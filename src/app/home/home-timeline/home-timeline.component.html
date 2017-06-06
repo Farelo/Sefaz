@@ -1,0 +1,15 @@
+<div class="panel-body info" *ngFor="let embalagem of embalagens"
+[ngClass]="{
+  'atrasado' : embalagem.status == 'atrasado',
+  'ok' : embalagem.status == 'ok',
+  'quase' : embalagem.status == 'quase'
+}"
+(click)="open(embalagem)"
+>
+{{embalagem.nome}}
+<p class="infoData">{{embalagem.ultimaAtualizacao}}</p>
+</div>
+
+
+<!--<button (click)="open()">Abrir modal</button>
+(click)="open()"-->
