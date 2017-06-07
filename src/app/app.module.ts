@@ -11,6 +11,14 @@ import { ImportarComponent } from './importar/importar.component';
 import { InventarioComponent } from './inventario/inventario.component';
 
 import { EmbalagensService } from './servicos/embalagens.service';
+import { AlertsService } from './servicos/alerts.service';
+import { DepartmentService } from './servicos/departments.service';
+import { PackingService } from './servicos/packings.service';
+import { PlantsService } from './servicos/plants.service';
+import { RoutesService } from './servicos/routes.service';
+import { SuppliersService } from './servicos/suppliers.service';
+import { TagsService } from './servicos/tags.service';
+
 import { AppRoutingModule } from './app.routing.module';
 import { HomeModule } from './home/home.module';
 import { ModalComponent } from './shared/modal/modal.component';
@@ -32,7 +40,15 @@ import { ModalComponent } from './shared/modal/modal.component';
     AppRoutingModule
   ],
   providers: [
-    EmbalagensService
+    EmbalagensService,
+    AlertsService,
+    DepartmentService,
+    PackingService,
+    PlantsService,
+    RoutesService,
+    SuppliersService,
+    TagsService
+
   ],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent]
