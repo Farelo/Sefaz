@@ -6,14 +6,17 @@ import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-
 import { ImportarComponent } from './importar/importar.component';
 import { InventarioComponent } from './inventario/inventario.component';
+import { ModalComponent } from './shared/modal/modal.component';
+
+import { HomeModule } from './home/home.module';
+import { CadastrosModule } from './cadastros/cadastros.module';
+import { AppRoutingModule } from './app.routing.module';
 
 import { EmbalagensService } from './servicos/embalagens.service';
-import { AppRoutingModule } from './app.routing.module';
-import { HomeModule } from './home/home.module';
-import { ModalComponent } from './shared/modal/modal.component';
+
+
 
 @NgModule({
   declarations: [
@@ -29,6 +32,7 @@ import { ModalComponent } from './shared/modal/modal.component';
     HttpModule,
     NgbModule.forRoot(),
     HomeModule,
+    CadastrosModule,
     AppRoutingModule
   ],
   providers: [

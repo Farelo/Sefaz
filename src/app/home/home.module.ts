@@ -8,7 +8,6 @@ import { HomeTimelineComponent } from './home-timeline/home-timeline.component';
 
 import { HomeRoutingModule } from './home.routing.module';
 import { EmbalagensService } from '../servicos/embalagens.service';
-import { DetalheComponent } from './detalhe/detalhe.component';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -21,8 +20,7 @@ import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
   declarations: [
     HomeComponent,
     HomeInfoComponent,
-    HomeTimelineComponent,
-    DetalheComponent
+    HomeTimelineComponent
   ],
   providers: [
     NgbActiveModal,

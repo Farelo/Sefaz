@@ -1,0 +1,26 @@
+button {
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: white;
+  border: none;
+  padding: 2px;
+  color: grey;
+  box-shadow: 0px 0px 7px #000;
+}
+button div {
+  width: 100%;
+  height: auto;
+  border-style: solid;
+  border-color: grey;
+  border-width: thin;
+  padding: 3px;
+}
+button:hover {
+  background-color: #6382c9;
+}
+button div:hover {
+  color: white;
+  border-color: white;
+}
+/*button:active { color: red; }
+button:after { color: red; }*/
