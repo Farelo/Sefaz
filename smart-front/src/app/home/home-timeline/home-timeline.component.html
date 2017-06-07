@@ -1,0 +1,11 @@
+<div class="panel-body info" *ngFor="let alert of alerts"
+[ngClass]="{
+  'atrasado' : alert.status == '03',
+  'ok' : alert.status == '02',
+  'quase' : alert.status == '01'
+}"
+(click)="open(alert)"
+>
+{{alert.packing.code}}
+<p class="infoData">{{alert.packing.type}}</p>
+</div>
