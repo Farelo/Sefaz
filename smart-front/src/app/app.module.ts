@@ -9,6 +9,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ImportarComponent } from './importar/importar.component';
 import { InventarioComponent } from './inventario/inventario.component';
 import { ModalComponent } from './shared/modal/modal.component';
+
 import { EmbalagensService } from './servicos/embalagens.service';
 import { AlertsService } from './servicos/alerts.service';
 import { DepartmentService } from './servicos/departments.service';
@@ -18,9 +19,11 @@ import { RoutesService } from './servicos/routes.service';
 import { SuppliersService } from './servicos/suppliers.service';
 import { TagsService } from './servicos/tags.service';
 import { CheckpointService } from './servicos/checkpoints.service';
+
 import { HomeModule } from './home/home.module';
 import { CadastrosModule } from './cadastros/cadastros.module';
 import { AppRoutingModule } from './app.routing.module';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -29,7 +32,8 @@ import { AppRoutingModule } from './app.routing.module';
     NavbarComponent,
     ImportarComponent,
     InventarioComponent,
-    ModalComponent
+    ModalComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

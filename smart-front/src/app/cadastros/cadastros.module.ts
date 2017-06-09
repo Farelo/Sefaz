@@ -17,6 +17,14 @@ import { PlataformaComponent } from './plataforma/plataforma.component';
 import { RotasComponent } from './rotas/rotas.component';
 import { PlantaComponent } from './planta/planta.component';
 import { EmbalagemDetalheComponent } from './embalagem/embalagem-detalhe/embalagem-detalhe.component';
+import { EmbalagemCadastroComponent } from './embalagem/embalagem-cadastro/embalagem-cadastro.component';
+import { FornecedorCadastrarComponent } from './fornecedor/fornecedor-cadastrar/fornecedor-cadastrar.component';
+import { PlantaCadastrarComponent } from './planta/planta/planta-cadastrar/planta-cadastrar.component';
+import { PlataformaCadastrarComponent } from './plataforma/plataforma-cadastrar/plataforma-cadastrar.component';
+import { RotasCadastrarComponent } from './rotas/rotas-cadastrar/rotas-cadastrar.component';
+import { ScannerCadastrarComponent } from './scanner/scanner-cadastrar/scanner-cadastrar.component';
+import { SetorCadastrarComponent } from './setor/setor-cadastrar/setor-cadastrar.component';
+import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.component';
 
 @NgModule({
   imports: [
@@ -35,7 +43,15 @@ import { EmbalagemDetalheComponent } from './embalagem/embalagem-detalhe/embalag
     PlataformaComponent,
     RotasComponent,
     PlantaComponent,
-    EmbalagemDetalheComponent
+    EmbalagemDetalheComponent,
+    EmbalagemCadastroComponent,
+    FornecedorCadastrarComponent,
+    PlantaCadastrarComponent,
+    PlataformaCadastrarComponent,
+    RotasCadastrarComponent,
+    ScannerCadastrarComponent,
+    SetorCadastrarComponent,
+    TagsCadastrarComponent
   ],
   providers: [
     NgbActiveModal,

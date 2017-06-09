@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PackingService } from '../../servicos/packings.service';;
+import { PackingService } from '../../servicos/packings.service';
+import { EmbalagensService } from '../../servicos/embalagens.service';;
 import { Packing } from '../../shared/models/Packing';
 
 @Component({
@@ -8,8 +9,15 @@ import { Packing } from '../../shared/models/Packing';
   styleUrls: ['./embalagem.component.css']
 })
 export class EmbalagemComponent implements OnInit {
-  constructor(private PackingService : PackingService) { }
+  embalagens: any[];
 
+  constructor(private embalagensService : EmbalagensService) { }
+    ngOnInit() {
+      this.embalagens = this.embalagensService.getEmbalagens();
+    }
+
+
+/*
   packings : Packing [];
 
 
@@ -21,6 +29,6 @@ export class EmbalagemComponent implements OnInit {
 
   ngOnInit() {
     this.loadPackings();
-  }
+  }*/
 
 }

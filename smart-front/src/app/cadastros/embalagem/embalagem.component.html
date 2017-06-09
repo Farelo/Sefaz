@@ -6,7 +6,7 @@
 
   </div>
   <div class="col-xs-3">
-    <button class="mais" >+</button>
+    <button class="mais" routerLink="cadastrar">+</button>
   </div>
 </div>
 
@@ -20,14 +20,22 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let packing of packings">
+      <tr *ngFor="let embalagem of embalagens" [routerLink]=[embalagem.id]>
+        <td>{{embalagem.id}}</td>
+        <td>{{embalagem.fornecedor}}</td>
+        <td class="teste">
+          <button class="editar" >Editar</button>
+          <button class="excluir">Excluir</button>
+        </td>
+      </tr>
+      <!--<tr *ngFor="let packing of packings">
         <td>{{packing.code}}</td>
         <td>{{packing.supplier.name}}</td>
         <td class="teste">
           <button class="editar" >Editar</button>
           <button class="excluir">Excluir</button>
         </td>
-      </tr>
+      </tr>-->
     </tbody>
   </table>
 </div>

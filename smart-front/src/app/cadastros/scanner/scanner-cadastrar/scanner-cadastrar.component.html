@@ -1,0 +1,26 @@
+<div class="base">
+  <h1>REGISTRAR SCANNER</h1>
+  <br />
+  <div class="row">
+    <div class="col-md-6">
+      <p class="descricao">CÓDIGO</p> <p class="explicacao">Ex. "994475545"</p>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="199874978" aria-describedby="basic-addon2">
+      </div>
+    </div>
+
+    <div class="col-md-6">
+        <p class="descricao">SETOR/ÁREA INTERNA</p> <p class="explicacao">Ex. "Logradouro"</p>
+        <div ngbDropdown class="d-inline-block">
+          <button class="botaoDrop" id="dropdownBasic1" ngbDropdownToggle>Please choose</button>
+          <div class="dropdown-menu" aria-labelledby="dropdownBasic1">
+            <button class="dropdown-item">Setor 1</button>
+            <button class="dropdown-item">Setor 2</button>
+            <button class="dropdown-item">Setor 3</button>
+          </div>
+        </div>
+    </div>
+  </div>
+    <button routerlink="/cadastros/tags" class="botaoVoltar" >Voltar</button>
+    <button class="botaoRegistrar">Registrar</button>
+</div>

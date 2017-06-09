@@ -3,15 +3,32 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertsService } from '../../servicos/alerts.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { Alert } from '../../shared/models/alert';
+import { EmbalagensService } from '../../servicos/embalagens.service';
 
 @Component({
   selector: 'timeline',
-  templateUrl: './home-timeline.component.html',
-  styleUrls: ['./home-timeline.component.css']
+  templateUrl: './timeline.component.html',
+  styleUrls: ['./timeline.component.css']
 })
-export class HomeTimelineComponent implements OnInit {
+export class TimelineComponent implements OnInit {
 
-  alerts: Alert[];
+  embalagens: any[];
+    embalagem: any;
+    constructor(
+      private embalagensService: EmbalagensService,
+      private modalService: NgbModal
+    ) { }
+
+    ngOnInit() {
+      this.embalagens = this.embalagensService.getEmbalagens();
+    }
+    open(embalagem) {
+      const modalRef = this.modalService.open(ModalComponent);
+      modalRef.componentInstance.embalagem = embalagem;
+    }
+  }
+
+  /*alerts: Alert[];
   alert: Alert;
 
   constructor(
@@ -37,4 +54,4 @@ export class HomeTimelineComponent implements OnInit {
       this.loadAlerts();
   }
 
-}
+}*/

@@ -1,0 +1,26 @@
+<!--<div style="background-color: white; padding: 10px;">
+  <p>Nome: {{embalagem.nome}}</p>
+  <p>Id: {{embalagem.id}}</p>
+  <p>Descrição: {{embalagem.descricao}}</p>
+  <p>Duns: {{embalagem.duns}}</p>
+  <p>Fornecedor: {{embalagem.fornecedor}}</p>
+  <p>Última atualização:: {{embalagem.ultimaAtualizacao}}</p>
+  <p>Status: {{embalagem.status}}</p>
+</div>-->
+
+<div  *ngFor="let emb of embalagens">
+  <div class="panel-body info" *ngIf="emb.duns == embalagem.duns"
+  [ngClass]="{
+    'atrasado' : emb.status == 'atrasado',
+    'ok' : emb.status == 'ok',
+    'quase' : emb.status == 'quase'
+  }"
+  (click)="open(emb)">
+{{emb.nome}}
+<p class="infoData">{{emb.ultimaAtualizacao}}</p>
+</div>
+</div>
+
+<br />
+
+<button routerLink="/home" class="botaoVoltar">Voltar</button>

@@ -7,7 +7,7 @@ import { InventarioComponent } from './inventario/inventario.component';
 
 const appRoutes: Routes = [
   //{ path: 'home', component: HomeComponent },
-  { path: '', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'inventario', component: InventarioComponent },
   { path: 'importar', component: ImportarComponent }
 ];

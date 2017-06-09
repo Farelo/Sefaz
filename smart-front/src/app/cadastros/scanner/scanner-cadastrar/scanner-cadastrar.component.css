@@ -1,0 +1,51 @@
+.base {
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0px 0px 7px #000;
+}
+h1 {
+  padding-bottom: 15px;
+  border-bottom-color: #6382c9;
+  border-width: thin;
+  border-bottom-style: solid;
+}
+.descricao {
+  display: inline;
+  font-weight: bold;
+}
+.explicacao {
+  color: #777;
+  font-size: 12px;
+}
+input {
+  font-size: 13px;
+}
+.input-group {
+  margin-bottom: 20px;
+}
+.botaoVoltar {
+  background-color: #777;
+  color: white;
+  border: none;
+  padding: 5px;
+}
+.botaoVoltar:hover {
+  background-color: #555;
+}
+.botaoRegistrar {
+  background-color: #6382c9;
+  color: white;
+}
+.botaoRegistrar:hover {
+  background-color: #35466d;
+}
+.botaoVoltar, .botaoRegistrar {
+  border: none;
+  padding: 5px;
+  width: 100px;
+  -webkit-transition: background-color 0.5s;
+  transition: background-color 0.5s;
+}
+.botaoDrop {
+  width: 100%;
+}

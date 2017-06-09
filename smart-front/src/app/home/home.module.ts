@@ -3,12 +3,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { HomeComponent } from './home.component';
-import { HomeInfoComponent } from './home-info/home-info.component';
-import { HomeTimelineComponent } from './home-timeline/home-timeline.component';
+import { TimelineComponent } from './timeline/timeline.component';
 
 import { HomeRoutingModule } from './home.routing.module';
 import { EmbalagensService } from '../servicos/embalagens.service';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DetalhesComponent } from './timeline/detalhes/detalhes.component';
+import { ListaComponent } from './lista/lista.component';
 
 @NgModule({
   imports: [
@@ -19,8 +20,9 @@ import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
   ],
   declarations: [
     HomeComponent,
-    HomeInfoComponent,
-    HomeTimelineComponent
+    TimelineComponent,
+    DetalhesComponent,
+    ListaComponent
   ],
   providers: [
     NgbActiveModal,
