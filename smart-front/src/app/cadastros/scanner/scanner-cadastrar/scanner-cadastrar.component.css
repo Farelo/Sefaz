@@ -20,9 +20,6 @@ h1 {
 input {
   font-size: 13px;
 }
-.input-group {
-  margin-bottom: 20px;
-}
 .botaoVoltar {
   background-color: #777;
   color: white;
@@ -47,5 +44,19 @@ input {
   transition: background-color 0.5s;
 }
 .botaoDrop {
+  background-color: white;
+  padding:5px;
+  line-height: 1.25;
+  border:1px solid rgba(0, 0, 0, 0.15);
   width: 100%;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+.dropdown-item {
+  font-size: 12px;
+}
+.dropdown-item:hover {
+  background: lightgrey;
 }

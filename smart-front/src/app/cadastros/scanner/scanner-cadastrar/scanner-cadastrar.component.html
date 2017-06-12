@@ -11,15 +11,18 @@
 
     <div class="col-md-6">
         <p class="descricao">SETOR/ÁREA INTERNA</p> <p class="explicacao">Ex. "Logradouro"</p>
+
         <div ngbDropdown class="d-inline-block">
           <select [(ngModel)]="checkpoint.department">
                       <option *ngFor="let department of departments" [ngValue]="department._id" >{{department.name}}</option>
                   </select>
-        </div>
+
     </div>
 
 
   </div>
+
     <button routerlink="/cadastros/tags" class="botaoVoltar" >Voltar</button>
     <button class="botaoRegistrar"  (click)="registerCheckpoint()">Registrar</button>
+
 </div>

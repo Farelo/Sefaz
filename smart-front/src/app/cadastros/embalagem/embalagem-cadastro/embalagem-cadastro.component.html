@@ -1,4 +1,66 @@
 <div class="base">
-<h1>Adicionar Embalagem</h1>
+  <h1>REGISTRAR EMBALAGEM</h1>
+  <br />
+  <div class="row">
+    <div class="col-md-6">
 
+      <div class="campo">
+      <p class="descricao">CÓDIGO</p> <p class="explicacao">Ex. "994475545"</p>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+      </div>
+      </div>
+
+      <div class="campo">
+        <p class="descricao">ASSOCIE A TAG</p>
+        <p class="explicacao">Associe uma tag a sua embalagem.</p>
+        <select id="planta">
+          <option value="hide">Associe uma Tag</option>
+          <option value="Tag">CFC3272EB0D</option>
+        </select>
+      </div>
+
+
+      <div class="campo">
+        <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
+        <p class="explicacao">Ex. "57 peças"</p>
+        <div class="placeholder" data-placeholder="peças">
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="hourStep" /></div>
+
+    </div>
+
+      <div class="campo">
+      <p class="descricao">TIPO DA EMBALAGEM</p> <p class="explicacao">Ex. "Rack Metálico"</p>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Rack Metálico" aria-describedby="basic-addon2">
+      </div>
+      </div>
+
+      <div class="campo">
+        <p class="descricao">ASSOCIE UM FORNECEDOR</p>
+        <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
+        <select>
+          <option value="hide">Associe um Fornecedor</option>
+          <option value="Fornecedor">Fornecedor 1</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="col-md-6">
+      <div class="campo">
+        <p class="descricao">SETOR/ÁREA INTERNA</p>
+        <p class="explicacao">Ex. "Logradouro"</p>
+        <select>
+          <option value="hide">Please choose</option>
+          <option value="Fornecedor">Setor 1</option>
+          <option value="Fornecedor">Setor 2</option>
+          <option value="Fornecedor">Setor 3</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+    <button routerlink="/cadastros/scanner" class="botaoVoltar" >Voltar</button>
+    <button class="botaoRegistrar">Registrar</button>
 </div>
