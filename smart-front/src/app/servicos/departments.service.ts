@@ -28,8 +28,8 @@ export class DepartmentService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updateDepartment(id: string, tag: Department): Observable<Department>{
-    return this.http.put(this.url + 'department/update' + id,tag)
+  updateDepartment(id: string, department: Department): Observable<Department>{
+    return this.http.put(this.url + 'department/update' + id,department)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -40,8 +40,8 @@ export class DepartmentService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createDepartment(tag: Department): Observable<Department>{
-    return this.http.post(this.url + 'department/create', tag)
+  createDepartment(department: Department): Observable<Department>{
+    return this.http.post(this.url + 'department/create', department)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

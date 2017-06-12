@@ -28,8 +28,8 @@ export class RoutesService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updateRoute(id: string, tag: Route): Observable<Route>{
-    return this.http.put(this.url + 'route/update' + id,tag)
+  updateRoute(id: string, route: Route): Observable<Route>{
+    return this.http.put(this.url + 'route/update' + id,route)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -40,8 +40,8 @@ export class RoutesService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createRoute(tag: Route): Observable<Route>{
-    return this.http.post(this.url + 'route/create', tag)
+  createRoute(route: Route): Observable<Route>{
+    return this.http.post(this.url + 'route/create', route)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

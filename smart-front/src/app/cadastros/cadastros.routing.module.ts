@@ -13,7 +13,7 @@ import { PlantaComponent } from './planta/planta.component';
 import { EmbalagemDetalheComponent } from './embalagem/embalagem-detalhe/embalagem-detalhe.component';
 import { EmbalagemCadastroComponent }from './embalagem/embalagem-cadastro/embalagem-cadastro.component';
 import { FornecedorCadastrarComponent } from './fornecedor/fornecedor-cadastrar/fornecedor-cadastrar.component';
-import { PlantaCadastrarComponent } from './planta/planta/planta-cadastrar/planta-cadastrar.component';
+import { PlantaCadastrarComponent } from './planta/planta-cadastrar/planta-cadastrar.component';
 import { PlataformaCadastrarComponent } from './plataforma/plataforma-cadastrar/plataforma-cadastrar.component';
 import { RotasCadastrarComponent } from './rotas/rotas-cadastrar/rotas-cadastrar.component';
 import { ScannerCadastrarComponent } from './scanner/scanner-cadastrar/scanner-cadastrar.component';

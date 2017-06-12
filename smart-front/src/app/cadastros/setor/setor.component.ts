@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DepartmentService } from '../../servicos/departments.service';;
+import { DepartmentService } from '../../servicos/departments.service';
 import { Department } from '../../shared/models/department';
 
 @Component({

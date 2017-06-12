@@ -6,26 +6,28 @@
   <table class="table">
     <thead>
       <tr class="cabecalho">
-        <th>Id</th>
-        <th>Nome</th>
-        <th>Descrição</th>
-        <th>Duns</th>
+        <th>Código</th>
         <th>Fornecedor</th>
+        <th>DUNS</th>
+        <th>Local</th>
+        <th>Setor/Area Interna</th>
+        <th>Quantidade</th>
         <th>Status</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let embalagem of embalagens">
-        <td> {{embalagem.id}} </td>
-        <td>{{embalagem.nome}} </td>
-        <td> {{embalagem.descricao}} </td>
-        <td> {{embalagem.duns}} </td>
-        <td> {{embalagem.fornecedor}} </td>
+      <tr *ngFor="let inventory of inventory">
+        <td> {{inventory.code}} </td>
+        <td> {{inventory.supplier.name}} </td>
+        <td> {{inventory.supplier.duns}} </td>
+        <td> {{inventory.plant.name}} </td>
+        <td> {{inventory.department.name}} </td>
+        <td> {{inventory.quantity}} </td>
         <td>
           <span class="alerta" [ngClass]="{
-            'atrasado' : embalagem.status == 'atrasado',
-            'ok' : embalagem.status == 'ok',
-            'quase' : embalagem.status == 'quase'
+            'atrasado' : inventory.missing ,
+            'ok' : inventory.nothing ,
+            'quase' : inventory.problem
           }"></span>
         </td>
       </tr>

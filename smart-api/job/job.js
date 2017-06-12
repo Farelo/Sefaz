@@ -390,8 +390,34 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
               pn.last_time_missing = new Date();
               pn.time_countdown = 0;
             }
+
+            if(pn.missing){
+              promiseUpdate.push(
+                alert.update({"packing": pn._id},{
+                "actual_plant": pn.actual_plant,
+                "department": pn.department,
+                "packing": pn._id,
+                "supplier": pn.supplier,
+                "status": "02",
+                "hashpacking": pn.hashPacking
+              },{
+                  upsert: true
+              }));
+            }else{
+              pn.missing = true;
+              promiseUpdate.push(
+                alert.remove({ "packing": pn._id}).then(() => alert.create({
+                "actual_plant": pn.actual_plant,
+                "department": pn.department,
+                "packing": pn._id,
+                "supplier": pn.supplier,
+                "status": "02",
+                "hashpacking": pn.hashPacking
+              })));
+            }
+
             pn.hashPacking  =   pn.supplier + pn.code;
-            pn.missing = true;
+
             promiseUpdate.push(packing.update({
                 _id: pn._id
             }, pn, {
@@ -421,9 +447,16 @@ function getInfoScanner(device, checkpoint) {
             if (error)
                 reject(error);
 
-            var info = JSON.parse(body);
-            info.checkpoint = checkpoint;
-            resolve(info);
+
+            try {
+              var info = JSON.parse(body);
+              info.checkpoint = checkpoint;
+              resolve(info);
+            }
+            catch(err) {
+                reject(err);
+            }
+
         }
 
         request(options, callback);

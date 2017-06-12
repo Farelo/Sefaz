@@ -6,13 +6,11 @@
 </div>
 
 <div class="modal-body">
-  <p>Nome: {{embalagem.nome}}</p>
-  <p>Id: {{embalagem.id}}</p>
-  <p>Descrição: {{embalagem.descricao}}</p>
-  <p>Duns: {{embalagem.duns}}</p>
-  <p>Fornecedor: {{embalagem.fornecedor}}</p>
-  <p>Última atualização:: {{embalagem.ultimaAtualizacao}}</p>
-  <p>Status: {{embalagem.status}}</p>
+  <p>Código: {{embalagem.packing.code}}</p>
+  <p>Planta do Fornecedor: {{embalagem.correct_plant_supplier.name}}</p>
+  <p>Planta da Fabrica: {{embalagem.correct_plant_factory.name}}</p>
+  <p>Setor/Área Interna Atual: {{embalagem.department.name}}</p>
+  <p>Planta Atual: {{embalagem.actual_plant.name}}</p>
 </div>
 
 <div class="modal-footer">

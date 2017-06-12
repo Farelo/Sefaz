@@ -28,8 +28,8 @@ export class PlantsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updatePlant(id: string, tag: Plant): Observable<Plant>{
-    return this.http.put(this.url + 'plant/update' + id,tag)
+  updatePlant(id: string, plant: Plant): Observable<Plant>{
+    return this.http.put(this.url + 'plant/update' + id,plant)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -40,8 +40,8 @@ export class PlantsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createPlant(tag: Plant): Observable<Plant>{
-    return this.http.post(this.url + 'plant/create', tag)
+  createPlant(plant: Plant): Observable<Plant>{
+    return this.http.post(this.url + 'plant/create', plant)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

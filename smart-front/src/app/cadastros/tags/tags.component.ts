@@ -11,7 +11,7 @@ export class TagsComponent implements OnInit {
 
   constructor(private TagsService: TagsService) { }
   // Local properties
-  tags: Tag[] ;
+  tags: Tag[];
 
 
   loadTags() {

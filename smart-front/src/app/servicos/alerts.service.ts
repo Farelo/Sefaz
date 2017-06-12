@@ -17,4 +17,17 @@ export class AlertsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  getAlertsPaginationByHashing(limit: number, page: number, hashing: string): Observable<Alert[]> {
+
+    return this.http.get(this.url + 'alert/list/all/hashing/' + limit + '/' + page + '/' + hashing)
+      .map((res: Response) => res.json().data)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  retrieveAlertByPacking(id: string): Observable<Alert>{
+    return this.http.get(this.url + 'alert/retrieve/' + id)
+      .map((res: Response) => res.json().data)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
 }

@@ -1,4 +1,4 @@
-<div class="panel-body info" *ngFor="let embalagem of embalagens"
+<!-- <div class="panel-body info" *ngFor="let embalagem of embalagens"
 [ngClass]="{
   'atrasado' : embalagem.status == 'atrasado',
   'ok' : embalagem.status == 'ok',
@@ -9,19 +9,19 @@
 {{embalagem.nome}}
 <p class="infoData">{{embalagem.ultimaAtualizacao}}</p>
 </div>
-<router-outlet></router-outlet>
+<router-outlet></router-outlet> -->
 
 <!--(click)="open(embalagem) -->
 
-<!--<div class="panel-body info" *ngFor="let alert of alerts"
+<div class="panel-body info" *ngFor="let alert of alerts"
 [ngClass]="{
   'atrasado' : alert.status == '03',
   'ok' : alert.status == '02',
   'quase' : alert.status == '01'
 }"
-(click)="open(alert)"
+[routerLink]=[alert._id.hash]
 >
 {{alert.packing.code}}
 <p class="infoData">{{alert.packing.type}}</p>
 </div>
--->
+<router-outlet></router-outlet>

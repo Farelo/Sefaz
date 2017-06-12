@@ -28,8 +28,8 @@ export class SuppliersService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updateSupplier(id: string, tag: Supplier): Observable<Supplier>{
-    return this.http.put(this.url + 'supplier/update' + id,tag)
+  updateSupplier(id: string, supplier: Supplier): Observable<Supplier>{
+    return this.http.put(this.url + 'supplier/update' + id,supplier)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -40,8 +40,8 @@ export class SuppliersService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createSupplier(tag: Supplier): Observable<Supplier>{
-    return this.http.post(this.url + 'supplier/create', tag)
+  createSupplier(supplier: Supplier): Observable<Supplier>{
+    return this.http.post(this.url + 'supplier/create', supplier)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

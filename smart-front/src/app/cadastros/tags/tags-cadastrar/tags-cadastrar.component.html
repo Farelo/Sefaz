@@ -4,9 +4,9 @@
     <div>
       <p class="descricao">CÓDIGO DA TAG</p> <p class="explicacao">Ex: "DEV0864DC215"</p>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="DEV0864DC215" aria-describedby="basic-addon2">
+        <input type="text" class="form-control" placeholder="DEV0864DC215" aria-describedby="basic-addon2" [(ngModel)]="tag.code">
       </div>
     </div>
     <button routerlink="/cadastros/tags" class="botaoVoltar" >Voltar</button>
-    <button class="botaoRegistrar">Registrar</button>
+    <button class="botaoRegistrar" (click)="registerTag()">Registrar</button>
 </div>

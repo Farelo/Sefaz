@@ -46,9 +46,9 @@ export class TagsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createTag(tag: Tag): Observable<Tag>{
+  createTag(tag: Tag[]): Observable<Tag>{
     return this.http.post(this.url + 'tags/create', tag)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => {console.log(res.json())})
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 

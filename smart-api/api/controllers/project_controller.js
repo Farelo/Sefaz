@@ -65,3 +65,14 @@ exports.project_delete = function(req, res) { 
          .then(result => res.json({code:200, message: "OK", "count": result[0], "projects": result[1]}))
          .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
  };
+
+
+ /**
+  * List of Categories
+  */
+  exports.project_list= function(req, res) { 
+
+    project.find({})
+        .then(tags => res.json({code:200, message: "OK", data: tags}))
+        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  };

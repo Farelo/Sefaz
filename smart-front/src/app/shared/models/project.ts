@@ -1,12 +1,9 @@
-
-export class Department {
+export class Project {
     public name: string;
-    public plant: string;
     public _id: string;
 
     public constructor(fields ?: {
   name?: string,
-  plant?: string,
   _id?: string
 }
 ){

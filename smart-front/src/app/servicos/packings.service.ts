@@ -40,8 +40,21 @@ export class PackingService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updatePacking(id: string, tag: Packing): Observable<Packing>{
-    return this.http.put(this.url + 'packing/update' + id,tag)
+
+  retrieveInventory(limit: number, page: number): Observable<any>{
+    return this.http.get(this.url + 'packing/list/inventory/pagination/' + limit + '/' + page)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  updatePacking(id: string, packing: Packing): Observable<Packing>{
+    return this.http.put(this.url + 'packing/update' + id,packing)
+      .map((res: Response) => res.json().data)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  updateAllPacking(code: string, supplier: string, packing: Packing): Observable<Packing>{
+    return this.http.put(this.url + 'api/packing/update/all/' + code + "/"+ supplier,packing)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -52,7 +65,7 @@ export class PackingService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createPacking(tag: Packing): Observable<Packing>{
+  createPacking(tag: Packing []): Observable<Packing>{
     return this.http.post(this.url + 'packing/create', tag)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));

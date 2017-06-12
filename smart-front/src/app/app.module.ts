@@ -19,6 +19,7 @@ import { RoutesService } from './servicos/routes.service';
 import { SuppliersService } from './servicos/suppliers.service';
 import { TagsService } from './servicos/tags.service';
 import { CheckpointService } from './servicos/checkpoints.service';
+import { ProjectService } from './servicos/projects.service';
 
 import { HomeModule } from './home/home.module';
 import { CadastrosModule } from './cadastros/cadastros.module';
@@ -53,7 +54,8 @@ import { LoginComponent } from './login/login.component';
     RoutesService,
     SuppliersService,
     TagsService,
-    CheckpointService
+    CheckpointService,
+    ProjectService
 
   ],
   bootstrap: [AppComponent],

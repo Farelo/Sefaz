@@ -12,23 +12,23 @@ import { EmbalagensService } from '../../servicos/embalagens.service';
 })
 export class TimelineComponent implements OnInit {
 
-  embalagens: any[];
-    embalagem: any;
-    constructor(
-      private embalagensService: EmbalagensService,
-      private modalService: NgbModal
-    ) { }
+  // embalagens: any[];
+  //   embalagem: any;
+  //   constructor(
+  //     private embalagensService: EmbalagensService,
+  //     private modalService: NgbModal
+  //   ) { }
+  //
+  //   ngOnInit() {
+  //     this.embalagens = this.embalagensService.getEmbalagens();
+  //   }
+  //   open(embalagem) {
+  //     const modalRef = this.modalService.open(ModalComponent);
+  //     modalRef.componentInstance.embalagem = embalagem;
+  //   }
+  // }
 
-    ngOnInit() {
-      this.embalagens = this.embalagensService.getEmbalagens();
-    }
-    open(embalagem) {
-      const modalRef = this.modalService.open(ModalComponent);
-      modalRef.componentInstance.embalagem = embalagem;
-    }
-  }
-
-  /*alerts: Alert[];
+  alerts: Alert[];
   alert: Alert;
 
   constructor(
@@ -54,4 +54,4 @@ export class TimelineComponent implements OnInit {
       this.loadAlerts();
   }
 
-}*/
+}

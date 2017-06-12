@@ -394,7 +394,10 @@ exports.queries = {
             },
             "supplier": {
                 "$first": "$supplierObject"
-            }
+            },
+            "nothing": {
+                    "$sum": 1
+                },
         }
     }],
     "quantityFoundNoCode": [{
@@ -503,7 +506,10 @@ exports.queries = {
             },
             "missing": {
                 "$first": "$missing"
-            }
+            },
+            "missing": {
+                    "$sum": 1
+                },
         }
     }],
     "countAll": {
@@ -616,6 +622,9 @@ exports.queries = {
                 },
                 "supplier": {
                     "$first": "$ObjectSupplier"
+                },
+                "problem": {
+                    "$sum": 1
                 }
 
             }

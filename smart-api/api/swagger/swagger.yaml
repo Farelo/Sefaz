@@ -725,6 +725,23 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /project/list/all:
+    x-swagger-router-controller: project_controller
+    get:
+      tags:
+        - "Project"
+      summary: "Get all projects on the system"
+      description: ""
+      operationId: project_list
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /project/create:
     x-swagger-router-controller: project_controller
     post:

@@ -10,7 +10,7 @@ import { ListaComponent } from './lista/lista.component';
 const homeRoutes = [
   {path: 'home', component: HomeComponent, children: [
     {path: '', component: TimelineComponent},
-    {path: ':id', component: ListaComponent}
+    {path: ':hashing', component: ListaComponent}
   ]
   }
 ];
