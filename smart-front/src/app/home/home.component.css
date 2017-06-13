@@ -7,6 +7,8 @@ modal-footer: before {
 }
 p{
   box-shadow: 0px 0px 7px #000;
+  font-family: 'Libre Baskerville', serif;
+
 }
 #losango{
   width:150px;
@@ -25,7 +27,7 @@ p{
   margin-bottom: 5px;
   border-width: 0.9px;
   padding-top: 75px;
-  font-size: 16px;
+  font-size: 14px;
 }
 .imgUsuario {
   margin-bottom: -75px;
@@ -38,6 +40,10 @@ button {
   padding: 2px;
   color: grey;
   box-shadow: 0px 0px 7px #000;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
 }
 button div {
   width: 100%;

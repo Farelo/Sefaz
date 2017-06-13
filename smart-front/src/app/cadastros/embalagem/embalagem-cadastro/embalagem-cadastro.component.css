@@ -1,3 +1,5 @@
+* { font-family: 'Roboto', sans-serif; }
+
 .base {
     background-color: white;
     padding: 15px;
@@ -9,6 +11,7 @@ h1 {
   border-width: thin;
   border-bottom-style: solid;
 }
+
 .descricao {
   display: inline;
   font-weight: bold;
@@ -17,28 +20,23 @@ h1 {
   color: #777;
   font-size: 12px;
 }
-.campo {
-  margin-bottom: 20px;
-}
-input {
-  font-size: 13px;
-}
+.campo { margin-bottom: 20px; }
+input { font-size: 13px; }
+
 .botaoVoltar {
   background-color: #777;
   color: white;
   border: none;
   padding: 5px;
 }
-.botaoVoltar:hover {
-  background-color: #555;
-}
+.botaoVoltar:hover { background-color: #555; }
+.botaoRegistrar:hover { background-color: #35466d; }
+
 .botaoRegistrar {
   background-color: #6382c9;
   color: white;
 }
-.botaoRegistrar:hover {
-  background-color: #35466d;
-}
+
 .botaoVoltar, .botaoRegistrar {
   border: none;
   padding: 5px;
@@ -54,15 +52,9 @@ input {
   width: 100%;
 }
 
-.row {
-  margin-bottom: 20px;
-}
-.dropdown-item {
-  font-size: 12px;
-}
-.dropdown-item:hover {
-  background: lightgrey;
-}
+.row { margin-bottom: 20px; }
+.dropdown-item { font-size: 12px; }
+.dropdown-item:hover { background: lightgrey; }
 
 select {
   background-color: white;
@@ -72,16 +64,13 @@ select {
   width: 100%;
   text-align: left;
 }
-option {
-  color: grey;
-}
-option:hover {
-  background-color: lightgrey;
-}
-.placeholder {    position: relative; }
 
-.placeholder::after
-{
+option { color: grey; }
+option:hover { background-color: lightgrey; }
+
+.placeholder { position: relative; }
+
+.placeholder::after {
     position: absolute;
     right: 30px;
     top: 5px;

@@ -3,26 +3,31 @@
   <br />
   <div class="row">
     <div class="col-md-6">
-      <p class="descricao">CÓDIGO</p> <p class="explicacao">Ex. "994475545"</p>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="199874978" aria-describedby="basic-addon2" [(ngModel)]="checkpoint.code">
+
+      <div class="campo">
+        <p class="descricao">CÓDIGO</p>
+        <p class="explicacao">Ex. "994475545"</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="199874978" aria-describedby="basic-addon2" [(ngModel)]="checkpoint.code">
+        </div>
       </div>
+
     </div>
 
     <div class="col-md-6">
-        <p class="descricao">SETOR/ÁREA INTERNA</p> <p class="explicacao">Ex. "Logradouro"</p>
 
-        <div ngbDropdown class="d-inline-block">
-          <select [(ngModel)]="checkpoint.department">
-                      <option *ngFor="let department of departments" [ngValue]="department._id" >{{department.name}}</option>
-                  </select>
+      <div class="campo">
+        <p class="descricao">SETOR/ÁREA INTERNA</p>
+        <p class="explicacao">Ex. "Logradouro"</p>
+        <select [(ngModel)]="checkpoint.department">
+          <option *ngFor="" [ngValue]="" >lalal</option>
+        </select>
+      </div>
 
     </div>
-
-
   </div>
 
-    <button routerlink="/cadastros/tags" class="botaoVoltar" >Voltar</button>
-    <button class="botaoRegistrar"  (click)="registerCheckpoint()">Registrar</button>
+  <button routerLink="/cadastros/scanner" class="botaoVoltar" >Voltar</button>
+  <button class="botaoRegistrar"  (click)="registerCheckpoint()">Registrar</button>
 
 </div>

@@ -5,10 +5,11 @@
     <div class="col-md-6">
 
       <div class="campo">
-      <p class="descricao">CÓDIGO</p> <p class="explicacao">Ex. "994475545"</p>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
-      </div>
+        <p class="descricao">CÓDIGO</p>
+        <p class="explicacao">Ex. "994475545"</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+        </div>
       </div>
 
       <div class="campo">
@@ -20,20 +21,20 @@
         </select>
       </div>
 
+      <div class="campo">
+        <p class="descricao">TIPO DA EMBALAGEM</p>
+        <p class="explicacao">Ex. "Rack Metálico"</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Rack Metálico" aria-describedby="basic-addon2">
+        </div>
+      </div>
 
       <div class="campo">
         <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
         <p class="explicacao">Ex. "57 peças"</p>
         <div class="placeholder" data-placeholder="peças">
-          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="hourStep" /></div>
-
-    </div>
-
-      <div class="campo">
-      <p class="descricao">TIPO DA EMBALAGEM</p> <p class="explicacao">Ex. "Rack Metálico"</p>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Rack Metálico" aria-describedby="basic-addon2">
-      </div>
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="capacidade" />
+        </div>
       </div>
 
       <div class="campo">
@@ -48,19 +49,50 @@
     </div>
 
     <div class="col-md-6">
+
       <div class="campo">
-        <p class="descricao">SETOR/ÁREA INTERNA</p>
-        <p class="explicacao">Ex. "Logradouro"</p>
-        <select>
-          <option value="hide">Please choose</option>
-          <option value="Fornecedor">Setor 1</option>
-          <option value="Fornecedor">Setor 2</option>
-          <option value="Fornecedor">Setor 3</option>
-        </select>
+        <p class="descricao">TARA (KG)</p>
+        <p class="explicacao">Ex. "57 kg"</p>
+        <div class="placeholder" data-placeholder="kg">
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="tara" />
+        </div>
       </div>
+
+      <div class="campo">
+        <p class="descricao">COMPRIMENTO (M)</p>
+        <p class="explicacao">Ex. "57 m"</p>
+        <div class="placeholder" data-placeholder="metros">
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="comprimento" />
+        </div>
+      </div>
+
+      <div class="campo">
+        <p class="descricao">LARGURA (M)</p>
+        <p class="explicacao">Ex. "57 m"</p>
+        <div class="placeholder" data-placeholder="metros">
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="largura" />
+        </div>
+      </div>
+
+      <div class="campo">
+        <p class="descricao">ALTURA (M)</p>
+        <p class="explicacao">Ex. "57 m"</p>
+        <div class="placeholder" data-placeholder="metros">
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="altura" />
+        </div>
+      </div>
+
+      <div class="campo">
+        <p class="descricao">QUANTIDADE DE EMBALAGENS</p>
+        <p class="explicacao">Ex. "8"</p>
+        <div class="placeholder" data-placeholder="embagens">
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="quantidade" />
+        </div>
+      </div>
+
     </div>
 
   </div>
-    <button routerlink="/cadastros/scanner" class="botaoVoltar" >Voltar</button>
+    <button routerLink="/cadastros/embalagem" class="botaoVoltar" >Voltar</button>
     <button class="botaoRegistrar">Registrar</button>
 </div>

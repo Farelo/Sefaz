@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./rotas-cadastrar.component.css']
 })
 export class RotasCadastrarComponent implements OnInit {
+  time: any;
 
   constructor(
     private PlantsService: PlantsService,

@@ -1,3 +1,36 @@
-<p>
-  rotas-cadastrar works!
-</p>
+<div class="base">
+  <h1>REGISTRAR ROTA</h1>
+  <br />
+  <div class="row">
+    <div class="col-md-6">
+
+      <div class="campo">
+        <p class="descricao">ASSOCIE UMA EMBALAGEM</p>
+        <p class="explicacao"></p>
+        <select id="planta">
+          <option>Associe uma Embalagem</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
+        <p class="explicacao"></p>
+        <select id="planta">
+          <option *ngFor="let department of departments" [ngValue]="department._id" >{{department.name}}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="col-md-6">
+      <div class="campo">
+        <p class="descricao">ESTIME UM TEMPO DE VIAGEM</p>
+        <p class="explicacao"></p>
+        <ngb-timepicker [(ngModel)]="time"></ngb-timepicker>
+      </div>
+    </div>
+
+  </div>
+  <button routerLink="/cadastros/rotas" class="botaoVoltar" >Voltar</button>
+  <button class="botaoRegistrar">Registrar</button>
+</div>

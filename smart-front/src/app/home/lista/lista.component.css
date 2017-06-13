@@ -1,3 +1,4 @@
+* { font-family: 'Roboto', sans-serif; }
 .info {
   padding: 10px 20px 10px 10px;
   margin-bottom: 5px;
@@ -46,6 +47,8 @@
   border: none;
   padding: 5px 20px;
   box-shadow: 0px 0px 7px #000;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
 }
 .botaoVoltar:hover {
   color: white;
