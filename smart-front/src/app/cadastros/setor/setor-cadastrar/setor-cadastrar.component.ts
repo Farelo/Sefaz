@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-setor-cadastrar',
   templateUrl: './setor-cadastrar.component.html',
-  styleUrls: ['./setor-cadastrar.component.css']
+  styleUrls: ['../../cadastros.component.css']
 })
 export class SetorCadastrarComponent implements OnInit {
 

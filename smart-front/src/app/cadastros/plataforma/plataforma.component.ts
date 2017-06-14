@@ -5,13 +5,13 @@ import { Project } from '../../shared/models/project';
 @Component({
   selector: 'app-plataforma',
   templateUrl: './plataforma.component.html',
-  styleUrls: ['./plataforma.component.css']
+  styleUrls: ['../cadastros.component.css']
 })
 export class PlataformaComponent implements OnInit {
 
   constructor(private ProjectService : ProjectService) { }
 
-
+    vazio: boolean = true;
     projects: Project [];
 
     loadProjects(){

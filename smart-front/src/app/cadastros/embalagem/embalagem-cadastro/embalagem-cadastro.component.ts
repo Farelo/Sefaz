@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-embalagem-cadastro',
   templateUrl: './embalagem-cadastro.component.html',
-  styleUrls: ['./embalagem-cadastro.component.css']
+  styleUrls: ['../../cadastros.component.css']
 })
 export class EmbalagemCadastroComponent implements OnInit {
 

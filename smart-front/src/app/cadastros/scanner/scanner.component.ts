@@ -5,13 +5,14 @@ import { Checkpoint } from '../../shared/models/Checkpoint';
 @Component({
   selector: 'app-scanner',
   templateUrl: './scanner.component.html',
-  styleUrls: ['./scanner.component.css']
+    styleUrls: ['../cadastros.component.css']
 })
 export class ScannerComponent implements OnInit {
 
   constructor(private CheckpointService : CheckpointService) { }
 
     checkpoints: Checkpoint [];
+      vazio: boolean = false;
 
     loadCheckpoints(){
       this.CheckpointService.getCheckpointsPagination(10,1)

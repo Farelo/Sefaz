@@ -6,10 +6,11 @@ import { Packing } from '../../shared/models/Packing';
 @Component({
   selector: 'app-embalagem',
   templateUrl: './embalagem.component.html',
-  styleUrls: ['./embalagem.component.css']
+  styleUrls: ['../cadastros.component.css']
 })
 export class EmbalagemComponent implements OnInit {
   embalagens: any[];
+  vazio: boolean = false;
 
   constructor(
     private embalagensService : EmbalagensService,

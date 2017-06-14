@@ -5,13 +5,14 @@ import { Tag } from '../../shared/models/Tag';
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
-  styleUrls: ['./tags.component.css']
+    styleUrls: ['../cadastros.component.css']
 })
 export class TagsComponent implements OnInit {
 
   constructor(private TagsService: TagsService) { }
   // Local properties
   tags: Tag[];
+    vazio: boolean = false;
 
 
   loadTags() {

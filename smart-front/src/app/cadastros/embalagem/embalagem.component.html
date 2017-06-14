@@ -20,14 +20,6 @@
       </tr>
     </thead>
     <tbody>
-      <!-- <tr *ngFor="let embalagem of embalagens" [routerLink]=[embalagem.id]>
-        <td>{{embalagem.id}}</td>
-        <td>{{embalagem.fornecedor}}</td>
-        <td class="teste">
-          <button class="editar" >Editar</button>
-          <button class="excluir">Excluir</button>
-        </td>
-      </tr> -->
       <tr *ngFor="let packing of packings">
         <td>{{packing.code}}</td>
         <td>{{packing.supplier.name}}</td>
@@ -38,4 +30,8 @@
       </tr>
     </tbody>
   </table>
+</div>
+
+<div class="classVazio" *ngIf="vazio">
+  Ainda não existem plataformas cadastradas.
 </div>

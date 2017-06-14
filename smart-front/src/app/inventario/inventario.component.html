@@ -23,7 +23,7 @@
         <td> {{inventory.plant.name}} </td>
         <td> {{inventory.department.name}} </td>
         <td> {{inventory.quantity}} </td>
-        <td>
+        <td > <!--(click)="open(inventory.code)"-->
           <span class="alerta" [ngClass]="{
             'atrasado' : inventory.missing ,
             'ok' : inventory.nothing ,

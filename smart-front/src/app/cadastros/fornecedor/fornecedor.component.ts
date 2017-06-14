@@ -5,12 +5,13 @@ import { Supplier } from '../../shared/models/supplier';
 @Component({
   selector: 'app-fornecedor',
   templateUrl: './fornecedor.component.html',
-  styleUrls: ['./fornecedor.component.css']
+  styleUrls: ['../cadastros.component.css']
 })
 export class FornecedorComponent implements OnInit {
 
   constructor(private SuppliersService : SuppliersService) { }
   suppliers : Supplier [];
+  vazio: boolean = false;
 
 
   loadSuppliers(){

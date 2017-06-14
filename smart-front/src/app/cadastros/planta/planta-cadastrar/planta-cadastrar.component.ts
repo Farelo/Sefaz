@@ -6,7 +6,7 @@ import { PlantsService } from '../../../servicos/plants.service';;
 @Component({
   selector: 'app-planta-cadastrar',
   templateUrl: './planta-cadastrar.component.html',
-  styleUrls: ['./planta-cadastrar.component.css']
+  styleUrls: ['../../cadastros.component.css']
 })
 export class PlantaCadastrarComponent implements OnInit {
 

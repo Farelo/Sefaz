@@ -5,12 +5,13 @@ import { Route } from '../../shared/models/route';
 @Component({
   selector: 'app-rotas',
   templateUrl: './rotas.component.html',
-  styleUrls: ['./rotas.component.css']
+  styleUrls: ['../cadastros.component.css']
 })
 export class RotasComponent implements OnInit {
 
   constructor(private RoutesService : RoutesService) { }
 routes : Route [];
+  vazio: boolean = false;
 
 
 loadRoutes(){

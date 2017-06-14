@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-fornecedor-cadastrar',
   templateUrl: './fornecedor-cadastrar.component.html',
-  styleUrls: ['./fornecedor-cadastrar.component.css']
+  styleUrls: ['../../cadastros.component.css']
 })
 export class FornecedorCadastrarComponent implements OnInit {
 

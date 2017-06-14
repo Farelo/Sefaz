@@ -22,9 +22,13 @@ import { CheckpointService } from './servicos/checkpoints.service';
 import { ProjectService } from './servicos/projects.service';
 
 import { HomeModule } from './home/home.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { CadastrosModule } from './cadastros/cadastros.module';
 import { AppRoutingModule } from './app.routing.module';
 import { LoginComponent } from './login/login.component';
+import { AlertaComponent } from './shared/alerta/alerta.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -34,7 +38,10 @@ import { LoginComponent } from './login/login.component';
     ImportarComponent,
     InventarioComponent,
     ModalComponent,
-    LoginComponent
+    LoginComponent,
+    AlertaComponent,
+    LandingPageComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +49,7 @@ import { LoginComponent } from './login/login.component';
     HttpModule,
     NgbModule.forRoot(),
     HomeModule,
+    DashboardModule,
     CadastrosModule,
     AppRoutingModule
   ],

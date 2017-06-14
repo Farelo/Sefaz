@@ -8,7 +8,7 @@ import { DepartmentService } from '../../../servicos/departments.service';;
 @Component({
   selector: 'app-scanner-cadastrar',
   templateUrl: './scanner-cadastrar.component.html',
-  styleUrls: ['./scanner-cadastrar.component.css']
+  styleUrls: ['../../cadastros.component.css']
 })
 export class ScannerCadastrarComponent implements OnInit {
 

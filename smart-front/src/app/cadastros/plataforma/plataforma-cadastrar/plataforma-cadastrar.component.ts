@@ -7,7 +7,7 @@ import { ProjectService } from '../../../servicos/projects.service';;
 @Component({
   selector: 'app-plataforma-cadastrar',
   templateUrl: './plataforma-cadastrar.component.html',
-  styleUrls: ['./plataforma-cadastrar.component.css']
+  styleUrls: ['../../cadastros.component.css']
 })
 export class PlataformaCadastrarComponent implements OnInit {
 

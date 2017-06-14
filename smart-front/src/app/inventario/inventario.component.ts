@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { PackingService } from '../servicos/packings.service';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
+import { Router } from '@angular/router';
+import { AlertsService } from '../servicos/alerts.service';
+import { Alert } from '../shared/models/alert';
+
+/*ALerta!*/
+import { AlertaComponent } from '../shared/alerta/alerta.component';
 
 @Component({
   selector: 'app-inventario',
@@ -10,7 +19,11 @@ export class InventarioComponent implements OnInit {
   embalagens: any[];
 
   constructor(
-    private PackingService: PackingService
+    private PackingService: PackingService,
+    private AlertsService: AlertsService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private modalService: NgbModal
   ) { }
 
   inventory = [];
@@ -27,6 +40,10 @@ export class InventarioComponent implements OnInit {
       this.inventory = this.inventory.concat(listProblem).concat(listMissing);
       console.log(this.inventory);
     });
+  }
+
+  open(numero) {
+
   }
 
 }

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-tags-cadastrar',
   templateUrl: './tags-cadastrar.component.html',
-  styleUrls: ['./tags-cadastrar.component.css']
+    styleUrls: ['../../cadastros.component.css']
 })
 export class TagsCadastrarComponent implements OnInit {
 

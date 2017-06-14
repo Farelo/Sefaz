@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-rotas-cadastrar',
   templateUrl: './rotas-cadastrar.component.html',
-  styleUrls: ['./rotas-cadastrar.component.css']
+  styleUrls: ['../../cadastros.component.css']
 })
 export class RotasCadastrarComponent implements OnInit {
   time: any;
