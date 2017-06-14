@@ -19,8 +19,9 @@
       <div class="campo">
         <p class="descricao">SETOR/ÁREA INTERNA</p>
         <p class="explicacao">Ex. "Logradouro"</p>
-        <select [(ngModel)]="checkpoint.department">
-          <option *ngFor="" [ngValue]="" >lalal</option>
+        <select  [(ngModel)]="checkpoint.department">
+           <option value="">Associe uma Área Interna</option>
+           <option *ngFor="let obj of departments" [ngValue]="obj._id">{{obj.name}}</option>
         </select>
       </div>
 

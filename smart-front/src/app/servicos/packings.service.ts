@@ -29,6 +29,7 @@ export class PackingService {
   }
 
   retrieveAllNoBinded(): Observable<Packing[]> {
+
     return this.http.get(this.url + 'packing/list/all/nobinded')
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
@@ -54,7 +55,7 @@ export class PackingService {
   }
 
   updateAllPacking(code: string, supplier: string, packing: Packing): Observable<Packing>{
-    return this.http.put(this.url + 'api/packing/update/all/' + code + "/"+ supplier,packing)
+    return this.http.put(this.url + 'packing/update/all/' + code + "/"+ supplier,packing)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

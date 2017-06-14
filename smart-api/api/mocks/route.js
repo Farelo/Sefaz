@@ -16,7 +16,7 @@ var routeSchema = new mongoose.Schema({
       },
       packing_code: String,
       estimeted_time: Number,
-      date_estimated: Date,
+      date_estimated: Object,
       hashPacking : String
 
 });

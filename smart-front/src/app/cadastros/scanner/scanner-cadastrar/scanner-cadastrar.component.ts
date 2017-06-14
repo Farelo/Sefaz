@@ -18,12 +18,12 @@ export class ScannerCadastrarComponent implements OnInit {
     private router: Router
   ) { }
 
-  checkpoint: Checkpoint = new Checkpoint();
+  checkpoint: Checkpoint = new Checkpoint({department: ""});
   departments = [] ;
 
   registerCheckpoint():void {
     this.checkpoint.code = "00"+this.checkpoint.code;
-    console.log(this.checkpoint);
+
     this.CheckpointService.createCheckpoint([this.checkpoint]).subscribe( result => this.router.navigate(['/cadastros/scanner']) );
   }
 

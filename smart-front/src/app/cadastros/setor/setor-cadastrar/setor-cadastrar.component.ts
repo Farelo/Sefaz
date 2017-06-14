@@ -18,10 +18,10 @@ export class SetorCadastrarComponent implements OnInit {
   ) { }
 
   plants =  [];
-  department:  Department = new Department();
+  department:  Department = new Department({plant:""});
 
-  registerSupplier():void {
-
+  registerDepartment():void {
+    console.log("aquhu");
     this.DepartmentService.createDepartment(this.department).subscribe( result => this.router.navigate(['/cadastros/setor']) );
   }
 
@@ -30,6 +30,7 @@ export class SetorCadastrarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadPlants();
     console.log(this.department);
 
   }

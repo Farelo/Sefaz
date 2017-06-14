@@ -8,16 +8,17 @@
         <p class="descricao">CÓDIGO</p>
         <p class="explicacao">Ex. "994475545"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.code">
         </div>
       </div>
+
 
       <div class="campo">
         <p class="descricao">ASSOCIE A TAG</p>
         <p class="explicacao">Associe uma tag a sua embalagem.</p>
-        <select id="planta">
-          <option value="hide">Associe uma Tag</option>
-          <option value="Tag">CFC3272EB0D</option>
+        <select  [(ngModel)]="packing.tag_mac">
+           <option value="">Associe uma Tag</option>
+           <option *ngFor="let obj of tags" [ngValue]="obj._id">{{obj.code}}</option>
         </select>
       </div>
 
@@ -25,7 +26,7 @@
         <p class="descricao">TIPO DA EMBALAGEM</p>
         <p class="explicacao">Ex. "Rack Metálico"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Rack Metálico" aria-describedby="basic-addon2">
+          <input type="text" class="form-control" placeholder="Rack Metálico" aria-describedby="basic-addon2"  [(ngModel)]="packing.type">
         </div>
       </div>
 
@@ -33,16 +34,16 @@
         <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
         <p class="explicacao">Ex. "57 peças"</p>
         <div class="placeholder" data-placeholder="peças">
-          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="capacidade" />
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.capacity" />
         </div>
       </div>
 
       <div class="campo">
         <p class="descricao">ASSOCIE UM FORNECEDOR</p>
         <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
-        <select>
-          <option value="hide">Associe um Fornecedor</option>
-          <option value="Fornecedor">Fornecedor 1</option>
+        <select  [(ngModel)]="packing.supplier">
+           <option value="">Associe um Fornecedor</option>
+           <option *ngFor="let obj of suppliers" [ngValue]="obj._id">{{obj.name}}</option>
         </select>
       </div>
 
@@ -54,7 +55,7 @@
         <p class="descricao">TARA (KG)</p>
         <p class="explicacao">Ex. "57 kg"</p>
         <div class="placeholder" data-placeholder="kg">
-          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="tara" />
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.weight" />
         </div>
       </div>
 
@@ -62,7 +63,7 @@
         <p class="descricao">COMPRIMENTO (M)</p>
         <p class="explicacao">Ex. "57 m"</p>
         <div class="placeholder" data-placeholder="metros">
-          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="comprimento" />
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.length" />
         </div>
       </div>
 
@@ -70,7 +71,7 @@
         <p class="descricao">LARGURA (M)</p>
         <p class="explicacao">Ex. "57 m"</p>
         <div class="placeholder" data-placeholder="metros">
-          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="largura" />
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.width" />
         </div>
       </div>
 
@@ -78,21 +79,23 @@
         <p class="descricao">ALTURA (M)</p>
         <p class="explicacao">Ex. "57 m"</p>
         <div class="placeholder" data-placeholder="metros">
-          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="altura" />
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.heigth" />
         </div>
       </div>
 
       <div class="campo">
-        <p class="descricao">QUANTIDADE DE EMBALAGENS</p>
-        <p class="explicacao">Ex. "8"</p>
-        <div class="placeholder" data-placeholder="embagens">
-          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="quantidade" />
-        </div>
+        <p class="descricao">ASSOCIE UMA PLATAFORMA</p>
+        <p class="explicacao">Associe uma plataforma a sua embalagem.</p>
+        <select  [(ngModel)]="packing.project">
+           <option value="">Associe uma Plataforma</option>
+           <option *ngFor="let obj of projects" [ngValue]="obj._id">{{obj.name}}</option>
+        </select>
       </div>
+
 
     </div>
 
   </div>
     <button routerLink="/cadastros/embalagem" class="botaoVoltar" >Voltar</button>
-    <button class="botaoRegistrar">Registrar</button>
+    <button class="botaoRegistrar"  (click)="registerPacking()">Registrar</button>
 </div>

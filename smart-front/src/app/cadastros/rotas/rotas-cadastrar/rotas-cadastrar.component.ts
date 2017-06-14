@@ -28,24 +28,23 @@ export class RotasCadastrarComponent implements OnInit {
   plants =  [];
   packings = [];
   supplier : Supplier = new Supplier();
-  route : Route = new Route();
-
+  route : Route = new Route({packing_code:"",plant_factory:""});
+  packing: Route = new Route({packing_code:""});
+  plant_supplier: any;
+  supplier_packing: any;
+  choiced = false;
 
   registerRoute():void {
 
-    try {
-      // this.route.packing_code = this.route.packing_code.code;
-      // this.route.supplier = this.route.supplier._id;
-      // this.route.plant_supplier = this.route.supplier.plant._id;
-      // this.route.hashPacking =  this.supplier._id + this.route.packing_code;
-      // this.route.estimeted_time = (this.route.date_estimated.getHours() * (60000 * 60)) + (this.route.date_estimated.getMinutes() * 60000);
+
+      this.route.hashPacking =  this.route.supplier + this.route.packing_code;
+      this.route.estimeted_time = (this.route.date_estimated.hour * (60000 * 60)) + (this.route.date_estimated.minute * 60000);
+
 
       this.RoutesService.createRoute(this.route)
-      .subscribe( result => this.PackingService.updateAllPacking(this.route.packing_code,this.supplier._id , new Packing({"hashPacking": this.route.hashPacking}))
-      .subscribe(result => this.router.navigate(['/cadastros/embalagem'])) );
-   } catch (e) {
+      .subscribe( result => this.PackingService.updateAllPacking(this.route.packing_code,this.route.supplier , new Packing({"hashPacking": this.route.hashPacking}))
+      .subscribe(result => this.router.navigate(['/cadastros/rotas'])) );
 
-   }
 
   }
 
@@ -57,12 +56,27 @@ export class RotasCadastrarComponent implements OnInit {
     this.PackingService.retrieveAllNoBinded().subscribe( result => this.packings = result );
   }
 
-  loadSupplier(id):void {
-    this.SuppliersService.retrieveSupplier(id).subscribe( result => this.supplier = result );
+  //try to otimizate this (ugly)
+  loadSupplier(event):void {
+    console.log(event);
+    if(event != ""){
+      this.choiced = true;
+      this.route.packing_code = event._id.code;
+      this.SuppliersService.retrieveSupplier( event._id.supplier).subscribe( result => {
+        this.supplier_packing = result.name;
+        this.plant_supplier = result.plant;
+        this.route.supplier = result._id;
+        this.route.plant_supplier = this.plant_supplier._id;
+        this.plant_supplier = this.plant_supplier.name;
+      });
+    }else{
+      this.choiced = false;
+    }
+
   }
 
   ngOnInit() {
-    console.log(this.route);
+
     this.loadPlants();
     this.loadPackings();
   }

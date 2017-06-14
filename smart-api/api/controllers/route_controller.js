@@ -9,6 +9,7 @@ var route = mongoose.model('Route');
  * Create a Category
  */
 exports.route_create = function(req, res) {
+  console.log(req.body);
     	route.create(req.body)
            .then(success => res.json({code:200, message: "OK", response: success}))
            .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));

@@ -19,7 +19,7 @@ export class PlataformaCadastrarComponent implements OnInit {
   project: Project = new Project();
 
 
-  registerSupplier():void {
+  registerProject():void {
 
     this.ProjectService.createProject(this.project).subscribe( result => this.router.navigate(['/cadastros/plataforma']) );
   }

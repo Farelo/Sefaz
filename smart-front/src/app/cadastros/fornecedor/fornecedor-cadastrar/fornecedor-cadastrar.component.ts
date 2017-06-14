@@ -18,7 +18,7 @@ export class FornecedorCadastrarComponent implements OnInit {
   ) { }
 
   plants =  [];
-  supplier:  Supplier = new Supplier();
+  supplier:  Supplier = new Supplier({plant:""});
 
   registerSupplier():void {
 
@@ -30,8 +30,7 @@ export class FornecedorCadastrarComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.supplier);
-
+    this.loadPlants();
   }
 
 }

@@ -20,12 +20,11 @@ export class PlantaCadastrarComponent implements OnInit {
 
   registerPlant():void {
 
-    this.PlantsService.createPlant(this.plant).subscribe( result => this.router.navigate(['/cadastros/plant']) );
+    this.PlantsService.createPlant(this.plant).subscribe( result => this.router.navigate(['/cadastros/planta']) );
   }
 
 
   ngOnInit() {
-    console.log(this.plant);
 
   }
 

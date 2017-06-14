@@ -11,13 +11,16 @@ import { Packing } from '../../shared/models/Packing';
 export class EmbalagemComponent implements OnInit {
   embalagens: any[];
 
-  constructor(private embalagensService : EmbalagensService) { }
-    ngOnInit() {
-      this.embalagens = this.embalagensService.getEmbalagens();
-    }
+  constructor(
+    private embalagensService : EmbalagensService,
+    private PackingService : PackingService
+  ) { }
+    // ngOnInit() {
+    //   this.embalagens = this.embalagensService.getEmbalagens();
+    // }
 
 
-/*
+
   packings : Packing [];
 
 
@@ -29,6 +32,6 @@ export class EmbalagemComponent implements OnInit {
 
   ngOnInit() {
     this.loadPackings();
-  }*/
+  }
 
 }

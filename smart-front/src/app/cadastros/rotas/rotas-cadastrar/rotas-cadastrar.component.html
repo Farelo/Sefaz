@@ -7,30 +7,49 @@
       <div class="campo">
         <p class="descricao">ASSOCIE UMA EMBALAGEM</p>
         <p class="explicacao"></p>
-        <select id="planta">
-          <option>Associe uma Embalagem</option>
+        <select id="planta" [ngModel]="packing.packing_code" (ngModelChange)="loadSupplier($event)">
+          <option value="">Associe uma Embalagem</option>
+          <option *ngFor="let obj of packings" [ngValue]="obj" >{{obj.code}}</option>
         </select>
       </div>
 
-      <div class="campo">
-        <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
-        <p class="explicacao"></p>
-        <select id="planta">
-          <option *ngFor="let department of departments" [ngValue]="department._id" >{{department.name}}</option>
-        </select>
+      <div class="campo" [hidden]="!choiced">
+        <p class="descricao">FORNECEDOR DA EMBALAGEM</p>
+        <div class="input-group" >
+          <input class="form-control"  aria-describedby="basic-addon2" [(ngModel)] ="plant_supplier"  />
+        </div>
       </div>
+
+      <div class="campo" [hidden]="!choiced">
+        <p class="descricao">PLANTA DO FORNECEDOR </p>
+        <div class="input-group" >
+          <input class="form-control"  aria-describedby="basic-addon2"  [(ngModel)] ="supplier_packing" />
+        </div>
+      </div>
+
+
 
     </div>
 
     <div class="col-md-6">
+
+      <div class="campo">
+        <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
+        <p class="explicacao"></p>
+        <select id="planta" [(ngModel)]="route.plant_factory">
+            <option value="">Associe uma Planta</option>
+          <option *ngFor="let obj of plants" [ngValue]="obj._id" >{{obj.name}}</option>
+        </select>
+      </div>
+
       <div class="campo">
         <p class="descricao">ESTIME UM TEMPO DE VIAGEM</p>
         <p class="explicacao"></p>
-        <ngb-timepicker [(ngModel)]="time"></ngb-timepicker>
+        <ngb-timepicker [(ngModel)]="this.route.date_estimated"></ngb-timepicker>
       </div>
     </div>
 
   </div>
   <button routerLink="/cadastros/rotas" class="botaoVoltar" >Voltar</button>
-  <button class="botaoRegistrar">Registrar</button>
+  <button class="botaoRegistrar" (click)="registerRoute()">Registrar</button>
 </div>

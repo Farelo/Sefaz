@@ -17,8 +17,8 @@ export class TagsService {
   }
 
   retrieveAllNoBinded(): Observable<Tag[]> {
-    return this.http.get(this.url + 'tags/list/all/nobinded/')
-      .map((res: Response) => res.json().tags)
+    return this.http.get(this.url + 'tags/list/all/nobinded')
+      .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 

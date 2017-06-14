@@ -8,7 +8,7 @@
         <p class="descricao">NOME DO SETOR/ÁREA INTERNA</p>
         <p class="explicacao">Ex. "Estoque"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Armazém" aria-describedby="basic-addon2">
+          <input type="text" class="form-control" placeholder="Armazém" aria-describedby="basic-addon2" [(ngModel)] = "department.name">
         </div>
       </div>
 
@@ -19,9 +19,9 @@
       <div class="campo">
         <p class="descricao">ASSOCIE A PLANTA</p>
         <p class="explicacao">Escolha uma das plantas</p>
-        <select id="planta">
-          <option value="hide">Associe uma Planta</option>
-          <option value="Fornecedor">Fornecedor 1</option>
+        <select id="planta" [(ngModel)]="department.plant">
+          <option value="">Associe uma Planta</option>
+          <option *ngFor="let obj of plants" [ngValue]="obj._id">{{obj.name}}</option>
         </select>
       </div>
 
@@ -29,5 +29,5 @@
 
   </div>
   <button routerLink="/cadastros/setor" class="botaoVoltar" >Voltar</button>
-  <button class="botaoRegistrar">Registrar</button>
+  <button class="botaoRegistrar" (click)="registerDepartment()">Registrar</button>
 </div>
