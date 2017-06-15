@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { HomeModule } from './home/home.module';
 import { CadastrosModule } from './cadastros/cadastros.module';
+import { RastreamentoModule } from './rastreamento/rastreamento.module';
 
 import { DashboardRoutingModule } from './dashboard.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -21,6 +22,7 @@ import { ImportarComponent } from './importar/importar.component';
     FormsModule,
     HomeModule,
     CadastrosModule,
+    RastreamentoModule,
     NgbModule.forRoot(),
     DashboardRoutingModule
   ],

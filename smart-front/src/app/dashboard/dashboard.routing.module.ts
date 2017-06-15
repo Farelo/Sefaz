@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard.component';
 import { CadastrosComponent } from './cadastros/cadastros.component';
 import { InventarioComponent } from './inventario/inventario.component';
 import { ImportarComponent } from './importar/importar.component';
+import { RastreamentoComponent } from './rastreamento/rastreamento.component';
 
 import { TagsComponent } from './cadastros/tags/tags.component';
 import { EmbalagemComponent } from './cadastros/embalagem/embalagem.component';
@@ -53,10 +54,11 @@ const dashboardRoutes = [
       {path: 'planta', component: PlantaComponent},
       {path: 'planta/cadastrar', component: PlantaCadastrarComponent},
     ]
-  
+
 },
     {path: 'inventario', component: InventarioComponent},
     {path: 'importar', component: ImportarComponent},
+    {path: 'rastreamento', component: RastreamentoComponent},
   ]
   }
 ];
