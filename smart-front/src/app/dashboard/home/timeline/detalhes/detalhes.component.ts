@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { EmbalagensService } from '../../../servicos/embalagens.service';
+import { EmbalagensService } from '../../../../servicos/embalagens.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ export class DetalhesComponent implements OnInit {
   embalagens: any[]
   embalagem: any;
   inscricao: Subscription;
-  
+
 
   constructor(
       private embalagensService: EmbalagensService,

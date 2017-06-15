@@ -15,7 +15,7 @@
             <button style="margin-bottom: 5px"><div>EDITAR</div></button>
           </div>
           <div class="col-xs-6" style="padding-left: 2px;">
-            <button style="margin-bottom: 5px"><div>SAIR</div></button>
+            <button style="margin-bottom: 5px" routerLink=""><div>SAIR</div></button>
           </div>
         </div><!--Row-->
 
@@ -28,12 +28,3 @@
     <router-outlet></router-outlet>
   </div>
 </div>
-<!--
-<div class="panel-body info" *ngFor="let embalagem of embalagens"
-style="background-color: white;margin-bottom: 5px;"
-[routerLink]="[embalagem.id]"
-(click)="verEmbalagem([embalagem.id])">
-{{embalagem.nome}}
-
-</div>
--->

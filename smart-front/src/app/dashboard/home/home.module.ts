@@ -6,7 +6,6 @@ import { HomeComponent } from './home.component';
 import { TimelineComponent } from './timeline/timeline.component';
 
 import { HomeRoutingModule } from './home.routing.module';
-import { EmbalagensService } from '../servicos/embalagens.service';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DetalhesComponent } from './timeline/detalhes/detalhes.component';
 import { ListaComponent } from './lista/lista.component';
@@ -26,7 +25,6 @@ import { ListaComponent } from './lista/lista.component';
   ],
   providers: [
     NgbActiveModal,
-    EmbalagensService
   ],
 })
 export class HomeModule { }

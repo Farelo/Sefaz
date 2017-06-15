@@ -2,10 +2,16 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { HomeComponent } from './home/home.component';
+import { HomeModule } from './home/home.module';
+import { CadastrosModule } from './cadastros/cadastros.module';
 
 import { DashboardRoutingModule } from './dashboard.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DashboardComponent } from './dashboard.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { InventarioComponent } from './inventario/inventario.component';
+import { ImportarComponent } from './importar/importar.component';
+
 
 
 
@@ -13,11 +19,16 @@ import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
   imports: [
     CommonModule,
     FormsModule,
+    HomeModule,
+    CadastrosModule,
     NgbModule.forRoot(),
     DashboardRoutingModule
   ],
   declarations: [
-    HomeComponent
+    DashboardComponent,
+    NavbarComponent,
+    InventarioComponent,
+    ImportarComponent
   ],
   providers: [
     NgbActiveModal

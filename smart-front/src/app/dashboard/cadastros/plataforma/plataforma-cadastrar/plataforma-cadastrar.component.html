@@ -1,0 +1,15 @@
+<div class="base">
+  <h1>REGISTRAR PLATAFORMA</h1>
+  <br />
+
+    <div class="campo">
+      <p class="descricao">NOME</p>
+      <p class="explicacao">Ex. "Plataforma B1"</p>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Magneto Marelli" aria-describedby="basic-addon2" [(ngModel)]="project.name" >
+      </div>
+    </div>
+
+  <button routerLink="/rc/cadastros/planta" class="botaoVoltar" >Voltar</button>
+  <button class="botaoRegistrar" (click)="registerProject()" >Registrar</button>
+</div>

@@ -1,0 +1,41 @@
+<div class="base">
+  <h1>REGISTRAR FORNECEDOR</h1>
+  <br />
+  <div class="row">
+    <div class="col-md-6">
+
+      <div class="campo">
+        <p class="descricao">NOME</p>
+        <p class="explicacao">Ex. "Magneto Marelli"</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Magneto Marelli" aria-describedby="basic-addon2" [(ngModel)]="supplier.name">
+        </div>
+      </div>
+
+      <div class="campo">
+        <p class="descricao">DUN'S</p>
+        <p class="explicacao">Ex. "987445515"</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="987445515" aria-describedby="basic-addon2" [(ngModel)]="supplier.duns">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+      <div class="campo">
+        <p class="descricao">ASSOCIE A PLANTA</p>
+        <p class="explicacao">Escolha uma das plantas</p>
+        <select id="planta" [(ngModel)]="supplier.plant">
+          <option value="">Associe uma Planta</option>
+          <option *ngFor="let obj of plants" [ngValue]="obj._id">{{obj.name}}</option>
+        </select>
+      </div>
+
+    </div>
+
+  </div>
+    <button routerLink="/rc/cadastros/fornecedor" class="botaoVoltar" >Voltar</button>
+    <button class="botaoRegistrar" (click)="registerSupplier()">Registrar</button>
+</div>
