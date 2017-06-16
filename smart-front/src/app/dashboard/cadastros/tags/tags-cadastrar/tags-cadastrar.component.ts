@@ -18,10 +18,8 @@ export class TagsCadastrarComponent implements OnInit {
   tag = new Tag();
 
   registerTag():void {
-    this.TagsService.createTag([this.tag]).subscribe( result => this.router.navigate(['/cadastros/tags']) );
+    this.TagsService.createTag([this.tag]).subscribe( result => this.router.navigate(['/rc/cadastros/tags']) );
   }
-
-
 
   ngOnInit() {
     console.log(this.tag);

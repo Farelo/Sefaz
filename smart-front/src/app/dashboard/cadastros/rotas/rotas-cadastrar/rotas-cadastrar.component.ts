@@ -43,7 +43,7 @@ export class RotasCadastrarComponent implements OnInit {
 
       this.RoutesService.createRoute(this.route)
       .subscribe( result => this.PackingService.updateAllPacking(this.route.packing_code,this.route.supplier , new Packing({"hashPacking": this.route.hashPacking}))
-      .subscribe(result => this.router.navigate(['/cadastros/rotas'])) );
+      .subscribe(result => this.router.navigate(['/rc/cadastros/rotas'])) );
 
 
   }

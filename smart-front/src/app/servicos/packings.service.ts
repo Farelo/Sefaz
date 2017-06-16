@@ -28,6 +28,12 @@ export class PackingService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  getPackingsByDepartment(id): Observable<Packing[]> {
+    return this.http.get(this.url + 'packing/list/department/'+ id )
+      .map((res: Response) => res.json().data)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   retrieveAllNoBinded(): Observable<Packing[]> {
 
     return this.http.get(this.url + 'packing/list/all/nobinded')

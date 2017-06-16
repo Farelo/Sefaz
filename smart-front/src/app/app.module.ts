@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
 import { ModalComponent } from './shared/modal/modal.component';
@@ -43,9 +42,6 @@ import { AppRoutingModule } from './app.routing.module';
     HttpModule,
     NgbModule.forRoot(),
     DashboardModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAxExwipXRulS96HJrEmVO-CeI0HTek_CI'
-    }),
     AppRoutingModule
   ],
   providers: [

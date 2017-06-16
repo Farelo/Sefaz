@@ -2,8 +2,8 @@
 <div  *ngFor="let alert of alerts">
   <div class="panel-body info"
   [ngClass]="{
-    'atrasado' : alert.status == '03',
-    'ok' : alert.status == '02',
+    'atrasado' : alert.status == '02',
+    'ok' : alert.status == '03',
     'quase' : alert.status == '01'
   }"
   (click)="open(alert.packing._id)">

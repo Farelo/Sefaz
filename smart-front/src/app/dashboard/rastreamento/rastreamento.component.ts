@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { DepartmentService } from '../../servicos/departments.service';
+import { Department } from '../../shared/models/department';
+import { PackingService } from '../../servicos/packings.service';
 
 @Component({
   selector: 'app-rastreamento',
@@ -6,23 +9,58 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rastreamento.component.css']
 })
 export class RastreamentoComponent implements OnInit {
-  title: string = 'My first AGM project';
-    lat: number = -8.052444;
-    lng: number = -34.886136;
-    // lat2: number = -8.050404;
-    // lng2: number = -34.886458;
-    descri: '<div>lalalalal</div>';
+  autocomplete: any;
+  address: any = {};
+  center: any;
+  pos: any;
+  departments: Department[];
+  options = [];
+  marker = {
+    display: true,
+    lat: null,
+    lng: null,
+    plant: null,
+    departments: null
+  };
 
-  private arrayDoAmor: any[] = [
-    {lat: -8.050404, lng: -34.886458},
-    {lat: -8.053421, lng: -34.884982}
-  ];
+  constructor(
+    private ref: ChangeDetectorRef,
+    private DepartmentService: DepartmentService,
+    private PackingService: PackingService
+  ) { }
 
-  private lats: number[] = [-8.050404,-8.053421];
-  private lngs: number[] = [-34.886458,-34.884982];
-  constructor() { }
+  loadDepartmentsByPlant() {
+    this.DepartmentService.retrieveByPlants()
+      .subscribe(departments => {
+
+        for (let department of departments) {
+          var plant = department.plant;
+          this.options.push({departments:department.departments,name: plant.name, position: [plant.lat, plant.lng]});
+        }
+
+        this.center = { lat: plant.lat, lng: plant.lng };
+
+      }, err => { console.log(err) });
+  }
+
+  clicked(_a, opt) {
+    var marker = _a.target;
+
+    this.marker.lat = marker.getPosition().lat();
+    this.marker.lng = marker.getPosition().lng();
+    this.marker.plant = opt.name;
+    this.marker.departments = opt.departments;
+
+    marker.nguiMapComponent.openInfoWindow('iw', marker);
+
+  }
+
+  getPackings(id){
+    this.PackingService.getPackingsByDepartment(id).subscribe(departments => console.log(departments));
+  }
 
   ngOnInit() {
+    this.loadDepartmentsByPlant();
   }
 
 }

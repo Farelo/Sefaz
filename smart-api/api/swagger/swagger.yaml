@@ -264,7 +264,7 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /alert/list/all/hashing/{limit}/{page}/{hashing}:
+  /alert/list/all/hashing/{limit}/{page}/{hashing}/{status}:
     x-swagger-router-controller: alert_controller
     get:
       tags:
@@ -285,6 +285,11 @@ paths:
         type: string
       - in: "path"
         name: "hashing"
+        description: "The especific page that returns alerts related a this page"
+        required: true
+        type: string
+      - in: "path"
+        name: "status"
         description: "The especific page that returns alerts related a this page"
         required: true
         type: string
@@ -2171,6 +2176,23 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /department/list/department/plant:
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - "Department"
+      summary: "Get all departments on the system by plant"
+      description: ""
+      operationId: list_department_by_plant
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /department/create:
     x-swagger-router-controller: department_controller
     post:
@@ -2314,6 +2336,29 @@ paths:
         parameters:
         - in: "path"
           name: "packing_code"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /packing/list/department/{department}:
+      x-swagger-router-controller: packing_controller
+      get:
+        tags:
+          - "Packing"
+        summary: "Get list packing by department"
+        description: ""
+        operationId: list_packing_department
+        parameters:
+        - in: "path"
+          name: "department"
           description: "The code that needs to be fetched"
           required: true
           type: string
@@ -3118,6 +3163,12 @@ definitions:
     properties:
       name:
         type: string
+      # lat:
+      #   type: "integer"
+      #   format: "int64"
+      # lng:
+      #   type: "integer"
+      #   format: "int64"
   Project:
     type: object
     properties:

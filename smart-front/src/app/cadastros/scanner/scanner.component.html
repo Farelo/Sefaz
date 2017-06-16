@@ -15,23 +15,21 @@
     <thead>
       <tr class="cabecalho">
         <th>Código</th>
-        <th>Fornecedor</th>
+        <th>ID</th>
+        <th>Setor/Area Interna</th>
         <th>Opções</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let packing of packings">
-        <td>{{packing.code}}</td>
-        <td>{{packing.supplier.name}}</td>
+      <tr *ngFor="let checkpoint of checkpoints">
+        <td>{{checkpoint.code}}</td>
+        <td>{{checkpoint.place_id}}</td>
+        <td>{{checkpoint.department.name  }} ({{checkpoint.plant.name}} )</td>
         <td class="teste">
           <button class="editar" >Editar</button>
-          <button class="excluir" (click) ="removePacking(packing._id)">Excluir</button>
+          <button class="excluir" (click)="removeScanner(checkpoint._id)">Excluir</button>
         </td>
       </tr>
     </tbody>
   </table>
-</div>
-
-<div class="classVazio" *ngIf="packings?.length < 1">
-  Ainda não existem embalagens cadastradas.
 </div>

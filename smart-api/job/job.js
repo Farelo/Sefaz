@@ -108,8 +108,8 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
                 if (p.department.equals(Scanned[indexCheckpoint].checkpoint.department)) {
                     var oneDay = 1000; // hours*minutes*seconds*milliseconds
                     var date = new Date();
-                    var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneDay)));
-                    p.amount_days += diffDays;
+                    //var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneDay)));
+                  //  p.amount_days += diffDays;
 
                     //verifica o tempo de permanencia em um mesmo local
                     if(p.amount_days > 1000000000){
@@ -239,8 +239,8 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
             if(pn.last_time_missing){
               var oneDay = 1000; // hours*minutes*seconds*milliseconds
               var date = new Date();
-              var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneDay)));
-              pn.time_countdown += diffDays;
+              //var diffDays = Math.round(Math.abs((pn.last_time.getTime() - date.getTime()) / (oneDay)));
+              //pn.time_countdown += diffDays;
               pn.last_time_missing = new Date();
             }else{
               pn.last_time_missing = new Date();
@@ -299,8 +299,8 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
               if (p.department.equals(Scanned[indexCheckpoint].checkpoint.department)) {
                   var oneSecond =  1000; // hours*minutes*seconds*milliseconds
                   var date = new Date();
-                  var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneSecond)));
-                  p.amount_days += diffDays;
+                  //var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneSecond)));
+                  //p.amount_days += diffDays;
 
                   //verifica o tempo de permanencia em um mesmo local
                   if(p.amount_days > 30){
@@ -383,8 +383,8 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
             if(pn.last_time_missing){
               var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
               var date = new Date();
-              var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneDay)));
-              pn.time_countdown += diffDays;
+              //var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneDay)));
+              //pn.time_countdown += diffDays;
               pn.last_time_missing = new Date();
             }else{
               pn.last_time_missing = new Date();

@@ -24,7 +24,8 @@ exports.queries = {
    , {
         "$group": {
             "_id": {
-                "hash": "$hashpacking"
+                "hash": "$hashpacking",
+                "status" : "$status"
             },
             "quantity": {
                 "$sum": 1
@@ -114,10 +115,11 @@ exports.queries = {
             }
         ]
     },
-    listAllByHasshing: function (hashpacking) {
+    listAllByHasshing: function (hashpacking,status) {
       return [{
          "$match": {
              "hashpacking": hashpacking,
+             "status" : status
          }
      },{
          "$lookup": {

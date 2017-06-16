@@ -1,10 +1,29 @@
-<!-- this creates a google map on the page with the given lat/lng from -->
-<!-- the component as the initial center of the map: -->
-<agm-map [latitude]="lat" [longitude]="lng"  [zoom]=15>
-  <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-  <agm-marker [latitude]="lats[0]" [longitude]="lngs[0]"></agm-marker>
+<div id="map">
+  <ngui-map zoom="13" [center]="center">
+    <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
 
-  <agm-marker *ngFor="let item of arrayDoAmor"[latitude]="item.lat" [longitude]="item.lng"></agm-marker>
+    </marker>
+    <info-window id="iw" maxWidth="400">
+      <div *ngIf="marker.display">
 
-  <!-- <agm-marker [latitude]= "{{lats[0]}}" [longitude]= "{{lngs[0]}}"></agm-marker> -->
-</agm-map>
+
+        <div id="iw-container">
+          <div class="iw-title">Planta: {{marker.plant}}</div>
+          <div class="iw-subTitle">Setor/Área Interna </div>
+          <div *ngFor="let dept of marker.departments">
+            <div class="row">
+              <div class="col-md-6">
+                <p>{{dept.name}}</p>
+              </div>
+              <div class="col-md-6">
+                <button type="button" name="button" (click)="getPackings(dept._id)">Visualizar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </info-window>
+
+  </ngui-map>
+</div>

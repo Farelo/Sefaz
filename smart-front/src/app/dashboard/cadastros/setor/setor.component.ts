@@ -11,7 +11,7 @@ export class SetorComponent implements OnInit {
 
   constructor(private DepartmentService : DepartmentService) { }
   departments : Department [];
-    vazio: boolean = false;
+
 
 
   loadDepartments(){

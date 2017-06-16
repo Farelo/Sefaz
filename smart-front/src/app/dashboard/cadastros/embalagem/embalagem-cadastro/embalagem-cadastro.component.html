@@ -18,7 +18,7 @@
         <p class="explicacao">Associe uma tag a sua embalagem.</p>
         <select  [(ngModel)]="packing.tag_mac">
            <option value="">Associe uma Tag</option>
-           <option *ngFor="let obj of tags" [ngValue]="obj._id">{{obj.code}}</option>
+           <option *ngFor="let obj of tags" [ngValue]="obj.mac">{{obj.code}}</option>
         </select>
       </div>
 

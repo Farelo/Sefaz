@@ -10,7 +10,7 @@ var plant = mongoose.model('Plant');
  * Create a Category
  */
 exports.plant_create = function(req, res) {
-
+    console.log(req.body);
     plant.create(req.body)
         .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}))
         .then(success => res.json({code:200, message: "OK", response: success}));

@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose');
+var ObjectId = require('mongoose').Types.ObjectId;
 mongoose.Promise = global.Promise;
 var packing = mongoose.model('Packing');
 // var route = mongoose.model('Route');
@@ -30,6 +31,22 @@ exports.packing_read = function(req, res) {
         .then(packing => res.json({code:200, message: "OK", data: packing}))
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 };
+/**
+ * Show the current Category
+ */
+exports.list_packing_department = function(req, res) {
+
+    packing.find({
+            department: new ObjectId(req.swagger.params.department.value)
+        })
+        .populate('tag')
+        .populate('actual_plant')
+        .populate('department')
+        .populate('supplier')
+        .populate('project')
+        .then(packing => res.json({code:200, message: "OK", data: packing}))
+        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+};
 /*
  * Update a Category
  */
@@ -46,7 +63,7 @@ exports.packing_update = function(req, res) {
  * Update a Category
  */
 exports.packing_update_all_by_route = function(req, res) {
-    console.log(req.body);
+
     packing.update({
             code: req.swagger.params.code.value ,
             supplier: req.swagger.params.supplier.value
@@ -142,7 +159,8 @@ exports.list_all_inventory = function(req, res) {
       var arrayOfPromises = [ packing.aggregate(query.queries.packingListNoCode).skip(value).limit(parseInt(req.swagger.params.limit.value)),
       packing.aggregate(query.queries.quantityFoundNoCode),
       packing.aggregate(query.queries.existingQuantityNoCode),
-      packing.aggregate(query.queries.listPackingMissingNoCode).skip(value).limit(parseInt(req.swagger.params.limit.value)),
+      packing.aggregate(query.queries.listPackingMissingNoCodeNoRoute).skip(value).limit(parseInt(req.swagger.params.limit.value)),
+      packing.aggregate(query.queries.listPackingMissingNoCodeRoute).skip(value).limit(parseInt(req.swagger.params.limit.value)),
       packing.aggregate(query.queries.listPackingProblemNoCode).skip(value).limit(parseInt(req.swagger.params.limit.value)),
       packing.find(query.queries.countAll).count()];
 
@@ -150,9 +168,10 @@ exports.list_all_inventory = function(req, res) {
       .then(result => res.json({code:200, message: "OK","packing_list":result[0],
                                 "quantity_found": result[1],
                                 "existing_quantity": result[2],
-                                "list_packing_missing": result[3],
-                                "list_packing_problem": result[4],
-                                "count": result[5]}))
+                                "list_packing_missing_no_route": result[3],
+                                "list_packing_missing_route": result[4],
+                                "list_packing_problem": result[5],
+                                "count": result[6]}))
       .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 
 };

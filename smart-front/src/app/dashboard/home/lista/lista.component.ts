@@ -33,7 +33,8 @@ export class ListaComponent implements OnInit {
     this.inscricao = this.route.params.subscribe(
       (params: any)=>{
         let id = params ['hashing'];
-        this.AlertsService.getAlertsPaginationByHashing(10,1,id)
+        let status = params ['status'];
+        this.AlertsService.getAlertsPaginationByHashing(10,1,id,status)
           .subscribe(alerts => this.alerts = alerts,
           err => {
             console.log(err);

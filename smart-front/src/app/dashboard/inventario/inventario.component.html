@@ -17,12 +17,12 @@
     </thead>
     <tbody>
       <tr *ngFor="let inventory of inventory">
-        <td> {{inventory.code}} </td>
-        <td> {{inventory.supplier.name}} </td>
-        <td> {{inventory.supplier.duns}} </td>
-        <td> {{inventory.plant.name}} </td>
-        <td> {{inventory.department.name}} </td>
-        <td> {{inventory.quantity}} </td>
+        <td> {{inventory.code || 'Vazio'}} </td>
+        <td> {{inventory.supplier ? inventory.supplier.name : 'Vazio'}} </td>
+        <td> {{inventory.supplier ? inventory.supplier.duns : 'Vazio'}} </td>
+        <td> {{inventory.plant ? inventory.plant.name : 'Vazio'}} </td>
+        <td> {{inventory.department ? inventory.department.name : 'Vazio'}} </td>
+        <td> {{inventory.quantity || 'Vazio'}} </td>
         <td > <!--(click)="open(inventory.code)"-->
           <span class="alerta" [ngClass]="{
             'atrasado' : inventory.missing ,

@@ -402,12 +402,6 @@ exports.queries = {
     }],
     "quantityFoundNoCode": [{
         "$match": {
-            "actual_plant": {
-                "$exists": true
-            },
-            "department": {
-                "$exists": true
-            },
             "missing": false
         }
     }, {
@@ -419,16 +413,6 @@ exports.queries = {
         }
     }],
     "existingQuantityNoCode": [{
-        "$match": {
-            "actual_plant": {
-                "$exists": true
-            },
-            "department": {
-                "$exists": true
-            }
-
-        }
-    }, {
         "$group": {
             "_id": "$code",
             "quantity": {
@@ -436,8 +420,31 @@ exports.queries = {
             }
         }
     }],
+    "listPackingMissingNoCodeNoRoute": [{
+        "$match": {
 
-    "listPackingMissingNoCode": [{
+            "missing": true
+        }
+    },{
+        "$group": {
+            "_id": {
+                "code": "$code",
+            },
+            "code": {
+                "$first":"$code"
+            },
+            "quantity": {
+                "$sum": 1
+            },
+            "missing": {
+                "$first": "$missing"
+            },
+            "missing": {
+                    "$sum": 1
+                }
+        }
+    }],
+    "listPackingMissingNoCodeRoute": [{
         "$match": {
             "actual_plant": {
                 $exists: true

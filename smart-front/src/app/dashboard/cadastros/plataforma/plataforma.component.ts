@@ -16,7 +16,7 @@ export class PlataformaComponent implements OnInit {
 
     loadProjects(){
       this.ProjectService.getProjectPagination(10,1)
-        .subscribe(checkpoints => this.projects = checkpoints,
+        .subscribe(projects => this.projects = projects,
          err => {console.log(err)});
     }
 
@@ -26,6 +26,7 @@ export class PlataformaComponent implements OnInit {
     }
 
     ngOnInit() {
+
       this.loadProjects();
     }
 

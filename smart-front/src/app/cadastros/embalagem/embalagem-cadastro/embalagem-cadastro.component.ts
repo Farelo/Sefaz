@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { PackingService } from '../../../../servicos/packings.service';;
-import { Packing } from '../../../../shared/models/packing';
-import { TagsService } from '../../../../servicos/tags.service';
-import { SuppliersService } from '../../../../servicos/suppliers.service';
-import { ProjectService } from '../../../../servicos/projects.service';;
-import { Supplier } from '../../../../shared/models/supplier';
+import { PackingService } from '../../../servicos/packings.service';;
+import { Packing } from '../../../shared/models/packing';
+import { TagsService } from '../../../servicos/tags.service';
+import { SuppliersService } from '../../../servicos/suppliers.service';
+import { ProjectService } from '../../../servicos/projects.service';;
+import { Supplier } from '../../../shared/models/supplier';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-embalagem-cadastro',
   templateUrl: './embalagem-cadastro.component.html',
-  styleUrls: ['../../cadastros.component.css']
+  styleUrls: ['./embalagem-cadastro.component.css']
 })
 export class EmbalagemCadastroComponent implements OnInit {
 
@@ -29,7 +29,7 @@ export class EmbalagemCadastroComponent implements OnInit {
 
   registerPacking():void {
     //console.log(this.packing);
-    this.PackingService.createPacking([this.packing]).subscribe( result => this.router.navigate(['/rc/cadastros/embalagem']) );
+    this.PackingService.createPacking([this.packing]).subscribe( result => this.router.navigate(['/cadastros/embalagem']) );
   }
 
   loadTags():void {

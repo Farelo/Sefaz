@@ -33,7 +33,7 @@ const dashboardRoutes = [
     {path: '', redirectTo: '/rc/home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent, children: [
        {path: '', component: TimelineComponent},
-       {path: ':hashing', component: ListaComponent}
+       {path: ':hashing/:status', component: ListaComponent}
     ]},
      {path: 'cadastros', component: CadastrosComponent, children: [
       {path: '', redirectTo: '/rc/cadastros/tags', pathMatch: 'full'},

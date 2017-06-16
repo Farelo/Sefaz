@@ -24,7 +24,7 @@ export class ScannerCadastrarComponent implements OnInit {
   registerCheckpoint():void {
     this.checkpoint.code = "00"+this.checkpoint.code;
 
-    this.CheckpointService.createCheckpoint([this.checkpoint]).subscribe( result => this.router.navigate(['/cadastros/scanner']) );
+    this.CheckpointService.createCheckpoint([this.checkpoint]).subscribe( result => this.router.navigate(['/rc/cadastros/scanner']) );
   }
 
   loadDepartments():void {

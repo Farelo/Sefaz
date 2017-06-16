@@ -34,10 +34,11 @@ export class InventarioComponent implements OnInit {
       var totalItems = result.count;
       var packings = result.packing_list;
       var found = result.quantity_found;
-      var existingQuantity = result.existing_quantity;
+      var existingQuantity = result.existing_quantity_no;
       var listProblem = result.list_packing_problem;
-      var listMissing = result.list_packing_missing;
-      this.inventory = this.inventory.concat(listProblem).concat(listMissing);
+      var listMissing_no_route = result.list_packing_missing_no_route;
+      var listMissing_route = result.list_packing_missing_route;
+      this.inventory = this.inventory.concat(listProblem).concat(listMissing_no_route).concat(listMissing_route);
       console.log(this.inventory);
     });
   }

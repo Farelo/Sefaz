@@ -22,7 +22,7 @@ export class SetorCadastrarComponent implements OnInit {
 
   registerDepartment():void {
     console.log("aquhu");
-    this.DepartmentService.createDepartment(this.department).subscribe( result => this.router.navigate(['/cadastros/setor']) );
+    this.DepartmentService.createDepartment(this.department).subscribe( result => this.router.navigate(['/rc/cadastros/setor']) );
   }
 
   loadPlants():void {

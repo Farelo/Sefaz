@@ -5,7 +5,7 @@
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var department = mongoose.model('Department');
-
+var query = require('../helpers/queries/complex_queries_departments');
 /**
  * Create a Category
  */
@@ -77,5 +77,15 @@ exports.department_list_all = function(req, res) { 
   department.find({})
         .populate("plant")
         .then(departments => res.json({code:200, message: "OK", data: departments}))
+        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+};
+
+
+/**
+ * List of Categories
+ */
+exports.list_department_by_plant = function(req, res) {
+    department.aggregate(query.queries.listDepartmentsByPlant)
+        .then(packings =>res.json({code:200, message: "OK", data: packings}))
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 };

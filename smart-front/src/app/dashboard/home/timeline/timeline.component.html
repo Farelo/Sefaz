@@ -15,11 +15,11 @@
 <p class="titulo">Timeline</p>
 <div class="panel-body info" *ngFor="let alert of alerts"
 [ngClass]="{
-  'atrasado' : alert.status == '03',
-  'ok' : alert.status == '02',
+  'atrasado' : alert.status == '02',
+  'ok' : alert.status == '03',
   'quase' : alert.status == '01'
 }"
-[routerLink]=[alert._id.hash]
+[routerLink]=[alert._id.hash,alert.status]
 >
 {{alert.packing.code}}
 <p class="infoData">{{alert.packing.type}}</p>

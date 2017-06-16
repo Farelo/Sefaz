@@ -22,6 +22,12 @@ export class DepartmentService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  retrieveByPlants(): Observable<any[]> {
+    return this.http.get(this.url + 'department/list/department/plant')
+      .map((res: Response) => res.json().data)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   retrieveDepartment(id: string): Observable<Department>{
     return this.http.get(this.url + 'department/retrieve/' + id)
       .map((res: Response) => res.json().data)

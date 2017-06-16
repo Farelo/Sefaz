@@ -1,12 +1,12 @@
 
 export class Department {
     public name: string;
-    public plant: string;
+    public plant: any;
     public _id: string;
 
     public constructor(fields ?: {
   name?: string,
-  plant?: string,
+  plant?: any,
   _id?: string
 }
 ){

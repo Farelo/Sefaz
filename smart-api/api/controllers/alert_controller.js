@@ -59,7 +59,7 @@ exports.alert_delete = function(req, res) { 
  */
 exports.alert_list_hashing = function(req, res) { 
   var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-  var alertList = alert.find(  {"hashpacking": "12345678959257cfa2c2f08317c749c69"})
+  var alertList = alert.find(  {"hashpacking": req.swagger.params.hashing.value,"status": req.swagger.params.status.value})
       .populate("packing")
       .skip(value).limit(parseInt(req.swagger.params.limit.value))
       .sort({_id: 1});

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NguiMapModule } from '@ngui/map';
 
 import { CadastrosComponent } from './cadastros.component';
 
@@ -29,7 +30,11 @@ import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.com
     CommonModule,
     FormsModule,
     NgbModule.forRoot(),
-    CadastrosRoutingModule
+    CadastrosRoutingModule,
+    NguiMapModule.forRoot({
+      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
+      '&libraries=visualization,places,drawing',
+    })
   ],
   declarations: [
     CadastrosComponent,
