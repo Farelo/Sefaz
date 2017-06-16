@@ -18,6 +18,10 @@ export class PlantaComponent implements OnInit {
     .subscribe( plants => this.plants = plants, err => {console.log(err)});
   }
 
+  removePlant(id):void{
+    this.PlantsService.deletePlant(id).subscribe(result =>   this.loadPlants(), err => {console.log(err)})
+  }
+
   ngOnInit() {
     this.loadPlants();
   }

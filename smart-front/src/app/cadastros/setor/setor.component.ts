@@ -17,6 +17,11 @@ export class SetorComponent implements OnInit {
     this.DepartmentService.getDepartmentsPagination(10,1)
       .subscribe(departments => this.departments = departments, err => {console.log(err)});
   }
+
+  removeDepartment(id):void{
+    this.DepartmentService.deleteDepartment(id).subscribe(result =>   this.loadDepartments(), err => {console.log(err)})
+  }
+
   ngOnInit() {
 
     this.loadDepartments();

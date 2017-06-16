@@ -17,7 +17,6 @@ export class PlantaCadastrarComponent implements OnInit {
 
   plant: Plant = new Plant();
 
-
   registerPlant():void {
 
     this.PlantsService.createPlant(this.plant).subscribe( result => this.router.navigate(['/cadastros/planta']) );

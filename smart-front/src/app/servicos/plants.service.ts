@@ -29,13 +29,13 @@ export class PlantsService {
   }
 
   updatePlant(id: string, plant: Plant): Observable<Plant>{
-    return this.http.put(this.url + 'plant/update' + id,plant)
+    return this.http.put(this.url + 'plant/update/' + id,plant)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   deletePlant(id: string): Observable<Plant>{
-    return this.http.delete(this.url + 'plant/delete' + id)
+    return this.http.delete(this.url + 'plant/delete/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

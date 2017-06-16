@@ -20,6 +20,11 @@ export class PlataformaComponent implements OnInit {
          err => {console.log(err)});
     }
 
+
+    removeProject(id):void{
+      this.ProjectService.deleteProject(id).subscribe(result =>   this.loadProjects(), err => {console.log(err)})
+    }
+
     ngOnInit() {
       this.loadProjects();
     }

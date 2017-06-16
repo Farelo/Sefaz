@@ -45,6 +45,9 @@ export class EmbalagemCadastroComponent implements OnInit {
     this.ProjectService.retrieveAll().subscribe(projects => this.projects = projects, err => {console.log(err)});
   }
 
+
+
+
   ngOnInit() {
 
     this.loadTags();

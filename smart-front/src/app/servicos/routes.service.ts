@@ -29,13 +29,13 @@ export class RoutesService {
   }
 
   updateRoute(id: string, route: Route): Observable<Route>{
-    return this.http.put(this.url + 'route/update' + id,route)
+    return this.http.put(this.url + 'route/update/' + id,route)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   deleteRoute(id: string): Observable<Route>{
-    return this.http.delete(this.url + 'route/delete' + id)
+    return this.http.delete(this.url + 'route/delete/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

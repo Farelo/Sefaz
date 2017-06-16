@@ -23,7 +23,7 @@
         <td>{{project.name}}</td>
         <td class="teste">
           <button class="editar" >Editar</button>
-          <button class="excluir">Excluir</button>
+          <button class="excluir" (click)="removeProject(project._id)">Excluir</button>
         </td>
       </tr>
     </tbody>

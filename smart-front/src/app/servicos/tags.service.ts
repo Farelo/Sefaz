@@ -35,13 +35,13 @@ export class TagsService {
   }
 
   updateTag(id: string, tag: Tag): Observable<Tag>{
-    return this.http.put(this.url + 'tags/update' + id,tag)
+    return this.http.put(this.url + 'tags/update/' + id,tag)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   deleteTag(id: string): Observable<Tag>{
-    return this.http.delete(this.url + 'tags/delete' + id)
+    return this.http.delete(this.url + 'tags/delete/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

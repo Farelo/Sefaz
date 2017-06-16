@@ -25,7 +25,7 @@
         <td>{{department.plant.name}}</td>
         <td class="teste">
           <button class="editar" >Editar</button>
-          <button class="excluir">Excluir</button>
+          <button class="excluir" (click)="removeDepartment(department._id)">Excluir</button>
         </td>
       </tr>
     </tbody>

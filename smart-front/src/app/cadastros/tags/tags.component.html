@@ -25,7 +25,7 @@
         <td>{{tag.mac}}</td>
         <td class="teste">
           <button class="editar" >Editar</button>
-          <button class="excluir">Excluir</button>
+          <button class="excluir" (click)="removeTags(tag._id)"  [disabled]="tag.status == 1">Excluir</button>
         </td>
       </tr>
     </tbody>

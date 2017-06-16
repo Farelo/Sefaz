@@ -19,6 +19,10 @@ export class ScannerComponent implements OnInit {
          err => {console.log(err)});
     }
 
+    removeScanner(id):void{
+      this.CheckpointService.deleteCheckpoint(id).subscribe(result =>   this.loadCheckpoints(), err => {console.log(err)})
+    }
+
     ngOnInit() {
       this.loadCheckpoints();
     }

@@ -17,6 +17,11 @@ loadRoutes(){
   this.RoutesService.getRoutesPagination(10,1)
     .subscribe(routes => this.routes = routes, err => {console.log(err)});
 }
+
+removeRoutes(id):void{
+  this.RoutesService.deleteRoute(id).subscribe(result =>   this.loadRoutes(), err => {console.log(err)})
+}
+
 ngOnInit() {
 
   this.loadRoutes();

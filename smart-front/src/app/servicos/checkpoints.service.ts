@@ -29,13 +29,13 @@ export class CheckpointService {
   }
 
   updateCheckpoint(id: string, checkpoint: Checkpoint): Observable<Checkpoint>{
-    return this.http.put(this.url + 'checkpoint/update' + id,checkpoint)
+    return this.http.put(this.url + 'checkpoint/update/' + id,checkpoint)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   deleteCheckpoint(id: string): Observable<Checkpoint>{
-    return this.http.delete(this.url + 'checkpoint/delete' + id)
+    return this.http.delete(this.url + 'checkpoint/delete/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

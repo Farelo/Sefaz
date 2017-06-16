@@ -61,7 +61,7 @@ export class PackingService {
   }
 
   deletePacking(id: string): Observable<Packing>{
-    return this.http.delete(this.url + 'packing/delete' + id)
+    return this.http.delete(this.url + 'packing/delete/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

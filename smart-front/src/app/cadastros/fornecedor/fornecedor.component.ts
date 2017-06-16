@@ -17,6 +17,11 @@ export class FornecedorComponent implements OnInit {
     this.SuppliersService.getSuppliersPagination(10,1)
       .subscribe(suppliers => this.suppliers = suppliers, err => {console.log(err)});
   }
+
+  removeDepartment(id):void{
+    this.SuppliersService.deleteSupplier(id).subscribe(result =>   this.loadSuppliers(), err => {console.log(err)})
+  }
+
   ngOnInit() {
 
     this.loadSuppliers();

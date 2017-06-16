@@ -29,13 +29,13 @@ export class SuppliersService {
   }
 
   updateSupplier(id: string, supplier: Supplier): Observable<Supplier>{
-    return this.http.put(this.url + 'supplier/update' + id,supplier)
+    return this.http.put(this.url + 'supplier/update/' + id,supplier)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   deleteSupplier(id: string): Observable<Supplier>{
-    return this.http.delete(this.url + 'supplier/delete' + id)
+    return this.http.delete(this.url + 'supplier/delete/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

@@ -29,13 +29,13 @@ export class DepartmentService {
   }
 
   updateDepartment(id: string, department: Department): Observable<Department>{
-    return this.http.put(this.url + 'department/update' + id,department)
+    return this.http.put(this.url + 'department/update/' + id,department)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   deleteDepartment(id: string): Observable<Department>{
-    return this.http.delete(this.url + 'department/delete' + id)
+    return this.http.delete(this.url + 'department/delete/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

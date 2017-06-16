@@ -25,6 +25,10 @@ export class TagsComponent implements OnInit {
       });
   }
 
+  removeTags(id):void{
+    this.TagsService.deleteTag(id).subscribe(result =>   this.loadTags(), err => {console.log(err)})
+  }
+
   ngOnInit() {
     // Load comments
     this.loadTags()

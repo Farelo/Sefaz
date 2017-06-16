@@ -29,13 +29,13 @@ export class ProjectService {
   }
 
   updateProject(id: string, project: Project): Observable<Project>{
-    return this.http.put(this.url + 'project/update' + id,project)
+    return this.http.put(this.url + 'project/update/' + id,project)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   deleteProject(id: string): Observable<Project>{
-    return this.http.delete(this.url + 'project/delete' + id)
+    return this.http.delete(this.url + 'project/delete/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
