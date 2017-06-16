@@ -3,12 +3,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { ImportarComponent } from './importar/importar.component';
-import { InventarioComponent } from './inventario/inventario.component';
 import { ModalComponent } from './shared/modal/modal.component';
+import { AlertaComponent } from './shared/alerta/alerta.component';
+import { LoginComponent } from './login/login.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 import { EmbalagensService } from './servicos/embalagens.service';
 import { AlertsService } from './servicos/alerts.service';
@@ -21,28 +22,30 @@ import { TagsService } from './servicos/tags.service';
 import { CheckpointService } from './servicos/checkpoints.service';
 import { ProjectService } from './servicos/projects.service';
 
-import { HomeModule } from './home/home.module';
-import { CadastrosModule } from './cadastros/cadastros.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
-import { LoginComponent } from './login/login.component';
+
+
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
-    ImportarComponent,
-    InventarioComponent,
     ModalComponent,
-    LoginComponent
+    LoginComponent,
+    AlertaComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     NgbModule.forRoot(),
-    HomeModule,
-    CadastrosModule,
+    DashboardModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAxExwipXRulS96HJrEmVO-CeI0HTek_CI'
+    }),
     AppRoutingModule
   ],
   providers: [
@@ -56,7 +59,6 @@ import { LoginComponent } from './login/login.component';
     TagsService,
     CheckpointService,
     ProjectService
-
   ],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent]

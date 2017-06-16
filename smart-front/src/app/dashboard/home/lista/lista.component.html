@@ -1,0 +1,17 @@
+<p class="titulo">Timeline > Alertas</p>
+<div  *ngFor="let alert of alerts">
+  <div class="panel-body info"
+  [ngClass]="{
+    'atrasado' : alert.status == '03',
+    'ok' : alert.status == '02',
+    'quase' : alert.status == '01'
+  }"
+  (click)="open(alert.packing._id)">
+{{alert.packing.code}}
+<p class="infoData">{{alert.packing.tag_mac}}</p>
+</div>
+</div>
+
+<br />
+
+<button routerLink="/rc/home" class="botaoVoltar">Voltar</button>

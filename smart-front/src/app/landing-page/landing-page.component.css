@@ -1,0 +1,76 @@
+* { font-family: 'Roboto', sans-serif; }
+
+.teste {
+  background-image: url("../../assets/images/img-fundo2.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  height: 100%;
+  min-height: 100vh;
+  margin: 0px;
+  padding: 0px;
+}
+.wrapper {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  height: 100%;
+  min-height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  background-color: rgba(0,0,0,.8);
+
+}
+
+.quadrado {
+  /*background-color: rgba(0,0,0,.8);*/
+  display: inline-block;
+  text-align: -webkit-center;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+h1 {
+  color: white;
+  font-weight: bold;
+  font-size: 40px;
+  margin-bottom: 15px;
+  opacity: 0.9;
+}
+h2 {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+button {
+  padding: 5px 40px;
+  background-color: #6382c9;
+  border-radius: 20px;
+  border-style: solid;
+  border-width: medium;
+  color: white;
+  border-color: #6382c9;
+  font-size: 20px;
+}
+button:hover {
+  background-color: white;
+  color: #6382c9;
+  border-color: white;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+}
+
+button:focus {
+  outline: none !important;
+  border-style: solid;
+  border-color: white;
+  border-radius: 20px;
+}

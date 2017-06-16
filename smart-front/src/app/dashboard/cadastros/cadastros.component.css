@@ -1,0 +1,194 @@
+.cadastroMenu {
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: white;
+  border: none;
+  padding: 2px;
+  color: grey;
+  box-shadow: 0px 0px 7px #000;
+  -webkit-transition: background-color 0.5s;
+  transition: background-color 0.5s;
+
+  font-family: 'Roboto', sans-serif;
+}
+.cadastroMenu div {
+  width: 100%;
+  height: auto;
+  border-style: solid;
+  border-color: grey;
+  border-width: thin;
+  padding: 3px;
+  -webkit-transition: background-color 0.5s;
+  transition: background-color 0.5s;
+}
+.cadastroMenu:hover {
+  background-color: #6382c9;
+}
+.cadastroMenu div:hover {
+  color: white;
+  border-color: white;
+}
+.cadastroMenu:active { background-color: #6382c9; }
+
+.cadastroMenu div:active {
+  color: white;
+  border-color: white;
+}
+
+.active { background-color: #6382c9; }
+
+.active div{
+  color: white;
+  border-color: white;
+}
+
+.col-md-3 { margin-bottom: 20px; }
+
+/*Embalagem*/
+* { font-family: 'Roboto', sans-serif; }
+
+.meuInput {
+  width:100%;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 3px #000;
+  display: inline-block;
+  border-radius: 0em;
+  border: none;
+}
+.mais {
+  width: 100%;
+  background-color: #6382c9;
+  padding: 5px;
+  color: white;
+  box-shadow: 0px 0px 7px #000;
+  border: none;
+}
+
+.form-control {  font-size: 15px; }
+.cabecalho {
+  background-color: #6382c9;
+  color: white;
+}
+td {  background-color: white; }
+
+.editar {  background-color: #3b5d93; }
+.excluir {  background-color:  #1d416B; }
+.editar:hover {
+  background-color: #6382c9;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+.excluir:hover{
+  background-color: #102b40;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.editar, .excluir {
+  color: white;
+  border: none;
+  padding: 5px 20px;
+}
+.botaoVoltar, .botaoRegistrar {
+  border: none;
+  padding: 5px 20px 5px 20px;
+}
+.tabela {  box-shadow: 0px 0px 7px #000;}
+.table {margin-bottom: 0px;}
+.teste {  text-align: left;
+}
+@media (max-width: 768px){
+  .row {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+}
+
+/*Cdastro*/
+
+* { font-family: 'Roboto', sans-serif; }
+
+.base {
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0px 0px 7px #000;
+}
+h1 {
+  padding-bottom: 15px;
+  border-bottom-color: #6382c9;
+  border-width: thin;
+  border-bottom-style: solid;
+}
+
+.descricao {
+  display: inline;
+  font-weight: bold;
+}
+.explicacao {
+  color: #777;
+  font-size: 12px;
+}
+.campo { margin-bottom: 20px; }
+input { font-size: 13px; }
+
+.botaoVoltar {
+  background-color: #777;
+  color: white;
+  border: none;
+  padding: 5px;
+}
+.botaoVoltar:hover { background-color: #555; }
+.botaoRegistrar:hover { background-color: #35466d; }
+
+.botaoRegistrar {
+  background-color: #6382c9;
+  color: white;
+}
+
+.botaoVoltar, .botaoRegistrar {
+  border: none;
+  padding: 5px;
+  width: 100px;
+  -webkit-transition: background-color 0.5s;
+  transition: background-color 0.5s;
+}
+.botaoDrop {
+  background-color: white;
+  padding:5px;
+  line-height: 1.25;
+  border:1px solid rgba(0, 0, 0, 0.15);
+  width: 100%;
+}
+
+.row { margin-bottom: 20px; }
+.dropdown-item { font-size: 12px; }
+.dropdown-item:hover { background: lightgrey; }
+
+select {
+  background-color: white;
+  padding:7px;
+  line-height: 1.25;
+  border:1px solid rgba(0, 0, 0, 0.15);
+  width: 100%;
+  text-align: left;
+}
+
+option { color: grey; }
+option:hover { background-color: lightgrey; }
+
+.placeholder { position: relative; }
+
+.placeholder::after {
+    position: absolute;
+    right: 30px;
+    top: 5px;
+    content: attr(data-placeholder);
+    pointer-events: none;
+    opacity: 0.6;
+}
+.classVazio {
+  background-color: white;
+  margin: 0px;
+  padding: 20px;
+  box-shadow: 0px 0px 7px #000;
+}
