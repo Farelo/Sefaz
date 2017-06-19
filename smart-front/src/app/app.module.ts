@@ -23,10 +23,7 @@ import { ProjectService } from './servicos/projects.service';
 
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
-
-
-
-
+import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +31,8 @@ import { AppRoutingModule } from './app.routing.module';
     ModalComponent,
     LoginComponent,
     AlertaComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    ModalRastComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +55,7 @@ import { AppRoutingModule } from './app.routing.module';
     ProjectService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ModalComponent]
+  entryComponents: [ModalComponent, ModalRastComponent]
 })
 
 export class AppModule { }

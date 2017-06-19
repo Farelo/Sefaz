@@ -1,15 +1,39 @@
+
+
+
 <div id="map">
-  <ngui-map zoom="13" [center]="center">
+  <ngui-map zoom="13" [center]="center" [fullscreenControl]="true">
     <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
 
     </marker>
-    <info-window id="iw" maxWidth="400">
-      <div *ngIf="marker.display">
+    <info-window id="iw" width="400" maxWidth="500">
+      <div *ngIf="marker.display" class="pai">
 
 
-        <div id="iw-container">
+        <div >
           <div class="iw-title">Planta: {{marker.plant}}</div>
-          <div class="iw-subTitle">Setor/Área Interna </div>
+
+          <div>
+            <div class="table-responsive tabela">
+              <table class="table">
+                <thead>
+                  <tr class="cabecalho">
+                    <th>Setor/Área Interna</th>
+                    <th class="teste">Opções</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dept of marker.departments">
+                    <td>{{dept.name}}</td>
+                    <td class="teste"><button (click)="open()" type="button" name="button" (click)="getPackings(dept._id)">Visualizar</button></td>
+                    <!-- <span class="glyphicon glyphicon-eye-open"></span> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- <div class="iw-subTitle">Setor/Área Interna </div>
           <div *ngFor="let dept of marker.departments">
             <div class="row">
               <div class="col-md-6">
@@ -19,7 +43,7 @@
                 <button type="button" name="button" (click)="getPackings(dept._id)">Visualizar</button>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
 
       </div>

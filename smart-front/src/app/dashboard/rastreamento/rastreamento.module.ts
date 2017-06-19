@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NguiMapModule } from '@ngui/map';
 import { RastreamentoComponent } from './rastreamento.component';
+// import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
+
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { RastreamentoComponent } from './rastreamento.component';
     })
   ],
   declarations: [
-    RastreamentoComponent
-  ]
+    RastreamentoComponent,
+    // ModalRastComponent
+  ],
+  // entryComponents: [ModalRastComponent]
 })
 export class RastreamentoModule { }

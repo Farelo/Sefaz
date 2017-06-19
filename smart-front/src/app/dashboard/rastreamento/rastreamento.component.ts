@@ -1,7 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DepartmentService } from '../../servicos/departments.service';
 import { Department } from '../../shared/models/department';
-import { PackingService } from '../../servicos/packings.service';
+import { ActivatedRoute } from '@angular/router';
+// import { Subscription } from 'rxjs/Rx';
+import { Router } from '@angular/router';import { PackingService } from '../../servicos/packings.service';
+import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
 
 @Component({
   selector: 'app-rastreamento',
@@ -22,11 +26,19 @@ export class RastreamentoComponent implements OnInit {
     plant: null,
     departments: null
   };
+  // inscricao: Subscription;
+  numero: 1;
+
 
   constructor(
     private ref: ChangeDetectorRef,
     private DepartmentService: DepartmentService,
-    private PackingService: PackingService
+    private PackingService: PackingService,
+    // private modalRast: ModalRastComponent,
+    private router: Router,
+    private route: ActivatedRoute,
+    private modalService: NgbModal
+
   ) { }
 
   loadDepartmentsByPlant() {
@@ -61,6 +73,16 @@ export class RastreamentoComponent implements OnInit {
 
   ngOnInit() {
     this.loadDepartmentsByPlant();
+  }
+
+  // open(numero) {
+  //   const modalRef = this.modalService.open(ModalRastComponent);
+  //   // modalRef.componentInstance.embalagem = packing;
+  //
+  // }
+  open() {
+    const modalRef = this.modalService.open(ModalRastComponent);
+    modalRef.componentInstance.name = 'World';
   }
 
 }

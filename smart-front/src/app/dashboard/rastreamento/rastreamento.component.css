@@ -1,12 +1,51 @@
 #map {
 	margin: 0;
 	padding: 0;
-	height: 100%;
 	max-width: none;
+
 }
 #map-canvas img {
 	max-width: none !important;
 }
+
+ngui-map{
+	/*display: block;*/
+	height: 90vh;
+	margin-top: -40px;
+	width: 100vw;
+	/*display: flex;*/
+	/*left: -40em;*/
+}
+@media (max-width: 576px) {
+	ngui-map {
+		margin-left: -5vw;
+	}
+}
+@media (min-width: 576px) and (max-width: 768px) {
+	ngui-map {
+		margin-left: -5vw;
+	}
+}
+@media (min-width: 768px) and (max-width: 992px) {
+	ngui-map {
+		margin-left: -5vw;
+	}
+}
+@media (min-width: 992px) and (max-width: 1200px) {
+	ngui-map {
+		margin-left: -6vw;
+	}
+}@media (min-width: 1200px){
+	ngui-map {
+		margin-left: -10vw;
+	}
+}
+@media (min-width: 1400px){
+	ngui-map {
+		margin-left: -19vw;
+	}
+}
+
 .gm-style-iw {
 	width: 350px !important;
 	top: 15px !important;
@@ -20,14 +59,19 @@
 	max-width: 200px;
 	margin-bottom: 10px;
 }
-#iw-container .iw-title {
+#iw {
+	width: 400px;
+}
+.pai {
+	width: 250px;
+}
+
+.iw-title {
 	font-family: 'Open Sans Condensed', sans-serif;
 	font-size: 22px;
 	font-weight: 400;
-	padding: 10px;
-	background-color: #3e4f5f;
-	color: white;
-	margin: 0;
+	color: black;
+	margin: 10px 0px 10px 0px;
 	border-radius: 2px 2px 0 0;
 }
 #iw-container .iw-content {
@@ -39,6 +83,30 @@
 	max-height: 140px;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+.table {
+	font-size: 14px;
+}
+span {
+	color: #3b5d93;
+}
+button {
+	background-color: #3b5d93;
+	/*background-color: white;*/
+	color: white;
+	border: none;
+	padding: 5px;
+}
+td {
+	padding: 5px 0px !important;
+}
+.teste {
+	text-align: right;
+}
+button:hover {
+	background-color: #6382c9;
+	-webkit-transition: background-color 0.3s;
+	transition: background-color 0.3s;
 }
 .iw-content img {
 	float: right;
@@ -60,3 +128,8 @@
 	background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 	background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 }
+.cabecalho {
+  background-color: #6382c9;
+  color: white;
+}
+td {  background-color: white; }
