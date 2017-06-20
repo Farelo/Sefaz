@@ -9,8 +9,8 @@
 	.conteudoTop {
     /*width: 90vw;*/
 		width: inherit;
-    margin-left: 5vw;
-    margin-right: 5vw;
+    margin-left: 30px;
+    margin-right: 30px;
   }
 }
 @media (min-width: 576px) and (max-width: 768px) {
