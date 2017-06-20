@@ -2,6 +2,7 @@
 
 var SwaggerExpress = require('swagger-express-mw');
 var express  = require('express');
+const path = require('path');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 // cria nossa aplicação Express
 // puxar informações por POST HTML (express4)
@@ -17,8 +18,9 @@ app.use(bodyParser.urlencoded({limit: '50mb'}));
 // parse application/vnd.api+json as json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
-//app.use(express.static(__dirname.replace("reciclapac-api","app")));
-//console.log(express.static(__dirname.replace("reciclapac-api","app")));
+//app.use(express.static(__dirname.replace("smart-api","smart-front/src")));
+app.use(express.static(path.join(__dirname, '../smart-front/dist')));
+console.log(__dirname.replace("smart-api","smart-front"));
 module.exports = app; // for testing
 // DATABASE ==============================================
 require('./config.database')();

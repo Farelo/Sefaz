@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { ModalComponent } from '../../../shared/modal/modal.component';
+import { PositionModalComponent } from '../../../shared/modal/alerta/position/alerta.component';
+import { MissingModalComponent } from '../../../shared/modal/alerta/missing/alerta.component';
 import { AlertsService } from '../../../servicos/alerts.service';
 import { Alert } from '../../../shared/models/alert';
 
@@ -47,12 +49,19 @@ export class ListaComponent implements OnInit {
     this.inscricao.unsubscribe();
   }
 
-  open(embalagem) {
-    console.log(embalagem);
+  open(embalagem,status) {
+
     this.AlertsService.retrieveAlertByPacking(embalagem)
       .subscribe(packing => {
-        const modalRef = this.modalService.open(ModalComponent);
-        modalRef.componentInstance.embalagem = packing;
+        console.log(packing);
+        if(status === "02"){
+          const modalRef = this.modalService.open(MissingModalComponent);
+          modalRef.componentInstance.alerta = packing;
+        }else{
+          const modalRef = this.modalService.open(PositionModalComponent);
+          modalRef.componentInstance.alerta = packing;
+        }
+
       },
       err => {
         console.log(err);

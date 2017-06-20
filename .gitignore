@@ -1,6 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 smart-api/node_modules
 smart-front/node_modules
+smart-front/dist
 # compiled output
 /dist
 /tmp

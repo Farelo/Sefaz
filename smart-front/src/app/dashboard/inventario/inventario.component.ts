@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { AlertsService } from '../../servicos/alerts.service';
 import { Alert } from '../../shared/models/alert';
-import { ModalAlertaComponent } from '../../shared/modal-alerta/modal-alerta.component';
+
 
 @Component({
   selector: 'app-inventario',
@@ -28,7 +28,7 @@ export class InventarioComponent implements OnInit {
 
   ngOnInit() {
     this.PackingService.retrieveInventory(10, 1).subscribe(result => {
-
+      console.log(result);
       var totalItems = result.count;
       var packings = result.packing_list;
       var found = result.quantity_found;
@@ -41,9 +41,9 @@ export class InventarioComponent implements OnInit {
     });
   }
 
-  open() {
-    const modalRef = this.modalService.open(ModalAlertaComponent);
-    modalRef.componentInstance.name = 'World';
-  }
+  // open() {
+  //   const modalRef = this.modalService.open(ModalAlertaComponent);
+  //   modalRef.componentInstance.name = 'World';
+  // }
 
 }

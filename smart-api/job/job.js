@@ -1,3 +1,4 @@
+
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var cron = require('node-cron');
@@ -104,6 +105,13 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
             var hasProblem = !route.plant_factory._id.equals(Scanned[indexCheckpoint].checkpoint.plant) &&
                 !route.plant_supplier._id.equals(Scanned[indexCheckpoint].checkpoint.plant);
 
+                p.department = Scanned[indexCheckpoint].checkpoint.department;
+                p.actual_plant = Scanned[indexCheckpoint].checkpoint.plant;
+                p.correct_plant_factory = route.plant_factory._id;
+                p.correct_plant_supplier = route.plant_supplier._id;
+                p.hashPacking  =   p.supplier + p.code;
+                p.missing = false;
+
             if (p.last_time && !hasProblem) {
                 if (p.department.equals(Scanned[indexCheckpoint].checkpoint.department)) {
                     var oneDay = 1000; // hours*minutes*seconds*milliseconds
@@ -168,11 +176,7 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
                 }));
             }
 
-            p.department = Scanned[indexCheckpoint].checkpoint.department;
-            p.actual_plant = Scanned[indexCheckpoint].checkpoint.plant;
-            p.correct_plant_factory = route.plant_factory._id;
-            p.correct_plant_supplier = route.plant_supplier._id;
-            p.hashPacking  =   p.supplier + p.code;
+
 
             //insere informações sobre embalagem como problemas para a tabela de alertas
             if(hasProblem ){
@@ -212,7 +216,7 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
               }
             }
 
-            p.missing = false;
+
 
             promiseUpdate.push(packing.update({
                 _id: p._id
@@ -236,16 +240,16 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
             var route = routes.filter(r => r.packing_code === pn.code && r.supplier._id.equals(pn.supplier))[0];
 
             pn.hashPacking  =   pn.supplier + pn.code;
-            if(pn.last_time_missing){
-              var oneDay = 1000; // hours*minutes*seconds*milliseconds
-              var date = new Date();
-              //var diffDays = Math.round(Math.abs((pn.last_time.getTime() - date.getTime()) / (oneDay)));
-              //pn.time_countdown += diffDays;
-              pn.last_time_missing = new Date();
-            }else{
-              pn.last_time_missing = new Date();
-              pn.time_countdown = 0;
-            }
+            // if(pn.last_time_missing){
+            //   var oneDay = 1000; // hours*minutes*seconds*milliseconds
+            //   var date = new Date();
+            //   //var diffDays = Math.round(Math.abs((pn.last_time.getTime() - date.getTime()) / (oneDay)));
+            //   //pn.time_countdown += diffDays;
+            //   pn.last_time_missing = new Date();
+            // }else{
+            //   pn.last_time_missing = new Date();
+            //   pn.time_countdown = 0;
+            // }
 
             // if(  pn.time_countdown > route.estimeted_time){
               if(pn.missing){
@@ -295,15 +299,24 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
 
         packingsFound.forEach(function(p) {
             var indexCheckpoint = filterScanned.indexOf(p.tag_mac);
+
+
+            p.department = Scanned[indexCheckpoint].checkpoint.department;
+            p.actual_plant = Scanned[indexCheckpoint].checkpoint.plant;
+            p.hashPacking  =   p.supplier + p.code;
+            p.missing = false;
+            p.problem = false;
+
+              //verifica se o tempo de permanencia foi inserido a essa embalagem
             if (p.last_time) {
               if (p.department.equals(Scanned[indexCheckpoint].checkpoint.department)) {
                   var oneSecond =  1000; // hours*minutes*seconds*milliseconds
                   var date = new Date();
-                  //var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneSecond)));
-                  //p.amount_days += diffDays;
+                  var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneSecond)));
+                  p.amount_days += diffDays;
 
                   //verifica o tempo de permanencia em um mesmo local
-                  if(p.amount_days > 30){
+                  if(p.amount_days > 1000000000000){
                     if(p.permanence_exceeded){
                       promiseUpdate.push(
                         alert.update({"packing": p._id},{
@@ -317,6 +330,7 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
                           upsert: true
                       }));
                     }else{
+                      //seta a informação de que o tempo de permanencia foi excedido
                       p.permanence_exceeded = true;
                       promiseUpdate.push(
                         alert.remove({ "packing": p._id}).then(() => alert.create({
@@ -345,7 +359,7 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
                 p.last_time = new Date();
                 p.amount_days = 0;
                 promiseUpdate.push(
-                  alert.remove({ "packing": pn._id}));
+                alert.remove({ "packing": p._id}));
                 promiseUpdate.push(historic_packings.create({
                     'packing': p._id,
                     'historic': [{
@@ -354,11 +368,6 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
                 }));
             }
 
-            p.department = Scanned[indexCheckpoint].checkpoint.department;
-            p.actual_plant = Scanned[indexCheckpoint].checkpoint.plant;
-            p.hashPacking  =   p.supplier + p.code;
-            p.missing = false;
-            p.problem = false;
 
             promiseUpdate.push(packing.update({
                 _id: p._id
@@ -380,16 +389,17 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
 
         packingsNoFound.forEach(function(pn) {
 
-            if(pn.last_time_missing){
-              var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-              var date = new Date();
-              //var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneDay)));
-              //pn.time_countdown += diffDays;
-              pn.last_time_missing = new Date();
-            }else{
-              pn.last_time_missing = new Date();
-              pn.time_countdown = 0;
-            }
+            // if(pn.last_time_missing){
+            //   var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            //   var date = new Date();
+            //   //var diffDays = Math.round(Math.abs((p.last_time.getTime() - date.getTime()) / (oneDay)));
+            //   //pn.time_countdown += diffDays;
+            //   pn.last_time_missing = new Date();
+            // }else{
+            //   pn.last_time_missing = new Date();
+            //   pn.time_countdown = 0;
+            // }
+              pn.hashPacking  =   pn.supplier + pn.code;
 
             if(pn.missing){
               promiseUpdate.push(
@@ -415,8 +425,6 @@ function checkingPackings(packingsFound, packingsNoFound, routes) {
                 "hashpacking": pn.hashPacking
               })));
             }
-
-            pn.hashPacking  =   pn.supplier + pn.code;
 
             promiseUpdate.push(packing.update({
                 _id: pn._id

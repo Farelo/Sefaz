@@ -1,0 +1,22 @@
+<div class="modal-header">
+      <h4 class="modal-title">Detalhes do alerta</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+</div>
+
+<div class="modal-body">
+
+  <p>Código: {{alerta.packing.code}}</p>
+  <p>Planta do Fornecedor: {{alerta.correct_plant_supplier.name ? alerta.correct_plant_supplier.name : 'Informação Indisponivel'}}</p>
+  <p>Planta da Fabrica: {{alerta.correct_plant_factory.name  ? alerta.correct_plant_factory.name : 'Informação Indisponivel'}}</p>
+  <p>Ultima Planta que foi visto : {{alerta.actual_plant  ? alerta.actual_plant.name : 'Informação Indisponivel'}}</p>
+  <p>Ultimo departamento visto : {{alerta.department  ? alerta.department.name : 'Informação Indisponivel'}}</p>
+
+  <p> <button type="button" class="btn btn-secondary">Visualizar Historico</button></p>
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeAlerta.close('Close click')">Close</button>
+</div>

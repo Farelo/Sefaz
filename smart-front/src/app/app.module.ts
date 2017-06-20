@@ -9,8 +9,9 @@ import { LoginComponent } from './login/login.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
-import { ModalAlertaComponent } from './shared/modal-alerta/modal-alerta.component';
-import { AlertaComponent } from './shared/alerta/alerta.component';
+
+import { PositionModalComponent } from './shared/modal/alerta/position/alerta.component';
+import { MissingModalComponent } from './shared/modal/alerta/missing/alerta.component';
 
 import { EmbalagensService } from './servicos/embalagens.service';
 import { AlertsService } from './servicos/alerts.service';
@@ -31,10 +32,10 @@ import { AppRoutingModule } from './app.routing.module';
     AppComponent,
     LoginComponent,
     LandingPageComponent,
-    AlertaComponent,
     ModalComponent,
-    ModalAlertaComponent,
-    ModalRastComponent
+    PositionModalComponent,
+    ModalRastComponent,
+    MissingModalComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +58,7 @@ import { AppRoutingModule } from './app.routing.module';
     ProjectService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ModalComponent, ModalAlertaComponent, ModalRastComponent]
+  entryComponents: [ModalComponent, ModalRastComponent,PositionModalComponent,MissingModalComponent]
 })
 
 export class AppModule { }

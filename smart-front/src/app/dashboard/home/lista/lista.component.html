@@ -6,9 +6,10 @@
     'ok' : alert.status == '03',
     'quase' : alert.status == '01'
   }"
-  (click)="open(alert.packing._id)">
+  (click)="open(alert.packing._id,alert.status)">
 {{alert.packing.code}}
 <p class="infoData">{{alert.packing.tag_mac}}</p>
+
 </div>
 </div>
 
