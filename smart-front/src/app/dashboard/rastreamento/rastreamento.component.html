@@ -1,6 +1,3 @@
-
-
-
 <div id="map">
   <ngui-map zoom="13" [center]="center" [fullscreenControl]="true">
     <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
@@ -45,9 +42,7 @@
             </div>
           </div> -->
         </div>
-
       </div>
     </info-window>
-
   </ngui-map>
 </div>

@@ -53,3 +53,6 @@ td {
 .quase {
   background: radial-gradient(#d6d63c 5%, #d6d63c 45%, #fff 45%, #fff 62%, #d6d63c 62%);
 }
+span {
+  cursor: pointer;
+}

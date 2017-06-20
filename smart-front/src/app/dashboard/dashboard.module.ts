@@ -13,9 +13,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { InventarioComponent } from './inventario/inventario.component';
 import { ImportarComponent } from './importar/importar.component';
 
-
-
-
 @NgModule({
   imports: [
     CommonModule,

@@ -6,9 +6,7 @@ import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { AlertsService } from '../../servicos/alerts.service';
 import { Alert } from '../../shared/models/alert';
-
-/*ALerta!*/
-import { AlertaComponent } from '../../shared/alerta/alerta.component';
+import { ModalAlertaComponent } from '../../shared/modal-alerta/modal-alerta.component';
 
 @Component({
   selector: 'app-inventario',
@@ -43,8 +41,9 @@ export class InventarioComponent implements OnInit {
     });
   }
 
-  open(numero) {
-
+  open() {
+    const modalRef = this.modalService.open(ModalAlertaComponent);
+    modalRef.componentInstance.name = 'World';
   }
 
 }

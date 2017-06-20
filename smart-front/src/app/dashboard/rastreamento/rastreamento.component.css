@@ -10,7 +10,7 @@
 
 ngui-map{
 	/*display: block;*/
-	height: 90vh;
+	height: calc(100vh - 45px);
 	margin-top: -40px;
 	width: 100vw;
 	/*display: flex;*/
@@ -18,31 +18,31 @@ ngui-map{
 }
 @media (max-width: 576px) {
 	ngui-map {
-		margin-left: -5vw;
+		margin-left: -30px;
 	}
 }
 @media (min-width: 576px) and (max-width: 768px) {
 	ngui-map {
-		margin-left: -5vw;
+		margin-left: -30px;
 	}
 }
 @media (min-width: 768px) and (max-width: 992px) {
 	ngui-map {
-		margin-left: -5vw;
+		margin-left: -40px;
 	}
 }
 @media (min-width: 992px) and (max-width: 1200px) {
 	ngui-map {
-		margin-left: -6vw;
+		margin-left: -70px;
 	}
 }@media (min-width: 1200px){
 	ngui-map {
-		margin-left: -10vw;
+		margin-left: -130px;
 	}
 }
 @media (min-width: 1400px){
 	ngui-map {
-		margin-left: -19vw;
+		margin-left: -300px;
 	}
 }
 

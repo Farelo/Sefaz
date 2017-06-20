@@ -6,11 +6,11 @@ import { Router } from '@angular/router';
 import { EmbalagensService } from '../../servicos/embalagens.service';
 
 @Component({
-  selector: 'app-modal-rast',
-  templateUrl: './modal-rast.component.html',
-  styleUrls: ['./modal-rast.component.css']
+  selector: 'app-modal-alerta',
+  templateUrl: './modal-alerta.component.html',
+  styleUrls: ['./modal-alerta.component.css']
 })
-export class ModalRastComponent implements OnInit {
+export class ModalAlertaComponent implements OnInit {
 @Input() setor;
 
   constructor(

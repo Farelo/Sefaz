@@ -34,7 +34,6 @@ export class RastreamentoComponent implements OnInit {
     private ref: ChangeDetectorRef,
     private DepartmentService: DepartmentService,
     private PackingService: PackingService,
-    // private modalRast: ModalRastComponent,
     private router: Router,
     private route: ActivatedRoute,
     private modalService: NgbModal

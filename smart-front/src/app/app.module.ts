@@ -5,10 +5,12 @@ import { HttpModule } from '@angular/http';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { ModalComponent } from './shared/modal/modal.component';
-import { AlertaComponent } from './shared/alerta/alerta.component';
 import { LoginComponent } from './login/login.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { ModalComponent } from './shared/modal/modal.component';
+import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
+import { ModalAlertaComponent } from './shared/modal-alerta/modal-alerta.component';
+import { AlertaComponent } from './shared/alerta/alerta.component';
 
 import { EmbalagensService } from './servicos/embalagens.service';
 import { AlertsService } from './servicos/alerts.service';
@@ -23,15 +25,15 @@ import { ProjectService } from './servicos/projects.service';
 
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
-import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ModalComponent,
     LoginComponent,
-    AlertaComponent,
     LandingPageComponent,
+    AlertaComponent,
+    ModalComponent,
+    ModalAlertaComponent,
     ModalRastComponent
   ],
   imports: [
@@ -55,7 +57,7 @@ import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
     ProjectService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ModalComponent, ModalRastComponent]
+  entryComponents: [ModalComponent, ModalAlertaComponent, ModalRastComponent]
 })
 
 export class AppModule { }
