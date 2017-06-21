@@ -21,9 +21,24 @@
 }"
 [routerLink]=[alert._id.hash,alert.status]
 >
-{{alert.packing.code}}
+<div class="esquerda">
+<h4>{{alert.packing.code}}</h4>
 <p class="infoData">{{alert.packing.type}}</p>
-<p class="infoData">{{alert.quantity}}</p>
-<p class="infoData">{{alert.supplier.name}}</p>
+</div>
+<!-- <p class="infoData">{{alert.quantity}}</p> -->
+<!-- <p class="infoData">{{alert.supplier.name}}</p> -->
+<div class="direita">
+
+
+<h3><span [ngClass]="{
+  'atrasado2' : alert.status == '02',
+  'ok2' : alert.status == '03',
+  'quase2' : alert.status == '01'
+}" class="badge">
+{{alert.quantity}}</span></h3>
+
+<h3><span class="badge badge-default">
+{{alert.supplier.name}}</span></h3>
+</div>
 </div>
 <router-outlet></router-outlet>
