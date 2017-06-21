@@ -7,8 +7,8 @@ import { Packing } from '../shared/models/packing';
 export class PackingService {
 
   constructor(private http: Http) { }
-  private url = 'http://localhost:8080/api/';
-
+  private url = 'http://localhost:8984/api/';
+  //private url = 'http://isi.pe.senai.br:8984/api/';
 
   getPackingsPagination(limit: number, page: number): Observable<Packing[]> {
     return this.http.get(this.url + 'packing/list/pagination/' + limit + '/' + page)

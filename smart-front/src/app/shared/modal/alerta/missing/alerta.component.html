@@ -8,8 +8,8 @@
 <div class="modal-body">
 
   <p>Código: {{alerta.packing.code}}</p>
-  <p>Planta do Fornecedor: {{alerta.correct_plant_supplier.name ? alerta.correct_plant_supplier.name : 'Informação Indisponivel'}}</p>
-  <p>Planta da Fabrica: {{alerta.correct_plant_factory.name  ? alerta.correct_plant_factory.name : 'Informação Indisponivel'}}</p>
+  <p>Planta do Fornecedor: {{alerta.correct_plant_supplier ? alerta.correct_plant_supplier.name : 'Informação Indisponivel'}}</p>
+  <p>Planta da Fabrica: {{alerta.correct_plant_factory ? alerta.correct_plant_factory.name : 'Informação Indisponivel'}}</p>
   <p>Ultima Planta que foi visto : {{alerta.actual_plant  ? alerta.actual_plant.name : 'Informação Indisponivel'}}</p>
   <p>Ultimo departamento visto : {{alerta.department  ? alerta.department.name : 'Informação Indisponivel'}}</p>
 

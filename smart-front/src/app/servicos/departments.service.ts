@@ -7,8 +7,9 @@ import { Department } from '../shared/models/department';
 export class DepartmentService {
 
   constructor(private http: Http) { }
-  private url = 'http://localhost:8080/api/';
 
+   private url = 'http://localhost:8984/api/';
+  //private url = 'http://isi.pe.senai.br:8984/api/';
 
   getDepartmentsPagination(limit: number, page: number): Observable<Department[]> {
     return this.http.get(this.url + 'department/list/pagination/' + limit + '/' + page)

@@ -7,8 +7,8 @@ import { Plant } from '../shared/models/plant';
 export class PlantsService {
 
   constructor(private http: Http) { }
-  private url = 'http://localhost:8080/api/';
-
+  private url = 'http://localhost:8984/api/';
+ //private url = 'http://isi.pe.senai.br:8984/api/';
 
   getPlantsPagination(limit: number, page: number): Observable<Plant[]> {
     return this.http.get(this.url + 'plant/list/pagination/' + limit + '/' + page)

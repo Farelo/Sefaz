@@ -7,7 +7,8 @@ import { Alert } from '../shared/models/alert';
 export class AlertsService {
 
   constructor(private http: Http) { }
-  private url = 'http://localhost:8080/api/';
+   private url = 'http://localhost:8984/api/';
+  //private url = 'http://isi.pe.senai.br:8984/api/';
 
 
   getAlertsPagination(limit: number, page: number): Observable<Alert[]> {

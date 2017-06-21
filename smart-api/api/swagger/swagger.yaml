@@ -8,7 +8,7 @@ info:
    email: "david.santos@pe.senai.br"
    url: "http://pe.senai.br"
 # during dev, should point to your local machine
-host: localhost:8080
+host: localhost:8984
 # basePath prefixes all resource paths
 basePath: /api
 #

@@ -54,12 +54,13 @@ export class ListaComponent implements OnInit {
     this.AlertsService.retrieveAlertByPacking(embalagem)
       .subscribe(packing => {
         console.log(packing);
-        if(status === "02"){
-          const modalRef = this.modalService.open(MissingModalComponent);
-          modalRef.componentInstance.alerta = packing;
-        }else{
+        if(status === "01"){
           const modalRef = this.modalService.open(PositionModalComponent);
           modalRef.componentInstance.alerta = packing;
+        }else{
+          const modalRef = this.modalService.open(MissingModalComponent);
+          modalRef.componentInstance.alerta = packing;
+
         }
 
       },
