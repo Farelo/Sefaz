@@ -16,9 +16,9 @@
 <!-- <input [(ngModel)]="message" /><button (click)="sendMessage()">Click</button> -->
 <div class="panel-body info" *ngFor="let alert of alerts"
 [ngClass]="{
-  'atrasado' : alert.status == '02',
-  'ok' : alert.status == '03',
-  'quase' : alert.status == '01'
+  'perdido' : alert.status == '02',
+  'parado' : alert.status == '03',
+  'incorreto' : alert.status == '01'
 }"
 [routerLink]=[alert._id.hash,alert.status]
 >
@@ -32,9 +32,9 @@
 
 
 <h3><span [ngClass]="{
-  'atrasado2' : alert.status == '02',
-  'ok2' : alert.status == '03',
-  'quase2' : alert.status == '01'
+  'perdido2' : alert.status == '02',
+  'parado2' : alert.status == '03',
+  'incorreto2' : alert.status == '01'
 }" class="badge">
 {{alert.quantity}}</span></h3>
 

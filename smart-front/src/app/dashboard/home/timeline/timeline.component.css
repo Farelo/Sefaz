@@ -19,37 +19,39 @@
   font-size: 9px; color: grey; margin: 0px;
 }
 
-.atrasado {
+.perdido {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#7F1715 97%,#7F1715 97.5%,
-    #fff 97.5%,#fff 98%,#7F1715 98%,#7F1715 100%);
+    #fff 0%,#fff 97%,#EF5562 97%,#EF5562 97.5%,
+    #fff 97.5%,#fff 98%,#EF5562 98%,#EF5562 100%);
 }
-.ok {
+.incorreto {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#ee851f 97%,#ee851f 97.5%,
-    #fff 97.5%,#fff 98%,#ee851f 98%,#ee851f 100%);
+    #fff 0%,#fff 97%,#a08dc2 97%,#a08dc2 97.5%,
+    #fff 97.5%,#fff 98%,#a08dc2 98%,#a08dc2 100%);
 }
-.quase {
+.parado {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#FF5C58 97%,#FF5C58 97.5%,
-    #fff 97.5%,#fff 98%,#FF5C58 98%,#FF5C58 100%);
+    #fff 0%,#fff 97%,#5D8DD7 97%,#5D8DD7 97.5%,
+    #fff 97.5%,#fff 98%,#5D8DD7 98%,#5D8DD7 100%);
 }
 
-.atrasado:hover {
+
+.perdido:hover {
   background: linear-gradient(to right,
-    #d3d3d3 0%,#d3d3d3 97%,#7F1715 97%,#7F1715 97.5%,
-    #d3d3d3 97.5%,#d3d3d3 98%,#7F1715 98%,#7F1715 100%);
+    #e0e0e0 0%,#e0e0e0 97%,#EF5562 97%,#EF5562 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#EF5562 98%,#EF5562 100%);
 }
-.ok:hover {
+.incorreto:hover {
   background: linear-gradient(to right,
-    #d3d3d3 0%,#d3d3d3 97%,#ee851f 97%,#ee851f 97.5%,
-    #d3d3d3 97.5%,#d3d3d3 98%,#ee851f 98%,#ee851f 100%);
+    #e0e0e0 0%,#e0e0e0 97%,#a08dc2 97%,#a08dc2 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#a08dc2 98%,#a08dc2 100%);
 }
-.quase:hover {
+.parado:hover {
   background: linear-gradient(to right,
-    #d3d3d3 0%,#d3d3d3 97%,#FF5C58 97%,#FF5C58 97.5%,
-    #d3d3d3 97.5%,#d3d3d3 98%,#FF5C58 98%,#FF5C58 100%);
+    #e0e0e0 0%,#e0e0e0 97%,#5D8DD7 97%,#5D8DD7 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#5D8DD7 98%,#5D8DD7 100%);
 }
+
 /*Amarelo de maysa d6d63c*/
 .esquerda{
   float: left;
@@ -58,32 +60,32 @@
   float: right;
   text-align: right;
 }
-.atrasado2 {
-  border-color: #7F1715;
+.perdido2 {
+  border-color: #EF5562;
   border-radius: 12px;
   border-style: solid;
   border-width: medium;
   background-color: transparent;
-  color: #7F1715;
+  color: #EF5562;
 }
-.ok2 {
-  border-color: #ee851f;
+.parado2 {
+  border-color: #5D8DD7;
   border-radius: 12px;
   border-style: solid;
   border-width: medium;
   background-color: transparent;
-  color: #ee851f;
+  color: #5D8DD7;
   }
-.quase2 {
-  border-color: #FF5C58;
+.incorreto2 {
+  border-color: #a08dc2;
   border-radius: 12px;
   border-style: solid;
   border-width: medium;
   background-color: transparent;
-  color: #FF5C58;
+  color: #a08dc2;
 }
 
-.atrasado2, .ok2, .quase2 {
+.perdido2, .parado2, .incorreto2 {
     font-weight: bold;
 }
 

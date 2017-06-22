@@ -49,7 +49,16 @@
   .conteudoTop {
     /*width: 62vw;*/
 		width: inherit;
-    margin-left: 300px;
-    margin-right: 300px;
+    margin-left: 270px;
+    margin-right: 270px;
+  }
+}
+
+@media (min-width: 1700px){
+  .conteudoTop {
+    /*width: 62vw;*/
+		width: inherit;
+    margin-left: 450px;
+    margin-right: 450px;
   }
 }

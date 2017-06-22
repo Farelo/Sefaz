@@ -42,9 +42,16 @@ ngui-map{
 }
 @media (min-width: 1400px){
 	ngui-map {
-		margin-left: -300px;
+		margin-left: -2700px;
 	}
 }
+
+@media (min-width: 1700px){
+	ngui-map {
+		margin-left: -450px;
+	}
+}
+
 
 .gm-style-iw {
 	width: 350px !important;

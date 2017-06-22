@@ -18,36 +18,37 @@
   font-size: 9px; color: grey; margin: 0px;
 }
 
-.atrasado {
+.perdido {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#db3a3a 97%,#db3a3a 97.5%,
-    #fff 97.5%,#fff 98%,#db3a3a 98%,#db3a3a 100%);
+    #fff 0%,#fff 97%,#EF5562 97%,#EF5562 97.5%,
+    #fff 97.5%,#fff 98%,#EF5562 98%,#EF5562 100%);
 }
-.ok {
+.incorreto {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#34d83e 97%,#34d83e 97.5%,
-    #fff 97.5%,#fff 98%,#34d83e 98%,#34d83e 100%);
+    #fff 0%,#fff 97%,#a08dc2 97%,#a08dc2 97.5%,
+    #fff 97.5%,#fff 98%,#a08dc2 98%,#a08dc2 100%);
 }
-.quase {
+.parado {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#d6d63c 97%,#d6d63c 97.5%,
-    #fff 97.5%,#fff 98%,#d6d63c 98%,#d6d63c 100%);
+    #fff 0%,#fff 97%,#5D8DD7 97%,#5D8DD7 97.5%,
+    #fff 97.5%,#fff 98%,#5D8DD7 98%,#5D8DD7 100%);
 }
 
-.atrasado:hover {
+
+.perdido:hover {
   background: linear-gradient(to right,
-    #d3d3d3 0%,#d3d3d3 97%,#db3a3a 97%,#db3a3a 97.5%,
-    #d3d3d3 97.5%,#d3d3d3 98%,#db3a3a 98%,#db3a3a 100%);
+    #e0e0e0 0%,#e0e0e0 97%,#EF5562 97%,#EF5562 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#EF5562 98%,#EF5562 100%);
 }
-.ok:hover {
+.incorreto:hover {
   background: linear-gradient(to right,
-    #d3d3d3 0%,#d3d3d3 97%,#34d83e 97%,#34d83e 97.5%,
-    #d3d3d3 97.5%,#d3d3d3 98%,#34d83e 98%,#34d83e 100%);
+    #e0e0e0 0%,#e0e0e0 97%,#a08dc2 97%,#a08dc2 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#a08dc2 98%,#a08dc2 100%);
 }
-.quase:hover {
+.parado:hover {
   background: linear-gradient(to right,
-    #d3d3d3 0%,#d3d3d3 97%,#d6d63c 97%,#d6d63c 97.5%,
-    #d3d3d3 97.5%,#d3d3d3 98%,#d6d63c 98%,#d6d63c 100%);
+    #e0e0e0 0%,#e0e0e0 97%,#5D8DD7 97%,#5D8DD7 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#5D8DD7 98%,#5D8DD7 100%);
 }
 .botaoVoltar {
   background-color: #777;

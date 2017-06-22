@@ -16,13 +16,13 @@
       <tr class="cabecalho">
         <th>Codigo</th>
         <th>Mac</th>
-        <th>Opções</th>
+        <th class="opcoes">Opções</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let tag of tags">
         <td>{{tag.code}}</td>
-        <td>{{tag.mac}}</td>
+        <td class="penultima">{{tag.mac}}</td>
         <td class="teste">
           <button class="editar" >Editar</button>
           <button class="excluir" (click)="removeTags(tag._id)"  [disabled]="tag.status == 1">Excluir</button>
