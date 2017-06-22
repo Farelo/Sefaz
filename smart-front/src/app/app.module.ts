@@ -23,6 +23,7 @@ import { SuppliersService } from './servicos/suppliers.service';
 import { TagsService } from './servicos/tags.service';
 import { CheckpointService } from './servicos/checkpoints.service';
 import { ProjectService } from './servicos/projects.service';
+import { ChatService } from './servicos/teste';
 
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
@@ -55,7 +56,8 @@ import { AppRoutingModule } from './app.routing.module';
     SuppliersService,
     TagsService,
     CheckpointService,
-    ProjectService
+    ProjectService,
+    ChatService
   ],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent, ModalRastComponent,PositionModalComponent,MissingModalComponent]

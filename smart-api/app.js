@@ -4,6 +4,7 @@ var SwaggerExpress = require('swagger-express-mw');
 var express  = require('express');
 const path = require('path');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
+var cron = require('node-cron');
 // cria nossa aplicação Express
 // puxar informações por POST HTML (express4)
 var bodyParser = require('body-parser');
@@ -33,6 +34,28 @@ var config = {
 
 require('./job/job');
 
+
+let http = require('http').Server(app);
+let io = require('socket.io')(http);
+
+// let task = cron.schedule('*/10 * * * * *', function() {
+//     console.log("sEND menssage");
+//
+//  });
+
+io.on('connection', (socket) => {
+  console.log('USER CONNECTED');
+
+  socket.on('disconnect', function(){
+    console.log('USER DISCONNECTED');
+
+  });
+
+
+  socket.on('add-message', (message) => {
+     io.emit('message', {type:'new-message', text: "testeeeee"});
+  });
+});
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }
   app.use(SwaggerUi(swaggerExpress.runner.swagger));
@@ -40,7 +63,9 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
   swaggerExpress.register(app);
 
   var port = process.env.PORT || 8984;
-  app.listen(port);
+  http.listen(port, () => {
+  console.log('started on port 8984');
+});
 
   if (swaggerExpress.runner.swagger.paths['/hello']) {
     console.log('try this:\ncurl http://127.0.0.1:' + port + '/hello?name=Scott');
