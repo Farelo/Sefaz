@@ -22,7 +22,7 @@
                 <tbody>
                   <tr *ngFor="let dept of marker.departments">
                     <td>{{dept.name}}</td>
-                    <td class="teste"><button (click)="open()" type="button" name="button" (click)="getPackings(dept._id)">Visualizar</button></td>
+                    <td class="teste"><button (click)="open(dept._id)" type="button" name="button">Visualizar</button></td>
                     <!-- <span class="glyphicon glyphicon-eye-open"></span> -->
                   </tr>
                 </tbody>

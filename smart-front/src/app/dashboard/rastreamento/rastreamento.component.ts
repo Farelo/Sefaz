@@ -66,17 +66,18 @@ export class RastreamentoComponent implements OnInit {
 
   }
 
-  getPackings(id){
-    this.PackingService.getPackingsByDepartment(id).subscribe(departments => console.log(departments));
-  }
-
   ngOnInit() {
+
     this.loadDepartmentsByPlant();
   }
 
-  open() {
-    const modalRef = this.modalService.open(ModalRastComponent);
-    modalRef.componentInstance.name = 'World';
+  open(id) {
+    this.PackingService.getPackingsByDepartment(id).subscribe(packings => {
+      const modalRef = this.modalService.open(ModalRastComponent);
+        console.log(packings);
+      modalRef.componentInstance.packings = packings;
+    });
+
   }
 
 }

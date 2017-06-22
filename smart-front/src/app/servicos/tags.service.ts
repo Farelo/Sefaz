@@ -7,8 +7,8 @@ import { Tag } from '../shared/models/tag';
 export class TagsService {
 
   constructor(private http: Http) { }
-  private url = 'http://localhost:8984/api/';
- //private url = 'http://isi.pe.senai.br:8984/api/';
+  //private url = 'http://localhost:8984/api/';
+  private url = 'http://isi.pe.senai.br:8984/api/';
 
   getTagsPagination(limit: number, page: number): Observable<Tag[]> {
     return this.http.get(this.url + 'tags/list/pagination/' + limit + '/' + page)

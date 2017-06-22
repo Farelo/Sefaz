@@ -25,7 +25,7 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 //app.use(express.static(__dirname.replace("smart-api","smart-front/src")));
 app.use(express.static(path.join(__dirname, '../smart-front/dist')));
-console.log(__dirname.replace("smart-api","smart-front"));
+
 module.exports = app; // for testing
 // DATABASE ==============================================
 require('./config.database')();
@@ -53,7 +53,7 @@ let task = cron.schedule('*/10 * * * * *', function() {
 
     Promise.all([count,alertList])
         .then(result =>  {io.emit('message', {type:'new-message', text: result[1]});
-        console.log(result[1])} )
+        } )
         .catch(err => console.log(err));
  });
 

@@ -11,18 +11,21 @@
       <table class="table">
         <thead>
           <tr class="cabecalho">
-            <th>Título 1</th>
-            <th>Título 2</th>
+            <th>Codigo</th>
+            <th>Tag</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Info 1</td>
-            <td>Info 1</td>
+        <tbody >
+          <tr *ngFor="let packing of packings">
+            <td>{{packing.code}}</td>
+            <td>{{packing.tag_mac}}</td>
           </tr>
         </tbody>
       </table>
     </div>
+  </div>
+  <div class="classVazio" *ngIf="packings?.length < 1">
+    Não existe embalagens nesse setor.
   </div>
 </div>
 
