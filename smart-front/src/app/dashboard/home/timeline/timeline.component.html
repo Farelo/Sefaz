@@ -13,6 +13,7 @@
 
 <!--(click)="open(embalagem) -->
 <p class="titulo">Timeline</p>
+<!-- <input [(ngModel)]="message" /><button (click)="sendMessage()">Click</button> -->
 <div class="panel-body info" *ngFor="let alert of alerts"
 [ngClass]="{
   'atrasado' : alert.status == '02',

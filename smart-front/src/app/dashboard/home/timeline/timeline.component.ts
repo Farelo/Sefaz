@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,OnDestroy } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertsService } from '../../../servicos/alerts.service';
 import { Alert } from '../../../shared/models/alert';
+import { ChatService }       from '../../../servicos/teste';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { Alert } from '../../../shared/models/alert';
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.css']
 })
-export class TimelineComponent implements OnInit {
+export class TimelineComponent implements OnInit,OnDestroy {
 
   // embalagens: any[];
   //   embalagem: any;
@@ -27,13 +28,26 @@ export class TimelineComponent implements OnInit {
   //   }
   // }
 
-  alerts: Alert[];
+  alerts;
   alert: Alert;
+  connection;
+  message;
 
   constructor(
       private AlertsService: AlertsService,
-      private modalService: NgbModal
+      private modalService: NgbModal,
+      private chatService: ChatService
   ) { }
+
+
+  ngOnDestroy() {
+    this.connection.unsubscribe();
+  }
+
+  sendMessage() {
+    this.chatService.sendMessage(this.message);
+    this.message = '';
+  }
 
   loadAlerts(){
     this.AlertsService.getAlertsPagination(10,1)
@@ -42,6 +56,15 @@ export class TimelineComponent implements OnInit {
       err => {
         console.log(err);
       });
+
+    this.connection = this.chatService.getMessages().subscribe(message => {
+
+      this.alerts = message;
+      this.alerts = this.alerts.text;
+
+    }
+
+    );
   }
 
   ngOnInit() {

@@ -27,7 +27,7 @@ export class ChatService {
       this.socket = io(this.url);
 
       this.socket.on('message', (data) => {
-
+        console.log(data);
         observer.next(data);
 
       });

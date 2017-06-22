@@ -5,6 +5,10 @@ var express  = require('express');
 const path = require('path');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var cron = require('node-cron');
+
+var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+
 // cria nossa aplicação Express
 // puxar informações por POST HTML (express4)
 var bodyParser = require('body-parser');
@@ -34,14 +38,24 @@ var config = {
 
 require('./job/job');
 
-
+var alert = mongoose.model('Alerts');
+var query = require('./api/helpers/queries/complex_queries_alerts');
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
-// let task = cron.schedule('*/10 * * * * *', function() {
-//     console.log("sEND menssage");
-//
-//  });
+let task = cron.schedule('*/10 * * * * *', function() {
+    console.log("sEND menssage");
+    var value = parseInt(1) > 0 ? ((parseInt(1) - 1) * parseInt(10)) : 0;
+    var alertList = alert.aggregate(query.queries.listAlerts)
+        .skip(value).limit(parseInt(10))
+        .sort({_id: 1});
+    var count = alert.find({}).count();
+
+    Promise.all([count,alertList])
+        .then(result =>  {io.emit('message', {type:'new-message', text: result[1]});
+        console.log(result[1])} )
+        .catch(err => console.log(err));
+ });
 
 io.on('connection', (socket) => {
   console.log('USER CONNECTED');
@@ -53,7 +67,8 @@ io.on('connection', (socket) => {
 
 
   socket.on('add-message', (message) => {
-     io.emit('message', {type:'new-message', text: "testeeeee"});
+
+
   });
 });
 SwaggerExpress.create(config, function(err, swaggerExpress) {
