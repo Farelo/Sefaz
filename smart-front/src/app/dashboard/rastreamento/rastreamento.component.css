@@ -64,6 +64,8 @@ ngui-map{
 }
 .pai {
 	width: 250px;
+	/*margin-right: -20px;*/
+	/*background-color: red;*/
 }
 
 .iw-title {
@@ -71,7 +73,7 @@ ngui-map{
 	font-size: 22px;
 	font-weight: 400;
 	color: black;
-	margin: 10px 0px 10px 0px;
+	margin: 0px 0px 10px 0px;
 	border-radius: 2px 2px 0 0;
 }
 #iw-container .iw-content {

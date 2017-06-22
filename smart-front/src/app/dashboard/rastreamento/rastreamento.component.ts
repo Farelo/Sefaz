@@ -74,11 +74,6 @@ export class RastreamentoComponent implements OnInit {
     this.loadDepartmentsByPlant();
   }
 
-  // open(numero) {
-  //   const modalRef = this.modalService.open(ModalRastComponent);
-  //   // modalRef.componentInstance.embalagem = packing;
-  //
-  // }
   open() {
     const modalRef = this.modalService.open(ModalRastComponent);
     modalRef.componentInstance.name = 'World';

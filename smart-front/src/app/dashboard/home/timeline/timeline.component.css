@@ -1,6 +1,6 @@
 * { font-family: 'Roboto', sans-serif; }
 .info {
-  padding: 10px 20px 10px 10px;
+  padding: 10px 4% 10px 10px;
   margin-bottom: 5px;
   background: white;
   box-shadow: 0px 0px 7px #000;
@@ -21,32 +21,72 @@
 
 .atrasado {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#db3a3a 97%,#db3a3a 97.5%,
-    #fff 97.5%,#fff 98%,#db3a3a 98%,#db3a3a 100%);
+    #fff 0%,#fff 97%,#7F1715 97%,#7F1715 97.5%,
+    #fff 97.5%,#fff 98%,#7F1715 98%,#7F1715 100%);
 }
 .ok {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#34d83e 97%,#34d83e 97.5%,
-    #fff 97.5%,#fff 98%,#34d83e 98%,#34d83e 100%);
+    #fff 0%,#fff 97%,#ee851f 97%,#ee851f 97.5%,
+    #fff 97.5%,#fff 98%,#ee851f 98%,#ee851f 100%);
 }
 .quase {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#d6d63c 97%,#d6d63c 97.5%,
-    #fff 97.5%,#fff 98%,#d6d63c 98%,#d6d63c 100%);
+    #fff 0%,#fff 97%,#FF5C58 97%,#FF5C58 97.5%,
+    #fff 97.5%,#fff 98%,#FF5C58 98%,#FF5C58 100%);
 }
 
 .atrasado:hover {
   background: linear-gradient(to right,
-    #d3d3d3 0%,#d3d3d3 97%,#db3a3a 97%,#db3a3a 97.5%,
-    #d3d3d3 97.5%,#d3d3d3 98%,#db3a3a 98%,#db3a3a 100%);
+    #d3d3d3 0%,#d3d3d3 97%,#7F1715 97%,#7F1715 97.5%,
+    #d3d3d3 97.5%,#d3d3d3 98%,#7F1715 98%,#7F1715 100%);
 }
 .ok:hover {
   background: linear-gradient(to right,
-    #d3d3d3 0%,#d3d3d3 97%,#34d83e 97%,#34d83e 97.5%,
-    #d3d3d3 97.5%,#d3d3d3 98%,#34d83e 98%,#34d83e 100%);
+    #d3d3d3 0%,#d3d3d3 97%,#ee851f 97%,#ee851f 97.5%,
+    #d3d3d3 97.5%,#d3d3d3 98%,#ee851f 98%,#ee851f 100%);
 }
 .quase:hover {
   background: linear-gradient(to right,
-    #d3d3d3 0%,#d3d3d3 97%,#d6d63c 97%,#d6d63c 97.5%,
-    #d3d3d3 97.5%,#d3d3d3 98%,#d6d63c 98%,#d6d63c 100%);
+    #d3d3d3 0%,#d3d3d3 97%,#FF5C58 97%,#FF5C58 97.5%,
+    #d3d3d3 97.5%,#d3d3d3 98%,#FF5C58 98%,#FF5C58 100%);
+}
+/*Amarelo de maysa d6d63c*/
+.esquerda{
+  float: left;
+}
+.direita {
+  float: right;
+  text-align: right;
+}
+.atrasado2 {
+  border-color: #7F1715;
+  border-radius: 12px;
+  border-style: solid;
+  border-width: medium;
+  background-color: transparent;
+  color: #7F1715;
+}
+.ok2 {
+  border-color: #ee851f;
+  border-radius: 12px;
+  border-style: solid;
+  border-width: medium;
+  background-color: transparent;
+  color: #ee851f;
+  }
+.quase2 {
+  border-color: #FF5C58;
+  border-radius: 12px;
+  border-style: solid;
+  border-width: medium;
+  background-color: transparent;
+  color: #FF5C58;
+}
+
+.atrasado2, .ok2, .quase2 {
+    font-weight: bold;
+}
+
+span {
+  font-weight: normal;
 }
