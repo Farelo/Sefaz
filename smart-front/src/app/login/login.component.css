@@ -47,12 +47,12 @@ input {
 }
 .inputMail {
   background: url("../../assets/images/mail.png") no-repeat left center;
-  background-size: contain;
+  background-size: 18px;
   text-decoration: none;
 }
 .inputSenha {
   background: url("../../assets/images/lock.png") no-repeat left center;
-  background-size: contain;
+  background-size: 18px;
   text-decoration: none;
 
 }
