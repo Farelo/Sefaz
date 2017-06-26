@@ -7,8 +7,8 @@ import { Supplier } from '../shared/models/supplier';
 export class SuppliersService {
 
   constructor(private http: Http) { }
-  private url = 'http://localhost:8984/api/';
- //private url = 'http://isi.pe.senai.br:8984/api/';
+  //private url = 'http://localhost:8984/api/';
+  private url = 'http://isi.pe.senai.br:8984/api/';
   getSuppliersPagination(limit: number, page: number): Observable<Supplier[]> {
     return this.http.get(this.url + 'supplier/list/pagination/' + limit + '/' + page)
       .map((res: Response) => res.json().suppliers)

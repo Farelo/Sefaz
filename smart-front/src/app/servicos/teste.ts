@@ -6,7 +6,7 @@ import * as io from 'socket.io-client';
 
 export class ChatService {
 
-  private url = 'http://localhost:8984';
+  private url = 'http://isi.pe.senai.br:8984';
 
   private socket;
 

@@ -22,6 +22,8 @@ function joinParams(body, dev, res) {
           body_friendly.push({'tag_mac': device.attributes.MAC});
       });
 
+      console.log(body);
+
       friendly_tag.create(body_friendly)
         .then(friendlies => tags.create(JoinFriendlyName(friendlies,body)))
         .then(success => res.json({code:200, message: "OK", response: success}))
@@ -38,7 +40,7 @@ exports.tags_create = function(req, res) {
     var devArray = [];
 
     req.body.forEach(o => devArray.push(getInfoScanner(o.code)));
-
+    console.log(req.body);
     Promise.all(devArray)
         .then(result => joinParams(req.body, result, res))
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));

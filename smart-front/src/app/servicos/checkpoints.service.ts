@@ -7,10 +7,8 @@ import { Checkpoint } from '../shared/models/checkpoint';
 export class CheckpointService {
 
   constructor(private http: Http) { }
-
-   private url = 'http://localhost:8984/api/';
-  //private url = 'http://isi.pe.senai.br:8984/api/';
-
+  //private url = 'http://localhost:8984/api/';
+  private url = 'http://isi.pe.senai.br:8984/api/';
 
   getCheckpointsPagination(limit: number, page: number): Observable<Checkpoint[]> {
     return this.http.get(this.url + 'checkpoint/list/pagination/' + limit + '/' + page)

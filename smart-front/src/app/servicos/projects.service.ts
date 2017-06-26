@@ -7,8 +7,8 @@ import { Project } from '../shared/models/project';
 export class ProjectService {
 
   constructor(private http: Http) { }
-  private url = 'http://localhost:8984/api/';
- //private url = 'http://isi.pe.senai.br:8984/api/';
+  //private url = 'http://localhost:8984/api/';
+  private url = 'http://isi.pe.senai.br:8984/api/';
 
   getProjectPagination(limit: number, page: number): Observable<Project[]> {
     return this.http.get(this.url + 'project/list/pagination/' + limit + '/' + page)

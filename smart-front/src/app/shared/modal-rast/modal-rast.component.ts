@@ -11,7 +11,7 @@ import { EmbalagensService } from '../../servicos/embalagens.service';
   styleUrls: ['./modal-rast.component.css']
 })
 export class ModalRastComponent implements OnInit {
-@Input() setor;
+@Input() packings;
 
   constructor(
     public activeModal: NgbActiveModal,

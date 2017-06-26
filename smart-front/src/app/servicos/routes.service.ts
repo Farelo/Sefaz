@@ -7,8 +7,8 @@ import { Route } from '../shared/models/route';
 export class RoutesService {
 
   constructor(private http: Http) { }
-  private url = 'http://localhost:8984/api/';
- //private url = 'http://isi.pe.senai.br:8984/api/';
+  //private url = 'http://localhost:8984/api/';
+  private url = 'http://isi.pe.senai.br:8984/api/';
 
   getRoutesPagination(limit: number, page: number): Observable<Route[]> {
     return this.http.get(this.url + 'route/list/pagination/' + limit + '/' + page)
