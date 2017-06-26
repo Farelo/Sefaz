@@ -11,6 +11,8 @@
 
 }
 .botao {
+  font-family: 'Roboto', sans-serif;
+
   text-align: center;
   padding: 20px 0px;
 }
@@ -22,5 +24,6 @@
 }
 p {
   font-size: 14px;
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Roboto', sans-serif;
+  /*font-family: 'Libre Baskerville', serif;*/
 }

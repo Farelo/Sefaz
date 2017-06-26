@@ -5,8 +5,6 @@
     </marker>
     <info-window id="iw" width="400" maxWidth="500">
       <div *ngIf="marker.display" class="pai">
-
-
         <div >
           <div class="iw-title">Planta: {{marker.plant}}</div>
 
@@ -23,24 +21,12 @@
                   <tr *ngFor="let dept of marker.departments">
                     <td>{{dept.name}}</td>
                     <td class="teste"><button (click)="open(dept._id)" type="button" name="button">Visualizar</button></td>
-                    <!-- <span class="glyphicon glyphicon-eye-open"></span> -->
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- <div class="iw-subTitle">Setor/Área Interna </div>
-          <div *ngFor="let dept of marker.departments">
-            <div class="row">
-              <div class="col-md-6">
-                <p>{{dept.name}}</p>
-              </div>
-              <div class="col-md-6">
-                <button type="button" name="button" (click)="getPackings(dept._id)">Visualizar</button>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </info-window>

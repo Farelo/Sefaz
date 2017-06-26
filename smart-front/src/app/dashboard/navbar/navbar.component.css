@@ -1,9 +1,10 @@
 body {
-	  font-family: sans-serif;
+	  font-family: 'Raleway', sans-serif;
 }
 
 * {
 	  box-sizing: border-box;
+		 font-family: 'Raleway', sans-serif;
 }
 
 nav {
@@ -29,6 +30,7 @@ nav {
 	  font-weight: 800;
 	  font-size: 29px;
 	  line-height: 40px;
+		font-weight: 900;
 }
 
 nav > ul {
