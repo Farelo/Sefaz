@@ -44,14 +44,14 @@ td {
 .infoData {
   font-size: 9px; color: grey; margin: 0px;
 }
-.atrasado {
-  background: radial-gradient(#db3a3a 5%, #db3a3a 45%, #fff 45%, #fff 62%, #db3a3a 62%);
+.perdido {
+  background: radial-gradient(#EF5562 5%, #EF5562 45%, #fff 45%, #fff 62%, #EF5562 62%);
 }
-.ok {
-  background: radial-gradient(#34d83e 5%, #34d83e 45%, #fff 45%, #fff 62%, #34d83e 62%);
+.parado {
+  background: radial-gradient(#5D8DD7 5%, #5D8DD7 45%, #fff 45%, #fff 62%, #5D8DD7 62%);
 }
-.quase {
-  background: radial-gradient(#d6d63c 5%, #d6d63c 45%, #fff 45%, #fff 62%, #d6d63c 62%);
+.incorreto {
+  background: radial-gradient(#a08dc2 5%, #a08dc2 45%, #fff 45%, #fff 62%, #a08dc2 62%);
 }
 span {
   cursor: pointer;

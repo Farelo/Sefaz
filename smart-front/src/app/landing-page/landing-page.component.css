@@ -1,4 +1,4 @@
-* { font-family: 'Roboto', sans-serif; }
+* { font-family: 'Montserrat', sans-serif; }
 
 .teste {
   background-image: url("../../assets/images/img-fundo2.png");
@@ -23,11 +23,8 @@
   background-color: rgba(0,0,0,.8);
 
 }
-
 .quadrado {
-  /*background-color: rgba(0,0,0,.8);*/
   display: inline-block;
-  text-align: -webkit-center;
   padding: 20px;
   position: absolute;
   top: 50%;
@@ -35,18 +32,28 @@
   transform: translate(-50%, -50%);
 }
 
-h1 {
+p {
+  text-align: -webkit-center;
   color: white;
-  font-weight: bold;
-  font-size: 40px;
-  margin-bottom: 15px;
+  font-weight: 900;
+  font-size: 30px;
+  margin-bottom: 50px;
   opacity: 0.9;
+
+}
+.titulo {
+  border-bottom-style: solid;
+  border-bottom-color: white;
+  border-bottom-width: thin;
 }
 h2 {
+  text-align: -webkit-center;
   color: white;
-  font-weight: lighter;
+  font-weight: 300;
   margin-bottom: 20px;
   opacity: 0.9;
+  margin: 0px;
+  padding: 20px 15px 0px 15px;
 }
 button {
   padding: 5px 40px;
@@ -57,6 +64,7 @@ button {
   color: white;
   border-color: #6382c9;
   font-size: 20px;
+  font-weight: 300;
 }
 button:hover {
   background-color: white;
@@ -67,10 +75,56 @@ button:hover {
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
 }
+.botao{
+  text-align: -webkit-center;
+  margin-top: 70px;
 
+}
 button:focus {
   outline: none !important;
   border-style: solid;
   border-color: white;
   border-radius: 20px;
+}
+.azul {
+  color: #6382c9;
+}
+.span1{
+  background: url("../../assets/images/bordas-02.png") no-repeat left center;
+  background-size: 18px;
+  text-decoration: none;
+  width: 18px;
+  height: 18px;
+  position: fixed;
+}
+.span2{
+  background: url("../../assets/images/bordas-01.png") no-repeat left center;
+  background-size: 18px;
+  text-decoration: none;
+  width: 18px;
+  height: 18px;
+  position: sticky;
+  text-align: right;
+  float: right;
+  bottom: 0px;
+}
+.span3 {
+  background: url("../../assets/images/bordas-04.png") no-repeat left center;
+  background-size: 18px;
+  text-decoration: none;
+  width: 18px;
+  height: 18px;
+  position: fixed;
+}
+
+.span4 {
+  background: url("../../assets/images/bordas-03.png") no-repeat left center;
+  background-size: 18px;
+  text-decoration: none;
+  width: 18px;
+  height: 18px;
+  position: sticky;
+  float: right;
+  bottom: 0px;
+  vertical-align: bottom;
 }

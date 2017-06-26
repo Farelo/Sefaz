@@ -25,9 +25,9 @@
         <td> {{inventory.quantity || 'Vazio'}} </td>
         <td > <!--(click)="open(inventory.code)"-->
           <span class="alerta" [ngClass]="{
-            'atrasado' : inventory.missing ,
-            'ok' : inventory.nothing ,
-            'quase' : inventory.problem
+            'perdido' : inventory.missing ,
+            'parado' : inventory.nothing ,
+            'incorreto' : inventory.problem
           }" (click)="open()"></span>
         </td>
       </tr>
