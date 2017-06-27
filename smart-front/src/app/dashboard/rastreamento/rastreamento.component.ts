@@ -4,7 +4,8 @@ import { DepartmentService } from '../../servicos/departments.service';
 import { Department } from '../../shared/models/department';
 import { ActivatedRoute } from '@angular/router';
 // import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';import { PackingService } from '../../servicos/packings.service';
+import { Router } from '@angular/router';
+import { PackingService } from '../../servicos/packings.service';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
 
 @Component({
@@ -12,7 +13,9 @@ import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component
   templateUrl: './rastreamento.component.html',
   styleUrls: ['./rastreamento.component.css']
 })
+
 export class RastreamentoComponent implements OnInit {
+
   autocomplete: any;
   address: any = {};
   center: any;

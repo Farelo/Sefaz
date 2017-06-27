@@ -6,7 +6,7 @@
     <info-window id="iw" width="400" maxWidth="500">
       <div *ngIf="marker.display" class="pai">
         <div >
-          <div class="iw-title">Planta: {{marker.plant}}</div>
+          <div class="iw-title">PLANTA: {{marker.plant}}</div>
 
           <div>
             <div class="table-responsive tabela">
@@ -20,7 +20,11 @@
                 <tbody>
                   <tr *ngFor="let dept of marker.departments">
                     <td>{{dept.name}}</td>
-                    <td class="teste"><button (click)="open(dept._id)" type="button" name="button">Visualizar</button></td>
+                    <td class="teste2"><button (click)="open(dept._id)" type="button" name="button">Visualizar</button></td>
+                  </tr>
+                  <tr *ngFor="let dept of marker.departments">
+                    <td>{{dept.name}}</td>
+                    <td class="teste2"><button (click)="open(dept._id)" type="button" name="button">Visualizar</button></td>
                   </tr>
                 </tbody>
               </table>

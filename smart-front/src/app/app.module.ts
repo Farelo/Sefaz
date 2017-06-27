@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import * as $ from 'jquery';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
