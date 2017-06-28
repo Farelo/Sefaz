@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Alert } from '../../shared/models/alert';
 import { Subscription } from 'rxjs/Rx';
+declare var $:any;
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
+      $('.edit').css({'background-color':'red'});
+    
   }
-
+  funcaoTop(){
+    $('.edit').css({'background-color':'red'});
+  }
 }
