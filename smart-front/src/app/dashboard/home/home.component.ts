@@ -24,10 +24,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-      $('.edit').css({'background-color':'red'});
-    
+      // $('.edit').css({'background-color':'red'});
+
   }
-  funcaoTop(){
-    $('.edit').css({'background-color':'red'});
-  }
+  // funcaoTop(){
+  //   $('.edit').css({'background-color':'red'});
+  // }
 }
