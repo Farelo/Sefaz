@@ -31,36 +31,12 @@ import { TagsCadastrarComponent } from './cadastros/tags/tags-cadastrar/tags-cad
 const dashboardRoutes = [
   {path: 'rc', component: DashboardComponent, children: [
     {path: '', redirectTo: '/rc/home', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent, children: [
-       {path: '', component: TimelineComponent},
-       {path: ':hashing/:status', component: ListaComponent}
-    ]},
-     {path: 'cadastros', component: CadastrosComponent, children: [
-      {path: '', redirectTo: '/rc/cadastros/tags', pathMatch: 'full'},
-      {path: 'tags', component: TagsComponent},
-      {path: 'tags/cadastrar', component: TagsCadastrarComponent},
-      {path: 'scanner', component: ScannerComponent},
-      {path: 'scanner/cadastrar', component: ScannerCadastrarComponent},
-      {path: 'embalagem', component: EmbalagemComponent},
-      {path: 'embalagem/cadastrar', component: EmbalagemCadastroComponent},
-      {path: 'setor', component: SetorComponent},
-      {path: 'setor/cadastrar', component: SetorCadastrarComponent},
-      {path: 'fornecedor', component: FornecedorComponent},
-      {path: 'fornecedor/cadastrar', component: FornecedorCadastrarComponent},
-      {path: 'plataforma', component: PlataformaComponent},
-      {path: 'plataforma/cadastrar', component: PlataformaCadastrarComponent},
-      {path: 'rotas', component: RotasComponent},
-      {path: 'rotas/cadastrar', component: RotasCadastrarComponent},
-      {path: 'planta', component: PlantaComponent},
-      {path: 'planta/cadastrar', component: PlantaCadastrarComponent},
-    ]
-
-},
+    {path: 'home', component: HomeComponent},
+    {path: 'cadastros', component: CadastrosComponent},
     {path: 'inventario', component: InventarioComponent},
     {path: 'importar', component: ImportarComponent},
     {path: 'rastreamento', component: RastreamentoComponent},
-  ]
-  }
+  ]}
 ];
 
 @NgModule({

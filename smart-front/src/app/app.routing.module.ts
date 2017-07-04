@@ -7,9 +7,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 const appRoutes: Routes = [
 
-  { path: '', component: LandingPageComponent },
+
+  { path: 'rc', component: DashboardComponent },
+  // { path: 'rc', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
   { path: 'login', component: LoginComponent },
-  { path: 'rc', component: DashboardComponent }
+  { path: '', component: LandingPageComponent },
+  { path: '**', redirectTo: ''},
+
 
 ];
 
