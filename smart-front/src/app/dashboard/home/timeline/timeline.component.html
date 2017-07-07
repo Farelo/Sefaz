@@ -1,45 +1,66 @@
-<!-- <div class="panel-body info" *ngFor="let embalagem of embalagens"
-[ngClass]="{
-  'atrasado' : embalagem.status == 'atrasado',
-  'ok' : embalagem.status == 'ok',
-  'quase' : embalagem.status == 'quase'
-}"
-[routerLink]=[embalagem.id]
->
-{{embalagem.nome}}
-<p class="infoData">{{embalagem.ultimaAtualizacao}}</p>
-</div>
-<router-outlet></router-outlet> -->
+<!-- {{altura}}
+{{largura}}
+{{telaGrande}}
+{{config.placement}} -->
+<div class="header">
+  Timeline
 
-<!--(click)="open(embalagem) -->
-<p class="titulo">Timeline</p>
-<!-- <input [(ngModel)]="message" /><button (click)="sendMessage()">Click</button> -->
+  <button (click)="open(content)">abremodal</button>
+
+<button type="button" class="interrogacao1"
+    [ngbPopover]= 'popContent' triggers = 'hover'
+    placement="left"
+    *ngIf="telaGrande == false"
+    >
+</button>
+<button type="button" class="interrogacao2"
+    [ngbPopover]= 'popContent'placement="bottom"
+    *ngIf="telaGrande == true" triggers = 'hover'
+    >
+</button>
+
+  <ng-template #popContent>
+    <p class="tit1">Alertas e seus significados</p>
+    <span class="lgperdido">OBJETO PERDIDO</span><br />
+    <span class="lgatrasado">OBJETO ATRASADO</span><br />
+    <span class="lgincorreto">OBJETO INCORRETO</span>
+    <span class="lgperdido">OBJETO PERDIDO</span><br />
+    <span class="lgatrasado">OBJETO ATRASADO</span><br />
+    <span class="lgincorreto">OBJETO INCORRETO</span>
+  </ng-template>
+
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  Alertas e seus significados
+  <span class="lgperdido">OBJETO PERDIDO</span><br />
+  <span class="lgatrasado">OBJETO ATRASADO</span><br />
+  <span class="lgincorreto">OBJETO INCORRETO</span>
+  <span class="lgperdido">OBJETO PERDIDO</span><br />
+  <span class="lgatrasado">OBJETO ATRASADO</span><br />
+  <span class="lgincorreto">OBJETO INCORRETO</span>
+</ng-template>
+
 <div class="panel-body info" *ngFor="let alert of alerts"
-[ngClass]="{
-  'perdido' : alert.status == '02',
-  'parado' : alert.status == '03',
-  'incorreto' : alert.status == '01'
-}"
-[routerLink]=[alert._id.hash,alert.status]
->
-<div class="esquerda">
-<h4>{{alert.packing.code}}</h4>
-<p class="infoData">{{alert.packing.type}}</p>
-</div>
-<!-- <p class="infoData">{{alert.quantity}}</p> -->
-<!-- <p class="infoData">{{alert.supplier.name}}</p> -->
-<div class="direita">
-
-
-<h3><span [ngClass]="{
-  'perdido2' : alert.status == '02',
-  'parado2' : alert.status == '03',
-  'incorreto2' : alert.status == '01'
-}" class="badge">
-{{alert.quantity}}</span></h3>
-
-<h3><span class="badge badge-default">
-{{alert.supplier.name}}</span></h3>
-</div>
+  [ngClass]="{
+    'perdido' : alert.status == '02',
+    'parado' : alert.status == '03',
+    'incorreto' : alert.status == '01'
+  }"
+  [routerLink]=[alert._id.hash,alert.status]
+  >
+  <div class="esquerda">
+    <h4>{{alert.packing.code}}</h4>
+    <p class="infoData">{{alert.packing.type}}</p>
+  </div>
+  <div class="direita">
+    <h3><span [ngClass]="{
+      'perdido2' : alert.status == '02',
+      'parado2' : alert.status == '03',
+      'incorreto2' : alert.status == '01'
+    }" class="badge">
+    {{alert.quantity}}</span></h3>
+    <h3><span class="badge badge-default"> {{alert.supplier.name}}</span></h3>
+  </div>
 </div>
 <router-outlet></router-outlet>

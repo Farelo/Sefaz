@@ -1,0 +1,27 @@
+<div class="teste">
+  <div class="row">
+    <div class="col-sm-10 col-md-8 col-lg-4 quadrado">
+      <!-- <img [src]="'../../assets/images/img-fundo.png'" alt=""> -->
+      <h1>RECICLAPAC</h1>
+      <!-- <div class="col-sm-12 col-md-10 col-lg-8"> -->
+
+
+      <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+
+      <div class="wrapper form-group ">
+        <p class="titulo">Esqueceu sua senha?</p>
+        <p>Não se preocupe, enviaremos um link para que possa redefinir sua senha.</p>
+        <input class="inputSenha" type="email" placeholder="senha" aria-describedby="basic-addon2">
+          <p class="emailNaoCadastrado">E-mail inválido</p>
+          <p class="emailNaoCadastrado">Este e-mail não está cadastrado</p>
+      </div>
+      <div class="divBotao">
+
+
+      <button routerLink="/rc" type="submit">ENTRAR</button>
+      </div>
+    </form>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

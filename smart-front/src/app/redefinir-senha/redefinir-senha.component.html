@@ -1,0 +1,32 @@
+<div class="teste">
+  <div class="row">
+    <div class="col-sm-10 col-md-8 col-lg-4 quadrado">
+      <h1>RECICLAPAC</h1>
+
+      <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <div class="wrapper form-group ">
+        <p class="titulo">Redefinir senha</p>
+        {{novaSenha}}
+        <p>A nova senha deve conter mais de 6 caracteres,
+          letras, números, letras maiúsculas e caracteres especiais.</p>
+        <input class="inputSenha" type="password" id="password" placeholder="senha"
+        aria-describedby="basic-addon2" name="novaSenha" (input)="calcular()"
+        [(ngModel)]="usuario.senha"
+        [ngClass]="{
+          'week' : senhaFraca == 'true',
+          'medium' : senhaModerada == 'true',
+          'strong' : senhForte == 'true'
+        }"
+        >
+          <p class="senhaFraca" *ngIf="senhaFraca">Senha fraca</p>
+          <p class="senhaModerada" *ngIf="senhaModerada">Senha moderada</p>
+          <p class="senhaForte" *ngIf="senhaForte">Senha forte</p>
+      </div>
+      <div class="divBotao">
+        <button routerLink="/rc" type="submit">Confirmar</button>
+      </div>
+    </form>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

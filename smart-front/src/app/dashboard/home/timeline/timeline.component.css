@@ -5,18 +5,70 @@
   background: white;
   box-shadow: 0px 0px 7px #000;
 }
-.titulo {
-  color: white;
-  font-size: 20px;
+.header {
   margin-bottom: 25px;
   padding-bottom: 19px;
-  border-bottom-color: lighgrey;
+  border-bottom-color: #fff;
   border-width: thin;
   border-bottom-style: solid;
+  margin-bottom: 25px;
+  color: white;
+  font-size: 20px;
   font-family: 'Raleway', sans-serif;
-
+  vertical-align: middle;
 }
-
+.tit1 {
+    color: black;
+}
+.tit1, .lgperdido, .lgincorreto, .lgatrasado {
+  font-size: 12px;
+  /*width: 150px;*/
+  display: inline-block;
+  text-align: center;
+}
+.lgperdido, .lgincorreto, .lgatrasado {
+  color: white;
+  padding: 5px;
+  margin-bottom: 5px;
+  width: 150px !important;
+}
+.lgperdido {
+  background-color: #EF5562;
+}
+.lgincorreto {
+  background-color: #a08dc2;
+}
+.lgatrasado {
+  background-color: #5D8DD7;
+}
+.interrogacao1{
+  background-color: transparent;
+  border: none;
+  text-align: right;
+  float: right;
+  background-image: url("../../../../assets/images/interrogacao.png");
+  background-size: 20px;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  vertical-align: baseline;
+}
+.interrogacao2{
+  background-color: transparent;
+  border: none;
+  text-align: right;
+  float: right;
+  background-image: url("../../../../assets/images/interrogacao.png");
+  background-size: 20px;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  vertical-align: baseline;
+}
+.button:focus {
+  border: none!important;
+  outline: none!important;
+}
 .infoData {
   font-size: 9px; color: grey; margin: 0px;
 }

@@ -28,6 +28,9 @@ import { ChatService } from './servicos/teste';
 
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
+import { EsqueciMinhaSenhaComponent } from './esqueci-minha-senha/esqueci-minha-senha.component';
+import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.component';
+import { ModalLegComponent } from './shared/modal-leg/modal-leg.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { AppRoutingModule } from './app.routing.module';
     ModalComponent,
     PositionModalComponent,
     ModalRastComponent,
-    MissingModalComponent
+    MissingModalComponent,
+    EsqueciMinhaSenhaComponent,
+    RedefinirSenhaComponent,
+    ModalLegComponent
   ],
   imports: [
     BrowserModule,

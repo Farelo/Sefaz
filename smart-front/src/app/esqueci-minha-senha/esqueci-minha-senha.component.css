@@ -15,18 +15,22 @@
 .quadrado {
   background-color: rgba(0,0,0,.8);
   display: inline-block;
-  text-align: -webkit-center;
+  /*text-align: -webkit-center;*/
   padding: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.divBotao {
+  text-align: center;
+}
 
 h1 {
   color: white;
   font-weight: bold;
   /*margin-bottom: 20px;*/
+  text-align: center;
   opacity: 0.9;
 }
 input {
@@ -42,38 +46,22 @@ input {
   background-size: contain;
   text-decoration: none;
   color: white;
-  margin-left: 10px;
 }
-/*.inputMail {
-  margin-bottom: 25px;
-}*/
-.spanMail {
-  /*background: url("../../assets/images/mail.png") no-repeat left center;*/
-  max-width: 17px;
-  max-height: 13.48px;
-  width: auto;
-  height: auto;
-  text-decoration: none;
-  margin-top: 11px;
-}
-.spanLock {
-    max-width: 17px;
-    max-height: 20.54px;
-    width: auto;
-    height: auto;
-    margin-top: 4px;
-}
-.spanMail, .spanLock {
 
-}
 .wrapper {
-  display: inline-flex;
   margin-top: 25px;
+}
+@media (min-width: 1080px) {
+  .wrapper {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 }
 .inputSenha {
   /*background: url("../../assets/images/lock.png") no-repeat left center;*/
   background-size: 18px;
   text-decoration: none;
+  text-align: left;
 }
 input:focus {
   outline: none !important;
@@ -100,20 +88,10 @@ input:focus {
 p {
   color: white;
   text-align: left;
-  margin-left: 10px;
+  font-weight: lighter;
 }
 .esqueci {
   margin-top: 25px;
-}
-.esqueci:hover{
-  color: #4577d8;
-  cursor: pointer;
-}
-.esqueci:focus {
-    outline: none !important;
-    border-style: none;
-    /*border-color: white;
-    border-radius: 20px;*/
 }
 button {
   padding: 5px 40px;
@@ -124,6 +102,8 @@ button {
   border-width: medium;
   border-color: white;
   opacity: 0.7;
+  text-align: center;
+  margin-top: 25px;
 }
 button:hover {
   background-color: white;
@@ -135,23 +115,15 @@ button:hover {
   -webkit-transition: color 0.5s;
   transition: color 0.5s;
 }
-
-span {
-  background-image: url("../../assets/images/lock.png");
-}
 .ng-invalid.ng-touched:not(form) {
-  outline: none !important;
-  border-style: solid;
-  border-bottom-color: #D24444;
-  border-bottom-width: 1.5px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  box-shadow: none;
+  border: 1px solid red;
 }
-.senhaIncorreta2, .emailObrigatorio, .emailIncorreto, .emailNaoCadastrado,.senhaObrigatoria {
+.emailNaoCadastrado {
   color: #d24444;
   font-size: 13px;
+}
+.titulo {
+  font-weight: bold;
 }
 
 ::-webkit-input-placeholder {  color: #FAFAFB; opacity: 0.5 }
