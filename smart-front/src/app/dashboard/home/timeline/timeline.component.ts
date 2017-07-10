@@ -1,12 +1,17 @@
-import { Component, OnInit, Input,OnDestroy, NgZone, ComponentRef } from '@angular/core';
+import { Component, OnInit, Input,OnDestroy, NgZone, ComponentRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AlertsService } from '../../../servicos/alerts.service';
 import { Alert } from '../../../shared/models/alert';
 import { ChatService }       from '../../../servicos/teste';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ModalLegComponent } from '../../../shared/modal-leg/modal-leg.component';
+// import { ModalLegComponent } from '../../../shared/modal-leg/modal-leg.component';
+// import { ModalDirective } from 'ngx-bootstrap/modal';
 // import { HttpModule, JsonpModule } from '@angular/http';
 // import { Http, Response }          from '@angular/http';
+import { ModalModule } from 'ngx-bootstrap/modal'
+import { ModalDirective } from 'ngx-bootstrap/modal';
+declare var $:any;
+
 
 
 @Component({
@@ -16,6 +21,21 @@ import { ModalLegComponent } from '../../../shared/modal-leg/modal-leg.component
   providers: [NgbPopoverConfig]
 })
 export class TimelineComponent implements OnInit,OnDestroy {
+
+  @ViewChild('autoShownModal') public autoShownModal:ModalDirective;
+  public isModalShown:boolean = false;
+
+  public showModal():void {
+    this.isModalShown = true;
+  }
+
+  public hideModal():void {
+    this.autoShownModal.hide();
+  }
+
+  public onHidden():void {
+    this.isModalShown = false;
+  }
 
 
   alerts;
@@ -27,13 +47,15 @@ export class TimelineComponent implements OnInit,OnDestroy {
   largura: any;
   private aparecer: boolean = false;
   closeResult: string;
+  verModal: boolean = true;
 
   constructor(
       private AlertsService: AlertsService,
       private modalService: NgbModal,
       private chatService: ChatService,
       private config: NgbPopoverConfig,
-      private ngZone:NgZone
+      private ngZone:NgZone,
+      private modalTop: ModalModule
   ) {
     window.onresize = (e) => {
         ngZone.run(() => {
@@ -85,18 +107,16 @@ export class TimelineComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
       this.loadAlerts();
+      this.showModal();
       // this.modalService.open(ChildComponent);
+      // var conteudoL = $('#content');
+      // this.open(conteudoL);
+      //  document.getElementById("staticModal").show();
+
+
   }
   open(content) {
     this.modalService.open(content);
   }
+
 }
-
-@Component({
-selector: 'legendas',
-template: `
-<button>Estou num celular</button>
-`
-})
-
-export class ChildComponent {}

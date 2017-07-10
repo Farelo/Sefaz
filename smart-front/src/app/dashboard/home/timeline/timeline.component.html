@@ -5,17 +5,54 @@
 <div class="header">
   Timeline
 
-  <button (click)="open(content)">abremodal</button>
+  <!-- <button class="abre"(click)="open(content)">abremodal</button> -->
+  {{verModal}}
+
+  <!-- <button type="button" class="btn btn-primary" (click)="showModal()">Render auto-shown modal</button> -->
+  <div *ngIf="isModalShown && verModal" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modalFilho">
+        <p>Alertas e seus significados</p>
+        <span class="lgperdido">OBJETO PERDIDO</span><br />
+        <span class="lgatrasado">OBJETO ATRASADO</span><br />
+        <span class="lgincorreto">OBJETO INCORRETO</span><br />
+        <span class="lgperdido">OBJETO PERDIDO</span><br />
+        <span class="lgatrasado">OBJETO ATRASADO</span><br />
+        <span class="lgincorreto">OBJETO INCORRETO</span><br />
+        <input id="opcao" class="inputOp" type="checkbox"/> <label>Não ver mais isso</label><br />
+      <!-- <button class="botaoOk"(click)="d('Cross click')">Ok</button> -->
+      <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()" (click)="verModal='false'">
+        <span aria-hidden="true">&times;</span>
+      </button>
+        <!-- <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button> -->
+
+
+        </div>
+        <!-- <div class="modal-header">
+          <h4 class="modal-title pull-left">Auto shown modal</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>I am a modal that is shown right after initialization!</p>
+          <p>I wasn't present in DOM until you clicked the button</p>
+          <p>When you close me, I'll be removed from the DOM</p>
+        </div> -->
+      </div>
+    </div>
+  </div>
 
 <button type="button" class="interrogacao1"
-    [ngbPopover]= 'popContent' triggers = 'hover'
+    [ngbPopover]= 'popContent'
     placement="left"
-    *ngIf="telaGrande == false"
+    *ngIf="telaGrande == false" triggers='hover'
     >
 </button>
 <button type="button" class="interrogacao2"
     [ngbPopover]= 'popContent'placement="bottom"
-    *ngIf="telaGrande == true" triggers = 'hover'
+    *ngIf="telaGrande == true" triggers='hover'
     >
 </button>
 
@@ -32,13 +69,21 @@
 </div>
 
 <ng-template #content let-c="close" let-d="dismiss">
-  Alertas e seus significados
+  <div class="modalFilho">
+
+  <p>Alertas e seus significados</p>
   <span class="lgperdido">OBJETO PERDIDO</span><br />
   <span class="lgatrasado">OBJETO ATRASADO</span><br />
-  <span class="lgincorreto">OBJETO INCORRETO</span>
+  <span class="lgincorreto">OBJETO INCORRETO</span><br />
   <span class="lgperdido">OBJETO PERDIDO</span><br />
   <span class="lgatrasado">OBJETO ATRASADO</span><br />
-  <span class="lgincorreto">OBJETO INCORRETO</span>
+  <span class="lgincorreto">OBJETO INCORRETO</span><br />
+  <input id="opcao" class="inputOp" type="checkbox"/> <label>Não ver mais isso</label><br />
+<button class="botaoOk"(click)="d('Cross click')">Ok</button>
+  <!-- <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button> -->
+
+
+  </div>
 </ng-template>
 
 <div class="panel-body info" *ngFor="let alert of alerts"

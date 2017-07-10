@@ -21,7 +21,7 @@ body  {
   width: 100%;
   height: 100vh;
 }
-.interrogacao1, .interrogação2 {
+.interrogacao1 , .interrogacao2 {
   border: none!important;
   outline: none!important;
 }
@@ -42,8 +42,42 @@ body  {
  }
  .popover-left {
    top: -10px!important;
+
  }
+  .popover-left, .popover-bottom {
+  border-radius: inherit;
+  }
 .popover.popover-left::before, .popover.bs-tether-element-attached-right::before {
   top: 15px!important;
 }
 .popover.popover-left::after, .popover.bs-tether-element-attached-right::after {top: 15px !important}
+
+.modal-content {
+  border-radius: 0rem!important;
+  background-color: transparent;
+  border-style: solid;
+  border-color: lightgrey;
+  border-width: thin;
+  padding: 5px;
+  width: 250px;
+  margin: auto;
+  margin-top: 100px;
+
+}
+.modal-dialog {
+  margin-top: 30px!important;
+}
+@media (max-width: 500px) {
+  .modal-content {
+    /*margin-left: 125px;*/
+    /*margin-left: 0px;*/
+  }
+}
+.modalFilho {
+  background-color: white;
+  padding: 15px;
+  text-align: center;
+}
+.modal {
+  background-color: rgba(0,0,0,0.6);
+}
