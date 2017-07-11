@@ -6,7 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./esqueci-minha-senha.component.css']
 })
 export class EsqueciMinhaSenhaComponent implements OnInit {
-
+  usuario: any = {
+    email: null,
+    senha: null
+  };
   constructor() { }
 
   ngOnInit() {

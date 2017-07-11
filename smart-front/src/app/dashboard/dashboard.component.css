@@ -62,3 +62,50 @@
     margin-right: 450px;
   }
 }
+span {
+  font-weight: normal;
+}
+label {
+  font-weight: normal;
+  color: black;
+  font-size: 12px;
+}
+.botaoOk{
+  padding: 3px 15px;
+  background-color: #777;
+  color: white;
+  border: none;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  font-size: 14px;
+}
+.botaoOk:hover {
+  color: white;
+  background-color: #555;
+}
+.modalFilho p {
+  color: black;
+  font-size: 15px;
+}
+.tit1, .lgperdido, .lgincorreto, .lgatrasado {
+  font-size: 12px;
+  /*width: 150px;*/
+  display: inline-block;
+  text-align: center;
+}
+.lgperdido, .lgincorreto, .lgatrasado {
+  color: white;
+  padding: 5px;
+  margin-bottom: 5px;
+  width: 150px !important;
+  text-align: center;
+}
+.lgperdido {
+  background-color: #EF5562;
+}
+.lgincorreto {
+  background-color: #a08dc2;
+}
+.lgatrasado {
+  background-color: #5D8DD7;
+}

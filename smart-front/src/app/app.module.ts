@@ -26,15 +26,11 @@ import { TagsService } from './servicos/tags.service';
 import { CheckpointService } from './servicos/checkpoints.service';
 import { ProjectService } from './servicos/projects.service';
 import { ChatService } from './servicos/teste';
-// import { AlertModule } from 'ngx-bootstrap';
-// import { ModalModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
 import { EsqueciMinhaSenhaComponent } from './esqueci-minha-senha/esqueci-minha-senha.component';
 import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.component';
-import { ModalLegComponent } from './shared/modal-leg/modal-leg.component';
-// import * as NG2Bootstrap from 'ng2-bootstrap';
 
 @NgModule({
   declarations: [
@@ -46,8 +42,7 @@ import { ModalLegComponent } from './shared/modal-leg/modal-leg.component';
     ModalRastComponent,
     MissingModalComponent,
     EsqueciMinhaSenhaComponent,
-    RedefinirSenhaComponent,
-    ModalLegComponent
+    RedefinirSenhaComponent
   ],
   imports: [
     BrowserModule,
@@ -55,9 +50,6 @@ import { ModalLegComponent } from './shared/modal-leg/modal-leg.component';
     HttpModule,
     NgbModule.forRoot(),
     DashboardModule,
-  //   AlertModule.forRoot(),
-  //   NG2Bootstrap.AlertModule,
-  // NG2Bootstrap.ModalModule,
     AppRoutingModule
   ],
   providers: [

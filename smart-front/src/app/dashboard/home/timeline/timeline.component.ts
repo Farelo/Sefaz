@@ -4,15 +4,9 @@ import { AlertsService } from '../../../servicos/alerts.service';
 import { Alert } from '../../../shared/models/alert';
 import { ChatService }       from '../../../servicos/teste';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-// import { ModalLegComponent } from '../../../shared/modal-leg/modal-leg.component';
-// import { ModalDirective } from 'ngx-bootstrap/modal';
-// import { HttpModule, JsonpModule } from '@angular/http';
-// import { Http, Response }          from '@angular/http';
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { ModalDirective } from 'ngx-bootstrap/modal';
 declare var $:any;
-
-
 
 @Component({
   selector: 'timeline',
@@ -94,26 +88,15 @@ export class TimelineComponent implements OnInit,OnDestroy {
       err => {
         console.log(err);
       });
-
     this.connection = this.chatService.getMessages().subscribe(message => {
-
       this.alerts = message;
       this.alerts = this.alerts.text;
-
-    }
-
-    );
+    });
   }
 
   ngOnInit() {
       this.loadAlerts();
       this.showModal();
-      // this.modalService.open(ChildComponent);
-      // var conteudoL = $('#content');
-      // this.open(conteudoL);
-      //  document.getElementById("staticModal").show();
-
-
   }
   open(content) {
     this.modalService.open(content);

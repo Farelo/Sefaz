@@ -11,25 +11,20 @@
   margin: 0px;
   padding: 0px;
 }
-
 .quadrado {
   background-color: rgba(0,0,0,.8);
   display: inline-block;
-  /*text-align: -webkit-center;*/
   padding: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.divBotao {
-  text-align: center;
-}
+.divBotao { text-align: center; }
 
 h1 {
   color: white;
   font-weight: bold;
-  /*margin-bottom: 20px;*/
   text-align: center;
   opacity: 0.9;
 }
@@ -48,9 +43,8 @@ input {
   color: white;
 }
 
-.wrapper {
-  margin-top: 25px;
-}
+.wrapper { margin-top: 25px; }
+
 @media (min-width: 1080px) {
   .wrapper {
     margin-left: 20px;
@@ -58,7 +52,6 @@ input {
   }
 }
 .inputSenha {
-  /*background: url("../../assets/images/lock.png") no-repeat left center;*/
   background-size: 18px;
   text-decoration: none;
   text-align: left;
@@ -86,14 +79,17 @@ input:focus {
 .senhaFraca {
   font-size: 13px;
   color: #D24444;
+  display: none;
 }
 .senhaModerada {
   font-size: 13px;
   color: #C6AE22;
+  display: none;
 }
 .senhaForte {
   font-size: 13px;
   color: #3Ad83E;
+  display: none;
 }
 p {
   color: white;
@@ -142,25 +138,6 @@ button:hover {
 :-moz-placeholder {  color: #FAFAFB;opacity: 0.8}
 /**************fffffffffffffffffff***********/
 
-
-/*input:focus ~ label, input:valid ~ label{
-    top:-10px;
-    font-size: 14px;
-    color:#9b59b6;
-    font-weight: bold;
-}*/
-/*.bar{
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 4px;
-    width:0;
-    border:1px;
-    background-color: #9b59b6;
-    transition: all .4s;
-    -webkit-transition: all .4s;
-    -moz-transition: all .4s;
-}*/
 .weak, .medium, .strong {
   outline: none !important;
   border-style: solid;
@@ -170,16 +147,10 @@ button:hover {
   border-right: none;
   box-shadow: none;
 }
-.weak{
-  border-bottom-color: #D24444;
-
-}
-.medium{
-  border-bottom-color: #C6AE22;
-}
-.strong{
-  border-bottom-color: #3Ad83E;
-}
+.weak { border-bottom-color: #D24444;}
+.medium { border-bottom-color: #C6AE22; }
+.strong { border-bottom-color: #3Ad83E; }
+.lalala { color: blue}
 
 input:focus ~ .bar,input:valid ~ .bar{
     width:100%;

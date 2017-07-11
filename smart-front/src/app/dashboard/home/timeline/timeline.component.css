@@ -107,7 +107,6 @@
     #e0e0e0 97.5%,#e0e0e0 98%,#5D8DD7 98%,#5D8DD7 100%);
 }
 
-/*Amarelo de maysa d6d63c*/
 .esquerda{
   float: left;
 }
@@ -153,12 +152,13 @@ label {
   font-size: 12px;
 }
 .botaoOk{
-  padding: 5px 15px;
+  padding: 3px 15px;
   background-color: #777;
   color: white;
   border: none;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
+  font-size: 14px;
 }
 .botaoOk:hover {
   color: white;

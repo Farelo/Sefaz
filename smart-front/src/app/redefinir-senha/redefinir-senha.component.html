@@ -9,18 +9,23 @@
         {{novaSenha}}
         <p>A nova senha deve conter mais de 6 caracteres,
           letras, números, letras maiúsculas e caracteres especiais.</p>
+          {{senhaFraca}}
+          {{senhaModerada}}
+          {{senhaForte}}
+          <h3   [ngClass]="{
+              'lalala' : senhaFraca == true,
+              'medium' : senhaModerada == true,
+              'strong' : senhForte == true
+            }"
+            >lalala</h3>
         <input class="inputSenha" type="password" id="password" placeholder="senha"
         aria-describedby="basic-addon2" name="novaSenha" (input)="calcular()"
         [(ngModel)]="usuario.senha"
-        [ngClass]="{
-          'week' : senhaFraca == 'true',
-          'medium' : senhaModerada == 'true',
-          'strong' : senhForte == 'true'
-        }"
+
         >
-          <p class="senhaFraca" *ngIf="senhaFraca">Senha fraca</p>
-          <p class="senhaModerada" *ngIf="senhaModerada">Senha moderada</p>
-          <p class="senhaForte" *ngIf="senhaForte">Senha forte</p>
+          <p class="senhaFraca" >Senha fraca</p>
+          <p class="senhaModerada" >Senha moderada</p>
+          <p class="senhaForte" >Senha forte</p>
       </div>
       <div class="divBotao">
         <button routerLink="/rc" type="submit">Confirmar</button>

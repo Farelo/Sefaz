@@ -59,25 +59,23 @@ body  {
   border-color: lightgrey;
   border-width: thin;
   padding: 5px;
-  width: 250px;
+
   margin: auto;
   margin-top: 100px;
-
+}
+.modalPequeno {
+  width: 250px;
 }
 .modal-dialog {
   margin-top: 30px!important;
 }
-@media (max-width: 500px) {
-  .modal-content {
-    /*margin-left: 125px;*/
-    /*margin-left: 0px;*/
-  }
-}
 .modalFilho {
   background-color: white;
   padding: 15px;
+}
+.modalFilhoLeg {
   text-align: center;
 }
-.modal {
+.modalTop2 {
   background-color: rgba(0,0,0,0.6);
 }

@@ -11,7 +11,20 @@
       <div class="wrapper form-group ">
         <p class="titulo">Esqueceu sua senha?</p>
         <p>Não se preocupe, enviaremos um link para que possa redefinir sua senha.</p>
-        <input class="inputSenha" type="email" placeholder="senha" aria-describedby="basic-addon2">
+
+        <!-- <label>Username</label>
+           <input type="text" name="username" [ngModel]="usuario.senha"
+             required minlength="5" maxlength="8" #username="ngModel">
+           <small [hidden]="username.valid || (username.pristine &&
+             !f.submitted)">
+             Username is required (minimum 5 characters).
+           </small> -->
+
+        <input class="inputSenha"
+                type="email"
+                placeholder="senha"
+                aria-describedby="basic-addon2"
+        >
           <p class="emailNaoCadastrado">E-mail inválido</p>
           <p class="emailNaoCadastrado">Este e-mail não está cadastrado</p>
       </div>
