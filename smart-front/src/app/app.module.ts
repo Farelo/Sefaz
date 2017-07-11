@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as $ from 'jquery';
@@ -11,6 +11,8 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
 
+import {ValidatorsModule, EmailValidators} from 'ngx-validators'
+// import{ NgValidationModule } from 'ngx-validation'
 
 import { PositionModalComponent } from './shared/modal/alerta/position/alerta.component';
 import { MissingModalComponent } from './shared/modal/alerta/missing/alerta.component';
@@ -50,7 +52,10 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     HttpModule,
     NgbModule.forRoot(),
     DashboardModule,
-    AppRoutingModule
+    ReactiveFormsModule,
+    ValidatorsModule,
+    AppRoutingModule,
+
   ],
   providers: [
     EmbalagensService,
@@ -63,9 +68,13 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     TagsService,
     CheckpointService,
     ProjectService,
-    ChatService
+    ChatService,
+
+    // FormBuilder,
+    // RadioControlRegistry
   ],
   bootstrap: [AppComponent],
+  exports: [ReactiveFormsModule],
   entryComponents: [ModalComponent, ModalRastComponent,PositionModalComponent,MissingModalComponent]
 })
 

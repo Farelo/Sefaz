@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Directive, forwardRef } from '@angular/core';
-import { NG_VALIDATORS, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 declare var $:any;
+
 
 @Component({
   selector: 'app-redefinir-senha',
@@ -9,14 +10,15 @@ declare var $:any;
   styleUrls: ['./redefinir-senha.component.css']
 })
 export class RedefinirSenhaComponent implements OnInit {
-  usuario: any = {
+  private usuario: any = {
     email: null,
     senha: null
   };
-  entrada: any;
+  private entrada: any;
   private senhaFraca: boolean = false;
   private senhaModerada: boolean = false;
   private senhaForte: boolean = false;
+
 
   constructor() { }
 
@@ -62,7 +64,7 @@ export class RedefinirSenhaComponent implements OnInit {
             $('.inputSenha').addClass('medium');
             $('.inputSenha').removeClass('weak');
             $('.inputSenha').removeClass('strong');
-            
+
             $('.senhaModerada').css('display','flex');
             $('.senhaForte').css('display','none');
             $('.senhaFraca').css('display','none');

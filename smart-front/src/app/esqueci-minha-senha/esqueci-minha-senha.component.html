@@ -12,17 +12,30 @@
         <p class="titulo">Esqueceu sua senha?</p>
         <p>Não se preocupe, enviaremos um link para que possa redefinir sua senha.</p>
 
-        <!-- <label>Username</label>
-           <input type="text" name="username" [ngModel]="usuario.senha"
-             required minlength="5" maxlength="8" #username="ngModel">
-           <small [hidden]="username.valid || (username.pristine &&
-             !f.submitted)">
-             Username is required (minimum 5 characters).
-           </small> -->
+           <form>
+           <input type="text" [(ngModel)]="usuario.email" name="email" #formControl="ngModel" email>
+           <span *ngIf="formControl.hasError('normalEmailRule')">Is not a email</span>
+
+           <input type="password" [(ngModel)]="usuario.senha" name="password" #formControl="ngModel" password>
+           <span *ngIf="(formControl.hasError('digitCharacterRule')) && (formControl.hasError('alphabeticalCharacterRule')) && (formControl.hasError('lowercaseCharacterRule')) && (formControl.hasError('uppercaseCharacterRule'))">Senha fraca</span>
+           <span *ngIf="formControl.hasError('digitCharacterRule')">Password should contain at least on digit</span>
+           <span *ngIf="formControl.hasError('alphabeticalCharacterRule')">Password should contain at least on alphabetical character</span>
+           <span *ngIf="formControl.hasError('lowercaseCharacterRule')">Password should contain at least on lowercase character</span>
+           <span *ngIf="formControl.hasError('uppercaseCharacterRule')">Password should contain at least on uppercase character</span>
+           </form>
+
+           <!-- <form>
+<input type="password" [(ngModel)]="usuario.senha" name="password" #formControl="ngModel" password>
+<span *ngIf="formControl.hasError('repeatCharacterRegexRule')">Password contains repeating characters</span>
+<span *ngIf="formControl.hasError('digitCharacterRule')">Password should contain at least on digit</span>
+<span *ngIf="formControl.hasError('alphabeticalCharacterRule')">Password should contain at least on alphabetical character</span>
+<span *ngIf="formControl.hasError('lowercaseCharacterRule')">Password should contain at least on lowercase character</span>
+<span *ngIf="formControl.hasError('uppercaseCharacterRule')">Password should contain at least on uppercase character</span>
+</form> -->
 
         <input class="inputSenha"
                 type="email"
-                placeholder="senha"
+                placeholder="digite seu email"
                 aria-describedby="basic-addon2"
         >
           <p class="emailNaoCadastrado">E-mail inválido</p>

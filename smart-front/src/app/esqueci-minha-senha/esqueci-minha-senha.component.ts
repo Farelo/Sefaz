@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, Validator } from '@angular/forms';
+import { ValidatorsModule, EmailValidators} from 'ngx-validators'
+import {PasswordValidators} from 'ngx-validators'
 
 @Component({
   selector: 'app-esqueci-minha-senha',
