@@ -133,6 +133,9 @@ button:hover {
   -webkit-transition: color 0.5s;
   transition: color 0.5s;
 }
+button:focus {
+  outline: none;
+}
 /*.ng-invalid.ng-touched.ng-dirty:not(form) {
   outline: none !important;
   border-style: solid;

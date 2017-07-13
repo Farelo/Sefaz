@@ -10,14 +10,9 @@ import {PasswordValidators} from 'ngx-validators'
   styleUrls: ['./esqueci-minha-senha.component.css']
 })
 export class EsqueciMinhaSenhaComponent implements OnInit {
-  usuario: any = {
-    email: null,
-    senha: null
-  };
+
   emailInput: any;
-  emailNaoCadastrado: boolean = false;
   aparecerMsgEmailInvalido: boolean = false;
-  emailIgual: boolean = false;
   inputVazio: boolean = false;
   aparecerMsg: boolean = false;
   usuarios: any[] = [
@@ -29,7 +24,6 @@ export class EsqueciMinhaSenhaComponent implements OnInit {
   constructor(private router: Router) { }
 
   testar(input){
-    this.emailNaoCadastrado = false;
     this.inputVazio = false;
     this.aparecerMsg = false;
     this.aparecerMsgEmailInvalido = true;
@@ -38,7 +32,6 @@ export class EsqueciMinhaSenhaComponent implements OnInit {
 
     for(i = 0; i < f ; i ++ ){
       if(input == this.usuarios[i].email){
-          this.emailIgual = true;
           alert("Mandamos o seu email!")
           this.router.navigate(['/rc']);
           return true;
@@ -54,9 +47,6 @@ export class EsqueciMinhaSenhaComponent implements OnInit {
         }
       }
     }
-  }
-  limpar(){
-
   }
 
   prosseguir(){

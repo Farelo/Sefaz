@@ -1,14 +1,10 @@
 <div class="teste">
   <div class="row">
     <div class="col-sm-10 col-md-8 col-lg-4 quadrado">
-      <!-- <img [src]="'../../assets/images/img-fundo.png'" alt=""> -->
       <h1>RECICLAPAC</h1>
-      <!-- <div class="col-sm-12 col-md-10 col-lg-8"> -->
-
 
       <form #f="ngForm" >
         <!-- (ngSubmit)="onSubmit(f)" -->
-
       <div class="wrapper form-group ">
         <p class="titulo">Esqueceu sua senha?</p>
         <p>Não se preocupe, enviaremos um link para que possa redefinir sua senha.</p>
@@ -39,15 +35,9 @@
              <p class="emailNaoCadastrado" *ngIf="(aparecerMsg)">Este e-mail não está cadastrado</p>
              <p class="emailNaoCadastrado" *ngIf="(inputVazio)">E-mail obrigatório</p>
         </form>
-
       </div>
-
-      <div class="divBotao">
-        <!-- type="submit" -->
-        <button  (click)='prosseguir()' >ENTRAR</button>
-      </div>
+      <div class="divBotao"><button  (click)='prosseguir()' >ENTRAR</button></div>
     </form>
-      <!-- </div> -->
     </div>
   </div>
 </div>
