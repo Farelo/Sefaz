@@ -51,7 +51,7 @@
   </div>
 </ng-template>
 
-<div class="panel-body info" *ngFor="let alert of alerts"
+<!-- <div class="panel-body info" *ngFor="let alert of alerts"
   [ngClass]="{
     'perdido' : alert.status == '02',
     'parado' : alert.status == '03',
@@ -72,5 +72,19 @@
     {{alert.quantity}}</span></h3>
     <h3><span class="badge badge-default"> {{alert.supplier.name}}</span></h3>
   </div>
+</div> -->
+<div class="painel">
+<div class="quadradoPequeno"*ngFor="let teste of testes">
+  <div class="esquerda">
+    <span class="codigo">{{teste.codigo}}</span><br />
+    <span class="descricao">{{teste.rack}}</span>
+  </div>
+  <div class="direita">
+    <span class="fornecedor">{{teste.safe}}</span><Br />
+    <span class="quantidade">{{teste.numero}}</span>
+  </div>
 </div>
+</div>
+
+
 <router-outlet></router-outlet>

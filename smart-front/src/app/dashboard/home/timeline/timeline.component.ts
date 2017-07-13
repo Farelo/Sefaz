@@ -42,6 +42,17 @@ export class TimelineComponent implements OnInit,OnDestroy {
   private aparecer: boolean = false;
   closeResult: string;
   verModal: boolean = true;
+  testes: any[] = [
+    {codigo: '000000001', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '1'},
+    {codigo: '000000002', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '2'},
+    {codigo: '000000003', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '3'},
+    {codigo: '000000004', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '4'},
+    {codigo: '000000005', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '5'},
+    {codigo: '000000006', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '6'},
+    {codigo: '000000007', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '7'},
+    {codigo: '000000008', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '8'},
+    {codigo: '000000009', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '9'}
+  ];
 
   constructor(
       private AlertsService: AlertsService,

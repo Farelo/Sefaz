@@ -16,6 +16,8 @@
   font-size: 20px;
   font-family: 'Raleway', sans-serif;
   vertical-align: middle;
+  /*padding-left: 20px;
+  padding-right:20px;*/
 }
 .tit1 {
     color: black;
@@ -107,13 +109,13 @@
     #e0e0e0 97.5%,#e0e0e0 98%,#5D8DD7 98%,#5D8DD7 100%);
 }
 
-.esquerda{
+/*.esquerda{
   float: left;
 }
 .direita {
   float: right;
   text-align: right;
-}
+}*/
 .perdido2 {
   border-color: #EF5562;
   border-radius: 12px;
@@ -167,4 +169,63 @@ label {
 .modalFilho p {
   color: black;
   font-size: 15px;
+}
+/*COMEÇANDO O NOVO AGORA*/
+.painel {
+  text-align: center;
+}
+.quadradoPequeno {
+  /*background-color: white;*/
+  /*background: linear-gradient(to bottom,
+    #e0e0e0 0%,#e0e0e0 97%,#a08dc2 97%,#a08dc2 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#a08dc2 98%,#a08dc2 100%);*/
+    background: linear-gradient(to bottom,
+       #a08dc2 0%,#a08dc2 10%, #ffffff 10%,#ffffff 13%,
+       #a08dc2 13%,#a08dc2 16%,#ffffff 16%,#ffffff 100%);
+  width: 32%;
+  height: 75px;
+  border-left-style: solid;
+  border-right-style: solid;
+  border-left-color: #a08dc2;
+  border-right-color: #a08dc2;
+  border-left-width: 2px;
+  border-right-width: 2px;
+  padding: 20px 10px 10px 10px;
+  margin-bottom: 5px;
+  display: inline-block;
+  margin-left: 0.4%;
+  margin-right: 0.4%
+}
+/*@media (max-width: 710px) {
+  .quadradoPequeno{
+    width: 45%;
+  }
+}*/
+.esquerda{
+  float: left;
+}
+.direita {
+  float: right;
+  text-align: left;
+}
+.descricao {
+  color: #6b6b6b;
+  font-size: 12px;
+}
+.fornecedor, .quantidade {
+  background-repeat: no-repeat;
+  padding-left: 15px;
+  vertical-align: middle;
+  font-size: 12px;
+  color: #666666;
+}
+.fornecedor {
+  background-image: url("../../../../assets/images/local1.png");
+  background-size: 10px;
+
+}
+.quantidade {
+  background-image: url("../../../../assets/images/quant1.png");
+  background-size: 11px;
+
 }
