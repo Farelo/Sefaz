@@ -7,8 +7,6 @@
 
   <!-- <button class="abre"(click)="open(content)">abremodal</button> -->
 
-
-
 <button type="button" class="interrogacao1"
     [ngbPopover]= 'popContent'
     placement="left"
@@ -74,14 +72,29 @@
   </div>
 </div> -->
 <div class="painel">
-<div class="quadradoPequeno"*ngFor="let teste of testes">
+<div class="quadradoPequeno"*ngFor="let alert of alerts"
+[ngClass]="{
+  'perdido' : alert.status == '02',
+  'parado' : alert.status == '03',
+  'incorreto' : alert.status == '01'
+}">
   <div class="esquerda">
-    <span class="codigo">{{teste.codigo}}</span><br />
-    <span class="descricao">{{teste.rack}}</span>
+    <span class="codigo">{{alert.packing.code}}</span><br />
+    <span class="descricao">{{alert.packing.type}}</span>
   </div>
   <div class="direita">
-    <span class="fornecedor">{{teste.safe}}</span><Br />
-    <span class="quantidade">{{teste.numero}}</span>
+    <span class="fornecedor"
+    [ngClass]="{
+      'fornecedorPerdido' : alert.status == '02',
+      'fornecedorParado' : alert.status == '03',
+      'fornecedorIncorreto' : alert.status == '01'
+    }">{{alert.supplier.name}}</span><Br />
+    <span class="quantidade"
+    [ngClass]="{
+      'quantidadePerdido' : alert.status == '02',
+      'quantidadeParado' : alert.status == '03',
+      'quantidadeIncorreto' : alert.status == '01'
+    }">{{alert.quantity}}</span>
   </div>
 </div>
 </div>
