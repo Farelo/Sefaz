@@ -27,6 +27,8 @@ import { ScannerCadastrarComponent } from './cadastros/scanner/scanner-cadastrar
 import { RotasCadastrarComponent } from './cadastros/rotas/rotas-cadastrar/rotas-cadastrar.component';
 import { SetorCadastrarComponent } from './cadastros/setor/setor-cadastrar/setor-cadastrar.component';
 import { TagsCadastrarComponent } from './cadastros/tags/tags-cadastrar/tags-cadastrar.component';
+import { Gc16Component } from './gc16/gc16.component';
+import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.component';
 
 const dashboardRoutes = [
   {path: 'rc', component: DashboardComponent, children: [
@@ -36,6 +38,8 @@ const dashboardRoutes = [
     {path: 'inventario', component: InventarioComponent},
     {path: 'importar', component: ImportarComponent},
     {path: 'rastreamento', component: RastreamentoComponent},
+    {path: 'gc16', component: Gc16Component},
+    {path: 'gc16/adicionar', component: Gc16AdicionarComponent},
   ]}
 ];
 

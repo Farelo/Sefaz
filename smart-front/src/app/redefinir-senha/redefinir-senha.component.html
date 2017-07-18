@@ -3,35 +3,58 @@
     <div class="col-sm-10 col-md-8 col-lg-4 quadrado">
       <h1>RECICLAPAC</h1>
 
-      <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <form #f="ngForm" >
+        <!-- (ngSubmit)="onSubmit(f)" -->
       <div class="wrapper form-group ">
         <p class="titulo">Redefinir senha</p>
         <p>A nova senha deve conter mais de 6 caracteres,
           letras, números, letras maiúsculas e caracteres especiais.</p>
           <form>
-<input [formControl]="password"
-(input) = "calcular(
-password,
-password.dirty,
-password.value.length>0,
-password.hasError('minLength'),
-password.hasError('digitCharacterRule'),
-password.hasError('lowercaseCharacterRule'),
-password.hasError('uppercaseCharacterRule'),
-password.hasError('specialCharacterRule')
-)"
-[ngClass]="{ strong: senhaForte == true}"
->
-<p class="senhaForte" *ngIf="(senhaForte)">Senha forte</p>
-<p class="senhaFraca" *ngIf="(senhaFraca)">Senha fraca</p>
-</form>
-
+            <input [formControl]="password"
+             type="password"
+             required
+            (input) = "calcular(
+            password.value,
+            password.dirty,
+            password.value.length>0,
+            password.hasError('minLength'),
+            password.hasError('digitCharacterRule'),
+            password.hasError('lowercaseCharacterRule'),
+            password.hasError('uppercaseCharacterRule'),
+            password.hasError('specialCharacterRule')
+            )"
+            [ngClass]="{ strong: senhaForte == true,
+            medium: senhaModerada == true,
+            weak: senhaFraca == true
+            }"
+            >
+            <p class="senhaForte" *ngIf="(senhaForte)">Senha forte</p>
+            <p class="senhaModerada" *ngIf="(senhaModerada)">Senha moderada</p>
+            <p class="senhaFraca" *ngIf="(senhaFraca)">Senha fraca</p>
+            <p class="conf">Confirmar senha</p>
+            <input
+                   type="password"
+                   placeholder="senha"
+                   aria-describedby="basic-addon2"
+                   name="senha" id="senha"
+                   required [(ngModel)]="entrada2"
+                   #senha="ngModel"
+                   (input)="senhasIguais=false"
+                   (input)="senhasDiferentes=false"
+                   (blur)="senhasIguais=false"
+                   (blur)="senhasDiferentes=false"
+                   (keyup.enter)="checar()"
+                   (blur)="checar()"
+            >
+            <p class="senhaForte" *ngIf="(senhasIguais)">Senhas iguais :)</p>
+            <p class="senhaFraca" *ngIf="(senhasDiferentes)">As senhas não estão iguais.</p>
+          </form>
       </div>
       <div class="divBotao">
-        <button routerLink="/rc" type="submit">Confirmar</button>
+        <button (click)="redefinir()">Confirmar</button>
+        <!-- type="submit" -->
       </div>
     </form>
-      <!-- </div> -->
     </div>
   </div>
 </div>

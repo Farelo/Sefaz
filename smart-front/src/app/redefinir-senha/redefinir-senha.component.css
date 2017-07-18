@@ -155,3 +155,7 @@ button:hover {
 input:focus ~ .bar,input:valid ~ .bar{
     width:100%;
 }
+.conf {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}

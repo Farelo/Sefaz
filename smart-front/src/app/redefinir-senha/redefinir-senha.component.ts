@@ -14,11 +14,15 @@ declare var $:any;
   styleUrls: ['./redefinir-senha.component.css']
 })
 export class RedefinirSenhaComponent implements OnInit {
-  private entrada: 'teste';
   private entrada2: any;
   private senhaFraca: boolean = false;
   private senhaModerada: boolean = false;
   private senhaForte: boolean = false;
+  private preCaracteres: boolean = false;
+  private preNumeros: boolean = false;
+  private preLetras: boolean = false;
+  private senhasIguais: boolean = false;
+  private senhasDiferentes: boolean = false;
 
   password: FormControl = new FormControl('', Validators.compose([
     UniversalValidators.minLength(6),
@@ -36,7 +40,7 @@ export class RedefinirSenhaComponent implements OnInit {
   ];
 
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
 this.imprimir();  }
@@ -44,67 +48,67 @@ this.imprimir();  }
     console.log(this.password.value);
     // console.log(this.password.hasError(digitCharacterRule));
   }
-  calcular(entrada, dirty, tamanho, minimo, numero, letras, min, mai, especial){
+  calcular(entrada, dirty, tamanho, minimo, numero, min, mai, especial){
+    var i = 0;
+    console.log(entrada);
     if((!tamanho)){
       this.senhaFraca = false;
       this.senhaForte = false;
       this.senhaModerada = false;
-    }else if((dirty && tamanho && !minimo && !numero && !letras && !min && !mai && !especial)==true){
+      this.preCaracteres = false;
+      this.preNumeros = false;
+      this.preLetras = false;
+    }
+    if(!numero){i++;}
+    if(!min){i++;}
+    if(!mai){i++;}
+    if(!especial){i++;}
+
+    if((dirty && tamanho && !minimo && (i==4))==true){
       this.senhaForte = true;
       this.senhaFraca = false;
       this.senhaModerada = false;
-    } else if((dirty && tamanho && !letras)==true){
+      i=0;
+    } else if((dirty && tamanho && ((i<2)||(minimo && i<3)||(i==3 && minimo)))==true){
       this.senhaFraca = true;
       this.senhaForte = false;
       this.senhaModerada = false;
+      i=0;
+    } else {
+      this.senhaModerada = true;
+      this.senhaFraca = false;
+      this.senhaForte = false;
+      i=0;
+    }
+    if((!tamanho)){
+      this.senhaFraca = false;
+      this.senhaForte = false;
+      this.senhaModerada = false;
+      i=0;
+    }
+  }
+  checar(){
+    if(this.password.value == this.entrada2){
+      if(this.password.value.length>0 || this.entrada2.length>0){
+        if(!this.senhaFraca){
+        this.senhasIguais = true;
+        return true;
+        //A função só retorna true se a senha tiver pelo menos moderada.
+        }
+        return false;
+      }
+      return false;
+    } else {
+      this.senhasDiferentes = true;
+      return false;
     }
   }
 
-//   calcular(){
-//     $(function(){
-//     $('#password').keyup(function(){
-//         var pass_val = $('#password').val();
-//         var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
-//         var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
-//         var okRegex = new RegExp("(?=.{6,}).*", "g");
-//
-//         if(okRegex.test(pass_val) === false){
-//             $('.inputSenha').addClass('weak');
-//             $('.inputSenha').removeClass('medium');
-//             $('.inputSenha').removeClass('strong');
-//
-//             $('.senhaFraca').css('display','flex');
-//             $('.senhaForte').css('display','none');
-//             $('.senhaModerada').css('display','none');
-//
-//         }else if(strongRegex.test(pass_val)){
-//             $('.inputSenha').addClass('strong');
-//             $('.inputSenha').removeClass('medium');
-//             $('.inputSenha').removeClass('weak');
-//
-//             $('.senhaForte').css('display','flex');
-//             $('.senhaFraca').css('display','none');
-//             $('.senhaModerada').css('display','none');
-//
-//         }else if(mediumRegex.test(pass_val)){
-//             $('.inputSenha').addClass('medium');
-//             $('.inputSenha').removeClass('weak');
-//             $('.inputSenha').removeClass('strong');
-//
-//             $('.senhaModerada').css('display','flex');
-//             $('.senhaForte').css('display','none');
-//             $('.senhaFraca').css('display','none');
-//         }else{
-//             $('.inputSenha').addClass('medium');
-//             $('.inputSenha').removeClass('weak');
-//             $('.inputSenha').removeClass('strong');
-//
-//             $('.senhaModerada').css('display','flex');
-//             $('.senhaForte').css('display','none');
-//             $('.senhaFraca').css('display','none');
-//         }
-//     });
-// });
-//   }
-
+  redefinir(){
+    //Redefinir a senha real, aqui eu vou só avançar
+    if(this.checar()){
+      //Aparecer tela dizendo que a senha foi redefinida e mandar pra o login
+      this.router.navigate(['/login']);
+    }
+  }
 }
