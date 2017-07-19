@@ -2,11 +2,6 @@
   font-family: 'Roboto', sans-serif;
 }
 
-.meuInput {
-  width: 50vw;
-  margin-bottom: 10px;
-  box-shadow: 0px 0px 3px #000;
-}
 .meuInventario {
   box-shadow: 0px 0px 7px #000;
 }
@@ -59,6 +54,12 @@ span {
 }
 .buscar {
   width: 200px;
+  box-shadow: 0px 0px 2px #000;
+}
+@media (min-width: 600px) {
+  .buscar {
+    width: 400px;
+  }
 }
 .mais {
   width: 80px;
