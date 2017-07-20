@@ -3,12 +3,12 @@
       <a routerLink="/rc/home" class="logo">RECICLAPAC</a>
       <input type="checkbox" id="nav" /><label for="nav"></label>
       <ul>
-        <li class="scroll"><a routerLinkActive="active" routerLink="/rc/home">HOME</a></li>
-        <li class="scroll"><a routerLinkActive="active" routerLink="/rc/cadastros">CADASTROS</a></li>
-        <li class="scroll"><a routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
-        <li class="scroll"><a routerLinkActive="active" routerLink="/rc/importar">IMPORTAR DADOS</a></li>
-        <li class="scroll"><a routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
-        <li class="scroll"><a routerLinkActive="active" >GC16</a></li>
+        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/home" (click)="funcaoTop()">HOME</a></li>
+        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/cadastros" (click)="funcaoTop()">CADASTROS</a></li>
+        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/inventario" (click)="funcaoTop()">INVENTÁRIO</a></li>
+        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/importar" (click)="funcaoTop()">IMPORTAR DADOS</a></li>
+        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/rastreamento" (click)="funcaoTop()">GEOLOCALIZAÇÃO</a></li>
+        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/gc16" (click)="funcaoTop()">GC16</a></li>
       </ul>
     </nav>
   </div>

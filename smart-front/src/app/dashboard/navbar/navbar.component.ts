@@ -20,4 +20,8 @@ export class NavbarComponent implements OnInit {
         return false;
     });
 }
+outraFuncaoTop(){
+  $('label').click();
+  // return false;
+}
 }

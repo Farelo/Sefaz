@@ -14,6 +14,8 @@ import { RastreamentoModule } from './rastreamento/rastreamento.module';
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { DashboardRoutingModule } from './dashboard.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Gc16Component } from './gc16/gc16.component';
+import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.component';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
     DashboardComponent,
     NavbarComponent,
     InventarioComponent,
-    ImportarComponent
+    ImportarComponent,
+    Gc16Component,
+    Gc16AdicionarComponent
   ],
   providers: [
     NgbActiveModal

@@ -16,6 +16,8 @@
   font-size: 20px;
   font-family: 'Raleway', sans-serif;
   vertical-align: middle;
+  /*padding-left: 20px;
+  padding-right:20px;*/
 }
 .tit1 {
     color: black;
@@ -74,7 +76,7 @@
   font-size: 9px; color: grey; margin: 0px;
 }
 
-.perdido {
+/*.perdido {
   background: linear-gradient(to right,
     #fff 0%,#fff 97%,#EF5562 97%,#EF5562 97.5%,
     #fff 97.5%,#fff 98%,#EF5562 98%,#EF5562 100%);
@@ -105,16 +107,16 @@
   background: linear-gradient(to right,
     #e0e0e0 0%,#e0e0e0 97%,#5D8DD7 97%,#5D8DD7 97.5%,
     #e0e0e0 97.5%,#e0e0e0 98%,#5D8DD7 98%,#5D8DD7 100%);
-}
+}*/
 
-.esquerda{
+/*.esquerda{
   float: left;
 }
 .direita {
   float: right;
   text-align: right;
-}
-.perdido2 {
+}*/
+/*.perdido2 {
   border-color: #EF5562;
   border-radius: 12px;
   border-style: solid;
@@ -137,7 +139,7 @@
   border-width: medium;
   background-color: transparent;
   color: #a08dc2;
-}
+}*/
 
 .perdido2, .parado2, .incorreto2 {
     font-weight: bold;
@@ -168,3 +170,116 @@ label {
   color: black;
   font-size: 15px;
 }
+/*COMEÇANDO O NOVO AGORA*/
+.painel {
+  text-align: center;
+}
+.quadradoPequeno {
+    /*background: linear-gradient(to bottom,
+       #a08dc2 0%,#a08dc2 10%, #ffffff 10%,#ffffff 13%,
+       #a08dc2 13%,#a08dc2 16%,#ffffff 16%,#ffffff 100%);*/
+  width: 24%;
+  height: 75px;
+  border-left-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  /*border-left-color: #a08dc2;
+  border-right-color: #a08dc2;*/
+  border-left-width: 2px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  padding: 20px 10px 10px 10px;
+  margin-bottom: 5px;
+  display: inline-block;
+  margin-left: 0.4%;
+  margin-right: 0.4%
+}
+.perdido {
+  background: linear-gradient(to bottom,
+     #EF5562 0%,#EF5562 10%, #ffffff 10%,#ffffff 13%,
+     #EF5562 13%,#EF5562 16%,#ffffff 16%,#ffffff 100%);
+     border-left-color: #EF5562;
+     border-right-color: #EF5562;
+     border-bottom-color: #EF5562;
+}
+.incorreto {
+  background: linear-gradient(to bottom,
+     #a08dc2 0%,#a08dc2 10%, #ffffff 10%,#ffffff 13%,
+     #a08dc2 13%,#a08dc2 16%,#ffffff 16%,#ffffff 100%);
+     border-left-color: #a08dc2;
+     border-right-color: #a08dc2;
+     border-bottom-color: #a08dc2;
+}
+.parado {
+  background: linear-gradient(to bottom,
+     #5D8DD7 0%,#5D8DD7 10%, #ffffff 10%,#ffffff 13%,
+     #5D8DD7 13%,#5D8DD7 16%,#ffffff 16%,#ffffff 100%);
+     border-left-color: #5D8DD7;
+     border-right-color: #5D8DD7;
+     border-bottom-color: #5d8dd7;
+}
+
+.esquerda{
+  float: left;
+  text-align: left;
+}
+.direita {
+  float: right;
+  text-align: left;
+}
+.descricao {
+  color: #6b6b6b;
+  font-size: 11.5px;
+}
+.fornecedor, .quantidade {
+  background-repeat: no-repeat;
+  padding-left: 15px;
+  vertical-align: middle;
+  font-size: 12px;
+  color: #666666;
+}
+.fornecedor {
+  background-size: 10px;
+}
+.fornecedorPerdido { background-image: url("../../../../assets/images/local3.png");}
+.fornecedorIncorreto {  background-image: url("../../../../assets/images/local1.png");}
+.fornecedorParado {  background-image: url("../../../../assets/images/local2.png");}
+
+.quantidade {
+  background-size: 11px;
+}
+.quantidadePerdido {  background-image: url("../../../../assets/images/quant3.png");}
+.quantidadeIncorreto {  background-image: url("../../../../assets/images/quant1.png");}
+.quantidadeParado {  background-image: url("../../../../assets/images/quant2.png");}
+@media (min-width: 1920px){
+  .quadradoPequeno{ width: 24%; }
+}
+@media (min-width: 1700px) and (max-width: 1919px) {
+  .quadradoPequeno{ width: 32%; }
+}
+@media (min-width: 1555px) and (max-width: 1699px) {
+  .quadradoPequeno{ width: 24%; }
+}
+@media (min-width: 1400px) and (max-width: 1554px) {
+  .quadradoPequeno{ width: 32%; }
+}
+@media (min-width: 1276px) and (max-width: 1399px) {
+  .quadradoPequeno{ width: 24%; }
+}
+@media (min-width: 992px) and (max-width: 1275px) {
+  .quadradoPequeno{ width: 32%; }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .quadradoPequeno{ width: 49%; }
+}
+@media (max-width: 767px) and (min-width: 663px) {
+  .quadradoPequeno{ width: 32%; }
+}
+@media (max-width: 662px) {
+  .quadradoPequeno{ width: 49%; }
+}
+@media (max-width: 450px) {
+  .quadradoPequeno { height: 115px; text-align: center;  }
+  .esquerda, .direita { float:none; text-align: center; }
+}
+/*teste*/

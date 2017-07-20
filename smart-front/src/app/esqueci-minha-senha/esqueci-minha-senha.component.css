@@ -65,16 +65,15 @@ input {
 }
 input:focus {
   outline: none !important;
-  border-style: solid;
+  /*border-style: solid;
   border-bottom-color: #4577d8;
   border-bottom-width: 1.5px;
   border-top: none;
   border-left: none;
   border-right: none;
-  box-shadow: none;
-
+  box-shadow: none;*/
 }
-.senhaIncorreta {
+.bordaVermelha {
   outline: none !important;
   border-style: solid;
   border-bottom-color: #D24444;
@@ -83,7 +82,26 @@ input:focus {
   border-left: none;
   border-right: none;
   box-shadow: none;
-
+}
+.bordaVermelha2 {
+  outline: none !important;
+  border-style: solid;
+  border-bottom-color: #D24444;
+  border-bottom-width: 1.5px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: none;
+}
+.bordaVermelha3 {
+  outline: none !important;
+  border-style: solid;
+  border-bottom-color: #D24444;
+  border-bottom-width: 1.5px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: none;
 }
 p {
   color: white;
@@ -115,9 +133,19 @@ button:hover {
   -webkit-transition: color 0.5s;
   transition: color 0.5s;
 }
-.ng-invalid.ng-touched:not(form) {
-  border: 1px solid red;
+button:focus {
+  outline: none;
 }
+/*.ng-invalid.ng-touched.ng-dirty:not(form) {
+  outline: none !important;
+  border-style: solid;
+  border-bottom-color: #D24444;
+  border-bottom-width: 1.5px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: none;
+}*/
 .emailNaoCadastrado {
   color: #d24444;
   font-size: 13px;

@@ -2,19 +2,33 @@
   <div class="row">
     <div class="col-sm-10 col-md-8 col-lg-4 quadrado">
       <!-- <img [src]="'../../assets/images/img-fundo.png'" alt=""> -->
-      <h1>RECICLAPAC</h1>
+      <h1>RECICLAPAC</h1> <h1>{{emailInput}} -- {{senhaInput}}</h1>
 
-      <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <form #f="ngForm" >
+        <!-- (ngSubmit)="onSubmit(f)" -->
       <div class="form-group wrapper">
         <img src="../../assets/images/mail.png" class="spanMail">
         <div>
-
-          <input class="inputMail" type="email" placeholder="e-mail" aria-describedby="basic-addon2"
-          name="mail" id="mail" required [(ngModel)]="usuario.email" #mail="ngModel"
-          >
-          <p class="emailObrigatorio" *ngIf="mail.invalid && mail.touched">E-mail é obrigatório</p>
-          <!-- <p class="emailIncorreto" >E-mail incorreto</p>
-          <p class="emailNaoCadastrado" >E-mail não cadastrado</p> -->
+          <input class="inputMail"
+                 type="email"
+                 placeholder="e-mail"
+                 aria-describedby="basic-addon2"
+                 name="email"
+                 id="email"
+                 required
+                 [(ngModel)]="emailInput"
+                 #email="ngModel"
+                 (input) = '(emailVazio = false)'
+                 (input) = '(senhaVazia = false)'
+                 (input) = '(emailNaoCadastrado = false)'
+                 (input) = '(senhaIncorreta = false)'
+                 (blur) = '(emailVazio = false)'
+                 (blur) = '(senhaVazia = false)'
+                 (blur) = '(emailNaoCadastrado = false)'
+                 (blur) = '(senhaIncorreta = false)'
+                 (keyup.enter) = 'entrar(emailInput, senhaInput)'>
+          <p class="emailObrigatorio" *ngIf="emailVazio">E-mail é obrigatório</p>
+          <p class="emailNaoCadastrado" *ngIf="emailNaoCadastrado">E-mail não cadastrado</p>
         </div>
 
       </div>
@@ -22,16 +36,33 @@
       <div class="wrapper form-group">
         <img src="../../assets/images/lock.png" class="spanLock">
         <div>
-          <input class="inputSenha" type="password" placeholder="senha" aria-describedby="basic-addon2"
-          name="senha" id="senha" required [(ngModel)]="usuario.senha" #senha="ngModel"
-          >
-          <p class="senhaObrigatoria" *ngIf="senha.invalid && senha.touched">Senha é obrigatória</p>
-          <!-- <p class="senhaIncorreta2">Senha incorreta</p> -->
+          <input class="inputSenha"
+                 type="password"
+                 placeholder="senha"
+                 aria-describedby="basic-addon2"
+                 name="senha"
+                 id="senha"
+                 required
+                 [(ngModel)]="senhaInput"
+                 #senha="ngModel"
+                 (input) = '(emailVazio = false)'
+                 (input) = '(senhaVazia = false)'
+                 (input) = '(emailNaoCadastrado = false)'
+                 (input) = '(senhaIncorreta = false)'
+                 (blur) = '(emailVazio = false)'
+                 (blur) = '(senhaVazia = false)'
+                 (blur) = '(emailNaoCadastrado = false)'
+                 (blur) = '(senhaIncorreta = false)'
+                 (keyup.enter) = 'entrar(emailInput, senhaInput)'>
+          <p class="senhaObrigatoria" *ngIf="senhaVazia">Senha é obrigatória</p>
+          <p class="senhaObrigatoria" *ngIf="senhaIncorreta">Senha incorreta</p>
+
           <p class="esqueci" routerLink="/esqueciMinhaSenha">Esqueci minha senha</p>
         </div>
       </div>
+
       <br />
-      <button routerLink="/rc" type="submit">ENTRAR</button>
+      <button (click)='prosseguir()'>ENTRAR</button>
     </form>
     </div>
   </div>

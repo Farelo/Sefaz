@@ -95,7 +95,6 @@ input:focus {
   border-left: none;
   border-right: none;
   box-shadow: none;
-
 }
 p {
   color: white;
@@ -135,11 +134,14 @@ button:hover {
   -webkit-transition: color 0.5s;
   transition: color 0.5s;
 }
+button:focus {
+  outline: none;
+}
 
 span {
   background-image: url("../../assets/images/lock.png");
 }
-.ng-invalid.ng-touched:not(form) {
+/*.ng-invalid.ng-touched:not(form) {
   outline: none !important;
   border-style: solid;
   border-bottom-color: #D24444;
@@ -148,7 +150,7 @@ span {
   border-left: none;
   border-right: none;
   box-shadow: none;
-}
+}*/
 .senhaIncorreta2, .emailObrigatorio, .emailIncorreto, .emailNaoCadastrado,.senhaObrigatoria {
   color: #d24444;
   font-size: 13px;

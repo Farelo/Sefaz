@@ -58,12 +58,12 @@ input {
 }
 input:focus {
   outline: none !important;
-  border-style: solid;
+  /*border-style: solid;
   border-bottom-width: 1.5px;
   border-top: none;
   border-left: none;
   border-right: none;
-  box-shadow: none;
+  box-shadow: none;*/
 }
 .senhaIncorreta {
   outline: none !important;
@@ -79,17 +79,17 @@ input:focus {
 .senhaFraca {
   font-size: 13px;
   color: #D24444;
-  display: none;
+  /*display: none;*/
 }
 .senhaModerada {
   font-size: 13px;
   color: #C6AE22;
-  display: none;
+  /*display: none;*/
 }
 .senhaForte {
   font-size: 13px;
   color: #3Ad83E;
-  display: none;
+  /*display: none;*/
 }
 p {
   color: white;
@@ -121,9 +121,9 @@ button:hover {
   -webkit-transition: color 0.5s;
   transition: color 0.5s;
 }
-.ng-invalid.ng-touched:not(form) {
+/*.ng-invalid.ng-touched:not(form) {
   border: 1px solid red;
-}
+}*/
 .emailNaoCadastrado {
   color: #d24444;
   font-size: 13px;
@@ -154,4 +154,8 @@ button:hover {
 
 input:focus ~ .bar,input:valid ~ .bar{
     width:100%;
+}
+.conf {
+  margin-top: 20px;
+  margin-bottom: 0px;
 }
