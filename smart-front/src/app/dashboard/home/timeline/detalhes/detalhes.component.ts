@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { EmbalagensService } from '../../../../servicos/embalagens.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
@@ -16,20 +15,19 @@ export class DetalhesComponent implements OnInit {
 
 
   constructor(
-      private embalagensService: EmbalagensService,
       private router: Router,
         private route: ActivatedRoute,
 
   ) { }
 
   ngOnInit() {
-    this.embalagens = this.embalagensService.getEmbalagens();
-    this.inscricao = this.route.params.subscribe(
-      (params: any)=>{
-        let id = params ['id'];
-        this.embalagem = this.embalagensService.getEmbalagem(id);
-      }
-    )
+    // this.embalagens = this.embalagensService.getEmbalagens();
+    // this.inscricao = this.route.params.subscribe(
+    //   (params: any)=>{
+    //     let id = params ['id'];
+    //     this.embalagem = this.embalagensService.getEmbalagem(id);
+    //   }
+    // )
   }
   ngOnDestroy () {
     this.inscricao.unsubscribe();

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PackingService } from '../../../servicos/packings.service';
-import { EmbalagensService } from '../../../servicos/embalagens.service';;
 import { Packing } from '../../../shared/models/Packing';
 
 @Component({
@@ -13,7 +12,6 @@ export class EmbalagemComponent implements OnInit {
   vazio: boolean = false;
 
   constructor(
-    private embalagensService : EmbalagensService,
     private PackingService : PackingService
   ) { }
     // ngOnInit() {

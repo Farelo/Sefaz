@@ -3,7 +3,6 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { EmbalagensService } from '../../servicos/embalagens.service';
 
 @Component({
   selector: 'app-modal-rast',
@@ -16,7 +15,6 @@ export class ModalRastComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private route: ActivatedRoute,
-    private embalagensService: EmbalagensService,
     private router: Router
   ) { }
 

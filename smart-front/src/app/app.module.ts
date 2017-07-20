@@ -8,16 +8,13 @@ import * as $ from 'jquery';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
-import { ModalComponent } from './shared/modal/modal.component';
 import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
 
 import {ValidatorsModule, EmailValidators} from 'ngx-validators'
-// import{ NgValidationModule } from 'ngx-validation'
 
 import { PositionModalComponent } from './shared/modal/alerta/position/alerta.component';
 import { MissingModalComponent } from './shared/modal/alerta/missing/alerta.component';
 
-import { EmbalagensService } from './servicos/embalagens.service';
 import { AlertsService } from './servicos/alerts.service';
 import { DepartmentService } from './servicos/departments.service';
 import { PackingService } from './servicos/packings.service';
@@ -39,7 +36,6 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     AppComponent,
     LoginComponent,
     LandingPageComponent,
-    ModalComponent,
     PositionModalComponent,
     ModalRastComponent,
     MissingModalComponent,
@@ -58,7 +54,6 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
 
   ],
   providers: [
-    EmbalagensService,
     AlertsService,
     DepartmentService,
     PackingService,
@@ -75,7 +70,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
-  entryComponents: [ModalComponent, ModalRastComponent,PositionModalComponent,MissingModalComponent]
+  entryComponents: [ModalRastComponent,PositionModalComponent,MissingModalComponent]
 })
 
 export class AppModule { }

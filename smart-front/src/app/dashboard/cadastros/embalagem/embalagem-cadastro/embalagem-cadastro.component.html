@@ -32,8 +32,8 @@
 
       <div class="campo">
         <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
-        <p class="explicacao">Ex. "57 peças"</p>
-        <div class="placeholder" data-placeholder="peças">
+        <p class="explicacao">Ex. "57 PEÇAS"</p>
+        <div class="placeholder" data-placeholder="PEÇAS">
           <input type="number"  min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.capacity" />
         </div>
       </div>
@@ -54,7 +54,7 @@
       <div class="campo">
         <p class="descricao">TARA (KG)</p>
         <p class="explicacao">Ex. "57 kg"</p>
-        <div class="placeholder"  min="0" data-placeholder="kg">
+        <div class="placeholder"  min="0" data-placeholder="KG">
           <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.weight" />
         </div>
       </div>
@@ -62,7 +62,7 @@
       <div class="campo">
         <p class="descricao">COMPRIMENTO (M)</p>
         <p class="explicacao">Ex. "57 m"</p>
-        <div class="placeholder" data-placeholder="metros">
+        <div class="placeholder" data-placeholder="METROS">
           <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.length" />
         </div>
       </div>
@@ -70,7 +70,7 @@
       <div class="campo">
         <p class="descricao">LARGURA (M)</p>
         <p class="explicacao">Ex. "57 m"</p>
-        <div class="placeholder"  min="0" data-placeholder="metros">
+        <div class="placeholder"  min="0" data-placeholder="METROS">
           <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.width" />
         </div>
       </div>
@@ -78,7 +78,7 @@
       <div class="campo">
         <p class="descricao">ALTURA (M)</p>
         <p class="explicacao">Ex. "57 m"</p>
-        <div class="placeholder"  min="0" data-placeholder="metros">
+        <div class="placeholder"  min="0" data-placeholder="METROS">
           <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.heigth" />
         </div>
       </div>
@@ -96,6 +96,13 @@
     </div>
 
   </div>
-    <button routerLink="/rc/cadastros/embalagem" class="botaoVoltar" >Voltar</button>
-    <button class="botaoRegistrar"  (click)="registerPacking()">Registrar</button>
+  <br />
+  <div class="botoes">
+    <button routerLink="/rc/cadastros/embalagem" class="botaoVoltar" >VOLTAR</button>
+    <button class="botaoRegistrar"  (click)="registerPacking()">REGISTRAR</button>
+  </div>
+  <br />
+
 </div>
+<br />
+<br />
