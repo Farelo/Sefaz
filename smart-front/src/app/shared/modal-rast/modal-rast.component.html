@@ -1,18 +1,19 @@
-<div class="modal-header">
-      <h4 class="modal-title">Detalhes do alerta</h4>
-      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-</div>
+<div class="modalFilho">
 
-<div class="modal-body">
+<div class="header">
+      <p>Detalhes do alerta</p>
+</div>
+<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <span aria-hidden="true">&times;</span>
+</button>
+
   <div>
     <div class="table-responsive tabela">
       <table class="table">
         <thead>
           <tr class="cabecalho">
-            <th>Codigo</th>
-            <th>Tag</th>
+            <th class="semBorda">Codigo</th>
+            <th  class="semBorda">Tag</th>
           </tr>
         </thead>
         <tbody >
@@ -27,8 +28,4 @@
   <div class="classVazio" *ngIf="packings?.length < 1">
     Não existe embalagens nesse setor.
   </div>
-</div>
-
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
 </div>

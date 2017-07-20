@@ -23,3 +23,20 @@
   color: white;
 }
 td {  background-color: white; }
+.header {
+  display: inline-grid;
+  border-bottom-style: solid;
+  border-bottom-color: grey;
+  border-bottom-width: thin;
+  margin-bottom: 15px;
+}
+.header span {
+  color: #EF5562;
+}
+.header p {
+  font-weight: bold;
+  width: 200px;
+}
+th {
+  border-bottom: none !important;
+}
