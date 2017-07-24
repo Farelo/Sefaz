@@ -1,0 +1,133 @@
+paths:
+#-------------------------------------------START CRUD ROUTE ----------------------------------
+  /route/retrieve/{route_id}:
+      x-swagger-router-controller: route_controller
+      get:
+        tags:
+          - "Route"
+        summary: "Get a route on the system"
+        description: ""
+        operationId: route_read
+        parameters:
+        - in: "path"
+          name: "route_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /route/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: route_controller
+    get:
+      tags:
+        - "Route"
+      summary: "Get all routes on the system by pagination"
+      description: ""
+      operationId: route_list_pagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of routes that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns routes related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /route/create:
+    x-swagger-router-controller: route_controller
+    post:
+      tags:
+      - "Route"
+      summary: "Add a new route to the system"
+      description: ""
+      operationId: route_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "route object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/Route"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /route/delete/{route_id}:
+    x-swagger-router-controller: route_controller
+    delete:
+      tags:
+      - "Route"
+      summary: "Remove a route on the system"
+      description: ""
+      operationId: route_delete
+      parameters:
+      - in: "path"
+        name: "route_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /route/update/{route_id}:
+    x-swagger-router-controller: route_controller
+    put:
+      tags:
+      - "Route"
+      summary: "Update a route on the system"
+      description: ""
+      operationId: route_update
+      parameters:
+      - in: "path"
+        name: "route_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The project object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/Route"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+#-------------------------------------------FINISH CRUD ROUTE ----------------------------------

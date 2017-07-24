@@ -1,0 +1,182 @@
+paths:
+#-------------------------------------------START CRUD TAGS ----------------------------------
+  /tags/retrieve/{tags_id}:
+      x-swagger-router-controller: tags_controller
+      get:
+        tags:
+          - "Tag"
+        summary: "Get a tags on the system"
+        description: ""
+        operationId: tags_read
+        parameters:
+        - in: "path"
+          name: "tags_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /tags/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: tags_controller
+    get:
+      tags:
+        - "Tag"
+      summary: "Get all tagss on the system by pagination that were binded and no binded with packings"
+      description: ""
+      operationId: tags_list_pagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of tagss that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns tagss related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /tags/list/pagination/nobinded/{limit}/{page}:
+    x-swagger-router-controller: tags_controller
+    get:
+      tags:
+        - "Tag"
+      summary: "Get all tags on the system by pagination that does not was still binded with the packing"
+      description: ""
+      operationId: tags_list_all_no_binded_pagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of tagss that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns tagss related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /tags/list/all/nobinded:
+    x-swagger-router-controller: tags_controller
+    get:
+      tags:
+        - "Tag"
+      summary: "Get all tags on the system that does not was still binded with the packing"
+      description: ""
+      operationId: tags_list_all_no_binded
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /tags/create:
+    x-swagger-router-controller: tags_controller
+    post:
+      tags:
+      - "Tag"
+      summary: "Add a new tags to the system"
+      description: ""
+      operationId: tags_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "tags object that needs to be added to the system"
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: "#/definitions/Tag"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /tags/delete/{tags_id}:
+    x-swagger-router-controller: tags_controller
+    delete:
+      tags:
+      - "Tag"
+      summary: "Remove a tags on the system"
+      description: ""
+      operationId: tags_delete
+      parameters:
+      - in: "path"
+        name: "tags_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /tags/update/{tags_id}:
+    x-swagger-router-controller: tags_controller
+    put:
+      tags:
+      - "Tag"
+      summary: "Update a tags on the system"
+      description: ""
+      operationId: tags_update
+      parameters:
+      - in: "path"
+        name: "tags_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The project object that will to be modified"
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: "#/definitions/Tag"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+#-------------------------------------------FINISH CRUD TAGS ----------------------------------

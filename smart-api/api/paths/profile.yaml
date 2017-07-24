@@ -1,0 +1,130 @@
+paths:
+#-------------------------------------------START CRUD PROFILE ----------------------------------
+  /profile/retrieve/{profile_id}:
+      x-swagger-router-controller: profile_controller
+      get:
+        tags:
+          - "Profile"
+        summary: "Get a profile on the system"
+        description: ""
+        operationId: profile_read
+        parameters:
+        - in: "path"
+          name: "profile_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /profile/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: profile_controller
+    get:
+      tags:
+        - "Profile"
+      summary: "Get all profilies on the system by pagination"
+      description: ""
+      operationId: profile_listPagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of profilies that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns profilies related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /profile/create:
+    x-swagger-router-controller: profile_controller
+    post:
+      tags:
+      - "Profile"
+      summary: "Add a new profile to the system"
+      description: ""
+      operationId: profile_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "profile object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/Profile"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /profile/delete/{profile_id}:
+    x-swagger-router-controller: profile_controller
+    delete:
+      tags:
+      - "Profile"
+      summary: "Remove a profile on the system"
+      description: ""
+      operationId: profile_delete
+      parameters:
+      - in: "path"
+        name: "profile_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /profile/update/{profile_id}:
+    x-swagger-router-controller: profile_controller
+    put:
+      tags:
+      - "Profile"
+      summary: "Update a profile on the system"
+      description: ""
+      operationId: profile_update
+      parameters:
+      - in: "path"
+        name: "profile_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The profile object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/Profile"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"

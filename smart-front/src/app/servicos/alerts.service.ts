@@ -2,31 +2,30 @@ import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import { Alert } from '../shared/models/alert';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AlertsService {
 
   constructor(private http: Http) { }
-  //private url = 'http://localhost:8984/api/';
-  private url = 'http://isi.pe.senai.br:8984/api/';
 
 
   getAlertsPagination(limit: number, page: number): Observable<Alert[]> {
 
-    return this.http.get(this.url + 'alert/list/pagination/' + limit + '/' + page)
+    return this.http.get(environment.url + 'alert/list/pagination/' + limit + '/' + page)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   getAlertsPaginationByHashing(limit: number, page: number, hashing: string, status:string): Observable<Alert[]> {
 
-    return this.http.get(this.url + 'alert/list/all/hashing/' + limit + '/' + page + '/' + hashing +'/'+status)
+    return this.http.get(environment.url + 'alert/list/all/hashing/' + limit + '/' + page + '/' + hashing +'/'+status)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   retrieveAlertByPacking(id: string): Observable<Alert>{
-    return this.http.get(this.url + 'alert/retrieve/' + id)
+    return this.http.get(environment.url + 'alert/retrieve/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

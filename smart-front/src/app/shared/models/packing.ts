@@ -22,6 +22,7 @@ export class Packing {
   public supplier: string;
   public project: string;
   public hashPacking : string;
+  public serial : string;
   public _id : string;
 
     public constructor(fields ?: {
@@ -48,6 +49,7 @@ export class Packing {
       supplier?: string;
       project?: string;
       hashPacking ?: string;
+      serial ?: string;
       _id ?: string;
 }
 ){

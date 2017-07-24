@@ -1,0 +1,20 @@
+module.exports = [
+  "api/paths/index.yaml",
+  "api/paths/project.yaml",
+  "api/paths/packing.yaml",
+  "api/paths/plant.yaml",
+  "api/paths/alert.yaml",
+  "api/paths/admin_client.yaml",
+  "api/paths/admin.yaml",
+  "api/paths/checkpoint.yaml",
+  "api/paths/department.yaml",
+  "api/paths/historic_packings.yaml",
+  "api/paths/Logistic_operator.yaml",
+  "api/paths/profile.yaml",
+  "api/paths/route.yaml",
+  "api/paths/staff_supplier.yaml",
+  "api/paths/staff.yaml",
+  "api/paths/supplier.yaml",
+  "api/paths/tags.yaml",
+  "api/definitions/definitions.yaml"
+];

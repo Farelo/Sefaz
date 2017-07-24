@@ -1,0 +1,147 @@
+paths:
+  /historicpackings/retrieve/{historic_packings_id}:
+      x-swagger-router-controller: historic_packings_controller
+      get:
+        tags:
+          - "Historic Packings"
+        summary: "Get a historic packings on the system"
+        description: ""
+        operationId: historic_packings_read
+        parameters:
+        - in: "path"
+          name: "historic_packings_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /historicpackings/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: historic_packings_controller
+    get:
+      tags:
+        - "Historic Packings"
+      summary: "Get all historic packingss on the system by pagination"
+      description: ""
+      operationId: historic_packings_listPagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of historic packings that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns historic packings related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /historicpackings/list/all:
+    x-swagger-router-controller: historic_packings_controller
+    get:
+      tags:
+        - "Historic Packings"
+      summary: "Get all historic packings on the system"
+      description: ""
+      operationId: historic_packings_list
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /historicpackings/create:
+    x-swagger-router-controller: historic_packings_controller
+    post:
+      tags:
+      - "Historic Packings"
+      summary: "Add a new historic packings to the system"
+      description: ""
+      operationId: historic_packings_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Historic packings object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/HistoricPackings"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /historicpackings/delete/{historic_packings_id}:
+    x-swagger-router-controller: historic_packings_controller
+    delete:
+      tags:
+      - "Historic Packings"
+      summary: "Remove a historic packings on the system"
+      description: ""
+      operationId: historic_packings_delete
+      parameters:
+      - in: "path"
+        name: "historic_packings_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /historicpackings/update/{historic_packings_id}:
+    x-swagger-router-controller: historic_packings_controller
+    put:
+      tags:
+      - "Historic Packings"
+      summary: "Update a historic packings on the system"
+      description: ""
+      operationId: historic_packings_update
+      parameters:
+      - in: "path"
+        name: "historic_packings_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The historic packing object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/HistoricPackings"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"

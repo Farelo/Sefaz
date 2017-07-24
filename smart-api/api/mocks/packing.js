@@ -17,6 +17,11 @@ var packingSchema = new mongoose.Schema({
       amount_days: Number,
       last_time_missing: Date,
       time_countdown: Number,
+      latitude: Number,
+      longitude: Number,
+      temperature: Number,
+      serial: {type: String, required: true},
+      time_countdown: Number,
       correct_plant_factory: {
           type:mongoose.Schema.Types.ObjectId,
           ref:'Plant'

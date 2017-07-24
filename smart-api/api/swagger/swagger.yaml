@@ -1,3004 +1,2521 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  version: "0.0.1"
-  description: "An project that has how the main functionality recover packings on the system through Beacons and Checkpoints"
+  version: 0.0.1
+  description: >-
+    An project that has how the main functionality recover packings on the
+    system through Beacons and Checkpoints
   title: Reciclapac API Documentation
   contact:
-   name: "David W. F. Santos"
-   email: "david.santos@pe.senai.br"
-   url: "http://pe.senai.br"
-# during dev, should point to your local machine
-host: isi.pe.senai.br:8984
-# basePath prefixes all resource paths
+    name: David W. F. Santos
+    email: david.santos@pe.senai.br
+    url: 'http://pe.senai.br'
+host: 'localhost:8984'
 basePath: /api
-#
 schemes:
-  # tip: remove http to make production-grade
   - http
   - https
-# format of bodies a client can send (Content-Type)
 consumes:
   - application/json
-# format of the responses to the client (Accepts)
 produces:
   - application/json
 tags:
-- name: "Plant"
-  description: "All information about your Plants"
-- name: "Profile"
-  description: "All information about your Profiles"
-- name: "Project"
-  description: "All information about your Projects"
-- name: "Admin"
-  description: "All information about your Admins"
-- name: "Supplier"
-  description: "All information about your Suppliers"
-- name: "Company"
-  description: "All information about your Companies"
-- name: "Logistic Operator"
-  description: "All information about your Logistic Operators"
-- name: "Route"
-  description: "All information about your Routes"
-- name: "Department"
-  description: "All information about your Departments"
-- name: "Packing"
-  description: "All information about your Packings"
-- name: "Tag"
-  description: "All information about your Tags"
-- name: "Checkpoint"
-  description: "All information about your Checkpoints"
-- name: "Staff Supplier"
-  description: "All information about your Staff Supplier"
-- name: "Admin Client"
-  description: "All information about your Admin Client"
-- name: "Staff"
-  description: "All information about your Staff"
-- name: "Friendly Tag"
-  description: "All information about your Friendly Tag"
-- name: "Historic Tags"
-  description: "All information about your Historic Tags"
-- name: "Historic Packings"
-  description: "All information about your Historic Packings"
-- name: "Alerts"
-  description: "All information about your Alerts"
-
+  - name: Plant
+    description: All information about your Plants
+  - name: Profile
+    description: All information about your Profiles
+  - name: Project
+    description: All information about your Projects
+  - name: Admin
+    description: All information about your Admins
+  - name: Supplier
+    description: All information about your Suppliers
+  - name: Company
+    description: All information about your Companies
+  - name: Logistic Operator
+    description: All information about your Logistic Operators
+  - name: Route
+    description: All information about your Routes
+  - name: Department
+    description: All information about your Departments
+  - name: Packing
+    description: All information about your Packings
+  - name: Tag
+    description: All information about your Tags
+  - name: Checkpoint
+    description: All information about your Checkpoints
+  - name: Staff Supplier
+    description: All information about your Staff Supplier
+  - name: Admin Client
+    description: All information about your Admin Client
+  - name: Staff
+    description: All information about your Staff
+  - name: Historic Tags
+    description: All information about your Historic Tags
+  - name: Historic Packings
+    description: All information about your Historic Packings
+  - name: Alerts
+    description: All information about your Alerts
 paths:
-#-------------------------------------------START CRUD PLANT----------------------------------
-  /plant/retrieve/{plant_id}:
-      x-swagger-router-controller: plant_controller
-      get:
-        tags:
-          - "Plant"
-        summary: "Get a plant on the system"
-        description: ""
-        operationId: plant_read
-        parameters:
-        - in: "path"
-          name: "plant_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /plant/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: plant_controller
-    get:
-      tags:
-        - "Plant"
-      summary: "Get all plants on the system by pagination"
-      description: ""
-      operationId: plant_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of plants that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns plants related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /plant/list/all:
-    x-swagger-router-controller: plant_controller
-    get:
-      tags:
-        - "Plant"
-      summary: "Get all plants on the system"
-      description: ""
-      operationId: list_all
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /plant/create:
-    x-swagger-router-controller: plant_controller
-    post:
-      tags:
-      - "Plant"
-      summary: "Add a new plant to the system"
-      description: ""
-      operationId: plant_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Plant object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Plant"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /plant/delete/{plant_id}:
-    x-swagger-router-controller: plant_controller
-    delete:
-      tags:
-      - "Plant"
-      summary: "Remove a plant on the system"
-      description: ""
-      operationId: plant_delete
-      parameters:
-      - in: "path"
-        name: "plant_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /plant/update/{plant_id}:
-    x-swagger-router-controller: plant_controller
-    put:
-      tags:
-      - "Plant"
-      summary: "Update a plant on the system"
-      description: ""
-      operationId: plant_update
-      parameters:
-      - in: "path"
-        name: "plant_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The plant object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Plant"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD PLANT----------------------------------
-#-------------------------------------------START CRUD ALERTS----------------------------------
-  /alert/retrieve/{packing_id}:
-      x-swagger-router-controller: alert_controller
-      get:
-        tags:
-          - "Alerts"
-        summary: "Get a alert on the system"
-        description: ""
-        operationId: alert_read_by_packing
-        parameters:
-        - in: "path"
-          name: "packing_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /alert/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: alert_controller
-    get:
-      tags:
-        - "Alerts"
-      summary: "Get all alerts on the system by pagination"
-      description: ""
-      operationId: alert_list_pagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of alerts that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns alerts related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /alert/list/all/hashing/{limit}/{page}/{hashing}/{status}:
-    x-swagger-router-controller: alert_controller
-    get:
-      tags:
-        - "Alerts"
-      summary: "Get all alerts on the system"
-      description: ""
-      operationId: alert_list_hashing
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of alerts that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns alerts related a this page"
-        required: true
-        type: string
-      - in: "path"
-        name: "hashing"
-        description: "The especific page that returns alerts related a this page"
-        required: true
-        type: string
-      - in: "path"
-        name: "status"
-        description: "The especific page that returns alerts related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /alert/create:
-    x-swagger-router-controller: alert_controller
-    post:
-      tags:
-      - "Alerts"
-      summary: "Add a new alert to the system"
-      description: ""
-      operationId: alert_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Alert object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Alert"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /alert/delete/{alert_id}:
-    x-swagger-router-controller: alert_controller
-    delete:
-      tags:
-      - "Alerts"
-      summary: "Remove a alert on the system"
-      description: ""
-      operationId: alert_delete
-      parameters:
-      - in: "path"
-        name: "alert_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /alert/update/{alert_id}:
-    x-swagger-router-controller: alert_controller
-    put:
-      tags:
-      - "Alerts"
-      summary: "Update a alert on the system"
-      description: ""
-      operationId: alert_update
-      parameters:
-      - in: "path"
-        name: "alert_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The plant object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Alert"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD ALERT----------------------------------
-#-------------------------------------------START HISTORIC TAGS----------------------------------
-  /historictags/retrieve/{historic_tags_id}:
-      x-swagger-router-controller: historic_tags_controller
-      get:
-        tags:
-          - "Historic Tags"
-        summary: "Get a historic tags on the system"
-        description: ""
-        operationId: historic_tags_read
-        parameters:
-        - in: "path"
-          name: "historic_tags_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /historictags/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: historic_tags_controller
-    get:
-      tags:
-        - "Historic Tags"
-      summary: "Get all historic tags on the system by pagination"
-      description: ""
-      operationId: historic_tags_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of historic tags that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns historic tags related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /historictags/list/all:
-    x-swagger-router-controller: historic_tags_controller
-    get:
-      tags:
-        - "Historic Tags"
-      summary: "Get all historic tags on the system"
-      description: ""
-      operationId: historic_tags_list
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /historictags/create:
-    x-swagger-router-controller: historic_tags_controller
-    post:
-      tags:
-      - "Historic Tags"
-      summary: "Add a new historic tags to the system"
-      description: ""
-      operationId: historic_tags_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Historic tags object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/HistoricTags"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /historictags/delete/{historic_tags_id}:
-    x-swagger-router-controller: historic_tags_controller
-    delete:
-      tags:
-      - "Historic Tags"
-      summary: "Remove a historic tags on the system"
-      description: ""
-      operationId: historic_tags_delete
-      parameters:
-      - in: "path"
-        name: "historic_tags_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /historictags/update/{historic_tags_id}:
-    x-swagger-router-controller: historic_tags_controller
-    put:
-      tags:
-      - "Historic Tags"
-      summary: "Update a historic tags on the system"
-      description: ""
-      operationId: historic_tags_update
-      parameters:
-      - in: "path"
-        name: "historic_tags_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The historic tags object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/HistoricTags"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD HISTORIC TAGS----------------------------------
-#-------------------------------------------START HISTORIC PACKINGS----------------------------------
-  /historicpackings/retrieve/{historic_packings_id}:
-      x-swagger-router-controller: historic_packings_controller
-      get:
-        tags:
-          - "Historic Packings"
-        summary: "Get a historic packings on the system"
-        description: ""
-        operationId: historic_packings_read
-        parameters:
-        - in: "path"
-          name: "historic_packings_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /historicpackings/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: historic_packings_controller
-    get:
-      tags:
-        - "Historic Packings"
-      summary: "Get all historic packingss on the system by pagination"
-      description: ""
-      operationId: historic_packings_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of historic packings that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns historic packings related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /historicpackings/list/all:
-    x-swagger-router-controller: historic_packings_controller
-    get:
-      tags:
-        - "Historic Packings"
-      summary: "Get all historic packings on the system"
-      description: ""
-      operationId: historic_packings_list
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /historicpackings/create:
-    x-swagger-router-controller: historic_packings_controller
-    post:
-      tags:
-      - "Historic Packings"
-      summary: "Add a new historic packings to the system"
-      description: ""
-      operationId: historic_packings_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Historic packings object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/HistoricPackings"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /historicpackings/delete/{historic_packings_id}:
-    x-swagger-router-controller: historic_packings_controller
-    delete:
-      tags:
-      - "Historic Packings"
-      summary: "Remove a historic packings on the system"
-      description: ""
-      operationId: historic_packings_delete
-      parameters:
-      - in: "path"
-        name: "historic_packings_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /historicpackings/update/{historic_packings_id}:
-    x-swagger-router-controller: historic_packings_controller
-    put:
-      tags:
-      - "Historic Packings"
-      summary: "Update a historic packings on the system"
-      description: ""
-      operationId: historic_packings_update
-      parameters:
-      - in: "path"
-        name: "historic_packings_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The historic packing object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/HistoricPackings"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD HISTORIC PACKINGS----------------------------------
-#-------------------------------------------START CRUD PROJECT ----------------------------------
-  /project/retrieve/{project_id}:
-      x-swagger-router-controller: project_controller
-      get:
-        tags:
-          - "Project"
-        summary: "Get a project on the system"
-        description: ""
-        operationId: project_read
-        parameters:
-        - in: "path"
-          name: "project_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /project/list/pagination/{limit}/{page}:
+  '/project/retrieve/{project_id}':
     x-swagger-router-controller: project_controller
     get:
       tags:
-        - "Project"
-      summary: "Get all projects on the system by pagination"
-      description: ""
+        - Project
+      summary: Get a project on the system
+      description: ''
+      operationId: project_read
+      parameters:
+        - in: path
+          name: project_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/project/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: project_controller
+    get:
+      tags:
+        - Project
+      summary: Get all projects on the system by pagination
+      description: ''
       operationId: project_listPagination
       parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of projects that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns projects related a this page"
-        required: true
-        type: string
+        - in: path
+          name: limit
+          description: The limit of projects that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns projects related a this page
+          required: true
+          type: string
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: '#/definitions/ErrorResponse'
   /project/list/all:
     x-swagger-router-controller: project_controller
     get:
       tags:
-        - "Project"
-      summary: "Get all projects on the system"
-      description: ""
+        - Project
+      summary: Get all projects on the system
+      description: ''
       operationId: project_list
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: '#/definitions/ErrorResponse'
   /project/create:
     x-swagger-router-controller: project_controller
     post:
       tags:
-      - "Project"
-      summary: "Add a new project to the system"
-      description: ""
+        - Project
+      summary: Add a new project to the system
+      description: ''
       operationId: project_create
       parameters:
-      - in: "body"
-        name: "body"
-        description: "project object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Project"
+        - in: body
+          name: body
+          description: project object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Project'
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /project/delete/{project_id}:
+            $ref: '#/definitions/ErrorResponse'
+  '/project/delete/{project_id}':
     x-swagger-router-controller: project_controller
     delete:
       tags:
-      - "Project"
-      summary: "Remove a project on the system"
-      description: ""
+        - Project
+      summary: Remove a project on the system
+      description: ''
       operationId: project_delete
       parameters:
-      - in: "path"
-        name: "project_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
+        - in: path
+          name: project_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /project/update/{project_id}:
+            $ref: '#/definitions/ErrorResponse'
+  '/project/update/{project_id}':
     x-swagger-router-controller: project_controller
     put:
       tags:
-      - "Project"
-      summary: "Update a project on the system"
-      description: ""
+        - Project
+      summary: Update a project on the system
+      description: ''
       operationId: project_update
       parameters:
-      - in: "path"
-        name: "project_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Project"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD PROJECT ----------------------------------
-#-------------------------------------------START CRUD PROFILE ----------------------------------
-  /profile/retrieve/{profile_id}:
-      x-swagger-router-controller: profile_controller
-      get:
-        tags:
-          - "Profile"
-        summary: "Get a profile on the system"
-        description: ""
-        operationId: profile_read
-        parameters:
-        - in: "path"
-          name: "profile_id"
-          description: "The code that needs to be fetched"
+        - in: path
+          name: project_id
+          description: The code that needs to be fetchede
           required: true
           type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /profile/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: profile_controller
-    get:
-      tags:
-        - "Profile"
-      summary: "Get all profilies on the system by pagination"
-      description: ""
-      operationId: profile_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of profilies that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns profilies related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /profile/create:
-    x-swagger-router-controller: profile_controller
-    post:
-      tags:
-      - "Profile"
-      summary: "Add a new profile to the system"
-      description: ""
-      operationId: profile_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "profile object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Profile"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-  /profile/delete/{profile_id}:
-    x-swagger-router-controller: profile_controller
-    delete:
-      tags:
-      - "Profile"
-      summary: "Remove a profile on the system"
-      description: ""
-      operationId: profile_delete
-      parameters:
-      - in: "path"
-        name: "profile_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /profile/update/{profile_id}:
-    x-swagger-router-controller: profile_controller
-    put:
-      tags:
-      - "Profile"
-      summary: "Update a profile on the system"
-      description: ""
-      operationId: profile_update
-      parameters:
-      - in: "path"
-        name: "profile_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The profile object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Profile"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD PROFILE ----------------------------------
-#-------------------------------------------START CRUD STAFF SUPPLIER ----------------------------------
-  /staffsuppplier/retrieve/{staff_supplier_id}:
-      x-swagger-router-controller: staff_supplier_controller
-      get:
-        tags:
-          - "Staff Supplier"
-        summary: "Get a staff supplier on the system"
-        description: ""
-        operationId: staff_supplier_read
-        parameters:
-        - in: "path"
-          name: "staff_supplier_id"
-          description: "The code that needs to be fetched"
+        - in: body
+          name: body
+          description: The project object that will to be modified
           required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /staffsuppplier/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: staff_supplier_controller
-    get:
-      tags:
-        - "Staff Supplier"
-      summary: "Get all staff suppliers on the system by pagination"
-      description: ""
-      operationId: staff_supplier_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of staff supplier that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns staff suppliers related a this page"
-        required: true
-        type: string
+          schema:
+            $ref: '#/definitions/Project'
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /staffsuppplier/create:
-    x-swagger-router-controller: staff_supplier_controller
-    post:
-      tags:
-      - "Staff Supplier"
-      summary: "Add a new staff supplier to the system"
-      description: ""
-      operationId: staff_supplier_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "staff profile object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/StaffSupplier"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-  /staffsuppplier/delete/{staff_supplier_id}:
-    x-swagger-router-controller: staff_supplier_controller
-    delete:
-      tags:
-      - "Staff Supplier"
-      summary: "Remove a staff supplier on the system"
-      description: ""
-      operationId: staff_supplier_delete
-      parameters:
-      - in: "path"
-        name: "staff_supplier_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /staffsuppplier/update/{staff_supplier_id}:
-    x-swagger-router-controller: staff_supplier_controller
-    put:
-      tags:
-      - "Staff Supplier"
-      summary: "Update a profile on the system"
-      description: ""
-      operationId: staff_supplier_update
-      parameters:
-      - in: "path"
-        name: "staff_supplier_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The profile object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/StaffSupplier"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD STAFF SUPPLIER  ----------------------------------
-#-------------------------------------------START CRUD STAFF  ----------------------------------
-  /staff/retrieve/{staff_id}:
-      x-swagger-router-controller: staff_controller
-      get:
-        tags:
-          - "Staff"
-        summary: "Get a staff on the system"
-        description: ""
-        operationId: staff_read
-        parameters:
-        - in: "path"
-          name: "staff_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /staff/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: staff_controller
-    get:
-      tags:
-        - "Staff"
-      summary: "Get all staff on the system by pagination"
-      description: ""
-      operationId: staff_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of staff that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns staff related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /staff/create:
-    x-swagger-router-controller: staff_controller
-    post:
-      tags:
-      - "Staff"
-      summary: "Add a new staff to the system"
-      description: ""
-      operationId: staff_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "staff object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Staff"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-  /staff/delete/{staff_id}:
-    x-swagger-router-controller: staff_controller
-    delete:
-      tags:
-      - "Staff"
-      summary: "Remove a staff on the system"
-      description: ""
-      operationId: staff_delete
-      parameters:
-      - in: "path"
-        name: "staff_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /staff/update/{staff_id}:
-    x-swagger-router-controller: staff_controller
-    put:
-      tags:
-      - "Staff"
-      summary: "Update a staff on the system"
-      description: ""
-      operationId: staff_update
-      parameters:
-      - in: "path"
-        name: "staff_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The profile object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Staff"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD STAFF  ----------------------------------
-#-------------------------------------------START CRUD FRIENDLY TAG  ----------------------------------
-  /friendlytag/retrieve/{friendly_tag_id}:
-      x-swagger-router-controller: friendly_tag_controller
-      get:
-        tags:
-          - "Friendly Tag"
-        summary: "Get a friendly_tag on the system"
-        description: ""
-        operationId: friendly_tag_read
-        parameters:
-        - in: "path"
-          name: "friendly_tag_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /friendlytag/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: friendly_tag_controller
-    get:
-      tags:
-        - "Friendly Tag"
-      summary: "Get all friendly_tag on the system by pagination"
-      description: ""
-      operationId: friendly_tag_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of friendly_tag that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns friendly_tag related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /friendlytag/create:
-    x-swagger-router-controller: friendly_tag_controller
-    post:
-      tags:
-      - "Friendly Tag"
-      summary: "Add a new friendly_tag to the system"
-      description: ""
-      operationId: friendly_tag_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "friendly_tag object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/FriendlyTag"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-  /friendlytag/delete/{friendly_tag_id}:
-    x-swagger-router-controller: friendly_tag_controller
-    delete:
-      tags:
-      - "Friendly Tag"
-      summary: "Remove a friendly_tag on the system"
-      description: ""
-      operationId: friendly_tag_delete
-      parameters:
-      - in: "path"
-        name: "friendly_tag_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /friendlytag/update/{friendly_tag_id}:
-    x-swagger-router-controller: friendly_tag_controller
-    put:
-      tags:
-      - "Friendly Tag"
-      summary: "Update a friendly_tag on the system"
-      description: ""
-      operationId: friendly_tag_update
-      parameters:
-      - in: "path"
-        name: "friendly_tag_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The profile object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/FriendlyTag"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD STAFF  ----------------------------------
-#-------------------------------------------START CRUD COMPANY ----------------------------------
-  /company/retrieve/{company_id}:
-      x-swagger-router-controller: company_controller
-      get:
-        tags:
-          - "Company"
-        summary: "Get a company on the system"
-        description: ""
-        operationId: company_read
-        parameters:
-        - in: "path"
-          name: "company_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /company/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: company_controller
-    get:
-      tags:
-        - "Company"
-      summary: "Get all companies on the system by pagination"
-      description: ""
-      operationId: company_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of companies that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns companies related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /company/create:
-    x-swagger-router-controller: company_controller
-    post:
-      tags:
-      - "Company"
-      summary: "Add a new company to the system"
-      description: ""
-      operationId: company_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "company object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Company"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /company/delete/{company_id}:
-    x-swagger-router-controller: company_controller
-    delete:
-      tags:
-      - "Company"
-      summary: "Remove a company on the system"
-      description: ""
-      operationId: company_delete
-      parameters:
-      - in: "path"
-        name: "company_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /company/update/{company_id}:
-    x-swagger-router-controller: company_controller
-    put:
-      tags:
-      - "Company"
-      summary: "Update a company on the system"
-      description: ""
-      operationId: company_update
-      parameters:
-      - in: "path"
-        name: "company_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The company object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Company"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD COMPANY ----------------------------------
-#-------------------------------------------START CRUD ADMIN ----------------------------------
-  /admin/retrieve/{admin_id}:
-      x-swagger-router-controller: admin_controller
-      get:
-        tags:
-          - "Admin"
-        summary: "Get a admin on the system"
-        description: ""
-        operationId: admin_read
-        parameters:
-        - in: "path"
-          name: "admin_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /admin/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: admin_controller
-    get:
-      tags:
-        - "Admin"
-      summary: "Get all admins on the system by pagination"
-      description: ""
-      operationId: admin_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of admins that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns admins related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /admin/create:
-    x-swagger-router-controller: admin_controller
-    post:
-      tags:
-      - "Admin"
-      summary: "Add a new admin to the system"
-      description: ""
-      operationId: admin_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "admin object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Admin"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /admin/delete/{admin_id}:
-    x-swagger-router-controller: admin_controller
-    delete:
-      tags:
-      - "Admin"
-      summary: "Remove a admin on the system"
-      description: ""
-      operationId: admin_delete
-      parameters:
-      - in: "path"
-        name: "admin_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /admin/update/{admin_id}:
-    x-swagger-router-controller: admin_controller
-    put:
-      tags:
-      - "Admin"
-      summary: "Update a admin on the system"
-      description: ""
-      operationId: admin_update
-      parameters:
-      - in: "path"
-        name: "admin_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Admin"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD ADMIN ----------------------------------
-#-------------------------------------------START CRUD ADMIN CLIENT ----------------------------------
-  /adminclient/retrieve/{admin_client_id}:
-      x-swagger-router-controller: admin_client_controller
-      get:
-        tags:
-          - "Admin Client"
-        summary: "Get a admin on the system"
-        description: ""
-        operationId: admin_client_read
-        parameters:
-        - in: "path"
-          name: "admin_client_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /adminclient/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: admin_client_controller
-    get:
-      tags:
-        - "Admin Client"
-      summary: "Get all admin clients on the system by pagination"
-      description: ""
-      operationId: admin_client_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of admin clients that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns clients admins related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /adminclient/create:
-    x-swagger-router-controller: admin_client_controller
-    post:
-      tags:
-      - "Admin Client"
-      summary: "Add a new client admin to the system"
-      description: ""
-      operationId: admin_client_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "admin object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/ClientAdmin"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /adminclient/delete/{admin_client_id}:
-    x-swagger-router-controller: admin_client_controller
-    delete:
-      tags:
-      - "Admin Client"
-      summary: "Remove a client admin on the system"
-      description: ""
-      operationId: admin_client_delete
-      parameters:
-      - in: "path"
-        name: "admin_client_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /adminclient/update/{admin_client_id}:
-    x-swagger-router-controller: admin_client_controller
-    put:
-      tags:
-      - "Admin Client"
-      summary: "Update a client admin on the system"
-      description: ""
-      operationId: admin_client_update
-      parameters:
-      - in: "path"
-        name: "admin_client_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/ClientAdmin"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD ADMIN CLIENT----------------------------------
-#-------------------------------------------START CRUD LOGISTICOPERATOR ----------------------------------
-  /logistic_operator/retrieve/{logistic_operator_id}:
-      x-swagger-router-controller: logistic_operator_controller
-      get:
-        tags:
-          - "Logistic Operator"
-        summary: "Get a logistic operator on the system"
-        description: ""
-        operationId: logistic_operator_read
-        parameters:
-        - in: "path"
-          name: "logistic_operator_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /logistic_operator/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: logistic_operator_controller
-    get:
-      tags:
-        - "Logistic Operator"
-      summary: "Get all logistic_operators on the system by pagination"
-      description: ""
-      operationId: logistic_operator_listPagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of logistic operators that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns logistic operators related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /logistic_operator/create:
-    x-swagger-router-controller: logistic_operator_controller
-    post:
-      tags:
-      - "Logistic Operator"
-      summary: "Add a new logistic operator to the system"
-      description: ""
-      operationId: logistic_operator_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "logistic operator object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Logistic_operator"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /logistic_operator/delete/{logistic_operator_id}:
-    x-swagger-router-controller: logistic_operator_controller
-    delete:
-      tags:
-      - "Logistic Operator"
-      summary: "Remove a logistic operator on the system"
-      description: ""
-      operationId: logistic_operator_delete
-      parameters:
-      - in: "path"
-        name: "logistic_operator_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /logistic_operator/update/{logistic_operator_id}:
-    x-swagger-router-controller: logistic_operator_controller
-    put:
-      tags:
-      - "Logistic Operator"
-      summary: "Update a logistic operator on the system"
-      description: ""
-      operationId: logistic_operator_update
-      parameters:
-      - in: "path"
-        name: "logistic_operator_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Logistic_operator"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD LOGISTICOPERATOR ----------------------------------
-#-------------------------------------------START CRUD SUPPLIER ----------------------------------
-  /supplier/retrieve/{supplier_id}:
-      x-swagger-router-controller: supplier_controller
-      get:
-        tags:
-          - "Supplier"
-        summary: "Get a supplier on the system"
-        description: ""
-        operationId: supplier_read
-        parameters:
-        - in: "path"
-          name: "supplier_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /supplier/retrieve/duns/{supplier_duns}:
-      x-swagger-router-controller: supplier_controller
-      get:
-        tags:
-          - "Supplier"
-        summary: "Get a supplier on the system"
-        description: ""
-        operationId: supplier_read_by_duns
-        parameters:
-        - in: "path"
-          name: "supplier_duns"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /supplier/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: supplier_controller
-    get:
-      tags:
-        - "Supplier"
-      summary: "Get all suppliers on the system by pagination"
-      description: ""
-      operationId: supplier_list_pagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of suppliers that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns suppliers related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /supplier/list/all:
-    x-swagger-router-controller: supplier_controller
-    get:
-      tags:
-        - "Supplier"
-      summary: "Get all suppliers on the system "
-      description: ""
-      operationId: supplier_list_all
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /supplier/list/pagination/duns/{limit}/{page}/{supplier_id}:
-    x-swagger-router-controller: supplier_controller
-    get:
-      tags:
-        - "Supplier"
-      summary: "Get informations about packings that the supplier is responsible like actual local and plant"
-      description: ""
-      operationId: list_all_by_duns
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of suppliers that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns suppliers related a this page"
-        required: true
-        type: string
-      - in: "path"
-        name: "supplier_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /supplier/create:
-    x-swagger-router-controller: supplier_controller
-    post:
-      tags:
-      - "Supplier"
-      summary: "Add a new supplier to the system"
-      description: ""
-      operationId: supplier_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "supplier object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Supplier"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /supplier/delete/{supplier_id}:
-    x-swagger-router-controller: supplier_controller
-    delete:
-      tags:
-      - "Supplier"
-      summary: "Remove a supplier on the system"
-      description: ""
-      operationId: supplier_delete
-      parameters:
-      - in: "path"
-        name: "supplier_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /supplier/update/{supplier_id}:
-    x-swagger-router-controller: supplier_controller
-    put:
-      tags:
-      - "Supplier"
-      summary: "Update a supplier on the system"
-      description: ""
-      operationId: supplier_update
-      parameters:
-      - in: "path"
-        name: "supplier_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Supplier"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD SUPPLIER ----------------------------------
-#-------------------------------------------START CRUD DEPARTMENT ----------------------------------
-  /department/retrieve/{department_id}:
-      x-swagger-router-controller: department_controller
-      get:
-        tags:
-          - "Department"
-        summary: "Get a department on the system"
-        description: ""
-        operationId: department_read
-        parameters:
-        - in: "path"
-          name: "department_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /department/retrieve/name/{department_name}:
-      x-swagger-router-controller: department_controller
-      get:
-        tags:
-          - "Department"
-        summary: "Get a department by name on the system"
-        description: ""
-        operationId: department_read_by_name
-        parameters:
-        - in: "path"
-          name: "department_name"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /department/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: department_controller
-    get:
-      tags:
-        - "Department"
-      summary: "Get all departments on the system by pagination"
-      description: ""
-      operationId: department_list_pagination
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of departments that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns departments related a this page"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /department/list/all:
-    x-swagger-router-controller: department_controller
-    get:
-      tags:
-        - "Department"
-      summary: "Get all departments on the system"
-      description: ""
-      operationId: department_list_all
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /department/list/department/plant:
-    x-swagger-router-controller: department_controller
-    get:
-      tags:
-        - "Department"
-      summary: "Get all departments on the system by plant"
-      description: ""
-      operationId: list_department_by_plant
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /department/create:
-    x-swagger-router-controller: department_controller
-    post:
-      tags:
-      - "Department"
-      summary: "Add a new department to the system"
-      description: ""
-      operationId: department_create
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "department object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Department"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /department/delete/{department_id}:
-    x-swagger-router-controller: department_controller
-    delete:
-      tags:
-      - "Department"
-      summary: "Remove a department on the system"
-      description: ""
-      operationId: department_delete
-      parameters:
-      - in: "path"
-        name: "department_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /department/update/{department_id}:
-    x-swagger-router-controller: department_controller
-    put:
-      tags:
-      - "Department"
-      summary: "Update a department on the system"
-      description: ""
-      operationId: department_update
-      parameters:
-      - in: "path"
-        name: "department_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Department"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD DEPARTMENT ----------------------------------
-#-------------------------------------------START CRUD PACKING ----------------------------------
-  /packing/retrieve/{packing_id}:
-      x-swagger-router-controller: packing_controller
-      get:
-        tags:
-          - "Packing"
-        summary: "Get a packing on the system"
-        description: ""
-        operationId: packing_read
-        parameters:
-        - in: "path"
-          name: "packing_id"
-          description: "The code that needs to be fetched"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /packing/list/pagination/{limit}/{page}:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/retrieve/{packing_id}':
     x-swagger-router-controller: packing_controller
     get:
       tags:
-        - "Packing"
-      summary: "Get all packings on the system by pagination"
-      description: ""
+        - Packing
+      summary: Get a packing on the system
+      description: ''
+      operationId: packing_read
+      parameters:
+        - in: path
+          name: packing_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Get all packings on the system by pagination
+      description: ''
       operationId: packing_list_pagination
       parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of packings that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns packings related a this page"
-        required: true
-        type: string
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /packing/list/code/{packing_code}:
-      x-swagger-router-controller: packing_controller
-      get:
-        tags:
-          - "Packing"
-        summary: "Get a packing by code ...."
-        description: ""
-        operationId: list_by_code
-        parameters:
-        - in: "path"
-          name: "packing_code"
-          description: "The code that needs to be fetched"
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/list/code/{packing_code}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Get a packing by code ....
+      description: ''
+      operationId: list_by_code
+      parameters:
+        - in: path
+          name: packing_code
+          description: The code that needs to be fetched
           required: true
           type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /packing/list/department/{department}:
-      x-swagger-router-controller: packing_controller
-      get:
-        tags:
-          - "Packing"
-        summary: "Get list packing by department"
-        description: ""
-        operationId: list_packing_department
-        parameters:
-        - in: "path"
-          name: "department"
-          description: "The code that needs to be fetched"
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/list/department/{department}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Get list packing by department
+      description: ''
+      operationId: list_packing_department
+      parameters:
+        - in: path
+          name: department
+          description: The code that needs to be fetched
           required: true
           type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /packing/list/inventory/pagination/{limit}/{page}:
-      x-swagger-router-controller: packing_controller
-      get:
-        tags:
-          - "Packing"
-        summary: "Get a packing by code ...."
-        description: ""
-        operationId: list_all_inventory
-        parameters:
-        - in: "path"
-          name: "limit"
-          description: "The limit of packings that will be returned"
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/list/inventory/pagination/{limit}/{page}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Get a packing by code ....
+      description: ''
+      operationId: list_all_inventory
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
           required: true
           type: string
-        - in: "path"
-          name: "page"
-          description: "The especific page that returns packings related a this page"
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
           required: true
           type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   /packing/list/all/nobinded:
-      x-swagger-router-controller: packing_controller
-      get:
-        tags:
-          - "Packing"
-        summary: "Get a packings no binded."
-        description: ""
-        operationId: list_packing_no_binded
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Get a packings no binded.
+      description: ''
+      operationId: list_packing_no_binded
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   /packing/create:
     x-swagger-router-controller: packing_controller
     post:
       tags:
-      - "Packing"
-      summary: "Add a new packing to the system"
-      description: ""
+        - Packing
+      summary: Add a new packing to the system
+      description: ''
       operationId: packing_create
       parameters:
-      - in: "body"
-        name: "body"
-        description: "packing object that needs to be added to the system"
-        required: true
-        schema:
-          type: array
-          items:
-            $ref: "#/definitions/Packing"
+        - in: body
+          name: body
+          description: packing object that needs to be added to the system
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Packing'
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /packing/delete/{packing_id}:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/delete/{packing_id}':
     x-swagger-router-controller: packing_controller
     delete:
       tags:
-      - "Packing"
-      summary: "Remove a packing on the system"
-      description: ""
+        - Packing
+      summary: Remove a packing on the system
+      description: ''
       operationId: packing_delete
       parameters:
-      - in: "path"
-        name: "packing_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
+        - in: path
+          name: packing_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /packing/update/{packing_id}:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/update/{packing_id}':
     x-swagger-router-controller: packing_controller
     put:
       tags:
-      - "Packing"
-      summary: "Update a packing on the system"
-      description: ""
+        - Packing
+      summary: Update a packing on the system
+      description: ''
       operationId: packing_update
       parameters:
-      - in: "path"
-        name: "packing_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Packing"
+        - in: path
+          name: packing_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Packing'
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /packing/update/all/{code}/{supplier}:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/update/all/{code}/{supplier}':
     x-swagger-router-controller: packing_controller
     put:
       tags:
-      - "Packing"
-      summary: "Update all packings on the system based on query"
-      description: ""
+        - Packing
+      summary: Update all packings on the system based on query
+      description: ''
       operationId: packing_update_all_by_route
       parameters:
-      - in: "path"
-        name: "code"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "path"
-        name: "supplier"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/PackingHash"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD PACKING ----------------------------------
-#-------------------------------------------START CRUD ROUTE ----------------------------------
-  /route/retrieve/{route_id}:
-      x-swagger-router-controller: route_controller
-      get:
-        tags:
-          - "Route"
-        summary: "Get a route on the system"
-        description: ""
-        operationId: route_read
-        parameters:
-        - in: "path"
-          name: "route_id"
-          description: "The code that needs to be fetched"
+        - in: path
+          name: code
+          description: The code that needs to be fetchede
           required: true
           type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /route/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: route_controller
+        - in: path
+          name: supplier
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/PackingHash'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/plant/retrieve/{plant_id}':
+    x-swagger-router-controller: plant_controller
     get:
       tags:
-        - "Route"
-      summary: "Get all routes on the system by pagination"
-      description: ""
-      operationId: route_list_pagination
+        - Plant
+      summary: Get a plant on the system
+      description: ''
+      operationId: plant_read
       parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of routes that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns routes related a this page"
-        required: true
-        type: string
+        - in: path
+          name: plant_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /route/create:
-    x-swagger-router-controller: route_controller
+            $ref: '#/definitions/ErrorResponse'
+  '/plant/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: plant_controller
+    get:
+      tags:
+        - Plant
+      summary: Get all plants on the system by pagination
+      description: ''
+      operationId: plant_listPagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of plants that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns plants related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /plant/list/all:
+    x-swagger-router-controller: plant_controller
+    get:
+      tags:
+        - Plant
+      summary: Get all plants on the system
+      description: ''
+      operationId: list_all
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /plant/create:
+    x-swagger-router-controller: plant_controller
     post:
       tags:
-      - "Route"
-      summary: "Add a new route to the system"
-      description: ""
-      operationId: route_create
+        - Plant
+      summary: Add a new plant to the system
+      description: ''
+      operationId: plant_create
       parameters:
-      - in: "body"
-        name: "body"
-        description: "route object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/definitions/Route"
+        - in: body
+          name: body
+          description: Plant object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Plant'
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /route/delete/{route_id}:
-    x-swagger-router-controller: route_controller
+            $ref: '#/definitions/ErrorResponse'
+  '/plant/delete/{plant_id}':
+    x-swagger-router-controller: plant_controller
     delete:
       tags:
-      - "Route"
-      summary: "Remove a route on the system"
-      description: ""
-      operationId: route_delete
+        - Plant
+      summary: Remove a plant on the system
+      description: ''
+      operationId: plant_delete
       parameters:
-      - in: "path"
-        name: "route_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /route/update/{route_id}:
-    x-swagger-router-controller: route_controller
-    put:
-      tags:
-      - "Route"
-      summary: "Update a route on the system"
-      description: ""
-      operationId: route_update
-      parameters:
-      - in: "path"
-        name: "route_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          $ref: "#/definitions/Route"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD ROUTE ----------------------------------
-#-------------------------------------------START CRUD TAGS ----------------------------------
-  /tags/retrieve/{tags_id}:
-      x-swagger-router-controller: tags_controller
-      get:
-        tags:
-          - "Tag"
-        summary: "Get a tags on the system"
-        description: ""
-        operationId: tags_read
-        parameters:
-        - in: "path"
-          name: "tags_id"
-          description: "The code that needs to be fetched"
+        - in: path
+          name: plant_id
+          description: The code that needs to be fetched
           required: true
           type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /tags/list/pagination/{limit}/{page}:
-    x-swagger-router-controller: tags_controller
-    get:
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/plant/update/{plant_id}':
+    x-swagger-router-controller: plant_controller
+    put:
       tags:
-        - "Tag"
-      summary: "Get all tagss on the system by pagination that were binded and no binded with packings"
-      description: ""
-      operationId: tags_list_pagination
+        - Plant
+      summary: Update a plant on the system
+      description: ''
+      operationId: plant_update
       parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of tagss that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns tagss related a this page"
-        required: true
-        type: string
+        - in: path
+          name: plant_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The plant object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Plant'
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /tags/list/pagination/nobinded/{limit}/{page}:
-    x-swagger-router-controller: tags_controller
+            $ref: '#/definitions/ErrorResponse'
+  '/alert/retrieve/{packing_id}':
+    x-swagger-router-controller: alert_controller
     get:
       tags:
-        - "Tag"
-      summary: "Get all tags on the system by pagination that does not was still binded with the packing"
-      description: ""
-      operationId: tags_list_all_no_binded_pagination
+        - Alerts
+      summary: Get a alert on the system
+      description: ''
+      operationId: alert_read_by_packing
       parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of tagss that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns tagss related a this page"
-        required: true
-        type: string
+        - in: path
+          name: packing_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /tags/list/all/nobinded:
-    x-swagger-router-controller: tags_controller
+            $ref: '#/definitions/ErrorResponse'
+  '/alert/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: alert_controller
     get:
       tags:
-        - "Tag"
-      summary: "Get all tags on the system that does not was still binded with the packing"
-      description: ""
-      operationId: tags_list_all_no_binded
+        - Alerts
+      summary: Get all alerts on the system by pagination
+      description: ''
+      operationId: alert_list_pagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of alerts that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns alerts related a this page
+          required: true
+          type: string
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /tags/create:
-    x-swagger-router-controller: tags_controller
+            $ref: '#/definitions/ErrorResponse'
+  '/alert/list/all/hashing/{limit}/{page}/{hashing}/{status}':
+    x-swagger-router-controller: alert_controller
+    get:
+      tags:
+        - Alerts
+      summary: Get all alerts on the system
+      description: ''
+      operationId: alert_list_hashing
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of alerts that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns alerts related a this page
+          required: true
+          type: string
+        - in: path
+          name: hashing
+          description: The especific page that returns alerts related a this page
+          required: true
+          type: string
+        - in: path
+          name: status
+          description: The especific page that returns alerts related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /alert/create:
+    x-swagger-router-controller: alert_controller
     post:
       tags:
-      - "Tag"
-      summary: "Add a new tags to the system"
-      description: ""
-      operationId: tags_create
+        - Alerts
+      summary: Add a new alert to the system
+      description: ''
+      operationId: alert_create
       parameters:
-      - in: "body"
-        name: "body"
-        description: "tags object that needs to be added to the system"
-        required: true
-        schema:
-          type: array
-          items:
-            $ref: "#/definitions/Tag"
+        - in: body
+          name: body
+          description: Alert object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Alert'
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /tags/delete/{tags_id}:
-    x-swagger-router-controller: tags_controller
+            $ref: '#/definitions/ErrorResponse'
+  '/alert/delete/{alert_id}':
+    x-swagger-router-controller: alert_controller
     delete:
       tags:
-      - "Tag"
-      summary: "Remove a tags on the system"
-      description: ""
-      operationId: tags_delete
+        - Alerts
+      summary: Remove a alert on the system
+      description: ''
+      operationId: alert_delete
       parameters:
-      - in: "path"
-        name: "tags_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /tags/update/{tags_id}:
-    x-swagger-router-controller: tags_controller
-    put:
-      tags:
-      - "Tag"
-      summary: "Update a tags on the system"
-      description: ""
-      operationId: tags_update
-      parameters:
-      - in: "path"
-        name: "tags_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          type: array
-          items:
-            $ref: "#/definitions/Tag"
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD TAGS ----------------------------------
-#-------------------------------------------START CRUD CHECKPOINT ----------------------------------
-  /checkpoint/retrieve/{checkpoint_id}:
-      x-swagger-router-controller: checkpoint_controller
-      get:
-        tags:
-          - "Checkpoint"
-        summary: "Get a tags on the system"
-        description: ""
-        operationId: checkpoint_read
-        parameters:
-        - in: "path"
-          name: "checkpoint_id"
-          description: "The code that needs to be fetched"
+        - in: path
+          name: alert_id
+          description: The code that needs to be fetched
           required: true
           type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-  /checkpoint/list/pagination/{limit}/{page}:
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/alert/update/{alert_id}':
+    x-swagger-router-controller: alert_controller
+    put:
+      tags:
+        - Alerts
+      summary: Update a alert on the system
+      description: ''
+      operationId: alert_update
+      parameters:
+        - in: path
+          name: alert_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The plant object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Alert'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/adminclient/retrieve/{admin_client_id}':
+    x-swagger-router-controller: admin_client_controller
+    get:
+      tags:
+        - Admin Client
+      summary: Get a admin on the system
+      description: ''
+      operationId: admin_client_read
+      parameters:
+        - in: path
+          name: admin_client_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/adminclient/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: admin_client_controller
+    get:
+      tags:
+        - Admin Client
+      summary: Get all admin clients on the system by pagination
+      description: ''
+      operationId: admin_client_listPagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of admin clients that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns clients admins related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /adminclient/create:
+    x-swagger-router-controller: admin_client_controller
+    post:
+      tags:
+        - Admin Client
+      summary: Add a new client admin to the system
+      description: ''
+      operationId: admin_client_create
+      parameters:
+        - in: body
+          name: body
+          description: admin object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/ClientAdmin'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/adminclient/delete/{admin_client_id}':
+    x-swagger-router-controller: admin_client_controller
+    delete:
+      tags:
+        - Admin Client
+      summary: Remove a client admin on the system
+      description: ''
+      operationId: admin_client_delete
+      parameters:
+        - in: path
+          name: admin_client_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/adminclient/update/{admin_client_id}':
+    x-swagger-router-controller: admin_client_controller
+    put:
+      tags:
+        - Admin Client
+      summary: Update a client admin on the system
+      description: ''
+      operationId: admin_client_update
+      parameters:
+        - in: path
+          name: admin_client_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/ClientAdmin'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/admin/retrieve/{admin_id}':
+    x-swagger-router-controller: admin_controller
+    get:
+      tags:
+        - Admin
+      summary: Get a admin on the system
+      description: ''
+      operationId: admin_read
+      parameters:
+        - in: path
+          name: admin_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/admin/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: admin_controller
+    get:
+      tags:
+        - Admin
+      summary: Get all admins on the system by pagination
+      description: ''
+      operationId: admin_listPagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of admins that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns admins related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /admin/create:
+    x-swagger-router-controller: admin_controller
+    post:
+      tags:
+        - Admin
+      summary: Add a new admin to the system
+      description: ''
+      operationId: admin_create
+      parameters:
+        - in: body
+          name: body
+          description: admin object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Admin'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/admin/delete/{admin_id}':
+    x-swagger-router-controller: admin_controller
+    delete:
+      tags:
+        - Admin
+      summary: Remove a admin on the system
+      description: ''
+      operationId: admin_delete
+      parameters:
+        - in: path
+          name: admin_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/admin/update/{admin_id}':
+    x-swagger-router-controller: admin_controller
+    put:
+      tags:
+        - Admin
+      summary: Update a admin on the system
+      description: ''
+      operationId: admin_update
+      parameters:
+        - in: path
+          name: admin_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Admin'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/checkpoint/retrieve/{checkpoint_id}':
     x-swagger-router-controller: checkpoint_controller
     get:
       tags:
-        - "Checkpoint"
-      summary: "Get all checkpoints on the system by pagination"
-      description: ""
+        - Checkpoint
+      summary: Get a tags on the system
+      description: ''
+      operationId: checkpoint_read
+      parameters:
+        - in: path
+          name: checkpoint_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/checkpoint/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: checkpoint_controller
+    get:
+      tags:
+        - Checkpoint
+      summary: Get all checkpoints on the system by pagination
+      description: ''
       operationId: checkpoint_list_pagination
       parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of checkpoints that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns checkpoints related a this page"
-        required: true
-        type: string
+        - in: path
+          name: limit
+          description: The limit of checkpoints that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns checkpoints related a this page
+          required: true
+          type: string
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: '#/definitions/ErrorResponse'
   /checkpoint/list/all:
     x-swagger-router-controller: checkpoint_controller
     get:
       tags:
-        - "Checkpoint"
-      summary: "Get all checkpoints on the system "
-      description: ""
+        - Checkpoint
+      summary: 'Get all checkpoints on the system '
+      description: ''
       operationId: checkpoint_list_all
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: '#/definitions/ErrorResponse'
   /checkpoint/create:
     x-swagger-router-controller: checkpoint_controller
     post:
       tags:
-      - "Checkpoint"
-      summary: "Add a new checkpoint to the system"
-      description: ""
+        - Checkpoint
+      summary: Add a new checkpoint to the system
+      description: ''
       operationId: checkpoint_create
       parameters:
-      - in: "body"
-        name: "body"
-        description: "checkpoint object that needs to be added to the system"
-        required: true
-        schema:
-          type: array
-          items:
-            $ref: "#/definitions/Checkpoint"
+        - in: body
+          name: body
+          description: checkpoint object that needs to be added to the system
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Checkpoint'
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-
-
-  /checkpoint/delete/{checkpoint_id}:
+            $ref: '#/definitions/ErrorResponse'
+  '/checkpoint/delete/{checkpoint_id}':
     x-swagger-router-controller: checkpoint_controller
     delete:
       tags:
-      - "Checkpoint"
-      summary: "Remove a checkpoint on the system"
-      description: ""
+        - Checkpoint
+      summary: Remove a checkpoint on the system
+      description: ''
       operationId: checkpoint_delete
       parameters:
-      - in: "path"
-        name: "checkpoint_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
+        - in: path
+          name: checkpoint_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /checkpoint/update/{checkpoint_id}:
+            $ref: '#/definitions/ErrorResponse'
+  '/checkpoint/update/{checkpoint_id}':
     x-swagger-router-controller: checkpoint_controller
     put:
       tags:
-      - "Checkpoint"
-      summary: "Update a checkpoint on the system"
-      description: ""
+        - Checkpoint
+      summary: Update a checkpoint on the system
+      description: ''
       operationId: checkpoint_update
       parameters:
-      - in: "path"
-        name: "checkpoint_id"
-        description: "The code that needs to be fetchede"
-        required: true
-        type: string
-      - in: "body"
-        name: "body"
-        description: "The project object that will to be modified"
-        required: true
-        schema:
-          type: array
-          items:
-            $ref: "#/definitions/Checkpoint"
+        - in: path
+          name: checkpoint_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Checkpoint'
       responses:
-        200:
-          description: "Message"
+        '200':
+          description: Message
           schema:
-            $ref: "#/definitions/SuccessResponse"
+            $ref: '#/definitions/SuccessResponse'
         default:
-          description: "Error"
+          description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-
-#-------------------------------------------FINISH CRUD TAGS ----------------------------------
+            $ref: '#/definitions/ErrorResponse'
+  '/department/retrieve/{department_id}':
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - Department
+      summary: Get a department on the system
+      description: ''
+      operationId: department_read
+      parameters:
+        - in: path
+          name: department_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/department/retrieve/name/{department_name}':
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - Department
+      summary: Get a department by name on the system
+      description: ''
+      operationId: department_read_by_name
+      parameters:
+        - in: path
+          name: department_name
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/department/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - Department
+      summary: Get all departments on the system by pagination
+      description: ''
+      operationId: department_list_pagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of departments that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns departments related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /department/list/all:
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - Department
+      summary: Get all departments on the system
+      description: ''
+      operationId: department_list_all
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /department/list/department/plant:
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - Department
+      summary: Get all departments on the system by plant
+      description: ''
+      operationId: list_department_by_plant
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /department/create:
+    x-swagger-router-controller: department_controller
+    post:
+      tags:
+        - Department
+      summary: Add a new department to the system
+      description: ''
+      operationId: department_create
+      parameters:
+        - in: body
+          name: body
+          description: department object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Department'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/department/delete/{department_id}':
+    x-swagger-router-controller: department_controller
+    delete:
+      tags:
+        - Department
+      summary: Remove a department on the system
+      description: ''
+      operationId: department_delete
+      parameters:
+        - in: path
+          name: department_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/department/update/{department_id}':
+    x-swagger-router-controller: department_controller
+    put:
+      tags:
+        - Department
+      summary: Update a department on the system
+      description: ''
+      operationId: department_update
+      parameters:
+        - in: path
+          name: department_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Department'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/historicpackings/retrieve/{historic_packings_id}':
+    x-swagger-router-controller: historic_packings_controller
+    get:
+      tags:
+        - Historic Packings
+      summary: Get a historic packings on the system
+      description: ''
+      operationId: historic_packings_read
+      parameters:
+        - in: path
+          name: historic_packings_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/historicpackings/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: historic_packings_controller
+    get:
+      tags:
+        - Historic Packings
+      summary: Get all historic packingss on the system by pagination
+      description: ''
+      operationId: historic_packings_listPagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of historic packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: >-
+            The especific page that returns historic packings related a this
+            page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /historicpackings/list/all:
+    x-swagger-router-controller: historic_packings_controller
+    get:
+      tags:
+        - Historic Packings
+      summary: Get all historic packings on the system
+      description: ''
+      operationId: historic_packings_list
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /historicpackings/create:
+    x-swagger-router-controller: historic_packings_controller
+    post:
+      tags:
+        - Historic Packings
+      summary: Add a new historic packings to the system
+      description: ''
+      operationId: historic_packings_create
+      parameters:
+        - in: body
+          name: body
+          description: Historic packings object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/HistoricPackings'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/historicpackings/delete/{historic_packings_id}':
+    x-swagger-router-controller: historic_packings_controller
+    delete:
+      tags:
+        - Historic Packings
+      summary: Remove a historic packings on the system
+      description: ''
+      operationId: historic_packings_delete
+      parameters:
+        - in: path
+          name: historic_packings_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/historicpackings/update/{historic_packings_id}':
+    x-swagger-router-controller: historic_packings_controller
+    put:
+      tags:
+        - Historic Packings
+      summary: Update a historic packings on the system
+      description: ''
+      operationId: historic_packings_update
+      parameters:
+        - in: path
+          name: historic_packings_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The historic packing object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/HistoricPackings'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/logistic_operator/retrieve/{logistic_operator_id}':
+    x-swagger-router-controller: logistic_operator_controller
+    get:
+      tags:
+        - Logistic Operator
+      summary: Get a logistic operator on the system
+      description: ''
+      operationId: logistic_operator_read
+      parameters:
+        - in: path
+          name: logistic_operator_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/logistic_operator/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: logistic_operator_controller
+    get:
+      tags:
+        - Logistic Operator
+      summary: Get all logistic_operators on the system by pagination
+      description: ''
+      operationId: logistic_operator_listPagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of logistic operators that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: >-
+            The especific page that returns logistic operators related a this
+            page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /logistic_operator/create:
+    x-swagger-router-controller: logistic_operator_controller
+    post:
+      tags:
+        - Logistic Operator
+      summary: Add a new logistic operator to the system
+      description: ''
+      operationId: logistic_operator_create
+      parameters:
+        - in: body
+          name: body
+          description: logistic operator object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Logistic_operator'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/logistic_operator/delete/{logistic_operator_id}':
+    x-swagger-router-controller: logistic_operator_controller
+    delete:
+      tags:
+        - Logistic Operator
+      summary: Remove a logistic operator on the system
+      description: ''
+      operationId: logistic_operator_delete
+      parameters:
+        - in: path
+          name: logistic_operator_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/logistic_operator/update/{logistic_operator_id}':
+    x-swagger-router-controller: logistic_operator_controller
+    put:
+      tags:
+        - Logistic Operator
+      summary: Update a logistic operator on the system
+      description: ''
+      operationId: logistic_operator_update
+      parameters:
+        - in: path
+          name: logistic_operator_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Logistic_operator'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/profile/retrieve/{profile_id}':
+    x-swagger-router-controller: profile_controller
+    get:
+      tags:
+        - Profile
+      summary: Get a profile on the system
+      description: ''
+      operationId: profile_read
+      parameters:
+        - in: path
+          name: profile_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/profile/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: profile_controller
+    get:
+      tags:
+        - Profile
+      summary: Get all profilies on the system by pagination
+      description: ''
+      operationId: profile_listPagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of profilies that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns profilies related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /profile/create:
+    x-swagger-router-controller: profile_controller
+    post:
+      tags:
+        - Profile
+      summary: Add a new profile to the system
+      description: ''
+      operationId: profile_create
+      parameters:
+        - in: body
+          name: body
+          description: profile object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Profile'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/profile/delete/{profile_id}':
+    x-swagger-router-controller: profile_controller
+    delete:
+      tags:
+        - Profile
+      summary: Remove a profile on the system
+      description: ''
+      operationId: profile_delete
+      parameters:
+        - in: path
+          name: profile_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/profile/update/{profile_id}':
+    x-swagger-router-controller: profile_controller
+    put:
+      tags:
+        - Profile
+      summary: Update a profile on the system
+      description: ''
+      operationId: profile_update
+      parameters:
+        - in: path
+          name: profile_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The profile object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Profile'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/route/retrieve/{route_id}':
+    x-swagger-router-controller: route_controller
+    get:
+      tags:
+        - Route
+      summary: Get a route on the system
+      description: ''
+      operationId: route_read
+      parameters:
+        - in: path
+          name: route_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/route/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: route_controller
+    get:
+      tags:
+        - Route
+      summary: Get all routes on the system by pagination
+      description: ''
+      operationId: route_list_pagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of routes that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns routes related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /route/create:
+    x-swagger-router-controller: route_controller
+    post:
+      tags:
+        - Route
+      summary: Add a new route to the system
+      description: ''
+      operationId: route_create
+      parameters:
+        - in: body
+          name: body
+          description: route object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Route'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/route/delete/{route_id}':
+    x-swagger-router-controller: route_controller
+    delete:
+      tags:
+        - Route
+      summary: Remove a route on the system
+      description: ''
+      operationId: route_delete
+      parameters:
+        - in: path
+          name: route_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/route/update/{route_id}':
+    x-swagger-router-controller: route_controller
+    put:
+      tags:
+        - Route
+      summary: Update a route on the system
+      description: ''
+      operationId: route_update
+      parameters:
+        - in: path
+          name: route_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Route'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/staffsuppplier/retrieve/{staff_supplier_id}':
+    x-swagger-router-controller: staff_supplier_controller
+    get:
+      tags:
+        - Staff Supplier
+      summary: Get a staff supplier on the system
+      description: ''
+      operationId: staff_supplier_read
+      parameters:
+        - in: path
+          name: staff_supplier_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/staffsuppplier/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: staff_supplier_controller
+    get:
+      tags:
+        - Staff Supplier
+      summary: Get all staff suppliers on the system by pagination
+      description: ''
+      operationId: staff_supplier_listPagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of staff supplier that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns staff suppliers related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /staffsuppplier/create:
+    x-swagger-router-controller: staff_supplier_controller
+    post:
+      tags:
+        - Staff Supplier
+      summary: Add a new staff supplier to the system
+      description: ''
+      operationId: staff_supplier_create
+      parameters:
+        - in: body
+          name: body
+          description: staff profile object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/StaffSupplier'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/staffsuppplier/delete/{staff_supplier_id}':
+    x-swagger-router-controller: staff_supplier_controller
+    delete:
+      tags:
+        - Staff Supplier
+      summary: Remove a staff supplier on the system
+      description: ''
+      operationId: staff_supplier_delete
+      parameters:
+        - in: path
+          name: staff_supplier_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/staffsuppplier/update/{staff_supplier_id}':
+    x-swagger-router-controller: staff_supplier_controller
+    put:
+      tags:
+        - Staff Supplier
+      summary: Update a profile on the system
+      description: ''
+      operationId: staff_supplier_update
+      parameters:
+        - in: path
+          name: staff_supplier_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The profile object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/StaffSupplier'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/staff/retrieve/{staff_id}':
+    x-swagger-router-controller: staff_controller
+    get:
+      tags:
+        - Staff
+      summary: Get a staff on the system
+      description: ''
+      operationId: staff_read
+      parameters:
+        - in: path
+          name: staff_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/staff/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: staff_controller
+    get:
+      tags:
+        - Staff
+      summary: Get all staff on the system by pagination
+      description: ''
+      operationId: staff_listPagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of staff that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns staff related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /staff/create:
+    x-swagger-router-controller: staff_controller
+    post:
+      tags:
+        - Staff
+      summary: Add a new staff to the system
+      description: ''
+      operationId: staff_create
+      parameters:
+        - in: body
+          name: body
+          description: staff object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Staff'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/staff/delete/{staff_id}':
+    x-swagger-router-controller: staff_controller
+    delete:
+      tags:
+        - Staff
+      summary: Remove a staff on the system
+      description: ''
+      operationId: staff_delete
+      parameters:
+        - in: path
+          name: staff_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/staff/update/{staff_id}':
+    x-swagger-router-controller: staff_controller
+    put:
+      tags:
+        - Staff
+      summary: Update a staff on the system
+      description: ''
+      operationId: staff_update
+      parameters:
+        - in: path
+          name: staff_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The profile object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Staff'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/supplier/retrieve/{supplier_id}':
+    x-swagger-router-controller: supplier_controller
+    get:
+      tags:
+        - Supplier
+      summary: Get a supplier on the system
+      description: ''
+      operationId: supplier_read
+      parameters:
+        - in: path
+          name: supplier_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/supplier/retrieve/duns/{supplier_duns}':
+    x-swagger-router-controller: supplier_controller
+    get:
+      tags:
+        - Supplier
+      summary: Get a supplier on the system
+      description: ''
+      operationId: supplier_read_by_duns
+      parameters:
+        - in: path
+          name: supplier_duns
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/supplier/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: supplier_controller
+    get:
+      tags:
+        - Supplier
+      summary: Get all suppliers on the system by pagination
+      description: ''
+      operationId: supplier_list_pagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of suppliers that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns suppliers related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /supplier/list/all:
+    x-swagger-router-controller: supplier_controller
+    get:
+      tags:
+        - Supplier
+      summary: 'Get all suppliers on the system '
+      description: ''
+      operationId: supplier_list_all
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/supplier/list/pagination/duns/{limit}/{page}/{supplier_id}':
+    x-swagger-router-controller: supplier_controller
+    get:
+      tags:
+        - Supplier
+      summary: >-
+        Get informations about packings that the supplier is responsible like
+        actual local and plant
+      description: ''
+      operationId: list_all_by_duns
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of suppliers that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns suppliers related a this page
+          required: true
+          type: string
+        - in: path
+          name: supplier_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /supplier/create:
+    x-swagger-router-controller: supplier_controller
+    post:
+      tags:
+        - Supplier
+      summary: Add a new supplier to the system
+      description: ''
+      operationId: supplier_create
+      parameters:
+        - in: body
+          name: body
+          description: supplier object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Supplier'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/supplier/delete/{supplier_id}':
+    x-swagger-router-controller: supplier_controller
+    delete:
+      tags:
+        - Supplier
+      summary: Remove a supplier on the system
+      description: ''
+      operationId: supplier_delete
+      parameters:
+        - in: path
+          name: supplier_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/supplier/update/{supplier_id}':
+    x-swagger-router-controller: supplier_controller
+    put:
+      tags:
+        - Supplier
+      summary: Update a supplier on the system
+      description: ''
+      operationId: supplier_update
+      parameters:
+        - in: path
+          name: supplier_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Supplier'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/tags/retrieve/{tags_id}':
+    x-swagger-router-controller: tags_controller
+    get:
+      tags:
+        - Tag
+      summary: Get a tags on the system
+      description: ''
+      operationId: tags_read
+      parameters:
+        - in: path
+          name: tags_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/tags/list/pagination/{limit}/{page}':
+    x-swagger-router-controller: tags_controller
+    get:
+      tags:
+        - Tag
+      summary: >-
+        Get all tagss on the system by pagination that were binded and no binded
+        with packings
+      description: ''
+      operationId: tags_list_pagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of tagss that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns tagss related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/tags/list/pagination/nobinded/{limit}/{page}':
+    x-swagger-router-controller: tags_controller
+    get:
+      tags:
+        - Tag
+      summary: >-
+        Get all tags on the system by pagination that does not was still binded
+        with the packing
+      description: ''
+      operationId: tags_list_all_no_binded_pagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of tagss that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns tagss related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /tags/list/all/nobinded:
+    x-swagger-router-controller: tags_controller
+    get:
+      tags:
+        - Tag
+      summary: >-
+        Get all tags on the system that does not was still binded with the
+        packing
+      description: ''
+      operationId: tags_list_all_no_binded
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /tags/create:
+    x-swagger-router-controller: tags_controller
+    post:
+      tags:
+        - Tag
+      summary: Add a new tags to the system
+      description: ''
+      operationId: tags_create
+      parameters:
+        - in: body
+          name: body
+          description: tags object that needs to be added to the system
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Tag'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/tags/delete/{tags_id}':
+    x-swagger-router-controller: tags_controller
+    delete:
+      tags:
+        - Tag
+      summary: Remove a tags on the system
+      description: ''
+      operationId: tags_delete
+      parameters:
+        - in: path
+          name: tags_id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/tags/update/{tags_id}':
+    x-swagger-router-controller: tags_controller
+    put:
+      tags:
+        - Tag
+      summary: Update a tags on the system
+      description: ''
+      operationId: tags_update
+      parameters:
+        - in: path
+          name: tags_id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Tag'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
 definitions:
   Route:
     type: object
@@ -3012,14 +2529,14 @@ definitions:
       packing_code:
         type: string
       estimeted_time:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       time_countdown:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       last_time:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
   Alert:
     type: object
     properties:
@@ -3052,25 +2569,27 @@ definitions:
       type:
         type: string
       weigth:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       width:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       heigth:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       length:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       capacity:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       tag_mac:
         type: string
       supplier:
         type: string
       project:
+        type: string
+      serial:
         type: string
   Department:
     type: object
@@ -3080,17 +2599,17 @@ definitions:
       plant:
         type: string
   Tag:
-    type : object
+    type: object
     properties:
       code:
         type: string
   FriendlyTag:
-    type : object
+    type: object
     properties:
       tag_mac:
         type: string
   Checkpoint:
-    type : object
+    type: object
     properties:
       code:
         type: string
@@ -3163,12 +2682,6 @@ definitions:
     properties:
       name:
         type: string
-      # lat:
-      #   type: "integer"
-      #   format: "int64"
-      # lng:
-      #   type: "integer"
-      #   format: "int64"
   Project:
     type: object
     properties:
@@ -3197,8 +2710,8 @@ definitions:
         type: string
       historic:
         type: array
-        items :
-          $ref : '#/definitions/historictag'
+        items:
+          $ref: '#/definitions/historictag'
   historictag:
     type: object
     properties:
@@ -3211,8 +2724,8 @@ definitions:
         type: string
       historic:
         type: array
-        items :
-          $ref : '#/definitions/historicpacking'
+        items:
+          $ref: '#/definitions/historicpacking'
   historicpacking:
     type: object
     properties:
@@ -3231,10 +2744,10 @@ definitions:
     properties:
       message:
         type: string
-        description:  a short comment
+        description: a short comment
       code:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
         description: type of error
       response:
         type: object

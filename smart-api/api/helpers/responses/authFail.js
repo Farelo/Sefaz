@@ -1,0 +1,9 @@
+"use strict";
+
+var HTTPStatus = require("http-status");
+
+function authFail(req, res) {
+    res.status(HTTPStatus.UNAUTHORIZED).json({jsonapi: { "version": "1.0" }, UNAUTHORIZED: 'The credentials are invalid!' });
+}
+
+module.exports = authFail;

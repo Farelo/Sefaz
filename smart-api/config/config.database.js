@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
-var autoIncrement = require('mongoose-auto-increment');
+
 
 module.exports  = function(){
-	var connection = mongoose.connect('mongodb://localhost/reciclopac');
-	autoIncrement.initialize(connection);
+	mongoose.connect('mongodb://localhost/reciclopac');
 
 	mongoose.connection.on('connected', function () {
 		console.log('Mongoose default connection open to ');
@@ -17,7 +16,7 @@ module.exports  = function(){
 		console.log('Mongoose default connection disconnected');
 	});
 
-	mongoose.connection.on('open', function () {
+	mongoose.connection.on('openUri', function () {
 		console.log('Mongoose default connection is open');
 	});
 }

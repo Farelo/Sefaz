@@ -1,0 +1,169 @@
+paths:
+#-------------------------------------------START CRUD ALERTS----------------------------------
+  /alert/retrieve/{packing_id}:
+      x-swagger-router-controller: alert_controller
+      get:
+        tags:
+          - "Alerts"
+        summary: "Get a alert on the system"
+        description: ""
+        operationId: alert_read_by_packing
+        parameters:
+        - in: "path"
+          name: "packing_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /alert/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: alert_controller
+    get:
+      tags:
+        - "Alerts"
+      summary: "Get all alerts on the system by pagination"
+      description: ""
+      operationId: alert_list_pagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of alerts that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns alerts related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /alert/list/all/hashing/{limit}/{page}/{hashing}/{status}:
+    x-swagger-router-controller: alert_controller
+    get:
+      tags:
+        - "Alerts"
+      summary: "Get all alerts on the system"
+      description: ""
+      operationId: alert_list_hashing
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of alerts that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns alerts related a this page"
+        required: true
+        type: string
+      - in: "path"
+        name: "hashing"
+        description: "The especific page that returns alerts related a this page"
+        required: true
+        type: string
+      - in: "path"
+        name: "status"
+        description: "The especific page that returns alerts related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /alert/create:
+    x-swagger-router-controller: alert_controller
+    post:
+      tags:
+      - "Alerts"
+      summary: "Add a new alert to the system"
+      description: ""
+      operationId: alert_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Alert object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/Alert"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /alert/delete/{alert_id}:
+    x-swagger-router-controller: alert_controller
+    delete:
+      tags:
+      - "Alerts"
+      summary: "Remove a alert on the system"
+      description: ""
+      operationId: alert_delete
+      parameters:
+      - in: "path"
+        name: "alert_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /alert/update/{alert_id}:
+    x-swagger-router-controller: alert_controller
+    put:
+      tags:
+      - "Alerts"
+      summary: "Update a alert on the system"
+      description: ""
+      operationId: alert_update
+      parameters:
+      - in: "path"
+        name: "alert_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The plant object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/Alert"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+#-------------------------------------------FINISH CRUD ALERT----------------------------------

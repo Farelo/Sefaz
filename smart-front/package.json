@@ -33,6 +33,7 @@
     "ng2-bootstrap": "^1.6.3",
     "ng2-map": "^0.16.5",
     "ngx-bootstrap": "^1.7.1",
+    "ngx-validators": "^3.0.0",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
   },

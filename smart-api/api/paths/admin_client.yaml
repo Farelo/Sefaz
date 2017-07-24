@@ -1,0 +1,131 @@
+paths:
+#-------------------------------------------START CRUD ADMIN CLIENT ----------------------------------
+  /adminclient/retrieve/{admin_client_id}:
+      x-swagger-router-controller: admin_client_controller
+      get:
+        tags:
+          - "Admin Client"
+        summary: "Get a admin on the system"
+        description: ""
+        operationId: admin_client_read
+        parameters:
+        - in: "path"
+          name: "admin_client_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /adminclient/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: admin_client_controller
+    get:
+      tags:
+        - "Admin Client"
+      summary: "Get all admin clients on the system by pagination"
+      description: ""
+      operationId: admin_client_listPagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of admin clients that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns clients admins related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /adminclient/create:
+    x-swagger-router-controller: admin_client_controller
+    post:
+      tags:
+      - "Admin Client"
+      summary: "Add a new client admin to the system"
+      description: ""
+      operationId: admin_client_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "admin object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/ClientAdmin"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /adminclient/delete/{admin_client_id}:
+    x-swagger-router-controller: admin_client_controller
+    delete:
+      tags:
+      - "Admin Client"
+      summary: "Remove a client admin on the system"
+      description: ""
+      operationId: admin_client_delete
+      parameters:
+      - in: "path"
+        name: "admin_client_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /adminclient/update/{admin_client_id}:
+    x-swagger-router-controller: admin_client_controller
+    put:
+      tags:
+      - "Admin Client"
+      summary: "Update a client admin on the system"
+      description: ""
+      operationId: admin_client_update
+      parameters:
+      - in: "path"
+        name: "admin_client_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The project object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/ClientAdmin"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"

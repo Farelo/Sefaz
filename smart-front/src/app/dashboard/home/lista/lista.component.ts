@@ -3,7 +3,6 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { ModalComponent } from '../../../shared/modal/modal.component';
 import { PositionModalComponent } from '../../../shared/modal/alerta/position/alerta.component';
 import { MissingModalComponent } from '../../../shared/modal/alerta/missing/alerta.component';
 import { AlertsService } from '../../../servicos/alerts.service';

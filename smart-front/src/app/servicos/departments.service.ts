@@ -2,52 +2,51 @@ import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import { Department } from '../shared/models/department';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class DepartmentService {
 
   constructor(private http: Http) { }
-  //private url = 'http://localhost:8984/api/';
-  private url = 'http://isi.pe.senai.br:8984/api/';
 
   getDepartmentsPagination(limit: number, page: number): Observable<Department[]> {
-    return this.http.get(this.url + 'department/list/pagination/' + limit + '/' + page)
+    return this.http.get(environment.url + 'department/list/pagination/' + limit + '/' + page)
       .map((res: Response) => res.json().departments)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   retrieveAll(): Observable<Department[]> {
-    return this.http.get(this.url + 'department/list/all')
+    return this.http.get(environment.url + 'department/list/all')
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   retrieveByPlants(): Observable<any[]> {
-    return this.http.get(this.url + 'department/list/department/plant')
+    return this.http.get(environment.url + 'department/list/department/plant')
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   retrieveDepartment(id: string): Observable<Department>{
-    return this.http.get(this.url + 'department/retrieve/' + id)
+    return this.http.get(environment.url + 'department/retrieve/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   updateDepartment(id: string, department: Department): Observable<Department>{
-    return this.http.put(this.url + 'department/update/' + id,department)
+    return this.http.put(environment.url + 'department/update/' + id,department)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   deleteDepartment(id: string): Observable<Department>{
-    return this.http.delete(this.url + 'department/delete/' + id)
+    return this.http.delete(environment.url + 'department/delete/' + id)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   createDepartment(department: Department): Observable<Department>{
-    return this.http.post(this.url + 'department/create', department)
+    return this.http.post(environment.url + 'department/create', department)
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

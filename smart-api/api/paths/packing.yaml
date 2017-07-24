@@ -1,0 +1,261 @@
+paths:
+#-------------------------------------------START CRUD PACKING ----------------------------------
+  /packing/retrieve/{packing_id}:
+      x-swagger-router-controller: packing_controller
+      get:
+        tags:
+          - "Packing"
+        summary: "Get a packing on the system"
+        description: ""
+        operationId: packing_read
+        parameters:
+        - in: "path"
+          name: "packing_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /packing/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - "Packing"
+      summary: "Get all packings on the system by pagination"
+      description: ""
+      operationId: packing_list_pagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of packings that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns packings related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /packing/list/code/{packing_code}:
+      x-swagger-router-controller: packing_controller
+      get:
+        tags:
+          - "Packing"
+        summary: "Get a packing by code ...."
+        description: ""
+        operationId: list_by_code
+        parameters:
+        - in: "path"
+          name: "packing_code"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /packing/list/department/{department}:
+      x-swagger-router-controller: packing_controller
+      get:
+        tags:
+          - "Packing"
+        summary: "Get list packing by department"
+        description: ""
+        operationId: list_packing_department
+        parameters:
+        - in: "path"
+          name: "department"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /packing/list/inventory/pagination/{limit}/{page}:
+      x-swagger-router-controller: packing_controller
+      get:
+        tags:
+          - "Packing"
+        summary: "Get a packing by code ...."
+        description: ""
+        operationId: list_all_inventory
+        parameters:
+        - in: "path"
+          name: "limit"
+          description: "The limit of packings that will be returned"
+          required: true
+          type: string
+        - in: "path"
+          name: "page"
+          description: "The especific page that returns packings related a this page"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /packing/list/all/nobinded:
+      x-swagger-router-controller: packing_controller
+      get:
+        tags:
+          - "Packing"
+        summary: "Get a packings no binded."
+        description: ""
+        operationId: list_packing_no_binded
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+
+  /packing/create:
+    x-swagger-router-controller: packing_controller
+    post:
+      tags:
+      - "Packing"
+      summary: "Add a new packing to the system"
+      description: ""
+      operationId: packing_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "packing object that needs to be added to the system"
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: "#/definitions/Packing"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /packing/delete/{packing_id}:
+    x-swagger-router-controller: packing_controller
+    delete:
+      tags:
+      - "Packing"
+      summary: "Remove a packing on the system"
+      description: ""
+      operationId: packing_delete
+      parameters:
+      - in: "path"
+        name: "packing_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /packing/update/{packing_id}:
+    x-swagger-router-controller: packing_controller
+    put:
+      tags:
+      - "Packing"
+      summary: "Update a packing on the system"
+      description: ""
+      operationId: packing_update
+      parameters:
+      - in: "path"
+        name: "packing_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The project object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/Packing"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /packing/update/all/{code}/{supplier}:
+    x-swagger-router-controller: packing_controller
+    put:
+      tags:
+      - "Packing"
+      summary: "Update all packings on the system based on query"
+      description: ""
+      operationId: packing_update_all_by_route
+      parameters:
+      - in: "path"
+        name: "code"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "path"
+        name: "supplier"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The project object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/PackingHash"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+#-------------------------------------------FINISH CRUD PACKING ----------------------------------

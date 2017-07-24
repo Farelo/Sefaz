@@ -1,0 +1,190 @@
+paths:
+#-------------------------------------------START CRUD DEPARTMENT ----------------------------------
+  /department/retrieve/{department_id}:
+      x-swagger-router-controller: department_controller
+      get:
+        tags:
+          - "Department"
+        summary: "Get a department on the system"
+        description: ""
+        operationId: department_read
+        parameters:
+        - in: "path"
+          name: "department_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /department/retrieve/name/{department_name}:
+      x-swagger-router-controller: department_controller
+      get:
+        tags:
+          - "Department"
+        summary: "Get a department by name on the system"
+        description: ""
+        operationId: department_read_by_name
+        parameters:
+        - in: "path"
+          name: "department_name"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /department/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - "Department"
+      summary: "Get all departments on the system by pagination"
+      description: ""
+      operationId: department_list_pagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of departments that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns departments related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /department/list/all:
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - "Department"
+      summary: "Get all departments on the system"
+      description: ""
+      operationId: department_list_all
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /department/list/department/plant:
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - "Department"
+      summary: "Get all departments on the system by plant"
+      description: ""
+      operationId: list_department_by_plant
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /department/create:
+    x-swagger-router-controller: department_controller
+    post:
+      tags:
+      - "Department"
+      summary: "Add a new department to the system"
+      description: ""
+      operationId: department_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "department object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/Department"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /department/delete/{department_id}:
+    x-swagger-router-controller: department_controller
+    delete:
+      tags:
+      - "Department"
+      summary: "Remove a department on the system"
+      description: ""
+      operationId: department_delete
+      parameters:
+      - in: "path"
+        name: "department_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /department/update/{department_id}:
+    x-swagger-router-controller: department_controller
+    put:
+      tags:
+      - "Department"
+      summary: "Update a department on the system"
+      description: ""
+      operationId: department_update
+      parameters:
+      - in: "path"
+        name: "department_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The project object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/Department"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+#-------------------------------------------FINISH CRUD DEPARTMENT ----------------------------------

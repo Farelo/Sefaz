@@ -1,12 +1,11 @@
 import { Observable } from 'rxjs/Observable';
 
 import * as io from 'socket.io-client';
-
+import { environment } from '../../environments/environment';
 
 
 export class ChatService {
 
-  private url = 'http://isi.pe.senai.br:8984';
 
   private socket;
 
@@ -24,7 +23,7 @@ export class ChatService {
 
     let observable = new Observable(observer => {
 
-      this.socket = io(this.url);
+      this.socket = io(environment.url);
 
       this.socket.on('message', (data) => {
         console.log(data);

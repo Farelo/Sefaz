@@ -1,0 +1,61 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  description: "An project that has how the main functionality recover packings on the system through Beacons and Checkpoints"
+  title: Reciclapac API Documentation
+  contact:
+   name: "David W. F. Santos"
+   email: "david.santos@pe.senai.br"
+   url: "http://pe.senai.br"
+# during dev, should point to your local machine
+host: isi.pe.senai.br:8984
+# basePath prefixes all resource paths
+basePath: /api
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+tags:
+- name: "Plant"
+  description: "All information about your Plants"
+- name: "Profile"
+  description: "All information about your Profiles"
+- name: "Project"
+  description: "All information about your Projects"
+- name: "Admin"
+  description: "All information about your Admins"
+- name: "Supplier"
+  description: "All information about your Suppliers"
+- name: "Company"
+  description: "All information about your Companies"
+- name: "Logistic Operator"
+  description: "All information about your Logistic Operators"
+- name: "Route"
+  description: "All information about your Routes"
+- name: "Department"
+  description: "All information about your Departments"
+- name: "Packing"
+  description: "All information about your Packings"
+- name: "Tag"
+  description: "All information about your Tags"
+- name: "Checkpoint"
+  description: "All information about your Checkpoints"
+- name: "Staff Supplier"
+  description: "All information about your Staff Supplier"
+- name: "Admin Client"
+  description: "All information about your Admin Client"
+- name: "Staff"
+  description: "All information about your Staff"
+- name: "Historic Tags"
+  description: "All information about your Historic Tags"
+- name: "Historic Packings"
+  description: "All information about your Historic Packings"
+- name: "Alerts"
+  description: "All information about your Alerts"

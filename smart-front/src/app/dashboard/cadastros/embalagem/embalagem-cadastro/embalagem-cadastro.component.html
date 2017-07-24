@@ -4,19 +4,35 @@
   <div class="row">
     <div class="col-md-6">
 
-      <div class="campo">
-        <p class="descricao">CÓDIGO</p>
-        <p class="explicacao">Ex. "994475545"</p>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.code">
+      <div class="row">
+
+
+      <div class="col-md-8">
+        <div class="campo">
+          <p class="descricao">CÓDIGO</p>
+          <p class="explicacao">Ex. "994475545"</p>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.code">
+          </div>
         </div>
       </div>
+
+      <div class="col-md-4">
+        <div class="campo">
+          <p class="descricao">SERIAL</p>
+          <p class="explicacao">Ex. "001"</p>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.serial">
+          </div>
+        </div>
+      </div>
+  </div>
 
 
       <div class="campo">
         <p class="descricao">ASSOCIE A TAG</p>
         <p class="explicacao">Associe uma tag a sua embalagem.</p>
-        <select  [(ngModel)]="packing.tag_mac">
+        <select [(ngModel)]="packing.tag_mac">
            <option value="">Associe uma Tag</option>
            <option *ngFor="let obj of tags" [ngValue]="obj.mac">{{obj.code}}</option>
         </select>
@@ -26,7 +42,7 @@
         <p class="descricao">TIPO DA EMBALAGEM</p>
         <p class="explicacao">Ex. "Rack Metálico"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Rack Metálico" aria-describedby="basic-addon2"  [(ngModel)]="packing.type">
+          <input type="text" class="form-control" placeholder="Rack Metálico" aria-describedby="basic-addon2" [(ngModel)]="packing.type">
         </div>
       </div>
 
@@ -34,14 +50,14 @@
         <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
         <p class="explicacao">Ex. "57 PEÇAS"</p>
         <div class="placeholder" data-placeholder="PEÇAS">
-          <input type="number"  min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.capacity" />
+          <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.capacity" />
         </div>
       </div>
 
       <div class="campo">
         <p class="descricao">ASSOCIE UM FORNECEDOR</p>
         <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
-        <select  [(ngModel)]="packing.supplier">
+        <select [(ngModel)]="packing.supplier">
            <option value="">Associe um Fornecedor</option>
            <option *ngFor="let obj of suppliers" [ngValue]="obj._id">{{obj.name}}</option>
         </select>
@@ -54,7 +70,7 @@
       <div class="campo">
         <p class="descricao">TARA (KG)</p>
         <p class="explicacao">Ex. "57 kg"</p>
-        <div class="placeholder"  min="0" data-placeholder="KG">
+        <div class="placeholder" min="0" data-placeholder="KG">
           <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.weight" />
         </div>
       </div>
@@ -70,7 +86,7 @@
       <div class="campo">
         <p class="descricao">LARGURA (M)</p>
         <p class="explicacao">Ex. "57 m"</p>
-        <div class="placeholder"  min="0" data-placeholder="METROS">
+        <div class="placeholder" min="0" data-placeholder="METROS">
           <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.width" />
         </div>
       </div>
@@ -78,7 +94,7 @@
       <div class="campo">
         <p class="descricao">ALTURA (M)</p>
         <p class="explicacao">Ex. "57 m"</p>
-        <div class="placeholder"  min="0" data-placeholder="METROS">
+        <div class="placeholder" min="0" data-placeholder="METROS">
           <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.heigth" />
         </div>
       </div>
@@ -86,7 +102,7 @@
       <div class="campo">
         <p class="descricao">ASSOCIE UMA PLATAFORMA</p>
         <p class="explicacao">Associe uma plataforma a sua embalagem.</p>
-        <select  [(ngModel)]="packing.project">
+        <select [(ngModel)]="packing.project">
            <option value="">Associe uma Plataforma</option>
            <option *ngFor="let obj of projects" [ngValue]="obj._id">{{obj.name}}</option>
         </select>
@@ -98,8 +114,8 @@
   </div>
   <br />
   <div class="botoes">
-    <button routerLink="/rc/cadastros/embalagem" class="botaoVoltar" >VOLTAR</button>
-    <button class="botaoRegistrar"  (click)="registerPacking()">REGISTRAR</button>
+    <button routerLink="/rc/cadastros/embalagem" class="botaoVoltar">VOLTAR</button>
+    <button class="botaoRegistrar" (click)="registerPacking()">REGISTRAR</button>
   </div>
   <br />
 

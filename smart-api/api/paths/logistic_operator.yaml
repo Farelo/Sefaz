@@ -1,0 +1,131 @@
+paths:
+#-------------------------------------------START CRUD LOGISTICOPERATOR ----------------------------------
+  /logistic_operator/retrieve/{logistic_operator_id}:
+      x-swagger-router-controller: logistic_operator_controller
+      get:
+        tags:
+          - "Logistic Operator"
+        summary: "Get a logistic operator on the system"
+        description: ""
+        operationId: logistic_operator_read
+        parameters:
+        - in: "path"
+          name: "logistic_operator_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /logistic_operator/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: logistic_operator_controller
+    get:
+      tags:
+        - "Logistic Operator"
+      summary: "Get all logistic_operators on the system by pagination"
+      description: ""
+      operationId: logistic_operator_listPagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of logistic operators that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns logistic operators related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /logistic_operator/create:
+    x-swagger-router-controller: logistic_operator_controller
+    post:
+      tags:
+      - "Logistic Operator"
+      summary: "Add a new logistic operator to the system"
+      description: ""
+      operationId: logistic_operator_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "logistic operator object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/Logistic_operator"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /logistic_operator/delete/{logistic_operator_id}:
+    x-swagger-router-controller: logistic_operator_controller
+    delete:
+      tags:
+      - "Logistic Operator"
+      summary: "Remove a logistic operator on the system"
+      description: ""
+      operationId: logistic_operator_delete
+      parameters:
+      - in: "path"
+        name: "logistic_operator_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /logistic_operator/update/{logistic_operator_id}:
+    x-swagger-router-controller: logistic_operator_controller
+    put:
+      tags:
+      - "Logistic Operator"
+      summary: "Update a logistic operator on the system"
+      description: ""
+      operationId: logistic_operator_update
+      parameters:
+      - in: "path"
+        name: "logistic_operator_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The project object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/Logistic_operator"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"

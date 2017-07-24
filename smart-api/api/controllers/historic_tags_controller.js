@@ -21,7 +21,6 @@ exports.historic_tags_read = function(req, res) {
     historic_tags.findOne({
             _id: req.swagger.params.historic_tags_id.value
         })
-        .populate('friendly_tag')
         .then(historic_tags => res.json({code:200, message: "OK", data: historic_tags}))
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 };
@@ -54,7 +53,6 @@ exports.historic_tags_delete = function(req, res) { 
  */
 exports.historic_tags_list = function(req, res) { 
     historic_tags.find({})
-        .populate('friendly_tag')
         .then(historic_tags => res.json({code:200, message: "OK", data: historic_tags}))
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 };
@@ -62,7 +60,6 @@ exports.historic_tags_list = function(req, res) { 
 exports.historic_tags_listPagination = function(req, res) { 
     var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
     var historic_tagsList = historic_tags.find({})
-        .populate('friendly_tag')
         .skip(value).limit(parseInt(req.swagger.params.limit.value))
         .sort({_id: 1});
 

@@ -1,0 +1,244 @@
+definitions:
+  Route:
+    type: object
+    properties:
+      supplier:
+        type: string
+      plant_factory:
+        type: string
+      plant_supplier:
+        type: string
+      packing_code:
+        type: string
+      estimeted_time:
+        type: "integer"
+        format: "int64"
+      time_countdown:
+        type: "integer"
+        format: "int64"
+      last_time:
+        type: "integer"
+        format: "int64"
+  Alert:
+    type: object
+    properties:
+      actual_plant:
+        type: string
+      department:
+        type: string
+      correct_plant:
+        type: string
+      packing:
+        type: string
+      supplier:
+        type: string
+      status:
+        type: string
+      hashpacking:
+        type: string
+  PackingHash:
+    type: object
+    properties:
+      hashPacking:
+        type: string
+  Packing:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+      type:
+        type: string
+      weigth:
+        type: "integer"
+        format: "int64"
+      width:
+        type: "integer"
+        format: "int64"
+      heigth:
+        type: "integer"
+        format: "int64"
+      length:
+        type: "integer"
+        format: "int64"
+      capacity:
+        type: "integer"
+        format: "int64"
+      tag_mac:
+        type: string
+      supplier:
+        type: string
+      project:
+        type: string
+      serial:
+        type: string
+  Department:
+    type: object
+    properties:
+      name:
+        type: string
+      plant:
+        type: string
+  Tag:
+    type : object
+    properties:
+      code:
+        type: string
+  FriendlyTag:
+    type : object
+    properties:
+      tag_mac:
+        type: string
+  Checkpoint:
+    type : object
+    properties:
+      code:
+        type: string
+      department:
+        type: string
+  Supplier:
+    type: object
+    properties:
+      name:
+        type: string
+      cnpj:
+        type: string
+      duns:
+        type: string
+      profile:
+        type: string
+      plant:
+        type: string
+  StaffSupplier:
+    type: object
+    properties:
+      name:
+        type: string
+      addrees:
+        type: string
+      profile:
+        type: string
+      supplier:
+        type: string
+  Staff:
+    type: object
+    properties:
+      name:
+        type: string
+      addrees:
+        type: string
+      profile:
+        type: string
+  Admin:
+    type: object
+    properties:
+      name:
+        type: string
+      cpf:
+        type: string
+      profile:
+        type: string
+  ClientAdmin:
+    type: object
+    properties:
+      name:
+        type: string
+      cnpj:
+        type: string
+      addrees:
+        type: string
+      profile:
+        type: string
+  Logistic_operator:
+    type: object
+    properties:
+      name:
+        type: string
+      cpf:
+        type: string
+      profile:
+        type: string
+  Plant:
+    type: object
+    properties:
+      name:
+        type: string
+      # lat:
+      #   type: "integer"
+      #   format: "int64"
+      # lng:
+      #   type: "integer"
+      #   format: "int64"
+  Project:
+    type: object
+    properties:
+      name:
+        type: string
+  Profile:
+    type: object
+    properties:
+      profile:
+        type: string
+      password:
+        type: string
+      email:
+        type: string
+  Company:
+    type: object
+    properties:
+      name:
+        type: string
+      cnpj:
+        type: string
+  HistoricTags:
+    type: object
+    properties:
+      friendly_tag:
+        type: string
+      historic:
+        type: array
+        items :
+          $ref : '#/definitions/historictag'
+  historictag:
+    type: object
+    properties:
+      tag_mac:
+        type: string
+  HistoricPackings:
+    type: object
+    properties:
+      packing:
+        type: string
+      historic:
+        type: array
+        items :
+          $ref : '#/definitions/historicpacking'
+  historicpacking:
+    type: object
+    properties:
+      plant:
+        type: string
+  SuccessResponse:
+    type: object
+    properties:
+      message:
+        type: string
+        description: a short comment
+    required:
+      - message
+  ErrorResponse:
+    type: object
+    properties:
+      message:
+        type: string
+        description:  a short comment
+      code:
+        type: "integer"
+        format: "int64"
+        description: type of error
+      response:
+        type: object
+        description: cause of the error
+    required:
+      - message

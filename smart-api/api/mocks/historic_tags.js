@@ -6,11 +6,7 @@ var historicTagsSchema = new mongoose.Schema({
         tag_mac: String,
         data: {type: Date, default: Date.now}
       }
-  ],
-  friendly_tag: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'FriendlyTag'
-  }
+  ]
 });
 
 

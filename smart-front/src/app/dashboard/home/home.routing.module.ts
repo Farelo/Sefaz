@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { HomeComponent } from './home.component';
 import { TimelineComponent } from './timeline/timeline.component';
-import { ModalComponent } from '../../shared/modal/modal.component';
 import { DetalhesComponent } from './timeline/detalhes/detalhes.component';
 import { ListaComponent } from './lista/lista.component';
 import { DashboardComponent } from '../../dashboard/dashboard.component';

@@ -56,7 +56,7 @@ export class PlantaCadastrarComponent implements OnInit {
 
 
   ngOnInit() {
-
+  console.log(this.plant);
   }
 
 }

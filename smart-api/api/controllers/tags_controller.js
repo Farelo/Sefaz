@@ -5,7 +5,6 @@
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var tags = mongoose.model('Tags');
-var friendly_tag = mongoose.model('FriendlyTag');
 const request = require('request');
 var query = require('../helpers/queries/complex_queries_tag');
 /**

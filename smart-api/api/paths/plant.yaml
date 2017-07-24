@@ -1,0 +1,150 @@
+paths:
+#-------------------------------------------START CRUD PLANT----------------------------------
+  /plant/retrieve/{plant_id}:
+      x-swagger-router-controller: plant_controller
+      get:
+        tags:
+          - "Plant"
+        summary: "Get a plant on the system"
+        description: ""
+        operationId: plant_read
+        parameters:
+        - in: "path"
+          name: "plant_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /plant/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: plant_controller
+    get:
+      tags:
+        - "Plant"
+      summary: "Get all plants on the system by pagination"
+      description: ""
+      operationId: plant_listPagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of plants that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns plants related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /plant/list/all:
+    x-swagger-router-controller: plant_controller
+    get:
+      tags:
+        - "Plant"
+      summary: "Get all plants on the system"
+      description: ""
+      operationId: list_all
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /plant/create:
+    x-swagger-router-controller: plant_controller
+    post:
+      tags:
+      - "Plant"
+      summary: "Add a new plant to the system"
+      description: ""
+      operationId: plant_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Plant object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/Plant"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /plant/delete/{plant_id}:
+    x-swagger-router-controller: plant_controller
+    delete:
+      tags:
+      - "Plant"
+      summary: "Remove a plant on the system"
+      description: ""
+      operationId: plant_delete
+      parameters:
+      - in: "path"
+        name: "plant_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /plant/update/{plant_id}:
+    x-swagger-router-controller: plant_controller
+    put:
+      tags:
+      - "Plant"
+      summary: "Update a plant on the system"
+      description: ""
+      operationId: plant_update
+      parameters:
+      - in: "path"
+        name: "plant_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The plant object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/Plant"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+#-------------------------------------------FINISH CRUD PLANT----------------------------------

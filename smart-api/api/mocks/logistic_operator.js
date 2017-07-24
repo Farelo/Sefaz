@@ -7,7 +7,15 @@ var logisticOperatorSchema = new mongoose.Schema({
     profile: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Profile'
-    }
+    },
+    plant: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Plant'
+    },
+    suppliers: [{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Supplier'
+    }]
 
 });
  

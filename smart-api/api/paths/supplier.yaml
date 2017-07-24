@@ -1,0 +1,206 @@
+paths:
+#-------------------------------------------START CRUD SUPPLIER ----------------------------------
+  /supplier/retrieve/{supplier_id}:
+      x-swagger-router-controller: supplier_controller
+      get:
+        tags:
+          - "Supplier"
+        summary: "Get a supplier on the system"
+        description: ""
+        operationId: supplier_read
+        parameters:
+        - in: "path"
+          name: "supplier_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /supplier/retrieve/duns/{supplier_duns}:
+      x-swagger-router-controller: supplier_controller
+      get:
+        tags:
+          - "Supplier"
+        summary: "Get a supplier on the system"
+        description: ""
+        operationId: supplier_read_by_duns
+        parameters:
+        - in: "path"
+          name: "supplier_duns"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /supplier/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: supplier_controller
+    get:
+      tags:
+        - "Supplier"
+      summary: "Get all suppliers on the system by pagination"
+      description: ""
+      operationId: supplier_list_pagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of suppliers that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns suppliers related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /supplier/list/all:
+    x-swagger-router-controller: supplier_controller
+    get:
+      tags:
+        - "Supplier"
+      summary: "Get all suppliers on the system "
+      description: ""
+      operationId: supplier_list_all
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /supplier/list/pagination/duns/{limit}/{page}/{supplier_id}:
+    x-swagger-router-controller: supplier_controller
+    get:
+      tags:
+        - "Supplier"
+      summary: "Get informations about packings that the supplier is responsible like actual local and plant"
+      description: ""
+      operationId: list_all_by_duns
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of suppliers that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns suppliers related a this page"
+        required: true
+        type: string
+      - in: "path"
+        name: "supplier_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /supplier/create:
+    x-swagger-router-controller: supplier_controller
+    post:
+      tags:
+      - "Supplier"
+      summary: "Add a new supplier to the system"
+      description: ""
+      operationId: supplier_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "supplier object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/Supplier"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /supplier/delete/{supplier_id}:
+    x-swagger-router-controller: supplier_controller
+    delete:
+      tags:
+      - "Supplier"
+      summary: "Remove a supplier on the system"
+      description: ""
+      operationId: supplier_delete
+      parameters:
+      - in: "path"
+        name: "supplier_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /supplier/update/{supplier_id}:
+    x-swagger-router-controller: supplier_controller
+    put:
+      tags:
+      - "Supplier"
+      summary: "Update a supplier on the system"
+      description: ""
+      operationId: supplier_update
+      parameters:
+      - in: "path"
+        name: "supplier_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The project object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/Supplier"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+#-------------------------------------------FINISH CRUD SUPPLIER ----------------------------------
