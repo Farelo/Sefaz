@@ -68,6 +68,11 @@ td, th, tr, .excluir, .editar, p {
   color: white;
   box-shadow: 0px 0px 7px #000;
   border: none;
+  height: 34px;
+  background-image: url("../../../assets/images/mais.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 15px;
 }
 
 .form-control {  font-size: 15px; }
@@ -244,7 +249,7 @@ option:hover { background-color: lightgrey; }
 
 .placeholder::after {
     position: absolute;
-    right: 10px;
+    right: 25px;
     top: 6px;
     content: attr(data-placeholder);
     pointer-events: none;
