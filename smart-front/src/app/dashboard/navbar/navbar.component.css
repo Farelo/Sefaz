@@ -11,7 +11,7 @@ nav {
   padding-bottom: 2px;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1200px) {
   nav {
   padding: 0px 110px 2px 110px;}
 }
@@ -101,7 +101,7 @@ nav > ul li ul li > a {
 	  display: none;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 832px) {
 	nav ul {
 		  display: none;
 	}
@@ -170,4 +170,19 @@ color: #6382c9!important;
 }
 nav a {
 		color: #777;
+}
+.usuario {
+	width: 34px;
+	/*height: 40px;*/
+	background-image: url("../../../assets/images/usuario1.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 20px;
+}
+.usuario:hover {
+	background-image: url("../../../assets/images/usuario2.png");
+	border-bottom: none;
+}
+.aio {
+	height: 40px;
 }
