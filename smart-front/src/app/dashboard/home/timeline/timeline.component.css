@@ -1,4 +1,12 @@
 * { font-family: 'Roboto', sans-serif; }
+
+@media (max-width: 576px) {	.conteudoHome {		padding: 0px;  } }
+@media (min-width: 576px) and (max-width: 768px) {	.conteudoHome {		padding: 0px;  } }
+@media (min-width: 768px) and (max-width: 992px) {	.conteudoHome {		padding: 0px;  } }
+@media (min-width: 992px) and (max-width: 1200px) {	.conteudoHome {		padding: 0px 30px;  } }
+@media (min-width: 1200px) {	.conteudoHome {		padding: 0px 60px;  } }
+@media (min-width: 1400px) {	.conteudoHome {		padding: 0px 60px;  } }
+@media (min-width: 1700px) {	.conteudoHome {		padding: 0px 60px;  } }
 .info {
   padding: 10px 4% 10px 10px;
   margin-bottom: 5px;
@@ -22,28 +30,26 @@
 .tit1 {
     color: black;
 }
-.tit1, .lgperdido, .lgincorreto, .lgatrasado {
+.tit1, .lgperdido, .lgincorreto, .lgatrasado, .lg4, .lg5, .lg6 {
   font-size: 12px;
   /*width: 150px;*/
   display: inline-block;
   text-align: center;
 }
-.lgperdido, .lgincorreto, .lgatrasado {
+.lgperdido, .lgincorreto, .lgatrasado, .lg4, .lg5, .lg6 {
   color: white;
   padding: 5px;
   margin-bottom: 5px;
   width: 150px !important;
   text-align: center;
 }
-.lgperdido {
-  background-color: #EF5562;
-}
-.lgincorreto {
-  background-color: #a08dc2;
-}
-.lgatrasado {
-  background-color: #5D8DD7;
-}
+.lgperdido {  background-color: #EF5562;}
+.lgincorreto {  background-color: #9F8CC1;}
+.lgatrasado {  background-color: #4DC9FF;}
+.lg4 {  background-color: #F77737;}
+.lg5 {  background-color: #F8BD37;}
+.lg6 {  background-color: #4C7BFF;}
+
 .interrogacao1{
   background-color: transparent;
   border: none;
@@ -75,71 +81,6 @@
 .infoData {
   font-size: 9px; color: grey; margin: 0px;
 }
-
-/*.perdido {
-  background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#EF5562 97%,#EF5562 97.5%,
-    #fff 97.5%,#fff 98%,#EF5562 98%,#EF5562 100%);
-}
-.incorreto {
-  background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#a08dc2 97%,#a08dc2 97.5%,
-    #fff 97.5%,#fff 98%,#a08dc2 98%,#a08dc2 100%);
-}
-.parado {
-  background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#5D8DD7 97%,#5D8DD7 97.5%,
-    #fff 97.5%,#fff 98%,#5D8DD7 98%,#5D8DD7 100%);
-}
-
-
-.perdido:hover {
-  background: linear-gradient(to right,
-    #e0e0e0 0%,#e0e0e0 97%,#EF5562 97%,#EF5562 97.5%,
-    #e0e0e0 97.5%,#e0e0e0 98%,#EF5562 98%,#EF5562 100%);
-}
-.incorreto:hover {
-  background: linear-gradient(to right,
-    #e0e0e0 0%,#e0e0e0 97%,#a08dc2 97%,#a08dc2 97.5%,
-    #e0e0e0 97.5%,#e0e0e0 98%,#a08dc2 98%,#a08dc2 100%);
-}
-.parado:hover {
-  background: linear-gradient(to right,
-    #e0e0e0 0%,#e0e0e0 97%,#5D8DD7 97%,#5D8DD7 97.5%,
-    #e0e0e0 97.5%,#e0e0e0 98%,#5D8DD7 98%,#5D8DD7 100%);
-}*/
-
-/*.esquerda{
-  float: left;
-}
-.direita {
-  float: right;
-  text-align: right;
-}*/
-/*.perdido2 {
-  border-color: #EF5562;
-  border-radius: 12px;
-  border-style: solid;
-  border-width: medium;
-  background-color: transparent;
-  color: #EF5562;
-}
-.parado2 {
-  border-color: #5D8DD7;
-  border-radius: 12px;
-  border-style: solid;
-  border-width: medium;
-  background-color: transparent;
-  color: #5D8DD7;
-  }
-.incorreto2 {
-  border-color: #a08dc2;
-  border-radius: 12px;
-  border-style: solid;
-  border-width: medium;
-  background-color: transparent;
-  color: #a08dc2;
-}*/
 
 .perdido2, .parado2, .incorreto2 {
     font-weight: bold;
@@ -175,16 +116,11 @@ label {
   text-align: center;
 }
 .quadradoPequeno {
-    /*background: linear-gradient(to bottom,
-       #a08dc2 0%,#a08dc2 10%, #ffffff 10%,#ffffff 13%,
-       #a08dc2 13%,#a08dc2 16%,#ffffff 16%,#ffffff 100%);*/
   width: 24%;
   height: 75px;
   border-left-style: solid;
   border-right-style: solid;
   border-bottom-style: solid;
-  /*border-left-color: #a08dc2;
-  border-right-color: #a08dc2;*/
   border-left-width: 2px;
   border-right-width: 2px;
   border-bottom-width: 2px;
@@ -204,19 +140,43 @@ label {
 }
 .incorreto {
   background: linear-gradient(to bottom,
-     #a08dc2 0%,#a08dc2 10%, #ffffff 10%,#ffffff 13%,
-     #a08dc2 13%,#a08dc2 16%,#ffffff 16%,#ffffff 100%);
-     border-left-color: #a08dc2;
-     border-right-color: #a08dc2;
-     border-bottom-color: #a08dc2;
+     #9F8CC1 0%,#9F8CC1 10%, #ffffff 10%,#ffffff 13%,
+     #9F8CC1 13%,#9F8CC1 16%,#ffffff 16%,#ffffff 100%);
+     border-left-color: #9F8CC1;
+     border-right-color: #9F8CC1;
+     border-bottom-color: #9F8CC1;
 }
 .parado {
   background: linear-gradient(to bottom,
-     #5D8DD7 0%,#5D8DD7 10%, #ffffff 10%,#ffffff 13%,
-     #5D8DD7 13%,#5D8DD7 16%,#ffffff 16%,#ffffff 100%);
-     border-left-color: #5D8DD7;
-     border-right-color: #5D8DD7;
-     border-bottom-color: #5d8dd7;
+     #4DC9FF 0%,#4DC9FF 10%, #ffffff 10%,#ffffff 13%,
+     #4DC9FF 13%,#4DC9FF 16%,#ffffff 16%,#ffffff 100%);
+     border-left-color: #4DC9FF;
+     border-right-color: #4DC9FF;
+     border-bottom-color: #4DC9FF;
+}
+.status4 {
+  background: linear-gradient(to bottom,
+     #F77737 0%,#F77737 10%, #ffffff 10%,#ffffff 13%,
+     #F77737 13%,#F77737 16%,#ffffff 16%,#ffffff 100%);
+     border-left-color: #F77737;
+     border-right-color: #F77737;
+     border-bottom-color: #F77737;
+}
+.status5 {
+  background: linear-gradient(to bottom,
+     #F8BD37 0%,#F8BD37 10%, #ffffff 10%,#ffffff 13%,
+     #F8BD37 13%,#F8BD37 16%,#ffffff 16%,#ffffff 100%);
+     border-left-color: #F8BD37;
+     border-right-color: #F8BD37;
+     border-bottom-color: #F8BD37;
+}
+.status6 {
+  background: linear-gradient(to bottom,
+     #4C7BFF 0%,#4C7BFF 10%, #ffffff 10%,#ffffff 13%,
+     #4C7BFF 13%,#4C7BFF 16%,#ffffff 16%,#ffffff 100%);
+     border-left-color: #4C7BFF;
+     border-right-color: #4C7BFF;
+     border-bottom-color: #4C7BFF;
 }
 
 .esquerda{
@@ -244,6 +204,9 @@ label {
 .fornecedorPerdido { background-image: url("../../../../assets/images/local3.png");}
 .fornecedorIncorreto {  background-image: url("../../../../assets/images/local1.png");}
 .fornecedorParado {  background-image: url("../../../../assets/images/local2.png");}
+.fornecedor4 { background-image: url("../../../../assets/images/local4.png");}
+.fornecedor5 {  background-image: url("../../../../assets/images/local5.png");}
+.fornecedor6 {  background-image: url("../../../../assets/images/local6.png");}
 
 .quantidade {
   background-size: 11px;
@@ -251,6 +214,9 @@ label {
 .quantidadePerdido {  background-image: url("../../../../assets/images/quant3.png");}
 .quantidadeIncorreto {  background-image: url("../../../../assets/images/quant1.png");}
 .quantidadeParado {  background-image: url("../../../../assets/images/quant2.png");}
+.quantidade4 {  background-image: url("../../../../assets/images/quant4.png");}
+.quantidade5 {  background-image: url("../../../../assets/images/quant5.png");}
+.quantidade6 {  background-image: url("../../../../assets/images/quant6.png");}
 @media (min-width: 1920px){
   .quadradoPequeno{ width: 24%; }
 }

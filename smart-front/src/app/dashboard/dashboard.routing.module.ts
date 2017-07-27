@@ -32,7 +32,7 @@ import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.com
 const dashboardRoutes = [
   {path: 'rc', component: DashboardComponent, children: [
     {path: '', redirectTo: '/rc/home', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent},
+    {path: 'home', component: TimelineComponent},
     {path: 'cadastros', component: CadastrosComponent},
     {path: 'inventario', component: InventarioComponent},
     {path: 'importar', component: ImportarComponent},
