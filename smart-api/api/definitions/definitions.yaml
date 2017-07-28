@@ -19,6 +19,17 @@ definitions:
       last_time:
         type: "integer"
         format: "int64"
+  GC16:
+    type: object
+    properties:
+      annualVolume:
+        type: "integer"
+      capacity:
+        type: "integer"
+      productiveDays:
+        type: "integer"
+      containerDays:
+        type: "integer"
   Alert:
     type: object
     properties:
@@ -43,8 +54,6 @@ definitions:
         type: string
   Packing:
     type: object
-    required:
-      - code
     properties:
       code:
         type: string
@@ -222,23 +231,22 @@ definitions:
   SuccessResponse:
     type: object
     properties:
-      message:
-        type: string
+      jsonapi:
+        type: object
         description: a short comment
     required:
-      - message
+      - jsonapi
   ErrorResponse:
     type: object
     properties:
-      message:
+      status:
         type: string
         description:  a short comment
-      code:
-        type: "integer"
-        format: "int64"
-        description: type of error
-      response:
+      source:
         type: object
+        description: type of error
+      detail:
+        type: string
         description: cause of the error
     required:
-      - message
+      - status

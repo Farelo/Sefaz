@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
 
-var sttafSupplierSchema = new mongoose.Schema({
+const sttafSupplierSchema = new mongoose.Schema({
       name: {type: String, required: true},
       addrees: {type: String, required: true},
       profile: {
@@ -13,4 +14,5 @@ var sttafSupplierSchema = new mongoose.Schema({
       }
 });
 
+sttafSupplierSchema.plugin(mongoosePaginate);
 mongoose.model('StaffSupplier', sttafSupplierSchema);

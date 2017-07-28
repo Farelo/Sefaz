@@ -8,20 +8,29 @@
   <table class="table">
     <thead>
       <tr class="cabecalho">
-        <th>Código</th>
-        <th>MAC</th>
+        <th>Volume Anual</th>
+        <th>Capacidade</th>
+        <th>Dias Produtivos</th>
+        <th>Fornecedor</th>
+        <th>Equipamento</th>
         <th class="opcoes">Opções</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>CODE</td>
-        <td class="penultima">MAC</td>
+      <tr *ngFor="let gc of gc16">
+        <td>{{gc.annualVolume}}</td>
+        <td>{{gc.capacity}}</td>
+        <td>{{gc.productiveDays}}</td>
+        <td>{{gc.supplier.name}}</td>
+        <td>{{gc.packing}}</td>
         <td class="teste">
-          <button class="editar">Editar</button>
-          <button class="excluir">Excluir</button>
+          <button class="editar" [routerLink]="['editar/', gc._id]">Editar</button>
+          <button class="excluir" (click)="removeGC16(gc)" >Excluir</button>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+<div class="classVazio" *ngIf="gc16?.length < 1">
+  Ainda não existem registros GC16 cadastrados.
 </div>

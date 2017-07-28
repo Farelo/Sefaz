@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PackingService } from '../../../servicos/packings.service';
 import { Packing } from '../../../shared/models/Packing';
+import { Pagination } from '../../../shared/models/pagination';
 
 @Component({
   selector: 'app-embalagem',
@@ -8,26 +9,34 @@ import { Packing } from '../../../shared/models/Packing';
   styleUrls: ['../cadastros.component.css']
 })
 export class EmbalagemComponent implements OnInit {
-  embalagens: any[];
-  vazio: boolean = false;
+  public data: Pagination = new Pagination({meta: {page : 1}});
+  public search : string;
 
   constructor(
     private PackingService : PackingService
   ) { }
-    // ngOnInit() {
-    //   this.embalagens = this.embalagensService.getEmbalagens();
-    // }
 
-  packings : Packing [];
+  searchEvent(): void{
+    if(this.search != "" && this.search){
+      this.PackingService.getPackingsPaginationByAttr(10,this.data.meta.page,this.search)
+        .subscribe(result => this.data = result, err => {console.log(err)});
+    }else{
+      this.loadPackings();
+    }
+  }
 
-  loadPackings(){
-    this.PackingService.getPackingsPagination(10,1)
-      .subscribe(packings => {this.packings = packings,
-      console.log(this.packings)}, err => {console.log(err)});
+  loadPackings(): void{
+    this.PackingService.getPackingsPagination(10,this.data.meta.page)
+      .subscribe(result => this.data = result, err => {console.log(err)});
   }
 
   removePacking(id):void{
     this.PackingService.deletePacking(id).subscribe(result =>   this.loadPackings(), err => {console.log(err)})
+  }
+
+  pageChanged(page: any): void{
+    this.data.meta.page = page;
+    this.loadPackings();
   }
 
   ngOnInit() {

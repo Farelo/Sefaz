@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
- 
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
 
-var departmentSchema = new mongoose.Schema({
+const departmentSchema = new mongoose.Schema({
     name:String,
     lat: {type: Number},
     lng: {type: Number},
@@ -11,5 +11,5 @@ var departmentSchema = new mongoose.Schema({
     }
 });
  
-
+departmentSchema.plugin(mongoosePaginate);
 mongoose.model('Department', departmentSchema);

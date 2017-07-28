@@ -19,10 +19,11 @@ export class Packing {
   public actual_plant: string;
   public tag_mac: string;
   public department: string;
-  public supplier: string;
-  public project: string;
+  public supplier: any;
+  public project: any;
   public hashPacking : string;
   public serial : string;
+  public gc16 : string;
   public _id : string;
 
     public constructor(fields ?: {
@@ -46,10 +47,11 @@ export class Packing {
       actual_plant?: string;
       tag_mac?: string;
       department?: string;
-      supplier?: string;
-      project?: string;
+      supplier?: any;
+      project?: any;
       hashPacking ?: string;
       serial ?: string;
+      gc16 ?: string;
       _id ?: string;
 }
 ){

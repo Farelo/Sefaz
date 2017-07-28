@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({limit: '50mb'}));
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, '../smart-front/dist')));
-app.use(logger('dev'));
+// app.use(logger('dev'));
 
 module.exports = app; // for testing
 
@@ -45,36 +45,36 @@ var query = require('./api/helpers/queries/complex_queries_alerts');
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
-let task = cron.schedule('*/10 * * * * *', function() {
-    var value = parseInt(1) > 0 ? ((parseInt(1) - 1) * parseInt(10)) : 0;
-    var alertList = alert.aggregate(query.queries.listAlerts)
-        .skip(value).limit(parseInt(10))
-        .sort({_id: 1});
-    var count = alert.find({}).count();
-
-    Promise.all([count,alertList])
-        .then(result =>  {
-
-          io.emit('message', {type:'new-message', text: result[1]
-        });
-        } )
-        .catch(err => console.log(err));
- });
-
-io.on('connection', (socket) => {
-  console.log('USER CONNECTED');
-
-  socket.on('disconnect', function(){
-    console.log('USER DISCONNECTED');
-
-  });
-
-
-  socket.on('add-message', (message) => {
-
-
-  });
-});
+// let task = cron.schedule('*/10 * * * * *', function() {
+//     var value = parseInt(1) > 0 ? ((parseInt(1) - 1) * parseInt(10)) : 0;
+//     var alertList = alert.aggregate(query.queries.listAlerts)
+//         .skip(value).limit(parseInt(10))
+//         .sort({_id: 1});
+//     var count = alert.find({}).count();
+//
+//     Promise.all([count,alertList])
+//         .then(result =>  {
+//
+//           io.emit('message', {type:'new-message', text: result[1]
+//         });
+//         } )
+//         .catch(err => console.log(err));
+//  });
+//
+// io.on('connection', (socket) => {
+//   console.log('USER CONNECTED');
+//
+//   socket.on('disconnect', function(){
+//     console.log('USER DISCONNECTED');
+//
+//   });
+//
+//
+//   socket.on('add-message', (message) => {
+//
+//
+//   });
+// });
 
 
 //START middleware SWAGGER

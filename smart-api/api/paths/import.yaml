@@ -1,0 +1,24 @@
+paths:
+   /upload:
+     x-swagger-router-controller: import_controller
+     post:
+       tags:
+         - "Upload"
+       summary: Uploads a file.
+       consumes:
+         - multipart/form-data
+       operationId: uploads
+       parameters:
+         - in: formData
+           name: upfile
+           type: file
+           description: The file to upload.
+       responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"

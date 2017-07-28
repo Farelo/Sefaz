@@ -27,8 +27,14 @@ export class SuppliersService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updateSupplier(id: string, supplier: Supplier): Observable<Supplier>{
+  updateSupplier(id: string, supplier: any): Observable<Supplier>{
     return this.http.put(environment.url + 'supplier/update/' + id,supplier)
+      .map((res: Response) => res.json().data)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  updateSupplierUnset(id: string): Observable<Supplier>{
+    return this.http.put(environment.url + 'supplier/update/unset/' + id,{})
       .map((res: Response) => res.json().data)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

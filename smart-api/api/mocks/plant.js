@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
- 
-var plantSchema = new mongoose.Schema({
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
+
+const plantSchema = new mongoose.Schema({
     name:{type: String, required: true, unique: true},
     lat: {type: Number},
     lng: {type: Number},
@@ -15,5 +16,6 @@ var plantSchema = new mongoose.Schema({
     profile: [String]
 
 });
- 
+
+plantSchema.plugin(mongoosePaginate);
 mongoose.model('Plant', plantSchema);

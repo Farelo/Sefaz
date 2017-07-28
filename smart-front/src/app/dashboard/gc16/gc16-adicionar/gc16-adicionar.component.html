@@ -5,28 +5,27 @@
   <div class="row diferente2">
     <div class="col-sm-4">
       <div class="campo">
-        <p class="descricao">FORNECEDOR</p>
-        <p class="explicacao">Ex. "994475545"</p>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" >
-        </div>
+        <p class="descricao">ASSOCIE UM FORNECEDOR</p>
+        <select [(ngModel)]="selectedItem" (ngModelChange)="loadPackings($event)">
+           <option value="">Escolha um Fornecedor</option>
+           <option *ngFor="let obj of suppliers" [ngValue]="obj">{{obj.name}}</option>
+        </select>
       </div>
     </div>
     <div class="col-sm-4">
-      <div class="campo">
+      <div class="campo"  >
         <p class="descricao">EQUIPAMENTO</p>
-        <p class="explicacao">Ex. "994475545"</p>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" >
-        </div>
+        <select [(ngModel)]="selectedProject" (ngModelChange)="loadProject($event)">
+           <option value="">Escolha um Equipamento</option>
+           <option *ngFor="let obj of packings" [ngValue]="obj">{{obj.packing}}</option>
+        </select>
       </div>
     </div>
     <div class="col-sm-4">
       <div class="campo">
         <p class="descricao">PROJETO/PLATAFORMA</p>
-        <p class="explicacao">Ex. "994475545"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled >
+          <input type="text" class="form-control" placeholder="" [(ngModel)]="project.name"  disabled >
         </div>
       </div>
     </div>
@@ -36,36 +35,38 @@
     <div class="col-sm-4">
       <div class="campo">
         <p class="descricao">VOLUME ANUAL</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p class="explicacao">Ex. "10000"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="gc16.annualVolume" (blur)="onBlurMethod()">
+          <input type="number" class="form-control" placeholder=""  [(ngModel)]="gc16.annualVolume" (blur)="onBlurMethod()">
         </div>
       </div>
     </div>
+
     <div class="col-sm-4">
       <div class="campo">
-        <p class="descricao">CAPACIDADE</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p class="descricao">DIAS PRODUTIVOS</p>
+        <p class="explicacao">Ex. "240 Dias"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="gc16.capacity" (blur)="onBlurMethod()">
+          <input type="number" class="form-control" placeholder=""   [(ngModel)]="gc16.productiveDays" (blur)="onBlurMethod()">
         </div>
       </div>
     </div>
+
     <div class="col-sm-2">
       <div class="campo">
-        <p class="descricao">DIAS PRODUTIVOS</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p class="descricao">CAPACIDADE</p>
+        <p class="explicacao">Ex. "26"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"  [(ngModel)]="gc16.productiveDays" (blur)="onBlurMethod()">
+          <input type="number" class="form-control" placeholder=""  [(ngModel)]="gc16.capacity" (blur)="onBlurMethod()">
         </div>
       </div>
     </div>
     <div class="col-sm-2">
       <div class="campo">
         <p class="descricao">CONTAINERS/DIA</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <span class="testeSaco"></span>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.containerDays">
+          <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.containerDays">
         </div>
       </div>
     </div>
@@ -75,7 +76,7 @@
     <div class="col-md-4">
       <div class="campo">
         <p class="descricao">ESTOQUE PLANTA MONTADORA</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p class="explicacao">Ex. "5 Dias"</p>
         <div class="placeholder" data-placeholder="DIAS">
           <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="gc16.factoryStock.days" (blur)="onBlurMethod()">
         </div>
@@ -89,7 +90,7 @@
         <p class="descricao dp">EM</p>
         <span class="testeSaco"></span>
         <div class="placeholder" data-placeholder="%">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.factoryStock.fs" >
+          <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.factoryStock.fs" >
         </div>
       </div>
       </div>
@@ -101,7 +102,7 @@
         <p class="descricao dp">QNT. CONTAINER</p>
         <span class="testeSaco"></span>
         <div class="input-group test2">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.factoryStock.QuantContainerfs" >
+          <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.factoryStock.QuantContainerfs" >
         </div>
       </div>
       </div>
@@ -118,7 +119,7 @@
         <p class="descricao dp">EM MÁX.</p>
         <span class="testeSaco"></span>
         <div class="placeholder" data-placeholder="%">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.factoryStock.fsMax" >
+          <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.factoryStock.fsMax" >
         </div>
       </div>
       </div>
@@ -130,7 +131,7 @@
         <p class="descricao dp">QNT. CONTAINER</p>
         <span class="testeSaco"></span>
         <div class="input-group test2">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.factoryStock.QuantContainerfsMax" >
+          <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.factoryStock.QuantContainerfsMax" >
         </div>
       </div>
       </div>
@@ -144,7 +145,7 @@
     <div class="col-md-4">
       <div class="campo">
         <p class="descricao">ESTOQUE FORNECEDOR</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p class="explicacao">Ex. "5 Dias"</p>
         <div class="placeholder" data-placeholder="DIAS">
           <input type="number" min="0" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="gc16.supplierStock.days" (blur)="onBlurMethod()">
         </div>
@@ -158,7 +159,7 @@
         <p class="descricao dp">EF</p>
         <span class="testeSaco"></span>
         <div class="placeholder" data-placeholder="%">
-          <input type="text" class="form-control" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.supplierStock.ss" >
+          <input type="number" class="form-control"  disabled [(ngModel)]="gc16.supplierStock.ss" >
         </div>
       </div>
       </div>
@@ -168,7 +169,7 @@
         <p class="descricao dp">QNT. CONTAINER</p>
         <span class="testeSaco"></span>
         <div class="input-group test2">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.supplierStock.QuantContainerSs" >
+          <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.supplierStock.QuantContainerSs" >
         </div>
       </div>
       </div>
@@ -182,7 +183,7 @@
         <p class="descricao dp">EF MÁX.</p>
         <span class="testeSaco"></span>
         <div class="placeholder" data-placeholder="%">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.supplierStock.ssMax" >
+          <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.supplierStock.ssMax" >
         </div>
       </div>
       </div>
@@ -192,7 +193,7 @@
         <p class="descricao dp">QNT. CONTAINER</p>
         <span class="testeSaco"></span>
         <div class="input-group test2">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.supplierStock.QuantContainerSsMax" >
+          <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.supplierStock.QuantContainerSsMax" >
         </div>
       </div>
       </div>
@@ -206,9 +207,13 @@
     <div class="col-sm-4">
       <div class="campo">
         <p class="descricao">TRANSP. IDA</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p class="explicacao">Ex. "2 Dias"</p>
         <div class="placeholder" data-placeholder="DIAS">
+<<<<<<< HEAD
+          <input type="number" class="form-control" placeholder=""  [(ngModel)]="gc16.transportationGoing.days" (blur)="onBlurMethod()">
+=======
           <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="gc16.transportationGoing.days" (blur)="onBlurMethod()">
+>>>>>>> 8167406888d882c5131114170ca2e7d2e6d38429
         </div>
       </div>
     </div>
@@ -219,7 +224,7 @@
           <p class="descricao">TI</p>
           <span class="testeSaco"></span>
           <div class="placeholder" data-placeholder="%">
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.transportationGoing.tg" >
+            <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.transportationGoing.tg" >
           </div>
         </div>
       </div>
@@ -229,7 +234,7 @@
           <p class="descricao">QNT. CONTAINER</p>
           <span class="testeSaco"></span>
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.transportationGoing.QuantContainerTg" >
+            <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.transportationGoing.QuantContainerTg" >
           </div>
         </div>
       </div>
@@ -243,9 +248,13 @@
     <div class="col-sm-4">
       <div class="campo">
         <p class="descricao">TRANSP. VOLTA</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p class="explicacao">Ex. "2 Dias"</p>
         <div class="placeholder" data-placeholder="DIAS">
+<<<<<<< HEAD
+          <input type="number" class="form-control" placeholder=""  [(ngModel)]="gc16.transportantionBack.days" (blur)="onBlurMethod()">
+=======
           <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="gc16.transportantionBack.days" (blur)="onBlurMethod()">
+>>>>>>> 8167406888d882c5131114170ca2e7d2e6d38429
         </div>
       </div>
     </div>
@@ -256,7 +265,7 @@
             <p class="descricao">TV</p>
             <span class="testeSaco"></span>
             <div class="placeholder" data-placeholder="%">
-              <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.transportantionBack.tb" >
+              <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.transportantionBack.tb" >
             </div>
           </div>
         </div>
@@ -265,7 +274,7 @@
             <p class="descricao">QNT. CONTAINER</p>
             <span class="testeSaco"></span>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.transportantionBack.QuantContainerTb" >
+              <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.transportantionBack.QuantContainerTb" >
             </div>
           </div>
         </div>
@@ -279,9 +288,13 @@
     <div class="col-md-4">
       <div class="campo">
         <p class="descricao">FREQUÊNCIA</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p class="explicacao">Ex. "3 Dias"</p>
         <div class="placeholder" data-placeholder="DIAS">
+<<<<<<< HEAD
+          <input type="number" class="form-control" placeholder=""  [(ngModel)]="gc16.frequency.days" (blur)="onBlurMethod()">
+=======
           <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="gc16.frequency.days" (blur)="onBlurMethod()">
+>>>>>>> 8167406888d882c5131114170ca2e7d2e6d38429
         </div>
       </div>
     </div>
@@ -292,7 +305,7 @@
             <p class="descricao">FR</p>
             <span class="testeSaco"></span>
             <div class="placeholder" data-placeholder="%">
-              <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.frequency.fr" >
+              <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.frequency.fr" >
             </div>
           </div>
         </div>
@@ -301,7 +314,7 @@
             <p class="descricao">QNT. CONTAINER</p>
             <span class="testeSaco"></span>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.frequency.QuantContainer" >
+              <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.frequency.QuantContainer" >
             </div>
           </div>
         </div>
@@ -310,7 +323,7 @@
             <p class="descricao">TOTAL DE DIAS</p>
             <span class="testeSaco"></span>
             <div class="placeholder" data-placeholder="%">
-              <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.frequency.QuantTotalDays" >
+              <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.frequency.QuantTotalDays" >
             </div>
           </div>
         </div>
@@ -323,9 +336,9 @@
     <div class="col-md-4">
       <div class="campo">
         <p class="descricao">FATOR DE SEGURANÇA</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p class="explicacao">Ex. "10"</p>
         <div class="placeholder" data-placeholder="%">
-          <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="gc16.secutiryFactor.percentage" (blur)="onBlurMethod()">
+          <input type="number" class="form-control" placeholder=""  [(ngModel)]="gc16.secutiryFactor.percentage" (blur)="onBlurMethod()">
         </div>
       </div>
     </div>
@@ -336,7 +349,7 @@
             <p class="descricao">QUANT. CONTAINER</p>
             <span class="testeSaco"></span>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.secutiryFactor.QuantContainer">
+              <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.secutiryFactor.QuantContainer">
             </div>
           </div>
       </div>
@@ -345,7 +358,7 @@
           <p class="descricao">QUANT. TOTAL CONSTRUÍDA</p>
           <span class="testeSaco desaparecer"></span>
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" disabled [(ngModel)]="gc16.secutiryFactor.QuantTotalBuilt">
+            <input type="number" class="form-control" placeholder=""  disabled [(ngModel)]="gc16.secutiryFactor.QuantTotalBuilt">
           </div>
         </div>
       </div>
@@ -355,7 +368,7 @@
   </div>
 <br>
   <div class="botoes">
-    <button class="botaoVoltar" >VOLTAR</button>
+    <button routerLink="/rc/gc16" class="botaoVoltar" >VOLTAR</button>
     <button  (click)="finish()" class="botaoSalvar" >SALVAR</button>
   </div>
 <br>

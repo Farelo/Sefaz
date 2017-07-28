@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserXhr } from '@angular/http';
+import { NgProgressBrowserXhr, NgProgressModule } from 'ngx-progressbar';
 import * as $ from 'jquery';
 
 import { AppComponent } from './app.component';
@@ -24,6 +26,7 @@ import { SuppliersService } from './servicos/suppliers.service';
 import { TagsService } from './servicos/tags.service';
 import { CheckpointService } from './servicos/checkpoints.service';
 import { ProjectService } from './servicos/projects.service';
+import { GC16Service } from './servicos/gc16.service';
 import { ChatService } from './servicos/teste';
 
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -51,6 +54,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ReactiveFormsModule,
     ValidatorsModule,
     AppRoutingModule,
+    NgProgressModule
 
   ],
   providers: [
@@ -64,6 +68,8 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     CheckpointService,
     ProjectService,
     ChatService,
+    GC16Service,
+    { provide: BrowserXhr, useClass: NgProgressBrowserXhr }
 
     // FormBuilder,
     // RadioControlRegistry

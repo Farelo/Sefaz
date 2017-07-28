@@ -11,9 +11,12 @@ import { PlataformaComponent } from './plataforma/plataforma.component';
 import { RotasComponent } from './rotas/rotas.component';
 import { PlantaComponent } from './planta/planta.component';
 import { EmbalagemCadastroComponent }from './embalagem/embalagem-cadastro/embalagem-cadastro.component';
+import { EmbalagemEditarComponent }from './embalagem/embalagem-editar/embalagem-editar.component';
 import { FornecedorCadastrarComponent } from './fornecedor/fornecedor-cadastrar/fornecedor-cadastrar.component';
 import { PlantaCadastrarComponent } from './planta/planta-cadastrar/planta-cadastrar.component';
+import { PlantaEditarComponent } from './planta/planta-editar/planta-editar.component';
 import { PlataformaCadastrarComponent } from './plataforma/plataforma-cadastrar/plataforma-cadastrar.component';
+import { PlataformaEditarComponent } from './plataforma/plataforma-editar/plataforma-editar.component';
 import { RotasCadastrarComponent } from './rotas/rotas-cadastrar/rotas-cadastrar.component';
 import { ScannerCadastrarComponent } from './scanner/scanner-cadastrar/scanner-cadastrar.component';
 import { SetorCadastrarComponent } from './setor/setor-cadastrar/setor-cadastrar.component';
@@ -31,16 +34,19 @@ const CadastrosRoutes = [
       {path: 'scanner/cadastrar', component: ScannerCadastrarComponent},
       {path: 'embalagem', component: EmbalagemComponent},
       {path: 'embalagem/cadastrar', component: EmbalagemCadastroComponent},
+      {path: 'embalagem/editar/:id', component: EmbalagemEditarComponent},
       {path: 'setor', component: SetorComponent},
       {path: 'setor/cadastrar', component: SetorCadastrarComponent},
       {path: 'fornecedor', component: FornecedorComponent},
       {path: 'fornecedor/cadastrar', component: FornecedorCadastrarComponent},
       {path: 'plataforma', component: PlataformaComponent},
       {path: 'plataforma/cadastrar', component: PlataformaCadastrarComponent},
+      {path: 'plataforma/editar/:id', component: PlataformaEditarComponent},
       {path: 'rotas', component: RotasComponent},
       {path: 'rotas/cadastrar', component: RotasCadastrarComponent},
       {path: 'planta', component: PlantaComponent},
       {path: 'planta/cadastrar', component: PlantaCadastrarComponent},
+      {path: 'planta/editar/:id', component: PlantaEditarComponent},
     ]}
   ]}
 ];

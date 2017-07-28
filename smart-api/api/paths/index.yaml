@@ -8,7 +8,7 @@ info:
    email: "david.santos@pe.senai.br"
    url: "http://pe.senai.br"
 # during dev, should point to your local machine
-host: isi.pe.senai.br:8984
+host: localhost:8984
 # basePath prefixes all resource paths
 basePath: /api
 #
@@ -19,6 +19,7 @@ schemes:
 # format of bodies a client can send (Content-Type)
 consumes:
   - application/json
+  - multipart/form-data
 # format of the responses to the client (Accepts)
 produces:
   - application/json
@@ -59,3 +60,7 @@ tags:
   description: "All information about your Historic Packings"
 - name: "Alerts"
   description: "All information about your Alerts"
+- name: "GC16"
+  description: "All information about your GC16 registers"
+- name: "Upload"
+  description: "All information about your upload "

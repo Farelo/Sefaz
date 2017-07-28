@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
- 
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
 
-var packingSchema = new mongoose.Schema({
+const packingSchema = new mongoose.Schema({
       code:{type: String, required: true},
       type: String,
       weigth: Number,
@@ -25,6 +25,10 @@ var packingSchema = new mongoose.Schema({
       correct_plant_factory: {
           type:mongoose.Schema.Types.ObjectId,
           ref:'Plant'
+      },
+      gc16: {
+          type:mongoose.Schema.Types.ObjectId,
+          ref:'GC16'
       },
       correct_plant_supplier: {
           type:mongoose.Schema.Types.ObjectId,
@@ -50,6 +54,6 @@ var packingSchema = new mongoose.Schema({
       hashPacking : String
 
 });
- 
 
- mongoose.model('Packing', packingSchema);
+packingSchema.plugin(mongoosePaginate);
+mongoose.model('Packing', packingSchema);

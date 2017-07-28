@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
- 
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
 
-var routeSchema = new mongoose.Schema({
+const routeSchema = new mongoose.Schema({
       supplier: {
           type:mongoose.Schema.Types.ObjectId,
           ref:'Supplier'
@@ -21,5 +21,5 @@ var routeSchema = new mongoose.Schema({
 
 });
  
-
+routeSchema.plugin(mongoosePaginate);
 mongoose.model('Route', routeSchema);

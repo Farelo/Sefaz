@@ -1,10 +1,20 @@
-var mongoose = require('mongoose');
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
 
-var gc16Schema = new mongoose.Schema({
+const gc16Schema = new mongoose.Schema({
       annualVolume: {type: Number, required: true},
       capacity: {type: Number, required: true},
       productiveDays: {type: Number, required: true},
       containerDays: {type: Number, required: true},
+      project: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Project'
+      },
+      packing: {type: String, required: true},
+      supplier: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Supplier'
+      },
       factoryStock: {
         days: {type: Number, required: true},
         fs: {type: Number, required: true},
@@ -43,4 +53,5 @@ var gc16Schema = new mongoose.Schema({
 
 });
 
+gc16Schema.plugin(mongoosePaginate);
 mongoose.model('GC16', gc16Schema);

@@ -11,7 +11,8 @@ var supplierSchema = new mongoose.Schema({
       plant: {
             type:mongoose.Schema.Types.ObjectId,
             ref:'Plant'
-      }
+      },
+      hashPacking: {type: String}
 });
 
 mongoose.model('Supplier', supplierSchema);

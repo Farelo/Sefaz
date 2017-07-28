@@ -28,7 +28,6 @@ export class EmbalagemCadastroComponent implements OnInit {
   packing:  Packing = new Packing({problem:false,missing:false,tag_mac:"",supplier:"",project:""});
 
   registerPacking():void {
-    //console.log(this.packing);
     this.PackingService.createPacking([this.packing]).subscribe( result => this.router.navigate(['/rc/cadastros/embalagem']) );
   }
 
