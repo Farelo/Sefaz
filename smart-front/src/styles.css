@@ -37,15 +37,15 @@ body  {
  #iw img {
    	background-color: red;
  }
- .popover-content {
-   width: 178px!important;
- }
- .popover-left {
-   top: -10px!important;
- }
-  .popover-left, .popover-bottom {
+.conteudoHome .popover-content {
+  width: 178px!important;
+}
+.popover-left {
+  top: -10px!important;
+}
+.popover-left, .popover-bottom {
   border-radius: inherit;
-  }
+}
 .popover.popover-left::before, .popover.bs-tether-element-attached-right::before {
   top: 15px!important;
 }
@@ -81,3 +81,6 @@ body  {
 .semBorda {
   border-bottom: none !important;
 }
+/*.test {
+	width: 300px!important;
+}*/

@@ -7,11 +7,14 @@ declare var $:any;
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+menuAparecer: boolean = false;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     this.funcaoTop();
+    this.menuAparecer = false;
   }
 
   funcaoTop(){
@@ -19,7 +22,15 @@ export class NavbarComponent implements OnInit {
         $('label').click();
         return false;
     });
-}
+  }
+
+  mudar(){
+    if(this.menuAparecer == false ){
+      this.menuAparecer = true;
+    } else{
+      this.menuAparecer = false;
+    }
+  }
 outraFuncaoTop(){
   $('label').click();
   // return false;
