@@ -1,11 +1,6 @@
-<!-- {{altura}}
-{{largura}}
-{{telaGrande}}
-{{config.placement}} -->
+<div class="conteudoHome">
 <div class="header">
   Timeline
-
-  <!-- <button class="abre"(click)="open(content)">abremodal</button> -->
 
 <button type="button" class="interrogacao1"
     [ngbPopover]= 'popContent'
@@ -21,12 +16,13 @@
 
   <ng-template #popContent>
     <p class="tit1">Alertas e seus significados</p>
+    <span class="lgincorreto">OBJETO INCORRETO</span><br />
     <span class="lgperdido">OBJETO PERDIDO</span><br />
+    <span class="lg4">OBJETO 4</span><br />
+    <span class="lg5">OBJETO 5</span><br />
     <span class="lgatrasado">OBJETO ATRASADO</span><br />
-    <span class="lgincorreto">OBJETO INCORRETO</span>
-    <span class="lgperdido">OBJETO PERDIDO</span><br />
-    <span class="lgatrasado">OBJETO ATRASADO</span><br />
-    <span class="lgincorreto">OBJETO INCORRETO</span>
+    <span class="lg6">OBJETO 6O</span><br />
+
   </ng-template>
 
 </div>
@@ -36,16 +32,14 @@
 
   <p>Alertas e seus significados</p>
   <span class="lgperdido">OBJETO PERDIDO</span><br />
-  <span class="lgatrasado">OBJETO ATRASADO</span><br />
+  <span class="lg4">OBJETO 4</span><br />
   <span class="lgincorreto">OBJETO INCORRETO</span><br />
-  <span class="lgperdido">OBJETO PERDIDO</span><br />
+  <span class="lg5">OBJETO 5</span><br />
   <span class="lgatrasado">OBJETO ATRASADO</span><br />
-  <span class="lgincorreto">OBJETO INCORRETO</span><br />
+  <span class="lg6">OBJETO 6O</span><br />
   <input id="opcao" class="inputOp" type="checkbox"/> <label>Não ver mais isso</label><br />
 <button class="botaoOk"(click)="d('Cross click')">Ok</button>
   <!-- <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button> -->
-
-
   </div>
 </ng-template>
 
@@ -72,32 +66,45 @@
   </div>
 </div> -->
 <div class="painel">
-<div class="quadradoPequeno"*ngFor="let alert of alerts"
+<div class="quadradoPequeno"
+*ngFor="let teste of testes"
+
 [ngClass]="{
-  'perdido' : alert.status == '02',
-  'parado' : alert.status == '03',
-  'incorreto' : alert.status == '01'
-}">
+  'perdido' : teste.status == 'A',
+  'parado' : teste.status == 'B',
+  'incorreto' : teste.status == 'C',
+  'status4' : teste.status == 'D',
+  'status5' : teste.status == 'E',
+  'status6' : teste.status == 'F'
+}"
+>
   <div class="esquerda">
-    <span class="codigo">{{alert.packing.code}}</span><br />
-    <span class="descricao">{{alert.packing.type}}</span>
+    <span class="codigo">{{teste.codigo}}</span><br />
+    <span class="descricao">{{teste.rack}}</span>
   </div>
   <div class="direita">
     <span class="fornecedor"
     [ngClass]="{
-      'fornecedorPerdido' : alert.status == '02',
-      'fornecedorParado' : alert.status == '03',
-      'fornecedorIncorreto' : alert.status == '01'
-    }">{{alert.supplier.name}}</span><Br />
+      'fornecedorPerdido' : teste.status == 'A',
+      'fornecedorParado' : teste.status == 'B',
+      'fornecedorIncorreto' : teste.status == 'C',
+      'fornecedor4' : teste.status == 'D',
+      'fornecedor5' : teste.status == 'E',
+      'fornecedor6' : teste.status == 'F'
+    }"
+    >{{teste.safe}}</span><Br />
     <span class="quantidade"
     [ngClass]="{
-      'quantidadePerdido' : alert.status == '02',
-      'quantidadeParado' : alert.status == '03',
-      'quantidadeIncorreto' : alert.status == '01'
-    }">{{alert.quantity}}</span>
+      'quantidadePerdido' : teste.status == 'A',
+      'quantidadeParado' : teste.status == 'B',
+      'quantidadeIncorreto' : teste.status == 'C',
+      'quantidade4' : teste.status == 'D',
+      'quantidade5' : teste.status == 'E',
+      'quantidade6' : teste.status == 'F'
+    }"
+    >{{teste.numero}} {{teste.status}}</span>
   </div>
 </div>
 </div>
-
-
 <router-outlet></router-outlet>
+</div>

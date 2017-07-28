@@ -43,15 +43,24 @@ export class TimelineComponent implements OnInit,OnDestroy {
   closeResult: string;
   verModal: boolean = true;
   testes: any[] = [
-    {codigo: '000000001', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '1'},
-    {codigo: '000000002', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '2'},
-    {codigo: '000000003', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '3'},
-    {codigo: '000000004', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '4'},
-    {codigo: '000000005', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '5'},
-    {codigo: '000000006', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '6'},
-    {codigo: '000000007', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '7'},
-    {codigo: '000000008', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '8'},
-    {codigo: '000000009', rack: 'Rack Metálico', safe: 'SafeSIM', numero: '9'}
+    {codigo: '000000001', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '1', status: 'A'},
+    {codigo: '000000002', rack: 'Rack de Madeira', safe: 'Fornecedor 1', numero: '2', status: 'B'},
+    {codigo: '000000003', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '3',  status: 'C',},
+    {codigo: '000000004', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '4',  status: 'D'},
+    {codigo: '000000005', rack: 'Rack de Madeira', safe: 'Fornecedor 1', numero: '5',  status: 'E'},
+    {codigo: '000000006', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '6',  status: 'F'},
+    {codigo: '000000007', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '7',  status: 'A'},
+    {codigo: '000000008', rack: 'Rack de Madeira', safe: 'Fornecedor 1', numero: '8',  status: 'B'},
+    {codigo: '000000009', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '9',  status: 'C'},
+    {codigo: '000000010', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '1', status: 'A'},
+    {codigo: '000000011', rack: 'Rack de Madeira', safe: 'Fornecedor 1', numero: '2', status: 'B'},
+    {codigo: '000000013', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '3',  status: 'C',},
+    {codigo: '000000014', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '4',  status: 'D'},
+    {codigo: '000000015', rack: 'Rack de Madeira', safe: 'Fornecedor 1', numero: '5',  status: 'E'},
+    {codigo: '000000016', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '6',  status: 'F'},
+    {codigo: '000000017', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '7',  status: 'A'},
+    {codigo: '000000018', rack: 'Rack de Madeira', safe: 'Fornecedor 1', numero: '8',  status: 'B'},
+    {codigo: '000000019', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '9',  status: 'C'}
   ];
 
   constructor(
