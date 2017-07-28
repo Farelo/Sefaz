@@ -1,110 +1,83 @@
 <div class="conteudoHome">
-<div class="header">
-  Timeline
+  <div class="header">
 
-<button type="button" class="interrogacao1"
-    [ngbPopover]= 'popContent'
-    placement="left"
-    *ngIf="telaGrande == false" triggers='hover'
-    >
-</button>
-<button type="button" class="interrogacao2"
-    [ngbPopover]= 'popContent'placement="bottom"
-    *ngIf="telaGrande == true" triggers='hover'
-    >
-</button>
+    Timeline
+    <button type="button" class="interrogacao1"
+      [ngbPopover]= 'popContent'
+      placement="left"
+      *ngIf="telaGrande == false" triggers='hover'>
+    </button>
 
-  <ng-template #popContent>
-    <p class="tit1">Alertas e seus significados</p>
-    <span class="lgincorreto">OBJETO INCORRETO</span><br />
+    <button type="button" class="interrogacao2"
+        [ngbPopover]= 'popContent'placement="bottom"
+        *ngIf="telaGrande == true" triggers='hover'>
+    </button>
+
+    <ng-template #popContent>
+      <p class="tit1">Alertas e seus significados</p>
+      <span class="lg1">OBJETO PERDIDO</span><br />
+      <span class="lg2">OBJETO 2</span><br />
+      <span class="lg3">OBJETO 3</span><br />
+      <span class="lg4">OBJETO ATRASADO</span><br />
+      <span class="lg5">OBJETO 5</span><br />
+      <span class="lg6">OBJETO INCORRETO</span><br />
+    </ng-template>
+
+  </div>
+
+  <!-- <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modalFilho">
+
+    <p>Alertas e seus significados</p>
     <span class="lgperdido">OBJETO PERDIDO</span><br />
     <span class="lg4">OBJETO 4</span><br />
     <span class="lg5">OBJETO 5</span><br />
     <span class="lgatrasado">OBJETO ATRASADO</span><br />
-    <span class="lg6">OBJETO 6O</span><br />
-
-  </ng-template>
-
-</div>
-
-<ng-template #content let-c="close" let-d="dismiss">
-  <div class="modalFilho">
-
-  <p>Alertas e seus significados</p>
-  <span class="lgperdido">OBJETO PERDIDO</span><br />
-  <span class="lg4">OBJETO 4</span><br />
-  <span class="lgincorreto">OBJETO INCORRETO</span><br />
-  <span class="lg5">OBJETO 5</span><br />
-  <span class="lgatrasado">OBJETO ATRASADO</span><br />
-  <span class="lg6">OBJETO 6O</span><br />
-  <input id="opcao" class="inputOp" type="checkbox"/> <label>Não ver mais isso</label><br />
-<button class="botaoOk"(click)="d('Cross click')">Ok</button>
-  <!-- <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button> -->
+    <span class="lg6">OBJETO 6</span><br />
+    <span class="lgincorreto">OBJETO INCORRETO</span><br />
+    <input id="opcao" class="inputOp" type="checkbox"/> <label>Não ver mais isso</label><br />
+  <button class="botaoOk"(click)="d('Cross click')">Ok</button>
+    </div>
+  </ng-template> -->
+  <div class="painel">
+    <div class="quadradoPequeno"
+      *ngFor="let teste of testes"
+      [ngClass]="{
+        'status1' : teste.status == 'A',
+        'status2' : teste.status == 'B',
+        'status3' : teste.status == 'C',
+        'status4' : teste.status == 'D',
+        'status5' : teste.status == 'E',
+        'status6' : teste.status == 'F'
+      }"
+      >
+      <div class="esquerda">
+        <span class="codigo">{{teste.codigo}}</span><br />
+        <span class="descricao">{{teste.rack}}</span>
+      </div>
+      <div class="direita">
+        <span class="fornecedor"
+        [ngClass]="{
+          'fornecedor1' : teste.status == 'A',
+          'fornecedor2' : teste.status == 'B',
+          'fornecedor3' : teste.status == 'C',
+          'fornecedor4' : teste.status == 'D',
+          'fornecedor5' : teste.status == 'E',
+          'fornecedor6' : teste.status == 'F'
+        }"
+        >{{teste.safe}}</span><Br />
+        <span class="quantidade"
+        [ngClass]="{
+          'quantidade1' : teste.status == 'A',
+          'quantidade2' : teste.status == 'B',
+          'quantidade3' : teste.status == 'C',
+          'quantidade4' : teste.status == 'D',
+          'quantidade5' : teste.status == 'E',
+          'quantidade6' : teste.status == 'F'
+        }"
+        >{{teste.numero}} {{teste.status}}</span>
+      </div>
+    </div>
   </div>
-</ng-template>
-
-<!-- <div class="panel-body info" *ngFor="let alert of alerts"
-  [ngClass]="{
-    'perdido' : alert.status == '02',
-    'parado' : alert.status == '03',
-    'incorreto' : alert.status == '01'
-  }"
-  [routerLink]=[alert._id.hash,alert.status]
-  >
-  <div class="esquerda">
-    <h4>{{alert.packing.code}}</h4>
-    <p class="infoData">{{alert.packing.type}}</p>
-  </div>
-  <div class="direita">
-    <h3><span [ngClass]="{
-      'perdido2' : alert.status == '02',
-      'parado2' : alert.status == '03',
-      'incorreto2' : alert.status == '01'
-    }" class="badge">
-    {{alert.quantity}}</span></h3>
-    <h3><span class="badge badge-default"> {{alert.supplier.name}}</span></h3>
-  </div>
-</div> -->
-<div class="painel">
-<div class="quadradoPequeno"
-*ngFor="let teste of testes"
-
-[ngClass]="{
-  'perdido' : teste.status == 'A',
-  'parado' : teste.status == 'B',
-  'incorreto' : teste.status == 'C',
-  'status4' : teste.status == 'D',
-  'status5' : teste.status == 'E',
-  'status6' : teste.status == 'F'
-}"
->
-  <div class="esquerda">
-    <span class="codigo">{{teste.codigo}}</span><br />
-    <span class="descricao">{{teste.rack}}</span>
-  </div>
-  <div class="direita">
-    <span class="fornecedor"
-    [ngClass]="{
-      'fornecedorPerdido' : teste.status == 'A',
-      'fornecedorParado' : teste.status == 'B',
-      'fornecedorIncorreto' : teste.status == 'C',
-      'fornecedor4' : teste.status == 'D',
-      'fornecedor5' : teste.status == 'E',
-      'fornecedor6' : teste.status == 'F'
-    }"
-    >{{teste.safe}}</span><Br />
-    <span class="quantidade"
-    [ngClass]="{
-      'quantidadePerdido' : teste.status == 'A',
-      'quantidadeParado' : teste.status == 'B',
-      'quantidadeIncorreto' : teste.status == 'C',
-      'quantidade4' : teste.status == 'D',
-      'quantidade5' : teste.status == 'E',
-      'quantidade6' : teste.status == 'F'
-    }"
-    >{{teste.numero}} {{teste.status}}</span>
-  </div>
-</div>
-</div>
 <router-outlet></router-outlet>
 </div>

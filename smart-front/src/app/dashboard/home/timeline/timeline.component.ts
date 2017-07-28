@@ -31,7 +31,6 @@ export class TimelineComponent implements OnInit,OnDestroy {
     this.isModalShown = false;
   }
 
-
   alerts;
   alert: Alert;
   connection;

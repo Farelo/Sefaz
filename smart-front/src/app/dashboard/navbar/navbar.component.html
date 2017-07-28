@@ -9,7 +9,28 @@
         <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/importar" (click)="funcaoTop()">IMPORTAR DADOS</a></li>
         <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/rastreamento" (click)="funcaoTop()">GEOLOCALIZAÇÃO</a></li>
         <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/gc16" (click)="funcaoTop()">GC16</a></li>
-        <li class="scroll usuario" (click)="funcaoTop()"><a class="aio" routerLinkActive="active" routerLink="/rc/gc16" (click)="funcaoTop()"></a></li>
+        <li class="scroll usuario"
+        (click)="funcaoTop()"
+        [ngbPopover]= 'popContent'
+        placement="bottom"
+        triggers='click'
+        >
+          <a class="botaoUsuario"
+          routerLinkActive="active"
+
+          (click)="funcaoTop()"></a>
+        </li>
       </ul>
     </nav>
   </div>
+
+
+  <ng-template #popContent>
+    <img src="../../../assets/images/perfil1.png">
+    <p>Usuário Administrador Geral.</p>
+    <hr />
+    <button>GERENCIAR USUÁRIOS</button>
+    <br />
+    <button>EDITAR</button>
+    <button>SAIR</button>
+  </ng-template>
