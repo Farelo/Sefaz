@@ -9,40 +9,40 @@ export class GC16Service {
 
   constructor(private http: Http) { }
 
-  getGC16sPagination(limit: number, page: number): Observable<GC16[]> {
+  getGC16sPagination(limit: number, page: number): Observable<any> {
     return this.http.get(environment.url + 'gc16/list/all/pagination/' + limit + '/' + page)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveAll(): Observable<GC16[]> {
+  retrieveAll(): Observable<any> {
     return this.http.get(environment.url + 'gc16/list/all')
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveGC16(id: string): Observable<GC16>{
+  retrieveGC16(id: string): Observable<any>{
     return this.http.get(environment.url + 'gc16/retrieve/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updateGC16(id: string, gc16: GC16): Observable<GC16>{
+  updateGC16(id: string, gc16: GC16): Observable<any>{
     return this.http.put(environment.url + 'gc16/update/' + id,gc16)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  deleteGC16(id: string): Observable<GC16>{
+  deleteGC16(id: string): Observable<any>{
     return this.http.delete(environment.url + 'gc16/delete/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createGC16(gc16: GC16): Observable<GC16>{
+  createGC16(gc16: GC16): Observable<any>{
     console.log(gc16);
     return this.http.post(environment.url + 'gc16/create', gc16)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => {
         console.log(error);
         return Observable.throw(error.json().error || 'Server error');

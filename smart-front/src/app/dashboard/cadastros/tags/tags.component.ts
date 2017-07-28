@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TagsService } from '../../../servicos/tags.service';;
 import { Tag } from '../../../shared/models/Tag';
+import { Pagination } from '../../../shared/models/pagination';
 
 @Component({
   selector: 'app-tags',
@@ -8,26 +9,32 @@ import { Tag } from '../../../shared/models/Tag';
     styleUrls: ['../cadastros.component.css']
 })
 export class TagsComponent implements OnInit {
+  public data: Pagination = new Pagination({meta: {page : 1}});
+  public search : string;
 
   constructor(private TagsService: TagsService) { }
-  // Local properties
-  tags: Tag[];
-    vazio: boolean = false;
 
+  searchEvent(): void{
+    if(this.search != "" && this.search){
+      // this.PackingService.getPackingsPaginationByAttr(10,this.data.meta.page,this.search)
+      //   .subscribe(result => this.data = result, err => {console.log(err)});
+    }else{
+      this.loadTags();
+    }
+  }
 
   loadTags() {
-    // Get all comments
     this.TagsService.getTagsPagination(10, 1)
-      .subscribe(
-      tags => this.tags = tags,
-      err => {
-        // Log errors if any
-        console.log(err);
-      });
+      .subscribe(data => this.data = data,err => console.log(err));
   }
 
   removeTags(id):void{
     this.TagsService.deleteTag(id).subscribe(result =>   this.loadTags(), err => {console.log(err)})
+  }
+
+  pageChanged(page: any): void{
+    this.data.meta.page = page;
+    this.loadTags();
   }
 
   ngOnInit() {

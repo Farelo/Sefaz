@@ -9,39 +9,39 @@ export class PlantsService {
 
   constructor(private http: Http) { }
 
-  getPlantsPagination(limit: number, page: number): Observable<Plant[]> {
+  getPlantsPagination(limit: number, page: number): Observable<any> {
     return this.http.get(environment.url + 'plant/list/pagination/' + limit + '/' + page)
-      .map((res: Response) => res.json().plants)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveAll(): Observable<Plant[]> {
+  retrieveAll(): Observable<any> {
     return this.http.get(environment.url + 'plant/list/all')
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrievePlant(id: string): Observable<Plant>{
+  retrievePlant(id: string): Observable<any>{
     return this.http.get(environment.url + 'plant/retrieve/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updatePlant(id: string, plant: Plant): Observable<Plant>{
+  updatePlant(id: string, plant: Plant): Observable<any>{
     return this.http.put(environment.url + 'plant/update/' + id,plant)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  deletePlant(id: string): Observable<Plant>{
+  deletePlant(id: string): Observable<any>{
     return this.http.delete(environment.url + 'plant/delete/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createPlant(plant: Plant): Observable<Plant>{
+  createPlant(plant: Plant): Observable<any>{
     return this.http.post(environment.url + 'plant/create', plant)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 

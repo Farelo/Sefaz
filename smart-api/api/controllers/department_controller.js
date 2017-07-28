@@ -2,90 +2,93 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var department = mongoose.model('Department');
-var query = require('../helpers/queries/complex_queries_departments');
+const successHandler             = require('../helpers/responses/successHandler');
+const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
+const errorHandler               = require('../helpers/responses/errorHandler');
+const query                      = require('../helpers/queries/complex_queries_departments');
+const mongoose                   = require('mongoose');
+const department                 = mongoose.model('Department');
+const _                          = require("lodash");
+mongoose.Promise                 = global.Promise;
 /**
- * Create a Category
+ * Create a Department
  */
-
 exports.department_create = function(req, res) {
-
-    department.create(req.body)
-          .then(success => res.json({code:200, message: "OK", response: success}))
-          .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  department.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create deparment'))
+    .then(_.partial(successHandler, res));
 };
-
 /**
- * Show the current Category
+ * Show the current Department
  */
 exports.department_read = function(req, res) {
-    department.findOne({
-            _id: req.swagger.params.department_id.value
-        })
-        .then(department => res.json({code:200, message: "OK", data: department}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
-};
-
-exports.department_read_by_name = function(req, res) {
-    department.findOne({
-            "name": req.swagger.params.department_name.value
-        })
-        .then(department => res.json({code:200, message: "OK", data: department}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  department.findOne({
+      _id: req.swagger.params.department_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read department'));
 };
 /**
- * Update a Category
+ * Show the current Department by name
+ */
+exports.department_read_by_name = function(req, res) {
+  department.findOne({
+      "name": req.swagger.params.department_name.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read department by name'));
+};
+/**
+ * Update a Department
  */
 exports.department_update = function(req, res) {  
-    console.log(req.body);
-    department.update( {
-            _id: req.swagger.params.department_id.value
-        },  req.body,   {
-            upsert: true
-        })
-        .then(department => res.json({code:200, message: "OK", data: department}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err})); 
+  department.update( {
+      _id: req.swagger.params.department_id.value
+    },  req.body,   {
+      upsert: true
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to update department')); 
 };
 /**
- * Delete an Category
+ * Delete an Department
  */
 exports.department_delete = function(req, res) { 
-    department.remove({
-            _id: req.swagger.params.department_id.value
-        })
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}))
-        .then(success => res.json({code:200, message: "OK", response: success}));
+  department.remove({
+      _id: req.swagger.params.department_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to delete department'));
 };
 /**
- * List of Categories
+ * List of departments
  */
 exports.department_list_pagination = function(req, res) { 
-  var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-  var departmentlist = department.find({})
-        .skip(value)
-        .limit(parseInt(req.swagger.params.limit.value))
-        .populate("plant");
-  var count = department.find({}).count();
-      Promise.all([count, departmentlist])
-        .then(result => res.json({code:200, message: "OK", "count": result[0], "departments": result[1]}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  department.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['plant'],
+      sort: {
+        _id: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list gc16 registers by pagination'));
 };
-
+/**
+ * List of all departments
+ */
 exports.department_list_all = function(req, res) { 
   department.find({})
-        .populate("plant")
-        .then(departments => res.json({code:200, message: "OK", data: departments}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+    .populate("plant")
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to list all departments'));
 };
-
-
 /**
- * List of Categories
+ * List of departments by plant
  */
 exports.list_department_by_plant = function(req, res) {
-    department.aggregate(query.queries.listDepartmentsByPlant)
-        .then(packings =>res.json({code:200, message: "OK", data: packings}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  department.aggregate(query.queries.listDepartmentsByPlant)
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to list all departments by plant'));
 };

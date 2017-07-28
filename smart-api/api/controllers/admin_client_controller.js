@@ -2,74 +2,78 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var admin_client = mongoose.model('AdminClient');
+const successHandler             = require('../helpers/responses/successHandler');
+const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
+const errorHandler               = require('../helpers/responses/errorHandler');
+const mongoose                   = require('mongoose');
+const admin_client               = mongoose.model('AdminClient');
+const _                          = require("lodash");
+mongoose.Promise                 = global.Promise;
 /**
- * Create a Category
+ * Create a admin client
  */
 exports.admin_client_create = function(req, res) {
-    admin_client.create(req.body)
-           .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}))
-           .then(success => res.json({code:200, message: "OK", response: success}))
+  admin_client.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create admin client'))
+    .then(_.partial(successHandler, res));
 
 };
 /**
- * Show the current Category
+ * Show the current admin client
  */
 exports.admin_client_read = function(req, res) {
 
-    admin_client.findOne({
-            _id: req.swagger.params.admin_client_id.value
-        })
-        .populate('profile')
-        .then(admin_client => res.json({code:200, message: "OK", data: admin_client}))
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}));
+  admin_client.findOne({
+      _id: req.swagger.params.admin_client_id.value
+    })
+    .populate('profile')
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read admin client'));
 };
 /**
- * Update a Category
+ * Update a admin client
  */
 exports.admin_client_update = function(req, res) {  
-    admin_client.update( {
-            _id: req.swagger.params.admin_client_id.value
-        },  req.body,   {
-            upsert: true
-        })
-        .then(success => res.json({code:200, message: "OK", response: success}))
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err})); 
+  admin_client.update( {
+      _id: req.swagger.params.admin_client_id.value
+    },  req.body,   {
+      upsert: true
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to update admin client'));
 };
 /**
- * Delete an Category
+ * Delete an admin client
  */
 exports.admin_client_delete = function(req, res) { 
-    admin_client.remove({
-            _id: req.swagger.params.admin_client_id.value
-        })
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}))
-        .then(success => res.json({code:200, message: "OK", response: success}));
+  admin_client.remove({
+      _id: req.swagger.params.admin_client_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to delete admin client'));
 
 };
 /**
- * List of Categories
+ * List of all admin client
  */
 exports.admin_client_list = function(req, res) { 
-    admin_client.find({})
-        .populate('profile')
-        .then(admin_clients => res.json({code:200, message: "OK", data: admin_clients}))
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}));
+  admin_client.find({})
+    .populate('profile')
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to list of all admin client'));
 };
-
-
-
+/**
+ * List of all admin client by pagination
+ */
 exports.admin_client_listPagination = function(req, res) { 
-    var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-    var admin_clientList = admin_client.find({})
-        .populate('profile')
-        .skip(value).limit(parseInt(req.swagger.params.limit.value))
-        .sort({_id: 1});
-    var count = admin_client.find({}).count();
-
-    Promise.all([count,admin_clientList])
-        .then(result => res.json({code:200, message: "OK", "count": result[0], "adminclients": result[1]}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  admin_client.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['profile'],
+      sort: {
+        _id: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list of all admin client by pagination'));
 };

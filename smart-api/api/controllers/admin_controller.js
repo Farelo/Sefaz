@@ -2,71 +2,77 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var admin = mongoose.model('Admin');
+const successHandler             = require('../helpers/responses/successHandler');
+const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
+const errorHandler               = require('../helpers/responses/errorHandler');
+const mongoose                   = require('mongoose');
+const admin                      = mongoose.model('Admin');
+const _                          = require("lodash");
+mongoose.Promise                 = global.Promise;
 /**
- * Create a Category
+ * Create a Admin
  */
 exports.admin_create = function(req, res) {
-    admin.create(req.body)
-           .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}))
-           .then(success => res.json({code:200, message: "OK", response: success}))
+  admin.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create admin'))
+    .then(_.partial(successHandler, res));
 
 };
 /**
- * Show the current Category
+ * Show the current Admin
  */
 exports.admin_read = function(req, res) {
 
-    admin.findOne({
-            _id: req.swagger.params.admin_id.value
-        })
-        .populate('profile')
-        .then(admin => res.json({code:200, message: "OK", data: admin}))
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}));
+  admin.findOne({
+      _id: req.swagger.params.admin_id.value
+    })
+    .populate('profile')
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read admin'));
 };
 /**
- * Update a Category
+ * Update a Admin
  */
 exports.admin_update = function(req, res) {  
-    admin.update( {
-            _id: req.swagger.params.admin_id.value
-        },  req.body,   {
-            upsert: true
-        })
-        .then(success => res.json({code:200, message: "OK", response: success}))
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err})); 
+  admin.update( {
+      _id: req.swagger.params.admin_id.value
+    },  req.body,   {
+      upsert: true
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to update admin')); 
 };
 /**
- * Delete an Category
+ * Delete an Admin
  */
 exports.admin_delete = function(req, res) { 
-    admin.remove({
-            _id: req.swagger.params.admin_id.value
-        })
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}))
-        .then(success => res.json({code:200, message: "OK", response: success}));
+  admin.remove({
+      _id: req.swagger.params.admin_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to delete admin'));
 
 };
 /**
- * List of Categories
+ * List of all Admin's
  */
 exports.admin_list = function(req, res) { 
-    admin.find({})
-        .then(admins => res.json({code:200, message: "OK", data: admins}))
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}));
+  admin.find({})
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to list of all admin'));
 };
-
+/**
+ * List of all Admin's by pagination
+ */
 exports.admin_listPagination = function(req, res) { 
-    var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-    var adminList = admin.find({})
-        .populate('profile')
-        .skip(value).limit(parseInt(req.swagger.params.limit.value))
-        .sort({_id: 1});
-    var count = admin.find({}).count();
-
-    Promise.all([count,adminList])
-        .then(result => res.json({code:200, message: "OK", "count": result[0], "admins": result[1]}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  admin.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['profile'],
+      sort: {
+        _id: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list admins by pagination'));
 };

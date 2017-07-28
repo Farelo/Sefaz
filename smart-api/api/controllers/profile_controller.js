@@ -2,70 +2,75 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var profile = mongoose.model('Profile');
-
+const successHandler             = require('../helpers/responses/successHandler');
+const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
+const errorHandler               = require('../helpers/responses/errorHandler');
+const mongoose                   = require('mongoose');
+const profile                    = mongoose.model('Profile');
+const _                          = require("lodash");
+mongoose.Promise                 = global.Promise;
 /**
- * Create a Category
+ * Create a Profile
  */
 exports.profile_create = function(req, res) {
-    profile.create(req.body)
-           .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}))
-           .then(success => res.json({code:200, message: "OK", response: success}))
+  profile.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create Profile'))
+    .then(_.partial(successHandler, res));
 };
 
 /**
- * Show the current Category
+ * Show the current Profile
  */
 exports.profile_read = function(req, res) {
-    profile.findOne({
-            _id: req.swagger.params.profile_id.value
-        })
-        .then(profile => res.json({code:200, message: "OK", data: profile}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  profile.findOne({
+      _id: req.swagger.params.profile_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read profile'));
 };
 
 /**
- * Update a Category
+ * Update a Profile
  */
 exports.profile_update = function(req, res) {  
-    profile.update( {
-            _id: req.swagger.params.profile_id.value
-        },  req.body,   {
-            upsert: true
-        })
-        .then(success => res.json({code:200, message: "OK", response: success}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err})); 
+  profile.update( {
+      _id: req.swagger.params.profile_id.value
+    },  req.body,   {
+      upsert: true
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to update profile'));
 };
 /**
- * Delete an Category
+ * Delete an Profile
  */
 exports.profile_delete = function(req, res) { 
-    profile.remove({
-            _id: req.swagger.params.profile_id.value
-        })
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}))
-        .then(success => res.json({code:200, message: "OK", response: success}));
+  profile.remove({
+      _id: req.swagger.params.profile_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to delete profile'));
 
 };
 /**
- * List of Categories
+ * List of all Profiles
  */
 exports.profile_list = function(req, res) { 
-    company.find({})
-        .then(profiles => res.json({code:200, message: "OK", data: profiles}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  profile.find({})
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to list of all profiles'));
 };
-
+/**
+ * List of all Profiles by pagination
+ */
 exports.profile_listPagination = function(req, res) { 
-    var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-    var profileList = profile.find({})
-        .skip(value).limit(parseInt(req.swagger.params.limit.value))
-        .sort({_id: 1});
-    var count = profile.find({}).count();
-
-    Promise.all([count,profileList])
-        .then(result => res.json({code:200, message: "OK", "count": result[0], "profiles": result[1]}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  profile.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      sort: {
+        _id: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list all profiles by pagination'));
 };

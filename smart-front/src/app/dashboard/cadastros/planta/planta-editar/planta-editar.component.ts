@@ -61,7 +61,7 @@ export class PlantaEditarComponent implements OnInit {
         (params: any)=>{
           let id = params ['id'];
           this.PlantsService.retrievePlant(id).subscribe(result => {
-            this.plant = result;
+            this.plant = result.data;
             this.center = { lat: this.plant.lat, lng: this.plant.lng };
             this.pos = [this.plant.lat, this.plant.lng];
           });

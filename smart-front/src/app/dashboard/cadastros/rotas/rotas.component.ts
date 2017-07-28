@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RoutesService } from '../../../servicos/routes.service';;
 import { Route } from '../../../shared/models/route';
+import { Pagination } from '../../../shared/models/pagination';
 
 @Component({
   selector: 'app-rotas',
@@ -8,24 +9,36 @@ import { Route } from '../../../shared/models/route';
   styleUrls: ['../cadastros.component.css']
 })
 export class RotasComponent implements OnInit {
-
+  public data: Pagination = new Pagination({meta: {page : 1}});
+  public search : string;
   constructor(private RoutesService : RoutesService) { }
-routes : Route [];
-  vazio: boolean = false;
 
+  searchEvent(): void{
+    if(this.search != "" && this.search){
+      // this.PackingService.getPackingsPaginationByAttr(10,this.data.meta.page,this.search)
+      //   .subscribe(result => this.data = result, err => {console.log(err)});
+    }else{
+      this.loadRoutes();
+    }
+  }
 
-loadRoutes(){
-  this.RoutesService.getRoutesPagination(10,1)
-    .subscribe(routes => this.routes = routes, err => {console.log(err)});
-}
+  pageChanged(page: any): void{
+    this.data.meta.page = page;
+    this.loadRoutes();
+  }
 
-removeRoutes(id):void{
-  this.RoutesService.deleteRoute(id).subscribe(result =>   this.loadRoutes(), err => {console.log(err)})
-}
+  loadRoutes(){
+    this.RoutesService.getRoutesPagination(10,1)
+      .subscribe(data => this.data = data, err => {console.log(err)});
+  }
 
-ngOnInit() {
+  removeRoutes(id):void{
+    this.RoutesService.deleteRoute(id).subscribe(result =>   this.loadRoutes(), err => {console.log(err)})
+  }
 
-  this.loadRoutes();
-}
+  ngOnInit() {
+
+    this.loadRoutes();
+  }
 
 }

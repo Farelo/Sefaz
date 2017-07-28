@@ -2,70 +2,74 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var staff_supplier = mongoose.model('StaffSupplier');
+const successHandler             = require('../helpers/responses/successHandler');
+const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
+const errorHandler               = require('../helpers/responses/errorHandler');
+const mongoose                   = require('mongoose');
+const staff_supplier             = mongoose.model('StaffSupplier');
+const _                          = require("lodash");
+mongoose.Promise                 = global.Promise;
 /**
- * Create a Category
+ * Create a Staff Supplier
  */
 exports.staff_supplier_create = function(req, res) {
-    staff_supplier.create(req.body)
-           .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}))
-           .then(success => res.json({code:200, message: "OK", response: success}))
+  staff_supplier.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create staff supplier'))
+    .then(_.partial(successHandler, res));
 };
-
 /**
- * Show the current Category
+ * Show the current Staff Supplier
  */
 exports.staff_supplier_read = function(req, res) {
-    staff_supplier.findOne({
-            _id: req.swagger.params.staff_supplier_id.value
-        })
-        .then(staff_supplier => res.json({code:200, message: "OK", data: staff_supplier}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  staff_supplier.findOne({
+      _id: req.swagger.params.staff_supplier_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read staff supplier'));
 };
-
 /**
- * Update a Category
+ * Update a Staff Supplier
  */
 exports.staff_supplier_update = function(req, res) {  
-    staff_supplier.update( {
-            _id: req.swagger.params.staff_supplier_id.value
-        },  req.body,   {
-            upsert: true
-        })
-        .then(success => res.json({code:200, message: "OK", response: success}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err})); 
+  staff_supplier.update( {
+      _id: req.swagger.params.staff_supplier_id.value
+    },  req.body,   {
+      upsert: true
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to update staff supplier'));
 };
 /**
- * Delete an Category
+ * Delete an Staff Supplier
  */
 exports.staff_supplier_delete = function(req, res) { 
-    staff_supplier.remove({
-            _id: req.swagger.params.staff_supplier_id.value
-        })
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}))
-        .then(success => res.json({code:200, message: "OK", response: success}));
+  staff_supplier.remove({
+      _id: req.swagger.params.staff_supplier_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to delete staff supplier'));
 
 };
 /**
- * List of Categories
+ * List of all staff suppliers
  */
 exports.staff_supplier_list = function(req, res) { 
-    company.find({})
-        .then(staff_suppliers => res.json({code:200, message: "OK", data: staff_suppliers}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  staff_supplier.find({})
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to list of all staff supplier'));
 };
-
+/**
+ * List of all staff suppliers
+ */
 exports.staff_supplier_listPagination = function(req, res) { 
-    var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-    var staff_supplierList = staff_supplier.find({})
-        .skip(value).limit(parseInt(req.swagger.params.limit.value))
-        .sort({_id: 1});
-
-    var count = staff_supplier.find({}).count();
-
-    Promise.all([count,staff_supplierList])
-        .then(result => res.json({code:200, message: "OK", "count": result[0], "staff_suppliers": result[1]}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  staff_supplier.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['profile'],
+      sort: {
+        _id: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list of all staff supplier pagination'));
 };

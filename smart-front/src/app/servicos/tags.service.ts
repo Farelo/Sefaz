@@ -9,43 +9,43 @@ export class TagsService {
 
   constructor(private http: Http) { }
 
-  getTagsPagination(limit: number, page: number): Observable<Tag[]> {
+  getTagsPagination(limit: number, page: number): Observable<any> {
     return this.http.get(environment.url + 'tags/list/pagination/' + limit + '/' + page)
-      .map((res: Response) => res.json().tags)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveAllNoBinded(): Observable<Tag[]> {
+  retrieveAllNoBinded(): Observable<any> {
     return this.http.get(environment.url + 'tags/list/all/nobinded')
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveTag(id: string): Observable<Tag>{
+  retrieveTag(id: string): Observable<any>{
     return this.http.get(environment.url + 'tags/retrieve/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveTagByMac(id: string): Observable<Tag>{
+  retrieveTagByMac(id: string): Observable<any>{
     return this.http.get(environment.url + 'tags/retrieve/mac/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updateTag(id: string, tag: Tag): Observable<Tag>{
+  updateTag(id: string, tag: Tag): Observable<any>{
     return this.http.put(environment.url + 'tags/update/' + id,tag)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  deleteTag(id: string): Observable<Tag>{
+  deleteTag(id: string): Observable<any>{
     return this.http.delete(environment.url + 'tags/delete/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createTag(tag: Tag[]): Observable<Tag>{
+  createTag(tag: Tag[]): Observable<any>{
     return this.http.post(environment.url + 'tags/create', tag)
       .map((res: Response) => {console.log(res.json())})
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));

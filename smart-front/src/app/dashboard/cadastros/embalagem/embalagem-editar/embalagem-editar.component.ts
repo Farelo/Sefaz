@@ -34,15 +34,15 @@ export class EmbalagemEditarComponent implements OnInit {
   }
 
   loadTags():void {
-    this.TagsService.retrieveAllNoBinded().subscribe( result => this.tags = result, err => {console.log(err)});
+    this.TagsService.retrieveAllNoBinded().subscribe( result => this.tags = result.data, err => {console.log(err)});
   }
 
   loadSuppliers():void{
-    this.SuppliersService.retrieveAll().subscribe(suppliers => this.suppliers = suppliers, err => {console.log(err)});
+    this.SuppliersService.retrieveAll().subscribe(result => this.suppliers = result.data, err => {console.log(err)});
   }
 
   loadProject():void{
-    this.ProjectService.retrieveAll().subscribe(projects => this.projects = projects, err => {console.log(err)});
+    this.ProjectService.retrieveAll().subscribe(result => this.projects = result.data, err => {console.log(err)});
   }
 
 
@@ -52,9 +52,9 @@ export class EmbalagemEditarComponent implements OnInit {
     this.loadProject();
     this.inscricao = this.route.params.subscribe(
       (params: any)=>{
-        let id = params ['id'];
+        let id = params['id'];
         this.PackingService.retrievePacking(id).subscribe(result => {
-          this.packing = result;
+          this.packing = result.data;
           this.packing.project =  this.packing.project._id;
           this.packing.supplier =  this.packing.supplier._id;
         });

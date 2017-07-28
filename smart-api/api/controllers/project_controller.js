@@ -2,77 +2,73 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var project = mongoose.model('Project');
-
+const successHandler             = require('../helpers/responses/successHandler');
+const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
+const errorHandler               = require('../helpers/responses/errorHandler');
+const mongoose                   = require('mongoose');
+const project                    = mongoose.model('Project');
+const _                          = require("lodash");
+mongoose.Promise                 = global.Promise;
 /**
- * Create a Category
+ * Create a Project
  */
 exports.project_create = function(req, res) {
-
-    project.create(req.body)
-           .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}))
-           .then(success => res.json({code:200, message: "OK", response: success}))
-
+  project.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create a project'))
+    .then(_.partial(successHandler, res));
 };
-
 /**
- * Show the current Category
+ * Show the current Project
  */
 exports.project_read = function(req, res) {
-    project.findOne({
-            _id: req.swagger.params.project_id.value
-        })
-        .then(project => res.json({code:200, message: "OK", data: project}))
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}));
+  project.findOne({
+      _id: req.swagger.params.project_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read project'));
 };
-
 /**
- * Update a Category
+ * Update a Project
  */
 exports.project_update = function(req, res) {  
-    project.update( {
-            _id: req.swagger.params.project_id.value
-        },  req.body,   {
-            upsert: true
-        })
-        .then(success => res.json({code:200, message: "OK", response: success}))
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err})); 
+  project.update( {
+      _id: req.swagger.params.project_id.value
+    },  req.body,   {
+      upsert: true
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to update project'));
 };
 /**
- * Delete an Category
+ * Delete an Project
  */
 exports.project_delete = function(req, res) { 
-    project.remove({
-            _id: req.swagger.params.project_id.value
-        })
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}))
-        .then(success => res.json({code:200, message: "OK", response: success}));
-
+  project.remove({
+      _id: req.swagger.params.project_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to delete project'));
 };
 /**
- * List of Categories
+ * List of Projets by pagination
  */
- exports.project_listPagination = function(req, res) { 
-     var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-     var projectList = project.find({})
-         .skip(value).limit(parseInt(req.swagger.params.limit.value))
-         .sort({_id: 1});
-     var count = project.find({}).count();
+exports.project_listPagination = function(req, res) { 
+  project.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      sort: {
+        _id: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list gc16 registers by pagination'));
+};
+/**
+ * List of all Projets
+ */
+exports.project_list = function(req, res) { 
 
-     Promise.all([count,projectList])
-         .then(result => res.json({code:200, message: "OK", "count": result[0], "projects": result[1]}))
-         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
- };
-
-
- /**
-  * List of Categories
-  */
-  exports.project_list= function(req, res) { 
-
-    project.find({})
-        .then(tags => res.json({code:200, message: "OK", data: tags}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
-  };
+  project.find({})
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to list all projects'));
+};

@@ -56,7 +56,7 @@ exports.list_packing_department = function(req, res) {
 exports.packing_update = function(req, res) {
 
   packing.update({
-        _id: req.swagger.params.packing_id.value
+      _id: req.swagger.params.packing_id.value
     }, req.body, {
       upsert: true,
       multi: true
@@ -71,7 +71,7 @@ exports.packing_update = function(req, res) {
 exports.packing_update_by_code = function(req, res) {
 
   packing.update({
-        code: req.swagger.params.packing_code.value
+      code: req.swagger.params.packing_code.value
     }, req.body, {
       upsert: true,
       multi: true
@@ -85,8 +85,12 @@ exports.packing_update_by_code = function(req, res) {
 exports.packing_update_unset_by_code = function(req, res) {
 
   packing.update({
-        code: req.swagger.params.packing_code.value
-    }, {$unset: {gc16:1}}, {
+      code: req.swagger.params.packing_code.value
+    }, {
+      $unset: {
+        gc16: 1
+      }
+    }, {
       upsert: true,
       multi: true
     })
@@ -122,11 +126,14 @@ exports.packing_delete = function(req, res) {
  * List of packings by pagination
  */
 exports.packing_list_pagination = function(req, res) {
-  packing.paginate({},
-    { page: parseInt(req.swagger.params.page.value) ,
-      populate: ['supplier','project','tag', 'actual_plant', 'department','gc16'],
-      sort: { serial: 1 },
-      limit: parseInt(req.swagger.params.limit.value)})
+  packing.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      sort: {
+        serial: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
     .then(_.partial(successHandlerPagination, res))
     .catch(_.partial(errorHandler, res, 'Error to list packings by Supplier'));
 };
@@ -134,15 +141,20 @@ exports.packing_list_pagination = function(req, res) {
  * List of packings by pagination by serial and code
  */
 exports.packing_list_pagination_by_code_serial = function(req, res) {
-  packing.paginate({"$or": [{
+  packing.paginate({
+      "$or": [{
         "code": req.swagger.params.attr.value
-    }, {
+      }, {
         "serial": req.swagger.params.attr.value
-    }]},
-    { page: parseInt(req.swagger.params.page.value) ,
-      populate: ['supplier','project','tag', 'actual_plant', 'department','gc16'],
-      sort: { serial: 1 },
-      limit: parseInt(req.swagger.params.limit.value)})
+      }]
+    }, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      sort: {
+        serial: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
     .then(_.partial(successHandlerPagination, res))
     .catch(_.partial(errorHandler, res, 'Error to list packings by Supplier'));
 };

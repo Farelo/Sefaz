@@ -10,23 +10,23 @@ export class AlertsService {
   constructor(private http: Http) { }
 
 
-  getAlertsPagination(limit: number, page: number): Observable<Alert[]> {
+  getAlertsPagination(limit: number, page: number): Observable<any> {
 
     return this.http.get(environment.url + 'alert/list/pagination/' + limit + '/' + page)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getAlertsPaginationByHashing(limit: number, page: number, hashing: string, status:string): Observable<Alert[]> {
+  getAlertsPaginationByHashing(limit: number, page: number, hashing: string, status:string): Observable<any> {
 
     return this.http.get(environment.url + 'alert/list/all/hashing/' + limit + '/' + page + '/' + hashing +'/'+status)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveAlertByPacking(id: string): Observable<Alert>{
+  retrieveAlertByPacking(id: string): Observable<any>{
     return this.http.get(environment.url + 'alert/retrieve/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 

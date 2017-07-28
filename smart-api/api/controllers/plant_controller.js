@@ -2,87 +2,75 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var plant = mongoose.model('Plant');
-
+const successHandler             = require('../helpers/responses/successHandler');
+const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
+const errorHandler               = require('../helpers/responses/errorHandler');
+const mongoose                   = require('mongoose');
+const plant                       = mongoose.model('Plant');
+const _                          = require("lodash");
+mongoose.Promise                 = global.Promise;
 /**
- * Create a Category
+ * Create a Plant
  */
 exports.plant_create = function(req, res) {
-
-    plant.create(req.body)
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}))
-        .then(success => res.json({code:200, message: "OK", response: success}));
-
+  plant.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create plant'))
+    .then(_.partial(successHandler, res));
 };
-
 /**
- * Show the current Category
+ * Show the current Plant
  */
 exports.plant_read = function(req, res) {
 
-    plant.findOne({
-            _id: req.swagger.params.plant_id.value
-        })
-        .then(plant => res.json({code:200, message: "OK", data: plant}))
-        .catch(err => res.status(404).send({code:404, message: "ERROR", response: err}));
+  plant.findOne({
+      _id: req.swagger.params.plant_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read plant'));
 };
 
 /**
- * Update a Category
+ * Update a Plant
  */
 exports.plant_update = function(req, res) {  
-    plant.update( {
-            _id: req.swagger.params.plant_id.value
-        },  req.body,   {
-            upsert: true
-        })
-        .then(success => res.json({code:200, message: "OK", response: success}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err})); 
+  plant.update( {
+      _id: req.swagger.params.plant_id.value
+    },  req.body,   {
+      upsert: true
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to update plant'));
 };
 /**
- * Delete an Category
+ * Delete an Plant
  */
 exports.plant_delete = function(req, res) { 
-    plant.remove({
-            _id: req.swagger.params.plant_id.value
-        })
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}))
-        .then(success => res.json({code:200, message: "OK", response: success}));
+  plant.remove({
+      _id: req.swagger.params.plant_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to delete plant'));
 
 };
 /**
- * List of Categories
+ * List of all Plants
  */
 exports.list_all = function(req, res) { 
-
-    plant.find({})
-        .then(plants => res.json({code:200, message: "OK", data: plants}))
-        .catch(err => res.send({code:404, message: "ERROR", response: err}));
+  plant.find({})
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read plant'));
 };
-
-exports.plant_listPagination = function(req, res) { 
-    var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-    var plantList = plant.find({})
-        .skip(value).limit(parseInt(req.swagger.params.limit.value))
-        .sort({_id: 1});
-    var count = plant.find({}).count();
-
-    Promise.all([count,plantList])
-        .then(result => res.json({code:200, message: "OK", "count": result[0], "plants": result[1]}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
-};
-
 /**
- * List of Categories
+ * List of all Plants by pagination
  */
-// exports.listallByFactory = function(req, res) { 
-//     plant.find({})
-//         .populate({
-//           path: 'factory',
-//           match: { name:  req.params.factory_name}}
-//         )
-//         .then(plant => res.json(plant.filter(o => o.factory !=  null)))
-//         .catch(err => res.send(err));
-// };
+exports.plant_listPagination = function(req, res) { 
+  plant.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      sort: {
+        _id: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list gc16 registers by pagination'));
+};

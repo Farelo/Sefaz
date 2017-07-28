@@ -31,7 +31,7 @@ export class PlataformaEditarComponent implements OnInit {
     this.inscricao = this.route.params.subscribe(
       (params: any)=>{
         let id = params ['id'];
-        this.ProjectService.retrieveProject(id).subscribe(result => this.project = result);
+        this.ProjectService.retrieveProject(id).subscribe(result => this.project = result.data);
       }
     )
   }

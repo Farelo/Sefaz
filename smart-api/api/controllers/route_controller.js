@@ -2,68 +2,79 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var route = mongoose.model('Route');
+const successHandler            = require('../helpers/responses/successHandler');
+const successHandlerPagination  = require('../helpers/responses/successHandlerPagination');
+const errorHandler              = require('../helpers/responses/errorHandler');
+const mongoose                  = require('mongoose');
+const route                     = mongoose.model('Route');
+const _                         = require("lodash");
+mongoose.Promise                = global.Promise;
 /**
- * Create a Category
+ * Create a Route
  */
 exports.route_create = function(req, res) {
-  console.log(req.body);
-    	route.create(req.body)
-           .then(success => res.json({code:200, message: "OK", response: success}))
-           .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  route.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create route'))
+    .then(_.partial(successHandler, res));
 };
 /**
- * Show the current Category
+ * Show the current Route
  */
 exports.route_read = function(req, res) {
-      route.findOne({_id: req.swagger.params.route_id.value})
-           .populate('plant_factory')
-           .populate('plant_supplier')
-           .populate('supplier')
-           .then(route => res.json({code:200, message: "OK", data: route}))
-           .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  route.findOne({
+      _id: req.swagger.params.route_id.value
+    })
+    .populate('plant_factory')
+    .populate('plant_supplier')
+    .populate('supplier')
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read route'));
 };
 /**
- * Update a Category
+ * Update a Route
  */
-exports.route_update = function(req, res) {
-    route.update( {_id: req.swagger.params.route_id.value }, req.body, { upsert: true})
-         .then(success => res.json({code:200, message: "OK", response: success}))
-         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+exports.route_update = function(req, res) {  
+  route.update( {
+      _id: req.swagger.params.route_id.value
+    },  req.body,   {
+      upsert: true
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to update route'));
 };
 /**
- * Delete an Category
+ * Delete an Route
  */
-exports.route_delete = function(req, res) {
-     route.remove({_id : req.swagger.params.route_id.value})
-          .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}))
-          .then(success => res.json({code:200, message: "OK", response: success}));
+exports.route_delete = function(req, res) { 
+  route.remove({
+      _id: req.swagger.params.route_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to delete route '));
 };
 /**
- * List of Categories
+ * List of all Routes
  */
-exports.route_list_all = function(req, res) {
-	   route.find({})
-          .populate('plant_factory')
-          .populate('plant_supplier')
-          .populate('supplier')
-          .then(routes => res.json({code:200, message: "OK", data: routes}))
-          .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+exports.route_list_all = function(req, res) { 
+  route.find({})
+    .populate('plant_factory')
+    .populate('plant_supplier')
+    .populate('supplier')
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to list all routes'));
 };
-
+/**
+ * List of all Routes pagination
+ */
 exports.route_list_pagination = function(req, res) { 
-    var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-    var routeList = route.find({})
-        .skip(value).limit(parseInt(req.swagger.params.limit.value))
-        .populate('plant_factory')
-        .populate('plant_supplier')
-        .populate('supplier')
-        .sort({_id: 1});
-
-    var count = route.find({}).count();
-    Promise.all([count,routeList])
-        .then(result => res.json({code:200, message: "OK", "count": result[0], "routes": result[1]}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+  route.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['plant_factory', 'plant_supplier', 'supplier'],
+      sort: {
+        _id: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list routes by pagination'));
 };

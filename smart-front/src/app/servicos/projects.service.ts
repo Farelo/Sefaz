@@ -9,39 +9,39 @@ export class ProjectService {
 
   constructor(private http: Http) { }
 
-  getProjectPagination(limit: number, page: number): Observable<Project[]> {
+  getProjectPagination(limit: number, page: number): Observable<any> {
     return this.http.get(environment.url + 'project/list/pagination/' + limit + '/' + page)
-      .map((res: Response) => res.json().projects)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveAll(): Observable<Project[]> {
+  retrieveAll(): Observable<any> {
     return this.http.get(environment.url + 'project/list/all')
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveProject(id: string): Observable<Project>{
+  retrieveProject(id: string): Observable<any>{
     return this.http.get(environment.url + 'project/retrieve/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updateProject(id: string, project: Project): Observable<Project>{
+  updateProject(id: string, project: Project): Observable<any>{
     return this.http.put(environment.url + 'project/update/' + id,project)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  deleteProject(id: string): Observable<Project>{
+  deleteProject(id: string): Observable<any>{
     return this.http.delete(environment.url + 'project/delete/' + id)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createProject(project: Project): Observable<Project>{
+  createProject(project: Project): Observable<any>{
     return this.http.post(environment.url + 'project/create', project)
-      .map((res: Response) => res.json().data)
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 

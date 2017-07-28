@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-7">
-    <input type="text" class="form-control meuInput" placeholder="Buscar" aria-describedby="basic-addon1">
+    <input type="text" class="form-control meuInput" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (blur)="searchEvent()">
   </div>
   <div class="col-xs-2">
 
@@ -19,7 +19,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let plant of plants">
+      <tr  *ngFor="let plant of data.data | paginate: {
+                                                      itemsPerPage: data.meta.limit,
+                                                      currentPage: data.meta.page,
+                                                      totalItems: data.meta.total_docs}">
         <td>{{plant.name}}</td>
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', plant._id]">Editar</button>
@@ -29,6 +32,11 @@
     </tbody>
   </table>
 </div>
-<div class="classVazio" *ngIf="plants?.length < 1">
+<div class="has-text-centered">
+    <pagination-controls (pageChange)="pageChanged($event)"
+                         previousLabel="Anterior"
+                         nextLabel="Próximo"></pagination-controls>
+</div>
+<div class="classVazio" *ngIf="data.data?.length < 1">
   Ainda não existem plantas cadastradas.
 </div>

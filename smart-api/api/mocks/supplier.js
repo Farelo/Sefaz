@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
-
-var supplierSchema = new mongoose.Schema({
+const mongoose            = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
+const supplierSchema = new mongoose.Schema({
       name: {type: String, required: true},
       duns: {type: String, required: true},
       cnpj:{type: String},
@@ -14,5 +14,5 @@ var supplierSchema = new mongoose.Schema({
       },
       hashPacking: {type: String}
 });
-
+supplierSchema.plugin(mongoosePaginate);
 mongoose.model('Supplier', supplierSchema);
