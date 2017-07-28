@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { HotTableModule } from 'ng2-handsontable';
 import { DashboardComponent } from './dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { InventarioComponent } from './inventario/inventario.component';
@@ -16,18 +17,21 @@ import { DashboardRoutingModule } from './dashboard.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Gc16Component } from './gc16/gc16.component';
 import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.component';
+import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
+    BrowserModule,
     FormsModule,
     HomeModule,
     CadastrosModule,
     RastreamentoModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    HotTableModule
   ],
   declarations: [
     DashboardComponent,
@@ -35,7 +39,8 @@ import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.com
     InventarioComponent,
     ImportarComponent,
     Gc16Component,
-    Gc16AdicionarComponent
+    Gc16AdicionarComponent,
+    Gc16EditarComponent
   ],
   providers: [
     NgbActiveModal

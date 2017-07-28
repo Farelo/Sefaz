@@ -28,6 +28,7 @@ import { SetorCadastrarComponent } from './cadastros/setor/setor-cadastrar/setor
 import { TagsCadastrarComponent } from './cadastros/tags/tags-cadastrar/tags-cadastrar.component';
 import { Gc16Component } from './gc16/gc16.component';
 import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.component';
+import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
 
 const dashboardRoutes = [
   {path: 'rc', component: DashboardComponent, children: [
@@ -39,6 +40,8 @@ const dashboardRoutes = [
     {path: 'rastreamento', component: RastreamentoComponent},
     {path: 'gc16', component: Gc16Component},
     {path: 'gc16/adicionar', component: Gc16AdicionarComponent},
+    {path: 'gc16/editar/:id', component: Gc16EditarComponent}
+
   ]}
 ];
 

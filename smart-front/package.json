@@ -31,8 +31,12 @@
     "jquery": "^3.2.1",
     "ng-tether": "^0.1.0",
     "ng2-bootstrap": "^1.6.3",
+    "ng2-file-upload": "^1.2.1",
+    "ng2-handsontable": "^1.0.3",
     "ng2-map": "^0.16.5",
     "ngx-bootstrap": "^1.7.1",
+    "ngx-pagination": "^3.0.1",
+    "ngx-progressbar": "^2.0.3",
     "ngx-validators": "^3.0.0",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"

@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
 
-var staffSchema = new mongoose.Schema({
+const staffSchema = new mongoose.Schema({
       name: {type: String, required: true},
       addrees: {type: String, required: true},
       profile: {
@@ -9,4 +10,5 @@ var staffSchema = new mongoose.Schema({
       }
 });
 
+staffSchema.plugin(mongoosePaginate);
 mongoose.model('Staff', staffSchema);

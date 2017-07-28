@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
- 
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
 
-var logisticOperatorSchema = new mongoose.Schema({
+const logisticOperatorSchema = new mongoose.Schema({
     name: {type: String, required: true},
     cpf:{type: String, required: true, unique: true},
     profile: {
@@ -19,5 +19,5 @@ var logisticOperatorSchema = new mongoose.Schema({
 
 });
  
-
+logisticOperatorSchema.plugin(mongoosePaginate);
 mongoose.model('LogisticOperator', logisticOperatorSchema);

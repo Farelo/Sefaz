@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
 
-var historicPackingsSchema = new mongoose.Schema({
+const historicPackingsSchema = new mongoose.Schema({
   historic : [
       {
         plant: {
@@ -16,5 +17,5 @@ var historicPackingsSchema = new mongoose.Schema({
   }
 });
 
-
+historicPackingsSchema.plugin(mongoosePaginate);
 mongoose.model('HistoricPackings', historicPackingsSchema);

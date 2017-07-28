@@ -19,6 +19,7 @@ module.exports  = function(){
 	require('../api/mocks/historic_tags');
 	require('../api/mocks/historic_packings');
 	require('../api/mocks/alerts');
+	require('../api/mocks/gc16');
 
 }
  

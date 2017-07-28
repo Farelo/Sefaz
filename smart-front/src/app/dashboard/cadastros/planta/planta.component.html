@@ -22,7 +22,7 @@
       <tr *ngFor="let plant of plants">
         <td>{{plant.name}}</td>
         <td class="teste">
-          <button class="editar" >Editar</button>
+          <button class="editar" [routerLink]="['editar/', plant._id]">Editar</button>
           <button class="excluir" (click)="removePlant(plant._id)">Excluir</button>
         </td>
       </tr>

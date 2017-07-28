@@ -51,6 +51,62 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /packing/list/pagination/attribute/{limit}/{page}/{attr}:
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - "Packing"
+      summary: "Get all packings on the system by pagination"
+      description: ""
+      operationId: packing_list_pagination_by_code_serial
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of packings that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "attr"
+        description: "The attribute of packings that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns packings related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /packing/list/supplier/{id}:
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - "Packing"
+      summary: "Get all packings on the system by supplier"
+      description: ""
+      operationId: packing_list_by_supplier
+      parameters:
+      - in: "path"
+        name: "id"
+        description: "The supplier id"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /packing/list/code/{packing_code}:
       x-swagger-router-controller: packing_controller
       get:
@@ -214,6 +270,58 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/Packing"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /packing/update/code/{packing_code}:
+    x-swagger-router-controller: packing_controller
+    put:
+      tags:
+      - "Packing"
+      summary: "Update a packing on the system using code"
+      description: ""
+      operationId: packing_update_by_code
+      parameters:
+      - in: "path"
+        name: "packing_code"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The project object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/Packing"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /packing/update/unset/{packing_code}:
+    x-swagger-router-controller: packing_controller
+    put:
+      tags:
+      - "Packing"
+      summary: "Unset a filed from packing on the system using code"
+      description: ""
+      operationId: packing_update_unset_by_code
+      parameters:
+      - in: "path"
+        name: "packing_code"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
       responses:
         200:
           description: "Message"

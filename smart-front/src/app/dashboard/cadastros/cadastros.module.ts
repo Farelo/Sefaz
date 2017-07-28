@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NguiMapModule } from '@ngui/map';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 import { CadastrosComponent } from './cadastros.component';
 
 import { CadastrosRoutingModule } from './cadastros.routing.module';
@@ -17,9 +17,12 @@ import { PlataformaComponent } from './plataforma/plataforma.component';
 import { RotasComponent } from './rotas/rotas.component';
 import { PlantaComponent } from './planta/planta.component';
 import { EmbalagemCadastroComponent } from './embalagem/embalagem-cadastro/embalagem-cadastro.component';
+import { EmbalagemEditarComponent } from './embalagem/embalagem-editar/embalagem-editar.component';
 import { FornecedorCadastrarComponent } from './fornecedor/fornecedor-cadastrar/fornecedor-cadastrar.component';
 import { PlantaCadastrarComponent } from './planta/planta-cadastrar/planta-cadastrar.component';
+import { PlantaEditarComponent } from './planta/planta-editar/planta-editar.component';
 import { PlataformaCadastrarComponent } from './plataforma/plataforma-cadastrar/plataforma-cadastrar.component';
+import { PlataformaEditarComponent } from './plataforma/plataforma-editar/plataforma-editar.component';
 import { RotasCadastrarComponent } from './rotas/rotas-cadastrar/rotas-cadastrar.component';
 import { ScannerCadastrarComponent } from './scanner/scanner-cadastrar/scanner-cadastrar.component';
 import { SetorCadastrarComponent } from './setor/setor-cadastrar/setor-cadastrar.component';
@@ -31,6 +34,7 @@ import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.com
     FormsModule,
     NgbModule.forRoot(),
     CadastrosRoutingModule,
+    NgxPaginationModule,
     NguiMapModule.forRoot({
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
       '&libraries=visualization,places,drawing',
@@ -53,7 +57,10 @@ import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.com
     RotasCadastrarComponent,
     ScannerCadastrarComponent,
     SetorCadastrarComponent,
-    TagsCadastrarComponent
+    TagsCadastrarComponent,
+    PlantaEditarComponent,
+    PlataformaEditarComponent,
+    EmbalagemEditarComponent
   ],
   providers: [
     NgbActiveModal

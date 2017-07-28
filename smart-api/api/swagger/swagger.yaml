@@ -16,6 +16,7 @@ schemes:
   - https
 consumes:
   - application/json
+  - multipart/form-data
 produces:
   - application/json
 tags:
@@ -55,6 +56,10 @@ tags:
     description: All information about your Historic Packings
   - name: Alerts
     description: All information about your Alerts
+  - name: GC16
+    description: All information about your GC16 registers
+  - name: Upload
+    description: 'All information about your upload '
 paths:
   '/project/retrieve/{project_id}':
     x-swagger-router-controller: project_controller
@@ -251,6 +256,62 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/ErrorResponse'
+  '/packing/list/pagination/attribute/{limit}/{page}/{attr}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Get all packings on the system by pagination
+      description: ''
+      operationId: packing_list_pagination_by_code_serial
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: attr
+          description: The attribute of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/list/supplier/{id}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Get all packings on the system by supplier
+      description: ''
+      operationId: packing_list_by_supplier
+      parameters:
+        - in: path
+          name: id
+          description: The supplier id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   '/packing/list/code/{packing_code}':
     x-swagger-router-controller: packing_controller
     get:
@@ -411,6 +472,58 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/Packing'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/update/code/{packing_code}':
+    x-swagger-router-controller: packing_controller
+    put:
+      tags:
+        - Packing
+      summary: Update a packing on the system using code
+      description: ''
+      operationId: packing_update_by_code
+      parameters:
+        - in: path
+          name: packing_code
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The project object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/Packing'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/packing/update/unset/{packing_code}':
+    x-swagger-router-controller: packing_controller
+    put:
+      tags:
+        - Packing
+      summary: Unset a filed from packing on the system using code
+      description: ''
+      operationId: packing_update_unset_by_code
+      parameters:
+        - in: path
+          name: packing_code
+          description: The code that needs to be fetchede
+          required: true
+          type: string
       responses:
         '200':
           description: Message
@@ -754,6 +867,173 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/Alert'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/gc16/retrieve/{id}':
+    x-swagger-router-controller: gc16_controller
+    get:
+      tags:
+        - GC16
+      summary: Get a GC16 on the system
+      description: ''
+      operationId: gc16_read
+      parameters:
+        - in: path
+          name: id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /gc16/list/all:
+    x-swagger-router-controller: gc16_controller
+    get:
+      tags:
+        - GC16
+      summary: Get all gc16 registers on the system by pagination
+      description: ''
+      operationId: gc16_list
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/gc16/list/all/pagination/{limit}/{page}':
+    x-swagger-router-controller: gc16_controller
+    get:
+      tags:
+        - GC16
+      summary: Get all gc16 registers on the system
+      description: ''
+      operationId: gc16_list_pagination
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of gc16 registers that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns gc16 registerss related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /gc16/create:
+    x-swagger-router-controller: gc16_controller
+    post:
+      tags:
+        - GC16
+      summary: Add a new gc16 register to the system
+      description: ''
+      operationId: gc16_create
+      parameters:
+        - in: body
+          name: body
+          description: GC16 object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/GC16'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/gc16/delete/{id}':
+    x-swagger-router-controller: gc16_controller
+    delete:
+      tags:
+        - GC16
+      summary: Remove a gc16 register on the system
+      description: ''
+      operationId: gc16_delete
+      parameters:
+        - in: path
+          name: id
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/gc16/update/{id}':
+    x-swagger-router-controller: gc16_controller
+    put:
+      tags:
+        - GC16
+      summary: Update a gc16 register on the system
+      description: ''
+      operationId: gc16_update
+      parameters:
+        - in: path
+          name: id
+          description: The code that needs to be fetchede
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: The GC16 object that will to be modified
+          required: true
+          schema:
+            $ref: '#/definitions/GC16'
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /upload:
+    x-swagger-router-controller: import_controller
+    post:
+      tags:
+        - Upload
+      summary: Uploads a file.
+      consumes:
+        - multipart/form-data
+      operationId: uploads
+      parameters:
+        - in: formData
+          name: upfile
+          type: file
+          description: The file to upload.
       responses:
         '200':
           description: Message
@@ -2537,6 +2817,17 @@ definitions:
       last_time:
         type: integer
         format: int64
+  GC16:
+    type: object
+    properties:
+      annualVolume:
+        type: integer
+      capacity:
+        type: integer
+      productiveDays:
+        type: integer
+      containerDays:
+        type: integer
   Alert:
     type: object
     properties:
@@ -2561,8 +2852,6 @@ definitions:
         type: string
   Packing:
     type: object
-    required:
-      - code
     properties:
       code:
         type: string
@@ -2734,23 +3023,22 @@ definitions:
   SuccessResponse:
     type: object
     properties:
-      message:
-        type: string
+      jsonapi:
+        type: object
         description: a short comment
     required:
-      - message
+      - jsonapi
   ErrorResponse:
     type: object
     properties:
-      message:
+      status:
         type: string
         description: a short comment
-      code:
-        type: integer
-        format: int64
-        description: type of error
-      response:
+      source:
         type: object
+        description: type of error
+      detail:
+        type: string
         description: cause of the error
     required:
-      - message
+      - status

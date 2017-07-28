@@ -1,0 +1,35 @@
+<div class="base">
+  <h1>REGISTRAR PLANTA</h1>
+  <br />
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="campo">
+        <h3>LOCAL</h3>
+        <input places-auto-complete
+          (place_changed)="placeChanged($event)"
+          [types]="['geocode']" class="form-control" style="margin-bottom: 10px;"placeholder="Digite o local da planta"/>
+        <p>
+          <ngui-map [center]="center" (click)="onClick($event)">
+              <marker  [position]="pos"></marker>
+            </ngui-map>
+        </p>
+      </div>
+
+    <div class="campo">
+      <p class="descricao">NOME</p>
+      <p class="explicacao">Ex. "Planta B1"</p>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Magneto Marelli" aria-describedby="basic-addon2" [(ngModel)]="plant.name" >
+      </div>
+    </div>
+
+  </div>
+</div>
+<br />
+<div class="botoes">
+  <button routerLink="/rc/cadastros/planta" class="botaoVoltar" >Voltar</button>
+  <button class="botaoRegistrar" (click)="registerPlant()" >Registrar</button>
+</div>
+<Br />
+</div>

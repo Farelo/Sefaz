@@ -4,6 +4,7 @@ export class Supplier {
     public cnpj: string;
     public profile: string;
     public plant: string;
+    public hashPacking: string;
     public _id: string;
 
     public constructor(fields ?: {
@@ -12,6 +13,7 @@ export class Supplier {
   cnpj?: string,
   profile?: string,
   plant?: string,
+  hashPacking?: string;
   _id?: string
 }
 ){

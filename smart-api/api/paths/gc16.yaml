@@ -1,0 +1,148 @@
+paths:
+#-------------------------------------------START CRUD ALERTS----------------------------------
+  /gc16/retrieve/{id}:
+      x-swagger-router-controller: gc16_controller
+      get:
+        tags:
+          - "GC16"
+        summary: "Get a GC16 on the system"
+        description: ""
+        operationId: gc16_read
+        parameters:
+        - in: "path"
+          name: "id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /gc16/list/all:
+    x-swagger-router-controller: gc16_controller
+    get:
+      tags:
+        - "GC16"
+      summary: "Get all gc16 registers on the system by pagination"
+      description: ""
+      operationId: gc16_list
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /gc16/list/all/pagination/{limit}/{page}:
+    x-swagger-router-controller: gc16_controller
+    get:
+      tags:
+        - "GC16"
+      summary: "Get all gc16 registers on the system"
+      description: ""
+      operationId: gc16_list_pagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of gc16 registers that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns gc16 registerss related a this page"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /gc16/create:
+    x-swagger-router-controller: gc16_controller
+    post:
+      tags:
+      - "GC16"
+      summary: "Add a new gc16 register to the system"
+      description: ""
+      operationId: gc16_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "GC16 object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/GC16"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /gc16/delete/{id}:
+    x-swagger-router-controller: gc16_controller
+    delete:
+      tags:
+      - "GC16"
+      summary: "Remove a gc16 register on the system"
+      description: ""
+      operationId: gc16_delete
+      parameters:
+      - in: "path"
+        name: "id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /gc16/update/{id}:
+    x-swagger-router-controller: gc16_controller
+    put:
+      tags:
+      - "GC16"
+      summary: "Update a gc16 register on the system"
+      description: ""
+      operationId: gc16_update
+      parameters:
+      - in: "path"
+        name: "id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The GC16 object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/GC16"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+#-------------------------------------------FINISH CRUD ALERT----------------------------------

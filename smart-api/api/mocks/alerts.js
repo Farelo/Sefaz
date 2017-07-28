@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
- 
-var alertsSchema = new mongoose.Schema({
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
+
+const alertsSchema = new mongoose.Schema({
     actual_plant: {
         type:mongoose.Schema.Types.ObjectId,
         ref:'Plant'
@@ -29,5 +30,5 @@ var alertsSchema = new mongoose.Schema({
     hashpacking : String
 });
  
-
+alertsSchema.plugin(mongoosePaginate);
 mongoose.model('Alerts', alertsSchema);

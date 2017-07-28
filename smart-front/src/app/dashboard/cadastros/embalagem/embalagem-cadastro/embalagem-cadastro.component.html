@@ -58,7 +58,7 @@
         <p class="descricao">ASSOCIE UM FORNECEDOR</p>
         <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
         <select [(ngModel)]="packing.supplier">
-           <option value="">Associe um Fornecedor</option>
+            <option value="">Associe um Fornecedor</option>
            <option *ngFor="let obj of suppliers" [ngValue]="obj._id">{{obj.name}}</option>
         </select>
       </div>
@@ -71,7 +71,7 @@
         <p class="descricao">TARA (KG)</p>
         <p class="explicacao">Ex. "57 kg"</p>
         <div class="placeholder" min="0" data-placeholder="KG">
-          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.weight" />
+          <input type="number" class="form-control form-control-sm" value="0" [(ngModel)]="packing.weigth" />
         </div>
       </div>
 
@@ -103,14 +103,11 @@
         <p class="descricao">ASSOCIE UMA PLATAFORMA</p>
         <p class="explicacao">Associe uma plataforma a sua embalagem.</p>
         <select [(ngModel)]="packing.project">
-           <option value="">Associe uma Plataforma</option>
+            <option value="">Associe um Projeto</option>
            <option *ngFor="let obj of projects" [ngValue]="obj._id">{{obj.name}}</option>
         </select>
       </div>
-
-
     </div>
-
   </div>
   <br />
   <div class="botoes">

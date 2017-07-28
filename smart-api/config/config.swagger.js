@@ -4,6 +4,8 @@ module.exports = [
   "api/paths/packing.yaml",
   "api/paths/plant.yaml",
   "api/paths/alert.yaml",
+  "api/paths/gc16.yaml",
+  "api/paths/import.yaml",
   "api/paths/admin_client.yaml",
   "api/paths/admin.yaml",
   "api/paths/checkpoint.yaml",

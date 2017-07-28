@@ -3,6 +3,9 @@ export class GC16 {
   public capacity: number;
   public productiveDays: number;
   public containerDays: number;
+  public project: any;
+  public packing: string;
+  public supplier: any;
   public _id : string;
   public factoryStock: {
     days: number,
@@ -50,6 +53,9 @@ export class GC16 {
       transportantionBack?: any ;
       frequency?: any ;
       secutiryFactor?: any ;
+      project?: any;
+      packing?: string;
+      supplier?: any;
 }
 ){
 

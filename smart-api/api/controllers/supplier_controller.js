@@ -1,18 +1,20 @@
 'use strict';
-
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var supplier = mongoose.model('Supplier');
-var query = require('../helpers/queries/complex_queries_supplier');
+ const successHandler             = require('../helpers/responses/successHandler');
+ const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
+ const errorHandler               = require('../helpers/responses/errorHandler');
+ const query                      = require('../helpers/queries/complex_queries_supplier');
+ const mongoose                   = require('mongoose');
+ const supplier                   = mongoose.model('Supplier');
+ const _                          = require("lodash");
+ mongoose.Promise                 = global.Promise;
 /**
- * Create a Category
+ * Create a Supplier
  */
-
 exports.supplier_create = function(req, res) {
-    console.log(req.body);
+
     supplier.create(req.body)
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}))
         .then(function(success){
@@ -23,7 +25,7 @@ exports.supplier_create = function(req, res) {
 };
 
 /**
- * Show the current Category
+ * Show the current Supplier
  */
 exports.supplier_read = function(req, res) {
     supplier.findOne({
@@ -35,7 +37,7 @@ exports.supplier_read = function(req, res) {
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 };
 /**
- * Show the current Category by DUNS
+ * Show the current Supplier by DUNS
  */
 exports.supplier_read_by_duns = function(req, res) {
     supplier.findOne({
@@ -47,7 +49,7 @@ exports.supplier_read_by_duns = function(req, res) {
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 };
 /**
- * Update a Category
+ * Update a Supplier
  */
 exports.supplier_update = function(req, res) {  
     supplier.update( {
@@ -59,7 +61,7 @@ exports.supplier_update = function(req, res) {  
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 };
 /**
- * Delete an Category
+ * Delete an Supplier
  */
 exports.supplier_delete = function(req, res) { 
     supplier.remove({
@@ -70,7 +72,7 @@ exports.supplier_delete = function(req, res) { 
 };
 
 /**
- * List of Categories
+ * List of Suppliers by pagination
  */
 exports.supplier_list_pagination = function(req, res) { 
     var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
@@ -85,6 +87,9 @@ exports.supplier_list_pagination = function(req, res) { 
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 };
 
+/**
+ * List of all Suppliers
+ */
 exports.supplier_list_all = function(req, res) { 
     supplier.find({})
         .populate('profile')
@@ -93,6 +98,10 @@ exports.supplier_list_all = function(req, res) { 
         .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
 };
 
+
+/**
+ * List of all Suppliers by duns
+ */
 exports.list_all_by_duns = function(req, res) { 
   var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
   var supplierList = supplier.aggregate(query.queries.supplierListByDuns(req.swagger.params.supplier_id.value))

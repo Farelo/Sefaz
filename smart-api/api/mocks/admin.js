@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
- 
+const mongoose          = require('mongoose');
+const mongoosePaginate  = require('mongoose-paginate');
 
-var adminSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     name: {type: String, required: true},
     cpf:{type: String, required: true, unique: true},
     profile: {
@@ -11,5 +11,5 @@ var adminSchema = new mongoose.Schema({
 
 });
  
-
+adminSchema.plugin(mongoosePaginate);
 mongoose.model('Admin', adminSchema);
