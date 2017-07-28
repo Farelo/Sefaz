@@ -1,15 +1,62 @@
-  <div class="inner" style="margin-bottom: 40px;">
-    <nav>
-      <a routerLink="/rc/home" class="logo">RECICLAPAC</a>
-      <input type="checkbox" id="nav" /><label for="nav"></label>
-      <ul>
-        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/home" (click)="funcaoTop()">HOME</a></li>
-        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/cadastros" (click)="funcaoTop()">CADASTROS</a></li>
-        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/inventario" (click)="funcaoTop()">INVENTÁRIO</a></li>
-        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/importar" (click)="funcaoTop()">IMPORTAR DADOS</a></li>
-        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/rastreamento" (click)="funcaoTop()">GEOLOCALIZAÇÃO</a></li>
-        <li class="scroll" (click)="funcaoTop()"><a routerLinkActive="active" routerLink="/rc/gc16" (click)="funcaoTop()">GC16</a></li>
-        <li class="scroll usuario" (click)="funcaoTop()"><a class="aio" routerLinkActive="active" routerLink="/rc/gc16" (click)="funcaoTop()"></a></li>
+<div class="menu1">
+  <h1 style="float: left">RECICLAPAC</h1>
+  <ul class="lista"style=" list-style-type:none; float: right">
+    <li><a routerLinkActive="active" routerLink="/rc/home" >HOME</a></li>
+    <li><a routerLinkActive="active" routerLink="/rc/cadastros">CADASTROS</a></li>
+    <li><a routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
+    <li><a routerLinkActive="active" routerLink="/rc/importar">IMPORTAR DADOS</a></li>
+    <li><a routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
+    <li><a routerLinkActive="active" routerLink="/rc/gc16">GC16</a></li>
+    <li class="scroll usuario"
+    [ngbPopover]= 'popContent'
+    placement="bottom"
+    triggers='click'>
+      <a class="botaoUsuario"
+      routerLinkActive="active"></a>
+    </li>
+  </ul>
+  <button class="menu" style=""
+  (click)="mudar()">
+    <span class="opa"></span>
+    <span class="opa"></span>
+    <span class="opa"></span>
+  </button>
+</div>
+
+<div class="menuEscondido"
+  [ngClass]="{
+    'desaparecer': menuAparecer == false,
+    'aparecer': menuAparecer == true}">
+  <div class="row menuApp">
+    <div class="col-sm-6 middle">
+      <img src="../../../assets/images/perfil1.png">
+      <p>Usuário Administrador Geral.</p><hr>
+      <button class="gerenciar"><div>GERENCIAR USUÁRIOS</div></button><br>
+      <button class="medio"><div>EDITAR</div></button>
+      <button class="medio2"><div>SAIR</div></button>
+    </div>
+
+    <div class="col-sm-6">
+      <ul class="listaEscondida"style=" ">
+        <li class="opcaoEscondida"><a (click)="mudar()">GERENCIAR USUÁRIOS</a></li>
+        <li class="opcaoEscondida"><a (click)="mudar()">EDITAR</a></li>
+        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/home">HOME</a></li>
+        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/cadastros">CADASTROS</a></li>
+        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
+        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/importar">IMPORTAR DADOS</a></li>
+        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
+        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">GC16</a></li>
+        <li class="opcaoEscondida"><a (click)="mudar()">SAIR</a></li>
+
       </ul>
-    </nav>
+    </div>
   </div>
+</div>
+
+<ng-template #popContent class="test">
+  <img src="../../../assets/images/perfil1.png">
+  <p>Usuário Administrador Geral.</p><hr>
+  <button class="gerenciar"><div>GERENCIAR USUÁRIOS</div></button><br>
+  <button class="medio"><div>EDITAR</div></button>
+  <button class="medio2"><div>SAIR</div></button>
+</ng-template>
