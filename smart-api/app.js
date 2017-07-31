@@ -39,7 +39,6 @@ var config = {
 };
 
 
-
 var alert = mongoose.model('Alerts');
 var query = require('./api/helpers/queries/complex_queries_alerts');
 let http = require('http').Server(app);

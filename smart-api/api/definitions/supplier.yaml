@@ -1,0 +1,14 @@
+definitions:
+  Supplier:
+    type: object
+    properties:
+      name:
+        type: string
+      cnpj:
+        type: string
+      duns:
+        type: string
+      profile:
+        type: string
+      plant:
+        type: string

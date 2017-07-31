@@ -1,0 +1,6 @@
+definitions:
+  Tag:
+    type : object
+    properties:
+      code:
+        type: string

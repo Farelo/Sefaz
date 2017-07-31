@@ -17,7 +17,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let gc of gc16">
+      <tr *ngFor="let gc of data.data | paginate: {
+                                                      itemsPerPage: data.meta.limit,
+                                                      currentPage: data.meta.page,
+                                                      totalItems: data.meta.total_docs}">
         <td>{{gc.annualVolume}}</td>
         <td>{{gc.capacity}}</td>
         <td>{{gc.productiveDays}}</td>
@@ -31,6 +34,12 @@
     </tbody>
   </table>
 </div>
-<div class="classVazio" *ngIf="gc16?.length < 1">
+
+<div class="has-text-centered">
+    <pagination-controls (pageChange)="pageChanged($event)"
+                         previousLabel="Anterior"
+                         nextLabel="Próximo"></pagination-controls>
+</div>
+<div class="classVazio" *ngIf="data.data?.length < 1">
   Ainda não existem registros GC16 cadastrados.
 </div>

@@ -1,0 +1,8 @@
+definitions:
+  Checkpoint:
+    type : object
+    properties:
+      code:
+        type: string
+      department:
+        type: string

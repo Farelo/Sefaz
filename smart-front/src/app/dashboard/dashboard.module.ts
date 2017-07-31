@@ -7,7 +7,7 @@ import { DashboardComponent } from './dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { InventarioComponent } from './inventario/inventario.component';
 import { ImportarComponent } from './importar/importar.component';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 import { HomeModule } from './home/home.module';
 import { CadastrosModule } from './cadastros/cadastros.module';
 import { RastreamentoModule } from './rastreamento/rastreamento.module';
@@ -31,7 +31,8 @@ import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     DashboardRoutingModule,
-    HotTableModule
+    HotTableModule,
+    NgxPaginationModule
   ],
   declarations: [
     DashboardComponent,

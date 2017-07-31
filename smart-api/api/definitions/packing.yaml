@@ -1,0 +1,36 @@
+definitions:
+  PackingHash:
+    type: object
+    properties:
+      hashPacking:
+        type: string
+  Packing:
+    type: object
+    properties:
+      code:
+        type: string
+      type:
+        type: string
+      weigth:
+        type: "integer"
+        format: "int64"
+      width:
+        type: "integer"
+        format: "int64"
+      heigth:
+        type: "integer"
+        format: "int64"
+      length:
+        type: "integer"
+        format: "int64"
+      capacity:
+        type: "integer"
+        format: "int64"
+      tag_mac:
+        type: string
+      supplier:
+        type: string
+      project:
+        type: string
+      serial:
+        type: string

@@ -106,19 +106,19 @@
     }
   ],
   "paths": {
-    "/project/retrieve/{project_id}": {
-      "x-swagger-router-controller": "project_controller",
+    "/adminclient/retrieve/{admin_client_id}": {
+      "x-swagger-router-controller": "admin_client_controller",
       "get": {
         "tags": [
-          "Project"
+          "Admin Client"
         ],
-        "summary": "Get a project on the system",
+        "summary": "Get a admin on the system",
         "description": "",
-        "operationId": "project_read",
+        "operationId": "admin_client_read",
         "parameters": [
           {
             "in": "path",
-            "name": "project_id",
+            "name": "admin_client_id",
             "description": "The code that needs to be fetched",
             "required": true,
             "type": "string"
@@ -140,27 +140,27 @@
         }
       }
     },
-    "/project/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "project_controller",
+    "/adminclient/list/pagination/{limit}/{page}": {
+      "x-swagger-router-controller": "admin_client_controller",
       "get": {
         "tags": [
-          "Project"
+          "Admin Client"
         ],
-        "summary": "Get all projects on the system by pagination",
+        "summary": "Get all admin clients on the system by pagination",
         "description": "",
-        "operationId": "project_listPagination",
+        "operationId": "admin_client_listPagination",
         "parameters": [
           {
             "in": "path",
             "name": "limit",
-            "description": "The limit of projects that will be returned",
+            "description": "The limit of admin clients that will be returned",
             "required": true,
             "type": "string"
           },
           {
             "in": "path",
             "name": "page",
-            "description": "The especific page that returns projects related a this page",
+            "description": "The especific page that returns clients admins related a this page",
             "required": true,
             "type": "string"
           }
@@ -181,48 +181,23 @@
         }
       }
     },
-    "/project/list/all": {
-      "x-swagger-router-controller": "project_controller",
-      "get": {
-        "tags": [
-          "Project"
-        ],
-        "summary": "Get all projects on the system",
-        "description": "",
-        "operationId": "project_list",
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/project/create": {
-      "x-swagger-router-controller": "project_controller",
+    "/adminclient/create": {
+      "x-swagger-router-controller": "admin_client_controller",
       "post": {
         "tags": [
-          "Project"
+          "Admin Client"
         ],
-        "summary": "Add a new project to the system",
+        "summary": "Add a new client admin to the system",
         "description": "",
-        "operationId": "project_create",
+        "operationId": "admin_client_create",
         "parameters": [
           {
             "in": "body",
             "name": "body",
-            "description": "project object that needs to be added to the system",
+            "description": "admin object that needs to be added to the system",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Project"
+              "$ref": "#/definitions/ClientAdmin"
             }
           }
         ],
@@ -242,19 +217,19 @@
         }
       }
     },
-    "/project/delete/{project_id}": {
-      "x-swagger-router-controller": "project_controller",
+    "/adminclient/delete/{admin_client_id}": {
+      "x-swagger-router-controller": "admin_client_controller",
       "delete": {
         "tags": [
-          "Project"
+          "Admin Client"
         ],
-        "summary": "Remove a project on the system",
+        "summary": "Remove a client admin on the system",
         "description": "",
-        "operationId": "project_delete",
+        "operationId": "admin_client_delete",
         "parameters": [
           {
             "in": "path",
-            "name": "project_id",
+            "name": "admin_client_id",
             "description": "The code that needs to be fetched",
             "required": true,
             "type": "string"
@@ -276,19 +251,19 @@
         }
       }
     },
-    "/project/update/{project_id}": {
-      "x-swagger-router-controller": "project_controller",
+    "/adminclient/update/{admin_client_id}": {
+      "x-swagger-router-controller": "admin_client_controller",
       "put": {
         "tags": [
-          "Project"
+          "Admin Client"
         ],
-        "summary": "Update a project on the system",
+        "summary": "Update a client admin on the system",
         "description": "",
-        "operationId": "project_update",
+        "operationId": "admin_client_update",
         "parameters": [
           {
             "in": "path",
-            "name": "project_id",
+            "name": "admin_client_id",
             "description": "The code that needs to be fetchede",
             "required": true,
             "type": "string"
@@ -299,7 +274,1578 @@
             "description": "The project object that will to be modified",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Project"
+              "$ref": "#/definitions/ClientAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/retrieve/{admin_id}": {
+      "x-swagger-router-controller": "admin_controller",
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get a admin on the system",
+        "description": "",
+        "operationId": "admin_read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "admin_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/list/pagination/{limit}/{page}": {
+      "x-swagger-router-controller": "admin_controller",
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get all admins on the system by pagination",
+        "description": "",
+        "operationId": "admin_listPagination",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of admins that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns admins related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/create": {
+      "x-swagger-router-controller": "admin_controller",
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Add a new admin to the system",
+        "description": "",
+        "operationId": "admin_create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "admin object that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Admin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/delete/{admin_id}": {
+      "x-swagger-router-controller": "admin_controller",
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Remove a admin on the system",
+        "description": "",
+        "operationId": "admin_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "admin_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/update/{admin_id}": {
+      "x-swagger-router-controller": "admin_controller",
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Update a admin on the system",
+        "description": "",
+        "operationId": "admin_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "admin_id",
+            "description": "The code that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The project object that will to be modified",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Admin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/alert/retrieve/{packing_id}": {
+      "x-swagger-router-controller": "alert_controller",
+      "get": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Get a alert on the system",
+        "description": "",
+        "operationId": "alert_read_by_packing",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "packing_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/alert/list/pagination/{limit}/{page}": {
+      "x-swagger-router-controller": "alert_controller",
+      "get": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Get all alerts on the system by pagination",
+        "description": "",
+        "operationId": "alert_list_pagination",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of alerts that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/alert/list/all/hashing/{limit}/{page}/{hashing}/{status}": {
+      "x-swagger-router-controller": "alert_controller",
+      "get": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Get all alerts on the system",
+        "description": "",
+        "operationId": "alert_list_hashing",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of alerts that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "hashing",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "status",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/alert/create": {
+      "x-swagger-router-controller": "alert_controller",
+      "post": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Add a new alert to the system",
+        "description": "",
+        "operationId": "alert_create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Alert object that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Alert"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/alert/delete/{alert_id}": {
+      "x-swagger-router-controller": "alert_controller",
+      "delete": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Remove a alert on the system",
+        "description": "",
+        "operationId": "alert_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alert_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/alert/update/{alert_id}": {
+      "x-swagger-router-controller": "alert_controller",
+      "put": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Update a alert on the system",
+        "description": "",
+        "operationId": "alert_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alert_id",
+            "description": "The code that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The plant object that will to be modified",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Alert"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/checkpoint/retrieve/{checkpoint_id}": {
+      "x-swagger-router-controller": "checkpoint_controller",
+      "get": {
+        "tags": [
+          "Checkpoint"
+        ],
+        "summary": "Get a tags on the system",
+        "description": "",
+        "operationId": "checkpoint_read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "checkpoint_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/checkpoint/list/pagination/{limit}/{page}": {
+      "x-swagger-router-controller": "checkpoint_controller",
+      "get": {
+        "tags": [
+          "Checkpoint"
+        ],
+        "summary": "Get all checkpoints on the system by pagination",
+        "description": "",
+        "operationId": "checkpoint_list_pagination",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of checkpoints that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns checkpoints related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/checkpoint/list/all": {
+      "x-swagger-router-controller": "checkpoint_controller",
+      "get": {
+        "tags": [
+          "Checkpoint"
+        ],
+        "summary": "Get all checkpoints on the system ",
+        "description": "",
+        "operationId": "checkpoint_list_all",
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/checkpoint/create": {
+      "x-swagger-router-controller": "checkpoint_controller",
+      "post": {
+        "tags": [
+          "Checkpoint"
+        ],
+        "summary": "Add a new checkpoint to the system",
+        "description": "",
+        "operationId": "checkpoint_create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "checkpoint object that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Checkpoint"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/checkpoint/delete/{checkpoint_id}": {
+      "x-swagger-router-controller": "checkpoint_controller",
+      "delete": {
+        "tags": [
+          "Checkpoint"
+        ],
+        "summary": "Remove a checkpoint on the system",
+        "description": "",
+        "operationId": "checkpoint_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "checkpoint_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/checkpoint/update/{checkpoint_id}": {
+      "x-swagger-router-controller": "checkpoint_controller",
+      "put": {
+        "tags": [
+          "Checkpoint"
+        ],
+        "summary": "Update a checkpoint on the system",
+        "description": "",
+        "operationId": "checkpoint_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "checkpoint_id",
+            "description": "The code that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The project object that will to be modified",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Checkpoint"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/department/retrieve/{department_id}": {
+      "x-swagger-router-controller": "department_controller",
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Get a department on the system",
+        "description": "",
+        "operationId": "department_read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "department_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/department/retrieve/name/{department_name}": {
+      "x-swagger-router-controller": "department_controller",
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Get a department by name on the system",
+        "description": "",
+        "operationId": "department_read_by_name",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "department_name",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/department/list/pagination/{limit}/{page}": {
+      "x-swagger-router-controller": "department_controller",
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Get all departments on the system by pagination",
+        "description": "",
+        "operationId": "department_list_pagination",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of departments that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns departments related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/department/list/all": {
+      "x-swagger-router-controller": "department_controller",
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Get all departments on the system",
+        "description": "",
+        "operationId": "department_list_all",
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/department/list/department/plant": {
+      "x-swagger-router-controller": "department_controller",
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Get all departments on the system by plant",
+        "description": "",
+        "operationId": "list_department_by_plant",
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/department/create": {
+      "x-swagger-router-controller": "department_controller",
+      "post": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Add a new department to the system",
+        "description": "",
+        "operationId": "department_create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "department object that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/department/delete/{department_id}": {
+      "x-swagger-router-controller": "department_controller",
+      "delete": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Remove a department on the system",
+        "description": "",
+        "operationId": "department_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "department_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/department/update/{department_id}": {
+      "x-swagger-router-controller": "department_controller",
+      "put": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Update a department on the system",
+        "description": "",
+        "operationId": "department_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "department_id",
+            "description": "The code that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The project object that will to be modified",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/gc16/retrieve/{id}": {
+      "x-swagger-router-controller": "gc16_controller",
+      "get": {
+        "tags": [
+          "GC16"
+        ],
+        "summary": "Get a GC16 on the system",
+        "description": "",
+        "operationId": "gc16_read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/gc16/list/all": {
+      "x-swagger-router-controller": "gc16_controller",
+      "get": {
+        "tags": [
+          "GC16"
+        ],
+        "summary": "Get all gc16 registers on the system by pagination",
+        "description": "",
+        "operationId": "gc16_list",
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/gc16/list/all/pagination/{limit}/{page}": {
+      "x-swagger-router-controller": "gc16_controller",
+      "get": {
+        "tags": [
+          "GC16"
+        ],
+        "summary": "Get all gc16 registers on the system",
+        "description": "",
+        "operationId": "gc16_list_pagination",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of gc16 registers that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns gc16 registerss related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/gc16/create": {
+      "x-swagger-router-controller": "gc16_controller",
+      "post": {
+        "tags": [
+          "GC16"
+        ],
+        "summary": "Add a new gc16 register to the system",
+        "description": "",
+        "operationId": "gc16_create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "GC16 object that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GC16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/gc16/delete/{id}": {
+      "x-swagger-router-controller": "gc16_controller",
+      "delete": {
+        "tags": [
+          "GC16"
+        ],
+        "summary": "Remove a gc16 register on the system",
+        "description": "",
+        "operationId": "gc16_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/gc16/update/{id}": {
+      "x-swagger-router-controller": "gc16_controller",
+      "put": {
+        "tags": [
+          "GC16"
+        ],
+        "summary": "Update a gc16 register on the system",
+        "description": "",
+        "operationId": "gc16_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The code that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The GC16 object that will to be modified",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GC16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/historicpackings/retrieve/{historic_packings_id}": {
+      "x-swagger-router-controller": "historic_packings_controller",
+      "get": {
+        "tags": [
+          "Historic Packings"
+        ],
+        "summary": "Get a historic packings on the system",
+        "description": "",
+        "operationId": "historic_packings_read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "historic_packings_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/historicpackings/list/pagination/{limit}/{page}": {
+      "x-swagger-router-controller": "historic_packings_controller",
+      "get": {
+        "tags": [
+          "Historic Packings"
+        ],
+        "summary": "Get all historic packingss on the system by pagination",
+        "description": "",
+        "operationId": "historic_packings_listPagination",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of historic packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns historic packings related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/historicpackings/list/all": {
+      "x-swagger-router-controller": "historic_packings_controller",
+      "get": {
+        "tags": [
+          "Historic Packings"
+        ],
+        "summary": "Get all historic packings on the system",
+        "description": "",
+        "operationId": "historic_packings_list",
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/historicpackings/create": {
+      "x-swagger-router-controller": "historic_packings_controller",
+      "post": {
+        "tags": [
+          "Historic Packings"
+        ],
+        "summary": "Add a new historic packings to the system",
+        "description": "",
+        "operationId": "historic_packings_create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Historic packings object that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/HistoricPackings"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/historicpackings/delete/{historic_packings_id}": {
+      "x-swagger-router-controller": "historic_packings_controller",
+      "delete": {
+        "tags": [
+          "Historic Packings"
+        ],
+        "summary": "Remove a historic packings on the system",
+        "description": "",
+        "operationId": "historic_packings_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "historic_packings_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/historicpackings/update/{historic_packings_id}": {
+      "x-swagger-router-controller": "historic_packings_controller",
+      "put": {
+        "tags": [
+          "Historic Packings"
+        ],
+        "summary": "Update a historic packings on the system",
+        "description": "",
+        "operationId": "historic_packings_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "historic_packings_id",
+            "description": "The code that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The historic packing object that will to be modified",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/HistoricPackings"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/upload": {
+      "x-swagger-router-controller": "import_controller",
+      "post": {
+        "tags": [
+          "Upload"
+        ],
+        "summary": "Uploads a file.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "operationId": "uploads",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "upfile",
+            "type": "file",
+            "description": "The file to upload."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/logistic_operator/retrieve/{logistic_operator_id}": {
+      "x-swagger-router-controller": "logistic_operator_controller",
+      "get": {
+        "tags": [
+          "Logistic Operator"
+        ],
+        "summary": "Get a logistic operator on the system",
+        "description": "",
+        "operationId": "logistic_operator_read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "logistic_operator_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/logistic_operator/list/pagination/{limit}/{page}": {
+      "x-swagger-router-controller": "logistic_operator_controller",
+      "get": {
+        "tags": [
+          "Logistic Operator"
+        ],
+        "summary": "Get all logistic_operators on the system by pagination",
+        "description": "",
+        "operationId": "logistic_operator_listPagination",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of logistic operators that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns logistic operators related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/logistic_operator/create": {
+      "x-swagger-router-controller": "logistic_operator_controller",
+      "post": {
+        "tags": [
+          "Logistic Operator"
+        ],
+        "summary": "Add a new logistic operator to the system",
+        "description": "",
+        "operationId": "logistic_operator_create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "logistic operator object that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Logistic_operator"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/logistic_operator/delete/{logistic_operator_id}": {
+      "x-swagger-router-controller": "logistic_operator_controller",
+      "delete": {
+        "tags": [
+          "Logistic Operator"
+        ],
+        "summary": "Remove a logistic operator on the system",
+        "description": "",
+        "operationId": "logistic_operator_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "logistic_operator_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/logistic_operator/update/{logistic_operator_id}": {
+      "x-swagger-router-controller": "logistic_operator_controller",
+      "put": {
+        "tags": [
+          "Logistic Operator"
+        ],
+        "summary": "Update a logistic operator on the system",
+        "description": "",
+        "operationId": "logistic_operator_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "logistic_operator_id",
+            "description": "The code that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The project object that will to be modified",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Logistic_operator"
             }
           }
         ],
@@ -1066,1765 +2612,6 @@
         }
       }
     },
-    "/alert/retrieve/{packing_id}": {
-      "x-swagger-router-controller": "alert_controller",
-      "get": {
-        "tags": [
-          "Alerts"
-        ],
-        "summary": "Get a alert on the system",
-        "description": "",
-        "operationId": "alert_read_by_packing",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "packing_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/alert/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "alert_controller",
-      "get": {
-        "tags": [
-          "Alerts"
-        ],
-        "summary": "Get all alerts on the system by pagination",
-        "description": "",
-        "operationId": "alert_list_pagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of alerts that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns alerts related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/alert/list/all/hashing/{limit}/{page}/{hashing}/{status}": {
-      "x-swagger-router-controller": "alert_controller",
-      "get": {
-        "tags": [
-          "Alerts"
-        ],
-        "summary": "Get all alerts on the system",
-        "description": "",
-        "operationId": "alert_list_hashing",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of alerts that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns alerts related a this page",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "hashing",
-            "description": "The especific page that returns alerts related a this page",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "status",
-            "description": "The especific page that returns alerts related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/alert/create": {
-      "x-swagger-router-controller": "alert_controller",
-      "post": {
-        "tags": [
-          "Alerts"
-        ],
-        "summary": "Add a new alert to the system",
-        "description": "",
-        "operationId": "alert_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Alert object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Alert"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/alert/delete/{alert_id}": {
-      "x-swagger-router-controller": "alert_controller",
-      "delete": {
-        "tags": [
-          "Alerts"
-        ],
-        "summary": "Remove a alert on the system",
-        "description": "",
-        "operationId": "alert_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "alert_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/alert/update/{alert_id}": {
-      "x-swagger-router-controller": "alert_controller",
-      "put": {
-        "tags": [
-          "Alerts"
-        ],
-        "summary": "Update a alert on the system",
-        "description": "",
-        "operationId": "alert_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "alert_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The plant object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Alert"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/gc16/retrieve/{id}": {
-      "x-swagger-router-controller": "gc16_controller",
-      "get": {
-        "tags": [
-          "GC16"
-        ],
-        "summary": "Get a GC16 on the system",
-        "description": "",
-        "operationId": "gc16_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/gc16/list/all": {
-      "x-swagger-router-controller": "gc16_controller",
-      "get": {
-        "tags": [
-          "GC16"
-        ],
-        "summary": "Get all gc16 registers on the system by pagination",
-        "description": "",
-        "operationId": "gc16_list",
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/gc16/list/all/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "gc16_controller",
-      "get": {
-        "tags": [
-          "GC16"
-        ],
-        "summary": "Get all gc16 registers on the system",
-        "description": "",
-        "operationId": "gc16_list_pagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of gc16 registers that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns gc16 registerss related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/gc16/create": {
-      "x-swagger-router-controller": "gc16_controller",
-      "post": {
-        "tags": [
-          "GC16"
-        ],
-        "summary": "Add a new gc16 register to the system",
-        "description": "",
-        "operationId": "gc16_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "GC16 object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/GC16"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/gc16/delete/{id}": {
-      "x-swagger-router-controller": "gc16_controller",
-      "delete": {
-        "tags": [
-          "GC16"
-        ],
-        "summary": "Remove a gc16 register on the system",
-        "description": "",
-        "operationId": "gc16_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/gc16/update/{id}": {
-      "x-swagger-router-controller": "gc16_controller",
-      "put": {
-        "tags": [
-          "GC16"
-        ],
-        "summary": "Update a gc16 register on the system",
-        "description": "",
-        "operationId": "gc16_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The GC16 object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/GC16"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/upload": {
-      "x-swagger-router-controller": "import_controller",
-      "post": {
-        "tags": [
-          "Upload"
-        ],
-        "summary": "Uploads a file.",
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "operationId": "uploads",
-        "parameters": [
-          {
-            "in": "formData",
-            "name": "upfile",
-            "type": "file",
-            "description": "The file to upload."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/adminclient/retrieve/{admin_client_id}": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "get": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Get a admin on the system",
-        "description": "",
-        "operationId": "admin_client_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_client_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/adminclient/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "get": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Get all admin clients on the system by pagination",
-        "description": "",
-        "operationId": "admin_client_listPagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of admin clients that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns clients admins related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/adminclient/create": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "post": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Add a new client admin to the system",
-        "description": "",
-        "operationId": "admin_client_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "admin object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ClientAdmin"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/adminclient/delete/{admin_client_id}": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "delete": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Remove a client admin on the system",
-        "description": "",
-        "operationId": "admin_client_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_client_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/adminclient/update/{admin_client_id}": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "put": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Update a client admin on the system",
-        "description": "",
-        "operationId": "admin_client_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_client_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The project object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ClientAdmin"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/retrieve/{admin_id}": {
-      "x-swagger-router-controller": "admin_controller",
-      "get": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Get a admin on the system",
-        "description": "",
-        "operationId": "admin_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "admin_controller",
-      "get": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Get all admins on the system by pagination",
-        "description": "",
-        "operationId": "admin_listPagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of admins that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns admins related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/create": {
-      "x-swagger-router-controller": "admin_controller",
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Add a new admin to the system",
-        "description": "",
-        "operationId": "admin_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "admin object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Admin"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/delete/{admin_id}": {
-      "x-swagger-router-controller": "admin_controller",
-      "delete": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Remove a admin on the system",
-        "description": "",
-        "operationId": "admin_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/update/{admin_id}": {
-      "x-swagger-router-controller": "admin_controller",
-      "put": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Update a admin on the system",
-        "description": "",
-        "operationId": "admin_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The project object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Admin"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/checkpoint/retrieve/{checkpoint_id}": {
-      "x-swagger-router-controller": "checkpoint_controller",
-      "get": {
-        "tags": [
-          "Checkpoint"
-        ],
-        "summary": "Get a tags on the system",
-        "description": "",
-        "operationId": "checkpoint_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "checkpoint_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/checkpoint/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "checkpoint_controller",
-      "get": {
-        "tags": [
-          "Checkpoint"
-        ],
-        "summary": "Get all checkpoints on the system by pagination",
-        "description": "",
-        "operationId": "checkpoint_list_pagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of checkpoints that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns checkpoints related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/checkpoint/list/all": {
-      "x-swagger-router-controller": "checkpoint_controller",
-      "get": {
-        "tags": [
-          "Checkpoint"
-        ],
-        "summary": "Get all checkpoints on the system ",
-        "description": "",
-        "operationId": "checkpoint_list_all",
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/checkpoint/create": {
-      "x-swagger-router-controller": "checkpoint_controller",
-      "post": {
-        "tags": [
-          "Checkpoint"
-        ],
-        "summary": "Add a new checkpoint to the system",
-        "description": "",
-        "operationId": "checkpoint_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "checkpoint object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Checkpoint"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/checkpoint/delete/{checkpoint_id}": {
-      "x-swagger-router-controller": "checkpoint_controller",
-      "delete": {
-        "tags": [
-          "Checkpoint"
-        ],
-        "summary": "Remove a checkpoint on the system",
-        "description": "",
-        "operationId": "checkpoint_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "checkpoint_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/checkpoint/update/{checkpoint_id}": {
-      "x-swagger-router-controller": "checkpoint_controller",
-      "put": {
-        "tags": [
-          "Checkpoint"
-        ],
-        "summary": "Update a checkpoint on the system",
-        "description": "",
-        "operationId": "checkpoint_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "checkpoint_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The project object that will to be modified",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Checkpoint"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/department/retrieve/{department_id}": {
-      "x-swagger-router-controller": "department_controller",
-      "get": {
-        "tags": [
-          "Department"
-        ],
-        "summary": "Get a department on the system",
-        "description": "",
-        "operationId": "department_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "department_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/department/retrieve/name/{department_name}": {
-      "x-swagger-router-controller": "department_controller",
-      "get": {
-        "tags": [
-          "Department"
-        ],
-        "summary": "Get a department by name on the system",
-        "description": "",
-        "operationId": "department_read_by_name",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "department_name",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/department/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "department_controller",
-      "get": {
-        "tags": [
-          "Department"
-        ],
-        "summary": "Get all departments on the system by pagination",
-        "description": "",
-        "operationId": "department_list_pagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of departments that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns departments related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/department/list/all": {
-      "x-swagger-router-controller": "department_controller",
-      "get": {
-        "tags": [
-          "Department"
-        ],
-        "summary": "Get all departments on the system",
-        "description": "",
-        "operationId": "department_list_all",
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/department/list/department/plant": {
-      "x-swagger-router-controller": "department_controller",
-      "get": {
-        "tags": [
-          "Department"
-        ],
-        "summary": "Get all departments on the system by plant",
-        "description": "",
-        "operationId": "list_department_by_plant",
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/department/create": {
-      "x-swagger-router-controller": "department_controller",
-      "post": {
-        "tags": [
-          "Department"
-        ],
-        "summary": "Add a new department to the system",
-        "description": "",
-        "operationId": "department_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "department object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Department"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/department/delete/{department_id}": {
-      "x-swagger-router-controller": "department_controller",
-      "delete": {
-        "tags": [
-          "Department"
-        ],
-        "summary": "Remove a department on the system",
-        "description": "",
-        "operationId": "department_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "department_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/department/update/{department_id}": {
-      "x-swagger-router-controller": "department_controller",
-      "put": {
-        "tags": [
-          "Department"
-        ],
-        "summary": "Update a department on the system",
-        "description": "",
-        "operationId": "department_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "department_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The project object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Department"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/historicpackings/retrieve/{historic_packings_id}": {
-      "x-swagger-router-controller": "historic_packings_controller",
-      "get": {
-        "tags": [
-          "Historic Packings"
-        ],
-        "summary": "Get a historic packings on the system",
-        "description": "",
-        "operationId": "historic_packings_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "historic_packings_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/historicpackings/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "historic_packings_controller",
-      "get": {
-        "tags": [
-          "Historic Packings"
-        ],
-        "summary": "Get all historic packingss on the system by pagination",
-        "description": "",
-        "operationId": "historic_packings_listPagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of historic packings that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns historic packings related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/historicpackings/list/all": {
-      "x-swagger-router-controller": "historic_packings_controller",
-      "get": {
-        "tags": [
-          "Historic Packings"
-        ],
-        "summary": "Get all historic packings on the system",
-        "description": "",
-        "operationId": "historic_packings_list",
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/historicpackings/create": {
-      "x-swagger-router-controller": "historic_packings_controller",
-      "post": {
-        "tags": [
-          "Historic Packings"
-        ],
-        "summary": "Add a new historic packings to the system",
-        "description": "",
-        "operationId": "historic_packings_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Historic packings object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/HistoricPackings"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/historicpackings/delete/{historic_packings_id}": {
-      "x-swagger-router-controller": "historic_packings_controller",
-      "delete": {
-        "tags": [
-          "Historic Packings"
-        ],
-        "summary": "Remove a historic packings on the system",
-        "description": "",
-        "operationId": "historic_packings_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "historic_packings_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/historicpackings/update/{historic_packings_id}": {
-      "x-swagger-router-controller": "historic_packings_controller",
-      "put": {
-        "tags": [
-          "Historic Packings"
-        ],
-        "summary": "Update a historic packings on the system",
-        "description": "",
-        "operationId": "historic_packings_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "historic_packings_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The historic packing object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/HistoricPackings"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/logistic_operator/retrieve/{logistic_operator_id}": {
-      "x-swagger-router-controller": "logistic_operator_controller",
-      "get": {
-        "tags": [
-          "Logistic Operator"
-        ],
-        "summary": "Get a logistic operator on the system",
-        "description": "",
-        "operationId": "logistic_operator_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "logistic_operator_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/logistic_operator/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "logistic_operator_controller",
-      "get": {
-        "tags": [
-          "Logistic Operator"
-        ],
-        "summary": "Get all logistic_operators on the system by pagination",
-        "description": "",
-        "operationId": "logistic_operator_listPagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of logistic operators that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns logistic operators related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/logistic_operator/create": {
-      "x-swagger-router-controller": "logistic_operator_controller",
-      "post": {
-        "tags": [
-          "Logistic Operator"
-        ],
-        "summary": "Add a new logistic operator to the system",
-        "description": "",
-        "operationId": "logistic_operator_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "logistic operator object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Logistic_operator"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/logistic_operator/delete/{logistic_operator_id}": {
-      "x-swagger-router-controller": "logistic_operator_controller",
-      "delete": {
-        "tags": [
-          "Logistic Operator"
-        ],
-        "summary": "Remove a logistic operator on the system",
-        "description": "",
-        "operationId": "logistic_operator_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "logistic_operator_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/logistic_operator/update/{logistic_operator_id}": {
-      "x-swagger-router-controller": "logistic_operator_controller",
-      "put": {
-        "tags": [
-          "Logistic Operator"
-        ],
-        "summary": "Update a logistic operator on the system",
-        "description": "",
-        "operationId": "logistic_operator_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "logistic_operator_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The project object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Logistic_operator"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
     "/profile/retrieve/{profile_id}": {
       "x-swagger-router-controller": "profile_controller",
       "get": {
@@ -2994,6 +2781,219 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Profile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/project/retrieve/{project_id}": {
+      "x-swagger-router-controller": "project_controller",
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Get a project on the system",
+        "description": "",
+        "operationId": "project_read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/project/list/pagination/{limit}/{page}": {
+      "x-swagger-router-controller": "project_controller",
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Get all projects on the system by pagination",
+        "description": "",
+        "operationId": "project_listPagination",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of projects that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns projects related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/project/list/all": {
+      "x-swagger-router-controller": "project_controller",
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Get all projects on the system",
+        "description": "",
+        "operationId": "project_list",
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/project/create": {
+      "x-swagger-router-controller": "project_controller",
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Add a new project to the system",
+        "description": "",
+        "operationId": "project_create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "project object that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/project/delete/{project_id}": {
+      "x-swagger-router-controller": "project_controller",
+      "delete": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Remove a project on the system",
+        "description": "",
+        "operationId": "project_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/project/update/{project_id}": {
+      "x-swagger-router-controller": "project_controller",
+      "put": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Update a project on the system",
+        "description": "",
+        "operationId": "project_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "description": "The code that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The project object that will to be modified",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Project"
             }
           }
         ],
@@ -4134,49 +4134,17 @@
     }
   },
   "definitions": {
-    "Route": {
+    "Admin": {
       "type": "object",
       "properties": {
-        "supplier": {
+        "name": {
           "type": "string"
         },
-        "plant_factory": {
+        "cpf": {
           "type": "string"
         },
-        "plant_supplier": {
+        "profile": {
           "type": "string"
-        },
-        "packing_code": {
-          "type": "string"
-        },
-        "estimeted_time": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "time_countdown": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "last_time": {
-          "type": "integer",
-          "format": "int64"
-        }
-      }
-    },
-    "GC16": {
-      "type": "object",
-      "properties": {
-        "annualVolume": {
-          "type": "integer"
-        },
-        "capacity": {
-          "type": "integer"
-        },
-        "productiveDays": {
-          "type": "integer"
-        },
-        "containerDays": {
-          "type": "integer"
         }
       }
     },
@@ -4202,6 +4170,118 @@
           "type": "string"
         },
         "hashpacking": {
+          "type": "string"
+        }
+      }
+    },
+    "Checkpoint": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        }
+      }
+    },
+    "ClientAdmin": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "cnpj": {
+          "type": "string"
+        },
+        "addrees": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        }
+      }
+    },
+    "Department": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "plant": {
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "a short comment"
+        },
+        "source": {
+          "type": "object",
+          "description": "type of error"
+        },
+        "detail": {
+          "type": "string",
+          "description": "cause of the error"
+        }
+      },
+      "required": [
+        "status"
+      ]
+    },
+    "GC16": {
+      "type": "object",
+      "properties": {
+        "annualVolume": {
+          "type": "integer"
+        },
+        "capacity": {
+          "type": "integer"
+        },
+        "productiveDays": {
+          "type": "integer"
+        },
+        "containerDays": {
+          "type": "integer"
+        }
+      }
+    },
+    "HistoricPackings": {
+      "type": "object",
+      "properties": {
+        "packing": {
+          "type": "string"
+        },
+        "historic": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/historicpacking"
+          }
+        }
+      }
+    },
+    "historicpacking": {
+      "type": "object",
+      "properties": {
+        "plant": {
+          "type": "string"
+        }
+      }
+    },
+    "Logistic_operator": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "cpf": {
+          "type": "string"
+        },
+        "profile": {
           "type": "string"
         }
       }
@@ -4257,61 +4337,62 @@
         }
       }
     },
-    "Department": {
+    "Plant": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string"
-        },
-        "plant": {
-          "type": "string"
         }
       }
     },
-    "Tag": {
+    "Profile": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "string"
-        }
-      }
-    },
-    "FriendlyTag": {
-      "type": "object",
-      "properties": {
-        "tag_mac": {
-          "type": "string"
-        }
-      }
-    },
-    "Checkpoint": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "department": {
-          "type": "string"
-        }
-      }
-    },
-    "Supplier": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "cnpj": {
-          "type": "string"
-        },
-        "duns": {
-          "type": "string"
-        },
         "profile": {
           "type": "string"
         },
-        "plant": {
+        "password": {
           "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "Project": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Route": {
+      "type": "object",
+      "properties": {
+        "supplier": {
+          "type": "string"
+        },
+        "plant_factory": {
+          "type": "string"
+        },
+        "plant_supplier": {
+          "type": "string"
+        },
+        "packing_code": {
+          "type": "string"
+        },
+        "estimeted_time": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "time_countdown": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "last_time": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
@@ -4346,136 +4427,6 @@
         }
       }
     },
-    "Admin": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "cpf": {
-          "type": "string"
-        },
-        "profile": {
-          "type": "string"
-        }
-      }
-    },
-    "ClientAdmin": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "cnpj": {
-          "type": "string"
-        },
-        "addrees": {
-          "type": "string"
-        },
-        "profile": {
-          "type": "string"
-        }
-      }
-    },
-    "Logistic_operator": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "cpf": {
-          "type": "string"
-        },
-        "profile": {
-          "type": "string"
-        }
-      }
-    },
-    "Plant": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "Project": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "Profile": {
-      "type": "object",
-      "properties": {
-        "profile": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        }
-      }
-    },
-    "Company": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "cnpj": {
-          "type": "string"
-        }
-      }
-    },
-    "HistoricTags": {
-      "type": "object",
-      "properties": {
-        "friendly_tag": {
-          "type": "string"
-        },
-        "historic": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/historictag"
-          }
-        }
-      }
-    },
-    "historictag": {
-      "type": "object",
-      "properties": {
-        "tag_mac": {
-          "type": "string"
-        }
-      }
-    },
-    "HistoricPackings": {
-      "type": "object",
-      "properties": {
-        "packing": {
-          "type": "string"
-        },
-        "historic": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/historicpacking"
-          }
-        }
-      }
-    },
-    "historicpacking": {
-      "type": "object",
-      "properties": {
-        "plant": {
-          "type": "string"
-        }
-      }
-    },
     "SuccessResponse": {
       "type": "object",
       "properties": {
@@ -4488,25 +4439,33 @@
         "jsonapi"
       ]
     },
-    "ErrorResponse": {
+    "Supplier": {
       "type": "object",
       "properties": {
-        "status": {
-          "type": "string",
-          "description": "a short comment"
+        "name": {
+          "type": "string"
         },
-        "source": {
-          "type": "object",
-          "description": "type of error"
+        "cnpj": {
+          "type": "string"
         },
-        "detail": {
-          "type": "string",
-          "description": "cause of the error"
+        "duns": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        },
+        "plant": {
+          "type": "string"
         }
-      },
-      "required": [
-        "status"
-      ]
+      }
+    },
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      }
     }
   }
 }

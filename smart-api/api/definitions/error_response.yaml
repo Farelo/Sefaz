@@ -1,0 +1,15 @@
+definitions:
+  ErrorResponse:
+    type: object
+    properties:
+      status:
+        type: string
+        description:  a short comment
+      source:
+        type: object
+        description: type of error
+      detail:
+        type: string
+        description: cause of the error
+    required:
+      - status

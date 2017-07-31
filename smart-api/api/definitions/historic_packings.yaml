@@ -1,0 +1,15 @@
+definitions:
+  HistoricPackings:
+    type: object
+    properties:
+      packing:
+        type: string
+      historic:
+        type: array
+        items :
+          $ref : '#/definitions/historicpacking'
+  historicpacking:
+    type: object
+    properties:
+      plant:
+        type: string

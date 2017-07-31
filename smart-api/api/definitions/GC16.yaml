@@ -1,0 +1,12 @@
+definitions:
+  GC16:
+    type: object
+    properties:
+      annualVolume:
+        type: "integer"
+      capacity:
+        type: "integer"
+      productiveDays:
+        type: "integer"
+      containerDays:
+        type: "integer"

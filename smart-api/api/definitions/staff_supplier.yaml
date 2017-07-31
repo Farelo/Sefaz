@@ -1,0 +1,12 @@
+definitions:
+  StaffSupplier:
+    type: object
+    properties:
+      name:
+        type: string
+      addrees:
+        type: string
+      profile:
+        type: string
+      supplier:
+        type: string

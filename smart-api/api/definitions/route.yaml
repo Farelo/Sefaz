@@ -1,0 +1,21 @@
+definitions:
+  Route:
+    type: object
+    properties:
+      supplier:
+        type: string
+      plant_factory:
+        type: string
+      plant_supplier:
+        type: string
+      packing_code:
+        type: string
+      estimeted_time:
+        type: "integer"
+        format: "int64"
+      time_countdown:
+        type: "integer"
+        format: "int64"
+      last_time:
+        type: "integer"
+        format: "int64"

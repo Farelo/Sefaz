@@ -88,19 +88,19 @@ export class Gc16AdicionarComponent implements OnInit {
     this.selectedProject = "";
     if(event){
       this.gc16.supplier = event._id;
-      this.packingService.getBySupplier(event._id).subscribe(packings => this.packings = packings, err => {console.log(err)});
+      this.packingService.getBySupplier(event._id).subscribe(result => this.packings = result.data, err => {console.log(err)});
     }
   }
 
   loadProject(event: any):void{
     if(event){
       this.gc16.packing = event.packing;
-      this.projectService.retrieveProject(event.project).subscribe(project => this.project = project, err => {console.log(err)});
+      this.projectService.retrieveProject(event.project).subscribe(result => this.project = result.data, err => {console.log(err)});
     }
   }
 
   loadSuppliers():void{
-    this.suppliersService.retrieveAll().subscribe(suppliers => this.suppliers = suppliers, err => {console.log(err)});
+    this.suppliersService.retrieveAll().subscribe(result => this.suppliers = result.data, err => {console.log(err)});
   }
 
   ngOnInit() {

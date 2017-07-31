@@ -1,0 +1,12 @@
+definitions:
+  ClientAdmin:
+    type: object
+    properties:
+      name:
+        type: string
+      cnpj:
+        type: string
+      addrees:
+        type: string
+      profile:
+        type: string

@@ -74,7 +74,7 @@ export class Gc16EditarComponent implements OnInit {
     this.inscricao = this.route.params.subscribe(
       (params: any)=>{
         let id = params ['id'];
-        this.GC16Service.retrieveGC16(id).subscribe(result => this.gc16 = result);
+        this.GC16Service.retrieveGC16(id).subscribe(result => this.gc16 = result.data);
       }
     )
   }

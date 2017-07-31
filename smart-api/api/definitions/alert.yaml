@@ -1,0 +1,18 @@
+definitions:
+  Alert:
+    type: object
+    properties:
+      actual_plant:
+        type: string
+      department:
+        type: string
+      correct_plant:
+        type: string
+      packing:
+        type: string
+      supplier:
+        type: string
+      status:
+        type: string
+      hashpacking:
+        type: string
