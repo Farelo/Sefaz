@@ -39,17 +39,26 @@ body  {
  }
 .conteudoHome .popover-content {
   width: 178px!important;
+  text-align: center;
 }
-.popover-left {
-  top: -10px!important;
-}
-.popover-left, .popover-bottom {
-  border-radius: inherit;
-}
-.popover.popover-left::before, .popover.bs-tether-element-attached-right::before {
-  top: 15px!important;
-}
-.popover.popover-left::after, .popover.bs-tether-element-attached-right::after {top: 15px !important}
+
+.conteudoHome .popover-left {  top: 80px!important;}
+.conteudoHome .popover-left, .popover-bottom {  border-radius: inherit;}
+.conteudoHome .popover.popover-left::before, .popover.bs-tether-element-attached-right::before
+{  top: 15px!important; }
+.conteudoHome .popover.popover-left::after, .popover.bs-tether-element-attached-right::after
+{  top: 15px !important; }
+
+.menu1 .popover-content { text-align: center; }
+.menu1 .popover-left {  top: 10px!important;}
+.menu1 .popover-left, .popover-bottom {  border-radius: inherit;}
+.menu1 .popover.popover-left::before, .popover.bs-tether-element-attached-right::before {
+  top: 15px!important; }
+.menu1 .popover.popover-left::after, .popover.bs-tether-element-attached-right::after {
+  top: 15px !important; }
+
+  @media (min-width: 1200px) { .menu1 .popover-left {  display: none!important;}  }
+  @media (max-width: 1199px) { .menu1 .popover-bottom {  display: none!important;}  }
 
 .modal-content {
   border-radius: 0rem!important;
@@ -58,29 +67,12 @@ body  {
   border-color: lightgrey;
   border-width: thin;
   padding: 5px;
-
   margin: auto;
   margin-top: 100px;
 }
-.modalPequeno {
-  width: 250px;
-}
-.modal-dialog {
-  margin-top: 30px!important;
-}
-.modalFilho {
-  background-color: white;
-  padding: 15px;
-}
-.modalFilhoLeg {
-  text-align: center;
-}
-.modalTop2 {
-  background-color: rgba(0,0,0,0.6);
-}
-.semBorda {
-  border-bottom: none !important;
-}
-/*.test {
-	width: 300px!important;
-}*/
+.modalPequeno {  width: 250px; }
+.modal-dialog {  margin-top: 30px!important; }
+.modalFilho {  background-color: white;  padding: 15px;}
+.modalFilhoLeg {  text-align: center;}
+.modalTop2 {  background-color: rgba(0,0,0,0.6); }
+.semBorda {  border-bottom: none !important; }

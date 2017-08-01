@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 declare var $:any;
 
 @Component({
@@ -8,8 +8,12 @@ declare var $:any;
 })
 export class NavbarComponent implements OnInit {
 menuAparecer: boolean = false;
+private telaGrande: boolean = false;
+altura: any;
+largura: any;
 
-  constructor() {
+  constructor(private ngZone:NgZone) {
+
   }
 
   ngOnInit() {

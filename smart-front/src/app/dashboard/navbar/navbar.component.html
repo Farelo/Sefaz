@@ -1,5 +1,5 @@
 <div class="menu1">
-  <h1 style="float: left">RECICLAPAC</h1>
+  <h1 style="float: left">RECICLAPAC</h1>{{telaGrande}}
   <ul class="lista"style=" list-style-type:none; float: right">
     <li><a routerLinkActive="active" routerLink="/rc/home" >HOME</a></li>
     <li><a routerLinkActive="active" routerLink="/rc/cadastros">CADASTROS</a></li>
@@ -7,13 +7,23 @@
     <li><a routerLinkActive="active" routerLink="/rc/importar">IMPORTAR DADOS</a></li>
     <li><a routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
     <li><a routerLinkActive="active" routerLink="/rc/gc16">GC16</a></li>
-    <li class="scroll usuario"
+
+    <li class="scroll usuario placementBottom"
     [ngbPopover]= 'popContent'
     placement="bottom"
     triggers='click'>
       <a class="botaoUsuario"
       routerLinkActive="active"></a>
     </li>
+
+    <li class="scroll usuario placementLeft"
+    [ngbPopover]= 'popContent'
+    placement="left"
+    triggers='click'>
+      <a class="botaoUsuario"
+      routerLinkActive="active"></a>
+    </li>
+
   </ul>
   <button class="menu" style=""
   (click)="mudar()">
@@ -31,7 +41,7 @@
     <div class="col-sm-6 middle">
       <img src="../../../assets/images/perfil1.png">
       <p>Usuário Administrador Geral.</p><hr>
-      <button class="gerenciar"><div>GERENCIAR USUÁRIOS</div></button><br>
+      <button class="gerenciar"><div>GERENCIAR USUÁRIOS</div></button><br class="brgone">
       <button class="medio"><div>EDITAR</div></button>
       <button class="medio2"><div>SAIR</div></button>
     </div>
