@@ -15,6 +15,12 @@ import { Alert } from '../../shared/models/alert';
 })
 export class InventarioComponent implements OnInit {
   embalagens: any[];
+  escolha: any;
+  verModal: boolean = true;
+  escolhas: any[] = [
+    {nome: 'GERAL', numero: '01'},
+    {nome: 'EQUIPAMENTO', numero: '02'},
+    {nome: 'FORNECEDOR', numero: '03'}]
 
   constructor(
     private PackingService: PackingService,

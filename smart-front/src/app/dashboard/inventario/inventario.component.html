@@ -1,4 +1,27 @@
-<input type="text" class="form-control meuInput" placeholder="Buscar" aria-describedby="basic-addon1">
+Buscar por
+<select [(ngModel)]="escolha">
+   <option value="">Escolha</option>
+   <option *ngFor="let obj of escolhas" [ngValue]="obj.nome">{{obj.nome}}</option>
+</select>
+<label *ngIf="(escolha == 'FORNECEDOR')">DUNS</label><input *ngIf="(escolha == 'FORNECEDOR')" type="text" class="form-control meuInput" placeholder="Buscar">
+
+<br />
+<br />
+
+<div>
+<div *ngIf="(escolha == 'GERAL')">
+  Essa é a GERAL
+</div>
+<div *ngIf="(escolha == 'EQUIPAMENTO')">
+  Essa é a EQUIPAMENTO
+</div>
+<div *ngIf="(escolha == 'FORNECEDOR')">
+  Essa é a FORNECEDOR
+</div>
+</div>
+
+<!-- <input type="text" class="form-control meuInput" placeholder="Buscar" aria-describedby="basic-addon1"> -->
+
 
 
 <div class="table-responsive meuInventario">
