@@ -1,59 +1,210 @@
-Buscar por
-<select [(ngModel)]="escolha">
-   <option value="">Escolha</option>
-   <option *ngFor="let obj of escolhas" [ngValue]="obj.nome">{{obj.nome}}</option>
-</select>
-<label *ngIf="(escolha == 'FORNECEDOR')">DUNS</label><input *ngIf="(escolha == 'FORNECEDOR')" type="text" class="form-control meuInput" placeholder="Buscar">
+<div class="painel">
+  <div class="corpo">
 
-<br />
+    <div class="headerInventario">
+      <h2>BUSCA POR </h2>
+      <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal">
+         <option selected><div class="ge">GERAL</div></option>
+         <option >EQUIPAMENTO</option>
+         <option >FORNECEDOR</option>
+      </select>
+    </div >
+
+    <hr *ngIf="((escolhaGeral == 'FORNECEDOR')||(escolhaGeral == 'EQUIPAMENTO'))">
+
+    <div *ngIf="(escolhaGeral == 'FORNECEDOR')" class="row escolhaFornecedor">
+      <div class="col-sm-6">
+        <p>DUNS</p><input type="text" class="form-control meuInput" placeholder="">
+      </div>
+      <div class="col-sm-6">
+        <p>NOME DO FORNECEDOR</p><input type="text" class="form-control meuInput" placeholder="">
+      </div>
+    </div>
+
+    <div *ngIf="(escolhaGeral == 'EQUIPAMENTO')" class="row escolhaEquipamento">
+      <div class="col-sm-4">
+        <p>TIPO</p>
+        <select [(ngModel)]="escolhaEquipamento" data-style="btn-primary" class="selectEq">
+           <option value="">Escolha</option>
+           <option>Tempo de permanência</option>
+           <option>Bateria Baixa</option>
+           <option>Quantidade</option>
+        </select>
+      </div>
+
+      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
+        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="">
+      </div>
+      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
+        <p>SERIAL</p><input type="text" class="form-control meuInput" placeholder="">
+      </div>
+      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Bateria Baixa')">
+        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="">
+      </div>
+      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Quantidade')">
+        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="">
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
 <br />
 
 <div>
-<div *ngIf="(escolha == 'GERAL')">
-  Essa é a GERAL
+<div *ngIf="(escolhaGeral == 'GERAL')">
+  <div class="table-responsive meuInventario">
+    <!-- Table -->
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th>Equipamento</th>
+          <th>Descrição</th>
+          <th>Fornecedor</th>
+          <th>Quantidade</th>
+          <th>Max</th>
+          <th>Min</th>
+          <th>Variação</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td>
+          <td>Fornecedor 1</td>
+          <td>DUNS 1</td>
+          <td>Local 1</td>
+          <td>Setor 1</td>
+          <td>001</td>
+          <td>Perdido</td>
+          <td>Ver mais</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-<div *ngIf="(escolha == 'EQUIPAMENTO')">
-  Essa é a EQUIPAMENTO
-</div>
-<div *ngIf="(escolha == 'FORNECEDOR')">
-  Essa é a FORNECEDOR
-</div>
+<div *ngIf="(escolhaGeral == 'FORNECEDOR')">
+      <h2 class="tituloClaro">FORNECEDOR</h2>
+      <br />
+      <br />
+  <div class="table-responsive meuInventario">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th>Equipamento</th>
+          <th>Descrição</th>
+          <th>Quantidade Encontrada</th>
+          <th>Quantidade no Fornecedor</th>
+          <th>Max</th>
+          <th>Min</th>
+          <th>Variação</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td>
+          <td>Fornecedor 1</td>
+          <td>DUNS 1</td>
+          <td>Local 1</td>
+          <td>Setor 1</td>
+          <td>001</td>
+          <td>Perdido</td>
+          <td>Ver mais</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<!-- <input type="text" class="form-control meuInput" placeholder="Buscar" aria-describedby="basic-addon1"> -->
+<div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Tempo de permanência'))">
+  <h2 class="tituloClaro">TEMPO DE PERMANÊNCIA</h2>
+  <br />
+  <br />
+  <div class="table-responsive meuInventario">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th>Equipamento</th>
+          <th>Serial</th>
+          <th>Tempo (dias)</th>
+          <th>DUNS</th>
+          <th>Alerta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td>
+          <td>Fornecedor 1</td>
+          <td>DUNS 1</td>
+          <td>Local 1</td>
+          <td>Setor 1</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
+<div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Bateria Baixa'))">
+  <h2 class="tituloClaro">BATERIA BAIXA</h2>
+  <br />
+  <br />
+  <div class="table-responsive meuInventario">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th>Equipamento</th>
+          <th>Serial</th>
+          <th>Nome</th>
+          <th>Nível</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td>
+          <td>Fornecedor 1</td>
+          <td>DUNS 1</td>
+          <td>Local 1</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
+<div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Quantidade'))">
+  <h2 class="tituloClaro"> QUANTIDADE</h2>
+  <br />
+  <br />
+  <div class="table-responsive meuInventario">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th>DUNS</th>
+          <th>Planta</th>
+          <th>Quantidade</th>
+          <th>?? Max</th>
+          <th>Diferença</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>lala</td>
+          <td>lala</td>
+          <td>lala</td>
+          <td>lalal</td>
+          <td>lalal</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="resumo">
+    <h3 class="definicao">TOTAL: </h3><h3 class="numero">500</h3>
+  </div>
+  <div class="resumo">
+    <h3 class="definicao">DIFERENÇA: </h3><h3 class="numero">500</h3>
+  </div>
+</div>
 
-<div class="table-responsive meuInventario">
-  <!-- Table -->
-  <table class="table">
-    <thead>
-      <tr class="cabecalho">
-        <th>Código</th>
-        <th>Fornecedor</th>
-        <th>DUNS</th>
-        <th>Local</th>
-        <th>Setor/Area Interna</th>
-        <th>Quantidade</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let inventory of inventory">
-        <td> {{inventory.code || 'Vazio'}} </td>
-        <td> {{inventory.supplier ? inventory.supplier.name : 'Vazio'}} </td>
-        <td> {{inventory.supplier ? inventory.supplier.duns : 'Vazio'}} </td>
-        <td> {{inventory.plant ? inventory.plant.name : 'Vazio'}} </td>
-        <td> {{inventory.department ? inventory.department.name : 'Vazio'}} </td>
-        <td> {{inventory.quantity || 'Vazio'}} </td>
-        <td > <!--(click)="open(inventory.code)"-->
-          <span class="alerta" [ngClass]="{
-            'perdido' : inventory.missing ,
-            'parado' : inventory.nothing ,
-            'incorreto' : inventory.problem
-          }" (click)="open()"></span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div>
