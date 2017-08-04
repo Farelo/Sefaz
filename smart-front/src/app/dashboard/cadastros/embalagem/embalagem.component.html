@@ -36,10 +36,12 @@
   </table>
 </div>
 <div class="has-text-centered">
-    <pagination-controls (pageChange)="pageChanged($event)"
-                         previousLabel="Anterior"
-                         nextLabel="Próximo"></pagination-controls>
+    <pagination-controls class="my-pagination" (pageChange)="pageChanged($event)"
+                                             directionLinks="false"
+                                             autoHide="true"></pagination-controls>
 </div>
+
+
 
 <div class="classVazio" *ngIf="data.data?.length < 1">
   Ainda não existem embalagens cadastradas.

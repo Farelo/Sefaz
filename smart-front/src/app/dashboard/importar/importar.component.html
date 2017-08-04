@@ -1,18 +1,59 @@
 <div class="painel">
   <div class="corpo">
-    <div class="row">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <form>
+            <div class="form-group">
+              <label for="single">Importe o arquivo xlxs</label>
+              <input type="file" class="form-control" name="single" (change)=fileEvent($event) accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-8">
+          <table class="table">
+            <thead>
+              <tr>
+                <th width="50%">Name</th>
+                <th>Size</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of uploader">
+                <td><strong>{{ item.name }}</strong></td>
+                <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
+                <td class="text-center">
+                  <i *ngIf="send" class="glyphicon glyphicon-ok"></i>
+                  <i *ngIf="!send" class="glyphicon glyphicon-cloud-upload"></i>
 
-      <input type="file" (change)="fileEvent($event)" />
-      <button  value="Upload" (click)="sendFile()" name="submit"> Upload</button>
+                </td>
+                <td nowrap>
+                  <button type="button" class="btn btn-success btn-xs" (click)="sendFile()">
+                                            <span class="glyphicon glyphicon-upload"></span> Upload
+                                        </button>
+                  <button type="button" class="btn btn-danger btn-xs" (click)="remove()">
+                                            <span class="glyphicon glyphicon-trash"></span> Remove
+                                        </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-
+        <div class="col-md-12">
+          <br />
+          <br />
+          <div class="row" *ngIf="data?.length > 1 && send">
+            <hotTable [data]="data" [colHeaders]="colHeaders" [columns]="columns" [options]="options"></hotTable>
+          </div>
+          <br />
+          <div class="botoes" *ngIf="data?.length > 1 && send">
+            <button type="button" class="botaoRegistrar" name="button">Register</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="row" *ngIf="data?.length > 1">
-      <hotTable [data]="data"
-           [colHeaders]="colHeaders"
-           [columns]="columns"
-           [options]="options"></hotTable>
-    </div>
-
   </div>
 </div>

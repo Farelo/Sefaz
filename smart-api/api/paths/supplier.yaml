@@ -91,39 +91,6 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /supplier/list/pagination/duns/{limit}/{page}/{supplier_id}:
-    x-swagger-router-controller: supplier_controller
-    get:
-      tags:
-        - "Supplier"
-      summary: "Get informations about packings that the supplier is responsible like actual local and plant"
-      description: ""
-      operationId: list_all_by_duns
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of suppliers that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns suppliers related a this page"
-        required: true
-        type: string
-      - in: "path"
-        name: "supplier_id"
-        description: "The code that needs to be fetched"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
   /supplier/create:
     x-swagger-router-controller: supplier_controller
     post:

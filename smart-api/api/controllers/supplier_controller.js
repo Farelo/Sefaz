@@ -92,31 +92,31 @@ exports.supplier_list_all = function(req, res) { 
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to list all suppliers'));
 };
-/**
- * List of all Suppliers by duns refatorar isso
- */
-exports.list_all_by_duns = function(req, res) { 
-  var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-  var supplierList = supplier.aggregate(query.queries.supplierListByDuns(req.swagger.params.supplier_id.value))
-    .skip(value).limit(parseInt(req.swagger.params.limit.value))
-    .sort({
-      _id: 1
-    });
-
-  var count = supplier.find({}).count();
-
-  Promise.all([count, supplierList])
-    .then(result => res.json({
-      code: 200,
-      message: "OK",
-      "count": result[0],
-      "suppliers": result[1]
-    }))
-    .catch(err => res.status(404).json({
-      code: 404,
-      message: "ERROR",
-      response: err
-    }));
-
-
-};
+// /**
+//  * List of all Suppliers by duns refatorar isso
+//  */
+// exports.list_all_by_duns = function(req, res) { 
+//   var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
+//   var supplierList = supplier.aggregate(query.queries.supplierListByDuns(req.swagger.params.supplier_id.value))
+//     .skip(value).limit(parseInt(req.swagger.params.limit.value))
+//     .sort({
+//       _id: 1
+//     });
+//
+//   var count = supplier.find({}).count();
+//
+//   Promise.all([count, supplierList])
+//     .then(result => res.json({
+//       code: 200,
+//       message: "OK",
+//       "count": result[0],
+//       "suppliers": result[1]
+//     }))
+//     .catch(err => res.status(404).json({
+//       code: 404,
+//       message: "ERROR",
+//       response: err
+//     }));
+//
+//
+// };

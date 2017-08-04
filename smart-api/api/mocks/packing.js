@@ -1,5 +1,7 @@
-const mongoose          = require('mongoose');
-const mongoosePaginate  = require('mongoose-paginate');
+const mongoose                  = require('mongoose');
+const mongoosePaginate          = require('mongoose-paginate');
+const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
+
 
 const packingSchema = new mongoose.Schema({
       code:{type: String, required: true},
@@ -9,19 +11,27 @@ const packingSchema = new mongoose.Schema({
       heigth: Number,
       length: Number,
       capacity: Number,
-      status: String,
-      problem: Boolean,
+      status: Number,
+      battery: Number,
       missing: Boolean,
-      permanence_exceeded: Boolean,
-      last_time: Date,
-      amount_days: Number,
-      last_time_missing: Date,
-      time_countdown: Number,
+      permanence : {
+        time_exceeded: Boolean,
+        date: Number,
+        amount_days: Number
+      },
+      trip: {
+        time_exceeded: Boolean,
+        date: Number,
+        time_countdown: Number,
+      },
+      missing: {
+        last_time: Number,
+        time_countdown: Number,
+      },
       latitude: Number,
       longitude: Number,
       temperature: Number,
       serial: {type: String, required: true},
-      time_countdown: Number,
       correct_plant_factory: {
           type:mongoose.Schema.Types.ObjectId,
           ref:'Plant'
@@ -55,5 +65,6 @@ const packingSchema = new mongoose.Schema({
 
 });
 
+packingSchema.plugin(mongooseAggregatePaginate);
 packingSchema.plugin(mongoosePaginate);
 mongoose.model('Packing', packingSchema);

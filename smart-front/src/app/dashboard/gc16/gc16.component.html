@@ -37,9 +37,12 @@
 
 <div class="has-text-centered">
     <pagination-controls (pageChange)="pageChanged($event)"
-                         previousLabel="Anterior"
-                         nextLabel="Próximo"></pagination-controls>
+                         autoHide="true"
+                         directionLinks="false"></pagination-controls>
 </div>
+
+
+
 <div class="classVazio" *ngIf="data.data?.length < 1">
   Ainda não existem registros GC16 cadastrados.
 </div>

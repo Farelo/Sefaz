@@ -1,8 +1,8 @@
 "use strict";
 
-const jwt = require("jwt-simple");
+const jwt        = require("jwt-simple");
 const HttpStatus = require("http-status");
-const bcrypt = require("bcrypt");
+const bcrypt     = require("bcrypt");
 
 function authSuccess(res, credentials, data) {
 

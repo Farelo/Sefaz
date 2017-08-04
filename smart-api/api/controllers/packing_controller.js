@@ -2,15 +2,19 @@
 /**
  * Module dependencies.
  */
-const successHandler             = require('../helpers/responses/successHandler');
-const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
-const errorHandler               = require('../helpers/responses/errorHandler');
-const query                      = require('../helpers/queries/complex_queries_packing');
-const mongoose                   = require('mongoose');
-const ObjectId                   = require('mongoose').Types.ObjectId;
-const packing                    = mongoose.model('Packing');
-const _                          = require("lodash");
-mongoose.Promise                 = global.Promise;
+const successHandler                            = require('../helpers/responses/successHandler');
+const successHandlerPagination                  = require('../helpers/responses/successHandlerPagination');
+const successHandlerPaginationAggregate         = require('../helpers/responses/successHandlerPaginationAggregate');
+const successHandlerPaginationAggregateQuantity = require('../helpers/responses/successHandlerPaginationAggregateQuantity');
+const errorHandler                              = require('../helpers/responses/errorHandler');
+const query                                     = require('../helpers/queries/complex_queries_packing');
+const mongoose                                  = require('mongoose');
+const ObjectId                                  = require('mongoose').Types.ObjectId;
+const packing                                   = mongoose.model('Packing');
+const plant                                     = mongoose.model('Plant');
+const historic                                  = mongoose.model('HistoricPackings');
+const _                                         = require("lodash");
+mongoose.Promise                                = global.Promise;
 /**
  * Create the current Packing
  */
@@ -69,7 +73,6 @@ exports.packing_update = function(req, res) {
  * Update a Packing by code
  */
 exports.packing_update_by_code = function(req, res) {
-
   packing.update({
       code: req.swagger.params.packing_code.value
     }, req.body, {
@@ -176,7 +179,7 @@ exports.packing_list_all = function(req, res) {
  * List of packings by supplier
  */
 exports.packing_list_by_supplier = function(req, res) {
-  packing.aggregate(query.queries.listPackingBySupplier(req.swagger.params.id.value))
+  packing.aggregate(query.queries.listPackingBySupplier(new ObjectId(req.swagger.params.id.value)))
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to list packings by Supplier'));
 };
@@ -197,65 +200,207 @@ exports.packing_list_packing_no_binded_with_code = function(req, res) {
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to list packings by Supplier'));
 };
+/**
+ * list of general pagickings inventory
+ **/
+exports.geraneral_inventory_packing = function(req, res) {
+  let aggregate = packing.aggregate(query.queries.inventory_general);
 
-//DAQUI PRA BAIXO, ARRANJAR UMA MANEIRA DE ATUALIZAR ESSA COISA
-//list by code used to inventory
-exports.list_by_code = function(req, res) {
+  packing.aggregatePaginate(aggregate,
+    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
+    _.partial(successHandlerPaginationAggregate, res));
+};
+/**
+ * list of general pagickings inventory by location
+ **/
+exports.geraneral_inventory_packing_by_plant = function(req, res) {
+  let aggregate = packing.aggregate(query.queries.inventory_general_by_plant(req.swagger.params.code.value,new ObjectId(req.swagger.params.supplier.value)));
 
-  var arrayOfPromises = [packing.aggregate(query.queries.packingList(req.swagger.params.packing_code.value)),
-    packing.aggregate(query.queries.quantityFound(req.swagger.params.packing_code.value)),
-    packing.aggregate(query.queries.existingQuantity(req.swagger.params.packing_code.value)),
-    packing.aggregate(query.queries.listPackingMissing(req.swagger.params.packing_code.value)),
-    packing.aggregate(query.queries.listPackingProblem(req.swagger.params.packing_code.value))
-  ];
+  packing.aggregatePaginate(aggregate,
+    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
+    _.partial(successHandlerPaginationAggregate, res));
+};
+/**
+ * list of supplier inventory
+ **/
+exports.supplier_inventory = function(req, res) {
+  let aggregate = packing.aggregate(query.queries.supplier_inventory(req.swagger.params.supplier.value));
 
-  Promise.all(arrayOfPromises)
-    .then(result => res.json({
-      code: 200,
-      message: "OK",
-      "packing_list": result[0],
-      "quantity_found": result[1],
-      "existing_quantity": result[2],
-      "list_packing_missing": result[3],
-      "list_packing_problem": result[4]
-    }))
-    .catch(err => res.status(404).json({
-      code: 404,
-      message: "ERROR",
-      response: err
-    }));
+  packing.aggregatePaginate(aggregate,
+    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
+    _.partial(successHandlerPaginationAggregate, res));
+};
+/**
+ * list of quantity inventory
+ **/
+exports.quantity_inventory = function(req, res) {
+  let aggregate = packing.aggregate(query.queries.quantity_inventory(req.swagger.params.code.value));
 
+  packing.aggregatePaginate(aggregate,
+    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
+    _.partial(successHandlerPaginationAggregateQuantity, res, req.swagger.params.code.value));
 };
 
-//list all inventory  --- ISO AQUI TEM QUE MUDAR
-exports.list_all_inventory = function(req, res) {
-  var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-
-  var arrayOfPromises = [packing.aggregate(query.queries.packingListNoCode).skip(value).limit(parseInt(req.swagger.params.limit.value)),
-    packing.aggregate(query.queries.quantityFoundNoCode),
-    packing.aggregate(query.queries.existingQuantityNoCode),
-    packing.aggregate(query.queries.listPackingMissingNoCodeNoRoute).skip(value).limit(parseInt(req.swagger.params.limit.value)),
-    packing.aggregate(query.queries.listPackingMissingNoCodeRoute).skip(value).limit(parseInt(req.swagger.params.limit.value)),
-    packing.aggregate(query.queries.listPackingProblemNoCode).skip(value).limit(parseInt(req.swagger.params.limit.value)),
-    packing.find(query.queries.countAll).count()
-  ];
-
-  Promise.all(arrayOfPromises)
-    .then(result => res.json({
-      code: 200,
-      message: "OK",
-      "packing_list": result[0],
-      "quantity_found": result[1],
-      "existing_quantity": result[2],
-      "list_packing_missing_no_route": result[3],
-      "list_packing_missing_route": result[4],
-      "list_packing_problem": result[5],
-      "count": result[6]
-    }))
-    .catch(err => res.status(404).json({
-      code: 404,
-      message: "ERROR",
-      response: err
-    }));
-
+/**
+ * List of packings analysis battery
+ */
+exports.inventory_battery = function(req, res) {
+  packing.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      sort: {
+        battery: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list inventory battery'));
 };
+
+/**
+ * List of packings analysis battery
+ */
+exports.inventory_battery_by_code = function(req, res) {
+  packing.paginate({
+    "code": req.swagger.params.code.value
+  }, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      sort: {
+        battery: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list inventory battery by code'));
+};
+/**
+ * List of packings analysis by permanence time
+ */
+exports.inventory_permanence = function(req, res) {
+  packing.paginate({ "code": req.swagger.params.code.value}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      sort: {
+        'permanence.amount_days': -1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list inventory permanence'));
+};
+/**
+ * Historic of packings by serial
+ */
+exports.inventory_packing_historic = function(req, res) {
+  historic.paginate({
+      "serial": req.swagger.params.serial.value
+    }, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: query.queries.populate,
+      sort: {
+        'date': -1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list inventory permanence'));
+};
+
+
+
+
+//
+// exports.createEstrategy = function(req, res) {
+//   packing.find({}).then( packings => {
+//     plant.find({}).then( plant => {
+//       packings.forEach(o => {
+//         let temp = template();
+//         temp.packing = o._id;
+//         temp.serial = o.serial;
+//         for(var i = 1 ; i <  Math.floor(Math.random() * 10); i++){
+//             temp.plant =  plant[Math.floor(Math.random() * plant.length)]._id;
+//             temp.date =  new Date().getTime();
+//             temp.temperature =  Math.floor(Math.random() * 100);
+//             temp.permanence_time =  Math.floor(Math.random() * 20);
+//             historic.create(temp).then(result => console.log("OK"))
+//         }
+//       });
+//     });
+//   });
+// };
+//
+// function template(){
+//   return {
+//     plant: String,
+//     date: Number,
+//     temperature: Number,
+//     permanence_time: Number,
+//     serial: String,
+//     packing: String
+// };
+// }
+
+
+
+// //DAQUI PRA BAIXO, ARRANJAR UMA MANEIRA DE ATUALIZAR ESSA COISA
+// //list by code used to inventory
+// exports.list_by_code = function(req, res) {
+//
+//   var arrayOfPromises = [packing.aggregate(query.queries.packingList(req.swagger.params.packing_code.value)),
+//     packing.aggregate(query.queries.quantityFound(req.swagger.params.packing_code.value)),
+//     packing.aggregate(query.queries.existingQuantity(req.swagger.params.packing_code.value)),
+//     packing.aggregate(query.queries.listPackingMissing(req.swagger.params.packing_code.value)),
+//     packing.aggregate(query.queries.listPackingProblem(req.swagger.params.packing_code.value))
+//   ];
+//
+//   Promise.all(arrayOfPromises)
+//     .then(result => res.json({
+//       code: 200,
+//       message: "OK",
+//       "packing_list": result[0],
+//       "quantity_found": result[1],
+//       "existing_quantity": result[2],
+//       "list_packing_missing": result[3],
+//       "list_packing_problem": result[4]
+//     }))
+//     .catch(err => res.status(404).json({
+//       code: 404,
+//       message: "ERROR",
+//       response: err
+//     }));
+//
+// };
+//
+// //list all inventory  --- ISO AQUI TEM QUE MUDAR
+// exports.list_all_inventory = function(req, res) {
+//   var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
+//
+//   var arrayOfPromises = [packing.aggregate(query.queries.packingListNoCode).skip(value).limit(parseInt(req.swagger.params.limit.value)),
+//     packing.aggregate(query.queries.quantityFoundNoCode),
+//     packing.aggregate(query.queries.existingQuantityNoCode),
+//     packing.aggregate(query.queries.listPackingMissingNoCodeNoRoute).skip(value).limit(parseInt(req.swagger.params.limit.value)),
+//     packing.aggregate(query.queries.listPackingMissingNoCodeRoute).skip(value).limit(parseInt(req.swagger.params.limit.value)),
+//     packing.aggregate(query.queries.listPackingProblemNoCode).skip(value).limit(parseInt(req.swagger.params.limit.value)),
+//     packing.find(query.queries.countAll).count()
+//   ];
+//
+//   Promise.all(arrayOfPromises)
+//     .then(result => res.json({
+//       code: 200,
+//       message: "OK",
+//       "packing_list": result[0],
+//       "quantity_found": result[1],
+//       "existing_quantity": result[2],
+//       "list_packing_missing_no_route": result[3],
+//       "list_packing_missing_route": result[4],
+//       "list_packing_problem": result[5],
+//       "count": result[6]
+//     }))
+//     .catch(err => res.status(404).json({
+//       code: 404,
+//       message: "ERROR",
+//       response: err
+//     }));
+//
+// };

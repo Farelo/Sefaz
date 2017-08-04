@@ -32,16 +32,16 @@ export class EmbalagemCadastroComponent implements OnInit {
   }
 
   loadTags():void {
-    this.TagsService.retrieveAllNoBinded().subscribe( result => this.tags = result, err => {console.log(err)});
+    this.TagsService.retrieveAllNoBinded().subscribe( result => this.tags = result.data, err => {console.log(err)});
   }
 
 
   loadSuppliers():void{
-    this.SuppliersService.retrieveAll().subscribe(suppliers => this.suppliers = suppliers, err => {console.log(err)});
+    this.SuppliersService.retrieveAll().subscribe(result => this.suppliers = result.data, err => {console.log(err)});
   }
 
   loadProject():void{
-    this.ProjectService.retrieveAll().subscribe(projects => this.projects = projects, err => {console.log(err)});
+    this.ProjectService.retrieveAll().subscribe(result => this.projects = result.data, err => {console.log(err)});
   }
 
 

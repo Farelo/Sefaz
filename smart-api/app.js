@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({limit: '50mb'}));
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, '../smart-front/dist')));
-// app.use(logger('dev'));
+app.use(logger('dev'));
 
 module.exports = app; // for testing
 
@@ -29,9 +29,9 @@ require('./config/config.database')();
 
 // MODELS ==============================================
 require('./config/config.models')();
-
+// require('./api/controllers/packing_controller').createEstrategy();
 //JOB =================================================
-require('./job/job');
+//require('./job/job');
 
 //ALERTS
 var config = {
