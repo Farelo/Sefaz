@@ -42,7 +42,8 @@
 <div class="has-text-centered">
     <pagination-controls (pageChange)="pageChanged($event)"
                          previousLabel="Anterior"
-                         nextLabel="Próximo"></pagination-controls>
+                         nextLabel="Próximo"
+                         autoHide="true"></pagination-controls>
 </div>
 
 <div class="classVazio" *ngIf="data.data?.length < 1">

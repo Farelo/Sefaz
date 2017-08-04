@@ -22,6 +22,8 @@ produces:
 tags:
   - name: Plant
     description: All information about your Plants
+  - name: Inventory
+    description: All information about your Inventory
   - name: Profile
     description: All information about your Profiles
   - name: Project
@@ -1125,6 +1127,265 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/ErrorResponse'
+  '/inventory/general/{limit}/{page}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Inventory of the equipaments.
+      description: ''
+      operationId: geraneral_inventory_packing
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/inventory/battery/{limit}/{page}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Inventory of the equipaments Analyzing the battery.
+      description: ''
+      operationId: inventory_battery
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/inventory/permanence/{limit}/{page}/{code}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Inventory of the equipaments Analyzing the permanence.
+      description: ''
+      operationId: inventory_permanence
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+        - in: path
+          name: code
+          description: The especific page that returns packings related a this code
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/inventory/quantity/{limit}/{page}/{code}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Inventory of the equipaments Analyzing your quantity.
+      description: ''
+      operationId: quantity_inventory
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+        - in: path
+          name: code
+          description: The especific page that returns packings related a this code
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/inventory/packing/historic/{limit}/{page}/{serial}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Inventory of the equipaments Analyzing your historic.
+      description: ''
+      operationId: inventory_packing_historic
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+        - in: path
+          name: serial
+          description: The especific page that returns packings related a this code
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/inventory/battery/code/{limit}/{page}/{code}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Inventory of the equipaments Analyzing the battery by code.
+      description: ''
+      operationId: inventory_battery_by_code
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+        - in: path
+          name: code
+          description: The especific page that returns packings related a this code
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/inventory/supplier/{limit}/{page}/{supplier}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Inventory of the suppliers.
+      description: ''
+      operationId: supplier_inventory
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+        - in: path
+          name: supplier
+          description: The especific page that returns packings related a this supplier
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/inventory/plant/{limit}/{page}/{code}/{supplier}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Inventory of the equipaments by plant.
+      description: ''
+      operationId: geraneral_inventory_packing_by_plant
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+        - in: path
+          name: code
+          description: The especific page that returns packings related a this code
+          required: true
+          type: string
+        - in: path
+          name: supplier
+          description: The especific page that returns packings related a this supplier
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   '/logistic_operator/retrieve/{logistic_operator_id}':
     x-swagger-router-controller: logistic_operator_controller
     get:
@@ -1396,34 +1657,6 @@ paths:
         - in: path
           name: department
           description: The code that needs to be fetched
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Message
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-  '/packing/list/inventory/pagination/{limit}/{page}':
-    x-swagger-router-controller: packing_controller
-    get:
-      tags:
-        - Packing
-      summary: Get a packing by code ....
-      description: ''
-      operationId: list_all_inventory
-      parameters:
-        - in: path
-          name: limit
-          description: The limit of packings that will be returned
-          required: true
-          type: string
-        - in: path
-          name: page
-          description: The especific page that returns packings related a this page
           required: true
           type: string
       responses:
@@ -2494,41 +2727,6 @@ paths:
       summary: 'Get all suppliers on the system '
       description: ''
       operationId: supplier_list_all
-      responses:
-        '200':
-          description: Message
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-  '/supplier/list/pagination/duns/{limit}/{page}/{supplier_id}':
-    x-swagger-router-controller: supplier_controller
-    get:
-      tags:
-        - Supplier
-      summary: >-
-        Get informations about packings that the supplier is responsible like
-        actual local and plant
-      description: ''
-      operationId: list_all_by_duns
-      parameters:
-        - in: path
-          name: limit
-          description: The limit of suppliers that will be returned
-          required: true
-          type: string
-        - in: path
-          name: page
-          description: The especific page that returns suppliers related a this page
-          required: true
-          type: string
-        - in: path
-          name: supplier_id
-          description: The code that needs to be fetched
-          required: true
-          type: string
       responses:
         '200':
           description: Message

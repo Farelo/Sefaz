@@ -26,6 +26,8 @@ produces:
 tags:
 - name: "Plant"
   description: "All information about your Plants"
+- name: "Inventory"
+  description: "All information about your Inventory"
 - name: "Profile"
   description: "All information about your Profiles"
 - name: "Project"

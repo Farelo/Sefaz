@@ -77,19 +77,13 @@ export class PackingService {
   updatePackingByCode(code: string, packing: any): Observable<any>{
     return this.http.put(environment.url + 'packing/update/code/' + code,packing)
       .map((res: Response) => res.json())
-      .catch((error: any) => {
-        console.log(error);
-        return Observable.throw(error.json().error || 'Server error');
-      });
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   updatePackingUnset(id: string): Observable<any>{
     return this.http.put(environment.url + 'packing/update/unset/' + id,{})
       .map((res: Response) => res.json())
-      .catch((error: any) => {
-        console.log(error);
-        return Observable.throw(error.json().error || 'Server error');
-      });
+      .catch((error: any) =>  Observable.throw(error.json().error || 'Server error'));
   }
 
   updateAllPacking(code: string, supplier: string, packing: Packing): Observable<any>{

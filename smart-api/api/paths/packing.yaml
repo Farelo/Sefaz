@@ -153,34 +153,6 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
-  /packing/list/inventory/pagination/{limit}/{page}:
-      x-swagger-router-controller: packing_controller
-      get:
-        tags:
-          - "Packing"
-        summary: "Get a packing by code ...."
-        description: ""
-        operationId: list_all_inventory
-        parameters:
-        - in: "path"
-          name: "limit"
-          description: "The limit of packings that will be returned"
-          required: true
-          type: string
-        - in: "path"
-          name: "page"
-          description: "The especific page that returns packings related a this page"
-          required: true
-          type: string
-        responses:
-          200:
-            description: "Message"
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-          default:
-            description: "Error"
-            schema:
-              $ref: "#/definitions/ErrorResponse"
   /packing/list/all/nobinded:
       x-swagger-router-controller: packing_controller
       get:

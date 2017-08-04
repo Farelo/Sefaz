@@ -1,4 +1,5 @@
 exports.queries = {
+  //da pra usar o find
     "listTagsNoBinded": [{
         "$lookup": {
             "from": "packings",
@@ -39,6 +40,7 @@ exports.queries = {
       },
         { "$group": { "_id": null, "count": { "$sum": 1 } }}
       ],
+      //da pra usar o find
     "listTagsBindedAndNoBinded": [{
             "$lookup": {
                 "from": "packings",

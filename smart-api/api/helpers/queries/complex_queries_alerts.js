@@ -41,6 +41,7 @@ exports.queries = {
             }
         }
     }],
+    //da pra fazer realizando um find
     retrieve: function (code) {
       return [{
             "$match": {
@@ -115,6 +116,7 @@ exports.queries = {
             }
         ]
     },
+    //da pra fazer usando um find
     listAllByHasshing: function (hashpacking,status) {
       return [{
          "$match": {

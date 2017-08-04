@@ -1,6 +1,6 @@
 "use strict";
 
-var HTTPStatus = require("http-status");
+const HTTPStatus = require("http-status");
 
 function onError(res, message, err) {
     res.status(HTTPStatus.INTERNAL_SERVER_ERROR).send({

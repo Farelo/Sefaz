@@ -40,7 +40,7 @@ export class Gc16AdicionarComponent implements OnInit {
     this.gc16.project =  this.project._id;
 
     this.GC16Service.createGC16(this.gc16)
-                    .subscribe(result => this.packingService.updatePackingByCode(this.gc16.packing,{gc16: result._id})
+                    .subscribe(result => this.packingService.updatePackingByCode(this.gc16.packing,{gc16: result.data._id})
                     .subscribe(result => this.router.navigate(['/rc/gc16'])));
 
   }

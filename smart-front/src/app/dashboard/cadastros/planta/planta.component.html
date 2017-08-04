@@ -15,6 +15,7 @@
     <thead>
       <tr class="cabecalho">
         <th>Nome</th>
+
         <th class="opcoes">Opções</th>
       </tr>
     </thead>
@@ -24,6 +25,7 @@
                                                       currentPage: data.meta.page,
                                                       totalItems: data.meta.total_docs}">
         <td>{{plant.name}}</td>
+
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', plant._id]">Editar</button>
           <button class="excluir" (click)="removePlant(plant._id)">Excluir</button>
@@ -35,7 +37,8 @@
 <div class="has-text-centered">
     <pagination-controls (pageChange)="pageChanged($event)"
                          previousLabel="Anterior"
-                         nextLabel="Próximo"></pagination-controls>
+                         nextLabel="Próximo"
+                         autoHide="true"></pagination-controls>
 </div>
 <div class="classVazio" *ngIf="data.data?.length < 1">
   Ainda não existem plantas cadastradas.

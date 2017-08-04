@@ -9,7 +9,7 @@ import { ListaComponent } from './lista/lista.component';
 
 import { HomeRoutingModule } from './home.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalModule } from 'ngx-bootstrap/modal'
+import { ModalModule,TooltipModule } from 'ngx-bootstrap'
 
 @NgModule({
   imports: [
@@ -17,6 +17,7 @@ import { ModalModule } from 'ngx-bootstrap/modal'
     FormsModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
+    TooltipModule.forRoot(),
     HomeRoutingModule
   ],
   declarations: [

@@ -11,7 +11,7 @@ import { NgxPaginationModule} from 'ngx-pagination';
 import { HomeModule } from './home/home.module';
 import { CadastrosModule } from './cadastros/cadastros.module';
 import { RastreamentoModule } from './rastreamento/rastreamento.module';
-
+import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { DashboardRoutingModule } from './dashboard.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -41,7 +41,8 @@ import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
     ImportarComponent,
     Gc16Component,
     Gc16AdicionarComponent,
-    Gc16EditarComponent
+    Gc16EditarComponent,
+    FileSelectDirective
   ],
   providers: [
     NgbActiveModal
