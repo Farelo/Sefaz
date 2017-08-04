@@ -1,4 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
 declare var $:any;
 
 @Component({
@@ -12,7 +14,7 @@ private telaGrande: boolean = false;
 altura: any;
 largura: any;
 
-  constructor(private ngZone:NgZone) {
+  constructor(private ngZone:NgZone, private modalService: NgbModal) {
 
   }
 
@@ -38,5 +40,8 @@ largura: any;
 outraFuncaoTop(){
   $('label').click();
   // return false;
+}
+openModal(){
+  this.modalService.open(ModalUserComponent);
 }
 }
