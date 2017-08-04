@@ -17,19 +17,11 @@ declare var $:any;
 export class TimelineComponent implements OnInit,OnDestroy {
 
   @ViewChild('autoShownModal') public autoShownModal:ModalDirective;
+
   public isModalShown:boolean = false;
-
-  public showModal():void {
-    this.isModalShown = true;
-  }
-
-  public hideModal():void {
-    this.autoShownModal.hide();
-  }
-
-  public onHidden():void {
-    this.isModalShown = false;
-  }
+  public showModal():void { this.isModalShown = true; }
+  public hideModal():void { this.autoShownModal.hide(); }
+  public onHidden():void { this.isModalShown = false; }
 
   alerts;
   alert: Alert;
@@ -91,6 +83,7 @@ export class TimelineComponent implements OnInit,OnDestroy {
       this.telaGrande = false;
     }
   }
+
   ngOnDestroy() {
     this.connection.unsubscribe();
   }

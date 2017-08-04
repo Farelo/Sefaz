@@ -1,15 +1,13 @@
 <div class="conteudoHome">
   <div class="header">
-
     Timeline
     <button type="button" class="interrogacao1"
-      [ngbPopover]= 'popContent'
-      placement="left"
+      [ngbPopover]= 'popContent' placement="left"
       *ngIf="telaGrande == false" triggers='hover'>
     </button>
 
     <button type="button" class="interrogacao2"
-        [ngbPopover]= 'popContent'placement="bottom"
+        [ngbPopover]= 'popContent' placement="bottom"
         *ngIf="telaGrande == true" triggers='hover'>
     </button>
 
