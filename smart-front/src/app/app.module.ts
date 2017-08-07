@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
+import { ModalUserComponent } from './shared/modal-user/modal-user.component';
 
 import {ValidatorsModule, EmailValidators} from 'ngx-validators'
 
@@ -42,6 +43,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     LandingPageComponent,
     PositionModalComponent,
     ModalRastComponent,
+    ModalUserComponent,
     MissingModalComponent,
     EsqueciMinhaSenhaComponent,
     RedefinirSenhaComponent
@@ -78,7 +80,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
-  entryComponents: [ModalRastComponent,PositionModalComponent,MissingModalComponent]
+  entryComponents: [ModalRastComponent,PositionModalComponent,MissingModalComponent, ModalUserComponent]
 })
 
 export class AppModule { }

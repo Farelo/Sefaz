@@ -41,14 +41,14 @@
     <div class="col-sm-6 middle">
       <img src="../../../assets/images/perfil1.png">
       <p>Usuário Administrador Geral.</p><hr>
-      <button class="gerenciar"><div>GERENCIAR USUÁRIOS</div></button><br class="brgone">
+      <button class="gerenciar" (click)="openModal()"><div>GERENCIAR USUÁRIOS</div></button><br class="brgone">
       <button class="medio"><div>EDITAR</div></button>
       <button class="medio2"><div>SAIR</div></button>
     </div>
 
     <div class="col-sm-6">
       <ul class="listaEscondida"style=" ">
-        <li class="opcaoEscondida"><a (click)="mudar()">GERENCIAR USUÁRIOS</a></li>
+        <li class="opcaoEscondida"><a (click)="openModal()">GERENCIAR USUÁRIOS</a></li>
         <li class="opcaoEscondida"><a (click)="mudar()">EDITAR</a></li>
         <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/home">HOME</a></li>
         <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/cadastros">CADASTROS</a></li>
@@ -66,7 +66,7 @@
 <ng-template #popContent class="test">
   <img src="../../../assets/images/perfil1.png">
   <p>Usuário Administrador Geral.</p><hr>
-  <button class="gerenciar"><div>GERENCIAR USUÁRIOS</div></button><br>
+  <button class="gerenciar" (click)="openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
   <button class="medio"><div>EDITAR</div></button>
   <button class="medio2"><div>SAIR</div></button>
 </ng-template>
