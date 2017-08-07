@@ -496,6 +496,8 @@ exports.queries = {
     ];
   },
   populate: [
+    "plant",
+    "supplier",
     "packing",
     {
       path: 'packing',

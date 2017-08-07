@@ -18,6 +18,7 @@ import { PositionModalComponent } from './shared/modal/alerta/position/alerta.co
 import { MissingModalComponent } from './shared/modal/alerta/missing/alerta.component';
 
 import { AlertsService } from './servicos/alerts.service';
+import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';
 import { PackingService } from './servicos/packings.service';
 import { PlantsService } from './servicos/plants.service';
@@ -69,6 +70,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ProjectService,
     ChatService,
     GC16Service,
+    InventoryService,
     { provide: BrowserXhr, useClass: NgProgressBrowserXhr }
 
     // FormBuilder,

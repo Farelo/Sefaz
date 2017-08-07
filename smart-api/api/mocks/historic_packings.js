@@ -6,6 +6,10 @@ const historicPackingsSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Plant'
   },
+  supplier: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Supplier'
+  },
   date: {
     type: Number
   },
@@ -16,6 +20,7 @@ const historicPackingsSchema = new mongoose.Schema({
     type: Number
   },
   serial: String,
+  code: String,
   packing: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Packing'

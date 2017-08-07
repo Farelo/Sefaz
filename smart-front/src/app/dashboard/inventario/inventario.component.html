@@ -14,35 +14,33 @@
 
     <div *ngIf="(escolhaGeral == 'FORNECEDOR')" class="row escolhaFornecedor">
       <div class="col-sm-6">
-        <p>DUNS</p><input type="text" class="form-control meuInput" placeholder="">
-      </div>
-      <div class="col-sm-6">
-        <p>NOME DO FORNECEDOR</p><input type="text" class="form-control meuInput" placeholder="">
+        <p>DUNS</p><input type="text" class="form-control meuInput" [(ngModel)]="supplierSearch"  (blur)="supplierInventory()">
       </div>
     </div>
 
     <div *ngIf="(escolhaGeral == 'EQUIPAMENTO')" class="row escolhaEquipamento">
       <div class="col-sm-4">
+
         <p>TIPO</p>
-        <select [(ngModel)]="escolhaEquipamento" data-style="btn-primary" class="selectEq">
+        <select [(ngModel)]="escolhaEquipamento" data-style="btn-primary" (ngModelChange)="changeSelect($event)" class="selectEq">
            <option value="">Escolha</option>
            <option>Tempo de permanência</option>
-           <option>Bateria Baixa</option>
+           <option>Bateria</option>
            <option>Quantidade</option>
         </select>
       </div>
 
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
-        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="">
+        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="permanenceSearchEquipamento"  (blur)="permanenceInventory()">
       </div>
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
-        <p>SERIAL</p><input type="text" class="form-control meuInput" placeholder="">
+        <p>SERIAL</p><input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="permanenceSearchSerial" (blur)="permanenceInventory()" >
       </div>
-      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Bateria Baixa')">
-        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="">
+      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Bateria')">
+        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="batterySearch"  (blur)="batteryInventory()">
       </div>
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Quantidade')">
-        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="">
+        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="quantitySearch"  (blur)="quantityInventory()" >
       </div>
 
     </div>
@@ -67,19 +65,23 @@
           <th>Max</th>
           <th>Min</th>
           <th>Variação</th>
-          <th></th>
+          <th>Detalhes</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>01</td>
-          <td>Fornecedor 1</td>
-          <td>DUNS 1</td>
-          <td>Local 1</td>
-          <td>Setor 1</td>
-          <td>001</td>
-          <td>Perdido</td>
-          <td>Ver mais</td>
+        <tr *ngFor="let packing of general.data | paginate: {
+                                                        itemsPerPage: 10,
+                                                        currentPage: general.meta.page,
+                                                        totalItems: general.meta.total_docs}">
+          <td>{{packing.code}}</td>
+          <td>{{packing.description}}</td>
+          <td>{{packing.supplier.name}}</td>
+          <td>{{packing.quantity}}</td>
+          <td>{{packing.gc16?.factoryStock?.QuantContainerfs || '-'}}</td>
+          <td>{{packing.gc16?.factoryStock?.QuantContainerfsMax || '-'}}</td>
+          <td>{{calculate(packing)}}</td>
+          <td class="text-center"> <i class="glyphicon glyphicon-eye-open"></i></td>
+
         </tr>
       </tbody>
     </table>
@@ -96,30 +98,34 @@
           <th>Equipamento</th>
           <th>Descrição</th>
           <th>Quantidade Encontrada</th>
-          <th>Quantidade no Fornecedor</th>
+          <th>Planta</th>
           <th>Max</th>
           <th>Min</th>
           <th>Variação</th>
-          <th></th>
+          <th>Detalhes</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>01</td>
-          <td>Fornecedor 1</td>
-          <td>DUNS 1</td>
-          <td>Local 1</td>
-          <td>Setor 1</td>
-          <td>001</td>
-          <td>Perdido</td>
-          <td>Ver mais</td>
+        <tr *ngFor="let packing of supplier.data | paginate: {
+                                                        itemsPerPage: 10,
+                                                        currentPage: supplier.meta.page,
+                                                        totalItems: supplier.meta.total_docs}">
+          <td>{{packing.code}}</td>
+          <td>{{packing.description}}</td>
+          <td>{{packing.quantity}}</td>
+          <td>{{packing.actual_plant?.name || '-'}}</td>
+          <td>{{packing.gc16?.supplierStock?.QuantContainerSs || '-'}}</td>
+          <td>{{packing.gc16?.supplierStock?.QuantContainerSsMax || '-'}}</td>
+          <td>25</td>
+          <td><button class="editar" ></button></td>
+
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Tempo de permanência'))">
+<div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Tempo de permanência') && !serial)">
   <h2 class="tituloClaro">TEMPO DE PERMANÊNCIA</h2>
   <br />
   <br />
@@ -131,23 +137,61 @@
           <th>Serial</th>
           <th>Tempo (dias)</th>
           <th>DUNS</th>
-          <th>Alerta</th>
+
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>01</td>
-          <td>Fornecedor 1</td>
-          <td>DUNS 1</td>
-          <td>Local 1</td>
-          <td>Setor 1</td>
+        <tr *ngFor="let packing of permanence.data | paginate: {
+                                                        itemsPerPage: 10,
+                                                        currentPage: permanence.meta.page,
+                                                        totalItems: permanence.meta.total_docs}">
+          <td>{{packing.code}}</td>
+          <td>{{packing.serial}}</td>
+          <td>{{packing.permanence?.amount_days || '-'}}</td>
+          <td>{{packing.supplier?.duns || '-'}}</td>
+
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Bateria Baixa'))">
+
+<div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Tempo de permanência') && serial)">
+  <h2 class="tituloClaro">TEMPO DE PERMANÊNCIA</h2>
+  <br />
+  <br />
+  <div class="table-responsive meuInventario">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th>Data</th>
+          <th>Horário</th>
+          <th>Duns</th>
+          <th>Local</th>
+          <th>Tempo (Dias)</th>
+          <th>GC16 (Dias)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let packing of permanence.data | paginate: {
+                                                        itemsPerPage: 10,
+                                                        currentPage: permanence.meta.page,
+                                                        totalItems: permanence.meta.total_docs}">
+          <td>{{packing.date | date: 'dd/MM/yyyy'}}</td>
+          <td>{{packing.date | date:'shortTime'}}</td>
+          <td>{{packing.supplier?.duns || '-'}}</td>
+          <td>{{packing.plant?.name || '-'}}</td>
+          <td>{{packing.permanence_time || '-'}}</td>
+          <td>{{packing.packing?.gc16?.supplierStock?.days || '-'}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Bateria'))">
   <h2 class="tituloClaro">BATERIA BAIXA</h2>
   <br />
   <br />
@@ -157,16 +201,20 @@
         <tr class="cabecalho">
           <th>Equipamento</th>
           <th>Serial</th>
-          <th>Nome</th>
+          <th>Planta Atual</th>
           <th>Nível</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>01</td>
-          <td>Fornecedor 1</td>
-          <td>DUNS 1</td>
-          <td>Local 1</td>
+        <tr *ngFor="let packing of battery.data | paginate: {
+                                                        itemsPerPage: 10,
+                                                        currentPage: battery.meta.page,
+                                                        totalItems: battery.meta.total_docs}">
+          <td>{{packing.code}}</td>
+          <td>{{packing.serial}}</td>
+          <td>{{packing.actual_plant?.name || '-'}}</td>
+          <td>{{packing?.battery || 0}}</td>
+
         </tr>
       </tbody>
     </table>
@@ -184,26 +232,32 @@
           <th>DUNS</th>
           <th>Planta</th>
           <th>Quantidade</th>
-          <th>?? Max</th>
+          <th>Min</th>
+          <th>Max</th>
           <th>Diferença</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>lala</td>
-          <td>lala</td>
-          <td>lala</td>
-          <td>lalal</td>
-          <td>lalal</td>
+        <tr *ngFor="let packing of quantity.data | paginate: {
+                                                        itemsPerPage: 10,
+                                                        currentPage: quantity.meta.page,
+                                                        totalItems: quantity.meta.total_docs}">
+          <td>{{packing.supplier?.duns}}</td>
+          <td>{{packing.actual_plant?.name}}</td>
+          <td>{{packing.quantity }}</td>
+          <td>{{packing.gc16?.supplierStock?.QuantContainerSs || '-'}}</td>
+          <td>{{packing.gc16?.supplierStock?.QuantContainerSsMax || '-'}}</td>
+          <td>25</td>
+
         </tr>
       </tbody>
     </table>
   </div>
   <div class="resumo">
-    <h3 class="definicao">TOTAL: </h3><h3 class="numero">500</h3>
+    <h3 class="definicao">TOTAL: </h3><h3 class="numero">{{quantity.meta?.total_packings || 0}}</h3>
   </div>
   <div class="resumo">
-    <h3 class="definicao">DIFERENÇA: </h3><h3 class="numero">500</h3>
+    <h3 class="definicao">DIFERENÇA: </h3><h3 class="numero">{{quantity.meta?.missing || 0}}</h3>
   </div>
 </div>
 
