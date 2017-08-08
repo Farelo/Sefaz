@@ -62,9 +62,6 @@
           <th>Descrição</th>
           <th>Fornecedor</th>
           <th>Quantidade</th>
-          <!-- <th>Max</th>
-          <th>Min</th>
-          <th>Variação</th> -->
           <th>Detalhes</th>
         </tr>
       </thead>
@@ -75,11 +72,8 @@
                                                         totalItems: general.meta.total_docs}">
           <td>{{packing.code}}</td>
           <td>{{packing.description}}</td>
-          <td>{{packing.supplier.name}}</td>
+          <td>{{packing.supplier?.name}}</td>
           <td>{{packing.quantity}}</td>
-          <!-- <td>{{packing.gc16?.factoryStock?.QuantContainerfs || '-'}}</td>
-          <td>{{packing.gc16?.factoryStock?.QuantContainerfsMax || '-'}}</td>
-          <td>{{calculate(packing)}}</td> -->
           <td class="text-center"> <i class="glyphicon glyphicon-eye-open"></i></td>
 
         </tr>
@@ -99,9 +93,6 @@
           <th>Descrição</th>
           <th>Quantidade Encontrada</th>
           <th>Planta</th>
-          <th>Max</th>
-          <th>Min</th>
-          <th>Variação</th>
           <th>Detalhes</th>
         </tr>
       </thead>
@@ -114,10 +105,8 @@
           <td>{{packing.description}}</td>
           <td>{{packing.quantity}}</td>
           <td>{{packing.actual_plant?.name || '-'}}</td>
-          <td>{{packing.gc16?.supplierStock?.QuantContainerSs || '-'}}</td>
-          <td>{{packing.gc16?.supplierStock?.QuantContainerSsMax || '-'}}</td>
-          <td>25</td>
-          <td><button class="editar" ></button></td>
+
+          <td class="text-center"> <i class="glyphicon glyphicon-eye-open"></i></td>
 
         </tr>
       </tbody>
@@ -135,8 +124,10 @@
         <tr class="cabecalho">
           <th>Equipamento</th>
           <th>Serial</th>
+          <th>Planta</th>
           <th>Tempo (dias)</th>
           <th>DUNS</th>
+          <th>Fornecedor</th>
 
         </tr>
       </thead>
@@ -147,8 +138,10 @@
                                                         totalItems: permanence.meta.total_docs}">
           <td>{{packing.code}}</td>
           <td>{{packing.serial}}</td>
+          <td>{{packing.actual_plant?.name || '-'}}</td>
           <td>{{packing.permanence?.amount_days || '-'}}</td>
           <td>{{packing.supplier?.duns || '-'}}</td>
+          <td>{{packing.supplier?.name || '-'}}</td>
 
         </tr>
       </tbody>
@@ -168,9 +161,10 @@
           <th>Data</th>
           <th>Horário</th>
           <th>Duns</th>
+          <th>Fornecedor</th>
           <th>Local</th>
           <th>Tempo (Dias)</th>
-          <th>GC16 (Dias)</th>
+          <th>Tempo de Referência GC16 (Dias)</th>
         </tr>
       </thead>
       <tbody>
@@ -181,6 +175,7 @@
           <td>{{packing.date | date: 'dd/MM/yyyy'}}</td>
           <td>{{packing.date | date:'shortTime'}}</td>
           <td>{{packing.supplier?.duns || '-'}}</td>
+          <td>{{packing.supplier?.name || '-'}}</td>
           <td>{{packing.plant?.name || '-'}}</td>
           <td>{{packing.permanence_time || '-'}}</td>
           <td>{{packing.packing?.gc16?.supplierStock?.days || '-'}}</td>
@@ -202,6 +197,7 @@
           <th>Equipamento</th>
           <th>Serial</th>
           <th>Planta Atual</th>
+          <th>Bateria</th>
           <th>Nível</th>
         </tr>
       </thead>
@@ -213,7 +209,8 @@
           <td>{{packing.code}}</td>
           <td>{{packing.serial}}</td>
           <td>{{packing.actual_plant?.name || '-'}}</td>
-          <td>{{packing?.battery || 0}}</td>
+          <td>{{packing?.battery || 0}} %</td>
+          <td>{{packing?.battery > 80 ? 'Alta' : (packing?.battery > 40 ? 'Medio' : 'Baixa')}}</td>
 
         </tr>
       </tbody>
@@ -229,12 +226,15 @@
     <table class="table">
       <thead>
         <tr class="cabecalho">
+          <th>Serial</th>
           <th>DUNS</th>
+          <th>Fornecedor</th>
           <th>Planta</th>
           <th>Quantidade</th>
           <th>Min</th>
           <th>Max</th>
           <th>Diferença</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -242,12 +242,15 @@
                                                         itemsPerPage: 10,
                                                         currentPage: quantity.meta.page,
                                                         totalItems: quantity.meta.total_docs}">
+          <td>{{packing.serial}}</td>
           <td>{{packing.supplier?.duns}}</td>
-          <td>{{packing.actual_plant?.name}}</td>
+          <td>{{packing.supplier?.name}}</td>
+          <td>{{packing.actual_plant?.name || 'Não Registrado'}}</td>
           <td>{{packing.quantity }}</td>
           <td>{{packing.gc16?.supplierStock?.QuantContainerSs || '-'}}</td>
           <td>{{packing.gc16?.supplierStock?.QuantContainerSsMax || '-'}}</td>
-          <td>25</td>
+          <td>{{packing.gc16?.supplierStock?.QuantContainerSs > packing.quantity ? (packing.quantity-packing.gc16?.supplierStock?.QuantContainerSs) : (packing.gc16?.supplierStock?.QuantContainerSsMax < packing.quantity ? packing.quantity-packing.gc16?.supplierStock?.QuantContainerSsMax :  'OK')  }}</td>
+          <td>{{packing.missing ? 'Perdida': (packing.problem ? 'Local Errado' : 'OK') }}</td>
 
         </tr>
       </tbody>

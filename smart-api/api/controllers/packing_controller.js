@@ -179,6 +179,8 @@ exports.packing_list_all = function(req, res) {
  * List of packings by supplier
  */
 exports.packing_list_by_supplier = function(req, res) {
+  console.log(req.swagger.params.id.value);
+
   packing.aggregate(query.queries.listPackingBySupplier(new ObjectId(req.swagger.params.id.value)))
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to list packings by Supplier'));
