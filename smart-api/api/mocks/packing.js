@@ -24,9 +24,13 @@ const packingSchema = new mongoose.Schema({
         date: Number,
         time_countdown: Number,
       },
-      missing: {
+      packing_missing: {
         last_time: Number,
         time_countdown: Number,
+        rota: {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Route'
+        },
       },
       latitude: Number,
       longitude: Number,

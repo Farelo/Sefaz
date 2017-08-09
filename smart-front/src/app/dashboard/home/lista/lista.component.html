@@ -1,5 +1,5 @@
-<p class="titulo">Timeline > Fornecedor: GM</p>
-<div  *ngFor="let alert of alerts">
+<p class="titulo">Timeline </p>
+<!-- <div  *ngFor="let alert of alerts.data">
   <div class="panel-body info"
   [ngClass]="{
     'perdido' : alert.status == '02',
@@ -11,8 +11,49 @@
 <p class="infoData">{{alert.packing.tag_mac}}</p>
 
 </div>
+</div> -->
+
+
+
+<div class="painel">
+  <div class="quadradoPequeno"
+    *ngFor="let alert of alerts?.data"
+    [ngClass]="{
+      'status1' : alert.status == 1,
+      'status2' : alert.status == 2,
+      'status3' : alert.status == 3,
+      'status4' : alert.status == 4,
+      'status5' : alert.status == 5,
+      'status6' : alert.status == 6
+    }"
+     (click)="open(alert?.packing?._id,alert.status)" >
+    <div class="esquerda">
+      <span class="codigo">{{alert.packing?.code}}</span><br />
+      <span class="descricao">{{alert.date | date}}</span>
+    </div>
+    <div class="direita">
+      <span class="fornecedor" tooltip="Fornecedor"
+      [ngClass]="{
+        'fornecedor1' : alert.status == 1,
+        'fornecedor2' : alert.status == 2,
+        'fornecedor3' : alert.status == 3,
+        'fornecedor4' : alert.status == 4,
+        'fornecedor5' : alert.status == 5,
+        'fornecedor6' : alert.status == 6
+      }"
+      >{{alert.actual_plant?.name}}</span><Br />
+      <span class="quantidade" tooltip="Quantidade de embalagens"
+      [ngClass]="{
+        'quantidade1' : alert.status == 1,
+        'quantidade2' : alert.status == 2,
+        'quantidade3' : alert.status == 3,
+        'quantidade4' : alert.status == 4,
+        'quantidade5' : alert.status == 5,
+        'quantidade6' : alert.status == 6
+      }"
+      >{{alert.serial}}</span>
+    </div>
+  </div>
 </div>
-
 <br />
-
 <button routerLink="/rc/home" class="botaoVoltar">Voltar</button>

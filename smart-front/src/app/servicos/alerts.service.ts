@@ -10,7 +10,7 @@ export class AlertsService {
   constructor(private http: Http) { }
 
 
-  getAlertsPagination(limit: number, page: number): Observable<any> {
+  getAlerts(limit: number, page: number): Observable<any> {
 
     return this.http.get(environment.url + 'alert/list/pagination/' + limit + '/' + page)
       .map((res: Response) => res.json())
@@ -24,8 +24,8 @@ export class AlertsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveAlertByPacking(id: string): Observable<any>{
-    return this.http.get(environment.url + 'alert/retrieve/' + id)
+  retrieveAlertByPacking(id: string, status: number): Observable<any>{
+    return this.http.get(environment.url + 'alert/retrieve/' + id + '/' + status)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

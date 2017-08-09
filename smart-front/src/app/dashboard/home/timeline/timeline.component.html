@@ -14,11 +14,11 @@
     <ng-template #popContent>
       <p class="tit1">Alertas e seus significados</p>
       <span class="lg1">OBJETO PERDIDO</span><br />
-      <span class="lg2">OBJETO 2</span><br />
-      <span class="lg3">OBJETO 3</span><br />
+      <span class="lg2">OBJETO INCORRETO</span><br />
+      <span class="lg3">BATERIA BAIXA</span><br />
       <span class="lg4">OBJETO ATRASADO</span><br />
-      <span class="lg5">OBJETO 5</span><br />
-      <span class="lg6">OBJETO INCORRETO</span><br />
+      <span class="lg5">TEMPO DE PERMANÊNCIA</span><br />
+      <!-- <span class="lg6"></span><br /> -->
     </ng-template>
 
   </div>
@@ -39,43 +39,43 @@
   </ng-template> -->
   <div class="painel">
     <div class="quadradoPequeno"
-      *ngFor="let teste of testes"
+      *ngFor="let alert of alerts?.data"
       [ngClass]="{
-        'status1' : teste.status == 'A',
-        'status2' : teste.status == 'B',
-        'status3' : teste.status == 'C',
-        'status4' : teste.status == 'D',
-        'status5' : teste.status == 'E',
-        'status6' : teste.status == 'F'
+        'status1' : alert.status == 1,
+        'status2' : alert.status == 2,
+        'status3' : alert.status == 3,
+        'status4' : alert.status == 4,
+        'status5' : alert.status == 5,
+        'status6' : alert.status == 6
       }"
-      >
+      [routerLink]="['list/', alert.hash, alert.status]">
       <div class="esquerda">
-        <span class="codigo">{{teste.codigo}}</span><br />
-        <span class="descricao">{{teste.rack}}</span>
+        <span class="codigo">{{alert.packing?.code}}</span><br />
+        <span class="descricao">{{alert.packing?.type}}</span>
       </div>
       <div class="direita">
         <span class="fornecedor" tooltip="Fornecedor"
         [ngClass]="{
-          'fornecedor1' : teste.status == 'A',
-          'fornecedor2' : teste.status == 'B',
-          'fornecedor3' : teste.status == 'C',
-          'fornecedor4' : teste.status == 'D',
-          'fornecedor5' : teste.status == 'E',
-          'fornecedor6' : teste.status == 'F'
+          'fornecedor1' : alert.status == 1,
+          'fornecedor2' : alert.status == 2,
+          'fornecedor3' : alert.status == 3,
+          'fornecedor4' : alert.status == 4,
+          'fornecedor5' : alert.status == 5,
+          'fornecedor6' : alert.status == 6
         }"
-        >{{teste.safe}}</span><Br />
+        >{{alert.supplier?.name}}</span><Br />
         <span class="quantidade" tooltip="Quantidade de embalagens"
         [ngClass]="{
-          'quantidade1' : teste.status == 'A',
-          'quantidade2' : teste.status == 'B',
-          'quantidade3' : teste.status == 'C',
-          'quantidade4' : teste.status == 'D',
-          'quantidade5' : teste.status == 'E',
-          'quantidade6' : teste.status == 'F'
+          'quantidade1' : alert.status == 1,
+          'quantidade2' : alert.status == 2,
+          'quantidade3' : alert.status == 3,
+          'quantidade4' : alert.status == 4,
+          'quantidade5' : alert.status == 5,
+          'quantidade6' : alert.status == 6
         }"
-        >{{teste.numero}} {{teste.status}}</span>
+        >{{alert.quantity }}</span>
       </div>
     </div>
   </div>
-<router-outlet></router-outlet>
+
 </div>

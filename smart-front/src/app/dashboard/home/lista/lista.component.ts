@@ -49,18 +49,17 @@ export class ListaComponent implements OnInit {
   }
 
   open(embalagem,status) {
-
-    this.AlertsService.retrieveAlertByPacking(embalagem)
+    console.log(embalagem);
+    this.AlertsService.retrieveAlertByPacking(embalagem,status)
       .subscribe(packing => {
-        console.log(packing);
-        if(status === "01"){
+
           const modalRef = this.modalService.open(PositionModalComponent);
           modalRef.componentInstance.alerta = packing;
-        }else{
-          const modalRef = this.modalService.open(MissingModalComponent);
-          modalRef.componentInstance.alerta = packing;
-
-        }
+        // }else{
+        //   const modalRef = this.modalService.open(MissingModalComponent);
+        //   modalRef.componentInstance.alerta = packing;
+        //
+        // }
 
       },
       err => {

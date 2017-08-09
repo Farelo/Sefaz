@@ -13,6 +13,7 @@ const ObjectId                                  = require('mongoose').Types.Obje
 const packing                                   = mongoose.model('Packing');
 const plant                                     = mongoose.model('Plant');
 const historic                                  = mongoose.model('HistoricPackings');
+const alert                                     = mongoose.model('Alerts');
 const _                                         = require("lodash");
 mongoose.Promise                                = global.Promise;
 /**
@@ -27,7 +28,7 @@ exports.packing_create = function(req, res) {
  * Show the current Packing
  */
 exports.packing_read = function(req, res) {
-  packing.findOne({
+packing.findOne({
       _id: req.swagger.params.packing_id.value 
     })
     .populate('tag')
@@ -179,7 +180,6 @@ exports.packing_list_all = function(req, res) {
  * List of packings by supplier
  */
 exports.packing_list_by_supplier = function(req, res) {
-  console.log(req.swagger.params.id.value);
 
   packing.aggregate(query.queries.listPackingBySupplier(new ObjectId(req.swagger.params.id.value)))
     .then(_.partial(successHandler, res))
@@ -312,7 +312,7 @@ exports.inventory_packing_historic = function(req, res) {
 
 
 
-//
+
 // exports.createEstrategy = function(req, res) {
 //   packing.find({}).then( packings => {
 //     plant.find({}).then( plant => {
@@ -331,8 +331,42 @@ exports.inventory_packing_historic = function(req, res) {
 //     });
 //   });
 // };
-//
-// function template(){
+
+exports.createAlerts = function(req, res) {
+  var alerts1 = [1,2,4];
+  var alerts2 = [3,5];
+  packing.find({}).then( packings => {
+    plant.find({}).then( plant => {
+      packings.forEach(o => {
+        let temp = template();
+        temp.actual_plant = plant[Math.floor(Math.random() * plant.length)]._id;;
+        temp.correct_plant_factory = plant[Math.floor(Math.random() * plant.length)]._id;
+        temp.correct_plant_supplier = plant[Math.floor(Math.random() * plant.length)]._id;
+        temp.packing = o._id;
+        temp.serial = o.serial;
+        temp.supplier = o.supplier;
+        temp.status = alerts1[Math.floor(Math.random() * alerts1.length)];
+        temp.hashpacking = o.supplier + o.code;
+        temp.date = randomDate(new Date(2012, 0, 1), new Date());
+        alert.create(temp).then(result => console.log("OK"));
+        temp = template();
+        temp.actual_plant = plant[Math.floor(Math.random() * plant.length)]._id;;
+        temp.correct_plant_factory = plant[Math.floor(Math.random() * plant.length)]._id;
+        temp.correct_plant_supplier = plant[Math.floor(Math.random() * plant.length)]._id;
+        temp.packing = o._id;
+        temp.serial = o.serial;
+        temp.supplier = o.supplier;
+        temp.status = alerts2[Math.floor(Math.random() * alerts2.length)];
+        temp.hashpacking = o.supplier + o.code;
+        temp.date = randomDate(new Date(2012, 0, 1), new Date());
+        alert.create(temp).then(result => console.log("OK"));
+
+      });
+    });
+  });
+};
+
+function template(){
 //   return {
 //     plant: String,
 //     date: Number,
@@ -341,7 +375,26 @@ exports.inventory_packing_historic = function(req, res) {
 //     serial: String,
 //     packing: String
 // };
-// }
+
+  return {
+    actual_plant: String,
+    correct_plant_factory: String,
+    correct_plant_supplier: String,
+    packing: String,
+    supplier: String,
+    status: Number,
+    serial: String,
+    date: Number,
+    hashpacking : String
+  }
+}
+
+function randomDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).getTime();
+}
+
+
+
 
 
 

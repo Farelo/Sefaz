@@ -2,14 +2,15 @@
 /**
  * Module dependencies.
  */
-const successHandler             = require('../helpers/responses/successHandler');
-const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
-const errorHandler               = require('../helpers/responses/errorHandler');
-const query                      = require('../helpers/queries/complex_queries_alerts');
-const mongoose                   = require('mongoose');
-const alert                      = mongoose.model('Alerts');
-const _                          = require("lodash");
-mongoose.Promise                 = global.Promise;
+const successHandler                      = require('../helpers/responses/successHandler');
+const successHandlerPagination            = require('../helpers/responses/successHandlerPagination');
+const successHandlerPaginationAggregate   = require('../helpers/responses/successHandlerPaginationAggregate');
+const errorHandler                        = require('../helpers/responses/errorHandler');
+const query                               = require('../helpers/queries/complex_queries_alerts');
+const mongoose                            = require('mongoose');
+const alert                               = mongoose.model('Alerts');
+const _                                   = require("lodash");
+mongoose.Promise                          = global.Promise;
 /**
  * Create a Alert
  */
@@ -24,7 +25,8 @@ exports.alert_create = function(req, res) {
 exports.alert_read_by_packing = function(req, res) {
 
   alert.findOne({
-      packing: req.swagger.params.packing_id.value
+      packing: req.swagger.params.packing_id.value,
+      status: req.swagger.params.status.value
     })
     .populate('actual_plant')
     .populate('department')
@@ -66,9 +68,9 @@ exports.alert_list_hashing = function(req, res) { 
       "status": req.swagger.params.status.value
     }, {
       page: parseInt(req.swagger.params.page.value),
-      populate: ['packing'],
+      populate: ['packing','supplier','actual_plant'],
       sort: {
-        _id: 1
+        date: -1
       },
       limit: parseInt(req.swagger.params.limit.value)
     })
@@ -79,24 +81,12 @@ exports.alert_list_hashing = function(req, res) { 
  * List of Alerts pagination
  */
 exports.alert_list_pagination = function(req, res) { 
-  var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-  var alertList = alert.aggregate(query.queries.listAlerts)
-    .skip(value).limit(parseInt(req.swagger.params.limit.value))
-    .sort({
-      _id: 1
-    });
-  var count = alert.find({}).count();
 
-  Promise.all([count, alertList])
-    .then(result => res.json({
-      code: 200,
-      message: "OK",
-      "count": result[0],
-      "data": result[1]
-    }))
-    .catch(err => res.status(404).json({
-      code: 404,
-      message: "ERROR",
-      response: err
-    }));
+  let aggregate = alert.aggregate(query.queries.listAlerts);
+
+  alert.aggregatePaginate(aggregate,
+    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
+    _.partial(successHandlerPaginationAggregate, res));
+
+
 };

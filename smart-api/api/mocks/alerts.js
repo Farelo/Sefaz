@@ -1,5 +1,6 @@
-const mongoose          = require('mongoose');
-const mongoosePaginate  = require('mongoose-paginate');
+const mongoose                  = require('mongoose');
+const mongoosePaginate          = require('mongoose-paginate');
+const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const alertsSchema = new mongoose.Schema({
     actual_plant: {
@@ -24,11 +25,14 @@ const alertsSchema = new mongoose.Schema({
     },
     supplier: {
           type:mongoose.Schema.Types.ObjectId,
-          ref:'Department'
+          ref:'Supplier'
     },
-    status: String,
+    status: Number,
+    serial: String,
+    date: Number,
     hashpacking : String
 });
- 
+
+alertsSchema.plugin(mongooseAggregatePaginate);
 alertsSchema.plugin(mongoosePaginate);
 mongoose.model('Alerts', alertsSchema);

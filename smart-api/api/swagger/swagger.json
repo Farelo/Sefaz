@@ -486,7 +486,7 @@
         }
       }
     },
-    "/alert/retrieve/{packing_id}": {
+    "/alert/retrieve/{packing_id}/{status}": {
       "x-swagger-router-controller": "alert_controller",
       "get": {
         "tags": [
@@ -499,6 +499,13 @@
           {
             "in": "path",
             "name": "packing_id",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "status",
             "description": "The code that needs to be fetched",
             "required": true,
             "type": "string"

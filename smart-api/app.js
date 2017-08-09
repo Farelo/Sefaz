@@ -29,7 +29,7 @@ require('./config/config.database')();
 
 // MODELS ==============================================
 require('./config/config.models')();
-// require('./api/controllers/packing_controller').createEstrategy();
+// require('./api/controllers/packing_controller').createAlerts();
 //JOB =================================================
 //require('./job/job');
 
