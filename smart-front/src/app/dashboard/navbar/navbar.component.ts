@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
 declare var $:any;
 
@@ -10,17 +10,22 @@ declare var $:any;
 })
 export class NavbarComponent implements OnInit {
 menuAparecer: boolean = false;
-private telaGrande: boolean = false;
+telaGrande: boolean = false;
 altura: any;
 largura: any;
+closeResult: string;
 
-  constructor(private ngZone:NgZone, private modalService: NgbModal) {
-
+  constructor(
+    private ngZone:NgZone,
+    private modalService: NgbModal,
+    // public modalOptions: NgbModalOptions
+  ) {
   }
 
   ngOnInit() {
     this.funcaoTop();
     this.menuAparecer = false;
+    // this.modalOptions.backdrop =  'static';
   }
 
   funcaoTop(){
@@ -37,11 +42,10 @@ largura: any;
       this.menuAparecer = false;
     }
   }
-outraFuncaoTop(){
-  $('label').click();
-  // return false;
-}
-openModal(){
-  this.modalService.open(ModalUserComponent);
-}
+
+  openModal(){
+    this.mudar();
+    this.modalService.open(ModalUserComponent,{backdrop: "static"});
+
+  }
 }

@@ -262,10 +262,10 @@ label {
 .quantidade5 {  background-image: url("../../../../assets/images/quant5.png");}
 .quantidade6 {  background-image: url("../../../../assets/images/quant6.png");}
 
-@media (min-width: 1920px){
+@media (min-width: 1880px){
   .quadradoPequeno{ width: 24%; }
 }
-@media (min-width: 1700px) and (max-width: 1919px) {
+@media (min-width: 1700px) and (max-width: 1880px) {
   .quadradoPequeno{ width: 32%; }
 }
 @media (min-width: 1555px) and (max-width: 1699px) {
@@ -277,19 +277,19 @@ label {
 @media (min-width: 1276px) and (max-width: 1399px) {
   .quadradoPequeno{ width: 24%; }
 }
-@media (min-width: 992px) and (max-width: 1275px) {
+@media (min-width: 1050px) and (max-width: 1275px) {
+  .quadradoPequeno{ width: 24%; }
+}
+@media (min-width: 746px) and (max-width: 1049px) {
   .quadradoPequeno{ width: 32%; }
 }
-@media (min-width: 768px) and (max-width: 991px) {
-  .quadradoPequeno{ width: 49%; }
-}
-@media (max-width: 767px) and (min-width: 663px) {
+/*@media (max-width: 746px) and (min-width: 663px) {
   .quadradoPequeno{ width: 32%; }
-}
-@media (max-width: 662px) {
+}*/
+@media (max-width: 745px) {
   .quadradoPequeno{ width: 49%; }
 }
-@media (max-width: 450px) {
+@media (max-width: 500px) {
   .quadradoPequeno { height: 115px; text-align: center;  }
   .esquerda, .direita { float:none; text-align: center; }
 }
