@@ -20,38 +20,69 @@
   font-size: 9px; color: grey; margin: 0px;
 }
 
-.perdido {
+.status1 {
   background: linear-gradient(to right,
     #fff 0%,#fff 97%,#EF5562 97%,#EF5562 97.5%,
     #fff 97.5%,#fff 98%,#EF5562 98%,#EF5562 100%);
 }
-.incorreto {
+.status2 {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#a08dc2 97%,#a08dc2 97.5%,
-    #fff 97.5%,#fff 98%,#a08dc2 98%,#a08dc2 100%);
+    #fff 0%,#fff 97%,#F77737 97%,#F77737 97.5%,
+    #fff 97.5%,#fff 98%,#F77737 98%,#F77737 100%);
 }
-.parado {
+.status3 {
   background: linear-gradient(to right,
-    #fff 0%,#fff 97%,#5D8DD7 97%,#5D8DD7 97.5%,
-    #fff 97.5%,#fff 98%,#5D8DD7 98%,#5D8DD7 100%);
+    #fff 0%,#fff 97%,#F8BD37 97%,#F8BD37 97.5%,
+    #fff 97.5%,#fff 98%,#F8BD37 98%,#F8BD37 100%);
+}
+.status4 {
+  background: linear-gradient(to right,
+    #fff 0%,#fff 97%,#4DC9FF 97%,#4DC9FF 97.5%,
+    #fff 97.5%,#fff 98%,#4DC9FF 98%,#4DC9FF 100%);
+}
+.status5 {
+  background: linear-gradient(to right,
+    #fff 0%,#fff 97%,#4C7BFF 97%,#4C7BFF 97.5%,
+    #fff 97.5%,#fff 98%,#4C7BFF 98%,#4C7BFF 100%);
+}
+.status6 {
+  background: linear-gradient(to right,
+    #fff 0%,#fff 97%,#9F8CC1 97%,#9F8CC1 97.5%,
+    #fff 97.5%,#fff 98%,#9F8CC1 98%,#9F8CC1 100%);
 }
 
 
-.perdido:hover {
+.status1:hover {
   background: linear-gradient(to right,
     #e0e0e0 0%,#e0e0e0 97%,#EF5562 97%,#EF5562 97.5%,
     #e0e0e0 97.5%,#e0e0e0 98%,#EF5562 98%,#EF5562 100%);
 }
-.incorreto:hover {
+.status2:hover {
   background: linear-gradient(to right,
-    #e0e0e0 0%,#e0e0e0 97%,#a08dc2 97%,#a08dc2 97.5%,
-    #e0e0e0 97.5%,#e0e0e0 98%,#a08dc2 98%,#a08dc2 100%);
+    #e0e0e0 0%,#e0e0e0 97%,#F77737 97%,#F77737 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#F77737 98%,#F77737 100%);
 }
-.parado:hover {
+.status3:hover {
   background: linear-gradient(to right,
-    #e0e0e0 0%,#e0e0e0 97%,#5D8DD7 97%,#5D8DD7 97.5%,
-    #e0e0e0 97.5%,#e0e0e0 98%,#5D8DD7 98%,#5D8DD7 100%);
+    #e0e0e0 0%,#e0e0e0 97%,#F8BD37 97%,#F8BD37 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#F8BD37 98%,#F8BD37 100%);
 }
+.status4:hover {
+  background: linear-gradient(to right,
+    #e0e0e0 0%,#e0e0e0 97%,#4DC9FF 97%,#4DC9FF 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#4DC9FF 98%,#4DC9FF 100%);
+}
+.status5:hover {
+  background: linear-gradient(to right,
+    #e0e0e0 0%,#e0e0e0 97%,#4C7BFF 97%,#4C7BFF 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#4C7BFF 98%,#4C7BFF 100%);
+}
+.status6:hover {
+  background: linear-gradient(to right,
+    #e0e0e0 0%,#e0e0e0 97%,#9F8CC1 97%,#9F8CC1 97.5%,
+    #e0e0e0 97.5%,#e0e0e0 98%,#9F8CC1 98%,#9F8CC1 100%);
+}
+
 .botaoVoltar {
   background-color: #777;
   color: white;

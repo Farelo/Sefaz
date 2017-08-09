@@ -19,26 +19,11 @@
           <th  class="semBorda">Opções</th>
         </tr>
       </thead>
-      <tbody >
+      <tbody *ngFor="let usuario of usuarios">
         <tr>
-          <td>David top</td>
-          <td>Back-end</td>
-          <td>op1</td>
-        </tr>
-        <tr>
-          <td>Samuel top</td>
-          <td>Gerente?</td>
-          <td>op2</td>
-        </tr>
-        <tr>
-          <td>Maraísa top</td>
-          <td>deSAINer</td>
-          <td>Op3</td>
-        </tr>
-        <tr>
-          <td>sarah top</td>
-          <td>Front-end</td>
-          <td>Op4</td>
+          <td>{{usuario.nome}}</td>
+          <td>{{usuario.perfil}}</td>
+          <td>opções</td>
         </tr>
       </tbody>
     </table>
@@ -46,61 +31,63 @@
 </div>
 
 <div class="adicionarUsuarios" *ngIf="(aparecerAdd)">
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
   <h2 class="titulo">ADICIONAR USUÁRIO</h2><br />
   <hr />
 
   <div class="row">
     <div class="col-sm-6">
-      {{perfil}}
-      <p class="descricao">PERFIL DE USUÁRIOS</p>
+      <p class="descricao">PERFIL DO USUÁRIO</p>
       <select [(ngModel)]="perfil">
          <option>FORNECEDOR</option>
          <option>OPERADOR LOGÍSTICO</option>
          <option>FUNCIONÁRIO</option>
       </select>
+
       <DIV *ngIf="(perfil=='FORNECEDOR')">
         <p class="descricao">NOME</p>
         <input type="text" class="form-control">
-        <p class="descricao">DUNS</p>
+        <p class="descricao">E-MAIL</p>
         <input type="text" class="form-control">
         <p class="descricao">DUNS</p>
         <input type="text" class="form-control">
       </DIV>
 
+      <DIV *ngIf="(perfil=='OPERADOR LOGÍSTICO')">
+        <p class="descricao">NOME</p>
+        <input type="text" class="form-control">
+        <p class="descricao">E-MAIL</p>
+        <input type="text" class="form-control">
+        <p class="descricao">VINCULAR FORNECEDORES</p>
+        <input type="text" class="form-control">
+      </DIV>
+
+      <DIV *ngIf="(perfil=='FUNCIONÁRIO')">
+        <p class="descricao">NOME</p>
+        <input type="text" class="form-control">
+        <p class="descricao">E-MAIL</p>
+        <input type="text" class="form-control">
+      </DIV>
+
     </div>
     <div class="col-sm-6">
-      Mapa TOP que david vai botar aqui
-    </div>
+      <div *ngIf="((perfil=='FORNECEDOR')||(perfil=='OPERADOR LOGÍSTICO'))">
+        <p class="descricao">NOME DA PLANTA</p>
+        <input type="text" class="form-control">
+        <div class="mapa">
+          <p style="color: grey;">Mapa</p>
+        </div>
+      </div>
 
+
+    </div>
+  </div>
+  <div class="botoes">
+    <button class="botaoVoltar" (click)="closeAdd()">VOLTAR</button>
+    <button class="botaoRegistrar" (click)="adicionarUsuario()">ADICIONAR</button>
   </div>
 </div>
 
-<!-- <div class="header">
-      <p>Detalhes do alerta</p>
-</div>
-<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-  <span aria-hidden="true">&times;</span>
-</button>
-
-  <div>
-    <div class="table-responsive tabela">
-      <table class="table">
-        <thead>
-          <tr class="cabecalho">
-            <th class="semBorda">Codigo</th>
-            <th  class="semBorda">Tag</th>
-          </tr>
-        </thead>
-        <tbody >
-          <tr *ngFor="let packing of packings">
-            <td>OLAAA</td>
-            <td>WOW</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="classVazio" *ngIf="packings?.length < 1">
-    Não existe embalagens nesse setor.
-  </div> -->
 </div>

@@ -14,7 +14,7 @@ import { RastreamentoModule } from './rastreamento/rastreamento.module';
 import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { DashboardRoutingModule } from './dashboard.routing.module';
-import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Gc16Component } from './gc16/gc16.component';
 import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.component';
 import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
@@ -30,6 +30,7 @@ import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
     RastreamentoModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
+    // NgbModalOptions.forRoot(),
     DashboardRoutingModule,
     HotTableModule,
     NgxPaginationModule

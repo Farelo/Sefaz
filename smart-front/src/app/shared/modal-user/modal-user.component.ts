@@ -16,11 +16,18 @@ export class ModalUserComponent implements OnInit {
 private aparecerLista: boolean = true;
 private aparecerAdd: boolean = false;
 private perfil: any;
+usuarios: any[] = [
+  {nome: 'David', perfil: 'Operador Logístico'},
+  {nome: 'Samuel', perfil: 'Funcionário'},
+  {nome: 'Maysa', perfil: 'Operador Logístico'},
+  {nome: 'Sarah', perfil: 'Fornecedor'},
+];
 
   constructor(
     public activeModal: NgbActiveModal,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    // private modalOptions: NgbModalOptions
   ) { }
 
   ngOnInit() {
@@ -29,7 +36,16 @@ private perfil: any;
   openAdd(){
       this.aparecerLista = false;
       this.aparecerAdd = true;
+      // this.modalOptions.backdrop = 'static';
+      // this.modalOptions.keyboard(false);
   }
+  closeAdd(){
+      this.aparecerLista = true;
+      this.aparecerAdd = false;
+      this.perfil ="";
+  }
+  adicionarUsuario(){
 
+  }
 
 }
