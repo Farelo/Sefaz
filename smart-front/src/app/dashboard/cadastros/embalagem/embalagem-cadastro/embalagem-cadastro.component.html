@@ -57,9 +57,12 @@
       <div class="campo">
         <p class="descricao">ASSOCIE UM FORNECEDOR</p>
         <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
-        <select [(ngModel)]="packing.supplier">
+        <select [(ngModel)]="packing.supplier" class="ui fluid search selection dropdown">
             <option value="">Associe um Fornecedor</option>
-           <option *ngFor="let obj of suppliers" [ngValue]="obj._id">{{obj.name}}</option>
+           <option *ngFor="let obj of suppliers" [ngValue]="obj._id">
+             <p>{{obj.name}}</p>
+             <p>{{obj.duns}}</p>
+           </option>
         </select>
       </div>
 

@@ -2870,36 +2870,6 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/ErrorResponse'
-  '/tags/list/pagination/nobinded/{limit}/{page}':
-    x-swagger-router-controller: tags_controller
-    get:
-      tags:
-        - Tag
-      summary: >-
-        Get all tags on the system by pagination that does not was still binded
-        with the packing
-      description: ''
-      operationId: tags_list_all_no_binded_pagination
-      parameters:
-        - in: path
-          name: limit
-          description: The limit of tagss that will be returned
-          required: true
-          type: string
-        - in: path
-          name: page
-          description: The especific page that returns tagss related a this page
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Message
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
   /tags/list/all/nobinded:
     x-swagger-router-controller: tags_controller
     get:
@@ -3054,17 +3024,11 @@ definitions:
   ErrorResponse:
     type: object
     properties:
-      status:
-        type: string
-        description: a short comment
-      source:
+      jsonapi:
         type: object
-        description: type of error
-      detail:
-        type: string
-        description: cause of the error
+        description: a short comment
     required:
-      - status
+      - jsonapi
   GC16:
     type: object
     properties:

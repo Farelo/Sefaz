@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NguiMapModule } from '@ngui/map';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { CadastrosComponent } from './cadastros.component';
-
+import {SelectModule} from 'ng2-select';
 import { CadastrosRoutingModule } from './cadastros.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -32,6 +32,7 @@ import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.com
   imports: [
     CommonModule,
     FormsModule,
+    SelectModule,
     NgbModule.forRoot(),
     CadastrosRoutingModule,
     NgxPaginationModule,

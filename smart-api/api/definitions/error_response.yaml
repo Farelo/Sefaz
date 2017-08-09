@@ -2,14 +2,8 @@ definitions:
   ErrorResponse:
     type: object
     properties:
-      status:
-        type: string
-        description:  a short comment
-      source:
+      jsonapi:
         type: object
-        description: type of error
-      detail:
-        type: string
-        description: cause of the error
+        description: a short comment
     required:
-      - status
+      - jsonapi

@@ -18,6 +18,7 @@ export class TagsCadastrarComponent implements OnInit {
   tag = new Tag();
 
   registerTag():void {
+    console.log(this.tag);
     this.TagsService.createTag([this.tag]).subscribe( result => this.router.navigate(['/rc/cadastros/tags']) );
   }
 

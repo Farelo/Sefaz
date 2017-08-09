@@ -14,38 +14,10 @@ mongoose.Promise                 = global.Promise;
 /**
  * Create a Tags
  */
-function joinParams(body, dev, res) {
-      var body_friendly = [];
-
-      body.forEach(function(o) {
-          var device = dev.filter(i => i.attributes.ID === o.code)[0];
-          o.mac = device.attributes.MAC;
-          o.status = device.attributes.last_location;
-          body_friendly.push({'tag_mac': device.attributes.MAC});
-      });
-
-      console.log(body);
-
-      friendly_tag.create(body_friendly)
-        .then(friendlies => tags.create(JoinFriendlyName(friendlies,body)))
-        .catch(_.partial(errorHandler, res, 'Error to create tags'))
-        .then(_.partial(successHandler, res));
-
-}
-
-function JoinFriendlyName(friendlies,body){
-  body.forEach((o,index) => o.friendly_name = friendlies[index].code);
-  return body;
-};
-
 exports.tags_create = function(req, res) {
-    var devArray = [];
-
-    req.body.forEach(o => devArray.push(getInfoScanner(o.code)));
-    console.log(req.body);
-    Promise.all(devArray)
-        .then(result => joinParams(req.body, result, res))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
+    tags.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create tags'))
+    .then(_.partial(successHandler, res));
 };
 /**
  * Show the current Tags
@@ -101,24 +73,6 @@ exports.tags_list_all = function(req, res) { 
 /**
  * List of tags's by pagination
  */
-exports.tags_list_all_no_binded_pagination = function(req, res) { 
-    var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-
-    var tagslist = tags.aggregate(query.queries.listTagsNoBinded)
-        .skip(value)
-        .limit(parseInt(req.swagger.params.limit.value));
-
-    var count = tags.find({}).count();
-
-    Promise.all([count, tagslist])
-        .then(result => res.json({code:200, message: "OK", "count": result[0], "tags": result[1]}))
-        .catch(err => res.status(404).json({code:404, message: "ERROR", response: err}));
-
-};
-
-/**
- * List of tags's by pagination
- */
 exports.tags_list_all_no_binded = function(req, res) { 
 
     tags.aggregate(query.queries.listTagsNoBinded)
@@ -140,29 +94,3 @@ exports.tags_list_pagination = function(req, res) {
     .then(_.partial(successHandlerPagination, res))
     .catch(_.partial(errorHandler, res, 'Error to list tags by pagination'));
 };
-
-/*
- PROMISES
-*/
-function getInfoScanner(code) {
-    return new Promise(function(resolve, reject) {
-        var options = {
-            url: 'http://reciclapac.track.devtec.com.br/api/management/devices/' + code,
-            method: 'GET',
-            headers: {
-                'x-ha-access': 'reciclapac',
-                'content-type': 'application/json'
-            }
-        }
-
-        var callback = function(error, response, body) {
-            if (error)
-                reject(error);
-
-            var info = JSON.parse(body);
-            resolve(info);
-        }
-
-        request(options, callback);
-    });
-}

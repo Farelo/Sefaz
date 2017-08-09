@@ -52,7 +52,10 @@ const packingSchema = new mongoose.Schema({
           type:mongoose.Schema.Types.ObjectId,
           ref:'Plant'
       },
-      tag_mac: String,
+      tag : {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Department'
+      },
       department: {
         type:mongoose.Schema.Types.ObjectId,
         ref:'Department'
