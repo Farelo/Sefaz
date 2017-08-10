@@ -28,9 +28,11 @@ import { SuppliersService } from './servicos/suppliers.service';
 import { TagsService } from './servicos/tags.service';
 import { CheckpointService } from './servicos/checkpoints.service';
 import { ProjectService } from './servicos/projects.service';
+import { ProfileService } from './servicos/profile.service';
+import { CEPService } from './servicos/cep.service';
 import { GC16Service } from './servicos/gc16.service';
 import { ChatService } from './servicos/teste';
-
+import { NguiMapModule } from '@ngui/map';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
 import { EsqueciMinhaSenhaComponent } from './esqueci-minha-senha/esqueci-minha-senha.component';
@@ -57,7 +59,11 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ReactiveFormsModule,
     ValidatorsModule,
     AppRoutingModule,
-    NgProgressModule
+    NgProgressModule,
+    NguiMapModule.forRoot({
+      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
+      '&libraries=visualization,places,drawing',
+    })
 
   ],
   providers: [
@@ -72,7 +78,9 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ProjectService,
     ChatService,
     GC16Service,
+    ProfileService,
     InventoryService,
+    CEPService,
     { provide: BrowserXhr, useClass: NgProgressBrowserXhr }
 
     // FormBuilder,

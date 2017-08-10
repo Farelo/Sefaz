@@ -3,8 +3,22 @@ definitions:
     type: object
     properties:
       profile:
-        type: string
+        type: integer
       password:
         type: string
       email:
+        type: string
+      city:
+        type: string
+      address:
+        type: string
+      telephone:
+        type: string
+      cellphone:
+        type: string
+      cep:
+        type: string
+      neighborhood:
+        type: string
+      uf:
         type: string

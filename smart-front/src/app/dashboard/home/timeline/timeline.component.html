@@ -62,7 +62,7 @@
         >{{alert.quantity }}</span>
       </div>
     </div>
-    <div class="externa">
+    <div class="externa" *ngIf="alerts?.data?.length < 1 ">
         <div class="row interna">
           <div class="col-sm-3 divImagem">
             <span class="imagemInterrogacao"></span>

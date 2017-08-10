@@ -1,0 +1,25 @@
+paths:
+#-------------------------------------------START CRUD CEP----------------------------------
+  /address/{cep}:
+      x-swagger-router-controller: cep_correios_controller
+      get:
+        tags:
+          - "CEP"
+        summary: "Get address through CEP"
+        description: ""
+        operationId: get_CEP
+        parameters:
+        - in: "path"
+          name: "cep"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"

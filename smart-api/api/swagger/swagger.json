@@ -107,6 +107,10 @@
     {
       "name": "Upload",
       "description": "All information about your upload "
+    },
+    {
+      "name": "CEP",
+      "description": "Get address through CEP"
     }
   ],
   "paths": {
@@ -718,6 +722,40 @@
             "schema": {
               "$ref": "#/definitions/Alert"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/address/{cep}": {
+      "x-swagger-router-controller": "cep_correios_controller",
+      "get": {
+        "tags": [
+          "CEP"
+        ],
+        "summary": "Get address through CEP",
+        "description": "",
+        "operationId": "get_CEP",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cep",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -4599,12 +4637,33 @@
       "type": "object",
       "properties": {
         "profile": {
-          "type": "string"
+          "type": "integer"
         },
         "password": {
           "type": "string"
         },
         "email": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "telephone": {
+          "type": "string"
+        },
+        "cellphone": {
+          "type": "string"
+        },
+        "cep": {
+          "type": "string"
+        },
+        "neighborhood": {
+          "type": "string"
+        },
+        "uf": {
           "type": "string"
         }
       }

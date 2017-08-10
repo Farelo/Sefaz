@@ -66,3 +66,5 @@ tags:
   description: "All information about your GC16 registers"
 - name: "Upload"
   description: "All information about your upload "
+- name: "CEP"
+  description: "Get address through CEP"

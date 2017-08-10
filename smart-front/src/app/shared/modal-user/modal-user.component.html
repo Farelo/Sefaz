@@ -14,15 +14,19 @@
     <table class="table">
       <thead>
         <tr class="cabecalho">
-          <th class="semBorda">Nome</th>
+          <th class="semBorda">E-mail</th>
           <th  class="semBorda">Perfil</th>
+          <th  class="semBorda">Endereço</th>
+          <th  class="semBorda">UF</th>
           <th  class="semBorda">Opções</th>
         </tr>
       </thead>
-      <tbody *ngFor="let usuario of usuarios">
+      <tbody *ngFor="let user of users">
         <tr>
-          <td>{{usuario.nome}}</td>
-          <td>{{usuario.perfil}}</td>
+            <td>{{user.email}}</td>
+          <td>{{user.propfile === '1' ? 'Fornecedor' : 'Other'}}</td>
+          <td>{{user.address}}</td>
+          <td>{{user.uf}}</td>
           <td>opções</td>
         </tr>
       </tbody>
@@ -48,17 +52,45 @@
 
       <DIV *ngIf="(perfil=='FORNECEDOR')">
         <p class="descricao">NOME</p>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" [(ngModel)]="supplier.name">
         <p class="descricao">E-MAIL</p>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" [(ngModel)]="profile.email">
         <p class="descricao">DUNS</p>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" [(ngModel)]="supplier.duns">
+        <p class="descricao">PASSWORD</p>
+        <input type="password" class="form-control" [(ngModel)]="profile.password">
+        <p class="descricao">CEP</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.cep"  (blur)="getAddress()">
+        <p class="descricao">CIDADE</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.city">
+        <p class="descricao">ENDEREÇO</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.address">
+        <p class="descricao">Bairro</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.neighborhood">
+        <p class="descricao">UF</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.uf">
+        <p class="descricao">TELEFONE</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.telephone">
+        <p class="descricao">CELULAR</p>
+        <input type="text" class="form-control"[(ngModel)]="profile.cellphone" >
       </DIV>
 
       <DIV *ngIf="(perfil=='OPERADOR LOGÍSTICO')">
         <p class="descricao">NOME</p>
         <input type="text" class="form-control">
         <p class="descricao">E-MAIL</p>
+        <input type="text" class="form-control">
+        <p class="descricao">PASSWORD</p>
+        <input type="password" class="form-control">
+        <p class="descricao">CEP</p>
+        <input type="text" class="form-control">
+        <p class="descricao">RUA</p>
+        <input type="text" class="form-control">
+        <p class="descricao">ENDEREÇO</p>
+        <input type="text" class="form-control">
+        <p class="descricao">TELEFONE</p>
+        <input type="text" class="form-control">
+        <p class="descricao">CELULAR</p>
         <input type="text" class="form-control">
         <p class="descricao">VINCULAR FORNECEDORES</p>
         <input type="text" class="form-control">
@@ -69,16 +101,39 @@
         <input type="text" class="form-control">
         <p class="descricao">E-MAIL</p>
         <input type="text" class="form-control">
+        <p class="descricao">PASSWORD</p>
+        <input type="password" class="form-control">
+        <p class="descricao">CEP</p>
+        <input type="text" class="form-control">
+        <p class="descricao">RUA</p>
+        <input type="text" class="form-control">
+        <p class="descricao">ENDEREÇO</p>
+        <input type="text" class="form-control">
+        <p class="descricao">TELEFONE</p>
+        <input type="text" class="form-control">
+        <p class="descricao">CELULAR</p>
+        <input type="text" class="form-control">
       </DIV>
 
     </div>
     <div class="col-sm-6">
       <div *ngIf="((perfil=='FORNECEDOR')||(perfil=='OPERADOR LOGÍSTICO'))">
         <p class="descricao">NOME DA PLANTA</p>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" [(ngModel)]="plant.name">
         <div class="mapa">
-          <p style="color: grey;">Mapa</p>
+          <input places-auto-complete
+            (place_changed)="placeChanged($event)"
+            [types]="['geocode']" class="form-control" style="margin-bottom: 10px;"placeholder="Digite o local da planta"/>
+          <p>
+            <ngui-map [center]="center" (click)="onClick($event)">
+                <marker  [position]="pos"></marker>
+              </ngui-map>
+          </p>
         </div>
+
+
+
+
       </div>
 
 

@@ -38,7 +38,7 @@ export class PlantaCadastrarComponent implements OnInit {
       let addressType = place.address_components[i].types[0];
       this.address[addressType] = place.address_components[i].long_name;
     }
-    console.log(this.center);
+
     this.ref.detectChanges();
   }
 
