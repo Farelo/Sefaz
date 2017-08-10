@@ -19,7 +19,7 @@
   padding: 5px 0px;
   width: 100px;
   font-size: 13px;
-  font-family: 'Montserrat', sans-serif;
+  /*font-family: 'Montserrat', sans-serif;*/
 }
 .botaoRegistrar:hover, .botaoVoltar:hover {
   -webkit-transition: background-color 0.3s;
@@ -41,7 +41,7 @@
   color: white;
 }
 .botao {
-  font-family: 'Roboto', sans-serif;
+  /*font-family: 'Roboto', sans-serif;*/
 
   text-align: center;
   padding: 20px 0px;
@@ -54,6 +54,133 @@
 }
 p {
   font-size: 14px;
-  font-family: 'Roboto', sans-serif;
+  /*font-family: 'Roboto', sans-serif;*/
   /*font-family: 'Libre Baskerville', serif;*/
+}
+.importar {
+  font-family: 'Raleway', sans-serif;
+}
+
+
+input[type='file'] {
+  display: none
+}
+
+/* Aparência que terá o seletor de arquivo */
+.botaoImport {
+  background-color: white;
+  padding: 3px;
+  border-style: solid;
+  border-width: thin;
+  border-color: #777;
+  width: fit-content;
+}
+label {
+  background-color: white;
+  color: #777;
+  cursor: pointer;
+  padding: 5px 20px;
+  font-weight: 400!important;
+  margin: 0px;
+  border-style: solid;
+  border-width: thin;
+  border-color: #777;
+}
+label:hover{
+  background-color: #6382c9;
+  border-color: white;
+  color: white;
+}
+.botaoImport:hover {
+  background-color: #6382c9;
+  border-color: #6482c9;
+  color: white;
+}
+.label:hover, .botaoImport:hover {
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+  -webkit-transition: border-color 0.3s;
+  transition: border-color 0.3s;
+}
+h1 {
+  font-family:'Montserrat',sans-serif;
+  padding-bottom: 15px;
+  border-bottom-color: #6382c9;
+  border-width: thin;
+  border-bottom-style: solid;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.row {
+  margin: 0px;
+}
+.col-md-4, .col-md-8 {
+  padding: 0px;
+}
+
+.cabecalho {
+  background-color: #6382c9;
+  color: white;
+}
+td {  background-color: white; }
+tr {
+  border-style: solid;
+  border-color: #6382c9;
+  border-width: 2px;
+}
+th { border-bottom: none!important}
+
+.editar {  background-color: #3b5d93; }
+.excluir {  background-color:  #1d416B; }
+.editar:hover {
+  background-color: #6382c9;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+.excluir:hover{
+  background-color: #102b40;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.editar, .excluir {
+  width: 100px;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+}
+span {
+  opacity: 0.95;
+}
+
+/*.tabela {  box-shadow: 0px 0px 7px #000;}*/
+.tabela {
+  border: none !important;
+  font-family: 'Roboto', sans-serif;
+}
+.table {margin-bottom: 0px;}
+.teste {
+  text-align: right;
+}
+.opcoes {
+  text-align: right;
+  padding-right: 123px;
+}
+@media (max-width: 768px){
+  .row {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+}
+.none {
+  border-style: solid;
+  border-color: #6382c9;
+  border-width: 2px;
+  text-align: center;
+  padding: 15px;
+}
+tbody {
+  font-weight: 300;
 }
