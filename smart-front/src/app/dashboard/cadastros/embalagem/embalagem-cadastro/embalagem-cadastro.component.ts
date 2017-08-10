@@ -46,8 +46,6 @@ export class EmbalagemCadastroComponent implements OnInit {
 
 
 
-
-
   ngOnInit() {
 
     this.loadTags();
