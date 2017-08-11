@@ -17,7 +17,7 @@ export class Packing {
   public correct_plant_factory: string;
   public correct_plant_supplier: string;
   public actual_plant: string;
-  public tag_mac: string;
+  public tag: string;
   public department: string;
   public supplier: any;
   public project: any;
@@ -45,7 +45,7 @@ export class Packing {
       correct_plant_factory?: string;
       correct_plant_supplier?: string;
       actual_plant?: string;
-      tag_mac?: string;
+      tag?: string;
       department?: string;
       supplier?: any;
       project?: any;

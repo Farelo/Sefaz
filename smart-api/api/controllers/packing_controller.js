@@ -313,24 +313,32 @@ exports.inventory_packing_historic = function(req, res) {
 
 
 
-// exports.createEstrategy = function(req, res) {
-//   packing.find({}).then( packings => {
-//     plant.find({}).then( plant => {
-//       packings.forEach(o => {
-//         let temp = template();
-//         temp.packing = o._id;
-//         temp.serial = o.serial;
-//         for(var i = 1 ; i <  Math.floor(Math.random() * 10); i++){
-//             temp.plant =  plant[Math.floor(Math.random() * plant.length)]._id;
-//             temp.date =  new Date().getTime();
-//             temp.temperature =  Math.floor(Math.random() * 100);
-//             temp.permanence_time =  Math.floor(Math.random() * 20);
-//             historic.create(temp).then(result => console.log("OK"))
-//         }
-//       });
-//     });
-//   });
-// };
+exports.createEstrategy = function(req, res) {
+  packing.find({}).then( packings => {
+    plant.find({}).then( plant => {
+      packings.forEach(o => {
+        let temp = template();
+        temp.packing = o._id;
+        temp.serial = o.serial;
+        for(var i = 1 ; i <  Math.floor(Math.random() * 10); i++){
+            temp.plant =  plant[Math.floor(Math.random() * plant.length)]._id;
+            temp.date =  randomDate(new Date(2012, 0, 1), new Date());
+            temp.temperature =  Math.floor(Math.random() * 100);
+            temp.permanence_time =  Math.floor(Math.random() * 20);
+            historic.create(temp).then(result => console.log("OK"))
+        }
+        o.temperature =  Math.floor(Math.random() * 100);
+        o.actual_plant = plant[Math.floor(Math.random() * plant.length)]._id;
+        packing.update({
+            _id: o._id
+          },o, {
+            upsert: true,
+            multi: true
+          }).then(result => console.log("OK"));
+      });
+    });
+  });
+};
 
 exports.createAlerts = function(req, res) {
   var alerts1 = [1,2,4];

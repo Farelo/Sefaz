@@ -13,6 +13,7 @@ const packingSchema = new mongoose.Schema({
       capacity: Number,
       status: Number,
       battery: Number,
+      problem: Boolean,
       missing: Boolean,
       permanence : {
         time_exceeded: Boolean,
@@ -54,7 +55,7 @@ const packingSchema = new mongoose.Schema({
       },
       tag : {
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Department'
+        ref:'Tags'
       },
       department: {
         type:mongoose.Schema.Types.ObjectId,

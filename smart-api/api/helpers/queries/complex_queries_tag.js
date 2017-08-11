@@ -3,8 +3,8 @@ exports.queries = {
     "listTagsNoBinded": [{
         "$lookup": {
             "from": "packings",
-            "localField": "mac",
-            "foreignField": "tag_mac",
+            "localField": "_id",
+            "foreignField": "tag",
             "as": "packingObject"
         }
     }, {
