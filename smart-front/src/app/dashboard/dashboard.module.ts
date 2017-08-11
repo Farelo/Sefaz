@@ -18,7 +18,9 @@ import { NgbModule, NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootst
 import { Gc16Component } from './gc16/gc16.component';
 import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.component';
 import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
-
+import {SelectModule} from 'ng2-select';
+import { MultiSelectComponent } from "ng2-group-multiselect/src/";
+import { SelectComponent } from '../shared/component/select';
 
 @NgModule({
   imports: [
@@ -28,6 +30,7 @@ import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
     HomeModule,
     CadastrosModule,
     RastreamentoModule,
+    SelectModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     // NgbModalOptions.forRoot(),
@@ -43,7 +46,9 @@ import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
     Gc16Component,
     Gc16AdicionarComponent,
     Gc16EditarComponent,
-    FileSelectDirective
+    FileSelectDirective,
+    MultiSelectComponent,
+    SelectComponent
   ],
   providers: [
     NgbActiveModal

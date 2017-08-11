@@ -85,10 +85,8 @@ exports.supplier_list_pagination = function(req, res) { 
 /**
  * List of all Suppliers
  */
-exports.supplier_list_all = function(req, res) { 
-  supplier.find({})
-    .populate('profile')
-    .populate('plant')
+exports.supplier_list_all = function(req, res) {
+  supplier.aggregate(query.queries.group)
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to list all suppliers'));
 };

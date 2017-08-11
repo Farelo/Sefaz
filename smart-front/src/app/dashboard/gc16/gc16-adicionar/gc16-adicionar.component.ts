@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-gc16-adicionar',
   templateUrl: './gc16-adicionar.component.html',
-  styleUrls: ['./gc16-adicionar.component.css']
+  styleUrls: ['./gc16-adicionar.component.css'],
+
 })
 
 export class Gc16AdicionarComponent implements OnInit {
@@ -86,6 +87,7 @@ export class Gc16AdicionarComponent implements OnInit {
   loadPackings(event: any):void{
     this.project = new Project();
     this.selectedProject = "";
+
     if(event){
       this.gc16.supplier = event._id;
       this.packingService.getBySupplier(event._id).subscribe(result => this.packings = result.data, err => {console.log(err)});
@@ -102,6 +104,9 @@ export class Gc16AdicionarComponent implements OnInit {
   loadSuppliers():void{
     this.suppliersService.retrieveAll().subscribe(result => this.suppliers = result.data, err => {console.log(err)});
   }
+
+
+
 
   ngOnInit() {
       this.loadSuppliers();

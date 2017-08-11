@@ -6,9 +6,13 @@
     <div class="col-sm-4">
       <div class="campo">
         <p class="descricao">ASSOCIE UM FORNECEDOR</p>
-        <select [(ngModel)]="selectedItem" (ngModelChange)="loadPackings($event)">
-           <option value="">Escolha um Fornecedor</option>
-           <option *ngFor="let obj of suppliers" [ngValue]="obj">{{obj.name}}</option>
+
+        <select [(ngModel)]="selectedItem" (ngModelChange)="loadPackings($event)"  >
+           <optgroup *ngFor="let obj of suppliers" label="{{obj._id}}">
+              <option *ngFor="let item of obj.items" [ngValue]="item">
+                  {{item.duns}}
+              </option>
+          </optgroup>
         </select>
       </div>
     </div>

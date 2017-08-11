@@ -18,6 +18,7 @@ import {ValidatorsModule, EmailValidators} from 'ngx-validators'
 import { PositionModalComponent } from './shared/modal/alerta/position/alerta.component';
 import { MissingModalComponent } from './shared/modal/alerta/missing/alerta.component';
 
+
 import { AlertsService } from './servicos/alerts.service';
 import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';
@@ -48,7 +49,8 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ModalUserComponent,
     MissingModalComponent,
     EsqueciMinhaSenhaComponent,
-    RedefinirSenhaComponent
+    RedefinirSenhaComponent,
+
   ],
   imports: [
     BrowserModule,
