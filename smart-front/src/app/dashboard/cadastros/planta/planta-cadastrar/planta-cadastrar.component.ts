@@ -23,7 +23,6 @@ export class PlantaCadastrarComponent implements OnInit {
   pos : any;
 
   registerPlant():void {
-    console.log(this.plant);
     this.PlantsService.createPlant(this.plant).subscribe( result => this.router.navigate(['/rc/cadastros/planta']) );
   }
 
@@ -32,6 +31,7 @@ export class PlantaCadastrarComponent implements OnInit {
   initialized(autocomplete: any) {
     this.autocomplete = autocomplete;
   }
+
   placeChanged(place) {
     this.center = place.geometry.location;
     for (let i = 0; i < place.address_components.length; i++) {

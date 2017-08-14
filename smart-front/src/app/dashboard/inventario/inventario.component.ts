@@ -17,6 +17,7 @@ import { Alert } from '../../shared/models/alert';
 export class InventarioComponent implements OnInit {
   public embalagens: any[];
   public suppliers: any;
+  public name_supplier: any;
   public escolhaGeral: any = 'GERAL';
   public escolhaEquipamento =  "";
   public verModal: boolean = true;
@@ -60,8 +61,12 @@ export class InventarioComponent implements OnInit {
   }
 
   supplierInventory(event){
+
     if(event){
-      this.InventoryService.getInventorySupplier(10,this.general.meta.page,event.value).subscribe(result => this.supplier = result, err => {console.log(err)});
+      this.InventoryService.getInventorySupplier(10,this.general.meta.page,event.value).subscribe(result => {
+        this.supplier = result;
+        this.name_supplier = result.data[0];
+      }, err => {console.log(err)});
     }
   }
 

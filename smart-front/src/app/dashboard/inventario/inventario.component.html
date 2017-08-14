@@ -1,6 +1,6 @@
 <div class="painel">
   <div class="corpo">
-    
+
     <div class="headerInventario">
       <h2>BUSCA POR </h2>
       <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal">
@@ -16,6 +16,10 @@
       <div class="col-sm-6">
 
         <p>DUNS</p>  <select2 [data]="suppliers?.data" (valueChanged)="supplierInventory($event)" [options]="{ placeholder: 'Search ..'}"></select2>
+      </div>
+      <div class="col-sm-6" *ngIf="this.name_supplier">
+
+        <p>Fornecedor: {{name_supplier?.supplier?.name}}</p>
       </div>
     </div>
 
