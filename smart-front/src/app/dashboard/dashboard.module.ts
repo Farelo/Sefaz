@@ -46,9 +46,7 @@ import { Select2Component } from 'ng2-select2/ng2-select2';
     Gc16AdicionarComponent,
     Gc16EditarComponent,
     FileSelectDirective,
-    MultiSelectComponent,
     Select2Component
-
   ],
   providers: [
     NgbActiveModal

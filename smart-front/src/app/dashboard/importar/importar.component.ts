@@ -17,12 +17,10 @@ export class ImportarComponent implements OnInit {
   public fileName: string;
   public uploader = [];
   public send = false;
-  constructor(private http: Http){
 
+  constructor(private http: Http){  }
 
-  }
   public ngOnInit(){
-
   }
 
   remove(){

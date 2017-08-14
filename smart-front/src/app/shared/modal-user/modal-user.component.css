@@ -1,3 +1,7 @@
+.modalFilho {
+  max-width: 800px;
+  width: 100%;
+}
 .mais {
   width: 80px;
   background-color: #6382c9;
@@ -11,13 +15,22 @@
   background-position: center;
   background-size: 15px;
   float: right;
-  margin-right: 15px;
 }
 .titulo {
   float: left;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
 }
 .inicio {
   /*position: relative;;*/
+}
+tbody {
+  border: none!important;
+}
+tr {
+  border-top-style: solid;
+  border-top-width: 0.1px;
+  border-top-color: rgba(99,130,201,0.2);
 }
 hr{
   margin: 20px 0px 20px 0px;
@@ -59,6 +72,11 @@ select {
   background-color: #6382c9;
   color: white;
 }
+.tabela {
+  border-style: solid;
+  border-color: #6382c9;
+  border-width: 2px;
+}
 td {  background-color: white; }
 .header {
   display: inline-grid;
@@ -74,12 +92,14 @@ td {  background-color: white; }
   font-weight: bold;
   width: 200px;
 }
-th {
+th, td {
   border-bottom: none !important;
+  border: none !important;
 }
 .mapa {
-  background-color: aliceblue;
-  height: 205px;
+  /*background-color: aliceblue;*/
+  width: 100%;
+  /*height: 100px;*/
   margin-top: 10px;
 }
 

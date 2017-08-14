@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Supplier } from '../../shared/models/supplier';
 import { Profile } from '../../shared/models/profile';
 import { Plant } from '../../shared/models/plant';
+declare var $:any;
 
 @Component({
   selector: 'app-modal-user',
@@ -17,11 +18,9 @@ import { Plant } from '../../shared/models/plant';
   styleUrls: ['./modal-user.component.css']
 })
 export class ModalUserComponent implements OnInit {
-// @Input() aparecerLista;
-// @Input() aparecerAdd;
+@Input() view;
 
-  private aparecerLista: boolean = true;
-  private aparecerAdd: boolean = false;
+
   private perfil: any;
   public supplier:  Supplier = new Supplier();
   public plant:  Plant = new Plant();
@@ -45,27 +44,32 @@ export class ModalUserComponent implements OnInit {
 
   ngOnInit() {
     this.getUsers();
+    this.tamanho();
   }
+  tamanho(){
+    var mapa = $('.teste');
+    mapa.css({'background-color':'red'});
 
+    var filho = $('.modalFilho');
+    var pai1 = filho.parent();
+    var pai2 = pai1.parent();
+    var pai3 = pai2.parent();
+    pai3.css({'max-width': '800px'});
+  }
   getUsers(){
       this.ProfileService.getProfilePagination(10,1).subscribe(result => this.users = result.data);
   }
 
   openAdd(){
-      this.aparecerLista = false;
-      this.aparecerAdd = true;
-      // this.modalOptions.backdrop = 'static';
-      // this.modalOptions.keyboard(false);
+      this.view = 'ADICIONAR';
   }
   closeAdd(){
-      this.aparecerLista = true;
-      this.aparecerAdd = false;
+      this.view = 'GERENCIAR';
       this.perfil ="";
       this.getUsers();
 
   }
   adicionarUsuario(){
-
       this.profile.profile = 1;
       this.ProfileService.createProfile(this.profile).subscribe(result => {
         this.supplier.profile = result.data._id;
@@ -102,7 +106,6 @@ export class ModalUserComponent implements OnInit {
           this.profile.address = result.data.logradouro;
       })
     }
-
   }
 
   onClick(event, str) {
@@ -113,6 +116,9 @@ export class ModalUserComponent implements OnInit {
      this.plant.lat = event.latLng.lat();
      this.plant.lng = event.latLng.lng();
      event.target.panTo(event.latLng);
-    }
+  }
+  closeAll(){
+    this.view='';
+  }
 
 }
