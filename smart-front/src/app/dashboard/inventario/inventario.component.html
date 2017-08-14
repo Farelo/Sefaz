@@ -14,7 +14,8 @@
 
     <div *ngIf="(escolhaGeral == 'FORNECEDOR')" class="row escolhaFornecedor">
       <div class="col-sm-6">
-        <p>DUNS</p><input type="text" class="form-control meuInput" [(ngModel)]="supplierSearch"  (blur)="supplierInventory()">
+
+        <p>DUNS</p>  <select2 [data]="suppliers?.data" (valueChanged)="supplierInventory($event)" [options]="{ placeholder: 'Search ..'}"></select2>
       </div>
     </div>
 

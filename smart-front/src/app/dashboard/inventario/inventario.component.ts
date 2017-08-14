@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { InventoryService } from '../../servicos/inventory.service';
+import { SuppliersService } from '../../servicos/suppliers.service';
 import { Pagination } from '../../shared/models/pagination';
 import { Alert } from '../../shared/models/alert';
 
@@ -15,6 +16,7 @@ import { Alert } from '../../shared/models/alert';
 })
 export class InventarioComponent implements OnInit {
   public embalagens: any[];
+  public suppliers: any;
   public escolhaGeral: any = 'GERAL';
   public escolhaEquipamento =  "";
   public verModal: boolean = true;
@@ -36,6 +38,7 @@ export class InventarioComponent implements OnInit {
 
   constructor(
     private InventoryService: InventoryService,
+    private SuppliersService: SuppliersService,
     private router: Router,
     private route: ActivatedRoute,
     private modalService: NgbModal
@@ -44,7 +47,9 @@ export class InventarioComponent implements OnInit {
   inventory = [];
 
   ngOnInit() {
+
     this.generalInventory();
+    this.loadSuppliers();
   }
 
   changeSelect(event){
@@ -54,9 +59,9 @@ export class InventarioComponent implements OnInit {
     }
   }
 
-  supplierInventory(){
-    if(this.supplierSearch){
-      this.InventoryService.getInventorySupplier(10,this.general.meta.page,this.supplierSearch).subscribe(result => this.supplier = result, err => {console.log(err)});
+  supplierInventory(event){
+    if(event){
+      this.InventoryService.getInventorySupplier(10,this.general.meta.page,event.value).subscribe(result => this.supplier = result, err => {console.log(err)});
     }
   }
 
@@ -87,6 +92,16 @@ export class InventarioComponent implements OnInit {
       this.InventoryService.getInventoryPermanence(10,this.general.meta.page,this.permanenceSearchEquipamento).subscribe(result => this.permanence = result, err => {console.log(err)});
     }
 
+  }
+
+  loadSuppliers():void{
+
+    this.SuppliersService.retrieveAll().subscribe(result => {
+      this.suppliers = result;
+
+
+      this.suppliers = result;
+    }, err => {console.log(err)});
   }
 
   calculate(packing){

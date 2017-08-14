@@ -6,7 +6,6 @@ import { NgbModule, NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootst
 import { BrowserXhr } from '@angular/http';
 import { NgProgressBrowserXhr, NgProgressModule } from 'ngx-progressbar';
 import * as $ from 'jquery';
-
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';

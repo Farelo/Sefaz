@@ -165,7 +165,7 @@ exports.queries = {
       }
     ]
   },
-  supplier_inventory: function(duns) {
+  supplier_inventory: function(id) {
     return [{
         "$lookup": {
           "from": "suppliers",
@@ -222,7 +222,7 @@ exports.queries = {
       },
       {
         "$match": {
-          "supplierObject.duns": duns,
+          "supplierObject._id": id,
         }
       },
       {

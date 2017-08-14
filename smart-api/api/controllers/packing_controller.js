@@ -226,7 +226,7 @@ exports.geraneral_inventory_packing_by_plant = function(req, res) {
  * list of supplier inventory
  **/
 exports.supplier_inventory = function(req, res) {
-  let aggregate = packing.aggregate(query.queries.supplier_inventory(req.swagger.params.supplier.value));
+  let aggregate = packing.aggregate(query.queries.supplier_inventory(new ObjectId(req.swagger.params.supplier.value)));
 
   packing.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
