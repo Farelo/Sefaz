@@ -68,11 +68,14 @@ body  {
   border-width: thin;
   padding: 5px;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 70px;
 }
 .modalPequeno {  width: 250px; }
-.modal-dialog {  margin-top: 30px!important; }
+.modal-dialog {  margin-top: 20px!important; }
 .modalFilho {  background-color: white;  padding: 15px;}
 .modalFilhoLeg {  text-align: center;}
 .modalTop2 {  background-color: rgba(0,0,0,0.6); }
 .semBorda {  border-bottom: none !important; }
+.mapaNeto{
+  height: 200px;
+}

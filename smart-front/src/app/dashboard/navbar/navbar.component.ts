@@ -45,7 +45,12 @@ closeResult: string;
 
   openModal(){
     this.mudar();
-    this.modalService.open(ModalUserComponent,{backdrop: "static"});
-
+    const modalRef = this.modalService.open(ModalUserComponent,{backdrop: "static", size: "lg"});
+    modalRef.componentInstance.view = 'GERENCIAR';
+  }
+  openModalEditar(){
+    this.mudar();
+    const modalRef = this.modalService.open(ModalUserComponent,{backdrop: "static", size: "lg"});
+    modalRef.componentInstance.view = 'EDITAR';
   }
 }
