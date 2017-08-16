@@ -19,7 +19,7 @@ import { Gc16Component } from './gc16/gc16.component';
 import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.component';
 import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
 import { MultiSelectComponent } from "ng2-group-multiselect/src/";
-import { Select2Component } from 'ng2-select2/ng2-select2';
+import { Select2Module } from 'ng2-select2';
 
 @NgModule({
   imports: [
@@ -34,7 +34,8 @@ import { Select2Component } from 'ng2-select2/ng2-select2';
     // NgbModalOptions.forRoot(),
     DashboardRoutingModule,
     HotTableModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    Select2Module
 
   ],
   declarations: [
@@ -45,8 +46,7 @@ import { Select2Component } from 'ng2-select2/ng2-select2';
     Gc16Component,
     Gc16AdicionarComponent,
     Gc16EditarComponent,
-    FileSelectDirective,
-    Select2Component
+    FileSelectDirective
   ],
   providers: [
     NgbActiveModal

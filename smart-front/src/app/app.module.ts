@@ -37,7 +37,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
 import { EsqueciMinhaSenhaComponent } from './esqueci-minha-senha/esqueci-minha-senha.component';
 import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.component';
-
 @NgModule({
   declarations: [
     AppComponent,
