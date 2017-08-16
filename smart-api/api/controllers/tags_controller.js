@@ -7,6 +7,8 @@ const successHandlerPagination   = require('../helpers/responses/successHandlerP
 const errorHandler               = require('../helpers/responses/errorHandler');
 const query                      = require('../helpers/queries/complex_queries_tag');
 const request                    = require('request');
+const token                      = require('../helpers/request/token');
+const confirmDevice              = require('../helpers/request/loka-api');
 const mongoose                   = require('mongoose');
 const tags                       = mongoose.model('Tags');
 const _                          = require("lodash");
@@ -15,7 +17,10 @@ mongoose.Promise                 = global.Promise;
  * Create a Tags
  */
 exports.tags_create = function(req, res) {
-    tags.create(req.body)
+    token()
+    .then(token => confirmDevice(token,req.body.code))
+    .then(() => tags.create(req.body))
+    .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to create tags'))
     .then(_.partial(successHandler, res));
 };

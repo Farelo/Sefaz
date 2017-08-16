@@ -110,9 +110,7 @@ paths:
         description: "tags object that needs to be added to the system"
         required: true
         schema:
-          type: array
-          items:
-            $ref: "#/definitions/Tag"
+          $ref: "#/definitions/Tag"
       responses:
         200:
           description: "Message"

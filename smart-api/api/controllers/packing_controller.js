@@ -20,9 +20,10 @@ mongoose.Promise                                = global.Promise;
  * Create the current Packing
  */
 exports.packing_create = function(req, res) {
+  console.log(req.body);
   packing.create(req.body)
-    .catch(_.partial(errorHandler, res, 'Error to create packing'))
     .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to create packing'))
 };
 /**
  * Show the current Packing
