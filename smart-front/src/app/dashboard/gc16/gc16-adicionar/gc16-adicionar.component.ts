@@ -18,7 +18,8 @@ import { Router } from '@angular/router';
 
 export class Gc16AdicionarComponent implements OnInit {
   public gc16:  GC16;
-  public suppliers : Supplier [];
+  // public suppliers : Supplier [];
+  public suppliers :any;
   public packings : any [];
   public project : Project;
   public selectedItem = "";
@@ -87,10 +88,9 @@ export class Gc16AdicionarComponent implements OnInit {
   loadPackings(event: any):void{
     this.project = new Project();
     this.selectedProject = "";
-
     if(event){
-      this.gc16.supplier = event._id;
-      this.packingService.getBySupplier(event._id).subscribe(result => this.packings = result.data, err => {console.log(err)});
+      this.gc16.supplier = event.value;
+      this.packingService.getBySupplier(event.value).subscribe(result => this.packings = result.data, err => {console.log(err)});
     }
   }
 
@@ -102,7 +102,13 @@ export class Gc16AdicionarComponent implements OnInit {
   }
 
   loadSuppliers():void{
-    this.suppliersService.retrieveAll().subscribe(result => this.suppliers = result.data, err => {console.log(err)});
+
+    this.suppliersService.retrieveAll().subscribe(result => {
+      this.suppliers = result;
+
+
+      this.suppliers = result;
+    }, err => {console.log(err)});
   }
 
 

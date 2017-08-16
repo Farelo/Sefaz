@@ -6,7 +6,7 @@ import { SuppliersService } from '../../../../servicos/suppliers.service';
 import { ProjectService } from '../../../../servicos/projects.service';;
 import { Supplier } from '../../../../shared/models/supplier';
 import { Router } from '@angular/router';
-
+import { Select2Module } from 'ng2-select2';
 @Component({
   selector: 'app-embalagem-cadastro',
   templateUrl: './embalagem-cadastro.component.html',
@@ -28,6 +28,9 @@ export class EmbalagemCadastroComponent implements OnInit {
   packing:  Packing = new Packing({problem:false,missing:false,tag:"",supplier:"",project:""});
 
   registerPacking():void {
+
+    this.packing.code_tag = this.packing.tag.code;
+    this.packing.tag = this.packing.tag._id;
     console.log(this.packing);
     this.PackingService.createPacking([this.packing]).subscribe( result => this.router.navigate(['/rc/cadastros/embalagem']) );
   }
@@ -38,13 +41,16 @@ export class EmbalagemCadastroComponent implements OnInit {
 
 
   loadSuppliers():void{
-    this.SuppliersService.retrieveAll().subscribe(result => this.suppliers = result.data, err => {console.log(err)});
+    this.SuppliersService.retrieveAll().subscribe(result => this.suppliers = result, err => {console.log(err)});
   }
 
   loadProject():void{
     this.ProjectService.retrieveAll().subscribe(result => this.projects = result.data, err => {console.log(err)});
   }
 
+   changed(e: any): void {
+    this.packing.supplier= e.value;
+  }
 
 
   ngOnInit() {

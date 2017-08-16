@@ -197,8 +197,6 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-
-
   /packing/delete/{packing_id}:
     x-swagger-router-controller: packing_controller
     delete:

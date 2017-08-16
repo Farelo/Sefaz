@@ -59,7 +59,7 @@
         <p class="descricao">PASSWORD</p>
         <input type="password" class="form-control" [(ngModel)]="profile.password">
         <p class="descricao">CEP</p>
-        <input type="text" class="form-control" [(ngModel)]="profile.cep"  (blur)="getAddress()">
+        <input type="text" class="form-control" mask='00000-000' [(ngModel)]="profile.cep"  (blur)="getAddress()">
     </div>
     <div class="col-sm-4">
         <p class="descricao">CIDADE</p>
@@ -148,9 +148,10 @@
     </div>
     <div class="col-sm-4">
       <p class="descricao">DIGITE O LOCAL DA PLANTA</p>
-        <input places-auto-complete
-          (place_changed)="placeChanged($event)"
-          [types]="['geocode']" class="form-control" style="margin-bottom: 10px;"placeholder=""/>
+      <input places-auto-complete
+        (place_changed)="placeChanged($event)"
+        [types]="['geocode']" class="form-control" style="margin-bottom: 10px;"placeholder="Digite o local da planta"/>
+
     </div>
   </div>
 

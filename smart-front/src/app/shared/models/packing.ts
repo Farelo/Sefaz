@@ -17,7 +17,7 @@ export class Packing {
   public correct_plant_factory: string;
   public correct_plant_supplier: string;
   public actual_plant: string;
-  public tag: string;
+  public tag: any;
   public department: string;
   public supplier: any;
   public project: any;
@@ -25,6 +25,7 @@ export class Packing {
   public serial : string;
   public gc16 : string;
   public _id : string;
+  public code_tag : string;
 
     public constructor(fields ?: {
       code?: string;
@@ -45,7 +46,7 @@ export class Packing {
       correct_plant_factory?: string;
       correct_plant_supplier?: string;
       actual_plant?: string;
-      tag?: string;
+      tag?: any;
       department?: string;
       supplier?: any;
       project?: any;
@@ -53,6 +54,7 @@ export class Packing {
       serial ?: string;
       gc16 ?: string;
       _id ?: string;
+      code_tag ?: string;
 }
 ){
 

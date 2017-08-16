@@ -6,7 +6,6 @@ import { NgbModule, NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootst
 import { BrowserXhr } from '@angular/http';
 import { NgProgressBrowserXhr, NgProgressModule } from 'ngx-progressbar';
 import * as $ from 'jquery';
-
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
@@ -38,7 +37,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
 import { EsqueciMinhaSenhaComponent } from './esqueci-minha-senha/esqueci-minha-senha.component';
 import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.component';
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -21,11 +21,11 @@ export class ModalUserComponent implements OnInit {
 @Input() view;
 
 
-  private perfil: any;
+  private perfil = 'FORNECEDOR';
   public supplier:  Supplier = new Supplier();
   public plant:  Plant = new Plant();
   public profile:  Profile = new Profile();
-  public autocomplete: any;
+  public autocomplete: google.maps.places.Autocomplete;
   public address: any = {};
   public center: any;
   public pos : any;

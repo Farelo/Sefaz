@@ -74,9 +74,14 @@ exports.queries = {
             }
         ]
     },
-
     group: [{"$group": {
             "_id": "$name",
-            "items": {"$push": {"_id": "$_id", "duns": "$duns"}}
+            "id": {
+                "$first": "$name"
+            },
+            "text": {
+                "$first": "$name"
+            },
+            "children": {"$push": {"id": "$_id", "text": "$duns"}}
         }}]
 }

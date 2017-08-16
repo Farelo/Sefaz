@@ -14,13 +14,10 @@
 
     <div *ngIf="(escolhaGeral == 'FORNECEDOR')" class="row escolhaFornecedor">
       <div class="col-sm-6">
-        <p>DUNS</p>
-        <input type="text" class="form-control meuInput" [(ngModel)]="supplierSearch"  (blur)="supplierInventory()">
+        <p>DUNS</p>  <select2 [data]="suppliers?.data" (valueChanged)="supplierInventory($event)" [options]="{ placeholder: 'Search ..'}"></select2>
       </div>
-      <div class="col-sm-6">
-        <button type="button" class="botaoVoltar">
-          <span>FILTRAR</span>
-        </button>
+      <div class="col-sm-6" *ngIf="this.name_supplier">
+        <p>Fornecedor: {{name_supplier?.supplier?.name}}</p>
       </div>
     </div>
 
