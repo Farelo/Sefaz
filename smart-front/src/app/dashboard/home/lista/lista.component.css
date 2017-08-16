@@ -84,17 +84,30 @@
 }
 
 .botaoVoltar {
-  background-color: #777;
+  background-color: transparent;
   color: white;
-  border: none;
-  padding: 5px 20px;
-  box-shadow: 0px 0px 7px #000;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
+  border-color: white;
+  border-style: solid;
+  border-width: 2px;
+  padding: 5px 0px;
+  width: 100px;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  /*box-shadow: 0px 0px 7px #000;*/
+  float: right;
+  vertical-align: baseline;
+
 }
 .botaoVoltar:hover {
-  color: white;
-  background-color: #555;
+  background-color: white;
+  color: #777;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+.botaoVoltar:focus {
+  outline: none;
 }
 
 * { font-family: 'Roboto', sans-serif; }
@@ -391,4 +404,16 @@ label {
 @media (max-width: 450px) {
   .quadradoPequeno { height: 115px; text-align: center;  }
   .esquerda, .direita { float:none; text-align: center; }
+}
+.header {
+  margin-bottom: 25px;
+  padding-bottom: 19px;
+  border-bottom-color: #fff;
+  border-width: thin;
+  border-bottom-style: solid;
+  margin-bottom: 25px;
+  color: white;
+  font-size: 20px;
+  font-family: 'Raleway', sans-serif;
+  vertical-align: middle;
 }

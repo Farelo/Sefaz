@@ -151,3 +151,45 @@ color: white;
 .botaoVoltar:focus {
   outline: none !important;
 }
+.mais {
+  width: 100%;
+  background-color: #6382c9;
+  padding: 5px;
+  color: white;
+  border: none;
+  height: 34px;
+  background-image: url("../../../assets/images/mais.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 15px;
+}
+.det {
+  width: 15px;
+  height: 15px;
+  -webkit-mask-box-image: url("../../../assets/images/mais.png");
+  cursor: pointer;
+  left: 50%;
+  margin-left: 36%;
+  background-color: #6382c9;
+}
+.det:hover {
+  background-color: #777;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+.bigger {
+  position: relative;
+}
+.background {
+    background: url("../../../assets/images/mais.png") 0 0 no-repeat fixed;
+    height: 100%;
+    overflow: hidden;
+    color: #FFFFFF
+ }
+
+.layer{
+    background: rgba(39,62,84,0.82);
+    overflow: hidden;
+    height: 100%;
+    z-index: 2;
+}
