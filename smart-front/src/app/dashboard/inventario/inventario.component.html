@@ -1,6 +1,6 @@
 <div class="painel">
   <div class="corpo">
-    
+
     <div class="headerInventario">
       <h2>BUSCA POR </h2>
       <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal">
@@ -14,7 +14,13 @@
 
     <div *ngIf="(escolhaGeral == 'FORNECEDOR')" class="row escolhaFornecedor">
       <div class="col-sm-6">
-        <p>DUNS</p><input type="text" class="form-control meuInput" [(ngModel)]="supplierSearch"  (blur)="supplierInventory()">
+        <p>DUNS</p>
+        <input type="text" class="form-control meuInput" [(ngModel)]="supplierSearch"  (blur)="supplierInventory()">
+      </div>
+      <div class="col-sm-6">
+        <button type="button" class="botaoVoltar">
+          <span>FILTRAR</span>
+        </button>
       </div>
     </div>
 
@@ -31,16 +37,25 @@
       </div>
 
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
-        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="permanenceSearchEquipamento"  (blur)="permanenceInventory()">
+        <p>EQUIPAMENTO</p>
+        <input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="permanenceSearchEquipamento"  (blur)="permanenceInventory()">
       </div>
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
-        <p>SERIAL</p><input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="permanenceSearchSerial" (blur)="permanenceInventory()" >
+        <p>SERIAL</p>
+        <input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="permanenceSearchSerial" (blur)="permanenceInventory()" >
       </div>
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Bateria')">
-        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="batterySearch"  (blur)="batteryInventory()">
+        <p>EQUIPAMENTO</p>
+        <input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="batterySearch"  (blur)="batteryInventory()">
       </div>
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Quantidade')">
-        <p>EQUIPAMENTO</p><input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="quantitySearch"  (blur)="quantityInventory()" >
+        <p>EQUIPAMENTO</p>
+        <input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="quantitySearch"  (blur)="quantityInventory()" >
+      </div>
+      <div class="col-sm-4">
+          <button type="button" class="botaoVoltar">
+            <span>FILTRAR</span>
+          </button>
       </div>
 
     </div>

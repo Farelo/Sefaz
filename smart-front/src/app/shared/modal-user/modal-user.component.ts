@@ -48,7 +48,6 @@ export class ModalUserComponent implements OnInit {
   }
   tamanho(){
     var mapa = $('.teste');
-    mapa.css({'background-color':'red'});
 
     var filho = $('.modalFilho');
     var pai1 = filho.parent();
