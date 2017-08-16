@@ -19,6 +19,9 @@ import { Gc16Component } from './gc16/gc16.component';
 import { Gc16AdicionarComponent } from './gc16/gc16-adicionar/gc16-adicionar.component';
 import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
 import { Select2Module } from 'ng2-select2';
+import { SimpleNotificationsModule } from 'angular2-notifications';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   imports: [
@@ -30,6 +33,8 @@ import { Select2Module } from 'ng2-select2';
     RastreamentoModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
+    SimpleNotificationsModule.forRoot(),
+    BrowserAnimationsModule,
     // NgbModalOptions.forRoot(),
     DashboardRoutingModule,
     HotTableModule,

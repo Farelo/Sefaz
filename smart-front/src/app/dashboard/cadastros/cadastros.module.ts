@@ -28,6 +28,7 @@ import { ScannerCadastrarComponent } from './scanner/scanner-cadastrar/scanner-c
 import { SetorCadastrarComponent } from './setor/setor-cadastrar/setor-cadastrar.component';
 import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.component';
 import { Select2Module } from 'ng2-select2';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,6 +37,7 @@ import { Select2Module } from 'ng2-select2';
     NgbModule.forRoot(),
     CadastrosRoutingModule,
     NgxPaginationModule,
+    SimpleNotificationsModule.forRoot(),
     Select2Module,
     NguiMapModule.forRoot({
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
