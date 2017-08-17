@@ -33,32 +33,35 @@
         </select>
       </div>
 
-      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
+      <!--TEMPO DE PERMANêNCIA -->
+      <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
         <p>EQUIPAMENTO</p>
-        <input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="permanenceSearchEquipamento"  (blur)="permanenceInventory()">
+        <input type="text" class="form-control meuInput" [(ngModel)]="permanenceSearchEquipamento" (keyup.enter)="permanenceInventory()" (blur)="permanenceInventory()">
       </div>
-      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
+      <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
         <p>SERIAL</p>
-        <input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="permanenceSearchSerial" (blur)="permanenceInventory()" >
+        <input type="text" class="form-control meuInput" [(ngModel)]="permanenceSearchSerial" (keyup.enter)="permanenceInventory()" (blur)="permanenceInventory()" >
       </div>
-      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Bateria')">
+      <!-- BATERIA -->
+      <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Bateria')">
         <p>EQUIPAMENTO</p>
-        <input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="batterySearch"  (blur)="batteryInventory()">
+        <input type="text" class="form-control meuInput" [(ngModel)]="batterySearch" (keyup.enter)="batteryInventory()" (blur)="batteryInventory()">
       </div>
-      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Quantidade')">
+      <!-- QUANTIDADE -->
+      <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Quantidade')">
         <p>EQUIPAMENTO</p>
-        <input type="text" class="form-control meuInput" placeholder="" [(ngModel)]="quantitySearch"  (blur)="quantityInventory()" >
+        <input type="text" class="form-control meuInput" [(ngModel)]="quantitySearch" (keyup.enter)="quantityInventory()" (blur)="quantityInventory()" >
       </div>
-      <div class="col-sm-4">
-          <button type="button" class="botaoVoltar">
-            <span>FILTRAR</span>
-          </button>
+      <!-- BOTAO FILTRAR -->
+      <div class="col-sm-2" *ngIf="((escolhaEquipamento == 'Tempo de permanência')||(escolhaEquipamento == 'Bateria')||(escolhaEquipamento == 'Quantidade'))">
+        <div class="col-sm-4">
+            <button type="button" class="botaoVoltar" onclick="permanenceInventory()" *ngIf="(escolhaEquipamento == 'Tempo de permanência')"><span>FILTRAR</span></button>
+            <button type="button" class="botaoVoltar" onclick="batteryInventory()" *ngIf="(escolhaEquipamento == 'Bateria')"><span>FILTRAR</span></button>
+            <button type="button" class="botaoVoltar" onclick="quantityInventory()" *ngIf="(escolhaEquipamento == 'Quantidade')"><span>FILTRAR</span></button>
+        </div>
       </div>
-
     </div>
-
   </div>
-
 </div>
 
 <br />
@@ -74,7 +77,7 @@
           <th>Descrição</th>
           <th>Fornecedor</th>
           <th>Quantidade</th>
-          <th>Detalhes</th>
+          <th style="width: 80px">Detalhes</th>
         </tr>
       </thead>
       <tbody>
@@ -86,7 +89,10 @@
           <td>{{packing.description}}</td>
           <td>{{packing.supplier?.name}}</td>
           <td>{{packing.quantity}}</td>
-          <td class="text-center"> <i class="glyphicon glyphicon-eye-open"></i></td>
+          <!-- <td class="text-center"> <i class="glyphicon glyphicon-eye-open"></i></td> -->
+          <!-- <td><button class="mais"></button></td> -->
+          <td style="text-align: center;"><div class="bigger"><div class="det" (click)="open()"></div></div></td>
+          <!-- <td><div class="background"><div class="layer"></div></div></td> -->
 
         </tr>
       </tbody>

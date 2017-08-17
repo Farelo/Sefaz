@@ -7,6 +7,7 @@ import { InventoryService } from '../../servicos/inventory.service';
 import { SuppliersService } from '../../servicos/suppliers.service';
 import { Pagination } from '../../shared/models/pagination';
 import { Alert } from '../../shared/models/alert';
+import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
 
 
 @Component({
@@ -122,6 +123,10 @@ export class InventarioComponent implements OnInit {
       return "-";
     }
 
+  }
+  open() {
+          const modalRef = this.modalService.open(ModalInvComponent);
+          // modalRef.componentInstance.alerta = packing;
   }
 
   // open() {

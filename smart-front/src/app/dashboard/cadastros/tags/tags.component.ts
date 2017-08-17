@@ -24,7 +24,7 @@ export class TagsComponent implements OnInit {
   }
 
   loadTags() {
-    this.TagsService.getTagsPagination(10, 1)
+    this.TagsService.getTagsPagination(10, this.data.meta.page)
       .subscribe(data => this.data = data,err => console.log(err));
   }
 

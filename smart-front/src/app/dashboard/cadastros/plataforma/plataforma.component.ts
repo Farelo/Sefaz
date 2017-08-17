@@ -23,7 +23,7 @@ export class PlataformaComponent implements OnInit {
     }
 
     loadProjects(){
-      this.ProjectService.getProjectPagination(10,1)
+      this.ProjectService.getProjectPagination(10,this.data.meta.page)
         .subscribe(data => this.data = data,
          err => {console.log(err)});
     }

@@ -23,7 +23,7 @@ export class PlantaComponent implements OnInit {
   }
 
   loadPlants(){
-    this.PlantsService.getPlantsPagination(10,1)
+    this.PlantsService.getPlantsPagination(10,this.data.meta.page)
     .subscribe( data => this.data = data, err => {console.log(err)});
   }
 

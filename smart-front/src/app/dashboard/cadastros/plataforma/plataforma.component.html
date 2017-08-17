@@ -33,11 +33,13 @@
   </table>
 </div>
 
+<br />
 <div class="has-text-centered">
-    <pagination-controls (pageChange)="pageChanged($event)"
-                         previousLabel="Anterior"
-                         nextLabel="Próximo"
-                         autoHide="true"></pagination-controls>
+    <pagination-controls class="my-pagination"
+    (pageChange)="pageChanged($event)"
+    directionLinks="false"
+    autoHide="true">
+    </pagination-controls>
 </div>
 
 <div class="classVazio"  *ngIf="data.data?.length < 1">
