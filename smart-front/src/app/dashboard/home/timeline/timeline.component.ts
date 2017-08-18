@@ -23,6 +23,7 @@ export class TimelineComponent implements OnInit {
   public showModal():void { this.isModalShown = true; }
   public hideModal():void { this.autoShownModal.hide(); }
   public onHidden():void { this.isModalShown = false; }
+  public grande = false;
 
   public alerts : any;
   alert: Alert;
