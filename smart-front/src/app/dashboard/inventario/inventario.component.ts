@@ -8,7 +8,7 @@ import { SuppliersService } from '../../servicos/suppliers.service';
 import { Pagination } from '../../shared/models/pagination';
 import { Alert } from '../../shared/models/alert';
 import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
-
+declare var $:any;
 
 @Component({
   selector: 'app-inventario',
@@ -52,6 +52,7 @@ export class InventarioComponent implements OnInit {
 
     this.generalInventory();
     this.loadSuppliers();
+    this.tamanhoSelect();
   }
 
   changeSelect(event){
@@ -59,6 +60,13 @@ export class InventarioComponent implements OnInit {
     if(event === "Bateria"){
         this.batteryInventory();
     }
+  }
+  tamanhoSelect(){
+      $(window).resize(function(){
+      var largura = $('.select2-container').width();
+      var quadrado = $('.select2-container--open');
+      quadrado.css({'width':'largura'});
+    });
   }
 
   supplierInventory(event){
