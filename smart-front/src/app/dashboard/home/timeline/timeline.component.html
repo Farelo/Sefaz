@@ -24,7 +24,8 @@
   </div>
 
   <div class="painel">
-    <div class="quadradoPequeno"
+
+    <div class="row quadradoPequeno"
       *ngFor="let alert of alerts?.data"
       [ngClass]="{
         'status1' : alert.status == 1,
@@ -35,21 +36,26 @@
         'status6' : alert.status == 6
       }"
       [routerLink]="['list/', alert.hash, alert.status]">
-      <div class="esquerda">
+
+      <div class="col-sm-6 esquerda">
         <span class="codigo">{{alert.packing?.code}}</span><br />
         <span class="descricao">{{alert.packing?.type}}</span>
       </div>
-      <div class="direita">
-        <span class="fornecedor" tooltip="Fornecedor"
-        [ngClass]="{
-          'fornecedor1' : alert.status == 1,
-          'fornecedor2' : alert.status == 2,
-          'fornecedor3' : alert.status == 3,
-          'fornecedor4' : alert.status == 4,
-          'fornecedor5' : alert.status == 5,
-          'fornecedor6' : alert.status == 6
-        }"
-        >{{alert.supplier?.name}}</span><Br />
+
+      <div class="col-sm-6 direita">
+        <div class="bigger">
+          <div [ngClass]="{
+            'f1' : alert.status == 1,
+            'f2' : alert.status == 2,
+            'f3' : alert.status == 3,
+            'f4' : alert.status == 4,
+            'f5' : alert.status == 5,
+            'f6' : alert.status == 6
+          }">
+          </div>
+        </div>
+        <span class="forn">{{alert.supplier?.name}}</span>
+        <Br />
         <span class="quantidade" tooltip="Quantidade de embalagens"
         [ngClass]="{
           'quantidade1' : alert.status == 1,
@@ -62,6 +68,7 @@
         >{{alert.quantity }}</span>
       </div>
     </div>
+
     <div class="externa" *ngIf="alerts?.data?.length < 1 ">
         <div class="row interna">
           <div class="col-sm-3 divImagem">

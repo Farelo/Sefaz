@@ -13,11 +13,13 @@
     <hr *ngIf="((escolhaGeral == 'FORNECEDOR')||(escolhaGeral == 'EQUIPAMENTO'))">
 
     <div *ngIf="(escolhaGeral == 'FORNECEDOR')" class="row escolhaFornecedor">
-      <div class="col-sm-6">
-        <p>DUNS</p>  <select2 [data]="suppliers?.data" (valueChanged)="supplierInventory($event)" [options]="{ placeholder: 'Search ..'}"></select2>
+      <div class="col-sm-4">
+        <p>DUNS</p>
+        <select2 class="selectInventario" [data]="suppliers?.data" (valueChanged)="supplierInventory($event)" [options]="{ placeholder: 'Search ..'}"></select2>
       </div>
-      <div class="col-sm-6" *ngIf="this.name_supplier">
-        <p>Fornecedor: {{name_supplier?.supplier?.name}}</p>
+      <div class="col-sm-4" *ngIf="this.name_supplier">
+        <p>FORNECEDOR:</p>
+        <p>{{name_supplier?.supplier?.name}}</p>
       </div>
     </div>
 
@@ -89,10 +91,12 @@
           <td>{{packing.description}}</td>
           <td>{{packing.supplier?.name}}</td>
           <td>{{packing.quantity}}</td>
-          <!-- <td class="text-center"> <i class="glyphicon glyphicon-eye-open"></i></td> -->
-          <!-- <td><button class="mais"></button></td> -->
-          <td style="text-align: center;"><div class="bigger"><div class="det" (click)="open()"></div></div></td>
-          <!-- <td><div class="background"><div class="layer"></div></div></td> -->
+          <td style="text-align: center;">
+            <div class="bigger">
+              <div class="det" (click)="open()">
+              </div>
+            </div>
+          </td>
 
         </tr>
       </tbody>
