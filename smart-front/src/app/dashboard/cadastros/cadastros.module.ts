@@ -4,10 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NguiMapModule } from '@ngui/map';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CadastrosComponent } from './cadastros.component';
-// import { SelectModule } from 'ng2-select';
 import { CadastrosRoutingModule } from './cadastros.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { TagsComponent } from './tags/tags.component';
 import { EmbalagemComponent } from './embalagem/embalagem.component';
 import { ScannerComponent } from './scanner/scanner.component';
@@ -29,6 +27,7 @@ import { SetorCadastrarComponent } from './setor/setor-cadastrar/setor-cadastrar
 import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.component';
 import { Select2Module } from 'ng2-select2';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+
 @NgModule({
   imports: [
     CommonModule,

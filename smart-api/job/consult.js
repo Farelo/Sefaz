@@ -13,7 +13,8 @@ module.exports = function () {
   .populate('department')
   .populate('supplier')
   .populate('route')
-  .populate('project'), plant.find({})];
+  .populate('project')
+  .populate('gc16'), plant.find({})];
 
   return arrayOfPromises;
 }
