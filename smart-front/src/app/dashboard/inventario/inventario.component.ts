@@ -55,6 +55,9 @@ export class InventarioComponent implements OnInit {
     this.tamanhoSelect();
   }
 
+
+
+
   changeSelect(event){
 
     if(event === "Bateria"){
