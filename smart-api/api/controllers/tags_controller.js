@@ -22,7 +22,7 @@ exports.tags_create = function(req, res) {
     .then(() => tags.create(req.body))
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to create tags'))
-    .then(_.partial(successHandler, res));
+
 };
 /**
  * Show the current Tags
@@ -48,11 +48,9 @@ exports.tags_read_by_mac = function(req, res) {
  * Update a Tags
  */
 exports.tags_update = function(req, res) {  
-    tags.update({
-            _id: req.swagger.params.tags_id.value
-        }, req.body,   {
-            upsert: true
-        })
+      token()
+        .then(token => confirmDevice(token,req.body.code))
+        .then(() => tags.update({_id: req.swagger.params.tags_id.value}, req.body,{upsert: true}))
         .then(_.partial(successHandler, res))
         .catch(_.partial(errorHandler, res, 'Error to update tags'));
 };

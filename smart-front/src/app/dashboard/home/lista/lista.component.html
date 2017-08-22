@@ -31,11 +31,11 @@ Timeline
     }"
      (click)="open(alert?.packing?._id,alert.status)" >
     <div class="esquerda">
-      <span class="codigo">{{alert.packing?.code}}</span><br />
-      <span class="descricao">{{alert.date | date}}</span>
+      <span class="codigo" tooltip="Código da Embalagem" >{{alert.packing?.code}}</span><br />
+      <span class="descricao" tooltip="Data do Alerta">{{alert.date | date}}</span>
     </div>
     <div class="direita">
-      <span class="fornecedor" tooltip="Fornecedor"
+      <span class="fornecedor" tooltip="Planta Atual"
       [ngClass]="{
         'fornecedor1' : alert.status == 1,
         'fornecedor2' : alert.status == 2,
@@ -45,7 +45,7 @@ Timeline
         'fornecedor6' : alert.status == 6
       }"
       >{{alert.actual_plant?.name}}</span><Br />
-      <span class="quantidade" tooltip="Quantidade de embalagens"
+      <span class="quantidade" tooltip="Código Serial da Emabalagem"
       [ngClass]="{
         'quantidade1' : alert.status == 1,
         'quantidade2' : alert.status == 2,

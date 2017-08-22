@@ -38,28 +38,28 @@
       <!--TEMPO DE PERMANêNCIA -->
       <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
         <p>EQUIPAMENTO</p>
-        <input type="text" class="form-control meuInput" [(ngModel)]="permanenceSearchEquipamento" (keyup.enter)="permanenceInventory()" (blur)="permanenceInventory()">
+        <input type="text" class="form-control meuInput" [(ngModel)]="permanenceSearchEquipamento" (keyup.enter)="permanenceInventory()" >
       </div>
       <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
         <p>SERIAL</p>
-        <input type="text" class="form-control meuInput" [(ngModel)]="permanenceSearchSerial" (keyup.enter)="permanenceInventory()" (blur)="permanenceInventory()" >
+        <input type="text" class="form-control meuInput" [(ngModel)]="permanenceSearchSerial" (keyup.enter)="permanenceInventory()"  >
       </div>
       <!-- BATERIA -->
       <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Bateria')">
         <p>EQUIPAMENTO</p>
-        <input type="text" class="form-control meuInput" [(ngModel)]="batterySearch" (keyup.enter)="batteryInventory()" (blur)="batteryInventory()">
+        <input type="text" class="form-control meuInput" [(ngModel)]="batterySearch" (keyup.enter)="batteryInventory()" >
       </div>
       <!-- QUANTIDADE -->
       <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Quantidade')">
         <p>EQUIPAMENTO</p>
-        <input type="text" class="form-control meuInput" [(ngModel)]="quantitySearch" (keyup.enter)="quantityInventory()" (blur)="quantityInventory()" >
+        <input type="text" class="form-control meuInput" [(ngModel)]="quantitySearch" (keyup.enter)="quantityInventory()"  >
       </div>
       <!-- BOTAO FILTRAR -->
       <div class="col-sm-2" *ngIf="((escolhaEquipamento == 'Tempo de permanência')||(escolhaEquipamento == 'Bateria')||(escolhaEquipamento == 'Quantidade'))">
         <div class="col-sm-4">
-            <button type="button" class="botaoVoltar" onclick="permanenceInventory()" *ngIf="(escolhaEquipamento == 'Tempo de permanência')"><span>FILTRAR</span></button>
-            <button type="button" class="botaoVoltar" onclick="batteryInventory()" *ngIf="(escolhaEquipamento == 'Bateria')"><span>FILTRAR</span></button>
-            <button type="button" class="botaoVoltar" onclick="quantityInventory()" *ngIf="(escolhaEquipamento == 'Quantidade')"><span>FILTRAR</span></button>
+            <button type="button" class="botaoVoltar" (click)="permanenceInventory()" *ngIf="(escolhaEquipamento == 'Tempo de permanência')"><span>FILTRAR</span></button>
+            <button type="button" class="botaoVoltar" (click)="batteryInventory()" *ngIf="(escolhaEquipamento == 'Bateria')"><span>FILTRAR</span></button>
+            <button type="button" class="botaoVoltar" (click)="quantityInventory()" *ngIf="(escolhaEquipamento == 'Quantidade')"><span>FILTRAR</span></button>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
           <td>{{packing.quantity}}</td>
           <td style="text-align: center;">
             <div class="bigger">
-              <div class="det" (click)="open()">
+              <div class="det" (click)="open(packing)">
               </div>
             </div>
           </td>

@@ -7,6 +7,7 @@ import { ProjectService } from '../../../../servicos/projects.service';;
 import { Supplier } from '../../../../shared/models/supplier';
 import { Router } from '@angular/router';
 import { Select2Module } from 'ng2-select2';
+import { ToastService } from '../../../../servicos/toast.service';
 @Component({
   selector: 'app-embalagem-cadastro',
   templateUrl: './embalagem-cadastro.component.html',
@@ -19,7 +20,8 @@ export class EmbalagemCadastroComponent implements OnInit {
     private PackingService: PackingService,
     private router: Router,
     private SuppliersService: SuppliersService,
-    private ProjectService: ProjectService
+    private ProjectService: ProjectService,
+    private toastService: ToastService
   ) { }
 
   tags =  [];
@@ -31,8 +33,8 @@ export class EmbalagemCadastroComponent implements OnInit {
 
     this.packing.code_tag = this.packing.tag.code;
     this.packing.tag = this.packing.tag._id;
-    console.log(this.packing);
-    this.PackingService.createPacking([this.packing]).subscribe( result => this.router.navigate(['/rc/cadastros/embalagem']) );
+    this.packing.hashPacking = this.packing.supplier + this.packing.code;
+    this.PackingService.createPacking([this.packing]).subscribe( result => this.toastService.success('/rc/cadastros/embalagem', 'Embalagem'), err => this.toastService.error(err) );
   }
 
   loadTags():void {

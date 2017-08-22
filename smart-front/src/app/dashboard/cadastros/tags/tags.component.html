@@ -27,12 +27,15 @@
         <td>{{tag.code}}</td>
         <td class="penultima">{{tag.mac}}</td>
         <td class="teste">
-          <button class="editar" >Editar</button>
+          <button class="editar" [routerLink]="['editar/', tag._id]">Editar</button>
           <button class="excluir" (click)="removeTags(tag._id)"  [disabled]="tag.status == 1">Excluir</button>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+<div class="classVazio" *ngIf="data.data?.length < 1">
+  Ainda não existem tags cadastradas.
 </div>
 <br />
 <div class="has-text-centered">
@@ -41,8 +44,4 @@
     directionLinks="false"
     autoHide="true">
     </pagination-controls>
-</div>
-
-<div class="classVazio" *ngIf="data.data?.length < 1">
-  Ainda não existem tags cadastradas.
 </div>

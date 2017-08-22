@@ -38,12 +38,12 @@
       [routerLink]="['list/', alert.hash, alert.status]">
 
       <div class="col-sm-6 esquerda">
-        <span class="codigo">{{alert.packing?.code}}</span><br />
-        <span class="descricao">{{alert.packing?.type}}</span>
+        <span class="codigo" tooltip="Código da Embalagem">{{alert.packing?.code}}</span><br />
+        <span class="descricao" tooltip="Descrição">{{alert.packing?.type}}</span>
       </div>
 
       <div class="col-sm-6 direita">
-        <div class="bigger">
+        <div class="bigger" tooltip="Fornecedor">
           <div [ngClass]="{
             'f1' : alert.status == 1,
             'f2' : alert.status == 2,

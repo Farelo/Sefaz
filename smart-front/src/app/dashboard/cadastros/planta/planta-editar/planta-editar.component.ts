@@ -4,6 +4,7 @@ import { Plant } from '../../../../shared/models/plant';
 import { PlantsService } from '../../../../servicos/plants.service';;
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
+import { ToastService } from '../../../../servicos/toast.service';
 
 @Component({
   selector: 'app-planta-editar',
@@ -16,7 +17,8 @@ export class PlantaEditarComponent implements OnInit {
     private PlantsService: PlantsService,
     private router: Router,
     private ref: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastService: ToastService
   ) { }
 
   plant: Plant = new Plant();
@@ -26,7 +28,7 @@ export class PlantaEditarComponent implements OnInit {
   pos : any;
 
   registerPlant():void {
-    this.PlantsService.updatePlant(this.plant._id,this.plant).subscribe( result => this.router.navigate(['/rc/cadastros/planta']) );
+    this.PlantsService.updatePlant(this.plant._id,this.plant).subscribe( result => this.toastService.edit('/rc/cadastros/planta', 'Planta'), err => this.toastService.error(err) );
   }
 
   initialized(autocomplete: any) {

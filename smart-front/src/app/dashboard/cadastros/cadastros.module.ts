@@ -25,8 +25,9 @@ import { RotasCadastrarComponent } from './rotas/rotas-cadastrar/rotas-cadastrar
 import { ScannerCadastrarComponent } from './scanner/scanner-cadastrar/scanner-cadastrar.component';
 import { SetorCadastrarComponent } from './setor/setor-cadastrar/setor-cadastrar.component';
 import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.component';
+import { TagsEditarComponent } from './tags/tags-editar/tags-editar.component';
 import { Select2Module } from 'ng2-select2';
-import { SimpleNotificationsModule } from 'angular2-notifications';
+import {ToastyModule} from 'ng2-toasty'
 
 @NgModule({
   imports: [
@@ -36,8 +37,8 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
     NgbModule.forRoot(),
     CadastrosRoutingModule,
     NgxPaginationModule,
-    SimpleNotificationsModule.forRoot(),
     Select2Module,
+    ToastyModule.forRoot(),
     NguiMapModule.forRoot({
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
       '&libraries=visualization,places,drawing',
@@ -63,7 +64,8 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
     TagsCadastrarComponent,
     PlantaEditarComponent,
     PlataformaEditarComponent,
-    EmbalagemEditarComponent
+    EmbalagemEditarComponent,
+    TagsEditarComponent
   ],
   providers: [
     NgbActiveModal

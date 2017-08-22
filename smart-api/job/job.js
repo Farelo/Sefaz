@@ -40,26 +40,25 @@ function analysis(data){
           //update
           //INCORRECT PLANT
         }
-        //TODO FIRST
       }else{ //embalagen que não estão associadas as rotas
         if(p.actual_plant){
           //Indefitico que ja foi encontrada em uma planta
           if(p.actual_plant.equals(plant._id)){//verifica se esta na mesma planta
             //fazer algo caso esteja na mesma planta
             evaluate_battery(p)//AVALIAR BATERIA - EMITIR ALERTA OU REMOVER CASO EXISTA ALERTA
-              .then(() => evaluate_missing(p))//VERIFICAR SE A MESMA SUMIU  - VERIFICAR SE A MESMA SUMIU , PARA EMITIR ALERTA, CASO CONTRARIO, REMOVER ALGUM ALERTA
+              .then(p => evaluate_missing(p))//VERIFICAR SE A MESMA SUMIU  - VERIFICAR SE A MESMA SUMIU , PARA EMITIR ALERTA, CASO CONTRARIO, REMOVER ALGUM ALERTA
               .then(new_p => permanence_time.fixednoroute(new_p))//VERIFICAR O TEMPO DE PERMANENCIA - EMITIR ALERTA SOBRE O TEMPO DE PERMANENCIA DAR UM UPDATE UPSERT, ESSE CASO É DIFERENTE, NUNCA IRÁ REMoVER
-              .then(new_p => Promise.all[packing.update({"_id": p._id}, new_p),historic.update(new_p)])
+              .then(new_p => Promise.all([packing.update({"_id": p._id}, new_p), historic.update(new_p)]))
               .then(() => console.log("FINISHI VERTENTE 2"));
 
           }else{
             //TEST IT
             //não esta na mesma planta
-            p.actual_plant = plant;
+            p.actual_plant = plant._id;
             //a data é utilizada como parametro para atualizar as informações, ja que ela é fixa
             evaluate_battery(p)//AVALIAR BATERIA - EMITIR ALERTA OU REMOVER CASO EXISTA ALERTA
-              .then(() => permanence_time.change(p))//ZERAR TEMPO DE PERMANENCIA - OU REMOVER ALERTA DESSE TIPO CASO EXISTA
-              .then(new_p => Promise.all[packing.update({"_id": p._id}, new_p),historic.create(new_p)])//ATUALIZAR EMBALAGEM COM AS NOVAS INFORMAçÔES E CRIAR HISTORICO (VERIFICAR SE É NECESSÀRIO ATUALIZAR o HISTORICOANTERIOR EM 1 HORA )
+              .then(p => permanence_time.change(p))//ZERAR TEMPO DE PERMANENCIA - OU REMOVER ALERTA DESSE TIPO CASO EXISTA
+              .then(new_p => Promise.all([packing.update({"_id": p._id}, new_p),historic.create(new_p)]))//ATUALIZAR EMBALAGEM COM AS NOVAS INFORMAçÔES E CRIAR HISTORICO (VERIFICAR SE É NECESSÀRIO ATUALIZAR o HISTORICOANTERIOR EM 1 HORA )
               .then(() => console.log("FINISHI VERTENTE 1"));
           }
 
@@ -67,16 +66,17 @@ function analysis(data){
           //não estava associado a nenhuma plant
           //VERIFICA A BATERIA
           //APENAS CRIAR
-          p.actual_plant = plant;
+          p.actual_plant = plant._id;
           p.permanence = {
             "amount_days" : 0,
             "date" : new Date().getTime(),
             "time_exceeded" : false
           };
+
           //a data é utilizada como parametro para atualizar as informações, ja que ela é fixa
           evaluate_battery(p)//AVALIAR BATERIA - EMITIR ALERTA OU REMOVER CASO EXISTA ALERTA
-            .then(() => Promise.all[packing.update({"_id": p._id}, p),historic.create(p)])//ATUALIZAR EMBALAGEM COM AS NOVAS INFORMAçÔES E CRIAR HISTORICO (VERIFICAR SE É NECESSÀRIO ATUALIZAR o HISTORICOANTERIOR EM 1 HORA )
-            .then(() => console.log("FINISHI VERTENTE 3"));
+            .then( p => Promise.all([packing.update({"_id": p._id}, p),historic.create(p)]))//ATUALIZAR EMBALAGEM COM AS NOVAS INFORMAçÔES E CRIAR HISTORICO (VERIFICAR SE É NECESSÀRIO ATUALIZAR o HISTORICOANTERIOR EM 1 HORA )
+            .then( result => console.log(result));
         }
 
       }

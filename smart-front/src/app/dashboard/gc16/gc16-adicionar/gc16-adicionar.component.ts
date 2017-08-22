@@ -87,6 +87,7 @@ export class Gc16AdicionarComponent implements OnInit {
 
   loadPackings(event: any):void{
     this.project = new Project();
+    console.log(event);
     this.selectedProject = "";
     if(event){
       this.gc16.supplier = event.value;
@@ -105,7 +106,7 @@ export class Gc16AdicionarComponent implements OnInit {
 
     this.suppliersService.retrieveAll().subscribe(result => {
       this.suppliers = result;
-
+      console.log(result);
 
       this.suppliers = result;
     }, err => {console.log(err)});

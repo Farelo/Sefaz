@@ -38,6 +38,7 @@
     "ng2-input-mask": "0.0.7",
     "ng2-map": "^0.16.5",
     "ng2-select2": "^1.0.0-beta.10",
+    "ng2-toasty": "^4.0.3",
     "ngx-bootstrap": "^1.7.1",
     "ngx-mask": "^1.0.3",
     "ngx-pagination": "^3.0.1",

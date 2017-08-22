@@ -21,6 +21,7 @@ import { RotasCadastrarComponent } from './rotas/rotas-cadastrar/rotas-cadastrar
 import { ScannerCadastrarComponent } from './scanner/scanner-cadastrar/scanner-cadastrar.component';
 import { SetorCadastrarComponent } from './setor/setor-cadastrar/setor-cadastrar.component';
 import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.component';
+import { TagsEditarComponent } from './tags/tags-editar/tags-editar.component';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 
 
@@ -30,6 +31,7 @@ const CadastrosRoutes = [
       {path: '', redirectTo: '/rc/cadastros/tags', pathMatch: 'full'},
       {path: 'tags', component: TagsComponent},
       {path: 'tags/cadastrar', component: TagsCadastrarComponent},
+      {path: 'tags/editar/:id', component: TagsEditarComponent},
       {path: 'scanner', component: ScannerComponent},
       {path: 'scanner/cadastrar', component: ScannerCadastrarComponent},
       {path: 'embalagem', component: EmbalagemComponent},

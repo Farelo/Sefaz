@@ -34,6 +34,11 @@ exports.alert_read_by_packing = function(req, res) {
     .populate('correct_plant_factory')
     .populate('packing')
     .populate('supplier')
+    .populate({path: 'supplier',
+      populate: {
+        path: 'plant',
+        model: 'Plant'
+      }})
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read alert'));
 };

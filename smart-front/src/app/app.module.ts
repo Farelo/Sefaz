@@ -20,6 +20,7 @@ import { MissingModalComponent } from './shared/modal/alerta/missing/alerta.comp
 
 
 import { AlertsService } from './servicos/alerts.service';
+import { ToastService } from './servicos/toast.service';
 import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';
 import { PackingService } from './servicos/packings.service';
@@ -83,6 +84,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ProfileService,
     InventoryService,
     CEPService,
+    ToastService,
     { provide: BrowserXhr, useClass: NgProgressBrowserXhr }
 
     // FormBuilder,

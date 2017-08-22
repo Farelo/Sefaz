@@ -32,7 +32,9 @@
     </tbody>
   </table>
 </div>
-
+<div class="classVazio"  *ngIf="data.data?.length < 1">
+  Ainda não existem plataformas cadastradas.
+</div>
 <br />
 <div class="has-text-centered">
     <pagination-controls class="my-pagination"
@@ -40,8 +42,4 @@
     directionLinks="false"
     autoHide="true">
     </pagination-controls>
-</div>
-
-<div class="classVazio"  *ngIf="data.data?.length < 1">
-  Ainda não existem plataformas cadastradas.
 </div>

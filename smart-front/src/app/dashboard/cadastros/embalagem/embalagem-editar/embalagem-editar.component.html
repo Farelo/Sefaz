@@ -5,28 +5,26 @@
     <div class="col-md-6">
 
       <div class="row">
+        <div class="col-md-8">
+          <div class="campo">
+            <p class="descricao">CÓDIGO</p>
+            <p class="explicacao">Ex. "994475545"</p>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.code">
+            </div>
+          </div>
+        </div>
 
-
-      <div class="col-md-8">
-        <div class="campo">
-          <p class="descricao">CÓDIGO</p>
-          <p class="explicacao">Ex. "994475545"</p>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.code">
+        <div class="col-md-4">
+          <div class="campo">
+            <p class="descricao">SERIAL</p>
+            <p class="explicacao">Ex. "001"</p>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.serial">
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="col-md-4">
-        <div class="campo">
-          <p class="descricao">SERIAL</p>
-          <p class="explicacao">Ex. "001"</p>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.serial">
-          </div>
-        </div>
-      </div>
-  </div>
 
 
       <div class="campo">
@@ -57,9 +55,7 @@
       <div class="campo">
         <p class="descricao">ASSOCIE UM FORNECEDOR</p>
         <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
-        <select [(ngModel)]="packing.supplier">
-           <option *ngFor="let obj of suppliers" [ngValue]="obj._id">{{obj.name}}</option>
-        </select>
+        <select2 [data]="suppliers?.data" [value]="this.packing?.supplier" (valueChanged)="changed($event)" [options]="{ placeholder: 'Search ..'}"></select2>
       </div>
 
     </div>

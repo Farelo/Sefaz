@@ -132,9 +132,9 @@ export class InventarioComponent implements OnInit {
     }
 
   }
-  open() {
+  open(packing) {
           const modalRef = this.modalService.open(ModalInvComponent);
-          // modalRef.componentInstance.alerta = packing;
+           modalRef.componentInstance.packing = packing;
   }
 
   // open() {

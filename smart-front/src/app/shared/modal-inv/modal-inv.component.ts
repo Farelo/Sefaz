@@ -3,6 +3,7 @@ import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
+import { InventoryService } from '../../servicos/inventory.service';
 
 
 
@@ -12,15 +13,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./modal-inv.component.css']
 })
 export class ModalInvComponent implements OnInit {
-// @Input() alerta;
+ @Input() packing;
 
 inscricao: Subscription;
   constructor(
     public activeAlerta: NgbActiveModal,
     private route: ActivatedRoute,
+    private inventoryService: InventoryService,
     private router: Router) { }
 
   ngOnInit() {
+    this.inventoryService.getInventorySupplierByPlant(10,1,this.packing.code, this.packing.supplier._id).subscribe( result => console.log(result))
   }
 
 }

@@ -4,6 +4,7 @@ import { Project } from '../../../../shared/models/project';
 import { ProjectService } from '../../../../servicos/projects.service';;
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
+import { ToastService } from '../../../../servicos/toast.service';
 
 @Component({
   selector: 'app-plataforma-editar',
@@ -15,14 +16,15 @@ export class PlataformaEditarComponent implements OnInit {
   constructor(
     private ProjectService: ProjectService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastService: ToastService
   ) { }
 
   project: Project = new Project();
 
 
   registerProject():void {
-    this.ProjectService.updateProject(this.project._id,this.project).subscribe( result => this.router.navigate(['/rc/cadastros/plataforma']) );
+    this.ProjectService.updateProject(this.project._id,this.project).subscribe( result => this.toastService.edit('/rc/cadastros/plataforma', 'Plataforma'), err =>  this.toastService.error(err));
   }
 
 

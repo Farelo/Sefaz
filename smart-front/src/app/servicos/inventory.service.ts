@@ -58,7 +58,7 @@ export class InventoryService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getInventorySupplierbYplANT(limit: number, page: number, code: string, supplier: string): Observable<any> {
+  getInventorySupplierByPlant(limit: number, page: number, code: string, supplier: string): Observable<any> {
 
     return this.http.get(environment.url + 'inventory/plant/' + limit + '/' + page + '/'+ code + '/'+ supplier)
       .map((res: Response) => res.json())

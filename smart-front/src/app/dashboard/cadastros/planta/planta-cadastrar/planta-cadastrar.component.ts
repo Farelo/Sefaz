@@ -2,7 +2,7 @@ import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plant } from '../../../../shared/models/plant';
 import { PlantsService } from '../../../../servicos/plants.service';;
-
+import { ToastService } from '../../../../servicos/toast.service';
 @Component({
   selector: 'app-planta-cadastrar',
   templateUrl: './planta-cadastrar.component.html',
@@ -13,7 +13,8 @@ export class PlantaCadastrarComponent implements OnInit {
   constructor(
     private PlantsService: PlantsService,
     private router: Router,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private toastService: ToastService
   ) { }
 
   plant: Plant = new Plant();
@@ -23,7 +24,7 @@ export class PlantaCadastrarComponent implements OnInit {
   pos : any;
 
   registerPlant():void {
-    this.PlantsService.createPlant(this.plant).subscribe( result => this.router.navigate(['/rc/cadastros/planta']) );
+    this.PlantsService.createPlant(this.plant).subscribe( result => this.toastService.success('/rc/cadastros/planta', 'Planta'), err => this.toastService.error(err) );
   }
 
 
@@ -40,6 +41,11 @@ export class PlantaCadastrarComponent implements OnInit {
     }
 
     this.ref.detectChanges();
+  }
+
+  onMapReady(map) {
+    this.plant.lat = map.center.lat();
+    this.plant.lng = map.center.lng();
   }
 
   onClick(event, str) {

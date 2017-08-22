@@ -58,7 +58,7 @@ export class RotasCadastrarComponent implements OnInit {
 
   //try to otimizate this (ugly)
   loadSupplier(event):void {
-    console.log(event);
+
     if(event != ""){
       this.choiced = true;
       this.route.packing_code = event._id.code;

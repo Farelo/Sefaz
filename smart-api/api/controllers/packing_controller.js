@@ -20,7 +20,6 @@ mongoose.Promise                                = global.Promise;
  * Create the current Packing
  */
 exports.packing_create = function(req, res) {
-  console.log(req.body);
   packing.create(req.body)
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to create packing'))
@@ -237,6 +236,7 @@ exports.supplier_inventory = function(req, res) {
  * list of quantity inventory
  **/
 exports.quantity_inventory = function(req, res) {
+
   let aggregate = packing.aggregate(query.queries.quantity_inventory(req.swagger.params.code.value));
 
   packing.aggregatePaginate(aggregate,

@@ -57,13 +57,7 @@
       <div class="campo">
         <p class="descricao">ASSOCIE UM FORNECEDOR</p>
         <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
-        <!-- <select [(ngModel)]="packing.supplier" class="ui fluid search selection dropdown">
-            <option value="">Associe um Fornecedor</option>
-           <option *ngFor="let obj of suppliers" [ngValue]="obj._id">
-             <p>{{obj.name}}</p>
-             <p>{{obj.duns}}</p>
-           </option>
-        </select> -->
+
         <select2 [data]="suppliers?.data" (valueChanged)="changed($event)" [options]="{ placeholder: 'Search ..'}"></select2>
 
       </div>
@@ -76,7 +70,7 @@
         <p class="descricao">TARA (KG)</p>
         <p class="explicacao">Ex. "57 kg"</p>
         <div class="placeholder" data-placeholder="KG">
-          <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.weight" />
+          <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.weigth" />
         </div>
       </div>
 

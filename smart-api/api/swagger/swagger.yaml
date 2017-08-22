@@ -2980,9 +2980,7 @@ paths:
           description: The project object that will to be modified
           required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Tag'
+            $ref: '#/definitions/Tag'
       responses:
         '200':
           description: Message

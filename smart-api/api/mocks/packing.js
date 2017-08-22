@@ -4,7 +4,7 @@ const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 
 const packingSchema = new mongoose.Schema({
-  code: {type: String, required: true, unique: true},
+  code: {type: String, required: true},
   type: String,
   weigth: Number,
   width: Number,

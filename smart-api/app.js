@@ -33,7 +33,7 @@ require('./config/config.models')();
 
 // require('./api/controllers/packing_controller').createEstrategy();
 //JOB =================================================
-// require('./job/job');
+require('./job/job');
 
 //ALERTS
 var config = {
