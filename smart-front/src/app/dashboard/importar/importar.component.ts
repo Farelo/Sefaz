@@ -52,8 +52,8 @@ export class ImportarComponent implements OnInit {
         {data: 'product id', type: 'text'}
       ];
       this.options = {
-        height: 396,
-        width: 700,
+        // height: 396,
+        // width: 700,
         rowHeaders: true,
         stretchH: 'all',
         columnSorting: true,

@@ -10,7 +10,6 @@ body  {
   background-size: cover;
   width: 200px;
   height: 200px;
-  /*background-color: red;*/
   position: absolute;
   top: 50%;
   left: 50%;
@@ -34,9 +33,7 @@ body  {
   padding-top: 6px;
   padding-left: 6px;
 }
- #iw img {
-   	/*background-color: red;*/
- }
+
 .conteudoHome .popover-content {
   width: 178px!important;
   text-align: center;
@@ -159,18 +156,76 @@ body  {
   border-right: none!important;
 
   outline: none!important;
-  border-bottom: 1px solid #6382c9!important;
+  border-bottom-style: solid !important;
+  border-bottom-width: thin !important;
+  border-bottom-color: #6382c9 !important;
 }
 .select2-container--open .select2-dropdown--below {
 font-family: 'Roboto', sans-serif;
 }
 .select2-search--dropdown {
   padding: 10px!important;
-  border-bottom: 1px solid #6382c9 !important;
+  border-bottom-style: solid !important;
+  border-bottom-width: thin !important;
+  border-bottom-color: lightgrey !important;
 }
 .select2-results__option {
-  border-bottom: 1px solid #6382c9 !important;
+  border-bottom-style: solid !important;
+  border-bottom-width: thin !important;
+  border-bottom-color: lightgrey !important;
+}
+.select2-container--default .select2-results__option .select2-results__option {
+padding-left: 1.7em;
+  color: #6382c9!important;
 }
 .select2-dropdown--below {
-  border: 1px solid #6382c9 !important;
+  border: 1px solid rgba(0, 0, 0, 0.15)!important;
+  border-top: none!important;
+  border-radius: 0em!important;
+  -webkit-box-shadow: 0px 32px 86px -25px rgba(0,0,0,0.26);
+  -moz-box-shadow: 0px 32px 86px -25px rgba(0,0,0,0.26);
+  box-shadow: 0px 32px 86px -25px rgba(0,0,0,0.26);
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #f0f0f0!important;
+  color: #6382c9!important;
+}
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: #f7f7f7 !important;
+}
+.select2-container--default .select2-results__group {
+  color: #777!important;
+  font-weight: 400!important;
+}
+
+/*Tabela enorme de importar*/
+hotTable {
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+.handsontable .columnSorting {
+  color: white;
+  font-weight: bold;
+}
+.handsontable thead th .relative {
+  background-color: #6382c9;
+}
+.ht_master:not(.innerBorderTop) thead tr:last-child th, .ht_master:not(.innerBorderTop) ~ .handsontable thead tr:last-child th, .ht_master:not(.innerBorderTop) thead tr.lastChild th, .ht_master:not(.innerBorderTop) ~ .handsontable thead tr.lastChild th {
+  border: none;
+  padding: 10px 0px 0px 0px;
+  background-color: #6382c9;
+}
+.handsontable tr:first-child th, .handsontable tr:first-child td{
+  border-top: 1px solid #6382c9!important;
+}
+.handsontable tr:first-child th {
+  background-color: #6382c9;
+  border-left: none;
+  border-right: none;
+}
+.ht_master:not(.innerBorderLeft):not(.emptyColumns) ~ .handsontable tbody tr th, .ht_master:not(.innerBorderLeft):not(.emptyColumns) ~ .handsontable:not(.ht_clone_top) thead tr th:first-child {
+  background-color: #6382c9;
+  color: white;
+  border-left: 1px solid #6382c9;
 }
