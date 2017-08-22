@@ -29,7 +29,7 @@ module.exports = {
         var diffDays = Math.round(Math.abs((p.permanence.date - date.getTime()) / (oneSecond)));
         p.permanence.amount_days = diffDays;
         p.permanence.time_exceeded = true;
-        if(p.permanence.amount_days > 10000000000){
+        if(p.permanence.amount_days > 10000){
 
           alert.find({ //Verifica se o alerta ja existe
             "packing": p._id,

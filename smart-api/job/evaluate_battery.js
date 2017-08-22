@@ -4,7 +4,7 @@ mongoose.Promise  = global.Promise;
 
 module.exports = function(p) {
   return new Promise(function(resolve, reject) {
-    if (p.battery < 25) {
+    if (p.battery < 75) {
       //EMITIR ALERTA
       alert.find({ //Verifica se o alerta ja existe
         "packing": p._id,

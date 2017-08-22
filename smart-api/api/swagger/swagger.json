@@ -2516,7 +2516,7 @@
         }
       }
     },
-    "/packing/list/all/nobinded": {
+    "/packing/list/all/nobinded/{supplier}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
         "tags": [
@@ -2525,6 +2525,15 @@
         "summary": "Get a packings no binded.",
         "description": "",
         "operationId": "list_packing_no_binded",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "supplier",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Message",

@@ -57,8 +57,8 @@ exports.plant_delete = function(req, res) { 
  */
 exports.list_all = function(req, res) { 
   plant.find({
-    "supplier": { $exists: true, $ne: null },
-    "logistic_operator": { $exists: true, $ne: null }
+    "supplier": { $exists: false },
+    "logistic_operator": { $exists: false }
   })
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read plant'));

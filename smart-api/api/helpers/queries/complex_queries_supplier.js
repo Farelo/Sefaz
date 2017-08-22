@@ -82,6 +82,6 @@ exports.queries = {
             "text": {
                 "$first": "$name"
             },
-            "children": {"$push": {"id": {"supplier": "$_id", "name": "$name"}, "text": "$duns"}}
+            "children": {"$push": {"id": "$_id", "text": "$duns"}}
         }}]
 }

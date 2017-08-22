@@ -5,30 +5,33 @@
     <div class="col-md-6">
 
       <div class="campo">
-        <p class="descricao">ASSOCIE UMA EMBALAGEM</p>
+        <p class="descricao">ASSOCIE UM FORNECEDOR</p>
         <p class="explicacao"></p>
-        <select id="planta" [ngModel]="packing.packing_code" (ngModelChange)="loadSupplier($event)">
-          <option value="">Associe uma Embalagem</option>
-          <option *ngFor="let obj of packings" [ngValue]="obj" >{{obj.code}}</option>
+        <select2 [data]="suppliers?.data" (valueChanged)="loadPackings($event)" [options]="{ placeholder: 'Search ..'}"></select2>
+      </div>
+
+      <div class="campo" [hidden]="!choiced">
+        <p class="descricao">ASSOCIE A EMBALAGEM</p>
+        <p class="explicacao"></p>
+        <select id="planta" [(ngModel)]="partial_element" (ngModelChange)="onChange($event)">
+            <option value="">Associe uma Planta</option>
+          <option *ngFor="let obj of packings?.data" [ngValue]="obj" >{{obj.id}}</option>
         </select>
       </div>
 
-      <div class="campo" [hidden]="!choiced">
+      <div class="campo" [hidden]="!choice_equipament">
         <p class="descricao">FORNECEDOR DA EMBALAGEM</p>
         <div class="input-group" >
-          <input class="form-control"  aria-describedby="basic-addon2" [(ngModel)] ="plant_supplier"  />
+          <input class="form-control"  aria-describedby="basic-addon2" [(ngModel)] ="supplier?.name"  />
         </div>
       </div>
 
-      <div class="campo" [hidden]="!choiced">
+      <div class="campo" [hidden]="!choice_equipament">
         <p class="descricao">PLANTA DO FORNECEDOR </p>
         <div class="input-group" >
-          <input class="form-control"  aria-describedby="basic-addon2"  [(ngModel)] ="supplier_packing" />
+          <input class="form-control"  aria-describedby="basic-addon2"  [(ngModel)] ="supplier?.name" />
         </div>
       </div>
-
-
-
     </div>
 
     <div class="col-md-6">
@@ -38,7 +41,7 @@
         <p class="explicacao"></p>
         <select id="planta" [(ngModel)]="route.plant_factory">
             <option value="">Associe uma Planta</option>
-          <option *ngFor="let obj of plants" [ngValue]="obj._id" >{{obj.name}}</option>
+          <option *ngFor="let obj of plants?.data" [ngValue]="obj._id" >{{obj.name}}</option>
         </select>
       </div>
 

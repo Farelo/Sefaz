@@ -823,35 +823,53 @@ exports.queries = {
       }
     ];
   },
-  "listPackingsNoBinded": [{
-    "$lookup": {
-      "from": "routes",
-      "localField": "hashPacking",
-      "foreignField": "hashPacking",
-      "as": "packingObject"
-    }
-  }, {
-    "$unwind": {
-      "path": "$packingObject",
-      'preserveNullAndEmptyArrays': true
-    }
-  }, {
-    "$match": {
-      "packingObject": {
-        "$exists": false
+  "listPackingsNoBinded": function(id) {
+    return [
+      {
+      "$match": {
+        "route": { $exists: false },
+        "supplier": id
+
       }
-    }
-  }, {
-    '$group': {
-      "_id": {
-        "code": "$code",
-        "supplier": "$supplier"
-      },
-      "code": {
-        "$first": "$code"
+    },{
+      "$lookup": {
+        "from": "suppliers",
+        "localField": "supplier",
+        "foreignField": "_id",
+        "as": "ObjectSupplier"
       }
-    }
-  }],
+    },{
+      "$unwind": "$ObjectSupplier"
+    },{
+      "$lookup": {
+        "from": "plants",
+        "localField": "ObjectSupplier.plant",
+        "foreignField": "_id",
+        "as": "ObjectPlant"
+      }
+    },{
+      "$unwind": "$ObjectPlant"
+    },{
+      '$group': {
+        "_id": {
+          "code": "$code"
+        },
+        "id": {
+            "$first": "$code"
+        },
+        "packing": {
+          "$first": "$_id"
+        },
+        "supplier": {
+            "$first": "$ObjectSupplier"
+        },
+        "plant": {
+            "$first": "$ObjectPlant"
+        }
+
+      }
+    }]
+  },
   listPackingNoBindedWithCode: function(code) {
     return [{
       "$lookup": {

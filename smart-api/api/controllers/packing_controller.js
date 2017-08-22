@@ -189,7 +189,7 @@ exports.packing_list_by_supplier = function(req, res) {
  * List of packings no binded
  */
 exports.list_packing_no_binded = function(req, res) {
-  packing.aggregate(query.queries.listPackingsNoBinded)
+  packing.aggregate(query.queries.listPackingsNoBinded(new ObjectId(req.swagger.params.supplier.value)))
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to list packings no binded'));
 };

@@ -20,19 +20,21 @@ export class RotasCadastrarComponent implements OnInit {
   constructor(
     private PlantsService: PlantsService,
     private PackingService: PackingService,
-    private SuppliersService: SuppliersService,
+    private suppliersService: SuppliersService,
     private RoutesService: RoutesService,
     private router: Router
   ) { }
 
   plants =  [];
   packings = [];
+  public suppliers :any;
   supplier : Supplier = new Supplier();
   route : Route = new Route({packing_code:"",plant_factory:""});
   packing: Route = new Route({packing_code:""});
   plant_supplier: any;
   supplier_packing: any;
   choiced = false;
+  choice_equipament = false;
 
   registerRoute():void {
 
@@ -48,37 +50,46 @@ export class RotasCadastrarComponent implements OnInit {
 
   }
 
+  onChange(event:any){
+    console.log(event);
+    if(event){
+      this.choice_equipament = true;
+      this.supplier = event.supplier;
+    }
+
+
+  }
+
   loadPlants():void {
     this.PlantsService.retrieveAll().subscribe( result => this.plants = result );
   }
 
-  loadPackings():void {
-    this.PackingService.retrieveAllNoBinded().subscribe( result => this.packings = result );
-  }
-
-  //try to otimizate this (ugly)
-  loadSupplier(event):void {
-
-    if(event != ""){
-      this.choiced = true;
-      this.route.packing_code = event._id.code;
-      this.SuppliersService.retrieveSupplier( event._id.supplier).subscribe( result => {
-        this.supplier_packing = result.name;
-        this.plant_supplier = result.plant;
-        this.route.supplier = result._id;
-        this.route.plant_supplier = this.plant_supplier._id;
-        this.plant_supplier = this.plant_supplier.name;
-      });
+  loadPackings(event):void {
+    if(event){
+      this.choice_equipament = false;
+      this.PackingService.retrieveAllNoBinded(event.value).subscribe( result => {
+        this.choiced = true;
+        if(result.data.length === 0)  this.choiced = false;
+        else this.packings = result;
+        } );
     }else{
       this.choiced = false;
     }
 
   }
 
+  loadSuppliers():void{
+
+    this.suppliersService.retrieveAll().subscribe(result => {
+      this.suppliers = result;
+    }, err => {console.log(err)});
+  }
+
+
   ngOnInit() {
 
     this.loadPlants();
-    this.loadPackings();
+    this.loadSuppliers();
   }
 
 }

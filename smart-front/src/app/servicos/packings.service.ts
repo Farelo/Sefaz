@@ -45,9 +45,9 @@ export class PackingService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveAllNoBinded(): Observable<any> {
+  retrieveAllNoBinded(supplier: any): Observable<any> {
 
-    return this.http.get(environment.url + 'packing/list/all/nobinded')
+    return this.http.get(environment.url + 'packing/list/all/nobinded/'+ supplier)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
