@@ -23,6 +23,7 @@ inscricao: Subscription;
     private router: Router) { }
 
   ngOnInit() {
+    console.log(this.packing._id);
     this.inventoryService.getInventorySupplierByPlant(10,1,this.packing.code, this.packing.supplier._id).subscribe( result => console.log(result))
   }
 

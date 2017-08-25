@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PackingService } from '../../../servicos/packings.service';
 import { Packing } from '../../../shared/models/Packing';
 import { Pagination } from '../../../shared/models/pagination';
+import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-embalagem',
@@ -13,7 +15,8 @@ export class EmbalagemComponent implements OnInit {
   public search : string;
 
   constructor(
-    private PackingService : PackingService
+    private PackingService : PackingService,
+    private modalService: NgbModal
   ) { }
 
   searchEvent(): void{
@@ -31,7 +34,10 @@ export class EmbalagemComponent implements OnInit {
   }
 
   removePacking(id):void{
-    this.PackingService.deletePacking(id).subscribe(result =>   this.loadPackings(), err => {console.log(err)})
+    const modalRef = this.modalService.open(ModalDeleteComponent);
+    modalRef.componentInstance.view = id;
+    modalRef.componentInstance.type = "packing";
+    // this.PackingService.deletePacking(id).subscribe(result =>   this.loadPackings(), err => {console.log(err)})
   }
 
   pageChanged(page: any): void{

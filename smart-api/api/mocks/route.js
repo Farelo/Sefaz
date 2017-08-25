@@ -15,8 +15,18 @@ const routeSchema = new mongoose.Schema({
           ref:'Plant'
       },
       packing_code: String,
-      estimeted_time: Number,
-      date_estimated: Object,
+      location : {
+        distance: {
+          text: String,
+          value: Number
+        },
+        duration: {
+          text: String,
+          value: Number
+        },
+        start_address: String,
+        end_address: String
+      },
       hashPacking : String
 
 });

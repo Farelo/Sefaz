@@ -1,18 +1,18 @@
-const mongoose    = require('mongoose');
-const alert       = mongoose.model('Alerts');
-mongoose.Promise  = global.Promise;
+const mongoose = require('mongoose');
+const alert = mongoose.model('Alerts');
+mongoose.Promise = global.Promise;
 
 module.exports = function(p) {
   return new Promise(function(resolve, reject) {
     var oneSecond = 1000; // hours*minutes*seconds*milliseconds
     var date = new Date();
-    var diffDays = Math.round(Math.abs((p.lastCommunication - date.getTime()) / (oneSecond)));
-    if (diffDays > 5000000000) { //sumiu mais do que 3 horas
+    var time = Math.round(Math.abs((p.lastCommunication - date.getTime())));
+    if (time > 5000000000000000000) { //sumiu mais do que 3 horas
       //emite alerta
       p.missing = true;
       p.packing_missing = {
         "last_time": p.lastCommunication,
-        "time_countdown": diffDays,
+        "time_countdown": time,
         "route": p.actual_plant
       };
 
@@ -36,7 +36,7 @@ module.exports = function(p) {
           alert.update({ //Verifica se o alerta ja existe
             "packing": p._id,
             "status": 1
-          },{
+          }, {
             "actual_plant": p.actual_plant,
             "supplier": p.supplier,
             "hashpacking": p.hashPacking,

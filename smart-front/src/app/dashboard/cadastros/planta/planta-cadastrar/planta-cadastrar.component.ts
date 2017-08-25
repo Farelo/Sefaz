@@ -52,9 +52,9 @@ export class PlantaCadastrarComponent implements OnInit {
       if (event instanceof MouseEvent){
         return;
       }
-
+      console.log(event);
      this.pos = event.latLng;
-
+    //  this.plant.location =
      this.plant.lat = event.latLng.lat();
      this.plant.lng = event.latLng.lng();
      event.target.panTo(event.latLng);

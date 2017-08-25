@@ -5,6 +5,7 @@ export class Plant {
     public lng: number;
     public logistic_operator: string;
     public supplier: string;
+    public location: string;
 
     public constructor(fields ?: {
   name?: string,

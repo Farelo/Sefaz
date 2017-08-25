@@ -1,0 +1,25 @@
+<div class="modalFilho">
+  <div class="header" *ngIf="type === 'route'">
+     <p>Detalhes da Rota </p>
+     <p>Partida: {{view.location.start_address }}</p>
+     <p>Partida: {{view.location.end_address }}</p>
+     <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} de fornecedor {{view.supplier?.name}}</p>
+  </div>
+  <div class="header" *ngIf="type === 'packing'">
+     <p>Detalhes da Embalagem </p>
+
+  </div>
+  <div class="header" *ngIf="type === 'plant'">
+     <p>Detalhes da Planta </p>
+
+  </div>
+  <div class="header" *ngIf="type === 'tag'">
+     <p>Detalhes da Tag </p>
+
+  </div>
+
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeAlerta.close('Close click')">Close</button>
+</div>
+</div>

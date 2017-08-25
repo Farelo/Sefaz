@@ -24,13 +24,13 @@ module.exports = {
     return new Promise(function(resolve, reject) {
 
       if (!p.missing) {
-        var oneSecond = 1000; //1000 * 3600 * 24 hours*minutes*seconds*milliseconds
-        var date = new Date();
-        var diffDays = Math.round(Math.abs((p.permanence.date - date.getTime()) / (oneSecond)));
-        p.permanence.amount_days = diffDays;
-        p.permanence.time_exceeded = true;
-        if(p.permanence.amount_days > 10000){
 
+        var date = new Date();
+        var time = Math.round(Math.abs((p.permanence.date - date.getTime())));
+        p.permanence.amount_days = time;
+        p.permanence.time_exceeded = false;
+        if(p.permanence.amount_days > 1000){
+          p.permanence.time_exceeded = true;
           alert.find({ //Verifica se o alerta ja existe
             "packing": p._id,
             "status": 5

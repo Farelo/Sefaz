@@ -28,6 +28,7 @@ import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.com
 import { TagsEditarComponent } from './tags/tags-editar/tags-editar.component';
 import { Select2Module } from 'ng2-select2';
 import {ToastyModule} from 'ng2-toasty'
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import {ToastyModule} from 'ng2-toasty'
     CadastrosRoutingModule,
     NgxPaginationModule,
     Select2Module,
+    AlertModule.forRoot(),
     ToastyModule.forRoot(),
     NguiMapModule.forRoot({
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +

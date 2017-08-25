@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { RoutesService } from '../../../servicos/routes.service';;
 import { Route } from '../../../shared/models/route';
 import { Pagination } from '../../../shared/models/pagination';
+import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-rotas',
@@ -11,7 +13,10 @@ import { Pagination } from '../../../shared/models/pagination';
 export class RotasComponent implements OnInit {
   public data: Pagination = new Pagination({meta: {page : 1}});
   public search : string;
-  constructor(private RoutesService : RoutesService) { }
+  constructor(
+    private RoutesService : RoutesService,
+    private modalService: NgbModal
+  ) { }
 
   searchEvent(): void{
     if(this.search != "" && this.search){
@@ -32,8 +37,12 @@ export class RotasComponent implements OnInit {
       .subscribe(data => this.data = data, err => {console.log(err)});
   }
 
-  removeRoutes(id):void{
-    this.RoutesService.deleteRoute(id).subscribe(result =>   this.loadRoutes(), err => {console.log(err)})
+  removeRoutes(route):void{
+    //MOSTRAR
+    const modalRef = this.modalService.open(ModalDeleteComponent);
+    modalRef.componentInstance.view = route;
+    modalRef.componentInstance.type = "route";
+    //this.RoutesService.deleteRoute(route._id).subscribe(result =>   this.loadRoutes(), err => {console.log(err)})
   }
 
   ngOnInit() {

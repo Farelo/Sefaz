@@ -17,7 +17,7 @@ import {ValidatorsModule, EmailValidators} from 'ngx-validators'
 
 import { PositionModalComponent } from './shared/modal/alerta/position/alerta.component';
 import { MissingModalComponent } from './shared/modal/alerta/missing/alerta.component';
-
+import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.component';
 
 import { AlertsService } from './servicos/alerts.service';
 import { ToastService } from './servicos/toast.service';
@@ -48,6 +48,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ModalRastComponent,
     ModalUserComponent,
     ModalInvComponent,
+    ModalDeleteComponent,
     MissingModalComponent,
     EsqueciMinhaSenhaComponent,
     RedefinirSenhaComponent,
@@ -92,7 +93,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
-  entryComponents: [ModalRastComponent,PositionModalComponent,MissingModalComponent, ModalUserComponent, ModalInvComponent]
+  entryComponents: [ModalRastComponent,PositionModalComponent,MissingModalComponent, ModalUserComponent, ModalInvComponent, ModalDeleteComponent]
 })
 
 export class AppModule { }

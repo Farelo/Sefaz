@@ -2,61 +2,88 @@
   <h1>REGISTRAR ROTA</h1>
   <br />
   <div class="row">
+    <div class="col-md-12">
+      <alert type="info" *ngIf="packings?.length === 0 ">
+        <strong>Atenção!</strong> Não existe embalagens associadas a esse fornecedor.
+      </alert>
+    </div>
+
     <div class="col-md-6">
 
       <div class="campo">
         <p class="descricao">ASSOCIE UM FORNECEDOR</p>
         <p class="explicacao"></p>
-        <select2 [data]="suppliers?.data" (valueChanged)="loadPackings($event)" [options]="{ placeholder: 'Search ..'}"></select2>
+        <select2 [data]="suppliers?.data" (valueChanged)="loadPackings($event)" [options]="options"></select2>
       </div>
+
 
       <div class="campo" [hidden]="!choiced">
         <p class="descricao">ASSOCIE A EMBALAGEM</p>
         <p class="explicacao"></p>
-        <select id="planta" [(ngModel)]="partial_element" (ngModelChange)="onChange($event)">
+        <select id="planta" [(ngModel)]="partial_element" (ngModelChange)="onChangeSupplier($event)">
             <option value="">Associe uma Planta</option>
-          <option *ngFor="let obj of packings?.data" [ngValue]="obj" >{{obj.id}}</option>
+          <option *ngFor="let obj of packings" [ngValue]="obj" >{{obj.id}}</option>
         </select>
       </div>
 
-      <div class="campo" [hidden]="!choice_equipament">
-        <p class="descricao">FORNECEDOR DA EMBALAGEM</p>
-        <div class="input-group" >
-          <input class="form-control"  aria-describedby="basic-addon2" [(ngModel)] ="supplier?.name"  />
-        </div>
-      </div>
 
-      <div class="campo" [hidden]="!choice_equipament">
-        <p class="descricao">PLANTA DO FORNECEDOR </p>
-        <div class="input-group" >
-          <input class="form-control"  aria-describedby="basic-addon2"  [(ngModel)] ="supplier?.name" />
-        </div>
-      </div>
+     <div class="campo" [hidden]="!choice_equipament">
+       <p class="descricao">FORNECEDOR DA EMBALAGEM</p>
+       <div class="input-group">
+         <input class="form-control" aria-describedby="basic-addon2" [ngModel]="partial_element?.supplier?.name" disabled />
+       </div>
+     </div>
+
+
+     <div class="campo" [hidden]="!choice_equipament">
+       <p class="descricao">PLANTA DO FORNECEDOR </p>
+       <div class="input-group">
+         <input class="form-control" aria-describedby="basic-addon2" [ngModel]="partial_element?.plant?.name" disabled/>
+       </div>
+     </div>
+
+
+
     </div>
+
 
     <div class="col-md-6">
 
       <div class="campo">
         <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
         <p class="explicacao"></p>
-        <select id="planta" [(ngModel)]="route.plant_factory">
+        <select id="planta" [(ngModel)]="plant_factory" (ngModelChange)="onChangeFactory($event)">
             <option value="">Associe uma Planta</option>
-          <option *ngFor="let obj of plants?.data" [ngValue]="obj._id" >{{obj.name}}</option>
+          <option *ngFor="let obj of plants?.data" [ngValue]="obj" >{{obj.name}}</option>
         </select>
       </div>
 
-      <div class="campo">
-        <p class="descricao">ESTIME UM TEMPO DE VIAGEM</p>
-        <p class="explicacao"></p>
-        <ngb-timepicker [(ngModel)]="this.route.date_estimated"></ngb-timepicker>
-      </div>
+    </div>
+  </div>
+  <div class="row">
+
+
+    <div class="col-md-12" *ngIf="directions">
+      <p>{{this.route.location | json}}</p>
+
+    </div>
+    <div class="col-md-12">
+      <ngui-map zoom="13" [center]="center" (mapReady$)="onMapReady($event)">
+        <directions-renderer [suppressMarkers]="false" [draggable]="true" panel="#my-panel" (directions_changed)="directionsChanged()" [directions-request]="direction">
+        </directions-renderer>
+
+      </ngui-map>
     </div>
 
   </div>
+  <!-- MAP TO DIRECRTIONS -->
+
+
+
   <br />
   <div class="botoes">
-  <button routerLink="/rc/cadastros/rotas" class="botaoVoltar" >VOLTAR</button>
-  <button class="botaoRegistrar" (click)="registerRoute()">REGISTRAR</button>
+    <button routerLink="/rc/cadastros/rotas" class="botaoVoltar">VOLTAR</button>
+    <button class="botaoRegistrar" (click)="registerRoute()">REGISTRAR</button>
   </div>
   <Br />
 </div>

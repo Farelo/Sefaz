@@ -103,12 +103,34 @@ export class InventarioComponent implements OnInit {
   permanenceInventory(){
     if(this.permanenceSearchEquipamento && this.permanenceSearchSerial ){
       this.serial = true;
-      this.InventoryService.getInventoryPackingHistoric(10,this.general.meta.page,this.permanenceSearchSerial).subscribe(result => this.permanence = result, err => {console.log(err)});
+      this.InventoryService.getInventoryPackingHistoric(10,this.general.meta.page,this.permanenceSearchSerial).subscribe(result => {
+        console.log(result.data);
+         this.permanence = result.data.forEach( o => {
+            o.packing.permanence_time  = this.getTime(o.packing.permanence_time);
+            console.log(o.packing.permanence_time );
+          });
+
+       }, err => {console.log(err)});
     }else if(this.permanenceSearchEquipamento){
       this.serial = false;
       this.InventoryService.getInventoryPermanence(10,this.general.meta.page,this.permanenceSearchEquipamento).subscribe(result => this.permanence = result, err => {console.log(err)});
     }
 
+  }
+
+
+  getTime(value){
+    let time: number = parseInt(value);
+    parseInt((time / 1000).toString())
+    let seconds: string | number = (parseInt((time / 1000).toString()) % 60);
+    let minutes: string | number = (parseInt((time / (1000 * 60)).toString()) % 60);
+    let hours: string | number = (parseInt((time / (1000 * 60 * 60)).toString()) % 24);
+
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+    return  hours + " Horas e " + minutes + " Minutos"  ;
   }
 
   loadSuppliers():void{

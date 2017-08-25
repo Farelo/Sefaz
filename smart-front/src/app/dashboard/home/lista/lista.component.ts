@@ -49,12 +49,24 @@ export class ListaComponent implements OnInit {
   }
 
   open(embalagem,status) {
-    console.log(embalagem);
+
     this.AlertsService.retrieveAlertByPacking(embalagem,status)
-      .subscribe(packing => {
+      .subscribe(result => {
+
+          let time: number = parseInt(result.data.packing.permanence.amount_days);
+          parseInt((time / 1000).toString())
+          let seconds: string | number = (parseInt((time / 1000).toString()) % 60);
+          let minutes: string | number = (parseInt((time / (1000 * 60)).toString()) % 60);
+          let hours: string | number = (parseInt((time / (1000 * 60 * 60)).toString()) % 24);
+
+          hours = (hours < 10) ? "0" + hours : hours;
+          minutes = (minutes < 10) ? "0" + minutes : minutes;
+          seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+          result.data.packing.permanence.amount_days = hours + " Horas e " + minutes + " Minutos"  ;
 
           const modalRef = this.modalService.open(PositionModalComponent);
-          modalRef.componentInstance.alerta = packing;
+          modalRef.componentInstance.alerta = result;
         // }else{
         //   const modalRef = this.modalService.open(MissingModalComponent);
         //   modalRef.componentInstance.alerta = packing;

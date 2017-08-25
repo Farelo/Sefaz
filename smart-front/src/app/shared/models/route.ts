@@ -6,9 +6,19 @@ export class Route {
   public plant_factory: string;
   public plant_supplier: string;
   public packing_code: string;
-  public estimeted_time: number;
-  public date_estimated: any;
   public hashPacking: string;
+  public location : {
+    distance: {
+      text: string,
+      value: number
+    },
+    duration: {
+      text: string,
+      value: number
+    },
+    start_address: string,
+    end_address: string
+  };
   public _id: string;
 
 
@@ -17,9 +27,19 @@ export class Route {
   plant_factory?: string,
   plant_supplier?: string,
   packing_code?: string,
-  estimeted_time?: number,
-  date_estimated?: any,
   hashPacking?: string,
+  location? : {
+    distance?: {
+      text?: string,
+      value?: number
+    },
+    duration?: {
+      text?: string,
+      value?: number
+    },
+    start_address?: string,
+    end_address?: string
+  },
   _id?: string
 }
 ){
