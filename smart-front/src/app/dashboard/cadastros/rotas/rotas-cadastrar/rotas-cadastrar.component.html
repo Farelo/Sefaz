@@ -7,7 +7,9 @@
         <strong>Atenção!</strong> Não existe embalagens associadas a esse fornecedor.
       </alert>
     </div>
+  </div>
 
+    <div class="row">
     <div class="col-md-6">
 
       <div class="campo">
@@ -15,7 +17,6 @@
         <p class="explicacao"></p>
         <select2 [data]="suppliers?.data" (valueChanged)="loadPackings($event)" [options]="options"></select2>
       </div>
-
 
       <div class="campo" [hidden]="!choiced">
         <p class="descricao">ASSOCIE A EMBALAGEM</p>
@@ -26,7 +27,6 @@
         </select>
       </div>
 
-
      <div class="campo" [hidden]="!choice_equipament">
        <p class="descricao">FORNECEDOR DA EMBALAGEM</p>
        <div class="input-group">
@@ -34,21 +34,16 @@
        </div>
      </div>
 
-
      <div class="campo" [hidden]="!choice_equipament">
        <p class="descricao">PLANTA DO FORNECEDOR </p>
        <div class="input-group">
          <input class="form-control" aria-describedby="basic-addon2" [ngModel]="partial_element?.plant?.name" disabled/>
        </div>
      </div>
-
-
-
     </div>
 
 
     <div class="col-md-6">
-
       <div class="campo">
         <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
         <p class="explicacao"></p>
@@ -57,28 +52,54 @@
           <option *ngFor="let obj of plants?.data" [ngValue]="obj" >{{obj.name}}</option>
         </select>
       </div>
+    </div>
 
     </div>
-  </div>
+    <hr class="divisoria" *ngIf="directions">
+    <div class="row" *ngIf="directions" style="margin-top: 0px;">
+          <div class="col-sm-6 informacoes">
+            <div class="bigger2">
+              <div class="fromSun"></div>
+            </div>
+            <span class="forn">{{this.route.location.start_address}}</span>
+          </div>
+
+          <div class="col-sm-6 informacoes">
+            <div class="bigger2">
+              <div class="fromSun"></div>
+            </div>
+            <span class="forn">{{this.route.location.end_address}}</span>
+          </div>
+    </div>
+    <div class="row" *ngIf="directions" style="margin-top: 0px;">
+          <div class="col-sm-6 informacoes">
+            <div class="bigger2">
+              <div class="fromSun"></div>
+            </div>
+            <span class="forn">{{this.route.location.distance.text}}</span>
+          </div>
+
+          <div class="col-sm-6 informacoes">
+            <div class="bigger2">
+              <div class="fromSun"></div>
+            </div>
+            <span class="forn">{{this.route.location.duration.text}}</span>
+          </div>
+    </div>
+
   <div class="row">
-
-
-    <div class="col-md-12" *ngIf="directions">
+    <!-- <div class="col-md-12" *ngIf="directions">
       <p>{{this.route.location | json}}</p>
-
-    </div>
+    </div> -->
     <div class="col-md-12">
+      <br>
       <ngui-map zoom="13" [center]="center" (mapReady$)="onMapReady($event)">
         <directions-renderer [suppressMarkers]="false" [draggable]="true" panel="#my-panel" (directions_changed)="directionsChanged()" [directions-request]="direction">
         </directions-renderer>
-
       </ngui-map>
     </div>
-
   </div>
   <!-- MAP TO DIRECRTIONS -->
-
-
 
   <br />
   <div class="botoes">
