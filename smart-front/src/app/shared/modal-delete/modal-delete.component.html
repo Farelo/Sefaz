@@ -1,26 +1,30 @@
 <div class="modalFilho">
-  <div class="header" *ngIf="type === 'route'">
-     <p>Detalhes da Rota </p>
+  <div class="detalhes" *ngIf="type === 'route'">
+     <h2>Detalhes da Rota </h2>
+     <hr>
      <p>Partida: {{view.location.start_address }}</p>
-     <p>Partida: {{view.location.end_address }}</p>
-     <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} de fornecedor {{view.supplier?.name}}</p>
+     <p>Destino: {{view.location.end_address }}</p>
+     <hr>
+     <div class="alerta">
+       <span class="alert" aria-hidden="true"></span>
+       <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} do fornecedor {{view.supplier?.name}}.</p>
+     </div>
   </div>
+
   <div class="header" *ngIf="type === 'packing'">
      <p>Detalhes da Embalagem </p>
-
   </div>
+
   <div class="header" *ngIf="type === 'plant'">
      <p>Detalhes da Planta </p>
-
   </div>
+
   <div class="header" *ngIf="type === 'tag'">
      <p>Detalhes da Tag </p>
-
   </div>
 
-
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close('cancelar')">Cancelar</button>
-    <button type="button" class="btn btn-secondary" (click)="delete()">Deletar</button>
+<div class="botoes">
+  <button class="botaoVoltar" (click)="activeModal.close('cancelar')">CANCELAR</button>
+  <button class="botaoDeletar" (click)="delete()">DELETAR</button>
 </div>
 </div>

@@ -1,3 +1,5 @@
+* { font-family: 'Roboto', sans-serif; }
+
 .modalFilho {
   max-width: 800px;
   width: 100%;
@@ -5,108 +7,10 @@
 .pac-container {
     z-index: 100000;
 }
-.mais {
-  width: 80px;
-  background-color: #6382c9;
-  padding: 5px;
-  color: white;
-  border: none;
-  border-radius: 0em;
-  height: 34px;
-  background-image: url("../../../assets/images/mais.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 15px;
-  float: right;
-}
-.titulo {
-  float: left;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-}
-.inicio {
-  /*position: relative;;*/
-}
-tbody {
-  border: none!important;
-}
-tr {
-  border-top-style: solid;
-  border-top-width: 0.1px;
-  border-top-color: rgba(99,130,201,0.2);
-}
-hr{
-  margin: 20px 0px 20px 0px;
-  border-color: #6382c9;
-  border-width: thin;
-}
 .tipos {
   display: inline-flex;
 }
-select {
-  width:100%;
-  border-radius: 0em;
-  height: 34px;
-}
-.descricao {
-  margin: 10px 0px 5px 0px}
-
-.modal-title {
-  font-size: 18px;
-  text-align: left;
-  display:inline-block;
-}
-.close {
-  font-size: 25px;
-  text-align: right;
-}
-.modal-header {
-  display: block;
-}
-.btn {
-  font-size: 16px;
-}
-* { font-family: 'Roboto', sans-serif; }
-
-.table {
-	font-size: 14px;
-}
-.cabecalho {
-  background-color: #6382c9;
-  color: white;
-}
-.tabela {
-  border-style: solid;
-  border-color: #6382c9;
-  border-width: 2px;
-}
-td {  background-color: white; }
-.header {
-  display: inline-grid;
-  border-bottom-style: solid;
-  border-bottom-color: grey;
-  border-bottom-width: thin;
-  margin-bottom: 15px;
-}
-.header span {
-  color: #EF5562;
-}
-.header p {
-  font-weight: bold;
-  width: 200px;
-}
-th, td {
-  border-bottom: none !important;
-  border: none !important;
-}
-.mapa {
-  /*background-color: aliceblue;*/
-  width: 100%;
-  /*height: 100px;*/
-  margin-top: 10px;
-}
-
-.botaoRegistrar, .botaoVoltar {
+.botaoRegistrar, .botaoVoltar, .botaoDeletar {
   border-style: solid;
   border-width: 2px;
   padding: 5px 0px;
@@ -114,7 +18,7 @@ th, td {
   font-size: 13px;
   font-family: 'Montserrat', sans-serif;
 }
-.botaoRegistrar:hover, .botaoVoltar:hover {
+.botaoRegistrar:hover, .botaoVoltar:hover, .botaoDeletar:hover {
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
   -webkit-transition: color 0.3s;
@@ -133,6 +37,15 @@ th, td {
   background-color: #6382c9;
   color: white;
 }
+.botaoDeletar {
+  background-color: white;
+  color: #D24444;
+  border-color: #D24444;
+}
+.botaoDeletar:hover {
+  background-color: #D24444;
+  color: white;
+}
 .botaoVoltar {
   background-color: white;
   color: #777;
@@ -144,9 +57,22 @@ th, td {
 }
 .botoes {
   text-align: center;
-  padding: 30px 0px 15px 0px;
+  padding: 15px 0px 15px 0px;
 }
-.form-control {
-  border-radius: 0em!important;
-  font-size: 15px;
+
+.bold {
+  font-weight: bold;
+}
+.alerta {
+  display: flex;
+}
+.alert {
+  width: 40px;
+  height: 30px;
+  background-image: url("../../../assets/images/alert.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 35px;
+  margin-right: 15px;
+  margin-top: 10px
 }

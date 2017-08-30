@@ -229,3 +229,6 @@ hotTable {
   color: white;
   border-left: 1px solid #6382c9;
 }
+/*.google-map {
+  height: cal(100% -40px);
+}*/

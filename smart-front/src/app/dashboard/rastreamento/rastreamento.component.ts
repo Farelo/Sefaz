@@ -62,15 +62,13 @@ export class RastreamentoComponent implements OnInit {
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
     this.marker.plant = opt.name;
-
     marker.nguiMapComponent.openInfoWindow('iw', marker);
-    // console.log("antes");
-    this.lala();
-    // console.log("depois");
+    this.carregarMudancas();
   }
 
   ngOnInit() {
     this.loadDepartmentsByPlant();
+    this.carregarTamanho();
   }
 
   open(id) {
@@ -80,8 +78,14 @@ export class RastreamentoComponent implements OnInit {
       modalRef.componentInstance.packings = packings;
     });
   }
+  carregarTamanho() {
+    var map = $('#map');
+    var nguimap = map.children(':nth-child(1)');
+    var googleMap = nguimap.children(':nth-child(1)').css({'position' : 'absolute'});
+    googleMap.css({'height' : 'calc(100% - 42px)'});
+  }
 
-  lala() {
+  carregarMudancas() {
     var iwOuter = $('.gm-style-iw');
     var iwBackground = iwOuter.prev();
     iwBackground.css({'border' : '1px solid #000'});
