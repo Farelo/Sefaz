@@ -1102,6 +1102,54 @@
         }
       }
     },
+    "/department/list/pagination/{limit}/{page}/plant/{id}": {
+      "x-swagger-router-controller": "department_controller",
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Get all departments on the system by pagination and plant",
+        "description": "",
+        "operationId": "department_list_pagination_by_plant",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of departments that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns departments related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The especific id that returns departments related a this plant",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/department/list/all": {
       "x-swagger-router-controller": "department_controller",
       "get": {
@@ -2407,6 +2455,54 @@
         }
       }
     },
+    "/packing/list/pagination/{limit}/{page}/plant/{id}": {
+      "x-swagger-router-controller": "packing_controller",
+      "get": {
+        "tags": [
+          "Packing"
+        ],
+        "summary": "Get all packings on the system by pagination by plant",
+        "description": "",
+        "operationId": "packing_list_pagination_by_plant",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns packings related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The especific id that returns packings related a this plant",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/packing/list/pagination/attribute/{limit}/{page}/{attr}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
@@ -2915,9 +3011,34 @@
         "tags": [
           "Plant"
         ],
-        "summary": "Get all plants on the system",
+        "summary": "Get all plants on the system without supplier and logistic operator",
         "description": "",
         "operationId": "list_all",
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/plant/list/general": {
+      "x-swagger-router-controller": "plant_controller",
+      "get": {
+        "tags": [
+          "Plant"
+        ],
+        "summary": "Get all plants on the system",
+        "description": "",
+        "operationId": "list_all_general",
         "responses": {
           "200": {
             "description": "Message",

@@ -7,6 +7,7 @@ const successHandlerPagination   = require('../helpers/responses/successHandlerP
 const errorHandler               = require('../helpers/responses/errorHandler');
 const query                      = require('../helpers/queries/complex_queries_departments');
 const mongoose                   = require('mongoose');
+const ObjectId                   = require('mongoose').Types.ObjectId;
 const department                 = mongoose.model('Department');
 const _                          = require("lodash");
 mongoose.Promise                 = global.Promise;
@@ -65,6 +66,21 @@ exports.department_delete = function(req, res) { 
  */
 exports.department_list_pagination = function(req, res) { 
   department.paginate({}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['plant'],
+      sort: {
+        _id: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list gc16 registers by pagination'));
+};
+/**
+ * List of departments by plant
+ */
+exports.department_list_pagination_by_plant = function(req, res) { 
+  department.paginate({plant: new ObjectId(req.swagger.params.id.value)}, {
       page: parseInt(req.swagger.params.page.value),
       populate: ['plant'],
       sort: {

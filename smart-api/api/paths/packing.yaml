@@ -79,6 +79,39 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /packing/list/pagination/{limit}/{page}/plant/{id}:
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - "Packing"
+      summary: "Get all packings on the system by pagination by plant"
+      description: ""
+      operationId: packing_list_pagination_by_plant
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of packings that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns packings related a this page"
+        required: true
+        type: string
+      - in: "path"
+        name: "id"
+        description: "The especific id that returns packings related a this plant"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /packing/list/pagination/attribute/{limit}/{page}/{attr}:
     x-swagger-router-controller: packing_controller
     get:

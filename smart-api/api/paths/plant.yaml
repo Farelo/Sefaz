@@ -56,9 +56,26 @@ paths:
     get:
       tags:
         - "Plant"
-      summary: "Get all plants on the system"
+      summary: "Get all plants on the system without supplier and logistic operator"
       description: ""
       operationId: list_all
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /plant/list/general:
+    x-swagger-router-controller: plant_controller
+    get:
+      tags:
+        - "Plant"
+      summary: "Get all plants on the system"
+      description: ""
+      operationId: list_all_general
       responses:
         200:
           description: "Message"

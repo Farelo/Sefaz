@@ -29,7 +29,13 @@ export class RastreamentoComponent implements OnInit {
     lat: null,
     lng: null,
     plant: null,
-    departments: null
+    departments: null,
+    packings: null,
+    department: null,
+    packing: null,
+    nothing: null,
+    isSupplier: null
+
   };
   numero: 1;
   plants = [];
@@ -38,7 +44,7 @@ export class RastreamentoComponent implements OnInit {
     private ref: ChangeDetectorRef,
     private departmentService: DepartmentService,
     private plantsService: PlantsService,
-    private PackingService: PackingService,
+    private packingService: PackingService,
     private router: Router,
     private route: ActivatedRoute,
     private modalService: NgbModal
@@ -46,11 +52,15 @@ export class RastreamentoComponent implements OnInit {
   ) { }
 
   loadDepartmentsByPlant() {
-    this.plantsService.retrieveAll()
+    this.plantsService.retrieveGeneral()
       .subscribe(result => {
         if(result.data.length > 0){
           for (let data of result.data) {
-            this.options.push({id: data._id,name: data.plant_name, position: [data.lat, data.lng]});
+            if(data.supplier){
+              this.options.push({id: data._id,name: data.plant_name, position: [data.lat, data.lng],isSupplier: true} );
+            }else{
+              this.options.push({id: data._id,name: data.plant_name, position: [data.lat, data.lng],isSupplier: false});
+            }
           }
           this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
         }
@@ -61,12 +71,33 @@ export class RastreamentoComponent implements OnInit {
     var marker = _a.target;
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
-    this.marker.plant = opt.name;
 
-    marker.nguiMapComponent.openInfoWindow('iw', marker);
-    // console.log("antes");
-    this.lala();
-    // console.log("depois");
+    this.departmentService.retrieveByPlants(10,1,opt.id).subscribe(result => {
+      this.marker.plant = opt.name;
+      this.marker.isSupplier = opt.isSupplier;
+      if(result.data.length > 0){
+        this.marker.department = true;
+        this.marker.packing = false;
+        this.marker.nothing = false;
+        this.marker.departments = result;
+        this.startWindow(marker) ;
+      }else{
+        this.packingService.retrieveByPlants(10,1,opt.id).subscribe(result => {
+          if(result.data.length > 0){
+            this.marker.department = false;
+            this.marker.packing = true;
+            this.marker.nothing = false;
+            this.marker.packings = result;
+            this.startWindow(marker) ;
+          }else{
+            this.marker.department = false;
+            this.marker.packing = false;
+            this.marker.nothing = true;
+            this.startWindow(marker) ;
+          }
+        })
+      }
+    })
   }
 
   ngOnInit() {
@@ -74,14 +105,15 @@ export class RastreamentoComponent implements OnInit {
   }
 
   open(id) {
-    this.PackingService.getPackingsByDepartment(id).subscribe(packings => {
+    this.packingService.getPackingsByDepartment(id).subscribe(packings => {
       const modalRef = this.modalService.open(ModalRastComponent);
         console.log(packings);
       modalRef.componentInstance.packings = packings;
     });
   }
 
-  lala() {
+  startWindow(marker) {
+    marker.nguiMapComponent.openInfoWindow('iw', marker);
     var iwOuter = $('.gm-style-iw');
     var iwBackground = iwOuter.prev();
     iwBackground.css({'border' : '1px solid #000'});

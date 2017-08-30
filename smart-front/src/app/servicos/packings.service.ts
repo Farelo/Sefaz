@@ -45,6 +45,12 @@ export class PackingService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  retrieveByPlants(limit: number, page: number, id: string): Observable<any> {
+    return this.http.get(environment.url + 'packing/list/pagination/'+ limit + '/'+ page +'/plant/'+id)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   retrieveAllNoBinded(supplier: any): Observable<any> {
 
     return this.http.get(environment.url + 'packing/list/all/nobinded/'+ supplier)

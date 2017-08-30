@@ -179,6 +179,21 @@ exports.packing_list_pagination = function(req, res) {
     .catch(_.partial(errorHandler, res, 'Error to list packings by Supplier'));
 };
 /**
+ * List of packings by pagination by plant
+ */
+exports.packing_list_pagination_by_plant = function(req, res) {
+  packing.paginate({actual_plant: new ObjectId(req.swagger.params.id.value)}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      sort: {
+        serial: 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list packings by Supplier'));
+};
+/**
  * List of packings by pagination by serial and code
  */
 exports.packing_list_pagination_by_code_serial = function(req, res) {

@@ -53,13 +53,21 @@ exports.plant_delete = function(req, res) { 
 
 };
 /**
- * List of all Plants
+ * List of all Plants without supplier and logistic_operator
  */
 exports.list_all = function(req, res) { 
   plant.find({
     "supplier": { $exists: false },
     "logistic_operator": { $exists: false }
   })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+};
+/**
+ * List of all Plants
+ */
+exports.list_all_general = function(req, res) { 
+  plant.find()
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read plant'));
 };

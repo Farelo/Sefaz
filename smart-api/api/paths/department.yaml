@@ -74,6 +74,39 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /department/list/pagination/{limit}/{page}/plant/{id}:
+    x-swagger-router-controller: department_controller
+    get:
+      tags:
+        - "Department"
+      summary: "Get all departments on the system by pagination and plant"
+      description: ""
+      operationId: department_list_pagination_by_plant
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of departments that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns departments related a this page"
+        required: true
+        type: string
+      - in: "path"
+        name: "id"
+        description: "The especific id that returns departments related a this plant"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /department/list/all:
     x-swagger-router-controller: department_controller
     get:
