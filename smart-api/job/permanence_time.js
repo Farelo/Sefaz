@@ -27,8 +27,11 @@ module.exports = {
 
         var date = new Date();
         var time = Math.round(Math.abs((p.permanence.date - date.getTime())));
+
         p.permanence.amount_days = time;
+
         p.permanence.time_exceeded = false;
+
         if(p.permanence.amount_days > 1000){
           p.permanence.time_exceeded = true;
           alert.find({ //Verifica se o alerta ja existe
@@ -68,6 +71,11 @@ module.exports = {
           }).then(() => resolve(p));
         }
       } else {
+        p.permanence = {
+          "amount_days": 0,
+          "date": 0,
+          "time_exceeded": false
+        };
         console.log("PERMANENCE TIME: NO CONFORMIDADE ABOUT THE PACKING: " + p._id);
         alert.remove({
           "packing": p._id,

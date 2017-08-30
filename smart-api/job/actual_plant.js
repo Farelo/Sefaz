@@ -3,11 +3,15 @@
 module.exports = function (packing, plants) {
   let distance = Infinity;
   let plant = {};
+
   plants.forEach(p => {
     let calculate = getDistanceFromLatLonInKm(packing.position.latitude,packing.position.longitude,p.lat, p.lng);
+
+
     if(calculate  < distance){
       distance = calculate;
       plant = p;
+
     }
   });
 

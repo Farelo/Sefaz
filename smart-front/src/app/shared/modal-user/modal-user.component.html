@@ -1,117 +1,130 @@
 <div class="modalFilho">
-<div class="listaUsuarios" *ngIf="(view=='GERENCIAR')">
-  <div class="inicio">
-  <h2 class="titulo">GERENCIAR USUÁRIOS</h2>
-  <div class="i2"><button class="mais" (click)="openAdd()"></button></div>
-  </div>
-  <br />
-  <br />
-  <div class="table-responsive tabela">
-    <table class="table">
-      <thead>
-        <tr class="cabecalho">
-          <th class="semBorda">E-mail</th>
-          <th  class="semBorda">Perfil</th>
-          <th  class="semBorda">Endereço</th>
-          <th  class="semBorda">UF</th>
-          <th  class="semBorda">Opções</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let user of users">
-        <tr>
+  <div class="listaUsuarios" *ngIf="(view=='GERENCIAR')">
+    <div class="inicio">
+      <h2 class="titulo">GERENCIAR USUÁRIOS</h2>
+      <div class="i2"><button class="mais" (click)="openAdd()"></button></div>
+    </div>
+    <br />
+    <br />
+    <div class="table-responsive tabela">
+      <table class="table">
+        <thead>
+          <tr class="cabecalho">
+            <th class="semBorda">E-mail</th>
+            <th class="semBorda">Perfil</th>
+            <th class="semBorda">Endereço</th>
+            <th class="semBorda">UF</th>
+            <th class="semBorda">Opções</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let user of users">
+          <tr>
             <td>{{user.email}}</td>
-          <td>{{user.propfile === '1' ? 'Fornecedor' : 'Other'}}</td>
-          <td>{{user.address}}</td>
-          <td>{{user.uf}}</td>
-          <td>opções</td>
-        </tr>
-      </tbody>
-    </table>
+            <td>{{user.profile === 1 ? 'Fornecedor' : 'Other'}}</td>
+            <td>{{user.street}}</td>
+            <td>{{user.uf}}</td>
+            <td>opções</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="botoes">
+      <button class="botaoVoltar" (click)="activeModal.dismiss('Cross click')">VOLTAR</button>
+    </div>
   </div>
-  <div class="botoes">
-    <button class="botaoVoltar" (click)="activeModal.dismiss('Cross click')">VOLTAR</button>
-  </div>
-</div>
 
-<div class="adicionarUsuarios" *ngIf="(view=='ADICIONAR')">
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <div class="adicionarUsuarios" *ngIf="(view=='ADICIONAR')">
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
-  <h2 class="titulo">ADICIONAR USUÁRIO</h2><br />
-  <hr />
-  <div class="row">
-    <div class="col-sm-4">
-      <p class="descricao">PERFIL DO USUÁRIO</p>
-      <select [(ngModel)]="perfil">
+    <h2 class="titulo">ADICIONAR USUÁRIO</h2><br />
+    <hr />
+    <div class="row">
+      <div class="col-sm-4">
+        <p class="descricao">PERFIL DO USUÁRIO</p>
+        <select [(ngModel)]="perfil">
          <option>FORNECEDOR</option>
          <option>OPERADOR LOGÍSTICO</option>
          <option>FUNCIONÁRIO</option>
       </select>
+      </div>
     </div>
-  </div>
 
-  <div class="row" *ngIf="(perfil=='FORNECEDOR')">
-    <div class="col-sm-4">
-        <p class="descricao">NOME</p>
-        <input type="text" class="form-control" [(ngModel)]="supplier.name">
-        <p class="descricao">E-MAIL</p>
-        <input type="text" class="form-control" [(ngModel)]="profile.email">
-        <p class="descricao">PASSWORD</p>
-        <input type="password" class="form-control" [(ngModel)]="profile.password">
-        <p class="descricao">CEP</p>
-        <input type="text" class="form-control" mask='00000-000' [(ngModel)]="profile.cep"  (blur)="getAddress()">
-    </div>
-    <div class="col-sm-4">
-        <p class="descricao">CIDADE</p>
-        <input type="text" class="form-control" [(ngModel)]="profile.city">
-        <p class="descricao">ENDEREÇO</p>
-        <input type="text" class="form-control" [(ngModel)]="profile.address">
-        <p class="descricao">BAIRRO</p>
-        <input type="text" class="form-control" [(ngModel)]="profile.neighborhood">
-        <p class="descricao">UF</p>
-        <input type="text" class="form-control" [(ngModel)]="profile.uf">
-    </div>
-    <div class="col-sm-4">
-      <p class="descricao">TELEFONE</p>
-      <input type="text" class="form-control" [(ngModel)]="profile.telephone">
-      <p class="descricao">CELULAR</p>
-      <input type="text" class="form-control"[(ngModel)]="profile.cellphone" >
-      <p class="descricao">DUNS</p>
-      <input type="text" class="form-control" [(ngModel)]="supplier.duns">
-    </div>
-  </div>
+    <div *ngIf="(perfil=='FORNECEDOR')">
+      <form novalidate (ngSubmit)="onSubmit(supplier)" [formGroup]="supplier">
+        <div class="row">
+          <div class="col-sm-4">
+            <p class="descricao">NOME</p>
+            <input type="text" class="form-control" [(ngModel)]="name" placeholder="Digite o nome do fornecedor" formControlName="name">
+            <p class="descricao">DUNS</p>
+            <input type="text" class="form-control" [(ngModel)]="duns" placeholder="Digite o duns do fornecedor" formControlName="duns">
+            <div formGroupName="profile">
+              <p class="descricao">E-MAIL</p>
+              <input type="text" class="form-control" [(ngModel)]="email" placeholder="Digite o email do fornecedor" formControlName="email">
+              <p class="descricao">PASSWORD</p>
+              <input type="password" class="form-control" [(ngModel)]="password" formControlName="password">
+            </div>
+          </div>
+          <div class="col-sm-4" formGroupName="profile">
 
-  <div class="row" *ngIf="(perfil=='FUNCIONÁRIO')">
-    <div class="col-sm-4">
-      <p class="descricao">NOME</p>
-      <input type="text" class="form-control">
-      <p class="descricao">E-MAIL</p>
-      <input type="text" class="form-control">
-      <p class="descricao">PASSWORD</p>
-      <input type="password" class="form-control">
-      <p class="descricao">CEP</p>
-      <input type="text" class="form-control" [(ngModel)]="profile.cep"  (blur)="getAddress()">
-    </div>
-    <div class="col-sm-4">
-      <p class="descricao">CIDADE</p>
-      <input type="text" class="form-control" [(ngModel)]="profile.city">
-      <p class="descricao">ENDEREÇO</p>
-      <input type="text" class="form-control" [(ngModel)]="profile.address">
-      <p class="descricao">BAIRRO</p>
-      <input type="text" class="form-control" [(ngModel)]="profile.neighborhood">
-      <p class="descricao">UF</p>
-      <input type="text" class="form-control" [(ngModel)]="profile.uf">
-    </div>
-    <div class="col-sm-4">
-      <p class="descricao">TELEFONE</p>
-      <input type="text" class="form-control">
-      <p class="descricao">CELULAR</p>
-      <input type="text" class="form-control">
-    </div>
-  </div>
+            <p class="descricao">CEP</p>
+            <input type="text" class="form-control" [(ngModel)]="cep" (blur)="getAddress()" formControlName="cep">
+            <p class="descricao">CIDADE</p>
+            <input type="text" class="form-control" [(ngModel)]="city" formControlName="city" disabled>
+            <p class="descricao">ENDEREÇO</p>
+            <input type="text" class="form-control" [(ngModel)]="street" formControlName="street" disabled>
+            <p class="descricao">BAIRRO</p>
+            <input type="text" class="form-control" [(ngModel)]="neighborhood" formControlName="neighborhood" disabled>
+          </div>
+          <div class="col-sm-4" formGroupName="profile">
+            <p class="descricao">UF</p>
+            <input type="text" class="form-control" [(ngModel)]="uf" formControlName="uf" disabled>
+            <p class="descricao">TELEFONE</p>
+            <input type="text" class="form-control" [(ngModel)]="telephone" formControlName="telephone">
+            <p class="descricao">CELULAR</p>
+            <input type="text" class="form-control" [(ngModel)]="cellphone" formControlName="cellphone">
+            <p class="descricao"></p>
+            <div class="informacoes">
+              <div class="bigger2">
+                <div class="fromSun"></div>
+              </div>
+              <span class="forn">{{this.supplier.controls.plant['controls'].location.value}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4" formGroupName="plant">
+            <p class="descricao">NOME DA PLANTA</p>
+            <input type="text" class="form-control" [(ngModel)]="plant_name" placeholder="Digite o nome da planta do fornecedor" formControlName="plant_name">
+          </div>
+          <div class="col-sm-4">
+            <p class="descricao">DIGITE O LOCAL DA PLANTA</p>
+            <input places-auto-complete (place_changed)="placeChanged($event)" [types]="['geocode']" class="form-control" style="margin-bottom: 10px;" placeholder="Digite o local da planta" />
 
-  <div class="row" *ngIf="(perfil=='OPERADOR LOGÍSTICO')">
-    <div class="col-sm-4">
+          </div>
+        </div>
+        <div class="row" style="height: 200px">
+          <div class="col-sm-12 mapa">
+            <ngui-map [center]="center" (click)="onClick($event)" class="mapaNeto" (mapReady$)="onMapReady($event)">
+              <marker [position]="pos"></marker>
+            </ngui-map>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="botoes">
+              <button class="botaoVoltar" (click)="closeAdd()">VOLTAR</button>
+              <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="row" *ngIf="(perfil=='FUNCIONÁRIO')">
+      <div class="col-sm-4">
         <p class="descricao">NOME</p>
         <input type="text" class="form-control">
         <p class="descricao">E-MAIL</p>
@@ -119,9 +132,9 @@
         <p class="descricao">PASSWORD</p>
         <input type="password" class="form-control">
         <p class="descricao">CEP</p>
-        <input type="text" class="form-control" [(ngModel)]="profile.cep"  (blur)="getAddress()">
-    </div>
-    <div class="col-sm-4">
+        <input type="text" class="form-control" [(ngModel)]="profile.cep" (blur)="getAddress()">
+      </div>
+      <div class="col-sm-4">
         <p class="descricao">CIDADE</p>
         <input type="text" class="form-control" [(ngModel)]="profile.city">
         <p class="descricao">ENDEREÇO</p>
@@ -130,18 +143,47 @@
         <input type="text" class="form-control" [(ngModel)]="profile.neighborhood">
         <p class="descricao">UF</p>
         <input type="text" class="form-control" [(ngModel)]="profile.uf">
+      </div>
+      <div class="col-sm-4">
+        <p class="descricao">TELEFONE</p>
+        <input type="text" class="form-control">
+        <p class="descricao">CELULAR</p>
+        <input type="text" class="form-control">
+      </div>
     </div>
-    <div class="col-sm-4">
+
+    <div class="row" *ngIf="(perfil=='OPERADOR LOGÍSTICO')">
+      <div class="col-sm-4">
+        <p class="descricao">NOME</p>
+        <input type="text" class="form-control">
+        <p class="descricao">E-MAIL</p>
+        <input type="text" class="form-control">
+        <p class="descricao">PASSWORD</p>
+        <input type="password" class="form-control">
+        <p class="descricao">CEP</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.cep" (blur)="getAddress()">
+      </div>
+      <div class="col-sm-4">
+        <p class="descricao">CIDADE</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.city">
+        <p class="descricao">ENDEREÇO</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.address">
+        <p class="descricao">BAIRRO</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.neighborhood">
+        <p class="descricao">UF</p>
+        <input type="text" class="form-control" [(ngModel)]="profile.uf">
+      </div>
+      <div class="col-sm-4">
         <p class="descricao">TELEFONE</p>
         <input type="text" class="form-control">
         <p class="descricao">CELULAR</p>
         <input type="text" class="form-control">
         <p class="descricao">VINCULAR FORNECEDORES</p>
         <input type="text" class="form-control">
+      </div>
     </div>
-  </div>
 
-  <div class="row" *ngIf="((perfil=='FORNECEDOR')||(perfil=='OPERADOR LOGÍSTICO'))">
+    <!-- <div class="row" *ngIf="((perfil=='FORNECEDOR')||(perfil=='OPERADOR LOGÍSTICO'))">
     <div class="col-sm-4">
         <p class="descricao">NOME DA PLANTA</p>
         <input type="text" class="form-control" [(ngModel)]="plant.name">
@@ -153,50 +195,43 @@
         [types]="['geocode']" class="form-control" style="margin-bottom: 10px;"placeholder="Digite o local da planta"/>
 
     </div>
-  </div>
+  </div> -->
 
-  <div class="row mapaPai" style="height: 200px" *ngIf="((perfil=='FORNECEDOR')||(perfil=='OPERADOR LOGÍSTICO'))">
+    <!-- <div class="row mapaPai" style="height: 200px" *ngIf="((perfil=='FORNECEDOR')||(perfil=='OPERADOR LOGÍSTICO'))">
     <div class="col-sm-12 mapa">
         <ngui-map [center]="center" (click)="onClick($event)" class="mapaNeto">
             <marker  [position]="pos"></marker>
           </ngui-map>
     </div>
+  </div> -->
+
   </div>
 
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="botoes">
-        <button class="botaoVoltar" (click)="closeAdd()">VOLTAR</button>
-        <button class="botaoRegistrar" (click)="adicionarUsuario()">ADICIONAR</button>
+  <div class="divEditar" *ngIf="(view=='EDITAR')">
+    <div class="inicio">
+      <h2 class="titulo">EDITAR</h2>
+      <BR />
+      <HR />
+    </div>
+    <div class="row">
+      <p>Aqui tu coloca as informações que a pessoa que tá logada pode editar dela mesma</p>
+      <div class="col-sm-4">
+        <p class="descricao">NOME</p>
+        <input type="text" class="form-control" [(ngModel)]="supplier.name">
+      </div>
+      <div class="col-sm-4">
+        <p class="descricao">NOME</p>
+        <input type="text" class="form-control" [(ngModel)]="supplier.name">
+      </div>
+      <div class="col-sm-4">
+        <p class="descricao">NOME</p>
+        <input type="text" class="form-control" [(ngModel)]="supplier.name">
       </div>
     </div>
-  </div>
-</div>
-
-<div class="divEditar" *ngIf="(view=='EDITAR')">
-  <div class="inicio">
-    <h2 class="titulo">EDITAR</h2><BR />
-    <HR />
-  </div>
-  <div class="row">
-    <p>Aqui tu coloca as informações que a pessoa que tá logada pode editar dela mesma</p>
-    <div class="col-sm-4">
-      <p class="descricao">NOME</p>
-      <input type="text" class="form-control" [(ngModel)]="supplier.name">
-    </div>
-    <div class="col-sm-4">
-      <p class="descricao">NOME</p>
-      <input type="text" class="form-control" [(ngModel)]="supplier.name">
-    </div>
-    <div class="col-sm-4">
-      <p class="descricao">NOME</p>
-      <input type="text" class="form-control" [(ngModel)]="supplier.name">
+    <div class="botoes">
+      <button class="botaoVoltar" (click)="closeAll(); activeModal.dismiss('Cross click')">CANCELAR</button>
+      <button class="botaoRegistrar" (click)="adicionarUsuario()">SALVAR</button>
     </div>
   </div>
-  <div class="botoes">
-    <button class="botaoVoltar" (click)="closeAll(); activeModal.dismiss('Cross click')">CANCELAR</button>
-    <button class="botaoRegistrar" (click)="adicionarUsuario()">SALVAR</button>
-  </div>
-</div>
 
 </div>

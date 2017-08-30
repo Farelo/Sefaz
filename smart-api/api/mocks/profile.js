@@ -6,9 +6,9 @@ const profileSchema = new mongoose.Schema({
       password: {type: String, required: true},
       email: {type: String, required: true , unique: true},
       city: {type: String, required: true },
-      address: {type: String, required: true },
-      telephone: {type: String, required: true },
-      cellphone: {type: String, required: true },
+      street: {type: String, required: true },
+      telephone: {type: String},
+      cellphone: {type: String},
       cep: {type: String, required: true },
       neighborhood: {type: String, required: true },
       uf: {type: String, required: true }

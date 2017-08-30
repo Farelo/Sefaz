@@ -1,67 +1,45 @@
-export class GC16 {
-  public annualVolume: number;
-  public capacity: number;
-  public productiveDays: number;
-  public containerDays: number;
-  public project: any;
-  public packing: string;
-  public supplier: any;
-  public _id : string;
-  public factoryStock: {
-    days: number,
+export interface GC16 {
+   annualVolume: number;
+   capacity: number;
+   productiveDays: number;
+   containerDays: number;
+   project: any;
+   packing: string;
+   supplier: any;
+   _id : string;
+   factoryStock: {
+    fsDays: number,
     fs:  number,
     fsMax:  number,
     QuantContainerfs:  number,
     QuantContainerfsMax:  number
   };
-  public supplierStock: {
-    days:  number,
+   supplierStock: {
+    ssDays:  number,
     ss:  number,
     ssMax:  number,
     QuantContainerSs:  number,
     QuantContainerSsMax:  number
   };
-  public transportationGoing: {
-    days:  number,
+   transportationGoing: {
+    tgDays:  number,
     tg:  number,
     QuantContainerTg:  number
   };
-  public transportantionBack: {
-    days:  number,
+   transportantionBack: {
+    tbDays:  number,
     tb:  number,
     QuantContainerTb:  number
   };
-  public frequency: {
-    days:  number,
+   frequency: {
+    fDays:  number,
     fr:  number,
     QuantTotalDays:  number,
     QuantContainer:  number
   };
-  public secutiryFactor: {
+   secutiryFactor: {
     percentage:  number,
     QuantTotalBuilt:  number,
     QuantContainer:  number
   };
-
-    public constructor(fields ?: {
-      annualVolume ?: number;
-      capacity ?: number;
-      productiveDays ?: number;
-      factoryStock?: any ;
-      supplierStock?: any ;
-      transportationGoing?: any ;
-      transportantionBack?: any ;
-      frequency?: any ;
-      secutiryFactor?: any ;
-      project?: any;
-      packing?: string;
-      supplier?: any;
-}
-){
-
-  if (fields) Object.assign(this, fields);
-
-}
-
-
 }

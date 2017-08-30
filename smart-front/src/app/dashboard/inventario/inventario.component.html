@@ -16,7 +16,7 @@
     <div *ngIf="(escolhaGeral == 'FORNECEDOR')" class="row escolhaFornecedor">
       <div class="col-sm-4">
         <p>DUNS</p>
-        <select2 class="selectInventario" [data]="suppliers?.data" (valueChanged)="supplierInventory($event)" [options]="{ placeholder: 'Search ..'}"></select2>
+        <select2  [data]="suppliers?.data" (valueChanged)="supplierInventory($event)" [options]="{ placeholder: 'Search ..'}"></select2>
       </div>
       <div class="col-sm-4" *ngIf="this.name_supplier">
         <p>FORNECEDOR:</p>
@@ -102,6 +102,9 @@
         </tr>
       </tbody>
     </table>
+    <div class="classVazio" *ngIf="general.data?.length < 1">
+      Ainda não existem embalagens cadastradas no sistema.
+    </div>
   </div>
 </div>
 <div *ngIf="(escolhaGeral == 'FORNECEDOR')">
@@ -127,13 +130,16 @@
           <td>{{packing.code}}</td>
           <td>{{packing.description}}</td>
           <td>{{packing.quantity}}</td>
-          <td>{{packing.actual_plant?.name || '-'}}</td>
+          <td>{{packing.actual_plant?.plant_name || '-'}}</td>
 
           <td class="text-center"> <i class="glyphicon glyphicon-eye-open"></i></td>
 
         </tr>
       </tbody>
     </table>
+    <div class="classVazio" *ngIf="supplier.data?.length < 1">
+      Ainda não existem embalagens associadas a esse fornecedor.
+    </div>
   </div>
 </div>
 
@@ -161,7 +167,7 @@
                                                         totalItems: permanence.meta.total_docs}">
           <td>{{packing.code}}</td>
           <td>{{packing.serial}}</td>
-          <td>{{packing.actual_plant?.name || '-'}}</td>
+          <td>{{packing.actual_plant?.plant_name || '-'}}</td>
           <td>{{packing.permanence?.amount_days || '-'}}</td>
           <td>{{packing.supplier?.duns || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
@@ -169,6 +175,9 @@
         </tr>
       </tbody>
     </table>
+    <div class="classVazio" *ngIf="permanence.data?.length < 1">
+      Realize uma pesquisa valida.
+    </div>
   </div>
 </div>
 
@@ -199,12 +208,15 @@
           <td>{{packing.date | date:'shortTime'}}</td>
           <td>{{packing.supplier?.duns || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
-          <td>{{packing.plant?.name || '-'}}</td>
+          <td>{{packing.plant?.plant_name || '-'}}</td>
           <td>{{packing.permanence_time || '-'}}</td>
           <td>{{packing.packing?.gc16?.supplierStock?.days || '-'}}</td>
         </tr>
 
       </tbody>
+      <div class="classVazio" *ngIf="permanence.data?.length < 1">
+        Não existem embalagens cadastradas com essas credências.
+      </div>
     </table>
   </div>
 </div>
@@ -231,13 +243,16 @@
                                                         totalItems: battery.meta.total_docs}">
           <td>{{packing.code}}</td>
           <td>{{packing.serial}}</td>
-          <td>{{packing.actual_plant?.name || '-'}}</td>
+          <td>{{packing.actual_plant?.plant_name || '-'}}</td>
           <td>{{packing?.battery || 0}} %</td>
           <td>{{packing?.battery > 80 ? 'Alta' : (packing?.battery > 40 ? 'Medio' : 'Baixa')}}</td>
 
         </tr>
       </tbody>
     </table>
+    <div class="classVazio" *ngIf="battery.data?.length < 1">
+      Ainda não foram cadastradas embalagens no sistema.
+    </div>
   </div>
 </div>
 
@@ -268,7 +283,7 @@
           <td>{{packing.serial}}</td>
           <td>{{packing.supplier?.duns}}</td>
           <td>{{packing.supplier?.name}}</td>
-          <td>{{packing.actual_plant?.name || 'Não Registrado'}}</td>
+          <td>{{packing.actual_plant?.plant_name || 'Não Registrado'}}</td>
           <td>{{packing.quantity }}</td>
           <td>{{packing.gc16?.supplierStock?.QuantContainerSs || '-'}}</td>
           <td>{{packing.gc16?.supplierStock?.QuantContainerSsMax || '-'}}</td>
@@ -278,6 +293,9 @@
         </tr>
       </tbody>
     </table>
+    <div class="classVazio" *ngIf="quantity.data?.length < 1">
+      Realize uma pesquisa valida.
+    </div>
   </div>
   <div class="resumo">
     <h3 class="definicao">TOTAL: </h3><h3 class="numero">{{quantity.meta?.total_packings || 0}}</h3>

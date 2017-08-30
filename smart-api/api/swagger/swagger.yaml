@@ -1568,6 +1568,34 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/ErrorResponse'
+  '/packing/retrieve/code/{code}/supplier/{supplier}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Get a packing on the system by supplier and code
+      description: ''
+      operationId: packing_read_by_supplierAndcode
+      parameters:
+        - in: path
+          name: supplier
+          description: The supplier that needs to be fetched
+          required: true
+          type: string
+        - in: path
+          name: code
+          description: The code that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   '/packing/list/pagination/{limit}/{page}':
     x-swagger-router-controller: packing_controller
     get:
@@ -3128,7 +3156,7 @@ definitions:
   Plant:
     type: object
     properties:
-      name:
+      plant_name:
         type: string
   Profile:
     type: object

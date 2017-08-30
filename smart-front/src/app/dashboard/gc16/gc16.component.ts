@@ -4,6 +4,8 @@ import { GC16 } from '../../shared/models/gc16';
 import { SuppliersService } from '../../servicos/suppliers.service';
 import { PackingService } from '../../servicos/packings.service';
 import { Pagination } from '../../shared/models/pagination';
+import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-gc16',
@@ -16,7 +18,8 @@ export class Gc16Component implements OnInit {
   constructor(
     private GC16Service: GC16Service,
     private SuppliersService: SuppliersService,
-    private PackingService: PackingService
+    private PackingService: PackingService,
+    private modalService: NgbModal
   ) { }
 
   loadGC16() {
@@ -32,9 +35,13 @@ export class Gc16Component implements OnInit {
 
   //refazer isso daqui, depende de muitas coisas para ser realizada a alteração
   removeGC16(object: any):void{
-    this.GC16Service.deleteGC16(object._id)
-    .subscribe(result => this.PackingService.updatePackingUnset(object.packing)
-    .subscribe(result => this.loadGC16(), err => {console.log(err)}));
+    const modalRef = this.modalService.open(ModalDeleteComponent);
+    modalRef.componentInstance.view = object;
+    modalRef.componentInstance.type = "gc16";
+
+    modalRef.result.then((result) => {
+      if(result === "remove") this.loadGC16();
+    });
   }
 
   pageChanged(page: any): void{

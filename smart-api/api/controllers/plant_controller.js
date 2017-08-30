@@ -6,7 +6,7 @@ const successHandler             = require('../helpers/responses/successHandler'
 const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
 const errorHandler               = require('../helpers/responses/errorHandler');
 const mongoose                   = require('mongoose');
-const plant                       = mongoose.model('Plant');
+const plant                      = mongoose.model('Plant');
 const _                          = require("lodash");
 mongoose.Promise                 = global.Promise;
 /**
@@ -67,7 +67,9 @@ exports.list_all = function(req, res) { 
  * List of all Plants by pagination
  */
 exports.plant_listPagination = function(req, res) { 
-  plant.paginate({}, {
+  plant.paginate({
+      "supplier": { $exists: false },
+      "logistic_operator": { $exists: false }}, {
       page: parseInt(req.swagger.params.page.value),
       sort: {
         _id: 1

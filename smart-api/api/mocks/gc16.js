@@ -16,31 +16,31 @@ const gc16Schema = new mongoose.Schema({
         ref: 'Supplier'
       },
       factoryStock: {
-        days: {type: Number, required: true},
+        fsDays: {type: Number, required: true},
         fs: {type: Number, required: true},
         fsMax: {type: Number, required: true},
         QuantContainerfs: {type: Number, required: true},
         QuantContainerfsMax: {type: Number, required: true}
       },
       supplierStock: {
-        days: {type: Number, required: true},
+        ssDays: {type: Number, required: true},
         ss: {type: Number, required: true},
         ssMax: {type: Number, required: true},
         QuantContainerSs: {type: Number, required: true},
         QuantContainerSsMax: {type: Number, required: true}
       },
       transportationGoing: {
-        days: {type: Number, required: true},
+        tgDays: {type: Number, required: true},
         tg: {type: Number, required: true},
         QuantContainerTg: {type: Number, required: true}
       },
       transportantionBack: {
-        days: {type: Number, required: true},
+        tbDays: {type: Number, required: true},
         tb: {type: Number, required: true},
         QuantContainerTb: {type: Number, required: true}
       },
       frequency: {
-        days: {type: Number, required: true},
+        fDays: {type: Number, required: true},
         fr: {type: Number, required: true},
         QuantTotalDays: {type: Number, required: true},
         QuantContainer: {type: Number, required: true}

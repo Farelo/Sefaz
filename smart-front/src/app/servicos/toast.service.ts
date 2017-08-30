@@ -72,6 +72,42 @@ export class ToastService {
      this.router.navigate([route]);
   }
 
+  remove(route:string, type: string){
+    var toastOptions:ToastOptions = {
+        title: "Removed successfully ",
+        msg: type + " inserted successfully into the sistema!",
+        showClose: true,
+        timeout: 5000,
+        theme: 'material',
+        onAdd: (toast:ToastData) => {
+            console.log('Toast ' + toast.id + ' has been added!');
+        },
+        onRemove: function(toast:ToastData) {
+            console.log('Toast ' + toast.id + ' has been removed!');
+        }
+    };
+     this.toastyService.success(toastOptions);
+     this.router.navigate([route]);
+  }
+
+  successModal(type: string){
+    var toastOptions:ToastOptions = {
+        title: "Created successfully ",
+        msg: type + " inserted successfully into the sistema!",
+        showClose: true,
+        timeout: 5000,
+        theme: 'material',
+        onAdd: (toast:ToastData) => {
+            console.log('Toast ' + toast.id + ' has been added!');
+        },
+        onRemove: function(toast:ToastData) {
+            console.log('Toast ' + toast.id + ' has been removed!');
+        }
+    };
+     this.toastyService.success(toastOptions);
+
+  }
+
 
   edit(route:string, type: string){
     var toastOptions:ToastOptions = {

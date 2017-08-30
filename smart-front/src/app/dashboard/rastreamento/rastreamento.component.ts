@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DepartmentService } from '../../servicos/departments.service';
+import { PlantsService } from '../../servicos/plants.service';
 import { Department } from '../../shared/models/department';
 import { ActivatedRoute } from '@angular/router';
-// import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { PackingService } from '../../servicos/packings.service';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
@@ -32,10 +32,12 @@ export class RastreamentoComponent implements OnInit {
     departments: null
   };
   numero: 1;
+  plants = [];
 
   constructor(
     private ref: ChangeDetectorRef,
-    private DepartmentService: DepartmentService,
+    private departmentService: DepartmentService,
+    private plantsService: PlantsService,
     private PackingService: PackingService,
     private router: Router,
     private route: ActivatedRoute,
@@ -44,16 +46,14 @@ export class RastreamentoComponent implements OnInit {
   ) { }
 
   loadDepartmentsByPlant() {
-    this.DepartmentService.retrieveByPlants()
-      .subscribe(departments => {
-
-        for (let department of departments) {
-          var plant = department.plant;
-          this.options.push({departments:department.departments,name: plant.name, position: [plant.lat, plant.lng]});
+    this.plantsService.retrieveAll()
+      .subscribe(result => {
+        if(result.data.length > 0){
+          for (let data of result.data) {
+            this.options.push({id: data._id,name: data.plant_name, position: [data.lat, data.lng]});
+          }
+          this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
         }
-
-        this.center = { lat: plant.lat, lng: plant.lng };
-
       }, err => { console.log(err) });
   }
 
@@ -62,7 +62,7 @@ export class RastreamentoComponent implements OnInit {
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
     this.marker.plant = opt.name;
-    this.marker.departments = opt.departments;
+
     marker.nguiMapComponent.openInfoWindow('iw', marker);
     // console.log("antes");
     this.lala();
@@ -114,7 +114,6 @@ iwCloseBtn.css({
   });
   }
   funcaoTop(){
-    console.log("lalalal");
     google.maps.event.addListener('iw', 'domready', function() {
     var iwOuter = $('.gm-style-iw');
     var iwBackground = iwOuter.prev();

@@ -1,9 +1,11 @@
 import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plant } from '../../../../shared/models/plant';
-import { PlantsService } from '../../../../servicos/plants.service';;
+import { PlantsService } from '../../../../servicos/plants.service';
+import { GeocodingService } from '../../../../servicos/geocoding.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ToastService } from '../../../../servicos/toast.service';
 
 @Component({
@@ -13,22 +15,37 @@ import { ToastService } from '../../../../servicos/toast.service';
 })
 export class PlantaEditarComponent implements OnInit {
   public inscricao: Subscription;
+  public plant: FormGroup;
+  public autocomplete: any;
+  public address: any = {};
+  public center: any;
+  public pos : any;
   constructor(
     private PlantsService: PlantsService,
     private router: Router,
     private ref: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private toastService: ToastService
-  ) { }
+    private toastService: ToastService,
+    private fb: FormBuilder,
+    private geocodingService: GeocodingService
 
-  plant: Plant = new Plant();
-  autocomplete: any;
-  address: any = {};
-  center: any;
-  pos : any;
+  ) {
+    this.plant = this.fb.group({
+      plant_name: ['', [Validators.required]],
+      lat: ['', [Validators.required]],
+      lng: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+      profile: [[], [Validators.required]],
+      _id:['', [Validators.required]],
+      __v: [''],
+    });
+  }
 
-  registerPlant():void {
-    this.PlantsService.updatePlant(this.plant._id,this.plant).subscribe( result => this.toastService.edit('/rc/cadastros/planta', 'Planta'), err => this.toastService.error(err) );
+
+
+  onSubmit({ value, valid }: { value: Plant, valid: boolean }): void {
+    if(valid)this.PlantsService.updatePlant(value._id,value)
+                 .subscribe( result => this.toastService.edit('/rc/cadastros/planta', 'Planta'), err => this.toastService.error(err) );
   }
 
   initialized(autocomplete: any) {
@@ -51,8 +68,8 @@ export class PlantaEditarComponent implements OnInit {
 
      this.pos = event.latLng;
 
-     this.plant.lat = event.latLng.lat();
-     this.plant.lng = event.latLng.lng();
+     this.plant.controls.lat.setValue(event.latLng.lat());
+     this.plant.controls.lng.setValue(event.latLng.lng());
      event.target.panTo(event.latLng);
     }
 
@@ -63,9 +80,11 @@ export class PlantaEditarComponent implements OnInit {
         (params: any)=>{
           let id = params ['id'];
           this.PlantsService.retrievePlant(id).subscribe(result => {
-            this.plant = result.data;
-            this.center = { lat: this.plant.lat, lng: this.plant.lng };
-            this.pos = [this.plant.lat, this.plant.lng];
+            (<FormGroup>this.plant)
+                    .setValue(result.data, { onlySelf: true });
+
+            this.center = { lat: this.plant.controls.lat.value, lng: this.plant.controls.lng.value };
+            this.pos = [this.plant.controls.lat.value,this.plant.controls.lng.value];
           });
         }
       )

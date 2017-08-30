@@ -21,7 +21,8 @@ import { Gc16EditarComponent } from './gc16/gc16-editar/gc16-editar.component';
 import { Select2Module } from 'ng2-select2';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ReactiveFormsModule} from '@angular/forms';
+import {ToastyModule} from 'ng2-toasty'
 
 @NgModule({
   imports: [
@@ -33,8 +34,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RastreamentoModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
+    ToastyModule.forRoot(),
     SimpleNotificationsModule.forRoot(),
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     // NgbModalOptions.forRoot(),
     DashboardRoutingModule,
     HotTableModule,

@@ -18,11 +18,11 @@ export class FornecedorCadastrarComponent implements OnInit {
   ) { }
 
   plants =  [];
-  supplier:  Supplier = new Supplier({plant:""});
+  // supplier:  Supplier = new Supplier({plant:""});
 
   registerSupplier():void {
 
-    this.SuppliersService.createSupplier(this.supplier).subscribe( result => this.router.navigate(['/rc/cadastros/fornecedor']) );
+    // this.SuppliersService.createSupplier(this.supplier).subscribe( result => this.router.navigate(['/rc/cadastros/fornecedor']) );
   }
 
   loadPlants():void {

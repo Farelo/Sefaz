@@ -7,6 +7,8 @@ const successHandlerPagination   = require('../helpers/responses/successHandlerP
 const errorHandler               = require('../helpers/responses/errorHandler');
 const mongoose                   = require('mongoose');
 const gc16                       = mongoose.model('GC16');
+const packing                    = mongoose.model('Packing');
+const ObjectId                   = require('mongoose').Types.ObjectId;
 const _                          = require("lodash");
 mongoose.Promise                 = global.Promise;
 /**
@@ -47,11 +49,11 @@ exports.gc16_update = function(req, res) {  
  * Delete an GC16
  */
 exports.gc16_delete = function(req, res) { 
-  gc16.remove({
-      _id: req.swagger.params.id.value
-    })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to delete gc16 register'));
+
+  packing.update({gc16: new ObjectId(req.swagger.params.id.value)}, {$unset: {gc16: 1}}, {upsert: true,multi: true})
+         .then(() => gc16.remove({_id: req.swagger.params.id.value}))
+         .then(_.partial(successHandler, res))
+         .catch(_.partial(errorHandler, res, 'Error to delete gc16 register'));
 
 };
 /**

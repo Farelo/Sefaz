@@ -1,49 +1,59 @@
 <div class="base">
   <h1>REGISTRAR PLANTA</h1>
   <br />
-  <div class="row">
-    <div class="col-md-12">
+  <form novalidate (ngSubmit)="onSubmit(plant)" [formGroup]="plant">
+    <div class="row">
+      <div class="col-md-12">
 
-      <div class="campo">
-        <h3>LOCAL (Facilita a busca)</h3>
-        <input places-auto-complete (place_changed)="placeChanged($event)" [types]="['geocode']" class="form-control" style="margin-bottom: 10px;" placeholder="Digite o local da planta" />
-        <p>
-          <ngui-map [center]="center" (click)="onClick($event)">
-            <marker [position]="pos"></marker>
-          </ngui-map>
-        </p>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <p class="descricao">LATITUDE</p>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="plant.lat">
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <p class="descricao">LONGITUDE</p>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="plant.lng">
-      </div>
-    </div>
-    <br />
-    <div class="col-md-12">
-      <div class="campo">
-        <p class="descricao">NOME</p>
-        <p class="explicacao">Ex. "Planta B1"</p>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Magneto Marelli" aria-describedby="basic-addon2" [(ngModel)]="plant.name">
+        <div class="campo">
+          <h3>LOCAL (Facilita a busca)</h3>
+          <input places-auto-complete (place_changed)="placeChanged($event)" [types]="['geocode']" class="form-control" style="margin-bottom: 10px;" placeholder="Digite o local da planta" />
+          <p>
+            <ngui-map [center]="center" (click)="onClick($event)">
+              <marker [position]="pos"></marker>
+            </ngui-map>
+          </p>
         </div>
       </div>
+      <div class="col-md-12 informacoes">
+
+        <div class="bigger2">
+          <div class="fromSun"></div>
+        </div>
+        <span class="forn">{{this.plant.controls.location.value}}</span>
+
+      </div>
+      <div class="col-md-6">
+        <p class="descricao">LATITUDE</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2" [(ngModel)]="lat" formControlName="lng">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <p class="descricao">LONGITUDE</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2" [(ngModel)]="lng" formControlName="lng">
+        </div>
+      </div>
+      <br />
+      <div class="col-md-12">
+        <div class="campo">
+          <p class="descricao">NOME</p>
+          <p class="explicacao">Ex. "Planta B1"</p>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Digite o nome da planta" aria-describedby="basic-addon2" [(ngModel)]="plant_name" formControlName="plant_name">
+          </div>
+        </div>
+      </div>
+
+
     </div>
-
-
-  </div>
-  <br />
-  <div class="botoes">
-    <button routerLink="/rc/cadastros/planta" class="botaoVoltar">Voltar</button>
-    <button class="botaoRegistrar" (click)="registerPlant()">Registrar</button>
-  </div>
-  <Br />
+    <br />
+    <div class="botoes">
+      <button routerLink="/rc/cadastros/planta" class="botaoVoltar">Voltar</button>
+      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+    </div>
+    <Br />
+  </form>
 </div>

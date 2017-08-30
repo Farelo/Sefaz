@@ -15,7 +15,6 @@
     <thead>
       <tr class="cabecalho">
         <th>Codigo</th>
-        <th>Mac</th>
         <th class="opcoes">Opções</th>
       </tr>
     </thead>
@@ -25,7 +24,7 @@
                                                       currentPage: data.meta.page,
                                                       totalItems: data.meta.total_docs}">
         <td>{{tag.code}}</td>
-        <td class="penultima">{{tag.mac}}</td>
+
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', tag._id]">Editar</button>
           <button class="excluir" (click)="removeTags(tag._id)"  [disabled]="tag.status == 1">Excluir</button>

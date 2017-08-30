@@ -42,7 +42,10 @@ export class RotasComponent implements OnInit {
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.view = route;
     modalRef.componentInstance.type = "route";
-    //this.RoutesService.deleteRoute(route._id).subscribe(result =>   this.loadRoutes(), err => {console.log(err)})
+
+    modalRef.result.then((result) => {
+      if(result === "remove") this.loadRoutes();
+    });
   }
 
   ngOnInit() {

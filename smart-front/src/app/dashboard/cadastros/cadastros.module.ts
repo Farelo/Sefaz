@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { NguiMapModule } from '@ngui/map';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CadastrosComponent } from './cadastros.component';
@@ -35,6 +35,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     CommonModule,
     FormsModule,
     // SelectModule,
+    ReactiveFormsModule,
     NgbModule.forRoot(),
     CadastrosRoutingModule,
     NgxPaginationModule,

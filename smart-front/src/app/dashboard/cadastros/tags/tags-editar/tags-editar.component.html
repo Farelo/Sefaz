@@ -1,20 +1,20 @@
 <div class="base">
   <h1>EDITAR TAG</h1>
   <br />
-
+<form novalidate (ngSubmit)="onSubmit(tag)" [formGroup]="tag">
   <div class="campo">
     <p class="descricao">CÓDIGO DA TAG</p>
     <p class="explicacao">Ex: "1881160"</p>
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="1881160" aria-describedby="basic-addon2" [(ngModel)]="tag.code">
+      <input type="text" class="form-control" aria-describedby="basic-addon2" placeholder="Digite o código" [(ngModel)]="code" formControlName="code">
     </div>
   </div>
 
   <br />
   <div class="botoes">
     <button routerLink="/rc/cadastros/tags" class="botaoVoltar" >VOLTAR</button>
-    <button class="botaoRegistrar" (click)="registerTag()">SALVAR</button>
+    <button type="submit" class="botaoRegistrar" >REGISTRAR</button>
   </div>
-
+  </form>
 
 </div>

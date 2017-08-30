@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
@@ -43,7 +43,8 @@ export class InventarioComponent implements OnInit {
     private SuppliersService: SuppliersService,
     private router: Router,
     private route: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private ref: ChangeDetectorRef,
   ) { }
 
   inventory = [];
@@ -54,9 +55,6 @@ export class InventarioComponent implements OnInit {
     this.loadSuppliers();
     this.tamanhoSelect();
   }
-
-
-
 
   changeSelect(event){
 
@@ -72,8 +70,8 @@ export class InventarioComponent implements OnInit {
     });
   }
 
-  supplierInventory(event){
-
+  supplierInventory(event): void {
+    console.log(event);
     if(event){
       this.InventoryService.getInventorySupplier(10,this.general.meta.page,event.value).subscribe(result => {
         this.supplier = result;
@@ -104,11 +102,11 @@ export class InventarioComponent implements OnInit {
     if(this.permanenceSearchEquipamento && this.permanenceSearchSerial ){
       this.serial = true;
       this.InventoryService.getInventoryPackingHistoric(10,this.general.meta.page,this.permanenceSearchSerial).subscribe(result => {
-        console.log(result.data);
-         this.permanence = result.data.forEach( o => {
-            o.packing.permanence_time  = this.getTime(o.packing.permanence_time);
-            console.log(o.packing.permanence_time );
-          });
+        this.permanence  = result;
+        //  this.permanence.data = result.data.forEach( o => {
+        //     o.packing.permanence_time  = this.getTime(o.packing.permanence_time);
+        //     console.log(o.packing.permanence_time );
+        //   });
 
        }, err => {console.log(err)});
     }else if(this.permanenceSearchEquipamento){
@@ -137,9 +135,6 @@ export class InventarioComponent implements OnInit {
 
     this.SuppliersService.retrieveAll().subscribe(result => {
       this.suppliers = result;
-
-
-      this.suppliers = result;
     }, err => {console.log(err)});
   }
 
@@ -162,9 +157,5 @@ export class InventarioComponent implements OnInit {
            modalRef.componentInstance.packing = packing;
   }
 
-  // open() {
-  //   const modalRef = this.modalService.open(ModalAlertaComponent);
-  //   modalRef.componentInstance.name = 'World';
-  // }
 
 }

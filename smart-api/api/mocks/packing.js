@@ -11,7 +11,6 @@ const packingSchema = new mongoose.Schema({
   heigth: Number,
   length: Number,
   capacity: Number,
-  status: Number,
   battery: Number,
   problem: Boolean,
   missing: Boolean,
@@ -29,10 +28,6 @@ const packingSchema = new mongoose.Schema({
   packing_missing: {
     last_time: Number,
     time_countdown: Number,
-    route: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Route'
-    },
   },
   position: {
     latitude: Number,

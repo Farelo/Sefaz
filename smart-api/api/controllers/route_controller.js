@@ -7,6 +7,8 @@ const successHandlerPagination  = require('../helpers/responses/successHandlerPa
 const errorHandler              = require('../helpers/responses/errorHandler');
 const mongoose                  = require('mongoose');
 const route                     = mongoose.model('Route');
+const ObjectId                  = require('mongoose').Types.ObjectId;
+const packing                   = mongoose.model('Packing');
 const _                         = require("lodash");
 mongoose.Promise                = global.Promise;
 /**
@@ -46,11 +48,10 @@ exports.route_update = function(req, res) {  
  * Delete an Route
  */
 exports.route_delete = function(req, res) { 
-  route.remove({
-      _id: req.swagger.params.route_id.value
-    })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to delete route '));
+   packing.update({route: new ObjectId(req.swagger.params.route_id.value)}, {$unset: {route: 1}}, {upsert: true,multi: true})
+          .then(() => route.remove({_id: req.swagger.params.route_id.value}))
+          .then(_.partial(successHandler, res))
+          .catch(_.partial(errorHandler, res, 'Error to delete route '));
 };
 /**
  * List of all Routes

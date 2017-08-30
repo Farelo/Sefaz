@@ -104,6 +104,7 @@ function analysis(data){
           //não estava associado a nenhuma plant
           //VERIFICA A BATERIA
           //APENAS CRIAR
+
           p.actual_plant = plant._id;
           p.permanence = {
             "amount_days" : 0,
@@ -114,7 +115,10 @@ function analysis(data){
           //a data é utilizada como parametro para atualizar as informações, ja que ela é fixa
           evaluate_battery(p)//AVALIAR BATERIA - EMITIR ALERTA OU REMOVER CASO EXISTA ALERTA
             .then( p => remove_incorrect_local(p))//REMOVENDO OS ALERTAS CRIADOS QUANDO EXISTIA ROTAS
-            .then( p => Promise.all([packing.update({"_id": p._id}, p),historic.create(p)]))//ATUALIZAR EMBALAGEM COM AS NOVAS INFORMAçÔES E CRIAR HISTORICO (VERIFICAR SE É NECESSÀRIO ATUALIZAR o HISTORICOANTERIOR EM 1 HORA )
+            .then( p => {
+              // console.log(p);
+              Promise.all([packing.update({"_id": p._id}, p),historic.create(p)]);
+            })//ATUALIZAR EMBALAGEM COM AS NOVAS INFORMAçÔES E CRIAR HISTORICO (VERIFICAR SE É NECESSÀRIO ATUALIZAR o HISTORICOANTERIOR EM 1 HORA )
             .then( result => console.log("FINISHI VERTENTE 3"));
         }
 

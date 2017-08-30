@@ -1,68 +1,49 @@
 export class Packing {
-  public code: string;
-  public type: string;
-  public weigth: number;
-  public width: number;
-  public heigth: number;
-  public length: number;
-  public capacity: number;
-  public status: string;
-  public problem: boolean;
-  public missing: boolean;
-  public permanence_exceeded: boolean;
-  public last_time: string;
-  public amount_days: number;
-  public last_time_missing: string;
-  public time_countdown: number;
-  public correct_plant_factory: string;
-  public correct_plant_supplier: string;
-  public actual_plant: string;
-  public route: string;
-  public tag: any;
-  public department: string;
-  public supplier: any;
-  public project: any;
-  public hashPacking : string;
-  public serial : string;
-  public gc16 : string;
-  public _id : string;
-  public code_tag : string;
-
-    public constructor(fields ?: {
-      code?: string;
-      type?: string;
-      weigth?: number;
-      width?: number;
-      heigth?: number;
-      length?: number;
-      capacity?: number;
-      status?: string;
-      problem?: boolean;
-      missing?: boolean;
-      permanence_exceeded?: boolean;
-      last_time?: string;
-      amount_days?: number;
-      last_time_missing?: string;
-      time_countdown?: number;
-      correct_plant_factory?: string;
-      correct_plant_supplier?: string;
-      actual_plant?: string;
-      tag?: any;
-      route?: string;
-      department?: string;
-      supplier?: any;
-      project?: any;
-      hashPacking ?: string;
-      serial ?: string;
-      gc16 ?: string;
-      _id ?: string;
-      code_tag ?: string;
-}
-){
-
-  if (fields) Object.assign(this, fields);
-
-}
+  code: string;
+  type: string;
+  weigth: number;
+  width: number;
+  heigth: number;
+  length: number;
+  capacity: number;
+  status: number;
+  battery: number;
+  problem: boolean;
+  missing: boolean;
+  lastCommunication: number;
+  permanence: {
+    time_exceeded: boolean,
+    date: number,
+    amount_days: number
+  };
+  trip: {
+    time_exceeded: boolean,
+    date: number,
+    time_countdown: number,
+  };
+  packing_missing: {
+    last_time: number,
+    time_countdown: number,
+  };
+  position: {
+    latitude: number,
+    longitude: number,
+    accuracy: number,
+    date: number
+  };
+  temperature: number;
+  serial: string;
+  correct_plant_factory: string;
+  gc16: string;
+  route: string;
+  correct_plant_supplier:string;
+  actual_plant: string;
+  tag: string;
+  code_tag: string;
+  department: string;
+  supplier: string;
+  project: string;
+  hashPacking: string;
 
 
 }

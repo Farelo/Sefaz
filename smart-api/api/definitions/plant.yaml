@@ -2,5 +2,5 @@ definitions:
   Plant:
     type: object
     properties:
-      name:
+      plant_name:
         type: string

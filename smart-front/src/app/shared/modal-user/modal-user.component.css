@@ -150,3 +150,33 @@ th, td {
   border-radius: 0em!important;
   font-size: 15px;
 }
+
+/*Rotas cadastro*/
+.informacoes {
+  display: inherit;
+  /*margin: 5px 15px;*/
+  margin-bottom: 10px;
+}
+.bigger2 {
+  position: relative;
+  font-size: 12px;
+  color: #666666;
+  display: inline-block;
+  width: 25px
+}
+.fromSun {
+  width: 23px;
+  height: 32px;
+  vertical-align: middle;
+  -webkit-mask-box-image: url("../../../assets/images/local1.png");
+  background-color: #EF5562;
+}
+.forn {
+  padding-left: 5px;
+}
+.divisoria {
+  color: #6382c9;
+  border-color: #6382c9;
+  border-width: thin;
+  margin-bottom: 25px;
+}

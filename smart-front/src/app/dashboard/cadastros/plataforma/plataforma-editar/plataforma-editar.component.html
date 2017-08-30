@@ -1,18 +1,19 @@
 <div class="base">
   <h1>REGISTRAR PLATAFORMA</h1>
   <br />
-
+  <form novalidate (ngSubmit)="onSubmit(project)" [formGroup]="project">
     <div class="campo">
       <p class="descricao">NOME</p>
       <p class="explicacao">Ex. "Plataforma B1"</p>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Magneto Marelli" aria-describedby="basic-addon2" [(ngModel)]="project.name" >
+        <input type="text" class="form-control" placeholder="Digite o nome do projeto" aria-describedby="basic-addon2" [(ngModel)]="name" formControlName="name">
       </div>
     </div>
-<br />
-<div class="botoes">
-  <button routerLink="/rc/cadastros/plataforma" class="botaoVoltar" >Voltar</button>
-  <button class="botaoRegistrar" (click)="registerProject()" >Registrar</button>
-</div>
-<Br />
+    <br />
+    <div class="botoes">
+      <button routerLink="/rc/cadastros/plataforma" class="botaoVoltar">Voltar</button>
+      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+    </div>
+    <Br />
+  </form>
 </div>

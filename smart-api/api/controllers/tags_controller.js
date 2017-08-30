@@ -17,6 +17,7 @@ mongoose.Promise                 = global.Promise;
  * Create a Tags
  */
 exports.tags_create = function(req, res) {
+  console.log(req.body);
     token()
     .then(token => confirmDevice(token,req.body.code))
     .then(() => tags.create(req.body))

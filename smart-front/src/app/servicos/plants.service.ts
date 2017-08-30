@@ -27,7 +27,7 @@ export class PlantsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  updatePlant(id: string, plant: Plant): Observable<any>{
+  updatePlant(id: string, plant: any): Observable<any>{
     return this.http.put(environment.url + 'plant/update/' + id,plant)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));

@@ -24,7 +24,7 @@
                                                       itemsPerPage: data.meta.limit,
                                                       currentPage: data.meta.page,
                                                       totalItems: data.meta.total_docs}">
-        <td>{{plant.name}}</td>
+        <td>{{plant.plant_name}}</td>
 
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', plant._id]">Editar</button>

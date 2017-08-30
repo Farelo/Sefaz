@@ -28,8 +28,8 @@
                                                       totalItems: data.meta.total_docs}">
         <td>{{route.packing_code}}</td>
         <td>{{route.supplier.name}}</td>
-        <td>{{route.plant_supplier.name}}</td>
-        <td>{{route.plant_factory.name}}</td>
+        <td>{{route.plant_supplier.plant_name}}</td>
+        <td>{{route.plant_factory.plant_name}}</td>
         <td class="teste">
           <button class="editar botaoPlanta" >Editar</button>
           <button class="excluir" (click)="removeRoutes(route)">Excluir</button>

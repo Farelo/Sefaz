@@ -58,6 +58,12 @@ export class PackingService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  retrievePackingBySupplierAndCode(code: string,supplier: string): Observable<any>{
+    return this.http.get(environment.url + 'packing/retrieve/code/'+code+'/supplier/' + supplier)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
 
   retrieveInventory(limit: number, page: number): Observable<any>{
     return this.http.get(environment.url + 'packing/list/inventory/pagination/' + limit + '/' + page)
@@ -86,7 +92,7 @@ export class PackingService {
       .catch((error: any) =>  Observable.throw(error.json().error || 'Server error'));
   }
 
-  updateAllPacking(code: string, supplier: string, packing: Packing): Observable<any>{
+  updateAllPacking(code: string, supplier: string, packing: any): Observable<any>{
     return this.http.put(environment.url + 'packing/update/all/' + code + "/"+ supplier,packing)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));

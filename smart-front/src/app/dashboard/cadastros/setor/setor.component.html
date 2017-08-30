@@ -25,7 +25,7 @@
                                                       currentPage: data.meta.page,
                                                       totalItems: data.meta.total_docs}">
         <td>{{department.name}}</td>
-        <td>{{department.plant.name}}</td>
+        <td>{{department.plant.plant_name}}</td>
         <td class="teste">
           <button class="editar" >Editar</button>
           <button class="excluir" (click)="removeDepartment(department._id)">Excluir</button>

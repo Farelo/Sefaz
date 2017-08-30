@@ -1,25 +1,8 @@
-export class Plant {
-    public name: string;
-    public _id: string;
-    public lat: number;
-    public lng: number;
-    public logistic_operator: string;
-    public supplier: string;
-    public location: string;
-
-    public constructor(fields ?: {
-  name?: string,
-  _id?: string,
-  logistic_operator?: string,
-  supplier?: string,
-  lat?: number,
-  lng?: number
-}
-){
-
-  if (fields) Object.assign(this, fields);
-
-}
-
-
+export interface Plant {
+     plant_name: string;
+     _id: string;
+     lat: number;
+     lng: number;
+     logistic_operator: string;
+     supplier: string;
 }

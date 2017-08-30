@@ -9,6 +9,7 @@ import { Route } from '../../../../shared/models/route';
 import { Router } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
 import { ToastService } from '../../../../servicos/toast.service';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-rotas-cadastrar',
@@ -18,14 +19,25 @@ import { ToastService } from '../../../../servicos/toast.service';
 export class RotasCadastrarComponent implements OnInit {
   @ViewChild(DirectionsRenderer) directionsRendererDirective: DirectionsRenderer;
 
-  directionsRenderer: google.maps.DirectionsRenderer;
-  directionsResult: google.maps.DirectionsResult;
-
-  direction: any = {
+  public directionsRenderer: google.maps.DirectionsRenderer;
+  public directionsResult: google.maps.DirectionsResult;
+  public direction: any = {
     origin: '',
-    destination:'',
+    destination: '',
     travelMode: 'DRIVING'
   };
+  public autocomplete: any;
+  public address: any = {};
+  public center: any;
+  public pos: any;
+  public directions = false;
+  public plant_factory: any = "";
+  public route: FormGroup;
+  public suppliers =  [];
+  public plants = [];
+  public packings = [];
+  public choiced = false;
+  public choice_equipament = false;
 
   constructor(
     private PlantsService: PlantsService,
@@ -34,60 +46,62 @@ export class RotasCadastrarComponent implements OnInit {
     private RoutesService: RoutesService,
     private router: Router,
     private ref: ChangeDetectorRef,
-    private toastService: ToastService
-  ) { }
+    private toastService: ToastService,
+    private fb: FormBuilder
+  ) {
 
-  plants =  [];
-  packings = [];
-  public suppliers :any;
-  supplier : Supplier = new Supplier();
-  route : Route = new Route({packing_code:"",plant_factory:"", location: { distance: "", duration: "", start_address: "", end_address: ""}});
-  packing: Route = new Route({packing_code:""});
-  plant_supplier: any;
-  supplier_packing: any;
-  choiced = false;
-  choice_equipament = false;
-  partial_element = '';
-  autocomplete: any;
-  address: any = {};
-  center: any;
-  pos : any;
-  directions = false;
-  plant_factory : any = "";
+    this.route = this.fb.group({
+      supplier: ['', [Validators.required]],
+      plant_factory: ['', [Validators.required]],
+      plant_supplier: ['', [Validators.required]],
+      packing_code: ['', [Validators.required]],
+      hashPacking: ['', [Validators.required]],
+      location: this.fb.group({
+        distance: this.fb.group({
+          text: ['', [Validators.required]],
+          value: ['', [Validators.required]]
+        }),
+        duration: this.fb.group({
+          text: ['', [Validators.required]],
+          value: ['', [Validators.required]]
+        }),
+        start_address: ['', [Validators.required]],
+        end_address: ['', [Validators.required]]
+      })
+    });
+  }
 
+  onSubmit({ value, valid }: { value: Route, valid: boolean }): void {
 
+    this.route['controls'].hashPacking.setValue(this.route['controls'].supplier.value._id + this.route['controls'].packing_code.value.id);
 
-
-  registerRoute():void {
-
-
-      this.route.hashPacking =  this.route.supplier + this.route.packing_code;
-      this.route.plant_factory = this.plant_factory._id;
-
-
-      this.RoutesService.createRoute(this.route)
-        .subscribe( result =>  this.PackingService.updateAllPacking(result.data.packing_code,result.data.supplier , new Packing({"hashPacking": result.data.hashPacking, "route": result.data._id}))
+    if(this.route.valid){
+      this.route['controls'].supplier.setValue(this.route['controls'].supplier.value._id);
+      this.route['controls'].plant_factory.setValue(this.route['controls'].plant_factory.value._id);
+      this.route['controls'].packing_code.setValue(this.route['controls'].packing_code.value.id);
+      this.route['controls'].plant_supplier.setValue(this.route['controls'].plant_supplier.value._id);
+      this.RoutesService.createRoute(this.route.value)
+        .subscribe( result =>  this.PackingService.updateAllPacking(result.data.packing_code,result.data.supplier , {"hashPacking": result.data.hashPacking, "route": result.data._id})
         .subscribe(result => this.toastService.success('/rc/cadastros/rotas', 'Rota'), err => this.toastService.error(err)));
 
-
+    }
   }
 
   directionsChanged() {
     this.directionsResult = this.directionsRenderer.getDirections();
-    if(this.directionsResult){
-      this.directions =  true;
-      this.route.location.distance = this.directionsResult.routes[0].legs[0].distance;
-      this.route.location.duration = this.directionsResult.routes[0].legs[0].duration;
-      this.route.location.start_address = this.directionsResult.routes[0].legs[0].start_address;
-      this.route.location.end_address = this.directionsResult.routes[0].legs[0].end_address;
-    }else{
-      this.directions =  false;
+    if (this.directionsResult) {
+      this.directions = true;
+      this.route['controls'].location['controls'].distance.patchValue(this.directionsResult.routes[0].legs[0].distance);
+      this.route['controls'].location['controls'].duration.patchValue(this.directionsResult.routes[0].legs[0].duration);
+      this.route['controls'].location['controls'].start_address.setValue(this.directionsResult.routes[0].legs[0].start_address);
+      this.route['controls'].location['controls'].end_address.setValue(this.directionsResult.routes[0].legs[0].end_address);
+    } else {
+      this.directions = false;
     }
     this.ref.detectChanges();
   }
 
   showDirection() {
-
     this.directionsRendererDirective['showDirections'](this.direction);
   }
 
@@ -95,69 +109,64 @@ export class RotasCadastrarComponent implements OnInit {
     this.autocomplete = autocomplete;
   }
 
+  onChangeFactory(event: any) {
 
-
-  onMapReady(map) {
-    // this.direction.origin = map.getCenter();
-
-  }
-
-  onChangeFactory(event:any){
-
-    if(event){
-
-        this.direction.origin  = new google.maps.LatLng(event.lat, event.lng);
-        this.showDirection();
-
-    }
-  }
-
-  onChangeSupplier(event:any){
-    if(event){
-      this.choice_equipament = true;
-      this.route.packing_code = event.id;
-      this.route.plant_supplier = event.supplier.plant;
-      this.route.supplier = event.supplier._id;
-      this.direction.destination  = new google.maps.LatLng(event.plant.lat, event.plant.lng);
+    if (event) {
+      this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
       this.showDirection();
-    }else{
-        this.choice_equipament = false;
     }
   }
 
-  loadPlants():void {
-    this.PlantsService.retrieveAll().subscribe( result => this.plants = result );
+  onChangeSupplier(event: any) {
+    if (typeof event != 'string') {
+      this.choice_equipament = true;
+
+      this.route['controls'].plant_supplier.setValue(event.plant);
+      this.route['controls'].supplier.setValue(event.supplier);
+
+      this.direction.destination = new google.maps.LatLng(event.plant.lat, event.plant.lng);
+      this.showDirection();
+    } else {
+      this.choice_equipament = false;
+    }
   }
 
-  loadPackings(event):void {
-    if(event){
-      this.choice_equipament = false;
-      this.PackingService.retrieveAllNoBinded(event.value).subscribe( result => {
+  loadPackings(event): void {
+    this.route['controls'].packing_code.setValue('');
+    this.route['controls'].plant_factory.setValue('');
+    this.route['controls'].plant_supplier.setValue('');
+    this.route['controls'].supplier.setValue('');
+    this.directions = false;
 
-        if(result.data.length === 0){
+    if (typeof event != 'string') {
+      this.choice_equipament = false;
+      this.PackingService.retrieveAllNoBinded(event.value).subscribe(result => {
+
+        if (result.data.length === 0) {
           this.choiced = false;
-          this.packings  = [];
+          this.packings = [];
         }
         else {
           this.choiced = true;
           this.packings = result.data;
         }
       });
-    }else{
+    } else {
       this.choiced = false;
     }
 
   }
 
-  loadSuppliers():void{
+  loadPlants(): void {
+    this.PlantsService.retrieveAll().subscribe(result => this.plants = result);
+  }
 
-    this.suppliersService.retrieveAll().subscribe(result => {
-      this.suppliers = result;
-    }, err => {console.log(err)});
+  loadSuppliers(): void {
+    this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result;}, err => { console.log(err) });
   }
 
   ngOnInit() {
-    this.directionsRendererDirective['initialized$'].subscribe( directionsRenderer => {
+    this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
       this.directionsRenderer = directionsRenderer;
     });
     this.loadPlants();

@@ -1,120 +1,126 @@
 <div class="base">
   <h1>REGISTRAR EMBALAGEM</h1>
   <br />
-  <div class="row">
-    <div class="col-md-6">
 
-      <div class="row">
+  <form novalidate (ngSubmit)="onSubmit(packing)" [formGroup]="packing">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="campo">
+              <p class="descricao">CÓDIGO</p>
+              <p class="explicacao">Ex. "994475545"</p>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Digite o código" aria-describedby="basic-addon2" [(ngModel)]="code" formControlName="code" (blur)="changeCode()">
+              </div>
+            </div>
+          </div>
 
-
-      <div class="col-md-8">
-        <div class="campo">
-          <p class="descricao">CÓDIGO</p>
-          <p class="explicacao">Ex. "994475545"</p>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.code">
+          <div class="col-md-4">
+            <div class="campo">
+              <p class="descricao">SERIAL</p>
+              <p class="explicacao">Ex. "001"</p>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Serial" aria-describedby="basic-addon2" [(ngModel)]="serial" formControlName="serial">
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-4">
+
         <div class="campo">
-          <p class="descricao">SERIAL</p>
-          <p class="explicacao">Ex. "001"</p>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="packing.serial">
-          </div>
-        </div>
-      </div>
-  </div>
-
-
-      <div class="campo">
-        <p class="descricao">ASSOCIE A TAG</p>
-        <p class="explicacao">Associe uma tag a sua embalagem.</p>
-        <select [(ngModel)]="packing.tag">
+          <p class="descricao">ASSOCIE A TAG</p>
+          <p class="explicacao">Associe uma tag a sua embalagem.</p>
+          <select  formControlName="tag">
            <option value="">Associe uma Tag</option>
            <option *ngFor="let obj of tags" [ngValue]="obj">{{obj.code}}</option>
         </select>
-      </div>
-
-      <div class="campo">
-        <p class="descricao">TIPO DA EMBALAGEM</p>
-        <p class="explicacao">Ex. "Rack Metálico"</p>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Rack Metálico" aria-describedby="basic-addon2" [(ngModel)]="packing.type">
         </div>
-      </div>
 
-      <div class="campo">
-        <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
-        <p class="explicacao">Ex. "57 PEÇAS"</p>
-        <div class="placeholder" data-placeholder="PEÇAS">
-          <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.capacity" />
+        <div class="campo">
+          <p class="descricao">TIPO DA EMBALAGEM</p>
+          <p class="explicacao">Ex. "Rack Metálico"</p>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Digite o tipo de embalagem" aria-describedby="basic-addon2" [(ngModel)]="type" formControlName="type">
+          </div>
         </div>
-      </div>
 
-      <div class="campo">
-        <p class="descricao">ASSOCIE UM FORNECEDOR</p>
-        <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
-
-        <select2 [data]="suppliers?.data" (valueChanged)="changed($event)" [options]="{ placeholder: 'Search ..'}"></select2>
-
-      </div>
-
-    </div>
-
-    <div class="col-md-6">
-
-      <div class="campo">
-        <p class="descricao">TARA (KG)</p>
-        <p class="explicacao">Ex. "57 kg"</p>
-        <div class="placeholder" data-placeholder="KG">
-          <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.weigth" />
+        <div class="campo">
+          <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
+          <p class="explicacao">Ex. "57 PEÇAS"</p>
+          <div class="placeholder" data-placeholder="PEÇAS">
+            <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="capacity" formControlName="capacity"/>
+          </div>
         </div>
-      </div>
 
-      <div class="campo">
-        <p class="descricao">COMPRIMENTO (M)</p>
-        <p class="explicacao">Ex. "57 m"</p>
-        <div class="placeholder" data-placeholder="METROS">
-          <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.length" />
+        <div class="campo">
+          <p class="descricao">ASSOCIE UM FORNECEDOR</p>
+          <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
+
+          <select2 [data]="suppliers?.data" (valueChanged)="changed($event)" [options]="{ placeholder: 'Search ..'}"></select2>
+
         </div>
+
       </div>
 
-      <div class="campo">
-        <p class="descricao">LARGURA (M)</p>
-        <p class="explicacao">Ex. "57 m"</p>
-        <div class="placeholder" data-placeholder="METROS">
-          <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.width" />
+      <div class="col-md-6">
+
+        <div class="campo">
+          <p class="descricao">TARA (KG)</p>
+          <p class="explicacao">Ex. "57 kg"</p>
+          <div class="placeholder" data-placeholder="KG">
+            <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="weigth" formControlName="weigth"/>
+          </div>
         </div>
-      </div>
 
-      <div class="campo">
-        <p class="descricao">ALTURA (M)</p>
-        <p class="explicacao">Ex. "57 m"</p>
-        <div class="placeholder" min="0" data-placeholder="METROS">
-          <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="packing.heigth" />
+        <div class="campo">
+          <p class="descricao">COMPRIMENTO (M)</p>
+          <p class="explicacao">Ex. "57 m"</p>
+          <div class="placeholder" data-placeholder="METROS">
+            <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="length" formControlName="length"/>
+          </div>
         </div>
-      </div>
 
-      <div class="campo">
-        <p class="descricao">ASSOCIE UMA PLATAFORMA</p>
-        <p class="explicacao">Associe uma plataforma a sua embalagem.</p>
-        <select [(ngModel)]="packing.project">
+        <div class="campo">
+          <p class="descricao">LARGURA (M)</p>
+          <p class="explicacao">Ex. "57 m"</p>
+          <div class="placeholder" data-placeholder="METROS">
+            <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="width" formControlName="width"/>
+          </div>
+        </div>
+
+        <div class="campo">
+          <p class="descricao">ALTURA (M)</p>
+          <p class="explicacao">Ex. "57 m"</p>
+          <div class="placeholder" min="0" data-placeholder="METROS">
+            <input type="number" min="0" class="form-control form-control-sm" value="0" [(ngModel)]="heigth" formControlName="heigth"/>
+          </div>
+        </div>
+
+        <div class="campo" [hidden]="exist">
+          <p class="descricao">ASSOCIE UMA PLATAFORMA</p>
+          <p class="explicacao">Associe uma plataforma a sua embalagem.</p>
+          <select  formControlName="project" >
             <option value="">Associe um Projeto</option>
-           <option *ngFor="let obj of projects" [ngValue]="obj._id">{{obj.name}}</option>
+            <option *ngFor="let obj of projects" [ngValue]="obj._id">{{obj.name}}</option>
         </select>
+        </div>
+
+        <div class="campo" [hidden]="!exist">
+          <p class="descricao">JÁ EXISTE UMA PLATAFORMA ASSOCIADA</p>
+          <p class="explicacao">Plataforma já associada pelo sistema</p>
+          <input type="text"  class="form-control form-control-sm"  [value]="packing.controls.project.value?.project?.name"  disabled />
+        </div>
+
       </div>
     </div>
-  </div>
-  <br />
-  <div class="botoes">
-    <button routerLink="/rc/cadastros/embalagem" class="botaoVoltar">VOLTAR</button>
-    <button class="botaoRegistrar" (click)="registerPacking()">REGISTRAR</button>
-  </div>
-  <br />
-
+    <br />
+    <div class="botoes">
+      <button routerLink="/rc/cadastros/embalagem" class="botaoVoltar">VOLTAR</button>
+      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+    </div>
+    <br />
+  </form>
 </div>
 <br />
 <br />

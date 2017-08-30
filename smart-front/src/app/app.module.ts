@@ -29,6 +29,7 @@ import { RoutesService } from './servicos/routes.service';
 import { SuppliersService } from './servicos/suppliers.service';
 import { TagsService } from './servicos/tags.service';
 import { CheckpointService } from './servicos/checkpoints.service';
+import { GeocodingService } from './servicos/geocoding.service';
 import { ProjectService } from './servicos/projects.service';
 import { ProfileService } from './servicos/profile.service';
 import { CEPService } from './servicos/cep.service';
@@ -82,6 +83,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ProjectService,
     ChatService,
     GC16Service,
+    GeocodingService,
     ProfileService,
     InventoryService,
     CEPService,

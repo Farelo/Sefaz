@@ -1,6 +1,7 @@
 <div class="base">
   <h1>REGISTRAR ROTA</h1>
   <br />
+  <form novalidate (ngSubmit)="onSubmit(route)" [formGroup]="route">
   <div class="row">
     <div class="col-md-12">
       <alert type="info" *ngIf="packings?.length === 0 ">
@@ -21,7 +22,7 @@
       <div class="campo" [hidden]="!choiced">
         <p class="descricao">ASSOCIE A EMBALAGEM</p>
         <p class="explicacao"></p>
-        <select id="planta" [(ngModel)]="partial_element" (ngModelChange)="onChangeSupplier($event)">
+        <select id="planta" (ngModelChange)="onChangeSupplier($event)" formControlName="packing_code">
             <option value="">Associe uma Planta</option>
           <option *ngFor="let obj of packings" [ngValue]="obj" >{{obj.id}}</option>
         </select>
@@ -30,26 +31,26 @@
      <div class="campo" [hidden]="!choice_equipament">
        <p class="descricao">FORNECEDOR DA EMBALAGEM</p>
        <div class="input-group">
-         <input class="form-control" aria-describedby="basic-addon2" [ngModel]="partial_element?.supplier?.name" disabled />
+         <input class="form-control" aria-describedby="basic-addon2" [value]="route['controls'].supplier.value.name ? route['controls'].supplier.value.name : ''" disabled />
        </div>
      </div>
 
      <div class="campo" [hidden]="!choice_equipament">
        <p class="descricao">PLANTA DO FORNECEDOR </p>
        <div class="input-group">
-         <input class="form-control" aria-describedby="basic-addon2" [ngModel]="partial_element?.plant?.name" disabled/>
+         <input class="form-control" aria-describedby="basic-addon2" [value]="route['controls'].plant_supplier.value.plant_name ? route['controls'].plant_supplier.value.plant_name : ''" disabled/>
        </div>
      </div>
     </div>
 
 
-    <div class="col-md-6">
+    <div class="col-md-6" [hidden]="!choiced">
       <div class="campo">
         <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
         <p class="explicacao"></p>
-        <select id="planta" [(ngModel)]="plant_factory" (ngModelChange)="onChangeFactory($event)">
+        <select id="planta"  (ngModelChange)="onChangeFactory($event)" formControlName="plant_factory">
             <option value="">Associe uma Planta</option>
-          <option *ngFor="let obj of plants?.data" [ngValue]="obj" >{{obj.name}}</option>
+          <option *ngFor="let obj of plants?.data" [ngValue]="obj" >{{obj.plant_name}}</option>
         </select>
       </div>
     </div>
@@ -61,14 +62,14 @@
             <div class="bigger2">
               <div class="fromSun"></div>
             </div>
-            <span class="forn">{{this.route.location.start_address}}</span>
+            <span class="forn">{{route['controls'].location['controls'].start_address.value}}</span>
           </div>
 
           <div class="col-sm-6 informacoes">
             <div class="bigger2">
               <div class="fromSun"></div>
             </div>
-            <span class="forn">{{this.route.location.end_address}}</span>
+            <span class="forn">{{route['controls'].location['controls'].end_address.value}}</span>
           </div>
     </div>
     <div class="row" *ngIf="directions" style="margin-top: 0px;">
@@ -76,14 +77,14 @@
             <div class="bigger2">
               <div class="fromSun"></div>
             </div>
-            <span class="forn">{{this.route.location.distance.text}}</span>
+            <span class="forn">{{route['controls'].location['controls'].distance['controls'].text.value}}</span>
           </div>
 
           <div class="col-sm-6 informacoes">
             <div class="bigger2">
               <div class="fromSun"></div>
             </div>
-            <span class="forn">{{this.route.location.duration.text}}</span>
+            <span class="forn">{{route['controls'].location['controls'].duration['controls'].text.value}}</span>
           </div>
     </div>
 
@@ -93,7 +94,7 @@
     </div> -->
     <div class="col-md-12">
       <br>
-      <ngui-map zoom="13" [center]="center" (mapReady$)="onMapReady($event)">
+      <ngui-map zoom="13" [center]="center">
         <directions-renderer [suppressMarkers]="false" [draggable]="true" panel="#my-panel" (directions_changed)="directionsChanged()" [directions-request]="direction">
         </directions-renderer>
       </ngui-map>
@@ -104,7 +105,8 @@
   <br />
   <div class="botoes">
     <button routerLink="/rc/cadastros/rotas" class="botaoVoltar">VOLTAR</button>
-    <button class="botaoRegistrar" (click)="registerRoute()">REGISTRAR</button>
+    <button type="submit" class="botaoRegistrar">REGISTRAR</button>
   </div>
   <Br />
+</form>
 </div>

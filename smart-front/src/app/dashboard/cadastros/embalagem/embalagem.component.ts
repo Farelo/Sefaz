@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit ,ViewChild} from '@angular/core';
 import { PackingService } from '../../../servicos/packings.service';
 import { Packing } from '../../../shared/models/Packing';
 import { Pagination } from '../../../shared/models/pagination';
@@ -33,11 +33,15 @@ export class EmbalagemComponent implements OnInit {
       .subscribe(result => this.data = result, err => {console.log(err)});
   }
 
-  removePacking(id):void{
+  removePacking(packing):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.view = id;
+    modalRef.componentInstance.view = packing;
     modalRef.componentInstance.type = "packing";
-    // this.PackingService.deletePacking(id).subscribe(result =>   this.loadPackings(), err => {console.log(err)})
+
+    modalRef.result.then((result) => {
+      if(result === "remove") this.loadPackings();
+    });
+
   }
 
   pageChanged(page: any): void{
