@@ -35,12 +35,11 @@ export class Gc16AdicionarComponent implements OnInit {
 
 
   onSubmit({ value, valid }: { value: GC16, valid: boolean }): void {
-
     if(valid){
-      this.gc16['controls'].packing.setValue(this.gc16['controls'].packing.value.packing);
-      this.gc16['controls'].project.setValue(this.gc16['controls'].project.value._id);
+      value.packing = this.gc16['controls'].packing.value.packing;
+      value.project = this.gc16['controls'].project.value._id;
 
-      this.GC16Service.createGC16(this.gc16.value)
+      this.GC16Service.createGC16(value)
                       .subscribe(result => this.packingService.updatePackingByCode(this.gc16.value.packing,{gc16: result.data._id})
                       .subscribe(result => this.toastService.success('/rc/gc16', 'GC16'), err => this.toastService.error(err)));
     }

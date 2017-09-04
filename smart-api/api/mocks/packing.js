@@ -35,6 +35,11 @@ const packingSchema = new mongoose.Schema({
     accuracy: Number,
     date: Number
   },
+  actual_gc16: {
+    days: Number,
+    max: Number,
+    min: Number,
+  },
   temperature: Number,
   serial: {
     type: String,
@@ -49,17 +54,20 @@ const packingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'GC16'
   },
-  route: {
+  routes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Route'
-  },
+  }],
   correct_plant_supplier: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Plant'
   },
   actual_plant: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Plant'
+    plant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Plant'
+    },
+    local: String
   },
   tag: {
     type: mongoose.Schema.Types.ObjectId,

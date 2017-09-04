@@ -89,7 +89,7 @@ exports.queries = {
       {
         "$lookup": {
           "from": "plants",
-          "localField": "actual_plant",
+          "localField": "actual_plant.plant",
           "foreignField": "_id",
           "as": "plantObject"
         }
@@ -136,7 +136,7 @@ exports.queries = {
         "$group": {
           "_id": {
             "code": "$code",
-            "plant": "$actual_plant",
+            "plant": "$actual_plant.plant",
             "supplier": "$supplier",
             "missing": "$missing"
           },
@@ -147,7 +147,10 @@ exports.queries = {
             "$first": "$supplierObject"
           },
           "actual_plant": {
-            "$first": "$plantObject"
+            "$first": {
+              "plant":'$plantObject',
+              "local":'$actual_plant.local'
+            }
           },
           "description": {
             "$first": "$type"
@@ -177,7 +180,7 @@ exports.queries = {
       {
         "$lookup": {
           "from": "plants",
-          "localField": "actual_plant",
+          "localField": "actual_plant.plant",
           "foreignField": "_id",
           "as": "plantObject"
         }
@@ -229,7 +232,7 @@ exports.queries = {
         "$group": {
           "_id": {
             "code": "$code",
-            "plant": "$actual_plant",
+            "plant": "$actual_plant.plant",
             "supplier": "$supplier",
             "missing": "$missing"
           },
@@ -240,7 +243,10 @@ exports.queries = {
             "$first": "$supplierObject"
           },
           "actual_plant": {
-            "$first": "$plantObject"
+            "$first": {
+              "plant":'$plantObject',
+              "local":'$actual_plant.local'
+            }
           },
           "description": {
             "$first": "$type"
@@ -276,7 +282,7 @@ exports.queries = {
       {
         "$lookup": {
           "from": "plants",
-          "localField": "actual_plant",
+          "localField": "actual_plant.plant",
           "foreignField": "_id",
           "as": "plantObject"
         }
@@ -337,7 +343,7 @@ exports.queries = {
         "$group": {
           "_id": {
             "code": "$code",
-            "plant": "$actual_plant",
+            "plant": "$actual_plant.plant",
             "supplier": "$supplier",
             "missing": "$missing"
           },
@@ -348,7 +354,10 @@ exports.queries = {
             "$first": "$supplierObject"
           },
           "actual_plant": {
-            "$first": "$plantObject"
+            "$first": {
+              "plant":'$plantObject',
+              "local":'$actual_plant.local'
+            }
           },
           "description": {
             "$first": "$type"
@@ -408,7 +417,7 @@ exports.queries = {
       {
         "$lookup": {
           "from": "plants",
-          "localField": "actual_plant",
+          "localField": "actual_plant.plant",
           "foreignField": "_id",
           "as": "plantObject"
         }
@@ -463,7 +472,7 @@ exports.queries = {
         "$group": {
           "_id": {
             "code": "$code",
-            "plant": "$actual_plant",
+            "plant": "$actual_plant.plant",
             "supplier": "$supplier",
             "missing": "$missing",
             "problem": "$problem"
@@ -475,7 +484,10 @@ exports.queries = {
             "$first": "$supplierObject"
           },
           "actual_plant": {
-            "$first": "$plantObject"
+            "$first": {
+              "plant":'$plantObject',
+              "local":'$actual_plant.local'
+            }
           },
           "description": {
             "$first": "$type"
@@ -506,7 +518,7 @@ exports.queries = {
     ];
   },
   populate: [
-    "plant",
+    "plant.plant",
     "supplier",
     "packing",
     {
@@ -526,7 +538,7 @@ exports.queries = {
     {
       path: 'packing',
       populate: {
-        path: 'actual_plant',
+        path: 'actual_plant.plant',
         model: 'Plant'
       }
     },
@@ -827,9 +839,7 @@ exports.queries = {
     return [
       {
       "$match": {
-        "route": { $exists: false },
         "supplier": id
-
       }
     },{
       "$lookup": {

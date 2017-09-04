@@ -1,26 +1,68 @@
 <div class="modalFilho">
-  <div class="header" *ngIf="type === 'route'">
-     <p>Detalhes da Rota </p>
+  <div class="detalhes" *ngIf="type === 'route'">
+     <h2>Detalhes da Rota </h2>
+     <hr>
      <p>Partida: {{view.location.start_address }}</p>
-     <p>Partida: {{view.location.end_address }}</p>
-     <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} de fornecedor {{view.supplier?.name}}</p>
-  </div>
-  <div class="header" *ngIf="type === 'packing'">
-     <p>Detalhes da Embalagem </p>
-
-  </div>
-  <div class="header" *ngIf="type === 'plant'">
-     <p>Detalhes da Planta </p>
-
-  </div>
-  <div class="header" *ngIf="type === 'tag'">
-     <p>Detalhes da Tag </p>
-
+     <p>Destino: {{view.location.end_address }}</p>
+     <hr>
+     <div class="alerta">
+       <span class="alert" aria-hidden="true"></span>
+       <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} do fornecedor {{view.supplier?.name}}.As informações serão perdidas, você tem certeza?</p>
+     </div>
   </div>
 
+  <div  class="detalhes" *ngIf="type === 'packing'">
+    <h2>Detalhes da Embalagem </h2>
+    <hr>
+    <p>Projeto: {{view.project.name }}</p>
+    <p>Fornecedor: {{view.supplier.name }}</p>
+    <p>Planta Atual: {{view.actual_plant.plant_name}}</p>
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção da embalagem {{view.code}} poderá remover o registro GC16 e as rotas associadas a essa embalagem. As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
 
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close('cancelar')">Cancelar</button>
-    <button type="button" class="btn btn-secondary" (click)="delete()">Deletar</button>
+  <div  class="detalhes" *ngIf="type === 'gc16'">
+    <h2>Detalhes do Registro GC16 </h2>
+    <hr>
+    <p>Projeto: {{view.project.name }}</p>
+    <p>Fornecedor: {{view.supplier.name }}</p>
+    <p>Packing: {{view.packing}}</p>
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção do registro do GC16  irá disvincular as embalagens de código {{view.packing}} do fornecedor {{view.supplier?.name}}. As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
+
+  <div  class="detalhes" *ngIf="type === 'plant'">
+    <h2>Detalhes da Planta </h2>
+    <hr>
+    <!-- <p>Partida: {{view.location.start_address }}</p>
+    <p>Destino: {{view.location.end_address }}</p> -->
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} do fornecedor {{view.supplier?.name}}.</p>
+    </div>
+  </div>
+
+  <div class="detalhes" *ngIf="type === 'tag'">
+    <h2>Detalhes da Tag </h2>
+    <hr>
+    <!-- <p>Partida: {{view.location.start_address }}</p>
+    <p>Destino: {{view.location.end_address }}</p> -->
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} do fornecedor {{view.supplier?.name}}.</p>
+    </div>
+  </div>
+
+<div class="botoes">
+  <button class="botaoVoltar" (click)="activeModal.close('cancelar')">CANCELAR</button>
+  <button class="botaoDeletar" (click)="delete()">DELETAR</button>
 </div>
 </div>

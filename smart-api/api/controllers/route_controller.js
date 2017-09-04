@@ -16,6 +16,7 @@ mongoose.Promise                = global.Promise;
  */
 exports.route_create = function(req, res) {
   route.create(req.body)
+    .then(result => packing.update({code: result.packing_code, supplier: new ObjectId(result.supplier)},{$push: { "routes": result._id }}))
     .catch(_.partial(errorHandler, res, 'Error to create route'))
     .then(_.partial(successHandler, res));
 };

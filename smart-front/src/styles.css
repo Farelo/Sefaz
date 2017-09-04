@@ -229,3 +229,17 @@ hotTable {
   color: white;
   border-left: 1px solid #6382c9;
 }
+/*.google-map {
+  height: cal(100% -40px);
+}*/
+
+.required {
+border-color: #D24444;
+border-style: solid;
+border-width: 1px;
+}
+.requiredText {
+ color: #D24444;
+ font-family: 'Roboto', sans-serif;
+ font-size: 10px;
+}

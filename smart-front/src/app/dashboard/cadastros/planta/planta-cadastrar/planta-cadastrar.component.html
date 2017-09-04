@@ -1,7 +1,7 @@
 <div class="base">
   <h1>REGISTRAR PLANTA</h1>
   <br />
-  <form novalidate (ngSubmit)="onSubmit(plant)" [formGroup]="plant">
+  <form novalidate (ngSubmit)="onSubmit(plant)" [formGroup]="plant" #formDir="ngForm">
     <div class="row">
       <div class="col-md-12">
 
@@ -27,14 +27,22 @@
       <div class="col-md-6">
         <p class="descricao">LATITUDE</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2" [(ngModel)]="lat" formControlName="lat">
+          <input type="text" class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2" [(ngModel)]="lat" formControlName="lat"
+          [ngClass]="{'required': (plant.get('lat').hasError('required') && plant.get('lat').touched)
+          || (plant.get('lat').hasError('required') && formDir.submitted)}">
         </div>
+        <p class="requiredText" *ngIf="(plant.get('lat').hasError('required') && plant.get('lat').touched)
+        || (plant.get('lat').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       </div>
       <div class="col-md-6">
         <p class="descricao">LONGITUDE</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2" [(ngModel)]="lng" formControlName="lng">
+          <input type="text" class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2" [(ngModel)]="lng" formControlName="lng"
+          [ngClass]="{'required': (plant.get('lng').hasError('required') && plant.get('lng').touched)
+          || (plant.get('lng').hasError('required') && formDir.submitted)}">
         </div>
+        <p class="requiredText" *ngIf="(plant.get('lng').hasError('required') && plant.get('lng').touched)
+        || (plant.get('lng').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       </div>
       <br />
 
@@ -43,8 +51,12 @@
           <p class="descricao">NOME</p>
           <p class="explicacao">Ex. "Planta B1"</p>
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Digite o nome da planta" aria-describedby="basic-addon2" [(ngModel)]="plant_name" formControlName="plant_name">
+            <input type="text" class="form-control" placeholder="Digite o nome da planta" aria-describedby="basic-addon2" [(ngModel)]="plant_name" formControlName="plant_name"
+            [ngClass]="{'required': (plant.get('plant_name').hasError('required') && plant.get('plant_name').touched)
+            || (plant.get('plant_name').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(plant.get('plant_name').hasError('required') && plant.get('plant_name').touched)
+          || (plant.get('plant_name').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
     </div>

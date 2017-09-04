@@ -9,7 +9,7 @@ module.exports = function () {
   var arrayOfPromises = [
     packing.find({})
   .populate('tag')
-  .populate('actual_plant')
+  .populate('actual_plant.plant')
   .populate('department')
   .populate('supplier')
   .populate('route')

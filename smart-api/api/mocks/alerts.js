@@ -4,8 +4,11 @@ const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const alertsSchema = new mongoose.Schema({
     actual_plant: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Plant'
+      plant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Plant'
+      },
+      local: String
     },
     department: {
         type:mongoose.Schema.Types.ObjectId,

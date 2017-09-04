@@ -20,6 +20,7 @@ import { PlataformaEditarComponent } from './plataforma/plataforma-editar/plataf
 import { RotasCadastrarComponent } from './rotas/rotas-cadastrar/rotas-cadastrar.component';
 import { ScannerCadastrarComponent } from './scanner/scanner-cadastrar/scanner-cadastrar.component';
 import { SetorCadastrarComponent } from './setor/setor-cadastrar/setor-cadastrar.component';
+import { SetorEditarComponent } from './setor/setor-editar/setor-editar.component';
 import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.component';
 import { TagsEditarComponent } from './tags/tags-editar/tags-editar.component';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
@@ -39,6 +40,7 @@ const CadastrosRoutes = [
       {path: 'embalagem/editar/:id', component: EmbalagemEditarComponent},
       {path: 'setor', component: SetorComponent},
       {path: 'setor/cadastrar', component: SetorCadastrarComponent},
+      {path: 'setor/editar/:id', component: SetorEditarComponent},
       {path: 'fornecedor', component: FornecedorComponent},
       {path: 'fornecedor/cadastrar', component: FornecedorCadastrarComponent},
       {path: 'plataforma', component: PlataformaComponent},

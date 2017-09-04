@@ -1,0 +1,69 @@
+<div class="base">
+  <h1>REGISTRAR SETOR</h1>
+  <br />
+  <form novalidate (ngSubmit)="onSubmit(department)" [formGroup]="department">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="campo">
+          <h3>LOCAL</h3>
+          <p>
+            <ngui-map [center]="center"  (click)="onClick($event)">
+              <marker [position]="pos"></marker>
+            </ngui-map>
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-12 informacoes" >
+
+          <div class="bigger2">
+            <div class="fromSun"></div>
+          </div>
+          <span class="forn" >{{department.value.plant?.location || 'Nenhuma informação sobre a localidade'}}</span>
+
+      </div>
+      <div class="col-md-6">
+        <p class="descricao">LATITUDE</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2" [(ngModel)]="lat" formControlName="lat">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="descricao">LONGITUDE</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2" [(ngModel)]="lng" formControlName="lng">
+        </div>
+      </div>
+      <br />
+
+      <div class="col-md-6">
+        <div class="campo">
+          <p class="descricao">NOME</p>
+          <p class="explicacao">Ex. "Setor B7"</p>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Digite o nome do departamento" aria-describedby="basic-addon2" [(ngModel)]="name" formControlName="name">
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-6">
+      <div class="campo">
+        <p class="descricao">ASSOCIE A PLANTA</p>
+        <p class="explicacao">Escolha uma das plantas</p>
+        <select (ngModelChange)="onChange($event,i)" formControlName="plant">
+            <option value="">Associe uma Planta</option>
+            <option *ngFor="let obj of plants;let i = index" [ngValue]="obj._id" >{{obj.plant_name}}</option>
+        </select>
+      </div>
+    </div>
+    </div>
+    <br />
+    <div class="botoes">
+      <button routerLink="/rc/cadastros/setor" class="botaoVoltar">VOLTAR</button>
+      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+    </div>
+    <br />
+  </form>
+  <Br />
+</div>

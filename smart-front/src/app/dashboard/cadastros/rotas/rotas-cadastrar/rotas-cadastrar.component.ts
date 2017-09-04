@@ -39,6 +39,7 @@ export class RotasCadastrarComponent implements OnInit {
   public choiced = false;
   public choice_equipament = false;
 
+
   constructor(
     private PlantsService: PlantsService,
     private PackingService: PackingService,
@@ -81,8 +82,7 @@ export class RotasCadastrarComponent implements OnInit {
       this.route['controls'].packing_code.setValue(this.route['controls'].packing_code.value.id);
       this.route['controls'].plant_supplier.setValue(this.route['controls'].plant_supplier.value._id);
       this.RoutesService.createRoute(this.route.value)
-        .subscribe( result =>  this.PackingService.updateAllPacking(result.data.packing_code,result.data.supplier , {"hashPacking": result.data.hashPacking, "route": result.data._id})
-        .subscribe(result => this.toastService.success('/rc/cadastros/rotas', 'Rota'), err => this.toastService.error(err)));
+        .subscribe(result => this.toastService.success('/rc/cadastros/rotas', 'Rota'), err => this.toastService.error(err));
 
     }
   }
@@ -110,7 +110,6 @@ export class RotasCadastrarComponent implements OnInit {
   }
 
   onChangeFactory(event: any) {
-
     if (event) {
       this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
       this.showDirection();
@@ -118,6 +117,7 @@ export class RotasCadastrarComponent implements OnInit {
   }
 
   onChangeSupplier(event: any) {
+
     if (typeof event != 'string') {
       this.choice_equipament = true;
 
@@ -125,6 +125,7 @@ export class RotasCadastrarComponent implements OnInit {
       this.route['controls'].supplier.setValue(event.supplier);
 
       this.direction.destination = new google.maps.LatLng(event.plant.lat, event.plant.lng);
+      this.loadPlants(event);
       this.showDirection();
     } else {
       this.choice_equipament = false;
@@ -157,8 +158,9 @@ export class RotasCadastrarComponent implements OnInit {
 
   }
 
-  loadPlants(): void {
-    this.PlantsService.retrieveAll().subscribe(result => this.plants = result);
+  loadPlants(event): void {
+    console.log(event);
+    this.PlantsService.retrieveAllNoBinded(event.id,this.route['controls'].supplier.value._id).subscribe(result => this.plants = result);
   }
 
   loadSuppliers(): void {
@@ -169,7 +171,7 @@ export class RotasCadastrarComponent implements OnInit {
     this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
       this.directionsRenderer = directionsRenderer;
     });
-    this.loadPlants();
+
     this.loadSuppliers();
   }
 

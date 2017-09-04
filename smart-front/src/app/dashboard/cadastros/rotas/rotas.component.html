@@ -31,7 +31,7 @@
         <td>{{route.plant_supplier.plant_name}}</td>
         <td>{{route.plant_factory.plant_name}}</td>
         <td class="teste">
-          <button class="editar botaoPlanta" >Editar</button>
+          <button class="editar botaoPlanta"  [routerLink]="['editar/', route._id]" >Editar</button>
           <button class="excluir" (click)="removeRoutes(route)">Excluir</button>
         </td>
       </tr>

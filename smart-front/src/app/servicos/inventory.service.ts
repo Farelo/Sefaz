@@ -16,9 +16,8 @@ export class InventoryService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getInventoryBattery(limit: number, page: number): Observable<any> {
-
-    return this.http.get(environment.url + 'inventory/battery/' + limit + '/' + page)
+  getInventoryGeneralPackings(limit: number, page: number, code: string): Observable<any> {
+    return this.http.get(environment.url + 'inventory/general/packings/' + limit + '/' + page + '?code='+ code)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -44,9 +43,9 @@ export class InventoryService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getInventoryBatteryByCode(limit: number, page: number, code: string): Observable<any> {
+  getInventoryBattery(limit: number, page: number, code: string): Observable<any> {
 
-    return this.http.get(environment.url + 'inventory/battery/code/' + limit + '/' + page + '/'+ code)
+    return this.http.get(environment.url + 'inventory/battery/' + limit + '/' + page + '?code='+ code)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

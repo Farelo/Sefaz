@@ -23,7 +23,7 @@
         <p class="descricao">ASSOCIE A EMBALAGEM</p>
         <p class="explicacao"></p>
         <select id="planta" (ngModelChange)="onChangeSupplier($event)" formControlName="packing_code">
-            <option value="">Associe uma Planta</option>
+            <option value="">Associe uma embalagem</option>
           <option *ngFor="let obj of packings" [ngValue]="obj" >{{obj.id}}</option>
         </select>
       </div>
@@ -44,7 +44,7 @@
     </div>
 
 
-    <div class="col-md-6" [hidden]="!choiced">
+    <div class="col-md-6" [hidden]="!choice_equipament">
       <div class="campo">
         <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
         <p class="explicacao"></p>

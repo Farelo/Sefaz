@@ -102,6 +102,7 @@ export class RastreamentoComponent implements OnInit {
 
   ngOnInit() {
     this.loadDepartmentsByPlant();
+    this.carregarTamanho();
   }
 
   open(id) {
@@ -110,6 +111,12 @@ export class RastreamentoComponent implements OnInit {
         console.log(packings);
       modalRef.componentInstance.packings = packings;
     });
+  }
+  carregarTamanho() {
+    var map = $('#map');
+    var nguimap = map.children(':nth-child(1)');
+    var googleMap = nguimap.children(':nth-child(1)').css({'position' : 'absolute'});
+    googleMap.css({'height' : 'calc(100% - 42px)'});
   }
 
   startWindow(marker) {

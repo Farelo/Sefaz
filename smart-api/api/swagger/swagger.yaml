@@ -1218,34 +1218,6 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/ErrorResponse'
-  '/inventory/battery/{limit}/{page}':
-    x-swagger-router-controller: packing_controller
-    get:
-      tags:
-        - Inventory
-      summary: Inventory of the equipaments Analyzing the battery.
-      description: ''
-      operationId: inventory_battery
-      parameters:
-        - in: path
-          name: limit
-          description: The limit of packings that will be returned
-          required: true
-          type: string
-        - in: path
-          name: page
-          description: The especific page that returns packings related a this page
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Message
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
   '/inventory/permanence/{limit}/{page}/{code}':
     x-swagger-router-controller: packing_controller
     get:
@@ -1345,14 +1317,14 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/ErrorResponse'
-  '/inventory/battery/code/{limit}/{page}/{code}':
+  '/inventory/battery/{limit}/{page}':
     x-swagger-router-controller: packing_controller
     get:
       tags:
         - Inventory
       summary: Inventory of the equipaments Analyzing the battery by code.
       description: ''
-      operationId: inventory_battery_by_code
+      operationId: inventory_battery
       parameters:
         - in: path
           name: limit
@@ -1364,10 +1336,43 @@ paths:
           description: The especific page that returns packings related a this page
           required: true
           type: string
-        - in: path
+        - in: query
           name: code
-          description: The especific page that returns packings related a this code
+          description: The especific code that returns packings related a this code
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/inventory/general/packings/{limit}/{page}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Inventory of the equipaments Analyzing yourself.
+      description: ''
+      operationId: inventory_packings
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be returned
           required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns packings related a this page
+          required: true
+          type: string
+        - in: query
+          name: code
+          description: The especific code that returns packings related a this code
+          required: false
           type: string
       responses:
         '200':
@@ -2018,6 +2023,34 @@ paths:
           type: string
         - in: path
           name: page
+          description: The especific page that returns plants related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  '/plant/list/nobinded/{code}/{supplier}':
+    x-swagger-router-controller: plant_controller
+    get:
+      tags:
+        - Plant
+      summary: Get all plants on the system no binded anyone route
+      description: ''
+      operationId: list_all_nobinded
+      parameters:
+        - in: path
+          name: code
+          description: The limit of plants that will be returned
+          required: true
+          type: string
+        - in: path
+          name: supplier
           description: The especific page that returns plants related a this page
           required: true
           type: string

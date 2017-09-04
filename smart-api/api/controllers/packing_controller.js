@@ -169,7 +169,7 @@ function evaluete(promise,p){
 exports.packing_list_pagination = function(req, res) {
   packing.paginate({}, {
       page: parseInt(req.swagger.params.page.value),
-      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {
         serial: 1
       },
@@ -182,9 +182,9 @@ exports.packing_list_pagination = function(req, res) {
  * List of packings by pagination by plant
  */
 exports.packing_list_pagination_by_plant = function(req, res) {
-  packing.paginate({actual_plant: new ObjectId(req.swagger.params.id.value)}, {
+  packing.paginate({'actual_plant.plant': new ObjectId(req.swagger.params.id.value)}, {
       page: parseInt(req.swagger.params.page.value),
-      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {
         serial: 1
       },
@@ -205,7 +205,7 @@ exports.packing_list_pagination_by_code_serial = function(req, res) {
       }]
     }, {
       page: parseInt(req.swagger.params.page.value),
-      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {
         serial: 1
       },
@@ -220,7 +220,7 @@ exports.packing_list_pagination_by_code_serial = function(req, res) {
 exports.packing_list_all = function(req, res) {
   Packing.find({})
     .populate('tag')
-    .populate('actual_plant')
+    .populate('actual_plant.plant')
     .populate('department')
     .populate('supplier')
     .populate('project')
@@ -295,32 +295,15 @@ exports.quantity_inventory = function(req, res) {
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
     _.partial(successHandlerPaginationAggregateQuantity, res, req.swagger.params.code.value));
 };
-
 /**
  * List of packings analysis battery
  */
 exports.inventory_battery = function(req, res) {
-  packing.paginate({}, {
+  packing.paginate(
+    req.swagger.params.code.value ? {"code": req.swagger.params.code.value} : {}
+  , {
       page: parseInt(req.swagger.params.page.value),
-      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
-      sort: {
-        battery: 1
-      },
-      limit: parseInt(req.swagger.params.limit.value)
-    })
-    .then(_.partial(successHandlerPagination, res))
-    .catch(_.partial(errorHandler, res, 'Error to list inventory battery'));
-};
-
-/**
- * List of packings analysis battery
- */
-exports.inventory_battery_by_code = function(req, res) {
-  packing.paginate({
-    "code": req.swagger.params.code.value
-  }, {
-      page: parseInt(req.swagger.params.page.value),
-      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {
         battery: 1
       },
@@ -335,7 +318,7 @@ exports.inventory_battery_by_code = function(req, res) {
 exports.inventory_permanence = function(req, res) {
   packing.paginate({ "code": req.swagger.params.code.value}, {
       page: parseInt(req.swagger.params.page.value),
-      populate: ['supplier', 'project', 'tag', 'actual_plant', 'department', 'gc16'],
+      populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {
         'permanence.amount_days': -1
       },
@@ -348,6 +331,7 @@ exports.inventory_permanence = function(req, res) {
  * Historic of packings by serial
  */
 exports.inventory_packing_historic = function(req, res) {
+  console.log("aqui");
   historic.paginate({
       "serial": req.swagger.params.serial.value
     }, {
@@ -361,6 +345,22 @@ exports.inventory_packing_historic = function(req, res) {
     .then(_.partial(successHandlerPagination, res))
     .catch(_.partial(errorHandler, res, 'Error to list inventory permanence'));
 };
+/**
+ * All packings inventory
+ */
+exports.inventory_packings = function(req, res) {
+  packing.paginate(req.swagger.params.code.value ? {"code": req.swagger.params.code.value} : {}, {
+      page: parseInt(req.swagger.params.page.value),
+      populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
+      sort: {
+        '_id': 1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(successHandlerPagination, res))
+    .catch(_.partial(errorHandler, res, 'Error to list inventory permanence'));
+};
+
 
 
 

@@ -50,16 +50,18 @@ export class ModalDeleteComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    console.log(this.view);
+    console.log(this.type);
   }
 
   delete(){
+
     if(this.type === 'packing'){
       this.packingService.deletePacking(this.view._id).subscribe( result => {this.toastService.remove('/rc/cadastros/embalagem','Embalagem');this.activeModal.close('remove') });
     }else if(this.type === 'route'){
       this.routesService.deleteRoute(this.view._id).subscribe(result =>  {this.toastService.remove('/rc/cadastros/rotas','Rota');this.activeModal.close('remove') });
     }else if(this.type === 'gc16'){
-      console.log(this.view._id);
+
       this.gc16Service.deleteGC16(this.view._id).subscribe(result => {this.toastService.remove('/rc/gc16','GC16');this.activeModal.close('remove') });
     }
   }

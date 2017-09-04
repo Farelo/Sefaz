@@ -27,8 +27,8 @@
         <td>{{department.name}}</td>
         <td>{{department.plant.plant_name}}</td>
         <td class="teste">
-          <button class="editar" >Editar</button>
-          <button class="excluir" (click)="removeDepartment(department._id)">Excluir</button>
+          <button class="editar" [routerLink]="['editar/', department._id]">Editar</button>
+          <button class="excluir" (click)="removeDepartment(department)">Excluir</button>
         </td>
       </tr>
     </tbody>

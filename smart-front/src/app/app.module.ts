@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { NgbModule, NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserXhr } from '@angular/http';
 import { NgProgressBrowserXhr, NgProgressModule } from 'ngx-progressbar';
+import { NgxPaginationModule} from 'ngx-pagination';
 import * as $ from 'jquery';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -13,6 +14,7 @@ import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
 import { ModalUserComponent } from './shared/modal-user/modal-user.component';
 import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
 
+import { ApplicationPipes } from './shared/pipes/application.pipes';
 import {ValidatorsModule, EmailValidators} from 'ngx-validators'
 
 import { PositionModalComponent } from './shared/modal/alerta/position/alerta.component';
@@ -65,8 +67,10 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ValidatorsModule,
     AppRoutingModule,
     NgProgressModule,
+    NgxPaginationModule,
+    ApplicationPipes,
     NguiMapModule.forRoot({
-      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
+      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ' +
       '&libraries=visualization,places,drawing',
     })
 

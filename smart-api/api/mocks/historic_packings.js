@@ -3,8 +3,11 @@ const mongoosePaginate  = require('mongoose-paginate');
 
 const historicPackingsSchema = new mongoose.Schema({
   plant: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Plant'
+    plant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Plant'
+    },
+    local: String
   },
   supplier: {
     type: mongoose.Schema.Types.ObjectId,

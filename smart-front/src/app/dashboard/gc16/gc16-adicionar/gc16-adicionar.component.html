@@ -1,7 +1,7 @@
 <div class="base">
   <h1>GC16</h1>
   <br />
-  <form novalidate (ngSubmit)="onSubmit(gc16)" [formGroup]="gc16">
+  <form novalidate (ngSubmit)="onSubmit(gc16)" [formGroup]="gc16"  #formDir="ngForm">
     <div class="row diferente2">
       <div class="col-sm-4">
         <div class="campo">
@@ -37,8 +37,12 @@
           <p class="descricao">VOLUME ANUAL</p>
           <p class="explicacao">Ex. "10000"</p>
           <div class="input-group">
-            <input type="number" class="form-control" placeholder="" [(ngModel)]="annualVolume" (blur)="onBlurMethod()" formControlName="annualVolume">
+            <input type="number" class="form-control" placeholder="" [(ngModel)]="annualVolume" (blur)="onBlurMethod()" formControlName="annualVolume"
+            [ngClass]="{'required': (gc16.get('annualVolume').hasError('required') && gc16.get('annualVolume').touched)
+            || (gc16.get('annualVolume').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(gc16.get('annualVolume').hasError('required') && gc16.get('annualVolume').touched)
+          || (gc16.get('annualVolume').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
 
@@ -47,8 +51,12 @@
           <p class="descricao">DIAS PRODUTIVOS</p>
           <p class="explicacao">Ex. "240 Dias"</p>
           <div class="input-group">
-            <input type="number" class="form-control" placeholder="" [(ngModel)]="productiveDays" (blur)="onBlurMethod()" formControlName="productiveDays">
+            <input type="number" class="form-control" placeholder="" [(ngModel)]="productiveDays" (blur)="onBlurMethod()" formControlName="productiveDays"
+            [ngClass]="{'required': (gc16.get('productiveDays').hasError('required') && gc16.get('productiveDays').touched)
+            || (gc16.get('productiveDays').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(gc16.get('productiveDays').hasError('required') && gc16.get('productiveDays').touched)
+          || (gc16.get('productiveDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
 
@@ -57,8 +65,12 @@
           <p class="descricao">CAPACIDADE</p>
           <p class="explicacao">Ex. "26"</p>
           <div class="input-group">
-            <input type="number" class="form-control" placeholder="" [(ngModel)]="capacity" (blur)="onBlurMethod()" formControlName="capacity">
+            <input type="number" class="form-control" placeholder="" [(ngModel)]="capacity" (blur)="onBlurMethod()" formControlName="capacity"
+            [ngClass]="{'required': (gc16.get('capacity').hasError('required') && gc16.get('capacity').touched)
+            || (gc16.get('capacity').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(gc16.get('capacity').hasError('required') && gc16.get('capacity').touched)
+          || (gc16.get('capacity').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
       <div class="col-sm-2">
@@ -78,8 +90,12 @@
           <p class="descricao">ESTOQUE PLANTA MONTADORA</p>
           <p class="explicacao">Ex. "5 Dias"</p>
           <div class="placeholder" data-placeholder="DIAS">
-            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fsDays" formControlName="fsDays" (blur)="onBlurMethod()">
+            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fsDays" formControlName="fsDays" (blur)="onBlurMethod()"
+            [ngClass]="{'required': (gc16.get('factoryStock.fsDays').hasError('required') && gc16.get('factoryStock.fsDays').touched)
+            || (gc16.get('factoryStock.fsDays').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(gc16.get('factoryStock.fsDays').hasError('required') && gc16.get('factoryStock.fsDays').touched)
+          || (gc16.get('factoryStock.fsDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
       <div class="col-md-4 dois">
@@ -147,11 +163,15 @@
           <p class="descricao">ESTOQUE FORNECEDOR</p>
           <p class="explicacao">Ex. "5 Dias"</p>
           <div class="placeholder" data-placeholder="DIAS">
-            <input type="number" min="0" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="ssDays" formControlName="ssDays" (blur)="onBlurMethod()">
+            <input type="number" min="0" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="ssDays" formControlName="ssDays" (blur)="onBlurMethod()"
+            [ngClass]="{'required': (gc16.get('supplierStock.ssDays').hasError('required') && gc16.get('supplierStock.ssDays').touched)
+            || (gc16.get('supplierStock.ssDays').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(gc16.get('supplierStock.ssDays').hasError('required') && gc16.get('supplierStock.ssDays').touched)
+          || (gc16.get('supplierStock.ssDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
-      <div class="col-md-4 dois">
+       <div class="col-md-4 dois">
 
         <div class="row diferente">
           <div class="col-xs-4 colEsq">
@@ -209,8 +229,12 @@
           <p class="descricao">TRANSP. IDA</p>
           <p class="explicacao">Ex. "2 Dias"</p>
           <div class="placeholder" data-placeholder="DIAS">
-            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tgDays" formControlName="tgDays" (blur)="onBlurMethod()">
+            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tgDays" formControlName="tgDays" (blur)="onBlurMethod()"
+            [ngClass]="{'required': (gc16.get('transportationGoing.tgDays').hasError('required') && gc16.get('transportationGoing.tgDays').touched)
+            || (gc16.get('transportationGoing.tgDays').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(gc16.get('transportationGoing.tgDays').hasError('required') && gc16.get('transportationGoing.tgDays').touched)
+          || (gc16.get('transportationGoing.tgDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
       <div class="col-sm-8">
@@ -246,8 +270,12 @@
           <p class="descricao">TRANSP. VOLTA</p>
           <p class="explicacao">Ex. "2 Dias"</p>
           <div class="placeholder" data-placeholder="DIAS">
-            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tbDays" formControlName="tbDays" (blur)="onBlurMethod()">
+            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tbDays" formControlName="tbDays" (blur)="onBlurMethod()"
+            [ngClass]="{'required': (gc16.get('transportantionBack.tbDays').hasError('required') && gc16.get('transportantionBack.tbDays').touched)
+            || (gc16.get('transportantionBack.tbDays').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(gc16.get('transportantionBack.tbDays').hasError('required') && gc16.get('transportantionBack.tbDays').touched)
+          || (gc16.get('transportantionBack.tbDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
       <div class="col-sm-8">
@@ -274,7 +302,7 @@
       </div>
 
     </div>
-    <!--row-->
+
 
 
     <div formGroupName="frequency" class="row diferente2">
@@ -284,8 +312,12 @@
           <p class="explicacao">Ex. "3 Dias"</p>
           <div class="placeholder" data-placeholder="DIAS">
 
-            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fDays" formControlName="fDays" (blur)="onBlurMethod()">
+            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fDays" formControlName="fDays" (blur)="onBlurMethod()"
+            [ngClass]="{'required': (gc16.get('frequency.fDays').hasError('required') && gc16.get('frequency.fDays').touched)
+            || (gc16.get('frequency.fDays').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(gc16.get('frequency.fDays').hasError('required') && gc16.get('frequency.fDays').touched)
+          || (gc16.get('frequency.fDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
       <div class="col-md-8">
@@ -328,8 +360,12 @@
           <p class="descricao">FATOR DE SEGURANÇA</p>
           <p class="explicacao">Ex. "10"</p>
           <div class="placeholder" data-placeholder="%">
-            <input type="number" class="form-control" placeholder="" [(ngModel)]="percentage" formControlName="percentage" (blur)="onBlurMethod()">
+            <input type="number" class="form-control" placeholder="" [(ngModel)]="percentage" formControlName="percentage" (blur)="onBlurMethod()"
+            [ngClass]="{'required': (gc16.get('secutiryFactor.percentage').hasError('required') && gc16.get('secutiryFactor.percentage').touched)
+            || (gc16.get('secutiryFactor.percentage').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(gc16.get('secutiryFactor.percentage').hasError('required') && gc16.get('secutiryFactor.percentage').touched)
+          || (gc16.get('secutiryFactor.percentage').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
       </div>
       <div class="col-md-8">

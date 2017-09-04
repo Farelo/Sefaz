@@ -1,8 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { InventoryService } from '../../servicos/inventory.service';
 import { SuppliersService } from '../../servicos/suppliers.service';
 import { Pagination } from '../../shared/models/pagination';
@@ -16,21 +13,22 @@ declare var $:any;
   styleUrls: ['./inventario.component.css']
 })
 export class InventarioComponent implements OnInit {
-  public embalagens: any[];
+
   public suppliers: any;
   public name_supplier: any;
   public escolhaGeral: any = 'GERAL';
   public escolhaEquipamento =  "";
   public verModal: boolean = true;
   public escolhas: any[] = [
-    {nome: 'GERAL', numero: '01'},
-    {nome: 'EQUIPAMENTO', numero: '02'},
-    {nome: 'FORNECEDOR', numero: '03'}]
+    {name: 'GERAL'},
+    {name: 'EQUIPAMENTO'},
+    {name: 'FORNECEDOR'}]
   public general: Pagination = new Pagination({meta: {page : 1}});
   public supplier: Pagination = new Pagination({meta: {page : 1}});
   public battery: Pagination = new Pagination({meta: {page : 1}});
   public permanence: Pagination = new Pagination({meta: {page : 1}});
   public quantity: Pagination = new Pagination({meta: {page : 1}});
+  public general_equipament: Pagination = new Pagination({meta: {page : 1}});
   public supplierSearch  = "";
   public batterySearch  = "";
   public quantitySearch  = "";
@@ -39,29 +37,22 @@ export class InventarioComponent implements OnInit {
   public serial = false;
 
   constructor(
-    private InventoryService: InventoryService,
-    private SuppliersService: SuppliersService,
-    private router: Router,
-    private route: ActivatedRoute,
+    private inventoryService: InventoryService,
+    private suppliersService: SuppliersService,
     private modalService: NgbModal,
     private ref: ChangeDetectorRef,
   ) { }
 
-  inventory = [];
 
-  ngOnInit() {
-
-    this.generalInventory();
-    this.loadSuppliers();
-    this.tamanhoSelect();
-  }
 
   changeSelect(event){
-
     if(event === "Bateria"){
         this.batteryInventory();
+    }else if(event === "Geral"){
+        this.generalInventoryEquipament();
     }
   }
+
   tamanhoSelect(){
       $(window).resize(function(){
       var largura = $('.select2-container').width();
@@ -70,10 +61,10 @@ export class InventarioComponent implements OnInit {
     });
   }
 
-  supplierInventory(event): void {
-    console.log(event);
+  supplierInventory(event: any):void{
+
     if(event){
-      this.InventoryService.getInventorySupplier(10,this.general.meta.page,event.value).subscribe(result => {
+      this.inventoryService.getInventorySupplier(10,this.supplier.meta.page,event.value).subscribe(result => {
         this.supplier = result;
         this.name_supplier = result.data[0];
       }, err => {console.log(err)});
@@ -82,80 +73,57 @@ export class InventarioComponent implements OnInit {
 
 // Bateria inventario  ----------------------------------
   batteryInventory(){
-    if(this.batterySearch){
-      this.InventoryService.getInventoryBatteryByCode(10,this.general.meta.page,this.batterySearch).subscribe(result => this.battery = result, err => {console.log(err)});
-    }else{
-      this.InventoryService.getInventoryBattery(10,this.general.meta.page).subscribe(result => this.battery = result, err => {console.log(err)});
-    }
+      this.inventoryService.getInventoryBattery(10,this.battery.meta.page,this.batterySearch).subscribe(result => this.battery = result, err => {console.log(err)});
+  }
+
+  generalInventoryEquipament(){
+      this.inventoryService.getInventoryGeneralPackings(10,this.general_equipament.meta.page,this.batterySearch).subscribe(result => {this.general_equipament = result; console.log(result)}, err => {console.log(err)});
   }
 
   quantityInventory(){
     if(this.quantitySearch){
-        this.InventoryService.getInventoryQuantity(10,this.general.meta.page,this.quantitySearch).subscribe(result => this.quantity = result, err => {console.log(err)});
+        this.inventoryService.getInventoryQuantity(10,this.quantity.meta.page,this.quantitySearch).subscribe(result => this.quantity = result, err => {console.log(err)});
     }
   }
   generalInventory(){
-    this.InventoryService.getInventoryGeneral(10,this.general.meta.page).subscribe(result => this.general = result, err => {console.log(err)});
+      this.inventoryService.getInventoryGeneral(10,this.general.meta.page).subscribe(result => this.general = result, err => {console.log(err)});
+  }
+
+  choiced(event:any){
+    if(event === "FORNECEDOR"){
+      this.loadSuppliers();
+    }
   }
 
   permanenceInventory(){
     if(this.permanenceSearchEquipamento && this.permanenceSearchSerial ){
       this.serial = true;
-      this.InventoryService.getInventoryPackingHistoric(10,this.general.meta.page,this.permanenceSearchSerial).subscribe(result => {
+      this.inventoryService.getInventoryPackingHistoric(10,this.permanence.meta.page,this.permanenceSearchSerial).subscribe(result => {
         this.permanence  = result;
-        //  this.permanence.data = result.data.forEach( o => {
-        //     o.packing.permanence_time  = this.getTime(o.packing.permanence_time);
-        //     console.log(o.packing.permanence_time );
-        //   });
-
        }, err => {console.log(err)});
     }else if(this.permanenceSearchEquipamento){
       this.serial = false;
-      this.InventoryService.getInventoryPermanence(10,this.general.meta.page,this.permanenceSearchEquipamento).subscribe(result => this.permanence = result, err => {console.log(err)});
+      this.inventoryService.getInventoryPermanence(10,this.permanence.meta.page,this.permanenceSearchEquipamento).subscribe(result => this.permanence = result, err => {console.log(err)});
     }
-
-  }
-
-
-  getTime(value){
-    let time: number = parseInt(value);
-    parseInt((time / 1000).toString())
-    let seconds: string | number = (parseInt((time / 1000).toString()) % 60);
-    let minutes: string | number = (parseInt((time / (1000 * 60)).toString()) % 60);
-    let hours: string | number = (parseInt((time / (1000 * 60 * 60)).toString()) % 24);
-
-    hours = (hours < 10) ? "0" + hours : hours;
-    minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-    return  hours + " Horas e " + minutes + " Minutos"  ;
   }
 
   loadSuppliers():void{
-
-    this.SuppliersService.retrieveAll().subscribe(result => {
-      this.suppliers = result;
-    }, err => {console.log(err)});
+    this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result}, err => {console.log(err)});
   }
 
-  calculate(packing){
-    if(packing.correct_plant_supplier && packing.correct_plant_factory){
-      if(packing.correct_plant_supplier.equals(packing.actual_plant)){
-
-      }else if(packing.correct_plant_factory.equals(packing.actual_plant)){
-
-      }else{
-        return '-'
-      }
-    }else{
-      return "-";
-    }
-
-  }
   open(packing) {
-          const modalRef = this.modalService.open(ModalInvComponent);
-           modalRef.componentInstance.packing = packing;
+    const modalRef = this.modalService.open(ModalInvComponent);
+    modalRef.componentInstance.packing = packing;
   }
+
+  ngOnInit() {
+
+    this.generalInventory();
+    this.tamanhoSelect();
+  }
+
+
+
 
 
 }

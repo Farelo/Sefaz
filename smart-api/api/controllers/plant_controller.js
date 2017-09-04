@@ -8,6 +8,7 @@ const errorHandler               = require('../helpers/responses/errorHandler');
 const mongoose                   = require('mongoose');
 const plant                      = mongoose.model('Plant');
 const _                          = require("lodash");
+const query                      = require('../helpers/queries/complex_queries_plants');
 mongoose.Promise                 = global.Promise;
 /**
  * Create a Plant
@@ -60,6 +61,14 @@ exports.list_all = function(req, res) { 
     "supplier": { $exists: false },
     "logistic_operator": { $exists: false }
   })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+};
+/**
+ * List of all Plants without supplier and logistic_operator no binded with route
+ */
+exports.list_all_nobinded = function(req, res) { 
+  plant.aggregate(query.queries.plant_filter(req.swagger.params.code.value, req.swagger.params.supplier.value))
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read plant'));
 };

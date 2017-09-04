@@ -22,7 +22,8 @@ import { Select2Module } from 'ng2-select2';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule} from '@angular/forms';
-import {ToastyModule} from 'ng2-toasty'
+import {ToastyModule} from 'ng2-toasty';
+import { ApplicationPipes } from '../shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
@@ -38,7 +39,7 @@ import {ToastyModule} from 'ng2-toasty'
     SimpleNotificationsModule.forRoot(),
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    // NgbModalOptions.forRoot(),
+    ApplicationPipes,
     DashboardRoutingModule,
     HotTableModule,
     NgxPaginationModule,
@@ -53,7 +54,9 @@ import {ToastyModule} from 'ng2-toasty'
     Gc16Component,
     Gc16AdicionarComponent,
     Gc16EditarComponent,
-    FileSelectDirective
+    FileSelectDirective,
+
+
   ],
   providers: [
     NgbActiveModal

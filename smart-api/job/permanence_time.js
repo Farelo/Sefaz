@@ -7,11 +7,6 @@ module.exports = {
   change: function(p, changeLocation) {
     console.log("CHANGE: PACKING: " + p._id);
     return new Promise(function(resolve, reject) {
-      p.permanence = {
-        "amount_days": 0,
-        "date": new Date().getTime(),
-        "time_exceeded": false
-      };
       //remove qualquer alerta de permanencia referente a essa embalagem
       alert.remove({
         "packing": p._id,
@@ -28,11 +23,16 @@ module.exports = {
         var date = new Date();
         var time = Math.round(Math.abs((p.permanence.date - date.getTime())));
 
-        p.permanence.amount_days = time;
+        if(p.actual_gc16){
+          var convertMili = 1000 * 60 * 60 * 24 * p.actual_gc16.days;
+        }else{
+          var convertMili = Infinity;
+        }
 
+        p.permanence.amount_days = time;
         p.permanence.time_exceeded = false;
 
-        if(p.permanence.amount_days > 1000){
+        if(p.permanence.amount_days > convertMili){
           p.permanence.time_exceeded = true;
           alert.find({ //Verifica se o alerta ja existe
             "packing": p._id,

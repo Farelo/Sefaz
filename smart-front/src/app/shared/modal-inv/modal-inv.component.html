@@ -1,29 +1,45 @@
 <div class="modalFilho">
   <div class="header">
-     <p>Detalhes do alerta</p>
-     <!-- <p>Código: {{alerta.packing.code}}</p> -->
-     <p>Tipo: <span>Objeto perdido</span></p>
+     <p>Detalhes da Embalagem </p>
+     <p>Código: <span>{{packing.code}}</span></p>
+     <p>Fornecedor: <span>{{packing.supplier?.name}}</span></p>
   </div>
   <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 <div class="modalBody">
-  <p><span>Planta do Fornecedor:</span>
-    <!-- {{alerta.correct_plant_supplier ? alerta.correct_plant_supplier.name : 'Informação Indisponivel'}}</p> -->
-  <p><span>Planta da Fabrica:</span>
-    <!-- {{alerta.correct_plant_factory ? alerta.correct_plant_factory.name : 'Informação Indisponivel'}}</p> -->
-  <p><span>Ultima Planta que foi visto:</span>
-    <!-- {{alerta.actual_plant  ? alerta.actual_plant.name : 'Informação Indisponivel'}}</p> -->
-  <p><span>Ultimo departamento visto:</span>
-    <!-- {{alerta.department  ? alerta.department.name : 'Informação Indisponivel'}}</p> -->
-  <div class="divBotao">
 
+    <div class="table-responsive tabela">
+      <table class="table">
+        <thead>
+          <tr class="cabecalho">
+            <th class="semBorda">Planta</th>
+            <th class="semBorda">Quantidade na Planta</th>
+            <th class="semBorda">Projeto</th>
 
-  <button type="button" class="botaoVisualizar">Visualizar Historico</button>
-</div>
-</div>
+          </tr>
+        </thead>
+        <tbody >
+          <tr *ngFor="let packing of data.data | paginate: {
+                                                          itemsPerPage: 10,
+                                                          currentPage: data.meta.page,
+                                                          totalItems: data.meta.total_docs}">
+            <td>{{packing.actual_plant?.plant.plant_name}}</td>
+            <td>{{packing.quantity}}</td>
+            <td>{{packing.project?.name}}</td>
 
-<!-- <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeAlerta.close('Close click')">Close</button>
-</div> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="has-text-centered">
+        <pagination-controls class="my-pagination"
+        (pageChange)="pageChanged($event)"
+        directionLinks="false"
+        autoHide="true">
+        </pagination-controls>
+    </div>
+
+  </div>
+
 </div>

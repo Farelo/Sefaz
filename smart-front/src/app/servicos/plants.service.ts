@@ -21,6 +21,12 @@ export class PlantsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  retrieveAllNoBinded(code: string, supplier: string): Observable<any> {
+    return this.http.get(environment.url + 'plant/list/nobinded/'+code+"/"+supplier)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   retrieveGeneral(): Observable<any> {
     return this.http.get(environment.url + 'plant/list/general')
       .map((res: Response) => res.json())

@@ -24,6 +24,7 @@ import { PlataformaEditarComponent } from './plataforma/plataforma-editar/plataf
 import { RotasCadastrarComponent } from './rotas/rotas-cadastrar/rotas-cadastrar.component';
 import { ScannerCadastrarComponent } from './scanner/scanner-cadastrar/scanner-cadastrar.component';
 import { SetorCadastrarComponent } from './setor/setor-cadastrar/setor-cadastrar.component';
+import { SetorEditarComponent } from './setor/setor-editar/setor-editar.component';
 import { TagsCadastrarComponent } from './tags/tags-cadastrar/tags-cadastrar.component';
 import { TagsEditarComponent } from './tags/tags-editar/tags-editar.component';
 import { Select2Module } from 'ng2-select2';
@@ -43,7 +44,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     AlertModule.forRoot(),
     ToastyModule.forRoot(),
     NguiMapModule.forRoot({
-      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
+      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ' +
       '&libraries=visualization,places,drawing',
     })
   ],
@@ -68,7 +69,8 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     PlantaEditarComponent,
     PlataformaEditarComponent,
     EmbalagemEditarComponent,
-    TagsEditarComponent
+    TagsEditarComponent,
+    SetorEditarComponent
   ],
   providers: [
     NgbActiveModal

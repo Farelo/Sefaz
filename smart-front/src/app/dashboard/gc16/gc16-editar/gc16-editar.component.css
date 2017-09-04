@@ -90,7 +90,7 @@ input { font-size: 13px; border-radius: 0em !important;}
 
 .placeholder::after {
     position: absolute;
-    right: 10px;
+    right: 25px;
     top: 6px;
     content: attr(data-placeholder);
     pointer-events: none;

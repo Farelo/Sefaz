@@ -36,7 +36,7 @@ export class ListaComponent implements OnInit {
         let id = params ['hashing'];
         let status = params ['status'];
         this.AlertsService.getAlertsPaginationByHashing(10,1,id,status)
-          .subscribe(alerts => this.alerts = alerts,
+          .subscribe(alerts => {console.log(alerts);this.alerts = alerts},
           err => {
             console.log(err);
           });
@@ -53,25 +53,8 @@ export class ListaComponent implements OnInit {
     this.AlertsService.retrieveAlertByPacking(embalagem,status)
       .subscribe(result => {
 
-          let time: number = parseInt(result.data.packing.permanence.amount_days);
-          parseInt((time / 1000).toString())
-          let seconds: string | number = (parseInt((time / 1000).toString()) % 60);
-          let minutes: string | number = (parseInt((time / (1000 * 60)).toString()) % 60);
-          let hours: string | number = (parseInt((time / (1000 * 60 * 60)).toString()) % 24);
-
-          hours = (hours < 10) ? "0" + hours : hours;
-          minutes = (minutes < 10) ? "0" + minutes : minutes;
-          seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-          result.data.packing.permanence.amount_days = hours + " Horas e " + minutes + " Minutos"  ;
-
           const modalRef = this.modalService.open(PositionModalComponent);
           modalRef.componentInstance.alerta = result;
-        // }else{
-        //   const modalRef = this.modalService.open(MissingModalComponent);
-        //   modalRef.componentInstance.alerta = packing;
-        //
-        // }
 
       },
       err => {

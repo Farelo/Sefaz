@@ -35,13 +35,11 @@ export class PlantaEditarComponent implements OnInit {
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
       location: ['', [Validators.required]],
-      profile: [[], [Validators.required]],
+      profile: [[]],
       _id:['', [Validators.required]],
       __v: [''],
     });
   }
-
-
 
   onSubmit({ value, valid }: { value: Plant, valid: boolean }): void {
     if(valid)this.PlantsService.updatePlant(value._id,value)

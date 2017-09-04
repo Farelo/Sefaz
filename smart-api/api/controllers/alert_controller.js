@@ -28,7 +28,7 @@ exports.alert_read_by_packing = function(req, res) {
       packing: req.swagger.params.packing_id.value,
       status: req.swagger.params.status.value
     })
-    .populate('actual_plant')
+    .populate('actual_plant.plant')
     .populate('department')
     .populate('correct_plant_supplier')
     .populate('correct_plant_factory')
@@ -73,7 +73,7 @@ exports.alert_list_hashing = function(req, res) { 
       "status": req.swagger.params.status.value
     }, {
       page: parseInt(req.swagger.params.page.value),
-      populate: ['packing','supplier','actual_plant'],
+      populate: ['packing','supplier','actual_plant.plant'],
       sort: {
         date: -1
       },

@@ -38,7 +38,7 @@ module.exports = function(p, plant) {
             },{
               "correct_plant_factory": p.route.plant_factory,
               "correct_plant_supplier": p.route.plant_supplier,
-              "actual_plant": p.actual_plant,
+              "actual_plant":p.actual_plant,
               "supplier": p.supplier,
               "hashpacking": p.hashPacking,
               "serial": p.serial

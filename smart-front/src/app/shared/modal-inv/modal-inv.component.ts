@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { InventoryService } from '../../servicos/inventory.service';
-
+import { Pagination } from '../../shared/models/pagination';
 
 
 @Component({
@@ -13,9 +13,9 @@ import { InventoryService } from '../../servicos/inventory.service';
   styleUrls: ['./modal-inv.component.css']
 })
 export class ModalInvComponent implements OnInit {
- @Input() packing;
-
-inscricao: Subscription;
+  @Input() packing;
+  public inscricao: Subscription;
+  public data: Pagination = new Pagination({meta: {page : 1}});
   constructor(
     public activeAlerta: NgbActiveModal,
     private route: ActivatedRoute,
@@ -23,8 +23,19 @@ inscricao: Subscription;
     private router: Router) { }
 
   ngOnInit() {
-    console.log(this.packing._id);
-    this.inventoryService.getInventorySupplierByPlant(10,1,this.packing.code, this.packing.supplier._id).subscribe( result => console.log(result))
+    this.loadInventory();
+  }
+
+  loadInventory(){
+    this.inventoryService.getInventorySupplierByPlant(10,this.data.meta.page,this.packing.code, this.packing.supplier._id).subscribe( result => {
+      this.data = result;
+      console.log(result);
+    });
+  }
+
+  pageChanged(page: any): void{
+    this.data.meta.page = page;
+    this.loadInventory();
   }
 
 }
