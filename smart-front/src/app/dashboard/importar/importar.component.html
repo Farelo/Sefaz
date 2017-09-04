@@ -1,7 +1,27 @@
 <div class="painel">
   <div class="corpo">
     <div class="container">
+      <button class="help" (click)="openHelp(content)">
+        <div class="bigger">
+          <div class="det2"></div>
+        </div>
+      </button>
       <h1>IMPORTAR DADOS</h1>
+      <ng-template #content>
+        <div class="modalFilho">
+          <div class="header">
+             <p>IMPORTAR DADOS</p>
+          </div>
+          <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        <div class="modalBody">
+          <p>Informações que o cliente deseja colocar.</p>
+        </div>
+        </div>
+      </ng-template>
+
+
 
       <div class="row">
         <div class="col-md-4 importar">
