@@ -28,6 +28,7 @@
     "@types/hammerjs": "^2.0.34",
     "@types/jquery": "2.0.47",
     "angular2-notifications": "^0.7.7",
+    "angular2-text-mask": "^8.0.3",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
     "jquery": "^3.2.1",

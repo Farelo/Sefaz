@@ -40,6 +40,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
 import { EsqueciMinhaSenhaComponent } from './esqueci-minha-senha/esqueci-minha-senha.component';
 import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.component';
+import { TextMaskModule } from 'angular2-text-mask';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,8 +54,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ModalDeleteComponent,
     MissingModalComponent,
     EsqueciMinhaSenhaComponent,
-    RedefinirSenhaComponent,
-
+    RedefinirSenhaComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +65,7 @@ import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.compo
     ReactiveFormsModule,
     ValidatorsModule,
     AppRoutingModule,
+    TextMaskModule,
     NgProgressModule,
     NguiMapModule.forRoot({
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +

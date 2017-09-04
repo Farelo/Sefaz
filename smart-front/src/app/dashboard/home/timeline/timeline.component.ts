@@ -35,6 +35,7 @@ export class TimelineComponent implements OnInit {
   private aparecer: boolean = false;
   closeResult: string;
   verModal: boolean = true;
+
   // testes: any[] = [
   //   {codigo: '000000001', rack: 'Rack Metálico', safe: 'Fornecedor 1', numero: '1', status: 'A'},
   //   {codigo: '000000002', rack: 'Rack de Madeira', safe: 'Fornecedor 1', numero: '2', status: 'B'},

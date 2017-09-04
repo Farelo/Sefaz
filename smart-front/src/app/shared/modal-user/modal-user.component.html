@@ -68,7 +68,8 @@
           <div class="col-sm-4" formGroupName="profile">
 
             <p class="descricao">CEP</p>
-            <input type="text" class="form-control" [(ngModel)]="cep" (blur)="getAddress()" formControlName="cep">
+            <!-- <input type="text" class="form-control" [(ngModel)]="cep" (blur)="getAddress()" formControlName="cep"> -->
+            <input [textMask]="{mask: maskCep}" class="form-control" [(ngModel)]="newcep" type="text" formControlName="cep"/>
             <p class="descricao">CIDADE</p>
             <input type="text" class="form-control" [(ngModel)]="city" formControlName="city" disabled>
             <p class="descricao">ENDEREÇO</p>
@@ -80,9 +81,10 @@
             <p class="descricao">UF</p>
             <input type="text" class="form-control" [(ngModel)]="uf" formControlName="uf" disabled>
             <p class="descricao">TELEFONE</p>
-            <input type="text" class="form-control" [(ngModel)]="telephone" formControlName="telephone">
+            <!-- <input type="text" class="form-control" [(ngModel)]="telephone" formControlName="telephone"> -->
+            <input [textMask]="{mask: maskTel}" class="form-control" [(ngModel)]="newtelefone" type="text" formControlName="telephone"/>
             <p class="descricao">CELULAR</p>
-            <input type="text" class="form-control" [(ngModel)]="cellphone" formControlName="cellphone">
+            <input [textMask]="{mask: maskCel}" class="form-control" [(ngModel)]="cellphone" type="text" formControlName="cellphone">
             <p class="descricao"></p>
             <div class="informacoes">
               <div class="bigger2">

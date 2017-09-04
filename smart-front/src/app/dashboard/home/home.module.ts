@@ -9,7 +9,7 @@ import { ListaComponent } from './lista/lista.component';
 
 import { HomeRoutingModule } from './home.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalModule,TooltipModule } from 'ngx-bootstrap'
+import { ModalModule,TooltipModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
