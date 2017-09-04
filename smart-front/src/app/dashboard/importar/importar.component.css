@@ -184,3 +184,53 @@ span {
 tbody {
   font-weight: 300;
 }
+/*Modal*/
+.close {
+  font-size: 20px;
+  text-align: right;
+  margin-right: 5px;
+}
+.modalFilho {
+  font-family: 'Roboto', sans-serif;
+}
+
+.header {
+  display: inline-grid;
+  border-bottom-style: solid;
+  border-bottom-color: grey;
+  border-bottom-width: thin;
+  margin-bottom: 15px;
+}
+.header span {
+  color: #EF5562;
+}
+.header p {
+  font-weight: bold;
+  width: 200px;
+}
+.modalBody span {
+  font-weight: bold;
+}
+.det2 {
+  width: 25px;
+  height: 25px;
+  -webkit-mask-box-image: url("../../../assets/images/interrogacao.png");
+  cursor: pointer;;
+  background-color: #6382c9;
+}
+.det2:hover {
+  background-color: #777;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+.bigger {
+  position: relative;
+}
+.help {
+background-color: transparent;
+border: none;
+float: right;
+}
+.help:focus {
+  outline: none;
+}

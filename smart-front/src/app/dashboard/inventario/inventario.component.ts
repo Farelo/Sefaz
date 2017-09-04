@@ -1,5 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
+import { Router } from '@angular/router';
 import { InventoryService } from '../../servicos/inventory.service';
 import { SuppliersService } from '../../servicos/suppliers.service';
 import { Pagination } from '../../shared/models/pagination';
@@ -37,9 +40,13 @@ export class InventarioComponent implements OnInit {
   public serial = false;
 
   constructor(
+    public activeModal: NgbActiveModal,
     private inventoryService: InventoryService,
     private suppliersService: SuppliersService,
+    private router: Router,
+    private route: ActivatedRoute,
     private modalService: NgbModal,
+    private modalActive: NgbActiveModal,
     private ref: ChangeDetectorRef,
   ) { }
 
@@ -123,7 +130,13 @@ export class InventarioComponent implements OnInit {
   }
 
 
+  openHelp(content) {
+   this.modalService.open(content);
+ }
 
+ closeHelp(){
+   this.modalActive.close();
+ }
 
 
 }

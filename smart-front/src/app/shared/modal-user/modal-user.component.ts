@@ -32,6 +32,14 @@ export class ModalUserComponent implements OnInit {
   public center: any;
   public pos : any;
   public users: any;
+  public newcep = '';
+  public newtelefone = '';
+  // public mask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  public mask = [/[0-9]/, /\d/, /\d/,'.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,'-', /\d/, /\d/];
+  public maskCep = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
+  public maskTel = ['(', /[0-9]/, /\d/,')', /\d/,/\d/, /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, /\d/];
+  public maskCel = ['(', /[0-9]/, /\d/,')', /\d/,/\d/, /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, /\d/];
+  // public mask2 = ['(', /[0-9]/, /\d/,')', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,/\d/];
 
   constructor(
     public activeModal: NgbActiveModal,

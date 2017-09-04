@@ -1,6 +1,7 @@
 <div class="conteudoHome">
   <div class="header">
     Timeline
+
     <button type="button" class="interrogacao1"
       [ngbPopover]= 'popContent' placement="left"
       *ngIf="telaGrande == false" triggers='hover'>
@@ -69,6 +70,7 @@
       </div>
     </div>
 
+    <!-- <div class="externa" *ngIf="alerts?.data?.length < 1 "> -->
     <div class="externa" *ngIf="alerts?.data?.length < 1 ">
         <div class="row interna">
           <div class="col-sm-3 divImagem">
@@ -76,7 +78,7 @@
           </div>
           <div class="col-sm-9 divTexto">
             <!-- <div class-"divTextoFilho"> -->
-              <p class="titulo">OBA!</p>
+              <!-- <p class="titulo">OBA!</p> -->
               <p class="texto">VOCÊ NÃO TEM NENHUM ALERTA</p>
             <!-- </div> -->
           </div>

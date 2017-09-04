@@ -352,6 +352,7 @@ label {
 }
 .externa {
   padding: 5px;
+  width: 100%;
 }
 .interna {
   border-style: solid;
@@ -387,7 +388,7 @@ label {
 }
 .divTexto {
   text-align: left;
-  padding-top: 20px;
+  padding-top: 30px;
 }
 @media (max-width: 576px) {
   .divTexto {
