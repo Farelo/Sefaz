@@ -22,6 +22,11 @@ const historicPackingsSchema = new mongoose.Schema({
   permanence_time: {
     type: Number
   },
+  actual_gc16: {
+    days: Number,
+    max: Number,
+    min: Number,
+  },
   serial: String,
   code: String,
   packing: {

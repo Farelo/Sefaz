@@ -18,18 +18,34 @@ module.exports = {
   update: function(p) {
     return new Promise(function(resolve, reject) {
       if (!p.missing) {
-        historic_packings.update({
-          "packing": p._id,
-          "date": p.permanence.date
-        }, {
-          "plant": p.actual_plant,
-          "date": p.permanence.date,
-          "temperature": p.temperature,
-          "permanence_time": p.permanence.amount_days,
-          "serial": p.serial,
-          "supplier": p.supplier,
-          "packing": p._id
-        }).then(() => resolve("OK"));
+        if(p.gc16){
+          historic_packings.update({
+            "packing": p._id,
+            "date": p.permanence.date
+          }, {
+            "actual_gc16": p.actual_gc16 ,
+            "plant": p.actual_plant,
+            "date": p.permanence.date,
+            "temperature": p.temperature,
+            "permanence_time": p.permanence.amount_days,
+            "serial": p.serial,
+            "supplier": p.supplier,
+            "packing": p._id
+          }).then(() => resolve("OK"));
+        }else{
+          historic_packings.update({
+            "packing": p._id,
+            "date": p.permanence.date
+          }, {$unset: {actual_gc16: 1}},{
+            "plant": p.actual_plant,
+            "date": p.permanence.date,
+            "temperature": p.temperature,
+            "permanence_time": p.permanence.amount_days,
+            "serial": p.serial,
+            "supplier": p.supplier,
+            "packing": p._id
+          }).then(() => resolve("OK"));
+        }
       } else {
         resolve("OK");
       }

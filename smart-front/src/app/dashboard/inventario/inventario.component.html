@@ -252,7 +252,7 @@
           <td>{{packing.supplier?.name || '-'}}</td>
           <td>{{packing.plant?.plant.plant_name || '-'}}</td>
           <td>{{packing.permanence_time || '-' | time}}</td>
-          <td>{{packing.packing?.gc16?.supplierStock?.days || '-'}}</td>
+          <td>{{packing.actual_gc16?.days || '-'}}</td>
         </tr>
 
       </tbody>
@@ -323,7 +323,6 @@
           <th>Serial</th>
           <th>Fornecedor</th>
           <th>Planta Atual</th>
-          <th>Status</th>
           <th>Bateria</th>
           <th>Projeto</th>
           <th>Temperatura</th>
@@ -340,10 +339,9 @@
             <td>{{packing.serial || '-'}}</td>
             <td>{{packing.supplier?.name || '-'}}</td>
             <td>{{packing.actual_plant?.plant.plant_name || '-'}}</td>
-            <td>{{packing.status || '-'}}</td>
             <td>{{packing.battery || '-' | round}} %</td>
             <td>{{packing.project?.name || '-'}}</td>
-            <td>{{packing.temperature || '-'}}</td>
+            <td>{{packing.temperature || '-'}} ∘</td>
             <td style="text-align: center;">
               <div class="bigger">
                 <div class="det">
@@ -395,9 +393,9 @@
           <td>{{packing.supplier?.name || '-'}}</td>
           <td>{{packing.actual_plant?.plant.plant_name || 'Não Registrado'}}</td>
           <td>{{packing.quantity || '-'}}</td>
-          <td>{{packing.gc16?.supplierStock?.QuantContainerSs || '-'}}</td>
-          <td>{{packing.gc16?.supplierStock?.QuantContainerSsMax || '-'}}</td>
-          <td>{{packing.gc16?.supplierStock?.QuantContainerSs > packing.quantity ? (packing.quantity-packing.gc16?.supplierStock?.QuantContainerSs) : (packing.gc16?.supplierStock?.QuantContainerSsMax < packing.quantity ? packing.quantity-packing.gc16?.supplierStock?.QuantContainerSsMax :  'OK')  }}</td>
+          <td>{{packing.actual_gc16?.min || '-'}}</td>
+          <td>{{packing.actual_gc16?.max || '-'}}</td>
+          <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min) : (packing.actual_gc16?.max < packing.quantity ? packing.quantity-packing.actual_gc16?.max  :  'NI')) : 0  }}</td>
           <td>{{packing.missing ? 'Perdida': (packing.problem ? 'Local Errado' : 'OK') }}</td>
 
         </tr>

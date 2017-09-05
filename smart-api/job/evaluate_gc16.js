@@ -16,8 +16,6 @@ module.exports = {
             min: p.gc16.supplierStock.QuantContainerSs,
           }
           console.log("INSERT GC16 SUPPLIER TO PACKING: "+p._id);
-        }else{
-          delete p.actual_gc16;
         }
       }
     }else{
@@ -28,8 +26,6 @@ module.exports = {
           min: p.gc16.factoryStock.QuantContainerfs,
         }
         console.log("INSERT GC16 FACTORY TO PACKING: "+p._id);
-      }else{
-        delete p.actual_gc16;
       }
     }
 
@@ -52,9 +48,6 @@ module.exports = {
             min: p.gc16.supplierStock.QuantContainerSs,
           }
           console.log("INSERT GC16 SUPPLIER TO PACKING: "+p._id);
-        }else{
-          console.log("REMOVE GC16 SUPPLIER TO PACKING: "+p._id);
-          delete p.actual_gc16;
         }
       }
     }else{
@@ -65,12 +58,9 @@ module.exports = {
           min: p.gc16.factoryStock.QuantContainerfs,
         }
         console.log("INSERT GC16 FACTORY TO PACKING: "+p._id);
-      }else{
-        console.log("REMOVE GC16 FACTORY TO PACKING: "+p._id);
-        p.actual_gc16 = null;
       }
     }
-    // console.log(p);
+
     return p;
   }
 
