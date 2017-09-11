@@ -1,6 +1,8 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
+import { AuthenticationService } from '../../servicos/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 declare var $:any;
 
 @Component({
@@ -18,7 +20,8 @@ closeResult: string;
   constructor(
     private ngZone:NgZone,
     private modalService: NgbModal,
-    // public modalOptions: NgbModalOptions
+    private authenticationService: AuthenticationService,
+    private router: Router
   ) {
   }
 
@@ -30,7 +33,7 @@ closeResult: string;
 
   funcaoTop(){
     $('.scroll').click(function() {
-        $('label').click();
+        // $('label').click();
         return false;
     });
   }
@@ -52,5 +55,11 @@ closeResult: string;
     this.mudar();
     const modalRef = this.modalService.open(ModalUserComponent,{backdrop: "static", size: "lg"});
     modalRef.componentInstance.view = 'EDITAR';
+  }
+
+  logout(){
+    console.log("aqui");
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
   }
 }

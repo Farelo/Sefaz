@@ -22,6 +22,14 @@ const historicPackingsSchema = new mongoose.Schema({
   permanence_time: {
     type: Number
   },
+  department: {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Department'
+  },
+  routes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Route'
+  }],
   actual_gc16: {
     days: Number,
     max: Number,

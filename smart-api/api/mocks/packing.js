@@ -4,7 +4,10 @@ const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 
 const packingSchema = new mongoose.Schema({
-  code: {type: String, required: true},
+  code: {
+    type: String,
+    required: true
+  },
   type: String,
   weigth: Number,
   width: Number,
@@ -46,10 +49,6 @@ const packingSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  correct_plant_factory: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Plant'
-  },
   gc16: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'GC16'
@@ -58,10 +57,6 @@ const packingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Route'
   }],
-  correct_plant_supplier: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Plant'
-  },
   actual_plant: {
     plant: {
       type: mongoose.Schema.Types.ObjectId,
@@ -89,7 +84,45 @@ const packingSchema = new mongoose.Schema({
   hashPacking: String
 
 });
+packingSchema.post('remove', function(next) {
+  let packing  = this;
+  // Remove all the assignment docs that reference the removed person.
+  packing.model('Alerts').remove({packing: packing._id})
+          .then(() => packing.model('HistoricPackings').remove({packing: packing._id}))
+          .then(() => evaluete(Promise.all([this.model('Packing').find({gc16: packing.gc16}), packing.model('Packing').find({routes: {$in: packing.routes}})]), next,packing));
 
+});
 packingSchema.plugin(mongooseAggregatePaginate);
 packingSchema.plugin(mongoosePaginate);
+
 mongoose.model('Packing', packingSchema);
+
+
+function evaluete(promise, next, p) {
+
+  promise.then(result => {
+    if (result[0].length === 0 && result[1].length === 0) {
+      p.model('GC16').remove({
+          _id: p.gc16
+        })
+        .then(() => p.model('Route').remove({
+          _id: {
+            $in: p.routes
+          }
+        }))
+        .then(() => next());
+    } else if (result[0].length === 0) {
+      p.model('GC16').remove({
+        _id: p.gc16
+      }).then(() => next());
+    } else if (result[1].length === 0) {
+      p.model('Route').remove({
+        _id: {
+          $in: p.routes
+        }
+      }).then(() => next());
+    } else {
+      next();
+    }
+  });
+}

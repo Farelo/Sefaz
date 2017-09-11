@@ -81,6 +81,11 @@ select {
   border-width: 2px;
 }
 td {  background-color: white; }
+
+td, th, tr, .excluir, .editar, p {
+  font-family: 'Roboto', sans-serif;
+
+}
 .header {
   display: inline-grid;
   border-bottom-style: solid;
@@ -179,4 +184,43 @@ th, td {
   border-color: #6382c9;
   border-width: thin;
   margin-bottom: 25px;
+}
+
+.editar, .excluir {
+  width: 80px;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+}
+.excluir {  background-color:  #1d416B; }
+.excluir:hover{
+  background-color: #102b40;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.editar, .excluir {
+  width: 80px;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+}
+.editar {  background-color: #3b5d93; }
+.editar:hover {
+  background-color: #6382c9;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+.teste {
+  text-align: right;
+}
+.opcoes {
+  text-align: right;
+  padding-right: 123px;
+}
+.classVazio {
+  background-color: white;
+  margin: 0px;
+  padding: 20px;
+  /*box-shadow: 0px 0px 7px #000;*/
 }

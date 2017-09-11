@@ -1,22 +1,15 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { LandingPageComponent } from './landing-page/landing-page.component';
-import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { EsqueciMinhaSenhaComponent } from './esqueci-minha-senha/esqueci-minha-senha.component'
-import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const appRoutes: Routes = [
 
-  { path: 'rc', component: DashboardComponent },
-  { path: 'esqueciMinhaSenha', component: EsqueciMinhaSenhaComponent },
-  { path: 'redefinirSenha', component: RedefinirSenhaComponent },
-  // { path: 'rc', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
-  { path: 'login', component: LoginComponent },
-  { path: '', component: LandingPageComponent },
+  { path: 'esqueciMinhaSenha', loadChildren: 'app/esqueci-minha-senha/esqueci-minha-senha.module#EsqueciMinhaSenhaModule' },
+  { path: 'redefinirSenha', loadChildren: 'app/redefinir-senha/redefinir-senha.module#RedefinirSenhaModule' },
+  {path: 'login', loadChildren: 'app/login/login.module#LoginModule'},
+  { path: '', loadChildren: 'app/landing-page/landing-page.module#LandingPageModule'},
   { path: '**', redirectTo: ''},
-
 
 ];
 

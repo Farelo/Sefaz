@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { GC16 } from '../../../shared/models/gc16';
 import { Project } from '../../../shared/models/project';
 import { SuppliersService } from '../../../servicos/suppliers.service';
@@ -9,6 +9,8 @@ import { GC16Service } from '../../../servicos/gc16.service';
 import { ToastService } from '../../../servicos/toast.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import * as $ from 'jquery'
+
 
 @Component({
   selector: 'app-gc16-adicionar',
@@ -17,6 +19,7 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 })
 
 export class Gc16AdicionarComponent implements OnInit {
+  @ViewChild('drawer') drawer: ElementRef;
   public gc16 : FormGroup;
   public suppliers = [];
   public packings : any [];
@@ -33,6 +36,10 @@ export class Gc16AdicionarComponent implements OnInit {
     private toastService: ToastService
   ) {}
 
+  ngAfterViewInit() {
+    console.log($('.chzn-select-template-example').animate({scrollLeft: 100}, 500));
+
+  }
 
   onSubmit({ value, valid }: { value: GC16, valid: boolean }): void {
     if(valid){
@@ -108,6 +115,7 @@ export class Gc16AdicionarComponent implements OnInit {
 
 
   ngOnInit() {
+
       this.loadSuppliers();
       this.gc16 = this.fb.group({
         annualVolume: ['', [Validators.required]],

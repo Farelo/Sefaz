@@ -130,39 +130,11 @@ exports.packing_update_all_by_route = function(req, res) {
  * Delete an Packing
  */
 exports.packing_delete = function(req, res) {
-  alert.remove({packing: req.swagger.params.packing_id.value})
-        .then( () => historic.remove({packing: req.swagger.params.packing_id.value}))
-        .then( () => packing.findOne({  _id: req.swagger.params.packing_id.value}))
-        .then( p => removePacking(p,req.swagger.params.packing_id.value))
-        .then( p => evaluete(Promise.all([packing.find({gc16: p.gc16}), packing.find({route: p.route })]), p))
+  packing.findOne({_id: req.swagger.params.packing_id.value}).exec()
+        .then(doc => doc.remove())
         .catch(_.partial(errorHandler, res, 'Error to delete packing'))
         .then(_.partial(successHandler, res));
 };
-
-function removePacking(p, id){
-  return new Promise(function(resolve, reject) {
-      packing.remove({ _id: id }).then(() => resolve(p));
-  });
-}
-
-function evaluete(promise,p){
-
-  return new Promise(function(resolve, reject) {
-    promise.then(result => {
-      if(result[0].length === 0 && result[1].length === 0){
-        gc16.remove({_id: p.gc16})
-            .then(() => route.remove({_id: p.route }))
-            .then(() => resolve(p));
-      }else if(result[0].length === 0){
-        gc16.remove({_id: p.gc16}).then(() => resolve(p));
-      }else if(result[1].length === 0){
-        route.remove({_id: p.route}).then(() => resolve(p));
-      }else{
-        resolve(p);
-      }
-    });
-  });
-}
 /**
  * List of packings by pagination
  */

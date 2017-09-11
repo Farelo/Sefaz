@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../../../servicos/projects.service';
 import { Project } from '../../../shared/models/project';
 import { Pagination } from '../../../shared/models/pagination';
+import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-plataforma',
@@ -11,7 +13,10 @@ import { Pagination } from '../../../shared/models/pagination';
 export class PlataformaComponent implements OnInit {
   public data: Pagination = new Pagination({meta: {page : 1}});
   public search : string;
-  constructor(private ProjectService : ProjectService) { }
+  constructor(
+    private ProjectService : ProjectService,
+    private modalService: NgbModal
+  ) { }
 
     searchEvent(): void{
       if(this.search != "" && this.search){
@@ -33,8 +38,14 @@ export class PlataformaComponent implements OnInit {
       this.loadProjects();
     }
 
-    removeProject(id):void{
-      this.ProjectService.deleteProject(id).subscribe(result =>   this.loadProjects(), err => {console.log(err)})
+    removeProject(project):void{
+      const modalRef = this.modalService.open(ModalDeleteComponent);
+      modalRef.componentInstance.view = project;
+      modalRef.componentInstance.type = "project";
+
+      modalRef.result.then((result) => {
+        if(result === "remove") this.loadProjects();
+      });
     }
 
     ngOnInit() {

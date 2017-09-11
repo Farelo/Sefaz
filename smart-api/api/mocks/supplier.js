@@ -14,5 +14,25 @@ const supplierSchema = new mongoose.Schema({
       },
       hashPacking: {type: String}
 });
+
+supplierSchema.pre('remove', function(next) {
+    let supplier = this;
+    console.log(supplier);
+    // Remove all the assignment docs that reference the removed person.
+    supplier.model('Plant').findOne({supplier: supplier._id}).exec()
+        .then(doc => {
+          doc.remove();
+          let cursor = supplier.model('Packing').find({supplier: supplier._id}).cursor();
+          cursor.on('data', function(doc) {
+            // Called once for every document
+            doc.remove();
+          });
+
+          cursor.on('close', function(doc) {
+            // Called once for every document
+            next();
+          })
+        });
+});
 supplierSchema.plugin(mongoosePaginate);
 mongoose.model('Supplier', supplierSchema);

@@ -55,9 +55,11 @@ exports.department_update = function(req, res) {  
  * Delete an Department
  */
 exports.department_delete = function(req, res) { 
-  department.remove({
-      _id: req.swagger.params.department_id.value
-    })
+
+  department.findOne({
+        _id: req.swagger.params.department_id.value
+    }).exec()
+    .then(doc => doc.remove())
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to delete department'));
 };

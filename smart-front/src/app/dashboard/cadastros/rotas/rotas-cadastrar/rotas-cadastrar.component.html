@@ -24,7 +24,7 @@
         <p class="explicacao"></p>
         <select id="planta" (ngModelChange)="onChangeSupplier($event)" formControlName="packing_code">
             <option value="">Associe uma embalagem</option>
-          <option *ngFor="let obj of packings" [ngValue]="obj" >{{obj.id}}</option>
+          <option *ngFor="let obj of packings" [ngValue]="obj" >Código: {{obj.id}}</option>
         </select>
       </div>
 

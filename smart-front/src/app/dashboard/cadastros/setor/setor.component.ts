@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DepartmentService } from '../../../servicos/departments.service';
 import { Department } from '../../../shared/models/department';
 import { Pagination } from '../../../shared/models/pagination';
+import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-setor',
@@ -11,7 +13,10 @@ import { Pagination } from '../../../shared/models/pagination';
 export class SetorComponent implements OnInit {
   public data: Pagination = new Pagination({meta: {page : 1}});
   public search : string;
-  constructor(private DepartmentService : DepartmentService) { }
+  constructor(
+    private DepartmentService : DepartmentService,
+    private modalService: NgbModal
+  ) { }
 
   searchEvent(): void{
     if(this.search != "" && this.search){
@@ -23,7 +28,7 @@ export class SetorComponent implements OnInit {
   }
 
   loadDepartments(){
-    this.DepartmentService.getDepartmentsPagination(10,1)
+    this.DepartmentService.getDepartmentsPagination(10, this.data.meta.page)
       .subscribe(data => this.data = data, err => {console.log(err)});
   }
 
@@ -32,8 +37,14 @@ export class SetorComponent implements OnInit {
     this.loadDepartments();
   }
 
-  removeDepartment(id):void{
-    this.DepartmentService.deleteDepartment(id).subscribe(result =>   this.loadDepartments(), err => {console.log(err)})
+  removeDepartment(department):void{
+    const modalRef = this.modalService.open(ModalDeleteComponent);
+    modalRef.componentInstance.view = department;
+    modalRef.componentInstance.type = "department";
+    modalRef.result.then((result) => {
+      if(result === "remove") this.loadDepartments();
+    });
+
   }
 
   ngOnInit() {

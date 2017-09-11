@@ -27,7 +27,7 @@
 
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', tag._id]">Editar</button>
-          <button class="excluir" (click)="removeTags(tag._id)"  [disabled]="tag.status == 1">Excluir</button>
+          <button class="excluir" (click)="removeTags(tag)"  [disabled]="tag.status == 1">Excluir</button>
         </td>
       </tr>
     </tbody>

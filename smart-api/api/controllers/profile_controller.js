@@ -2,13 +2,15 @@
 /**
  * Module dependencies.
  */
-const successHandler             = require('../helpers/responses/successHandler');
-const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
-const errorHandler               = require('../helpers/responses/errorHandler');
-const mongoose                   = require('mongoose');
-const profile                    = mongoose.model('Profile');
-const _                          = require("lodash");
-mongoose.Promise                 = global.Promise;
+const successHandler                            = require('../helpers/responses/successHandler');
+const successHandlerPagination                  = require('../helpers/responses/successHandlerPagination');
+const successHandlerPaginationAggregate         = require('../helpers/responses/successHandlerPaginationAggregate');
+const errorHandler                              = require('../helpers/responses/errorHandler');
+const query                                     = require('../helpers/queries/complex_queries_profile');
+const mongoose                                  = require('mongoose');
+const profile                                   = mongoose.model('Profile');
+const _                                         = require("lodash");
+mongoose.Promise                                = global.Promise;
 /**
  * Create a Profile
  */
@@ -17,13 +19,23 @@ exports.profile_create = function(req, res) {
     .catch(_.partial(errorHandler, res, 'Error to create Profile'))
     .then(_.partial(successHandler, res));
 };
-
 /**
  * Show the current Profile
  */
 exports.profile_read = function(req, res) {
   profile.findOne({
       _id: req.swagger.params.profile_id.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read profile'));
+};
+/**
+ * Show the current Profile
+ */
+exports.profile_auth = function(req, res) {
+  profile.findOne({
+      password: req.swagger.params.password.value,
+      email: req.swagger.params.email.value
     })
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read profile'));
@@ -45,9 +57,11 @@ exports.profile_update = function(req, res) {  
  * Delete an Profile
  */
 exports.profile_delete = function(req, res) { 
-  profile.remove({
+
+  profile.findOne({
       _id: req.swagger.params.profile_id.value
-    })
+    }).exec()
+    .then(doc => doc.remove())
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to delete profile'));
 
@@ -64,13 +78,8 @@ exports.profile_list = function(req, res) { 
  * List of all Profiles by pagination
  */
 exports.profile_listPagination = function(req, res) { 
-  profile.paginate({}, {
-      page: parseInt(req.swagger.params.page.value),
-      sort: {
-        _id: 1
-      },
-      limit: parseInt(req.swagger.params.limit.value)
-    })
-    .then(_.partial(successHandlerPagination, res))
-    .catch(_.partial(errorHandler, res, 'Error to list all profiles by pagination'));
+  let aggregate = profile.aggregate(query.queries.profiles);
+  profile.aggregatePaginate(aggregate,
+    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
+    _.partial(successHandlerPaginationAggregate, res));
 };

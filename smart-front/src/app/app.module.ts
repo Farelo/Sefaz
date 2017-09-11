@@ -8,8 +8,6 @@ import { NgProgressBrowserXhr, NgProgressModule } from 'ngx-progressbar';
 import { NgxPaginationModule} from 'ngx-pagination';
 import * as $ from 'jquery';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
 import { ModalUserComponent } from './shared/modal-user/modal-user.component';
 import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
@@ -22,6 +20,7 @@ import { MissingModalComponent } from './shared/modal/alerta/missing/alerta.comp
 import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.component';
 
 import { AlertsService } from './servicos/alerts.service';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { ToastService } from './servicos/toast.service';
 import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';
@@ -30,6 +29,7 @@ import { PlantsService } from './servicos/plants.service';
 import { RoutesService } from './servicos/routes.service';
 import { SuppliersService } from './servicos/suppliers.service';
 import { TagsService } from './servicos/tags.service';
+import { AuthenticationService } from './servicos/auth.service';
 import { CheckpointService } from './servicos/checkpoints.service';
 import { GeocodingService } from './servicos/geocoding.service';
 import { ProjectService } from './servicos/projects.service';
@@ -38,31 +38,27 @@ import { CEPService } from './servicos/cep.service';
 import { GC16Service } from './servicos/gc16.service';
 import { ChatService } from './servicos/teste';
 import { NguiMapModule } from '@ngui/map';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app.routing.module';
-import { EsqueciMinhaSenhaComponent } from './esqueci-minha-senha/esqueci-minha-senha.component';
-import { RedefinirSenhaComponent } from './redefinir-senha/redefinir-senha.component';
 import { TextMaskModule } from 'angular2-text-mask';
+import { AuthGuard } from './guard/auth.guard';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    LandingPageComponent,
     PositionModalComponent,
     ModalRastComponent,
     ModalUserComponent,
     ModalInvComponent,
     ModalDeleteComponent,
-    MissingModalComponent,
-    EsqueciMinhaSenhaComponent,
-    RedefinirSenhaComponent
+    MissingModalComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     NgbModule.forRoot(),
+    AlertModule.forRoot(),
     DashboardModule,
     ReactiveFormsModule,
     ValidatorsModule,
@@ -91,9 +87,11 @@ import { TextMaskModule } from 'angular2-text-mask';
     GC16Service,
     GeocodingService,
     ProfileService,
+    AuthGuard,
     InventoryService,
     CEPService,
     ToastService,
+    AuthenticationService,
     { provide: BrowserXhr, useClass: NgProgressBrowserXhr }
 
     // FormBuilder,

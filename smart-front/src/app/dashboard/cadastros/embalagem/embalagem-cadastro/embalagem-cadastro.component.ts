@@ -71,14 +71,14 @@ export class EmbalagemCadastroComponent implements OnInit {
   changeCode(){
     this.PackingService.retrievePackingBySupplierAndCode(this.packing.controls.code.value,this.packing.controls.supplier.value)
         .subscribe(result => {
-          console.log(result.data);
+
           if(result.data){
             this.packing.controls.project.setValue(result.data);
             if(result.data.gc16){
               this.packing.controls.gc16.setValue(result.data.gc16);
             }
-            if(result.data.route){
-              this.packing.controls.route.setValue(result.data.route);
+            if(result.data.routes){
+              this.packing.controls.routes.setValue(result.data.routes);
             }
             this.exist = true;
           }else{
@@ -126,7 +126,7 @@ export class EmbalagemCadastroComponent implements OnInit {
       serial: ['', [Validators.required]],
       correct_plant_factory: [String],
       gc16: [String],
-      route: [String],
+      routes: [String],
       correct_plant_supplier:[String],
       actual_plant: [String],
       tag: ['', [Validators.required]],

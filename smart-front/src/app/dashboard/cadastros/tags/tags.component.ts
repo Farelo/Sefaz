@@ -33,11 +33,13 @@ export class TagsComponent implements OnInit {
       .subscribe(data => this.data = data,err => console.log(err));
   }
 
-  removeTags(id):void{
+  removeTags(tag):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.view = id;
+    modalRef.componentInstance.view = tag;
     modalRef.componentInstance.type = "tag";
-    // this.TagsService.deleteTag(id).subscribe(result =>   this.loadTags(), err => {console.log(err)})
+    modalRef.result.then((result) => {
+      if(result === "remove") this.loadTags();
+    });
   }
 
   pageChanged(page: any): void{

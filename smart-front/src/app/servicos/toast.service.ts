@@ -87,7 +87,10 @@ export class ToastService {
         }
     };
      this.toastyService.success(toastOptions);
-     this.router.navigate([route]);
+     if(route != ''){
+        this.router.navigate([route]);
+     }
+
   }
 
   successModal(type: string){

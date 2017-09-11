@@ -3250,6 +3250,47 @@
         }
       }
     },
+    "/profile/auth/{password}/{email}": {
+      "x-swagger-router-controller": "profile_controller",
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Auth a profile on the system",
+        "description": "",
+        "operationId": "profile_auth",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "password",
+            "description": "The password that needs to be fetched",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "email",
+            "description": "The email that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/profile/list/pagination/{limit}/{page}": {
       "x-swagger-router-controller": "profile_controller",
       "get": {
@@ -4850,7 +4891,7 @@
       "type": "object",
       "properties": {
         "profile": {
-          "type": "integer"
+          "type": "string"
         },
         "password": {
           "type": "string"

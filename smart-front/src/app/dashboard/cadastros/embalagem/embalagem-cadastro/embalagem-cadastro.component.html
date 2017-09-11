@@ -40,10 +40,14 @@
         <div class="campo">
           <p class="descricao">ASSOCIE A TAG</p>
           <p class="explicacao">Associe uma tag a sua embalagem.</p>
-          <select  formControlName="tag">
+          <select  formControlName="tag"   [ngClass]="{'required': (packing.get('tag').hasError('required') && packing.get('tag').touched)
+            || (packing.get('tag').hasError('required') && formDir.submitted)}"
+            (blur)="changeCode()">
            <option value="">Associe uma Tag</option>
-           <option *ngFor="let obj of tags" [ngValue]="obj">{{obj.code}}</option>
+           <option *ngFor="let obj of tags" [ngValue]="obj">Código: {{obj.code}}</option>
         </select>
+        <p class="requiredText" *ngIf="(packing.get('tag').hasError('required') && packing.get('tag').touched)
+        || (packing.get('tag').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
 
         <div class="campo">
@@ -131,16 +135,19 @@
         </div>
 
         <div class="campo" [hidden]="exist">
-          <p class="descricao">ASSOCIE UMA PLATAFORMA</p>
+          <p class="descricao">ASSOCIE UMA PLATAFORMA/PROJETO</p>
           <p class="explicacao">Associe uma plataforma a sua embalagem.</p>
-          <select  formControlName="project" >
+          <select  formControlName="project"  [ngClass]="{'required': (packing.get('project').hasError('required') && packing.get('project').touched)
+            || (packing.get('project').hasError('required') && formDir.submitted)}">
             <option value="">Associe um Projeto</option>
             <option *ngFor="let obj of projects" [ngValue]="obj._id">{{obj.name}}</option>
         </select>
+        <p class="requiredText" *ngIf="(packing.get('project').hasError('required') && packing.get('project').touched)
+        || (packing.get('project').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
 
         <div class="campo" [hidden]="!exist">
-          <p class="descricao">JÁ EXISTE UMA PLATAFORMA ASSOCIADA</p>
+          <p class="descricao">JÁ EXISTE UMA PLATAFORMA/PROJETO ASSOCIADA</p>
           <p class="explicacao">Plataforma já associada pelo sistema</p>
           <input type="text"  class="form-control form-control-sm"  [value]="packing.controls.project.value?.project?.name"  disabled />
         </div>

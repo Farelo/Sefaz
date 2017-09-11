@@ -43,9 +43,10 @@ exports.project_update = function(req, res) {  
  * Delete an Project
  */
 exports.project_delete = function(req, res) { 
-  project.remove({
+  project.findOne({
       _id: req.swagger.params.project_id.value
-    })
+    }).exec()
+    .then(doc => doc.remove())
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to delete project'));
 };

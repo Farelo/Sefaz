@@ -59,9 +59,8 @@ exports.tags_update = function(req, res) {  
  * Delete an Tags
  */
 exports.tags_delete = function(req, res) { 
-    tags.remove({
-            _id: req.swagger.params.tags_id.value
-        })
+   tags.findOne({_id: req.swagger.params.tags_id.value}).exec()
+        .then(doc => doc.remove())
         .then(_.partial(successHandler, res))
         .catch(_.partial(errorHandler, res, 'Error to delete tags'));
 

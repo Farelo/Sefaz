@@ -14,10 +14,13 @@
       <div class="col-sm-4">
       <div class="campo"  >
         <p class="descricao">EQUIPAMENTO</p>
-        <select formControlName="packing" (ngModelChange)="loadProject($event)">
+        <select formControlName="packing" (ngModelChange)="loadProject($event)" [ngClass]="{'required': (gc16.get('packing').hasError('required') && gc16.get('packing').touched)
+        || (gc16.get('packing').hasError('required') && formDir.submitted)}">
            <option value="">Escolha um Equipamento</option>
            <option *ngFor="let obj of packings" [ngValue]="obj">{{obj.packing}}</option>
         </select>
+        <p class="requiredText" *ngIf="(gc16.get('packing').hasError('required') && gc16.get('packing').touched)
+        || (gc16.get('packing').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       </div>
     </div>
     <div class="col-sm-4">

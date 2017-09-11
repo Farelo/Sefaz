@@ -37,10 +37,11 @@ export class InventarioComponent implements OnInit {
   public quantitySearch  = "";
   public permanenceSearchEquipamento  = "";
   public permanenceSearchSerial  = "";
+  public generalEquipamentSearch  = "";
   public serial = false;
-
+  public activeModal : any;
   constructor(
-    public activeModal: NgbActiveModal,
+
     private inventoryService: InventoryService,
     private suppliersService: SuppliersService,
     private router: Router,
@@ -84,7 +85,7 @@ export class InventarioComponent implements OnInit {
   }
 
   generalInventoryEquipament(){
-      this.inventoryService.getInventoryGeneralPackings(10,this.general_equipament.meta.page,this.batterySearch).subscribe(result => {this.general_equipament = result; console.log(result)}, err => {console.log(err)});
+      this.inventoryService.getInventoryGeneralPackings(10,this.general_equipament.meta.page,this.generalEquipamentSearch).subscribe(result => {this.general_equipament = result; console.log(result)}, err => {console.log(err)});
   }
 
   quantityInventory(){
@@ -131,12 +132,9 @@ export class InventarioComponent implements OnInit {
 
 
   openHelp(content) {
-   this.modalService.open(content);
+   this.activeModal = this.modalService.open(content);
  }
 
- closeHelp(){
-   this.modalActive.close();
- }
 
 
 }

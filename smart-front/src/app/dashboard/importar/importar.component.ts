@@ -2,7 +2,7 @@ import { Component, OnInit  } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { FileUploader } from 'ng2-file-upload';
 import * as Handsontable from 'handsontable/dist/handsontable.full.js';
-import { NgbModal, NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-importar',
@@ -18,6 +18,7 @@ export class ImportarComponent implements OnInit {
   public fileName: string;
   public uploader = [];
   public send = false;
+  public activeModal : any;
 
   constructor(private http: Http,   private modalService: NgbModal,){  }
 
@@ -66,7 +67,7 @@ export class ImportarComponent implements OnInit {
 
 }
 openHelp(content) {
- this.modalService.open(content);
+ this.activeModal = this.modalService.open(content);
 }
 
 

@@ -15,7 +15,7 @@
   <p><span>Planta do Fornecedor:</span> {{alerta.data.correct_plant_supplier ? alerta.data.correct_plant_supplier.plant_name : 'Rota Não definida'}}</p>
   <p><span>Planta da Fabrica:</span> {{alerta.data.correct_plant_factory ? alerta.data.correct_plant_factory.plant_name : 'Rota Não definida'}}</p>
   <p><span>Ultima Planta que foi visto:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
-  <!-- <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel'}}</p> -->
+  <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Informação Indisponivel'}}</p>
   <div class="divBotao">
 
 
@@ -32,9 +32,9 @@
 </div>
 <div class="modalBody" *ngIf="alerta.data.status === 3">
 
-  <p><span>Nivel da Bateria:</span> {{alerta.data?.packing?.battery ? alerta.data?.packing?.battery : 'Informação Indisponivel'}}</p>
+  <p><span>Nivel da Bateria:</span> {{alerta.data?.packing?.battery ? (alerta.data?.packing?.battery | round) : 'Informação Indisponivel'}}%</p>
   <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
-  <!-- <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel'}}</p> -->
+  <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel'}}</p>
 
 </div>
 
@@ -52,7 +52,7 @@
   <p><span>Tempo de Permanência:</span> {{alerta.data?.packing.permanence  ? (alerta.data?.packing.permanence.amount_days | time ): 'Informação Indisponivel' }}</p>
   <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
   <p><span>Data de Entrada:</span> {{alerta.data?.packing.permanence ? (alerta.data?.packing.permanence?.date | date) : 'Informação Indisponivel'}}</p>
-
+  <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Informação Indisponivel'}}</p>
 
 </div>
 

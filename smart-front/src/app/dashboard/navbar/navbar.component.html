@@ -45,7 +45,7 @@
       <p>Usuário Administrador Geral.</p><hr>
       <button class="gerenciar" (click)="p.close();openModal()"><div>GERENCIAR USUÁRIOS</div></button><br class="brgone">
       <button class="medio" (click)="p.close();openModalEditar()"><div>EDITAR</div></button>
-      <button class="medio2"><div>SAIR</div></button>
+      <button class="medio2" (click)="logout()"><div>SAIR</div></button>
     </div>
     <!-- (click)="openModal()" -->
 
@@ -71,5 +71,5 @@
   <p>Usuário Administrador Geral.</p><hr>
   <button class="gerenciar" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
   <button class="medio" (click)="p.close(); a.close(); openModalEditar()"><div>EDITAR</div></button>
-  <button class="medio2"><div>SAIR</div></button>
+  <button class="medio2" (click)="logout()"><div>SAIR</div></button>
 </ng-template>

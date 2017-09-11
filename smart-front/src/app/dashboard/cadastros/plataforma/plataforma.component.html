@@ -26,7 +26,7 @@
         <td>{{project.name}}</td>
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', project._id]">Editar</button>
-          <button class="excluir" (click)="removeProject(project._id)">Excluir</button>
+          <button class="excluir" (click)="removeProject(project)">Excluir</button>
         </td>
       </tr>
     </tbody>

@@ -70,8 +70,8 @@
       </div>
       <!-- GERAL -->
       <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Geral')">
-        <p>GERAL</p>
-        <input type="text" class="form-control meuInput" [(ngModel)]="batterySearch" (keyup.enter)="batteryInventory()" >
+        <p>EQUIPAMENTO</p>
+        <input type="text" class="form-control meuInput" [(ngModel)]="generalEquipamentSearch" (keyup.enter)="generalInventoryEquipament()" >
       </div>
       <!-- QUANTIDADE -->
       <div class="col-sm-3" *ngIf="(escolhaEquipamento == 'Quantidade')">
@@ -79,11 +79,13 @@
         <input type="text" class="form-control meuInput" [(ngModel)]="quantitySearch" (keyup.enter)="quantityInventory()"  >
       </div>
       <!-- BOTAO FILTRAR -->
-      <div class="col-sm-2" *ngIf="((escolhaEquipamento == 'Tempo de permanência')||(escolhaEquipamento == 'Bateria')||(escolhaEquipamento == 'Quantidade'))">
+
+      <div class="col-sm-2" *ngIf="((escolhaEquipamento == 'Tempo de permanência')||(escolhaEquipamento == 'Bateria')||(escolhaEquipamento == 'Quantidade')||(escolhaEquipamento == 'Geral'))">
         <div class="col-sm-4">
             <button type="button" class="botaoVoltar" (click)="permanenceInventory()" *ngIf="(escolhaEquipamento == 'Tempo de permanência')"><span>FILTRAR</span></button>
             <button type="button" class="botaoVoltar" (click)="batteryInventory()" *ngIf="(escolhaEquipamento == 'Bateria')"><span>FILTRAR</span></button>
             <button type="button" class="botaoVoltar" (click)="quantityInventory()" *ngIf="(escolhaEquipamento == 'Quantidade')"><span>FILTRAR</span></button>
+            <button type="button" class="botaoVoltar" (click)="generalInventoryEquipament()" *ngIf="(escolhaEquipamento == 'Geral')"><span>FILTRAR</span></button>
         </div>
       </div>
     </div>
@@ -126,13 +128,13 @@
         </tr>
       </tbody>
     </table>
-    <div class="has-text-centered">
+    <!-- <div class="has-text-centered">
         <pagination-controls class="my-pagination"
         (pageChange)="general.meta.page = $event;generalInventory()"
         directionLinks="false"
         autoHide="true">
         </pagination-controls>
-    </div>
+    </div> -->
     <div class="classVazio" *ngIf="general.data?.length < 1">
       Ainda não existem embalagens cadastradas no sistema.
     </div>

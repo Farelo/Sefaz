@@ -13,6 +13,9 @@ import { Plant } from '../../shared/models/plant';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 import { GeocodingService } from '../../servicos/geocoding.service';
 import { ToastService } from '../../servicos/toast.service';
+import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
+import { Pagination } from '../../shared/models/pagination';
+
 declare var $:any;
 
 @Component({
@@ -21,17 +24,18 @@ declare var $:any;
   styleUrls: ['./modal-user.component.css']
 })
 export class ModalUserComponent implements OnInit {
-@Input() view;
+  @Input() view;
 
-
+  public data: Pagination = new Pagination({meta: {page : 1}});
   private perfil = 'FORNECEDOR';
-  public supplier:  FormGroup;;
+  public supplier:  FormGroup;
+  public profile_edit:  FormGroup;
   public geocoder = new google.maps.Geocoder;
   public autocomplete: google.maps.places.Autocomplete;
   public address: any = {};
   public center: any;
   public pos : any;
-  public users: any;
+  public users = [];
   public newcep = '';
   public newtelefone = '';
   // public mask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
@@ -45,6 +49,7 @@ export class ModalUserComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private route: ActivatedRoute,
     private router: Router,
+    private modalService: NgbModal,
     private SuppliersService : SuppliersService,
     private ProfileService : ProfileService,
     private PlantsService : PlantsService,
@@ -57,7 +62,26 @@ export class ModalUserComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if(this.view === "EDITAR"){
+      this.profile_edit = this.fb.group({
+        profile: ['',[Validators.required]],
+        password: ['',[Validators.required]],
+        email: ['',[Validators.required, Validators.email]],
+        street: ['',[Validators.required]],
+        city: ['',[Validators.required]],
+        telephone: [''],
+        cellphone: [''],
+        neighborhood: ['',[Validators.required]],
+        uf: ['',[Validators.required]],
+        cep: ['',[Validators.required]],
+        _id: ['',[Validators.required]],
+        __v: ['',[Validators.required]]
+      });
 
+      (<FormGroup>this.profile_edit)
+              .setValue(JSON.parse(localStorage.getItem('currentUser')), { onlySelf: true });
+      console.log(this.profile_edit);
+    }
     this.getUsers();
     this.tamanho();
   }
@@ -70,8 +94,9 @@ export class ModalUserComponent implements OnInit {
     var pai3 = pai2.parent();
     pai3.css({'max-width': '800px'});
   }
+
   getUsers(){
-      this.ProfileService.getProfilePagination(10,1).subscribe(result => this.users = result.data);
+      this.ProfileService.getProfilePagination(10,this.data.meta.page).subscribe(result => this.data = result);
   }
 
   openAdd(){
@@ -102,12 +127,12 @@ export class ModalUserComponent implements OnInit {
   }
   closeAdd(){
       this.view = 'GERENCIAR';
-      this.perfil ="";
+      this.perfil ="FORNECEDOR";
       this.getUsers();
   }
   onSubmit({ value, valid }: { value: Supplier, valid: boolean }):void {
 
-      this.supplier['controls'].profile['controls'].profile.setValue(1);
+      this.supplier['controls'].profile['controls'].profile.setValue("Supplier");
 
       if(this.supplier.valid){
         this.ProfileService.createProfile(this.supplier.value.profile).subscribe(result => {
@@ -182,5 +207,20 @@ export class ModalUserComponent implements OnInit {
   closeAll(){
     this.view='';
   }
+
+  removeProfile(profile):void{
+    const modalRef = this.modalService.open(ModalDeleteComponent);
+    modalRef.componentInstance.view = profile;
+    modalRef.componentInstance.type = "profile";
+    modalRef.result.then((result) => {
+      if(result === "remove") this.getUsers();
+    });
+  }
+
+  pageChanged(page: any): void{
+    this.data.meta.page = page;
+    this.getUsers();
+  }
+
 
 }

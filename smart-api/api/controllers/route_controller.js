@@ -16,7 +16,7 @@ mongoose.Promise                = global.Promise;
  */
 exports.route_create = function(req, res) {
   route.create(req.body)
-    .then(result => packing.update({code: result.packing_code, supplier: new ObjectId(result.supplier)},{$push: { "routes": result._id }}))
+    .then(result => packing.update({code: result.packing_code, supplier: new ObjectId(result.supplier)},{$push: { "routes": result._id }},{upsert: true,multi: true}))
     .catch(_.partial(errorHandler, res, 'Error to create route'))
     .then(_.partial(successHandler, res));
 };
@@ -49,8 +49,8 @@ exports.route_update = function(req, res) {  
  * Delete an Route
  */
 exports.route_delete = function(req, res) { 
-   packing.update({route: new ObjectId(req.swagger.params.route_id.value)}, {$unset: {route: 1}}, {upsert: true,multi: true})
-          .then(() => route.remove({_id: req.swagger.params.route_id.value}))
+    route.findOne({_id: req.swagger.params.route_id.value}).exec()
+          .then(doc => doc.remove())
           .then(_.partial(successHandler, res))
           .catch(_.partial(errorHandler, res, 'Error to delete route '));
 };

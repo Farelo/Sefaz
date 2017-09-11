@@ -7,6 +7,8 @@ const successHandlerPagination   = require('../helpers/responses/successHandlerP
 const errorHandler               = require('../helpers/responses/errorHandler');
 const mongoose                   = require('mongoose');
 const plant                      = mongoose.model('Plant');
+const route                      = mongoose.model('Route');
+const route_controller           = require('./route_controller');
 const _                          = require("lodash");
 const query                      = require('../helpers/queries/complex_queries_plants');
 mongoose.Promise                 = global.Promise;
@@ -46,12 +48,13 @@ exports.plant_update = function(req, res) {  
  * Delete an Plant
  */
 exports.plant_delete = function(req, res) { 
-  plant.remove({
+
+  plant.findOne({
       _id: req.swagger.params.plant_id.value
-    })
+    }).exec()
+    .then(doc => doc.remove())
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to delete plant'));
-
 };
 /**
  * List of all Plants without supplier and logistic_operator

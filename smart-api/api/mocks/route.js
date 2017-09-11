@@ -15,6 +15,10 @@ const routeSchema = new mongoose.Schema({
           ref:'Plant'
       },
       packing_code: String,
+      time: {
+        max: Number,
+        min: Number
+      },
       location : {
         distance: {
           text: String,
@@ -30,6 +34,11 @@ const routeSchema = new mongoose.Schema({
       hashPacking : String
 
 });
- 
+
+routeSchema.pre('remove', function(next) {
+    // Remove all the assignment docs that reference the removed person.
+    this.model('Packing').update({routes: { $in: [this._id] }}, {$pull: {routes: this._id}}, {multi: true}, next);
+
+});
 routeSchema.plugin(mongoosePaginate);
 mongoose.model('Route', routeSchema);

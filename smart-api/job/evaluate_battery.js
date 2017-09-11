@@ -14,6 +14,7 @@ module.exports = function(p) {
           console.log("BATTERY: ALERT CREATE TO PACKING: " + p._id);
           alert.create({
             "actual_plant": p.actual_plant,
+            "department": p.department,
             "packing": p._id,
             "supplier": p.supplier,
             "status": 3,
@@ -27,6 +28,7 @@ module.exports = function(p) {
             "packing": p._id,
             "status": 3
           },{
+            "department": p.department,
             "actual_plant": p.actual_plant,
             "supplier": p.supplier,
             "hashpacking": p.hashPacking,

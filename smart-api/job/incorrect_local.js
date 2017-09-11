@@ -1,10 +1,11 @@
-const mongoose    = require('mongoose');
-const alert       = mongoose.model('Alerts');
-mongoose.Promise  = global.Promise;
+const mongoose        = require('mongoose');
+const alert           = mongoose.model('Alerts');
+mongoose.Promise      = global.Promise;
+const evaluate_route  = require('./evaluate_route');
 
 module.exports = function(p, plant) {
   return new Promise(function(resolve, reject) {
-    if(p.route.plant_factory.equals(plant._id) || p.route.plant_supplier.equals(plant._id)){ //Make sure the current plant belongs to the route
+    if(evaluate_route(p, plant)){ //Make sure the current plant belongs to the route
       p.problem = false;
       console.log("INCORRECT LOCAL: NO CONFORMIDADE ABOUT THE PACKING: " + p._id);
       alert.remove({
@@ -20,8 +21,8 @@ module.exports = function(p, plant) {
           if (result.length === 0) { //Caso o alerta não exista, simplestemente cria o alerta
             console.log("INCORRECT LOCAL: ALERT CREATE TO PACKING: " + p._id);
             alert.create({
-              "correct_plant_factory": p.route.plant_factory,
-              "correct_plant_supplier": p.route.plant_supplier,
+              "department": p.department,
+              "routes": p.routes,
               "actual_plant": p.actual_plant,
               "packing": p._id,
               "supplier": p.supplier,
@@ -36,8 +37,8 @@ module.exports = function(p, plant) {
               "packing": p._id,
               "status": 2
             },{
-              "correct_plant_factory": p.route.plant_factory,
-              "correct_plant_supplier": p.route.plant_supplier,
+              "department": p.department,
+              "routes": p.routes,
               "actual_plant":p.actual_plant,
               "supplier": p.supplier,
               "hashpacking": p.hashPacking,

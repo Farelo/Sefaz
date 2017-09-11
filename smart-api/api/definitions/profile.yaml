@@ -3,7 +3,7 @@ definitions:
     type: object
     properties:
       profile:
-        type: integer
+        type: string
       password:
         type: string
       email:

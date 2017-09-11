@@ -7,7 +7,7 @@
      <hr>
      <div class="alerta">
        <span class="alert" aria-hidden="true"></span>
-       <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} do fornecedor {{view.supplier?.name}}.As informações serão perdidas, você tem certeza?</p>
+       <p>A remoção dessa Rota irá disvincular as Embalagens de código {{view.packing_code}} do Fornecedor {{view.supplier?.name}}.As informações serão perdidas, você tem certeza?</p>
      </div>
   </div>
 
@@ -16,11 +16,12 @@
     <hr>
     <p>Projeto: {{view.project.name }}</p>
     <p>Fornecedor: {{view.supplier.name }}</p>
-    <p>Planta Atual: {{view.actual_plant.plant_name}}</p>
+    <p>Serial: {{view.serial }}</p>
+    <p>Planta Atual: {{view.actual_plant?.plant.plant_name || 'Não Registrada'}}</p>
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção da embalagem {{view.code}} poderá remover o registro GC16 e as rotas associadas a essa embalagem. As informações serão perdidas, você tem certeza?</p>
+      <p>A remoção da Embalagem {{view.code}} poderá remover o Registro GC16 e as Rotas associadas a essa embalagem. As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 
@@ -33,31 +34,73 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção do registro do GC16  irá disvincular as embalagens de código {{view.packing}} do fornecedor {{view.supplier?.name}}. As informações serão perdidas, você tem certeza?</p>
+      <p>A remoção do Registro do GC16  irá disvincular as Embalagens de código {{view.packing}} do Fornecedor {{view.supplier?.name}}. As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 
   <div  class="detalhes" *ngIf="type === 'plant'">
     <h2>Detalhes da Planta </h2>
     <hr>
-    <!-- <p>Partida: {{view.location.start_address }}</p>
-    <p>Destino: {{view.location.end_address }}</p> -->
+    <p>Local: {{view.location }}</p>
+    <p>Nome: {{view.plant_name }}</p>
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} do fornecedor {{view.supplier?.name}}.</p>
+      <p>A remoção dessa Planta poderá disvincular Embalagens associadas a essa localidade.As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 
   <div class="detalhes" *ngIf="type === 'tag'">
     <h2>Detalhes da Tag </h2>
     <hr>
-    <!-- <p>Partida: {{view.location.start_address }}</p>
-    <p>Destino: {{view.location.end_address }}</p> -->
+    <p>Código: {{view.code }}</p>
+
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção dessa rota irá disvincular as embalagens de código {{view.packing_code}} do fornecedor {{view.supplier?.name}}.</p>
+    <p>A remoção dessa Tag {{view.name}} porederá desassociar Embalagens, Rotas e registros do GC16 .As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
+  <div class="detalhes" *ngIf="type === 'project'">
+    <h2>Detalhes da Plataforma/Projeto </h2>
+    <hr>
+    <p>Nome: {{view.code }}</p>
+
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção dessa Plataforma/Projeto {{view.code}} porederá desassociar Embalagens, Rotas e registros do GC16 .As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
+  <div class="detalhes" *ngIf="type === 'profile'">
+    <h2>Detalhes do Perfil do Usuário </h2>
+    <hr>
+    <p>Perfil: {{view.profile}}</p>
+    <p>E-mail: {{view.email}}</p>
+    <p>Name: {{view.user.name}}</p>
+    <div *ngIf="view.profile === 'Supplier'">
+      <p>DUNS: {{view.user.duns}}</p>
+    </div>
+
+
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção desse Perfil porederá desassociar Embalagens, Rotas e registros do GC16 .As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
+
+  <div class="detalhes" *ngIf="type === 'department'">
+    <h2>Detalhes do Departamento </h2>
+    <hr>
+
+    <p>Nome: {{view.name}}</p>
+    <p>Planta: {{view.plant.plant_name}}</p>
+
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção desse departmento porederá remover informações associadas as Plantas e Embalagens.As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 

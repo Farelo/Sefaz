@@ -32,11 +32,13 @@ export class PlantaComponent implements OnInit {
       .subscribe( data => this.data = data, err => {console.log(err)});
   }
 
-  removePlant(id):void{
+  removePlant(plant):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.view = id;
+    modalRef.componentInstance.view = plant;
     modalRef.componentInstance.type = "plant";
-    //this.PlantsService.deletePlant(id).subscribe(result =>   this.loadPlants(), err => {console.log(err)})
+    modalRef.result.then((result) => {
+      if(result === "remove") this.loadPlants();
+    });
   }
 
   pageChanged(page: any): void{

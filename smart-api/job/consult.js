@@ -12,7 +12,7 @@ module.exports = function () {
   .populate('actual_plant.plant')
   .populate('department')
   .populate('supplier')
-  .populate('route')
+  .populate('routes')
   .populate('project')
   .populate('gc16'), plant.find({})];
 

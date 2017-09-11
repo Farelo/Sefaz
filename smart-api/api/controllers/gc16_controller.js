@@ -50,8 +50,8 @@ exports.gc16_update = function(req, res) {  
  */
 exports.gc16_delete = function(req, res) { 
 
-  packing.update({gc16: new ObjectId(req.swagger.params.id.value)}, {$unset: {gc16: 1}}, {upsert: true,multi: true})
-         .then(() => gc16.remove({_id: req.swagger.params.id.value}))
+   gc16.findOne({_id: req.swagger.params.id.value}).exec()
+         .then(doc => doc.remove())
          .then(_.partial(successHandler, res))
          .catch(_.partial(errorHandler, res, 'Error to delete gc16 register'));
 

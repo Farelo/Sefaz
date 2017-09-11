@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
 import { ToastService } from '../../../../servicos/toast.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-
+declare var $:any;
 @Component({
   selector: 'app-rotas-cadastrar',
   templateUrl: './rotas-cadastrar.component.html',
@@ -71,6 +71,7 @@ export class RotasCadastrarComponent implements OnInit {
       })
     });
   }
+
 
   onSubmit({ value, valid }: { value: Route, valid: boolean }): void {
 

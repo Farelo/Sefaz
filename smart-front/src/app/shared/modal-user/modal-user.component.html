@@ -14,19 +14,28 @@
             <th class="semBorda">Perfil</th>
             <th class="semBorda">Endereço</th>
             <th class="semBorda">UF</th>
-            <th class="semBorda">Opções</th>
+            <th class="opcoes">Opções</th>
           </tr>
         </thead>
-        <tbody *ngFor="let user of users">
+        <tbody *ngFor="let user of data.data | paginate: {
+                                                        itemsPerPage: data.meta.limit,
+                                                        currentPage: data.meta.page,
+                                                        totalItems: data.meta.total_docs}">
           <tr>
             <td>{{user.email}}</td>
-            <td>{{user.profile === 1 ? 'Fornecedor' : 'Other'}}</td>
+            <td>{{user.profile}}</td>
             <td>{{user.street}}</td>
             <td>{{user.uf}}</td>
-            <td>opções</td>
+            <td class="teste">
+              <button class="editar botaoPlanta">Editar</button>
+              <button class="excluir" (click)="removeProfile(user)">Excluir</button>
+            </td>
           </tr>
         </tbody>
       </table>
+      <div class="classVazio" *ngIf="data.data?.length < 1">
+        Ainda não existem usuários cadastrados.
+      </div>
     </div>
     <div class="botoes">
       <button class="botaoVoltar" (click)="activeModal.dismiss('Cross click')">VOLTAR</button>
@@ -44,42 +53,84 @@
         <p class="descricao">PERFIL DO USUÁRIO</p>
         <select [(ngModel)]="perfil">
          <option>FORNECEDOR</option>
-         <option>OPERADOR LOGÍSTICO</option>
+         <!-- <option>OPERADOR LOGÍSTICO</option> -->
          <option>FUNCIONÁRIO</option>
       </select>
       </div>
     </div>
 
     <div *ngIf="(perfil=='FORNECEDOR')">
-      <form novalidate (ngSubmit)="onSubmit(supplier)" [formGroup]="supplier">
+      <form novalidate (ngSubmit)="onSubmit(supplier)" [formGroup]="supplier" #formDir="ngForm">
         <div class="row">
           <div class="col-sm-4">
             <p class="descricao">NOME</p>
-            <input type="text" class="form-control" [(ngModel)]="name" placeholder="Digite o nome do fornecedor" formControlName="name">
+            <input type="text" class="form-control" [(ngModel)]="name" placeholder="Digite o nome do fornecedor" formControlName="name"
+            [ngClass]="{'required': (supplier.get('name').hasError('required') && supplier.get('name').touched)
+            || (supplier.get('name').hasError('required') && formDir.submitted)}">
+            <p class="requiredText" *ngIf="(supplier.get('name').hasError('required') && supplier.get('name').touched)
+            || (supplier.get('name').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
             <p class="descricao">DUNS</p>
-            <input type="text" class="form-control" [(ngModel)]="duns" placeholder="Digite o duns do fornecedor" formControlName="duns">
+            <input type="text" class="form-control" [(ngModel)]="duns" placeholder="Digite o duns do fornecedor" formControlName="duns"
+            [ngClass]="{'required': (supplier.get('name').hasError('required') && supplier.get('name').touched)
+            || (supplier.get('name').hasError('required') && formDir.submitted)}">
+            <p class="requiredText" *ngIf="(supplier.get('name').hasError('required') && supplier.get('name').touched)
+            || (supplier.get('name').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
             <div formGroupName="profile">
               <p class="descricao">E-MAIL</p>
-              <input type="text" class="form-control" [(ngModel)]="email" placeholder="Digite o email do fornecedor" formControlName="email">
+              <input type="text" class="form-control" [(ngModel)]="email" placeholder="Digite o email do fornecedor" formControlName="email"
+              [ngClass]="{'required': (supplier.get('profile.email').hasError('required') && supplier.get('profile.email').touched)
+              || (supplier.get('profile.email').hasError('required') && formDir.submitted)}">
+              <p class="requiredText" *ngIf="(supplier.get('profile.email').hasError('required') && supplier.get('profile.email').touched)
+              || (supplier.get('profile.email').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
               <p class="descricao">PASSWORD</p>
-              <input type="password" class="form-control" [(ngModel)]="password" formControlName="password">
+              <input type="password" class="form-control" [(ngModel)]="password" formControlName="password"
+              [ngClass]="{'required': (supplier.get('profile.password').hasError('required') && supplier.get('profile.password').touched)
+              || (supplier.get('profile.password').hasError('required') && formDir.submitted)}">
+              <p class="requiredText" *ngIf="(supplier.get('profile.password').hasError('required') && supplier.get('profile.password').touched)
+              || (supplier.get('profile.password').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
             </div>
           </div>
           <div class="col-sm-4" formGroupName="profile">
 
             <p class="descricao">CEP</p>
             <!-- <input type="text" class="form-control" [(ngModel)]="cep" (blur)="getAddress()" formControlName="cep"> -->
-            <input [textMask]="{mask: maskCep}" class="form-control" [(ngModel)]="newcep" type="text" formControlName="cep"/>
+            <input [textMask]="{mask: maskCep}" class="form-control" (blur)="getAddress()" [(ngModel)]="cep" type="text" formControlName="cep"
+            [ngClass]="{'required': (supplier.get('profile.cep').hasError('required') && supplier.get('profile.cep').touched)
+            || (supplier.get('profile.cep').hasError('required') && formDir.submitted)}"/>
+            <p class="requiredText" *ngIf="(supplier.get('profile.cep').hasError('required') && supplier.get('profile.cep').touched)
+            || (supplier.get('profile.cep').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
             <p class="descricao">CIDADE</p>
-            <input type="text" class="form-control" [(ngModel)]="city" formControlName="city" disabled>
+            <input type="text" class="form-control" [(ngModel)]="city" formControlName="city"
+            [ngClass]="{'required': (supplier.get('profile.city').hasError('required') && supplier.get('profile.city').touched)
+            || (supplier.get('profile.city').hasError('required') && formDir.submitted)}">
+            <p class="requiredText" *ngIf="(supplier.get('profile.city').hasError('required') && supplier.get('profile.city').touched)
+            || (supplier.get('profile.city').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
             <p class="descricao">ENDEREÇO</p>
-            <input type="text" class="form-control" [(ngModel)]="street" formControlName="street" disabled>
+            <input type="text" class="form-control" [(ngModel)]="street" formControlName="street"
+            [ngClass]="{'required': (supplier.get('profile.street').hasError('required') && supplier.get('profile.street').touched)
+            || (supplier.get('profile.street').hasError('required') && formDir.submitted)}">
+            <p class="requiredText" *ngIf="(supplier.get('profile.street').hasError('required') && supplier.get('profile.street').touched)
+            || (supplier.get('profile.street').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
             <p class="descricao">BAIRRO</p>
-            <input type="text" class="form-control" [(ngModel)]="neighborhood" formControlName="neighborhood" disabled>
+            <input type="text" class="form-control" [(ngModel)]="neighborhood" formControlName="neighborhood"
+            [ngClass]="{'required': (supplier.get('profile.neighborhood').hasError('required') && supplier.get('profile.neighborhood').touched)
+            || (supplier.get('profile.neighborhood').hasError('required') && formDir.submitted)}">
+            <p class="requiredText" *ngIf="(supplier.get('profile.neighborhood').hasError('required') && supplier.get('profile.neighborhood').touched)
+            || (supplier.get('profile.neighborhood').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
           </div>
           <div class="col-sm-4" formGroupName="profile">
             <p class="descricao">UF</p>
-            <input type="text" class="form-control" [(ngModel)]="uf" formControlName="uf" disabled>
+            <input type="text" class="form-control" [(ngModel)]="uf" formControlName="uf"
+            [ngClass]="{'required': (supplier.get('profile.uf').hasError('required') && supplier.get('profile.uf').touched)
+            || (supplier.get('profile.uf').hasError('required') && formDir.submitted)}">
+            <p class="requiredText" *ngIf="(supplier.get('profile.uf').hasError('required') && supplier.get('profile.uf').touched)
+            || (supplier.get('profile.uf').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
             <p class="descricao">TELEFONE</p>
             <!-- <input type="text" class="form-control" [(ngModel)]="telephone" formControlName="telephone"> -->
             <input [textMask]="{mask: maskTel}" class="form-control" [(ngModel)]="newtelefone" type="text" formControlName="telephone"/>
@@ -97,7 +148,12 @@
         <div class="row">
           <div class="col-sm-4" formGroupName="plant">
             <p class="descricao">NOME DA PLANTA</p>
-            <input type="text" class="form-control" [(ngModel)]="plant_name" placeholder="Digite o nome da planta do fornecedor" formControlName="plant_name">
+            <input type="text" class="form-control" [(ngModel)]="plant_name" placeholder="Digite o nome da planta do fornecedor" formControlName="plant_name"
+            [ngClass]="{'required': (supplier.get('plant.plant_name').hasError('required') && supplier.get('plant.plant_name').touched)
+            || (supplier.get('plant.plant_name').hasError('required') && formDir.submitted)}">
+            <p class="requiredText" *ngIf="(supplier.get('plant.plant_name').hasError('required') && supplier.get('plant.plant_name').touched)
+            || (supplier.get('plant.plant_name').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
           </div>
           <div class="col-sm-4">
             <p class="descricao">DIGITE O LOCAL DA PLANTA</p>
@@ -154,6 +210,7 @@
       </div>
     </div>
 
+
     <div class="row" *ngIf="(perfil=='OPERADOR LOGÍSTICO')">
       <div class="col-sm-4">
         <p class="descricao">NOME</p>
@@ -185,55 +242,42 @@
       </div>
     </div>
 
-    <!-- <div class="row" *ngIf="((perfil=='FORNECEDOR')||(perfil=='OPERADOR LOGÍSTICO'))">
-    <div class="col-sm-4">
-        <p class="descricao">NOME DA PLANTA</p>
-        <input type="text" class="form-control" [(ngModel)]="plant.name">
-    </div>
-    <div class="col-sm-4">
-      <p class="descricao">DIGITE O LOCAL DA PLANTA</p>
-      <input places-auto-complete
-        (place_changed)="placeChanged($event)"
-        [types]="['geocode']" class="form-control" style="margin-bottom: 10px;"placeholder="Digite o local da planta"/>
 
-    </div>
-  </div> -->
-
-    <!-- <div class="row mapaPai" style="height: 200px" *ngIf="((perfil=='FORNECEDOR')||(perfil=='OPERADOR LOGÍSTICO'))">
-    <div class="col-sm-12 mapa">
-        <ngui-map [center]="center" (click)="onClick($event)" class="mapaNeto">
-            <marker  [position]="pos"></marker>
-          </ngui-map>
-    </div>
-  </div> -->
 
   </div>
 
+
+
   <div class="divEditar" *ngIf="(view=='EDITAR')">
+      <form novalidate (ngSubmit)="onSubmit(profile_edit)" [formGroup]="profile_edit" #formDir="ngForm">
     <div class="inicio">
       <h2 class="titulo">EDITAR</h2>
       <BR />
       <HR />
     </div>
     <div class="row">
-      <p>Aqui tu coloca as informações que a pessoa que tá logada pode editar dela mesma</p>
-      <div class="col-sm-4">
-        <p class="descricao">NOME</p>
-        <input type="text" class="form-control" [(ngModel)]="supplier.name">
+
+      <div class="col-sm-4" >
+        <p class="descricao">EMAIL</p>
+        <input type="text" class="form-control" [(ngModel)]="email"  formControlName="email">
       </div>
-      <div class="col-sm-4">
-        <p class="descricao">NOME</p>
-        <input type="text" class="form-control" [(ngModel)]="supplier.name">
+      <div class="col-sm-4" >
+        <p class="descricao">CIDADE</p>
+        <input type="text" class="form-control" [(ngModel)]="city" formControlName="city">
       </div>
-      <div class="col-sm-4">
-        <p class="descricao">NOME</p>
-        <input type="text" class="form-control" [(ngModel)]="supplier.name">
+      <div class="col-sm-4" >
+        <p class="descricao">RUA</p>
+        <input type="text" class="form-control" [(ngModel)]="street" formControlName="street">
       </div>
-    </div>
+
+      </div>
     <div class="botoes">
       <button class="botaoVoltar" (click)="closeAll(); activeModal.dismiss('Cross click')">CANCELAR</button>
-      <button class="botaoRegistrar" (click)="adicionarUsuario()">SALVAR</button>
+      <button class="botaoRegistrar">SALVAR</button>
     </div>
+
+    </form>
   </div>
+
 
 </div>

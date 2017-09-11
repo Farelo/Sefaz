@@ -42,6 +42,7 @@ module.exports = {
               console.log("PERMANENCE TIME: ALERT CREATE TO PACKING: " + p._id);
               alert.create({
                 "actual_plant": p.actual_plant,
+                "department": p.department,
                 "packing": p._id,
                 "supplier": p.supplier,
                 "status": 5,
@@ -55,6 +56,7 @@ module.exports = {
                 "packing": p._id,
                 "status": 5
               },{
+                "department": p.department,
                 "actual_plant": p.actual_plant,
                 "supplier": p.supplier,
                 "hashpacking": p.hashPacking,

@@ -1,11 +1,13 @@
 
 
 module.exports = {
-  changed: function (p , plant ) {
+  changed: function (p , plant , department) {
     p.actual_plant = {
       plant: plant._id,
       local: plant.supplier ? 'Supplier' : 'Factory'
     };
+
+    if(department.name)p.department = department._id;
 
     if(plant.supplier){
       if(plant.supplier.equals(p.supplier._id)){
@@ -37,7 +39,9 @@ module.exports = {
 
     return p;
   },
-  fixed: function (p , plant ) {
+  fixed: function (p , plant ,department) {
+
+    if(department.name)p.department = department._id;
 
     if(plant.supplier){
       if(plant.supplier.equals(p.supplier._id)){
@@ -60,7 +64,7 @@ module.exports = {
         console.log("INSERT GC16 FACTORY TO PACKING: "+p._id);
       }
     }
-
+    // console.log(p);
     return p;
   }
 

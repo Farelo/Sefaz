@@ -1,18 +1,11 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-
-import { HomeComponent } from './home.component';
-import { TimelineComponent } from './timeline/timeline.component';
-import { DetalhesComponent } from './timeline/detalhes/detalhes.component';
 import { ListaComponent } from './lista/lista.component';
-import { DashboardComponent } from '../../dashboard/dashboard.component';
+import { TimelineComponent } from './timeline/timeline.component';
 
 const homeRoutes = [
-  {path: 'rc', component: DashboardComponent, children: [
-    {path: '', redirectTo: '/rc/home', pathMatch: 'full'},
-    {path: 'home', component: TimelineComponent},
-    {path: 'home/list/:hashing/:status', component: ListaComponent}
-  ]}
+  {path: '', component: TimelineComponent},
+  {path: 'list/:hashing/:status', component: ListaComponent}
 ];
 
 @NgModule({

@@ -52,6 +52,12 @@ const gc16Schema = new mongoose.Schema({
       }
 
 });
+gc16Schema.pre('remove', function(next) {
+    let gc16 = this;
 
+    gc16.model('Packing').update({gc16: gc16._id}, {$unset: {gc16: 1, actual_gc16: 1}}, {multi: true})
+        .then(() => gc16.model('HistoricPackings').update({"department": gc16._id},{$unset: {department: 1}},{multi: true},next));;
+
+});
 gc16Schema.plugin(mongoosePaginate);
 mongoose.model('GC16', gc16Schema);

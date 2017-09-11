@@ -59,9 +59,11 @@ exports.supplier_update = function(req, res) {  
  * Delete an Supplier
  */
 exports.supplier_delete = function(req, res) { 
-  supplier.remove({
-      _id: req.swagger.params.supplier_id.value
-    })
+
+  supplier.findOne({
+        _id: req.swagger.params.supplier_id.value
+    }).exec()
+    .then(doc => doc.remove())
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to delete supplier'));
 };
