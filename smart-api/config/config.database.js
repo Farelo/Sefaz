@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
-
+const mongoose 				 = require('mongoose');
+const environment      = require('../environment');
 
 module.exports  = function(){
-	mongoose.connect('mongodb://localhost/reciclopac');
+	mongoose.connect('mongodb://localhost/'+environment.database);
 
 	mongoose.connection.on('connected', function () {
 		console.log('Mongoose default connection open to ');

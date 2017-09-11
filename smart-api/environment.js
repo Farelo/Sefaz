@@ -3,8 +3,9 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-export const environment = {
+module.exports = {
   production: false,
-  // url:"http://localhost:8983/api/",
-  url:"http://isi.pe.senai.br:8984/api/",
+  url:"isi.pe.senai.br",
+  port: '8984',
+  database: 'reciclopac'
 };
