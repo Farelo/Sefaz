@@ -42,6 +42,11 @@ paths:
         description: "The especific page that returns plants related a this page"
         required: true
         type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific attr that returns packings related a this attr"
+        required: false
+        type: string
       responses:
         200:
           description: "Message"
@@ -128,6 +133,30 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/Plant"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /plant/create/array:
+    x-swagger-router-controller: plant_controller
+    post:
+      tags:
+      - "Plant"
+      summary: "Add a array of plant to the system"
+      description: ""
+      operationId: plant_create_array
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Plant array that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/ArrayPlant"
       responses:
         200:
           description: "Message"

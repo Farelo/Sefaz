@@ -65,6 +65,11 @@ paths:
         description: "The especific page that returns departments related a this page"
         required: true
         type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific attr that returns packings related a this attr"
+        required: false
+        type: string
       responses:
         200:
           description: "Message"
@@ -156,6 +161,30 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/Department"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /department/create/array:
+    x-swagger-router-controller: department_controller
+    post:
+      tags:
+      - "Department"
+      summary: "Add a array to department to the system"
+      description: ""
+      operationId: department_create_array
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "department array that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/ArrayDepartment"
       responses:
         200:
           description: "Message"

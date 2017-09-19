@@ -21,6 +21,14 @@ exports.plant_create = function(req, res) {
     .then(_.partial(successHandler, res));
 };
 /**
+ * Create a Plant
+ */
+exports.plant_create_array = function(req, res) {
+  plant.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create plant'))
+    .then(_.partial(successHandler, res));
+};
+/**
  * Show the current Plant
  */
 exports.plant_read = function(req, res) {
@@ -35,7 +43,9 @@ exports.plant_read = function(req, res) {
 /**
  * Update a Plant
  */
-exports.plant_update = function(req, res) {  
+exports.plant_update = function(req, res) { 
+  console.log(req.body); 
+  console.log(req.swagger.params.plant_id.value); 
   plant.update( {
       _id: req.swagger.params.plant_id.value
     },  req.body,   {
@@ -87,7 +97,7 @@ exports.list_all_general = function(req, res) { 
  * List of all Plants by pagination
  */
 exports.plant_listPagination = function(req, res) { 
-  plant.paginate({
+  plant.paginate(req.swagger.params.attr.value ? {"name": req.swagger.params.attr.value, "supplier": { $exists: false },"logistic_operator": { $exists: false }} : {"supplier": { $exists: false },"logistic_operator": { $exists: false }} ,{
       "supplier": { $exists: false },
       "logistic_operator": { $exists: false }}, {
       page: parseInt(req.swagger.params.page.value),

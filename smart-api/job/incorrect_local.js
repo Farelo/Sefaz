@@ -7,7 +7,7 @@ module.exports = function(p, plant) {
   return new Promise(function(resolve, reject) {
     if(evaluate_route(p, plant)){ //Make sure the current plant belongs to the route
       p.problem = false;
-      console.log("INCORRECT LOCAL: NO CONFORMIDADE ABOUT THE PACKING: " + p._id);
+      console.log("INCORRECT LOCAL: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
       alert.remove({
         "packing": p._id,
         "status": 2
@@ -19,7 +19,7 @@ module.exports = function(p, plant) {
           "status": 2
         }).then(result => {
           if (result.length === 0) { //Caso o alerta não exista, simplestemente cria o alerta
-            console.log("INCORRECT LOCAL: ALERT CREATE TO PACKING: " + p._id);
+            console.log("INCORRECT LOCAL: ALERT CREATE TO PACKING:",p._id);
             alert.create({
               "department": p.department,
               "routes": p.routes,
@@ -32,7 +32,7 @@ module.exports = function(p, plant) {
               "date": new Date().getTime()
             }).then(() => resolve(p));
           } else {
-            console.log("INCORRECT LOCAL: ALERT ALREADY EXIST TO PACKING: " + p._id);
+            console.log("INCORRECT LOCAL: ALERT ALREADY EXIST TO PACKING:", p._id);
             alert.update({ //Verifica se o alerta ja existe
               "packing": p._id,
               "status": 2

@@ -13,8 +13,7 @@ const plantSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Supplier'
     },
-    location: String,
-    profile: [String]
+    location: String
 
 });
 

@@ -17,7 +17,6 @@ const supplierSchema = new mongoose.Schema({
 
 supplierSchema.pre('remove', function(next) {
     let supplier = this;
-    console.log(supplier);
     // Remove all the assignment docs that reference the removed person.
     supplier.model('Plant').findOne({supplier: supplier._id}).exec()
         .then(doc => {

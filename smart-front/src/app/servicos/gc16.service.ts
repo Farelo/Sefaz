@@ -9,8 +9,8 @@ export class GC16Service {
 
   constructor(private http: Http) { }
 
-  getGC16sPagination(limit: number, page: number): Observable<any> {
-    return this.http.get(environment.url + 'gc16/list/all/pagination/' + limit + '/' + page)
+  getGC16sPagination(limit: number, page: number, attr: any): Observable<any> {
+    return this.http.get(environment.url + 'gc16/list/all/pagination/' + limit + '/' + page+ '?attr='+ attr)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

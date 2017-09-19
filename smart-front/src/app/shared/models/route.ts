@@ -5,6 +5,10 @@ export interface Route {
    plant_supplier: string;
    packing_code: string;
    hashPacking: string;
+   time: {
+     max: number,
+     min: number
+   };
    location : {
     distance: {
       text: string,

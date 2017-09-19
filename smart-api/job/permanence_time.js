@@ -17,19 +17,20 @@ module.exports = {
 
   fixednoroute: function(p) {
     return new Promise(function(resolve, reject) {
-
       if (!p.missing) {
 
+
         var date = new Date();
-        var time = Math.round(Math.abs((p.permanence.date - date.getTime())));
+        var diff = Math.round(date.getTime() - p.permanence.date);
 
         if(p.actual_gc16){
-          var convertMili = 1000 * 60 * 60 * 24 * p.actual_gc16.days;
+          var convertMili = 1000 * 60 * 60 * 24 * p.actual_gc16.days;// milliseconds*seconds*minutes*hours*days
         }else{
           var convertMili = Infinity;
         }
 
-        p.permanence.amount_days = time;
+
+        p.permanence.amount_days = diff;
         p.permanence.time_exceeded = false;
 
         if(p.permanence.amount_days > convertMili){
@@ -39,7 +40,7 @@ module.exports = {
             "status": 5
           }).then( result => {
             if(result.length === 0){ //Caso o alerta não exista, simplestemente cria o alerta
-              console.log("PERMANENCE TIME: ALERT CREATE TO PACKING: " + p._id);
+              console.log("PERMANENCE TIME: ALERT CREATE TO PACKING:",p._id);
               alert.create({
                 "actual_plant": p.actual_plant,
                 "department": p.department,
@@ -51,7 +52,7 @@ module.exports = {
                 "date": new Date().getTime()
               }).then(() => resolve(p));
             }else{
-              console.log("PERMANENCE TIME: ALERT ALREADY EXIST TO PACKING: " + p._id);
+              console.log("PERMANENCE TIME: ALERT ALREADY EXIST TO PACKING:",p._id);
               alert.update({ //Verifica se o alerta ja existe
                 "packing": p._id,
                 "status": 5
@@ -66,7 +67,7 @@ module.exports = {
             }
           });
         }else{
-          console.log("PERMANENCE TIME: NO CONFORMIDADE ABOUT THE PACKING: " + p._id);
+          console.log("PERMANENCE TIME: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
           alert.remove({
             "packing": p._id,
             "status": 5
@@ -78,7 +79,7 @@ module.exports = {
           "date": 0,
           "time_exceeded": false
         };
-        console.log("PERMANENCE TIME: NO CONFORMIDADE ABOUT THE PACKING: " + p._id);
+        console.log("PERMANENCE TIME: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
         alert.remove({
           "packing": p._id,
           "status": 5

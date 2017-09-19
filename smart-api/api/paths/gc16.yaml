@@ -59,6 +59,11 @@ paths:
         description: "The especific page that returns gc16 registerss related a this page"
         required: true
         type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific attr that returns packings related a this attr"
+        required: false
+        type: string
       responses:
         200:
           description: "Message"

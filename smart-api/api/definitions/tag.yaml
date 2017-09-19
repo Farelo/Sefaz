@@ -4,3 +4,7 @@ definitions:
     properties:
       code:
         type: string
+  ArrayTag:
+    type : array
+    items:
+      $ref: '#/definitions/Tag'

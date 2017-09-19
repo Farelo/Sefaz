@@ -10,7 +10,7 @@ definitions:
         type: string
       city:
         type: string
-      address:
+      street:
         type: string
       telephone:
         type: string

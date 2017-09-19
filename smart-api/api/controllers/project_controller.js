@@ -18,6 +18,14 @@ exports.project_create = function(req, res) {
     .then(_.partial(successHandler, res));
 };
 /**
+ * Create a Project
+ */
+exports.project_create_array = function(req, res) {
+  project.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create a project'))
+    .then(_.partial(successHandler, res));
+};
+/**
  * Show the current Project
  */
 exports.project_read = function(req, res) {
@@ -54,7 +62,7 @@ exports.project_delete = function(req, res) { 
  * List of Projets by pagination
  */
 exports.project_listPagination = function(req, res) { 
-  project.paginate({}, {
+  project.paginate(req.swagger.params.attr.value ? {"name": req.swagger.params.attr.value} : {} , {
       page: parseInt(req.swagger.params.page.value),
       sort: {
         _id: 1

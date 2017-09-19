@@ -9,14 +9,8 @@ export class PackingService {
 
   constructor(private http: Http) { }
 
-  getPackingsPagination(limit: number, page: number): Observable<any> {
-    return this.http.get(environment.url + 'packing/list/pagination/' + limit + '/' + page)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-  }
-
-  getPackingsPaginationByAttr(limit: number, page: number, attr: string): Observable<any> {
-    return this.http.get(environment.url + 'packing/list/pagination/attribute/' + limit + '/' + page + '/' + attr)
+  getPackingsPagination(limit: number, page: number, attr: any): Observable<any> {
+    return this.http.get(environment.url + 'packing/list/pagination/' + limit + '/' + page + '?attr='+ attr)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -33,14 +27,20 @@ export class PackingService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  getPositions(code: string): Observable<any> {
+    return this.http.get(environment.url + 'packing/position/' + code  )
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   getPackingsByCode(id): Observable<any> {
     return this.http.get(environment.url + 'packing/list/code/'+ id )
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getPackingsByDepartment(id): Observable<any> {
-    return this.http.get(environment.url + 'packing/list/department/'+ id )
+  getPackingsByDepartment(id: string,limit: number, page: number): Observable<any> {
+    return this.http.get(environment.url + 'packing/list/department/'+ id +'/'+ limit + '/' + page)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -112,6 +112,12 @@ export class PackingService {
 
   createPacking(tag: Packing []): Observable<any>{
     return this.http.post(environment.url + 'packing/create', tag)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  createPackingArray(array: any): Observable<any>{
+    return this.http.post(environment.url + 'packing/create/array', array)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

@@ -15,12 +15,13 @@ import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
 import { ApplicationPipes } from './shared/pipes/application.pipes';
 import {ValidatorsModule, EmailValidators} from 'ngx-validators'
 
-import { PositionModalComponent } from './shared/modal/alerta/position/alerta.component';
-import { MissingModalComponent } from './shared/modal/alerta/missing/alerta.component';
+import { AlertaModalComponent } from './shared/modal-alerta/alerta.component';
+import { LayerModalComponent } from './shared/modal-packing/layer.component';
 import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.component';
 
 import { AlertsService } from './servicos/alerts.service';
-import { DashboardModule } from './dashboard/dashboard.module';
+import { ImportService } from './servicos/import.service';
+import { DashboardModule } from './admin/dashboard/dashboard.module';
 import { ToastService } from './servicos/toast.service';
 import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';
@@ -46,12 +47,12 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 @NgModule({
   declarations: [
     AppComponent,
-    PositionModalComponent,
+    AlertaModalComponent,
     ModalRastComponent,
     ModalUserComponent,
     ModalInvComponent,
     ModalDeleteComponent,
-    MissingModalComponent
+    LayerModalComponent
   ],
   imports: [
     BrowserModule,
@@ -91,6 +92,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     InventoryService,
     CEPService,
     ToastService,
+    ImportService,
     AuthenticationService,
     { provide: BrowserXhr, useClass: NgProgressBrowserXhr }
 
@@ -99,7 +101,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
-  entryComponents: [ModalRastComponent,PositionModalComponent,MissingModalComponent, ModalUserComponent, ModalInvComponent, ModalDeleteComponent]
+  entryComponents: [ModalRastComponent,AlertaModalComponent,LayerModalComponent, ModalUserComponent, ModalInvComponent, ModalDeleteComponent]
 })
 
 export class AppModule { }

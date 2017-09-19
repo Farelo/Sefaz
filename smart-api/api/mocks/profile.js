@@ -23,9 +23,6 @@ profileSchema.pre('remove', function(next) {
             .then(doc => doc.remove());
             next();
         break;
-      case "Admin":
-        console.log("Maçãs custam $0.32 o quilo.");
-        break;
       case "AdminClient":
         console.log("Bananas custam $0.48 o quilo.");
         break;

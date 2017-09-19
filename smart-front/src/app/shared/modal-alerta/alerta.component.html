@@ -1,0 +1,129 @@
+<div class="modalFilho">
+  <div class="header">
+     <p>Detalhes do alerta - {{alerta.data.date | date:'dd/mm/yyyy'}}</p>
+     <p>Código: {{alerta.data.packing?.code}}</p>
+     <p>Tipo: <span>{{alerta.data.status === 1 ? 'Objeto perdido' :
+       (alerta.data.status === 2 ? 'Objeto Incorreto' :
+       (alerta.data.status === 3 ? 'Bateria Baixa' :
+       (alerta.data.status === 4 ? 'Objeto Atrasado' : 'Tempo de Permanência')))}}</span></p>
+       <p>Hora: {{alerta.data.date | date:'jms'}}</p>
+  </div>
+  <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+<div class="modalBody" *ngIf="alerta.data.status === 1">
+
+  <p><span>Ultima Planta que foi visto:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
+  <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Informação Indisponivel'}}</p>
+  <div class="divBotao">
+
+  <button type="button" class="botaoVisualizar" (click)="getHistoric();historicFlag = true" *ngIf="!historicFlag">Visualizar Historico</button>
+  <button type="button" class="botaoVisualizar" (click)="historicFlag = false" *ngIf="historicFlag">Fechar Historico</button>
+
+  <div class="table-responsive tabela" *ngIf="historicFlag">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th>Data</th>
+          <th>Fornecedor</th>
+          <th>Local</th>
+          <th>Tempo na Planta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let packing of historic.data | paginate: {
+                                                        itemsPerPage: 10,
+                                                        currentPage: historic.meta.page,
+                                                        totalItems: historic.meta.total_docs}">
+          <td>{{packing.date | date: 'dd/MM/yyyy'}}</td>
+          <td>{{packing.supplier?.name || '-'}}</td>
+          <td>{{packing.plant?.plant.plant_name || '-'}}</td>
+          <td>{{packing.permanence_time || '-' | time}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+    <div class="has-text-centered">
+        <pagination-controls class="my-pagination"
+        (pageChange)="historic.meta.page = $event;getHistoric()"
+        directionLinks="false"
+        autoHide="true">
+        </pagination-controls>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modalBody" *ngIf="alerta.data.status === 2 && incorrectLocal">
+  <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
+  <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel'}}</p>
+  <div class="table-responsive tabela">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th class="semBorda">Fornecedor</th>
+          <th  class="semBorda">Planta da Fábrica</th>
+          <th  class="semBorda">Planta do Fornecedor</th>
+        </tr>
+      </thead>
+      <tbody >
+        <tr *ngFor="let route of alerta.data.routes">
+          <td>{{route.supplier.name}}</td>
+          <td>{{route.plant_factory.plant_name}}</td>
+          <td>{{route.plant_supplier.plant_name}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="modalBody" *ngIf="alerta.data.status === 3">
+
+  <p><span>Nivel da Bateria:</span> {{alerta.data?.packing?.battery ? (alerta.data?.packing?.battery | round) : 'Informação Indisponivel'}}%</p>
+  <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
+  <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel'}}</p>
+
+</div>
+
+<div class="modalBody" *ngIf="alerta.data.status === 4">
+
+  <p><span>Tempo em viagem:</span> {{alerta.data.packing?.trip.time_countdown  | time }}</p>
+  <div class="table-responsive tabela">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+
+          <th  class="semBorda">Planta da Fábrica</th>
+          <th  class="semBorda">Planta do Fornecedor</th>
+          <th  class="semBorda">Tempo Máximo</th>
+          <th  class="semBorda">Tempo Gasto</th>
+        </tr>
+      </thead>
+      <tbody >
+        <tr *ngFor="let route of alerta.data.routes">
+
+          <td>{{route.plant_factory.plant_name}}</td>
+          <td>{{route.plant_supplier.plant_name}}</td>
+          <td>{{route.time.max | time}}</td>
+          <td>{{alerta.data.packing?.trip.time_countdown  | time }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="modalBody" *ngIf="alerta.data.status === 5">
+
+  <p><span>Tempo de Permanência:</span> {{alerta.data?.packing.permanence  ? (alerta.data?.packing.permanence.amount_days | time ): 'Informação Indisponivel' }}</p>
+  <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
+  <p><span>Data de Entrada:</span> {{alerta.data?.packing.permanence ? (alerta.data?.packing.permanence?.date | date) : 'Informação Indisponivel'}}</p>
+  <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Informação Indisponivel'}}</p>
+
+</div>
+
+<!-- <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeAlerta.close('Close click')">Close</button>
+</div> -->
+</div>

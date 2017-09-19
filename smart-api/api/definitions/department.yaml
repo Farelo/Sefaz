@@ -5,4 +5,19 @@ definitions:
       name:
         type: string
       plant:
-        type: string
+        $ref: '#/definitions/Plant'
+      lat:
+        type: number
+        format: double
+      lng:
+        type: number
+        format: double
+    required:
+      - name
+      - lat
+      - lng
+      - plant
+  ArrayDepartment:
+    type : array
+    items:
+      $ref: '#/definitions/Department'

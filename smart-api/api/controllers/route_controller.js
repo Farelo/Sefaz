@@ -16,7 +16,16 @@ mongoose.Promise                = global.Promise;
  */
 exports.route_create = function(req, res) {
   route.create(req.body)
-    .then(result => packing.update({code: result.packing_code, supplier: new ObjectId(result.supplier)},{$push: { "routes": result._id }},{upsert: true,multi: true}))
+    .then(result => packing.update({code: result.packing_code, supplier: new ObjectId(result.supplier)},{$push: { "routes": result._id }},{multi: true}))
+    .catch(_.partial(errorHandler, res, 'Error to create route'))
+    .then(_.partial(successHandler, res));
+};
+/**
+ * Create a Route
+ */
+exports.route_create_array = function(req, res) {
+  route.create(req.body)
+    .then(result => Promise.all(result.map(o => packing.update({code: o.packing_code, supplier: new ObjectId(o.supplier)},{$push: { "routes": o._id }},{multi: true}))))
     .catch(_.partial(errorHandler, res, 'Error to create route'))
     .then(_.partial(successHandler, res));
 };
@@ -69,7 +78,7 @@ exports.route_list_all = function(req, res) { 
  * List of all Routes pagination
  */
 exports.route_list_pagination = function(req, res) { 
-  route.paginate({}, {
+  route.paginate(req.swagger.params.attr.value ?  {"packing_code": req.swagger.params.attr.value} :  {}, {
       page: parseInt(req.swagger.params.page.value),
       populate: ['plant_factory', 'plant_supplier', 'supplier'],
       sort: {

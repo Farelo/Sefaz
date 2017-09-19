@@ -96,7 +96,7 @@ export class ModalUserComponent implements OnInit {
   }
 
   getUsers(){
-      this.ProfileService.getProfilePagination(10,this.data.meta.page).subscribe(result => this.data = result);
+      this.ProfileService.getProfilePagination(10,this.data.meta.page).subscribe(result => {console.log(result);this.data = result});
   }
 
   openAdd(){
@@ -126,21 +126,26 @@ export class ModalUserComponent implements OnInit {
       });
   }
   closeAdd(){
+
       this.view = 'GERENCIAR';
       this.perfil ="FORNECEDOR";
+      this.supplier.reset();
       this.getUsers();
   }
-  onSubmit({ value, valid }: { value: Supplier, valid: boolean }):void {
+  onSubmit({ value, valid }: { value: any, valid: boolean }):void {
 
       this.supplier['controls'].profile['controls'].profile.setValue("Supplier");
+      value.profile.profile = "Supplier";
 
       if(this.supplier.valid){
-        this.ProfileService.createProfile(this.supplier.value.profile).subscribe(result => {
-          this.supplier.value.profile = result.data._id;
-          this.PlantsService.createPlant(this.supplier.value.plant).subscribe(result => {
-            this.supplier.value.plant = result.data._id;
-            this.SuppliersService.createSupplier(this.supplier.value).subscribe(result => {
-              this.PlantsService.updatePlant(result.data.plant, {supplier: result.data._id}).subscribe(result => {this.toastService.successModal('Fornecedor');this.closeAdd()}, err => this.toastService.error(err));
+        this.ProfileService.createProfile(value.profile).subscribe(result => {
+          value.profile._id =  result.data._id;
+          this.PlantsService.createPlant(value.plant).subscribe(result => {
+            value.plant._id =  result.data._id;
+
+            this.SuppliersService.createSupplier(value).subscribe(result => {
+              value.plant.supplier = result.data._id ;
+              this.PlantsService.updatePlant(result.data.plant, value.plant).subscribe(result => {this.toastService.successModal('Fornecedor');this.closeAdd()}, err => this.toastService.error(err));
             })
 
           })
@@ -152,12 +157,12 @@ export class ModalUserComponent implements OnInit {
   onMapReady(map) {
     let origin  = new google.maps.LatLng(map.center.lat(), map.center.lng());
     this.geocodingService.geocode(origin).subscribe(results => {
-      console.log(results[1].address_components.filter(o => o.types.indexOf("postal_code") == 0 ));
-      this.supplier['controls'].profile['controls'].cep.setValue(results[1].address_components.filter(o => o.types.indexOf("postal_code") == 0 )[0].long_name);
+      // console.log(results[1].address_components.filter(o => o.types.indexOf("postal_code") == 0 ));
+      // this.supplier['controls'].profile['controls'].cep.setValue(results[1].address_components.filter(o => o.types.indexOf("postal_code") == 0 )[0].long_name);
       this.supplier['controls'].plant['controls'].location.setValue(results[1].formatted_address);
       this.supplier.controls.plant['controls'].lat.setValue(map.center.lat());
       this.supplier.controls.plant['controls'].lng.setValue(map.center.lng());
-      this.getAddress();
+      // this.getAddress();
     });
 
   }
@@ -177,7 +182,7 @@ export class ModalUserComponent implements OnInit {
   }
 
   getAddress(){
-    console.log("aqui");
+
     if(this.supplier['controls'].profile['controls'].cep.value){
       this.CEPService.getAddress(this.supplier['controls'].profile['controls'].cep.value).subscribe(result => {
          this.supplier['controls'].profile['controls'].neighborhood.setValue(result.data.bairro);
@@ -194,13 +199,13 @@ export class ModalUserComponent implements OnInit {
       }
      this.pos = event.latLng;
      this.geocodingService.geocode(event.latLng).subscribe(results => {
-       console.log("depois");
-       this.supplier['controls'].profile['controls'].cep.setValue(results[1].address_components.filter(o => o.types.indexOf("postal_code") == 0 )[0].long_name);
+
+      //  this.supplier['controls'].profile['controls'].cep.setValue(results[1].address_components.filter(o => o.types.indexOf("postal_code") == 0 )[0].long_name);
        this.supplier['controls'].plant['controls'].location.setValue(results[1].formatted_address);
        this.supplier['controls'].plant['controls'].lat.setValue(event.latLng.lat());
        this.supplier['controls'].plant['controls'].lng.setValue(event.latLng.lng());
        event.target.panTo(event.latLng);
-       this.getAddress();
+      //  this.getAddress();
      });
 
   }

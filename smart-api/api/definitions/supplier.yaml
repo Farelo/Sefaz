@@ -4,11 +4,16 @@ definitions:
     properties:
       name:
         type: string
-      cnpj:
-        type: string
       duns:
         type: string
       profile:
-        type: string
+        $ref: '#/definitions/Profile'
       plant:
+        $ref: '#/definitions/Plant'
+  SupplierUtil:
+    type: object
+    properties:
+      name:
+        type: string
+      duns:
         type: string

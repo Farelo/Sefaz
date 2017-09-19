@@ -9,8 +9,8 @@ export class PlantsService {
 
   constructor(private http: Http) { }
 
-  getPlantsPagination(limit: number, page: number): Observable<any> {
-    return this.http.get(environment.url + 'plant/list/pagination/' + limit + '/' + page)
+  getPlantsPagination(limit: number, page: number, attr:any): Observable<any> {
+    return this.http.get(environment.url + 'plant/list/pagination/' + limit + '/' + page+ '?attr='+ attr)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -53,6 +53,12 @@ export class PlantsService {
 
   createPlant(plant: Plant): Observable<any>{
     return this.http.post(environment.url + 'plant/create', plant)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  createPlantArray(array: any): Observable<any>{
+    return this.http.post(environment.url + 'plant/create/array', array)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

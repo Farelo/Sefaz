@@ -17,6 +17,8 @@ const alert                                     = mongoose.model('Alerts');
 const gc16                                      = mongoose.model('GC16');
 const route                                     = mongoose.model('Route');
 const _                                         = require("lodash");
+const token                                     = require('../helpers/request/token');
+const loka_api                                  = require('../helpers/request/loka-api');
 mongoose.Promise                                = global.Promise;
 /**
  * Create the current Packing
@@ -27,14 +29,31 @@ exports.packing_create = function(req, res) {
     .catch(_.partial(errorHandler, res, 'Error to create packing'))
 };
 /**
+ * Create the current Packing
+ */
+exports.packing_create_array = function(req, res) {
+  packing.create(req.body)
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to create array packing'))
+};
+/**
  * Show the current Packing
  */
 exports.packing_read = function(req, res) {
-packing.findOne({
-      _id: req.swagger.params.packing_id.value 
-    })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to retrieve packings'));
+  packing.findOne({
+        _id: req.swagger.params.packing_id.value 
+      })
+      .then(_.partial(successHandler, res))
+      .catch(_.partial(errorHandler, res, 'Error to retrieve packings'));
+};
+/**
+ * Show the positions by LOKA-API about the Packing
+ */
+exports.packing_position= function(req, res) {
+      token()
+      .then(token => loka_api.positions(token,req.swagger.params.code.value))
+      .then(_.partial(successHandler, res))
+      .catch(_.partial(errorHandler, res, 'Error to retrive position by loka-api about the packing'))
 };
 
 /**
@@ -54,16 +73,16 @@ packing.findOne({
  */
 exports.list_packing_department = function(req, res) {
 
-  packing.find({
-      department: new ObjectId(req.swagger.params.department.value)
-    })
-    .populate('tag')
-    .populate('actual_plant')
-    .populate('department')
-    .populate('supplier')
-    .populate('project')
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to list packings by department'));
+    packing.paginate({"department": new ObjectId(req.swagger.params.department.value)}, {
+        page: parseInt(req.swagger.params.page.value),
+        populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
+        sort: {
+          serial: 1
+        },
+        limit: parseInt(req.swagger.params.limit.value)
+      })
+      .then(_.partial(successHandlerPagination, res))
+      .catch(_.partial(errorHandler, res, 'Error to list packings by department'));
 };
 /*
  * Update a Packing
@@ -139,7 +158,7 @@ exports.packing_delete = function(req, res) {
  * List of packings by pagination
  */
 exports.packing_list_pagination = function(req, res) {
-  packing.paginate({}, {
+  packing.paginate(req.swagger.params.attr.value ? {"$or": [{"code": req.swagger.params.attr.value}, {"serial": req.swagger.params.attr.value}]} : {} , {
       page: parseInt(req.swagger.params.page.value),
       populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {
@@ -155,27 +174,6 @@ exports.packing_list_pagination = function(req, res) {
  */
 exports.packing_list_pagination_by_plant = function(req, res) {
   packing.paginate({'actual_plant.plant': new ObjectId(req.swagger.params.id.value)}, {
-      page: parseInt(req.swagger.params.page.value),
-      populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
-      sort: {
-        serial: 1
-      },
-      limit: parseInt(req.swagger.params.limit.value)
-    })
-    .then(_.partial(successHandlerPagination, res))
-    .catch(_.partial(errorHandler, res, 'Error to list packings by Supplier'));
-};
-/**
- * List of packings by pagination by serial and code
- */
-exports.packing_list_pagination_by_code_serial = function(req, res) {
-  packing.paginate({
-      "$or": [{
-        "code": req.swagger.params.attr.value
-      }, {
-        "serial": req.swagger.params.attr.value
-      }]
-    }, {
       page: parseInt(req.swagger.params.page.value),
       populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {

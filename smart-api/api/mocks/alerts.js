@@ -10,17 +10,13 @@ const alertsSchema = new mongoose.Schema({
       },
       local: String
     },
+    routes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Route'
+    }],
     department: {
         type:mongoose.Schema.Types.ObjectId,
         ref:'Department'
-    },
-    correct_plant_factory: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Plant'
-    },
-    correct_plant_supplier: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Plant'
     },
     packing: {
           type:mongoose.Schema.Types.ObjectId,

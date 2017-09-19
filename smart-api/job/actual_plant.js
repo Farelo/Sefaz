@@ -6,13 +6,19 @@ module.exports = function (packing, plants) {
 
   plants.forEach(p => {
     let calculate = getDistanceFromLatLonInKm(packing.position.latitude,packing.position.longitude,p.lat, p.lng);
+
     if(calculate  < distance){
       distance = calculate;
       plant = p;
     }
   });
 
-  return plant;
+  if(distance > 0.5000){
+    return null
+  }else{
+    return plant;
+  }
+
 }
 
 

@@ -1,0 +1,26 @@
+<div class="modalFilho">
+  <div class="header">
+  <p>Detalhes da Embalagem - {{packing.code}}</p>
+  <p>Serial - {{packing.serial}}</p>
+  </div>
+  <button type="button" class="close" aria-label="Close" (click)="activeLayer.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+<div class="modalBody">
+  <ngui-map  [center]="center" mapTypeId="terrain" scrollwheel="false" >
+      <polyline
+
+        [path]="path"
+        [geodesic]="true"
+        [strokeColor]="'#FF0000'"
+        [strokeOpacity]="2"
+        [strokeWeight]="4"></polyline>
+        <marker *ngFor="let pos of path" [position]="pos">
+
+        </marker>
+    </ngui-map>
+
+</div>
+
+</div>

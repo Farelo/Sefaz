@@ -30,8 +30,22 @@ exports.alert_read_by_packing = function(req, res) {
     })
     .populate('actual_plant.plant')
     .populate('department')
-    .populate('correct_plant_supplier')
-    .populate('correct_plant_factory')
+    .populate('routes')
+    .populate({path: 'routes',
+      populate: {
+        path: 'plant_factory',
+        model: 'Plant'
+      }})
+    .populate({path: 'routes',
+      populate: {
+        path: 'plant_supplier',
+        model: 'Plant'
+      }})
+    .populate({path: 'routes',
+      populate: {
+        path: 'supplier',
+        model: 'Supplier'
+      }})
     .populate('packing')
     .populate('supplier')
     .populate({path: 'supplier',

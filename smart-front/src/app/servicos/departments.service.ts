@@ -9,8 +9,8 @@ export class DepartmentService {
 
   constructor(private http: Http) { }
 
-  getDepartmentsPagination(limit: number, page: number): Observable<any> {
-    return this.http.get(environment.url + 'department/list/pagination/' + limit + '/' + page)
+  getDepartmentsPagination(limit: number, page: number, attr:any): Observable<any> {
+    return this.http.get(environment.url + 'department/list/pagination/' + limit + '/' + page+ '?attr='+ attr)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -45,8 +45,13 @@ export class DepartmentService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  createDepartment(department: Department): Observable<any>{
+  createDepartment(department: any): Observable<any>{
     return this.http.post(environment.url + 'department/create', department)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+  createDepartmentArray(array: any): Observable<any>{
+    return this.http.post(environment.url + 'department/create/array', array)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

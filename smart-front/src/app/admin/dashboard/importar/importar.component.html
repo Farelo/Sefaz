@@ -1,0 +1,126 @@
+<div class="painel">
+  <div class="corpo">
+    <div class="container">
+      <button class="help" (click)="openHelp(content)">
+        <div class="bigger">
+          <div class="det2"></div>
+        </div>
+      </button>
+      <h1>IMPORTAR DADOS</h1>
+      <ng-template #content>
+        <div class="modalFilho">
+          <div class="header">
+             <p>IMPORTAR DADOS</p>
+          </div>
+          <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        <div class="modalBody">
+          <p>Informações que o cliente deseja colocar.</p>
+        </div>
+        </div>
+      </ng-template>
+
+
+  <form novalidate (ngSubmit)="onSubmit(import)" [formGroup]="import"  #formDir="ngForm">
+      <div class="row">
+        <div class="col-md-4 importar">
+          <p>Escolha um arquivo xlxs para importar</p>
+          <form>
+            <div class="form-group">
+              <div class="botaoImport">
+                <label for="single">ARQUIVO</label>
+              </div>
+                <input type="file" class="form-control" id="single"  (change)=fileEvent($event) accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-8">
+          <div class="table-responsive tabela">
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th width="30%">Name</th>
+                <th>Size</th>
+                <th>Status</th>
+                <th>Tipo de Cadastro</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of uploader">
+                <td><strong>{{ item.name }}</strong></td>
+                <td nowrap>{{ item.size/1024/1024 | number:'.2' }} MB</td>
+                <td class="text-center">
+                  <i *ngIf="send" class="glyphicon glyphicon-ok"></i>
+                  <i *ngIf="!send" class="glyphicon glyphicon-cloud-upload"></i>
+                </td>
+                <td nowrap>
+                  <select [(ngModel)]="type" type data-style="btn-primary"  class="selectEq" formControlName="type"
+                  [ngClass]="{'required': (import.get('type').hasError('required') && import.get('type').touched)
+                  || (import.get('type').hasError('required') && formDir.submitted)}">
+                   <option value="">Escolha</option>
+                   <option>Tags</option>
+                   <option>Plantas</option>
+                   <option>Projetos</option>
+                   <option>Setores</option>
+                   <option>Embalagens</option>
+                   <option>Rotas</option>
+                 </select>
+                 <p class="requiredText" *ngIf="(import.get('type').hasError('required') && import.get('type').touched)
+                 || (import.get('type').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+               </td>
+                <td nowrap>
+                  <button type="submit" class="editar" >
+                    <span class="glyphicon glyphicon-upload"></span> Upload
+                  </button>
+                  <button type="button" class="excluir" (click)="remove()">
+                    <span class="glyphicon glyphicon-trash"></span> Remove
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="(uploader.length == 0)" class="none" >
+                <td colspan="4">
+                    Você ainda não carregou nenhum arquivo
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+      </div>
+    </form>
+
+
+    <br />
+    <br />
+
+    <div class="row" *ngIf="data?.datas.length > 0 && send">
+      <div class="col-md-12">
+        <p>{{import['controls'].type.value}}</p>
+      </div>
+    </div>
+
+      <div class="row">
+        <div class="col-md-12" *ngIf="data?.datas.length == 0 && send">
+          <alert type="danger" dismissible="true">
+            <strong>Atenção!</strong> Existe algum problema no excel que você tentou importar, verifique se ele apresenta os campos corretos para inserir os cadastros da/o (s) {{import['controls'].type.value}}.
+          </alert>
+        </div>
+        <div class="col-md-12">
+          <br />
+          <br />
+          <div class="row" *ngIf="data?.datas.length > 0 && send">
+            <hotTable [data]="data.datas" [colHeaders]="colHeaders" [columns]="columns" [options]="options" width=400px></hotTable>
+          </div>
+          <br />
+          <div class="botoes" *ngIf="data?.datas.length > 0 && send">
+            <button type="button" class="botaoRegistrar" name="button" (click)="register()">REGISTRAR</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

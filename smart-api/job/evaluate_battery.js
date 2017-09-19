@@ -11,7 +11,7 @@ module.exports = function(p) {
         "status": 3
       }).then(result => {
         if (result.length === 0) { //Caso o alerta não exista, simplestemente cria o alerta
-          console.log("BATTERY: ALERT CREATE TO PACKING: " + p._id);
+          console.log("BATTERY: ALERT CREATE TO PACKING:",p._id);
           alert.create({
             "actual_plant": p.actual_plant,
             "department": p.department,
@@ -23,7 +23,7 @@ module.exports = function(p) {
             "date": new Date().getTime()
           }).then(() => resolve(p));
         } else {
-          console.log("BATTERY: ALERT ALREADY EXIST TO PACKING: " + p._id);
+          console.log("BATTERY: ALERT ALREADY EXIST TO PACKING:",p._id);
           alert.update({ //Verifica se o alerta ja existe
             "packing": p._id,
             "status": 3
@@ -38,7 +38,7 @@ module.exports = function(p) {
       });
     } else {
       //remove qualquer alerta de bateria referente a essa embalagem
-      console.log("BATTERY: NO CONFORMIDADE ABOUT THE PACKING: " + p._id);
+      console.log("BATTERY: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
       alert.remove({
         "packing": p._id,
         "status": 3

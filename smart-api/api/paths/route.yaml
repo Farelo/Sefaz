@@ -42,6 +42,11 @@ paths:
         description: "The especific page that returns routes related a this page"
         required: true
         type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific attr that returns packings related a this attr"
+        required: false
+        type: string
       responses:
         200:
           description: "Message"
@@ -75,8 +80,30 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-
-
+  /route/create/array:
+    x-swagger-router-controller: route_controller
+    post:
+      tags:
+      - "Route"
+      summary: "Add a array route to the system"
+      description: ""
+      operationId: route_create_array
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "route array that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/ArrayRoute"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /route/delete/{route_id}:
     x-swagger-router-controller: route_controller
     delete:

@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-xs-7">
+    <input type="text" class="form-control meuInput" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()">
+  </div>
+  <div class="col-xs-2">
+
+  </div>
+  <div class="col-xs-3">
+    <button class="mais" routerLink="cadastrar"></button>
+  </div>
+</div>
+
+<div class="table-responsive tabela">
+  <table class="table">
+    <thead>
+      <tr class="cabecalho">
+        <th>Nome</th>
+        <th class="opcoes">Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of data.data | paginate: {
+                                                      itemsPerPage: data.meta.limit,
+                                                      currentPage: data.meta.page,
+                                                      totalItems: data.meta.total_docs}">
+        <td>{{project.name}}</td>
+        <td class="teste">
+          <button class="editar" [routerLink]="['editar/', project._id]">Editar</button>
+          <button class="excluir" (click)="removeProject(project)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="classVazio"  *ngIf="data.data?.length < 1">
+  Ainda não existem plataformas cadastradas.
+</div>
+<br />
+<div class="has-text-centered">
+    <pagination-controls class="my-pagination"
+    (pageChange)="pageChanged($event)"
+    directionLinks="false"
+    autoHide="true">
+    </pagination-controls>
+</div>

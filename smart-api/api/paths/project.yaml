@@ -42,6 +42,11 @@ paths:
         description: "The especific page that returns projects related a this page"
         required: true
         type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific attr that returns packings related a this attr"
+        required: false
+        type: string
       responses:
         200:
           description: "Message"
@@ -92,8 +97,30 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-
-
+  /project/create/array:
+    x-swagger-router-controller: project_controller
+    post:
+      tags:
+      - "Project"
+      summary: "Add a array project to the system"
+      description: ""
+      operationId: project_create_array
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "project array that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/ArrayProject"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /project/delete/{project_id}:
     x-swagger-router-controller: project_controller
     delete:

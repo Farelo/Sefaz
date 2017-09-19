@@ -2,8 +2,8 @@
   <div class="detalhes" *ngIf="type === 'route'">
      <h2>Detalhes da Rota </h2>
      <hr>
-     <p>Partida: {{view.location.start_address }}</p>
-     <p>Destino: {{view.location.end_address }}</p>
+     <p>Partida: {{view.location?.start_address || 'Não Informado'}}</p>
+     <p>Destino: {{view.location?.end_address || 'Não Informado'}}</p>
      <hr>
      <div class="alerta">
        <span class="alert" aria-hidden="true"></span>
@@ -64,7 +64,7 @@
   <div class="detalhes" *ngIf="type === 'project'">
     <h2>Detalhes da Plataforma/Projeto </h2>
     <hr>
-    <p>Nome: {{view.code }}</p>
+    <p>Nome: {{view.name }}</p>
 
     <hr>
     <div class="alerta">

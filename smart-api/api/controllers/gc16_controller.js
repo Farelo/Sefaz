@@ -69,7 +69,7 @@ exports.gc16_list = function(req, res) { 
  * List of GC16's by pagination
  */
 exports.gc16_list_pagination = function(req, res) { 
-  gc16.paginate({}, {
+  gc16.paginate(req.swagger.params.attr.value ? {"packing": req.swagger.params.attr.value} : {} , {
       page: parseInt(req.swagger.params.page.value),
       populate: ['supplier','project'],
       sort: {

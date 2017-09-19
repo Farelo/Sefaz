@@ -20,6 +20,14 @@ exports.department_create = function(req, res) {
     .then(_.partial(successHandler, res));
 };
 /**
+ * Create a Department with array
+ */
+exports.department_create_array = function(req, res) {
+  department.create(req.body)
+    .catch(_.partial(errorHandler, res, 'Error to create deparment'))
+    .then(_.partial(successHandler, res));
+};
+/**
  * Show the current Department
  */
 exports.department_read = function(req, res) {
@@ -67,7 +75,7 @@ exports.department_delete = function(req, res) { 
  * List of departments
  */
 exports.department_list_pagination = function(req, res) { 
-  department.paginate({}, {
+  department.paginate(req.swagger.params.attr.value ?  {"name": req.swagger.params.attr.value} : {} , {
       page: parseInt(req.swagger.params.page.value),
       populate: ['plant'],
       sort: {

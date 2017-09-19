@@ -4,3 +4,7 @@ definitions:
     properties:
       name:
         type: string
+  ArrayProject:
+    type : array
+    items:
+      $ref: '#/definitions/Project'      

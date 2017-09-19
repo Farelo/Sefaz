@@ -9,8 +9,8 @@ export class RoutesService {
 
   constructor(private http: Http) { }
 
-  getRoutesPagination(limit: number, page: number): Observable<any> {
-    return this.http.get(environment.url + 'route/list/pagination/' + limit + '/' + page)
+  getRoutesPagination(limit: number, page: number, attr: any): Observable<any> {
+    return this.http.get(environment.url + 'route/list/pagination/' + limit + '/' + page+ '?attr='+ attr)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -41,6 +41,12 @@ export class RoutesService {
 
   createRoute(route: Route): Observable<any>{
     return this.http.post(environment.url + 'route/create', route)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  createRouteArray(array: any): Observable<any>{
+    return this.http.post(environment.url + 'route/create/array', array)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

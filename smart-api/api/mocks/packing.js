@@ -17,6 +17,7 @@ const packingSchema = new mongoose.Schema({
   battery: Number,
   problem: Boolean,
   missing: Boolean,
+  traveling: Boolean,
   lastCommunication: Number,
   permanence: {
     time_exceeded: Boolean,
@@ -110,19 +111,19 @@ function evaluete(promise, next, p) {
             $in: p.routes
           }
         }))
-        .then(() => next());
+        .then(() => next);
     } else if (result[0].length === 0) {
       p.model('GC16').remove({
         _id: p.gc16
-      }).then(() => next());
+      }).then(() => next);
     } else if (result[1].length === 0) {
       p.model('Route').remove({
         _id: {
           $in: p.routes
         }
-      }).then(() => next());
+      }).then(() => next);
     } else {
-      next();
+      next;
     }
   });
 }

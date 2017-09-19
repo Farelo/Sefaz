@@ -1,5 +1,5 @@
 paths:
-   /upload:
+   /upload/tag:
      x-swagger-router-controller: import_controller
      post:
        tags:
@@ -7,7 +7,122 @@ paths:
        summary: Uploads a file.
        consumes:
          - multipart/form-data
-       operationId: uploads
+       operationId: uploadTag
+       parameters:
+         - in: formData
+           name: upfile
+           type: file
+           description: The file to upload to tag.
+       responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+   /upload/project:
+     x-swagger-router-controller: import_controller
+     post:
+       tags:
+         - "Upload"
+       summary: Uploads a file to project.
+       consumes:
+         - multipart/form-data
+       operationId: uploadProject
+       parameters:
+         - in: formData
+           name: upfile
+           type: file
+           description: The file to upload.
+       responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+   /upload/plant:
+     x-swagger-router-controller: import_controller
+     post:
+       tags:
+         - "Upload"
+       summary: Uploads a file to plant.
+       consumes:
+         - multipart/form-data
+       operationId: uploadPlant
+       parameters:
+         - in: formData
+           name: upfile
+           type: file
+           description: The file to upload.
+       responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+   /upload/department:
+     x-swagger-router-controller: import_controller
+     post:
+       tags:
+         - "Upload"
+       summary: Uploads a file to department.
+       consumes:
+         - multipart/form-data
+       operationId: uploadDepartment
+       parameters:
+         - in: formData
+           name: upfile
+           type: file
+           description: The file to upload.
+       responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+   /upload/packing:
+     x-swagger-router-controller: import_controller
+     post:
+       tags:
+         - "Upload"
+       summary: Uploads a file to department.
+       consumes:
+         - multipart/form-data
+       operationId: uploadPacking
+       parameters:
+         - in: formData
+           name: upfile
+           type: file
+           description: The file to upload.
+       responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+   /upload/route:
+     x-swagger-router-controller: import_controller
+     post:
+       tags:
+         - "Upload"
+       summary: Uploads a file to department.
+       consumes:
+         - multipart/form-data
+       operationId: uploadRoute
        parameters:
          - in: formData
            name: upfile

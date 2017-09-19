@@ -10,7 +10,7 @@
       "url": "http://pe.senai.br"
     }
   },
-  "host": "localhost:8984",
+  "host": "localhost:3000",
   "basePath": "/api",
   "schemes": [
     "http",
@@ -1084,6 +1084,13 @@
             "description": "The especific page that returns departments related a this page",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific attr that returns packings related a this attr",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -1217,6 +1224,42 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Department"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/department/create/array": {
+      "x-swagger-router-controller": "department_controller",
+      "post": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Add a array to department to the system",
+        "description": "",
+        "operationId": "department_create_array",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "department array that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArrayDepartment"
             }
           }
         ],
@@ -1394,6 +1437,13 @@
             "name": "page",
             "description": "The especific page that returns gc16 registerss related a this page",
             "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific attr that returns packings related a this attr",
+            "required": false,
             "type": "string"
           }
         ],
@@ -1739,7 +1789,7 @@
         }
       }
     },
-    "/upload": {
+    "/upload/tag": {
       "x-swagger-router-controller": "import_controller",
       "post": {
         "tags": [
@@ -1749,7 +1799,182 @@
         "consumes": [
           "multipart/form-data"
         ],
-        "operationId": "uploads",
+        "operationId": "uploadTag",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "upfile",
+            "type": "file",
+            "description": "The file to upload to tag."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/upload/project": {
+      "x-swagger-router-controller": "import_controller",
+      "post": {
+        "tags": [
+          "Upload"
+        ],
+        "summary": "Uploads a file to project.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "operationId": "uploadProject",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "upfile",
+            "type": "file",
+            "description": "The file to upload."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/upload/plant": {
+      "x-swagger-router-controller": "import_controller",
+      "post": {
+        "tags": [
+          "Upload"
+        ],
+        "summary": "Uploads a file to plant.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "operationId": "uploadPlant",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "upfile",
+            "type": "file",
+            "description": "The file to upload."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/upload/department": {
+      "x-swagger-router-controller": "import_controller",
+      "post": {
+        "tags": [
+          "Upload"
+        ],
+        "summary": "Uploads a file to department.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "operationId": "uploadDepartment",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "upfile",
+            "type": "file",
+            "description": "The file to upload."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/upload/packing": {
+      "x-swagger-router-controller": "import_controller",
+      "post": {
+        "tags": [
+          "Upload"
+        ],
+        "summary": "Uploads a file to department.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "operationId": "uploadPacking",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "upfile",
+            "type": "file",
+            "description": "The file to upload."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/upload/route": {
+      "x-swagger-router-controller": "import_controller",
+      "post": {
+        "tags": [
+          "Upload"
+        ],
+        "summary": "Uploads a file to department.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "operationId": "uploadRoute",
         "parameters": [
           {
             "in": "formData",
@@ -2380,6 +2605,40 @@
         }
       }
     },
+    "/packing/position/{code}": {
+      "x-swagger-router-controller": "packing_controller",
+      "get": {
+        "tags": [
+          "Packing"
+        ],
+        "summary": "Get a position the packing on the system",
+        "description": "",
+        "operationId": "packing_position",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/packing/retrieve/code/{code}/supplier/{supplier}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
@@ -2444,6 +2703,13 @@
             "description": "The especific page that returns packings related a this page",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific attr that returns packings related a this attr",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -2490,54 +2756,6 @@
             "in": "path",
             "name": "id",
             "description": "The especific id that returns packings related a this plant",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/packing/list/pagination/attribute/{limit}/{page}/{attr}": {
-      "x-swagger-router-controller": "packing_controller",
-      "get": {
-        "tags": [
-          "Packing"
-        ],
-        "summary": "Get all packings on the system by pagination",
-        "description": "",
-        "operationId": "packing_list_pagination_by_code_serial",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of packings that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "attr",
-            "description": "The attribute of packings that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns packings related a this page",
             "required": true,
             "type": "string"
           }
@@ -2626,7 +2844,7 @@
         }
       }
     },
-    "/packing/list/department/{department}": {
+    "/packing/list/department/{department}/{limit}/{page}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
         "tags": [
@@ -2640,6 +2858,20 @@
             "in": "path",
             "name": "department",
             "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns packings related a this page",
             "required": true,
             "type": "string"
           }
@@ -2703,6 +2935,45 @@
         "summary": "Add a new packing to the system",
         "description": "",
         "operationId": "packing_create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "packing object that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Packing"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/packing/create/array": {
+      "x-swagger-router-controller": "packing_controller",
+      "post": {
+        "tags": [
+          "Packing"
+        ],
+        "summary": "Add a array packing to the system",
+        "description": "",
+        "operationId": "packing_create_array",
         "parameters": [
           {
             "in": "body",
@@ -2994,6 +3265,13 @@
             "description": "The especific page that returns plants related a this page",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific attr that returns packings related a this attr",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -3120,6 +3398,42 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Plant"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/plant/create/array": {
+      "x-swagger-router-controller": "plant_controller",
+      "post": {
+        "tags": [
+          "Plant"
+        ],
+        "summary": "Add a array of plant to the system",
+        "description": "",
+        "operationId": "plant_create_array",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Plant array that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArrayPlant"
             }
           }
         ],
@@ -3502,6 +3816,13 @@
             "description": "The especific page that returns projects related a this page",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific attr that returns packings related a this attr",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -3562,6 +3883,42 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Project"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/project/create/array": {
+      "x-swagger-router-controller": "project_controller",
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Add a array project to the system",
+        "description": "",
+        "operationId": "project_create_array",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "project array that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArrayProject"
             }
           }
         ],
@@ -3715,6 +4072,13 @@
             "description": "The especific page that returns routes related a this page",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific attr that returns packings related a this attr",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -3750,6 +4114,42 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Route"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/route/create/array": {
+      "x-swagger-router-controller": "route_controller",
+      "post": {
+        "tags": [
+          "Route"
+        ],
+        "summary": "Add a array route to the system",
+        "description": "",
+        "operationId": "route_create_array",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "route array that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArrayRoute"
             }
           }
         ],
@@ -4526,6 +4926,13 @@
             "description": "The especific page that returns tagss related a this page",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific attr that returns packings related a this attr",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -4586,6 +4993,42 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Tag"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tags/create/array": {
+      "x-swagger-router-controller": "tags_controller",
+      "post": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Add a array of tags to the system",
+        "description": "",
+        "operationId": "tags_create_array",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "tags array that needs to be added to the system",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArrayTag"
             }
           }
         ],
@@ -4759,8 +5202,28 @@
           "type": "string"
         },
         "plant": {
-          "type": "string"
+          "$ref": "#/definitions/Plant"
+        },
+        "lat": {
+          "type": "number",
+          "format": "double"
+        },
+        "lng": {
+          "type": "number",
+          "format": "double"
         }
+      },
+      "required": [
+        "name",
+        "lat",
+        "lng",
+        "plant"
+      ]
+    },
+    "ArrayDepartment": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Department"
       }
     },
     "ErrorResponse": {
@@ -4836,6 +5299,12 @@
         }
       }
     },
+    "ArrayPacking": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Packing"
+      }
+    },
     "Packing": {
       "type": "object",
       "properties": {
@@ -4865,14 +5334,17 @@
           "type": "integer",
           "format": "int64"
         },
-        "tag_mac": {
+        "tag": {
+          "$ref": "#/definitions/Tag"
+        },
+        "code_tag": {
           "type": "string"
         },
         "supplier": {
-          "type": "string"
+          "$ref": "#/definitions/SupplierUtil"
         },
         "project": {
-          "type": "string"
+          "$ref": "#/definitions/Project"
         },
         "serial": {
           "type": "string"
@@ -4884,7 +5356,29 @@
       "properties": {
         "plant_name": {
           "type": "string"
+        },
+        "lat": {
+          "type": "number",
+          "format": "double"
+        },
+        "lng": {
+          "type": "number",
+          "format": "double"
+        },
+        "location": {
+          "type": "string"
         }
+      },
+      "required": [
+        "plant_name",
+        "lat",
+        "lng"
+      ]
+    },
+    "ArrayPlant": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Plant"
       }
     },
     "Profile": {
@@ -4902,7 +5396,7 @@
         "city": {
           "type": "string"
         },
-        "address": {
+        "street": {
           "type": "string"
         },
         "telephone": {
@@ -4930,32 +5424,32 @@
         }
       }
     },
+    "ArrayProject": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Project"
+      }
+    },
+    "ArrayRoute": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Route"
+      }
+    },
     "Route": {
       "type": "object",
       "properties": {
         "supplier": {
-          "type": "string"
+          "$ref": "#/definitions/SupplierUtil"
         },
         "plant_factory": {
-          "type": "string"
+          "$ref": "#/definitions/Plant"
         },
         "plant_supplier": {
-          "type": "string"
+          "$ref": "#/definitions/Plant"
         },
         "packing_code": {
           "type": "string"
-        },
-        "estimeted_time": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "time_countdown": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "last_time": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     },
@@ -5008,16 +5502,24 @@
         "name": {
           "type": "string"
         },
-        "cnpj": {
-          "type": "string"
-        },
         "duns": {
           "type": "string"
         },
         "profile": {
-          "type": "string"
+          "$ref": "#/definitions/Profile"
         },
         "plant": {
+          "$ref": "#/definitions/Plant"
+        }
+      }
+    },
+    "SupplierUtil": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "duns": {
           "type": "string"
         }
       }
@@ -5028,6 +5530,12 @@
         "code": {
           "type": "string"
         }
+      }
+    },
+    "ArrayTag": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
       }
     }
   }

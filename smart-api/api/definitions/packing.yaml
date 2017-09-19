@@ -4,6 +4,10 @@ definitions:
     properties:
       hashPacking:
         type: string
+  ArrayPacking:
+    type : array
+    items:
+      $ref: '#/definitions/Packing'
   Packing:
     type: object
     properties:
@@ -26,11 +30,13 @@ definitions:
       capacity:
         type: "integer"
         format: "int64"
-      tag_mac:
+      tag:
+        $ref: '#/definitions/Tag'
+      code_tag:
         type: string
       supplier:
-        type: string
+        $ref: '#/definitions/SupplierUtil'
       project:
-        type: string
+        $ref: '#/definitions/Project'
       serial:
         type: string

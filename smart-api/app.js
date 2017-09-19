@@ -25,9 +25,9 @@ app.use(logger('dev'));
 module.exports = app; // for testing
 
 // DATABASE ==============================================
-require('./config/config.database')();
 // MODELS ==============================================
-require('./config/config.models')();
+// require('./config/config.models')();
+require('./config/config.database').open(environment.database);
 //JOB =================================================
 require('./job/job');
 

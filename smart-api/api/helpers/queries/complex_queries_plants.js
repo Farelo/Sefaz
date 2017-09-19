@@ -21,20 +21,27 @@ exports.queries = {
       },
       {
         "$match": {
-          "ObjectPlant.supplier": {
-            $ne: new ObjectId(supplier)
-          },
-          "ObjectPlant.packing_code": {
-            $ne: code
-          },
+          $or: [{
+              "ObjectPlant.supplier": {
+                $ne: new ObjectId(supplier)
+              }
+            },
+            {
+              "ObjectPlant.packing_code": {
+                $ne: code
+              }
+            }
+          ],
+
           "supplier": {
             $exists: false
           },
+
           "logistic_operator": {
             $exists: false
           }
         }
       }
-    ];
+    ]
   }
 }

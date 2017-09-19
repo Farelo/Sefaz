@@ -23,6 +23,29 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
+  /packing/position/{code}:
+      x-swagger-router-controller: packing_controller
+      get:
+        tags:
+          - "Packing"
+        summary: "Get a position the packing on the system"
+        description: ""
+        operationId: packing_position
+        parameters:
+        - in: "path"
+          name: "code"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
   /packing/retrieve/code/{code}/supplier/{supplier}:
       x-swagger-router-controller: packing_controller
       get:
@@ -70,6 +93,11 @@ paths:
         description: "The especific page that returns packings related a this page"
         required: true
         type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific attr that returns packings related a this attr"
+        required: false
+        type: string
       responses:
         200:
           description: "Message"
@@ -101,39 +129,6 @@ paths:
       - in: "path"
         name: "id"
         description: "The especific id that returns packings related a this plant"
-        required: true
-        type: string
-      responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /packing/list/pagination/attribute/{limit}/{page}/{attr}:
-    x-swagger-router-controller: packing_controller
-    get:
-      tags:
-        - "Packing"
-      summary: "Get all packings on the system by pagination"
-      description: ""
-      operationId: packing_list_pagination_by_code_serial
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of packings that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "attr"
-        description: "The attribute of packings that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "The especific page that returns packings related a this page"
         required: true
         type: string
       responses:
@@ -191,7 +186,7 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
-  /packing/list/department/{department}:
+  /packing/list/department/{department}/{limit}/{page}:
       x-swagger-router-controller: packing_controller
       get:
         tags:
@@ -203,6 +198,16 @@ paths:
         - in: "path"
           name: "department"
           description: "The code that needs to be fetched"
+          required: true
+          type: string
+        - in: "path"
+          name: "limit"
+          description: "The limit of packings that will be returned"
+          required: true
+          type: string
+        - in: "path"
+          name: "page"
+          description: "The especific page that returns packings related a this page"
           required: true
           type: string
         responses:
@@ -246,6 +251,32 @@ paths:
       summary: "Add a new packing to the system"
       description: ""
       operationId: packing_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "packing object that needs to be added to the system"
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: "#/definitions/Packing"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /packing/create/array:
+    x-swagger-router-controller: packing_controller
+    post:
+      tags:
+      - "Packing"
+      summary: "Add a array packing to the system"
+      description: ""
+      operationId: packing_create_array
       parameters:
       - in: "body"
         name: "body"

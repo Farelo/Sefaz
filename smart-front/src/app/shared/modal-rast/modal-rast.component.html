@@ -14,18 +14,30 @@
           <tr class="cabecalho">
             <th class="semBorda">Codigo</th>
             <th  class="semBorda">Tag</th>
+            <th  class="semBorda">Fornecedor</th>
           </tr>
         </thead>
         <tbody >
-          <tr *ngFor="let packing of packings">
+          <tr *ngFor="let packing of data.data | paginate: {
+                                                          itemsPerPage: data.meta.limit,
+                                                          currentPage: data.meta.page,
+                                                          totalItems: data.meta.total_docs}">
             <td>{{packing.code}}</td>
-            <td>{{packing.tag_mac}}</td>
+            <td>{{packing.tag.code}}</td>
+            <td>{{packing.supplier.name}}</td>
           </tr>
         </tbody>
       </table>
+      <div class="has-text-centered">
+          <pagination-controls class="my-pagination"
+          (pageChange)="pageChanged($event)"
+          directionLinks="false"
+          autoHide="true">
+          </pagination-controls>
+      </div>
     </div>
   </div>
-  <div class="classVazio" *ngIf="packings?.length < 1">
+  <div class="classVazio" *ngIf="data.data?.length < 1">
     Não existe embalagens nesse setor.
   </div>
 </div>

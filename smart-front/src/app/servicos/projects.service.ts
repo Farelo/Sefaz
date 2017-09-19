@@ -9,8 +9,8 @@ export class ProjectService {
 
   constructor(private http: Http) { }
 
-  getProjectPagination(limit: number, page: number): Observable<any> {
-    return this.http.get(environment.url + 'project/list/pagination/' + limit + '/' + page)
+  getProjectPagination(limit: number, page: number, attr: any): Observable<any> {
+    return this.http.get(environment.url + 'project/list/pagination/' + limit + '/' + page+ '?attr='+ attr)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -41,6 +41,12 @@ export class ProjectService {
 
   createProject(project: Project): Observable<any>{
     return this.http.post(environment.url + 'project/create', project)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  createProjectArray(array: any): Observable<any>{
+    return this.http.post(environment.url + 'project/create/array', array)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

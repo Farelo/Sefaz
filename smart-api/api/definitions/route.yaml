@@ -1,21 +1,16 @@
 definitions:
+  ArrayRoute:
+    type : array
+    items:
+      $ref: '#/definitions/Route'
   Route:
     type: object
     properties:
       supplier:
-        type: string
+        $ref: '#/definitions/SupplierUtil'
       plant_factory:
-        type: string
+        $ref: '#/definitions/Plant'
       plant_supplier:
-        type: string
+        $ref: '#/definitions/Plant'
       packing_code:
         type: string
-      estimeted_time:
-        type: "integer"
-        format: "int64"
-      time_countdown:
-        type: "integer"
-        format: "int64"
-      last_time:
-        type: "integer"
-        format: "int64"

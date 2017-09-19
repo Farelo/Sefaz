@@ -8,7 +8,7 @@ const errorHandler               = require('../helpers/responses/errorHandler');
 const query                      = require('../helpers/queries/complex_queries_tag');
 const request                    = require('request');
 const token                      = require('../helpers/request/token');
-const confirmDevice              = require('../helpers/request/loka-api');
+const loka_api                   = require('../helpers/request/loka-api');
 const mongoose                   = require('mongoose');
 const tags                       = mongoose.model('Tags');
 const _                          = require("lodash");
@@ -17,12 +17,24 @@ mongoose.Promise                 = global.Promise;
  * Create a Tags
  */
 exports.tags_create = function(req, res) {
-  console.log(req.body);
+
     token()
-    .then(token => confirmDevice(token,req.body.code))
+    .then(token => loka_api.confirmDevice(token,req.body.code))
     .then(() => tags.create(req.body))
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to create tags'))
+
+};
+/**
+ * Create a Tags a lot
+ */
+exports.tags_create_array = function(req, res) {
+
+    token()
+    .then(token => Promise.all(req.body.map(o => loka_api.confirmDevice(token,o.code))))
+    .then(() => tags.create(req.body))
+    .catch(_.partial(errorHandler, res, 'Error to create tags'))
+    .then(_.partial(successHandler, res))
 
 };
 /**
@@ -87,7 +99,8 @@ exports.tags_list_all_no_binded = function(req, res) { 
  * List of tags's by pagination
  */
 exports.tags_list_pagination = function(req, res) {
-  tags.paginate({}, {
+
+  tags.paginate(req.swagger.params.attr.value ? {"code": req.swagger.params.attr.value} : {}, {
       page: parseInt(req.swagger.params.page.value),
       sort: {
         _id: 1

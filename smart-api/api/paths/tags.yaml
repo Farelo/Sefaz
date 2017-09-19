@@ -42,6 +42,11 @@ paths:
         description: "The especific page that returns tagss related a this page"
         required: true
         type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific attr that returns packings related a this attr"
+        required: false
+        type: string
       responses:
         200:
           description: "Message"
@@ -111,6 +116,30 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/Tag"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /tags/create/array:
+    x-swagger-router-controller: tags_controller
+    post:
+      tags:
+      - "Tag"
+      summary: "Add a array of tags to the system"
+      description: ""
+      operationId: tags_create_array
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "tags array that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/ArrayTag"
       responses:
         200:
           description: "Message"

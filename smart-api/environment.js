@@ -6,6 +6,7 @@
 module.exports = {
   production: false,
   url:"isi.pe.senai.br",
+  // url:"localhost",
   port: '8984',
   database: 'reciclopac'
 };
