@@ -2,6 +2,7 @@ const mongoose        = require('mongoose');
 const alert           = mongoose.model('Alerts');
 mongoose.Promise      = global.Promise;
 const evaluate_route  = require('./evaluate_route');
+const alerts_type     = require('./alerts_type');
 
 module.exports = function(p, plant) {
   return new Promise(function(resolve, reject) {
@@ -10,13 +11,13 @@ module.exports = function(p, plant) {
       console.log("INCORRECT LOCAL: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
       alert.remove({
         "packing": p._id,
-        "status": 2
+        "status": alerts_type.INCORRECT_LOCAL
       }).then(() => resolve(p));
     }else{
         p.problem = true;
         alert.find({ //Verifica se o alerta ja existe
           "packing": p._id,
-          "status": 2
+          "status": alerts_type.INCORRECT_LOCAL
         }).then(result => {
           if (result.length === 0) { //Caso o alerta não exista, simplestemente cria o alerta
             console.log("INCORRECT LOCAL: ALERT CREATE TO PACKING:",p._id);
@@ -26,7 +27,7 @@ module.exports = function(p, plant) {
               "actual_plant": p.actual_plant,
               "packing": p._id,
               "supplier": p.supplier,
-              "status": 2,
+              "status": alerts_type.INCORRECT_LOCAL,
               "hashpacking": p.hashPacking,
               "serial": p.serial,
               "date": new Date().getTime()
@@ -35,7 +36,7 @@ module.exports = function(p, plant) {
             console.log("INCORRECT LOCAL: ALERT ALREADY EXIST TO PACKING:", p._id);
             alert.update({ //Verifica se o alerta ja existe
               "packing": p._id,
-              "status": 2
+              "status": alerts_type.INCORRECT_LOCAL
             },{
               "department": p.department,
               "routes": p.routes,

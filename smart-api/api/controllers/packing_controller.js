@@ -73,7 +73,7 @@ packing.findOne({
  */
 exports.list_packing_department = function(req, res) {
 
-    packing.paginate({"department": new ObjectId(req.swagger.params.department.value)}, {
+    packing.paginate({"department": new ObjectId(req.swagger.params.department.value),"missing": false, "traveling": false}, {
         page: parseInt(req.swagger.params.page.value),
         populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
         sort: {
@@ -301,7 +301,7 @@ exports.inventory_permanence = function(req, res) {
  * Historic of packings by serial
  */
 exports.inventory_packing_historic = function(req, res) {
-  console.log("aqui");
+
   historic.paginate({
       "serial": req.swagger.params.serial.value
     }, {

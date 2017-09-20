@@ -21,7 +21,7 @@ Timeline
       <span class="descricao" tooltip="Data do Alerta">{{alert.date | date}}</span>
     </div>
     <div class="direita">
-      <span class="fornecedor" tooltip="Planta Atual"
+      <span class="fornecedor" tooltip="Ultima planta em que foi visto" *ngIf="alert.status == 1 || alert.status == 4"
       [ngClass]="{
         'fornecedor1' : alert.status == 1,
         'fornecedor2' : alert.status == 2,
@@ -30,7 +30,17 @@ Timeline
         'fornecedor5' : alert.status == 5,
         'fornecedor6' : alert.status == 6
       }"
-      >{{alert.actual_plant?.plant.plant_name}}</span><Br />
+      >{{alert.actual_plant?.plant?.plant_name || 'Inf. Indespo.'}}</span>
+      <span class="fornecedor" tooltip="Planta Atual"  *ngIf="alert.status != 1 && alert.status != 4"
+      [ngClass]="{
+        'fornecedor1' : alert.status == 1,
+        'fornecedor2' : alert.status == 2,
+        'fornecedor3' : alert.status == 3,
+        'fornecedor4' : alert.status == 4,
+        'fornecedor5' : alert.status == 5,
+        'fornecedor6' : alert.status == 6
+      }"
+      >{{alert.actual_plant?.plant?.plant_name}}</span><Br />
       <span class="quantidade" tooltip="Código Serial da Embalagem"
       [ngClass]="{
         'quantidade1' : alert.status == 1,

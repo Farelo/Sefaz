@@ -15,6 +15,7 @@
 
   <p><span>Ultima Planta que foi visto:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
   <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Informação Indisponivel'}}</p>
+  <p><span>Tempo de sumiço:</span> {{alerta.data.packing?.packing_missing?.time_countdown ? (alerta.data.packing?.packing_missing?.time_countdown | time) : 'Informação Indisponivel'}}</p>
   <div class="divBotao">
 
   <button type="button" class="botaoVisualizar" (click)="getHistoric();historicFlag = true" *ngIf="!historicFlag">Visualizar Historico</button>
@@ -54,7 +55,7 @@
 </div>
 </div>
 
-<div class="modalBody" *ngIf="alerta.data.status === 2 && incorrectLocal">
+<div class="modalBody" *ngIf="alerta.data.status === 2 ">
   <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
   <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel'}}</p>
   <div class="table-responsive tabela">

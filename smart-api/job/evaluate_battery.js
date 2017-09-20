@@ -1,6 +1,7 @@
-const mongoose    = require('mongoose');
-const alert       = mongoose.model('Alerts');
-mongoose.Promise  = global.Promise;
+const mongoose     = require('mongoose');
+const alert        = mongoose.model('Alerts');
+mongoose.Promise   = global.Promise;
+const alerts_type  = require('./alerts_type');
 
 module.exports = function(p) {
   return new Promise(function(resolve, reject) {
@@ -8,7 +9,7 @@ module.exports = function(p) {
       //EMITIR ALERTA
       alert.find({ //Verifica se o alerta ja existe
         "packing": p._id,
-        "status": 3
+        "status": alerts_type.BATTERY
       }).then(result => {
         if (result.length === 0) { //Caso o alerta não exista, simplestemente cria o alerta
           console.log("BATTERY: ALERT CREATE TO PACKING:",p._id);
@@ -17,7 +18,7 @@ module.exports = function(p) {
             "department": p.department,
             "packing": p._id,
             "supplier": p.supplier,
-            "status": 3,
+            "status": alerts_type.BATTERY,
             "hashpacking": p.hashPacking,
             "serial": p.serial,
             "date": new Date().getTime()
@@ -26,7 +27,7 @@ module.exports = function(p) {
           console.log("BATTERY: ALERT ALREADY EXIST TO PACKING:",p._id);
           alert.update({ //Verifica se o alerta ja existe
             "packing": p._id,
-            "status": 3
+            "status": alerts_type.BATTERY
           },{
             "department": p.department,
             "actual_plant": p.actual_plant,
@@ -41,7 +42,7 @@ module.exports = function(p) {
       console.log("BATTERY: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
       alert.remove({
         "packing": p._id,
-        "status": 3
+        "status": alerts_type.BATTERY
       }).then(() => resolve(p));
     }
   });

@@ -5,6 +5,11 @@ const packing             = mongoose.model('Packing');
 
 
 
-module.exports = function (p) {
-  return packing.update({"_id": p._id},p);
+module.exports = {
+  set: function(p){
+    return packing.update({"_id": p._id},p);
+  },
+  unset: function(p){
+    return packing.update({"_id": p._id},{$unset: {'actual_plant': 1}});
+  }
 }

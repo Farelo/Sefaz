@@ -9,7 +9,7 @@ info:
     name: David W. F. Santos
     email: david.santos@pe.senai.br
     url: 'http://pe.senai.br'
-host: 'isi.pe.senai.br:8984'
+host: 'localhost:8984'
 basePath: /api
 schemes:
   - http

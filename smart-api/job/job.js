@@ -8,6 +8,10 @@ const without_route              = require('./without_route');
 const actual_plant               = require('./actual_plant');
 const evaluate_department        = require('./evaluate_department');
 const verify_finish              = require('./verify_finish');
+const evaluate_missing           = require('./evaluate_missing');
+const update_packing             = require('./update_packing');
+const traveling                  = require('./traveling');
+const remove_dependencies        = require('./remove_dependencies');
 
 var task = cron.schedule('*/10 * * * * *', function() {
     token()
@@ -27,6 +31,7 @@ function analysis(data){
       let plant  = actual_plant(p,plants); //calculate a distance from packing to plants
 
       if(plant != null){
+        console.log("PACKING HAS PLANT");
         evaluate_department(plant,p).then(department => {
             if(p.routes.length > 0){ //Evaluete if the packing has route ---------------------- EMBALAGENS QUE TEM  ROTA
               with_route(p,plant,department).then(result =>{
@@ -43,8 +48,19 @@ function analysis(data){
             }
         });
       }else{
+
         //para embalagens que não foram econtradas dentro de uma planta
-        // console.log("aqui");
+        console.log("PACKING HAS NOT PLANT");
+        remove_dependencies.without_plant(p)
+          .then(new_p => evaluate_missing(new_p))
+          .then(new_p => traveling.evaluate_traveling(new_p))
+          .then(new_p => update_packing.set(new_p))
+          .then(() => update_packing.unset(p))
+          .then(result =>{
+            count_packing++;
+            verify_finish("FINISH VERTENTE SEM PLANTA",total_packing,count_packing)
+          });
+
       }
 
     });

@@ -162,7 +162,7 @@
           <td>{{packing.code || '-'}}</td>
           <td>{{packing.description || '-'}}</td>
           <td>{{packing.quantity || '-'}}</td>
-          <td>{{packing.actual_plant?.plant.plant_name || '-'}}</td>
+          <td>{{packing.actual_plant?.plant?.plant_name || 'Nenhuma Informação'}}</td>
 
         </tr>
       </tbody>
@@ -396,7 +396,7 @@
           <td>{{packing.serial || '-' }}</td>
           <td>{{packing.supplier?.duns || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
-          <td>{{packing.actual_plant?.plant.plant_name || 'Não Registrado'}}</td>
+          <td>{{packing.actual_plant?.plant?.plant_name || 'Não Registrado'}}</td>
           <td>{{packing.quantity || '-'}}</td>
           <td>{{packing.actual_gc16?.min || '-'}}</td>
           <td>{{packing.actual_gc16?.max || '-'}}</td>

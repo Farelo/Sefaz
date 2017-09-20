@@ -133,6 +133,11 @@ exports.queries = {
         }
       },
       {
+        "$match": {
+            "actual_plant.plant": { "$exists": true, "$ne": null }
+        }
+      },
+      {
         "$group": {
           "_id": {
             "code": "$code",

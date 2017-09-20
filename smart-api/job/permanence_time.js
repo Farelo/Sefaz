@@ -1,6 +1,7 @@
-const mongoose    = require('mongoose');
-const alert       = mongoose.model('Alerts');
-mongoose.Promise  = global.Promise;
+const mongoose     = require('mongoose');
+const alert        = mongoose.model('Alerts');
+mongoose.Promise   = global.Promise;
+const alerts_type  = require('./alerts_type');
 
 module.exports = {
 
@@ -10,7 +11,7 @@ module.exports = {
       //remove qualquer alerta de permanencia referente a essa embalagem
       alert.remove({
         "packing": p._id,
-        "status": 5
+        "status": alerts_type.PERMANENCE
       }).then(() => resolve(p));
     });
   },
@@ -37,7 +38,7 @@ module.exports = {
           p.permanence.time_exceeded = true;
           alert.find({ //Verifica se o alerta ja existe
             "packing": p._id,
-            "status": 5
+            "status": alerts_type.PERMANENCE
           }).then( result => {
             if(result.length === 0){ //Caso o alerta não exista, simplestemente cria o alerta
               console.log("PERMANENCE TIME: ALERT CREATE TO PACKING:",p._id);
@@ -46,7 +47,7 @@ module.exports = {
                 "department": p.department,
                 "packing": p._id,
                 "supplier": p.supplier,
-                "status": 5,
+                "status": alerts_type.PERMANENCE,
                 "hashpacking": p.hashPacking,
                 "serial": p.serial,
                 "date": new Date().getTime()
@@ -55,7 +56,7 @@ module.exports = {
               console.log("PERMANENCE TIME: ALERT ALREADY EXIST TO PACKING:",p._id);
               alert.update({ //Verifica se o alerta ja existe
                 "packing": p._id,
-                "status": 5
+                "status": alerts_type.PERMANENCE
               },{
                 "department": p.department,
                 "actual_plant": p.actual_plant,
@@ -70,7 +71,7 @@ module.exports = {
           console.log("PERMANENCE TIME: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
           alert.remove({
             "packing": p._id,
-            "status": 5
+            "status": alerts_type.PERMANENCE
           }).then(() => resolve(p));
         }
       } else {

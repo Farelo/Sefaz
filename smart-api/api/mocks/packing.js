@@ -30,7 +30,7 @@ const packingSchema = new mongoose.Schema({
     time_countdown: Number,
   },
   packing_missing: {
-    last_time: Number,
+    date: Number,
     time_countdown: Number,
   },
   position: {
@@ -58,6 +58,12 @@ const packingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Route'
   }],
+  last_plant: {
+    plant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Plant'
+    }
+  },
   actual_plant: {
     plant: {
       type: mongoose.Schema.Types.ObjectId,
