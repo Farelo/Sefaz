@@ -56,30 +56,16 @@ export class ImportarComponent implements OnInit {
     this.editTable();
   }
   editTable(){
-    var aa = $('hotTable').css({'color':'red'});
-    console.log("sds");
-    console.log(aa);
-    
-    var iw1 = $('.handsontable-container');
-    iw1.css({'height':'he'});
-    iw1.css({'color':'red!important'});
-    iw1.css({'background-color':'red'});
+    var iwa = $('.classeDoCacete');
+    var hottable = iwa.children(':nth-child(1)');
+    var hand = hottable.children(':nth-child(1)');
+    var htmaster = hand.children(':nth-child(1)');
+    var wtholder = htmaster.children(':nth-child(1)');
+    var wthilder = wtholder.children(':nth-child(1)');
 
-    var iwa = $('.hotTable');
-    iwa.css({'height':'he'});
-    iwa.css({'color':'red!important'});
-    iwa.css({'background-color':'red'});
-
-    var iwb = $('.editar');
-    iwb.css({'color':'red!important'});
-    iwb.css({'background-color':'red'});
-
-    var iw2 = iw1.children(':nth-child(1)');
-    var iw3 = iw2.children(':nth-child(1)');
-    var iw4 = iw3.children(':nth-child(1)');
-    // var iw5 = iw4.children(':nth-child(1)');
-    var he = iw4.height();
-
+    var he = wthilder.height();
+    wtholder.css({'height':he});
+    hottable.css({'height':he});
   }
 
   remove(){
@@ -149,7 +135,6 @@ export class ImportarComponent implements OnInit {
     this.importService.sendDataToImportPlant(this.file).subscribe(res => {
       this.send = true;
       this.data = res.data;
-      console.log(res.data);
       this.colHeaders = ['Nome','Latitude','Longitude','Localidade'];
       this.columns = [
         {data: 'plant_name', type: 'text'},

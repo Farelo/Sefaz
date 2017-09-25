@@ -72,7 +72,7 @@
                  || (import.get('type').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
                </td>
                 <td nowrap>
-                  <button type="submit" class="editar" onclick="editTable()">
+                  <button type="submit" class="editar" >
                     <span class="glyphicon glyphicon-upload"></span> Upload
                   </button>
                   <button type="button" class="excluir" (click)="remove()">
@@ -98,7 +98,7 @@
 
     <div class="row" *ngIf="data?.datas.length > 0 && send">
       <div class="col-md-12">
-        <p>{{import['controls'].type.value}}</p>
+        <p class="descricaoTitulo">{{import['controls'].type.value}}</p>
       </div>
     </div>
 
@@ -111,8 +111,8 @@
         <div class="col-md-12">
           <br />
           <br />
-          <div class="row" *ngIf="data?.datas.length > 0 && send">
-            <hotTable [data]="data.datas" [colHeaders]="colHeaders" [columns]="columns" [options]="options" width=400px></hotTable>
+          <div class="row classeDoCacete" *ngIf="data?.datas.length > 0 && send">
+            <hotTable [data]="data.datas" [colHeaders]="colHeaders" [columns]="columns" [options]="options" width=400px (afterLoadData)= "editTable()"></hotTable>
           </div>
           <br />
           <div class="botoes" *ngIf="data?.datas.length > 0 && send">

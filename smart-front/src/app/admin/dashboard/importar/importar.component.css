@@ -227,3 +227,19 @@ float: right;
 .help:focus {
   outline: none;
 }
+.descricaoTitulo {
+  font-size: 25px;
+  font-family:'Montserrat',sans-serif;
+  border-top-color: #6382c9;
+  border-width: thin;
+  border-top-style: solid;
+  padding-top: 20px;
+  text-transform: uppercase;
+}
+select {
+  background-color: white;
+  padding:7px;
+  line-height: 1.25;
+  border:1px solid rgba(0, 0, 0, 0.15);
+  text-align: left;
+}
