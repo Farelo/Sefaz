@@ -21,6 +21,7 @@
     </thead>
     <tbody>
       <tr  *ngFor="let plant of data.data | paginate: {
+                                                      id:'plant',
                                                       itemsPerPage: data.meta.limit,
                                                       currentPage: data.meta.page,
                                                       totalItems: data.meta.total_docs}">
@@ -39,7 +40,7 @@
 </div>
 <br />
 <div class="has-text-centered">
-    <pagination-controls class="my-pagination"
+    <pagination-controls id='plant' class="my-pagination"
     (pageChange)="pageChanged($event)"
     directionLinks="false"
     autoHide="true">

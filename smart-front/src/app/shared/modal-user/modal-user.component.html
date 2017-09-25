@@ -18,6 +18,7 @@
           </tr>
         </thead>
         <tbody *ngFor="let user of data.data | paginate: {
+                                                        id:'user',
                                                         itemsPerPage: data.meta.limit,
                                                         currentPage: data.meta.page,
                                                         totalItems: data.meta.total_docs}">

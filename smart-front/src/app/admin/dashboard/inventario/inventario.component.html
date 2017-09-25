@@ -116,7 +116,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let packing of general.data | paginate: {
-                                                        id: 'GERAL',
+                                                        id: 'geral',
                                                         itemsPerPage: 10,
                                                         currentPage: general.meta.page,
                                                         totalItems: general.meta.total_docs}">
@@ -142,6 +142,7 @@
   </div>
   <div class="has-text-centered">
       <pagination-controls class="my-pagination"
+      id='geral'
       (pageChange)="general.meta.page = $event;generalInventory()"
       directionLinks="false"
       autoHide="true">
@@ -165,6 +166,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let packing of supplier.data | paginate: {
+                                                        id:'supplier',
                                                         itemsPerPage: 10,
                                                         currentPage: supplier.meta.page,
                                                         totalItems: supplier.meta.total_docs}">
@@ -184,6 +186,7 @@
   </div>
   <div class="has-text-centered">
       <pagination-controls class="my-pagination"
+      id='supplier'
       (pageChange)="supplier.meta.page = $event;supplierInventory()"
       directionLinks="false"
       autoHide="true">
@@ -211,6 +214,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let packing of permanence.data | paginate: {
+                                                        id:'permanence',
                                                         itemsPerPage: 10,
                                                         currentPage: permanence.meta.page,
                                                         totalItems: permanence.meta.total_docs}">
@@ -232,6 +236,7 @@
   </div>
   <div class="has-text-centered">
       <pagination-controls class="my-pagination"
+      id="permanence"
       (pageChange)="permanence.meta.page = $event;permanenceInventory()"
       directionLinks="false"
       autoHide="true">
@@ -259,6 +264,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let packing of permanence.data | paginate: {
+                                                        id: 'permanenceHistoric',
                                                         itemsPerPage: 10,
                                                         currentPage: permanence.meta.page,
                                                         totalItems: permanence.meta.total_docs}">
@@ -281,6 +287,7 @@
   </div>
   <div class="has-text-centered">
       <pagination-controls class="my-pagination"
+      id="permanenceHistoric"
       (pageChange)="permanence.meta.page = $event;permanenceInventory()"
       directionLinks="false"
       autoHide="true">
@@ -306,6 +313,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let packing of battery.data | paginate: {
+                                                        id:'battery',
                                                         itemsPerPage: 10,
                                                         currentPage: battery.meta.page,
                                                         totalItems: battery.meta.total_docs}">
@@ -326,6 +334,7 @@
   </div>
   <div class="has-text-centered">
       <pagination-controls class="my-pagination"
+      id='battery'
       (pageChange)="battery.meta.page = $event;batteryInventory()"
       directionLinks="false"
       autoHide="true">
@@ -354,6 +363,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let packing of general_equipament.data | paginate: {
+                                                        id:'general',
                                                         itemsPerPage: 10,
                                                         currentPage: general_equipament.meta.page,
                                                         totalItems: general_equipament.meta.total_docs}">
@@ -382,6 +392,7 @@
   </div>
   <div class="has-text-centered">
       <pagination-controls class="my-pagination"
+      id='general'
       (pageChange)="general_equipament.meta.page = $event;generalInventoryEquipament()"
       directionLinks="false"
       autoHide="true">
@@ -411,6 +422,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let packing of quantity.data | paginate: {
+                                                        id:'quantity',
                                                         itemsPerPage: 10,
                                                         currentPage: quantity.meta.page,
                                                         totalItems: quantity.meta.total_docs}">
@@ -442,7 +454,7 @@
     <h3 class="definicao">DIFERENÇA: </h3><h3 class="numero">{{quantity.meta?.missing || 0}}</h3>
   </div>
   <div class="has-text-centered">
-      <pagination-controls class="my-pagination"
+      <pagination-controls id='quantity' class="my-pagination"
       (pageChange)="quantity.meta.page = $event;quantityInventory()"
       directionLinks="false"
       autoHide="true">

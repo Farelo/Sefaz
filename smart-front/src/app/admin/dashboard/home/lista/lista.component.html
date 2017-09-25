@@ -9,7 +9,7 @@ Timeline
    (alert.status == 2 ? 'Embalagem em local incorreto':
    (alert.status == 3 ? 'Embalagem com bateria baixa':
    (alert.status == 4 ? 'Embalagem em viagem': 'Embalagem com tempo de permanência elevado')))}}" placement="bottom"
-    *ngFor="let alert of data?.data | paginate: {
+    *ngFor="let alert of data?.data | paginate: {   id:'list',
                                                     itemsPerPage: 10,
                                                     currentPage: data.meta.page,
                                                     totalItems: data.meta.total_docs}"
@@ -60,7 +60,7 @@ Timeline
     </div>
   </div>
   <div class="has-text-centered">
-      <pagination-controls class="my-pagination"
+      <pagination-controls id='list' class="my-pagination"
       (pageChange)="pageChanged($event)"
       directionLinks="false"
       autoHide="true">

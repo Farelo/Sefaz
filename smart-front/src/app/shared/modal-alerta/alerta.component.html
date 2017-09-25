@@ -33,6 +33,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let packing of historic.data | paginate: {
+                                                        id: 'historic',
                                                         itemsPerPage: 10,
                                                         currentPage: historic.meta.page,
                                                         totalItems: historic.meta.total_docs}">
@@ -45,7 +46,7 @@
       </tbody>
     </table>
     <div class="has-text-centered">
-        <pagination-controls class="my-pagination"
+        <pagination-controls id='historic' class="my-pagination"
         (pageChange)="historic.meta.page = $event;getHistoric()"
         directionLinks="false"
         autoHide="true">
