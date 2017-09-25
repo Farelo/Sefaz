@@ -13,40 +13,42 @@ ngui-map{
 	margin-top: -40px;
 	width: 100vw;
 }
+.campo select{
+	position: absolute!important;
+	margin-top: 45px;
+	height: 30px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+	border-radius: 2px;
+border-color: transparent;
+}
 @media (max-width: 576px) {
-	ngui-map {
-		margin-left: -30px;
-	}
+		ngui-map {		margin-left: -30px;	}
+	.campo select  { margin-left: -178px	}
 }
 @media (min-width: 576px) and (max-width: 768px) {
-	ngui-map {
-		margin-left: -30px;
-	}
+	ngui-map {		margin-left: -30px;	}
+	.campo select  { margin-left: -178px	}
 }
 @media (min-width: 768px) and (max-width: 992px) {
-	ngui-map {
-		margin-left: -40px;
-	}
+	ngui-map{		margin-left: -40px;	}
+	.campo select  { margin-left: -178px	}
 }
 @media (min-width: 992px) and (max-width: 1200px) {
-	ngui-map {
-		margin-left: -70px;
-	}
-}@media (min-width: 1200px){
-	ngui-map {
-		margin-left: -130px;
-	}
+	ngui-map {	margin-left: -70px;	}
+	.campo select  { margin-left: -178px	}
+}
+@media (min-width: 1200px){
+	ngui-map{		margin-left: -130px;	}
+	.campo select  {		margin-left: -278px	}
 }
 @media (min-width: 1400px){
-	ngui-map {
-		margin-left: -2700px;
-	}
+	ngui-map { margin-left: -270px; }
+	.campo select  { margin-left: -278px	}
 }
 
 @media (min-width: 1700px){
-	ngui-map {
-		margin-left: -450px;
-	}
+	ngui-map{	margin-left: -450px;	}
+	.campo select  {		margin-left: -440px	}
 }
 
 

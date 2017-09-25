@@ -72,7 +72,7 @@
                  || (import.get('type').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
                </td>
                 <td nowrap>
-                  <button type="submit" class="editar" >
+                  <button type="submit" class="editar" onclick="editTable()">
                     <span class="glyphicon glyphicon-upload"></span> Upload
                   </button>
                   <button type="button" class="excluir" (click)="remove()">
