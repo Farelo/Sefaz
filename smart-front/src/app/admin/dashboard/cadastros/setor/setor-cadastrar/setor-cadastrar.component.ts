@@ -18,6 +18,7 @@ export class SetorCadastrarComponent implements OnInit {
   public address: any = {};
   public center: any;
   public pos: any;
+  public zoom = 14;
   public geocoder = new google.maps.Geocoder;
 
   constructor(
@@ -68,6 +69,7 @@ export class SetorCadastrarComponent implements OnInit {
     if(event){
       this.pos = new google.maps.LatLng(event.lat,event.lng);
       this.center = this.pos;
+      this.zoom = 18;
       this.department.controls.lat.setValue(event.lat);
       this.department.controls.lng.setValue(event.lng);
     }

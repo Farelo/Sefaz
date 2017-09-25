@@ -1,5 +1,13 @@
+<div class="campo" style="z-index: 1;position: relative">
+
+<select   [ngModel]="plantSearch" (ngModelChange)="onChange($event)">
+ <option value="">Escolha uma Planta </option>
+ <option *ngFor="let obj of plants" [ngValue]="obj">{{obj.plant_name}}</option>
+</select>
+</div>
 <div id="map">
-  <ngui-map zoom="13" [center]="center" [fullscreenControl]="true">
+
+  <ngui-map [zoom]="zoom" [center]="center" [fullscreenControl]="true">
     <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
 
     </marker>

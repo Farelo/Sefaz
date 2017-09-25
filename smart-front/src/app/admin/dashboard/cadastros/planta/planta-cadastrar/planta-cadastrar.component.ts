@@ -17,6 +17,7 @@ export class PlantaCadastrarComponent implements OnInit {
   public autocomplete: any;
   public address: any = {};
   public center: any;
+  public zoom = 14;
   public pos: any;
   public geocoder = new google.maps.Geocoder;
 
@@ -51,6 +52,7 @@ export class PlantaCadastrarComponent implements OnInit {
       let addressType = place.address_components[i].types[0];
       this.address[addressType] = place.address_components[i].long_name;
     }
+    this.zoom = 18;
     this.ref.detectChanges();
   }
 
@@ -68,8 +70,6 @@ export class PlantaCadastrarComponent implements OnInit {
 
     this.pos = event.latLng;
     this.geocodingService.geocode(event.latLng).subscribe(results => this.plant.controls.location.setValue(results[1].formatted_address));
-    // results[1].address_components.filter(o => o.types.indexOf("postal_code") == 0 ) eu vou usar
-
     this.plant.controls.lat.setValue(event.latLng.lat());
     this.plant.controls.lng.setValue(event.latLng.lng());
     event.target.panTo(event.latLng);

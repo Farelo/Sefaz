@@ -22,8 +22,10 @@ export class RastreamentoComponent implements OnInit {
   address: any = {};
   center: any;
   pos: any;
+  plantSearch = "";
   departments: Department[];
   options = [];
+  zoom = 12;
   marker = {
     display: true,
     lat: null,
@@ -54,6 +56,7 @@ export class RastreamentoComponent implements OnInit {
   loadDepartmentsByPlant() {
     this.plantsService.retrieveGeneral()
       .subscribe(result => {
+        this.plants = result.data;
         if(result.data.length > 0){
           for (let data of result.data) {
             if(data.supplier){
@@ -65,6 +68,11 @@ export class RastreamentoComponent implements OnInit {
           this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
         }
       }, err => { console.log(err) });
+  }
+
+  onChange(event){
+    this.center = { lat: event.lat, lng: event.lng };
+    this.zoom = 18;
   }
 
   clicked(_a, opt) {

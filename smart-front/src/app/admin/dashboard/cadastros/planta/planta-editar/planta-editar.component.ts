@@ -20,6 +20,8 @@ export class PlantaEditarComponent implements OnInit {
   public address: any = {};
   public center: any;
   public pos : any;
+  public zoom = 14;
+
   constructor(
     private PlantsService: PlantsService,
     private router: Router,
@@ -55,6 +57,7 @@ export class PlantaEditarComponent implements OnInit {
       let addressType = place.address_components[i].types[0];
       this.address[addressType] = place.address_components[i].long_name;
     }
+    this.zoom = 18;
     this.ref.detectChanges();
   }
 

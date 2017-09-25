@@ -9,7 +9,7 @@
           <h3>LOCAL</h3>
           <input places-auto-complete (place_changed)="placeChanged($event)" [types]="['geocode']" class="form-control" style="margin-bottom: 10px;" placeholder="Digite o local da planta" />
           <p>
-            <ngui-map [center]="center" (mapReady$)="onMapReady($event)" (click)="onClick($event)">
+            <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="onMapReady($event)" (click)="onClick($event)">
               <marker [position]="pos"></marker>
             </ngui-map>
           </p>

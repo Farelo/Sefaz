@@ -8,7 +8,7 @@
         <div class="campo">
           <h3>LOCAL</h3>
           <p>
-            <ngui-map [center]="center" (mapReady$)="onMapReady($event)" (click)="onClick($event)">
+            <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="onMapReady($event)" (click)="onClick($event)">
               <marker [position]="pos"></marker>
             </ngui-map>
           </p>
