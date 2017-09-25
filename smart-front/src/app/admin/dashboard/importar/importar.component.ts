@@ -11,6 +11,7 @@ import { PackingService } from '../../../servicos/packings.service';
 import { RoutesService } from '../../../servicos/routes.service';
 import { DepartmentService } from '../../../servicos/departments.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+declare var $:any;
 
 @Component({
   selector: 'app-importar',
@@ -52,6 +53,19 @@ export class ImportarComponent implements OnInit {
       type: ['', [Validators.required]],
     });
     this.import['controls'].type.setValue("");
+    this.editTable();
+  }
+  editTable(){
+    var iwa = $('.classeDoCacete');
+    var hottable = iwa.children(':nth-child(1)');
+    var hand = hottable.children(':nth-child(1)');
+    var htmaster = hand.children(':nth-child(1)');
+    var wtholder = htmaster.children(':nth-child(1)');
+    var wthilder = wtholder.children(':nth-child(1)');
+
+    var he = wthilder.height();
+    wtholder.css({'height':he});
+    hottable.css({'height':he});
   }
 
   remove(){
@@ -121,7 +135,6 @@ export class ImportarComponent implements OnInit {
     this.importService.sendDataToImportPlant(this.file).subscribe(res => {
       this.send = true;
       this.data = res.data;
-      console.log(res.data);
       this.colHeaders = ['Nome','Latitude','Longitude','Localidade'];
       this.columns = [
         {data: 'plant_name', type: 'text'},
