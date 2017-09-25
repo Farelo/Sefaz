@@ -10,6 +10,7 @@ const query                               = require('../helpers/queries/complex_
 const mongoose                            = require('mongoose');
 const alert                               = mongoose.model('Alerts');
 const _                                   = require("lodash");
+const ObjectId                            = require('mongoose').Types.ObjectId;
 mongoose.Promise                          = global.Promise;
 /**
  * Create a Alert
@@ -82,19 +83,12 @@ exports.alert_delete = function(req, res) { 
  * List of Alerts pagination by hashing
  */
 exports.alert_list_hashing = function(req, res) { 
-  alert.paginate({
-      "hashpacking": req.swagger.params.hashing.value,
-      "status": req.swagger.params.status.value
-    }, {
-      page: parseInt(req.swagger.params.page.value),
-      populate: ['packing','supplier','actual_plant.plant'],
-      sort: {
-        date: -1
-      },
-      limit: parseInt(req.swagger.params.limit.value)
-    })
-    .then(_.partial(successHandlerPagination, res))
-    .catch(_.partial(errorHandler, res, 'Error to list gc16 registers by pagination'));
+
+  let aggregate = alert.aggregate(query.queries.packing_list(req.swagger.params.code.value,new ObjectId(req.swagger.params.project.value),new ObjectId(req.swagger.params.supplier.value),parseInt(req.swagger.params.status.value)));
+
+  alert.aggregatePaginate(aggregate,
+    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
+    _.partial(successHandlerPaginationAggregate, res))
 };
 /**
  * List of Alerts pagination
@@ -105,7 +99,7 @@ exports.alert_list_pagination = function(req, res) { 
 
   alert.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
-    _.partial(successHandlerPaginationAggregate, res));
+    _.partial(successHandlerPaginationAggregate, res))
 
 
 };

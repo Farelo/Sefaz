@@ -47,8 +47,7 @@ const packingSchema = new mongoose.Schema({
   temperature: Number,
   serial: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   gc16: {
     type: mongoose.Schema.Types.ObjectId,
@@ -63,6 +62,10 @@ const packingSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Plant'
     }
+  },
+  last_department: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Department'
   },
   actual_plant: {
     plant: {
@@ -99,6 +102,8 @@ packingSchema.post('remove', function(next) {
           .then(() => evaluete(Promise.all([this.model('Packing').find({gc16: packing.gc16}), packing.model('Packing').find({routes: {$in: packing.routes}})]), next,packing));
 
 });
+
+
 packingSchema.plugin(mongooseAggregatePaginate);
 packingSchema.plugin(mongoosePaginate);
 

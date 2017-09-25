@@ -11,6 +11,7 @@ import { Select2Module } from 'ng2-select2';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule} from '@angular/forms';
 import {RotasCadastrarComponent} from './rotas-cadastrar/rotas-cadastrar.component';
+import {RotasEditarComponent} from './rotas-editar/rotas-editar.component';
 import {RotasComponent} from './rotas.component';
 import {RotasRoutingModule} from './rotas.routing.module';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
@@ -37,6 +38,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
   ],
   declarations: [
     RotasCadastrarComponent,
+    RotasEditarComponent,
     RotasComponent
   ],
   providers: [

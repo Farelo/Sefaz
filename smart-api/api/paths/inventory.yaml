@@ -93,7 +93,7 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
-  /inventory/packing/historic/{limit}/{page}/{serial}:
+  /inventory/packing/historic/{limit}/{page}/{serial}/{code}:
       x-swagger-router-controller: packing_controller
       get:
         tags:
@@ -114,7 +114,12 @@ paths:
           type: string
         - in: "path"
           name: "serial"
-          description: "The especific page that returns packings related a this code"
+          description: "The especific page that returns packings related a this serial"
+          required: true
+          type: string
+        - in: "path"
+          name: "code"
+          description: "The especific code that returns packings related a this code"
           required: true
           type: string
         responses:
@@ -225,7 +230,7 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
-  /inventory/plant/{limit}/{page}/{code}/{supplier}:
+  /inventory/plant/{limit}/{page}/{code}/{supplier}/{project}:
       x-swagger-router-controller: packing_controller
       get:
         tags:
@@ -246,12 +251,17 @@ paths:
           type: string
         - in: "path"
           name: "code"
-          description: "The especific page that returns packings related a this code"
+          description: "The especific code that returns packings related a this code"
           required: true
           type: string
         - in: "path"
           name: "supplier"
-          description: "The especific page that returns packings related a this supplier"
+          description: "The especific supplier that returns packings related a this supplier"
+          required: true
+          type: string
+        - in: "path"
+          name: "project"
+          description: "The especific project that returns packings related a this project"
           required: true
           type: string
         responses:

@@ -23,6 +23,29 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
+  /plant/retrieve/name/{plant_name}:
+      x-swagger-router-controller: plant_controller
+      get:
+        tags:
+          - "Plant"
+        summary: "Get a plant on the system by plant name"
+        description: ""
+        operationId: plant_read_by_name
+        parameters:
+        - in: "path"
+          name: "plant_name"
+          description: "The plant_name that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
   /plant/list/pagination/{limit}/{page}:
     x-swagger-router-controller: plant_controller
     get:
@@ -56,7 +79,7 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /plant/list/nobinded/{code}/{supplier}:
+  /plant/list/nobinded/{code}/{supplier}/{project}:
     x-swagger-router-controller: plant_controller
     get:
       tags:
@@ -73,6 +96,11 @@ paths:
       - in: "path"
         name: "supplier"
         description: "The especific page that returns plants related a this page"
+        required: true
+        type: string
+      - in: "path"
+        name: "project"
+        description: "The especific project that returns plants related a this page"
         required: true
         type: string
       responses:

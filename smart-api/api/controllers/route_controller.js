@@ -16,7 +16,7 @@ mongoose.Promise                = global.Promise;
  */
 exports.route_create = function(req, res) {
   route.create(req.body)
-    .then(result => packing.update({code: result.packing_code, supplier: new ObjectId(result.supplier)},{$push: { "routes": result._id }},{multi: true}))
+    .then(result => packing.update({code: result.packing_code, supplier: new ObjectId(result.supplier), project: new ObjectId(result.project)},{$push: { "routes": result._id }},{multi: true}))
     .catch(_.partial(errorHandler, res, 'Error to create route'))
     .then(_.partial(successHandler, res));
 };
@@ -39,6 +39,7 @@ exports.route_read = function(req, res) {
     .populate('plant_factory')
     .populate('plant_supplier')
     .populate('supplier')
+    .populate('project')
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read route'));
 };
@@ -48,9 +49,7 @@ exports.route_read = function(req, res) {
 exports.route_update = function(req, res) {  
   route.update( {
       _id: req.swagger.params.route_id.value
-    },  req.body,   {
-      upsert: true
-    })
+    },  req.body)
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to update route'));
 };
@@ -80,7 +79,7 @@ exports.route_list_all = function(req, res) { 
 exports.route_list_pagination = function(req, res) { 
   route.paginate(req.swagger.params.attr.value ?  {"packing_code": req.swagger.params.attr.value} :  {}, {
       page: parseInt(req.swagger.params.page.value),
-      populate: ['plant_factory', 'plant_supplier', 'supplier'],
+      populate: ['plant_factory', 'plant_supplier', 'supplier', 'project'],
       sort: {
         _id: 1
       },

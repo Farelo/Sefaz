@@ -18,6 +18,7 @@ module.exports = function(p) {
             "department": p.department,
             "packing": p._id,
             "supplier": p.supplier,
+            "project": p.project,
             "status": alerts_type.BATTERY,
             "hashpacking": p.hashPacking,
             "serial": p.serial,
@@ -32,6 +33,7 @@ module.exports = function(p) {
             "department": p.department,
             "actual_plant": p.actual_plant,
             "supplier": p.supplier,
+            "project": p.project,
             "hashpacking": p.hashPacking,
             "serial": p.serial
           }).then(() => resolve(p));

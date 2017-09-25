@@ -42,6 +42,7 @@ module.exports = {
           "status": alerts_type.TRAVELING,
           "hashpacking": p.hashPacking,
           "serial": p.serial,
+          "project": p.project,
           "date": new Date().getTime()
         }).then(() => resolve(p));
       } else {
@@ -75,6 +76,7 @@ module.exports = {
             "routes": p.routes,
             "supplier": p.supplier,
             "hashpacking": p.hashPacking,
+            "project": p.project,
             "serial": p.serial
           }).then(() => resolve(p));
         } else {

@@ -35,7 +35,7 @@ li a {outline: none; 	  text-decoration: none;
 	color: #6382c9!important;
 }
 
-/*Aqui estão os novos, acho*/
+
 
 .usuario {
 	width: 34px;
@@ -226,7 +226,6 @@ li:hover > a { color: #6382c9; }
 	text-align: center;
 }
 .menuApp {
-	/*margin-top: -15px;*/
 	margin: -15px 0px 20px 0px;
 }
 .middle {

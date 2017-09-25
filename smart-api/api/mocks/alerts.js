@@ -14,6 +14,10 @@ const alertsSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Route'
     }],
+    project: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project'
+    },
     department: {
         type:mongoose.Schema.Types.ObjectId,
         ref:'Department'

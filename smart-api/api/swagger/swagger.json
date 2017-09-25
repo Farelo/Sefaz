@@ -572,7 +572,7 @@
         }
       }
     },
-    "/alert/list/all/hashing/{limit}/{page}/{hashing}/{status}": {
+    "/alert/list/all/packing/{limit}/{page}/{code}/{project}/{supplier}/{status}": {
       "x-swagger-router-controller": "alert_controller",
       "get": {
         "tags": [
@@ -598,7 +598,7 @@
           },
           {
             "in": "path",
-            "name": "hashing",
+            "name": "code",
             "description": "The especific page that returns alerts related a this page",
             "required": true,
             "type": "string"
@@ -606,6 +606,20 @@
           {
             "in": "path",
             "name": "status",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "supplier",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
             "description": "The especific page that returns alerts related a this page",
             "required": true,
             "type": "string"
@@ -2136,7 +2150,7 @@
         }
       }
     },
-    "/inventory/packing/historic/{limit}/{page}/{serial}": {
+    "/inventory/packing/historic/{limit}/{page}/{serial}/{code}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
         "tags": [
@@ -2163,7 +2177,14 @@
           {
             "in": "path",
             "name": "serial",
-            "description": "The especific page that returns packings related a this code",
+            "description": "The especific page that returns packings related a this serial",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "description": "The especific code that returns packings related a this code",
             "required": true,
             "type": "string"
           }
@@ -2328,7 +2349,7 @@
         }
       }
     },
-    "/inventory/plant/{limit}/{page}/{code}/{supplier}": {
+    "/inventory/plant/{limit}/{page}/{code}/{supplier}/{project}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
         "tags": [
@@ -2355,14 +2376,21 @@
           {
             "in": "path",
             "name": "code",
-            "description": "The especific page that returns packings related a this code",
+            "description": "The especific code that returns packings related a this code",
             "required": true,
             "type": "string"
           },
           {
             "in": "path",
             "name": "supplier",
-            "description": "The especific page that returns packings related a this supplier",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "The especific project that returns packings related a this project",
             "required": true,
             "type": "string"
           }
@@ -2639,20 +2667,68 @@
         }
       }
     },
-    "/packing/retrieve/code/{code}/supplier/{supplier}": {
+    "/packing/retrieve/code/{code}/supplier/{supplier}/project/{project}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
         "tags": [
           "Packing"
         ],
-        "summary": "Get a packing on the system by supplier and code",
+        "summary": "Get a packing on the system by supplier, code and Project",
         "description": "",
-        "operationId": "packing_read_by_supplierAndcode",
+        "operationId": "packing_read_by_supplierAndcodeAndProject",
         "parameters": [
           {
             "in": "path",
             "name": "supplier",
             "description": "The supplier that needs to be fetched",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "The project that needs to be fetched",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/packing/retrieve/code/{code}/serial/{serial}": {
+      "x-swagger-router-controller": "packing_controller",
+      "get": {
+        "tags": [
+          "Packing"
+        ],
+        "summary": "Get a packing on the system by serial and code",
+        "description": "",
+        "operationId": "packing_read_by_codeAndSerial",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serial",
+            "description": "The serial that needs to be fetched",
             "required": true,
             "type": "string"
           },
@@ -3081,20 +3157,34 @@
         }
       }
     },
-    "/packing/update/code/{packing_code}": {
+    "/packing/update/gc16/{code}/{supplier}/{project}": {
       "x-swagger-router-controller": "packing_controller",
       "put": {
         "tags": [
           "Packing"
         ],
-        "summary": "Update a packing on the system using code",
+        "summary": "Update a packing on the system using gc16",
         "description": "",
         "operationId": "packing_update_by_code",
         "parameters": [
           {
             "in": "path",
-            "name": "packing_code",
+            "name": "code",
             "description": "The code that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "The project that needs to be fetchede",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "supplier",
+            "description": "The supplier that needs to be fetchede",
             "required": true,
             "type": "string"
           },
@@ -3242,6 +3332,40 @@
         }
       }
     },
+    "/plant/retrieve/name/{plant_name}": {
+      "x-swagger-router-controller": "plant_controller",
+      "get": {
+        "tags": [
+          "Plant"
+        ],
+        "summary": "Get a plant on the system by plant name",
+        "description": "",
+        "operationId": "plant_read_by_name",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "plant_name",
+            "description": "The plant_name that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/plant/list/pagination/{limit}/{page}": {
       "x-swagger-router-controller": "plant_controller",
       "get": {
@@ -3290,7 +3414,7 @@
         }
       }
     },
-    "/plant/list/nobinded/{code}/{supplier}": {
+    "/plant/list/nobinded/{code}/{supplier}/{project}": {
       "x-swagger-router-controller": "plant_controller",
       "get": {
         "tags": [
@@ -3311,6 +3435,13 @@
             "in": "path",
             "name": "supplier",
             "description": "The especific page that returns plants related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "The especific project that returns plants related a this page",
             "required": true,
             "type": "string"
           }
@@ -3544,6 +3675,40 @@
             "in": "path",
             "name": "profile_id",
             "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/profile/retrieve/email/{email}": {
+      "x-swagger-router-controller": "profile_controller",
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Get a profile on the system by email",
+        "description": "",
+        "operationId": "profile_read_by_email",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "description": "The email that needs to be fetched",
             "required": true,
             "type": "string"
           }
@@ -4690,6 +4855,47 @@
         }
       }
     },
+    "/supplier/retrieve/duns/{duns}/name/{name}": {
+      "x-swagger-router-controller": "supplier_controller",
+      "get": {
+        "tags": [
+          "Supplier"
+        ],
+        "summary": "Get a supplier on the system by name and duns",
+        "description": "",
+        "operationId": "supplier_read_by_dunsAndSupplier",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "description": "The name that needs to be fetched",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "duns",
+            "description": "The duns that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/supplier/list/pagination/{limit}/{page}": {
       "x-swagger-router-controller": "supplier_controller",
       "get": {
@@ -5315,24 +5521,23 @@
           "type": "string"
         },
         "weigth": {
-          "type": "integer",
-          "format": "int64"
+          "type": "number",
+          "format": "double"
         },
         "width": {
-          "type": "integer",
-          "format": "int64"
+          "type": "number",
+          "format": "double"
         },
         "heigth": {
-          "type": "integer",
-          "format": "int64"
+          "type": "number",
+          "format": "double"
         },
         "length": {
-          "type": "integer",
-          "format": "int64"
+          "type": "number",
+          "format": "double"
         },
         "capacity": {
-          "type": "integer",
-          "format": "int64"
+          "type": "integer"
         },
         "tag": {
           "$ref": "#/definitions/Tag"

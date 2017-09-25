@@ -58,12 +58,6 @@ input {
 }
 input:focus {
   outline: none !important;
-  /*border-style: solid;
-  border-bottom-width: 1.5px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  box-shadow: none;*/
 }
 .senhaIncorreta {
   outline: none !important;
@@ -79,17 +73,14 @@ input:focus {
 .senhaFraca {
   font-size: 13px;
   color: #D24444;
-  /*display: none;*/
 }
 .senhaModerada {
   font-size: 13px;
   color: #C6AE22;
-  /*display: none;*/
 }
 .senhaForte {
   font-size: 13px;
   color: #3Ad83E;
-  /*display: none;*/
 }
 p {
   color: white;
@@ -121,9 +112,7 @@ button:hover {
   -webkit-transition: color 0.5s;
   transition: color 0.5s;
 }
-/*.ng-invalid.ng-touched:not(form) {
-  border: 1px solid red;
-}*/
+
 .emailNaoCadastrado {
   color: #d24444;
   font-size: 13px;
@@ -136,7 +125,7 @@ button:hover {
 ::-moz-placeholder {  color: #FAFAFB;opacity: 0.8}
 :-ms-input-placeholder {  color: #FAFAFB;opacity: 0.8}
 :-moz-placeholder {  color: #FAFAFB;opacity: 0.8}
-/**************fffffffffffffffffff***********/
+
 
 .weak, .medium, .strong {
   outline: none !important;

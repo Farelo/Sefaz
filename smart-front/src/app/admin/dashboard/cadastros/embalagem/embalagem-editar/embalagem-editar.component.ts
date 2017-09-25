@@ -35,32 +35,48 @@ export class EmbalagemEditarComponent implements OnInit {
 
   ) { }
 
-  registerPacking():void {
-    // this.packing.hashPacking = this.packing.supplier + this.packing.code;
-    // this.PackingService.updatePacking(this.packing._id,this.packing).subscribe( result => this.toastService.edit('/rc/cadastros/embalagem', "Embalagem"), err =>  this.toastService.error(err) );
+  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+
+
+    value.hashPacking = this.packing.controls.supplier.value._id + this.packing.controls.code.value;
+    value.code_tag = this.packing.controls.tag.value.code;
+
+    if(this.packing.valid){
+      this.PackingService.updatePacking(value._id,value).subscribe( result => this.toastService.edit('/rc/cadastros/embalagem', 'Embalagem'), err => this.toastService.error(err) );
+    }
+
   }
 
   loadTags():void {
-    this.TagsService.retrieveAllNoBinded().subscribe( result => this.tags = result.data, err => {console.log(err)});
+    this.TagsService.retrieveAllNoBinded().subscribe( result => {
+      this.tags = result.data;
+      this.tags.push(this.packing.controls.tag.value)
+    }, err => {console.log(err)});
   }
 
+
+
+
   loadSuppliers():void{
-    this.SuppliersService.retrieveAll().subscribe(result => this.suppliers = result, err => {console.log(err)});
+    this.SuppliersService.retrieveAll().subscribe(result => {
+      let supplier = result.data.filter( o => String(this.packing.controls.supplier.value._id) === String(o._id))[0];
+      this.packing.controls.supplier.setValue(supplier);
+      this.suppliers = result.data;
+    }, err => {console.log(err)});
   }
 
   loadProject():void{
-    this.ProjectService.retrieveAll().subscribe(result => this.projects = result.data, err => {console.log(err)});
+    this.ProjectService.retrieveAll().subscribe(result =>{
+      let project = result.data.filter( o => String(this.packing.controls.project.value._id) === String(o._id))[0];
+      this.packing.controls.project.setValue(project);
+      this.projects = result.data;
+      }, err => {console.log(err)});
   }
 
-  changed(e: any): void {
-  //  this.packing.supplier= e.value;
- }
 
 
   ngOnInit() {
-    this.loadTags();
-    this.loadSuppliers();
-    this.loadProject();
+
 
     this.packing = this.fb.group({
       code: ['', [Validators.required]],
@@ -73,6 +89,7 @@ export class EmbalagemEditarComponent implements OnInit {
       battery: [Number],
       problem: [false, [Validators.required]],
       missing: [false, [Validators.required]],
+      traveling: [false, [Validators.required]],
       lastCommunication: [Number],
       permanence: this.fb.group({
         time_exceeded: [Boolean],
@@ -85,7 +102,7 @@ export class EmbalagemEditarComponent implements OnInit {
         time_countdown: [Number],
       }),
       packing_missing: this.fb.group({
-        last_time: [Number],
+        date: [Number],
         time_countdown: [Number]
       }),
       position: this.fb.group({
@@ -96,25 +113,31 @@ export class EmbalagemEditarComponent implements OnInit {
       }),
       temperature: [Number],
       serial: ['', [Validators.required]],
-      correct_plant_factory: [String],
       gc16: [String],
-      route: [String],
-      correct_plant_supplier:[String],
-      actual_plant: [String],
+      routes: [String],
+      actual_gc16: [String],
+      last_plant:[String],
+      actual_plant:[String],
       tag: ['', [Validators.required]],
       code_tag: [String, [Validators.required]],
       department: [String],
-      supplier: ["", [Validators.required]],
-      project: ["", [Validators.required]],
-      hashPacking: [String, [Validators.required]]
+      supplier: ['', [Validators.required]],
+      project: ['', [Validators.required]],
+      hashPacking: [String, [Validators.required]],
+      _id:['', [Validators.required]],
+      __v:['']
     });
 
     this.inscricao = this.route.params.subscribe(
       (params: any)=>{
         let id = params['id'];
         this.PackingService.retrievePacking(id).subscribe(result => {
-          (<FormGroup>this.packing)
-                  .setValue(result.data, { onlySelf: true });
+          console.log(result);
+          (this.packing)
+                  .patchValue(result.data);
+          this.loadTags();
+          this.loadSuppliers();
+          this.loadProject();
         });
       }
     )

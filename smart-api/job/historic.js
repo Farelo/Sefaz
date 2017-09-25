@@ -14,7 +14,8 @@ module.exports = {
       "permanence_time": p.permanence.amount_days,
       "serial": p.serial,
       "supplier": p.supplier,
-      "packing": p._id
+      "packing": p._id,
+      "packing_code": p.code
     });
   },
   update: function(p) {
@@ -33,7 +34,8 @@ module.exports = {
             "permanence_time": p.permanence.amount_days,
             "serial": p.serial,
             "supplier": p.supplier,
-            "packing": p._id
+            "packing": p._id,
+            "packing_code": p.code
           }).then(() => resolve("OK"));
 
       } else {

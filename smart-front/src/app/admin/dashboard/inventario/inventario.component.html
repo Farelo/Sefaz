@@ -33,7 +33,12 @@
     <div *ngIf="(escolhaGeral == 'FORNECEDOR')" class="row escolhaFornecedor">
       <div class="col-sm-4">
         <p>DUNS</p>
-        <select2  [data]="suppliers?.data" (valueChanged)="supplierInventory($event)" [options]="{ placeholder: 'Search ..'}"></select2>
+
+        <select   [ngModel]="supplierSearch" (ngModelChange)="supplierInventory($event)" >
+         <option value="">Selecione um Fornecedor </option>
+         <option *ngFor="let obj of suppliers" [ngValue]="obj">DUNS: {{obj.duns}} - Nome: {{obj.name}}</option>
+        </select>
+
       </div>
       <div class="col-sm-4" *ngIf="this.name_supplier">
         <p>FORNECEDOR:</p>
@@ -102,6 +107,7 @@
       <thead>
         <tr class="cabecalho">
           <th>Equipamento</th>
+          <th>Projeto</th>
           <th>Descrição</th>
           <th>Fornecedor</th>
           <th>Quantidade</th>
@@ -115,6 +121,7 @@
                                                         currentPage: general.meta.page,
                                                         totalItems: general.meta.total_docs}">
           <td>{{packing.code || '-'}}</td>
+          <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.description || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
           <td>{{packing.quantity || '-'}}</td>
@@ -128,16 +135,17 @@
         </tr>
       </tbody>
     </table>
-    <!-- <div class="has-text-centered">
-        <pagination-controls class="my-pagination"
-        (pageChange)="general.meta.page = $event;generalInventory()"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
-    </div> -->
+
     <div class="classVazio" *ngIf="general.data?.length < 1">
       Ainda não existem embalagens cadastradas no sistema.
     </div>
+  </div>
+  <div class="has-text-centered">
+      <pagination-controls class="my-pagination"
+      (pageChange)="general.meta.page = $event;generalInventory()"
+      directionLinks="false"
+      autoHide="true">
+      </pagination-controls>
   </div>
 </div>
 <div *ngIf="(escolhaGeral == 'FORNECEDOR')">
@@ -150,6 +158,7 @@
         <tr class="cabecalho">
           <th>Equipamento</th>
           <th>Descrição</th>
+          <th>Projeto</th>
           <th>Quantidade Encontrada</th>
           <th>Planta</th>
         </tr>
@@ -161,22 +170,24 @@
                                                         totalItems: supplier.meta.total_docs}">
           <td>{{packing.code || '-'}}</td>
           <td>{{packing.description || '-'}}</td>
+          <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.quantity || '-'}}</td>
           <td>{{packing.actual_plant?.plant?.plant_name || 'Nenhuma Informação'}}</td>
 
         </tr>
       </tbody>
     </table>
-    <div class="has-text-centered">
-        <pagination-controls class="my-pagination"
-        (pageChange)="supplier.meta.page = $event;supplierInventory()"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
-    </div>
+
     <div class="classVazio" *ngIf="supplier.data?.length < 1">
       Ainda não existem embalagens associadas a esse fornecedor.
     </div>
+  </div>
+  <div class="has-text-centered">
+      <pagination-controls class="my-pagination"
+      (pageChange)="supplier.meta.page = $event;supplierInventory()"
+      directionLinks="false"
+      autoHide="true">
+      </pagination-controls>
   </div>
 </div>
 
@@ -190,6 +201,7 @@
         <tr class="cabecalho">
           <th>Equipamento</th>
           <th>Serial</th>
+          <th>Projeto</th>
           <th>Planta</th>
           <th>Tempo na Planta</th>
           <th>DUNS</th>
@@ -204,6 +216,7 @@
                                                         totalItems: permanence.meta.total_docs}">
           <td>{{packing.code || '-'}}</td>
           <td>{{packing.serial || '-'}}</td>
+          <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.actual_plant?.plant.plant_name || '-'}}</td>
           <td>{{packing.permanence?.amount_days ? (packing.permanence?.amount_days | time) : 'I.I.'}}</td>
           <td>{{packing.supplier?.duns || '-'}}</td>
@@ -212,16 +225,17 @@
         </tr>
       </tbody>
     </table>
-    <div class="has-text-centered">
-        <pagination-controls class="my-pagination"
-        (pageChange)="permanence.meta.page = $event;permanenceInventory()"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
-    </div>
+
     <div class="classVazio" *ngIf="permanence.data?.length < 1">
       Realize uma pesquisa valida.
     </div>
+  </div>
+  <div class="has-text-centered">
+      <pagination-controls class="my-pagination"
+      (pageChange)="permanence.meta.page = $event;permanenceInventory()"
+      directionLinks="false"
+      autoHide="true">
+      </pagination-controls>
   </div>
 </div>
 
@@ -259,10 +273,11 @@
 
       </tbody>
 
-      <div class="classVazio" *ngIf="permanence.data?.length < 1">
-        Não existem embalagens cadastradas com essas credências.
-      </div>
+
     </table>
+    <div class="classVazio" *ngIf="permanence.data?.length < 1">
+      Não existem embalagens cadastradas com essas credências.
+    </div>
   </div>
   <div class="has-text-centered">
       <pagination-controls class="my-pagination"
@@ -283,6 +298,7 @@
         <tr class="cabecalho">
           <th>Equipamento</th>
           <th>Serial</th>
+          <th>Projeto</th>
           <th>Planta Atual</th>
           <th>Bateria</th>
           <th>Nível</th>
@@ -295,6 +311,7 @@
                                                         totalItems: battery.meta.total_docs}">
           <td>{{packing.code || '-'}}</td>
           <td>{{packing.serial || '-'}}</td>
+          <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.actual_plant?.plant.plant_name || '-'}}</td>
           <td>{{packing.battery || '-' | round}} %</td>
           <td>{{packing?.battery > 80 ? 'Alta' : (packing?.battery > 40 ? 'Medio' : 'Baixa') }}</td>
@@ -302,16 +319,17 @@
         </tr>
       </tbody>
     </table>
-    <div class="has-text-centered">
-        <pagination-controls class="my-pagination"
-        (pageChange)="battery.meta.page = $event;batteryInventory()"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
-    </div>
+
     <div class="classVazio" *ngIf="battery.data?.length < 1">
       Ainda não foram cadastradas embalagens no sistema.
     </div>
+  </div>
+  <div class="has-text-centered">
+      <pagination-controls class="my-pagination"
+      (pageChange)="battery.meta.page = $event;batteryInventory()"
+      directionLinks="false"
+      autoHide="true">
+      </pagination-controls>
   </div>
 </div>
 <div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Geral'))">
@@ -324,6 +342,7 @@
         <tr class="cabecalho">
           <th>Equipamento</th>
           <th>Serial</th>
+          <th>Projeto</th>
           <th>Fornecedor</th>
           <th>Planta Atual</th>
           <th>Tag</th>
@@ -341,6 +360,7 @@
 
             <td>{{packing.code || '-'}}</td>
             <td>{{packing.serial || '-'}}</td>
+            <td>{{packing.project?.name || '-'}}</td>
             <td>{{packing.supplier?.name || '-'}}</td>
             <td>{{packing.actual_plant?.plant.plant_name || '-'}}</td>
             <td>{{packing.tag.code || '-'}}</td>
@@ -356,16 +376,16 @@
         </tr>
       </tbody>
     </table>
-    <div class="has-text-centered">
-        <pagination-controls class="my-pagination"
-        (pageChange)="general_equipament.meta.page = $event;generalInventoryEquipament()"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
-    </div>
     <div class="classVazio" *ngIf="general_equipament.data?.length < 1">
       Ainda não foram cadastradas embalagens no sistema.
     </div>
+  </div>
+  <div class="has-text-centered">
+      <pagination-controls class="my-pagination"
+      (pageChange)="general_equipament.meta.page = $event;generalInventoryEquipament()"
+      directionLinks="false"
+      autoHide="true">
+      </pagination-controls>
   </div>
 </div>
 
@@ -379,6 +399,7 @@
         <tr class="cabecalho">
           <th>Serial</th>
           <th>DUNS</th>
+          <th>Projeto</th>
           <th>Fornecedor</th>
           <th>Planta</th>
           <th>Quantidade</th>
@@ -395,27 +416,24 @@
                                                         totalItems: quantity.meta.total_docs}">
           <td>{{packing.serial || '-' }}</td>
           <td>{{packing.supplier?.duns || '-'}}</td>
+          <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
           <td>{{packing.actual_plant?.plant?.plant_name || 'Não Registrado'}}</td>
           <td>{{packing.quantity || '-'}}</td>
-          <td>{{packing.actual_gc16?.min || '-'}}</td>
-          <td>{{packing.actual_gc16?.max || '-'}}</td>
-          <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min) : (packing.actual_gc16?.max < packing.quantity ? packing.quantity-packing.actual_gc16?.max  :  'NI')) : 0  }}</td>
-          <td>{{packing.missing ? 'Perdida': (packing.problem ? 'Local Errado' : 'OK') }}</td>
+          <td>{{ (packing.problem || packing.traveling) ? '-' : (packing.actual_gc16?.min || '-')}}</td>
+          <td>{{(packing.problem || packing.traveling) ? '-' : (packing.actual_gc16?.max || '-')}}</td>
+          <td>{{(packing.problem || packing.traveling) ? '-' : (packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min) : (packing.actual_gc16?.max < packing.quantity ? packing.quantity-packing.actual_gc16?.max  :  'NI')) : '-'  )}}</td>
+          <td>{{packing.missing ? 'Perdida':
+            (packing.problem ? 'Local Errado' :
+            (packing.traveling ? 'Viajando' : 'Sem Anormalidade')) }}</td>
 
         </tr>
       </tbody>
     </table>
-    <div class="has-text-centered">
-        <pagination-controls class="my-pagination"
-        (pageChange)="quantity.meta.page = $event;quantityInventory()"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
-    </div>
     <div class="classVazio" *ngIf="quantity.data?.length < 1">
       Realize uma pesquisa valida.
     </div>
+
   </div>
   <div class="resumo">
     <h3 class="definicao">TOTAL: </h3><h3 class="numero">{{quantity.meta?.total_packings || 0}}</h3>
@@ -423,6 +441,14 @@
   <div class="resumo">
     <h3 class="definicao">DIFERENÇA: </h3><h3 class="numero">{{quantity.meta?.missing || 0}}</h3>
   </div>
+  <div class="has-text-centered">
+      <pagination-controls class="my-pagination"
+      (pageChange)="quantity.meta.page = $event;quantityInventory()"
+      directionLinks="false"
+      autoHide="true">
+      </pagination-controls>
+  </div>
+
 </div>
 
 </div>

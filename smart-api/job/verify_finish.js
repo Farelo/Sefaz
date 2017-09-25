@@ -27,7 +27,7 @@ module.exports = function (result, total, count) {
           packings.forEach(p => {
 
             if(p.routes.length != 0){
-              let evaluate = packings.filter( o =>  o.code === p.code && o.missing === true);
+              let evaluate = packings.filter( o =>  o.code === p.code && o.missing === true && o.project._id.equals(p.project._id) && o.supplier._id.equals(p.supplier._id));
 
               if(evaluate.length === 1 ){
                 console.log("PACKING",p._id,"IS REALY LOST");

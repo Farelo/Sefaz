@@ -46,6 +46,7 @@ module.exports = {
                 "actual_plant": p.actual_plant,
                 "department": p.department,
                 "packing": p._id,
+                "project": p.project,
                 "supplier": p.supplier,
                 "status": alerts_type.PERMANENCE,
                 "hashpacking": p.hashPacking,
@@ -61,6 +62,7 @@ module.exports = {
                 "department": p.department,
                 "actual_plant": p.actual_plant,
                 "supplier": p.supplier,
+                "project": p.project,
                 "hashpacking": p.hashPacking,
                 "serial": p.serial
               }).then(() => resolve(p));

@@ -44,6 +44,19 @@ exports.supplier_read_by_duns = function(req, res) {
     .catch(_.partial(errorHandler, res, 'Error to read supplier by duns'));
 };
 /**
+ * Show the current Supplier by DUNS and supplier
+ */
+exports.supplier_read_by_dunsAndSupplier = function(req, res) {
+  supplier.find({
+      "duns": req.swagger.params.duns.value,
+      "name": req.swagger.params.name.value,
+    })
+    .populate('profile')
+    .populate('plant')
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read supplier by duns and supplier'));
+};
+/**
  * Update a Supplier
  */
 exports.supplier_update = function(req, res) {  
@@ -89,7 +102,7 @@ exports.supplier_list_pagination = function(req, res) { 
  */
 exports.supplier_list_all = function(req, res) {
   // supplier.find({})
-  supplier.aggregate(query.queries.group)
+  supplier.find({})
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to list all suppliers'));
 };

@@ -16,6 +16,7 @@
         <th>Código</th>
         <th>Serial</th>
         <th>Fornecedor</th>
+        <th>Projeto</th>
         <th>Tag</th>
         <th class="opcoes">Opções</th>
       </tr>
@@ -27,7 +28,8 @@
                                                       totalItems: data.meta.total_docs}">
         <td>{{packing.code}}</td>
         <td>{{packing.serial}}</td>
-        <td>{{packing.supplier.name}}</td>
+        <td>{{packing.supplier?.name}}</td>
+        <td>{{packing.project?.name}}</td>
         <td>{{packing.code_tag}}</td>
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', packing._id]">Editar</button>

@@ -47,7 +47,7 @@ export class Gc16AdicionarComponent implements OnInit {
       value.project = this.gc16['controls'].project.value._id;
 
       this.GC16Service.createGC16(value)
-                      .subscribe(result => this.packingService.updatePackingByCode(this.gc16.value.packing,{gc16: result.data._id})
+                      .subscribe(result => this.packingService.updatePackingByGC16(value.packing,value.supplier._id,value.project,{gc16: result.data._id})
                       .subscribe(result => this.toastService.success('/rc/gc16', 'GC16'), err => this.toastService.error(err)));
     }
 
@@ -96,21 +96,20 @@ export class Gc16AdicionarComponent implements OnInit {
     this.gc16['controls'].packing.setValue('');
     this.gc16['controls'].project.setValue('');
     if(event){
-      this.gc16.controls.supplier.setValue(event.value);
-      this.packingService.getBySupplier(event.value).subscribe(result => this.packings = result.data, err => {console.log(err)});
+      this.packingService.getBySupplier(event._id).subscribe(result => this.packings = result.data, err => {console.log(err)});
     }
   }
 
   loadProject(event: any):void{
     if(typeof event != 'string'){
-      this.projectService.retrieveProject(event.project).subscribe(result => this.gc16['controls'].project.setValue(result.data), err => {console.log(err)});
+      this.gc16['controls'].project.setValue(event.project)
     }else{
       this.gc16['controls'].project.setValue('');
     }
   }
 
   loadSuppliers():void{
-    this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result}, err => {console.log(err)});
+    this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result.data}, err => {console.log(err)});
   }
 
 

@@ -255,7 +255,7 @@ exports.uploadRoute = function(req, res) {
       }
       //colocar as inferências em relação ao arquivo
       let count = 0;
-      let supplier_data, factory_data = {};
+      let supplier_data, factory_data, project_data = [];
 
       Promise.all(result.map(o => supplier.findOne({"name": o.supplier, 'duns': o.duns}).populate('plant')))
             .then(data => {
@@ -264,8 +264,13 @@ exports.uploadRoute = function(req, res) {
             })
             .then(data => {
               factory_data = data;
-              Promise.all(result.map((o,index) => maps.directions(supplier_data[index].plant.location, factory_data[index].location)))
-              .then(data => {
+              return Promise.all(result.map(o => project.findOne({"name": o.project})));
+            })
+            .then(data => {
+              project_data = data;
+              return Promise.all(result.map((o,index) => maps.directions(supplier_data[index].plant.location, factory_data[index].location)));
+            })
+            .then(data => {
 
                 result.forEach((o,index) => {
 
@@ -299,7 +304,5 @@ exports.uploadRoute = function(req, res) {
                 successHandler(res, result);
               }).catch(err =>  errorHandler(res, 'Error to generate excel', err))
       }).catch(err =>  errorHandler(res, 'Error to generate excel', err))
-
-    });
   });
 };

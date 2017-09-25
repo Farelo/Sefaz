@@ -7,7 +7,14 @@ module.exports = {
       local: plant.supplier ? 'Supplier' : 'Factory'
     };
 
-    if(department.name)p.department = department._id;
+    if(department.name){
+      p.department = department._id;
+    }else if(p.actual_plant && p.department){
+
+      if(!p.actual_plant.plant.equals(p.department.plant)) p.department = null;
+    }else{
+      p.department = null;
+    };
 
     if(plant.supplier){
       if(plant.supplier.equals(p.supplier._id)){
@@ -41,7 +48,13 @@ module.exports = {
   },
   fixed: function (p , plant ,department) {
 
-    if(department.name)p.department = department._id;
+    if(department.name){
+      p.department = department._id;
+    }else if(p.actual_plant && p.department){
+      if(!p.actual_plant.plant._id.equals(p.department.plant)) p.department = null;
+    }else{
+      p.department = null;
+    };
 
     if(plant.supplier){
       if(plant.supplier.equals(p.supplier._id)){

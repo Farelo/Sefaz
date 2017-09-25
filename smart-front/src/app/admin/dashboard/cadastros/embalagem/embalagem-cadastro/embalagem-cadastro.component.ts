@@ -20,7 +20,6 @@ export class EmbalagemCadastroComponent implements OnInit {
   public tags =  [];
   public projects = [];
   public suppliers = [];
-  public exist = false;
 
 
   constructor(
@@ -37,12 +36,11 @@ export class EmbalagemCadastroComponent implements OnInit {
   onSubmit({ value, valid }: { value: Packing, valid: boolean }): void {
 
 
-    this.packing.controls.hashPacking.setValue(this.packing.controls.supplier.value._id + this.packing.controls.code.value);
-    this.packing.controls.code_tag.setValue(this.packing.controls.tag.value.code);
+    value.hashPacking = this.packing.controls.supplier.value._id + this.packing.controls.code.value;
+    value.code_tag = this.packing.controls.tag.value.code;
 
     if(this.packing.valid){
-
-      this.PackingService.createPacking([this.packing.value]).subscribe( result => this.toastService.success('/rc/cadastros/embalagem', 'Embalagem'), err => this.toastService.error(err) );
+      this.changeCode(value);
     }
 
   }
@@ -51,39 +49,36 @@ export class EmbalagemCadastroComponent implements OnInit {
     this.TagsService.retrieveAllNoBinded().subscribe( result => {this.tags = result.data}, err => {console.log(err)});
   }
 
+  finishRegister(value){
+    this.PackingService.createPacking([value]).subscribe( result => this.toastService.success('/rc/cadastros/embalagem', 'Embalagem'), err => this.toastService.error(err) );
+  }
+
 
   loadSuppliers():void{
-    this.SuppliersService.retrieveAll().subscribe(result => this.suppliers = result, err => {console.log(err)});
+    this.SuppliersService.retrieveAll().subscribe(result => this.suppliers = result.data, err => {console.log(err)});
   }
 
   loadProject():void{
     this.ProjectService.retrieveAll().subscribe(result => this.projects = result.data, err => {console.log(err)});
   }
 
-  changed(e: any): void {
-    this.packing['controls'].supplier['controls']._id.setValue(e.value);
-    this.changeCode();
-  }
 
-  changeCode(){
-    this.PackingService.retrievePackingBySupplierAndCode(this.packing.controls.code.value,this.packing['controls'].supplier['controls']._id.value)
+  changeCode(value){
+
+    this.PackingService.retrievePackingBySupplierAndCodeAndProject(value.code,value.supplier._id,value.project._id)
         .subscribe(result => {
 
           if(result.data){
-
-            this.packing.controls.project.setValue(result.data.project);
             if(result.data.gc16){
-              this.packing.controls.gc16.setValue(result.data.gc16);
+              value.gc16 = result.data.gc16;
             }
             if(result.data.routes){
-              this.packing.controls.routes.setValue(result.data.routes);
+              value.routes = result.data.routes;
             }
-            this.exist = true;
+            this.finishRegister(value);
           }else{
-            this.packing.controls.project.setValue("");
-            this.packing.controls.gc16.setValue(String);
-            this.packing.controls.route.setValue(String);
-            this.exist = false;
+            this.finishRegister(value);
+
           }}, err => {console.log(err)});
   }
 
@@ -131,9 +126,7 @@ export class EmbalagemCadastroComponent implements OnInit {
       tag: ['', [Validators.required]],
       code_tag: [String, [Validators.required]],
       department: [String],
-      supplier: this.fb.group({
-        _id:['', [Validators.required]]
-      }),
+      supplier: ['', [Validators.required]],
       project: ['', [Validators.required]],
       hashPacking: [String, [Validators.required]]
     });

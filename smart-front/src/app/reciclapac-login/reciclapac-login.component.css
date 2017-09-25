@@ -26,7 +26,6 @@
 h1 {
   color: white;
   font-weight: bold;
-  /*margin-bottom: 20px;*/
   opacity: 0.9;
 }
 input {
@@ -44,11 +43,8 @@ input {
   color: white;
   margin-left: 10px;
 }
-/*.inputMail {
-  margin-bottom: 25px;
-}*/
+
 .spanMail {
-  /*background: url("../../assets/images/mail.png") no-repeat left center;*/
   max-width: 17px;
   max-height: 13.48px;
   width: auto;
@@ -71,7 +67,6 @@ input {
   margin-top: 25px;
 }
 .inputSenha {
-  /*background: url("../../assets/images/lock.png") no-repeat left center;*/
   background-size: 18px;
   text-decoration: none;
 }
@@ -111,8 +106,6 @@ p {
 .esqueci:focus {
     outline: none !important;
     border-style: none;
-    /*border-color: white;
-    border-radius: 20px;*/
 }
 button {
   padding: 5px 40px;
@@ -141,16 +134,7 @@ button:focus {
 span {
   background-image: url("../../assets/images/lock.png");
 }
-/*.ng-invalid.ng-touched:not(form) {
-  outline: none !important;
-  border-style: solid;
-  border-bottom-color: #D24444;
-  border-bottom-width: 1.5px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  box-shadow: none;
-}*/
+
 .senhaIncorreta2, .emailObrigatorio, .emailIncorreto, .emailNaoCadastrado,.senhaObrigatoria {
   color: #d24444;
   font-size: 13px;

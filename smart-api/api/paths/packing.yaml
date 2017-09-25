@@ -46,18 +46,51 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
-  /packing/retrieve/code/{code}/supplier/{supplier}:
+  /packing/retrieve/code/{code}/supplier/{supplier}/project/{project}:
       x-swagger-router-controller: packing_controller
       get:
         tags:
           - "Packing"
-        summary: "Get a packing on the system by supplier and code"
+        summary: "Get a packing on the system by supplier, code and Project"
         description: ""
-        operationId: packing_read_by_supplierAndcode
+        operationId: packing_read_by_supplierAndcodeAndProject
         parameters:
         - in: "path"
           name: "supplier"
           description: "The supplier that needs to be fetched"
+          required: true
+          type: string
+        - in: "path"
+          name: "project"
+          description: "The project that needs to be fetched"
+          required: true
+          type: string
+        - in: "path"
+          name: "code"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /packing/retrieve/code/{code}/serial/{serial}:
+      x-swagger-router-controller: packing_controller
+      get:
+        tags:
+          - "Packing"
+        summary: "Get a packing on the system by serial and code"
+        description: ""
+        operationId: packing_read_by_codeAndSerial
+        parameters:
+        - in: "path"
+          name: "serial"
+          description: "The serial that needs to be fetched"
           required: true
           type: string
         - in: "path"
@@ -347,18 +380,28 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /packing/update/code/{packing_code}:
+  /packing/update/gc16/{code}/{supplier}/{project}:
     x-swagger-router-controller: packing_controller
     put:
       tags:
       - "Packing"
-      summary: "Update a packing on the system using code"
+      summary: "Update a packing on the system using gc16"
       description: ""
       operationId: packing_update_by_code
       parameters:
       - in: "path"
-        name: "packing_code"
+        name: "code"
         description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "path"
+        name: "project"
+        description: "The project that needs to be fetchede"
+        required: true
+        type: string
+      - in: "path"
+        name: "supplier"
+        description: "The supplier that needs to be fetchede"
         required: true
         type: string
       - in: "body"

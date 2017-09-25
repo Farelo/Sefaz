@@ -1,5 +1,5 @@
 <div class="base">
-  <h1>REGISTRAR SETOR</h1>
+  <h1>EDITAR SETOR</h1>
   <br />
   <form novalidate (ngSubmit)="onSubmit(department)" [formGroup]="department">
     <div class="row">
@@ -51,10 +51,13 @@
       <div class="campo">
         <p class="descricao">ASSOCIE A PLANTA</p>
         <p class="explicacao">Escolha uma das plantas</p>
-        <select (ngModelChange)="onChange($event,i)" formControlName="plant">
+        <select  (ngModelChange)="onChange($event)" formControlName="plant" [ngClass]="{'required': (department.get('plant').hasError('required') && department.get('plant').touched)
+          || (department.get('plant').hasError('required') && formDir.submitted)}">
             <option value="">Associe uma Planta</option>
-            <option *ngFor="let obj of plants;let i = index" [ngValue]="obj._id" >{{obj.plant_name}}</option>
+            <option *ngFor="let obj of plants"  [ngValue]="obj" >{{obj.plant_name }} </option>
         </select>
+        <p class="requiredText" *ngIf="(department.get('plant').hasError('required') && department.get('plant').touched)
+        || (department.get('plant').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       </div>
     </div>
     </div>

@@ -16,20 +16,19 @@ definitions:
       type:
         type: string
       weigth:
-        type: "integer"
-        format: "int64"
+        type: number
+        format: double
       width:
-        type: "integer"
-        format: "int64"
+        type: number
+        format: double
       heigth:
-        type: "integer"
-        format: "int64"
+        type: number
+        format: double
       length:
-        type: "integer"
-        format: "int64"
+        type: number
+        format: double
       capacity:
-        type: "integer"
-        format: "int64"
+        type: integer
       tag:
         $ref: '#/definitions/Tag'
       code_tag:

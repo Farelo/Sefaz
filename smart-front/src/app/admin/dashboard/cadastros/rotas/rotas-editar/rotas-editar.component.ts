@@ -6,19 +6,20 @@ import { Supplier } from '../../../../../shared/models/supplier';
 import { PlantsService } from '../../../../../servicos/plants.service';
 import { RoutesService } from '../../../../../servicos/routes.service';;
 import { Route } from '../../../../../shared/models/route';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
 import { ToastService } from '../../../../../servicos/toast.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs/Rx';
 
 declare var $:any;
 @Component({
-  selector: 'app-rotas-cadastrar',
-  templateUrl: './rotas-cadastrar.component.html',
+  selector: 'app-rotas-editar',
+  templateUrl: './rotas-editar.component.html',
   styleUrls: ['../../cadastros.component.css']
 })
-export class RotasCadastrarComponent implements OnInit {
+export class RotasEditarComponent implements OnInit {
   @ViewChild(DirectionsRenderer) directionsRendererDirective: DirectionsRenderer;
   public time_min: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
   public time_max: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
@@ -29,19 +30,17 @@ export class RotasCadastrarComponent implements OnInit {
     destination: '',
     travelMode: 'DRIVING'
   };
+  public inscricao: Subscription;
   public autocomplete: any;
   public address: any = {};
   public center: any;
   public pos: any;
-  public existPacking = true;
   public directions = false;
   public plant_factory: any = "";
   public route: FormGroup;
   public suppliers =  [];
   public plants = [];
   public packings = [];
-  public choiced = false;
-  public choice_equipament = false;
 
 
   constructor(
@@ -50,6 +49,7 @@ export class RotasCadastrarComponent implements OnInit {
     private suppliersService: SuppliersService,
     private RoutesService: RoutesService,
     private router: Router,
+    private routeActive: ActivatedRoute,
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
     private fb: FormBuilder
@@ -62,6 +62,8 @@ export class RotasCadastrarComponent implements OnInit {
       plant_supplier: ['', [Validators.required]],
       packing_code: ['', [Validators.required]],
       hashPacking: ['', [Validators.required]],
+      _id: ['', [Validators.required]],
+      __v: ['', [Validators.required]],
       time: this.fb.group({
         max:  ['', [Validators.required]],
         min:  ['', [Validators.required]]
@@ -76,9 +78,11 @@ export class RotasCadastrarComponent implements OnInit {
           value: ['', [Validators.required]]
         }),
         start_address: ['', [Validators.required]],
-        end_address: ['', [Validators.required]]
+        end_address: ['', [Validators.required]],
+
       })
     });
+
 
 
   }
@@ -101,11 +105,10 @@ export class RotasCadastrarComponent implements OnInit {
 
     console.log(value);
     if(this.route.valid){
-      value.project = value.packing_code.project._id;
-      value.packing_code = value.packing_code.id;
-      console.log(value);
-      this.RoutesService.createRoute(value)
-        .subscribe(result => this.toastService.success('/rc/cadastros/rotas', 'Rota'), err => this.toastService.error(err));
+
+
+      this.RoutesService.updateRoute(value._id,value)
+        .subscribe(result => this.toastService.edit('/rc/cadastros/rotas', 'Rota'), err => this.toastService.error(err));
 
     }
   }
@@ -132,70 +135,53 @@ export class RotasCadastrarComponent implements OnInit {
     this.autocomplete = autocomplete;
   }
 
-  onChangeFactory(event: any) {
-    if (event) {
-      this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
-      this.showDirection();
-    }
-  }
 
-  onChangePacking(event: any) {
 
-    if (typeof event != 'string') {
-      this.choice_equipament = true;
-      this.route['controls'].plant_supplier.setValue(event.plant);
 
-      this.direction.destination = new google.maps.LatLng(event.plant.lat, event.plant.lng);
-      this.loadPlants(event);
-      this.showDirection();
-    } else {
-      this.choice_equipament = false;
-    }
-  }
 
-  loadPackings(event): void {
-    this.route['controls'].packing_code.setValue('');
-    this.route['controls'].plant_factory.setValue('');
-    this.route['controls'].plant_supplier.setValue('');
 
-    this.directions = false;
 
-    if (typeof event != 'string') {
-      this.choice_equipament = false;
-
-      this.PackingService.retrieveAllNoBinded(event._id).subscribe(result => {
-
-        if (result.data.length === 0) {
-          this.choiced = false;
-          this.existPacking = false;
-          this.packings = [];
-        }
-        else {
-          this.choiced = true;
-          this.existPacking = true;
-          this.packings = result.data;
-        }
-      });
-    } else {
-      this.choiced = false;
-    }
-
-  }
-
-  loadPlants(event): void {
-    this.PlantsService.retrieveAllNoBinded(event.id,this.route['controls'].supplier.value._id,event.project._id).subscribe(result => this.plants = result);
-  }
-
-  loadSuppliers(): void {
-    this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result;}, err => { console.log(err) });
-  }
 
   ngOnInit() {
-    this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
-      this.directionsRenderer = directionsRenderer;
-    });
 
-    this.loadSuppliers();
+
+    this.inscricao = this.routeActive.params.subscribe(
+      (params: any)=>{
+        let id = params ['id'];
+        this.RoutesService.retrieveRoute(id).subscribe(result => {
+          console.log(result.data);
+          let time = parseInt((result.data.time.min).toString());
+          this.time_min = {
+            hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
+            minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
+            second: (parseInt((time / (1000 * 60)).toString()) % 60)
+          };
+
+
+           time = parseInt((result.data.time.max).toString());
+           this.time_max = {
+             hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
+             minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
+             second: (parseInt((time / (1000 * 60)).toString()) % 60)
+           };
+
+
+           delete result.data.time;
+          (<FormGroup>this.route)
+                  .patchValue(result.data, { onlySelf: true });
+
+
+
+
+            this.direction.origin = new google.maps.LatLng(result.data.plant_factory.lat, result.data.plant_factory.lng);
+            this.direction.destination = new google.maps.LatLng(result.data.plant_supplier.lat, result.data.plant_supplier.lng);
+            this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
+              this.directionsRenderer = directionsRenderer;
+            });
+        });
+      }
+    )
+
   }
 
 }

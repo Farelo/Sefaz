@@ -26,6 +26,7 @@ module.exports = function(p, plant) {
               "routes": p.routes,
               "actual_plant": p.actual_plant,
               "packing": p._id,
+              "project": p.project,
               "supplier": p.supplier,
               "status": alerts_type.INCORRECT_LOCAL,
               "hashpacking": p.hashPacking,
@@ -40,6 +41,7 @@ module.exports = function(p, plant) {
             },{
               "department": p.department,
               "routes": p.routes,
+              "project": p.project,
               "actual_plant":p.actual_plant,
               "supplier": p.supplier,
               "hashpacking": p.hashPacking,

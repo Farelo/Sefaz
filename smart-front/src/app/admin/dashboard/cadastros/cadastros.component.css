@@ -51,9 +51,6 @@ td, th, tr, .excluir, .editar, p {
 
 .col-md-3 { margin-bottom: 20px; }
 
-/*Embalagem*/
-/** { font-family: 'Roboto', sans-serif; }*/
-
 .meuInput {
   width:100%;
   margin-bottom: 10px;
@@ -119,9 +116,6 @@ td {  background-color: white; }
   }
 }
 
-/*Cdastro*/
-
-/** { font-family: 'Roboto', sans-serif; }*/
 h1 , .botaoSalvar {
   font-family:'Montserrat',sans-serif;
 }
@@ -240,10 +234,9 @@ option:hover { background-color: lightgrey; }
 h3 {
   margin-bottom: 10px;
 }
-/*Rotas cadastro*/
+
 .informacoes {
   display: inherit;
-  /*margin: 5px 15px;*/
   margin-bottom: 10px;
 }
 .bigger2 {

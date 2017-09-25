@@ -39,10 +39,24 @@ exports.packing_create_array = function(req, res) {
 /**
  * Show the current Packing
  */
+exports.packing_read_by_codeAndSerial = function(req, res) {
+  packing.find({
+        code: req.swagger.params.code.value,
+        serial: req.swagger.params.serial.value,
+      })
+      .then(_.partial(successHandler, res))
+      .catch(_.partial(errorHandler, res, 'Error to retrieve packings'));
+};
+/**
+ * evaluate if exist the any packing with this code and serial on the system
+ */
 exports.packing_read = function(req, res) {
   packing.findOne({
         _id: req.swagger.params.packing_id.value 
       })
+      .populate("project")
+      .populate("supplier")
+      .populate("tag")
       .then(_.partial(successHandler, res))
       .catch(_.partial(errorHandler, res, 'Error to retrieve packings'));
 };
@@ -59,10 +73,11 @@ exports.packing_position= function(req, res) {
 /**
  * Show the current Packing
  */
-exports.packing_read_by_supplierAndcode = function(req, res) {
+exports.packing_read_by_supplierAndcodeAndProject = function(req, res) {
 packing.findOne({
       supplier: req.swagger.params.supplier.value,
       code: req.swagger.params.code.value,
+      project: req.swagger.params.project.value
     })
     .populate('project')
     .then(_.partial(successHandler, res))
@@ -88,23 +103,89 @@ exports.list_packing_department = function(req, res) {
  * Update a Packing
  */
 exports.packing_update = function(req, res) {
+  packing.findOne({
+    "code": req.body.code,
+    "supplier": new ObjectId(req.body.supplier._id),
+    "project": new ObjectId(req.body.project._id)}
+  )
+  .then(result => {
 
-  packing.update({
-      _id: req.swagger.params.packing_id.value
-    }, req.body, {
-      upsert: true,
-      multi: true
-    })
-    .then(_.partial(successHandler, res))
-    .then(result => successHandler(res, result))
-    .catch(_.partial(errorHandler, res, 'Error to update packings by department'));
+      if(result === null){
+        let partial = Object.assign({},req.body);
+        partial.routes = [];
+        delete partial.gc16;
+        return packing.update({
+            _id: req.swagger.params.packing_id.value
+        }, {$unset: {actual_gc16: 1, gc16: 1},$set : partial});
+      }else if(result.gc16 && result.routes){
+        let partial = Object.assign({},req.body);
+        partial.gc16 = result.gc16;
+        partial.routes = result.routes;
+        return packing.update({
+            _id: req.swagger.params.packing_id.value
+        }, partial);
+      }else if(result.gc16){
+        let partial = Object.assign({},req.body);
+        partial.gc16 = result.gc16;
+        partial.routes = [];
+        return packing.update({
+            _id: req.swagger.params.packing_id.value
+        }, {$set : partial});
+      }else if(result.routes){
+        let partial = Object.assign({},req.body);
+        partial.routes = result.routes;
+        delete partial.gc16;
+
+        return packing.update({
+            _id: req.swagger.params.packing_id.value
+        }, {$unset: {actual_gc16: 1, gc16: 1},$set : partial});
+      }
+
+  })
+  .then(() => {
+
+    return evaluete(Promise.all([packing.find({gc16: new ObjectId(req.body.gc16)}), packing.find({routes: {$in: req.body.routes}})]), req.body);
+  })
+  .then(_.partial(successHandler, res))
+  .catch(_.partial(errorHandler, res, 'Error to update packings'));
 };
+
+function evaluete(promise, p) {
+
+  return promise.then(result => {
+
+    if (result[0].length === 0 && result[1].length === 0) {
+        return mongoose.models['GC16'].remove({
+          _id: p.gc16
+        })
+        .then(() => mongoose.models['Route'].remove({
+          _id: {
+            $in: p.routes
+          }
+        }));
+    } else if (result[0].length === 0) {
+      return mongoose.models['GC16'].remove({
+        _id: p.gc16
+      });
+    } else if (result[1].length === 0) {
+      return mongoose.models['Route'].remove({
+        _id: {
+          $in: p.routes
+        }
+      });
+    } else {
+      return packing.findOne({_id: p._id});
+    }
+  });
+}
 /*
  * Update a Packing by code
  */
 exports.packing_update_by_code = function(req, res) {
   packing.update({
-      code: req.swagger.params.packing_code.value
+      code: req.swagger.params.code.value,
+      supplier: new ObjectId(req.swagger.params.supplier.value),
+      project: new ObjectId(req.swagger.params.project.value)
     }, req.body, {
       upsert: true,
       multi: true
@@ -238,7 +319,7 @@ exports.geraneral_inventory_packing = function(req, res) {
  * list of general pagickings inventory by location
  **/
 exports.geraneral_inventory_packing_by_plant = function(req, res) {
-  let aggregate = packing.aggregate(query.queries.inventory_general_by_plant(req.swagger.params.code.value,new ObjectId(req.swagger.params.supplier.value)));
+  let aggregate = packing.aggregate(query.queries.inventory_general_by_plant(req.swagger.params.code.value,new ObjectId(req.swagger.params.supplier.value),new ObjectId(req.swagger.params.project.value)));
 
   packing.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
@@ -303,7 +384,8 @@ exports.inventory_permanence = function(req, res) {
 exports.inventory_packing_historic = function(req, res) {
 
   historic.paginate({
-      "serial": req.swagger.params.serial.value
+      "serial": req.swagger.params.serial.value,
+      "packing_code":  req.swagger.params.code.value
     }, {
       page: parseInt(req.swagger.params.page.value),
       populate: query.queries.populate,
@@ -330,163 +412,3 @@ exports.inventory_packings = function(req, res) {
     .then(_.partial(successHandlerPagination, res))
     .catch(_.partial(errorHandler, res, 'Error to list inventory permanence'));
 };
-
-
-
-
-
-
-exports.createEstrategy = function(req, res) {
-  packing.find({}).then( packings => {
-    plant.find({}).then( plant => {
-      packings.forEach(o => {
-        let temp = template();
-        temp.packing = o._id;
-        temp.serial = o.serial;
-        for(var i = 1 ; i <  Math.floor(Math.random() * 10); i++){
-            temp.plant =  plant[Math.floor(Math.random() * plant.length)]._id;
-            temp.date =  randomDate(new Date(2012, 0, 1), new Date());
-            temp.temperature =  Math.floor(Math.random() * 100);
-            temp.permanence_time =  Math.floor(Math.random() * 20);
-            historic.create(temp).then(result => console.log("OK"))
-        }
-        o.temperature =  Math.floor(Math.random() * 100);
-        o.actual_plant = plant[Math.floor(Math.random() * plant.length)]._id;
-        packing.update({
-            _id: o._id
-          },o, {
-            upsert: true,
-            multi: true
-          }).then(result => console.log("OK"));
-      });
-    });
-  });
-};
-
-exports.createAlerts = function(req, res) {
-  var alerts1 = [1,2,4];
-  var alerts2 = [3,5];
-  packing.find({}).then( packings => {
-    plant.find({}).then( plant => {
-      packings.forEach(o => {
-        let temp = template();
-        temp.actual_plant = plant[Math.floor(Math.random() * plant.length)]._id;;
-        temp.correct_plant_factory = plant[Math.floor(Math.random() * plant.length)]._id;
-        temp.correct_plant_supplier = plant[Math.floor(Math.random() * plant.length)]._id;
-        temp.packing = o._id;
-        temp.serial = o.serial;
-        temp.supplier = o.supplier;
-        temp.status = alerts1[Math.floor(Math.random() * alerts1.length)];
-        temp.hashpacking = o.supplier + o.code;
-        temp.date = randomDate(new Date(2012, 0, 1), new Date());
-        alert.create(temp).then(result => console.log("OK"));
-        temp = template();
-        temp.actual_plant = plant[Math.floor(Math.random() * plant.length)]._id;;
-        temp.correct_plant_factory = plant[Math.floor(Math.random() * plant.length)]._id;
-        temp.correct_plant_supplier = plant[Math.floor(Math.random() * plant.length)]._id;
-        temp.packing = o._id;
-        temp.serial = o.serial;
-        temp.supplier = o.supplier;
-        temp.status = alerts2[Math.floor(Math.random() * alerts2.length)];
-        temp.hashpacking = o.supplier + o.code;
-        temp.date = randomDate(new Date(2012, 0, 1), new Date());
-        alert.create(temp).then(result => console.log("OK"));
-
-      });
-    });
-  });
-};
-
-function template(){
-//   return {
-//     plant: String,
-//     date: Number,
-//     temperature: Number,
-//     permanence_time: Number,
-//     serial: String,
-//     packing: String
-// };
-
-  return {
-    actual_plant: String,
-    correct_plant_factory: String,
-    correct_plant_supplier: String,
-    packing: String,
-    supplier: String,
-    status: Number,
-    serial: String,
-    date: Number,
-    hashpacking : String
-  }
-}
-
-function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).getTime();
-}
-
-
-
-
-
-
-// //DAQUI PRA BAIXO, ARRANJAR UMA MANEIRA DE ATUALIZAR ESSA COISA
-// //list by code used to inventory
-// exports.list_by_code = function(req, res) {
-//
-//   var arrayOfPromises = [packing.aggregate(query.queries.packingList(req.swagger.params.packing_code.value)),
-//     packing.aggregate(query.queries.quantityFound(req.swagger.params.packing_code.value)),
-//     packing.aggregate(query.queries.existingQuantity(req.swagger.params.packing_code.value)),
-//     packing.aggregate(query.queries.listPackingMissing(req.swagger.params.packing_code.value)),
-//     packing.aggregate(query.queries.listPackingProblem(req.swagger.params.packing_code.value))
-//   ];
-//
-//   Promise.all(arrayOfPromises)
-//     .then(result => res.json({
-//       code: 200,
-//       message: "OK",
-//       "packing_list": result[0],
-//       "quantity_found": result[1],
-//       "existing_quantity": result[2],
-//       "list_packing_missing": result[3],
-//       "list_packing_problem": result[4]
-//     }))
-//     .catch(err => res.status(404).json({
-//       code: 404,
-//       message: "ERROR",
-//       response: err
-//     }));
-//
-// };
-//
-// //list all inventory  --- ISO AQUI TEM QUE MUDAR
-// exports.list_all_inventory = function(req, res) {
-//   var value = parseInt(req.swagger.params.page.value) > 0 ? ((parseInt(req.swagger.params.page.value) - 1) * parseInt(req.swagger.params.limit.value)) : 0;
-//
-//   var arrayOfPromises = [packing.aggregate(query.queries.packingListNoCode).skip(value).limit(parseInt(req.swagger.params.limit.value)),
-//     packing.aggregate(query.queries.quantityFoundNoCode),
-//     packing.aggregate(query.queries.existingQuantityNoCode),
-//     packing.aggregate(query.queries.listPackingMissingNoCodeNoRoute).skip(value).limit(parseInt(req.swagger.params.limit.value)),
-//     packing.aggregate(query.queries.listPackingMissingNoCodeRoute).skip(value).limit(parseInt(req.swagger.params.limit.value)),
-//     packing.aggregate(query.queries.listPackingProblemNoCode).skip(value).limit(parseInt(req.swagger.params.limit.value)),
-//     packing.find(query.queries.countAll).count()
-//   ];
-//
-//   Promise.all(arrayOfPromises)
-//     .then(result => res.json({
-//       code: 200,
-//       message: "OK",
-//       "packing_list": result[0],
-//       "quantity_found": result[1],
-//       "existing_quantity": result[2],
-//       "list_packing_missing_no_route": result[3],
-//       "list_packing_missing_route": result[4],
-//       "list_packing_problem": result[5],
-//       "count": result[6]
-//     }))
-//     .catch(err => res.status(404).json({
-//       code: 404,
-//       message: "ERROR",
-//       response: err
-//     }));
-//
-// };

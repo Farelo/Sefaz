@@ -27,6 +27,12 @@ export class ProfileService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  retrieveProfileByEmail(email: string): Observable<any>{
+    return this.http.get(environment.url + 'profile/retrieve/email/' + email)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   updateProfile(id: string, profile: Profile): Observable<any>{
     return this.http.put(environment.url + 'profile/update/' + id,profile)
       .map((res: Response) => res.json())

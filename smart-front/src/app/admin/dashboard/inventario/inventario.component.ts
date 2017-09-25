@@ -73,7 +73,7 @@ export class InventarioComponent implements OnInit {
   supplierInventory(event: any):void{
 
     if(event){
-      this.inventoryService.getInventorySupplier(10,this.supplier.meta.page,event.value).subscribe(result => {
+      this.inventoryService.getInventorySupplier(10,this.supplier.meta.page,event._id).subscribe(result => {
         this.supplier = result;
         this.name_supplier = result.data[0];
       }, err => {console.log(err)});
@@ -91,7 +91,7 @@ export class InventarioComponent implements OnInit {
 
   quantityInventory(){
     if(this.quantitySearch){
-        this.inventoryService.getInventoryQuantity(10,this.quantity.meta.page,this.quantitySearch).subscribe(result => this.quantity = result, err => {console.log(err)});
+        this.inventoryService.getInventoryQuantity(10,this.quantity.meta.page,this.quantitySearch).subscribe(result => {console.log(result);this.quantity = result}, err => {console.log(err)});
     }
   }
 
@@ -108,7 +108,7 @@ export class InventarioComponent implements OnInit {
   permanenceInventory(){
     if(this.permanenceSearchEquipamento && this.permanenceSearchSerial ){
       this.serial = true;
-      this.inventoryService.getInventoryPackingHistoric(10,this.permanence.meta.page,this.permanenceSearchSerial).subscribe(result => {
+      this.inventoryService.getInventoryPackingHistoric(10,this.permanence.meta.page,this.permanenceSearchSerial,this.permanenceSearchEquipamento).subscribe(result => {
         this.permanence  = result;
        }, err => {console.log(err)});
     }else if(this.permanenceSearchEquipamento){
@@ -118,7 +118,7 @@ export class InventarioComponent implements OnInit {
   }
 
   loadSuppliers():void{
-    this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result}, err => {console.log(err)});
+    this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result.data}, err => {console.log(err)});
   }
 
   open(packing) {

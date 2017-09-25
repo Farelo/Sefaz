@@ -3,7 +3,7 @@ var Mongoose = require('mongoose');
 var ObjectId = Mongoose.Types.ObjectId;
 
 exports.queries = {
-  plant_filter: function(code, supplier) {
+  plant_filter: function(code, supplier,project) {
     return [{
         "$lookup": {
           "from": "routes",
@@ -29,6 +29,11 @@ exports.queries = {
             {
               "ObjectPlant.packing_code": {
                 $ne: code
+              }
+            },
+            {
+              "ObjectPlant.project": {
+                $ne: new ObjectId(project)
               }
             }
           ],

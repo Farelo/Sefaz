@@ -3,7 +3,7 @@
      <p>Detalhes do alerta - {{alerta.data.date | date:'dd/mm/yyyy'}}</p>
      <p>Código: {{alerta.data.packing?.code}}</p>
      <p>Tipo: <span>{{alerta.data.status === 1 ? 'Objeto perdido' :
-       (alerta.data.status === 2 ? 'Objeto Incorreto' :
+       (alerta.data.status === 2 ? 'Local Incorreto' :
        (alerta.data.status === 3 ? 'Bateria Baixa' :
        (alerta.data.status === 4 ? 'Objeto Atrasado' : 'Tempo de Permanência')))}}</span></p>
        <p>Hora: {{alerta.data.date | date:'jms'}}</p>
@@ -58,6 +58,7 @@
 <div class="modalBody" *ngIf="alerta.data.status === 2 ">
   <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
   <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel'}}</p>
+  <p><span>Rotas da embalagem </span> </p>
   <div class="table-responsive tabela">
     <table class="table">
       <thead>
@@ -65,6 +66,8 @@
           <th class="semBorda">Fornecedor</th>
           <th  class="semBorda">Planta da Fábrica</th>
           <th  class="semBorda">Planta do Fornecedor</th>
+          <th  class="semBorda">Tempo Min.</th>
+          <th  class="semBorda">Tempo Max.</th>
         </tr>
       </thead>
       <tbody >
@@ -72,6 +75,8 @@
           <td>{{route.supplier.name}}</td>
           <td>{{route.plant_factory.plant_name}}</td>
           <td>{{route.plant_supplier.plant_name}}</td>
+          <td>{{route.time.min | time}}</td>
+          <td>{{route.time.max | time}}</td>
         </tr>
       </tbody>
     </table>
@@ -82,8 +87,8 @@
 <div class="modalBody" *ngIf="alerta.data.status === 3">
 
   <p><span>Nivel da Bateria:</span> {{alerta.data?.packing?.battery ? (alerta.data?.packing?.battery | round) : 'Informação Indisponivel'}}%</p>
+  <p><span>Departamento:</span> {{alerta.data.actual_plant ? (alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel') : 'Informação Indisponivel'}}</p>
   <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
-  <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel'}}</p>
 
 </div>
 

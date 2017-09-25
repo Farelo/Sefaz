@@ -20,6 +20,11 @@ app.use(bodyParser.urlencoded({limit: '50mb'}));
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, '../smart-front/dist')));
+
+
+// app.get('*', function(req, res) {
+//   res.sendFile(path.join(__dirname,'../smart-front/dist/index.html'));
+// });
 app.use(logger('dev'));
 
 module.exports = app; // for testing
@@ -44,6 +49,7 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
 
   swaggerExpress.runner.swagger.host = environment.url + ":" + environment.port;
   app.use(SwaggerUi(swaggerExpress.runner.swagger));
+  app.set(port);
   // install middleware
   swaggerExpress.register(app);
 

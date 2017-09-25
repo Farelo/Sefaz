@@ -38,11 +38,11 @@ export class SetorEditarComponent implements OnInit {
   }
 
   onSubmit({ value, valid }: { value: Department, valid: boolean }): void {
-    console.log(value,valid);
-    // if(valid){
-    //   value.plant = value.plant._id;
-    //   this.DepartmentService.createDepartment(value).subscribe(result => this.toastService.success('/rc/cadastros/setor', 'Setor'), err => this.toastService.error(err));
-    // }
+
+    if(valid){
+
+      this.DepartmentService.updateDepartment(value._id,value).subscribe(result => this.toastService.edit('/rc/cadastros/setor', 'Setor'), err => this.toastService.error(err));
+    }
   }
 
 
@@ -60,22 +60,27 @@ export class SetorEditarComponent implements OnInit {
   }
 
   onChange(event, teste){
-    console.log(typeof event);
+    console.log(event);
 
 
     if(event){
-      let plant = this.plants.filter( o => String(event) === String(o._id))[0];
-      console.log(plant);
-      this.pos = new google.maps.LatLng(plant.lat,event.lng);
+
+      this.pos = new google.maps.LatLng(event.lat,event.lng);
       this.center = this.pos;
-      this.department.controls.lat.setValue(plant.lat);
-      this.department.controls.lng.setValue(plant.lng);
+      this.department.controls.lat.setValue(event.lat);
+      this.department.controls.lng.setValue(event.lng);
     }
 
   }
 
   loadPlants():void {
-      this.PlantsService.retrieveAll().subscribe(result => this.plants = result.data);
+      this.PlantsService.retrieveAll().subscribe(result => {
+
+        let plant = result.data.filter( o => String(this.department.controls.plant.value._id) === String(o._id))[0];
+
+        this.department.controls.plant.setValue(plant);
+        this.plants = result.data;
+      });
   }
 
   ngOnInit() {

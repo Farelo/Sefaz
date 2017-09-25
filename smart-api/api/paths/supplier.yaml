@@ -46,6 +46,34 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
+  /supplier/retrieve/duns/{duns}/name/{name}:
+      x-swagger-router-controller: supplier_controller
+      get:
+        tags:
+          - "Supplier"
+        summary: "Get a supplier on the system by name and duns"
+        description: ""
+        operationId: supplier_read_by_dunsAndSupplier
+        parameters:
+        - in: "path"
+          name: "name"
+          description: "The name that needs to be fetched"
+          required: true
+          type: string
+        - in: "path"
+          name: "duns"
+          description: "The duns that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
   /supplier/list/pagination/{limit}/{page}:
     x-swagger-router-controller: supplier_controller
     get:

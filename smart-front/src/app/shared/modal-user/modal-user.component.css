@@ -25,7 +25,7 @@
   font-weight: 500;
 }
 .inicio {
-  /*position: relative;;*/
+
 }
 tbody {
   border: none!important;
@@ -105,9 +105,7 @@ th, td {
   border: none !important;
 }
 .mapa {
-  /*background-color: aliceblue;*/
   width: 100%;
-  /*height: 100px;*/
   margin-top: 10px;
 }
 
@@ -156,10 +154,9 @@ th, td {
   font-size: 15px;
 }
 
-/*Rotas cadastro*/
+
 .informacoes {
   display: inherit;
-  /*margin: 5px 15px;*/
   margin-bottom: 10px;
 }
 .bigger2 {
@@ -222,5 +219,4 @@ th, td {
   background-color: white;
   margin: 0px;
   padding: 20px;
-  /*box-shadow: 0px 0px 7px #000;*/
 }

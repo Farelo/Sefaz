@@ -27,7 +27,7 @@ export class ModalInvComponent implements OnInit {
   }
 
   loadInventory(){
-    this.inventoryService.getInventorySupplierByPlant(10,this.data.meta.page,this.packing.code, this.packing.supplier._id).subscribe( result => {
+    this.inventoryService.getInventorySupplierByPlantAnd(10,this.data.meta.page,this.packing.code, this.packing.supplier._id, this.packing.project._id).subscribe( result => {
       this.data = result;
       console.log(result);
     });

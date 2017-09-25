@@ -6,6 +6,7 @@ const profileSchema = new mongoose.Schema({
       profile:{type: String, required: true},
       password: {type: String, required: true},
       email: {type: String, required: true , unique: true},
+      user: {type: String, required: true },
       city: {type: String, required: true },
       street: {type: String, required: true },
       telephone: {type: String},
@@ -15,6 +16,7 @@ const profileSchema = new mongoose.Schema({
       uf: {type: String, required: true }
 
 });
+
 profileSchema.pre('remove', function(next) {
     // Remove all the assignment docs that reference the removed person.
     switch (this.profile) {

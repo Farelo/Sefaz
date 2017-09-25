@@ -22,6 +22,7 @@ const historicPackingsSchema = new mongoose.Schema({
   permanence_time: {
     type: Number
   },
+  packing_code : String,
   department: {
       type:mongoose.Schema.Types.ObjectId,
       ref:'Department'

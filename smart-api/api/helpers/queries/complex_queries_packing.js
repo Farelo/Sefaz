@@ -48,7 +48,8 @@ exports.queries = {
       "$group": {
         "_id": {
           "code": "$code",
-          "supplier": "$supplier"
+          "supplier": "$supplier",
+          "project": "$project",
         },
         "code": {
           "$first": "$code"
@@ -71,11 +72,12 @@ exports.queries = {
       }
     }
   ],
-  inventory_general_by_plant: function(code, supplier) {
+  inventory_general_by_plant: function(code, supplier,project) {
     return [{
         "$match": {
           "supplier": supplier,
-          "code": code
+          "code": code,
+          "project": project,
         }
       },
       {
@@ -143,6 +145,7 @@ exports.queries = {
             "code": "$code",
             "plant": "$actual_plant.plant",
             "supplier": "$supplier",
+            "project": "$project",
             "missing": "$missing"
           },
           "code": {
@@ -239,6 +242,7 @@ exports.queries = {
             "code": "$code",
             "plant": "$actual_plant.plant",
             "supplier": "$supplier",
+            "project": "$project",
             "missing": "$missing"
           },
           "code": {
@@ -479,8 +483,11 @@ exports.queries = {
             "code": "$code",
             "plant": "$actual_plant.plant",
             "supplier": "$supplier",
+            "supplier": "$supplier",
             "missing": "$missing",
-            "problem": "$problem"
+            "problem": "$problem",
+            "traveling": "$traveling",
+            "project": "$project",
           },
           "code": {
             "$first": "$code"
@@ -506,6 +513,9 @@ exports.queries = {
           "gc16": {
             "$first": "$gc16Object"
           },
+          "actual_gc16": {
+            "$first": "$actual_gc16"
+          },
           "missing": {
             "$first": "$missing"
           },
@@ -514,6 +524,9 @@ exports.queries = {
           },
           "problem": {
             "$first": "$problem"
+          },
+          "traveling": {
+            "$first": "$traveling"
           },
           "historic": {
               "$first": "$historicpackingsObject"
@@ -827,14 +840,28 @@ exports.queries = {
           }
         }
       },
+       {
+        "$lookup": {
+          "from": "projects",
+          "localField": "project",
+          "foreignField": "_id",
+          "as": "projectObject"
+        }
+      },
+      {
+        "$unwind": "$projectObject"
+      },
       {
         "$group": {
-          "_id": "$code",
+          "_id": {
+            "code": "$code",
+            "project": "$projectObject._id"
+          },
           "packing": {
             "$first": "$code"
           },
           "project": {
-            "$first": "$project"
+            "$first": "$projectObject"
           }
         }
       }
@@ -854,7 +881,16 @@ exports.queries = {
         "as": "ObjectSupplier"
       }
     },{
+      "$lookup": {
+        "from": "projects",
+        "localField": "project",
+        "foreignField": "_id",
+        "as": "ObjectProject"
+      }
+    },{
       "$unwind": "$ObjectSupplier"
+    },{
+      "$unwind": "$ObjectProject"
     },{
       "$lookup": {
         "from": "plants",
@@ -867,7 +903,8 @@ exports.queries = {
     },{
       '$group': {
         "_id": {
-          "code": "$code"
+          "code": "$code",
+          "project": "$ObjectProject._id"
         },
         "id": {
             "$first": "$code"
@@ -880,6 +917,9 @@ exports.queries = {
         },
         "plant": {
             "$first": "$ObjectPlant"
+        },
+        "project": {
+            "$first": "$ObjectProject"
         }
 
       }

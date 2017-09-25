@@ -5,6 +5,7 @@ const consultDatabase            = require('./consult');
 const updateDevices              = require('./update_devices');
 const with_route                 = require('./with_route');
 const without_route              = require('./without_route');
+const evaluate_battery           = require('./evaluate_battery');
 const actual_plant               = require('./actual_plant');
 const evaluate_department        = require('./evaluate_department');
 const verify_finish              = require('./verify_finish');
@@ -52,6 +53,7 @@ function analysis(data){
         //para embalagens que não foram econtradas dentro de uma planta
         console.log("PACKING HAS NOT PLANT");
         remove_dependencies.without_plant(p)
+          .then(new_p => evaluate_battery(new_p))
           .then(new_p => evaluate_missing(new_p))
           .then(new_p => traveling.evaluate_traveling(new_p))
           .then(new_p => update_packing.set(new_p))

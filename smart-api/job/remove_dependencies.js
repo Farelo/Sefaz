@@ -7,7 +7,7 @@ module.exports = {
 
   whith_plant : function(p){
     return new Promise(function(resolve, reject) {
-          if(p.traveling || p.problem || p.missing){
+          if(p.traveling || p.missing || p.problem){
             console.log("REMOVED DEPENDENCIES ABOUT PACKING:",p._id);
             p.problem = false;
             p.missing = false;
@@ -34,7 +34,8 @@ module.exports = {
   },
   without_plant : function(p){
     return new Promise(function(resolve, reject) {
-      if(!p.missing || !p.traveling){
+
+      if(!p.missing && !p.traveling){
         console.log("REMOVED DEPENDENCIES ABOUT PACKING:",p._id);
         p.problem = false;
         p.permanence = {
@@ -47,6 +48,15 @@ module.exports = {
           "status": { '$in': [ alerts_type.INCORRECT_LOCAL, alerts_type.PERMANENCE] }
         }).then(() => resolve(p));
 
+      }else if(p.routes.length === 0){
+        console.log("aqui");
+        p.traveling = false;
+        p.trip = {
+          'time_exceeded': false,
+          'date': 0,
+          'time_countdown': 0
+        };
+        resolve(p);
       }else{
         resolve(p);
       }

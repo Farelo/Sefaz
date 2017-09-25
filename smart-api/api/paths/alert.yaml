@@ -56,7 +56,7 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /alert/list/all/hashing/{limit}/{page}/{hashing}/{status}:
+  /alert/list/all/packing/{limit}/{page}/{code}/{project}/{supplier}/{status}:
     x-swagger-router-controller: alert_controller
     get:
       tags:
@@ -76,12 +76,22 @@ paths:
         required: true
         type: string
       - in: "path"
-        name: "hashing"
+        name: "code"
         description: "The especific page that returns alerts related a this page"
         required: true
         type: string
       - in: "path"
         name: "status"
+        description: "The especific page that returns alerts related a this page"
+        required: true
+        type: string
+      - in: "path"
+        name: "supplier"
+        description: "The especific page that returns alerts related a this page"
+        required: true
+        type: string
+      - in: "path"
+        name: "project"
         description: "The especific page that returns alerts related a this page"
         required: true
         type: string

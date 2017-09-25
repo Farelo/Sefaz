@@ -39,13 +39,22 @@ exports.plant_read = function(req, res) {
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read plant'));
 };
+/**
+ * Show the current Plant by name
+ */
+exports.plant_read_by_name = function(req, res) {
+
+  plant.find({
+      plant_name: req.swagger.params.plant_name.value
+    })
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+};
 
 /**
  * Update a Plant
  */
 exports.plant_update = function(req, res) { 
-  console.log(req.body); 
-  console.log(req.swagger.params.plant_id.value); 
   plant.update( {
       _id: req.swagger.params.plant_id.value
     },  req.body,   {
@@ -81,7 +90,7 @@ exports.list_all = function(req, res) { 
  * List of all Plants without supplier and logistic_operator no binded with route
  */
 exports.list_all_nobinded = function(req, res) { 
-  plant.aggregate(query.queries.plant_filter(req.swagger.params.code.value, req.swagger.params.supplier.value))
+  plant.aggregate(query.queries.plant_filter(req.swagger.params.code.value, req.swagger.params.supplier.value,req.swagger.params.project.value))
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read plant'));
 };

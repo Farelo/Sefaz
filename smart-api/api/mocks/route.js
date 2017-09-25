@@ -14,6 +14,10 @@ const routeSchema = new mongoose.Schema({
           type:mongoose.Schema.Types.ObjectId,
           ref:'Plant'
       },
+      project: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Project'
+      },
       packing_code: String,
       time: {
         max: Number,

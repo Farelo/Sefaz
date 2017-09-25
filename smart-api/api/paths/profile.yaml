@@ -23,6 +23,29 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
+  /profile/retrieve/email/{email}:
+      x-swagger-router-controller: profile_controller
+      get:
+        tags:
+          - "Profile"
+        summary: "Get a profile on the system by email"
+        description: ""
+        operationId: profile_read_by_email
+        parameters:
+        - in: "path"
+          name: "email"
+          description: "The email that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
   /profile/auth/{password}/{email}:
       x-swagger-router-controller: profile_controller
       get:

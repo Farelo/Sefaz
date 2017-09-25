@@ -15,7 +15,6 @@
 .quadrado {
   background-color: rgba(0,0,0,.8);
   display: inline-block;
-  /*text-align: -webkit-center;*/
   padding: 20px;
   position: absolute;
   top: 50%;
@@ -29,7 +28,6 @@
 h1 {
   color: white;
   font-weight: bold;
-  /*margin-bottom: 20px;*/
   text-align: center;
   opacity: 0.9;
 }
@@ -58,20 +56,12 @@ input {
   }
 }
 .inputSenha {
-  /*background: url("../../assets/images/lock.png") no-repeat left center;*/
   background-size: 18px;
   text-decoration: none;
   text-align: left;
 }
 input:focus {
   outline: none !important;
-  /*border-style: solid;
-  border-bottom-color: #4577d8;
-  border-bottom-width: 1.5px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  box-shadow: none;*/
 }
 .bordaVermelha {
   outline: none !important;
@@ -136,16 +126,7 @@ button:hover {
 button:focus {
   outline: none;
 }
-/*.ng-invalid.ng-touched.ng-dirty:not(form) {
-  outline: none !important;
-  border-style: solid;
-  border-bottom-color: #D24444;
-  border-bottom-width: 1.5px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  box-shadow: none;
-}*/
+
 .emailNaoCadastrado {
   color: #d24444;
   font-size: 13px;

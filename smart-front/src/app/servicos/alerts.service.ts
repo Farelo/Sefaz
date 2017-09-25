@@ -17,9 +17,9 @@ export class AlertsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getAlertsPaginationByHashing(limit: number, page: number, hashing: string, status:string): Observable<any> {
+  getAlertsPaginationByHashing(limit: number, page: number, code: string, project: string , supplier: string, status:string): Observable<any> {
 
-    return this.http.get(environment.url + 'alert/list/all/hashing/' + limit + '/' + page + '/' + hashing +'/'+status)
+    return this.http.get(environment.url + 'alert/list/all/packing/' + limit + '/' + page + '/' + code +'/'+project + '/' + supplier +'/'+status)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

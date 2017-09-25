@@ -6,9 +6,7 @@ h1 , .botaoSalvar, .botaoVoltar {
     padding: 25px 35px;
     box-shadow: 0px 0px 7px #000;
 }
-/*@media (max-width: 991px) {
-    .base {}
-}*/
+
 h1 {
   padding-bottom: 15px;
   border-bottom-color: #6382c9;
@@ -30,22 +28,13 @@ h1 {
   font-family: 'Roboto', sans-serif;
 }
 .campo { margin-bottom: 20px; }
-/*.dois {
-  display: inline-block;
-}*/
-/*.campoE {
-  width: 30%;
-  float: left;
-}*/
+
 .testeSaco {
   height: 15px;
   position: initial;
   display: block;
 }
-/*.campoG {
-  width: 60%;
-  float: right;
-}*/
+
 input { font-size: 13px; border-radius: 0em !important;}
 
 .botoes {
@@ -104,7 +93,6 @@ input { font-size: 13px; border-radius: 0em !important;}
   margin: 0px !important;
 }
 .diferente2 {
-  /*padding: 0px 10px !important;*/
   margin-left: -10px !important;
   margin-right: -10px !important;
 }

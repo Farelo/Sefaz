@@ -57,7 +57,6 @@
 .f1 , .f2, .f3, .f4, .f5, .f6 {
   width: 10px;
   height: 10px;
-  /*padding-left: 15px;*/
   vertical-align: middle;
 }
 .f1 {
@@ -147,7 +146,7 @@ label {
   color: black;
   font-size: 15px;
 }
-/*COMEÇANDO O NOVO AGORA*/
+
 .painel {
   text-align: center;
   display: flex;
@@ -343,10 +342,7 @@ label {
 @media (min-width: 1400px) {	.conteudoHome {		padding: 0px 60px;  } }
 @media (min-width: 1700px) {	.conteudoHome {		padding: 0px 60px;  } }
 
-/*@media (min-width: 746px) and (max-width: 850px) {	.quadradoPequeno {		height: 90px;  } }
-@media (min-width: 1050px) and (max-width: 1150px) {	.quadradoPequeno {		height: 90px;  } }*/
 
-/*Div avisando que não tem alertas*/
 .externa, .interna {
   background-color: white;
 }
@@ -360,19 +356,15 @@ label {
   border-width: thin;
   padding: 20px;
   margin: 0px;
-  /*text-align: center;*/
 }
 .imagemInterrogacao {
   width: 50px;
   height: 90px;
-  /*height: 40px;*/
 	background-image: url("../../../../../assets/images/interrogacao2.png");
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 50px;
-  /*position: absolute;*/
   display: flex;
-  /*float: right;*/
   text-align: center;
   background-color: transparent;
   border:none;
@@ -381,7 +373,6 @@ label {
   background-color: none;
   border: none;
   outline: none;
-  /*cursor: none;*/
 }
 .imagemInterrogacao:focus {
   outline: none;
@@ -405,7 +396,7 @@ label {
 .divImagem {
   text-align: -webkit-center;
 }
-/*Teste*/
+
 .container {
   display: flex;
   flex-direction: row;

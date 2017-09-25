@@ -34,6 +34,7 @@ exports.department_read = function(req, res) {
   department.findOne({
       _id: req.swagger.params.department_id.value
     })
+    .populate("plant")
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read department'));
 };
@@ -51,13 +52,13 @@ exports.department_read_by_name = function(req, res) {
  * Update a Department
  */
 exports.department_update = function(req, res) {  
-  department.update( {
-      _id: req.swagger.params.department_id.value
-    },  req.body,   {
-      upsert: true
-    })
+  department.findOne({
+        _id: req.swagger.params.department_id.value
+    }).exec()
+    .then(doc => doc.update(req.body))
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to update department')); 
+
 };
 /**
  * Delete an Department

@@ -25,7 +25,7 @@ declare var $:any;
 })
 export class ModalUserComponent implements OnInit {
   @Input() view;
-
+  public next = false;
   public data: Pagination = new Pagination({meta: {page : 1}});
   private perfil = 'FORNECEDOR';
   public supplier:  FormGroup;
@@ -33,17 +33,19 @@ export class ModalUserComponent implements OnInit {
   public geocoder = new google.maps.Geocoder;
   public autocomplete: google.maps.places.Autocomplete;
   public address: any = {};
+  public invalidEmail = false;
+  public invalidDuns = false;
+  public invalidPlant = false;
   public center: any;
   public pos : any;
   public users = [];
   public newcep = '';
   public newtelefone = '';
-  // public mask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   public mask = [/[0-9]/, /\d/, /\d/,'.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,'-', /\d/, /\d/];
   public maskCep = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
   public maskTel = ['(', /[0-9]/, /\d/,')', /\d/,/\d/, /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, /\d/];
   public maskCel = ['(', /[0-9]/, /\d/,')', /\d/,/\d/, /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, /\d/];
-  // public mask2 = ['(', /[0-9]/, /\d/,')', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,/\d/];
+  public alerts: any = [];
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -80,7 +82,7 @@ export class ModalUserComponent implements OnInit {
 
       (<FormGroup>this.profile_edit)
               .setValue(JSON.parse(localStorage.getItem('currentUser')), { onlySelf: true });
-      console.log(this.profile_edit);
+
     }
     this.getUsers();
     this.tamanho();
@@ -101,43 +103,89 @@ export class ModalUserComponent implements OnInit {
 
   openAdd(){
       this.view = 'ADICIONAR';
-      this.supplier = this.fb.group({
-        name: ['',[Validators.required]],
-        duns: ['',[Validators.required]],
-        cnpj: [''],
-        profile: this.fb.group({
-          profile: ['',[Validators.required]],
-          password: ['',[Validators.required]],
-          email: ['',[Validators.required, Validators.email]],
-          street: ['',[Validators.required]],
-          city: ['',[Validators.required]],
-          telephone: [''],
-          cellphone: [''],
-          neighborhood: ['',[Validators.required]],
-          uf: ['',[Validators.required]],
-          cep: ['',[Validators.required]]
-        }),
-        plant: this.fb.group({
-          plant_name: ['',[Validators.required]],
-          lat: ['',[Validators.required]],
-          lng: ['',[Validators.required]],
-          location: ['',[Validators.required]]
-        })
-      });
+      this.formProfile();
   }
-  closeAdd(){
 
+  formProfile(){
+    this.supplier = this.fb.group({
+      name: ['',[Validators.required]],
+      duns: ['',[Validators.required]],
+      cnpj: [''],
+      profile: this.fb.group({
+        profile: ['',[Validators.required]],
+        password: ['',[Validators.required]],
+        email: ['',[Validators.required, Validators.email]],
+        user: ['',[Validators.required]],
+        street: ['',[Validators.required]],
+        city: ['',[Validators.required]],
+        telephone: [''],
+        cellphone: [''],
+        neighborhood: ['',[Validators.required]],
+        uf: ['',[Validators.required]],
+        cep: ['',[Validators.required]]
+      }),
+      plant: this.fb.group({
+        plant_name: ['',[Validators.required]],
+        lat: ['',[Validators.required]],
+        lng: ['',[Validators.required]],
+        location: ['',[Validators.required]]
+      })
+    });
+
+  }
+
+  closeAdd(){
       this.view = 'GERENCIAR';
       this.perfil ="FORNECEDOR";
-      this.supplier.reset();
+      this.supplier.reset({ profile: {
+        telephone:'',
+        cellphone: ''
+      }});
+      this.next = false;
+      this.formProfile();
       this.getUsers();
   }
+
+  evaluateEmail(){
+    this.ProfileService.retrieveProfileByEmail(this.supplier['controls'].profile['controls'].email.value).subscribe(result => {
+
+      if(result.data.length > 0) {
+        this.invalidEmail = true;
+      }else{
+        this.invalidEmail = false;
+      };
+    });
+  }
+
+  evaluateDuns(){
+    this.SuppliersService.retrieveSupplierByDunsAndSupplier(this.supplier['controls'].duns.value,this.supplier['controls'].name.value).subscribe(result => {
+
+      if(result.data.length > 0) {
+        this.invalidDuns = true;
+      }else{
+        this.invalidDuns = false;
+      };
+    });
+  }
+
+  evaluatePlant(){
+    this.PlantsService.retrievePlantByName(this.supplier['controls'].plant['controls'].plant_name.value).subscribe(result => {
+
+      if(result.data.length > 0) {
+        this.invalidPlant = true;
+      }else{
+        this.invalidPlant = false;
+      };
+    });
+  }
+
   onSubmit({ value, valid }: { value: any, valid: boolean }):void {
 
       this.supplier['controls'].profile['controls'].profile.setValue("Supplier");
       value.profile.profile = "Supplier";
 
-      if(this.supplier.valid){
+      if(this.supplier.valid && !this.invalidPlant && !this.invalidDuns && !this.invalidEmail){
+
         this.ProfileService.createProfile(value.profile).subscribe(result => {
           value.profile._id =  result.data._id;
           this.PlantsService.createPlant(value.plant).subscribe(result => {
@@ -150,6 +198,12 @@ export class ModalUserComponent implements OnInit {
 
           })
         })
+      }else{
+        this.alerts.push({
+          type: 'info',
+          msg: 'Esta faltando algumas informações a serem cadastradas!',
+          timeout: 5000
+        });
       }
 
   }

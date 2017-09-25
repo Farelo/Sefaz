@@ -53,8 +53,6 @@ span {
   cursor: pointer;
 }
 .inicial {
-  /*display: inline-block;*/
-  /*display: block;*/
   margin-bottom: 10px!important;
   height: 35px;
 }
@@ -112,5 +110,4 @@ span {
 }
 .teste {
   text-align: right;
-  /*background-color: lightblue;*/
 }

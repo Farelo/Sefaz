@@ -64,8 +64,14 @@ export class PackingService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrievePackingBySupplierAndCode(code: string,supplier: string): Observable<any>{
-    return this.http.get(environment.url + 'packing/retrieve/code/'+code+'/supplier/' + supplier)
+  retrievePackingByCodeAndSerial(code: string,serial: string): Observable<any>{
+    return this.http.get(environment.url + 'packing/retrieve/code/'+code+'/serial/' + serial)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  retrievePackingBySupplierAndCodeAndProject(code: string,supplier: string, project: string): Observable<any>{
+    return this.http.get(environment.url + 'packing/retrieve/code/'+code+'/supplier/' + supplier+'/project/' + project)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -86,8 +92,8 @@ export class PackingService {
       });
   }
 
-  updatePackingByCode(code: string, packing: any): Observable<any>{
-    return this.http.put(environment.url + 'packing/update/code/' + code,packing)
+  updatePackingByGC16(code: string,supplier: string,project: string, packing: any): Observable<any>{
+    return this.http.put(environment.url + 'packing/update/gc16/'+code+'/'+supplier+'/' + project,packing)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

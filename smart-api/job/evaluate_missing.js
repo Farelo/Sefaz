@@ -21,8 +21,9 @@ module.exports = function(p) {
         "packing": p._id,
         "status": alerts_type.MISSING
       }, {
-        "department": p.department,
+        "department": p.last_department,
         "actual_plant": p.last_plant,
+        "project": p.project,
         "supplier": p.supplier,
         "hashpacking": p.hashPacking,
         "serial": p.serial
@@ -40,12 +41,13 @@ module.exports = function(p) {
           "time_countdown": 0,
         };
         p.last_plant = p.actual_plant;
-
+        p.last_department = p.department;
         alert.create({
             "packing": p._id,
             "department": p.department,
             "actual_plant": p.last_plant,
             "supplier": p.supplier,
+            "project": p.project,
             "status": alerts_type.MISSING,
             "hashpacking": p.hashPacking,
             "serial": p.serial,

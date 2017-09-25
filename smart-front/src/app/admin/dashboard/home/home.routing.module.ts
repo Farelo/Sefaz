@@ -5,7 +5,7 @@ import { TimelineComponent } from './timeline/timeline.component';
 
 const homeRoutes = [
   {path: '', component: TimelineComponent},
-  {path: 'list/:hashing/:status', component: ListaComponent}
+  {path: 'list/:code/:project/:supplier/:status', component: ListaComponent}
 ];
 
 @NgModule({
