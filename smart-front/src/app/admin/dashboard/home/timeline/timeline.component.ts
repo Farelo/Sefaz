@@ -32,6 +32,7 @@ export class TimelineComponent implements OnInit {
   private aparecer: boolean = false;
   closeResult: string;
   verModal: boolean = true;
+  public activeModal : any;
 
   constructor(
       private AlertsService: AlertsService,
@@ -64,6 +65,7 @@ export class TimelineComponent implements OnInit {
   }
 
 
+
   loadAlerts(){
 
 
@@ -77,8 +79,15 @@ export class TimelineComponent implements OnInit {
   ngOnInit() {
       this.loadAlerts();
       this.showModal();
+      this.editModal();
   }
-
+  editModal(){
+    $('.modalFilho').parent().css({'width': '250px'});
+    $('.popover').css({'display': 'none'});
+  }
+  showPopover(){
+    $('.popover').css({'display': 'block'});
+  }
   pageChanged(page: any): void{
     this.data.meta.page = page;
     this.loadAlerts();
@@ -86,6 +95,9 @@ export class TimelineComponent implements OnInit {
 
   open(content) {
     this.modalService.open(content);
+  }
+  openHelp(content) {
+    this.activeModal = this.modalService.open(content,{size: "sm"});
   }
 
 }
