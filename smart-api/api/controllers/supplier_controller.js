@@ -23,6 +23,8 @@ exports.supplier_create = function(req, res) {
  * Show the current Supplier
  */
 exports.supplier_read = function(req, res) {
+
+
   supplier.findOne({
       _id: req.swagger.params.supplier_id.value
     })

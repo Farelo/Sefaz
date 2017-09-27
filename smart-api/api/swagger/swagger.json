@@ -554,6 +554,13 @@
             "description": "The especific page that returns alerts related a this page",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -622,6 +629,13 @@
             "name": "project",
             "description": "The especific page that returns alerts related a this page",
             "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": false,
             "type": "string"
           }
         ],
@@ -2021,7 +2035,7 @@
         ],
         "summary": "Inventory of the equipaments.",
         "description": "",
-        "operationId": "geraneral_inventory_packing",
+        "operationId": "general_inventory_packing",
         "parameters": [
           {
             "in": "path",
@@ -2035,6 +2049,13 @@
             "name": "page",
             "description": "The especific page that returns packings related a this page",
             "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": false,
             "type": "string"
           }
         ],
@@ -2084,6 +2105,13 @@
             "description": "The especific page that returns packings related a this code",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -2131,6 +2159,13 @@
             "name": "code",
             "description": "The especific page that returns packings related a this code",
             "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": false,
             "type": "string"
           }
         ],
@@ -2187,6 +2222,13 @@
             "description": "The especific code that returns packings related a this code",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -2235,6 +2277,13 @@
             "description": "The especific code that returns packings related a this code",
             "required": false,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -2281,6 +2330,13 @@
             "in": "query",
             "name": "code",
             "description": "The especific code that returns packings related a this code",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific supplier that returns packings related a this supplier",
             "required": false,
             "type": "string"
           }
@@ -3496,6 +3552,15 @@
         "summary": "Get all plants on the system",
         "description": "",
         "operationId": "list_all_general",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "attr",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": false,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Message",

@@ -43,4 +43,4 @@ import { ApplicationPipes } from '../../shared/pipes/application.pipes';
     NgbActiveModal
   ],
 })
-export class DashboardModule { }
+export class DashboardModuleAdmin { }

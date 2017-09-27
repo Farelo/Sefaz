@@ -43,11 +43,7 @@ exports.profile_read_by_email = function(req, res) {
  * Show the current Profile
  */
 exports.profile_auth = function(req, res) {
-
-  profile.findOne({
-      password: req.swagger.params.password.value,
-      email: req.swagger.params.email.value
-    })
+  profile.aggregate(query.queries.login(req.swagger.params.password.value,req.swagger.params.email.value))
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read profile'));
 };

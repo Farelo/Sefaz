@@ -11,6 +11,7 @@
   margin: 0px;
   padding: 0px;
 }
+
 .quadrado {
   background-color: rgba(0,0,0,.8);
   display: inline-block;
@@ -20,6 +21,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .divBotao { text-align: center; }
 
 h1 {
@@ -28,6 +30,7 @@ h1 {
   text-align: center;
   opacity: 0.9;
 }
+
 input {
   background-color: transparent;
   border-style: solid;
@@ -51,45 +54,53 @@ input {
     margin-right: 20px;
   }
 }
+
 .inputSenha {
   background-size: 18px;
   text-decoration: none;
   text-align: left;
 }
+
 input:focus {
   outline: none !important;
 }
+
 .senhaIncorreta {
   outline: none !important;
   border-style: solid;
-  border-bottom-color: #D24444;
+  border-bottom-color: #d24444;
   border-bottom-width: 1.5px;
   border-top: none;
   border-left: none;
   border-right: none;
   box-shadow: none;
-
 }
+
 .senhaFraca {
   font-size: 13px;
-  color: #D24444;
+  color: #d24444;
 }
+
 .senhaModerada {
   font-size: 13px;
-  color: #C6AE22;
+  color: #c6ae22;
 }
+
 .senhaForte {
   font-size: 13px;
-  color: #3Ad83E;
+  color: #3ad83e;
 }
+
 p {
   color: white;
   text-align: left;
   font-weight: lighter;
 }
+
 .esqueci {
   margin-top: 25px;
 }
+
 button {
   padding: 5px 40px;
   background-color: transparent;
@@ -102,6 +113,7 @@ button {
   text-align: center;
   margin-top: 25px;
 }
+
 button:hover {
   background-color: white;
   color: black;
@@ -117,17 +129,34 @@ button:hover {
   color: #d24444;
   font-size: 13px;
 }
+
 .titulo {
   font-weight: bold;
 }
 
-::-webkit-input-placeholder {  color: #FAFAFB; opacity: 0.5 }
-::-moz-placeholder {  color: #FAFAFB;opacity: 0.8}
-:-ms-input-placeholder {  color: #FAFAFB;opacity: 0.8}
-:-moz-placeholder {  color: #FAFAFB;opacity: 0.8}
+::-webkit-input-placeholder {
+  color: #fafafb;
+  opacity: 0.5;
+}
 
+::-moz-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}
 
-.weak, .medium, .strong {
+:-ms-input-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}
+
+:-moz-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}
+
+.weak,
+.medium,
+.strong {
   outline: none !important;
   border-style: solid;
   border-bottom-width: 1.5px;
@@ -136,14 +165,20 @@ button:hover {
   border-right: none;
   box-shadow: none;
 }
-.weak { border-bottom-color: #D24444;}
-.medium { border-bottom-color: #C6AE22; }
-.strong { border-bottom-color: #3Ad83E; }
-.lalala { color: blue}
 
-input:focus ~ .bar,input:valid ~ .bar{
-    width:100%;
+.weak { border-bottom-color: #d24444; }
+
+.medium { border-bottom-color: #c6ae22; }
+
+.strong { border-bottom-color: #3ad83e; }
+
+.lalala { color: blue }
+
+input:focus ~ .bar,
+input:valid ~ .bar {
+  width: 100%;
 }
+
 .conf {
   margin-top: 20px;
   margin-bottom: 0px;

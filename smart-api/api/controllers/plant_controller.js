@@ -6,6 +6,7 @@ const successHandler             = require('../helpers/responses/successHandler'
 const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
 const errorHandler               = require('../helpers/responses/errorHandler');
 const mongoose                   = require('mongoose');
+const ObjectId                   = require('mongoose').Types.ObjectId;
 const plant                      = mongoose.model('Plant');
 const route                      = mongoose.model('Route');
 const route_controller           = require('./route_controller');
@@ -98,7 +99,9 @@ exports.list_all_nobinded = function(req, res) { 
  * List of all Plants
  */
 exports.list_all_general = function(req, res) { 
-  plant.find()
+  let attr = req.swagger.params.attr.value;
+
+  plant.find(attr ? {"supplier": new ObjectId(attr)} : {})
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read plant'));
 };

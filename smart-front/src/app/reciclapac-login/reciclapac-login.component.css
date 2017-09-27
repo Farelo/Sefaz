@@ -28,6 +28,7 @@ h1 {
   font-weight: bold;
   opacity: 0.9;
 }
+
 input {
   background-color: transparent;
   border-style: solid;
@@ -52,24 +53,25 @@ input {
   text-decoration: none;
   margin-top: 11px;
 }
-.spanLock {
-    max-width: 17px;
-    max-height: 20.54px;
-    width: auto;
-    height: auto;
-    margin-top: 4px;
-}
-.spanMail, .spanLock {
 
+.spanLock {
+  max-width: 17px;
+  max-height: 20.54px;
+  width: auto;
+  height: auto;
+  margin-top: 4px;
 }
+
 .wrapper {
   display: inline-flex;
   margin-top: 25px;
 }
+
 .inputSenha {
   background-size: 18px;
   text-decoration: none;
 }
+
 input:focus {
   outline: none !important;
   border-style: solid;
@@ -79,34 +81,39 @@ input:focus {
   border-left: none;
   border-right: none;
   box-shadow: none;
-
 }
+
 .senhaIncorreta {
   outline: none !important;
   border-style: solid;
-  border-bottom-color: #D24444;
+  border-bottom-color: #d24444;
   border-bottom-width: 1.5px;
   border-top: none;
   border-left: none;
   border-right: none;
   box-shadow: none;
 }
+
 p {
   color: white;
   text-align: left;
   margin-left: 10px;
 }
+
 .esqueci {
   margin-top: 25px;
 }
-.esqueci:hover{
+
+.esqueci:hover {
   color: #4577d8;
   cursor: pointer;
 }
+
 .esqueci:focus {
-    outline: none !important;
-    border-style: none;
+  outline: none !important;
+  border-style: none;
 }
+
 button {
   padding: 5px 40px;
   background-color: transparent;
@@ -117,6 +124,7 @@ button {
   border-color: white;
   opacity: 0.7;
 }
+
 button:hover {
   background-color: white;
   color: black;
@@ -127,6 +135,7 @@ button:hover {
   -webkit-transition: color 0.5s;
   transition: color 0.5s;
 }
+
 button:focus {
   outline: none;
 }
@@ -135,12 +144,31 @@ span {
   background-image: url("../../assets/images/lock.png");
 }
 
-.senhaIncorreta2, .emailObrigatorio, .emailIncorreto, .emailNaoCadastrado,.senhaObrigatoria {
+.senhaIncorreta2,
+.emailObrigatorio,
+.emailIncorreto,
+.emailNaoCadastrado,
+.senhaObrigatoria {
   color: #d24444;
   font-size: 13px;
 }
 
-::-webkit-input-placeholder {  color: #FAFAFB; opacity: 0.5 }
-::-moz-placeholder {  color: #FAFAFB;opacity: 0.8}
-:-ms-input-placeholder {  color: #FAFAFB;opacity: 0.8}
-:-moz-placeholder {  color: #FAFAFB;opacity: 0.8}
+::-webkit-input-placeholder {
+  color: #fafafb;
+  opacity: 0.5;
+}
+
+::-moz-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}
+
+:-ms-input-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}
+
+:-moz-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}

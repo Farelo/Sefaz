@@ -114,6 +114,7 @@ exports.packing_update = function(req, res) {
         let partial = Object.assign({},req.body);
         partial.routes = [];
         delete partial.gc16;
+        delete partial.actual_gc16;
         return packing.update({
             _id: req.swagger.params.packing_id.value
         }, {$unset: {actual_gc16: 1, gc16: 1},$set : partial});
@@ -135,7 +136,7 @@ exports.packing_update = function(req, res) {
         let partial = Object.assign({},req.body);
         partial.routes = result.routes;
         delete partial.gc16;
-
+        delete partial.actual_gc16;
         return packing.update({
             _id: req.swagger.params.packing_id.value
         }, {$unset: {actual_gc16: 1, gc16: 1},$set : partial});
@@ -308,8 +309,8 @@ exports.packing_list_packing_no_binded_with_code = function(req, res) {
 /**
  * list of general pagickings inventory
  **/
-exports.geraneral_inventory_packing = function(req, res) {
-  let aggregate = packing.aggregate(query.queries.inventory_general);
+exports.general_inventory_packing = function(req, res) {
+  let aggregate = packing.aggregate(query.queries.inventory_general(req.swagger.params.attr.value));
 
   packing.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
@@ -340,7 +341,7 @@ exports.supplier_inventory = function(req, res) {
  **/
 exports.quantity_inventory = function(req, res) {
 
-  let aggregate = packing.aggregate(query.queries.quantity_inventory(req.swagger.params.code.value));
+  let aggregate = packing.aggregate(query.queries.quantity_inventory(req.swagger.params.code.value,req.swagger.params.attr.value));
 
   packing.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
@@ -350,8 +351,13 @@ exports.quantity_inventory = function(req, res) {
  * List of packings analysis battery
  */
 exports.inventory_battery = function(req, res) {
+  let code = req.swagger.params.code.value;
+  let attr = req.swagger.params.attr.value;
+
   packing.paginate(
-    req.swagger.params.code.value ? {"code": req.swagger.params.code.value} : {}
+    attr && code ? {"supplier": new ObjectId(attr),"code": code } :
+    (attr ? {"supplier": new ObjectId(attr)}:
+    (code ? {"code": code} : {}))
   , {
       page: parseInt(req.swagger.params.page.value),
       populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
@@ -367,7 +373,13 @@ exports.inventory_battery = function(req, res) {
  * List of packings analysis by permanence time
  */
 exports.inventory_permanence = function(req, res) {
-  packing.paginate({ "code": req.swagger.params.code.value}, {
+  let code = req.swagger.params.code.value;
+  let attr = req.swagger.params.attr.value;
+
+  packing.paginate( attr && code ? {"supplier": new ObjectId(attr),"code": code } :
+      (attr ? {"supplier": new ObjectId(attr)}:
+      (code ? {"code": code} : {})),
+    {
       page: parseInt(req.swagger.params.page.value),
       populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {
@@ -382,11 +394,13 @@ exports.inventory_permanence = function(req, res) {
  * Historic of packings by serial
  */
 exports.inventory_packing_historic = function(req, res) {
+  let serial = req.swagger.params.serial.value;
+  let code = req.swagger.params.code.value;
+  let attr = req.swagger.params.attr.value;
 
-  historic.paginate({
-      "serial": req.swagger.params.serial.value,
-      "packing_code":  req.swagger.params.code.value
-    }, {
+  historic.paginate(
+      attr ? {"supplier": new ObjectId(attr),"serial": serial,"packing_code": code} : {"serial": serial,"packing_code": code},
+     {
       page: parseInt(req.swagger.params.page.value),
       populate: query.queries.populate,
       sort: {
@@ -401,7 +415,12 @@ exports.inventory_packing_historic = function(req, res) {
  * All packings inventory
  */
 exports.inventory_packings = function(req, res) {
-  packing.paginate(req.swagger.params.code.value ? {"code": req.swagger.params.code.value} : {}, {
+  let code = req.swagger.params.code.value;
+  let attr = req.swagger.params.attr.value;
+
+  packing.paginate(attr && code ? {"supplier": new ObjectId(attr),"code": code } :
+      (attr ? {"supplier": new ObjectId(attr)}:
+      (code ? {"code": code} : {})), {
       page: parseInt(req.swagger.params.page.value),
       populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {

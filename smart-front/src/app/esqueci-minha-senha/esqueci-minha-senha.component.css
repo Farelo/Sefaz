@@ -21,6 +21,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .divBotao {
   text-align: center;
 }
@@ -31,6 +32,7 @@ h1 {
   text-align: center;
   opacity: 0.9;
 }
+
 input {
   background-color: transparent;
   border-style: solid;
@@ -49,58 +51,67 @@ input {
 .wrapper {
   margin-top: 25px;
 }
+
 @media (min-width: 1080px) {
   .wrapper {
     margin-left: 20px;
     margin-right: 20px;
   }
 }
+
 .inputSenha {
   background-size: 18px;
   text-decoration: none;
   text-align: left;
 }
+
 input:focus {
   outline: none !important;
 }
+
 .bordaVermelha {
   outline: none !important;
   border-style: solid;
-  border-bottom-color: #D24444;
+  border-bottom-color: #d24444;
   border-bottom-width: 1.5px;
   border-top: none;
   border-left: none;
   border-right: none;
   box-shadow: none;
 }
+
 .bordaVermelha2 {
   outline: none !important;
   border-style: solid;
-  border-bottom-color: #D24444;
+  border-bottom-color: #d24444;
   border-bottom-width: 1.5px;
   border-top: none;
   border-left: none;
   border-right: none;
   box-shadow: none;
 }
+
 .bordaVermelha3 {
   outline: none !important;
   border-style: solid;
-  border-bottom-color: #D24444;
+  border-bottom-color: #d24444;
   border-bottom-width: 1.5px;
   border-top: none;
   border-left: none;
   border-right: none;
   box-shadow: none;
 }
+
 p {
   color: white;
   text-align: left;
   font-weight: lighter;
 }
+
 .esqueci {
   margin-top: 25px;
 }
+
 button {
   padding: 5px 40px;
   background-color: transparent;
@@ -113,6 +124,7 @@ button {
   text-align: center;
   margin-top: 25px;
 }
+
 button:hover {
   background-color: white;
   color: black;
@@ -123,6 +135,7 @@ button:hover {
   -webkit-transition: color 0.5s;
   transition: color 0.5s;
 }
+
 button:focus {
   outline: none;
 }
@@ -131,11 +144,27 @@ button:focus {
   color: #d24444;
   font-size: 13px;
 }
+
 .titulo {
   font-weight: bold;
 }
 
-::-webkit-input-placeholder {  color: #FAFAFB; opacity: 0.5 }
-::-moz-placeholder {  color: #FAFAFB;opacity: 0.8}
-:-ms-input-placeholder {  color: #FAFAFB;opacity: 0.8}
-:-moz-placeholder {  color: #FAFAFB;opacity: 0.8}
+::-webkit-input-placeholder {
+  color: #fafafb;
+  opacity: 0.5;
+}
+
+::-moz-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}
+
+:-ms-input-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}
+
+:-moz-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}

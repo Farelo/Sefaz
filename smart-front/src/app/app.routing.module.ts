@@ -1,6 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { AuthGuard } from './guard/auth.guard';
 
 const appRoutes: Routes = [

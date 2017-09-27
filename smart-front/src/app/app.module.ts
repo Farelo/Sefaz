@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
 import { ModalUserComponent } from './shared/modal-user/modal-user.component';
 import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
-
 import { ApplicationPipes } from './shared/pipes/application.pipes';
 import {ValidatorsModule, EmailValidators} from 'ngx-validators'
 
@@ -21,7 +20,8 @@ import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.compone
 
 import { AlertsService } from './servicos/alerts.service';
 import { ImportService } from './servicos/import.service';
-import { DashboardModule } from './admin/dashboard/dashboard.module';
+import { DashboardModuleAdmin } from './admin/dashboard/dashboard.module';
+import { DashboardModuleSupplier } from './supplier/dashboard/dashboard.module';
 import { ToastService } from './servicos/toast.service';
 import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';
@@ -60,7 +60,8 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     HttpModule,
     NgbModule.forRoot(),
     AlertModule.forRoot(),
-    DashboardModule,
+    DashboardModuleAdmin,
+    DashboardModuleSupplier,
     ReactiveFormsModule,
     ValidatorsModule,
     AppRoutingModule,

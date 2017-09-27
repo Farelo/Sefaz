@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common'
 import { NgxPaginationModule} from 'ngx-pagination';
 import { ModalModule ,TooltipModule} from 'ngx-bootstrap'
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Select2Module } from 'ng2-select2';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule} from '@angular/forms';
 import {EmbalagemCadastroComponent} from './embalagem-cadastro/embalagem-cadastro.component';
@@ -20,7 +19,6 @@ import {EmbalagemRoutingModule} from './embalagem.routing.module';
   imports: [
     CommonModule,
     RouterModule,
-    Select2Module,
     EmbalagemRoutingModule,
     NgxPaginationModule,
     NgbModule.forRoot(),

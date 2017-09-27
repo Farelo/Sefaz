@@ -47,6 +47,11 @@ paths:
         description: "The especific page that returns alerts related a this page"
         required: true
         type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific supplier that returns packings related a this supplier"
+        required: false
+        type: string
       responses:
         200:
           description: "Message"
@@ -94,6 +99,11 @@ paths:
         name: "project"
         description: "The especific page that returns alerts related a this page"
         required: true
+        type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific supplier that returns packings related a this supplier"
+        required: false
         type: string
       responses:
         200:

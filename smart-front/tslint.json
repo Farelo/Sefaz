@@ -12,6 +12,15 @@
       true,
       "check-space"
     ],
+    "at-rule-no-unknown": [ true, {
+      "ignoreAtRules": [
+        "extends",
+        "ignores"
+      ]
+    }],
+    "indentation": "tab",
+    "number-leading-zero": null,
+    "unit-whitelist": ["em", "rem", "s"],
     "curly": true,
     "eofline": true,
     "forin": true,
@@ -119,6 +128,7 @@
     "media-feature-name-no-vendor-prefix": true,
     "property-no-vendor-prefix": true,
     "selector-no-vendor-prefix": true,
-    "value-no-vendor-prefix": true
+    "value-no-vendor-prefix": true,
+
   }
 }

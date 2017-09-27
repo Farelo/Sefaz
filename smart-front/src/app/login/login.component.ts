@@ -22,7 +22,14 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(value.password, value.email).subscribe(result =>  {
         if(result){
           this.erroAuth = false;
-          this.router.navigate(['/rc/home']);
+
+          if(this.authenticationService.currentUser().supplier){
+            console.log("aquiiii");
+            this.router.navigate(['/fornecedor/home']);
+          }else{
+            this.router.navigate(['/rc/home']);
+          };
+
         }else{
           this.erroAuth = true;
         }

@@ -58,5 +58,29 @@ exports.queries = {
         }
       }
     }
+  ],
+  login: function(password,email) {
+    return [
+    {
+      "$match": {
+        "password": password,
+        "email": email
+      }
+    },
+    {
+      "$lookup": {
+        "from": "suppliers",
+        "localField": "_id",
+        "foreignField": "profile",
+        "as": "supplier"
+      }
+    },
+    {
+      "$unwind": {
+        "path": "$supplier",
+        'preserveNullAndEmptyArrays': true
+      }
+    }
   ]
+  }
 }

@@ -137,6 +137,12 @@ paths:
       summary: "Get all plants on the system"
       description: ""
       operationId: list_all_general
+      parameters:
+      - in: "query"
+        name: "attr"
+        description: "The especific supplier that returns packings related a this supplier"
+        required: false
+        type: string
       responses:
         200:
           description: "Message"

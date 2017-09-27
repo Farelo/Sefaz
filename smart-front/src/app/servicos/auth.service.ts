@@ -15,7 +15,6 @@ export class AuthenticationService {
     }
 
     auth(res: Response) {
-        console.log(res.json().data);
         // login successful if there's a jwt token in the response
         let user = res.json().data;
         if (user) {
@@ -24,6 +23,10 @@ export class AuthenticationService {
         }
 
         return user;
+    }
+
+    currentUser(){
+      return JSON.parse(localStorage.getItem('currentUser'))[0];
     }
 
     logout() {

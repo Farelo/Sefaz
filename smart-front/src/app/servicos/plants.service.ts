@@ -27,8 +27,8 @@ export class PlantsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  retrieveGeneral(): Observable<any> {
-    return this.http.get(environment.url + 'plant/list/general')
+  retrieveGeneral(attr: string = ''): Observable<any> {
+    return this.http.get(environment.url + 'plant/list/general?attr=' +attr)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

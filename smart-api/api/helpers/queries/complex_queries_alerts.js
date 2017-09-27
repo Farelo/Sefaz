@@ -1,66 +1,73 @@
 'use strict';
+const mongoose   = require('mongoose');
+const ObjectId   = require('mongoose').Types.ObjectId;
 
 exports.queries = {
-    'listAlerts':
-    [{
-        "$lookup": {
-            "from": "packings",
-            "localField": "packing",
-            "foreignField": "_id",
-            "as": "packingObject"
-        }
-    },{
-        "$lookup": {
-            "from": "projects",
-            "localField": "project",
-            "foreignField": "_id",
-            "as": "projectObject"
-        }
-    }, {
-        "$lookup": {
-            "from": "suppliers",
-            "localField": "supplier",
-            "foreignField": "_id",
-            "as": "supplierObject"
-        }
-    }, {
-        "$unwind": "$packingObject"
-    },  {
-        "$unwind": "$supplierObject"
-    },  {
-        "$unwind": "$projectObject"
-    }
-   , {
-        "$group": {
-            "_id": {
-                "supplier": "$supplier",
-                "project": "$project",
-                "code": "$code",
-                "status" : "$status"
-            },
-            "quantity": {
-                "$sum": 1
-            },
-            "packing": {
-                "$first": "$packingObject"
-            },
-            "supplier": {
-                "$first": "$supplierObject"
-            },
-            "project": {
-                "$first": "$projectObject"
-            },
-            "status": {
-                "$first": "$status"
-            },
-            "hash": {
-                "$first": "$hashpacking"
-            }
-        }
+    'listAlerts': function(attr){
+      return [
+      attr ?  {"$match": {"supplier": new ObjectId(attr) }} : {"$match": { "supplier": { "$exists": true}}},
+      {
+          "$lookup": {
+              "from": "packings",
+              "localField": "packing",
+              "foreignField": "_id",
+              "as": "packingObject"
+          }
+      },{
+          "$lookup": {
+              "from": "projects",
+              "localField": "project",
+              "foreignField": "_id",
+              "as": "projectObject"
+          }
+      }, {
+          "$lookup": {
+              "from": "suppliers",
+              "localField": "supplier",
+              "foreignField": "_id",
+              "as": "supplierObject"
+          }
+      }, {
+          "$unwind": "$packingObject"
+      },  {
+          "$unwind": "$supplierObject"
+      },  {
+          "$unwind": "$projectObject"
+      }
+     , {
+          "$group": {
+              "_id": {
+                  "supplier": "$supplier",
+                  "project": "$project",
+                  "code": "$code",
+                  "status" : "$status"
+              },
+              "quantity": {
+                  "$sum": 1
+              },
+              "packing": {
+                  "$first": "$packingObject"
+              },
+              "supplier": {
+                  "$first": "$supplierObject"
+              },
+              "project": {
+                  "$first": "$projectObject"
+              },
+              "status": {
+                  "$first": "$status"
+              },
+              "hash": {
+                  "$first": "$hashpacking"
+              }
+          }
+      },
+    { $sort : { status : 1 } }]
     },
-  { $sort : { status : 1 } }],
-  packing_list: function(code,project,supplier,status){
-    return [{
+  packing_list: function(code,project,supplier,status, attr){
+    return [
+      attr ?  {"$match": {"supplier": new ObjectId(attr) }} : {"$match": { "supplier": { "$exists": true}}},
+      {
         "$lookup": {
             "from": "packings",
             "localField": "packing",

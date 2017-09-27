@@ -84,7 +84,11 @@ exports.alert_delete = function(req, res) { 
  */
 exports.alert_list_hashing = function(req, res) { 
 
-  let aggregate = alert.aggregate(query.queries.packing_list(req.swagger.params.code.value,new ObjectId(req.swagger.params.project.value),new ObjectId(req.swagger.params.supplier.value),parseInt(req.swagger.params.status.value)));
+  let aggregate = alert.aggregate(query.queries.packing_list(req.swagger.params.code.value,
+    new ObjectId(req.swagger.params.project.value),
+    new ObjectId(req.swagger.params.supplier.value),
+    parseInt(req.swagger.params.status.value,
+    req.swagger.params.attr.value)));
 
   alert.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
@@ -95,7 +99,7 @@ exports.alert_list_hashing = function(req, res) { 
  */
 exports.alert_list_pagination = function(req, res) { 
 
-  let aggregate = alert.aggregate(query.queries.listAlerts);
+  let aggregate = alert.aggregate(query.queries.listAlerts(req.swagger.params.attr.value));
 
   alert.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},

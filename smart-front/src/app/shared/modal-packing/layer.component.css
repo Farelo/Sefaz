@@ -3,11 +3,13 @@
   text-align: right;
   margin-right: 5px;
 }
+
 .botaoVisualizar {
   font-size: 16px;
   border-radius: 0rem;
 }
-.botaoVisualizar:focus{
+
+.botaoVisualizar:focus {
   outline: none;
 }
 * { font-family: 'Roboto', sans-serif; }
@@ -19,17 +21,21 @@
   border-bottom-width: thin;
   margin-bottom: 15px;
 }
+
 .header span {
-  color: #EF5562;
+  color: #ef5562;
 }
+
 .header p {
   font-weight: bold;
   width: 200px;
 }
+
 .modalBody span {
   font-weight: bold;
 }
-.botaoVisualizar{
+
+.botaoVisualizar {
   padding: 5px 15px;
   text-align: center;
   border-style: solid;
@@ -47,6 +53,7 @@
   -webkit-transition: color 0.3s;
   transition: color 0.3s;
 }
+
 .divBotao {
   text-align: center;
   margin-top: 20px;

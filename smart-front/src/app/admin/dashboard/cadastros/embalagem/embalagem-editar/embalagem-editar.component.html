@@ -76,7 +76,7 @@
           <select formControlName="supplier" [ngClass]="{'required': (packing.get('supplier').hasError('required') && packing.get('supplier').touched)
             || (packing.get('supplier').hasError('required') && formDir.submitted)}">
            <option value="">Associe um Fornecedor </option>
-           <option *ngFor="let obj of suppliers" [ngValue]="obj">DUNS: {{obj.duns}} - Nome: {{obj.name}}{{obj === packing.controls.tag.value}}</option>
+           <option *ngFor="let obj of suppliers" [ngValue]="obj">DUNS: {{obj.duns}} - Nome: {{obj.name}}</option>
           </select>
           <p class="requiredText" *ngIf="(packing.get('supplier').hasError('required') && packing.get('supplier').touched)
         || (packing.get('supplier').hasError('required') && formDir.submitted)">Campo Obrigatório</p>

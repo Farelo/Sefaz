@@ -3,77 +3,81 @@ var Mongoose = require('mongoose');
 var ObjectId = Mongoose.Types.ObjectId;
 
 exports.queries = {
-  inventory_general: [{
-      "$lookup": {
-        "from": "suppliers",
-        "localField": "supplier",
-        "foreignField": "_id",
-        "as": "supplierObject"
-      }
-    },
-    {
-      "$lookup": {
-        "from": "projects",
-        "localField": "project",
-        "foreignField": "_id",
-        "as": "projectObject"
-      }
-    },
-    {
-      "$lookup": {
-        "from": "gc16",
-        "localField": "gc16",
-        "foreignField": "_id",
-        "as": "gc16Object"
-      }
-    },
+  inventory_general: function(attr){
+    return [ attr ?  {"$match": {"supplier": new ObjectId(attr) }} : {"$match": { "supplier": { "$exists": true}}},
+      {
+        "$lookup": {
+          "from": "suppliers",
+          "localField": "supplier",
+          "foreignField": "_id",
+          "as": "supplierObject"
+        }
+      },
+      {
+        "$lookup": {
+          "from": "projects",
+          "localField": "project",
+          "foreignField": "_id",
+          "as": "projectObject"
+        }
+      },
+      {
+        "$lookup": {
+          "from": "gc16",
+          "localField": "gc16",
+          "foreignField": "_id",
+          "as": "gc16Object"
+        }
+      },
 
-    {
-      "$unwind": {
-        "path": "$supplierObject",
-        'preserveNullAndEmptyArrays': true
-      }
-    }, {
-      "$unwind": {
-        "path": "$projectObject",
-        'preserveNullAndEmptyArrays': true
-      }
-    }, {
-      "$unwind": {
-        "path": "$gc16Object",
-        'preserveNullAndEmptyArrays': true
-      }
-    },
-    {
-      "$group": {
-        "_id": {
-          "code": "$code",
-          "supplier": "$supplier",
-          "project": "$project",
-        },
-        "code": {
-          "$first": "$code"
-        },
-        "supplier": {
-          "$first": "$supplierObject"
-        },
-        "description": {
-          "$first": "$type"
-        },
-        "project": {
-          "$first": "$projectObject"
-        },
-        "quantity": {
-          "$sum": 1
-        },
-        "gc16": {
-          "$first": "$gc16Object"
+      {
+        "$unwind": {
+          "path": "$supplierObject",
+          'preserveNullAndEmptyArrays': true
+        }
+      }, {
+        "$unwind": {
+          "path": "$projectObject",
+          'preserveNullAndEmptyArrays': true
+        }
+      }, {
+        "$unwind": {
+          "path": "$gc16Object",
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        "$group": {
+          "_id": {
+            "code": "$code",
+            "supplier": "$supplier",
+            "project": "$project",
+          },
+          "code": {
+            "$first": "$code"
+          },
+          "supplier": {
+            "$first": "$supplierObject"
+          },
+          "description": {
+            "$first": "$type"
+          },
+          "project": {
+            "$first": "$projectObject"
+          },
+          "quantity": {
+            "$sum": 1
+          },
+          "gc16": {
+            "$first": "$gc16Object"
+          }
         }
       }
-    }
-  ],
-  inventory_general_by_plant: function(code, supplier,project) {
-    return [{
+    ]
+  },
+  inventory_general_by_plant: function(code, supplier,project, attr) {
+    return [
+      {
         "$match": {
           "supplier": supplier,
           "code": code,
@@ -176,8 +180,9 @@ exports.queries = {
       }
     ]
   },
-  supplier_inventory: function(id) {
-    return [{
+  supplier_inventory: function(id,attr) {
+    return [
+      {
         "$lookup": {
           "from": "suppliers",
           "localField": "supplier",
@@ -274,12 +279,9 @@ exports.queries = {
     ]
 
   },
-  historic_packing: function(serial) {
-    return [{
-        "$match": {
-          "serial": serial,
-        }
-      },
+  historic_packing: function(serial,attr) {
+    return [
+       attr ?  {"$match": {"supplier": new ObjectId(attr), "serial": serial}} : {"$match": { "serial": serial}},
       {
         "$lookup": {
           "from": "suppliers",
@@ -409,12 +411,9 @@ exports.queries = {
       }
     ];
   },
-  quantity_inventory: function(code){
-    return [{
-        "$match": {
-          "code": code,
-        }
-      },
+  quantity_inventory: function(code,attr){
+    return [
+      attr ?  {"$match": {"supplier": new ObjectId(attr), "code": code}} : {"$match": { "code": code}},
       {
         "$lookup": {
           "from": "suppliers",

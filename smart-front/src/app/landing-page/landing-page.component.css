@@ -11,6 +11,7 @@
   margin: 0px;
   padding: 0px;
 }
+
 .wrapper {
   background-position: center;
   background-repeat: no-repeat;
@@ -21,8 +22,8 @@
   margin: 0px;
   padding: 0px;
   background-color: rgba(0,0,0,.8);
-
 }
+
 .quadrado {
   display: inline-block;
   padding: 20px;
@@ -39,13 +40,14 @@ p {
   font-size: 30px;
   margin-bottom: 50px;
   opacity: 0.9;
-
 }
+
 .titulo {
   border-bottom-style: solid;
   border-bottom-color: white;
   border-bottom-width: thin;
 }
+
 h2 {
   text-align: -webkit-center;
   color: white;
@@ -55,6 +57,7 @@ h2 {
   margin: 0px;
   padding: 20px 15px 0px 15px;
 }
+
 button {
   padding: 5px 40px;
   background-color: #6382c9;
@@ -66,6 +69,7 @@ button {
   font-size: 20px;
   font-weight: 300;
 }
+
 button:hover {
   background-color: white;
   color: #6382c9;
@@ -75,22 +79,25 @@ button:hover {
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
 }
-.botao{
+
+.botao {
   text-align: -webkit-center;
   margin-top: 70px;
-
 }
+
 button:focus {
   outline: none !important;
   border-style: solid;
   border-color: white;
   border-radius: 20px;
 }
+
 .azul {
   color: #6382c9;
   font-weight: 400;
 }
-.span1{
+
+.span1 {
   background: url("../../assets/images/bordas-02.png") no-repeat left center;
   background-size: 18px;
   text-decoration: none;
@@ -98,7 +105,8 @@ button:focus {
   height: 18px;
   position: fixed;
 }
-.span2{
+
+.span2 {
   background: url("../../assets/images/bordas-01.png") no-repeat left center;
   background-size: 18px;
   text-decoration: none;
@@ -109,6 +117,7 @@ button:focus {
   float: right;
   bottom: 0px;
 }
+
 .span3 {
   background: url("../../assets/images/bordas-04.png") no-repeat left center;
   background-size: 18px;

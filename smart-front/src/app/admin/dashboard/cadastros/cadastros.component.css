@@ -10,14 +10,21 @@
   transition: background-color 0.5s;
   font-family: 'Raleway', sans-serif;
 }
-td, th, tr, .excluir, .editar, p {
-  font-family: 'Roboto', sans-serif;
 
+td,
+th,
+tr,
+.excluir,
+.editar,
+p {
+  font-family: 'Roboto', sans-serif;
 }
 
-.menu, h1 {
+.menu,
+h1 {
   font-family: 'Raleway', sans-serif;
 }
+
 .cadastroMenu div {
   width: 100%;
   height: auto;
@@ -28,37 +35,47 @@ td, th, tr, .excluir, .editar, p {
   -webkit-transition: background-color 0.5s;
   transition: background-color 0.5s;
 }
+
 .cadastroMenu:hover {
   background-color: #6382c9;
 }
+
 .cadastroMenu div:hover {
   color: white;
   border-color: white;
 }
-.cadastroMenu:active { background-color: #6382c9; }
+
+.cadastroMenu:active {
+  background-color: #6382c9;
+}
 
 .cadastroMenu div:active {
   color: white;
   border-color: white;
 }
 
-.active { background-color: #6382c9; }
+.active {
+  background-color: #6382c9;
+}
 
-.active div{
+.active div {
   color: white;
   border-color: white;
 }
 
-.col-md-3 { margin-bottom: 20px; }
+.col-md-3 {
+  margin-bottom: 20px;
+}
 
 .meuInput {
-  width:100%;
+  width: 100%;
   margin-bottom: 10px;
   box-shadow: 0px 0px 3px #000;
   display: inline-block;
   border-radius: 0em;
   border: none;
 }
+
 .mais {
   width: 100%;
   background-color: #6382c9;
@@ -73,58 +90,82 @@ td, th, tr, .excluir, .editar, p {
   background-size: 15px;
 }
 
-.form-control {  font-size: 15px; }
+.form-control {
+  font-size: 15px;
+}
+
 .cabecalho {
   background-color: #6382c9;
   color: white;
 }
-td {  background-color: white; }
 
-.editar {  background-color: #3b5d93; }
-.excluir {  background-color:  #1d416B; }
+td {
+  background-color: white;
+}
+
+.editar {
+  background-color: #3b5d93;
+}
+
+.excluir {
+  background-color: #1d416b;
+}
+
 .editar:hover {
   background-color: #6382c9;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
-.excluir:hover{
+
+.excluir:hover {
   background-color: #102b40;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
 
-.editar, .excluir {
+.editar,
+.excluir {
   width: 80px;
   color: white;
   border: none;
   padding: 5px 10px;
 }
 
-.tabela {  box-shadow: 0px 0px 7px #000;}
-.table {margin-bottom: 0px;}
+.tabela {
+  box-shadow: 0px 0px 7px #000;
+}
+
+.table {
+  margin-bottom: 0px;
+}
+
 .teste {
   text-align: right;
 }
+
 .opcoes {
   text-align: right;
   padding-right: 123px;
 }
-@media (max-width: 768px){
+
+@media (max-width: 768px) {
   .row {
     margin-bottom: 10px;
     margin-top: 10px;
   }
 }
 
-h1 , .botaoSalvar {
-  font-family:'Montserrat',sans-serif;
+h1,
+.botaoSalvar {
+  font-family: 'Montserrat', sans-serif;
 }
 
 .base {
-    background-color: white;
-    padding: 15px;
-    box-shadow: 0px 0px 7px #000;
+  background-color: white;
+  padding: 15px;
+  box-shadow: 0px 0px 7px #000;
 }
+
 h1 {
   padding-bottom: 15px;
   border-bottom-color: #6382c9;
@@ -138,19 +179,29 @@ h1 {
   font-family: 'Raleway', sans-serif;
   font-size: 13px;
 }
+
 .explicacao {
   color: #777;
   font-size: 10px;
   margin-bottom: 0px;
   font-family: 'Roboto', sans-serif;
 }
-.campo { margin-bottom: 20px; }
-input { font-size: 13px; border-radius: 0em !important;}
+
+.campo {
+  margin-bottom: 20px;
+}
+
+input {
+  font-size: 13px;
+  border-radius: 0em !important;
+}
 
 .botoes {
   text-align: center;
 }
-.botaoRegistrar, .botaoVoltar {
+
+.botaoRegistrar,
+.botaoVoltar {
   border-style: solid;
   border-width: 2px;
   padding: 5px 0px;
@@ -158,13 +209,17 @@ input { font-size: 13px; border-radius: 0em !important;}
   font-size: 13px;
   font-family: 'Montserrat', sans-serif;
 }
-.botaoRegistrar:hover, .botaoVoltar:hover {
+
+.botaoRegistrar:hover,
+.botaoVoltar:hover {
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
   -webkit-transition: color 0.3s;
   transition: color 0.3s;
 }
-.botaoRegistrar:focus, .botaoVoltar:focus {
+
+.botaoRegistrar:focus,
+.botaoVoltar:focus {
   outline: none !important;
 }
 
@@ -173,15 +228,18 @@ input { font-size: 13px; border-radius: 0em !important;}
   color: #6382c9;
   border-color: #6382c9;
 }
+
 .botaoRegistrar:hover {
   background-color: #6382c9;
   color: white;
 }
+
 .botaoVoltar {
   background-color: white;
   color: #777;
   border-color: #777;
 }
+
 .botaoVoltar:hover {
   background-color: #777;
   color: white;
@@ -189,48 +247,63 @@ input { font-size: 13px; border-radius: 0em !important;}
 
 .botaoDrop {
   background-color: white;
-  padding:5px;
+  padding: 5px;
   line-height: 1.25;
-  border:1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   width: 100%;
 }
 
-.dropdown-item { font-size: 12px; }
-.dropdown-item:hover { background: lightgrey; }
+.dropdown-item {
+  font-size: 12px;
+}
+
+.dropdown-item:hover {
+  background: lightgrey;
+}
 
 select {
   background-color: white;
-  padding:7px;
+  padding: 7px;
   line-height: 1.25;
-  border:1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   width: 100%;
   text-align: left;
 }
 
-option { color: grey; }
-option:hover { background-color: lightgrey; }
+option {
+  color: grey;
+}
 
-.placeholder { position: relative; }
+option:hover {
+  background-color: lightgrey;
+}
+
+.placeholder {
+  position: relative;
+}
 
 .placeholder::after {
-    position: absolute;
-    right: 25px;
-    top: 6px;
-    content: attr(data-placeholder);
-    pointer-events: none;
-    opacity: 0.6;
+  position: absolute;
+  right: 25px;
+  top: 6px;
+  content: attr(data-placeholder);
+  pointer-events: none;
+  opacity: 0.6;
 }
+
 .classVazio {
   background-color: white;
   margin: 0px;
   padding: 20px;
   box-shadow: 0px 0px 7px #000;
 }
+
 .inputMapa {
   margin-bottom: 15px;
   width: 100%;
   padding: 5px;
 }
+
 h3 {
   margin-bottom: 10px;
 }
@@ -239,23 +312,27 @@ h3 {
   display: inherit;
   margin-bottom: 10px;
 }
+
 .bigger2 {
   position: relative;
   font-size: 12px;
-  color: #666666;
+  color: #666;
   display: inline-block;
-  width: 25px
+  width: 25px;
 }
+
 .fromSun {
   width: 23px;
   height: 32px;
   vertical-align: middle;
   -webkit-mask-box-image: url("../../../../assets/images/local1.png");
-  background-color: #EF5562;
+  background-color: #ef5562;
 }
+
 .forn {
   padding-left: 5px;
 }
+
 .divisoria {
   color: #6382c9;
   border-color: #6382c9;

@@ -1,28 +1,34 @@
 .modal-title {
   font-size: 18px;
   text-align: left;
-  display:inline-block;
+  display: inline-block;
 }
+
 .close {
   font-size: 25px;
   text-align: right;
 }
+
 .modal-header {
   display: block;
 }
+
 .btn {
   font-size: 16px;
 }
 * { font-family: 'Roboto', sans-serif; }
 
 .table {
-	font-size: 14px;
+  font-size: 14px;
 }
+
 .cabecalho {
   background-color: #6382c9;
   color: white;
 }
-td {  background-color: white; }
+
+td { background-color: white; }
+
 .header {
   display: inline-grid;
   border-bottom-style: solid;
@@ -30,13 +36,16 @@ td {  background-color: white; }
   border-bottom-width: thin;
   margin-bottom: 15px;
 }
+
 .header span {
-  color: #EF5562;
+  color: #ef5562;
 }
+
 .header p {
   font-weight: bold;
   width: 200px;
 }
+
 th {
   border-bottom: none !important;
 }
