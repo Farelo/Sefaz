@@ -64,29 +64,74 @@
         || (route.get('plant_factory').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
 
-        <div class="campo" formGroupName="time">
-          <p class="descricao">DEFINA UM TEMPO MÁXIMO DE VIAGEM</p>
-          <p class="explicacao"></p>
-          <div class="col-md-6">
-            <ngb-timepicker [(ngModel)]="time_max" [seconds]="true" formControlName="max"></ngb-timepicker>
-            <!-- <timepicker [(ngModel)]="max" formControlName="max"></timepicker> -->
-            <p class="requiredText" *ngIf="(route.get('time.max').hasError('required') && route.get('time.max').touched)
-          || (route.get('time.max').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-          </div>
-          <div class="col-md-6">
-            <p>Dias: {{time_max.hour}}</p>
-            <p>Horas: {{time_max.minute }}</p>
-            <p>Minutos: {{time_max.second }}</p>
-          </div>
+        <div class="row campo" formGroupName="time" style="margin:0px;">
+          <p class="descricao" style="width: 100%">DEFINA UM TEMPO MÁXIMO DE VIAGEM</p>
+          <br>
+          <br>
 
+          <div class="col-sm-4 divEsquerda">
+            <div class="campo">
+              <p class="descricao">DIAS</p>
+              <div class="input-group" class="placeholder" style="font-size: 10px">
+                <input type="number" class="form-control" [(ngModel)]="time_max.hour">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 divMeio">
+            <div class="campo">
+              <p class="descricao">HORAS</p>
+              <div class="input-group"class="placeholder" style="font-size: 10px">
+                <input type="number" class="form-control" [(ngModel)]="time_max.minute">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 divDireita">
+            <div class="campo">
+              <p class="descricao">MINUTOS</p>
+              <div class="input-group"class="placeholder" style="font-size: 10px">
+                <input type="number" class="form-control" [(ngModel)]="time_max.second">
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="campo" formGroupName="time">
+        <div class="row campo" formGroupName="time" style="margin:0px;">
+          <p class="descricao" style="width: 100%">DEFINA UM TEMPO MÍNIMO DE VIAGEM</p>
+          <br>
+          <br>
+
+          <div class="col-sm-4 divEsquerda">
+            <div class="campo">
+              <p class="descricao">DIAS</p>
+              <div class="input-group" class="placeholder" style="font-size: 10px">
+                <input type="number" class="form-control" [(ngModel)]="time_min.hour">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 divMeio">
+            <div class="campo">
+              <p class="descricao">HORAS</p>
+              <div class="input-group"class="placeholder" style="font-size: 10px">
+                <input type="number" class="form-control" [(ngModel)]="time_min.minute">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 divDireita">
+            <div class="campo">
+              <p class="descricao">MINUTOS</p>
+              <div class="input-group"class="placeholder" style="font-size: 10px">
+                <input type="number" class="form-control" [(ngModel)]="time_min.second">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="campo" formGroupName="time">
           <p class="descricao">DEFINA UM TEMPO MÍNIMO DE VIAGEM</p>
           <p class="explicacao"></p>
           <div class="col-md-6">
             <ngb-timepicker [(ngModel)]="time_min" [seconds]="true" formControlName="min"></ngb-timepicker>
-            <!-- <timepicker [(ngModel)]="min" formControlName="min"></timepicker> -->
+            <!-- <timepicker [(ngModel)]="min" formControlName="min"></timepicker> -
             <p class="requiredText" *ngIf="(route.get('time.min').hasError('required') && route.get('time.min').touched)
           || (route.get('time.min').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
           </div>
@@ -96,7 +141,8 @@
             <p>Minutos: {{time_min.second }}</p>
           </div>
 
-        </div>
+        </div> -->
+
       </div>
 
     </div>

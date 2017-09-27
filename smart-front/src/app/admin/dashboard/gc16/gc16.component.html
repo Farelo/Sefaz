@@ -1,6 +1,10 @@
 <div class="inicial">
   <div class="i1"><input type="text" class="form-control buscar" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()"></div>
-  <div class="i2"><button class="mais" routerLink="/rc/gc16/adicionar"></button></div>
+  <div class="i2">
+    <button class="mais" routerLink="/rc/gc16/adicionar">
+      <div class="bigger"><div class="det"></div></div>
+  </button>
+</div>
 </div>
 
 <div class="table-responsive meuInventario">

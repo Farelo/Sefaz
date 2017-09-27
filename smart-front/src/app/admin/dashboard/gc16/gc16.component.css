@@ -89,10 +89,35 @@ span {
   box-shadow: 0px 0px 7px #000;
   border: none;
   height: 34px;
-  background-image: url("../../../../assets/images/mais.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 15px;
+}
+
+.mais:hover {
+  background-color: white;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.bigger {
+  position: relative;
+}
+
+.det {
+  width: 15px;
+  height: 15px;
+  -webkit-mask-box-image: url("../../../../assets/images/mais.png");
+  cursor: pointer;
+  left: 50%;
+  margin-left: 38%;
+  background-color: white;
+}
+
+.mais:hover .det {
+  background-color: #6382c9;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
 }
 
 .i1 {

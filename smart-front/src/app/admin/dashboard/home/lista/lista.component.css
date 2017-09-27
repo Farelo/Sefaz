@@ -295,11 +295,14 @@ label {
 
 .painel {
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
 }
 
 .quadradoPequeno {
   width: 24%;
-  height: 75px;
+  height: auto;
   border-left-style: solid;
   border-right-style: solid;
   border-bottom-style: solid;

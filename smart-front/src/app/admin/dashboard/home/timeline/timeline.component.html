@@ -4,12 +4,14 @@
 
     <button type="button" class="interrogacao1"
       [ngbPopover]= 'popContent' placement="left"
-      *ngIf="telaGrande == false" triggers='hover'>
+      *ngIf="telaGrande == false" triggers='hover'
+      (click)="openHelp(content);editModal()">
     </button>
 
     <button type="button" class="interrogacao2"
         [ngbPopover]= 'popContent' placement="bottom"
-        *ngIf="telaGrande == true" triggers='hover'>
+        *ngIf="telaGrande == true" triggers='hover'
+        (click)="openHelp(content);editModal()">
     </button>
 
     <ng-template #popContent>
@@ -20,6 +22,23 @@
       <span class="lg4">OBJETO ATRASADO</span><br />
       <span class="lg5">TEMPO DE PERMANÊNCIA</span><br />
       <!-- <span class="lg6"></span><br /> -->
+    </ng-template>
+
+    <ng-template #content>
+      <div class="modalFilho">
+        <p class="tit1">Alertas e seus significados</p>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click');showModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      <div class="modalBody" style="text-align: center">
+
+        <span class="lg1">OBJETO PERDIDO</span><br />
+        <span class="lg2">OBJETO INCORRETO</span><br />
+        <span class="lg3">BATERIA BAIXA</span><br />
+        <span class="lg4">OBJETO ATRASADO</span><br />
+        <span class="lg5">TEMPO DE PERMANÊNCIA</span><br />
+      </div>
+      </div>
     </ng-template>
 
   </div>
