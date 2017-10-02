@@ -33,16 +33,16 @@
       "description": "All information about your Inventory"
     },
     {
+      "name": "Inventory Logistic",
+      "description": "All information about your Inventory to Op. Logistic"
+    },
+    {
       "name": "Profile",
       "description": "All information about your Profiles"
     },
     {
       "name": "Project",
       "description": "All information about your Projects"
-    },
-    {
-      "name": "Admin",
-      "description": "All information about your Admins"
     },
     {
       "name": "Supplier",
@@ -77,18 +77,6 @@
       "description": "All information about your Checkpoints"
     },
     {
-      "name": "Staff Supplier",
-      "description": "All information about your Staff Supplier"
-    },
-    {
-      "name": "Admin Client",
-      "description": "All information about your Admin Client"
-    },
-    {
-      "name": "Staff",
-      "description": "All information about your Staff"
-    },
-    {
       "name": "Historic Tags",
       "description": "All information about your Historic Tags"
     },
@@ -114,382 +102,6 @@
     }
   ],
   "paths": {
-    "/adminclient/retrieve/{admin_client_id}": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "get": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Get a admin on the system",
-        "description": "",
-        "operationId": "admin_client_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_client_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/adminclient/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "get": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Get all admin clients on the system by pagination",
-        "description": "",
-        "operationId": "admin_client_listPagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of admin clients that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns clients admins related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/adminclient/create": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "post": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Add a new client admin to the system",
-        "description": "",
-        "operationId": "admin_client_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "admin object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ClientAdmin"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/adminclient/delete/{admin_client_id}": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "delete": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Remove a client admin on the system",
-        "description": "",
-        "operationId": "admin_client_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_client_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/adminclient/update/{admin_client_id}": {
-      "x-swagger-router-controller": "admin_client_controller",
-      "put": {
-        "tags": [
-          "Admin Client"
-        ],
-        "summary": "Update a client admin on the system",
-        "description": "",
-        "operationId": "admin_client_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_client_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The project object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ClientAdmin"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/retrieve/{admin_id}": {
-      "x-swagger-router-controller": "admin_controller",
-      "get": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Get a admin on the system",
-        "description": "",
-        "operationId": "admin_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "admin_controller",
-      "get": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Get all admins on the system by pagination",
-        "description": "",
-        "operationId": "admin_listPagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of admins that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns admins related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/create": {
-      "x-swagger-router-controller": "admin_controller",
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Add a new admin to the system",
-        "description": "",
-        "operationId": "admin_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "admin object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Admin"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/delete/{admin_id}": {
-      "x-swagger-router-controller": "admin_controller",
-      "delete": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Remove a admin on the system",
-        "description": "",
-        "operationId": "admin_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/admin/update/{admin_id}": {
-      "x-swagger-router-controller": "admin_controller",
-      "put": {
-        "tags": [
-          "Admin"
-        ],
-        "summary": "Update a admin on the system",
-        "description": "",
-        "operationId": "admin_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "admin_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The project object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Admin"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
     "/alert/retrieve/{packing_id}/{status}": {
       "x-swagger-router-controller": "alert_controller",
       "get": {
@@ -579,6 +191,56 @@
         }
       }
     },
+    "/alert/list/pagination/logistic/{limit}/{page}": {
+      "x-swagger-router-controller": "alert_controller",
+      "post": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Get all alerts on the system by pagination",
+        "description": "",
+        "operationId": "alert_list_pagination_logistic",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of alerts that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/alert/list/all/packing/{limit}/{page}/{code}/{project}/{supplier}/{status}": {
       "x-swagger-router-controller": "alert_controller",
       "get": {
@@ -637,6 +299,84 @@
             "description": "The especific supplier that returns packings related a this supplier",
             "required": false,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/alert/list/all/packing/logistic/{limit}/{page}/{code}/{project}/{supplier}/{status}": {
+      "x-swagger-router-controller": "alert_controller",
+      "post": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Get all alerts on the system",
+        "description": "",
+        "operationId": "alert_list_hashing_logistic",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of alerts that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "status",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "supplier",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "The especific page that returns alerts related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
           }
         ],
         "responses": {
@@ -2009,6 +1749,348 @@
             "name": "upfile",
             "type": "file",
             "description": "The file to upload."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/inventory/logistic/general/{limit}/{page}": {
+      "x-swagger-router-controller": "inventory_logistic",
+      "post": {
+        "tags": [
+          "Inventory Logistic"
+        ],
+        "summary": "Inventory of the equipaments.",
+        "description": "",
+        "operationId": "general_inventory_packing",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns packings related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/inventory/logistic/permanence/{limit}/{page}/{code}": {
+      "x-swagger-router-controller": "inventory_logistic",
+      "post": {
+        "tags": [
+          "Inventory Logistic"
+        ],
+        "summary": "Inventory of the equipaments Analyzing the permanence.",
+        "description": "",
+        "operationId": "inventory_permanence",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns packings related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "description": "The especific page that returns packings related a this code",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/inventory/logistic/quantity/{limit}/{page}/{code}": {
+      "x-swagger-router-controller": "inventory_logistic",
+      "post": {
+        "tags": [
+          "Inventory Logistic"
+        ],
+        "summary": "Inventory of the equipaments Analyzing your quantity.",
+        "description": "",
+        "operationId": "quantity_inventory",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns packings related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "description": "The especific page that returns packings related a this code",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/inventory/logistic/packing/historic/{limit}/{page}/{serial}/{code}": {
+      "x-swagger-router-controller": "inventory_logistic",
+      "post": {
+        "tags": [
+          "Inventory Logistic"
+        ],
+        "summary": "Inventory of the equipaments Analyzing your historic.",
+        "description": "",
+        "operationId": "inventory_packing_historic",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns packings related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "serial",
+            "description": "The especific page that returns packings related a this serial",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "description": "The especific code that returns packings related a this code",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/inventory/logistic/battery/{limit}/{page}": {
+      "x-swagger-router-controller": "inventory_logistic",
+      "post": {
+        "tags": [
+          "Inventory Logistic"
+        ],
+        "summary": "Inventory of the equipaments Analyzing the battery by code.",
+        "description": "",
+        "operationId": "inventory_battery",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns packings related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "code",
+            "description": "The especific code that returns packings related a this code",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/inventory/logistic/general/packings/{limit}/{page}": {
+      "x-swagger-router-controller": "inventory_logistic",
+      "post": {
+        "tags": [
+          "Inventory Logistic"
+        ],
+        "summary": "Inventory of the equipaments Analyzing yourself.",
+        "description": "",
+        "operationId": "inventory_packings",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns packings related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "code",
+            "description": "The especific code that returns packings related a this code",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
           }
         ],
         "responses": {
@@ -3577,6 +3659,42 @@
         }
       }
     },
+    "/plant/list/general/logistic": {
+      "x-swagger-router-controller": "plant_controller",
+      "post": {
+        "tags": [
+          "Plant"
+        ],
+        "summary": "Get all plants on the system by logistic",
+        "description": "",
+        "operationId": "list_all_general_logistic",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/plant/create": {
       "x-swagger-router-controller": "plant_controller",
       "post": {
@@ -4524,382 +4642,6 @@
         }
       }
     },
-    "/staffsuppplier/retrieve/{staff_supplier_id}": {
-      "x-swagger-router-controller": "staff_supplier_controller",
-      "get": {
-        "tags": [
-          "Staff Supplier"
-        ],
-        "summary": "Get a staff supplier on the system",
-        "description": "",
-        "operationId": "staff_supplier_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "staff_supplier_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/staffsuppplier/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "staff_supplier_controller",
-      "get": {
-        "tags": [
-          "Staff Supplier"
-        ],
-        "summary": "Get all staff suppliers on the system by pagination",
-        "description": "",
-        "operationId": "staff_supplier_listPagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of staff supplier that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns staff suppliers related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/staffsuppplier/create": {
-      "x-swagger-router-controller": "staff_supplier_controller",
-      "post": {
-        "tags": [
-          "Staff Supplier"
-        ],
-        "summary": "Add a new staff supplier to the system",
-        "description": "",
-        "operationId": "staff_supplier_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "staff profile object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/StaffSupplier"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/staffsuppplier/delete/{staff_supplier_id}": {
-      "x-swagger-router-controller": "staff_supplier_controller",
-      "delete": {
-        "tags": [
-          "Staff Supplier"
-        ],
-        "summary": "Remove a staff supplier on the system",
-        "description": "",
-        "operationId": "staff_supplier_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "staff_supplier_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/staffsuppplier/update/{staff_supplier_id}": {
-      "x-swagger-router-controller": "staff_supplier_controller",
-      "put": {
-        "tags": [
-          "Staff Supplier"
-        ],
-        "summary": "Update a profile on the system",
-        "description": "",
-        "operationId": "staff_supplier_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "staff_supplier_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The profile object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/StaffSupplier"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/staff/retrieve/{staff_id}": {
-      "x-swagger-router-controller": "staff_controller",
-      "get": {
-        "tags": [
-          "Staff"
-        ],
-        "summary": "Get a staff on the system",
-        "description": "",
-        "operationId": "staff_read",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "staff_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/staff/list/pagination/{limit}/{page}": {
-      "x-swagger-router-controller": "staff_controller",
-      "get": {
-        "tags": [
-          "Staff"
-        ],
-        "summary": "Get all staff on the system by pagination",
-        "description": "",
-        "operationId": "staff_listPagination",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of staff that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "The especific page that returns staff related a this page",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/staff/create": {
-      "x-swagger-router-controller": "staff_controller",
-      "post": {
-        "tags": [
-          "Staff"
-        ],
-        "summary": "Add a new staff to the system",
-        "description": "",
-        "operationId": "staff_create",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "staff object that needs to be added to the system",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Staff"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/staff/delete/{staff_id}": {
-      "x-swagger-router-controller": "staff_controller",
-      "delete": {
-        "tags": [
-          "Staff"
-        ],
-        "summary": "Remove a staff on the system",
-        "description": "",
-        "operationId": "staff_delete",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "staff_id",
-            "description": "The code that needs to be fetched",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/staff/update/{staff_id}": {
-      "x-swagger-router-controller": "staff_controller",
-      "put": {
-        "tags": [
-          "Staff"
-        ],
-        "summary": "Update a staff on the system",
-        "description": "",
-        "operationId": "staff_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "staff_id",
-            "description": "The code that needs to be fetchede",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "The profile object that will to be modified",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Staff"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Message",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "default": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
-    },
     "/supplier/retrieve/{supplier_id}": {
       "x-swagger-router-controller": "supplier_controller",
       "get": {
@@ -5446,20 +5188,6 @@
     }
   },
   "definitions": {
-    "Admin": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "cpf": {
-          "type": "string"
-        },
-        "profile": {
-          "type": "string"
-        }
-      }
-    },
     "Alert": {
       "type": "object",
       "properties": {
@@ -5493,23 +5221,6 @@
           "type": "string"
         },
         "department": {
-          "type": "string"
-        }
-      }
-    },
-    "ClientAdmin": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "cnpj": {
-          "type": "string"
-        },
-        "addrees": {
-          "type": "string"
-        },
-        "profile": {
           "type": "string"
         }
       }
@@ -5765,37 +5476,6 @@
         }
       }
     },
-    "StaffSupplier": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "addrees": {
-          "type": "string"
-        },
-        "profile": {
-          "type": "string"
-        },
-        "supplier": {
-          "type": "string"
-        }
-      }
-    },
-    "Staff": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "addrees": {
-          "type": "string"
-        },
-        "profile": {
-          "type": "string"
-        }
-      }
-    },
     "SuccessResponse": {
       "type": "object",
       "properties": {
@@ -5834,6 +5514,12 @@
         "duns": {
           "type": "string"
         }
+      }
+    },
+    "ArraySupplier": {
+      "type": "array",
+      "items": {
+        "type": "string"
       }
     },
     "Tag": {

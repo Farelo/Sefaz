@@ -17,3 +17,7 @@ definitions:
         type: string
       duns:
         type: string
+  ArraySupplier:
+    type : array
+    items:
+      type: string

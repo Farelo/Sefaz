@@ -106,6 +106,16 @@ exports.list_all_general = function(req, res) { 
     .catch(_.partial(errorHandler, res, 'Error to read plant'));
 };
 /**
+ * List of all Plants
+ */
+exports.list_all_general_logistic = function(req, res) { 
+  let map = req.body.map(o => new ObjectId(o));
+
+  plant.find({"supplier": { "$in": map }})
+    .then(_.partial(successHandler, res))
+    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+};
+/**
  * List of all Plants by pagination
  */
 exports.plant_listPagination = function(req, res) { 

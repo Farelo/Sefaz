@@ -1,0 +1,235 @@
+paths:
+  /inventory/logistic/general/{limit}/{page}:
+      x-swagger-router-controller: inventory_logistic
+      post:
+        tags:
+          - "Inventory Logistic"
+        summary: "Inventory of the equipaments."
+        description: ""
+        operationId: general_inventory_packing
+        parameters:
+        - in: "path"
+          name: "limit"
+          description: "The limit of packings that will be returned"
+          required: true
+          type: string
+        - in: "path"
+          name: "page"
+          description: "The especific page that returns packings related a this page"
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "Array of supplier that needs to be fatched "
+          required: true
+          schema:
+            $ref: "#/definitions/ArraySupplier"
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /inventory/logistic/permanence/{limit}/{page}/{code}:
+      x-swagger-router-controller: inventory_logistic
+      post:
+        tags:
+          - "Inventory Logistic"
+        summary: "Inventory of the equipaments Analyzing the permanence."
+        description: ""
+        operationId: inventory_permanence
+        parameters:
+        - in: "path"
+          name: "limit"
+          description: "The limit of packings that will be returned"
+          required: true
+          type: string
+        - in: "path"
+          name: "page"
+          description: "The especific page that returns packings related a this page"
+          required: true
+          type: string
+        - in: "path"
+          name: "code"
+          description: "The especific page that returns packings related a this code"
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "Array of supplier that needs to be fatched "
+          required: true
+          schema:
+            $ref: "#/definitions/ArraySupplier"
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /inventory/logistic/quantity/{limit}/{page}/{code}:
+      x-swagger-router-controller: inventory_logistic
+      post:
+        tags:
+          - "Inventory Logistic"
+        summary: "Inventory of the equipaments Analyzing your quantity."
+        description: ""
+        operationId: quantity_inventory
+        parameters:
+        - in: "path"
+          name: "limit"
+          description: "The limit of packings that will be returned"
+          required: true
+          type: string
+        - in: "path"
+          name: "page"
+          description: "The especific page that returns packings related a this page"
+          required: true
+          type: string
+        - in: "path"
+          name: "code"
+          description: "The especific page that returns packings related a this code"
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "Array of supplier that needs to be fatched "
+          required: true
+          schema:
+            $ref: "#/definitions/ArraySupplier"
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /inventory/logistic/packing/historic/{limit}/{page}/{serial}/{code}:
+      x-swagger-router-controller: inventory_logistic
+      post:
+        tags:
+          - "Inventory Logistic"
+        summary: "Inventory of the equipaments Analyzing your historic."
+        description: ""
+        operationId: inventory_packing_historic
+        parameters:
+        - in: "path"
+          name: "limit"
+          description: "The limit of packings that will be returned"
+          required: true
+          type: string
+        - in: "path"
+          name: "page"
+          description: "The especific page that returns packings related a this page"
+          required: true
+          type: string
+        - in: "path"
+          name: "serial"
+          description: "The especific page that returns packings related a this serial"
+          required: true
+          type: string
+        - in: "path"
+          name: "code"
+          description: "The especific code that returns packings related a this code"
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "Array of supplier that needs to be fatched "
+          required: true
+          schema:
+            $ref: "#/definitions/ArraySupplier"
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /inventory/logistic/battery/{limit}/{page}:
+      x-swagger-router-controller: inventory_logistic
+      post:
+        tags:
+          - "Inventory Logistic"
+        summary: "Inventory of the equipaments Analyzing the battery by code."
+        description: ""
+        operationId: inventory_battery
+        parameters:
+        - in: "path"
+          name: "limit"
+          description: "The limit of packings that will be returned"
+          required: true
+          type: string
+        - in: "path"
+          name: "page"
+          description: "The especific page that returns packings related a this page"
+          required: true
+          type: string
+        - in: "query"
+          name: "code"
+          description: "The especific code that returns packings related a this code"
+          required: false
+          type: string
+        - in: "body"
+          name: "body"
+          description: "Array of supplier that needs to be fatched "
+          required: true
+          schema:
+            $ref: "#/definitions/ArraySupplier"
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /inventory/logistic/general/packings/{limit}/{page}:
+      x-swagger-router-controller: inventory_logistic
+      post:
+        tags:
+          - "Inventory Logistic"
+        summary: "Inventory of the equipaments Analyzing yourself."
+        description: ""
+        operationId: inventory_packings
+        parameters:
+        - in: "path"
+          name: "limit"
+          description: "The limit of packings that will be returned"
+          required: true
+          type: string
+        - in: "path"
+          name: "page"
+          description: "The especific page that returns packings related a this page"
+          required: true
+          type: string
+        - in: "query"
+          name: "code"
+          description: "The especific code that returns packings related a this code"
+          required: false
+          type: string
+        - in: "body"
+          name: "body"
+          description: "Array of supplier that needs to be fatched "
+          required: true
+          schema:
+            $ref: "#/definitions/ArraySupplier"
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"

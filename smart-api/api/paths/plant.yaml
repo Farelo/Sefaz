@@ -152,6 +152,30 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /plant/list/general/logistic:
+    x-swagger-router-controller: plant_controller
+    post:
+      tags:
+        - "Plant"
+      summary: "Get all plants on the system by logistic"
+      description: ""
+      operationId: list_all_general_logistic
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Array of supplier that needs to be fatched "
+        required: true
+        schema:
+          $ref: "#/definitions/ArraySupplier"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /plant/create:
     x-swagger-router-controller: plant_controller
     post:
