@@ -1,0 +1,282 @@
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+.painel {
+  border-style: solid;
+  border-color: white;
+  border-width: thin;
+  background-color: transparent;
+  padding: 5px;
+}
+
+.corpo {
+  background-color: white;
+  padding: 15px;
+  transition: height 0.5s ease-out;
+}
+
+.meuInput {
+  margin-bottom: 10px;
+  border-radius: 0em;
+}
+
+.meuInventario {
+  box-shadow: 0px 0px 5px #000;
+  margin-bottom: 25px;
+}
+
+.table {
+  margin-bottom: 0px;
+}
+
+.selectPrincipal {
+  width: 180px;
+  padding-left: 5px;
+}
+
+.alerta {
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: left;
+  display: inline-block;
+  position: relative;
+  border-radius: 1em;
+}
+
+td {
+  background-color: white;
+}
+
+.form-control {
+  font-size: 15px;
+}
+
+.row1 {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.alerta img {
+  width: 15px;
+  height: 15px;
+}
+
+.cabecalho {
+  background-color: #6382c9;
+  color: white;
+}
+
+.infoData {
+  font-size: 9px;
+  color: grey;
+  margin: 0px;
+}
+
+.perdido {
+  background: radial-gradient(#ef5562 5%, #ef5562 45%, #fff 45%, #fff 62%, #ef5562 62%);
+}
+
+.parado {
+  background: radial-gradient(#5d8dd7 5%, #5d8dd7 45%, #fff 45%, #fff 62%, #5d8dd7 62%);
+}
+
+.incorreto {
+  background: radial-gradient(#a08dc2 5%, #a08dc2 45%, #fff 45%, #fff 62%, #a08dc2 62%);
+}
+
+span {
+  cursor: pointer;
+}
+
+h2,
+h3 {
+  display: inline-flex;
+  font-family: 'Raleway', sans-serif;
+  margin: 0px;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+select {
+  height: 34px;
+  margin-left: 10px;
+  background-color: WHITE;
+  line-height: 1.25;
+  border:1px solid rgba(0, 0, 0, 0.15);
+  text-align: left;
+}
+
+.selectEq {
+  width: 100%;
+  margin: 0px 0px 10px 0px;
+}
+
+.numero {
+  background-color: white;
+  color: black;
+  padding: 10px;
+}
+
+.definicao {
+  background-color: #6382c9;
+  color: white;
+  padding: 10px;
+}
+
+.resumo {
+  box-shadow: 0px 0px 5px #000;
+  display: inline-flex;
+  margin-right: 20px;
+}
+
+hr {
+  margin: 20px 0px 20px 0px;
+  border-color: #6382c9;
+  border-width: thin;
+}
+
+.tituloClaro {
+  color: white;
+}
+
+.botaoVoltar {
+  border-style: solid;
+  border-width: 2px;
+  padding: 5px 0px;
+  width: 100px;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: white;
+  color: #777;
+  border-color: #777;
+  margin-top: 31px;
+}
+
+.botaoVoltar:hover {
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+  background-color: #777;
+  color: white;
+}
+
+.botaoVoltar:focus {
+  outline: none !important;
+}
+
+.mais {
+  width: 100%;
+  background-color: #6382c9;
+  padding: 5px;
+  color: white;
+  border: none;
+  height: 34px;
+  background-image: url("../../../../assets/images/mais.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 15px;
+}
+
+.det {
+  width: 15px;
+  height: 15px;
+  -webkit-mask-box-image: url("../../../../assets/images/mais.png");
+  cursor: pointer;
+  left: 50%;
+  margin-left: 36%;
+  background-color: #6382c9;
+}
+
+.det:hover {
+  background-color: #777;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.det2 {
+  width: 25px;
+  height: 25px;
+  -webkit-mask-box-image: url("../../../../assets/images/interrogacao.png");
+  cursor: pointer;
+  background-color: #6382c9;
+}
+
+.det2:hover {
+  background-color: #777;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.bigger {
+  position: relative;
+}
+
+.background {
+  background: url("../../../../assets/images/mais.png") 0 0 no-repeat fixed;
+  height: 100%;
+  overflow: hidden;
+  color: #fff;
+}
+
+.layer {
+  background: rgba(39,62,84,0.82);
+  overflow: hidden;
+  height: 100%;
+  z-index: 2;
+}
+
+.classVazio {
+  background-color: white;
+  margin: 0px;
+  padding: 20px;
+  box-shadow: 0px 0px 7px #000;
+}
+
+.close {
+  font-size: 20px;
+  text-align: right;
+  margin-right: 5px;
+}
+
+.modalFilho {
+  font-family: 'Roboto', sans-serif;
+}
+
+.header {
+  display: inline-grid;
+  border-bottom-style: solid;
+  border-bottom-color: grey;
+  border-bottom-width: thin;
+  margin-bottom: 15px;
+}
+
+.header span {
+  color: #ef5562;
+}
+
+.header p {
+  font-weight: bold;
+  width: 200px;
+}
+
+.modalBody span {
+  font-weight: bold;
+}
+
+.help {
+  background-color: transparent;
+  border: none;
+  float: right;
+}
+
+.help:focus {
+  outline: none;
+}

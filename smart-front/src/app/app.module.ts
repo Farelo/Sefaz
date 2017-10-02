@@ -30,11 +30,13 @@ import { AlertsService } from './servicos/alerts.service';
 import { ImportService } from './servicos/import.service';
 import { DashboardModuleAdmin } from './admin/dashboard/dashboard.module';
 import { DashboardModuleSupplier } from './supplier/dashboard/dashboard.module';
+import { DashboardModuleLogistic } from './logistic/dashboard/dashboard.module';
 import { ToastService } from './servicos/toast.service';
 import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';
 import { PackingService } from './servicos/packings.service';
 import { LogisticService } from './servicos/logistic.service';
+import { InventoryLogisticService } from './servicos/inventory_logistic.service';
 import { PlantsService } from './servicos/plants.service';
 import { RoutesService } from './servicos/routes.service';
 import { SuppliersService } from './servicos/suppliers.service';
@@ -79,6 +81,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     AlertModule.forRoot(),
     DashboardModuleAdmin,
     DashboardModuleSupplier,
+    DashboardModuleLogistic,
     AngularMultiSelectModule,
     ReactiveFormsModule,
     ValidatorsModule,
@@ -102,6 +105,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     SuppliersService,
     TagsService,
     CheckpointService,
+    InventoryLogisticService,
     ProjectService,
     ChatService,
     GC16Service,

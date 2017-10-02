@@ -33,6 +33,12 @@ export class PlantsService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  retrieveGeneralLogistic(array: any): Observable<any> {
+    return this.http.post(environment.url + 'plant/list/general/logistic',array)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   retrievePlant(id: string): Observable<any>{
     return this.http.get(environment.url + 'plant/retrieve/' + id)
       .map((res: Response) => res.json())
