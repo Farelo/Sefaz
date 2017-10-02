@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({limit: '50mb'}));
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 
-
+app.use('/', express.static(path.join(__dirname, '../admin-front/dist')));
 app.use(logger('dev'));
 
 module.exports = app; // for testing

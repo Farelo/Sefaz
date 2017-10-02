@@ -32,7 +32,7 @@ export class AlertsService {
   }
 
   getAlertsPaginationByHashingLogistic(limit: number, page: number, code: string, project: string , supplier: string, status:string, array: any): Observable<any> {
-
+    console.log(array);
     return this.http.post(environment.url + 'alert/list/all/packing/logistic/' + limit + '/' + page + '/' + code +'/'+project + '/' + supplier +'/'+status, array )
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));

@@ -26,7 +26,6 @@ declare var $:any;
 })
 export class ModalSupplierEditarComponent implements OnInit {
   @Input() id;
-  // @Input() isSupplier : boolean = false;
 
   public next = false;
   public supplier:  FormGroup;
@@ -242,13 +241,10 @@ export class ModalSupplierEditarComponent implements OnInit {
 
 
   closeModal(){
-    if(!this.authenticationService.currentUser().supplier){
+
       const modalRef = this.modalService.open(ModalUserComponent,{backdrop: "static", size: "lg"});
-      modalRef.componentInstance.view = 'GERENCIAR';
       this.activeModal.close();
-    }else{
-      this.activeModal.close();
-    }
+
   }
 
 

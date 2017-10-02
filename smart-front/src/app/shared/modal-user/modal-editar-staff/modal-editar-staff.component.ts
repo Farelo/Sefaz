@@ -80,6 +80,7 @@ export class ModalStaffEditarComponent implements OnInit {
         city: ['',[Validators.required]],
         telephone: [''],
         official_supplier: [''],
+        official_logistic: [''],
         cellphone: [''],
         neighborhood: ['',[Validators.required]],
         uf: ['',[Validators.required]],
@@ -89,16 +90,17 @@ export class ModalStaffEditarComponent implements OnInit {
 
       });
 
-      if(!this.authenticationService.currentUser().supplier &&  !this.authenticationService.currentUser().official_supplier){
-        this.isAdmin = true;
-      }else{
+      if(this.authenticationService.currentUser().supplier
+      || this.authenticationService.currentUser().logistic
+      || this.authenticationService.currentUser().official_supplier
+      || this.authenticationService.currentUser().official_logistic){
         this.isAdmin = false;
+      }else{
+        this.isAdmin = true;
       }
 
       this.ProfileService.retrieveProfile(this.id).subscribe(response => {
         let result = response.data;
-
-        console.log(result);
         (this.staff)
                   .patchValue(result, { onlySelf: true });
 
@@ -130,6 +132,15 @@ export class ModalStaffEditarComponent implements OnInit {
 
       if(valid && !this.invalidEmail){
 
+        if(this.authenticationService.currentUser().supplier || this.authenticationService.currentUser().official_supplier){
+          delete value.official_logistic;
+        }else if(this.authenticationService.currentUser().logistic || this.authenticationService.currentUser().official_logistic){
+          delete value.official_supplier;
+        }else{
+          delete value.official_supplier;
+          delete value.official_logistic;
+        }
+
         this.ProfileService.updateProfile(value._id,value).subscribe(result => {
             this.toastService.edit('','Funcionário');
             this.closeModal();
@@ -153,11 +164,9 @@ export class ModalStaffEditarComponent implements OnInit {
 
 
   closeModal(){
-    if(this.isAdmin){
+    if ( !this.authenticationService.currentUser().official_supplier  && !this.authenticationService.currentUser().official_logistic){
       const modalRef = this.modalService.open(ModalUserComponent,{backdrop: "static", size: "lg"});
-      modalRef.componentInstance.view = 'GERENCIAR';
     }
-
     this.activeModal.close();
   }
 

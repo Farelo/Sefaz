@@ -42,12 +42,20 @@ closeResult: string;
         return false;
     });
   }
+  funcaoTop2(){
+    $('.menu').click(function() {
+        return false;
+    });
+  }
 
   mudar(){
     if(this.menuAparecer == false ){
       this.menuAparecer = true;
+      $('ngui-map').css({'margin-top':'-20px'});
     } else{
       this.menuAparecer = false;
+      $('ngui-map').css({'margin-top':'-40px'});
+
     }
   }
 

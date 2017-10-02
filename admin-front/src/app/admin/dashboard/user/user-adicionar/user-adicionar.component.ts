@@ -42,6 +42,7 @@ export class UserAdicionarComponent implements OnInit {
         company: ['', [Validators.required]],
         profile: ['AdminFactory', [Validators.required]]
 
+
       });
 
   }

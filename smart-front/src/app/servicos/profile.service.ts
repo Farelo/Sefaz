@@ -21,6 +21,12 @@ export class ProfileService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  getProfilePaginationLogistic(limit: number, page: number, logistic: string): Observable<any> {
+      return this.http.get(environment.url + 'profile/list/pagination/logistic/' + limit + '/' + page+ '/' + logistic)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   retrieveAll(): Observable<any> {
     return this.http.get(environment.url + 'profile/list/all')
       .map((res: Response) => res.json())

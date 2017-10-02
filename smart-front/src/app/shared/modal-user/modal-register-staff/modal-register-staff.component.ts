@@ -80,18 +80,23 @@ export class ModalStaffRegisterComponent implements OnInit {
         telephone: [''],
         cellphone: [''],
         official_supplier: [''],
+        official_logistic: [''],
         neighborhood: ['',[Validators.required]],
         uf: ['',[Validators.required]],
         cep: ['',[Validators.required]]
       });
 
-    if(!this.authenticationService.currentUser().supplier){
-      this.isAdmin = true;
-      this.staff['controls'].profile.setValue("AdminFactory");
-    }else{
+    if(this.authenticationService.currentUser().supplier){
       this.staff['controls'].profile.setValue("StaffSupplier");
       this.staff['controls'].official_supplier.setValue(this.authenticationService.currentUser().supplier._id);
       this.isAdmin = false;
+    }else if(this.authenticationService.currentUser().logistic ){
+      this.staff['controls'].profile.setValue("StaffLogistic");
+      this.staff['controls'].official_logistic.setValue(this.authenticationService.currentUser().logistic._id);
+      this.isAdmin = false;
+    }else{
+      this.isAdmin = true;
+      this.staff['controls'].profile.setValue("AdminFactory");
     }
 
 
@@ -129,10 +134,17 @@ export class ModalStaffRegisterComponent implements OnInit {
 
 
   onSubmit({ value, valid }: { value: any, valid: boolean }):void {
-      console.log(value,valid);
+
 
       if(valid && !this.invalidEmail){
-
+        if(this.authenticationService.currentUser().supplier){
+          delete value.official_logistic;
+        }else if(this.authenticationService.currentUser().logistic ){
+          delete value.official_supplier;
+        }else{
+          delete value.official_supplier;
+          delete value.official_logistic;
+        }
         this.ProfileService.createProfile(value).subscribe(result => {
             this.toastService.successModal('Funcionário');
             this.closeModal();

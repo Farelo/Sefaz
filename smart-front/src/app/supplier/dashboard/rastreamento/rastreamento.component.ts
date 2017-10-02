@@ -144,11 +144,13 @@ export class RastreamentoComponent implements OnInit {
     // iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
     // iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
     var iwCloseBtn = iwOuter.next();
+    var altura = $('.iw-title').height();
 
 iwCloseBtn.css({
   opacity: '0.5', // by default the close button has an opacity of 0.7
-  right: '60px',
+  // right: '0px',
   top: '38px',
+  left: 'calc(altura - 20px)'
   });
 
   iwCloseBtn.css({'background-color' : 'red'});
@@ -162,6 +164,7 @@ iwCloseBtn.css({
   $(this).css({opacity: '0.5'});
   });
   }
+
   funcaoTop(){
     google.maps.event.addListener('iw', 'domready', function() {
     var iwOuter = $('.gm-style-iw');

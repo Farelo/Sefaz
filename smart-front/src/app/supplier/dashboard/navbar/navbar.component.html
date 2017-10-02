@@ -38,9 +38,11 @@
     'aparecer': menuAparecer == true}">
   <div class="row menuApp">
     <div class="col-sm-6 middle">
-      <img src="../../../assets/images/perfil1.png">
-      <p>Usuário Administrador Geral.</p><hr>
-      <button class="gerenciar" (click)="p.close();openModal()"><div>GERENCIAR USUÁRIOS</div></button><br class="brgone">
+      <img *ngIf="currentUser?.profile != 'StaffSupplier'" src="../../../assets/images/perfil-fornecedor.png">
+      <img *ngIf="currentUser?.profile === 'StaffSupplier'" src="../../../assets/images/perfil-funcionario.png">
+      <p *ngIf="currentUser?.profile != 'StaffSupplier'">Fornecedor Administrador.</p>
+      <p *ngIf="currentUser?.profile === 'StaffSupplier'">Funcionário do Fornecedor.</p><hr>
+      <button class="gerenciar" *ngIf="currentUser?.profile != 'StaffSupplier'" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
       <button class="medio" (click)="p.close();openModalEditar()"><div>EDITAR</div></button>
       <button class="medio2" (click)="logout()"><div>SAIR</div></button>
     </div>
@@ -48,14 +50,11 @@
 
     <div class="col-sm-6">
       <ul class="listaEscondida"style=" ">
-        <li class="opcaoEscondida"><a (click)="p.close();openModal()">GERENCIAR USUÁRIOS</a></li>
+        <li class="opcaoEscondida" *ngIf="currentUser?.profile != 'StaffSupplier'" ><a (click)="p.close(); openModal()">GERENCIAR USUÁRIOS</a></li>
         <li class="opcaoEscondida"><a (click)="p.close();openModalEditar()">EDITAR</a></li>
-        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/home">HOME</a></li>
-        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/cadastros">CADASTROS</a></li>
-        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
-        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/importar">IMPORTAR DADOS</a></li>
-        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
-        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">GC16</a></li>
+        <li><a routerLinkActive="active" routerLink="/fornecedor/home" >HOME</a></li>
+        <li (click)="mudar()"><a routerLinkActive="active" routerLink="/fornecedor/inventario">INVENTÁRIO</a></li>
+        <li (click)="mudar()"><a routerLinkActive="active" routerLink="/fornecedor/rastreamento">GEOLOCALIZAÇÃO</a></li>
         <li class="opcaoEscondida"><a (click)="mudar()">SAIR</a></li>
 
       </ul>
@@ -66,7 +65,7 @@
 <ng-template #popContent class="test">
   <img *ngIf="currentUser?.profile != 'StaffSupplier'" src="../../../assets/images/perfil-fornecedor.png">
   <img *ngIf="currentUser?.profile === 'StaffSupplier'" src="../../../assets/images/perfil-funcionario.png">
-  <p *ngIf="currentUser?.profile != 'StaffSupplier'">Fornecedor Administrador.</p><hr>
+  <p *ngIf="currentUser?.profile != 'StaffSupplier'">Fornecedor Administrador.</p>
   <p *ngIf="currentUser?.profile === 'StaffSupplier'">Funcionário do Fornecedor.</p><hr>
   <button class="gerenciar" *ngIf="currentUser?.profile != 'StaffSupplier'" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
   <button class="medio" (click)="p.close(); a.close(); openModalEditar()"><div>EDITAR</div></button>

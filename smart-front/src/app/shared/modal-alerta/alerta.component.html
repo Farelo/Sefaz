@@ -1,6 +1,6 @@
 <div class="modalFilho">
   <div class="header">
-     <p>Detalhes do alerta - {{alerta.data.date | date:'dd/mm/yyyy'}}</p>
+     <p>Detalhes do alerta - {{alerta.data.date | date: 'dd/MM/yyyy'}}</p>
      <p>Código: {{alerta.data.packing?.code}}</p>
      <p>Tipo: <span>{{alerta.data.status === 1 ? 'Objeto perdido' :
        (alerta.data.status === 2 ? 'Local Incorreto' :

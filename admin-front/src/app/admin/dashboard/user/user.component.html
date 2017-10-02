@@ -29,7 +29,7 @@
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', user._id]">Editar</button>
           <button class="excluir" (click)="removeUser(user)" >Excluir</button>
-          <button class="excluir"  >Visualizar</button>
+          <a class="excluir" target="_blank" href="http://{{user.url}}:{{user.port}}/#/reciclapaclogin/reciclapac/reciclapac@reciclapac.com" >Visualizar</a>
         </td>
       </tr>
     </tbody>

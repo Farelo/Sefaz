@@ -113,6 +113,41 @@ exports.queries = {
       }
     ]
   },
+  profiles_logistic: function(id) {
+    return [{
+        "$match": {
+          "$or": [{
+            "profile": {
+              "$in": ['StaffLogistic']
+            }
+          }]
+        }
+      },
+
+      {
+        "$match": {
+
+          'official_logistic': id,
+        }
+      },
+      {
+        $project: {
+          "_id": '$_id',
+          "_id": '$_id',
+          "profile": "$profile",
+          "name": "$user",
+          "email": "$email",
+          "city": "$city",
+          "street": "$street",
+          "telephone": "$telephone",
+          "cellphone": "$cellphone",
+          "cep": "$cep",
+          "neighborhood": "$neighborhood",
+          "uf": "$uf"
+        }
+      }
+    ]
+  },
   login: function(password, email) {
     return [{
         "$match": {
@@ -129,8 +164,36 @@ exports.queries = {
         }
       },
       {
+        "$lookup": {
+          "from": "logisticoperators",
+          "localField": "_id",
+          "foreignField": "profile",
+          "as": "logistic"
+        }
+      },
+      {
+        "$lookup": {
+          "from": "logisticoperators",
+          "localField": "official_logistic",
+          "foreignField": "_id",
+          "as": "official_logistic"
+        }
+      },
+      {
         "$unwind": {
           "path": "$supplier",
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        "$unwind": {
+          "path": "$official_logistic",
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        "$unwind": {
+          "path": "$logistic",
           'preserveNullAndEmptyArrays': true
         }
       }

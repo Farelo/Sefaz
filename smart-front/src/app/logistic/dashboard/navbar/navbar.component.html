@@ -1,9 +1,9 @@
 <div class="menu1">
     <h1 style="float: left">RECICLAPAC</h1>
     <ul class="lista"style=" list-style-type:none; float: right">
-        <li><a routerLinkActive="active" routerLink="/fornecedor/home" >HOME</a></li>
-        <li><a routerLinkActive="active" routerLink="/fornecedor/inventario">INVENTÁRIO</a></li>
-        <li><a routerLinkActive="active" routerLink="/fornecedor/rastreamento">GEOLOCALIZAÇÃO</a></li>
+        <li><a routerLinkActive="active" routerLink="/logistico/home" >HOME</a></li>
+        <li><a routerLinkActive="active" routerLink="/logistico/inventario">INVENTÁRIO</a></li>
+        <li><a routerLinkActive="active" routerLink="/logistico/rastreamento">GEOLOCALIZAÇÃO</a></li>
 
         <li class="scroll usuario placementBottom"
         [ngbPopover]= 'popContent'
@@ -64,11 +64,11 @@
 </div>
 
 <ng-template #popContent class="test">
-  <img *ngIf="currentUser?.profile != 'StaffSupplier'" src="../../../assets/images/perfil-fornecedor.png">
-  <img *ngIf="currentUser?.profile === 'StaffSupplier'" src="../../../assets/images/perfil-funcionario.png">
-  <p *ngIf="currentUser?.profile != 'StaffSupplier'">Fornecedor Administrador.</p><hr>
-  <p *ngIf="currentUser?.profile === 'StaffSupplier'">Funcionário do Fornecedor.</p><hr>
-  <button class="gerenciar" *ngIf="currentUser?.profile != 'StaffSupplier'" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
+  <img *ngIf="currentUser?.profile != 'StaffLogistic'" src="../../../assets/images/perfil-operador.png">
+  <img *ngIf="currentUser?.profile === 'StaffLogistic'" src="../../../assets/images/perfil-funcionario.png">
+  <p *ngIf="currentUser?.profile != 'StaffLogistic'">Op. Logistico Administrador.</p><hr>
+  <p *ngIf="currentUser?.profile === 'StaffLogistic'">Funcionário do Op. Logistico.</p><hr>
+  <button class="gerenciar" *ngIf="currentUser?.profile != 'StaffLogistic'" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
   <button class="medio" (click)="p.close(); a.close(); openModalEditar()"><div>EDITAR</div></button>
   <button class="medio2" (click)="logout()"><div>SAIR</div></button>
 </ng-template>

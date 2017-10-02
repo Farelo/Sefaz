@@ -60,19 +60,21 @@ export class ModalUserComponent implements OnInit {
   }
 
   getUsers(){
-    if(!this.authenticationService.currentUser().supplier){
-      this.isAdmin = true;
-      this.profileService.getProfilePagination(10,this.data.meta.page).subscribe(result => {console.log(result);this.data = result});
-    }else{
+    if(this.authenticationService.currentUser().supplier){
       this.profileService.getProfilePaginationSupplier(10,this.data.meta.page,this.authenticationService.currentUser().supplier._id).subscribe(result => {console.log(result);this.data = result});
       this.isAdmin = false;
+    }else if(this.authenticationService.currentUser().logistic){
+      this.profileService.getProfilePaginationLogistic(10,this.data.meta.page,this.authenticationService.currentUser().logistic._id).subscribe(result => {console.log(result);this.data = result});
+      this.isAdmin = false;
+    }else{
+      this.isAdmin = true;
+      this.profileService.getProfilePagination(10,this.data.meta.page).subscribe(result => {console.log(result);this.data = result});
     }
 
   }
 
 
   editUser(user: any){
-    console.log(user);
     if(user.profile === "Supplier"){
       const modalRef = this.modalService.open(ModalSupplierEditarComponent,{backdrop: "static", size: "lg"});
       modalRef.componentInstance.id = user.user._id;

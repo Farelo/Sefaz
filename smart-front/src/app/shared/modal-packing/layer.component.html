@@ -18,10 +18,11 @@
         [strokeWeight]="4"></polyline>
         <marker *ngFor="let pos of markers" [position]="pos.position" (click)="clicked($event,pos)">
           <info-window id="iw">
+            <div class="iw-title">INFORMAÇÕES</div>
               <div *ngIf="marker.display">
-                    <p>Data de entrada: {{ marker.start |  date:'medium' }}</p>
-                    <p>Data de saida: {{ marker.end |  date:'medium'}}</p>
-                    <p>Bateria: {{ marker.battery | round }}</p>
+                    <p><span class="bold">Data de entrada:</span> {{ marker.start |  date:'dd/MM/yyyy - hh:mm a' }}</p>
+                    <p><span class="bold">Data de saida:</span> {{ marker.end |  date:'dd/MM/yyyy - hh:mm a'}}</p>
+                    <p><span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
               </div>
 
           </info-window>

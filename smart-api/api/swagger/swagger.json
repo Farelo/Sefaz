@@ -4042,6 +4042,54 @@
         }
       }
     },
+    "/profile/list/pagination/logistic/{limit}/{page}/{logistic}": {
+      "x-swagger-router-controller": "profile_controller",
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Get all profilies on the system by pagination and logistic",
+        "description": "",
+        "operationId": "profile_listPagination_logistic",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of profilies that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "The especific page that returns profilies related a this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "logistic",
+            "description": "The especific logistic that returns profilies related a this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/profile/create": {
       "x-swagger-router-controller": "profile_controller",
       "post": {

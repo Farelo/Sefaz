@@ -16,6 +16,7 @@ mongoose.Promise                                = global.Promise;
  * Create a Profile
  */
 exports.profile_create = function(req, res) {
+
   profile.create(req.body)
     .catch(_.partial(errorHandler, res, 'Error to create Profile'))
     .then(_.partial(successHandler, res));
@@ -95,6 +96,15 @@ exports.profile_listPagination = function(req, res) { 
  */
 exports.profile_listPagination_supplier = function(req, res) { 
   let aggregate = profile.aggregate(query.queries.profiles_supplier(new ObjectId(req.swagger.params.supplier.value)));
+  profile.aggregatePaginate(aggregate,
+    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
+    _.partial(successHandlerPaginationAggregate, res));
+};
+/**
+ * List of all Profiles by pagination by logistic
+ */
+exports.profile_listPagination_logistic = function(req, res) { 
+  let aggregate = profile.aggregate(query.queries.profiles_logistic(new ObjectId(req.swagger.params.logistic.value)));
   profile.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
     _.partial(successHandlerPaginationAggregate, res));

@@ -192,14 +192,14 @@ export class ModalLogisticEditarComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }):void {
 
       let logistic = this.logistic.value;
-      console.log(logistic);
+
       if(valid && !this.invalidPlant){
         logistic.suppliers = logistic.suppliers.map(o => o.id);
         this.ProfileService.updateProfile(logistic.profile._id,logistic.profile).subscribe(result => {
           this.PlantsService.updatePlant(value._id,value).subscribe(result => {
-            console.log(logistic);
+
             this.logisticService.updateLogistic(logistic._id,logistic).subscribe(result => {
-              this.toastService.edit('Operador Logistico','');
+              this.toastService.edit('','Operador Logistico');
               this.closeModal();
             }, err => this.toastService.error(err))
           })

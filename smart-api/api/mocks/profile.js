@@ -17,6 +17,10 @@ const profileSchema = new mongoose.Schema({
       official_supplier: {
             type:mongoose.Schema.Types.ObjectId,
             ref:'Supplier'
+      },
+      official_logistic: {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'LogisticOperator'
       }
 
 });

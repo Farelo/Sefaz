@@ -99,12 +99,11 @@ exports.alert_list_hashing = function(req, res) { 
  */
 exports.alert_list_hashing_logistic = function(req, res) { 
   let map = req.body.map(o => new ObjectId(o));
-
+  console.log(map);
   let aggregate = alert.aggregate(query.queries.packing_list_logistic(req.swagger.params.code.value,
     new ObjectId(req.swagger.params.project.value),
     new ObjectId(req.swagger.params.supplier.value),
-    parseInt(req.swagger.params.status.value,
-    map)));
+    parseInt(req.swagger.params.status.value),map));
 
   alert.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
