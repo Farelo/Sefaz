@@ -1,0 +1,164 @@
+paths:
+#-------------------------------------------START CRUD ADMIN CLIENT ----------------------------------
+  /user/retrieve/{user_id}:
+      x-swagger-router-controller: user_controller
+      get:
+        tags:
+          - "User"
+        summary: "Get a user on the system"
+        description: ""
+        operationId: user_read
+        parameters:
+        - in: "path"
+          name: "user_id"
+          description: "The code that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /user/auth/{password}/{email}:
+      x-swagger-router-controller: user_controller
+      get:
+        tags:
+          - "User"
+        summary: "Auth a user on the system"
+        description: ""
+        operationId: user_auth
+        parameters:
+        - in: "path"
+          name: "password"
+          description: "The password that needs to be fetched"
+          required: true
+          type: string
+        - in: "path"
+          name: "email"
+          description: "The email that needs to be fetched"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Message"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+  /user/list/pagination/{limit}/{page}:
+    x-swagger-router-controller: user_controller
+    get:
+      tags:
+        - "User"
+      summary: "Get all users on the system by pagination"
+      description: ""
+      operationId: user_listPagination
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of users that will be returned"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "The especific page that returns users related a this page"
+        required: true
+        type: string
+      - in: "query"
+        name: "attr"
+        description: "The especific attr that returns packings related a this attr"
+        required: false
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /user/create:
+    x-swagger-router-controller: user_controller
+    post:
+      tags:
+      - "User"
+      summary: "Add a new user to the system"
+      description: ""
+      operationId: user_create
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "user object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /user/delete/{user_id}:
+    x-swagger-router-controller: user_controller
+    delete:
+      tags:
+      - "User"
+      summary: "Remove a user on the system"
+      description: ""
+      operationId: user_delete
+      parameters:
+      - in: "path"
+        name: "user_id"
+        description: "The code that needs to be fetched"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /user/update/{user_id}:
+    x-swagger-router-controller: user_controller
+    put:
+      tags:
+      - "User"
+      summary: "Update a user on the system"
+      description: ""
+      operationId: user_update
+      parameters:
+      - in: "path"
+        name: "user_id"
+        description: "The code that needs to be fetchede"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "The user object that will to be modified"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Message"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"

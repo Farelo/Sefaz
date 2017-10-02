@@ -13,7 +13,11 @@ const profileSchema = new mongoose.Schema({
       cellphone: {type: String},
       cep: {type: String, required: true },
       neighborhood: {type: String, required: true },
-      uf: {type: String, required: true }
+      uf: {type: String, required: true },
+      official_supplier: {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Supplier'
+      }
 
 });
 
@@ -25,11 +29,13 @@ profileSchema.pre('remove', function(next) {
             .then(doc => doc.remove());
             next();
         break;
-      case "AdminClient":
-        console.log("Bananas custam $0.48 o quilo.");
+      case "Logistic":
+        this.model('LogisticOperator').findOne({"profile": this._id}).exec()
+            .then(doc => doc.remove());
+            next();
         break;
       default:
-        console.log("Desculpe, estamos sem nenhuma " + expr + ".");
+        next();
     }
 
 

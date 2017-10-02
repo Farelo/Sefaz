@@ -2621,6 +2621,39 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/ErrorResponse'
+  '/profile/list/pagination/supplier/{limit}/{page}/{supplier}':
+    x-swagger-router-controller: profile_controller
+    get:
+      tags:
+        - Profile
+      summary: Get all profilies on the system by pagination and supplier
+      description: ''
+      operationId: profile_listPagination_supplier
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of profilies that will be returned
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: The especific page that returns profilies related a this page
+          required: true
+          type: string
+        - in: path
+          name: supplier
+          description: The especific supplier that returns profilies related a this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   /profile/create:
     x-swagger-router-controller: profile_controller
     post:
@@ -3756,10 +3789,6 @@ definitions:
     type: object
     properties:
       name:
-        type: string
-      cpf:
-        type: string
-      profile:
         type: string
   PackingHash:
     type: object

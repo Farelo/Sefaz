@@ -13,6 +13,7 @@ mongoose.Promise                 = global.Promise;
  * Create a Logistc Operator
  */
 exports.logistic_operator_create = function(req, res) {
+
   logistic_operator.create(req.body)
     .catch(_.partial(errorHandler, res, 'Error to create Logistic Operator'))
     .then(_.partial(successHandler, res));
@@ -27,6 +28,8 @@ exports.logistic_operator_read = function(req, res) {
       _id: req.swagger.params.logistic_operator_id.value
     })
     .populate('profile')
+    .populate('suppliers')
+    .populate('plant')
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to read Logistic Operator'));
 };
@@ -37,9 +40,7 @@ exports.logistic_operator_read = function(req, res) {
 exports.logistic_operator_update = function(req, res) {  
   logistic_operator.update( {
       _id: req.swagger.params.logistic_operator_id.value
-    },  req.body,   {
-      upsert: true
-    })
+    },  req.body)
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to update Logistic Operator')); 
 };
@@ -47,12 +48,10 @@ exports.logistic_operator_update = function(req, res) {  
  * Delete an Logistc Operator
  */
 exports.logistic_operator_delete = function(req, res) { 
-  logistic_operator.remove({
-      _id: req.swagger.params.logistic_operator_id.value
-    })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to delete Logistic Operator'));
-
+  logistic_operator.findOne({_id: req.swagger.params.logistic_operator_id.value}).exec()
+        .then(doc => doc.remove())
+        .then(_.partial(successHandler, res))
+        .catch(_.partial(errorHandler, res, 'Error to delete Logistic Operator'))
 };
 /**
  * List of all Logistics Operator

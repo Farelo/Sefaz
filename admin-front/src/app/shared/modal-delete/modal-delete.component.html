@@ -1,0 +1,20 @@
+<div class="modalFilho">
+  <div class="detalhes">
+     <h2>Detalhes da Empresa </h2>
+     <hr>
+     <p>Nome da Empresa: {{view.company || 'Não Informado'}}</p>
+     <p>URL: {{view.url || 'Não Informado'}}</p>
+     <p>Porta: {{view.port || 'Não Informado'}}</p>
+     <p>Email: {{view.email || 'Não Informado'}}</p>
+     <hr>
+     <div class="alerta">
+       <span class="alert" aria-hidden="true"></span>
+       <p>A remoção dessa Empresa acarretará na perda de informações. As informações serão perdidas, você tem certeza?</p>
+     </div>
+  </div>
+
+<div class="botoes">
+  <button class="botaoVoltar" (click)="activeModal.close('cancelar')">CANCELAR</button>
+  <button class="botaoDeletar" (click)="delete()">DELETAR</button>
+</div>
+</div>

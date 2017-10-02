@@ -8,6 +8,7 @@ const successHandlerPaginationAggregate         = require('../helpers/responses/
 const errorHandler                              = require('../helpers/responses/errorHandler');
 const query                                     = require('../helpers/queries/complex_queries_profile');
 const mongoose                                  = require('mongoose');
+const ObjectId                                  = require('mongoose').Types.ObjectId;
 const profile                                   = mongoose.model('Profile');
 const _                                         = require("lodash");
 mongoose.Promise                                = global.Promise;
@@ -85,6 +86,15 @@ exports.profile_list = function(req, res) { 
  */
 exports.profile_listPagination = function(req, res) { 
   let aggregate = profile.aggregate(query.queries.profiles);
+  profile.aggregatePaginate(aggregate,
+    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
+    _.partial(successHandlerPaginationAggregate, res));
+};
+/**
+ * List of all Profiles by pagination
+ */
+exports.profile_listPagination_supplier = function(req, res) { 
+  let aggregate = profile.aggregate(query.queries.profiles_supplier(new ObjectId(req.swagger.params.supplier.value)));
   profile.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
     _.partial(successHandlerPaginationAggregate, res));

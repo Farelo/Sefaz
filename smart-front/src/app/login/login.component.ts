@@ -20,15 +20,17 @@ export class LoginComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
     if(valid){
       this.authenticationService.login(value.password, value.email).subscribe(result =>  {
-        if(result){
+
+        if(result.length != 0){
           this.erroAuth = false;
 
-          if(this.authenticationService.currentUser().supplier){
-            console.log("aquiiii");
-            this.router.navigate(['/fornecedor/home']);
+
+          if(this.authenticationService.currentUser().supplier || this.authenticationService.currentUser().official_supplier){
+              this.router.navigate(['/fornecedor/home']);
           }else{
-            this.router.navigate(['/rc/home']);
+              this.router.navigate(['/rc/home']);
           };
+
 
         }else{
           this.erroAuth = true;

@@ -1,0 +1,174 @@
+* { font-family: 'Roboto', sans-serif; }
+
+.teste {
+  background-image: url("../../assets/images/img-fundo.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  height: 100%;
+  min-height: 100vh;
+  margin: 0px;
+  padding: 0px;
+}
+
+.quadrado {
+  background-color: rgba(0,0,0,.8);
+  display: inline-block;
+  text-align: -webkit-center;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+h1 {
+  color: white;
+  font-weight: bold;
+  opacity: 0.9;
+}
+
+input {
+  background-color: transparent;
+  border-style: solid;
+  border-bottom-color: white;
+  border-bottom-width: 1.5px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  width: 300px;
+  display: -webkit-box;
+  background-size: contain;
+  text-decoration: none;
+  color: white;
+  margin-left: 10px;
+}
+
+.spanMail {
+  max-width: 17px;
+  max-height: 13.48px;
+  width: auto;
+  height: auto;
+  text-decoration: none;
+  margin-top: 11px;
+}
+
+.spanLock {
+  max-width: 17px;
+  max-height: 20.54px;
+  width: auto;
+  height: auto;
+  margin-top: 4px;
+}
+
+.wrapper {
+  display: inline-flex;
+  margin-top: 25px;
+}
+
+.inputSenha {
+  background-size: 18px;
+  text-decoration: none;
+}
+
+input:focus {
+  outline: none !important;
+  border-style: solid;
+  border-bottom-color: #4577d8;
+  border-bottom-width: 1.5px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: none;
+}
+
+.senhaIncorreta {
+  outline: none !important;
+  border-style: solid;
+  border-bottom-color: #d24444;
+  border-bottom-width: 1.5px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: none;
+}
+
+p {
+  color: white;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.esqueci {
+  margin-top: 25px;
+}
+
+.esqueci:hover {
+  color: #4577d8;
+  cursor: pointer;
+}
+
+.esqueci:focus {
+  outline: none !important;
+  border-style: none;
+}
+
+button {
+  padding: 5px 40px;
+  background-color: transparent;
+  border-radius: 15px;
+  color: white;
+  border-style: solid;
+  border-width: medium;
+  border-color: white;
+  opacity: 0.7;
+}
+
+button:hover {
+  background-color: white;
+  color: black;
+  border-color: white;
+  opacity: 0.7;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  -webkit-transition: color 0.5s;
+  transition: color 0.5s;
+}
+
+button:focus {
+  outline: none;
+}
+
+span {
+  background-image: url("../../assets/images/lock.png");
+}
+
+.senhaIncorreta2,
+.emailObrigatorio,
+.emailIncorreto,
+.emailNaoCadastrado,
+.senhaObrigatoria {
+  color: #d24444;
+  font-size: 13px;
+}
+
+::-webkit-input-placeholder {
+  color: #fafafb;
+  opacity: 0.5;
+}
+
+::-moz-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}
+
+:-ms-input-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}
+
+:-moz-placeholder {
+  color: #fafafb;
+  opacity: 0.8;
+}

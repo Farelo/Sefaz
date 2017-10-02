@@ -10,7 +10,15 @@ import * as $ from 'jquery';
 import { AppComponent } from './app.component';
 import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
 import { ModalUserComponent } from './shared/modal-user/modal-user.component';
+import { ModalSupplierRegisterComponent } from './shared/modal-user/modal-register-supplier/modal-register-supplier.component';
+import { ModalLogisticRegisterComponent } from './shared/modal-user/modal-register-logistic/modal-register-logistic.component';
+import { ModalStaffRegisterComponent } from './shared/modal-user/modal-register-staff/modal-register-staff.component';
+import { ModalSupplierEditarComponent } from './shared/modal-user/modal-editar-supplier/modal-editar-supplier.component';
+import { ModalLogisticEditarComponent } from './shared/modal-user/modal-editar-logistic/modal-editar-logistic.component';
+import { ModalCurrentEditarComponent } from './shared/modal-current-edit/modal-editar-current.component';
+import { ModalStaffEditarComponent } from './shared/modal-user/modal-editar-staff/modal-editar-staff.component';
 import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
+
 import { ApplicationPipes } from './shared/pipes/application.pipes';
 import {ValidatorsModule, EmailValidators} from 'ngx-validators'
 
@@ -26,6 +34,7 @@ import { ToastService } from './servicos/toast.service';
 import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';
 import { PackingService } from './servicos/packings.service';
+import { LogisticService } from './servicos/logistic.service';
 import { PlantsService } from './servicos/plants.service';
 import { RoutesService } from './servicos/routes.service';
 import { SuppliersService } from './servicos/suppliers.service';
@@ -43,6 +52,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { TextMaskModule } from 'angular2-text-mask';
 import { AuthGuard } from './guard/auth.guard';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -50,9 +60,16 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     AlertaModalComponent,
     ModalRastComponent,
     ModalUserComponent,
+    ModalSupplierEditarComponent,
     ModalInvComponent,
     ModalDeleteComponent,
-    LayerModalComponent
+    LayerModalComponent,
+    ModalSupplierRegisterComponent,
+    ModalLogisticRegisterComponent,
+    ModalLogisticEditarComponent,
+    ModalStaffRegisterComponent,
+    ModalStaffEditarComponent,
+    ModalCurrentEditarComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +79,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     AlertModule.forRoot(),
     DashboardModuleAdmin,
     DashboardModuleSupplier,
+    AngularMultiSelectModule,
     ReactiveFormsModule,
     ValidatorsModule,
     AppRoutingModule,
@@ -92,6 +110,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     AuthGuard,
     InventoryService,
     CEPService,
+    LogisticService,
     ToastService,
     ImportService,
     AuthenticationService,
@@ -102,7 +121,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
-  entryComponents: [ModalRastComponent,AlertaModalComponent,LayerModalComponent, ModalUserComponent, ModalInvComponent, ModalDeleteComponent]
+  entryComponents: [ModalRastComponent,AlertaModalComponent,ModalCurrentEditarComponent,LayerModalComponent,ModalStaffEditarComponent, ModalUserComponent, ModalStaffRegisterComponent,ModalLogisticEditarComponent,ModalInvComponent, ModalLogisticRegisterComponent,ModalDeleteComponent,ModalSupplierRegisterComponent,ModalSupplierEditarComponent]
 })
 
 export class AppModule { }

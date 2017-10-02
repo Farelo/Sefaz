@@ -1,0 +1,49 @@
+<div class="inicial">
+  <div class="i1"><input type="text" class="form-control buscar" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()"></div>
+  <div class="i2">
+    <button class="mais" routerLink="adicionar">
+      <div class="bigger"><div class="det"></div></div>
+  </button>
+</div>
+</div>
+
+<div class="table-responsive meuInventario">
+  <!-- Table -->
+  <table class="table">
+    <thead>
+      <tr class="cabecalho">
+        <th>Nome do Cliente</th>
+        <th>Url</th>
+        <th>Porta</th>
+        <th class="opcoes">Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of data.data | paginate: {   id:'user',
+                                                      itemsPerPage: data.meta.limit,
+                                                      currentPage: data.meta.page,
+                                                      totalItems: data.meta.total_docs}">
+        <td>{{user.company}}</td>
+        <td>{{user.url}}</td>
+        <td>{{user.port}}</td>
+        <td class="teste">
+          <button class="editar" [routerLink]="['editar/', user._id]">Editar</button>
+          <button class="excluir" (click)="removeUser(user)" >Excluir</button>
+          <button class="excluir"  >Visualizar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="has-text-centered">
+    <pagination-controls id="user" (pageChange)="pageChanged($event)"
+                         autoHide="true"
+                         directionLinks="false"></pagination-controls>
+</div>
+
+
+
+<div class="classVazio" *ngIf="data.data?.length < 1">
+  Ainda não existem clientes cadastrados.
+</div>

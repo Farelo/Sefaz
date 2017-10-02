@@ -1,0 +1,197 @@
+<div class="modalFilho">
+
+
+  <div class="adicionarUsuarios">
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <h2 class="titulo" *ngIf="!next">DADOS DO USUÁRIO</h2>
+    <h2 class="titulo" *ngIf="next">DADOS DA PLANTA </h2><br />
+    <hr />
+
+    <div class="row">
+      <div class="col-sm-4" *ngIf="!next">
+        <p class="descricao">DADOS DO USUÁRIO</p>
+
+        <select [(ngModel)]="perfil" (ngModelChange)="onChange($event)">
+         <option>FORNECEDOR</option>
+         <option>OPERADOR LOGÍSTICO</option>
+         <option>FUNCIONÁRIO</option>
+      </select>
+      </div>
+    </div>
+
+    <form novalidate [formGroup]="supplier">
+      <div class="row">
+
+        <br />
+        <alert type="info" *ngIf="invalidEmail">
+          <strong>Atenção!</strong> O e-mail ja existe no sistema!
+        </alert>
+        <alert type="info" *ngIf="invalidDuns">
+          <strong>Atenção!</strong> Fornecedor e DUNS ja estão presentes no sistema!
+        </alert>
+
+      </div>
+      <div class="row">
+
+
+        <div class="col-sm-4">
+          <div formGroupName="profile">
+            <p class="descricao">NOME DO USUÁRIO</p>
+            <input type="text" class="form-control" [(ngModel)]="user" placeholder="Digite o nome do usuário" formControlName="user" [ngClass]="{'required': (supplier.get('profile.user').hasError('required') && supplier.get('profile.user').touched)
+              || (supplier.get('profile.user').hasError('required') && submitted)}">
+            <p class="requiredText" *ngIf="(supplier.get('profile.user').hasError('required') && supplier.get('profile.user').touched)
+              || (supplier.get('profile.user').hasError('required') && submitted)">Campo Obrigatório</p>
+          </div>
+
+          <p class="descricao">NOME DO FORNECEDOR</p>
+          <input type="text" class="form-control" [(ngModel)]="name" placeholder="Digite o nome do fornecedor" formControlName="name" [ngClass]="{'required': (supplier.get('name').hasError('required') && supplier.get('name').touched)
+            || (supplier.get('name').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(supplier.get('name').hasError('required') && supplier.get('name').touched)
+            || (supplier.get('name').hasError('required') && submitted)">Campo Obrigatório</p>
+
+          <p class="descricao">DUNS</p>
+          <input type="text" class="form-control" [(ngModel)]="duns" (blur)="evaluateDuns()" placeholder="Digite o duns do fornecedor" formControlName="duns" [ngClass]="{'required': (supplier.get('name').hasError('required') && supplier.get('name').touched)
+            || (supplier.get('name').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(supplier.get('name').hasError('required') && supplier.get('name').touched)
+            || (supplier.get('name').hasError('required') && submitted)">Campo Obrigatório</p>
+
+          <div formGroupName="profile">
+            <p class="descricao">E-MAIL</p>
+            <input type="text" class="form-control" [(ngModel)]="email" (blur)="evaluateEmail()" placeholder="Digite o email do fornecedor" formControlName="email" [ngClass]="{'required': (supplier.get('profile.email').hasError('required') && supplier.get('profile.email').touched)
+              || (supplier.get('profile.email').hasError('required') && submitted), 'requiredEmail': (supplier.get('profile.email').hasError('email') && supplier.get('profile.email').touched) && !supplier.get('profile.email').hasError('required')}
+              || (supplier.get('profile.email').hasError('email') && submitted && !supplier.get('profile.email').hasError('required'))">
+            <p class="requiredText" *ngIf="(supplier.get('profile.email').hasError('required') && supplier.get('profile.email').touched)
+              || (supplier.get('profile.email').hasError('required') && submitted)">Campo Obrigatório</p>
+            <p class="requiredText" *ngIf="(supplier.get('profile.email').hasError('email') && supplier.get('profile.email').touched) && !supplier.get('profile.email').hasError('required')
+              || (supplier.get('profile.email').hasError('email') && submitted && !supplier.get('profile.email').hasError('required'))">Formato do email esta incorreto!</p>
+
+          </div>
+        </div>
+        <div class="col-sm-4" formGroupName="profile">
+          <p class="descricao">PASSWORD</p>
+          <input type="password" class="form-control" [(ngModel)]="password" formControlName="password" [ngClass]="{'required': (supplier.get('profile.password').hasError('required') && supplier.get('profile.password').touched)
+            || (supplier.get('profile.password').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(supplier.get('profile.password').hasError('required') && supplier.get('profile.password').touched)
+            || (supplier.get('profile.password').hasError('required') && submitted)">Campo Obrigatório</p>
+
+          <p class="descricao">CEP</p>
+          <input [textMask]="{mask: maskCep}" class="form-control" (blur)="getAddress()" [(ngModel)]="cep" type="text" formControlName="cep" [ngClass]="{'required': (supplier.get('profile.cep').hasError('required') && supplier.get('profile.cep').touched)
+            || (supplier.get('profile.cep').hasError('required') && submitted)}" />
+          <p class="requiredText" *ngIf="(supplier.get('profile.cep').hasError('required') && supplier.get('profile.cep').touched)
+            || (supplier.get('profile.cep').hasError('required') && submitted)">Campo Obrigatório</p>
+
+          <p class="descricao">CIDADE</p>
+          <input type="text" class="form-control" [(ngModel)]="city" formControlName="city" [ngClass]="{'required': (supplier.get('profile.city').hasError('required') && supplier.get('profile.city').touched)
+            || (supplier.get('profile.city').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(supplier.get('profile.city').hasError('required') && supplier.get('profile.city').touched)
+            || (supplier.get('profile.city').hasError('required') && submitted)">Campo Obrigatório</p>
+
+          <p class="descricao">ENDEREÇO</p>
+          <input type="text" class="form-control" [(ngModel)]="street" formControlName="street" [ngClass]="{'required': (supplier.get('profile.street').hasError('required') && supplier.get('profile.street').touched)
+            || (supplier.get('profile.street').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(supplier.get('profile.street').hasError('required') && supplier.get('profile.street').touched)
+            || (supplier.get('profile.street').hasError('required') && submitted)">Campo Obrigatório</p>
+
+
+        </div>
+        <div class="col-sm-4" formGroupName="profile">
+          <p class="descricao">BAIRRO</p>
+          <input type="text" class="form-control" [(ngModel)]="neighborhood" formControlName="neighborhood" [ngClass]="{'required': (supplier.get('profile.neighborhood').hasError('required') && supplier.get('profile.neighborhood').touched)
+            || (supplier.get('profile.neighborhood').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(supplier.get('profile.neighborhood').hasError('required') && supplier.get('profile.neighborhood').touched)
+            || (supplier.get('profile.neighborhood').hasError('required') && submitted)">Campo Obrigatório</p>
+
+          <p class="descricao">UF</p>
+          <input type="text" class="form-control" [(ngModel)]="uf" formControlName="uf" [ngClass]="{'required': (supplier.get('profile.uf').hasError('required') && supplier.get('profile.uf').touched)
+            || (supplier.get('profile.uf').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(supplier.get('profile.uf').hasError('required') && supplier.get('profile.uf').touched)
+            || (supplier.get('profile.uf').hasError('required') && submitted)">Campo Obrigatório</p>
+
+          <p class="descricao">TELEFONE</p>
+
+          <input [textMask]="{mask: maskTel}" class="form-control" [(ngModel)]="newtelefone" type="text" formControlName="telephone" />
+          <p class="descricao">CELULAR</p>
+          <input [textMask]="{mask: maskCel}" class="form-control" [(ngModel)]="cellphone" type="text" formControlName="cellphone">
+
+
+        </div>
+        <div class="col-sm-12">
+          <div class="botoes">
+            <button class="botaoVoltar" (click)="closeModal()">VOLTAR</button>
+            <button type="button" class="botaoRegistrar" (click)="evaluateForm()">PRÓXIMO</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="row" *ngIf="next">
+    <form novalidate (ngSubmit)="onSubmit(plant)" [formGroup]="plant" #formDir="ngForm">
+      <div class="row">
+        <br />
+        <alert type="info" *ngIf="invalidPlant">
+          <strong>Atenção!</strong> O nome da planta já existe no sistema, use outro!
+        </alert>
+      </div>
+      <div class="col-md-12">
+
+        <div class="campo">
+          <h3>LOCAL</h3>
+          <input places-auto-complete (place_changed)="placeChanged($event)" [types]="['geocode']" class="form-control" style="margin-bottom: 10px;" placeholder="Digite o local da planta" />
+          <p>
+            <ngui-map [center]="center" (click)="onClick($event)" class="mapaNeto" (mapReady$)="onMapReady($event)">
+              <marker [position]="pos"></marker>
+            </ngui-map>
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-12 informacoes">
+
+        <div class="bigger2">
+          <div class="fromSun"></div>
+        </div>
+        <span class="forn">{{this.plant?.controls?.location.value}}</span>
+
+      </div>
+
+
+      <div class="col-md-6">
+        <p class="descricao">LATITUDE</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2" [(ngModel)]="lat" formControlName="lat" [ngClass]="{'required': (plant.get('lat').hasError('required') && plant.get('lat').touched)
+              || (plant.get('lat').hasError('required') && formDir.submitted)}">
+        </div>
+        <p class="requiredText" *ngIf="(plant.get('lat').hasError('required') && plant.get('lat').touched)
+            || (plant.get('lat').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+      </div>
+      <div class="col-md-6">
+        <p class="descricao">LONGITUDE</p>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2" [(ngModel)]="lng" formControlName="lng" [ngClass]="{'required': (plant.get('lng').hasError('required') && plant.get('lng').touched)
+              || (plant.get('lng').hasError('required') && formDir.submitted)}">
+        </div>
+        <p class="requiredText" *ngIf="(plant.get('lng').hasError('required') && plant.get('lng').touched)
+            || (plant.get('lng').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+      </div>
+      <div class="col-md-12">
+        <p class="descricao">NOME DA PLANTA</p>
+        <input type="text" class="form-control" [(ngModel)]="plant_name" (blur)="evaluatePlant()" placeholder="Digite o nome da planta do fornecedor" formControlName="plant_name" [ngClass]="{'required': (plant.get('plant_name').hasError('required') && plant.get('plant_name').touched)
+            || (plant.get('plant_name').hasError('required') && formDir.submitted)}">
+        <p class="requiredText" *ngIf="(plant.get('plant_name').hasError('required') && plant.get('plant_name').touched)
+            || (plant.get('plant_name').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
+      </div>
+      <div class="col-sm-12">
+        <div class="botoes">
+          <button class="botaoVoltar" (click)="next=false">VOLTAR</button>
+          <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

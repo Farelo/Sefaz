@@ -51,7 +51,9 @@ export class ListaComponent implements OnInit {
   }
 
   getAlerts(){
-    this.AlertsService.getAlertsPaginationByHashing(10,this.data.meta.page,this.code,this.project,this.supplier,this.status,this.auth.currentUser().supplier._id)
+    let id = (this.auth.currentUser().supplier ? this.auth.currentUser().supplier._id : this.auth.currentUser().official_supplier);
+
+    this.AlertsService.getAlertsPaginationByHashing(10,this.data.meta.page,this.code,this.project,this.supplier,this.status,id)
       .subscribe(alerts => this.data = alerts,
       err => {
         console.log(err);

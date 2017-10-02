@@ -1,0 +1,64 @@
+<div class="base">
+  <h1>CADASTRO DA EMPRESA</h1>
+  <br />
+  <form novalidate (ngSubmit)="onSubmit(user)" [formGroup]="user" #formDir="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="campo">
+          <p class="descricao">NOME DA EMPRESA</p>
+          <p class="explicacao">Ex. "Empresa 1"</p>
+          <div class="input-group">
+            <input type="text" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="company" formControlName="company" [ngClass]="{'required': (user.get('company').hasError('required') && user.get('company').touched)
+            || (user.get('company').hasError('required') && formDir.submitted)}">
+          </div>
+          <p class="requiredText" *ngIf="(user.get('company').hasError('required') && user.get('company').touched)
+          || (user.get('company').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+        </div>
+
+        <div class="campo">
+          <p class="descricao">URL</p>
+          <p class="explicacao">Ex. "empresa.com"</p>
+          <div class="input-group">
+            <input type="text" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="url" formControlName="url" [ngClass]="{'required': (user.get('url').hasError('required') && user.get('url').touched)
+            || (user.get('url').hasError('required') && formDir.submitted)}">
+          </div>
+          <p class="requiredText" *ngIf="(user.get('url').hasError('required') && user.get('url').touched)
+          || (user.get('url').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+        </div>
+
+
+      </div>
+
+      <div class="col-md-6">
+        <div class="campo">
+          <p class="descricao">PORTA</p>
+          <p class="explicacao">Ex. "8080"</p>
+          <div class="input-group">
+            <input type="text" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="port" formControlName="port" [ngClass]="{'required': (user.get('port').hasError('required') && user.get('port').touched)
+            || (user.get('port').hasError('required') && formDir.submitted)}">
+          </div>
+          <p class="requiredText" *ngIf="(user.get('port').hasError('required') && user.get('port').touched)
+          || (user.get('port').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+        </div>
+
+        <div class="campo">
+          <p class="descricao">EMAIL DO USUÁRIO</p>
+          <p class="explicacao">Ex. "empresa@empresa.com"</p>
+          <div class="input-group">
+            <input type="text" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="email" formControlName="email" [ngClass]="{'required': (user.get('email').hasError('required') && user.get('email').touched)
+            || (user.get('email').hasError('required') && formDir.submitted)}">
+          </div>
+          <p class="requiredText" *ngIf="(user.get('email').hasError('required') && user.get('email').touched)
+          || (user.get('email').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+        </div>
+
+      </div>
+    </div>
+    <br />
+    <div class="botoes">
+      <button routerLink="/rc/home" class="botaoVoltar">VOLTAR</button>
+      <button type="submit" class="botaoSalvar">REGISTRAR</button>
+    </div>
+    <br />
+  </form>
+</div>

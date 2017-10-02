@@ -66,8 +66,9 @@ export class TimelineComponent implements OnInit {
 
   loadAlerts(){
 
+    let id = (this.auth.currentUser().supplier ? this.auth.currentUser().supplier._id : this.auth.currentUser().official_supplier);
 
-    this.AlertsService.getAlerts(20,this.data.meta.page,this.auth.currentUser().supplier._id)
+    this.AlertsService.getAlerts(20,this.data.meta.page,id)
       .subscribe(alerts => this.data = alerts,
       err => {
         console.log(err);

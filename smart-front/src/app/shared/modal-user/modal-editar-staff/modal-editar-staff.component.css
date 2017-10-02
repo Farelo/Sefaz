@@ -1,0 +1,268 @@
+.modalFilho {
+  max-width: 800px;
+  width: 100%;
+}
+
+.pac-container {
+  z-index: 100000;
+}
+
+.mais {
+  width: 80px;
+  background-color: #6382c9;
+  padding: 5px;
+  color: white;
+  border: none;
+  border-radius: 0em;
+  height: 34px;
+  background-image: url("../../../../assets/images/mais.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 15px;
+  float: right;
+}
+
+.titulo {
+  float: left;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+
+
+tbody {
+  border: none !important;
+}
+
+tr {
+  border-top-style: solid;
+  border-top-width: 0.1px;
+  border-top-color: rgba(99,130,201,0.2);
+}
+
+hr {
+  margin: 20px 0px 20px 0px;
+  border-color: #6382c9;
+  border-width: thin;
+}
+
+.tipos {
+  display: inline-flex;
+}
+
+select {
+  width: 100%;
+  border-radius: 0em;
+  height: 34px;
+}
+
+.descricao {
+  margin: 10px 0px 5px 0px
+}
+
+.modal-title {
+  font-size: 18px;
+  text-align: left;
+  display: inline-block;
+}
+
+.close {
+  font-size: 25px;
+  text-align: right;
+}
+
+.modal-header {
+  display: block;
+}
+
+.btn {
+  font-size: 16px;
+}
+* { font-family: 'Roboto', sans-serif; }
+
+.table {
+  font-size: 14px;
+}
+
+.cabecalho {
+  background-color: #6382c9;
+  color: white;
+}
+
+.tabela {
+  border-style: solid;
+  border-color: #6382c9;
+  border-width: 2px;
+}
+
+td { background-color: white; }
+
+td,
+th,
+tr,
+.excluir,
+.editar,
+p {
+  font-family: 'Roboto', sans-serif;
+}
+
+.header {
+  display: inline-grid;
+  border-bottom-style: solid;
+  border-bottom-color: grey;
+  border-bottom-width: thin;
+  margin-bottom: 15px;
+}
+
+.header span {
+  color: #ef5562;
+}
+
+.header p {
+  font-weight: bold;
+  width: 200px;
+}
+
+th,
+td {
+  border-bottom: none !important;
+  border: none !important;
+}
+
+.mapa {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.botaoRegistrar,
+.botaoVoltar {
+  border-style: solid;
+  border-width: 2px;
+  padding: 5px 0px;
+  width: 100px;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.botaoRegistrar:hover,
+.botaoVoltar:hover {
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+
+.botaoRegistrar:focus,
+.botaoVoltar:focus {
+  outline: none !important;
+}
+
+.botaoRegistrar {
+  background-color: white;
+  color: #6382c9;
+  border-color: #6382c9;
+}
+
+.botaoRegistrar:hover {
+  background-color: #6382c9;
+  color: white;
+}
+
+.botaoVoltar {
+  background-color: white;
+  color: #777;
+  border-color: #777;
+}
+
+.botaoVoltar:hover {
+  background-color: #777;
+  color: white;
+}
+
+.botoes {
+  text-align: center;
+  padding: 30px 0px 15px 0px;
+}
+
+.form-control {
+  border-radius: 0em !important;
+  font-size: 15px;
+}
+
+.informacoes {
+  display: inherit;
+  margin-bottom: 10px;
+}
+
+.bigger2 {
+  position: relative;
+  font-size: 12px;
+  color: #666666;
+  display: inline-block;
+  width: 25px;
+}
+
+.fromSun {
+  width: 23px;
+  height: 32px;
+  vertical-align: middle;
+  -webkit-mask-box-image: url("../../../../assets/images/local1.png");
+  background-color: #ef5562;
+}
+
+.forn {
+  padding-left: 5px;
+}
+
+.divisoria {
+  color: #6382c9;
+  border-color: #6382c9;
+  border-width: thin;
+  margin-bottom: 25px;
+}
+
+.editar,
+.excluir {
+  width: 80px;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+}
+
+.excluir { background-color: #1d416b; }
+
+.excluir:hover {
+  background-color: #102b40;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.editar,
+.excluir {
+  width: 80px;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+}
+
+.editar { background-color: #3b5d93; }
+
+.editar:hover {
+  background-color: #6382c9;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.teste {
+  text-align: right;
+}
+
+.opcoes {
+  text-align: right;
+  padding-right: 123px;
+}
+
+.classVazio {
+  background-color: white;
+  margin: 0px;
+  padding: 20px;
+}

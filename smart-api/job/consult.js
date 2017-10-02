@@ -14,7 +14,7 @@ module.exports = function () {
   .populate('supplier')
   .populate('routes')
   .populate('project')
-  .populate('gc16'), plant.find({})];
+  .populate('gc16'), plant.find({}).populate('logistic_operator')];
 
   return arrayOfPromises;
 }

@@ -1,0 +1,9 @@
+definitions:
+  ErrorResponse:
+    type: object
+    properties:
+      jsonapi:
+        type: object
+        description: a short comment
+    required:
+      - jsonapi

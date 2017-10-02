@@ -3,7 +3,7 @@ exports.queries = {
       "$match": {
         "$or": [{
           "profile": {
-            "$in": ["Supplier"]
+            "$in": ["Supplier", 'Logistic', 'AdminFactory', 'StaffFactory']
           }
         }, ]
       }
@@ -14,6 +14,13 @@ exports.queries = {
         "localField": "_id",
         "foreignField": "profile",
         "as": "supplier"
+      }
+    }, {
+      "$lookup": {
+        "from": "logisticoperators",
+        "localField": "_id",
+        "foreignField": "profile",
+        "as": "logistic"
       }
     }, {
       "$lookup": {
@@ -31,6 +38,12 @@ exports.queries = {
     },
     {
       "$unwind": {
+        "path": "$logistic",
+        'preserveNullAndEmptyArrays': true
+      }
+    },
+    {
+      "$unwind": {
         "path": "$admin",
         'preserveNullAndEmptyArrays': true
       }
@@ -40,7 +53,7 @@ exports.queries = {
         "_id": '$_id',
         "_id": '$_id',
         "profile": "$profile",
-
+        "name": "$user",
         "email": "$email",
         "city": "$city",
         "street": "$street",
@@ -53,34 +66,74 @@ exports.queries = {
           '$cond': {
             if: '$admin',
             then: '$admin',
-            else: "$supplier"
+            else: {
+              '$cond': {
+                if: '$supplier',
+                then: '$supplier',
+                else: '$logistic'
+              }
+            }
           }
         }
       }
     }
   ],
-  login: function(password,email) {
-    return [
-    {
-      "$match": {
-        "password": password,
-        "email": email
+  profiles_supplier: function(id) {
+    return [{
+        "$match": {
+          "$or": [{
+            "profile": {
+              "$in": ['StaffSupplier']
+            }
+          }]
+        }
+      },
+
+      {
+        "$match": {
+
+          'official_supplier': id,
+        }
+      },
+      {
+        $project: {
+          "_id": '$_id',
+          "_id": '$_id',
+          "profile": "$profile",
+          "name": "$user",
+          "email": "$email",
+          "city": "$city",
+          "street": "$street",
+          "telephone": "$telephone",
+          "cellphone": "$cellphone",
+          "cep": "$cep",
+          "neighborhood": "$neighborhood",
+          "uf": "$uf"
+        }
       }
-    },
-    {
-      "$lookup": {
-        "from": "suppliers",
-        "localField": "_id",
-        "foreignField": "profile",
-        "as": "supplier"
+    ]
+  },
+  login: function(password, email) {
+    return [{
+        "$match": {
+          "password": password,
+          "email": email
+        }
+      },
+      {
+        "$lookup": {
+          "from": "suppliers",
+          "localField": "_id",
+          "foreignField": "profile",
+          "as": "supplier"
+        }
+      },
+      {
+        "$unwind": {
+          "path": "$supplier",
+          'preserveNullAndEmptyArrays': true
+        }
       }
-    },
-    {
-      "$unwind": {
-        "path": "$supplier",
-        'preserveNullAndEmptyArrays': true
-      }
-    }
-  ]
+    ]
   }
 }

@@ -30,7 +30,6 @@ export class TagsEditarComponent implements OnInit {
     }
   }
 
-
   ngOnInit() {
     this.tag = this.fb.group({
       code: ['',[Validators.required, Validators.maxLength(7),Validators.minLength(7)]],
@@ -50,5 +49,7 @@ export class TagsEditarComponent implements OnInit {
       }
     )
   }
+
+
 
 }

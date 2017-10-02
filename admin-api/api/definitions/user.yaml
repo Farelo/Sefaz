@@ -1,0 +1,18 @@
+definitions:
+  User:
+    type: object
+    properties:
+      company:
+        type: string
+      url:
+        type: string
+      profile:
+        type: string
+      email:
+        type: string
+      port:
+        type: string
+      username:
+        type: string
+      password:
+        type: string

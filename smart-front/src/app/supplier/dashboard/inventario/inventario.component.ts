@@ -18,7 +18,7 @@ declare var $:any;
   styleUrls: ['./inventario.component.css']
 })
 export class InventarioComponent implements OnInit {
-
+  public id : any;
   public suppliers: any;
   public name_supplier: any;
   public escolhaGeral: any = 'GERAL';
@@ -74,21 +74,22 @@ export class InventarioComponent implements OnInit {
 
 // Bateria inventario  ----------------------------------
   batteryInventory(){
-      this.inventoryService.getInventoryBattery(10,this.battery.meta.page,this.batterySearch,this.auth.currentUser().supplier._id).subscribe(result => this.battery = result, err => {console.log(err)});
+
+      this.inventoryService.getInventoryBattery(10,this.battery.meta.page,this.batterySearch,this.id).subscribe(result => this.battery = result, err => {console.log(err)});
   }
 
   generalInventoryEquipament(){
-      this.inventoryService.getInventoryGeneralPackings(10,this.general_equipament.meta.page,this.generalEquipamentSearch,this.auth.currentUser().supplier._id).subscribe(result => {this.general_equipament = result; console.log(result)}, err => {console.log(err)});
+      this.inventoryService.getInventoryGeneralPackings(10,this.general_equipament.meta.page,this.generalEquipamentSearch,this.id).subscribe(result => {this.general_equipament = result; console.log(result)}, err => {console.log(err)});
   }
 
   quantityInventory(){
     if(this.quantitySearch){
-        this.inventoryService.getInventoryQuantity(10,this.quantity.meta.page,this.quantitySearch,this.auth.currentUser().supplier._id).subscribe(result => {console.log(result);this.quantity = result}, err => {console.log(err)});
+        this.inventoryService.getInventoryQuantity(10,this.quantity.meta.page,this.quantitySearch,this.id).subscribe(result => {console.log(result);this.quantity = result}, err => {console.log(err)});
     }
   }
 
   generalInventory(){
-      this.inventoryService.getInventoryGeneral(10,this.general.meta.page,this.auth.currentUser().supplier._id).subscribe(result => this.general = result, err => {console.log(err)});
+      this.inventoryService.getInventoryGeneral(10,this.general.meta.page,this.id).subscribe(result => this.general = result, err => {console.log(err)});
   }
 
   choiced(event:any){
@@ -100,12 +101,12 @@ export class InventarioComponent implements OnInit {
   permanenceInventory(){
     if(this.permanenceSearchEquipamento && this.permanenceSearchSerial ){
       this.serial = true;
-      this.inventoryService.getInventoryPackingHistoric(10,this.permanence.meta.page,this.permanenceSearchSerial,this.permanenceSearchEquipamento,this.auth.currentUser().supplier._id).subscribe(result => {
+      this.inventoryService.getInventoryPackingHistoric(10,this.permanence.meta.page,this.permanenceSearchSerial,this.permanenceSearchEquipamento,this.id).subscribe(result => {
         this.permanence  = result;
        }, err => {console.log(err)});
     }else if(this.permanenceSearchEquipamento){
       this.serial = false;
-      this.inventoryService.getInventoryPermanence(10,this.permanence.meta.page,this.permanenceSearchEquipamento,this.auth.currentUser().supplier._id).subscribe(result => this.permanence = result, err => {console.log(err)});
+      this.inventoryService.getInventoryPermanence(10,this.permanence.meta.page,this.permanenceSearchEquipamento,this.id).subscribe(result => this.permanence = result, err => {console.log(err)});
     }
   }
 
@@ -120,7 +121,7 @@ export class InventarioComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.id = (this.auth.currentUser().supplier ? this.auth.currentUser().supplier._id : this.auth.currentUser().official_supplier);
     this.generalInventory();
     this.tamanhoSelect();
   }

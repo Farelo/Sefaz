@@ -18,8 +18,9 @@ const supplierSchema = new mongoose.Schema({
 supplierSchema.pre('remove', function(next) {
     let supplier = this;
     // Remove all the assignment docs that reference the removed person.
-    supplier.model('Plant').findOne({supplier: supplier._id}).exec()
-        .then(doc => {
+    supplier.model('LogisticOperator').update({supliers: { $in: [this._id] }}, {$pull: {supliers: this._id}}, {multi: true})
+    .then( () => supplier.model('Plant').findOne({supplier: supplier._id}).exec())
+    .then(doc => {
           doc.remove();
           let cursor = supplier.model('Packing').find({supplier: supplier._id}).cursor();
           cursor.on('data', function(doc) {
@@ -32,6 +33,7 @@ supplierSchema.pre('remove', function(next) {
             next();
           })
         });
+
 });
 supplierSchema.plugin(mongoosePaginate);
 mongoose.model('Supplier', supplierSchema);

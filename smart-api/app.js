@@ -19,13 +19,8 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb'}));
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
-// app.use(express.static(path.join(__dirname, '../smart-front/dist')));
 
 app.use('/', express.static(path.join(__dirname, '../smart-front/dist')));
-
-// app.get('*', function(req, res) {
-//   res.sendFile(path.join(__dirname,'../smart-front/dist/index.html'));
-// });
 
 app.use(logger('dev'));
 

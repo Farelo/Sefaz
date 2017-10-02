@@ -109,6 +109,7 @@ export class InventarioComponent implements OnInit {
     if(this.permanenceSearchEquipamento && this.permanenceSearchSerial ){
       this.serial = true;
       this.inventoryService.getInventoryPackingHistoric(10,this.permanence.meta.page,this.permanenceSearchSerial,this.permanenceSearchEquipamento).subscribe(result => {
+        console.log(result);
         this.permanence  = result;
        }, err => {console.log(err)});
     }else if(this.permanenceSearchEquipamento){

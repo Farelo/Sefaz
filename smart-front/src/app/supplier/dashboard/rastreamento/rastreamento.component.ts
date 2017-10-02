@@ -56,7 +56,9 @@ export class RastreamentoComponent implements OnInit {
   ) { }
 
   loadDepartmentsByPlant() {
-    this.plantsService.retrieveGeneral(this.auth.currentUser().supplier._id)
+    let id = (this.auth.currentUser().supplier ? this.auth.currentUser().supplier._id : this.auth.currentUser().official_supplier);
+
+    this.plantsService.retrieveGeneral(id)
       .subscribe(result => {
         this.plants = result.data;
         if(result.data.length > 0){

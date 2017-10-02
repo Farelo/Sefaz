@@ -64,9 +64,11 @@
 </div>
 
 <ng-template #popContent class="test">
-  <img src="../../../assets/images/perfil1.png">
-  <p>Usuário Administrador Geral.</p><hr>
-  <button class="gerenciar" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
+  <img *ngIf="currentUser?.profile != 'StaffSupplier'" src="../../../assets/images/perfil-fornecedor.png">
+  <img *ngIf="currentUser?.profile === 'StaffSupplier'" src="../../../assets/images/perfil-funcionario.png">
+  <p *ngIf="currentUser?.profile != 'StaffSupplier'">Fornecedor Administrador.</p><hr>
+  <p *ngIf="currentUser?.profile === 'StaffSupplier'">Funcionário do Fornecedor.</p><hr>
+  <button class="gerenciar" *ngIf="currentUser?.profile != 'StaffSupplier'" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
   <button class="medio" (click)="p.close(); a.close(); openModalEditar()"><div>EDITAR</div></button>
   <button class="medio2" (click)="logout()"><div>SAIR</div></button>
 </ng-template>

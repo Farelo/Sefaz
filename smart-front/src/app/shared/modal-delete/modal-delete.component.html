@@ -75,13 +75,14 @@
   <div class="detalhes" *ngIf="type === 'profile'">
     <h2>Detalhes do Perfil do Usuário </h2>
     <hr>
-    <p>Perfil: {{view.profile}}</p>
+    <p>{{view.profile == "Supplier" ? 'Fornecedor' :
+      (view.profile == 'Logistic' ? 'Op. Logistico' :
+      (view.profile == 'AdminFactory' ? 'Admin. Fábrica' : 'Func. Fábrica'))}}</p>
     <p>E-mail: {{view.email}}</p>
-    <p>Name: {{view.user.name}}</p>
+    <p>Name: {{view.user?.name ? view.user?.name : view.name }}</p>
     <div *ngIf="view.profile === 'Supplier'">
       <p>DUNS: {{view.user.duns}}</p>
     </div>
-
 
     <hr>
     <div class="alerta">

@@ -1,0 +1,29 @@
+{
+  "name": "admin-api",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.12.3",
+    "http-status": "^1.0.1",
+    "lodash": "^4.17.4",
+    "method-override": "^2.3.10",
+    "mongoose": "^4.11.13",
+    "morgan": "^1.9.0",
+    "swagger-express-mw": "^0.1.0"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "build": "node ./config/compile.swagger.js",
+    "test": "swagger project test"
+  }
+}

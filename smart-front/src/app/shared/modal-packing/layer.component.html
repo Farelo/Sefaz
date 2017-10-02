@@ -16,8 +16,15 @@
         [strokeColor]="'#FF0000'"
         [strokeOpacity]="2"
         [strokeWeight]="4"></polyline>
-        <marker *ngFor="let pos of path" [position]="pos">
+        <marker *ngFor="let pos of markers" [position]="pos.position" (click)="clicked($event,pos)">
+          <info-window id="iw">
+              <div *ngIf="marker.display">
+                    <p>Data de entrada: {{ marker.start |  date:'medium' }}</p>
+                    <p>Data de saida: {{ marker.end |  date:'medium'}}</p>
+                    <p>Bateria: {{ marker.battery | round }}</p>
+              </div>
 
+          </info-window>
         </marker>
     </ngui-map>
 

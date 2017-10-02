@@ -17,6 +17,16 @@ public path = [];
 public center: any;
 public pos: any;
 public inscricao: Subscription;
+public markers = [];
+public marker = {
+  display: true,
+  lat: null,
+  lng: null,
+  start: null,
+  end: null,
+  battery: null
+
+};
 
   constructor(
     public activeLayer: NgbActiveModal,
@@ -30,7 +40,23 @@ public inscricao: Subscription;
   }
 
   getPositions(){
-    this.packingService.getPositions(this.packing.code_tag).subscribe(result => {this.center = result.data.positions[0]; this.path = result.data.positions})
+    this.packingService.getPositions(this.packing.code_tag).subscribe(result => {
+      this.center = result.data.positions[0];
+      this.path = result.data.positions;
+      this.markers  = result.data.markers;
+      console.log(result.data);
+    })
+  }
+
+  clicked(_a, opt) {
+    var marker = _a.target;
+    this.marker.lat = marker.getPosition().lat();
+    this.marker.lng = marker.getPosition().lng();
+    this.marker.start = opt.start;
+    this.marker.battery = opt.battery;
+    this.marker.end = opt.end;
+    marker.nguiMapComponent.openInfoWindow('iw', marker);
+
   }
 
   getPosition(event:any){

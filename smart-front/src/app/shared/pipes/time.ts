@@ -16,9 +16,10 @@ export class TimePipe {
     seconds = (seconds < 10) ? "0" + seconds : seconds;
 
     if(days != 0){
-      return  days + " Dia";
+      return  (days > 1 ? ( days + " Dias ") : ( days + " Dia ") ) + (hours > 1 ? ( hours + " Horas e ") : ( hours + " Hora e ") ) + (minutes > 1 ? ( minutes + " Minutos") : ( minutes + " Minuto") );
+
     }else{
-      return  hours + " Horas e " + minutes + " Minutos"  ;
+      return (hours > 1 ? ( hours + " Horas e ") : ( hours + " Hora e ") ) + (minutes > 1 ? ( minutes + " Minutos ") : ( minutes + " Minuto") ) ;
     }
 
   }

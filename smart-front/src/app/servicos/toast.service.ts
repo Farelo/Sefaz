@@ -18,7 +18,7 @@ export class ToastService {
 
   error(status: any) {
     // Add see all possible types in one shot
-
+    console.log(status.status);
     if(status.status.errmsg){
       var toastOptions: ToastOptions = {
         title: "Erro no cadastro",
@@ -48,7 +48,10 @@ export class ToastService {
         }
       };
     }
+    this.toastyService.error(toastOptions);
   }
+
+
   errorArray(status: any) {
     // Add see all possible types in one shot
 

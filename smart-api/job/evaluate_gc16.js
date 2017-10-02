@@ -4,13 +4,12 @@ module.exports = {
   changed: function (p , plant , department) {
     p.actual_plant = {
       plant: plant._id,
-      local: plant.supplier ? 'Supplier' : 'Factory'
+      local: plant.supplier ? 'Supplier' : (plant.logistic_operator ? 'Logistic' : 'Factory')
     };
 
     if(department.name){
       p.department = department._id;
     }else if(p.actual_plant && p.department){
-
       if(!p.actual_plant.plant.equals(p.department.plant)) p.department = null;
     }else{
       p.department = null;

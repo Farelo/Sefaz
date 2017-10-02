@@ -1,0 +1,42 @@
+<div class="teste">
+  <div class="row">
+    <div class="col-sm-10 col-md-8 col-lg-4 quadrado">
+      <alert type="danger" *ngIf="erroAuth">
+        <strong>Atenção!</strong> Usuário ou senha invalidos!.
+      </alert>
+      <h1>RECICLAPAC</h1>
+
+      <form novalidate (ngSubmit)="onSubmit(login)" [formGroup]="login" #formDir="ngForm">
+        <!-- (ngSubmit)="onSubmit(f)" -->
+        <div class="form-group wrapper">
+          <img src="../../assets/images/mail.png" class="spanMail">
+          <div>
+            <input class="inputMail" type="email" placeholder="e-mail" aria-describedby="basic-addon2" name="email" id="email" required [(ngModel)]="email" formControlName="email"
+            [ngClass]="{'required': (login.get('email').hasError('required') && login.get('email').touched)
+            || (login.get('email').hasError('required') && formDir.submitted)}">
+
+          </div>
+          <p class="requiredText" *ngIf="(login.get('email').hasError('required') && login.get('email').touched)
+          || (login.get('email').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
+        </div>
+
+        <div class="wrapper form-group">
+          <img src="../../assets/images/lock.png" class="spanLock">
+          <div>
+            <input class="inputSenha" type="password" placeholder="senha" aria-describedby="basic-addon2" name="senha" id="senha" required [(ngModel)]="password" formControlName="password"
+            [ngClass]="{'required': (login.get('password').hasError('required') && login.get('password').touched)
+            || (login.get('password').hasError('required') && formDir.submitted)}">
+
+            <p class="esqueci" routerLink="/esqueciMinhaSenha">Esqueci minha senha</p>
+          </div>
+          <p class="requiredText" *ngIf="(login.get('password').hasError('required') && login.get('password').touched)
+          || (login.get('password').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+        </div>
+
+        <br />
+        <button type="submit">ENTRAR</button>
+      </form>
+    </div>
+  </div>
+</div>

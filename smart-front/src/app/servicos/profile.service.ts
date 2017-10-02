@@ -15,6 +15,12 @@ export class ProfileService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  getProfilePaginationSupplier(limit: number, page: number, supplier: string): Observable<any> {
+    return this.http.get(environment.url + 'profile/list/pagination/supplier/' + limit + '/' + page+ '/' + supplier)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   retrieveAll(): Observable<any> {
     return this.http.get(environment.url + 'profile/list/all')
       .map((res: Response) => res.json())

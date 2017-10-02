@@ -4,7 +4,3 @@ definitions:
     properties:
       name:
         type: string
-      cpf:
-        type: string
-      profile:
-        type: string
