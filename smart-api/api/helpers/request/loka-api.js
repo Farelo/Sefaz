@@ -40,7 +40,7 @@ module.exports = {
           let start =  date.getTime() - (1000 * 60 * 60 * 24 * 10);
           let end = date.getTime();
           var options = {
-              url: 'https://loka-app.com/api/deviceDetails?deviceId='+device+'&startDate='+start+'&endDate='+end,
+              url: 'https://loka-app.com/api/deviceDetails?deviceId='+device,
               method: 'POST',
               headers : {
                   'content-type': 'application/json',
@@ -59,19 +59,20 @@ module.exports = {
                       markers : [],
                       positions : []
                     };
-                    //TODO
-                    //odernar de tras pra frente
-                    info.positions.forEach(o => array.markers.push( {'start': o.date, 'end': o.to,'battery': o.battery,'position': [o.latitude, o.longitude]}))
-                    array.markers.sort(function(a,b){
-                      if (a.start > b.start) {
-                        return 1;
-                      }
-                      if (a.start < b.start) {
-                        return -1;
-                      }
-                      // a must be equal to b
-                      return 0;
-                    });
+
+
+                    info.positions.forEach(o => array.markers.push( {'start': new Date(o.date*1000), 'end': (o.to == null ? null : new Date(o.to*1000)),'battery': o.battery,'position': [o.latitude, o.longitude]}))
+                    console.log(array.positions);
+                    // array.markers.sort(function(a,b){
+                    //   if (a.start < b.start) {
+                    //     return 1;
+                    //   }
+                    //   if (a.start > b.start) {
+                    //     return -1;
+                    //   }
+                    //   // a must be equal to b
+                    //   return 0;
+                    // });
                     array.markers.forEach( o => array.positions.push({lat: o.position[0], lng: o.position[1]}));
 
                     resolve(array);

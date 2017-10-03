@@ -31,7 +31,7 @@
     <hr *ngIf="((escolhaGeral == 'FORNECEDOR')||(escolhaGeral == 'EQUIPAMENTO'))">
 
     <div *ngIf="(escolhaGeral == 'FORNECEDOR')" class="row escolhaFornecedor">
-      <div class="col-sm-4">
+      <div class="col-sm-6">
         <p>DUNS</p>
 
         <select   [ngModel]="supplierSearch" (ngModelChange)="supplierInventory($event)" >
@@ -40,9 +40,10 @@
         </select>
 
       </div>
-      <div class="col-sm-4" *ngIf="this.name_supplier">
+      <div class="col-sm-6" *ngIf="this.name_supplier">
         <p>FORNECEDOR:</p>
-        <p>{{name_supplier?.supplier?.name}}</p>
+        <input type="text" class="form-control meuInput" [ngModel]="name_supplier?.supplier?.name" disabled>
+
       </div>
     </div>
 
@@ -444,9 +445,9 @@
           <td>{{packing.actual_plant?.plant?.plant_name || 'Não Registrado'}}</td>
           <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor': (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Não Registrado'))}}</td>
           <td>{{packing.quantity || '-'}}</td>
-          <td>{{ (packing.problem || packing.traveling) ? '-' : (packing.actual_gc16?.min || '-')}}</td>
-          <td>{{(packing.problem || packing.traveling) ? '-' : (packing.actual_gc16?.max || '-')}}</td>
-          <td>{{(packing.problem || packing.traveling) ? '-' : (packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min) : (packing.actual_gc16?.max < packing.quantity ? packing.quantity-packing.actual_gc16?.max  :  'NI')) : '-'  )}}</td>
+          <td>{{ (packing.problem || packing.traveling) ? '-' : (packing.actual_gc16?.min )}}</td>
+          <td>{{(packing.problem || packing.traveling) ? '-' : (packing.actual_gc16?.max )}}</td>
+          <td>{{(packing.problem || packing.traveling) ? '-' : (packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min) : (packing.actual_gc16?.max < packing.quantity ? packing.quantity-packing.actual_gc16?.max  :  'NP')) : '-'  )}}</td>
           <td>{{packing.missing ? 'Perdida':
             (packing.problem ? 'Local Errado' :
             (packing.traveling ? 'Viajando' : 'Sem Anormalidade')) }}</td>

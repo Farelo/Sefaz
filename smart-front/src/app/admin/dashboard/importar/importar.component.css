@@ -15,6 +15,18 @@
   text-align: center;
 }
 
+span.lg1 {
+  color: white;
+  padding: 5px;
+  margin-bottom: 5px;
+  width: 150px !important;
+  text-align: center;
+}
+
+span.lg1 {
+  background-color: #4c7bff;
+}
+
 .botaoRegistrar,
 .botaoVoltar {
   border-style: solid;
@@ -237,9 +249,13 @@ tbody {
   color: #EF5562;
 }
 
+.modalBody p {
+  font-weight: bold;
+}
+
 .header p {
   font-weight: bold;
-  width: 200px;
+  width: 564px;
 }
 
 .modalBody span {

@@ -98,8 +98,8 @@ td { background-color: white; }
   margin-bottom: 15px;
 }
 
-.header span {
-  color: #ef5562;
+.header span.alert{
+  color: #4c7bff;
 }
 
 .header p {

@@ -154,6 +154,7 @@ exports.uploadDepartment = function(req, res) {
           o.lat = parseFloat(o.lat);
           o.lng = parseFloat(o.lng);
         });
+
         result = result.filter( o => {
           if(o.name && o.lat && o.lng){
             return true;
@@ -303,6 +304,6 @@ exports.uploadRoute = function(req, res) {
                 };
                 successHandler(res, result);
               }).catch(err =>  errorHandler(res, 'Error to generate excel', err))
-      }).catch(err =>  errorHandler(res, 'Error to generate excel', err))
+      });
   });
 };

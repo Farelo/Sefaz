@@ -1,12 +1,13 @@
 <div class="modalFilho">
   <div class="header">
-     <p>Detalhes do alerta - {{alerta.data.date | date: 'dd/MM/yyyy'}}</p>
+     <h1><span >Detalhes do Alerta </span> </h1><br>
+     <p>Data do alerta: {{alerta.data.date | date: 'dd/MM/yyyy'}}</p>
      <p>Código: {{alerta.data.packing?.code}}</p>
-     <p>Tipo: <span>{{alerta.data.status === 1 ? 'Objeto perdido' :
+     <p>Tipo: <span >{{alerta.data.status === 1 ? 'Objeto perdido' :
        (alerta.data.status === 2 ? 'Local Incorreto' :
        (alerta.data.status === 3 ? 'Bateria Baixa' :
        (alerta.data.status === 4 ? 'Objeto Atrasado' : 'Tempo de Permanência')))}}</span></p>
-       <p>Hora: {{alerta.data.date | date:'jms'}}</p>
+       <p>Hora do alerta: {{alerta.data.date | date:'jms'}}</p>
   </div>
   <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -20,7 +21,7 @@
 
   <button type="button" class="botaoVisualizar" (click)="getHistoric();historicFlag = true" *ngIf="!historicFlag">Visualizar Historico</button>
   <button type="button" class="botaoVisualizar" (click)="historicFlag = false" *ngIf="historicFlag">Fechar Historico</button>
-
+  <br>
   <div class="table-responsive tabela" *ngIf="historicFlag">
     <table class="table">
       <thead>

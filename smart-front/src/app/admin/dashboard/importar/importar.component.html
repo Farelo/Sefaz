@@ -10,13 +10,57 @@
       <ng-template #content>
         <div class="modalFilho">
           <div class="header">
-             <p>IMPORTAR DADOS</p>
+             <p>DETALHES DAS COLUNAS QUE O EXCELL DEVE TER EM CADA TIPO DE IMPORTAÇÃO</p>
           </div>
           <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
           </button>
         <div class="modalBody">
-          <p>Informações que o cliente deseja colocar.</p>
+          <h1>Tag</h1>
+          <p><span class="lg1">CODE</span></p>
+          <p>code: Código do beacon</p>
+          <br>
+          <h1>Projeto</h1>
+          <p><span class="lg1">NAME</span></p>
+          <p>name: Nome do projeto</p>
+          <br>
+          <h1>Planta</h1>
+          <p><span class="lg1">PLANT_NAME</span> <span class="lg1">LAT</span> <span class="lg1">LNG</span></p>
+          <p>plant_name: Nome da planta da fábrica</p>
+          <p>lat: Latitude da planta</p>
+          <p>lng: Longitude da planta</p>
+          <br>
+          <h1>Departamento</h1>
+          <p><span class="lg1">NAME</span> <span class="lg1">PLANT</span> <span class="lg1">LAT</span> <span class="lg1">LNG</span> </p>
+          <p>name: Nome do setor de uma planta da fábrica</p>
+          <p>plant: Nome da planta da fábrica</p>
+          <p>lat: Latitude da planta</p>
+          <p>lng: Longitude da planta</p>
+          <br>
+          <h1>Embalagem</h1>
+          <p><span class="lg1">CODE</span> <span class="lg1">SERIAL</span> <span class="lg1">TAG</span> <span class="lg1">TYPE</span> <span class="lg1">CAPACITY</span> <span class="lg1">SUPPLIER</span> <span class="lg1">DUNS</span>
+            <span class="lg1">PROJECT</span> <span class="lg1">WEIGTH</span> <span class="lg1">WIDTH</span> <span class="lg1">HEIGTH</span> <span class="lg1">LENGTH</span></p>
+            <p>code: Código da embalagem</p>
+            <p>serial: Número serial da embalagem</p>
+            <p>type: Descrição da embalagem</p>
+            <p>capacity: Capacidade da embalagem</p>
+            <p>supplier: Nome Fornecedor da embalagem</p>
+            <p>duns: Número do duns do fornecedor da embalagem</p>
+            <p>project: Nome do projeto a qual a embalagem esta associada</p>
+            <p>weigth: Peso da embalagem</p>
+            <p>width: Largura da embalagem</p>
+            <p>height: Altura da embalagem</p>
+            <p>length: Comprimento da Embalagem</p>
+            <br>
+          <h1>Rota</h1>
+          <p><span class="lg1">SUPPLIER</span> <span class="lg1">DUNS</span> <span class="lg1">PROJECT</span> <span class="lg1">PLANT_FACTORY</span> <span class="lg1">PACKING_CODE</span></p>
+          <p>supplier: Nome do fornecedor da fábrica</p>
+          <p>duns: Numero do fornecedor</p>
+          <p>project: Latitude da planta</p>
+          <p>plant_factory: Longitude da planta</p>
+          <p>packing_code: Longitude da planta</p>
+          <br>
+
         </div>
         </div>
       </ng-template>

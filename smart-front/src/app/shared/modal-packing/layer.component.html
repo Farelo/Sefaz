@@ -1,7 +1,11 @@
 <div class="modalFilho">
   <div class="header">
-  <p>Detalhes da Embalagem - {{packing.code}}</p>
-  <p>Serial - {{packing.serial}}</p>
+  <h1><span >Detalhes do Embalagem </span> </h1><br>
+  <p>Código: {{packing.code}}</p>
+  <p>Serial: {{packing.serial}}</p>
+  <p>Projeto: {{packing.project.name}}</p>
+  <p>Fornecedor: {{packing.supplier.name}}</p>
+  <p>Planta Atual: {{packing.actual_plant?.plant?.plant_name ? packing.actual_plant?.plant?.plant_name : "Sem informação"}}</p>
   </div>
   <button type="button" class="close" aria-label="Close" (click)="activeLayer.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -13,15 +17,15 @@
 
         [path]="path"
         [geodesic]="true"
-        [strokeColor]="'#FF0000'"
+        [strokeColor]="'#3c763d'"
         [strokeOpacity]="2"
-        [strokeWeight]="4"></polyline>
+        [strokeWeight]="3"></polyline>
         <marker *ngFor="let pos of markers" [position]="pos.position" (click)="clicked($event,pos)">
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
               <div *ngIf="marker.display">
-                    <p><span class="bold">Data de entrada:</span> {{ marker.start |  date:'dd/MM/yyyy - hh:mm a' }}</p>
-                    <p><span class="bold">Data de saida:</span> {{ marker.end |  date:'dd/MM/yyyy - hh:mm a'}}</p>
+                    <p><span class="bold">Data de entrada:</span> {{ marker.start |  date: 'dd/MM/yyyy - hh:mm a' }}</p>
+                    <p><span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end |  date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
                     <p><span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
               </div>
 

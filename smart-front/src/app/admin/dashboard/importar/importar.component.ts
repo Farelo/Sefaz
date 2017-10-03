@@ -20,6 +20,7 @@ declare var $:any;
 })
 export class ImportarComponent implements OnInit {
   private data: any;
+  private type = "";
   private colHeaders: string[];
   private columns: any[];
   public file : any;
@@ -225,7 +226,7 @@ export class ImportarComponent implements OnInit {
   }
 
   openHelp(content) {
-    this.activeModal = this.modalService.open(content);
+    this.activeModal = this.modalService.open(content,{backdrop: "static", size: "lg"});
   }
 
 

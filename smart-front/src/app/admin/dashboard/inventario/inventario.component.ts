@@ -128,7 +128,7 @@ export class InventarioComponent implements OnInit {
   }
 
   openLayer(packing) {
-    const modalRef = this.modalService.open(LayerModalComponent);
+    const modalRef = this.modalService.open(LayerModalComponent,{backdrop: "static", size: "lg"});
     modalRef.componentInstance.packing = packing;
   }
 
