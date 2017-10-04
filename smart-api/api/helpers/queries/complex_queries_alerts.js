@@ -39,7 +39,7 @@ exports.queries = {
               "_id": {
                   "supplier": "$supplier",
                   "project": "$project",
-                  "code": "$code",
+                  "code": "$packingObject.code",
                   "status" : "$status"
               },
               "quantity": {
@@ -100,7 +100,7 @@ exports.queries = {
               "_id": {
                   "supplier": "$supplier",
                   "project": "$project",
-                  "code": "$code",
+                  "code": "$packingObject.code",
                   "status" : "$status"
               },
               "quantity": {

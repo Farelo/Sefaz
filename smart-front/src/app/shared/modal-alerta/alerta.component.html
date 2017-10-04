@@ -22,7 +22,7 @@
   <button type="button" class="botaoVisualizar" (click)="getHistoric();historicFlag = true" *ngIf="!historicFlag">Visualizar Historico</button>
   <button type="button" class="botaoVisualizar" (click)="historicFlag = false" *ngIf="historicFlag">Fechar Historico</button>
   <br>
-  <div class="table-responsive tabela" *ngIf="historicFlag">
+  <div style="padding-top: 20px" class="table-responsive tabela" *ngIf="historicFlag">
     <table class="table">
       <thead>
         <tr class="cabecalho">

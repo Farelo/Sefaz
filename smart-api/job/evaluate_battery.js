@@ -5,7 +5,7 @@ const alerts_type  = require('./alerts_type');
 
 module.exports = function(p) {
   return new Promise(function(resolve, reject) {
-    if (p.battery < 75) {
+    if (p.battery < 20) {
       //EMITIR ALERTA
       alert.find({ //Verifica se o alerta ja existe
         "packing": p._id,

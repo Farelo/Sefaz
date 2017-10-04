@@ -226,7 +226,7 @@ export class ImportarComponent implements OnInit {
   }
 
   openHelp(content) {
-    this.activeModal = this.modalService.open(content,{backdrop: "static", size: "lg"});
+    this.activeModal = this.modalService.open(content,{ size: "lg"});
   }
 
 

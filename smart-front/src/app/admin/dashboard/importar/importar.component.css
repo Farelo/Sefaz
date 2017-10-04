@@ -24,7 +24,7 @@ span.lg1 {
 }
 
 span.lg1 {
-  background-color: #4c7bff;
+  background-color: #6382c9;
 }
 
 .botaoRegistrar,
@@ -253,7 +253,7 @@ tbody {
   font-weight: bold;
 }
 
-.header p {
+.header .titulo {
   font-weight: bold;
   width: 564px;
 }
