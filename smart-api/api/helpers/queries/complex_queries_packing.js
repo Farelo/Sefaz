@@ -140,7 +140,7 @@ exports.queries = {
       },
       {
         "$match": {
-            "actual_plant.plant": { "$exists": true, "$ne": null }
+            "actual_plant.plant": { "$exists": true }
         }
       },
       {
@@ -150,10 +150,17 @@ exports.queries = {
             "plant": "$actual_plant.plant",
             "supplier": "$supplier",
             "project": "$project",
-            "missing": "$missing"
+            "missing": "$missing",
+            "traveling": "$traveling"
           },
           "code": {
             "$first": "$code"
+          },
+          "traveling": {
+            "$first": "$traveling"
+          },
+          "missing": {
+            "$first": "$missing"
           },
           "supplier": {
             "$first": "$supplierObject"

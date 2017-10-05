@@ -14,7 +14,7 @@
         <thead>
           <tr class="cabecalho">
             <th class="semBorda">Planta</th>
-            <th class="semBorda">Quantidade na Planta</th>
+            <th class="semBorda">Quantidade de Embalagens</th>
             <th class="semBorda">Projeto</th>
             <th class="semBorda">Local</th>
 
@@ -26,10 +26,10 @@
                                                           itemsPerPage: 10,
                                                           currentPage: data.meta.page,
                                                           totalItems: data.meta.total_docs}">
-            <td>{{packing.actual_plant?.plant.plant_name}}</td>
+            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Perdida" : "Embalagem em Viagem")}}</td>
             <td>{{packing.quantity}}</td>
             <td>{{packing.project?.name}}</td>
-            <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor': (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Não Registrado'))}}</td>
+            <td>{{packing.actual_plant?.plant ? (packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor': (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Não Registrado'))) : '-'}}</td>
 
           </tr>
         </tbody>
