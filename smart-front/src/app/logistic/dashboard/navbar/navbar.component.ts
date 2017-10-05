@@ -33,7 +33,7 @@ closeResult: string;
     this.funcaoTop();
     this.menuAparecer = false;
     this.currentUser = this.authenticationService.currentUser();
-    // this.modalOptions.backdrop =  'static';
+
   }
 
   funcaoTop(){

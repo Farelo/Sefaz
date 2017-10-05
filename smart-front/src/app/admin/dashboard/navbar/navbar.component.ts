@@ -32,7 +32,6 @@ public closeResult: string;
     this.menuAparecer = false;
     this.currentUser = this.authenticationService.currentUser();
 
-    // this.modalOptions.backdrop =  'static';
   }
 
   funcaoTop(){
@@ -62,7 +61,6 @@ public closeResult: string;
   }
 
   logout(){
-    console.log("aqui");
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }

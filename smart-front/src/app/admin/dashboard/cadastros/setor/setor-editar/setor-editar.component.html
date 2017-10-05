@@ -1,14 +1,14 @@
 <div class="base">
   <h1>EDITAR SETOR</h1>
   <br />
-  <form novalidate (ngSubmit)="onSubmit(department)" [formGroup]="department">
+  <form novalidate (ngSubmit)="onSubmit(department)" [formGroup]="department"  #formDir="ngForm">
     <div class="row">
       <div class="col-md-12">
 
         <div class="campo">
           <h3>LOCAL</h3>
           <p>
-            <ngui-map [center]="center"  (click)="onClick($event)">
+            <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="onMapReady($event)" (click)="onClick($event)">
               <marker [position]="pos"></marker>
             </ngui-map>
           </p>
@@ -26,14 +26,22 @@
       <div class="col-md-6">
         <p class="descricao">LATITUDE</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2" [(ngModel)]="lat" formControlName="lat">
+          <input type="text" class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2" [(ngModel)]="lat" formControlName="lat"
+          [ngClass]="{'required': (department.get('lat').hasError('required') && department.get('lat').touched)
+          || (department.get('lat').hasError('required') && formDir.submitted)}">
         </div>
+        <p class="requiredText" *ngIf="(department.get('lat').hasError('required') && department.get('lat').touched)
+        || (department.get('lat').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       </div>
       <div class="col-md-6">
         <p class="descricao">LONGITUDE</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2" [(ngModel)]="lng" formControlName="lng">
+          <input type="text" class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2" [(ngModel)]="lng" formControlName="lng"
+          [ngClass]="{'required': (department.get('lng').hasError('required') && department.get('lng').touched)
+          || (department.get('lng').hasError('required') && formDir.submitted)}">
         </div>
+        <p class="requiredText" *ngIf="(department.get('lng').hasError('required') && department.get('lng').touched)
+        || (department.get('lng').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       </div>
       <br />
 
@@ -42,29 +50,33 @@
           <p class="descricao">NOME</p>
           <p class="explicacao">Ex. "Setor B7"</p>
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Digite o nome do departamento" aria-describedby="basic-addon2" [(ngModel)]="name" formControlName="name">
+            <input type="text" class="form-control" placeholder="Digite o nome do departamento" aria-describedby="basic-addon2" [(ngModel)]="name" formControlName="name"
+            [ngClass]="{'required': (department.get('name').hasError('required') && department.get('name').touched)
+            || (department.get('name').hasError('required') && formDir.submitted)}">
           </div>
+          <p class="requiredText" *ngIf="(department.get('name').hasError('required') && department.get('name').touched)
+          || (department.get('name').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
 
       </div>
       <div class="col-md-6">
-      <div class="campo">
-        <p class="descricao">ASSOCIE A PLANTA</p>
-        <p class="explicacao">Escolha uma das plantas</p>
-        <select  (ngModelChange)="onChange($event)" formControlName="plant" [ngClass]="{'required': (department.get('plant').hasError('required') && department.get('plant').touched)
-          || (department.get('plant').hasError('required') && formDir.submitted)}">
-            <option value="">Associe uma Planta</option>
-            <option *ngFor="let obj of plants"  [ngValue]="obj" >{{obj.plant_name }} </option>
-        </select>
-        <p class="requiredText" *ngIf="(department.get('plant').hasError('required') && department.get('plant').touched)
-        || (department.get('plant').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-      </div>
+        <div class="campo">
+          <p class="descricao">ASSOCIE A PLANTA</p>
+          <p class="explicacao">Escolha uma das plantas</p>
+          <select  (ngModelChange)="onChange($event)" formControlName="plant" [ngClass]="{'required': (department.get('plant').hasError('required') && department.get('plant').touched)
+            || (department.get('plant').hasError('required') && formDir.submitted)}">
+              <option value="">Associe uma Planta</option>
+              <option *ngFor="let obj of plants"  [ngValue]="obj" >{{obj.plant_name }} </option>
+          </select>
+          <p class="requiredText" *ngIf="(department.get('plant').hasError('required') && department.get('plant').touched)
+          || (department.get('plant').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+        </div>
     </div>
     </div>
     <br />
     <div class="botoes">
       <button routerLink="/rc/cadastros/setor" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
     </div>
     <br />
   </form>
