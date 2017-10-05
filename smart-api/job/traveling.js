@@ -64,25 +64,45 @@ module.exports = {
           var date = new Date()
 
           var time = Math.floor(date.getTime()-p.trip.date);
-          p.trip = {
-            'time_exceeded': true,
-            'date': p.trip.date,
-            'time_countdown':time
-          };
-          alert.update({ //Verifica se o alerta ja existe
-            "packing": p._id,
-            "status": alerts_type.TRAVELING
-          }, {
-            "routes": p.routes,
-            "supplier": p.supplier,
-            "hashpacking": p.hashPacking,
-            "project": p.project,
-            "serial": p.serial
-          }).then(() => resolve(p));
+
+          let result = p.routes.filter(r => {
+            return r.time.max < time;
+          });
+
+          if (result.length > 0) {
+            p.trip = {
+              'time_exceeded': true,
+              'date': p.trip.date,
+              'time_countdown':time
+            };
+
+            alert.update({ //Verifica se o alerta ja existe
+              "packing": p._id,
+              "status": alerts_type.TRAVELING
+            }, {
+              "routes": p.routes,
+              "supplier": p.supplier,
+              "hashpacking": p.hashPacking,
+              "project": p.project,
+              "serial": p.serial
+            }).then(() => resolve(p));
+
+          } else {
+            p.trip = {
+              'time_exceeded': false,
+              'date': p.trip.date,
+              'time_countdown':time
+            };
+
+            alert.remove({
+              "packing": p._id,
+              "status":  alerts_type.TRAVELING
+            }).then(() => resolve(p));
+          }
         } else {
           module.exports.create(p).then(new_p => resolve(new_p));
         }
-      }else{
+      }else {
         resolve(p);
       }
     });
