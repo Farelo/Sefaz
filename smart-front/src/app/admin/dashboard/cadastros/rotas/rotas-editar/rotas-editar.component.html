@@ -48,7 +48,7 @@
 
         </div>
 
-        <div class="campo" formGroupName="time">
+        <div class="campo row time" formGroupName="time" style="margin: 0px">
           <p class="descricao">DEFINA UM TEMPO MÁXIMO DE VIAGEM</p>
           <p class="explicacao"></p>
           <div class="col-md-6">
@@ -57,27 +57,27 @@
             <p class="requiredText" *ngIf="(route.get('time.max').hasError('required') && route.get('time.max').touched)
           || (route.get('time.max').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
           </div>
-          <div class="col-md-6">
-            <p>Dias: {{time_max.hour}}</p>
-            <p>Horas: {{time_max.minute }}</p>
-            <p>Minutos: {{time_max.second }}</p>
+          <div class="col-md-6" style="padding-top: 5px;">
+            <span class="titulo">DIAS: </span><span> {{time_max.hour}}</span><br>
+            <span class="titulo">HORAS: </span><span>{{time_max.minute }}</span><br>
+            <span class="titulo">MINUTOS: </span><span>{{time_max.second }}</span><br>
           </div>
 
         </div>
 
-        <div class="campo" formGroupName="time">
+        <div class="campo row time" formGroupName="time" style="margin: 0px">
           <p class="descricao">DEFINA UM TEMPO MÍNIMO DE VIAGEM</p>
           <p class="explicacao"></p>
           <div class="col-md-6">
-            <ngb-timepicker [(ngModel)]="time_min" [seconds]="true" formControlName="min"></ngb-timepicker>
+            <ngb-timepicker [(ngModel)]="time_min" [seconds]="true" formControlName="min">ppp</ngb-timepicker>
             <!-- <timepicker [(ngModel)]="min" formControlName="min"></timepicker> -->
             <p class="requiredText" *ngIf="(route.get('time.min').hasError('required') && route.get('time.min').touched)
           || (route.get('time.min').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
           </div>
-          <div class="col-md-6">
-            <p>Dias: {{time_min.hour}}</p>
-            <p>Horas: {{time_min.minute }}</p>
-            <p>Minutos: {{time_min.second }}</p>
+          <div class="col-md-6" style="padding-top: 5px;">
+            <span class="titulo">DIAS: </span><span> {{time_min.hour}}</span><br>
+            <span class="titulo">HORAS: </span><span>{{time_min.minute }}</span><br>
+            <span class="titulo">MINUTOS: </span><span>{{time_min.second }}</span><br>
           </div>
 
         </div>
@@ -86,27 +86,30 @@
     </div>
     <hr class="divisoria" *ngIf="directions">
     <div class="row" *ngIf="directions" style="margin-top: 0px;">
-      <div class="col-sm-6 informacoes">
+      <div class="col-sm-12 informacoes">
         <div class="bigger2">
           <div class="fromSun"></div>
         </div>
         <span class="forn">{{route['controls'].location['controls'].start_address.value}}</span>
       </div>
 
-      <div class="col-sm-6 informacoes">
+      <div class="col-sm-12 informacoes">
         <div class="bigger2">
-          <div class="fromSun"></div>
+          <div class="fromSun1"></div>
         </div>
         <span class="forn">{{route['controls'].location['controls'].end_address.value}}</span>
       </div>
-    </div>
-    <div class="row" *ngIf="directions" style="margin-top: 0px;">
-      <div class="col-sm-6 informacoes">
+
+      <div class="col-sm-12 informacoes">
         <div class="bigger2">
-          <div class="fromSun"></div>
+          <div class="fromSun2"></div>
         </div>
         <span class="forn">{{route['controls'].location['controls'].distance['controls'].text.value}}</span>
       </div>
+
+    </div>
+    <div class="row" *ngIf="directions" style="margin-top: 0px;">
+
 
       <!-- <div class="col-sm-6 informacoes">
             <div class="bigger2">
