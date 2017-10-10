@@ -71,6 +71,7 @@ export class ImportarComponent implements OnInit {
 
   remove(){
     this.uploader.pop();
+    console.log(this.uploader);
     this.send = false;
   }
 
@@ -80,8 +81,9 @@ export class ImportarComponent implements OnInit {
     const formData = new FormData();
     formData.append('upfile', file);
     this.file = formData;
-    if(this.uploader.length != 0)this.uploader.pop()
-    this.uploader.push(file)
+    if(this.uploader.length != 0 && file)this.uploader.pop()
+    if(file)this.uploader.push(file);
+
     this.send = false;
   }
 
