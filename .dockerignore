@@ -1,0 +1,6 @@
+.gitigonore
+Dockerfile
+smart-api/node_modules/
+smart-front/node_modules/
+admin-api/node_modules/
+admin-front/node_modules/

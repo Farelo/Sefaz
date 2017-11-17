@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
   url:"http://localhost:8985/api/",
-  // url:"http://isi.pe.senai.br:8984/api/",
+
 };

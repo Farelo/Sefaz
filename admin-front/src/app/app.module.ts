@@ -20,7 +20,6 @@ import { AppRoutingModule } from './app.routing.module';
 import { TextMaskModule } from 'angular2-text-mask';
 import { AuthGuard } from './guard/auth.guard';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,6 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     NgbModule.forRoot(),
     AlertModule.forRoot(),
     DashboardModuleAdmin,
-    AngularMultiSelectModule,
     ReactiveFormsModule,
     ValidatorsModule,
     AppRoutingModule,

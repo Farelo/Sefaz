@@ -43,6 +43,8 @@
   },
   "scripts": {
     "build": "node ./config/compile.swagger.js",
+    "deploy:prod": "docker-compose -f ../docker-compose.prod.yml up --build",
+    "start": "node app.js",
     "test": "swagger project test"
   }
 }

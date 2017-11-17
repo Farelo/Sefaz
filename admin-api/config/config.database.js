@@ -1,8 +1,8 @@
 const mongoose 				 = require('mongoose');
 
 module.exports  = {
-	open : function(database){
-		mongoose.connect('mongodb://localhost/'+database);
+	open : function(environment){
+		mongoose.connect(`mongodb://${environment.urldatabase}/${environment.database}`);
 
 		mongoose.connection.on('connected', function () {
 			console.log('Mongoose default connection open to ');

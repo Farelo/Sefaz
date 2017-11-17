@@ -1,0 +1,22 @@
+version: "2"
+services:
+  smart:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    environment:
+      NODE_ENV: production
+    ports:
+      - '8984:8984'
+  admin:
+    build:
+      context: .
+      dockerfile: Dockerfile.admin
+    environment:
+      NODE_ENV: production
+    ports:
+      - '8982:8982'
+  mongo:
+    image: 'sameersbn/mongodb:latest'
+    ports:
+      - '27017:27017'

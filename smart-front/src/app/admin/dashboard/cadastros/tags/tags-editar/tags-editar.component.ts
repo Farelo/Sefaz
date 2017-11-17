@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TagsService } from '../../../../../servicos/tags.service';
 import { ToastService } from '../../../../../servicos/toast.service';
-import { Tag } from '../../../../../shared/models/Tag';
+import { Tag } from '../../../../../shared/models/tag';
 import { Router,ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';

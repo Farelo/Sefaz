@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit ,ViewChild} from '@angular/core';
 import { PackingService } from '../../../../servicos/packings.service';
-import { Packing } from '../../../../shared/models/Packing';
+import { Packing } from '../../../../shared/models/packing';
 import { Pagination } from '../../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';

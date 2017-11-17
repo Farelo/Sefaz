@@ -9,7 +9,7 @@ const mongoose         = require('mongoose');
 const bodyParser       = require('body-parser');
 const methodOverride   = require('method-override');
 const SwaggerUi        = require('swagger-tools/middleware/swagger-ui');
-const environment      = require('./environment');
+const environment      = require('./environment')(process.env.NODE_ENV);
 const port             = process.env.PORT || environment.port;
 const app              = express();
 const http             = require('http').Server(app);
@@ -29,7 +29,7 @@ module.exports = app; // for testing
 // DATABASE ==============================================
 // MODELS ==============================================
 
-require('./config/config.database').open(environment.database);
+require('./config/config.database').open(environment);
 //JOB =================================================
 require('./job/job');
 

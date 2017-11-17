@@ -2,11 +2,22 @@
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
+let environment = {
+  "production": {
+    url:"localhost",
+    port: '8984',
+    database: 'reciclopac',
+    urldatabase: "mongo"
+  },
+  "development": {
+    url:"localhost",
+    port: '8984',
+    database: 'reciclopac',
+    urldatabase: "localhost"
+  }
+}
 
-module.exports = {
-  production: false,
-  url:"isi.pe.senai.br",
-  // url:"localhost",
-  port: '8984',
-  database: 'reciclopac'
+
+module.exports = function(mode){
+  return environment[mode];
 };
