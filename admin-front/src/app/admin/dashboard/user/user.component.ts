@@ -24,7 +24,7 @@ export class UserComponent implements OnInit {
   loadUsers() {
     // Get all comments
     this.userService.getUserPagination(10, this.data.meta.page ,this.search)
-      .subscribe(result => this.data = result,err => {  console.log(err)});
+      .subscribe(result => {console.log(result); this.data = result},err => {  console.log(err)});
   }
 
   removeUser(object: any):void{
@@ -41,8 +41,6 @@ export class UserComponent implements OnInit {
     this.data.meta.page = page;
     this.loadUsers();
   }
-
-
 
   ngOnInit() {
     this.loadUsers();

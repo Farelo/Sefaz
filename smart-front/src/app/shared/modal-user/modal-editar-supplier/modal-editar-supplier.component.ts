@@ -119,7 +119,6 @@ export class ModalSupplierEditarComponent implements OnInit {
 
       this.SuppliersService.retrieveSupplier(this.id).subscribe(response => {
         let result = response.data;
-        console.log(result);
         (this.supplier)
                 .patchValue(result, { onlySelf: true });
 

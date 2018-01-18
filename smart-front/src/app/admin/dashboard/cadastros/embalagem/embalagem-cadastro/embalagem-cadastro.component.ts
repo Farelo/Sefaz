@@ -50,7 +50,9 @@ export class EmbalagemCadastroComponent implements OnInit {
   }
 
   finishRegister(value){
-    this.PackingService.createPacking([value]).subscribe( result => this.toastService.success('/rc/cadastros/embalagem', 'Embalagem'), err => this.toastService.error(err) );
+    this.PackingService.createPacking([value]).subscribe( result => {
+      this.toastService.success('/rc/cadastros/embalagem', 'Embalagem');
+    }, err => this.toastService.error(err) );
   }
 
 

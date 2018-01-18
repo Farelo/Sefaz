@@ -9,7 +9,7 @@ import {HomeRoutingModule} from './home.routing.module';
 import { CommonModule } from '@angular/common'
 import { NgxPaginationModule} from 'ngx-pagination';
 import { ApplicationPipes } from '../../../shared/pipes/application.pipes';
-import { ModalModule ,TooltipModule} from 'ngx-bootstrap'
+import { ModalModule ,TooltipModule, PopoverModule} from 'ngx-bootstrap'
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -19,6 +19,7 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     RouterModule,
     NgxPaginationModule,
     ApplicationPipes,
+    PopoverModule.forRoot(),
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
@@ -27,8 +28,6 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   declarations: [
     ListaComponent,
     TimelineComponent
-
-
   ],
   providers: [
     NgbActiveModal

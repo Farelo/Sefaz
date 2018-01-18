@@ -21,8 +21,15 @@ export class PlataformaCadastrarComponent implements OnInit {
 
 
   onSubmit({ value, valid }: { value: Project, valid: boolean }): void {
-      if(valid)this.ProjectService.createProject(value)
-                   .subscribe( result => this.toastService.success('/rc/cadastros/plataforma', 'Plataforma'), err =>  this.toastService.error(err));
+
+      if(valid){
+
+        this.ProjectService
+          .createProject(value)
+          .subscribe( result => {
+            this.toastService.success('/rc/cadastros/plataforma', 'Plataforma')
+          }, err =>  this.toastService.error(err));
+      }
   }
 
   ngOnInit() {

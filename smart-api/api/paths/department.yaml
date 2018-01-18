@@ -8,6 +8,8 @@ paths:
         summary: "Get a department on the system"
         description: ""
         operationId: department_read
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "department_id"
@@ -16,9 +18,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -31,6 +41,8 @@ paths:
         summary: "Get a department by name on the system"
         description: ""
         operationId: department_read_by_name
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "department_name"
@@ -39,9 +51,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -54,6 +74,8 @@ paths:
       summary: "Get all departments on the system by pagination"
       description: ""
       operationId: department_list_pagination
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -72,9 +94,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -87,6 +117,8 @@ paths:
       summary: "Get all departments on the system by pagination and plant"
       description: ""
       operationId: department_list_pagination_by_plant
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -105,9 +137,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -120,11 +160,21 @@ paths:
       summary: "Get all departments on the system"
       description: ""
       operationId: department_list_all
+      security:
+        - Bearer: []
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -137,11 +187,21 @@ paths:
       summary: "Get all departments on the system by plant"
       description: ""
       operationId: list_department_by_plant
+      security:
+        - Bearer: []
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -154,6 +214,8 @@ paths:
       summary: "Add a new department to the system"
       description: ""
       operationId: department_create
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"
@@ -163,9 +225,17 @@ paths:
           $ref: "#/definitions/Department"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -178,6 +248,8 @@ paths:
       summary: "Add a array to department to the system"
       description: ""
       operationId: department_create_array
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"
@@ -187,9 +259,17 @@ paths:
           $ref: "#/definitions/ArrayDepartment"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -204,6 +284,8 @@ paths:
       summary: "Remove a department on the system"
       description: ""
       operationId: department_delete
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "department_id"
@@ -212,9 +294,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -227,6 +317,8 @@ paths:
       summary: "Update a department on the system"
       description: ""
       operationId: department_update
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "department_id"
@@ -241,9 +333,17 @@ paths:
           $ref: "#/definitions/Department"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:

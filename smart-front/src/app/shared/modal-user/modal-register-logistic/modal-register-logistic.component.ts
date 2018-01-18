@@ -15,6 +15,7 @@ import { GeocodingService } from '../../../servicos/geocoding.service';
 import { LogisticService } from '../../../servicos/logistic.service';
 import { ToastService } from '../../../servicos/toast.service';
 
+import { constants } from '../../../../environments/constants';
 declare var $:any;
 
 @Component({
@@ -28,7 +29,7 @@ export class ModalLogisticRegisterComponent implements OnInit {
   public selectedItems = [];
   public dropdownSettings = {};
   public next = false;
-  private perfil = "OPERADOR LOGÍSTICO";
+  private perfil = constants.profile.logistic;
   public logistic :  FormGroup;
   public plant:  FormGroup;
   public geocoder = new google.maps.Geocoder;
@@ -110,17 +111,17 @@ export class ModalLogisticRegisterComponent implements OnInit {
       location: ['',[Validators.required]]
     })
 
-    this.logistic['controls'].profile['controls'].profile.setValue("Logistic");
+    this.logistic['controls'].profile['controls'].profile.setValue(constants.LOGISTIC);
     this.loadSuppliers();
   }
 
 
   onChange(event){
 
-    if(event == "FORNECEDOR"){
+    if(event == constants.profile.supplier){
       const modalRef = this.modalService.open(ModalSupplierRegisterComponent,{backdrop: "static", size: "lg"});
       this.activeModal.close();
-    }else if(event === "FUNCIONÁRIO"){
+    }else if(event === constants.profile.staff){
       const modalRef = this.modalService.open(ModalStaffRegisterComponent,{backdrop: "static", size: "lg"});
       this.activeModal.close();
     }
@@ -180,8 +181,10 @@ export class ModalLogisticRegisterComponent implements OnInit {
 
       let logistic = this.logistic.value;
 
+
       if(valid && !this.invalidPlant){
         logistic.suppliers = logistic.suppliers.map(o => o.id);
+
         this.ProfileService.createProfile(logistic.profile).subscribe(result => {
           logistic.profile =  result.data._id;
           this.PlantsService.createPlant(value).subscribe(result => {
@@ -190,6 +193,7 @@ export class ModalLogisticRegisterComponent implements OnInit {
 
             this.logisticService.createLogistic(logistic).subscribe(result => {
               value.logistic_operator = result.data._id ;
+
               this.PlantsService.updatePlant(result.data.plant, value).subscribe(result => {
                 this.toastService.successModal('Operador Logistico');
 

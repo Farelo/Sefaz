@@ -13,6 +13,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class PlataformaComponent implements OnInit {
   public data: Pagination = new Pagination({meta: {page : 1}});
   public search  = "";
+
   constructor(
     private ProjectService : ProjectService,
     private modalService: NgbModal
@@ -23,8 +24,11 @@ export class PlataformaComponent implements OnInit {
     }
 
     loadProjects(){
-      this.ProjectService.getProjectPagination(10,this.data.meta.page,this.search)
-        .subscribe(data => this.data = data,
+      this.ProjectService
+        .getProjectPagination(10,this.data.meta.page,this.search)
+        .subscribe(data => {
+          this.data = data;
+        },
          err => {console.log(err)});
     }
 

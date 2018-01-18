@@ -37,12 +37,14 @@ export class EmbalagemEditarComponent implements OnInit {
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
-
     value.hashPacking = this.packing.controls.supplier.value._id + this.packing.controls.code.value;
     value.code_tag = this.packing.controls.tag.value.code;
 
     if(this.packing.valid){
-      this.PackingService.updatePacking(value._id,value).subscribe( result => this.toastService.edit('/rc/cadastros/embalagem', 'Embalagem'), err => this.toastService.error(err) );
+
+      this.PackingService.updatePacking(value._id,value).subscribe( result => {
+        this.toastService.edit('/rc/cadastros/embalagem', 'Embalagem');
+      }, err => this.toastService.error(err) );
     }
 
   }
@@ -53,8 +55,6 @@ export class EmbalagemEditarComponent implements OnInit {
       this.tags.push(this.packing.controls.tag.value)
     }, err => {console.log(err)});
   }
-
-
 
 
   loadSuppliers():void{
@@ -73,10 +73,7 @@ export class EmbalagemEditarComponent implements OnInit {
       }, err => {console.log(err)});
   }
 
-
-
   ngOnInit() {
-
 
     this.packing = this.fb.group({
       code: ['', [Validators.required]],
@@ -132,9 +129,10 @@ export class EmbalagemEditarComponent implements OnInit {
       (params: any)=>{
         let id = params['id'];
         this.PackingService.retrievePacking(id).subscribe(result => {
-          console.log(result);
+
           (this.packing)
                   .patchValue(result.data);
+
           this.loadTags();
           this.loadSuppliers();
           this.loadProject();
@@ -146,7 +144,5 @@ export class EmbalagemEditarComponent implements OnInit {
   ngOnDestroy () {
     this.inscricao.unsubscribe();
   }
-
-
 
 }

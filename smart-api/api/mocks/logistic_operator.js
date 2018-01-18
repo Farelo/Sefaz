@@ -26,7 +26,6 @@ logisticOperatorSchema.pre('remove', function(next) {
           doc.remove();
           next();
         });
-
 });
 
 logisticOperatorSchema.plugin(mongoosePaginate);

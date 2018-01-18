@@ -122,14 +122,13 @@ export class ModalLogisticEditarComponent implements OnInit {
     this.logisticService.retrieveLogistic(this.id).subscribe(response => {
       let result = response.data;
 
-      console.log(result);
+
       (this.logistic)
                 .patchValue(result, { onlySelf: true });
 
       (this.plant)
                 .setValue(result.plant, { onlySelf: true });
 
-      console.log(this.plant);
       this.center = { lat: this.plant.controls.lat.value, lng: this.plant.controls.lng.value };
       this.pos = [this.plant.controls.lat.value,this.plant.controls.lng.value];
         this.loadSuppliers();

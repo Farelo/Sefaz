@@ -6,89 +6,97 @@
     </div>
     <br />
     <br />
-    <div class="table-responsive tabela" *ngIf="isAdmin">
-      <table class="table">
-        <thead>
-          <tr class="cabecalho">
-            <th class="semBorda">Nome</th>
-            <th class="semBorda">Perfil</th>
-            <th class="semBorda">DUNS</th>
-            <th class="semBorda">Endereço</th>
-            <th class="semBorda">UF</th>
-            <th class="opcoes">Opções</th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let user of data.data | paginate: {
-                                                        id:'adminManage',
-                                                        itemsPerPage: 10,
-                                                        currentPage: data.meta.page,
-                                                        totalItems: data.meta.total_docs}">
-          <tr>
-            <td>{{user.user?.name ?  user.user?.name : user.name}}</td>
-            <td>{{user.profile == "Supplier" ? 'Fornecedor' :
-              (user.profile == 'Logistic' ? 'Op. Logistico' :
-              (user.profile == 'AdminFactory' ? 'Admin. Fábrica' : 'Func. Fábrica'))}}</td>
-            <td>{{user.user?.duns || '-'}}</td>
-            <td>{{user.street}}</td>
-            <td>{{user.uf}}</td>
-            <td class="teste">
-              <button class="editar botaoPlanta" (click)="editUser(user)">Editar</button>
-              <button class="excluir" (click)="removeProfile(user)">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="classVazio" *ngIf="data.data?.length < 1">
-        Ainda não existem usuários cadastrados.
+    <div class="" *ngIf="isAdmin">
+      <div class="table-responsive tabela" >
+        <table class="table">
+          <thead>
+            <tr class="cabecalho">
+              <th class="semBorda">Nome</th>
+              <th class="semBorda">Perfil</th>
+              <th class="semBorda">DUNS</th>
+              <th class="semBorda">Endereço</th>
+              <th class="semBorda">UF</th>
+              <th class="opcoes">Opções</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let user of data.data | paginate: {
+                                                          id:'adminManage',
+                                                          itemsPerPage: 10,
+                                                          currentPage: data.meta.page,
+                                                          totalItems: data.meta.total_docs}">
+            <tr>
+              <td>{{user.user?.name ?  user.user?.name : user.name}}</td>
+              <td>{{user.profile == "Supplier" ? 'Fornecedor' :
+                (user.profile == 'Logistic' ? 'Op. Logistico' :
+                (user.profile == 'AdminFactory' ? 'Admin. Fábrica' : 'Func. Fábrica'))}}</td>
+              <td>{{user.user?.duns || '-'}}</td>
+              <td>{{user.street}}</td>
+              <td>{{user.uf}}</td>
+              <td class="teste">
+                <button class="editar botaoPlanta" (click)="editUser(user)">Editar</button>
+                <button class="excluir" (click)="removeProfile(user)">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="classVazio" *ngIf="data.data?.length < 1">
+          Ainda não existem usuários cadastrados.
+        </div>
+
       </div>
-
-    </div>
-    <div class="has-text-centered">
-        <pagination-controls id='adminManage' class="my-pagination"
-        (pageChange)="pageChanged($event)"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
-    </div>
-
-    <div class="table-responsive tabela" *ngIf="!isAdmin">
-      <table class="table">
-        <thead>
-          <tr class="cabecalho">
-            <th class="semBorda">Nome</th>
-            <th class="semBorda">Endereço</th>
-            <th class="semBorda">UF</th>
-            <th class="opcoes">Opções</th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let user of data.data | paginate: {
-                                                        id:'supplierManage',
-                                                        itemsPerPage: 10,
-                                                        currentPage: data.meta.page,
-                                                        totalItems: data.meta.total_docs}">
-          <tr>
-            <td>{{user.user?.name ?  user.user?.name : user.name}}</td>
-            <td>{{user.street}}</td>
-            <td>{{user.uf}}</td>
-            <td class="teste">
-              <button class="editar botaoPlanta" (click)="editUser(user)">Editar</button>
-              <button class="excluir" (click)="removeProfile(user)">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="classVazio" *ngIf="data.data?.length < 1">
-        Ainda não existem usuários cadastrados.
+      <br />
+      <div class="has-text-centered">
+          <pagination-controls id='adminManage' class="my-pagination"
+          (pageChange)="pageChanged($event)"
+          directionLinks="false"
+          autoHide="true">
+          </pagination-controls>
       </div>
+    </div>
 
+
+    <div class="" *ngIf="!isAdmin">
+      <div class="table-responsive tabela" >
+        <table class="table">
+          <thead>
+            <tr class="cabecalho">
+              <th class="semBorda">Nome</th>
+              <th class="semBorda">Endereço</th>
+              <th class="semBorda">UF</th>
+              <th class="opcoes">Opções</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let user of data.data | paginate: {
+                                                          id:'supplierManage',
+                                                          itemsPerPage: 10,
+                                                          currentPage: data.meta.page,
+                                                          totalItems: data.meta.total_docs}">
+            <tr>
+              <td>{{user.user?.name ?  user.user?.name : user.name}}</td>
+              <td>{{user.street}}</td>
+              <td>{{user.uf}}</td>
+              <td class="teste">
+                <button class="editar botaoPlanta" (click)="editUser(user)">Editar</button>
+                <button class="excluir" (click)="removeProfile(user)">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="classVazio" *ngIf="data.data?.length < 1">
+          Ainda não existem usuários cadastrados.
+        </div>
+
+      </div>
+      <br />
+      <div class="has-text-centered">
+          <pagination-controls id='supplierManage' class="my-pagination"
+          (pageChange)="pageChanged($event)"
+          directionLinks="false"
+          autoHide="true">
+          </pagination-controls>
+      </div>
     </div>
-    <div class="has-text-centered">
-        <pagination-controls id='supplierManage' class="my-pagination"
-        (pageChange)="pageChanged($event)"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
-    </div>
+
     <div class="botoes">
       <button class="botaoVoltar" (click)="activeModal.dismiss('Cross click')">VOLTAR</button>
     </div>

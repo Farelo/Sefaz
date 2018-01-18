@@ -1,67 +1,63 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class InventoryService {
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
+  private handleError(error: Response) {
+      return Observable.throw(error);
+  }
 
   getInventoryGeneral(limit: number, page: number, attr: string = ''): Observable<any> {
 
-    return this.http.get(environment.url + 'inventory/general/' + limit + '/' + page+ '?attr='+ attr)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}inventory/general/${limit}/${page}?attr=${attr}`)
+      .catch(this.handleError);
   }
 
   getInventoryGeneralPackings(limit: number, page: number, code: string, attr: string = ''): Observable<any> {
-    return this.http.get(environment.url + 'inventory/general/packings/' + limit + '/' + page + '?code='+ code+ '&attr='+ attr)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}inventory/general/packings/${limit}/${page}?code=${code}&attr=${attr}`)
+      .catch(this.handleError);
   }
 
   getInventoryPermanence(limit: number, page: number, code: string, attr: string = ''): Observable<any> {
 
-    return this.http.get(environment.url + 'inventory/permanence/' + limit + '/' + page + '/'+ code+ '?attr='+ attr)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}inventory/permanence/${limit}/${page}/${code}?attr=${attr}`)
+      .catch(this.handleError);
   }
 
   getInventoryQuantity(limit: number, page: number, code: string, attr: string = ''): Observable<any> {
 
-    return this.http.get(environment.url + 'inventory/quantity/' + limit + '/' + page + '/'+ code+ '?attr='+ attr)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}inventory/quantity/${limit}/${page}/${code}?attr=${attr}`)
+      .catch(this.handleError);
   }
 
   getInventoryPackingHistoric(limit: number, page: number, serial: string, code: string, attr: string = ''): Observable<any> {
 
-    return this.http.get(environment.url + 'inventory/packing/historic/' + limit + '/' + page + '/'+ serial+ '/'+ code+ '?attr='+ attr)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}inventory/packing/historic/${limit}/${page}/${serial}/${code}?attr=${attr}`)
+      .catch(this.handleError);
   }
 
   getInventoryBattery(limit: number, page: number, code: string, attr: string = ''): Observable<any> {
 
-    return this.http.get(environment.url + 'inventory/battery/' + limit + '/' + page + '?code='+ code+ '&attr='+ attr  )
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}inventory/battery/${limit}/${page}?code=${code}&attr=${attr}`)
+      .catch(this.handleError);
   }
 
   getInventorySupplier(limit: number, page: number, supplier: string): Observable<any> {
 
-    return this.http.get(environment.url + 'inventory/supplier/' + limit + '/' + page + '/'+ supplier)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}inventory/supplier/${limit}/${page}/${supplier}`)
+      .catch(this.handleError);
   }
 
   getInventorySupplierByPlantAnd(limit: number, page: number, code: string, supplier: string, project: string): Observable<any> {
 
-    return this.http.get(environment.url + 'inventory/plant/' + limit + '/' + page + '/'+ code + '/'+ supplier+ '/'+ project)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}inventory/plant/${limit}/${page}/${code}/${supplier}/${project}`)
+      .catch(this.handleError);
   }
 
 

@@ -8,6 +8,8 @@ paths:
         summary: "Get a profile on the system"
         description: ""
         operationId: profile_read
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "profile_id"
@@ -16,9 +18,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -31,6 +41,8 @@ paths:
         summary: "Get a profile on the system by email"
         description: ""
         operationId: profile_read_by_email
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "email"
@@ -39,9 +51,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -67,9 +87,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -82,6 +110,8 @@ paths:
       summary: "Get all profilies on the system by pagination"
       description: ""
       operationId: profile_listPagination
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -95,9 +125,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -110,6 +148,8 @@ paths:
       summary: "Get all profilies on the system by pagination and supplier"
       description: ""
       operationId: profile_listPagination_supplier
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -128,9 +168,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -143,6 +191,8 @@ paths:
       summary: "Get all profilies on the system by pagination and logistic"
       description: ""
       operationId: profile_listPagination_logistic
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -161,9 +211,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -185,9 +243,17 @@ paths:
           $ref: "#/definitions/Profile"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -201,6 +267,8 @@ paths:
       summary: "Remove a profile on the system"
       description: ""
       operationId: profile_delete
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "profile_id"
@@ -209,9 +277,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -224,6 +300,8 @@ paths:
       summary: "Update a profile on the system"
       description: ""
       operationId: profile_update
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "profile_id"
@@ -238,9 +316,17 @@ paths:
           $ref: "#/definitions/Profile"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:

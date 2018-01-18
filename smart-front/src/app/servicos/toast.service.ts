@@ -1,6 +1,7 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import { Tag } from '../shared/models/tag';
 import { environment } from '../../environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,7 +19,7 @@ export class ToastService {
 
   error(status: any) {
     // Add see all possible types in one shot
-    console.log(status.status);
+
     if(status.status.errmsg){
       var toastOptions: ToastOptions = {
         title: "Erro no cadastro",

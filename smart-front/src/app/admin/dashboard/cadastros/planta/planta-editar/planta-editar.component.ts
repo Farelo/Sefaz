@@ -43,8 +43,14 @@ export class PlantaEditarComponent implements OnInit {
   }
 
   onSubmit({ value, valid }: { value: Plant, valid: boolean }): void {
-    if(valid)this.PlantsService.updatePlant(value._id,value)
-                 .subscribe( result => this.toastService.edit('/rc/cadastros/planta', 'Planta'), err => this.toastService.error(err) );
+
+    if(valid){
+      this.PlantsService
+          .updatePlant(value._id,value)
+          .subscribe( result => {
+            this.toastService.edit('/rc/cadastros/planta', 'Planta')
+          }, err => this.toastService.error(err) );
+    }
   }
 
   initialized(autocomplete: any) {

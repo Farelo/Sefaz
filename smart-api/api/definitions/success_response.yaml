@@ -4,6 +4,6 @@ definitions:
     properties:
       jsonapi:
         type: object
-        description: a short comment
+        description: a API version
     required:
       - jsonapi

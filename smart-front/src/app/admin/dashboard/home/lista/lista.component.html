@@ -60,13 +60,15 @@ Timeline
       >{{alert.serial}}</span>
     </div>
   </div>
-  <div class="has-text-centered">
-      <pagination-controls id='list' class="my-pagination"
-      (pageChange)="pageChanged($event)"
-      directionLinks="false"
-      autoHide="true">
-      </pagination-controls>
+
+  <div style="width: 100%;" *ngIf="data?.data?.length > 1 ">
+    <br />
+    <div class="has-text-centered">
+        <pagination-controls id='list' class="my-pagination"
+        (pageChange)="pageChanged($event)"
+        directionLinks="false"
+        autoHide="true">
+        </pagination-controls>
+    </div>
   </div>
-</div>
-<br />
 </div>

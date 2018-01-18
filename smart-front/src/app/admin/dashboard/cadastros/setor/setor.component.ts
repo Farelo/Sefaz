@@ -23,8 +23,12 @@ export class SetorComponent implements OnInit {
   }
 
   loadDepartments(){
-    this.DepartmentService.getDepartmentsPagination(10, this.data.meta.page,this.search)
-      .subscribe(data => this.data = data, err => {console.log(err)});
+
+    this.DepartmentService
+      .getDepartmentsPagination(10, this.data.meta.page,this.search)
+      .subscribe(data => {
+        this.data = data;
+      }, err => {console.log(err)});
   }
 
   pageChanged(page: any): void{

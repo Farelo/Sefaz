@@ -5,7 +5,6 @@ import { AuthGuard } from '../../guard/auth.guard';
 
 const dashboardRoutes = [
   {path: 'rc', component: DashboardComponent, canActivate: [AuthGuard], children: [
-          {path: '', redirectTo: '/rc/home', pathMatch: 'full'},
           {path: 'cadastros', loadChildren: 'app/admin/dashboard/cadastros/cadastros.module#CadastrosModule'},
           {path: 'home', loadChildren: 'app/admin/dashboard/home/home.module#HomeModule'},
           {path: 'inventario', loadChildren: 'app/admin/dashboard/inventario/inventario.module#InventarioModule'},

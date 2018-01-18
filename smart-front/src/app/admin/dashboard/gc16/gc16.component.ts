@@ -22,9 +22,11 @@ export class Gc16Component implements OnInit {
   }
 
   loadGC16() {
-    // Get all comments
-    this.GC16Service.getGC16sPagination(10, this.data.meta.page ,this.search)
-      .subscribe(result => this.data = result,err => {  console.log(err)});
+    this.GC16Service
+      .getGC16sPagination(10, this.data.meta.page ,this.search)
+      .subscribe(result => {
+         this.data = result;
+       },err => {  console.log(err)});
   }
 
   //refazer isso daqui, depende de muitas coisas para ser realizada a alteração

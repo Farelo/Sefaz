@@ -1,0 +1,13 @@
+FROM node:6.9.5
+
+ENV HOME=/home
+
+COPY package.json  $HOME/admin-api/
+
+WORKDIR $HOME/admin-api
+
+RUN npm cache clean && npm install --silent --progress=false
+
+COPY . $HOME/admin-api/
+
+CMD ["npm", "start"]

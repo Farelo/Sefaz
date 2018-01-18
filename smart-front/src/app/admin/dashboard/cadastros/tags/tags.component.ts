@@ -24,8 +24,11 @@ export class TagsComponent implements OnInit {
   }
 
   loadTags(){
-    this.TagsService.getTagsPagination(10, this.data.meta.page,this.search)
-      .subscribe(data => this.data = data,err => console.log(err));
+    this.TagsService
+      .getTagsPagination(10, this.data.meta.page,this.search)
+      .subscribe(data => {
+         this.data = data;
+       },err => console.log(err));
   }
 
   removeTags(tag):void{

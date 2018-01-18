@@ -1,47 +1,47 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import {Observable} from 'rxjs/Rx';
 import { Alert } from '../shared/models/alert';
 import { environment } from '../../environments/environment';
 
+
 @Injectable()
 export class AlertsService {
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
+  private handleError(error: Response) {
+      return Observable.throw(error);
+  }
 
   getAlerts(limit: number, page: number, attr: string = ''): Observable<any> {
 
-    return this.http.get(environment.url + 'alert/list/pagination/' + limit + '/' + page + '?attr='+ attr )
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}alert/list/pagination/${limit}/${page}?attr=${attr}` )
+      .catch(this.handleError);
   }
 
   getAlertsLogistic(limit: number, page: number, array: any): Observable<any> {
 
-    return this.http.post(environment.url + 'alert/list/pagination/logistic/' + limit + '/' + page, array )
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.post(`${environment.url}alert/list/pagination/logistic/${limit}/${page}`, array )
+        .catch(this.handleError);
   }
 
   getAlertsPaginationByHashing(limit: number, page: number, code: string, project: string , supplier: string, status:string, attr: string = ''): Observable<any> {
 
-    return this.http.get(environment.url + 'alert/list/all/packing/' + limit + '/' + page + '/' + code +'/'+project + '/' + supplier +'/'+status + '?attr='+ attr )
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}alert/list/all/packing/${limit}/${page}/${code}/${project}/${supplier}/${status}?attr=${attr}` )
+        .catch(this.handleError);
   }
 
   getAlertsPaginationByHashingLogistic(limit: number, page: number, code: string, project: string , supplier: string, status:string, array: any): Observable<any> {
-    console.log(array);
-    return this.http.post(environment.url + 'alert/list/all/packing/logistic/' + limit + '/' + page + '/' + code +'/'+project + '/' + supplier +'/'+status, array )
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+
+    return this.http.post(`${environment.url}alert/list/all/packing/logistic/${limit}/${page}/${code}/${project}/${supplier}/${status}`, array )
+        .catch(this.handleError);
   }
 
   retrieveAlertByPacking(id: string, status: number): Observable<any>{
-    return this.http.get(environment.url + 'alert/retrieve/' + id + '/' + status)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}alert/retrieve/${id}/${status}`)
+        .catch(this.handleError);
   }
 
 }

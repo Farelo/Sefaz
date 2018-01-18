@@ -7,9 +7,8 @@ import {LoginComponent} from './login.component';
 import {LoginRoutingModule} from './login.routing.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AlertModule } from 'ngx-bootstrap/alert';
+import { AlertModule } from 'ngx-bootstrap';
 import { ReactiveFormsModule} from '@angular/forms';
-
 
 @NgModule({
   imports: [
@@ -17,7 +16,7 @@ import { ReactiveFormsModule} from '@angular/forms';
     CommonModule,
     FormsModule,
     RouterModule,
-    AlertModule,
+    AlertModule.forRoot(),
     ReactiveFormsModule
   ],
   declarations: [

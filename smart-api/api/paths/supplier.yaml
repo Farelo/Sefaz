@@ -8,6 +8,8 @@ paths:
         summary: "Get a supplier on the system"
         description: ""
         operationId: supplier_read
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "supplier_id"
@@ -16,9 +18,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -31,6 +41,8 @@ paths:
         summary: "Get a supplier on the system"
         description: ""
         operationId: supplier_read_by_duns
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "supplier_duns"
@@ -39,9 +51,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -54,6 +74,8 @@ paths:
         summary: "Get a supplier on the system by name and duns"
         description: ""
         operationId: supplier_read_by_dunsAndSupplier
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "name"
@@ -67,9 +89,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -82,6 +112,8 @@ paths:
       summary: "Get all suppliers on the system by pagination"
       description: ""
       operationId: supplier_list_pagination
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -95,9 +127,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -110,11 +150,21 @@ paths:
       summary: "Get all suppliers on the system "
       description: ""
       operationId: supplier_list_all
+      security:
+        - Bearer: []
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -127,6 +177,8 @@ paths:
       summary: "Add a new supplier to the system"
       description: ""
       operationId: supplier_create
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"
@@ -136,9 +188,17 @@ paths:
           $ref: "#/definitions/Supplier"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -153,6 +213,8 @@ paths:
       summary: "Remove a supplier on the system"
       description: ""
       operationId: supplier_delete
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "supplier_id"
@@ -161,9 +223,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -176,6 +246,8 @@ paths:
       summary: "Update a supplier on the system"
       description: ""
       operationId: supplier_update
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "supplier_id"
@@ -190,9 +262,17 @@ paths:
           $ref: "#/definitions/Supplier"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:

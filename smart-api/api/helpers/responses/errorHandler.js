@@ -3,11 +3,13 @@
 const HTTPStatus = require("http-status");
 
 function onError(res, message, err) {
-    res.status(HTTPStatus.INTERNAL_SERVER_ERROR).send({
+
+    res.status(HTTPStatus.BAD_REQUEST).send({
         jsonapi: { "version": "1.0" },
         error: {
-            "status": err,
-            "source": { "pointer": "" },
+            "name": err ? err.name : "Undefined" ,
+            "message": err ? err.message : "Undefined",
+            "error": err ? err.errors : "Undefined",
             "detail": message
         }
     });

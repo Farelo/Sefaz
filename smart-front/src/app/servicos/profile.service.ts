@@ -1,66 +1,63 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import { Profile } from '../shared/models/profile';
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ProfileService {
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
+
+  private handleError(error: Response) {
+      return Observable.throw(error);
+  }
 
   getProfilePagination(limit: number, page: number): Observable<any> {
-    return this.http.get(environment.url + 'profile/list/pagination/' + limit + '/' + page)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+
+    return this.http.get(`${environment.url}profile/list/pagination/${limit}/${page}`)
+      .catch(this.handleError);
   }
 
   getProfilePaginationSupplier(limit: number, page: number, supplier: string): Observable<any> {
-    return this.http.get(environment.url + 'profile/list/pagination/supplier/' + limit + '/' + page+ '/' + supplier)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}profile/list/pagination/supplier/${limit}/${page}/${supplier}`)
+      .catch(this.handleError);
   }
 
   getProfilePaginationLogistic(limit: number, page: number, logistic: string): Observable<any> {
-      return this.http.get(environment.url + 'profile/list/pagination/logistic/' + limit + '/' + page+ '/' + logistic)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+      return this.http.get(`${environment.url}profile/list/pagination/logistic/${limit}/${page}/${logistic}`)
+      .catch(this.handleError);
   }
 
   retrieveAll(): Observable<any> {
-    return this.http.get(environment.url + 'profile/list/all')
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}profile/list/all`)
+      .catch(this.handleError);
   }
 
   retrieveProfile(id: string): Observable<any>{
-    return this.http.get(environment.url + 'profile/retrieve/' + id)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}profile/retrieve/${id}`)
+      .catch(this.handleError);
   }
 
   retrieveProfileByEmail(email: string): Observable<any>{
-    return this.http.get(environment.url + 'profile/retrieve/email/' + email)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.get(`${environment.url}profile/retrieve/email/${email}`)
+      .catch(this.handleError);
   }
 
   updateProfile(id: string, profile: Profile): Observable<any>{
-    return this.http.put(environment.url + 'profile/update/' + id,profile)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.put(`${environment.url}profile/update/${id}`,profile)
+      .catch(this.handleError);
   }
 
   deleteProfile(id: string): Observable<any>{
-    return this.http.delete(environment.url + 'profile/delete/' + id)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    return this.http.delete(`${environment.url}profile/delete/${id}`)
+      .catch(this.handleError);
   }
 
   createProfile(profile: Profile): Observable<any>{
-    return this.http.post(environment.url + 'profile/create', profile)
-      .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(console.log(error.json())));
+    return this.http.post(`${environment.url}profile/create`, profile)
+      .catch(this.handleError);
   }
 
 }

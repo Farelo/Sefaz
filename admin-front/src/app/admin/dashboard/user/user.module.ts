@@ -36,7 +36,6 @@ import { ReactiveFormsModule} from '@angular/forms';
     UserEditarComponent,
     UserAdicionarComponent
 
-
   ],
   providers: [
     NgbActiveModal

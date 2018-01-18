@@ -18,14 +18,14 @@ mongoose.Promise                 = global.Promise;
 // /UPLOAD OF THE TAGS BY EXCEL/
 exports.uploadTag = function(req, res) {
   var datetimestamp = Date.now();
-  fs.writeFile("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, req.swagger.params.upfile.value.buffer, function (err,data) {
+  fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err,data) {
 
     xlsxtojson({
-      input: "./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, //the same path where we uploaded our file
+      input: `./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, //the same path where we uploaded our file
       output: null, //since we don't need output.json
       lowerCaseHeaders: true
     }, function(err, result) {
-      fs.unlinkSync("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname);
+      fs.unlinkSync(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`);
       if (err) {
         errorHandler(res, 'Error to create packing', err);
       }
@@ -52,14 +52,14 @@ exports.uploadTag = function(req, res) {
 exports.uploadPlant = function(req, res) {
   var datetimestamp = Date.now();
 
-  fs.writeFile("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, req.swagger.params.upfile.value.buffer, function (err,data) {
+  fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err,data) {
 
     xlsxtojson({
-      input: "./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, //the same path where we uploaded our file
+      input: `./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, //the same path where we uploaded our file
       output: null, //since we don't need output.json
       lowerCaseHeaders: true
     }, function(err, result) {
-      fs.unlinkSync("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname);
+      fs.unlinkSync(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`);
       if (err) {
         errorHandler(res, 'Error to create packing', err);
       }
@@ -98,14 +98,14 @@ exports.uploadPlant = function(req, res) {
 // /UPLOAD OF THE PROJECTS BY EXCEL/
 exports.uploadProject = function(req, res) {
   var datetimestamp = Date.now();
-  fs.writeFile("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, req.swagger.params.upfile.value.buffer, function (err,data) {
+  fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err,data) {
 
     xlsxtojson({
-      input: "./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, //the same path where we uploaded our file
+      input: `./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, //the same path where we uploaded our file
       output: null, //since we don't need output.json
       lowerCaseHeaders: true
     }, function(err, result) {
-      fs.unlinkSync("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname);
+      fs.unlinkSync(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`);
       if (err) {
         errorHandler(res, 'Error to create packing', err);
       }
@@ -133,14 +133,14 @@ exports.uploadProject = function(req, res) {
 // /UPLOAD OF THE DEPARTMENTS BY EXCEL/
 exports.uploadDepartment = function(req, res) {
   var datetimestamp = Date.now();
-  fs.writeFile("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, req.swagger.params.upfile.value.buffer, function (err,data) {
+  fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err,data) {
 
     xlsxtojson({
-      input: "./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, //the same path where we uploaded our file
+      input: `./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, //the same path where we uploaded our file
       output: null, //since we don't need output.json
       lowerCaseHeaders: true
     }, function(err, result) {
-      fs.unlinkSync("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname);
+      fs.unlinkSync(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`);
       if (err) {
         errorHandler(res, 'Error to create packing', err);
       }
@@ -178,14 +178,14 @@ exports.uploadDepartment = function(req, res) {
 // /UPLOAD OF THE PACKINGS BY EXCEL/
 exports.uploadPacking = function(req, res) {
   var datetimestamp = Date.now();
-  fs.writeFile("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, req.swagger.params.upfile.value.buffer, function (err,data) {
+  fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err,data) {
 
     xlsxtojson({
-      input: "./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, //the same path where we uploaded our file
+      input: `./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, //the same path where we uploaded our file
       output: null, //since we don't need output.json
       lowerCaseHeaders: true
     }, function(err, result) {
-      fs.unlinkSync("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname);
+      fs.unlinkSync(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`);
       if (err) {
         errorHandler(res, 'Error to create packing', err);
       }
@@ -195,7 +195,6 @@ exports.uploadPacking = function(req, res) {
 
       Promise.all(result.map(o => tag.findOne({"code": o.tag})))
             .then(data => {
-              console.log(data);
               tag_data = data;
               return Promise.all(result.map(o => supplier.findOne({"name": o.supplier, 'duns': o.duns})));
             })
@@ -243,14 +242,14 @@ exports.uploadPacking = function(req, res) {
 // /UPLOAD OF THE ROUTES BY EXCEL/
 exports.uploadRoute = function(req, res) {
   var datetimestamp = Date.now();
-  fs.writeFile("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, req.swagger.params.upfile.value.buffer, function (err,data) {
+  fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err,data) {
 
     xlsxtojson({
-      input: "./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname, //the same path where we uploaded our file
+      input: `./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, //the same path where we uploaded our file
       output: null, //since we don't need output.json
       lowerCaseHeaders: true
     }, function(err, result) {
-      fs.unlinkSync("./uploads/"+datetimestamp+req.swagger.params.upfile.value.originalname);
+      fs.unlinkSync(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`);
       if (err) {
         errorHandler(res, 'Error to create packing', err);
       }

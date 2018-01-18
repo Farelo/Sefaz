@@ -10,12 +10,14 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.12.3",
+    "cors": "^2.8.4",
     "http-status": "^1.0.1",
     "lodash": "^4.17.4",
     "method-override": "^2.3.10",
     "mongoose": "^4.11.13",
     "morgan": "^1.9.0",
     "swagger-express-mw": "^0.1.0",
+    "swagger-tools": "^0.10.3",
     "mongoose-paginate": "^5.0.3"
   },
   "devDependencies": {
@@ -25,6 +27,8 @@
   "scripts": {
     "start": "node app.js",
     "build": "node ./config/compile.swagger.js",
+    "deploy:prod": "docker-compose -f ../docker-compose.prod.yml up --build",
+    "develop": "set NODE_ENV=development&& nodemon server.js",
     "test": "swagger project test"
   }
 }

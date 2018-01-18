@@ -69,12 +69,13 @@
   </div>
 </div>
 
-<ng-template #popContent class="test">
+<ng-template #popContent >
   <img *ngIf="currentUser?.profile != 'StaffFactory'" src="../../../assets/images/perfil1.png">
   <img *ngIf="currentUser?.profile === 'StaffFactory'" src="../../../assets/images/perfil-funcionario.png">
   <p *ngIf="currentUser?.profile != 'StaffFactory'">Administrador da Fábrica.</p>
   <p *ngIf="currentUser?.profile === 'StaffFactory'">Funcionário da Fábrica.</p><hr>
   <p>{{this.currentUser.user}}</p><hr>
+
   <button class="gerenciar" *ngIf="currentUser?.profile != 'StaffFactory'" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
   <button class="medio" (click)="p.close(); a.close(); openModalEditar()"><div>EDITAR</div></button>
   <button class="medio2" (click)="logout()"><div>SAIR</div></button>

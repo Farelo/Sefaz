@@ -8,6 +8,8 @@ paths:
         summary: "Get address through CEP"
         description: ""
         operationId: get_CEP
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "cep"
@@ -16,9 +18,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:

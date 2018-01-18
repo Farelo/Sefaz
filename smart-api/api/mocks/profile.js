@@ -1,19 +1,20 @@
-const mongoose          = require('mongoose');
-const mongoosePaginate  = require('mongoose-paginate');
+const mongoose                  = require('mongoose');
+const mongoosePaginate          = require('mongoose-paginate');
 const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
+const hashPassword              = require('../helpers/utils/encrypt')
 
 const profileSchema = new mongoose.Schema({
       profile:{type: String, required: true},
       password: {type: String, required: true},
       email: {type: String, required: true , unique: true},
-      user: {type: String, required: true },
-      city: {type: String, required: true },
-      street: {type: String, required: true },
+      user: {type: String },
+      city: {type: String },
+      street: {type: String },
       telephone: {type: String},
       cellphone: {type: String},
-      cep: {type: String, required: true },
-      neighborhood: {type: String, required: true },
-      uf: {type: String, required: true },
+      cep: {type: String },
+      neighborhood: {type: String },
+      uf: {type: String },
       official_supplier: {
             type:mongoose.Schema.Types.ObjectId,
             ref:'Supplier'
@@ -44,6 +45,15 @@ profileSchema.pre('remove', function(next) {
 
 
 });
+
+//change the password before them to be inserted in database
+profileSchema.pre('save', function(next) {
+  this.password = hashPassword.encrypt(this.password)
+  next();
+});
+
+
+
 
 profileSchema.plugin(mongooseAggregatePaginate);
 profileSchema.plugin(mongoosePaginate);

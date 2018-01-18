@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
 
         if(result.length != 0){
           this.erroAuth = false;
-
           if(this.authenticationService.currentUser().supplier || this.authenticationService.currentUser().official_supplier){
               this.router.navigate(['/fornecedor/home']);
           }else if(this.authenticationService.currentUser().logistic || this.authenticationService.currentUser().official_logistic){

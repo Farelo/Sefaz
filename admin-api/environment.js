@@ -2,19 +2,20 @@
 let environment = {
   "production": {
     url:"localhost",
-    port: '8982',
+    port: '8985',
     database: 'reciclopacadmin',
-    urldatabase: "mongo"
+    urldatabase: "mongo",
+    time: "50",
+    secret: 'S3cr3t'
   },
   "development": {
     url:"localhost",
-    port: '8982',
+    port: '8985',
     database: 'reciclopacadmin',
-    urldatabase: "localhost"
+    urldatabase: "localhost",
+    time: "50",
+    secret: 'S3cr3t'
   }
 }
 
-
-module.exports = function(mode){
-  return environment[mode];
-};
+module.exports = environment[process.env.NODE_ENV];

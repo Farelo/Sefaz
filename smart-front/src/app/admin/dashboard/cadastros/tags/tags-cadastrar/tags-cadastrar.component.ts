@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { ToastService } from '../../../../../servicos/toast.service';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 
-
 @Component({
   selector: 'app-tags-cadastrar',
   templateUrl: './tags-cadastrar.component.html',
@@ -22,8 +21,14 @@ export class TagsCadastrarComponent implements OnInit {
   ) {}
 
   onSubmit({ value, valid }: { value: Tag, valid: boolean }):void {
-    if(valid)this.TagsService.createTag(value)
-                 .subscribe( result => {this.ToastService.success('/rc/cadastros/tags',"Tag")}, err => this.ToastService.error(err));
+    if(valid){
+
+      this.TagsService
+          .createTag(value)
+          .subscribe( result => {
+            this.ToastService.success('/rc/cadastros/tags',"Tag");
+          }, err => this.ToastService.error(err));
+    }
   }
 
   ngOnInit() {

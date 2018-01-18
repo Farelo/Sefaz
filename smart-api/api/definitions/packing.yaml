@@ -4,10 +4,6 @@ definitions:
     properties:
       hashPacking:
         type: string
-  ArrayPacking:
-    type : array
-    items:
-      $ref: '#/definitions/Packing'
   Packing:
     type: object
     properties:

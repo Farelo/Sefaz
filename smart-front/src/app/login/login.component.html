@@ -4,10 +4,9 @@
       <alert type="danger" *ngIf="erroAuth">
         <strong>Atenção!</strong> Usuário ou senha invalidos!.
       </alert>
-      <h1>RECICLAPAC</h1>
 
+      <h1>RECICLAPAC</h1>
       <form novalidate (ngSubmit)="onSubmit(login)" [formGroup]="login" #formDir="ngForm">
-        <!-- (ngSubmit)="onSubmit(f)" -->
         <div class="form-group wrapper">
           <img src="../../assets/images/mail.png" class="spanMail">
           <div>

@@ -1,24 +1,53 @@
-const mongoose 				 = require('mongoose');
+
+const constants                                 = require('../api/helpers/constants');
+const mongoose                                  = require('mongoose');
+mongoose.Promise                                = global.Promise;
+
+function tryReconect(dbURI){
+	setTimeout(function() {
+            mongoose.connect(dbURI,constants.database_options);
+        },
+        5000
+    );
+}
 
 module.exports  = {
 	open : function(environment){
-		mongoose.connect(`mongodb://${environment.urldatabase}/${environment.database}`);
 
-		mongoose.connection.on('connected', function () {
-			console.log('Mongoose default connection open to ');
-		});
+		const dbURI  = `mongodb://${environment.urldatabase}/${environment.database}`;
 
-		mongoose.connection.on('disconnected', function () {
-			console.log('Mongoose default connection disconnected');
-		});
+		mongoose.connect(dbURI,constants.database_options);
 
-		mongoose.connection.on('error',function (err) {
-			console.log('Mongoose default connection error: ' + err);
-		});
+		mongoose.connection.on('error', function(e){
+			 console.log("db: mongodb error " + e);
+			 // reconnect here
+			 mongoose.connection.close();
+			 tryReconect(dbURI);
 
-		mongoose.connection.on('openUri', function () {
-			console.log('Mongoose default connection is open');
-		});
+	 });
+
+	 mongoose.connection.on('connected', function(e){
+			 console.log('db: mongodb is connected: ' + dbURI);
+	 });
+
+	 mongoose.connection.on('disconnecting', function(){
+			 console.log('db: mongodb is disconnecting!!!');
+	 });
+
+	 mongoose.connection.on('disconnected', function(){
+			 console.log('db: mongodb is disconnected!!!');
+	 });
+
+	 mongoose.connection.on('reconnected', function(){
+			 console.log('db: mongodb is reconnected: ' + dbURI);
+	 });
+
+	 mongoose.connection.on('timeout', function(e) {
+			 console.log("db: mongodb timeout "+e);
+			 mongoose.connection.close();
+			 tryReconect(dbURI);
+	 });
+
 
 		// If the Node process ends, close the Mongoose connection
 		process.on('SIGINT', function() {
@@ -27,6 +56,8 @@ module.exports  = {
 		    process.exit(0);
 		  });
 		});
+
+
 	},
 	close: function(database){
 

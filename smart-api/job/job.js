@@ -13,8 +13,9 @@ const evaluate_missing           = require('./evaluate_missing');
 const update_packing             = require('./update_packing');
 const traveling                  = require('./traveling');
 const remove_dependencies        = require('./remove_dependencies');
+const environment                = require('../environment');
 
-var task = cron.schedule('*/10 * * * * *', function() {
+var task = cron.schedule(`*/${environment.time} * * * * *`, function() {
     token()
       .then(token => devices(token))//Get All devices from SIGFOX LOKA-API
       .then(devices => Promise.all(updateDevices(devices))) //UPDATE ALL PACKINGS WITH INFORMATION FROM LOKA-API

@@ -21,7 +21,7 @@ import { ToastService } from '../../servicos/toast.service';
 import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
 import { Pagination } from '../../shared/models/pagination';
 import { AuthenticationService } from '../../servicos/auth.service';
-
+import { constants } from '../../../environments/constants';
 declare var $:any;
 
 @Component({
@@ -75,11 +75,11 @@ export class ModalUserComponent implements OnInit {
 
 
   editUser(user: any){
-    if(user.profile === "Supplier"){
+    if(user.profile === constants.profile.supplier){
       const modalRef = this.modalService.open(ModalSupplierEditarComponent,{backdrop: "static", size: "lg"});
       modalRef.componentInstance.id = user.user._id;
       this.activeModal.close();
-    }else if(user.profile === "Logistic"){
+    }else if(user.profile ===  constants.profile.logistic){
       const modalRef = this.modalService.open(ModalLogisticEditarComponent,{backdrop: "static", size: "lg"});
       modalRef.componentInstance.id = user.user._id;
       this.activeModal.close();

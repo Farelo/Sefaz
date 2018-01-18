@@ -12,7 +12,5 @@ definitions:
         type: string
       port:
         type: string
-      username:
-        type: string
       password:
         type: string

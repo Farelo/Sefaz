@@ -43,7 +43,11 @@ export class SetorCadastrarComponent implements OnInit {
   onSubmit({ value, valid }: { value: Department, valid: boolean }): void {
 
     if(valid){
-      this.DepartmentService.createDepartment(value).subscribe(result => this.toastService.success('/rc/cadastros/setor', 'Setor'), err => this.toastService.error(err));
+      this.DepartmentService
+      .createDepartment(value)
+      .subscribe(result => {
+        this.toastService.success('/rc/cadastros/setor', 'Setor');
+      }, err => this.toastService.error(err));
     }
   }
 

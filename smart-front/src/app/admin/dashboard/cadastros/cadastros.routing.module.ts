@@ -1,13 +1,11 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CadastrosComponent } from './cadastros.component';
-import { AuthGuard } from '../../../guard/auth.guard';
 
 const CadastrosRoutes = [
   {
            path: '',
            component: CadastrosComponent,
-           canActivate: [AuthGuard],
            children: [
              {path: '', redirectTo: '/rc/cadastros/tags', pathMatch: 'full'},
              {path: 'tags', loadChildren: 'app/admin/dashboard/cadastros/tags/tags.module#TagsModule'},

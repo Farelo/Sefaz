@@ -8,20 +8,30 @@ paths:
        consumes:
          - multipart/form-data
        operationId: uploadTag
+       security:
+         - Bearer: []
        parameters:
          - in: formData
            name: upfile
            type: file
            description: The file to upload to tag.
        responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+         200:
+           description: "Successfully"
+           schema:
+             $ref: "#/definitions/SuccessResponse"
+         400:
+           description: "Client Error"
+           schema:
+             $ref: "#/definitions/Error400"
+         500:
+           description: "Server Error"
+           schema:
+             $ref: "#/definitions/Error500"
+         default:
+           description: "Error"
+           schema:
+             $ref: "#/definitions/ErrorResponse"
    /upload/project:
      x-swagger-router-controller: import_controller
      post:
@@ -31,20 +41,30 @@ paths:
        consumes:
          - multipart/form-data
        operationId: uploadProject
+       security:
+         - Bearer: []
        parameters:
          - in: formData
            name: upfile
            type: file
            description: The file to upload.
        responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+         200:
+           description: "Successfully"
+           schema:
+             $ref: "#/definitions/SuccessResponse"
+         400:
+           description: "Client Error"
+           schema:
+             $ref: "#/definitions/Error400"
+         500:
+           description: "Server Error"
+           schema:
+             $ref: "#/definitions/Error500"
+         default:
+           description: "Error"
+           schema:
+             $ref: "#/definitions/ErrorResponse"
    /upload/plant:
      x-swagger-router-controller: import_controller
      post:
@@ -54,20 +74,30 @@ paths:
        consumes:
          - multipart/form-data
        operationId: uploadPlant
+       security:
+         - Bearer: []
        parameters:
          - in: formData
            name: upfile
            type: file
            description: The file to upload.
        responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+         200:
+           description: "Successfully"
+           schema:
+             $ref: "#/definitions/SuccessResponse"
+         400:
+           description: "Client Error"
+           schema:
+             $ref: "#/definitions/Error400"
+         500:
+           description: "Server Error"
+           schema:
+             $ref: "#/definitions/Error500"
+         default:
+           description: "Error"
+           schema:
+             $ref: "#/definitions/ErrorResponse"
    /upload/department:
      x-swagger-router-controller: import_controller
      post:
@@ -77,20 +107,30 @@ paths:
        consumes:
          - multipart/form-data
        operationId: uploadDepartment
+       security:
+         - Bearer: []
        parameters:
          - in: formData
            name: upfile
            type: file
            description: The file to upload.
        responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+         200:
+           description: "Successfully"
+           schema:
+             $ref: "#/definitions/SuccessResponse"
+         400:
+           description: "Client Error"
+           schema:
+             $ref: "#/definitions/Error400"
+         500:
+           description: "Server Error"
+           schema:
+             $ref: "#/definitions/Error500"
+         default:
+           description: "Error"
+           schema:
+             $ref: "#/definitions/ErrorResponse"
    /upload/packing:
      x-swagger-router-controller: import_controller
      post:
@@ -100,20 +140,30 @@ paths:
        consumes:
          - multipart/form-data
        operationId: uploadPacking
+       security:
+         - Bearer: []
        parameters:
          - in: formData
            name: upfile
            type: file
            description: The file to upload.
        responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+         200:
+           description: "Successfully"
+           schema:
+             $ref: "#/definitions/SuccessResponse"
+         400:
+           description: "Client Error"
+           schema:
+             $ref: "#/definitions/Error400"
+         500:
+           description: "Server Error"
+           schema:
+             $ref: "#/definitions/Error500"
+         default:
+           description: "Error"
+           schema:
+             $ref: "#/definitions/ErrorResponse"
    /upload/route:
      x-swagger-router-controller: import_controller
      post:
@@ -123,17 +173,27 @@ paths:
        consumes:
          - multipart/form-data
        operationId: uploadRoute
+       security:
+         - Bearer: []
        parameters:
          - in: formData
            name: upfile
            type: file
            description: The file to upload.
        responses:
-        200:
-          description: "Message"
-          schema:
-            $ref: "#/definitions/SuccessResponse"
-        default:
-          description: "Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+         200:
+           description: "Successfully"
+           schema:
+             $ref: "#/definitions/SuccessResponse"
+         400:
+           description: "Client Error"
+           schema:
+             $ref: "#/definitions/Error400"
+         500:
+           description: "Server Error"
+           schema:
+             $ref: "#/definitions/Error500"
+         default:
+           description: "Error"
+           schema:
+             $ref: "#/definitions/ErrorResponse"

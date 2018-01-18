@@ -31,21 +31,19 @@ export class SetorEditarComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder,
     private geocodingService: GeocodingService
-  ) {
-
-
-
-  }
+  ) { }
 
   onSubmit({ value, valid }: { value: Department, valid: boolean }): void {
 
     if(valid){
 
-      this.DepartmentService.updateDepartment(value._id,value).subscribe(result => this.toastService.edit('/rc/cadastros/setor', 'Setor'), err => this.toastService.error(err));
+      this.DepartmentService
+      .updateDepartment(value._id,value)
+      .subscribe(result => {
+        this.toastService.edit('/rc/cadastros/setor', 'Setor');
+      }, err => this.toastService.error(err));
     }
   }
-
-
 
   onClick(event, str) {
     if (event instanceof MouseEvent) {
@@ -59,9 +57,7 @@ export class SetorEditarComponent implements OnInit {
     event.target.panTo(event.latLng);
   }
 
-  onChange(event, teste){
-    console.log(event);
-
+  onChange(event){
 
     if(event){
 

@@ -14,6 +14,7 @@ import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 import { GeocodingService } from '../../../servicos/geocoding.service';
 import { LogisticService } from '../../../servicos/logistic.service';
 import { ToastService } from '../../../servicos/toast.service';
+import { constants } from '../../../../environments/constants';
 
 declare var $:any;
 
@@ -27,7 +28,7 @@ export class ModalSupplierRegisterComponent implements OnInit {
   public next = false;
   public supplier:  FormGroup;
   public plant:  FormGroup;
-  public perfil = "FORNECEDOR";
+  public perfil = constants.profile.supplier;
   public geocoder = new google.maps.Geocoder;
   public autocomplete: google.maps.places.Autocomplete;
   public address: any = {};
@@ -105,15 +106,15 @@ export class ModalSupplierRegisterComponent implements OnInit {
       location: ['',[Validators.required]]
     })
 
-    this.supplier['controls'].profile['controls'].profile.setValue("Supplier");
+    this.supplier['controls'].profile['controls'].profile.setValue(constants.SUPPLIER);
   }
 
 
   onChange(event){
-    if(event == "OPERADOR LOGÍSTICO"){
+    if(event == constants.profile.logistic){
       const modalRef = this.modalService.open(ModalLogisticRegisterComponent,{backdrop: "static", size: "lg"});
       this.activeModal.close();
-    }else if(event === "FUNCIONÁRIO"){
+    }else if(event === constants.profile.staff){
       const modalRef = this.modalService.open(ModalStaffRegisterComponent,{backdrop: "static", size: "lg"});
       this.activeModal.close();
     }

@@ -1,7 +1,4 @@
 <navbar></navbar>
-<!-- {{verModal}} -->
-
-
 <!-- <button type="button" class="btn btn-primary" (click)="showModal()">Render auto-shown modal</button> -->
 <div *ngIf="isModalShown && verModal" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal" class="modal fade modalTop2" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -21,10 +18,10 @@
         <!-- <button class="botaoOk"(click)="d('Cross click')">Ok</button> -->
 
         <button type="button" class="botaoOk" (click)="hideModal()" (click)="verModal='false'"> ok </button>
-      </div><!-- ModalFilho-->
+      </div><!-- ModalFilho -->
     </div><!-- ModalContent -->
-  </div><!--modal-sm -->
-</div><!--modal modaltop2 -->
+  </div><!-- modal-sm -->
+</div><!-- modal modaltop2 -->
 
 <div class="conteudoTop">
   <div class="teste1">

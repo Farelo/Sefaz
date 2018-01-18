@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule} from '@angular/forms';
 import {ToastyModule} from 'ng2-toasty';
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
+import { AuthGuard } from '../../guard/auth.guard';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { ApplicationPipes } from '../../shared/pipes/application.pipes';
     NavbarComponent,
   ],
   providers: [
-    NgbActiveModal
+    NgbActiveModal,
+    AuthGuard
   ],
 })
 export class DashboardModuleLogistic { }

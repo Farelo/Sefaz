@@ -8,6 +8,8 @@ paths:
         summary: "Get a alert on the system"
         description: ""
         operationId: alert_read_by_packing
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "packing_id"
@@ -21,9 +23,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -36,6 +46,8 @@ paths:
       summary: "Get all alerts on the system by pagination"
       description: ""
       operationId: alert_list_pagination
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -54,9 +66,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -69,6 +89,8 @@ paths:
       summary: "Get all alerts on the system by pagination"
       description: ""
       operationId: alert_list_pagination_logistic
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -88,9 +110,17 @@ paths:
           $ref: "#/definitions/ArraySupplier"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -103,6 +133,8 @@ paths:
       summary: "Get all alerts on the system"
       description: ""
       operationId: alert_list_hashing
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -141,9 +173,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -156,6 +196,8 @@ paths:
       summary: "Get all alerts on the system"
       description: ""
       operationId: alert_list_hashing_logistic
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -195,9 +237,17 @@ paths:
           $ref: "#/definitions/ArraySupplier"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -210,6 +260,8 @@ paths:
       summary: "Add a new alert to the system"
       description: ""
       operationId: alert_create
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"
@@ -219,9 +271,17 @@ paths:
           $ref: "#/definitions/Alert"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -234,6 +294,8 @@ paths:
       summary: "Remove a alert on the system"
       description: ""
       operationId: alert_delete
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "alert_id"
@@ -242,9 +304,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -257,6 +327,8 @@ paths:
       summary: "Update a alert on the system"
       description: ""
       operationId: alert_update
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "alert_id"
@@ -271,9 +343,17 @@ paths:
           $ref: "#/definitions/Alert"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:

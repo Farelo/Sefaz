@@ -38,8 +38,17 @@ export class PlantaCadastrarComponent implements OnInit {
   }
 
   onSubmit({ value, valid }: { value: Plant, valid: boolean }): void {
-    if(valid)this.PlantsService.createPlant(value)
-                 .subscribe(result => this.toastService.success('/rc/cadastros/planta', 'Planta'), err => this.toastService.error(err));
+
+
+    if(valid){
+
+      this.PlantsService
+        .createPlant(value)
+        .subscribe(result => {
+          this.toastService.success('/rc/cadastros/planta', 'Planta');
+        }, err => this.toastService.error(err));
+    }
+
   }
 
   initialized(autocomplete: any) {

@@ -23,8 +23,11 @@ export class PlantaComponent implements OnInit {
   }
 
   loadPlants(){
-    this.PlantsService.getPlantsPagination(10,this.data.meta.page,this.search)
-      .subscribe( data => this.data = data, err => {console.log(err)});
+    this.PlantsService
+      .getPlantsPagination(10,this.data.meta.page,this.search)
+      .subscribe( data => {
+        this.data = data;
+      }, err => {console.log(err)});
   }
 
   removePlant(plant):void{
@@ -37,6 +40,7 @@ export class PlantaComponent implements OnInit {
   }
 
   pageChanged(page: any): void{
+    console.log(page);
     this.data.meta.page = page;
     this.loadPlants();
   }

@@ -31,7 +31,7 @@ exports.general_inventory_packing = function(req, res) {
 
   packing.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
-    _.partial(successHandlerPaginationAggregate, res));
+  _.partial(successHandlerPaginationAggregate, res, req.swagger.params.page.value, req.swagger.params.limit.value));
 };
 /**
  * list of general pagickings inventory by location
@@ -41,7 +41,7 @@ exports.geraneral_inventory_packing_by_plant = function(req, res) {
 
   packing.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
-    _.partial(successHandlerPaginationAggregate, res));
+  _.partial(successHandlerPaginationAggregate, res, req.swagger.params.page.value, req.swagger.params.limit.value));
 };
 /**
  * list of quantity inventory
@@ -52,7 +52,7 @@ exports.quantity_inventory = function(req, res) {
 
   packing.aggregatePaginate(aggregate,
     { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
-    _.partial(successHandlerPaginationAggregateQuantity, res, req.swagger.params.code.value));
+    _.partial(successHandlerPaginationAggregateQuantity, res, req.swagger.params.code.value,req.swagger.params.page.value,req.swagger.params.limit.value));
 };
 /**
  * List of packings analysis battery

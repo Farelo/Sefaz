@@ -3,7 +3,7 @@ import { ToastService } from '../../../../servicos/toast.service';
 import { UserService } from '../../../../servicos/user.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-
+ import { constants } from '../../../../../environments/constants';
 
 
 @Component({
@@ -40,7 +40,7 @@ export class UserAdicionarComponent implements OnInit {
         email: ['', [Validators.required]],
         port: ['', [Validators.required]],
         company: ['', [Validators.required]],
-        profile: ['AdminFactory', [Validators.required]]
+        profile: [constants.ADMIM, [Validators.required]]
 
 
       });

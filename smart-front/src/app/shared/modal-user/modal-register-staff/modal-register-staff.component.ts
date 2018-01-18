@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 import { ToastService } from '../../../servicos/toast.service';
 import { AuthenticationService } from '../../../servicos/auth.service';
-
+import { constants } from '../../../../environments/constants';
 declare var $:any;
 
 @Component({
@@ -22,7 +22,7 @@ declare var $:any;
 export class ModalStaffRegisterComponent implements OnInit {
   public isAdmin : any;
   public next = false;
-  private perfil = "FUNCIONÁRIO";
+  private perfil = constants.profile.staff;
   public staff :  FormGroup;
   public address: any = {};
   public submitted = false;
@@ -87,16 +87,16 @@ export class ModalStaffRegisterComponent implements OnInit {
       });
 
     if(this.authenticationService.currentUser().supplier){
-      this.staff['controls'].profile.setValue("StaffSupplier");
+      this.staff['controls'].profile.setValue(constants.STAFF_SUPPLIER);
       this.staff['controls'].official_supplier.setValue(this.authenticationService.currentUser().supplier._id);
       this.isAdmin = false;
     }else if(this.authenticationService.currentUser().logistic ){
-      this.staff['controls'].profile.setValue("StaffLogistic");
+      this.staff['controls'].profile.setValue(constants.STAFF_LOGISTIC);
       this.staff['controls'].official_logistic.setValue(this.authenticationService.currentUser().logistic._id);
       this.isAdmin = false;
     }else{
       this.isAdmin = true;
-      this.staff['controls'].profile.setValue("AdminFactory");
+      this.staff['controls'].profile.setValue(constants.ADMIN);
     }
 
 
@@ -105,11 +105,11 @@ export class ModalStaffRegisterComponent implements OnInit {
 
   onChange(event){
 
-    if(event == "FORNECEDOR"){
+    if(event == constants.profile.supplier){
 
       const modalRef = this.modalService.open(ModalSupplierRegisterComponent,{backdrop: "static", size: "lg"});
       this.activeModal.close();
-    }else if(event == "OPERADOR LOGÍSTICO"){
+    }else if(event == constants.profile.logistic){
       const modalRef = this.modalService.open(ModalLogisticRegisterComponent,{backdrop: "static", size: "lg"});
       this.activeModal.close();
     }

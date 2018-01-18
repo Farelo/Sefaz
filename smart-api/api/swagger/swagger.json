@@ -101,6 +101,13 @@
       "description": "Get address through CEP"
     }
   ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
   "paths": {
     "/alert/retrieve/{packing_id}/{status}": {
       "x-swagger-router-controller": "alert_controller",
@@ -111,6 +118,11 @@
         "summary": "Get a alert on the system",
         "description": "",
         "operationId": "alert_read_by_packing",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -129,9 +141,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -152,6 +176,11 @@
         "summary": "Get all alerts on the system by pagination",
         "description": "",
         "operationId": "alert_list_pagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -177,9 +206,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -200,6 +241,11 @@
         "summary": "Get all alerts on the system by pagination",
         "description": "",
         "operationId": "alert_list_pagination_logistic",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -227,9 +273,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -250,6 +308,11 @@
         "summary": "Get all alerts on the system",
         "description": "",
         "operationId": "alert_list_hashing",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -303,9 +366,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -326,6 +401,11 @@
         "summary": "Get all alerts on the system",
         "description": "",
         "operationId": "alert_list_hashing_logistic",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -381,9 +461,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -404,6 +496,11 @@
         "summary": "Add a new alert to the system",
         "description": "",
         "operationId": "alert_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -417,9 +514,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -440,6 +549,11 @@
         "summary": "Remove a alert on the system",
         "description": "",
         "operationId": "alert_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -451,9 +565,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -474,6 +600,11 @@
         "summary": "Update a alert on the system",
         "description": "",
         "operationId": "alert_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -494,9 +625,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -517,6 +660,11 @@
         "summary": "Get address through CEP",
         "description": "",
         "operationId": "get_CEP",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -528,9 +676,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -562,9 +722,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -603,9 +775,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -628,9 +812,21 @@
         "operationId": "checkpoint_list_all",
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -667,9 +863,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -701,9 +909,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -747,9 +967,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -770,6 +1002,11 @@
         "summary": "Get a department on the system",
         "description": "",
         "operationId": "department_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -781,9 +1018,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -804,6 +1053,11 @@
         "summary": "Get a department by name on the system",
         "description": "",
         "operationId": "department_read_by_name",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -815,9 +1069,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -838,6 +1104,11 @@
         "summary": "Get all departments on the system by pagination",
         "description": "",
         "operationId": "department_list_pagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -863,9 +1134,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -886,6 +1169,11 @@
         "summary": "Get all departments on the system by pagination and plant",
         "description": "",
         "operationId": "department_list_pagination_by_plant",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -911,9 +1199,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -934,11 +1234,28 @@
         "summary": "Get all departments on the system",
         "description": "",
         "operationId": "department_list_all",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -959,11 +1276,28 @@
         "summary": "Get all departments on the system by plant",
         "description": "",
         "operationId": "list_department_by_plant",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -984,6 +1318,11 @@
         "summary": "Add a new department to the system",
         "description": "",
         "operationId": "department_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -997,9 +1336,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1020,6 +1371,11 @@
         "summary": "Add a array to department to the system",
         "description": "",
         "operationId": "department_create_array",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -1033,9 +1389,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1056,6 +1424,11 @@
         "summary": "Remove a department on the system",
         "description": "",
         "operationId": "department_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1067,9 +1440,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1090,6 +1475,11 @@
         "summary": "Update a department on the system",
         "description": "",
         "operationId": "department_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1110,9 +1500,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1133,6 +1535,11 @@
         "summary": "Get a GC16 on the system",
         "description": "",
         "operationId": "gc16_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1144,9 +1551,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1167,11 +1586,28 @@
         "summary": "Get all gc16 registers on the system by pagination",
         "description": "",
         "operationId": "gc16_list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1192,6 +1628,11 @@
         "summary": "Get all gc16 registers on the system",
         "description": "",
         "operationId": "gc16_list_pagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1217,9 +1658,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1240,6 +1693,11 @@
         "summary": "Add a new gc16 register to the system",
         "description": "",
         "operationId": "gc16_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -1253,9 +1711,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1276,6 +1746,11 @@
         "summary": "Remove a gc16 register on the system",
         "description": "",
         "operationId": "gc16_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1287,9 +1762,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1310,6 +1797,11 @@
         "summary": "Update a gc16 register on the system",
         "description": "",
         "operationId": "gc16_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1330,9 +1822,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1353,6 +1857,11 @@
         "summary": "Get a historic packings on the system",
         "description": "",
         "operationId": "historic_packings_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1364,9 +1873,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1387,6 +1908,11 @@
         "summary": "Get all historic packingss on the system by pagination",
         "description": "",
         "operationId": "historic_packings_listPagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1405,9 +1931,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1428,11 +1966,28 @@
         "summary": "Get all historic packings on the system",
         "description": "",
         "operationId": "historic_packings_list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1453,6 +2008,11 @@
         "summary": "Add a new historic packings to the system",
         "description": "",
         "operationId": "historic_packings_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -1466,9 +2026,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1489,6 +2061,11 @@
         "summary": "Remove a historic packings on the system",
         "description": "",
         "operationId": "historic_packings_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1500,9 +2077,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1523,6 +2112,11 @@
         "summary": "Update a historic packings on the system",
         "description": "",
         "operationId": "historic_packings_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1543,9 +2137,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1568,6 +2174,11 @@
           "multipart/form-data"
         ],
         "operationId": "uploadTag",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "formData",
@@ -1578,9 +2189,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1603,6 +2226,11 @@
           "multipart/form-data"
         ],
         "operationId": "uploadProject",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "formData",
@@ -1613,9 +2241,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1638,6 +2278,11 @@
           "multipart/form-data"
         ],
         "operationId": "uploadPlant",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "formData",
@@ -1648,9 +2293,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1673,6 +2330,11 @@
           "multipart/form-data"
         ],
         "operationId": "uploadDepartment",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "formData",
@@ -1683,9 +2345,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1708,6 +2382,11 @@
           "multipart/form-data"
         ],
         "operationId": "uploadPacking",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "formData",
@@ -1718,9 +2397,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1743,6 +2434,11 @@
           "multipart/form-data"
         ],
         "operationId": "uploadRoute",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "formData",
@@ -1753,9 +2449,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1776,6 +2484,11 @@
         "summary": "Inventory of the equipaments.",
         "description": "",
         "operationId": "general_inventory_packing",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1803,9 +2516,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1826,6 +2551,11 @@
         "summary": "Inventory of the equipaments Analyzing the permanence.",
         "description": "",
         "operationId": "inventory_permanence",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1860,9 +2590,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1883,6 +2625,11 @@
         "summary": "Inventory of the equipaments Analyzing your quantity.",
         "description": "",
         "operationId": "quantity_inventory",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1917,9 +2664,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -1940,6 +2699,11 @@
         "summary": "Inventory of the equipaments Analyzing your historic.",
         "description": "",
         "operationId": "inventory_packing_historic",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1981,9 +2745,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2004,6 +2780,11 @@
         "summary": "Inventory of the equipaments Analyzing the battery by code.",
         "description": "",
         "operationId": "inventory_battery",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2038,9 +2819,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2061,6 +2854,11 @@
         "summary": "Inventory of the equipaments Analyzing yourself.",
         "description": "",
         "operationId": "inventory_packings",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2095,9 +2893,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2118,6 +2928,11 @@
         "summary": "Inventory of the equipaments.",
         "description": "",
         "operationId": "general_inventory_packing",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2143,9 +2958,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2166,6 +2993,11 @@
         "summary": "Inventory of the equipaments Analyzing the permanence.",
         "description": "",
         "operationId": "inventory_permanence",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2198,9 +3030,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2221,6 +3065,11 @@
         "summary": "Inventory of the equipaments Analyzing your quantity.",
         "description": "",
         "operationId": "quantity_inventory",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2253,9 +3102,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2276,6 +3137,11 @@
         "summary": "Inventory of the equipaments Analyzing your historic.",
         "description": "",
         "operationId": "inventory_packing_historic",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2315,9 +3181,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2338,6 +3216,11 @@
         "summary": "Inventory of the equipaments Analyzing the battery by code.",
         "description": "",
         "operationId": "inventory_battery",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2370,9 +3253,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2393,6 +3288,11 @@
         "summary": "Inventory of the equipaments Analyzing yourself.",
         "description": "",
         "operationId": "inventory_packings",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2425,9 +3325,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2448,6 +3360,11 @@
         "summary": "Inventory of the suppliers.",
         "description": "",
         "operationId": "supplier_inventory",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2473,9 +3390,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2496,6 +3425,11 @@
         "summary": "Inventory of the equipaments by plant.",
         "description": "",
         "operationId": "geraneral_inventory_packing_by_plant",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2535,9 +3469,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2558,6 +3504,11 @@
         "summary": "Get a logistic operator on the system",
         "description": "",
         "operationId": "logistic_operator_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2569,9 +3520,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2592,6 +3555,11 @@
         "summary": "Get all logistic_operators on the system by pagination",
         "description": "",
         "operationId": "logistic_operator_listPagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2610,9 +3578,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2633,6 +3613,11 @@
         "summary": "Add a new logistic operator to the system",
         "description": "",
         "operationId": "logistic_operator_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -2646,9 +3631,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2669,6 +3666,11 @@
         "summary": "Remove a logistic operator on the system",
         "description": "",
         "operationId": "logistic_operator_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2680,9 +3682,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2703,6 +3717,11 @@
         "summary": "Update a logistic operator on the system",
         "description": "",
         "operationId": "logistic_operator_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2723,9 +3742,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2746,6 +3777,11 @@
         "summary": "Get a packing on the system",
         "description": "",
         "operationId": "packing_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2757,9 +3793,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2780,6 +3828,11 @@
         "summary": "Get a position the packing on the system",
         "description": "",
         "operationId": "packing_position",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2791,9 +3844,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2814,6 +3879,11 @@
         "summary": "Get a packing on the system by supplier, code and Project",
         "description": "",
         "operationId": "packing_read_by_supplierAndcodeAndProject",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2839,9 +3909,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2862,6 +3944,11 @@
         "summary": "Get a packing on the system by serial and code",
         "description": "",
         "operationId": "packing_read_by_codeAndSerial",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2880,9 +3967,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2903,6 +4002,11 @@
         "summary": "Get all packings on the system by pagination",
         "description": "",
         "operationId": "packing_list_pagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2928,9 +4032,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2951,6 +4067,11 @@
         "summary": "Get all packings on the system by pagination by plant",
         "description": "",
         "operationId": "packing_list_pagination_by_plant",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2976,9 +4097,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -2999,6 +4132,11 @@
         "summary": "Get all packings on the system by supplier",
         "description": "",
         "operationId": "packing_list_by_supplier",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3010,9 +4148,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3033,6 +4183,11 @@
         "summary": "Get a packing by code ....",
         "description": "",
         "operationId": "list_by_code",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3044,9 +4199,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3067,6 +4234,11 @@
         "summary": "Get list packing by department",
         "description": "",
         "operationId": "list_packing_department",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3092,9 +4264,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3115,6 +4299,11 @@
         "summary": "Get a packings no binded.",
         "description": "",
         "operationId": "list_packing_no_binded",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3126,9 +4315,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3149,6 +4350,11 @@
         "summary": "Add a new packing to the system",
         "description": "",
         "operationId": "packing_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -3165,9 +4371,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3188,6 +4406,11 @@
         "summary": "Add a array packing to the system",
         "description": "",
         "operationId": "packing_create_array",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -3204,9 +4427,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3227,6 +4462,11 @@
         "summary": "Remove a packing on the system",
         "description": "",
         "operationId": "packing_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3238,9 +4478,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3261,6 +4513,11 @@
         "summary": "Update a packing on the system",
         "description": "",
         "operationId": "packing_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3281,9 +4538,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3304,6 +4573,11 @@
         "summary": "Update a packing on the system using gc16",
         "description": "",
         "operationId": "packing_update_by_code",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3338,9 +4612,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3361,6 +4647,11 @@
         "summary": "Unset a filed from packing on the system using code",
         "description": "",
         "operationId": "packing_update_unset_by_code",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3372,9 +4663,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3395,6 +4698,11 @@
         "summary": "Update all packings on the system based on query",
         "description": "",
         "operationId": "packing_update_all_by_route",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3422,9 +4730,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3445,6 +4765,11 @@
         "summary": "Get a plant on the system",
         "description": "",
         "operationId": "plant_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3456,9 +4781,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3479,6 +4816,11 @@
         "summary": "Get a plant on the system by plant name",
         "description": "",
         "operationId": "plant_read_by_name",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3490,9 +4832,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3513,6 +4867,11 @@
         "summary": "Get all plants on the system by pagination",
         "description": "",
         "operationId": "plant_listPagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3538,9 +4897,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3561,6 +4932,11 @@
         "summary": "Get all plants on the system no binded anyone route",
         "description": "",
         "operationId": "list_all_nobinded",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3586,9 +4962,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3609,11 +4997,28 @@
         "summary": "Get all plants on the system without supplier and logistic operator",
         "description": "",
         "operationId": "list_all",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3634,6 +5039,11 @@
         "summary": "Get all plants on the system",
         "description": "",
         "operationId": "list_all_general",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "query",
@@ -3645,9 +5055,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3668,6 +5090,11 @@
         "summary": "Get all plants on the system by logistic",
         "description": "",
         "operationId": "list_all_general_logistic",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -3681,9 +5108,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3704,6 +5143,11 @@
         "summary": "Add a new plant to the system",
         "description": "",
         "operationId": "plant_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -3717,9 +5161,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3740,6 +5196,11 @@
         "summary": "Add a array of plant to the system",
         "description": "",
         "operationId": "plant_create_array",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -3753,9 +5214,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3776,6 +5249,11 @@
         "summary": "Remove a plant on the system",
         "description": "",
         "operationId": "plant_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3787,9 +5265,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3810,6 +5300,11 @@
         "summary": "Update a plant on the system",
         "description": "",
         "operationId": "plant_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3830,9 +5325,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3853,6 +5360,11 @@
         "summary": "Get a profile on the system",
         "description": "",
         "operationId": "profile_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3864,9 +5376,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3887,6 +5411,11 @@
         "summary": "Get a profile on the system by email",
         "description": "",
         "operationId": "profile_read_by_email",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3898,9 +5427,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3939,9 +5480,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -3962,6 +5515,11 @@
         "summary": "Get all profilies on the system by pagination",
         "description": "",
         "operationId": "profile_listPagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3980,9 +5538,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4003,6 +5573,11 @@
         "summary": "Get all profilies on the system by pagination and supplier",
         "description": "",
         "operationId": "profile_listPagination_supplier",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4028,9 +5603,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4051,6 +5638,11 @@
         "summary": "Get all profilies on the system by pagination and logistic",
         "description": "",
         "operationId": "profile_listPagination_logistic",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4076,9 +5668,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4112,9 +5716,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4135,6 +5751,11 @@
         "summary": "Remove a profile on the system",
         "description": "",
         "operationId": "profile_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4146,9 +5767,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4169,6 +5802,11 @@
         "summary": "Update a profile on the system",
         "description": "",
         "operationId": "profile_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4189,9 +5827,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4212,6 +5862,11 @@
         "summary": "Get a project on the system",
         "description": "",
         "operationId": "project_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4223,9 +5878,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4246,6 +5913,11 @@
         "summary": "Get all projects on the system by pagination",
         "description": "",
         "operationId": "project_listPagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4271,9 +5943,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4294,11 +5978,28 @@
         "summary": "Get all projects on the system",
         "description": "",
         "operationId": "project_list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4319,6 +6020,11 @@
         "summary": "Add a new project to the system",
         "description": "",
         "operationId": "project_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -4332,9 +6038,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4355,6 +6073,11 @@
         "summary": "Add a array project to the system",
         "description": "",
         "operationId": "project_create_array",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -4368,9 +6091,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4391,6 +6126,11 @@
         "summary": "Remove a project on the system",
         "description": "",
         "operationId": "project_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4402,9 +6142,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4425,6 +6177,11 @@
         "summary": "Update a project on the system",
         "description": "",
         "operationId": "project_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4445,9 +6202,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4468,6 +6237,11 @@
         "summary": "Get a route on the system",
         "description": "",
         "operationId": "route_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4479,9 +6253,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4502,6 +6288,11 @@
         "summary": "Get all routes on the system by pagination",
         "description": "",
         "operationId": "route_list_pagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4527,9 +6318,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4550,6 +6353,11 @@
         "summary": "Add a new route to the system",
         "description": "",
         "operationId": "route_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -4563,9 +6371,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4586,6 +6406,11 @@
         "summary": "Add a array route to the system",
         "description": "",
         "operationId": "route_create_array",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -4599,9 +6424,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4622,6 +6459,11 @@
         "summary": "Remove a route on the system",
         "description": "",
         "operationId": "route_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4633,9 +6475,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4656,6 +6510,11 @@
         "summary": "Update a route on the system",
         "description": "",
         "operationId": "route_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4676,9 +6535,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4699,6 +6570,11 @@
         "summary": "Get a supplier on the system",
         "description": "",
         "operationId": "supplier_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4710,9 +6586,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4733,6 +6621,11 @@
         "summary": "Get a supplier on the system",
         "description": "",
         "operationId": "supplier_read_by_duns",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4744,9 +6637,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4767,6 +6672,11 @@
         "summary": "Get a supplier on the system by name and duns",
         "description": "",
         "operationId": "supplier_read_by_dunsAndSupplier",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4785,9 +6695,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4808,6 +6730,11 @@
         "summary": "Get all suppliers on the system by pagination",
         "description": "",
         "operationId": "supplier_list_pagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4826,9 +6753,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4849,11 +6788,28 @@
         "summary": "Get all suppliers on the system ",
         "description": "",
         "operationId": "supplier_list_all",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4874,6 +6830,11 @@
         "summary": "Add a new supplier to the system",
         "description": "",
         "operationId": "supplier_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -4887,9 +6848,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4910,6 +6883,11 @@
         "summary": "Remove a supplier on the system",
         "description": "",
         "operationId": "supplier_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4921,9 +6899,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4944,6 +6934,11 @@
         "summary": "Update a supplier on the system",
         "description": "",
         "operationId": "supplier_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4964,9 +6959,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -4987,6 +6994,11 @@
         "summary": "Get a tags on the system",
         "description": "",
         "operationId": "tags_read",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4998,9 +7010,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -5021,6 +7045,11 @@
         "summary": "Get all tagss on the system by pagination that were binded and no binded with packings",
         "description": "",
         "operationId": "tags_list_pagination",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -5046,9 +7075,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -5069,11 +7110,28 @@
         "summary": "Get all tags on the system that does not was still binded with the packing",
         "description": "",
         "operationId": "tags_list_all_no_binded",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -5094,6 +7152,11 @@
         "summary": "Add a new tags to the system",
         "description": "",
         "operationId": "tags_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -5107,9 +7170,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -5130,6 +7205,11 @@
         "summary": "Add a array of tags to the system",
         "description": "",
         "operationId": "tags_create_array",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",
@@ -5143,9 +7223,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -5166,6 +7258,11 @@
         "summary": "Remove a tags on the system",
         "description": "",
         "operationId": "tags_delete",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -5177,9 +7274,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -5200,6 +7309,11 @@
         "summary": "Update a tags on the system",
         "description": "",
         "operationId": "tags_update",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -5220,9 +7334,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Message",
+            "description": "Successfully",
             "schema": {
               "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
             }
           },
           "default": {
@@ -5309,7 +7435,79 @@
       "properties": {
         "jsonapi": {
           "type": "object",
-          "description": "a short comment"
+          "description": "a API version"
+        },
+        "name": {
+          "type": "string",
+          "description": "error type"
+        },
+        "message": {
+          "type": "string",
+          "description": "a short comment about the error"
+        },
+        "error": {
+          "type": "object",
+          "description": "details about the error"
+        },
+        "details": {
+          "type": "string",
+          "description": "especific details about the error"
+        }
+      },
+      "required": [
+        "jsonapi"
+      ]
+    },
+    "Error400": {
+      "type": "object",
+      "properties": {
+        "jsonapi": {
+          "type": "object",
+          "description": "a API version"
+        },
+        "name": {
+          "type": "string",
+          "description": "error type"
+        },
+        "message": {
+          "type": "string",
+          "description": "a short comment about the error"
+        },
+        "error": {
+          "type": "object",
+          "description": "details about the error"
+        },
+        "details": {
+          "type": "string",
+          "description": "especific details about the error"
+        }
+      },
+      "required": [
+        "jsonapi"
+      ]
+    },
+    "Error500": {
+      "type": "object",
+      "properties": {
+        "jsonapi": {
+          "type": "object",
+          "description": "a API version"
+        },
+        "name": {
+          "type": "string",
+          "description": "error type"
+        },
+        "message": {
+          "type": "string",
+          "description": "a short comment about the error"
+        },
+        "error": {
+          "type": "object",
+          "description": "details about the error"
+        },
+        "details": {
+          "type": "string",
+          "description": "especific details about the error"
         }
       },
       "required": [
@@ -5369,12 +7567,6 @@
         "hashPacking": {
           "type": "string"
         }
-      }
-    },
-    "ArrayPacking": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Packing"
       }
     },
     "Packing": {
@@ -5470,6 +7662,9 @@
         "street": {
           "type": "string"
         },
+        "user": {
+          "type": "string"
+        },
         "telephone": {
           "type": "string"
         },
@@ -5529,7 +7724,7 @@
       "properties": {
         "jsonapi": {
           "type": "object",
-          "description": "a short comment"
+          "description": "a API version"
         }
       },
       "required": [

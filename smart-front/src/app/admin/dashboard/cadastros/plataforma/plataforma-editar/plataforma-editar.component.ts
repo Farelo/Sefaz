@@ -25,8 +25,14 @@ export class PlataformaEditarComponent implements OnInit {
   ) { }
 
   onSubmit({ value, valid }: { value: Project, valid: boolean }): void {
-      if(valid)this.ProjectService.updateProject(value._id,value)
-                  .subscribe( result => this.toastService.edit('/rc/cadastros/plataforma', 'Plataforma'), err =>  this.toastService.error(err));
+      if(valid){
+
+        this.ProjectService
+            .updateProject(value._id,value)
+            .subscribe( result =>{
+                this.toastService.edit('/rc/cadastros/plataforma', 'Plataforma')
+            }, err =>  this.toastService.error(err));
+      }
   }
 
   ngOnInit() {

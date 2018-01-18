@@ -6,7 +6,7 @@ const mongoose     = require('mongoose');
 const packing      = mongoose.model('Packing');
 
 
-function onSuccess(res, code, err, data, page, amount) {
+function onSuccess(res, code, page, limit, err, data, pages, amount) {
 
   let total = data.reduce(function(previousValue, currentValue) {
     return {
@@ -33,7 +33,9 @@ function onSuccess(res, code, err, data, page, amount) {
       "version": "1.0"
     },
     meta: {
+      "limit": limit,
       "page": page,
+      "total_pages": pages,
       "total_docs": amount,
       "total_packings": total,
       missing: missing

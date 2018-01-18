@@ -26,7 +26,11 @@ export class TagsEditarComponent implements OnInit {
 
   onSubmit({ value, valid }: { value: Tag, valid: boolean }):void {
     if(valid){
-      this.tagsService.updateTag(value._id,value).subscribe( result => { this.toastyService.edit('/rc/cadastros/tags',"Tag")}, err => this.toastyService.error(err));
+      this.tagsService
+          .updateTag(value._id,value)
+          .subscribe( result => {
+            this.toastyService.edit('/rc/cadastros/tags',"Tag");
+          }, err => this.toastyService.error(err));
     }
   }
 
@@ -41,15 +45,9 @@ export class TagsEditarComponent implements OnInit {
       (params: any)=>{
         let id = params['id'];
         this.tagsService.retrieveTag(id).subscribe(result => {
-
            (<FormGroup>this.tag)
                    .setValue(result.data, { onlySelf: true });
-
         });
-      }
-    )
+      })
   }
-
-
-
 }

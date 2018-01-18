@@ -99,13 +99,15 @@ export class RotasCadastrarComponent implements OnInit {
     value.time.max = partial_max;
     value.time.min = partial_min;
 
-    console.log(value);
+
     if(this.route.valid){
       value.project = value.packing_code.project._id;
       value.packing_code = value.packing_code.id;
-      console.log(value);
+
       this.RoutesService.createRoute(value)
-        .subscribe(result => this.toastService.success('/rc/cadastros/rotas', 'Rota'), err => this.toastService.error(err));
+        .subscribe(result => {
+          this.toastService.success('/rc/cadastros/rotas', 'Rota');
+        }, err => this.toastService.error(err));
 
     }
   }

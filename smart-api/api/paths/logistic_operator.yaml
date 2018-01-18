@@ -8,6 +8,8 @@ paths:
         summary: "Get a logistic operator on the system"
         description: ""
         operationId: logistic_operator_read
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "logistic_operator_id"
@@ -16,9 +18,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -31,6 +41,8 @@ paths:
       summary: "Get all logistic_operators on the system by pagination"
       description: ""
       operationId: logistic_operator_listPagination
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -44,9 +56,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -59,6 +79,8 @@ paths:
       summary: "Add a new logistic operator to the system"
       description: ""
       operationId: logistic_operator_create
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"
@@ -68,9 +90,17 @@ paths:
           $ref: "#/definitions/Logistic_operator"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -85,6 +115,8 @@ paths:
       summary: "Remove a logistic operator on the system"
       description: ""
       operationId: logistic_operator_delete
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "logistic_operator_id"
@@ -93,9 +125,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -108,6 +148,8 @@ paths:
       summary: "Update a logistic operator on the system"
       description: ""
       operationId: logistic_operator_update
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "logistic_operator_id"
@@ -122,9 +164,17 @@ paths:
           $ref: "#/definitions/Logistic_operator"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:

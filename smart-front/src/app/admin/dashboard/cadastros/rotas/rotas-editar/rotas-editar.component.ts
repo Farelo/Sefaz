@@ -12,8 +12,8 @@ import { ToastService } from '../../../../../servicos/toast.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs/Rx';
-
 declare var $:any;
+
 @Component({
   selector: 'app-rotas-editar',
   templateUrl: './rotas-editar.component.html',
@@ -103,12 +103,13 @@ export class RotasEditarComponent implements OnInit {
     value.time.max = partial_max;
     value.time.min = partial_min;
 
-    console.log(value);
     if(this.route.valid){
 
-
-      this.RoutesService.updateRoute(value._id,value)
-        .subscribe(result => this.toastService.edit('/rc/cadastros/rotas', 'Rota'), err => this.toastService.error(err));
+      this.RoutesService
+        .updateRoute(value._id,value)
+        .subscribe(result => {
+          this.toastService.edit('/rc/cadastros/rotas', 'Rota')
+        }, err => this.toastService.error(err));
 
     }
   }
@@ -136,12 +137,6 @@ export class RotasEditarComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
   ngOnInit() {
 
 
@@ -149,7 +144,7 @@ export class RotasEditarComponent implements OnInit {
       (params: any)=>{
         let id = params ['id'];
         this.RoutesService.retrieveRoute(id).subscribe(result => {
-          console.log(result.data);
+
           let time = parseInt((result.data.time.min).toString());
           this.time_min = {
             hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
@@ -165,12 +160,9 @@ export class RotasEditarComponent implements OnInit {
              second: (parseInt((time / (1000 * 60)).toString()) % 60)
            };
 
-
            delete result.data.time;
           (<FormGroup>this.route)
                   .patchValue(result.data, { onlySelf: true });
-
-
 
 
             this.direction.origin = new google.maps.LatLng(result.data.plant_factory.lat, result.data.plant_factory.lng);

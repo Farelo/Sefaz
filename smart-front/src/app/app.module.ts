@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { NgbModule, NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { BrowserXhr } from '@angular/http';
-import { NgProgressBrowserXhr, NgProgressModule } from 'ngx-progressbar';
+import { NgProgressBrowserXhr, NgProgressModule , NgProgressInterceptor} from 'ngx-progressbar';
 import { NgxPaginationModule} from 'ngx-pagination';
 import * as $ from 'jquery';
 import { AppComponent } from './app.component';
@@ -18,14 +18,12 @@ import { ModalLogisticEditarComponent } from './shared/modal-user/modal-editar-l
 import { ModalCurrentEditarComponent } from './shared/modal-current-edit/modal-editar-current.component';
 import { ModalStaffEditarComponent } from './shared/modal-user/modal-editar-staff/modal-editar-staff.component';
 import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
-
+import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { ApplicationPipes } from './shared/pipes/application.pipes';
 import {ValidatorsModule, EmailValidators} from 'ngx-validators'
-
 import { AlertaModalComponent } from './shared/modal-alerta/alerta.component';
 import { LayerModalComponent } from './shared/modal-packing/layer.component';
 import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.component';
-
 import { AlertsService } from './servicos/alerts.service';
 import { ImportService } from './servicos/import.service';
 import { DashboardModuleAdmin } from './admin/dashboard/dashboard.module';
@@ -52,9 +50,9 @@ import { ChatService } from './servicos/teste';
 import { NguiMapModule } from '@ngui/map';
 import { AppRoutingModule } from './app.routing.module';
 import { TextMaskModule } from 'angular2-text-mask';
-import { AuthGuard } from './guard/auth.guard';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+
 
 @NgModule({
   declarations: [
@@ -77,6 +75,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     NgbModule.forRoot(),
     AlertModule.forRoot(),
     DashboardModuleAdmin,
@@ -111,14 +110,22 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     GC16Service,
     GeocodingService,
     ProfileService,
-    AuthGuard,
     InventoryService,
     CEPService,
     LogisticService,
     ToastService,
     ImportService,
     AuthenticationService,
-    { provide: BrowserXhr, useClass: NgProgressBrowserXhr }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NgProgressInterceptor,
+      multi: true
+    }
 
     // FormBuilder,
     // RadioControlRegistry

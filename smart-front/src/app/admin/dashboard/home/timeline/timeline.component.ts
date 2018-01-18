@@ -3,7 +3,6 @@ import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-
 import { AlertsService } from '../../../../servicos/alerts.service';
 import { Alert } from '../../../../shared/models/alert';
 import { ChatService }       from '../../../../servicos/teste';
-import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Pagination } from '../../../../shared/models/pagination';
@@ -12,17 +11,13 @@ declare var $:any;
 @Component({
   selector: 'timeline',
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.css'],
-  providers: [NgbPopoverConfig]
+  styleUrls: ['./timeline.component.css']
 })
 export class TimelineComponent implements OnInit {
 
   @ViewChild('autoShownModal') public autoShownModal:ModalDirective;
   public data: Pagination = new Pagination({meta: {page : 1}});
   public isModalShown:boolean = false;
-  public showModal():void { this.isModalShown = true; }
-  public hideModal():void { this.autoShownModal.hide(); }
-  public onHidden():void { this.isModalShown = false; }
   public grande = false;
 
 
@@ -38,7 +33,6 @@ export class TimelineComponent implements OnInit {
       private AlertsService: AlertsService,
       private modalService: NgbModal,
       private chatService: ChatService,
-      private config: NgbPopoverConfig,
       private ngZone:NgZone,
       private modalTop: ModalModule
   ) {
@@ -69,8 +63,8 @@ export class TimelineComponent implements OnInit {
   loadAlerts(){
 
 
-    this.AlertsService.getAlerts(20,this.data.meta.page)
-      .subscribe(alerts => this.data = alerts,
+    this.AlertsService.getAlerts(16,this.data.meta.page)
+      .subscribe(alerts =>{console.log(alerts); this.data = alerts},
       err => {
         console.log(err);
       });
@@ -78,16 +72,8 @@ export class TimelineComponent implements OnInit {
 
   ngOnInit() {
       this.loadAlerts();
-      this.showModal();
-      this.editModal();
   }
-  editModal(){
-    $('.modalFilho').parent().css({'width': '250px'});
-    $('.popover').css({'display': 'none'});
-  }
-  showPopover(){
-    $('.popover').css({'display': 'block'});
-  }
+
   pageChanged(page: any): void{
     this.data.meta.page = page;
     this.loadAlerts();

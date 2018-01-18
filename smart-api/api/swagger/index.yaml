@@ -48,8 +48,6 @@ tags:
   description: "All information about your Packings"
 - name: "Tag"
   description: "All information about your Tags"
-- name: "Checkpoint"
-  description: "All information about your Checkpoints"
 - name: "Historic Tags"
   description: "All information about your Historic Tags"
 - name: "Historic Packings"
@@ -62,3 +60,8 @@ tags:
   description: "All information about your upload "
 - name: "CEP"
   description: "Get address through CEP"
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization

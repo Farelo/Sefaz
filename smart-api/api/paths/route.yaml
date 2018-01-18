@@ -8,6 +8,8 @@ paths:
         summary: "Get a route on the system"
         description: ""
         operationId: route_read
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "route_id"
@@ -16,9 +18,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -31,6 +41,8 @@ paths:
       summary: "Get all routes on the system by pagination"
       description: ""
       operationId: route_list_pagination
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -49,9 +61,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -64,6 +84,8 @@ paths:
       summary: "Add a new route to the system"
       description: ""
       operationId: route_create
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"
@@ -73,9 +95,17 @@ paths:
           $ref: "#/definitions/Route"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -88,6 +118,8 @@ paths:
       summary: "Add a array route to the system"
       description: ""
       operationId: route_create_array
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"
@@ -97,9 +129,17 @@ paths:
           $ref: "#/definitions/ArrayRoute"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -112,6 +152,8 @@ paths:
       summary: "Remove a route on the system"
       description: ""
       operationId: route_delete
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "route_id"
@@ -120,9 +162,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -135,6 +185,8 @@ paths:
       summary: "Update a route on the system"
       description: ""
       operationId: route_update
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "route_id"
@@ -149,9 +201,17 @@ paths:
           $ref: "#/definitions/Route"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:

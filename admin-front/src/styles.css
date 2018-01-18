@@ -37,44 +37,78 @@ body {
   padding-left: 6px;
 }
 
-.conteudoHome .popover-content {
+.conteudoHome .popover.bs-popover-bottom .arrow {
+  top: -12px !important;
+}
+
+.conteudoHome .popover.bs-popover-left .arrow {
+  right: -12px !important;
+}
+
+.conteudoHome .bs-popover-left .arrow{
+  margin-top: -81px !important;
+}
+
+.conteudoHome .bs-popover-top .arrow,
+.bs-popover-bottom .arrow {
+  margin-left: -11px !important;
+}
+
+.conteudoHome .popover-body {
   width: 178px !important;
   text-align: center;
 }
 
-.conteudoHome .popover-left { top: 80px !important; }
+.conteudoHome .bs-popover-left { top: 52px !important; }
 
-.conteudoHome .popover-left,
+.conteudoHome .bs-popover-left,
 .popover-bottom { border-radius: inherit; }
 
-.conteudoHome .popover.popover-left::before,
+.conteudoHome .popover.bs-popover-left::before,
 .popover.bs-tether-element-attached-right::before
 { top: 15px !important; }
 
-.conteudoHome .popover.popover-left::after,
+.conteudoHome .popover.bs-popover-left::after,
 .popover.bs-tether-element-attached-right::after
 { top: 15px !important; }
 
-.menu1 .popover-content { text-align: center; }
+.menu1 .popover-body { text-align: center; }
 
-.menu1 .popover-left { top: 10px !important; }
+.menu1 .bs-popover-left { top: 10px !important; }
 
-.menu1 .popover-left,
-.popover-bottom { border-radius: inherit; }
+.menu1 .bs-popover-left,
+.bs-popover-bottom { border-radius: inherit; }
 
-.menu1 .popover.popover-left::before,
+.menu1 .popover.bs-popover-left::before,
 .popover.bs-tether-element-attached-right::before {
   top: 15px !important;
 }
 
-.menu1 .popover.popover-left::after,
+.menu1 .popover.bs-popover-bottom .arrow {
+  top: -12px !important;
+}
+
+.menu1 .bs-popover-left .arrow {
+  margin-top: -141px !important;
+}
+
+.menu1 .popover.bs-popover-left .arrow {
+  right: -12px !important;
+}
+
+.menu1,
+.bs-popover-bottom .arrow {
+  margin-left: -11px !important;
+}
+
+.menu1 .popover.bs-popover-left::after,
 .popover.bs-tether-element-attached-right::after {
   top: 15px !important;
 }
 
-@media (min-width: 1200px) { .menu1 .popover-left { display: none !important; } }
+@media (min-width: 1200px) { .menu1 .bs-popover-left { display: none !important; } }
 
-@media (max-width: 1199px) { .menu1 .popover-bottom { display: none !important; } }
+@media (max-width: 1199px) { .menu1 .bs-popover-bottom { display: none !important; } }
 
 .modal-content {
   border-radius: 0em !important;

@@ -8,6 +8,8 @@ paths:
         summary: "Get a project on the system"
         description: ""
         operationId: project_read
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "project_id"
@@ -16,9 +18,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -31,6 +41,8 @@ paths:
       summary: "Get all projects on the system by pagination"
       description: ""
       operationId: project_listPagination
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "limit"
@@ -49,9 +61,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -64,11 +84,21 @@ paths:
       summary: "Get all projects on the system"
       description: ""
       operationId: project_list
+      security:
+        - Bearer: []
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -81,6 +111,8 @@ paths:
       summary: "Add a new project to the system"
       description: ""
       operationId: project_create
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"
@@ -90,9 +122,17 @@ paths:
           $ref: "#/definitions/Project"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -105,6 +145,8 @@ paths:
       summary: "Add a array project to the system"
       description: ""
       operationId: project_create_array
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"
@@ -114,9 +156,17 @@ paths:
           $ref: "#/definitions/ArrayProject"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -129,6 +179,8 @@ paths:
       summary: "Remove a project on the system"
       description: ""
       operationId: project_delete
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "project_id"
@@ -137,9 +189,17 @@ paths:
         type: string
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:
@@ -152,6 +212,8 @@ paths:
       summary: "Update a project on the system"
       description: ""
       operationId: project_update
+      security:
+        - Bearer: []
       parameters:
       - in: "path"
         name: "project_id"
@@ -166,9 +228,17 @@ paths:
           $ref: "#/definitions/Project"
       responses:
         200:
-          description: "Message"
+          description: "Successfully"
           schema:
             $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
         default:
           description: "Error"
           schema:

@@ -28,15 +28,16 @@ export class Gc16EditarComponent implements OnInit {
 
 
   onSubmit({ value, valid }: { value: GC16, valid: boolean }): void {
-    console.log(value,valid);
+
     if(valid){
       this.GC16Service.updateGC16(value._id,value)
-                      .subscribe(result => this.toastService.edit('/rc/gc16', 'GC16'), err => this.toastService.error(err));
+                      .subscribe(result => {
+                        this.toastService.edit('/rc/gc16', 'GC16');
+                      }, err => this.toastService.error(err));
     }
   }
 
   onBlurMethod(){
-
 
     if(this.gc16.controls.capacity.value && this.gc16.controls.annualVolume.value && this.gc16.controls.productiveDays.value){
       this.gc16.controls.containerDays.setValue(Math.floor(((this.gc16.controls.annualVolume.value/this.gc16.controls.productiveDays.value)/this.gc16.controls.capacity.value)));

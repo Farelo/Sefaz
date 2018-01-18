@@ -36,10 +36,6 @@ export class Gc16AdicionarComponent implements OnInit {
     private toastService: ToastService
   ) {}
 
-  ngAfterViewInit() {
-    console.log($('.chzn-select-template-example').animate({scrollLeft: 100}, 500));
-
-  }
 
   onSubmit({ value, valid }: { value: GC16, valid: boolean }): void {
     if(valid){
@@ -48,7 +44,9 @@ export class Gc16AdicionarComponent implements OnInit {
 
       this.GC16Service.createGC16(value)
                       .subscribe(result => this.packingService.updatePackingByGC16(value.packing,value.supplier._id,value.project,{gc16: result.data._id})
-                      .subscribe(result => this.toastService.success('/rc/gc16', 'GC16'), err => this.toastService.error(err)));
+                      .subscribe(result => {
+                        this.toastService.success('/rc/gc16', 'GC16');
+                      }, err => this.toastService.error(err)));
     }
 
 

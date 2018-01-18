@@ -10,11 +10,12 @@ declare var $:any;
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-menuAparecer: boolean = false;
-telaGrande: boolean = false;
-altura: any;
-largura: any;
-closeResult: string;
+public menuAparecer: boolean = false;
+public currentUser  : any;
+public telaGrande: boolean = false;
+public altura: any;
+public largura: any;
+public closeResult: string;
 
   constructor(
     private ngZone:NgZone,
@@ -27,7 +28,8 @@ closeResult: string;
   ngOnInit() {
     this.funcaoTop();
     this.menuAparecer = false;
-    // this.modalOptions.backdrop =  'static';
+    this.currentUser = this.authenticationService.currentUser();
+    console.log(this.currentUser);
   }
 
   funcaoTop(){
@@ -45,15 +47,9 @@ closeResult: string;
     }
   }
 
-  openModal(){
 
-  }
-  openModalEditar(){
-
-  }
 
   logout(){
-    console.log("aqui");
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }

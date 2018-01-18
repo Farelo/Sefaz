@@ -28,8 +28,12 @@ export class RotasComponent implements OnInit {
   }
 
   loadRoutes(){
-    this.RoutesService.getRoutesPagination(10,this.data.meta.page,this.search)
-      .subscribe(data => this.data = data, err => {console.log(err)});
+
+    this.RoutesService
+      .getRoutesPagination(10,this.data.meta.page,this.search)
+      .subscribe(data => {
+        this.data = data;
+      }, err => {console.log(err)});
   }
 
   removeRoutes(route):void{
@@ -42,8 +46,6 @@ export class RotasComponent implements OnInit {
       if(result === "remove") this.loadRoutes();
     });
   }
-
-
 
   ngOnInit() {
 

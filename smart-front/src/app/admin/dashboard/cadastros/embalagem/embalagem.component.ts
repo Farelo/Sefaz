@@ -24,8 +24,12 @@ export class EmbalagemComponent implements OnInit {
   }
 
   loadPackings(): void{
-    this.PackingService.getPackingsPagination(10,this.data.meta.page,this.search)
-      .subscribe(result => this.data = result, err => {console.log(err)});
+
+    this.PackingService
+      .getPackingsPagination(10,this.data.meta.page,this.search)
+      .subscribe(result => {
+        this.data = result;
+      }, err => {console.log(err)});
   }
 
   removePacking(packing):void{

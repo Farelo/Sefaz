@@ -188,6 +188,15 @@ label {
   font-size: 12px;
 }
 
+.conteudoHome .popover.bs-popover-bottom .arrow {
+  top: -12px !important;
+}
+
+.conteudoHome .bs-popover-top[_nghost-c7] .arrow[_ngcontent-c7],
+.bs-popover-bottom[_nghost-c7] .arrow[_ngcontent-c7] {
+  margin-left: -11px !important;
+}
+
 .botaoOk {
   padding: 3px 15px;
   background-color: #777;

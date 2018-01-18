@@ -119,9 +119,9 @@ exports.list_all_general_logistic = function(req, res) { 
  * List of all Plants by pagination
  */
 exports.plant_listPagination = function(req, res) { 
-  plant.paginate(req.swagger.params.attr.value ? {"name": req.swagger.params.attr.value, "supplier": { $exists: false },"logistic_operator": { $exists: false }} : {"supplier": { $exists: false },"logistic_operator": { $exists: false }} ,{
-      "supplier": { $exists: false },
-      "logistic_operator": { $exists: false }}, {
+
+  plant.paginate(req.swagger.params.attr.value ? {"name": req.swagger.params.attr.value, "supplier": { $exists: false },"logistic_operator": { $exists: false }} :
+      {"supplier": { $exists: false },"logistic_operator": { $exists: false }}, {
       page: parseInt(req.swagger.params.page.value),
       sort: {
         _id: 1
@@ -129,5 +129,5 @@ exports.plant_listPagination = function(req, res) { 
       limit: parseInt(req.swagger.params.limit.value)
     })
     .then(_.partial(successHandlerPagination, res))
-    .catch(_.partial(errorHandler, res, 'Error to list gc16 registers by pagination'));
+    .catch(_.partial(errorHandler, res, 'Error to list plant registers by pagination'));
 };

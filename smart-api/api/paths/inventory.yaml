@@ -7,6 +7,8 @@ paths:
         summary: "Inventory of the equipaments."
         description: ""
         operationId: general_inventory_packing
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "limit"
@@ -25,9 +27,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -40,6 +50,8 @@ paths:
         summary: "Inventory of the equipaments Analyzing the permanence."
         description: ""
         operationId: inventory_permanence
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "limit"
@@ -63,9 +75,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -78,6 +98,8 @@ paths:
         summary: "Inventory of the equipaments Analyzing your quantity."
         description: ""
         operationId: quantity_inventory
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "limit"
@@ -101,9 +123,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -116,6 +146,8 @@ paths:
         summary: "Inventory of the equipaments Analyzing your historic."
         description: ""
         operationId: inventory_packing_historic
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "limit"
@@ -144,9 +176,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -159,6 +199,8 @@ paths:
         summary: "Inventory of the equipaments Analyzing the battery by code."
         description: ""
         operationId: inventory_battery
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "limit"
@@ -182,9 +224,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -197,6 +247,8 @@ paths:
         summary: "Inventory of the equipaments Analyzing yourself."
         description: ""
         operationId: inventory_packings
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "limit"
@@ -220,9 +272,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -235,6 +295,8 @@ paths:
         summary: "Inventory of the suppliers."
         description: ""
         operationId: supplier_inventory
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "limit"
@@ -253,9 +315,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
@@ -268,6 +338,8 @@ paths:
         summary: "Inventory of the equipaments by plant."
         description: ""
         operationId: geraneral_inventory_packing_by_plant
+        security:
+          - Bearer: []
         parameters:
         - in: "path"
           name: "limit"
@@ -296,9 +368,17 @@ paths:
           type: string
         responses:
           200:
-            description: "Message"
+            description: "Successfully"
             schema:
               $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
           default:
             description: "Error"
             schema:
