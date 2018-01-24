@@ -5,8 +5,8 @@
 
 let environment = {
   "production": {
-    url:"localhost",
-    port: '8984',
+    url:"isi.pe.senai.br", //host do servidor que a API será levantada
+    port: '8004', //porta na qual o API será colocada
     database: 'reciclopac',
     urldatabase: "mongo",
     time: "50",

@@ -32,7 +32,7 @@ export class ModalDeleteComponent implements OnInit {
   }
 
   delete(){
-   this.userService.deleteUser(this.view._id).subscribe( result => {this.toastService.remove('/rc/home','Usuário');this.activeModal.close('remove') });
+   this.userService.deleteUser(this.view._id).subscribe( result => {this.toastService.remove('/rc/home/lista','Usuário');this.activeModal.close('remove') });
   }
 
 

@@ -1,8 +1,8 @@
 
 let environment = {
   "production": {
-    url:"localhost",
-    port: '8985',
+    url:"isi.pe.senai.br",
+    port: '8005',
     database: 'reciclopacadmin',
     urldatabase: "mongo",
     time: "50",
@@ -10,7 +10,7 @@ let environment = {
   },
   "development": {
     url:"localhost",
-    port: '8985',
+    port: '8982',
     database: 'reciclopacadmin',
     urldatabase: "localhost",
     time: "50",

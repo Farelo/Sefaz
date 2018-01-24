@@ -5,7 +5,8 @@ import {UserEditarComponent} from './user-editar/user-editar.component';
 import {UserComponent} from './user.component';
 
 const userRoutes = [
-  {path: '', component: UserComponent},
+  { path: '',   redirectTo: '/reciclapac', pathMatch: 'full' },
+  {path: 'lista', component: UserComponent},
   {path: 'adicionar', component: UserAdicionarComponent},
   {path: 'editar/:id', component: UserEditarComponent}
 

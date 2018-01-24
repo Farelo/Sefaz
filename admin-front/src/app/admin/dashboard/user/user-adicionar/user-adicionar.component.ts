@@ -28,7 +28,7 @@ export class UserAdicionarComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
     if(valid){
       this.userService.createUser(value)
-                      .subscribe(result => this.toastService.success('/rc/home', 'Usuário'), err => this.toastService.error(err));
+                      .subscribe(result => this.toastService.success('/rc/home/lista', 'Usuário'), err => this.toastService.error(err));
     }
 
   }

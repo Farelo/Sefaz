@@ -2,8 +2,9 @@
 
 const HTTPStatus = require("http-status");
 
-function authFail(req, res) {
-    res.status(HTTPStatus.UNAUTHORIZED).json({jsonapi: { "version": "1.0" }, UNAUTHORIZED: 'The credentials are invalid!' });
+function authFail(res, err) {
+  console.log(err)
+  res.status(HTTPStatus.UNAUTHORIZED).json({jsonapi: { "version": "1.0" }, UNAUTHORIZED: 'The credentials are invalid!' });
 }
 
 module.exports = authFail;

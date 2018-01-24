@@ -149,6 +149,8 @@ exports.queries = {
     ]
   },
   login: function(password, email) {
+    console.log(password)
+    console.log(email)
     return [{
         "$match": {
           "password": password,

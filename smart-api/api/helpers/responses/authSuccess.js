@@ -7,9 +7,7 @@ const environment         = require('../../../environment')
 
 function authSuccess(res, credentials, data) {
     let user = data[0];
-
-    const isMatch = (hashPassword.encrypt(credentials.password) == user.password);
-
+    const isMatch = (credentials.password == user.password);
 
     if (isMatch) {
         var payload = { id: user._id };

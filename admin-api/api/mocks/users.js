@@ -12,5 +12,4 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.plugin(mongoosePaginate);
-const user = mongoose.model('User', userSchema);
-user.create(constants.system_user)
+mongoose.model('User', userSchema);

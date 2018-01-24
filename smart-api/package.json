@@ -48,7 +48,7 @@
     "build": "node ./config/compile.swagger.js",
     "deploy:prod": "docker-compose -f ../docker-compose.prod.yml up --build",
     "develop": "set NODE_ENV=development&& nodemon server.js",
-    "start": "node app.js",
+    "start": "node server.js",
     "test": "swagger project test"
   }
 }

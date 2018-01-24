@@ -1,6 +1,5 @@
 'use strict';
 
-const SwaggerExpress   = require('swagger-express-mw');
 const express          = require('express');
 const logger           = require('morgan');
 const bodyParser       = require('body-parser');
@@ -27,15 +26,12 @@ module.exports = app; // for testing
 // MODELS ==============================================
 
 require('./config/config.database').open(environment);
+require('./config/config.user');
 //JOB =================================================
-require('./job/job');
+// require('./job/job');
 
 //auth middleware
 require('./api/auth/auth')(app);
-//ALERTS
-var config = {
-  appRoot: __dirname // required config
-};
 
 swaggerObject.host = `${environment.url}:${environment.port}`;
 

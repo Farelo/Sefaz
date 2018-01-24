@@ -1,6 +1,5 @@
 'use strict';
 
-const SwaggerExpress   = require('swagger-express-mw');
 const express          = require('express');
 const logger           = require('morgan');
 const mongoose         = require('mongoose');
@@ -24,12 +23,8 @@ module.exports = app; // for testing
 
 // DATABASE =============================================
 require('./config/config.database').open(environment);
+require('./config/config.user');
 
-
-//ALERTS
-var config = {
-  appRoot: __dirname // required config
-};
 
 swaggerObject.host = `${environment.url}:${environment.port}`;
 

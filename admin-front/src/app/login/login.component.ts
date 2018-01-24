@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
 
         if(result.length != 0){
           this.erroAuth = false;
-            this.router.navigate(['/rc/home']);
+            this.router.navigate(['/rc/home/lista']);
         }else{
           this.erroAuth = true;
         }

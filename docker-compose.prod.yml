@@ -1,9 +1,10 @@
-version: "2"
+version: "3.3"
 services:
   smart-front:
     build:
       context: 'smart-front'
       dockerfile: Dockerfile.prod
+    container_name: smart_front
     depends_on:
       - smart-api
     ports:
@@ -12,6 +13,7 @@ services:
     build:
       context: 'admin-front'
       dockerfile: Dockerfile.prod
+    container_name: admin-front
     depends_on:
       - admin-api
     ports:
@@ -21,11 +23,12 @@ services:
       context: 'smart-api'
       dockerfile: Dockerfile.prod
     command: npm start
+    container_name: smart-api
     environment:
       NODE_ENV: production
     tty: true
     ports:
-      - '8984:8984'
+      - '8004:8004'
     depends_on:
       - mongo
   admin-api:
@@ -33,14 +36,18 @@ services:
       context: 'admin-api'
       dockerfile: Dockerfile.prod
     command: npm start
+    container_name: admin-api
     environment:
       NODE_ENV: production
     tty: true
     ports:
-      - '8982:8982'
+      - '8005:8005'
     depends_on:
       - mongo
   mongo:
     image: 'mongo:latest'
+    container_name: mongo
     ports:
       - '27017:27017'
+    volumes:
+      - ./data/db:/data/db

@@ -62,10 +62,9 @@ exports.profile_auth = function(req, res) {
   };
 
   if (credentials.hasOwnProperty('email') && credentials.hasOwnProperty('password')) {
-
     profile.aggregate(query.queries.login(credentials.password,credentials.email))
       .then(_.partial(authSuccess, res, credentials))
-      .catch(_.partial(authFail, req, res));
+      .catch(_.partial(authFail, res));
   }
 };
 /**

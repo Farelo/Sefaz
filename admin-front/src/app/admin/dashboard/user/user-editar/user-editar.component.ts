@@ -29,7 +29,7 @@ export class UserEditarComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
     if(valid){
       this.userService.updateUser(value._id,value)
-                      .subscribe(result => this.toastService.edit('/rc/home', 'Usuário'), err => this.toastService.error(err));
+                      .subscribe(result => this.toastService.edit('/rc/home/lista', 'Usuário'), err => this.toastService.error(err));
     }
 
   }
