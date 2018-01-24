@@ -31,7 +31,7 @@
     "angular2-multiselect-dropdown": "^1.3.0",
     "angular2-notifications": "^0.7.7",
     "angular2-text-mask": "^8.0.3",
-    "bootstrap": "^4.0.0-alpha.6",
+    "bootstrap": "4.0.0-beta.2",
     "core-js": "^2.4.1",
     "jquery": "^3.2.1",
     "ng-tether": "^0.1.0",
