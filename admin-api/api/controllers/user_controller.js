@@ -35,9 +35,7 @@ exports.user_read = function(req, res) {
 exports.user_update = function(req, res) {  
   user.update( {
       _id: req.swagger.params.user_id.value
-    },  req.body,   {
-      upsert: true
-    })
+    },  req.body)
     .then(_.partial(successHandler, res))
     .catch(_.partial(errorHandler, res, 'Error to update user'));
 };
