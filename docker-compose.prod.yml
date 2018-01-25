@@ -51,3 +51,5 @@ services:
       - '27017:27017'
     volumes:
       - ./data/db:/data/db
+      - ./data/backup:/data/backup
+    command:  bash -c 'mongorestore  -d reciclopac /data/backup'

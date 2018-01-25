@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"reciclopac.packings"},{"v":1,"unique":true,"key":{"serial":1},"name":"serial_1","ns":"reciclopac.packings","background":true}]}
