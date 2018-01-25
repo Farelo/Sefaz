@@ -6,6 +6,7 @@ const appRoutes: Routes = [
   { path: 'redefinirSenha', loadChildren: 'app/redefinir-senha/redefinir-senha.module#RedefinirSenhaModule' },
   { path: 'login', loadChildren: 'app/login/login.module#LoginModule'},
   { path: 'reciclapac', loadChildren: 'app/landing-page/landing-page.module#LandingPageModule'},
+  {path: 'reciclapaclogin', loadChildren: 'app/reciclapac-login/reciclapac-login.module#ReciclapacLoginModule'},
   { path: '**', redirectTo: 'reciclapac' }
 
 ];
