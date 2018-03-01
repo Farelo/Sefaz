@@ -28,7 +28,7 @@ module.exports = app; // for testing
 require('./config/config.database').open(environment);
 require('./config/config.user');
 //JOB =================================================
-require('./job/job');
+//require('./job/job');
 
 //auth middleware
 require('./api/auth/auth')(app);

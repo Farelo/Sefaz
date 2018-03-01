@@ -178,6 +178,11 @@ body {
 
 .ngx-pagination .current {
   border-color: #6382c9;
+   color: white !important;
+   border-color: white;
+   padding: 2px !important;
+
+
 }
 
 .ngx-pagination .current div{

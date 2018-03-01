@@ -1,11 +1,12 @@
 
+const constants = require('../constants');
 
 
 module.exports = {
   reverseGeocode: function(lat,lng) {
 
       var googleMapsClient = require('@google/maps').createClient({
-        key: 'AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ',
+        key: constants.google_api.key,
         Promise: Promise // 'Promise' is the native constructor.
       });
 
@@ -16,10 +17,10 @@ module.exports = {
   },
   directions: function(origin,destination) {
     var googleMapsClient = require('@google/maps').createClient({
-      key: 'AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ',
+      key: constants.google_api.key,
       Promise: Promise // 'Promise' is the native constructor.
     });
-    console.log(origin,destination)
+   
   return googleMapsClient.directions({
     'origin': origin,
     'destination': destination,

@@ -28,12 +28,20 @@ exports.profile_create = function(req, res) {
  * Show the current Profile
  */
 exports.profile_read = function(req, res) {
+ 
   profile.findOne({
       _id: req.swagger.params.profile_id.value
     })
     .then( data => {
-      data.password = hashPassword.decrypt(data.password);
+      console.log(data.password)
+      try {
+        data.password = hashPassword.decrypt(data.password);
+      } catch (error) {
+        successHandler(res, data);
+      }
+      
       successHandler(res, data);
+     
     })
     .catch(_.partial(errorHandler, res, 'Error to read profile'));
 };

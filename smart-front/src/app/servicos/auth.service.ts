@@ -14,8 +14,9 @@ export class AuthenticationService {
         .map(response =>  this.auth(response))
         .catch(this.handleError);
     }
-
+    
     private handleError(error: Response) {
+        
         return Observable.throw(error);
     }
 

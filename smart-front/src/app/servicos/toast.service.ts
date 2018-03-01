@@ -17,6 +17,29 @@ export class ToastService {
     private route: ActivatedRoute
   ) { }
 
+
+  warningunathorized() {
+    // Add see all possible types in one shot
+    
+    
+    
+      var toastOptions: ToastOptions = {
+        title: "Erro na autenticação",
+        msg: "Login ou Senha estão invalidos",
+        showClose: true,
+        timeout: 5000,
+        theme: 'material',
+        onAdd: (toast: ToastData) => {
+          console.log('Toast ' + toast.id + ' has been added!');
+        },
+        onRemove: function (toast: ToastData) {
+          console.log('Toast ' + toast.id + ' has been removed!');
+        }
+      };
+    
+    this.toastyService.warning(toastOptions);
+  }
+
   error(status: any) {
     // Add see all possible types in one shot
 

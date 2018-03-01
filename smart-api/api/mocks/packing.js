@@ -76,12 +76,13 @@ const packingSchema = new mongoose.Schema({
   },
   tag: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Tags'
+    ref: 'Tags',
+    unique: true
   },
   code_tag: String,
   department: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Department'
+    ref: 'Department',
   },
   supplier: {
     type: mongoose.Schema.Types.ObjectId,

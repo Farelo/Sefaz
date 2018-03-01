@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertModule } from 'ngx-bootstrap';
 import { ReactiveFormsModule} from '@angular/forms';
-
+import { ToastyModule } from 'ng2-toasty';
 @NgModule({
   imports: [
     LoginRoutingModule,
@@ -17,6 +17,7 @@ import { ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     RouterModule,
     AlertModule.forRoot(),
+    ToastyModule.forRoot(),
     ReactiveFormsModule
   ],
   declarations: [

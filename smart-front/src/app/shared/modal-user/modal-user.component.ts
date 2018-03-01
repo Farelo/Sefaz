@@ -75,11 +75,11 @@ export class ModalUserComponent implements OnInit {
 
 
   editUser(user: any){
-    if(user.profile === constants.profile.supplier){
+    if(user.profile === constants.SUPPLIER){
       const modalRef = this.modalService.open(ModalSupplierEditarComponent,{backdrop: "static", size: "lg"});
       modalRef.componentInstance.id = user.user._id;
       this.activeModal.close();
-    }else if(user.profile ===  constants.profile.logistic){
+    }else if(user.profile ===  constants.LOGISTIC){
       const modalRef = this.modalService.open(ModalLogisticEditarComponent,{backdrop: "static", size: "lg"});
       modalRef.componentInstance.id = user.user._id;
       this.activeModal.close();

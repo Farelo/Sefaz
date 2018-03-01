@@ -27,6 +27,29 @@ span.lg1 {
   background-color: #6382c9;
 }
 
+span.lg2 {
+  font-size: 25px;
+  color: white;
+  padding: 5px;
+  margin-bottom: 5px;
+  width: 150px !important;
+  text-align: center;
+}
+
+span.lg3 {
+  font-size: 14px;
+  color: white;
+  padding: 5px;
+  margin-bottom: 5px;
+  width: 150px !important;
+}
+
+
+span.lg2 {
+  background-color: #dc3545;
+
+}
+
 .botaoRegistrar,
 .botaoVoltar {
   border-style: solid;

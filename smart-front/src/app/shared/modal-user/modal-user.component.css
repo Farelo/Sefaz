@@ -222,7 +222,8 @@ td {
 
 .editar,
 .excluir {
-  width: 80px;
+  margin: 2px;
+  width: 70px;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -234,14 +235,6 @@ td {
   background-color: #102b40;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
-}
-
-.editar,
-.excluir {
-  width: 80px;
-  color: white;
-  border: none;
-  padding: 5px 10px;
 }
 
 .editar { background-color: #3b5d93; }

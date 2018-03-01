@@ -141,12 +141,13 @@ export class ImportarComponent implements OnInit {
       this.colHeaders = ['Nome','Latitude','Longitude','Localidade'];
       this.columns = [
         {data: 'plant_name', type: 'text'},
-        {data: 'lat', type: 'numeric', format: '0[.]000000000'},
-        {data: 'lng', type: 'numeric', format: '0[.]000000000'},
+        { data: 'lat', type: 'numeric', numericFormat: { pattern: '0.[0000000000]' } },
+        { data: 'lng', type: 'numeric', numericFormat: { pattern: '0.[0000000000]' } },
         {data: 'location', type: 'text'},
       ];
     },err => this.toastService.errorArray(err));
   }
+
   sendDepartment(){
     this.importService.sendDataToImportDepartment(this.file).subscribe(res => {
       this.send = true;
@@ -155,8 +156,8 @@ export class ImportarComponent implements OnInit {
       this.colHeaders = ['Nome','Latitude','Longitude','Planta'];
       this.columns = [
         {data: 'name', type: 'text'},
-        {data: 'lat', type: 'numeric', format: '0[.]000000000'},
-        {data: 'lng', type: 'numeric',format: '0[.]000000000'},
+        { data: 'lat', type: 'numeric', numericFormat: { pattern: '0.[0000000000]' }},
+        { data: 'lng', type: 'numeric', numericFormat: { pattern: '0.[0000000000]' }},
         {data: 'plant.plant_name', type: 'text', readOnly: true},
       ];
     },err => this.toastService.errorArray(err));
@@ -175,10 +176,10 @@ export class ImportarComponent implements OnInit {
         {data: 'type', type: 'text'},
         {data: 'supplier.name', type: 'text', readOnly: true},
         {data: 'supplier.duns', type: 'text', readOnly: true},
-        {data: 'capacity', type: 'numeric'},
-        {data: 'weigth', type: 'numeric'},
-        {data: 'width', type: 'numeric'},
-        {data: 'heigth', type: 'numeric'},
+        { data: 'capacity', type: 'numeric', numericFormat: { pattern: '0.[00]' }},
+        { data: 'weigth', type: 'numeric', numericFormat: { pattern: '0.[00]' }},
+        { data: 'width', type: 'numeric', numericFormat: { pattern: '0.[00]' }},
+        { data: 'heigth', type: 'numeric', numericFormat: { pattern: '0.[00]' }},
         {data: 'project.name', type: 'text', readOnly: true}
       ];
 

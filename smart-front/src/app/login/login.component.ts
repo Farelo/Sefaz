@@ -1,6 +1,7 @@
 import { Component, OnInit, Injectable, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../servicos/auth.service';
+import { ToastService } from '../servicos/toast.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private authenticationService: AuthenticationService,
+    private toastService: ToastService
   ) { }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
@@ -36,7 +38,7 @@ export class LoginComponent implements OnInit {
         }else{
           this.erroAuth = true;
         }
-      })
+      }, err => this.toastService.warningunathorized())
     }
   }
 

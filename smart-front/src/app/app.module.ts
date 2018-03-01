@@ -52,7 +52,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { TextMaskModule } from 'angular2-text-mask';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-
+import { ToastyModule } from 'ng2-toasty';
 
 @NgModule({
   declarations: [
@@ -78,6 +78,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     HttpClientModule,
     NgbModule.forRoot(),
     AlertModule.forRoot(),
+    ToastyModule.forRoot(),
     DashboardModuleAdmin,
     DashboardModuleSupplier,
     DashboardModuleLogistic,
