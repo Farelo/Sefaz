@@ -22,7 +22,7 @@ export class RastreamentoComponent implements OnInit {
   address: any = {};
   center: any;
   pos: any;
-  plantSearch = "";
+  plantSearch = null;
   departments: Department[];
   options = [];
   zoom = 12;

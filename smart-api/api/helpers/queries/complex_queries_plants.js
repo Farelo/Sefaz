@@ -1,6 +1,7 @@
 'use strict';
-var Mongoose = require('mongoose');
-var ObjectId = Mongoose.Types.ObjectId;
+
+const schemas = require("../../../config/database/require_schemas")
+const ObjectId = schemas.ObjectId
 
 exports.queries = {
   plant_filter: function(code, supplier,project) {

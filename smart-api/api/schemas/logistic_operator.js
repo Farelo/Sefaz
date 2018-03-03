@@ -16,7 +16,7 @@ const logisticOperatorSchema = new mongoose.Schema({
       ref:'Supplier'
     }]
 
-});
+}).plugin(mongoosePaginate);
 
 logisticOperatorSchema.pre('remove', function(next) {
     let logsitic = this;
@@ -28,5 +28,4 @@ logisticOperatorSchema.pre('remove', function(next) {
         });
 });
 
-logisticOperatorSchema.plugin(mongoosePaginate);
 mongoose.model('LogisticOperator', logisticOperatorSchema);

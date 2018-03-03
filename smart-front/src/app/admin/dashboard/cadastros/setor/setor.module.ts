@@ -15,6 +15,7 @@ import {SetorEditarComponent} from './setor-editar/setor-editar.component';
 import {SetorComponent} from './setor.component';
 import {SetorRoutingModule} from './setor.routing.module';
 import { NguiMapModule } from '@ngui/map';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { NguiMapModule } from '@ngui/map';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
+    NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
     NguiMapModule.forRoot({

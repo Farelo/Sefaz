@@ -29,5 +29,9 @@ module.exports = {
   },
   google_api: {
     key: 'AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ'
+  },
+  encrypt: {
+    key: 'supersecretkey'
   }
+
 }

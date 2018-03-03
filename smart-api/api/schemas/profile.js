@@ -24,7 +24,9 @@ const profileSchema = new mongoose.Schema({
             ref:'LogisticOperator'
       }
 
-});
+})
+.plugin(mongooseAggregatePaginate)
+.plugin(mongoosePaginate);
 
 profileSchema.pre('remove', function(next) {
     // Remove all the assignment docs that reference the removed person.
@@ -54,7 +56,4 @@ profileSchema.pre('save', function(next) {
 
 
 
-
-profileSchema.plugin(mongooseAggregatePaginate);
-profileSchema.plugin(mongoosePaginate);
 mongoose.model('Profile', profileSchema);

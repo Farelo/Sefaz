@@ -2,130 +2,170 @@
 /**
  * Module dependencies.
  */
-const successHandler                      = require('../helpers/responses/successHandler');
-const successHandlerPagination            = require('../helpers/responses/successHandlerPagination');
-const successHandlerPaginationAggregate   = require('../helpers/responses/successHandlerPaginationAggregate');
-const errorHandler                        = require('../helpers/responses/errorHandler');
-const query                               = require('../helpers/queries/complex_queries_alerts');
-const mongoose                            = require('mongoose');
-const alert                               = mongoose.model('Alerts');
-const _                                   = require("lodash");
-const ObjectId                            = require('mongoose').Types.ObjectId;
-mongoose.Promise                          = global.Promise;
+const responses            = require('../helpers/responses/index')
+const schemas              = require("../../config/database/require_schemas")
+const query                = require('../helpers/queries/complex_queries_alerts');
+const _                    = require("lodash");
+const ObjectId             = schemas.ObjectId
 /**
  * Create a Alert
  */
-exports.alert_create = function(req, res) {
-  alert.create(req.body)
-    .catch(_.partial(errorHandler, res, 'Error to create alert '))
-    .then(_.partial(successHandler, res));
+exports.alert_create = function (req, res) {
+  schemas.alert()
+    .create(req.body)
+    .catch(_.partial(responses.errorHandler, res, 'Error to create alert '))
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
+
 /**
  * Show the current Alert
  */
-exports.alert_read_by_packing = function(req, res) {
+exports.alert_read_by_packing = function (req, res) {
+  let packing_id = req.swagger.params.packing_id.value;
+  let status = req.swagger.params.status.value;
 
-  alert.findOne({
-      packing: req.swagger.params.packing_id.value,
-      status: req.swagger.params.status.value
-    })
+  schemas.alert().findOne({
+    packing: packing_id,
+    status: status
+  })
     .populate('actual_plant.plant')
     .populate('department')
     .populate('routes')
-    .populate({path: 'routes',
+    .populate({
+      path: 'routes',
       populate: {
         path: 'plant_factory',
         model: 'Plant'
-      }})
-    .populate({path: 'routes',
+      }
+    })
+    .populate({
+      path: 'routes',
       populate: {
         path: 'plant_supplier',
         model: 'Plant'
-      }})
-    .populate({path: 'routes',
+      }
+    })
+    .populate({
+      path: 'routes',
       populate: {
         path: 'supplier',
         model: 'Supplier'
-      }})
+      }
+    })
     .populate('packing')
     .populate('supplier')
-    .populate({path: 'supplier',
+    .populate({
+      path: 'supplier',
       populate: {
         path: 'plant',
         model: 'Plant'
-      }})
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to read alert'));
+      }
+    })
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to read alert'));
 };
+
 /**
  * Update a Alert
  */
-exports.alert_update = function(req, res) {  
-  alert.update( {
-      _id: req.swagger.params.alert_id.value
-    },  req.body,   {
+exports.alert_update = function (req, res) {
+  let id = req.swagger.params.alert_id.value;
+
+  schemas.alert().update( {
+    _id: id
+  }, req.body, {
       upsert: true
     })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to update alert')); 
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to update alert'));
 };
+
 /**
  * Delete an Alert
  */
-exports.alert_delete = function(req, res) { 
-  alert.remove({
-      _id: req.swagger.params.alert_id.value
-    })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to delete alert'));
+exports.alert_delete = function (req, res) {
+  let id = req.swagger.params.alert_id.value;
+
+  schemas.alert().remove({
+    _id: id
+  })
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to delete alert'));
 };
+
 /**
  * List of Alerts pagination by hashing
  */
-exports.alert_list_hashing = function(req, res) { 
-  let aggregate = alert.aggregate(query.queries.packing_list(req.swagger.params.code.value,
-    new ObjectId(req.swagger.params.project.value),
-    new ObjectId(req.swagger.params.supplier.value),
-    parseInt(req.swagger.params.status.value,
-    req.swagger.params.attr.value)));
+exports.alert_list_hashing = function (req, res) {
+  let project = req.swagger.params.project.value;
+  let code = req.swagger.params.code.value;
+  let supplier = req.swagger.params.supplier.value;
+  let status = req.swagger.params.status.value;
+  let attr = req.swagger.params.attr.value;
+  let page = req.swagger.params.page.value;
+  let limit = req.swagger.params.limit.value;
 
-  alert.aggregatePaginate(aggregate,
-    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
-  _.partial(successHandlerPaginationAggregate, res, req.swagger.params.page.value, req.swagger.params.limit.value));
+  let aggregate = schemas.alert()
+    .aggregate(query.queries.packing_list(
+      code,
+      new ObjectId(project),
+      new ObjectId(supplier),
+      parseInt(status, attr)));
+
+  schemas.alert().aggregatePaginate(aggregate,
+    { page: parseInt(page), limit: parseInt(limit) },
+    _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, page, limit));
 };
+
 /**
  * List of Alerts pagination by hashing
  */
-exports.alert_list_hashing_logistic = function(req, res) { 
+exports.alert_list_hashing_logistic = function (req, res) {
+  let project = req.swagger.params.project.value;
+  let code = req.swagger.params.code.value;
+  let supplier = req.swagger.params.supplier.value;
+  let status = req.swagger.params.status.value;
+  let page = req.swagger.params.page.value;
+  let limit = req.swagger.params.limit.value;
+
   let map = req.body.map(o => new ObjectId(o));
 
-  let aggregate = alert.aggregate(query.queries.packing_list_logistic(req.swagger.params.code.value,
-    new ObjectId(req.swagger.params.project.value),
-    new ObjectId(req.swagger.params.supplier.value),
-    parseInt(req.swagger.params.status.value),map));
+  let aggregate = schemas.alert().aggregate(query.queries.packing_list_logistic(code,
+    new ObjectId(project),
+    new ObjectId(supplier),
+    parseInt(status), map));
 
-  alert.aggregatePaginate(aggregate,
-    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
-  _.partial(successHandlerPaginationAggregate, res, req.swagger.params.page.value, req.swagger.params.limit.value));
+  schemas.alert().aggregatePaginate(aggregate,
+    { page: parseInt(page), limit: parseInt(limit) },
+    _.partial(responses.responses.successHandlerPaginationAggregate, res, req.user.refresh_token, page, limit));
 };
+
 /**
  * List of Alerts pagination
  */
-exports.alert_list_pagination = function(req, res) { 
-  let aggregate = alert.aggregate(query.queries.listAlerts(req.swagger.params.attr.value));
+exports.alert_list_pagination = function (req, res) {
+  let attr = req.swagger.params.attr.value
+  let page = req.swagger.params.page.value;
+  let limit = req.swagger.params.limit.value;
 
-  alert.aggregatePaginate(aggregate,
-    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
-  _.partial(successHandlerPaginationAggregate, res, req.swagger.params.page.value, req.swagger.params.limit.value));
+  let aggregate = schemas.alert().aggregate(query.queries.listAlerts(attr));
+
+  schemas.alert().aggregatePaginate(aggregate,
+    { page: parseInt(page), limit: parseInt(limit) },
+    _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, page, limit));
 };
+
 /**
  * List of Alerts pagination
  */
-exports.alert_list_pagination_logistic = function(req, res) { 
+exports.alert_list_pagination_logistic = function (req, res) {
+  let page = req.swagger.params.page.value;
+  let limit = req.swagger.params.limit.value;
   let map = req.body.map(o => new ObjectId(o));
-  let aggregate = alert.aggregate(query.queries.listAlertsLogistic(map));
 
-  alert.aggregatePaginate(aggregate,
-    { page : parseInt(req.swagger.params.page.value), limit : parseInt(req.swagger.params.limit.value)},
-  _.partial(successHandlerPaginationAggregate, res, req.swagger.params.page.value, req.swagger.params.limit.value));
+  let aggregate = schemas.alert().aggregate(query.queries.listAlertsLogistic(map));
+
+  schemas.alert().aggregatePaginate(aggregate,
+    { page: parseInt(page), limit: parseInt(limit) },
+    _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, page, limit));
 };

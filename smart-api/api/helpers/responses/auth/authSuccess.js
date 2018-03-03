@@ -1,9 +1,9 @@
 "use strict";
 
-const jwt                 = require("jwt-simple");
+const jwt                 = require('jsonwebtoken');
 const HttpStatus          = require("http-status");
-const hashPassword        = require('../utils/encrypt')
-const environment         = require('../../../environment')
+const hashPassword        = require('../../utils/encrypt')
+const environment         = require('../../../../config/environment')
 
 function authSuccess(res, credentials, data) {
     let user = data[0];
@@ -12,7 +12,7 @@ function authSuccess(res, credentials, data) {
     if (isMatch) {
         var payload = { id: user._id };
 
-        res.status(HttpStatus.OK).json({ jsonapi: { "version": "1.0" }, token: "JWT " + jwt.encode(payload, environment.secret,'HS512') , data: user});
+        res.status(HttpStatus.OK).json({ jsonapi: { "version": "1.0" }, token: `JWT ${jwt.sign(payload, environment.secret, { expiresIn: environment.expiresIn })}` , data: user});
     }
     else {
         res.status(HttpStatus.UNAUTHORIZED).json({ jsonapi: { "version": "1.0" }, UNAUTHORIZED: 'The credentials are invalid!' });

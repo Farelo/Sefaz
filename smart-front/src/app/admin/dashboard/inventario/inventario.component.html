@@ -7,6 +7,8 @@
           <option *ngFor="let obj of escolhas" [ngValue]="obj.name">{{obj.name}}</option>
       </select>
 
+      
+
       <ng-template #content>
         <div class="modalFilho">
           <div class="header">
@@ -34,10 +36,23 @@
       <div class="col-sm-6">
         <p>DUNS</p>
 
-        <select   [ngModel]="supplierSearch" (ngModelChange)="supplierInventory($event)" >
-         <option value="">Selecione um Fornecedor </option>
-         <option *ngFor="let obj of suppliers" [ngValue]="obj">DUNS: {{obj.duns}} - Nome: {{obj.name}}</option>
-        </select>
+        
+
+        <ng-select [ngModel]="supplierSearch" (change)="supplierInventory($event)" [items]="suppliers" bindLabel="duns" placeholder="Selecione um Fornecedor"
+          >
+          <ng-template ng-label-tmp let-item="item">
+            {{item.duns}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+              <b>Nome:</b> {{item.name}}
+            </div>
+            <small>
+              <b>DUNS:</b> {{item.duns}}
+            </small>
+        
+          </ng-template>
+        </ng-select>
 
       </div>
       <div class="col-sm-6" *ngIf="this.name_supplier">

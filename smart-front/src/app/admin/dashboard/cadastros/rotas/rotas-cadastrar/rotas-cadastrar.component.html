@@ -16,12 +16,25 @@
         <div class="campo">
           <p class="descricao">ASSOCIE UM FORNECEDOR</p>
           <p class="explicacao"></p>
-          <select  formControlName="supplier" (ngModelChange)="loadPackings($event)"
-          [ngClass]="{'required': (route.get('supplier').hasError('required') && route.get('supplier').touched)
-            || (route.get('supplier').hasError('required') && formDir.submitted)}">
-           <option value="">Associe um Fornecedor </option>
-           <option *ngFor="let obj of suppliers?.data" [ngValue]="obj">DUNS: {{obj.duns}} - Nome: {{obj.name}}</option>
-          </select>
+
+
+          <ng-select  (change)="loadPackings($event)" [items]="suppliers?.data" bindLabel="duns" 
+          placeholder="Associe um Fornecedor" formControlName="supplier" [ngClass]="{'required': (route.get('supplier').hasError('required') && route.get('supplier').touched) || (route.get('supplier').hasError('required')
+          && formDir.submitted)}">
+            <ng-template ng-label-tmp let-item="item">
+              {{item.name}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                <b>Nome:</b> {{item.name}}
+              </div>
+              <small>
+                <b>DUNS:</b> {{item.duns}}
+              </small>
+          
+            </ng-template>
+          </ng-select>
+
           <p class="requiredText" *ngIf="(route.get('supplier').hasError('required') && route.get('supplier').touched)
         || (route.get('supplier').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
@@ -29,10 +42,23 @@
         <div class="campo" [hidden]="!choiced">
           <p class="descricao">ASSOCIE A EMBALAGEM</p>
           <p class="explicacao"></p>
-          <select (ngModelChange)="onChangePacking($event)" formControlName="packing_code">
-            <option value="">Associe uma embalagem</option>
-          <option *ngFor="let obj of packings" [ngValue]="obj" >Código: {{obj.id}} - Projeto: {{obj.project.name}} </option>
-        </select>
+
+          <ng-select  (change)="onChangePacking($event)" [items]="packings" bindLabel="id" placeholder="Associe uma embalagem"
+            formControlName="packing_code" >
+            <ng-template ng-label-tmp let-item="item">
+               {{item.id}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                <b>Embalagem:</b> {{item.id}}
+              </div>
+              <small>
+                <b>Projeto:</b> {{item.project.name}}
+              </small>
+          
+            </ng-template>
+          </ng-select>
+
         </div>
 
         <div class="campo" [hidden]="!choice_equipament">
@@ -55,11 +81,20 @@
         <div class="campo">
           <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
           <p class="explicacao"></p>
-          <select id="planta" (ngModelChange)="onChangeFactory($event)" formControlName="plant_factory" [ngClass]="{'required': (route.get('plant_factory').hasError('required') && route.get('plant_factory').touched)
-        || (route.get('plant_factory').hasError('required') && formDir.submitted)}">
-            <option value="">Associe uma Planta</option>
-          <option *ngFor="let obj of plants?.data" [ngValue]="obj" >{{obj.plant_name}}</option>
-        </select>
+
+        <ng-select  (change)="onChangeFactory($event)" [items]="plants?.data" bindLabel="duns" 
+        placeholder="Associe uma Planta" formControlName="plant_factory" [ngClass]="{'required': (route.get('plant_factory').hasError('required') && route.get('plant_factory').touched) || (route.get('plant_factory').hasError('required')
+        && formDir.submitted)}">
+          <ng-template ng-label-tmp let-item="item">
+            {{item.plant_name}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+               {{item.plant_name}}
+            </div>
+          </ng-template>
+        </ng-select>
+
           <p class="requiredText" *ngIf="(route.get('plant_factory').hasError('required') && route.get('plant_factory').touched)
         || (route.get('plant_factory').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
@@ -111,7 +146,7 @@
 
       <div class="col-sm-6 informacoes">
         <div class="bigger2">
-          <div class="fromSun"></div>
+          <div class="fromSun1"></div>
         </div>
         <span class="forn">{{route['controls'].location['controls'].end_address.value}}</span>
       </div>
@@ -119,7 +154,7 @@
     <div class="row" *ngIf="directions" style="margin-top: 0px;">
       <div class="col-sm-6 informacoes">
         <div class="bigger2">
-          <div class="fromSun"></div>
+          <div class="fromSun2"></div>
         </div>
         <span class="forn">{{route['controls'].location['controls'].distance['controls'].text.value}}</span>
       </div>

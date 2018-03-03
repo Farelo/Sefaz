@@ -37,7 +37,7 @@ const routeSchema = new mongoose.Schema({
       },
       hashPacking : String
 
-});
+}).plugin(mongoosePaginate);
 
 routeSchema.pre('remove', function(next) {
     // Remove all the assignment docs that reference the removed person.
@@ -45,5 +45,5 @@ routeSchema.pre('remove', function(next) {
 
 
 });
-routeSchema.plugin(mongoosePaginate);
+
 mongoose.model('Route', routeSchema);

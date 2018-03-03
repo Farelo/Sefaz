@@ -19,7 +19,7 @@ declare var $:any;
 export class InventarioComponent implements OnInit {
 
   public suppliers: any;
-  public name_supplier: any;
+  public name_supplier: any = '';
   public escolhaGeral: any = 'GERAL';
   public escolhaEquipamento =  "";
   public verModal: boolean = true;
@@ -33,7 +33,7 @@ export class InventarioComponent implements OnInit {
   public permanence: Pagination = new Pagination({meta: {page : 1}});
   public quantity: Pagination = new Pagination({meta: {page : 1}});
   public general_equipament: Pagination = new Pagination({meta: {page : 1}});
-  public supplierSearch  = "";
+  public supplierSearch  = null;
   public batterySearch  = "";
   public quantitySearch  = "";
   public permanenceSearchEquipamento  = "";

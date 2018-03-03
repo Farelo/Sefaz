@@ -7,7 +7,6 @@ const staffSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Profile'
       }
-});
+}).plugin(mongoosePaginate);
 
-staffSchema.plugin(mongoosePaginate);
 mongoose.model('Staff', staffSchema);

@@ -17,13 +17,14 @@ import {RotasRoutingModule} from './rotas.routing.module';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { NguiMapModule } from '@ngui/map';
 import { AlertModule } from 'ngx-bootstrap/alert';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     Select2Module,
     AlertModule,
+    NgSelectModule,
     RotasRoutingModule,
     NgxPaginationModule,
     NgbModule.forRoot(),

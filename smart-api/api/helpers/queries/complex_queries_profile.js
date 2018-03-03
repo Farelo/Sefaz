@@ -1,3 +1,5 @@
+'use strict';
+
 exports.queries = {
   profiles: [{
       "$match": {

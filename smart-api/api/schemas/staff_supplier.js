@@ -12,7 +12,6 @@ const sttafSupplierSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:'Supplier'
       }
-});
+}).plugin(mongoosePaginate);
 
-sttafSupplierSchema.plugin(mongoosePaginate);
 mongoose.model('StaffSupplier', sttafSupplierSchema);

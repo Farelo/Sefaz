@@ -15,7 +15,7 @@ const plantSchema = new mongoose.Schema({
     },
     location: String
 
-});
+}).plugin(mongoosePaginate);
 
 plantSchema.pre('remove', function(next) {
     let plant  = this;
@@ -41,5 +41,4 @@ plantSchema.pre('remove', function(next) {
 
 });
 
-plantSchema.plugin(mongoosePaginate);
 mongoose.model('Plant', plantSchema);

@@ -24,7 +24,8 @@
          "styles.css",
         "../node_modules/ng2-toasty/style-bootstrap.css",
         "../node_modules/ng2-toasty/style-default.css",
-        "../node_modules/ng2-toasty/style-material.css"
+        "../node_modules/ng2-toasty/style-material.css",
+        "../node_modules/@ng-select/ng-select/themes/default.theme.css"
       ],
       "scripts": [
       ],

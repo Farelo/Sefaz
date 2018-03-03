@@ -1,3 +1,5 @@
+'use strict';
+
 const fs               = require('fs');
 const glob             = require('glob');
 const YAML             = require('js-yaml');
@@ -6,9 +8,9 @@ const extendify        = require('extendify');
 
 glob("api/swagger/index.yaml", function(er, files) {
   const index = files;
-  glob("api/paths/*.yaml", function(er, files) {
+  glob("api/swagger/paths/*.yaml", function(er, files) {
     const paths = files;
-    glob("api/definitions/*.yaml", function(er, files) {
+    glob("api/swagger/definitions/*.yaml", function(er, files) {
       const definitions = files;
       let contents = index.concat(paths).concat(definitions);
       contents = contents.map(f => {

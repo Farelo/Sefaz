@@ -1,4 +1,4 @@
-
+'use strict';
 
 module.exports = {
   changed: function (p , plant , department) {

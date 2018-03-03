@@ -1,3 +1,6 @@
+'use strict';
+
+
 exports.queries = {
   //da pra usar o find
     "listTagsNoBinded": [{

@@ -4,7 +4,7 @@ module.exports = {
     confirmDevice: function (token,device) {
         return new Promise(function(resolve, reject) {
           var options = {
-              url: 'https://loka-app.com/api/deviceDetails?deviceId='+device,
+        url: `https://loka-app.com/api/deviceDetails?deviceId=${device}`,
               method: 'POST',
               headers : {
                   'content-type': 'application/json',
@@ -17,7 +17,7 @@ module.exports = {
                     reject(error);
 
                 try {
-                  if(!body.match("Device "+device+" not found")){
+                  if(!body.match(`Device ${device} not found`)){
                     var info = JSON.parse(body);
                     resolve("Exist device in the system");
                   }else{
@@ -40,7 +40,7 @@ module.exports = {
           let start =  date.getTime() - (1000 * 60 * 60 * 24 * 10);
           let end = date.getTime();
           var options = {
-              url: 'https://loka-app.com/api/deviceDetails?deviceId='+device,
+              url: `https://loka-app.com/api/deviceDetails?deviceId=${device}`,
               method: 'POST',
               headers : {
                   'content-type': 'application/json',
@@ -53,7 +53,7 @@ module.exports = {
                     reject(error);
 
                 try {
-                  if(!body.match("Device "+device+" not found")){
+                    if (!body.match(`Device ${device} not found`)){
                     var info = JSON.parse(body);
                     var array = {
                       markers : [],

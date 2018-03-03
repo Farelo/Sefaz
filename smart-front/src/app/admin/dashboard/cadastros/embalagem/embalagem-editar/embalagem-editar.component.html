@@ -37,11 +37,23 @@
         <div class="campo">
           <p class="descricao">ASSOCIE A TAG</p>
           <p class="explicacao">Associe uma tag a sua embalagem.</p>
-          <select formControlName="tag" [ngClass]="{'required': (packing.get('tag').hasError('required') && packing.get('tag').touched)
-            || (packing.get('tag').hasError('required') && formDir.submitted)}">
-           <option value="">Associe uma Tag</option>
-           <option *ngFor="let obj of tags" [ngValue]="obj">Código: {{obj.code}} </option>
-        </select>
+
+          <ng-select formControlName="tag" [items]="tags" bindLabel="code" [ngClass]="{'required': (packing.get('tag').hasError('required') && packing.get('tag').touched) || (packing.get('tag').hasError('required')
+                    && formDir.submitted)}" placeholder="Associe uma Tag">
+            <ng-template ng-label-tmp let-item="item">
+              {{item.code}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                <b>Código:</b>
+                <small>
+                  {{item.code}}
+                </small>
+              </div>
+          
+            </ng-template>
+          </ng-select>
+          
           <p class="requiredText" *ngIf="(packing.get('tag').hasError('required') && packing.get('tag').touched)
         || (packing.get('tag').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
@@ -73,11 +85,21 @@
           <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
 
 
-          <select formControlName="supplier" [ngClass]="{'required': (packing.get('supplier').hasError('required') && packing.get('supplier').touched)
-            || (packing.get('supplier').hasError('required') && formDir.submitted)}">
-           <option value="">Associe um Fornecedor </option>
-           <option *ngFor="let obj of suppliers" [ngValue]="obj">DUNS: {{obj.duns}} - Nome: {{obj.name}}</option>
-          </select>
+          <ng-select [items]="suppliers" bindLabel="duns" placeholder="Associe um Fornecedor" formControlName="supplier" [ngClass]="{'required': (packing.get('supplier').hasError('required') && packing.get('supplier').touched) || (packing.get('supplier').hasError('required')
+                    && formDir.submitted)}">
+            <ng-template ng-label-tmp let-item="item">
+              {{item.name}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                <b>Nome:</b> {{item.name}}
+              </div>
+              <small>
+                <b>DUNS:</b> {{item.duns}}
+              </small>
+          
+            </ng-template>
+          </ng-select>
           <p class="requiredText" *ngIf="(packing.get('supplier').hasError('required') && packing.get('supplier').touched)
         || (packing.get('supplier').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
 
@@ -134,11 +156,17 @@
         <div class="campo">
           <p class="descricao">ASSOCIE UMA PLATAFORMA/PROJETO</p>
           <p class="explicacao">Associe uma plataforma a sua embalagem.</p>
-          <select formControlName="project" [ngClass]="{'required': (packing.get('project').hasError('required') && packing.get('project').touched)
-            || (packing.get('project').hasError('required') && formDir.submitted)}">
-            <option value="">Associe um Projeto</option>
-            <option *ngFor="let obj of projects" [ngValue]="obj">{{obj.name}}</option>
-        </select>
+          <ng-select [items]="projects" bindLabel="name" placeholder="Associe um Projeto" formControlName="project" [ngClass]="{'required': (packing.get('project').hasError('required') && packing.get('project').touched) || (packing.get('project').hasError('required')
+                    && formDir.submitted)}">
+            <ng-template ng-label-tmp let-item="item">
+              {{item.name}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                {{item.name}}
+              </div>
+            </ng-template>
+          </ng-select>
           <p class="requiredText" *ngIf="(packing.get('project').hasError('required') && packing.get('project').touched)
         || (packing.get('project').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>

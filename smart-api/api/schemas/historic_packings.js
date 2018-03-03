@@ -42,7 +42,6 @@ const historicPackingsSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Packing'
   }
-});
+}).plugin(mongoosePaginate);
 
-historicPackingsSchema.plugin(mongoosePaginate);
 mongoose.model('HistoricPackings', historicPackingsSchema);

@@ -51,7 +51,8 @@ const gc16Schema = new mongoose.Schema({
         QuantContainer: {type: Number, required: true}
       }
 
-});
+}).plugin(mongoosePaginate);
+
 gc16Schema.pre('remove', function(next) {
     let gc16 = this;
 
@@ -59,5 +60,5 @@ gc16Schema.pre('remove', function(next) {
         .then(() => gc16.model('HistoricPackings').update({"department": gc16._id},{$unset: {department: 1}},{multi: true},next));;
 
 });
-gc16Schema.plugin(mongoosePaginate);
+
 mongoose.model('GC16', gc16Schema);

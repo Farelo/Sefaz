@@ -1,6 +1,5 @@
 'use strict';
-var Mongoose = require('mongoose');
-var ObjectId = Mongoose.Types.ObjectId;
+
 
 exports.queries = {
   inventory_general: function(supplier_array){

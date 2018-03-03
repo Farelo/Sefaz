@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
     "@ng-bootstrap/ng-bootstrap": "~1.0.0-alpha.26",
+    "@ng-select/ng-select": "^0.24.0",
     "@ngui/map": "^0.20.0",
     "@ngui/utils": "^0.7.0",
     "@types/googlemaps": "^3.30.2",

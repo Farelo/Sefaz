@@ -14,6 +14,7 @@ import {EmbalagemCadastroComponent} from './embalagem-cadastro/embalagem-cadastr
 import {EmbalagemEditarComponent} from './embalagem-editar/embalagem-editar.component';
 import {EmbalagemComponent} from './embalagem.component';
 import {EmbalagemRoutingModule} from './embalagem.routing.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import {EmbalagemRoutingModule} from './embalagem.routing.module';
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgSelectModule
 
   ],
   declarations: [

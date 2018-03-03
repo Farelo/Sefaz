@@ -34,8 +34,8 @@ const alertsSchema = new mongoose.Schema({
     serial: String,
     date: Number,
     hashpacking : String
-});
+})
+.plugin(mongooseAggregatePaginate)
+.plugin(mongoosePaginate);
 
-alertsSchema.plugin(mongooseAggregatePaginate);
-alertsSchema.plugin(mongoosePaginate);
 mongoose.model('Alerts', alertsSchema);

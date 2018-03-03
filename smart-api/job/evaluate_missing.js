@@ -1,9 +1,8 @@
-const mongoose     = require('mongoose');
-const alert        = mongoose.model('Alerts');
-const packing      = mongoose.model('Packing');
+'use strict';
+
+const schemas      = require('../config/database/require_schemas')
 const historic     = require('./historic');
 const alerts_type  = require('./alerts_type');
-mongoose.Promise   = global.Promise;
 
 module.exports = function(p) {
   return new Promise(function(resolve, reject) {
@@ -17,7 +16,7 @@ module.exports = function(p) {
         "date": p.packing_missing.date,
         "time_countdown": time
       };
-      alert.update({ //Verifica se o alerta ja existe
+      schemas.alert().update({ //Verifica se o alerta ja existe
         "packing": p._id,
         "status": alerts_type.MISSING
       }, {
@@ -42,7 +41,7 @@ module.exports = function(p) {
         };
         p.last_plant = p.actual_plant;
         p.last_department = p.department;
-        alert.create({
+        schemas.alert().create({
             "packing": p._id,
             "department": p.department,
             "actual_plant": p.last_plant,

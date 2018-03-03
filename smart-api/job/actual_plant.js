@@ -1,4 +1,4 @@
-
+'use strict';
 
 module.exports = function (packing, plants) {
   let distance = Infinity;

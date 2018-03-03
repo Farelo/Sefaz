@@ -1,3 +1,5 @@
+'use strict';
+
 const cron                       = require('node-cron');
 const token                      = require('./token');
 const devices                    = require('./devices');
@@ -13,7 +15,7 @@ const evaluate_missing           = require('./evaluate_missing');
 const update_packing             = require('./update_packing');
 const traveling                  = require('./traveling');
 const remove_dependencies        = require('./remove_dependencies');
-const environment                = require('../environment');
+const environment                = require('../config/environment');
 
 var task = cron.schedule(`*/${environment.time} * * * * *`, function() {
     token()

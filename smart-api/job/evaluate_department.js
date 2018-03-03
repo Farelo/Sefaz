@@ -1,13 +1,13 @@
-const mongoose          = require('mongoose');
-const department        = mongoose.model('Department');
-mongoose.Promise        = global.Promise;
+'use strict';
+
+const schemas = require('../config/database/require_schemas')
+
 
 module.exports = function (plant,p) {
   return new Promise(function(resolve, reject) {
-      department.find({"plant": plant._id}).then(d => getNearDepartment(d,p,resolve));
+      schemas.department().find({"plant": plant._id}).then(d => getNearDepartment(d,p,resolve));
   });
 }
-
 
 function getNearDepartment(department, p,r) {
   let distance = Infinity;

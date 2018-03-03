@@ -15,7 +15,7 @@ import { ReactiveFormsModule} from '@angular/forms';
 import {ToastyModule} from 'ng2-toasty';
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { AuthGuard } from '../../guard/auth.guard';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -23,6 +23,7 @@ import { AuthGuard } from '../../guard/auth.guard';
     BrowserModule,
     FormsModule,
     CadastrosModule,
+    NgSelectModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     PopoverModule.forRoot(),

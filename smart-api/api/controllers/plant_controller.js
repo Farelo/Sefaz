@@ -2,132 +2,126 @@
 /**
  * Module dependencies.
  */
-const successHandler             = require('../helpers/responses/successHandler');
-const successHandlerPagination   = require('../helpers/responses/successHandlerPagination');
-const errorHandler               = require('../helpers/responses/errorHandler');
-const mongoose                   = require('mongoose');
-const ObjectId                   = require('mongoose').Types.ObjectId;
-const plant                      = mongoose.model('Plant');
-const route                      = mongoose.model('Route');
-const route_controller           = require('./route_controller');
+const responses                  = require('../helpers/responses/index')
+const schemas                    = require("../../config/database/require_schemas")
 const _                          = require("lodash");
 const query                      = require('../helpers/queries/complex_queries_plants');
-mongoose.Promise                 = global.Promise;
+const ObjectId                   = schemas.ObjectId
 /**
  * Create a Plant
  */
-exports.plant_create = function(req, res) {
-  plant.create(req.body)
-    .catch(_.partial(errorHandler, res, 'Error to create plant'))
-    .then(_.partial(successHandler, res));
+exports.plant_create = function (req, res) {
+  schemas.plant().create(req.body)
+    .catch(_.partial(responses.errorHandler, res, 'Error to create plant'))
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
 /**
  * Create a Plant
  */
-exports.plant_create_array = function(req, res) {
-  plant.create(req.body)
-    .catch(_.partial(errorHandler, res, 'Error to create plant'))
-    .then(_.partial(successHandler, res));
+exports.plant_create_array = function (req, res) {
+  schemas.plant().create(req.body)
+    .catch(_.partial(responses.errorHandler, res, 'Error to create plant'))
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
 /**
  * Show the current Plant
  */
-exports.plant_read = function(req, res) {
+exports.plant_read = function (req, res) {
 
-  plant.findOne({
-      _id: req.swagger.params.plant_id.value
-    })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+  schemas.plant().findOne({
+    _id: req.swagger.params.plant_id.value
+  })
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
 /**
  * Show the current Plant by name
  */
-exports.plant_read_by_name = function(req, res) {
+exports.plant_read_by_name = function (req, res) {
 
-  plant.find({
-      plant_name: req.swagger.params.plant_name.value
-    })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+  schemas.plant().find({
+    plant_name: req.swagger.params.plant_name.value
+  })
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
 
 /**
  * Update a Plant
  */
-exports.plant_update = function(req, res) { 
-  plant.update( {
-      _id: req.swagger.params.plant_id.value
-    },  req.body,   {
+exports.plant_update = function (req, res) {
+  schemas.plant().update( {
+    _id: req.swagger.params.plant_id.value
+  }, req.body, {
       upsert: true
     })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to update plant'));
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to update plant'));
 };
 /**
  * Delete an Plant
  */
-exports.plant_delete = function(req, res) { 
+exports.plant_delete = function (req, res) {
 
-  plant.findOne({
-      _id: req.swagger.params.plant_id.value
-    }).exec()
+  schemas.plant().findOne({
+    _id: req.swagger.params.plant_id.value
+  }).exec()
     .then(doc => doc.remove())
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to delete plant'));
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to delete plant'));
 };
 /**
  * List of all Plants without supplier and logistic_operator
  */
-exports.list_all = function(req, res) { 
-  plant.find({
+exports.list_all = function (req, res) {
+  schemas.plant().find({
     "supplier": { $exists: false },
     "logistic_operator": { $exists: false }
   })
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
 /**
  * List of all Plants without supplier and logistic_operator no binded with route
  */
-exports.list_all_nobinded = function(req, res) { 
-  plant.aggregate(query.queries.plant_filter(req.swagger.params.code.value, req.swagger.params.supplier.value,req.swagger.params.project.value))
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+exports.list_all_nobinded = function (req, res) {
+  schemas.plant().aggregate(query.queries.plant_filter(req.swagger.params.code.value, req.swagger.params.supplier.value, req.swagger.params.project.value))
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
 /**
  * List of all Plants
  */
-exports.list_all_general = function(req, res) { 
+exports.list_all_general = function (req, res) {
   let attr = req.swagger.params.attr.value;
 
-  plant.find(attr ? {"supplier": new ObjectId(attr)} : {})
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+  schemas.plant().find(attr ? { "supplier": new ObjectId(attr) } : {})
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
 /**
  * List of all Plants
  */
-exports.list_all_general_logistic = function(req, res) { 
+exports.list_all_general_logistic = function (req, res) {
   let map = req.body.map(o => new ObjectId(o));
 
-  plant.find({"supplier": { "$in": map }})
-    .then(_.partial(successHandler, res))
-    .catch(_.partial(errorHandler, res, 'Error to read plant'));
+  schemas.plant().find({ "supplier": { "$in": map } })
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
 /**
  * List of all Plants by pagination
  */
-exports.plant_listPagination = function(req, res) { 
+exports.plant_listPagination = function (req, res) {
 
-  plant.paginate(req.swagger.params.attr.value ? {"name": req.swagger.params.attr.value, "supplier": { $exists: false },"logistic_operator": { $exists: false }} :
-      {"supplier": { $exists: false },"logistic_operator": { $exists: false }}, {
+  schemas.plant().paginate(req.swagger.params.attr.value ? { "name": req.swagger.params.attr.value, "supplier": { $exists: false }, "logistic_operator": { $exists: false } } :
+    { "supplier": { $exists: false }, "logistic_operator": { $exists: false } }, {
       page: parseInt(req.swagger.params.page.value),
       sort: {
         _id: 1
       },
       limit: parseInt(req.swagger.params.limit.value)
     })
-    .then(_.partial(successHandlerPagination, res))
-    .catch(_.partial(errorHandler, res, 'Error to list plant registers by pagination'));
+    .then(_.partial(responses.successHandlerPagination, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to list plant registers by pagination'));
 };

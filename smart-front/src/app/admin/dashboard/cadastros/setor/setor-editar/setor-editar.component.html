@@ -63,11 +63,18 @@
         <div class="campo">
           <p class="descricao">ASSOCIE A PLANTA</p>
           <p class="explicacao">Escolha uma das plantas</p>
-          <select  (ngModelChange)="onChange($event)" formControlName="plant" [ngClass]="{'required': (department.get('plant').hasError('required') && department.get('plant').touched)
-            || (department.get('plant').hasError('required') && formDir.submitted)}">
-              <option value="">Associe uma Planta</option>
-              <option *ngFor="let obj of plants"  [ngValue]="obj" >{{obj.plant_name }} </option>
-          </select>
+          <ng-select (change)="onChange($event)" [items]="plants" bindLabel="plant_name" placeholder="Associe uma Planta" formControlName="plant"
+            [ngClass]="{'required': (department.get('plant').hasError('required') && department.get('plant').touched) || (department.get('plant').hasError('required')
+                  && formDir.submitted)}">
+            <ng-template ng-label-tmp let-item="item">
+              {{item.plant_name}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                {{item.plant_name}}
+              </div>
+            </ng-template>
+          </ng-select>
           <p class="requiredText" *ngIf="(department.get('plant').hasError('required') && department.get('plant').touched)
           || (department.get('plant').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>

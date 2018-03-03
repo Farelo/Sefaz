@@ -1,6 +1,6 @@
-const mongoose        = require('mongoose');
-const alert           = mongoose.model('Alerts');
-mongoose.Promise      = global.Promise;
+'use strict';
+
+const schemas         = require('../config/database/require_schemas')
 const alerts_type     = require('./alerts_type');
 
 module.exports = {
@@ -35,7 +35,8 @@ module.exports = {
           'date': p.trip.date,
           'time_countdown':time
         };
-        alert.create({
+
+        schemas.alert().create({
           "routes": p.routes,
           "packing": p._id,
           "supplier": p.supplier,
@@ -76,7 +77,7 @@ module.exports = {
               'time_countdown':time
             };
 
-            alert.update({ //Verifica se o alerta ja existe
+            schemas.alert().update({ //Verifica se o alerta ja existe
               "packing": p._id,
               "status": alerts_type.TRAVELING
             }, {
@@ -94,7 +95,7 @@ module.exports = {
               'time_countdown':time
             };
 
-            alert.remove({
+            schemas.alert().remove({
               "packing": p._id,
               "status":  alerts_type.TRAVELING
             }).then(() => resolve(p));

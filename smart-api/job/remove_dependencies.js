@@ -1,7 +1,7 @@
-const mongoose     = require('mongoose');
-const alert        = mongoose.model('Alerts');
+'use strict';
+
+const schemas      = require('../config/database/require_schemas')
 const alerts_type  = require('./alerts_type');
-mongoose.Promise   = global.Promise;
 
 module.exports = {
 
@@ -23,7 +23,7 @@ module.exports = {
               "time_countdown": 0
             };
 
-            alert.remove({
+            schemas.alert().remove({
               "packing": p._id,
               "status": { '$in': [ alerts_type.INCORRECT_LOCAL, alerts_type.TRAVELING , alerts_type.MISSING ] }
             }).then(() => resolve(p));
@@ -43,13 +43,12 @@ module.exports = {
           "date" : 0,
           "time_exceeded" : false
         };
-        alert.remove({
+        schemas.alert().remove({
           "packing": p._id,
           "status": { '$in': [ alerts_type.INCORRECT_LOCAL, alerts_type.PERMANENCE] }
         }).then(() => resolve(p));
 
       }else if(p.routes.length === 0){
-        console.log("aqui");
         p.traveling = false;
         p.trip = {
           'time_exceeded': false,

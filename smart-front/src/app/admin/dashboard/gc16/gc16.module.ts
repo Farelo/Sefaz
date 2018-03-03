@@ -15,10 +15,11 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select2Module } from 'ng2-select2';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule} from '@angular/forms';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
   imports: [
     GC16RoutingModule,
+    NgSelectModule,
     CommonModule,
     RouterModule,
     Select2Module,

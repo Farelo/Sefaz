@@ -1,11 +1,11 @@
 
-const mongoose                   = require('mongoose');
+'use strict';
+
+const schemas                    = require('../config/database/require_schemas')
 const traveling                  = require('./traveling');
-mongoose.Promise                 = global.Promise;
-const packing                    = mongoose.model('Packing');
-const alert                      = mongoose.model('Alerts');
 const update_packing             = require('./update_packing');
 const alerts_type                = require('./alerts_type');
+
 
 module.exports = function (result, total, count) {
   console.log(result); //LOG ABOUT PATHS UTILITS
@@ -13,7 +13,7 @@ module.exports = function (result, total, count) {
   if(total === count){
     console.log('FINISH FIRST PART OF THE JOB');
     //VERIFY WHICH
-    packing.find({'missing': true, 'traveling': false})
+    schemas.packing().find({'missing': true, 'traveling': false})
       .populate('tag')
       .populate('actual_plant.plant')
       .populate('department')
@@ -38,7 +38,7 @@ module.exports = function (result, total, count) {
                 let p_clone = JSON.parse(JSON.stringify(p));
                 traveling.set(p_clone)
                          .then(p_new => update_packing.set(p_new))
-                         .then( p_new => alert.remove({"packing": p._id,"status": alerts_type.MISSING}))
+                         .then( p_new => schemas.alert().remove({"packing": p._id,"status": alerts_type.MISSING}))
                          .then(() => console.log("PACKING",p._id,"IS TRAVELING"));
               }
             }else{

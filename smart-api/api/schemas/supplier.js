@@ -1,5 +1,6 @@
 const mongoose            = require('mongoose');
-const mongoosePaginate  = require('mongoose-paginate');
+const mongoosePaginate    = require('mongoose-paginate');
+
 const supplierSchema = new mongoose.Schema({
       name: {type: String, required: true},
       duns: {type: String, required: true},
@@ -13,7 +14,7 @@ const supplierSchema = new mongoose.Schema({
             ref:'Plant'
       },
       hashPacking: {type: String}
-});
+}).plugin(mongoosePaginate);
 
 supplierSchema.pre('remove', function(next) {
     let supplier = this;
@@ -35,5 +36,5 @@ supplierSchema.pre('remove', function(next) {
         });
 
 });
-supplierSchema.plugin(mongoosePaginate);
+
 mongoose.model('Supplier', supplierSchema);

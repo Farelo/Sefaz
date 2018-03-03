@@ -3,7 +3,7 @@ const mongoosePaginate  = require('mongoose-paginate');
 
 const projectSchema = new mongoose.Schema({
       name: {type: String, required: true, unique: true},
-});
+}).plugin(mongoosePaginate);
 
 projectSchema.pre('remove', function(next) {
      // Remove all the assignment docs that reference the removed person.
@@ -17,5 +17,5 @@ projectSchema.pre('remove', function(next) {
     });
 
 });
-projectSchema.plugin(mongoosePaginate);
+
 mongoose.model('Project', projectSchema);

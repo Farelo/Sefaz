@@ -9,7 +9,7 @@ const departmentSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Plant'
     }
-});
+}).plugin(mongoosePaginate);;
 
 departmentSchema.pre('remove', function(next) {
     let department  =  this;
@@ -29,5 +29,5 @@ departmentSchema.pre('update', function(next) {
         .then(() => mongoose.models['HistoricPackings'].update({"department": department._conditions._id},{$unset: {department: 1}},{multi: true},next));
 });
 
-departmentSchema.plugin(mongoosePaginate);
+
 mongoose.model('Department', departmentSchema);

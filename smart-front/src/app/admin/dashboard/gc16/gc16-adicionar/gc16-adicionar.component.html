@@ -7,11 +7,23 @@
         <div class="campo">
           <p class="descricao">ASSOCIE UM FORNECEDOR</p><br>
 
-          <select [ngModel]="this.gc16.controls.supplier.value" formControlName="supplier" (ngModelChange)="loadPackings($event)" [ngClass]="{'required': (gc16.get('supplier').hasError('required') && gc16.get('supplier').touched)
-            || (gc16.get('supplier').hasError('required') && formDir.submitted)}">
-           <option value="">Associe um Fornecedor </option>
-           <option *ngFor="let obj of suppliers" [ngValue]="obj">DUNS: {{obj.duns}} - Nome: {{obj.name}}</option>
-          </select>
+
+          <ng-select [ngModel]="supplier" (change)="loadPackings($event)" [items]="suppliers" 
+          bindLabel="duns" placeholder="Associe um Fornecedor" formControlName="supplier" [ngClass]="{'required': (gc16.get('supplier').hasError('required') && gc16.get('supplier').touched) || (gc16.get('supplier').hasError('required')
+          && formDir.submitted)}">
+            <ng-template ng-label-tmp let-item="item">
+              {{item.name}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                <b>Nome:</b> {{item.name}}
+              </div>
+              <small>
+                <b>DUNS:</b> {{item.duns}}
+              </small>
+          
+            </ng-template>
+          </ng-select>
           <p class="requiredText" *ngIf="(gc16.get('supplier').hasError('required') && gc16.get('supplier').touched)
         || (gc16.get('supplier').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
 
@@ -20,11 +32,24 @@
       <div class="col-sm-4">
       <div class="campo"  >
         <p class="descricao">EQUIPAMENTO</p>
-        <select formControlName="packing" (ngModelChange)="loadProject($event)" [ngClass]="{'required': (gc16.get('packing').hasError('required') && gc16.get('packing').touched)
-        || (gc16.get('packing').hasError('required') && formDir.submitted)}">
-           <option value="">Escolha um Equipamento</option>
-           <option *ngFor="let obj of packings" [ngValue]="obj">Código: {{obj.packing}} - Projeto: {{obj.project.name}}</option>
-        </select>
+        
+
+        <ng-select  [ngModel]="packing" (change)="loadProject($event)" [items]="packings" bindLabel="packing"
+          placeholder="Escolha um Equipamento" formControlName="packing" [ngClass]="{'required': (gc16.get('packing').hasError('required') && gc16.get('packing').touched) || (gc16.get('packing').hasError('required')
+          && formDir.submitted)}">
+          <ng-template ng-label-tmp let-item="item">
+            {{item.packing}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+              <b>Embalagem:</b> {{item.packing}}
+            </div>
+            <small>
+              <b>Projeto:</b> {{item.project.name}}
+            </small>
+        
+          </ng-template>
+        </ng-select>
         <p class="requiredText" *ngIf="(gc16.get('packing').hasError('required') && gc16.get('packing').touched)
         || (gc16.get('packing').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       </div>

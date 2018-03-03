@@ -1,5 +1,5 @@
 const crypto = require("crypto")
-const key    = "supersecretkey";
+const key    = require("./constants").encrypt.key;
 
 
 module.exports = {

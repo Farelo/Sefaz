@@ -10,10 +10,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule} from 'ngx-pagination';
 import { ApplicationPipes } from '../../../shared/pipes/application.pipes';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
+    NgSelectModule,
     InventarioRoutingModule,
     Select2Module,
     CommonModule,

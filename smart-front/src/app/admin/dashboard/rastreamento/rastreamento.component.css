@@ -14,10 +14,12 @@ ngui-map {
   width: 100%;
 }
 
-.campo select {
+.campo ng-select {
+
   position: absolute !important;
-  margin-top: 45px;
+  margin-top: 51px;
   height: 30px;
+  width: 250px;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
   border-radius: 2px;
   border-color: transparent;
@@ -25,37 +27,59 @@ ngui-map {
 
 @media (max-width: 576px) {
   ngui-map { margin-left: -30px; }
-  .campo select { margin-left: -178px; }
+  .campo ng-select {
+
+    margin-left: -20px;
+  }
+
 }
 
 @media (min-width: 576px) and (max-width: 768px) {
 	ngui-map { margin-left: -30px; }
-  .campo select { margin-left: -178px; }
+  .campo ng-select {
+    margin-left: -20px;
+  }
+
 }
 
 @media (min-width: 768px) and (max-width: 992px) {
 	ngui-map { margin-left: -40px; }
-  .campo select { margin-left: -178px; }
+  .campo ng-select {
+    margin-left: -30px;
+  }
+
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
 	ngui-map { margin-left: -70px; }
-  .campo select { margin-left: -178px; }
+  .campo ng-select {
+    margin-left: -60px;
+  }
+
 }
 
 @media (min-width: 1200px) {
 	ngui-map { margin-left: -130px; }
-  .campo select { margin-left: -278px; }
+  .campo ng-select {
+    margin-left: -120px;
+  }
+
 }
 
 @media (min-width: 1400px) {
   ngui-map { margin-left: -270px; }
-  .campo select { margin-left: -278px; }
+  .campo ng-select {
+    margin-left: -260px;
+  }
+
 }
 
 @media (min-width: 1700px) {
 	ngui-map { margin-left: -450px; }
-  .campo select { margin-left: -440px; }
+  .campo ng-select {
+    margin-left: -300px;
+  }
+
 }
 
 .gm-style-iw {

@@ -1,20 +1,18 @@
 
-const mongoose            = require('mongoose');
-mongoose.Promise          = global.Promise;
-const packing             = mongoose.model('Packing');
-const plant               = mongoose.model('Plant');
+'use strict';
 
+const schemas    = require('../config/database/require_schemas')
 
 module.exports = function () {
   var arrayOfPromises = [
-    packing.find({})
-  .populate('tag')
-  .populate('actual_plant.plant')
-  .populate('department')
-  .populate('supplier')
-  .populate('routes')
-  .populate('project')
-  .populate('gc16'), plant.find({}).populate('logistic_operator')];
+    schemas.packing().find({})
+      .populate('tag')
+      .populate('actual_plant.plant')
+      .populate('department')
+      .populate('supplier')
+      .populate('routes')
+      .populate('project')
+      .populate('gc16'), schemas.plant().find({}).populate('logistic_operator')];
 
   return arrayOfPromises;
 }

@@ -46,7 +46,7 @@ export class EmbalagemCadastroComponent implements OnInit {
   }
 
   loadTags():void {
-    this.TagsService.retrieveAllNoBinded().subscribe( result => {this.tags = result.data}, err => {console.log(err)});
+    this.TagsService.retrieveAllNoBinded().subscribe(result => { this.tags = result.data;}, err => {console.log(err)});
   }
 
   finishRegister(value){
@@ -125,11 +125,11 @@ export class EmbalagemCadastroComponent implements OnInit {
       routes: [String],
       correct_plant_supplier:[String],
       actual_plant: [String],
-      tag: ['', [Validators.required]],
+      tag: ['', Validators.required],
       code_tag: [String, [Validators.required]],
       department: [String],
-      supplier: ['', [Validators.required]],
-      project: ['', [Validators.required]],
+      supplier: ['', Validators.required],
+      project: ['', Validators.required],
       hashPacking: [String, [Validators.required]]
     });
 

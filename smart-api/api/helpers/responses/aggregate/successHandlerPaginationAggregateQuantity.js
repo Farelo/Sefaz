@@ -1,12 +1,10 @@
 "use strict";
 
 const HTTPStatus   = require("http-status");
-const query        = require('../queries/complex_queries_packing');
-const mongoose     = require('mongoose');
-const packing      = mongoose.model('Packing');
+const query        = require('../../queries/complex_queries_packing');
 
 
-function onSuccess(res, code, page, limit, err, data, pages, amount) {
+function onSuccess(res, refresh_token, code, page, limit, err, data, pages, amount) {
 
   let total = data.reduce(function(previousValue, currentValue) {
     return {
@@ -32,6 +30,7 @@ function onSuccess(res, code, page, limit, err, data, pages, amount) {
     jsonapi: {
       "version": "1.0"
     },
+    "refresh_token": refresh_token,
     meta: {
       "limit": limit,
       "page": page,

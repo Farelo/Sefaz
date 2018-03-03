@@ -94,7 +94,10 @@ const packingSchema = new mongoose.Schema({
   },
   hashPacking: String
 
-});
+})
+.plugin(mongooseAggregatePaginate)
+.plugin(mongoosePaginate);
+
 packingSchema.post('remove', function(next) {
   let packing  = this;
   // Remove all the assignment docs that reference the removed person.
@@ -103,10 +106,6 @@ packingSchema.post('remove', function(next) {
           .then(() => evaluete(Promise.all([this.model('Packing').find({gc16: packing.gc16}), packing.model('Packing').find({routes: {$in: packing.routes}})]), next,packing));
 
 });
-
-
-packingSchema.plugin(mongooseAggregatePaginate);
-packingSchema.plugin(mongoosePaginate);
 
 mongoose.model('Packing', packingSchema);
 

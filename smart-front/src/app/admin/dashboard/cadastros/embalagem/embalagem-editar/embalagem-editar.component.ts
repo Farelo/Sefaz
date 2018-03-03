@@ -59,16 +59,12 @@ export class EmbalagemEditarComponent implements OnInit {
 
   loadSuppliers():void{
     this.SuppliersService.retrieveAll().subscribe(result => {
-      let supplier = result.data.filter( o => String(this.packing.controls.supplier.value._id) === String(o._id))[0];
-      this.packing.controls.supplier.setValue(supplier);
       this.suppliers = result.data;
     }, err => {console.log(err)});
   }
 
   loadProject():void{
     this.ProjectService.retrieveAll().subscribe(result =>{
-      let project = result.data.filter( o => String(this.packing.controls.project.value._id) === String(o._id))[0];
-      this.packing.controls.project.setValue(project);
       this.projects = result.data;
       }, err => {console.log(err)});
   }
