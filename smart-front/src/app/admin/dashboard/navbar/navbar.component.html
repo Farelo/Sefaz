@@ -6,7 +6,7 @@
         <li><a routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
         <li *ngIf="currentUser?.profile != 'StaffFactory'"><a routerLinkActive="active"  routerLink="/rc/importar">IMPORTAR DADOS</a></li>
         <li><a routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
-        <li *ngIf="currentUser?.profile != 'StaffFactory'"><a routerLinkActive="active"  routerLink="/rc/gc16">GC16</a></li>
+        <li *ngIf="currentUser?.profile != 'StaffFactory'"><a routerLinkActive="active"  routerLink="/rc/gc16">BPline</a></li>
 
         <li class="scroll usuario placementBottom"
         [ngbPopover]= 'popContent'
@@ -61,7 +61,7 @@
         <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
         <li *ngIf="currentUser?.profile != 'StaffFactory'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/importar">IMPORTAR DADOS</a></li>
         <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
-        <li *ngIf="currentUser?.profile != 'StaffFactory'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">GC16</a></li>
+        <li *ngIf="currentUser?.profile != 'StaffFactory'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">BPline</a></li>
         <li class="opcaoEscondida"><a (click)="mudar()">SAIR</a></li>
 
       </ul>
