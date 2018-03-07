@@ -1,7 +1,7 @@
 
 let environment = {
   "production": {
-    url:"isi.pe.senai.br",
+    url:"35.169.169.38",
     port: '8005',
     database: 'reciclopacadmin',
     urldatabase: "mongo",

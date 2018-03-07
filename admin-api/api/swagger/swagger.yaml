@@ -22,6 +22,11 @@ produces:
 tags:
   - name: User
     description: All information about your Users
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization
 paths:
   '/user/retrieve/{user_id}':
     x-swagger-router-controller: user_controller
@@ -31,6 +36,8 @@ paths:
       summary: Get a user on the system
       description: ''
       operationId: user_read
+      security:
+        - Bearer: []
       parameters:
         - in: path
           name: user_id
@@ -82,6 +89,8 @@ paths:
       summary: Get all users on the system by pagination
       description: ''
       operationId: user_listPagination
+      security:
+        - Bearer: []
       parameters:
         - in: path
           name: limit
@@ -115,6 +124,8 @@ paths:
       summary: Add a new user to the system
       description: ''
       operationId: user_create
+      security:
+        - Bearer: []
       parameters:
         - in: body
           name: body
@@ -139,6 +150,8 @@ paths:
       summary: Remove a user on the system
       description: ''
       operationId: user_delete
+      security:
+        - Bearer: []
       parameters:
         - in: path
           name: user_id
@@ -162,6 +175,8 @@ paths:
       summary: Update a user on the system
       description: ''
       operationId: user_update
+      security:
+        - Bearer: []
       parameters:
         - in: path
           name: user_id
@@ -212,8 +227,6 @@ definitions:
       email:
         type: string
       port:
-        type: string
-      username:
         type: string
       password:
         type: string

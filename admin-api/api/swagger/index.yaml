@@ -26,3 +26,8 @@ produces:
 tags:
 - name: "User"
   description: "All information about your Users"
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization
