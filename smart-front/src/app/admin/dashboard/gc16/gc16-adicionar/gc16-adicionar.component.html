@@ -8,7 +8,7 @@
           <p class="descricao">ASSOCIE UM FORNECEDOR</p><br>
 
 
-          <ng-select [ngModel]="supplier" (change)="loadPackings($event)" [items]="suppliers" 
+          <ng-select [ngModel]="supplier" (change)="loadPackings($event)" [items]="suppliers"
           bindLabel="duns" placeholder="Associe um Fornecedor" formControlName="supplier" [ngClass]="{'required': (gc16.get('supplier').hasError('required') && gc16.get('supplier').touched) || (gc16.get('supplier').hasError('required')
           && formDir.submitted)}">
             <ng-template ng-label-tmp let-item="item">
@@ -21,7 +21,7 @@
               <small>
                 <b>DUNS:</b> {{item.duns}}
               </small>
-          
+
             </ng-template>
           </ng-select>
           <p class="requiredText" *ngIf="(gc16.get('supplier').hasError('required') && gc16.get('supplier').touched)
@@ -32,8 +32,7 @@
       <div class="col-sm-4">
       <div class="campo"  >
         <p class="descricao">EQUIPAMENTO</p>
-        
-        {{this.gc16.controls.packing.value}}
+
         <ng-select  [ngModel]="packing" (change)="loadProject($event)" [items]="packings" bindLabel="packing"
           placeholder="Escolha um Equipamento" formControlName="packing" [ngClass]="{'required': (gc16.get('packing').hasError('required') && gc16.get('packing').touched) || (gc16.get('packing').hasError('required')
           && formDir.submitted)}">
@@ -47,7 +46,7 @@
             <small>
               <b>Projeto:</b> {{item.project.name}}
             </small>
-        
+
           </ng-template>
         </ng-select>
         <p class="requiredText" *ngIf="(gc16.get('packing').hasError('required') && gc16.get('packing').touched)
