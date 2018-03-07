@@ -8,7 +8,7 @@ import { ProjectService } from '../../../../servicos/projects.service';
 import { GC16Service } from '../../../../servicos/gc16.service';
 import { ToastService } from '../../../../servicos/toast.service';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import * as $ from 'jquery'
 
 
@@ -91,10 +91,18 @@ export class Gc16AdicionarComponent implements OnInit {
   }
 
   loadPackings(event: any):void{
-    this.gc16['controls'].packing.setValue('');
-    this.gc16['controls'].project.setValue('');
+    
+    this.gc16['controls'].packing.setValue(undefined)
     if(event){
-      this.packingService.getBySupplier(event._id).subscribe(result => this.packings = result.data, err => {console.log(err)});
+      this.packingService.getBySupplier(event._id).subscribe( result => {
+          this.packings = result.data;
+
+          if (this.packings.length == 0){
+            this.gc16.controls.packing.disable()
+          }else{
+            this.gc16.controls.packing.enable()
+          }
+      }, err => {console.log(err)});
     }
   }
 

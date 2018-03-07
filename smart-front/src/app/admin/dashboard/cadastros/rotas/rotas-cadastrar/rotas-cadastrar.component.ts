@@ -9,7 +9,7 @@ import { Route } from '../../../../../shared/models/route';
 import { Router } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
 import { ToastService } from '../../../../../servicos/toast.service';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 
 declare var $:any;
@@ -54,32 +54,6 @@ export class RotasCadastrarComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder
   ) {
-
-    this.route = this.fb.group({
-      supplier:['', [Validators.required]],
-      project:[''],
-      plant_factory: ['', [Validators.required]],
-      plant_supplier: ['', [Validators.required]],
-      packing_code: ['', [Validators.required]],
-      hashPacking: ['', [Validators.required]],
-      time: this.fb.group({
-        max:  ['', [Validators.required]],
-        min:  ['', [Validators.required]]
-      }),
-      location: this.fb.group({
-        distance: this.fb.group({
-          text: ['', [Validators.required]],
-          value: ['', [Validators.required]]
-        }),
-        duration: this.fb.group({
-          text: ['', [Validators.required]],
-          value: ['', [Validators.required]]
-        }),
-        start_address: ['', [Validators.required]],
-        end_address: ['', [Validators.required]]
-      })
-    });
-
 
   }
 
@@ -156,9 +130,9 @@ export class RotasCadastrarComponent implements OnInit {
   }
 
   loadPackings(event): void {
-    this.route['controls'].packing_code.setValue('');
-    this.route['controls'].plant_factory.setValue('');
-    this.route['controls'].plant_supplier.setValue('');
+    this.route['controls'].packing_code.setValue(undefined);
+    this.route['controls'].plant_factory.setValue(undefined);
+    this.route['controls'].plant_supplier.setValue(undefined);
 
     this.directions = false;
 
@@ -184,6 +158,10 @@ export class RotasCadastrarComponent implements OnInit {
 
   }
 
+  onClear(){
+    this.choiced = false;
+  }
+
   loadPlants(event): void {
     this.PlantsService.retrieveAllNoBinded(event.id,this.route['controls'].supplier.value._id,event.project._id).subscribe(result => this.plants = result);
   }
@@ -197,6 +175,32 @@ export class RotasCadastrarComponent implements OnInit {
       this.directionsRenderer = directionsRenderer;
     });
 
+    this.route = this.fb.group({
+      supplier: [undefined, [Validators.required]],
+      project: [''],
+      plant_factory: ['', [Validators.required]],
+      plant_supplier: ['', [Validators.required]],
+      packing_code: ['', [Validators.required]],
+      hashPacking: ['', [Validators.required]],
+      time: this.fb.group({
+        max: ['', [Validators.required]],
+        min: ['', [Validators.required]]
+      }),
+      location: this.fb.group({
+        distance: this.fb.group({
+          text: ['', [Validators.required]],
+          value: ['', [Validators.required]]
+        }),
+        duration: this.fb.group({
+          text: ['', [Validators.required]],
+          value: ['', [Validators.required]]
+        }),
+        start_address: ['', [Validators.required]],
+        end_address: ['', [Validators.required]]
+      })
+    });
+
+    console.log(typeof this.route.controls.supplier.value)
     this.loadSuppliers();
   }
 

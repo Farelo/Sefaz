@@ -1,7 +1,7 @@
 <div class="base">
   <h1>REGISTRAR ROTA</h1>
   <br />
-  <form novalidate (ngSubmit)="onSubmit(route)" [formGroup]="route" #formDir="ngForm">
+  <form novalidate  (ngSubmit)="onSubmit(route)" [formGroup]="route" #formDir="ngForm">
     <div class="row">
       <div class="col-md-12">
         <alert type="info" *ngIf="!existPacking">
@@ -18,7 +18,7 @@
           <p class="explicacao"></p>
 
 
-          <ng-select  (change)="loadPackings($event)" [items]="suppliers?.data" bindLabel="duns" 
+          <ng-select (clear)="onClear()" (change)="loadPackings($event)" [items]="suppliers?.data" bindLabel="duns" 
           placeholder="Associe um Fornecedor" formControlName="supplier" [ngClass]="{'required': (route.get('supplier').hasError('required') && route.get('supplier').touched) || (route.get('supplier').hasError('required')
           && formDir.submitted)}">
             <ng-template ng-label-tmp let-item="item">
@@ -64,14 +64,14 @@
         <div class="campo" [hidden]="!choice_equipament">
           <p class="descricao">FORNECEDOR DA EMBALAGEM</p>
           <div class="input-group">
-            <input class="form-control" aria-describedby="basic-addon2" [value]="route['controls'].supplier.value.name ? route['controls'].supplier.value.name : ''" disabled />
+            <input class="form-control" aria-describedby="basic-addon2" [value]="route['controls'].supplier.value ? route['controls'].supplier.value.name : ''" disabled />
           </div>
         </div>
 
         <div class="campo" [hidden]="!choice_equipament">
           <p class="descricao">PLANTA DO FORNECEDOR </p>
           <div class="input-group">
-            <input class="form-control" aria-describedby="basic-addon2" [value]="route['controls'].plant_supplier.value.plant_name ? route['controls'].plant_supplier.value.plant_name : ''" disabled/>
+            <input class="form-control" aria-describedby="basic-addon2" [value]="route['controls'].plant_supplier.value ? route['controls'].plant_supplier.value.plant_name : ''" disabled/>
           </div>
         </div>
       </div>

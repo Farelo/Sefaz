@@ -32,6 +32,9 @@ module.exports = {
   },
   encrypt: {
     key: 'supersecretkey'
+  },
+  loka_api: {
+    username: "paulo.garcia@tyaro.com.br",
+    password: "system123"
   }
-
 }

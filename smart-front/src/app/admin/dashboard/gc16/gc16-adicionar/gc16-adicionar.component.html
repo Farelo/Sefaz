@@ -33,7 +33,7 @@
       <div class="campo"  >
         <p class="descricao">EQUIPAMENTO</p>
         
-
+        {{this.gc16.controls.packing.value}}
         <ng-select  [ngModel]="packing" (change)="loadProject($event)" [items]="packings" bindLabel="packing"
           placeholder="Escolha um Equipamento" formControlName="packing" [ngClass]="{'required': (gc16.get('packing').hasError('required') && gc16.get('packing').touched) || (gc16.get('packing').hasError('required')
           && formDir.submitted)}">

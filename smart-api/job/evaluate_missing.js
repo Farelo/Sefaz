@@ -52,7 +52,7 @@ module.exports = function(p) {
             "serial": p.serial,
             "date": new Date().getTime()
           })
-        .then(() => alert.remove({"packing": p._id,"status": alerts_type.TRAVELING}))
+        .then(() => schemas.alert().remove({"packing": p._id,"status": alerts_type.TRAVELING}))
         .then(() => resolve(p));
       }
     }
