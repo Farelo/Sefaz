@@ -38,7 +38,7 @@
     <div class="col-sm-6 middle">
       <img *ngIf="currentUser?.profile != 'StaffFactory'" src="../../../assets/images/perfil1.png">
       <p *ngIf="currentUser?.profile != 'StaffFactory'">Administrador.</p><hr>
-      <p>{{this.currentUser.user}}</p><hr>
+
 
       <button class="medio2" (click)="logout()"><div>SAIR</div></button>
     </div>
@@ -58,7 +58,7 @@
 <ng-template #popContent >
   <img *ngIf="currentUser?.profile != 'StaffFactory'" src="../../../assets/images/perfil1.png">
   <p *ngIf="currentUser?.profile != 'StaffFactory'">Administrador .</p><hr>
-  <p>{{this.currentUser.user}}</p><hr>
+
 
 
   <button class="medio2" (click)="logout()"><div>SAIR</div></button>
