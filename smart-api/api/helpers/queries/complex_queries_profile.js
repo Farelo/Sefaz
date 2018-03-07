@@ -72,7 +72,13 @@ exports.queries = {
               '$cond': {
                 if: '$supplier',
                 then: '$supplier',
-                else: '$logistic'
+                else: {
+                  '$cond': {
+                    if: '$logistic',
+                    then: '$logistic',
+                    else: '$user'
+                  }
+                }
               }
             }
           }
@@ -151,8 +157,7 @@ exports.queries = {
     ]
   },
   login: function(password, email) {
-    console.log(password)
-    console.log(email)
+
     return [{
         "$match": {
           "password": password,

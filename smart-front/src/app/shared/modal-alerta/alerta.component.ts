@@ -29,6 +29,7 @@ inscricao: Subscription;
 
   getHistoric(){
     this.inventoryService.getInventoryPackingHistoric(10,this.historic.meta.page,this.alerta.data.packing.serial,this.alerta.data.packing.code).subscribe(result => {
+      console.log(result)
       this.historic = result;
      }, err => {console.log(err)});
   }

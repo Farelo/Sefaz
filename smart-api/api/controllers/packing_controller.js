@@ -388,6 +388,9 @@ exports.inventory_packing_historic = function (req, res) {
   let code = req.swagger.params.code.value;
   let attr = req.swagger.params.attr.value;
 
+  console.log(serial);
+  console.log(code);
+
   schemas.historicPackings().paginate(
     attr ? { "supplier": new ObjectId(attr), "serial": serial, "packing_code": code } : { "serial": serial, "packing_code": code },
     {

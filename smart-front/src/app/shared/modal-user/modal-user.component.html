@@ -25,7 +25,7 @@
                                                           currentPage: data.meta.page,
                                                           totalItems: data.meta.total_docs}">
             <tr>
-              <td>{{user.user?.name ?  user.user?.name : user.name}}</td>
+              <td>{{user.user?.name ?  user.user?.name : user.user}}</td>
               <td>{{user.profile == "Supplier" ? 'Fornecedor' :
                 (user.profile == 'Logistic' ? 'Op. Logistico' :
                 (user.profile == 'AdminFactory' ? 'Admin. Fábrica' : 'Func. Fábrica'))}}</td>

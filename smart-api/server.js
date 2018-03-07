@@ -33,7 +33,7 @@ require('./config/database/connection').open(environment);
 require('./config/initial/create_user'); //criando o usuário
 
 //JOB =================================================
-require('./job/main');
+//require('./job/main');
 
 //adicionando a auth no middleware
 require('./api/auth/auth')(app);
@@ -47,7 +47,7 @@ swaggerTools.initializeMiddleware(swaggerObject, function(middleware) {
       Bearer: function (req, authOrSecDef, scopesOrApiKey, callback) {
 
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
-           
+
             if (err) return req.res.status(HttpStatus.UNAUTHORIZED).json({ jsonapi: { "version": "1.0" }, UNAUTHORIZED: 'The credentials are invalid!' });
             if (!user) return req.res.status(HttpStatus.UNAUTHORIZED).json({ jsonapi: { "version": "1.0" }, UNAUTHORIZED: 'The credentials are invalid!' });
 

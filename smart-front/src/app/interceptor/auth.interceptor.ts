@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable,Injector} from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Observable} from "rxjs";
 import { AuthenticationService } from '../servicos/auth.service';
@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
-    private authenticationService: AuthenticationService,
+    private injector: Injector,
     private router: Router
   ){ }
 
@@ -20,11 +20,12 @@ export class AuthInterceptor implements HttpInterceptor {
     return next
       .handle(req)
       .do((ev: HttpEvent<any>) => {
-         
+
         if (ev instanceof HttpResponse){
-          
+
           if (ev["body"].refresh_token){
-            var user = this.authenticationService.currentUser();
+            const auth = this.injector.get(AuthenticationService);
+            var user = auth.currentUser();
             user.token = ev["body"].refresh_token;
             localStorage.setItem('currentUser', JSON.stringify(user));
           }
@@ -33,18 +34,20 @@ export class AuthInterceptor implements HttpInterceptor {
       })
       .catch(error => {
         if (error instanceof HttpErrorResponse) {
-          
+
           if (error.status === 401) { // erro na autenticação
-            this.authenticationService.logout();
+            const auth = this.injector.get(AuthenticationService);
+            auth.logout();
             this.router.navigate(['/login']);
           }
 
           if (error.status === 0){ // o servidor não responde
-            this.authenticationService.logout();
+            const auth = this.injector.get(AuthenticationService);
+            auth.logout();
             this.router.navigate(['/login']);
           }
         }
-        
+
         return Observable.throw(error);
       });
 
