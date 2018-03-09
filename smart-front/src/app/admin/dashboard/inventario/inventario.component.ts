@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { InventoryService } from '../../../servicos/inventory.service';
 import { SuppliersService } from '../../../servicos/suppliers.service';
+import { PackingService } from '../../../servicos/packings.service';
 import { Pagination } from '../../../shared/models/pagination';
 import { Alert } from '../../../shared/models/alert';
 import { ModalInvComponent } from '../../../shared/modal-inv/modal-inv.component';
@@ -23,6 +24,7 @@ export class InventarioComponent implements OnInit {
   public escolhaGeral: any = 'GERAL';
   public escolhaEquipamento =  "";
   public verModal: boolean = true;
+  public packings: any[];
   public escolhas: any[] = [
     {name: 'GERAL'},
     {name: 'EQUIPAMENTO'},
@@ -45,6 +47,7 @@ export class InventarioComponent implements OnInit {
 
     private inventoryService: InventoryService,
     private suppliersService: SuppliersService,
+    private packingService: PackingService,
     private router: Router,
     private route: ActivatedRoute,
     private modalService: NgbModal,
@@ -61,6 +64,7 @@ export class InventarioComponent implements OnInit {
         this.generalInventoryEquipament();
     }
   }
+
 
   tamanhoSelect(){
       $(window).resize(function(){
@@ -106,15 +110,17 @@ export class InventarioComponent implements OnInit {
   }
 
   permanenceInventory(){
+    console.log("here")
+    console.log(this.permanenceSearchEquipamento)
     if(this.permanenceSearchEquipamento && this.permanenceSearchSerial ){
       this.serial = true;
       this.inventoryService.getInventoryPackingHistoric(10,this.permanence.meta.page,this.permanenceSearchSerial,this.permanenceSearchEquipamento).subscribe(result => {
-        console.log(result);
+      
         this.permanence  = result;
        }, err => {console.log(err)});
     }else if(this.permanenceSearchEquipamento){
       this.serial = false;
-      this.inventoryService.getInventoryPermanence(10,this.permanence.meta.page,this.permanenceSearchEquipamento).subscribe(result => this.permanence = result, err => {console.log(err)});
+      this.inventoryService.getInventoryPermanence(10,this.permanence.meta.page,this.permanenceSearchEquipamento).subscribe(result => {this.permanence = result, console.log(result)}, err => {console.log(err)});
     }
   }
 
@@ -136,6 +142,11 @@ export class InventarioComponent implements OnInit {
 
     this.generalInventory();
     this.tamanhoSelect();
+    this.loadPackings();
+  }
+
+  loadPackings(){
+    this.packingService.getPackingsDistincts().subscribe(result => { this.packings = result.data; console.log(this.packings) }, err => { console.log(err) });
   }
 
 

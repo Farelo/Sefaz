@@ -59,9 +59,7 @@ exports.supplier_read_by_dunsAndSupplier = function (req, res) {
 exports.supplier_update = function (req, res) {
   schemas.supplier().update( {
     _id: req.swagger.params.supplier_id.value
-  }, req.body, {
-      upsert: true
-    })
+  }, req.body)
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update supplier'));
 };

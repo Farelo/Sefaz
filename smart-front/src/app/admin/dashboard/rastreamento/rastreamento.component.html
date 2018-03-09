@@ -20,7 +20,7 @@
 
     </marker>
     <info-window id="iw" width="400" maxWidth="500">
-      <div *ngIf="marker.display" class="pai">
+      <div *ngIf="marker.display" >
         <div>
           <div class="iw-title">PLANTA {{marker.isSupplier ? 'FORNECEDOR' : 'FÁBRICA'}}: {{marker.plant}} </div>
 
@@ -34,6 +34,7 @@
                   </tr>
                   <tr class="cabecalho" [hidden]="!marker.packing">
                     <th>Embalagens na planta</th>
+                    <th>Serial</th>
 
                   </tr>
                 </thead>
@@ -47,6 +48,7 @@
                   </tr>
                   <tr *ngFor="let packing of marker.packings?.data" [hidden]="!marker.packing">
                     <td>{{packing.code}}</td>
+                    <td>{{packing.serial}}</td>
 
                   </tr>
 

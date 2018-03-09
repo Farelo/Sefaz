@@ -46,7 +46,7 @@
     "supertest": "^1.0.0"
   },
   "scripts": {
-    "build": "node ./config/compile.swagger.js",
+    "build": "node ./config/swagger/compile",
     "deploy:prod": "docker-compose -f ../docker-compose.prod.yml up --build",
     "develop": "set NODE_ENV=development&& nodemon server.js",
     "start": "node server.js",

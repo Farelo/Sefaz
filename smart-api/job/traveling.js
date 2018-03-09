@@ -2,6 +2,8 @@
 
 const schemas         = require('../config/database/require_schemas')
 const alerts_type     = require('./alerts_type');
+const historic        = require('./historic'); 
+const historic_types  = require('./historic_type')
 
 module.exports = {
   set: function(p){
@@ -13,7 +15,9 @@ module.exports = {
         'date': new Date().getTime(),
         'time_countdown': 0
       };
-      resolve(p);
+      historic.create_from_alert(p, historic_types.TRAVELING, p.trip.date, p.trip.time_countdown)
+      .then(() => resolve(p) )
+      
     });
   },
   create: function(p) {
@@ -45,7 +49,9 @@ module.exports = {
           "serial": p.serial,
           "project": p.project,
           "date": new Date().getTime()
-        }).then(() => resolve(p));
+        })
+        .then(() => historic.update_from_alert(p, historic_types.TRAVELING, p.trip.date, p.trip.time_countdown))
+        .then(() => resolve(p));
       } else {
         console.log("TRAVELING TIME: NO CONFORMIDADE ABOUT THE PACKING:", p._id);
         p.trip = {
@@ -53,7 +59,10 @@ module.exports = {
           'date': p.trip.date,
           'time_countdown':time
         };
-        resolve(p);
+
+        historic.update_from_alert(p, historic_types.TRAVELING, p.trip.date, p.trip.time_countdown)
+          .then(() => resolve(p))
+       
       }
     });
   },
@@ -86,7 +95,9 @@ module.exports = {
               "hashpacking": p.hashPacking,
               "project": p.project,
               "serial": p.serial
-            }).then(() => resolve(p));
+            })
+            .then(() => historic.update_from_alert(p, historic_types.TRAVELING, p.trip.date, p.trip.time_countdown))
+            .then(() => resolve(p));
 
           } else {
             p.trip = {
@@ -98,7 +109,9 @@ module.exports = {
             schemas.alert().remove({
               "packing": p._id,
               "status":  alerts_type.TRAVELING
-            }).then(() => resolve(p));
+            })
+            .then(() => historic.update_from_alert(p, historic_types.TRAVELING, p.trip.date, p.trip.time_countdown))
+            .then(() => resolve(p));
           }
         } else {
           module.exports.create(p).then(new_p => resolve(new_p));

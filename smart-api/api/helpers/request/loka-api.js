@@ -39,7 +39,7 @@ module.exports = {
             let date = new Date();
             let start = date.getTime() - (1000 * 60 * 60 * 24 * 10);
             let end = date.getTime();
-
+           
             var options = {
                 url: `https://loka-app.com/api/deviceDetails?deviceId=${device}`,
                 method: 'POST',
@@ -50,6 +50,7 @@ module.exports = {
             }
 
             var callback = function (error, response, body) {
+                console.log(error);
                 if (error)
                     reject(error);
 
@@ -61,6 +62,7 @@ module.exports = {
                             positions: []
                         };
 
+                      
 
                         info.positions.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude] }))
                         console.log(array.positions);
@@ -82,6 +84,7 @@ module.exports = {
                     }
                 }
                 catch (err) {
+                    
                     reject(err);
                 }
 

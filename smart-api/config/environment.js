@@ -8,7 +8,7 @@ let environment = {
     urldatabase: "mongo",
     time: "50",
     secret: 'S3cr3t',  //chave privada da tokenização
-    expiresIn: 2000    //tempo em que o token irá expirar
+    expiresIn: '2h'    //tempo em que o token irá expirar
   },
   "development": {
     url:"localhost",
@@ -17,7 +17,7 @@ let environment = {
     urldatabase: "localhost",
     time: "50",
     secret: 'S3cr3t',    //chave privada da tokenização
-    expiresIn: 2000     //tempo em que o token irá expirar
+    expiresIn: '2h'     //tempo em que o token irá expirar
   }
 }
 

@@ -1,6 +1,7 @@
 'use strict';
 
 const schemas = require('../config/database/require_schemas')
+const types = require('./historic_type')
 
 
 module.exports = {
@@ -15,7 +16,21 @@ module.exports = {
       "serial": p.serial,
       "supplier": p.supplier,
       "packing": p._id,
-      "packing_code": p.code
+      "packing_code": p.code,
+      "status": types.NORMAL
+    });
+  },
+  create_from_alert: function (p, status, date, time) {
+    return schemas.historicPackings().create({
+      "actual_gc16":  p.actual_gc16,
+      "date": date,
+      "temperature": p.temperature,
+      "permanence_time": time,
+      "serial": p.serial,
+      "supplier": p.supplier,
+      "packing": p._id,
+      "packing_code": p.code,
+      "status": status
     });
   },
   update: function(p) {
@@ -35,12 +50,31 @@ module.exports = {
             "serial": p.serial,
             "supplier": p.supplier,
             "packing": p._id,
-            "packing_code": p.code
+            "packing_code": p.code,
+            "status": types.NORMAL
           }).then(() => resolve("OK"));
 
       } else {
         resolve("OK");
       }
+    });
+  },
+  update_from_alert: function(p, status, date, time) {
+    return new Promise(function(resolve, reject) {
+     
+        schemas.historicPackings().update({
+            "packing": p._id,
+          "date": date
+          }, {
+            "date": date,
+            "temperature": p.temperature,
+            "permanence_time": time,
+            "serial": p.serial,
+            "supplier": p.supplier,
+            "packing": p._id,
+            "packing_code": p.code,
+            "status": status
+          }).then(() => resolve("OK"));
     });
   }
 }

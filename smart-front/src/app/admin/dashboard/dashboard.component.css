@@ -115,10 +115,6 @@ label {
   background-color: #5d8dd7;
 }
 
-modal-footer: before {
-  content: "";
-}
-
 .wrapper {
   align-content: center;
   text-align: center;

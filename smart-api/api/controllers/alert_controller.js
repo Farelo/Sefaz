@@ -73,9 +73,7 @@ exports.alert_update = function (req, res) {
 
   schemas.alert().update( {
     _id: id
-  }, req.body, {
-      upsert: true
-    })
+  }, req.body)
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update alert'));
 };

@@ -34,9 +34,7 @@ exports.gc16_read = function (req, res) {
 exports.gc16_update = function (req, res) {
   schemas.GC16().update( {
     _id: req.swagger.params.id.value
-  }, req.body, {
-      upsert: true
-    })
+  }, req.body)
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update gc16 register'));
 };

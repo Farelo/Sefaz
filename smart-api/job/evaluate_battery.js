@@ -1,11 +1,12 @@
 'use strict';
 
-const schemas      = require('../config/database/require_schemas')
-const alerts_type  = require('./alerts_type');
+const schemas        = require('../config/database/require_schemas')
+const alerts_type    = require('./alerts_type');
+const battery        = require('../api/helpers/utils/constants');
 
 module.exports = function(p) {
   return new Promise(function(resolve, reject) {
-    if (p.battery < 20) {
+    if (p.battery < battery.battery_level) {
       //EMITIR ALERTA
       schemas.alert().find({ //Verifica se o alerta ja existe
         "packing": p._id,

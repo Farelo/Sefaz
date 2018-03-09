@@ -39,6 +39,11 @@ export class PackingService {
       .catch(this.handleError);
   }
 
+  getPackingsDistincts(): Observable<any> {
+    return this.http.get(`${environment.url}packing/list/distinct`)
+      .catch(this.handleError);
+  }
+
   getPackingsByDepartment(id: string,limit: number, page: number): Observable<any> {
     return this.http.get(`${environment.url}packing/list/department/${id}/${limit}/${page}`)
       .catch(this.handleError);

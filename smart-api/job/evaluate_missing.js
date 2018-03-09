@@ -1,8 +1,9 @@
 'use strict';
 
-const schemas      = require('../config/database/require_schemas')
-const historic     = require('./historic');
-const alerts_type  = require('./alerts_type');
+const schemas           = require('../config/database/require_schemas')
+const historic          = require('./historic');
+const alerts_type       = require('./alerts_type');
+const historic_types    = require('./historic_type')
 
 module.exports = function(p) {
   return new Promise(function(resolve, reject) {
@@ -26,7 +27,9 @@ module.exports = function(p) {
         "supplier": p.supplier,
         "hashpacking": p.hashPacking,
         "serial": p.serial
-      }).then(() => resolve(p));
+      })
+      .then(() => historic.update_from_alert(p, historic_types.MISSING, p.packing_missing.date, p.packing_missing.time_countdown))
+      .then(() => resolve(p));
     }else{
       if(p.traveling){
         console.log("MISSING: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
@@ -53,6 +56,7 @@ module.exports = function(p) {
             "date": new Date().getTime()
           })
         .then(() => schemas.alert().remove({"packing": p._id,"status": alerts_type.TRAVELING}))
+        .then(() => historic.create_from_alert(p, historic_types.MISSING, p.packing_missing.date, p.packing_missing.time_countdown))
         .then(() => resolve(p));
       }
     }

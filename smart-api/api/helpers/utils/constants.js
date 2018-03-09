@@ -36,5 +36,7 @@ module.exports = {
   loka_api: {
     username: "paulo.garcia@tyaro.com.br",
     password: "system123"
-  }
+  },
+  battery_level: 20
+  
 }

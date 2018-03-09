@@ -37,9 +37,7 @@ exports.project_read = function (req, res) {
 exports.project_update = function (req, res) {
   schemas.project().update( {
     _id: req.swagger.params.project_id.value
-  }, req.body, {
-      upsert: true
-    })
+  }, req.body)
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update project'));
 };

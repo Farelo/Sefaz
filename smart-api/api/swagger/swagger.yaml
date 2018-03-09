@@ -44,8 +44,6 @@ tags:
     description: All information about your Packings
   - name: Tag
     description: All information about your Tags
-  - name: Checkpoint
-    description: All information about your Checkpoints
   - name: Historic Tags
     description: All information about your Historic Tags
   - name: Historic Packings
@@ -438,202 +436,6 @@ paths:
           description: The code that needs to be fetched
           required: true
           type: string
-      responses:
-        '200':
-          description: Successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '400':
-          description: Client Error
-          schema:
-            $ref: '#/definitions/Error400'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/Error500'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-  '/checkpoint/retrieve/{checkpoint_id}':
-    x-swagger-router-controller: checkpoint_controller
-    get:
-      tags:
-        - Checkpoint
-      summary: Get a tags on the system
-      description: ''
-      operationId: checkpoint_read
-      parameters:
-        - in: path
-          name: checkpoint_id
-          description: The code that needs to be fetched
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '400':
-          description: Client Error
-          schema:
-            $ref: '#/definitions/Error400'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/Error500'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-  '/checkpoint/list/pagination/{limit}/{page}':
-    x-swagger-router-controller: checkpoint_controller
-    get:
-      tags:
-        - Checkpoint
-      summary: Get all checkpoints on the system by pagination
-      description: ''
-      operationId: checkpoint_list_pagination
-      parameters:
-        - in: path
-          name: limit
-          description: The limit of checkpoints that will be returned
-          required: true
-          type: string
-        - in: path
-          name: page
-          description: The especific page that returns checkpoints related a this page
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '400':
-          description: Client Error
-          schema:
-            $ref: '#/definitions/Error400'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/Error500'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-  /checkpoint/list/all:
-    x-swagger-router-controller: checkpoint_controller
-    get:
-      tags:
-        - Checkpoint
-      summary: 'Get all checkpoints on the system '
-      description: ''
-      operationId: checkpoint_list_all
-      responses:
-        '200':
-          description: Successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '400':
-          description: Client Error
-          schema:
-            $ref: '#/definitions/Error400'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/Error500'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-  /checkpoint/create:
-    x-swagger-router-controller: checkpoint_controller
-    post:
-      tags:
-        - Checkpoint
-      summary: Add a new checkpoint to the system
-      description: ''
-      operationId: checkpoint_create
-      parameters:
-        - in: body
-          name: body
-          description: checkpoint object that needs to be added to the system
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Checkpoint'
-      responses:
-        '200':
-          description: Successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '400':
-          description: Client Error
-          schema:
-            $ref: '#/definitions/Error400'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/Error500'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-  '/checkpoint/delete/{checkpoint_id}':
-    x-swagger-router-controller: checkpoint_controller
-    delete:
-      tags:
-        - Checkpoint
-      summary: Remove a checkpoint on the system
-      description: ''
-      operationId: checkpoint_delete
-      parameters:
-        - in: path
-          name: checkpoint_id
-          description: The code that needs to be fetched
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '400':
-          description: Client Error
-          schema:
-            $ref: '#/definitions/Error400'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/Error500'
-        default:
-          description: Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-  '/checkpoint/update/{checkpoint_id}':
-    x-swagger-router-controller: checkpoint_controller
-    put:
-      tags:
-        - Checkpoint
-      summary: Update a checkpoint on the system
-      description: ''
-      operationId: checkpoint_update
-      parameters:
-        - in: path
-          name: checkpoint_id
-          description: The code that needs to be fetchede
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: The project object that will to be modified
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Checkpoint'
       responses:
         '200':
           description: Successfully
@@ -2716,6 +2518,33 @@ paths:
           description: The supplier id
           required: true
           type: string
+      responses:
+        '200':
+          description: Successfully
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: Client Error
+          schema:
+            $ref: '#/definitions/Error400'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /packing/list/distinct:
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: 'Get all distinct packings on the system '
+      description: ''
+      operationId: packing_list_distinct
+      security:
+        - Bearer: []
       responses:
         '200':
           description: Successfully
@@ -4826,13 +4655,6 @@ definitions:
       status:
         type: string
       hashpacking:
-        type: string
-  Checkpoint:
-    type: object
-    properties:
-      code:
-        type: string
-      department:
         type: string
   Department:
     type: object

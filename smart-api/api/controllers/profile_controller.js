@@ -79,9 +79,7 @@ exports.profile_update = function (req, res) {
 
   schemas.profile().update( {
     _id: id
-  }, req.body, {
-      upsert: true
-    })
+  }, req.body)
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update profile'));
 };

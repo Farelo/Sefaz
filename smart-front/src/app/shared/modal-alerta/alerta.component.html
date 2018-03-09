@@ -7,7 +7,7 @@
        (alerta.data.status === 2 ? 'Local Incorreto' :
        (alerta.data.status === 3 ? 'Bateria Baixa' :
        (alerta.data.status === 4 ? 'Objeto Atrasado' : 'Tempo de Permanência')))}}</span></p>
-       <p>Hora do alerta: {{alerta.data.date | date:'jms'}}</p>
+       <p>Hora do alerta: {{alerta.data.date | date:'mediumTime'}}</p>
   </div>
   <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -40,7 +40,8 @@
                                                         totalItems: historic.meta.total_docs}">
           <td>{{packing.date | date: 'dd/MM/yyyy'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
-          <td>{{packing.plant?.plant.plant_name || '-'}}</td>
+            <td>{{packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status == 'MISSING' ? 'Embalagem Perdida' : 'Embalagem
+              Viajando') }}</td>
           <td>{{packing.permanence_time || '-' | time}}</td>
         </tr>
 

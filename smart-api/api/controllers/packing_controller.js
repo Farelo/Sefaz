@@ -5,6 +5,7 @@
 const responses                                 = require('../helpers/responses/index')
 const schemas                                   = require("../../config/database/require_schemas")
 const query                                     = require('../helpers/queries/complex_queries_packing');
+const loka_api                                  = require('../helpers/request/loka-api');
 const _                                         = require("lodash");
 const token                                     = require('../helpers/request/token');
 const ObjectId                                  = schemas.ObjectId
@@ -52,6 +53,8 @@ exports.packing_read = function (req, res) {
  * Show the positions by LOKA-API about the Packing
  */
 exports.packing_position = function (req, res) {
+
+ 
   token()
     .then(token => loka_api.positions(token, req.swagger.params.code.value))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -98,7 +101,7 @@ exports.packing_update = function (req, res) {
   }
   )
     .then(result => {
-
+      console.log(result);
       if (result === null) {
         let partial = Object.assign({}, req.body);
         partial.routes = [];
@@ -133,8 +136,7 @@ exports.packing_update = function (req, res) {
 
     })
     .then(() => {
-
-      return evaluete(Promise.all([schemas.packing().find({ gc16: new ObjectId(req.body.gc16) }), packing.find({ routes: { $in: req.body.routes } })]), req.body);
+      return evaluete(Promise.all([schemas.packing().find({ gc16: new ObjectId(req.body.gc16) }), schemas.packing().find({ routes: { $in: req.body.routes } })]), req.body);
     })
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update packings'));
@@ -177,7 +179,6 @@ exports.packing_update_by_code = function (req, res) {
     supplier: new ObjectId(req.swagger.params.supplier.value),
     project: new ObjectId(req.swagger.params.project.value)
   }, req.body, {
-      upsert: true,
       multi: true
     })
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -195,7 +196,6 @@ exports.packing_update_unset_by_code = function (req, res) {
         gc16: 1
       }
     }, {
-      upsert: true,
       multi: true
     })
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -270,6 +270,16 @@ exports.packing_list_all = function (req, res) {
     .catch(_.partial(responses.errorHandler, res, 'Error to list packings by Supplier'));
 };
 /**
+ * List of all distinct packings
+ */
+exports.packing_list_distinct = function (req, res) {
+
+  schemas.packing().aggregate(query.queries.listPackingDistinct)
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to list distinct packings'));
+  
+};
+/**
  * List of packings by supplier
  */
 exports.packing_list_by_supplier = function (req, res) {
@@ -335,7 +345,7 @@ exports.quantity_inventory = function (req, res) {
 
   schemas.packing().aggregatePaginate(aggregate,
     { page: parseInt(req.swagger.params.page.value), limit: parseInt(req.swagger.params.limit.value) },
-    _.partial(responses.successHandlerPaginationAggregateQuantity, res, req.user.refresh_token, req.swagger.params.code.value));
+    _.partial(responses.successHandlerPaginationAggregateQuantity, res, req.user.refresh_token, req.swagger.params.code.value, req.swagger.params.page.value, req.swagger.params.limit.value));
 };
 /**
  * List of packings analysis battery

@@ -266,6 +266,33 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /packing/list/distinct:
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - "Packing"
+      summary: "Get all distinct packings on the system "
+      description: ""
+      operationId: packing_list_distinct
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: "Successfully"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /packing/list/code/{packing_code}:
       x-swagger-router-controller: packing_controller
       get:
