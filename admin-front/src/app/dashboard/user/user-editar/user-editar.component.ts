@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
-import { ToastService } from '../../../../servicos/toast.service';
-import { UserService } from '../../../../servicos/user.service';
+import { ToastService } from '../../../servicos/toast.service';
+import { UserService } from '../../../servicos/user.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs/Rx';

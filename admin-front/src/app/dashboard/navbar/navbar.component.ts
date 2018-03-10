@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { AuthenticationService } from '../../../servicos/auth.service';
+import { AuthenticationService } from '../../servicos/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare var $:any;
 

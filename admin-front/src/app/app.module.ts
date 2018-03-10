@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { ApplicationPipes } from './shared/pipes/application.pipes';
 import {ValidatorsModule, EmailValidators} from 'ngx-validators'
 import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.component';
-import { DashboardModuleAdmin } from './admin/dashboard/dashboard.module';
+import { DashboardModuleAdmin } from './dashboard/dashboard.module';
 import { ToastService } from './servicos/toast.service';
 import { UserService } from './servicos/user.service';
 import { AuthenticationService } from './servicos/auth.service';

@@ -1,9 +1,9 @@
 import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
-import { ToastService } from '../../../../servicos/toast.service';
-import { UserService } from '../../../../servicos/user.service';
+import { ToastService } from '../../../servicos/toast.service';
+import { UserService } from '../../../servicos/user.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
- import { constants } from '../../../../../environments/constants';
+ import { constants } from '../../../../environments/constants';
 
 
 @Component({
