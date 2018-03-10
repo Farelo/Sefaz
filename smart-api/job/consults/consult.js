@@ -1,7 +1,7 @@
 
 'use strict';
 
-const schemas    = require('../config/database/require_schemas')
+const schemas    = require('../../config/database/require_schemas')
 
 module.exports = function () {
   var arrayOfPromises = [

@@ -1,8 +1,10 @@
 'use strict';
 
-const schemas         = require('../config/database/require_schemas')
-const evaluate_route  = require('./evaluate_route');
-const alerts_type     = require('./alerts_type');
+
+
+const schemas          = require('../../config/database/require_schemas')
+const evaluate_route   = require('../routes/evaluate_route')
+const alerts_type      = require('./alerts_type')
 
 module.exports = function(p, plant) {
   return new Promise(function(resolve, reject) {

@@ -1,7 +1,7 @@
 'use strict';
 
-const schemas      = require('../config/database/require_schemas')
-const alerts_type  = require('./alerts_type');
+const schemas       = require('../../config/database/require_schemas')
+const alerts_type   = require('./alerts_type')
 
 module.exports = {
 

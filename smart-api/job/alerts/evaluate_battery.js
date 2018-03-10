@@ -1,8 +1,8 @@
 'use strict';
 
-const schemas        = require('../config/database/require_schemas')
+const schemas        = require('../../config/database/require_schemas')
 const alerts_type    = require('./alerts_type');
-const battery        = require('../api/helpers/utils/constants');
+const battery        = require('../../api/helpers/utils/constants');
 
 module.exports = function(p) {
   return new Promise(function(resolve, reject) {

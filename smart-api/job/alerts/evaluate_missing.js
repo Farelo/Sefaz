@@ -1,9 +1,10 @@
 'use strict';
 
-const schemas           = require('../config/database/require_schemas')
-const historic          = require('./historic');
+const schemas           = require('../../config/database/require_schemas')
+const historic          = require('../historic/historic');
 const alerts_type       = require('./alerts_type');
-const historic_types    = require('./historic_type')
+const historic_types    = require('../historic/historic_type')
+
 
 module.exports = function(p) {
   return new Promise(function(resolve, reject) {

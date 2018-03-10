@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"reciclopac.logisticoperators"},{"v":2,"unique":true,"key":{"cpf":1},"name":"cpf_1","ns":"reciclopac.logisticoperators","background":true}]}

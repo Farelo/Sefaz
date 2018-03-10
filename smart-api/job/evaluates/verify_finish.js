@@ -1,14 +1,16 @@
 
 'use strict';
 
-const schemas                    = require('../config/database/require_schemas')
-const traveling                  = require('./traveling');
-const update_packing             = require('./update_packing');
-const alerts_type                = require('./alerts_type');
+'use strict';
+
+const schemas                    = require('../../config/database/require_schemas')
+const traveling                  = require('../alerts/traveling');
+const update_packing             = require('../updates/update_packing');
+const alerts_type                = require('../alerts/alerts_type');
 
 
 module.exports = function (result, total, count) {
-  console.log(result); //LOG ABOUT PATHS UTILITS
+ //LOG ABOUT PATHS UTILITS
 
   if(total === count){
     console.log('FINISH FIRST PART OF THE JOB');

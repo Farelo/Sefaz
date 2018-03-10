@@ -1,7 +1,7 @@
 'use strict';
 
 const request       = require('request');
-const constants     = require('../api/helpers/utils/constants')
+const constants     = require('../../api/helpers/utils/constants')
 
 
 module.exports = function () {
