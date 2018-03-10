@@ -22,9 +22,9 @@
     <info-window id="iw" width="400" maxWidth="500">
       <div *ngIf="marker.display" >
         <div>
-          <div class="iw-title">PLANTA {{marker.isSupplier ? 'FORNECEDOR' : 'FÁBRICA'}}: {{marker.plant}} </div>
-
-          <div>
+          <div class="iw-title"> PLANTA {{marker.profile === "supplier" ? 'FORNECEDOR' : (marker.profile === "normal" ? 'FÁBRICA' : 'OP. LOGÍSTICO')}} {{marker.plant}} </div>
+          
+          <div> 
             <div class="table-responsive tabela">
               <table class="table" [hidden]="marker.nothing">
                 <thead>

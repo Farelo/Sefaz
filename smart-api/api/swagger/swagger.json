@@ -3921,6 +3921,175 @@
         }
       }
     },
+    "/packing/list/distinct/suplier/{supplier}": {
+      "x-swagger-router-controller": "packing_controller",
+      "get": {
+        "tags": [
+          "Packing"
+        ],
+        "summary": "Get all distinct packings on the system by supplier ",
+        "description": "",
+        "operationId": "packing_list_distinct_by_supplier",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "supplier",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/packing/list/distinct/logistic": {
+      "x-swagger-router-controller": "packing_controller",
+      "post": {
+        "tags": [
+          "Packing"
+        ],
+        "summary": "Get all distinct packings on the system by logistic ",
+        "description": "",
+        "operationId": "packing_list_distinct_by_logistic",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Array of supplier that needs to be fatched ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArraySupplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/packing/list/equals/{supplier}/{project}/{code}": {
+      "x-swagger-router-controller": "packing_controller",
+      "get": {
+        "tags": [
+          "Packing"
+        ],
+        "summary": "Get all distinct packings on the system ",
+        "description": "",
+        "operationId": "packing_list_equals",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "supplier",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "project",
+            "description": "The code that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/packing/list/code/{packing_code}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
@@ -4828,7 +4997,7 @@
         }
       }
     },
-    "/plant/list/general/logistic": {
+    "/plant/list/general/logistic/{logistic_id}": {
       "x-swagger-router-controller": "plant_controller",
       "post": {
         "tags": [
@@ -4843,6 +5012,13 @@
           }
         ],
         "parameters": [
+          {
+            "in": "path",
+            "name": "logistic_id",
+            "description": "The especific supplier that returns packings related a this supplier",
+            "required": true,
+            "type": "string"
+          },
           {
             "in": "body",
             "name": "body",
@@ -5450,6 +5626,11 @@
         "summary": "Add a new profile to the system",
         "description": "",
         "operationId": "profile_create",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "body",

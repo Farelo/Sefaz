@@ -20,15 +20,13 @@ import { ModalStaffEditarComponent } from './shared/modal-user/modal-editar-staf
 import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { ApplicationPipes } from './shared/pipes/application.pipes';
-import {ValidatorsModule, EmailValidators} from 'ngx-validators'
+import { ValidatorsModule, EmailValidators} from 'ngx-validators'
 import { AlertaModalComponent } from './shared/modal-alerta/alerta.component';
 import { LayerModalComponent } from './shared/modal-packing/layer.component';
 import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.component';
 import { AlertsService } from './servicos/alerts.service';
 import { ImportService } from './servicos/import.service';
 import { DashboardModuleAdmin } from './admin/dashboard/dashboard.module';
-import { DashboardModuleSupplier } from './supplier/dashboard/dashboard.module';
-import { DashboardModuleLogistic } from './logistic/dashboard/dashboard.module';
 import { ToastService } from './servicos/toast.service';
 import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';
@@ -53,6 +51,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { ToastyModule } from 'ng2-toasty';
+
 
 @NgModule({
   declarations: [
@@ -80,8 +79,6 @@ import { ToastyModule } from 'ng2-toasty';
     AlertModule.forRoot(),
     ToastyModule.forRoot(),
     DashboardModuleAdmin,
-    DashboardModuleSupplier,
-    DashboardModuleLogistic,
     AngularMultiSelectModule,
     ReactiveFormsModule,
     ValidatorsModule,

@@ -5,6 +5,7 @@
 const responses                   = require('../helpers/responses/index')
 const schemas                     = require("../../config/database/require_schemas")
 const _                           = require("lodash");
+const hashPassword                = require('../helpers/utils/encrypt')
 /**
  * Create a Supplier
  */
@@ -25,7 +26,18 @@ exports.supplier_read = function (req, res) {
   })
     .populate('profile')
     .populate('plant')
-    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+
+    .then(data => {
+     
+      try {
+        data.profile.password = hashPassword.decrypt(data.profile.password);
+      } catch (error) {
+        responses.successHandler(res, req.user.refresh_token, data);
+      }
+
+      responses.successHandler(res, req.user.refresh_token, data);
+
+    })
     .catch(_.partial(responses.errorHandler, res, 'Error to read supplier'));
 };
 /**

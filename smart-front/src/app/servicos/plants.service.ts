@@ -34,8 +34,8 @@ export class PlantsService {
       .catch(this.handleError);
   }
 
-  retrieveGeneralLogistic(array: any): Observable<any> {
-    return this.http.post(`${environment.url}plant/list/general/logistic`,array)
+  retrieveGeneralLogistic(array: any, logistic_id: string): Observable<any> {
+    return this.http.post(`${environment.url}plant/list/general/logistic/${logistic_id}`,array)
       .catch(this.handleError);
   }
 

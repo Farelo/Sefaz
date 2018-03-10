@@ -38,9 +38,24 @@ export class PackingService {
     return this.http.get(`${environment.url}packing/list/code/${id}`)
       .catch(this.handleError);
   }
+ 
+  getPackingsEquals(supplier: string, project: string, code: string): Observable<any> {
+    return this.http.get(`${environment.url}packing/list/equals/${supplier}/${project}/${code}`)
+      .catch(this.handleError);
+  }
 
   getPackingsDistincts(): Observable<any> {
     return this.http.get(`${environment.url}packing/list/distinct`)
+      .catch(this.handleError);
+  }
+
+  getPackingsDistinctsByLogistic(array: any): Observable<any> {
+    return this.http.post(`${environment.url}packing/list/distinct/logistic`, array)
+      .catch(this.handleError);
+  }
+
+  getPackingsDistinctsBySupplier(supplier: string): Observable<any> {
+    return this.http.get(`${environment.url}packing/list/distinct/suplier/${supplier}`)
       .catch(this.handleError);
   }
 

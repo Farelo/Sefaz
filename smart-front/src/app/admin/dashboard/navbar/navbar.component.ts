@@ -25,6 +25,7 @@ public closeResult: string;
     private authenticationService: AuthenticationService,
     private router: Router
   ) {
+  
   }
 
   ngOnInit() {

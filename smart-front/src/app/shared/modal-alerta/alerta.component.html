@@ -26,7 +26,8 @@
     <table class="table">
       <thead>
         <tr class="cabecalho">
-          <th>Data</th>
+          <th>Data de Entrada</th>
+          <th>Hora de Entrada</th>
           <th>Fornecedor</th>
           <th>Local</th>
           <th>Tempo na Planta</th>
@@ -39,6 +40,7 @@
                                                         currentPage: historic.meta.page,
                                                         totalItems: historic.meta.total_docs}">
           <td>{{packing.date | date: 'dd/MM/yyyy'}}</td>
+          <td>{{packing.date | date: 'mediumTime'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
             <td>{{packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status == 'MISSING' ? 'Embalagem Perdida' : 'Embalagem
               Viajando') }}</td>

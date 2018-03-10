@@ -5,14 +5,15 @@
 const responses                  = require('../helpers/responses/index')
 const schemas                    = require("../../config/database/require_schemas")
 const _                          = require("lodash");
+const hashPassword               = require('../helpers/utils/encrypt')
 /**
  * Create a Logistc Operator
  */
 exports.logistic_operator_create = function (req, res) {
 
   schemas.logisticOperator().create(req.body)
-    .catch(_.partial(schemas.errorHandler, res, 'Error to create Logistic Operator'))
-    .then(_.partial(schemas.successHandler, res, req.user.refresh_token));
+    .catch(_.partial(responses.errorHandler, res, 'Error to create Logistic Operator'))
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 
 };
 
@@ -25,9 +26,18 @@ exports.logistic_operator_read = function (req, res) {
   })
     .populate('profile')
     .populate('suppliers')
-    .populate('plant')
-    .then(_.partial(schemas.successHandler, res, req.user.refresh_token))
-    .catch(_.partial(schemas.errorHandler, res, 'Error to read Logistic Operator'));
+    .populate('plant').then(data => {
+      
+      try {
+        data.profile.password = hashPassword.decrypt(data.profile.password);
+      } catch (error) {
+        responses.successHandler(res, req.user.refresh_token, data);
+      }
+
+      responses.successHandler(res, req.user.refresh_token, data);
+
+    }).then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to read Logistic Operator'));
 };
 
 /**
@@ -37,8 +47,8 @@ exports.logistic_operator_update = function (req, res) {
   schemas.logisticOperator().update( {
     _id: req.swagger.params.logistic_operator_id.value
   }, req.body)
-    .then(_.partial(schemas.successHandler, res, req.user.refresh_token))
-    .catch(_.partial(schemas.errorHandler, res, 'Error to update Logistic Operator'));
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to update Logistic Operator'));
 };
 /**
  * Delete an Logistc Operator
@@ -46,8 +56,8 @@ exports.logistic_operator_update = function (req, res) {
 exports.logistic_operator_delete = function (req, res) {
   schemas.logisticOperator().findOne({ _id: req.swagger.params.logistic_operator_id.value }).exec()
     .then(doc => doc.remove())
-    .then(_.partial(schemas.successHandler, res, req.user.refresh_token))
-    .catch(_.partial(schemas.errorHandler, res, 'Error to delete Logistic Operator'))
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to delete Logistic Operator'))
 };
 /**
  * List of all Logistics Operator
@@ -55,8 +65,8 @@ exports.logistic_operator_delete = function (req, res) {
 exports.logistic_operator_list = function (req, res) {
   schemas.logisticOperator().find({})
     .populate('profile')
-    .then(_.partial(schemas.successHandler, res, req.user.refresh_token))
-    .catch(_.partial(schemas.errorHandler, res, 'Error to list of all Logistic Operator'));
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to list of all Logistic Operator'));
 };
 /**
  * List of all Logistics Operator by pagination
@@ -70,6 +80,6 @@ exports.logistic_operator_listPagination = function (req, res) {
     },
     limit: parseInt(req.swagger.params.limit.value)
   })
-    .then(_.partial(schemas.successHandlerPagination, res, req.user.refresh_token))
-    .catch(_.partial(schemas.errorHandler, res, 'Error to list admins by pagination'));
+    .then(_.partial(responses.successHandlerPagination, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to list admins by pagination'));
 };

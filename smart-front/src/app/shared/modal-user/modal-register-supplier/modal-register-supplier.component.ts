@@ -126,6 +126,7 @@ export class ModalSupplierRegisterComponent implements OnInit {
       this.ProfileService.retrieveProfileByEmail(this.supplier['controls'].profile['controls'].email.value).subscribe(result => {
 
         if(result.data.length > 0) {
+         
           this.invalidEmail = true;
         }else{
           this.invalidEmail = false;
@@ -147,7 +148,7 @@ export class ModalSupplierRegisterComponent implements OnInit {
   }
 
   evaluateForm(){
-    if(this.supplier.valid){
+    if (this.supplier.valid && !this.invalidEmail){
       this.next = true;
     }else{
       this.submitted = true;

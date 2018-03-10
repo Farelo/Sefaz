@@ -910,6 +910,94 @@ exports.queries = {
 
     }
   ],
+  listPackingDistinctBySupplier: function (attr) {
+    return [
+      { "$match": { "supplier": new ObjectId(attr) } } , 
+      {
+
+      "$lookup": {
+        "from": "projects",
+        "localField": "project",
+        "foreignField": "_id",
+        "as": "projectObject"
+      }
+    },
+    {
+      "$lookup": {
+        "from": "suppliers",
+        "localField": "supplier",
+        "foreignField": "_id",
+        "as": "supplierObject"
+      }
+    }, {
+      "$unwind": "$projectObject"
+    }, {
+      "$unwind": "$supplierObject"
+    },
+    {
+      "$group": {
+        "_id": {
+          "code": "$code",
+          "project": "$projectObject._id",
+          "supplier": "$supplierObject._id"
+        },
+        "packing": {
+          "$first": "$code"
+        },
+        "project": {
+          "$first": "$projectObject"
+        },
+        "supplier": {
+          "$first": "$supplierObject"
+        }
+      }
+
+    }
+  ]},
+  listPackingDistinctByLogistic: function (attr) {
+    return [
+      { "$match": { "supplier": { "$in": attr } } } , 
+      {
+
+      "$lookup": {
+        "from": "projects",
+        "localField": "project",
+        "foreignField": "_id",
+        "as": "projectObject"
+      }
+    },
+    {
+      "$lookup": {
+        "from": "suppliers",
+        "localField": "supplier",
+        "foreignField": "_id",
+        "as": "supplierObject"
+      }
+    }, {
+      "$unwind": "$projectObject"
+    }, {
+      "$unwind": "$supplierObject"
+    },
+    {
+      "$group": {
+        "_id": {
+          "code": "$code",
+          "project": "$projectObject._id",
+          "supplier": "$supplierObject._id"
+        },
+        "packing": {
+          "$first": "$code"
+        },
+        "project": {
+          "$first": "$projectObject"
+        },
+        "supplier": {
+          "$first": "$supplierObject"
+        }
+      }
+
+    }
+  ]},
   "listPackingsNoBinded": function(id) {
     return [
       {

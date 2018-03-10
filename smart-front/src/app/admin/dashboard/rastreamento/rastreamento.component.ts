@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { PackingService } from '../../../servicos/packings.service';
 import { ModalRastComponent } from '../../../shared/modal-rast/modal-rast.component';
+import { AuthenticationService } from '../../../servicos/auth.service';
 declare var $: any;
 declare var google: any;
 
@@ -18,6 +19,7 @@ declare var google: any;
 
 export class RastreamentoComponent implements OnInit {
 
+  public logged_user: any;
   autocomplete: any;
   address: any = {};
   center: any;
@@ -36,7 +38,7 @@ export class RastreamentoComponent implements OnInit {
     department: null,
     packing: null,
     nothing: null,
-    isSupplier: null
+    profile: null
 
   };
   numero: 1;
@@ -49,25 +51,53 @@ export class RastreamentoComponent implements OnInit {
     private packingService: PackingService,
     private router: Router,
     private route: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private auth: AuthenticationService
 
-  ) { }
+  ) { 
+    let user = this.auth.currentUser();
+    this.logged_user = (user.supplier ? user.supplier._id : (
+      user.official_supplier ? user.official_supplier : (
+        user.logistic ? user.logistic.suppliers : (
+          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
+
+  }
 
   loadDepartmentsByPlant() {
-    this.plantsService.retrieveGeneral()
-      .subscribe(result => {
-        this.plants = result.data;
-        if (result.data.length > 0) {
-          for (let data of result.data) {
-            if (data.supplier) {
-              this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], isSupplier: true });
-            } else {
-              this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], isSupplier: false });
+    if (this.logged_user instanceof Array) {
+      let user = this.auth.currentUser();
+      this.plantsService.retrieveGeneralLogistic(this.logged_user,user._id )
+        .subscribe(result => {
+          this.plants = result.data;
+          if (result.data.length > 0) {
+            for (let data of result.data) {
+              if (data.supplier) {
+                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "supplier" });
+              } else {
+                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "logistic" });
+              } 
             }
+            this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
           }
-          this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
-        }
-      }, err => { console.log(err) });
+        }, err => { console.log(err) });
+    }else{
+      this.plantsService.retrieveGeneral(this.logged_user)
+        .subscribe(result => {
+          this.plants = result.data;
+          if (result.data.length > 0) {
+            for (let data of result.data) {
+              if (data.supplier) {
+                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "supplier" });
+              } else if(data.logistic_operator) {
+                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "logistic" });
+              }else{
+                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "normal" });
+              }
+            }
+            this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
+          }
+        }, err => { console.log(err) });
+    }
   }
 
   onChange(event) {
@@ -82,7 +112,7 @@ export class RastreamentoComponent implements OnInit {
 
     this.departmentService.retrieveByPlants(10, 1, opt.id).subscribe(result => {
       this.marker.plant = opt.name;
-      this.marker.isSupplier = opt.isSupplier;
+      this.marker.profile = opt.profile;
       if (result.data.length > 0) {
         this.marker.department = true;
         this.marker.packing = false;

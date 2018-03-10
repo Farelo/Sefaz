@@ -60,9 +60,17 @@ export class ListaComponent implements OnInit {
 
     this.AlertsService.retrieveAlertByPacking(embalagem,status)
       .subscribe(result => {
+       
 
-          const modalRef = this.modalService.open(AlertaModalComponent);
+        if (status == 1 ){
+          const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static", size: "lg" });
           modalRef.componentInstance.alerta = result;
+        }else{
+          const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static" });
+          modalRef.componentInstance.alerta = result;
+        }
+       
+        
 
       },
       err => {

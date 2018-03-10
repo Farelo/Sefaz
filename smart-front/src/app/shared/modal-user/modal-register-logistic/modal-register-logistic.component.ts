@@ -159,7 +159,7 @@ export class ModalLogisticRegisterComponent implements OnInit {
 
 
   evaluateForm(){
-    if(this.logistic.valid){
+    if (this.logistic.valid && !this.invalidEmail){
       this.next = true;
     }else{
       this.submitted = true;

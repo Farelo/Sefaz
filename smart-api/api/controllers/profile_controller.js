@@ -21,7 +21,7 @@ exports.profile_create = function (req, res) {
  * Show the current Profile
  */
 exports.profile_read = function (req, res) {
-
+  
   schemas.profile().findOne({
     _id: req.swagger.params.profile_id.value
   })
@@ -43,12 +43,16 @@ exports.profile_read = function (req, res) {
  */
 exports.profile_read_by_email = function (req, res) {
   let email = req.swagger.params.email.value;
-
   schemas.profile().find({
     "email": email
   })
     .then(data => {
-      data.password = hashPassword.decrypt(data.password);
+      try {
+        data.password = hashPassword.decrypt(data.password);
+      } catch (error) {
+        responses.successHandler(res, req.user.refresh_token, data);
+      }
+
       responses.successHandler(res, req.user.refresh_token, data);
     })
     .catch(_.partial(responses.errorHandler, res, 'Error to read profile'));

@@ -14,8 +14,8 @@
     <div [hidden]="next">
       <form novalidate [formGroup]="logistic">
 
-        <div class="row">
-          <div class="col-sm-12">
+        <div class="row"  style="display: block;margin: 2px;">
+         
             <br>
             <alert type="info" *ngIf="invalidEmail">
               <strong>Atenção!</strong> O e-mail ja existe no sistema!
@@ -24,7 +24,7 @@
             <p class="descricao">VINCULE OS FORNECEDORES</p>
             <angular2-multiselect [data]="dropdownList" [(ngModel)]="this.logistic.controls.suppliers.value" formControlName="suppliers" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"></angular2-multiselect>
 
-          </div>
+       
         </div>
         <div class="row">
 
@@ -125,14 +125,16 @@
       </form>
     </div>
 
-    <div class="row" [hidden]="!next">
+    <div  [hidden]="!next">
       <form novalidate (ngSubmit)="onSubmit(plant)" [formGroup]="plant" #formDirLogistic="ngForm">
-        <div class="row">
+        <div class="row"  style="display: block;margin: 2px;">
           <br />
           <alert type="info" *ngIf="invalidPlant">
             <strong>Atenção!</strong> O nome da planta já existe no sistema, use outro!
           </alert>
         </div>
+
+        <div class="row" >
         <div class="col-md-12">
 
           <div class="campo">
@@ -185,10 +187,12 @@
         <div class="col-sm-12">
           <div class="botoes">
             <button class="botaoVoltar" (click)="next=false">VOLTAR</button>
-            <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+            <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
           </div>
         </div>
+        </div>
       </form>
+      
     </div>
   </div>
 </div>

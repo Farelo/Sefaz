@@ -280,6 +280,44 @@ exports.packing_list_distinct = function (req, res) {
   
 };
 /**
+ * List of all distinct packings by suppliers
+ */
+exports.packing_list_distinct_by_supplier = function (req, res) {
+  let supplier = req.swagger.params.supplier.value
+  schemas.packing().aggregate(query.queries.listPackingDistinctBySupplier(supplier))
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to list distinct packings by supplier'));
+  
+};
+/**
+ * List of all distinct packings by logistic
+ */
+exports.packing_list_distinct_by_logistic = function (req, res) {
+  let map = req.body.map(o => new ObjectId(o));
+ 
+  schemas.packing().aggregate(query.queries.listPackingDistinctByLogistic(map))
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to list distinct packings by supplier'));
+  
+};
+/**
+ * List of all equals packings 
+ */
+exports.packing_list_equals = function (req, res) {
+  let project =  req.swagger.params.project.value
+  let supplier = req.swagger.params.supplier.value
+  let code = req.swagger.params.code.value
+
+  schemas.packing().find({
+    project: project,
+    supplier: supplier,
+    code: code
+  })
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to list distinct packings'));
+  
+};
+/**
  * List of packings by supplier
  */
 exports.packing_list_by_supplier = function (req, res) {

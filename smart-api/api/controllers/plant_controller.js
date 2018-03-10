@@ -102,8 +102,9 @@ exports.list_all_general = function (req, res) {
  */
 exports.list_all_general_logistic = function (req, res) {
   let map = req.body.map(o => new ObjectId(o));
-
-  schemas.plant().find({ "supplier": { "$in": map } })
+  let logistic_id = req.swagger.params.logistic_id.value;
+  console.log(logistic_id);
+  schemas.plant().find({ $or: [{ "supplier": { "$in": map } }, { logistic_operator: logistic_id }] } )
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };

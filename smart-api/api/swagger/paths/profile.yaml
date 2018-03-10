@@ -234,6 +234,8 @@ paths:
       summary: "Add a new profile to the system"
       description: ""
       operationId: profile_create
+      security:
+        - Bearer: []
       parameters:
       - in: "body"
         name: "body"

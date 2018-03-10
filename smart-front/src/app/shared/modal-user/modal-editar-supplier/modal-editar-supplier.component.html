@@ -13,7 +13,7 @@
 
       <div [hidden]="next">
         <form novalidate [formGroup]="supplier">
-          <div class="row"  >
+          <div class="row"  style="display: block;margin: 2px;">
 
             <br />
             <alert type="info" *ngIf="invalidEmail">
@@ -118,14 +118,16 @@
         </form>
       </div>
 
-      <div class="row" [hidden]="!next">
+      <div  [hidden]="!next">
         <form novalidate (ngSubmit)="onSubmit(plant)" [formGroup]="plant" #formDir="ngForm">
-          <div class="row">
+          <div class="row" style="display: block;margin: 2px;">
             <br />
             <alert type="info" *ngIf="invalidPlant">
               <strong>Atenção!</strong> O nome da planta já existe no sistema, use outro!
             </alert>
           </div>
+
+          <div class="row">
           <div class="col-md-12">
 
             <div class="campo">
@@ -179,8 +181,9 @@
           <div class="col-sm-12">
             <div class="botoes">
               <button class="botaoVoltar" (click)="next=false">VOLTAR</button>
-              <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+              <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
             </div>
+          </div>
           </div>
         </form>
       </div>

@@ -212,7 +212,7 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /plant/list/general/logistic:
+  /plant/list/general/logistic/{logistic_id}:
     x-swagger-router-controller: plant_controller
     post:
       tags:
@@ -223,6 +223,11 @@ paths:
       security:
         - Bearer: []
       parameters:
+      - in: "path"
+        name: "logistic_id"
+        description: "The especific supplier that returns packings related a this supplier"
+        required: true
+        type: string
       - in: "body"
         name: "body"
         description: "Array of supplier that needs to be fatched "

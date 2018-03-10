@@ -108,7 +108,7 @@ exports.queries = {
           "_id": '$_id',
           "_id": '$_id',
           "profile": "$profile",
-          "name": "$name",
+          "name": "$user",
           "email": "$email",
           "city": "$city",
           "street": "$street",
