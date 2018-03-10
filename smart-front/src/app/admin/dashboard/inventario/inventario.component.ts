@@ -212,7 +212,8 @@ export class InventarioComponent implements OnInit {
   onClear() {
     this.serial = false;
     this.serials = [];
-    this.permanence = new Pagination({ meta: { page: 1 } });;
+    this.permanence = new Pagination({ meta: { page: 1 } })
+    this.permanence.data =  []
     this.permanenceSearchSerial = "";
   }
 
