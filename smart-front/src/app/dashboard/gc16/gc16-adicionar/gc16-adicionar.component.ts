@@ -101,7 +101,6 @@ export class Gc16AdicionarComponent implements OnInit {
         this.gc16['controls'].transportantionBack['controls'].QuantContainerTb.setValue(Math.floor(((this.gc16['controls'].transportantionBack['controls'].tb.value/100)*this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
         //
 
-        console.log(this.gc16)
       }
     }
 

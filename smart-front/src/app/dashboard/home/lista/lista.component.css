@@ -225,7 +225,7 @@
   border: none;
   text-align: right;
   float: right;
-  background-image: url("../../../../../assets/images/interrogacao.png");
+  background-image: url("../../../../assets/images/interrogacao.png");
   background-size: 20px;
   background-repeat: no-repeat;
   width: 20px;
@@ -238,7 +238,7 @@
   border: none;
   text-align: right;
   float: right;
-  background-image: url("../../../../../assets/images/interrogacao.png");
+  background-image: url("../../../../assets/images/interrogacao.png");
   background-size: 20px;
   background-repeat: no-repeat;
   width: 20px;
@@ -429,27 +429,27 @@ label {
 }
 
 .fornecedor1 {
-  background-image: url("../../../../../assets/images/local1.png");
+  background-image: url("../../../../assets/images/local1.png");
 }
 
 .fornecedor2 {
-  background-image: url("../../../../../assets/images/local2.png");
+  background-image: url("../../../../assets/images/local2.png");
 }
 
 .fornecedor3 {
-  background-image: url("../../../../../assets/images/local3.png");
+  background-image: url("../../../../assets/images/local3.png");
 }
 
 .fornecedor4 {
-  background-image: url("../../../../../assets/images/local4.png");
+  background-image: url("../../../../assets/images/local4.png");
 }
 
 .fornecedor5 {
-  background-image: url("../../../../../assets/images/local5.png");
+  background-image: url("../../../../assets/images/local5.png");
 }
 
 .fornecedor6 {
-  background-image: url("../../../../../assets/images/local6.png");
+  background-image: url("../../../../assets/images/local6.png");
 }
 
 .quantidade {
@@ -457,27 +457,27 @@ label {
 }
 
 .quantidade1 {
-  background-image: url("../../../../../assets/images/serial.png");
+  background-image: url("../../../../assets/images/serial.png");
 }
 
 .quantidade2 {
-  background-image: url("../../../../../assets/images/serial.png");
+  background-image: url("../../../../assets/images/serial.png");
 }
 
 .quantidade3 {
-  background-image: url("../../../../../assets/images/serial.png");
+  background-image: url("../../../../assets/images/serial.png");
 }
 
 .quantidade4 {
-  background-image: url("../../../../../assets/images/serial.png");
+  background-image: url("../../../../assets/images/serial.png");
 }
 
 .quantidade5 {
-  background-image: url("../../../../../assets/images/serial.png");
+  background-image: url("../../../../assets/images/serial.png");
 }
 
 .quantidade6 {
-  background-image: url("../../../../../assets/images/serial.png");
+  background-image: url("../../../../assets/images/serial.png");
 }
 
 @media (min-width: 1920px) {

@@ -179,7 +179,7 @@ hr {
   color: white;
   border: none;
   height: 34px;
-  background-image: url("../../../../assets/images/mais.png");
+  background-image: url("../../../assets/images/mais.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 15px;
@@ -188,7 +188,7 @@ hr {
 .det {
   width: 15px;
   height: 15px;
-  -webkit-mask-box-image: url("../../../../assets/images/mais.png");
+  -webkit-mask-box-image: url("../../../assets/images/mais.png");
   cursor: pointer;
   left: 50%;
   margin-left: 36%;
@@ -204,7 +204,7 @@ hr {
 .det2 {
   width: 25px;
   height: 25px;
-  -webkit-mask-box-image: url("../../../../assets/images/interrogacao.png");
+  -webkit-mask-box-image: url("../../../assets/images/interrogacao.png");
   cursor: pointer;
   background-color: #6382c9;
 }
@@ -220,7 +220,7 @@ hr {
 }
 
 .background {
-  background: url("../../../../assets/images/mais.png") 0 0 no-repeat fixed;
+  background: url("../../../assets/images/mais.png") 0 0 no-repeat fixed;
   height: 100%;
   overflow: hidden;
   color: #fff;

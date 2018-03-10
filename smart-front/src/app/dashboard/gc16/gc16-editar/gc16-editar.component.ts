@@ -39,36 +39,54 @@ export class Gc16EditarComponent implements OnInit {
 
   onBlurMethod(){
 
-    if(this.gc16.controls.capacity.value && this.gc16.controls.annualVolume.value && this.gc16.controls.productiveDays.value){
-      this.gc16.controls.containerDays.setValue(Math.floor(((this.gc16.controls.annualVolume.value/this.gc16.controls.productiveDays.value)/this.gc16.controls.capacity.value)));
+    let capacity = this.gc16.controls.capacity.value
+    let annualVolume = this.gc16.controls.annualVolume.value
+    let productiveDays = this.gc16.controls.productiveDays.value
+    let fsDays = this.gc16.controls.factoryStock['controls'].fsDays.value
+    let ssDays = this.gc16.controls.supplierStock['controls'].ssDays.value
+    let fDays = this.gc16.controls.frequency['controls'].fDays.value
+    let tgDays = this.gc16.controls.transportationGoing['controls'].tgDays.value
+    let tbDays = this.gc16.controls.transportantionBack['controls'].tbDays.value
+    let containerDays = this.gc16['controls'].containerDays.value
+    let percentage = this.gc16['controls'].secutiryFactor['controls'].percentage.value
+
+    if ((capacity || capacity == 0) && (annualVolume || annualVolume == 0) && (productiveDays || productiveDays == 0)) {
+      this.gc16.controls.containerDays.setValue(Math.floor(((annualVolume / productiveDays) / capacity)));
+      containerDays = this.gc16['controls'].containerDays.value
+
     }
     //setting Initializate
-    if(this.gc16.controls.factoryStock['controls'].fsDays.value && this.gc16.controls.supplierStock['controls'].ssDays.value && this.gc16.controls.transportationGoing['controls'].tgDays.value && this.gc16.controls.transportantionBack['controls'].tbDays.value && this.gc16.controls.frequency['controls'].fDays.value){
-      this.gc16.controls.frequency['controls'].QuantTotalDays.setValue((this.gc16['controls'].factoryStock['controls'].fsDays.value + this.gc16['controls'].supplierStock['controls'].ssDays.value + this.gc16['controls'].transportationGoing['controls'].tgDays.value + this.gc16['controls'].transportantionBack['controls'].tbDays.value) + (2 * this.gc16['controls'].frequency['controls'].fDays.value));
-      if(this.gc16['controls'].containerDays.value && this.gc16['controls'].frequency['controls'].QuantTotalDays.value && this.gc16['controls'].secutiryFactor['controls'].percentage.value){
+    if ((fsDays || fsDays == 0) && (ssDays || ssDays == 0) && (tgDays || tgDays == 0) && (tbDays || tbDays == 0) && (fDays || fDays == 0)) {
+      this.gc16.controls.frequency['controls'].QuantTotalDays.setValue((fsDays + ssDays + tgDays + tbDays) + (2 * fDays));
+      let QuantTotalDays = this.gc16['controls'].frequency['controls'].QuantTotalDays.value
+
+      if ((containerDays || containerDays == 0) && (QuantTotalDays || QuantTotalDays == 0) && (percentage || percentage == 0)) {
         //secutiryFactor
-        this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.setValue(Math.ceil(((((1 + (this.gc16['controls'].secutiryFactor['controls'].percentage.value/100))*this.gc16['controls'].containerDays.value)*this.gc16['controls'].frequency['controls'].QuantTotalDays.value))));
-        this.gc16['controls'].secutiryFactor['controls'].QuantContainer.setValue(Math.ceil(((this.gc16['controls'].secutiryFactor['controls'].percentage.value*this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)/100)));
+        console.log(containerDays)
+        this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.setValue(Math.ceil(((((1 + (percentage / 100)) * containerDays) * QuantTotalDays))));
+
+        this.gc16['controls'].secutiryFactor['controls'].QuantContainer.setValue(Math.ceil(((percentage * this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value) / 100)));
         // //Frequencia
-        this.gc16['controls'].frequency['controls'].fr.setValue(Math.floor(((this.gc16['controls'].frequency['controls'].fDays.value/this.gc16['controls'].frequency['controls'].QuantTotalDays.value)*100)));
-        this.gc16['controls'].frequency['controls'].QuantContainer.setValue(Math.floor(((this.gc16['controls'].frequency['controls'].fr.value/100)*this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
+        this.gc16['controls'].frequency['controls'].fr.setValue(Math.floor(((this.gc16['controls'].frequency['controls'].fDays.value / QuantTotalDays) * 100)));
+        this.gc16['controls'].frequency['controls'].QuantContainer.setValue(Math.floor(((this.gc16['controls'].frequency['controls'].fr.value / 100) * this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
         // //Estoque da Fábrica
-        this.gc16['controls'].factoryStock['controls'].fs.setValue(Math.floor(((this.gc16['controls'].factoryStock['controls'].fsDays.value/this.gc16['controls'].frequency['controls'].QuantTotalDays.value)*100)));
-        this.gc16['controls'].factoryStock['controls'].QuantContainerfs.setValue(Math.floor(((this.gc16['controls'].factoryStock['controls'].fs.value/100)*this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
+        this.gc16['controls'].factoryStock['controls'].fs.setValue(Math.floor(((this.gc16['controls'].factoryStock['controls'].fsDays.value / QuantTotalDays) * 100)));
+        this.gc16['controls'].factoryStock['controls'].QuantContainerfs.setValue(Math.floor(((this.gc16['controls'].factoryStock['controls'].fs.value / 100) * this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
         this.gc16['controls'].factoryStock['controls'].QuantContainerfsMax.setValue((this.gc16['controls'].factoryStock['controls'].QuantContainerfs.value + this.gc16['controls'].frequency['controls'].QuantContainer.value));
         this.gc16['controls'].factoryStock['controls'].fsMax.setValue((this.gc16['controls'].factoryStock['controls'].fs.value + this.gc16['controls'].frequency['controls'].fr.value));
         // //Estoque do Fornecedor
-        this.gc16['controls'].supplierStock['controls'].ss.setValue(Math.floor(((this.gc16['controls'].supplierStock['controls'].ssDays.value/this.gc16['controls'].frequency['controls'].QuantTotalDays.value)*100)));
-        this.gc16['controls'].supplierStock['controls'].QuantContainerSs.setValue(Math.floor(((this.gc16['controls'].supplierStock['controls'].ss.value/100)*this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
+        this.gc16['controls'].supplierStock['controls'].ss.setValue(Math.floor(((this.gc16['controls'].supplierStock['controls'].ssDays.value / QuantTotalDays) * 100)));
+        this.gc16['controls'].supplierStock['controls'].QuantContainerSs.setValue(Math.floor(((this.gc16['controls'].supplierStock['controls'].ss.value / 100) * this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
         this.gc16['controls'].supplierStock['controls'].QuantContainerSsMax.setValue((this.gc16['controls'].supplierStock['controls'].QuantContainerSs.value + this.gc16['controls'].frequency['controls'].QuantContainer.value));
         this.gc16['controls'].supplierStock['controls'].ssMax.setValue((this.gc16['controls'].supplierStock['controls'].ss.value + this.gc16['controls'].frequency['controls'].fr.value));
         // //Transport Ida
-        this.gc16['controls'].transportationGoing['controls'].tg.setValue(Math.floor(((this.gc16['controls'].transportationGoing['controls'].tgDays.value/this.gc16['controls'].frequency['controls'].QuantTotalDays.value)*100)));
-        this.gc16['controls'].transportationGoing['controls'].QuantContainerTg.setValue(Math.floor(((this.gc16['controls'].transportationGoing['controls'].tg.value/100)*this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
+        this.gc16['controls'].transportationGoing['controls'].tg.setValue(Math.floor(((this.gc16['controls'].transportationGoing['controls'].tgDays.value / QuantTotalDays) * 100)));
+        this.gc16['controls'].transportationGoing['controls'].QuantContainerTg.setValue(Math.floor(((this.gc16['controls'].transportationGoing['controls'].tg.value / 100) * this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
         // //Transport Volta
-        this.gc16['controls'].transportantionBack['controls'].tb.setValue(Math.floor(((this.gc16['controls'].transportantionBack['controls'].tbDays.value/this.gc16['controls'].frequency['controls'].QuantTotalDays.value)*100)));
-        this.gc16['controls'].transportantionBack['controls'].QuantContainerTb.setValue(Math.floor(((this.gc16['controls'].transportantionBack['controls'].tb.value/100)*this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
+        this.gc16['controls'].transportantionBack['controls'].tb.setValue(Math.floor(((this.gc16['controls'].transportantionBack['controls'].tbDays.value / QuantTotalDays) * 100)));
+        this.gc16['controls'].transportantionBack['controls'].QuantContainerTb.setValue(Math.floor(((this.gc16['controls'].transportantionBack['controls'].tb.value / 100) * this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value)));
         //
+
       }
     }
 

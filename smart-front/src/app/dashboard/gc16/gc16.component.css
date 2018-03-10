@@ -107,7 +107,7 @@ span {
 .det {
   width: 15px;
   height: 15px;
-  -webkit-mask-box-image: url("../../../../assets/images/mais.png");
+  -webkit-mask-box-image: url("../../../assets/images/mais.png");
   cursor: pointer;
   left: 50%;
   margin-left: 38%;

@@ -288,7 +288,7 @@ tbody {
 .det2 {
   width: 25px;
   height: 25px;
-  -webkit-mask-box-image: url("../../../../assets/images/interrogacao.png");
+  -webkit-mask-box-image: url("../../../assets/images/interrogacao.png");
   cursor: pointer;
   background-color: #6382c9;
 }

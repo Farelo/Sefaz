@@ -106,32 +106,32 @@
 }
 
 .f1 {
-  -webkit-mask-box-image: url("../../../../../assets/images/usuario1.png");
+  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
   background-color: #ef5562;
 }
 
 .f2 {
-  -webkit-mask-box-image: url("../../../../../assets/images/usuario1.png");
+  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
   background-color: #f77737;
 }
 
 .f3 {
-  -webkit-mask-box-image: url("../../../../../assets/images/usuario1.png");
+  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
   background-color: #f8bd37;
 }
 
 .f4 {
-  -webkit-mask-box-image: url("../../../../../assets/images/usuario1.png");
+  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
   background-color: #4dc9ff;
 }
 
 .f5 {
-  -webkit-mask-box-image: url("../../../../../assets/images/usuario1.png");
+  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
   background-color: #4c7bff;
 }
 
 .f6 {
-  -webkit-mask-box-image: url("../../../../../assets/images/usuario1.png");
+  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
   background-color: #9f8cc1;
 }
 
@@ -140,7 +140,7 @@
   border: none;
   text-align: right;
   float: right;
-  background-image: url("../../../../../assets/images/interrogacao.png");
+  background-image: url("../../../../assets/images/interrogacao.png");
   background-size: 20px;
   background-repeat: no-repeat;
   width: 20px;
@@ -153,7 +153,7 @@
   border: none;
   text-align: right;
   float: right;
-  background-image: url("../../../../../assets/images/interrogacao.png");
+  background-image: url("../../../../assets/images/interrogacao.png");
   background-size: 20px;
   background-repeat: no-repeat;
   width: 20px;
@@ -353,27 +353,27 @@ label {
 }
 
 .fornecedor1 {
-  background-image: url("../../../../../assets/images/local1.png");
+  background-image: url("../../../../assets/images/local1.png");
 }
 
 .fornecedor2 {
-  background-image: url("../../../../../assets/images/local2.png");
+  background-image: url("../../../../assets/images/local2.png");
 }
 
 .fornecedor3 {
-  background-image: url("../../../../../assets/images/local3.png");
+  background-image: url("../../../../assets/images/local3.png");
 }
 
 .fornecedor4 {
-  background-image: url("../../../../../assets/images/local4.png");
+  background-image: url("../../../../assets/images/local4.png");
 }
 
 .fornecedor5 {
-  background-image: url("../../../../../assets/images/local5.png");
+  background-image: url("../../../../assets/images/local5.png");
 }
 
 .fornecedor6 {
-  background-image: url("../../../../../assets/images/local6.png");
+  background-image: url("../../../../assets/images/local6.png");
 }
 
 .quantidade {
@@ -381,27 +381,27 @@ label {
 }
 
 .quantidade1 {
-  background-image: url("../../../../../assets/images/quant1.png");
+  background-image: url("../../../../assets/images/quant1.png");
 }
 
 .quantidade2 {
-  background-image: url("../../../../../assets/images/quant2.png");
+  background-image: url("../../../../assets/images/quant2.png");
 }
 
 .quantidade3 {
-  background-image: url("../../../../../assets/images/quant3.png");
+  background-image: url("../../../../assets/images/quant3.png");
 }
 
 .quantidade4 {
-  background-image: url("../../../../../assets/images/quant4.png");
+  background-image: url("../../../../assets/images/quant4.png");
 }
 
 .quantidade5 {
-  background-image: url("../../../../../assets/images/quant5.png");
+  background-image: url("../../../../assets/images/quant5.png");
 }
 
 .quantidade6 {
-  background-image: url("../../../../../assets/images/quant6.png");
+  background-image: url("../../../../assets/images/quant6.png");
 }
 
 @media (min-width: 1880px) {
@@ -533,7 +533,7 @@ label {
 .imagemInterrogacao {
   width: 50px;
   height: 90px;
-  background-image: url("../../../../../assets/images/interrogacao2.png");
+  background-image: url("../../../../assets/images/interrogacao2.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 50px;

@@ -102,7 +102,7 @@ h1 {
  .det {
    width: 15px;
    height: 15px;
-   -webkit-mask-box-image: url("../../../../assets/images/mais.png");
+   -webkit-mask-box-image: url("../../../assets/images/mais.png");
    cursor: pointer;
    left: 50%;
    margin-left: 43%;
@@ -363,20 +363,20 @@ h3 {
   vertical-align: middle;
 }
 .fromSun {
-  -webkit-mask-box-image: url("../../../../assets/images/local1.png");
+  -webkit-mask-box-image: url("../../../assets/images/local1.png");
   background-color: #77BF3B;
   margin-left: 8px;
 
 }
 .fromSun1 {
-  -webkit-mask-box-image: url("../../../../assets/images/local1.png");
+  -webkit-mask-box-image: url("../../../assets/images/local1.png");
   background-color: #ef5562;
   margin-left: 8px;
 
 }
 .fromSun2 {
   width: 35px;
-  -webkit-mask-box-image: url("../../../../assets/images/distancia.png");
+  -webkit-mask-box-image: url("../../../assets/images/distancia.png");
   background-color:  #6382c9;
 }
 
