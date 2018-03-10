@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TagsService } from '../../../../servicos/tags.service';;
-import { Tag } from '../../../../shared/models/tag';
-import { Pagination } from '../../../../shared/models/pagination';
-import { ModalDeleteComponent } from '../../../../shared/modal-delete/modal-delete.component';
+import { TagsService } from '../../../servicos/tags.service';;
+import { Tag } from '../../../shared/models/tag';
+import { Pagination } from '../../../shared/models/pagination';
+import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

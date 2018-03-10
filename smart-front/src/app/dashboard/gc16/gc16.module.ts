@@ -9,7 +9,7 @@ import {Gc16Component} from './gc16.component';
 import {GC16RoutingModule} from './gc16.routing.module';
 import { CommonModule } from '@angular/common'
 import { NgxPaginationModule} from 'ngx-pagination';
-import { ApplicationPipes } from '../../../shared/pipes/application.pipes';
+import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { ModalModule ,TooltipModule} from 'ngx-bootstrap'
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select2Module } from 'ng2-select2';

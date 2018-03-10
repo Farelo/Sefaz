@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Project } from '../../../../../shared/models/project';
-import { ProjectService } from '../../../../../servicos/projects.service';;
-import { ToastService } from '../../../../../servicos/toast.service';
+import { Project } from '../../../../shared/models/project';
+import { ProjectService } from '../../../../servicos/projects.service';;
+import { ToastService } from '../../../../servicos/toast.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({

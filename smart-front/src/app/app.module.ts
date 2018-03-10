@@ -26,7 +26,7 @@ import { LayerModalComponent } from './shared/modal-packing/layer.component';
 import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.component';
 import { AlertsService } from './servicos/alerts.service';
 import { ImportService } from './servicos/import.service';
-import { DashboardModuleAdmin } from './admin/dashboard/dashboard.module';
+import { DashboardModuleAdmin } from './dashboard/dashboard.module';
 import { ToastService } from './servicos/toast.service';
 import { InventoryService } from './servicos/inventory.service';
 import { DepartmentService } from './servicos/departments.service';

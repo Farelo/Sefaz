@@ -8,7 +8,7 @@ import {ListaComponent} from './lista/lista.component';
 import {HomeRoutingModule} from './home.routing.module';
 import { CommonModule } from '@angular/common'
 import { NgxPaginationModule} from 'ngx-pagination';
-import { ApplicationPipes } from '../../../shared/pipes/application.pipes';
+import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { ModalModule ,TooltipModule, PopoverModule} from 'ngx-bootstrap'
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 

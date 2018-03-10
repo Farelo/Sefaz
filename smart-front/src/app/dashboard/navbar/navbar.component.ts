@@ -1,8 +1,8 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { ModalUserComponent } from '../../../shared/modal-user/modal-user.component';
-import { ModalCurrentEditarComponent } from '../../../shared/modal-current-edit/modal-editar-current.component';
-import { AuthenticationService } from '../../../servicos/auth.service';
+import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
+import { ModalCurrentEditarComponent } from '../../shared/modal-current-edit/modal-editar-current.component';
+import { AuthenticationService } from '../../servicos/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare var $:any;
 

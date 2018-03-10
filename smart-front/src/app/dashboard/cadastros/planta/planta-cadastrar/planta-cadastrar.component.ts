@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { Plant } from '../../../../../shared/models/plant';
-import { PlantsService } from '../../../../../servicos/plants.service';;
-import { ToastService } from '../../../../../servicos/toast.service';
+import { Plant } from '../../../../shared/models/plant';
+import { PlantsService } from '../../../../servicos/plants.service';;
+import { ToastService } from '../../../../servicos/toast.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { GeocodingService } from '../../../../../servicos/geocoding.service';
+import { GeocodingService } from '../../../../servicos/geocoding.service';
 
 @Component({
   selector: 'app-planta-cadastrar',

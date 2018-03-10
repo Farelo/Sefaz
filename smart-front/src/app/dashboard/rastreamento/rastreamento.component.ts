@@ -1,13 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DepartmentService } from '../../../servicos/departments.service';
-import { PlantsService } from '../../../servicos/plants.service';
-import { Department } from '../../../shared/models/department';
+import { DepartmentService } from '../../servicos/departments.service';
+import { PlantsService } from '../../servicos/plants.service';
+import { Department } from '../../shared/models/department';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { PackingService } from '../../../servicos/packings.service';
-import { ModalRastComponent } from '../../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService } from '../../../servicos/auth.service';
+import { PackingService } from '../../servicos/packings.service';
+import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
+import { AuthenticationService } from '../../servicos/auth.service';
 declare var $: any;
 declare var google: any;
 

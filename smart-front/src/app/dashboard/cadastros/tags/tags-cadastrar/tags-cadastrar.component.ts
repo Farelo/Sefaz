@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TagsService } from '../../../../../servicos/tags.service';;
-import { Tag } from '../../../../../shared/models/tag';
+import { TagsService } from '../../../../servicos/tags.service';;
+import { Tag } from '../../../../shared/models/tag';
 import { Router } from '@angular/router';
-import { ToastService } from '../../../../../servicos/toast.service';
+import { ToastService } from '../../../../servicos/toast.service';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 
 @Component({

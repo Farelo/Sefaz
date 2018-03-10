@@ -3,15 +3,15 @@ import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { InventoryService } from '../../../servicos/inventory.service';
-import { SuppliersService } from '../../../servicos/suppliers.service';
-import { PackingService } from '../../../servicos/packings.service';
-import { Pagination } from '../../../shared/models/pagination';
-import { Alert } from '../../../shared/models/alert';
-import { ModalInvComponent } from '../../../shared/modal-inv/modal-inv.component';
-import { LayerModalComponent } from '../../../shared/modal-packing/layer.component';
-import { AuthenticationService } from '../../../servicos/auth.service';
-import { InventoryLogisticService } from '../../../servicos/inventory_logistic.service';
+import { InventoryService } from '../../servicos/inventory.service';
+import { SuppliersService } from '../../servicos/suppliers.service';
+import { PackingService } from '../../servicos/packings.service';
+import { Pagination } from '../../shared/models/pagination';
+import { Alert } from '../../shared/models/alert';
+import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
+import { LayerModalComponent } from '../../shared/modal-packing/layer.component';
+import { AuthenticationService } from '../../servicos/auth.service';
+import { InventoryLogisticService } from '../../servicos/inventory_logistic.service';
 declare var $: any;
 
 @Component({
