@@ -14,9 +14,9 @@
   </button>
 <div class="modalBody" *ngIf="alerta.data.status === 1">
 
-  <p><span>Ultima Planta que foi visto:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
-  <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Informação Indisponivel'}}</p>
-  <p><span>Tempo de sumiço:</span> {{alerta.data.packing?.packing_missing?.time_countdown ? (alerta.data.packing?.packing_missing?.time_countdown | time) : 'Informação Indisponivel'}}</p>
+  <p><span>Ultima Planta que foi visto:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}}</p>
+  <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Sem Registro'}}</p>
+  <p><span>Tempo de sumiço:</span> {{alerta.data.packing?.packing_missing?.time_countdown >= 0 ? (alerta.data.packing?.packing_missing?.time_countdown | time) : 'Sem Registro'}}</p>
   <div class="divBotao">
 
   <button type="button" class="botaoVisualizar" (click)="getHistoric();historicFlag = true" *ngIf="!historicFlag">Visualizar Historico</button>
@@ -44,7 +44,7 @@
           <td>{{packing.supplier?.name || '-'}}</td>
             <td>{{packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status == 'MISSING' ? 'Embalagem Perdida' : 'Embalagem
               Viajando') }}</td>
-          <td>{{packing.permanence_time || '-' | time}}</td>
+          <td>{{packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro'}}</td>
         </tr>
 
       </tbody>
@@ -61,8 +61,8 @@
 </div>
 
 <div class="modalBody" *ngIf="alerta.data.status === 2 ">
-  <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
-  <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel'}}</p>
+  <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}}</p>
+  <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Sem Registro'}}</p>
   <p><span>Rotas da embalagem </span> </p>
   <div class="table-responsive tabela">
     <table class="table">
@@ -91,9 +91,9 @@
 
 <div class="modalBody" *ngIf="alerta.data.status === 3">
 
-  <p><span>Nivel da Bateria:</span> {{alerta.data?.packing?.battery ? (alerta.data?.packing?.battery | round) : 'Informação Indisponivel'}}%</p>
-  <p><span>Departamento:</span> {{alerta.data.actual_plant ? (alerta.data.department  ? alerta.data.department.name : 'Informação Indisponivel') : 'Informação Indisponivel'}}</p>
-  <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
+  <p><span>Nivel da Bateria:</span> {{alerta.data?.packing?.battery >=0 ? (alerta.data?.packing?.battery | round) : 'Sem Registro'}}%</p>
+  <p><span>Departamento:</span> {{alerta.data.actual_plant ? (alerta.data.department  ? alerta.data.department.name : 'Sem Registro') : 'Sem Registro'}}</p>
+  <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}}</p>
 
 </div>
 
@@ -127,10 +127,10 @@
 
 <div class="modalBody" *ngIf="alerta.data.status === 5">
 
-  <p><span>Tempo de Permanência:</span> {{alerta.data?.packing.permanence  ? (alerta.data?.packing.permanence.amount_days | time ): 'Informação Indisponivel' }}</p>
-  <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Informação Indisponivel'}}</p>
-  <p><span>Data de Entrada:</span> {{alerta.data?.packing.permanence ? (alerta.data?.packing.permanence?.date | date) : 'Informação Indisponivel'}}</p>
-  <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Informação Indisponivel'}}</p>
+  <p><span>Tempo de Permanência:</span> {{alerta.data?.packing.permanence >= 0 ? (alerta.data?.packing.permanence.amount_days | time ): 'Sem Registro' }}</p>
+  <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}}</p>
+  <p><span>Data de Entrada:</span> {{alerta.data?.packing.permanence >= 0 ? (alerta.data?.packing.permanence?.date | date) : 'Sem Registro'}}</p>
+  <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Sem Registro'}}</p>
 
 </div>
 
