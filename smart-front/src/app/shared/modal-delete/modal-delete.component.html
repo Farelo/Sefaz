@@ -21,12 +21,12 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção da Embalagem {{view.code}} poderá remover o Registro GC16 e as Rotas associadas a essa embalagem. As informações serão perdidas, você tem certeza?</p>
+      <p>A remoção da Embalagem {{view.code}} poderá remover o Registro BPline e as Rotas associadas a essa embalagem. As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 
   <div  class="detalhes" *ngIf="type === 'gc16'">
-    <h2>Detalhes do Registro GC16 </h2>
+    <h2>Detalhes do Registro BPline </h2>
     <hr>
     <p>Projeto: {{view.project.name }}</p>
     <p>Fornecedor: {{view.supplier.name }}</p>
@@ -34,7 +34,7 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção do Registro do GC16  irá disvincular as Embalagens de código {{view.packing}} do Fornecedor {{view.supplier?.name}}. As informações serão perdidas, você tem certeza?</p>
+      <p>A remoção do Registro do BPline  irá disvincular as Embalagens de código {{view.packing}} do Fornecedor {{view.supplier?.name}}. As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 
@@ -58,7 +58,7 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-    <p>A remoção dessa Tag {{view.name}} porederá desassociar Embalagens, Rotas e registros do GC16 .As informações serão perdidas, você tem certeza?</p>
+    <p>A remoção dessa Tag {{view.name}} porederá desassociar Embalagens, Rotas e registros do BPline .As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
   <div class="detalhes" *ngIf="type === 'project'">
@@ -69,7 +69,7 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção dessa Plataforma/Projeto {{view.code}} porederá desassociar Embalagens, Rotas e registros do GC16 .As informações serão perdidas, você tem certeza?</p>
+      <p>A remoção dessa Plataforma/Projeto {{view.code}} porederá desassociar Embalagens, Rotas e registros do BPline .As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
   <div class="detalhes" *ngIf="type === 'profile'">
@@ -87,7 +87,7 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Perfil porederá desassociar Embalagens, Rotas e registros do GC16 .As informações serão perdidas, você tem certeza?</p>
+      <p>A remoção desse Perfil porederá desassociar Embalagens, Rotas e registros do BPline .As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 

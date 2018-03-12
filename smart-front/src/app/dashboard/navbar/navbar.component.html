@@ -6,7 +6,7 @@
         <li><a routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
         <li *ngIf="currentUser?.profile === 'AdminFactory'"><a routerLinkActive="active"  routerLink="/rc/importar">IMPORTAR DADOS</a></li>
         <li><a routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
-        <li *ngIf="currentUser?.profile === 'AdminFactory'"><a routerLinkActive="active"  routerLink="/rc/gc16">BPline</a></li>
+        <li *ngIf="currentUser?.profile === 'AdminFactory'"><a routerLinkActive="active"  routerLink="/rc/bpline">BPline</a></li>
 
         <li class="scroll usuario placementBottom"
         [ngbPopover]= 'popContent'

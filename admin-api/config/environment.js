@@ -6,7 +6,8 @@ let environment = {
     database: 'reciclopacadmin',
     urldatabase: "mongo",
     time: "50",
-    secret: 'S3cr3t'
+    secret: 'S3cr3t',
+    expiresIn: '2h'    //tempo em que o token irá expirar
   },
   "development": {
     url:"localhost",
@@ -14,7 +15,8 @@ let environment = {
     database: 'reciclopacadmin',
     urldatabase: "localhost",
     time: "50",
-    secret: 'S3cr3t'
+    secret: 'S3cr3t',
+    expiresIn: '2h'    //tempo em que o token irá expirar
   }
 }
 

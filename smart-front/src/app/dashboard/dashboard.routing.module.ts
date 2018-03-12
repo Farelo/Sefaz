@@ -10,7 +10,7 @@ const dashboardRoutes = [
           {path: 'inventario', loadChildren: 'app/dashboard/inventario/inventario.module#InventarioModule'},
           {path: 'importar', loadChildren: 'app/dashboard/importar/importar.module#ImportarModule'},
           {path: 'rastreamento',  loadChildren: 'app/dashboard/rastreamento/rastreamento.module#RastreamentoModule'},
-          {path: 'gc16', loadChildren: 'app/dashboard/gc16/gc16.module#GC16Module'},
+          {path: 'bpline', loadChildren: 'app/dashboard/gc16/gc16.module#GC16Module'},
     ]}
 ];
 
