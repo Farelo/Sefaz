@@ -6,7 +6,8 @@
       <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal" (ngModelChange)="choiced($event)">
         <option *ngFor="let obj of escolhas" [ngValue]="obj.name">{{obj.name}}</option>
       </select>
-
+<!-- TEST SOCKER IO REAL TIME   -->
+ <!-- {{messages.length}} -->
 
 
       <ng-template #content>
@@ -369,7 +370,7 @@
       </div>
     </div>
     <div class="has-text-centered">
-      <pagination-controls class="my-pagination" id="permanence" (pageChange)="permanence.meta.page = $event;permanenceInventorySerial()"
+      <pagination-controls class="my-pagination" id="permanence" (pageChange)="permanence.meta.page = $event;permanenceInventory()"
         directionLinks="false" autoHide="true">
       </pagination-controls>
     </div>
@@ -603,4 +604,15 @@
 
   </div>
 
+</div>
+
+<div >
+
+  
+<!-- TEST SOCKER IO REAL TIME   -->
+<!-- 
+<input type="text"  [(ngModel)]="message">
+<button (click)="sendMessage()"></button> -->
+
+  
 </div>

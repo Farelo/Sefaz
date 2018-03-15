@@ -35,14 +35,13 @@
     </tbody>
   </table>
 </div>
-
-<div class="has-text-centered">
-    <pagination-controls id='department' (pageChange)="pageChanged($event)"
-                         previousLabel="Anterior"
-                         nextLabel="Próximo"
-                         autoHide="true"></pagination-controls>
-</div>
-
 <div class="classVazio" *ngIf="data.data?.length < 1">
   Ainda não existem departamentos cadastradas.
 </div>
+<br />
+<div class="has-text-centered">
+    <pagination-controls id='department' (pageChange)="pageChanged($event)"
+                           directionLinks="false"
+                         autoHide="true"></pagination-controls>
+</div>
+

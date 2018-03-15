@@ -407,6 +407,12 @@ exports.uploadRoute = function (req, res) {
               delete o['duns'];
               o.hashPacking = o.supplier._id + o.packing_code;
             }
+            
+            if (!project_data[index]) {
+              typeError.push("O projeto inserido não pertence ao sistema");
+            } else {
+              o.project = project_data[index];
+            }
 
             if (!factory_data[index]) {
               typeError.push("A Fábrica inserida não pertence ao sistema");
@@ -421,8 +427,13 @@ exports.uploadRoute = function (req, res) {
                 'start_address': data[index].json ? data[index].json.routes[0].legs[0].start_address : undefined,
                 'end_address': data[index].json ? data[index].json.routes[0].legs[0].end_address : undefined
               }
-            }
 
+              //define time maxxx and min
+              o.time = {
+                max: 86400000,
+                min: 0
+              }
+            }
 
             if (typeError.length > 0) {
               dataErros.push({

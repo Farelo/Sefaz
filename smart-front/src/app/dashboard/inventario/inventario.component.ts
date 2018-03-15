@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy  } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
@@ -12,6 +12,7 @@ import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
 import { LayerModalComponent } from '../../shared/modal-packing/layer.component';
 import { AuthenticationService } from '../../servicos/auth.service';
 import { InventoryLogisticService } from '../../servicos/inventory_logistic.service';
+import { ChatService } from '../../servicos/teste';
 declare var $: any;
 
 @Component({
@@ -19,7 +20,7 @@ declare var $: any;
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.css']
 })
-export class InventarioComponent implements OnInit {
+export class InventarioComponent implements OnInit, OnDestroy  {
   public logged_user: any;
   public suppliers: any;
   public name_supplier: any = '';
@@ -43,6 +44,17 @@ export class InventarioComponent implements OnInit {
   public generalEquipamentSearch = "";
   public serial = false;
   public activeModal: any;
+
+  ////////////// // REAL TIME SOCKER IO TEST
+  // messages = [];
+
+  // connection;
+
+  // message;
+
+
+
+  /////////////
   constructor(
     private inventoryLogisticService: InventoryLogisticService,
     private inventoryService: InventoryService,
@@ -53,7 +65,8 @@ export class InventarioComponent implements OnInit {
     private modalService: NgbModal,
     private modalActive: NgbActiveModal,
     private ref: ChangeDetectorRef,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private chatService: ChatService,
   ) {
 
     let user = this.auth.currentUser();
@@ -76,6 +89,14 @@ export class InventarioComponent implements OnInit {
     }
   }
 
+// REAL TIME SOCKER IO TEST
+  // sendMessage() {
+  //   console.log(this.message)
+  //   this.chatService.sendMessage(this.message);
+
+  //   this.message = '';
+
+  // }
 
 
   changeSelect(event) {
@@ -190,6 +211,19 @@ export class InventarioComponent implements OnInit {
     this.generalInventory();
     this.tamanhoSelect();
     this.loadPackings();
+
+    // REAL TIME SOCKER IO TEST
+    // this.connection = this.chatService.getMessages().subscribe(message => {
+    //   console.log(this.messages.length)
+    //   this.messages.push(message);
+
+    // })
+  }
+// <!--TEST SOCKER IO REAL TIME-- >
+  ngOnDestroy() {
+
+    // this.connection.unsubscribe();
+
   }
 
   loadPackings() {

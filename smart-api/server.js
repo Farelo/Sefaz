@@ -14,7 +14,7 @@ const compression      = require('compression');
 const app              = express();
 const http             = require('http').Server(app);
 const port             = process.env.PORT || environment.port;
-
+const io               = require('socket.io')(http);
 
 //sentando configurações do middleware
 app.use(bodyParser.json({limit: '50mb'}));
@@ -37,6 +37,33 @@ require('./job/main');
 
 //adicionando a auth no middleware
 require('./api/auth/auth')(app);
+
+
+
+////////////////////// TESTANTO SOCKET IO PARA REALIZAR APLICAÇÃO REAL TIME
+
+// io.on('connection', (socket) => {
+
+//   console.log('USER CONNECTED');
+
+
+
+//   socket.on('disconnect', function () {
+
+//     console.log('USER DISCONNECTED');
+
+//   });
+
+//   socket.on('add-message', (message) => {
+//     console.log(message)
+//     io.emit('message', { type: 'new-message', text: message });
+
+//   });
+
+// });
+
+
+//////////////////////
 
 swaggerObject.host = `${environment.url}:${environment.port}`;
 

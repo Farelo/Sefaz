@@ -23,7 +23,7 @@ export class ChatService {
 
     let observable = new Observable(observer => {
 
-      this.socket = io(environment.url);
+      this.socket = io("http://localhost:8984");
 
       this.socket.on('message', (data) => {
         console.log(data);
