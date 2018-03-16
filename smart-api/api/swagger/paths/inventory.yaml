@@ -4,7 +4,7 @@ paths:
       get:
         tags:
           - "Inventory"
-        summary: "Inventory of the equipaments."
+        summary: "Retrieve all information about equipaments on the system with pagination and without some filter. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: general_inventory_packing
         security:
@@ -12,17 +12,17 @@ paths:
         parameters:
         - in: "path"
           name: "limit"
-          description: "The limit of packings that will be returned"
+          description: "The limit of information about packings that will be returned"
           required: true
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Return inventory related this page"
           required: true
           type: string
         - in: "query"
           name: "attr"
-          description: "The especific supplier that returns packings related a this supplier"
+          description: "Return inventory related this supplier"
           required: false
           type: string
         responses:
@@ -47,7 +47,7 @@ paths:
       get:
         tags:
           - "Inventory"
-        summary: "Inventory of the equipaments Analyzing the permanence."
+        summary: "Retrieve all information about permancence of the equipaments on the system with pagination and some filters. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: inventory_permanence
         security:
@@ -60,17 +60,17 @@ paths:
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Retrieve inventory related this page"
           required: true
           type: string
         - in: "path"
           name: "code"
-          description: "The especific page that returns packings related a this code"
+          description: "Retrieve inventory related this packing code"
           required: true
           type: string
         - in: "query"
           name: "attr"
-          description: "The especific supplier that returns packings related a this supplier"
+          description: "Retrieve inventory related this supplier id related to packing"
           required: false
           type: string
         responses:
@@ -95,7 +95,7 @@ paths:
       get:
         tags:
           - "Inventory"
-        summary: "Inventory of the equipaments Analyzing your quantity."
+        summary: "Retrieve all information about quantity of the equipaments on the system with pagination and some filters. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: quantity_inventory
         security:
@@ -108,17 +108,17 @@ paths:
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Return inventory related this page"
           required: true
           type: string
         - in: "path"
           name: "code"
-          description: "The especific page that returns packings related a this code"
+          description: "Return inventory related this packing code"
           required: true
           type: string
         - in: "query"
           name: "attr"
-          description: "The especific supplier that returns packings related a this supplier"
+          description: "Retrieve inventory related this supplier id related to packing"
           required: false
           type: string
         responses:
@@ -143,7 +143,7 @@ paths:
       get:
         tags:
           - "Inventory"
-        summary: "Inventory of the equipaments Analyzing your historic."
+        summary: "Retrieve all information about historic of the equipaments on the system with pagination and  by equipament serial. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: inventory_packing_historic
         security:
@@ -156,7 +156,7 @@ paths:
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Return inventory related this page"
           required: true
           type: string
         - in: "path"
@@ -171,7 +171,7 @@ paths:
           type: string
         - in: "query"
           name: "attr"
-          description: "The especific supplier that returns packings related a this supplier"
+          description: "Retrieve inventory related this supplier related to packing"
           required: false
           type: string
         responses:
@@ -196,7 +196,7 @@ paths:
       get:
         tags:
           - "Inventory"
-        summary: "Inventory of the equipaments Analyzing the battery by code."
+        summary: "Retrieve all information about battery level of the equipaments on the system with pagination and  without some filters. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: inventory_battery
         security:
@@ -219,7 +219,7 @@ paths:
           type: string
         - in: "query"
           name: "attr"
-          description: "The especific supplier that returns packings related a this supplier"
+          description: "Retrieve inventory related this supplier id related to packing"
           required: false
           type: string
         responses:
@@ -244,7 +244,7 @@ paths:
       get:
         tags:
           - "Inventory"
-        summary: "Inventory of the equipaments Analyzing yourself."
+        summary: "Retrieve all information about equipament on the system with pagination and  without some filters. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: inventory_packings
         security:
@@ -267,7 +267,7 @@ paths:
           type: string
         - in: "query"
           name: "attr"
-          description: "The especific supplier that returns packings related a this supplier"
+          description: "Retrieve inventory related this supplier id related to packing"
           required: false
           type: string
         responses:
@@ -292,7 +292,7 @@ paths:
       get:
         tags:
           - "Inventory"
-        summary: "Inventory of the suppliers."
+        summary: "Retrieve all information about equipaments related with suplliers. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: supplier_inventory
         security:
@@ -310,7 +310,7 @@ paths:
           type: string
         - in: "path"
           name: "supplier"
-          description: "The especific page that returns packings related a this supplier"
+          description: "Retrieve inventory related this supplier id related to packing"
           required: true
           type: string
         responses:
@@ -335,7 +335,7 @@ paths:
       get:
         tags:
           - "Inventory"
-        summary: "Inventory of the equipaments by plant."
+        summary: "Retrieve all information about  equipaments by plant on the system with pagination. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: geraneral_inventory_packing_by_plant
         security:
@@ -358,12 +358,12 @@ paths:
           type: string
         - in: "path"
           name: "supplier"
-          description: "The especific supplier that returns packings related a this supplier"
+          description: "Retrieve inventory related this supplier related to packing"
           required: true
           type: string
         - in: "path"
           name: "project"
-          description: "The especific project that returns packings related a this project"
+          description: "The especific project id that returns packings related a this project"
           required: true
           type: string
         responses:

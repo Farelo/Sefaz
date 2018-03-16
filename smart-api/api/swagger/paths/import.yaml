@@ -14,7 +14,7 @@ paths:
          - in: formData
            name: upfile
            type: file
-           description: The file to upload to tag.
+           description: The file that will be uploaded with information about tag. It needs only code tag as information on header of your excel.
        responses:
          200:
            description: "Successfully"
@@ -37,7 +37,7 @@ paths:
      post:
        tags:
          - "Upload"
-       summary: Uploads a file to project.
+       summary: The file that will be uploaded with information about project. It needs only project name as information on header of your excel.
        consumes:
          - multipart/form-data
        operationId: uploadProject
@@ -70,7 +70,7 @@ paths:
      post:
        tags:
          - "Upload"
-       summary: Uploads a file to plant.
+       summary: The file that will be uploaded with information about plant. It needs plant name, lat(latitude) and lng(longitude) as information on header of your excel.
        consumes:
          - multipart/form-data
        operationId: uploadPlant
@@ -103,7 +103,7 @@ paths:
      post:
        tags:
          - "Upload"
-       summary: Uploads a file to department.
+       summary: The file that will be uploaded with information about department. It needs department name, lat(latitude) , lng(longitude) and plant name related to this department as information on header of your excel.
        consumes:
          - multipart/form-data
        operationId: uploadDepartment
@@ -146,7 +146,7 @@ paths:
          - in: formData
            name: upfile
            type: file
-           description: The file to upload.
+           description: The file that will be uploaded with information about packing. It needs a supplier name, project name, duns related this supplier, code to this packing, serial to this packing, type to this packing, capacity to this packing, weight to this packing, width to this packing, height to this packing and length to this packing  as information on header of your excel.
        responses:
          200:
            description: "Successfully"
@@ -179,7 +179,7 @@ paths:
          - in: formData
            name: upfile
            type: file
-           description: The file to upload.
+           description: The file that will be uploaded with information about route. It needs a supplier name, project name, duns related this supplier, name of the factory plant and code packing as information on header of your excel.
        responses:
          200:
            description: "Successfully"

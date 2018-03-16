@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "Tag"
-        summary: "Get a tags on the system"
+        summary: "Retreive a tag from the system"
         description: ""
         operationId: tags_read
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "tags_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a tag related this tag id"
           required: true
           type: string
         responses:
@@ -38,7 +38,7 @@ paths:
     get:
       tags:
         - "Tag"
-      summary: "Get all tagss on the system by pagination that were binded and no binded with packings"
+      summary: "Retrieve all tags from the system with pagination that were binded and no binded with packings"
       description: ""
       operationId: tags_list_pagination
       security:
@@ -51,12 +51,12 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns tagss related a this page"
+        description: "Retrieve tags related this page"
         required: true
         type: string
       - in: "query"
         name: "attr"
-        description: "The especific attr that returns packings related a this attr"
+        description: "Retrieve tags related this supplier id"
         required: false
         type: string
       responses:
@@ -76,40 +76,12 @@ paths:
           description: "Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-  # /tags/list/pagination/nobinded/{limit}/{page}:
-  #   x-swagger-router-controller: tags_controller
-  #   get:
-  #     tags:
-  #       - "Tag"
-  #     summary: "Get all tags on the system by pagination that does not was still binded with the packing"
-  #     description: ""
-  #     operationId: tags_list_all_no_binded_pagination
-  #     parameters:
-  #     - in: "path"
-  #       name: "limit"
-  #       description: "The limit of tagss that will be returned"
-  #       required: true
-  #       type: string
-  #     - in: "path"
-  #       name: "page"
-  #       description: "The especific page that returns tagss related a this page"
-  #       required: true
-  #       type: string
-  #     responses:
-  #       200:
-  #         description: "Successfully"
-  #         schema:
-  #           $ref: "#/definitions/SuccessResponse"
-  #       default:
-  #         description: "Error"
-  #         schema:
-  #           $ref: "#/definitions/ErrorResponse"
   /tags/list/all/nobinded:
     x-swagger-router-controller: tags_controller
     get:
       tags:
         - "Tag"
-      summary: "Get all tags on the system that does not was still binded with the packing"
+      summary: "Retrieve all tags from the system that does not was still binded with the packing"
       description: ""
       operationId: tags_list_all_no_binded
       security:
@@ -144,7 +116,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "tags object that needs to be added to the system"
+        description: "Sample of tag object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/Tag"
@@ -170,7 +142,7 @@ paths:
     post:
       tags:
       - "Tag"
-      summary: "Add a array of tags to the system"
+      summary: "Add a array of tags on the system"
       description: ""
       operationId: tags_create_array
       security:
@@ -178,7 +150,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "tags array that needs to be added to the system"
+        description: "Sample of array tags object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/ArrayTag"
@@ -206,7 +178,7 @@ paths:
     delete:
       tags:
       - "Tag"
-      summary: "Remove a tags on the system"
+      summary: "Remove a tags from the system"
       description: ""
       operationId: tags_delete
       security:
@@ -214,7 +186,7 @@ paths:
       parameters:
       - in: "path"
         name: "tags_id"
-        description: "The code that needs to be fetched"
+        description: "Remove tag related this tag id"
         required: true
         type: string
       responses:
@@ -239,7 +211,7 @@ paths:
     put:
       tags:
       - "Tag"
-      summary: "Update a tags on the system"
+      summary: "Update a tag from the system"
       description: ""
       operationId: tags_update
       security:
@@ -247,12 +219,12 @@ paths:
       parameters:
       - in: "path"
         name: "tags_id"
-        description: "The code that needs to be fetchede"
+        description: "Update tag related this tag id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The project object that will to be modified"
+        description: "The tag object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/Tag"

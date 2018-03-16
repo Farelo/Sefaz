@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "GC16"
-        summary: "Get a GC16 on the system"
+        summary: "Retrieve a GC16 from the system"
         description: ""
         operationId: gc16_read
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a gc16 related this gc16 id"
           required: true
           type: string
         responses:
@@ -38,7 +38,7 @@ paths:
     get:
       tags:
         - "GC16"
-      summary: "Get all gc16 registers on the system by pagination"
+      summary: "Retrieve all registers GC16 on the system"
       description: ""
       operationId: gc16_list
       security:
@@ -65,7 +65,7 @@ paths:
     get:
       tags:
         - "GC16"
-      summary: "Get all gc16 registers on the system"
+      summary: "Retrieve all registers GC16 from the system with pagination"
       description: ""
       operationId: gc16_list_pagination
       security:
@@ -73,17 +73,17 @@ paths:
       parameters:
       - in: "path"
         name: "limit"
-        description: "The limit of gc16 registers that will be returned"
+        description: "The limit of registers GC16 that will be Retrieveed"
         required: true
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns gc16 registerss related a this page"
+        description: "Retrieve registers GC16 related this page"
         required: true
         type: string
       - in: "query"
         name: "attr"
-        description: "The especific attr that returns packings related a this attr"
+        description: "Retrieve registers GC16 related this supplier id"
         required: false
         type: string
       responses:
@@ -108,7 +108,7 @@ paths:
     post:
       tags:
       - "GC16"
-      summary: "Add a new gc16 register to the system"
+      summary: "Add a new gc16 register on the system"
       description: ""
       operationId: gc16_create
       security:
@@ -116,7 +116,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "GC16 object that needs to be added to the system"
+        description: "Sample of GC16 register object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/GC16"
@@ -142,7 +142,7 @@ paths:
     delete:
       tags:
       - "GC16"
-      summary: "Remove a gc16 register on the system"
+      summary: "Remove a gc16 register from the system"
       description: ""
       operationId: gc16_delete
       security:
@@ -150,7 +150,7 @@ paths:
       parameters:
       - in: "path"
         name: "id"
-        description: "The code that needs to be fetched"
+        description: "Remove a department related this gc16 id"
         required: true
         type: string
       responses:
@@ -175,7 +175,7 @@ paths:
     put:
       tags:
       - "GC16"
-      summary: "Update a gc16 register on the system"
+      summary: "Update a gc16 register from the system"
       description: ""
       operationId: gc16_update
       security:
@@ -183,12 +183,12 @@ paths:
       parameters:
       - in: "path"
         name: "id"
-        description: "The code that needs to be fetchede"
+        description: "Update a department related this gc16 id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The GC16 object that will to be modified"
+        description: "The GC16 object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/GC16"

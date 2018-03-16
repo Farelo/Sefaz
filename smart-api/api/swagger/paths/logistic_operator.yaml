@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "Logistic Operator"
-        summary: "Get a logistic operator on the system"
+        summary: "Retrieve a logistic operator from the system"
         description: ""
         operationId: logistic_operator_read
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "logistic_operator_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a logistic operato related this logistic operator id"
           required: true
           type: string
         responses:
@@ -38,7 +38,7 @@ paths:
     get:
       tags:
         - "Logistic Operator"
-      summary: "Get all logistic_operators on the system by pagination"
+      summary: "Retrieve all logistic operators on the system with pagination"
       description: ""
       operationId: logistic_operator_listPagination
       security:
@@ -51,7 +51,7 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns logistic operators related a this page"
+        description: "Retrieve a logistic operators related this page"
         required: true
         type: string
       responses:
@@ -76,7 +76,7 @@ paths:
     post:
       tags:
       - "Logistic Operator"
-      summary: "Add a new logistic operator to the system"
+      summary: "Add a new logistic operator on the system"
       description: ""
       operationId: logistic_operator_create
       security:
@@ -84,7 +84,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "logistic operator object that needs to be added to the system"
+        description: "Sample of logistic operator object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/Logistic_operator"
@@ -112,7 +112,7 @@ paths:
     delete:
       tags:
       - "Logistic Operator"
-      summary: "Remove a logistic operator on the system"
+      summary: "Remove a logistic operator from the system"
       description: ""
       operationId: logistic_operator_delete
       security:
@@ -120,7 +120,7 @@ paths:
       parameters:
       - in: "path"
         name: "logistic_operator_id"
-        description: "The code that needs to be fetched"
+        description: "Remove a logistic related this logistic operator id"
         required: true
         type: string
       responses:
@@ -145,7 +145,7 @@ paths:
     put:
       tags:
       - "Logistic Operator"
-      summary: "Update a logistic operator on the system"
+      summary: "Update a logistic operator from the system"
       description: ""
       operationId: logistic_operator_update
       security:
@@ -153,12 +153,12 @@ paths:
       parameters:
       - in: "path"
         name: "logistic_operator_id"
-        description: "The code that needs to be fetchede"
+        description: "Update a logistic related this logistic operator id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The project object that will to be modified"
+        description: "The Logistic object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/Logistic_operator"

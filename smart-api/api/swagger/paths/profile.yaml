@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "Profile"
-        summary: "Get a profile on the system"
+        summary: "Retrieve a profile from the system"
         description: ""
         operationId: profile_read
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "profile_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve profile related this profile id"
           required: true
           type: string
         responses:
@@ -38,7 +38,7 @@ paths:
       get:
         tags:
           - "Profile"
-        summary: "Get a profile on the system by email"
+        summary: "Retrieve a profile from the system by email"
         description: ""
         operationId: profile_read_by_email
         security:
@@ -46,7 +46,7 @@ paths:
         parameters:
         - in: "path"
           name: "email"
-          description: "The email that needs to be fetched"
+          description: "Retrieve profile related this email"
           required: true
           type: string
         responses:
@@ -71,18 +71,18 @@ paths:
       get:
         tags:
           - "Profile"
-        summary: "Auth a profile on the system"
+        summary: "Realyze auth on the system using password and email from profile"
         description: ""
         operationId: profile_auth
         parameters:
         - in: "path"
           name: "password"
-          description: "The password that needs to be fetched"
+          description: "Auth profile related this password"
           required: true
           type: string
         - in: "path"
           name: "email"
-          description: "The email that needs to be fetched"
+          description: "Auth profile related this email"
           required: true
           type: string
         responses:
@@ -107,7 +107,7 @@ paths:
     get:
       tags:
         - "Profile"
-      summary: "Get all profilies on the system by pagination"
+      summary: "Retrieve all profilies from the system with pagination"
       description: ""
       operationId: profile_listPagination
       security:
@@ -120,7 +120,7 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns profilies related a this page"
+        description: "Retrieve profiles related this page"
         required: true
         type: string
       responses:
@@ -145,7 +145,7 @@ paths:
     get:
       tags:
         - "Profile"
-      summary: "Get all profilies on the system by pagination and supplier"
+      summary: "Retrieve all profilies from the system with pagination by supplier"
       description: ""
       operationId: profile_listPagination_supplier
       security:
@@ -158,12 +158,12 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns profilies related a this page"
+        description: "Retrieve profiles related this page"
         required: true
         type: string
       - in: "path"
         name: "supplier"
-        description: "The especific supplier that returns profilies related a this page"
+        description: "Retrieve profiles related this supplier id"
         required: true
         type: string
       responses:
@@ -188,7 +188,7 @@ paths:
     get:
       tags:
         - "Profile"
-      summary: "Get all profilies on the system by pagination and logistic"
+      summary: "Retrieve all profilies from the system with pagination by logistic"
       description: ""
       operationId: profile_listPagination_logistic
       security:
@@ -196,17 +196,17 @@ paths:
       parameters:
       - in: "path"
         name: "limit"
-        description: "The limit of profilies that will be returned"
+        description: "The limit of profiles that will be returned"
         required: true
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns profilies related a this page"
+        description: "Retrieve profiles related this page"
         required: true
         type: string
       - in: "path"
         name: "logistic"
-        description: "The especific logistic that returns profilies related a this page"
+        description: "Retrieve profiles related this logistic operator id"
         required: true
         type: string
       responses:
@@ -231,7 +231,7 @@ paths:
     post:
       tags:
       - "Profile"
-      summary: "Add a new profile to the system"
+      summary: "Add a new profile on the system"
       description: ""
       operationId: profile_create
       security:
@@ -239,7 +239,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "profile object that needs to be added to the system"
+        description: "Sample of profile object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/Profile"
@@ -266,7 +266,7 @@ paths:
     delete:
       tags:
       - "Profile"
-      summary: "Remove a profile on the system"
+      summary: "Remove a profile from the system"
       description: ""
       operationId: profile_delete
       security:
@@ -274,7 +274,7 @@ paths:
       parameters:
       - in: "path"
         name: "profile_id"
-        description: "The code that needs to be fetched"
+        description: "Remove a profile related this profile id"
         required: true
         type: string
       responses:
@@ -299,7 +299,7 @@ paths:
     put:
       tags:
       - "Profile"
-      summary: "Update a profile on the system"
+      summary: "Update a profile from the system"
       description: ""
       operationId: profile_update
       security:
@@ -307,12 +307,12 @@ paths:
       parameters:
       - in: "path"
         name: "profile_id"
-        description: "The code that needs to be fetchede"
+        description: "Update a profile related this profile id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The profile object that will to be modified"
+        description: "The profile object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/Profile"

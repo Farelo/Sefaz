@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "Route"
-        summary: "Get a route on the system"
+        summary: "Retrieve a route from the system"
         description: ""
         operationId: route_read
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "route_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a route related this route id"
           required: true
           type: string
         responses:
@@ -38,7 +38,7 @@ paths:
     get:
       tags:
         - "Route"
-      summary: "Get all routes on the system by pagination"
+      summary: "Retrieve all routes from the system with pagination"
       description: ""
       operationId: route_list_pagination
       security:
@@ -51,12 +51,12 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns routes related a this page"
+        description: "Retrieve routes related this page"
         required: true
         type: string
       - in: "query"
         name: "attr"
-        description: "The especific attr that returns packings related a this attr"
+        description: "Retrieve routes related this supplier id"
         required: false
         type: string
       responses:
@@ -81,7 +81,7 @@ paths:
     post:
       tags:
       - "Route"
-      summary: "Add a new route to the system"
+      summary: "Add a new route on the system"
       description: ""
       operationId: route_create
       security:
@@ -89,7 +89,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "route object that needs to be added to the system"
+        description: "Sample of route object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/Route"
@@ -115,7 +115,7 @@ paths:
     post:
       tags:
       - "Route"
-      summary: "Add a array route to the system"
+      summary: "Add a array route from the system"
       description: ""
       operationId: route_create_array
       security:
@@ -123,7 +123,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "route array that needs to be added to the system"
+        description: "Sample of route array object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/ArrayRoute"
@@ -149,7 +149,7 @@ paths:
     delete:
       tags:
       - "Route"
-      summary: "Remove a route on the system"
+      summary: "Remove a route from the system"
       description: ""
       operationId: route_delete
       security:
@@ -157,7 +157,7 @@ paths:
       parameters:
       - in: "path"
         name: "route_id"
-        description: "The code that needs to be fetched"
+        description: "Remove a route related this route id"
         required: true
         type: string
       responses:
@@ -190,12 +190,12 @@ paths:
       parameters:
       - in: "path"
         name: "route_id"
-        description: "The code that needs to be fetchede"
+        description: "Update a route related this route id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The project object that will to be modified"
+        description: "The route object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/Route"

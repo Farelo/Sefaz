@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "Supplier"
-        summary: "Get a supplier on the system"
+        summary: "Retrieve a supplier from the system"
         description: ""
         operationId: supplier_read
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "supplier_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve supplier related this supplier id"
           required: true
           type: string
         responses:
@@ -38,7 +38,7 @@ paths:
       get:
         tags:
           - "Supplier"
-        summary: "Get a supplier on the system"
+        summary: "Retrieve a supplier from the system"
         description: ""
         operationId: supplier_read_by_duns
         security:
@@ -46,7 +46,7 @@ paths:
         parameters:
         - in: "path"
           name: "supplier_duns"
-          description: "The code that needs to be fetched"
+          description: "Retrieve supplier related this supplier duns"
           required: true
           type: string
         responses:
@@ -71,7 +71,7 @@ paths:
       get:
         tags:
           - "Supplier"
-        summary: "Get a supplier on the system by name and duns"
+        summary: "Retreive a supplier from the system by name and duns"
         description: ""
         operationId: supplier_read_by_dunsAndSupplier
         security:
@@ -79,12 +79,12 @@ paths:
         parameters:
         - in: "path"
           name: "name"
-          description: "The name that needs to be fetched"
+          description: "Retrieve supplier related this supplier name"
           required: true
           type: string
         - in: "path"
           name: "duns"
-          description: "The duns that needs to be fetched"
+          description: "Retrieve supplier related this supplier duns"
           required: true
           type: string
         responses:
@@ -109,7 +109,7 @@ paths:
     get:
       tags:
         - "Supplier"
-      summary: "Get all suppliers on the system by pagination"
+      summary: "Retrieve all suppliers from the system with pagination"
       description: ""
       operationId: supplier_list_pagination
       security:
@@ -122,7 +122,7 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns suppliers related a this page"
+        description: "Retrieve supplier related this page"
         required: true
         type: string
       responses:
@@ -147,7 +147,7 @@ paths:
     get:
       tags:
         - "Supplier"
-      summary: "Get all suppliers on the system "
+      summary: "Retrieve all suppliers from the system "
       description: ""
       operationId: supplier_list_all
       security:
@@ -182,7 +182,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "supplier object that needs to be added to the system"
+        description: "Sample of supplier object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/Supplier"
@@ -210,7 +210,7 @@ paths:
     delete:
       tags:
       - "Supplier"
-      summary: "Remove a supplier on the system"
+      summary: "Remove a supplier from the system"
       description: ""
       operationId: supplier_delete
       security:
@@ -218,7 +218,7 @@ paths:
       parameters:
       - in: "path"
         name: "supplier_id"
-        description: "The code that needs to be fetched"
+        description: "Remove supplier related this supplier id"
         required: true
         type: string
       responses:
@@ -243,7 +243,7 @@ paths:
     put:
       tags:
       - "Supplier"
-      summary: "Update a supplier on the system"
+      summary: "Update a supplier from the system"
       description: ""
       operationId: supplier_update
       security:
@@ -251,12 +251,12 @@ paths:
       parameters:
       - in: "path"
         name: "supplier_id"
-        description: "The code that needs to be fetchede"
+        description: "update a supplier related this supplier id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The project object that will to be modified"
+        description: "The supplier object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/Supplier"

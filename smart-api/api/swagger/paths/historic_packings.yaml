@@ -1,10 +1,11 @@
+#-------------------------------------------START GC16 CRUD ----------------------------------
 paths:
   /historicpackings/retrieve/{historic_packings_id}:
       x-swagger-router-controller: historic_packings_controller
       get:
         tags:
           - "Historic Packings"
-        summary: "Get a historic packings on the system"
+        summary: "Retrieve a historic packings from the system"
         description: ""
         operationId: historic_packings_read
         security:
@@ -12,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "historic_packings_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a historic packing related this historic packing id"
           required: true
           type: string
         responses:
@@ -37,7 +38,7 @@ paths:
     get:
       tags:
         - "Historic Packings"
-      summary: "Get all historic packingss on the system by pagination"
+      summary: "Retrieve all historic packing from the system with pagination"
       description: ""
       operationId: historic_packings_listPagination
       security:
@@ -45,12 +46,12 @@ paths:
       parameters:
       - in: "path"
         name: "limit"
-        description: "The limit of historic packings that will be returned"
+        description: "The limit of historic that will be Retrieveed"
         required: true
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns historic packings related a this page"
+        description: "Retrieve historic related this page"
         required: true
         type: string
       responses:
@@ -75,7 +76,7 @@ paths:
     get:
       tags:
         - "Historic Packings"
-      summary: "Get all historic packings on the system"
+      summary: "Retrieve all historic packing from the system"
       description: ""
       operationId: historic_packings_list
       security:
@@ -102,7 +103,7 @@ paths:
     post:
       tags:
       - "Historic Packings"
-      summary: "Add a new historic packings to the system"
+      summary: "Add a new historic packing on the system"
       description: ""
       operationId: historic_packings_create
       security:
@@ -110,7 +111,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Historic packings object that needs to be added to the system"
+        description: "Sample of Historic Packing object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/HistoricPackings"
@@ -138,7 +139,7 @@ paths:
     delete:
       tags:
       - "Historic Packings"
-      summary: "Remove a historic packings on the system"
+      summary: "Remove a historic packing from the system"
       description: ""
       operationId: historic_packings_delete
       security:
@@ -146,7 +147,7 @@ paths:
       parameters:
       - in: "path"
         name: "historic_packings_id"
-        description: "The code that needs to be fetched"
+        description: "Remove a historic packing related this historic id"
         required: true
         type: string
       responses:
@@ -171,7 +172,7 @@ paths:
     put:
       tags:
       - "Historic Packings"
-      summary: "Update a historic packings on the system"
+      summary: "Update a historic packing from the system"
       description: ""
       operationId: historic_packings_update
       security:
@@ -179,12 +180,12 @@ paths:
       parameters:
       - in: "path"
         name: "historic_packings_id"
-        description: "The code that needs to be fetchede"
+        description: "Update a historic related this historic id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The historic packing object that will to be modified"
+        description: "The Hisotric packing object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/HistoricPackings"

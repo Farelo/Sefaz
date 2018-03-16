@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "Packing"
-        summary: "Get a packing on the system"
+        summary: "Retrieve a packing from the system"
         description: ""
         operationId: packing_read
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "packing_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a packing related this packing id"
           required: true
           type: string
         responses:
@@ -38,7 +38,7 @@ paths:
       get:
         tags:
           - "Packing"
-        summary: "Get a position the packing on the system"
+        summary: "Retrieve the packing position on the system"
         description: ""
         operationId: packing_position
         security:
@@ -46,7 +46,7 @@ paths:
         parameters:
         - in: "path"
           name: "code"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a packing position related this packing code"
           required: true
           type: string
         responses:
@@ -71,7 +71,7 @@ paths:
       get:
         tags:
           - "Packing"
-        summary: "Get a packing on the system by supplier, code and Project"
+        summary: "Retrieve a packing from the system by supplier, code and Project"
         description: ""
         operationId: packing_read_by_supplierAndcodeAndProject
         security:
@@ -79,17 +79,17 @@ paths:
         parameters:
         - in: "path"
           name: "supplier"
-          description: "The supplier that needs to be fetched"
+          description: "Retrieve a packing related this supplier id"
           required: true
           type: string
         - in: "path"
           name: "project"
-          description: "The project that needs to be fetched"
+          description: "Retrieve a packing related this project id"
           required: true
           type: string
         - in: "path"
           name: "code"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a packing related this packing code"
           required: true
           type: string
         responses:
@@ -114,7 +114,7 @@ paths:
       get:
         tags:
           - "Packing"
-        summary: "Get a packing on the system by serial and code"
+        summary: "Retreive a packing from the system by serial and code"
         description: ""
         operationId: packing_read_by_codeAndSerial
         security:
@@ -122,12 +122,12 @@ paths:
         parameters:
         - in: "path"
           name: "serial"
-          description: "The serial that needs to be fetched"
+          description: "Retrieve a packing related this serial"
           required: true
           type: string
         - in: "path"
           name: "code"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a packing related this code"
           required: true
           type: string
         responses:
@@ -152,7 +152,7 @@ paths:
     get:
       tags:
         - "Packing"
-      summary: "Get all packings on the system by pagination"
+      summary: "Retreive all packings from the system with pagination"
       description: ""
       operationId: packing_list_pagination
       security:
@@ -165,12 +165,12 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns packings related a this page"
+        description: "Retrieve packings related this page"
         required: true
         type: string
       - in: "query"
         name: "attr"
-        description: "The especific attr that returns packings related a this attr"
+        description: "Retrieve packings related this supplier id"
         required: false
         type: string
       responses:
@@ -195,7 +195,7 @@ paths:
     get:
       tags:
         - "Packing"
-      summary: "Get all packings on the system by pagination by plant"
+      summary: "Retrieve all packings from the system with pagination by plant"
       description: ""
       operationId: packing_list_pagination_by_plant
       security:
@@ -208,12 +208,12 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns packings related a this page"
+        description: "Retrieve packings related this page"
         required: true
         type: string
       - in: "path"
         name: "id"
-        description: "The especific id that returns packings related a this plant"
+        description: "Retrieve packings related this plant id"
         required: true
         type: string
       responses:
@@ -238,7 +238,7 @@ paths:
     get:
       tags:
         - "Packing"
-      summary: "Get all packings on the system by supplier"
+      summary: "Retrieve all packings from the system by supplier"
       description: ""
       operationId: packing_list_by_supplier
       security:
@@ -246,7 +246,7 @@ paths:
       parameters:
       - in: "path"
         name: "id"
-        description: "The supplier id"
+        description: "Retrieve packings related this supplier id"
         required: true
         type: string
       responses:
@@ -271,7 +271,7 @@ paths:
     get:
       tags:
         - "Packing"
-      summary: "Get all distinct packings on the system "
+      summary: "Retrieve all distinct packings from the system "
       description: ""
       operationId: packing_list_distinct
       security:
@@ -298,7 +298,7 @@ paths:
     get:
       tags:
         - "Packing"
-      summary: "Get all distinct packings on the system by supplier "
+      summary: "Retrieve all distinct packings from the system by supplier "
       description: ""
       operationId: packing_list_distinct_by_supplier
       security:
@@ -306,7 +306,7 @@ paths:
       parameters:
         - in: "path"
           name: "supplier"
-          description: "The code that needs to be fetched"
+          description: "Retrieve packings related this supplier id"
           required: true
           type: string
       responses:
@@ -331,7 +331,7 @@ paths:
     post:
       tags:
         - "Packing"
-      summary: "Get all distinct packings on the system by logistic "
+      summary: "Retreive all distinct packings from the system by logistic "
       description: ""
       operationId: packing_list_distinct_by_logistic
       security:
@@ -339,7 +339,7 @@ paths:
       parameters:
         - in: "body"
           name: "body"
-          description: "Array of supplier that needs to be fatched "
+          description: "Array of the suppliers related to the logistic operator that will be used to Retrieve the information about the packings"
           required: true
           schema:
             $ref: "#/definitions/ArraySupplier"
@@ -365,7 +365,7 @@ paths:
     get:
       tags:
         - "Packing"
-      summary: "Get all distinct packings on the system "
+      summary: "Retrieve all distinct packings from the system "
       description: ""
       operationId: packing_list_equals
       security:
@@ -373,17 +373,17 @@ paths:
       parameters:
         - in: "path"
           name: "supplier"
-          description: "The code that needs to be fetched"
+          description: "Retrieve packings related this supplier id"
           required: true
           type: string
         - in: "path"
           name: "code"
-          description: "The code that needs to be fetched"
+          description: "Retrieve packings related this packing code"
           required: true
           type: string
         - in: "path"
           name: "project"
-          description: "The code that needs to be fetched"
+          description: "Retrieve packings related this project id"
           required: true
           type: string
       responses:
@@ -408,7 +408,7 @@ paths:
       get:
         tags:
           - "Packing"
-        summary: "Get a packing by code ...."
+        summary: "Retrieve all packings from the system by packing code"
         description: ""
         operationId: list_by_code
         security:
@@ -416,7 +416,7 @@ paths:
         parameters:
         - in: "path"
           name: "packing_code"
-          description: "The code that needs to be fetched"
+          description: "Retrieve packings related this packing code"
           required: true
           type: string
         responses:
@@ -441,7 +441,7 @@ paths:
       get:
         tags:
           - "Packing"
-        summary: "Get list packing by department"
+        summary: "Retreive a packing list by department with pagination"
         description: ""
         operationId: list_packing_department
         security:
@@ -449,17 +449,17 @@ paths:
         parameters:
         - in: "path"
           name: "department"
-          description: "The code that needs to be fetched"
+          description: "Retrieve packings related this department id"
           required: true
           type: string
         - in: "path"
           name: "limit"
-          description: "The limit of packings that will be returned"
+          description: "The limit of packings that will be retrieved"
           required: true
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Retrieve packings related this page"
           required: true
           type: string
         responses:
@@ -484,7 +484,7 @@ paths:
       get:
         tags:
           - "Packing"
-        summary: "Get a packings no binded."
+        summary: "Retreive a packings no binded with some tag."
         description: ""
         operationId: list_packing_no_binded
         security:
@@ -492,7 +492,7 @@ paths:
         parameters:
           - in: "path"
             name: "supplier"
-            description: "The code that needs to be fetched"
+            description: "Retrieve packings related this supplier id"
             required: true
             type: string
         responses:
@@ -518,7 +518,7 @@ paths:
     post:
       tags:
       - "Packing"
-      summary: "Add a new packing to the system"
+      summary: "Add a new packing on the system"
       description: ""
       operationId: packing_create
       security:
@@ -526,7 +526,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "packing object that needs to be added to the system"
+        description: "Sample of packing object that will be add to the system"
         required: true
         schema:
           type: array
@@ -554,7 +554,7 @@ paths:
     post:
       tags:
       - "Packing"
-      summary: "Add a array packing to the system"
+      summary: "Add a array packing on the system"
       description: ""
       operationId: packing_create_array
       security:
@@ -562,7 +562,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "packing object that needs to be added to the system"
+        description: "Sample of packing array object that will be add to the system"
         required: true
         schema:
           type: array
@@ -590,7 +590,7 @@ paths:
     delete:
       tags:
       - "Packing"
-      summary: "Remove a packing on the system"
+      summary: "Remove a packing from the system"
       description: ""
       operationId: packing_delete
       security:
@@ -598,7 +598,7 @@ paths:
       parameters:
       - in: "path"
         name: "packing_id"
-        description: "The code that needs to be fetched"
+        description: "Remove a packing related this packing id"
         required: true
         type: string
       responses:
@@ -623,7 +623,7 @@ paths:
     put:
       tags:
       - "Packing"
-      summary: "Update a packing on the system"
+      summary: "Update a packing from the system"
       description: ""
       operationId: packing_update
       security:
@@ -631,12 +631,12 @@ paths:
       parameters:
       - in: "path"
         name: "packing_id"
-        description: "The code that needs to be fetchede"
+        description: "Update a packing related this packing id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The project object that will to be modified"
+        description: "The packing object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/Packing"
@@ -662,7 +662,7 @@ paths:
     put:
       tags:
       - "Packing"
-      summary: "Update a packing on the system using gc16"
+      summary: "Update a packing from the system using gc16"
       description: ""
       operationId: packing_update_by_code
       security:
@@ -670,22 +670,22 @@ paths:
       parameters:
       - in: "path"
         name: "code"
-        description: "The code that needs to be fetchede"
+        description: "Retrieve packing related this packing code"
         required: true
         type: string
       - in: "path"
         name: "project"
-        description: "The project that needs to be fetchede"
+        description: "Retrieve packing related this project id"
         required: true
         type: string
       - in: "path"
         name: "supplier"
-        description: "The supplier that needs to be fetchede"
+        description: "Retrieve packing related this supplier id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The project object that will to be modified"
+        description: "The packing object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/Packing"
@@ -711,7 +711,7 @@ paths:
     put:
       tags:
       - "Packing"
-      summary: "Unset a filed from packing on the system using code"
+      summary: "Unset a field from packing from the system using code"
       description: ""
       operationId: packing_update_unset_by_code
       security:
@@ -719,7 +719,7 @@ paths:
       parameters:
       - in: "path"
         name: "packing_code"
-        description: "The code that needs to be fetchede"
+        description: "Update packing related this packing code"
         required: true
         type: string
       responses:
@@ -744,7 +744,7 @@ paths:
     put:
       tags:
       - "Packing"
-      summary: "Update all packings on the system based on query"
+      summary: "Update all packings on the system based on supplier and code"
       description: ""
       operationId: packing_update_all_by_route
       security:
@@ -752,17 +752,17 @@ paths:
       parameters:
       - in: "path"
         name: "code"
-        description: "The code that needs to be fetchede"
+        description: "Update packings related this code"
         required: true
         type: string
       - in: "path"
         name: "supplier"
-        description: "The code that needs to be fetchede"
+        description: "Update packings related this supplier id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The project object that will to be modified"
+        description: "The packing object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/PackingHash"

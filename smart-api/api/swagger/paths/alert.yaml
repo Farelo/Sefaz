@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "Alerts"
-        summary: "Get a alert on the system"
+        summary: "Retrieve a alert by status from the system"
         description: ""
         operationId: alert_read_by_packing
         security:
@@ -13,12 +13,12 @@ paths:
         parameters:
         - in: "path"
           name: "packing_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a alert related this packing id"
           required: true
           type: string
         - in: "path"
           name: "status"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a alert related this alert status"
           required: true
           type: string
         responses:
@@ -43,7 +43,7 @@ paths:
     get:
       tags:
         - "Alerts"
-      summary: "Get all alerts on the system by pagination"
+      summary: "Retrieve all alerts from the system with pagination"
       description: ""
       operationId: alert_list_pagination
       security:
@@ -51,17 +51,17 @@ paths:
       parameters:
       - in: "path"
         name: "limit"
-        description: "The limit of alerts that will be returned"
+        description: "The limit of alerts that will to be Retrieveed"
         required: true
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this page"
         required: true
         type: string
       - in: "query"
         name: "attr"
-        description: "The especific supplier that returns packings related a this supplier"
+        description: "Retrieves alerts related a this supplier id"
         required: false
         type: string
       responses:
@@ -86,7 +86,7 @@ paths:
     post:
       tags:
         - "Alerts"
-      summary: "Get all alerts on the system by pagination"
+      summary: "Retrieve all alerts from the system to logistic operator with pagination"
       description: ""
       operationId: alert_list_pagination_logistic
       security:
@@ -94,17 +94,17 @@ paths:
       parameters:
       - in: "path"
         name: "limit"
-        description: "The limit of alerts that will be returned"
+        description: "The limit of alerts that will to be Retrieveed"
         required: true
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this page"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "Array of supplier that needs to be fatched "
+        description: "Retrieves alerts related on this list of supplier id"
         required: true
         schema:
           $ref: "#/definitions/ArraySupplier"
@@ -130,7 +130,7 @@ paths:
     get:
       tags:
         - "Alerts"
-      summary: "Get all alerts on the system"
+      summary: "Retrieve all alerts from the system with pagination"
       description: ""
       operationId: alert_list_hashing
       security:
@@ -138,37 +138,37 @@ paths:
       parameters:
       - in: "path"
         name: "limit"
-        description: "The limit of alerts that will be returned"
+        description: "The limit of alerts that will be Retrieveed"
         required: true
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this page"
         required: true
         type: string
       - in: "path"
         name: "code"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this code"
         required: true
         type: string
       - in: "path"
         name: "status"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this slert status"
         required: true
         type: string
       - in: "path"
         name: "supplier"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this supplier id"
         required: true
         type: string
       - in: "path"
         name: "project"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this project id"
         required: true
         type: string
       - in: "query"
         name: "attr"
-        description: "The especific supplier that returns packings related a this supplier"
+        description: "Retrieves alerts related on this supplier id passed by query"
         required: false
         type: string
       responses:
@@ -193,7 +193,7 @@ paths:
     post:
       tags:
         - "Alerts"
-      summary: "Get all alerts on the system"
+      summary: "Retrieve all alerts from the system with pagination related the logistic operator"
       description: ""
       operationId: alert_list_hashing_logistic
       security:
@@ -201,37 +201,37 @@ paths:
       parameters:
       - in: "path"
         name: "limit"
-        description: "The limit of alerts that will be returned"
+        description: "The limit of alerts that will be Retrieveed"
         required: true
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this page"
         required: true
         type: string
       - in: "path"
         name: "code"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this code"
         required: true
         type: string
       - in: "path"
         name: "status"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this alert status"
         required: true
         type: string
       - in: "path"
         name: "supplier"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this page"
         required: true
         type: string
       - in: "path"
         name: "project"
-        description: "The especific page that returns alerts related a this page"
+        description: "Retrieves alerts related this project id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "Array of supplier that needs to be fatched "
+        description: "Retrieves alerts related on this list of supplier id"
         required: true
         schema:
           $ref: "#/definitions/ArraySupplier"
@@ -257,7 +257,7 @@ paths:
     post:
       tags:
       - "Alerts"
-      summary: "Add a new alert to the system"
+      summary: "Add a new alert on the system"
       description: ""
       operationId: alert_create
       security:
@@ -265,7 +265,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Alert object that needs to be added to the system"
+        description: "Sample of Alert object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/Alert"
@@ -299,7 +299,7 @@ paths:
       parameters:
       - in: "path"
         name: "alert_id"
-        description: "The code that needs to be fetched"
+        description: "Remove a specific alert related this alert id"
         required: true
         type: string
       responses:
@@ -332,12 +332,12 @@ paths:
       parameters:
       - in: "path"
         name: "alert_id"
-        description: "The code that needs to be fetchede"
+        description: "Update a specific alert related this alert id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The plant object that will to be modified"
+        description: "The alert object that will  be modified"
         required: true
         schema:
           $ref: "#/definitions/Alert"

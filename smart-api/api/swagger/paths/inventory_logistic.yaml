@@ -4,7 +4,7 @@ paths:
       post:
         tags:
           - "Inventory Logistic"
-        summary: "Inventory of the equipaments."
+        summary: "Retrieve all information about equipaments on the system related to logistic operator with pagination and without some filter. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: general_inventory_packing
         security:
@@ -12,17 +12,17 @@ paths:
         parameters:
         - in: "path"
           name: "limit"
-          description: "The limit of packings that will be returned"
+          description: "The limit of packings that will be Retrieved"
           required: true
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Retrieve inventory related this page"
           required: true
           type: string
         - in: "body"
           name: "body"
-          description: "Array of supplier that needs to be fatched "
+          description: "Array of the suppliers related to the logistic operator that will be used to Retrieve the information about the packings"
           required: true
           schema:
             $ref: "#/definitions/ArraySupplier"
@@ -48,7 +48,7 @@ paths:
       post:
         tags:
           - "Inventory Logistic"
-        summary: "Inventory of the equipaments Analyzing the permanence."
+        summary: "Retrieve all information about permanence of the equipaments on the system related to logistic operator with pagination and filters. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: inventory_permanence
         security:
@@ -56,22 +56,22 @@ paths:
         parameters:
         - in: "path"
           name: "limit"
-          description: "The limit of packings that will be returned"
+          description: "The limit of packings that will be Retrieveed"
           required: true
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Retrieve inventory related this page"
           required: true
           type: string
         - in: "path"
           name: "code"
-          description: "The especific page that returns packings related a this code"
+          description: "Retrieve inventory related this packing code"
           required: true
           type: string
         - in: "body"
           name: "body"
-          description: "Array of supplier that needs to be fatched "
+          description: "Array of the suppliers related to the logistic operator that will be used to Retrieve the information about the packings"
           required: true
           schema:
             $ref: "#/definitions/ArraySupplier"
@@ -97,7 +97,7 @@ paths:
       post:
         tags:
           - "Inventory Logistic"
-        summary: "Inventory of the equipaments Analyzing your quantity."
+        summary: "Retrieve all information about quantity of the equipaments  on the system related to logistic operator with pagination and filters. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: quantity_inventory
         security:
@@ -105,22 +105,22 @@ paths:
         parameters:
         - in: "path"
           name: "limit"
-          description: "The limit of packings that will be returned"
+          description: "The limit of packings that will be Retrieveed"
           required: true
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Retrieve inventory related this page"
           required: true
           type: string
         - in: "path"
           name: "code"
-          description: "The especific page that returns packings related a this code"
+          description: "Retrieve inventory related this packing code"
           required: true
           type: string
         - in: "body"
           name: "body"
-          description: "Array of supplier that needs to be fatched "
+          description: "Array of the suppliers related to the logistic operator that will be used to Retrieve the information about the packings"
           required: true
           schema:
             $ref: "#/definitions/ArraySupplier"
@@ -146,7 +146,7 @@ paths:
       post:
         tags:
           - "Inventory Logistic"
-        summary: "Inventory of the equipaments Analyzing your historic."
+        summary: "Retrieve all information about equipaments hisotric  on the system related to logistic operator with pagination and filters. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: inventory_packing_historic
         security:
@@ -154,27 +154,27 @@ paths:
         parameters:
         - in: "path"
           name: "limit"
-          description: "The limit of packings that will be returned"
+          description: "The limit of packings that will be Retrieveed"
           required: true
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Retrieve inventory related this page"
           required: true
           type: string
         - in: "path"
           name: "serial"
-          description: "The especific page that returns packings related a this serial"
+          description: "Retrieve inventory related this packing serial"
           required: true
           type: string
         - in: "path"
           name: "code"
-          description: "The especific code that returns packings related a this code"
+          description: "Retrieve inventory related this packing code"
           required: true
           type: string
         - in: "body"
           name: "body"
-          description: "Array of supplier that needs to be fatched "
+          description: "Array of the suppliers related to the logistic operator that will be used to Retrieve the information about the packings"
           required: true
           schema:
             $ref: "#/definitions/ArraySupplier"
@@ -200,7 +200,7 @@ paths:
       post:
         tags:
           - "Inventory Logistic"
-        summary: "Inventory of the equipaments Analyzing the battery by code."
+        summary: "Retrieve all information about battery level of the equipaments on the system related to logistic operator  with pagination and filters. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: inventory_battery
         security:
@@ -208,22 +208,22 @@ paths:
         parameters:
         - in: "path"
           name: "limit"
-          description: "The limit of packings that will be returned"
+          description: "The limit of packings that will be Retrieveed"
           required: true
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Retrieve inventory related this page"
           required: true
           type: string
         - in: "query"
           name: "code"
-          description: "The especific code that returns packings related a this code"
+          description: "Retrieve inventory related this packing code"
           required: false
           type: string
         - in: "body"
           name: "body"
-          description: "Array of supplier that needs to be fatched "
+          description: "Array of the suppliers related to the logistic operator that will be used to Retrieve the information about the packings"
           required: true
           schema:
             $ref: "#/definitions/ArraySupplier"
@@ -249,7 +249,7 @@ paths:
       post:
         tags:
           - "Inventory Logistic"
-        summary: "Inventory of the equipaments Analyzing yourself."
+        summary: "Retrieve all information about historic equipaments on the system related to logistic operator with pagination without someone filter. Groups equipaments with the same code, supplier and project to generate inventory"
         description: ""
         operationId: inventory_packings
         security:
@@ -257,22 +257,22 @@ paths:
         parameters:
         - in: "path"
           name: "limit"
-          description: "The limit of packings that will be returned"
+          description: "The limit of packings that will be Retrieveed"
           required: true
           type: string
         - in: "path"
           name: "page"
-          description: "The especific page that returns packings related a this page"
+          description: "Retrieve inventory related this page"
           required: true
           type: string
         - in: "query"
           name: "code"
-          description: "The especific code that returns packings related a this code"
+          description: "Retrieve inventory related this packing code"
           required: false
           type: string
         - in: "body"
           name: "body"
-          description: "Array of supplier that needs to be fatched "
+          description: "Array of the suppliers related to the logistic operator that will be used to Retrieve the information about the packings"
           required: true
           schema:
             $ref: "#/definitions/ArraySupplier"

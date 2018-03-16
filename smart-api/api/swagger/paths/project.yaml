@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "Project"
-        summary: "Get a project on the system"
+        summary: "Retrieve a project from the system"
         description: ""
         operationId: project_read
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "project_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a project related this project id"
           required: true
           type: string
         responses:
@@ -38,7 +38,7 @@ paths:
     get:
       tags:
         - "Project"
-      summary: "Get all projects on the system by pagination"
+      summary: "Retreive all projects from the system with pagination"
       description: ""
       operationId: project_listPagination
       security:
@@ -51,12 +51,12 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns projects related a this page"
+        description: "Retrieve project related this page"
         required: true
         type: string
       - in: "query"
         name: "attr"
-        description: "The especific attr that returns packings related a this attr"
+        description: "Retrieve project related this supplier id"
         required: false
         type: string
       responses:
@@ -81,7 +81,7 @@ paths:
     get:
       tags:
         - "Project"
-      summary: "Get all projects on the system"
+      summary: "Retreive all projects from the system"
       description: ""
       operationId: project_list
       security:
@@ -108,7 +108,7 @@ paths:
     post:
       tags:
       - "Project"
-      summary: "Add a new project to the system"
+      summary: "Add a new project on the system"
       description: ""
       operationId: project_create
       security:
@@ -116,7 +116,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "project object that needs to be added to the system"
+        description: "Sample of project object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/Project"
@@ -142,7 +142,7 @@ paths:
     post:
       tags:
       - "Project"
-      summary: "Add a array project to the system"
+      summary: "Add a array project on the system"
       description: ""
       operationId: project_create_array
       security:
@@ -150,7 +150,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "project array that needs to be added to the system"
+        description: "Sample of array profile object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/ArrayProject"
@@ -176,7 +176,7 @@ paths:
     delete:
       tags:
       - "Project"
-      summary: "Remove a project on the system"
+      summary: "Remove a project from the system"
       description: ""
       operationId: project_delete
       security:
@@ -184,7 +184,7 @@ paths:
       parameters:
       - in: "path"
         name: "project_id"
-        description: "The code that needs to be fetched"
+        description: "Remove project related this project id"
         required: true
         type: string
       responses:
@@ -209,7 +209,7 @@ paths:
     put:
       tags:
       - "Project"
-      summary: "Update a project on the system"
+      summary: "Update a project from the system"
       description: ""
       operationId: project_update
       security:
@@ -217,12 +217,12 @@ paths:
       parameters:
       - in: "path"
         name: "project_id"
-        description: "The code that needs to be fetchede"
+        description: "update project related this project id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The project object that will to be modified"
+        description: "The project object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/Project"

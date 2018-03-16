@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "Plant"
-        summary: "Get a plant on the system"
+        summary: "Retrieve a plant from the system"
         description: ""
         operationId: plant_read
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "plant_id"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a plant related this plant id"
           required: true
           type: string
         responses:
@@ -38,7 +38,7 @@ paths:
       get:
         tags:
           - "Plant"
-        summary: "Get a plant on the system by plant name"
+        summary: "Retreive a plant from the system by plant name"
         description: ""
         operationId: plant_read_by_name
         security:
@@ -46,7 +46,7 @@ paths:
         parameters:
         - in: "path"
           name: "plant_name"
-          description: "The plant_name that needs to be fetched"
+          description: "Retrieve a plant related this plant name"
           required: true
           type: string
         responses:
@@ -71,7 +71,7 @@ paths:
     get:
       tags:
         - "Plant"
-      summary: "Get all plants on the system by pagination"
+      summary: "Retrieve all plants from the system with pagination"
       description: ""
       operationId: plant_listPagination
       security:
@@ -84,12 +84,12 @@ paths:
         type: string
       - in: "path"
         name: "page"
-        description: "The especific page that returns plants related a this page"
+        description: "Retrieve plants related this page"
         required: true
         type: string
       - in: "query"
         name: "attr"
-        description: "The especific attr that returns packings related a this attr"
+        description: "Retrieve plants related this supplier id"
         required: false
         type: string
       responses:
@@ -114,7 +114,7 @@ paths:
     get:
       tags:
         - "Plant"
-      summary: "Get all plants on the system no binded anyone route"
+      summary: "Retrieve all plants from the system no binded about route"
       description: ""
       operationId: list_all_nobinded
       security:
@@ -122,17 +122,17 @@ paths:
       parameters:
       - in: "path"
         name: "code"
-        description: "The limit of plants that will be returned"
+        description: "Retrieve plants related this page"
         required: true
         type: string
       - in: "path"
         name: "supplier"
-        description: "The especific page that returns plants related a this page"
+        description: "Retrieve plants related this supplier id"
         required: true
         type: string
       - in: "path"
         name: "project"
-        description: "The especific project that returns plants related a this page"
+        description: "Retrieve plants related this project id"
         required: true
         type: string
       responses:
@@ -157,7 +157,7 @@ paths:
     get:
       tags:
         - "Plant"
-      summary: "Get all plants on the system without supplier and logistic operator"
+      summary: "Retrieve all plants from the system without supplier and logistic operator"
       description: ""
       operationId: list_all
       security:
@@ -184,7 +184,7 @@ paths:
     get:
       tags:
         - "Plant"
-      summary: "Get all plants on the system"
+      summary: "Retrieve all plants from the system"
       description: ""
       operationId: list_all_general
       security:
@@ -192,7 +192,7 @@ paths:
       parameters:
       - in: "query"
         name: "attr"
-        description: "The especific supplier that returns packings related a this supplier"
+        description: "Retrieve plants related this supplier id"
         required: false
         type: string
       responses:
@@ -217,7 +217,7 @@ paths:
     post:
       tags:
         - "Plant"
-      summary: "Get all plants on the system by logistic"
+      summary: "Retrieve all plants from the system by logistic"
       description: ""
       operationId: list_all_general_logistic
       security:
@@ -225,12 +225,12 @@ paths:
       parameters:
       - in: "path"
         name: "logistic_id"
-        description: "The especific supplier that returns packings related a this supplier"
+        description: "Retrieve plants related this logistic operator id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "Array of supplier that needs to be fatched "
+        description: "Array of the suppliers related to the logistic operator that will be used to Retrieve the information about the plants"
         required: true
         schema:
           $ref: "#/definitions/ArraySupplier"
@@ -256,7 +256,7 @@ paths:
     post:
       tags:
       - "Plant"
-      summary: "Add a new plant to the system"
+      summary: "Add a new plant on the system"
       description: ""
       operationId: plant_create
       security:
@@ -264,7 +264,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Plant object that needs to be added to the system"
+        description: "Sample of plant object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/Plant"
@@ -290,7 +290,7 @@ paths:
     post:
       tags:
       - "Plant"
-      summary: "Add a array of plant to the system"
+      summary: "Add a array of plants on the system"
       description: ""
       operationId: plant_create_array
       security:
@@ -298,7 +298,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Plant array that needs to be added to the system"
+        description: "Sample of Plants Array object that will be add to the system"
         required: true
         schema:
           $ref: "#/definitions/ArrayPlant"
@@ -326,7 +326,7 @@ paths:
     delete:
       tags:
       - "Plant"
-      summary: "Remove a plant on the system"
+      summary: "Remove a plant from the system"
       description: ""
       operationId: plant_delete
       security:
@@ -334,7 +334,7 @@ paths:
       parameters:
       - in: "path"
         name: "plant_id"
-        description: "The code that needs to be fetched"
+        description: "Remove a plant related this plant id"
         required: true
         type: string
       responses:
@@ -359,7 +359,7 @@ paths:
     put:
       tags:
       - "Plant"
-      summary: "Update a plant on the system"
+      summary: "Update a plant from the system"
       description: ""
       operationId: plant_update
       security:
@@ -367,12 +367,12 @@ paths:
       parameters:
       - in: "path"
         name: "plant_id"
-        description: "The code that needs to be fetchede"
+        description: "Update a plant related this plant id"
         required: true
         type: string
       - in: "body"
         name: "body"
-        description: "The plant object that will to be modified"
+        description: "The plant object that will be modified"
         required: true
         schema:
           $ref: "#/definitions/Plant"

@@ -48,8 +48,6 @@ tags:
   description: "All information about your Packings"
 - name: "Tag"
   description: "All information about your Tags"
-- name: "Historic Tags"
-  description: "All information about your Historic Tags"
 - name: "Historic Packings"
   description: "All information about your Historic Packings"
 - name: "Alerts"

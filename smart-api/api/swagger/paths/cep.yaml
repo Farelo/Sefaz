@@ -5,7 +5,7 @@ paths:
       get:
         tags:
           - "CEP"
-        summary: "Get address through CEP"
+        summary: "Get address through a specfic CEP"
         description: ""
         operationId: get_CEP
         security:
@@ -13,7 +13,7 @@ paths:
         parameters:
         - in: "path"
           name: "cep"
-          description: "The code that needs to be fetched"
+          description: "Retrieve a address related this postal code"
           required: true
           type: string
         responses:
