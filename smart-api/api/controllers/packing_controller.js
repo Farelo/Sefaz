@@ -13,7 +13,17 @@ const ObjectId                                  = schemas.ObjectId
  * Create the current Packing
  */
 exports.packing_create = function (req, res) {
-  schemas.packing().create(req.body)
+  schemas
+    .settings()
+    .find({})
+    .then(settings => {
+      if (!settings[0].register_gc16.enable) {//se o gc16  estiver habilitado realiza o passo de verificação
+        req.body[0].gc16 = settings[0].register_gc16.id;
+        return schemas.packing().create(req.body)
+      } else {
+        return schemas.packing().create(req.body)
+      }
+    })
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to create packing'))
 };

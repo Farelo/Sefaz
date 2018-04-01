@@ -37,6 +37,18 @@ export class AuthenticationService {
       return JSON.parse(localStorage.getItem('currentUser'));
     }
 
+    updateCurrentUser(){
+        var user = JSON.parse(localStorage.getItem('currentUser'))
+        
+        this.http.get(`${environment.url}profile/recover/${user.password}/${user.email}`)
+        .subscribe( (result:any) => {
+            var aux = result.data;
+
+            localStorage.setItem('currentUser', JSON.stringify(aux));
+        })
+       
+    }
+
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');

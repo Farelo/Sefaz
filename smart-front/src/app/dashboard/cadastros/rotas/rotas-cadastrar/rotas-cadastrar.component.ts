@@ -95,6 +95,7 @@ export class RotasCadastrarComponent implements OnInit {
       this.route['controls'].location['controls'].start_address.setValue(this.directionsResult.routes[0].legs[0].start_address);
       this.route['controls'].location['controls'].end_address.setValue(this.directionsResult.routes[0].legs[0].end_address);
     } else {
+    
       this.directions = false;
     }
     this.ref.detectChanges();
@@ -110,13 +111,14 @@ export class RotasCadastrarComponent implements OnInit {
 
   onChangeFactory(event: any) {
     if (event) {
+      console.log("PASSOU EVIRYBODY")
       this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
       this.showDirection();
     }
   }
 
   onChangePacking(event: any) {
-
+    console.log("Change Packings")
     if (typeof event != 'string') {
       this.choice_equipament = true;
       this.route['controls'].plant_supplier.setValue(event.plant);
@@ -130,6 +132,7 @@ export class RotasCadastrarComponent implements OnInit {
   }
 
   loadPackings(event): void {
+    console.log("Load Packings")
     this.route['controls'].packing_code.setValue(undefined);
     this.route['controls'].plant_factory.setValue(undefined);
     this.route['controls'].plant_supplier.setValue(undefined);
@@ -173,6 +176,7 @@ export class RotasCadastrarComponent implements OnInit {
   ngOnInit() {
     this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
       this.directionsRenderer = directionsRenderer;
+      console.log(this.directionsRenderer)
     });
 
     this.route = this.fb.group({
@@ -200,7 +204,7 @@ export class RotasCadastrarComponent implements OnInit {
       })
     });
 
-    console.log(typeof this.route.controls.supplier.value)
+   
     this.loadSuppliers();
   }
 

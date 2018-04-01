@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
 import { ModalCurrentEditarComponent } from '../../shared/modal-current-edit/modal-editar-current.component';
+import { ModalSettings } from '../../shared/modal-settings/modal-settings.component';
 import { AuthenticationService } from '../../servicos/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare var $:any;
@@ -23,7 +24,7 @@ public closeResult: string;
     private ngZone:NgZone,
     private modalService: NgbModal,
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
   ) {
   
   }
@@ -55,10 +56,16 @@ public closeResult: string;
     const modalRef = this.modalService.open(ModalUserComponent,{backdrop: "static", size: "lg"});
     modalRef.componentInstance.view = 'GERENCIAR';
   }
+
   openModalEditar(){
     this.mudar();
     const modalRef = this.modalService.open(ModalCurrentEditarComponent,{backdrop: "static", size: "lg"});
 
+  }
+
+  openSettings(){
+    this.mudar();
+    const modalRef = this.modalService.open(ModalSettings, { size: "sm"});
   }
 
   logout(){

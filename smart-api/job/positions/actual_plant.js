@@ -1,19 +1,22 @@
 'use strict';
 
-module.exports = function (packing, plants) {
+
+
+
+module.exports = function (packing, plants, settings) {
   let distance = Infinity;
   let plant = {};
 
   plants.forEach(p => {
     let calculate = getDistanceFromLatLonInKm(packing.position.latitude,packing.position.longitude,p.lat, p.lng);
 
-    if(calculate  < distance){
+    if (calculate < settings.range_radius){
       distance = calculate;
       plant = p;
     }
   });
 
-  if(distance > 0.5000){
+  if (distance > settings.range_radius){
     return null
   }else{
     return plant;

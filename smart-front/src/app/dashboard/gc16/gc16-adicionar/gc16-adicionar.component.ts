@@ -45,7 +45,7 @@ export class Gc16AdicionarComponent implements OnInit {
       this.GC16Service.createGC16(value)
                       .subscribe(result => this.packingService.updatePackingByGC16(value.packing,value.supplier._id,value.project,{gc16: result.data._id})
                       .subscribe(result => {
-                        this.toastService.success('/rc/gc16', 'GC16');
+                        this.toastService.success('/rc/bpline', 'BPline');
                       }, err => this.toastService.error(err)));
     }
 

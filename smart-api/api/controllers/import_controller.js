@@ -74,7 +74,7 @@ exports.uploadPlant = function (req, res) {
       var typeError = []
       Promise.all(result.map(o => maps.reverseGeocode(o.lat ? parseFloat(o.lat) : 0, o.lng ? parseFloat(o.lng) : 0)))
         .then(data => {
-          console.log(data)
+          
           result.forEach((o, index) => {
 
             if (!o.lat) {
@@ -268,13 +268,13 @@ exports.uploadPacking = function (req, res) {
       let supplier_data, tag_data, project_data = {};
       var dataErros = []
       var typeError = []
+
       Promise.all(result.map(o => schemas.tags().findOne({ "code": o.tag })))
         .then(data => {
           tag_data = data;
           return Promise.all(result.map(o => schemas.supplier().findOne({ "name": o.supplier, 'duns': o.duns })));
         })
         .then(data => {
-
           supplier_data = data;
           return Promise.all(result.map(o => schemas.project().findOne({ "name": o.project })));
         })
@@ -407,7 +407,7 @@ exports.uploadRoute = function (req, res) {
               delete o['duns'];
               o.hashPacking = o.supplier._id + o.packing_code;
             }
-            
+            console.log(project_data[index])
             if (!project_data[index]) {
               typeError.push("O projeto inserido não pertence ao sistema");
             } else {

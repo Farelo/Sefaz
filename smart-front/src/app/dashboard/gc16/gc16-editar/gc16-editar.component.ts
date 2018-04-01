@@ -32,7 +32,7 @@ export class Gc16EditarComponent implements OnInit {
     if(valid){
       this.GC16Service.updateGC16(value._id,value)
                       .subscribe(result => {
-                        this.toastService.edit('/rc/gc16', 'GC16');
+                        this.toastService.edit('/rc/bpline', 'BPline');
                       }, err => this.toastService.error(err));
     }
   }

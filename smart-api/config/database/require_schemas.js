@@ -20,6 +20,7 @@ module.exports = {
     tags: tags, //retorna o schema de tags
     route: route, //retorna o schema de route
     logisticOperator: logisticOperator, //retorna o schema de logisticOperator
+    settings: settings, //retorna o schema de logisticOperator
     ObjectId: ObjectId //cria um tipo  ObjectId,
 }
 
@@ -81,6 +82,11 @@ function route() {
 //retorna o schema de logisticOperator
 function logisticOperator() {
     return mongoose.model('LogisticOperator');
+}
+
+//retorna o schema de settings
+function settings() {
+    return mongoose.model('Settings');
 }
 
 

@@ -6,12 +6,12 @@ const hashPassword        = require('../../utils/encrypt')
 const environment         = require('../../../../config/environment')
 
 function authSuccess(res, credentials, data) {
-    let user = data[0];
+    let user = data[0][0];
     const isMatch = (credentials.password == user.password);
-
+  
     if (isMatch) {
         var payload = { id: user._id };
-
+        user.gc16 = data[1][0].register_gc16.enable
         res.status(HttpStatus.OK).json({ jsonapi: { "version": "1.0" }, token: `JWT ${jwt.sign(payload, environment.secret, { expiresIn: environment.expiresIn })}` , data: user});
     }
     else {

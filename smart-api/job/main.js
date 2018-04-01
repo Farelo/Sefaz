@@ -22,17 +22,19 @@ var task = cron.schedule(`*/${environment.time} * * * * *`, function() {
       .then(token => devices(token))//Get All devices from SIGFOX LOKA-API
       .then(devices => Promise.all(updateDevices(devices))) //UPDATE ALL PACKINGS WITH INFORMATION FROM LOKA-API
       .then(() =>  Promise.all(consultDatabase())) //RECEIVE ARRAY GET ALL PACKINGS AFTER UPDATE AND PLANTS
-      .then(data => analysis(data)); //EVALUETE ALL PACKINGS, TO SEARCH SOME PROBLEM
+      .then(data => analysis(data)) //EVALUETE ALL PACKINGS, TO SEARCH SOME PROBLEM
+      .catch(err => console.log(err))
 });
 
 function analysis(data){
   let packings      = data[0]; //GET ALL PACKINGS
   let plants        = data[1]; //GET ALL PLANTS
+  let settings      = data[2] //get seetings
   let total_packing = packings.length; //get amount the packings on the system
   let count_packing = 0; //count the amount of packings
 
   packings.forEach(p => {
-      let plant  = actual_plant(p,plants); //calculate a distance from packing to plants
+    let plant = actual_plant(p, plants, settings); //calculate a distance from packing to plants
 
       if(plant != null){
         console.log("PACKING HAS PLANT");
@@ -56,7 +58,7 @@ function analysis(data){
         //para embalagens que não foram econtradas dentro de uma planta
         console.log("PACKING HAS NOT PLANT");
         remove_dependencies.without_plant(p)
-          .then(new_p => evaluate_battery(new_p))
+          .then(new_p => evaluate_battery(new_p, settings))
           .then(new_p => evaluate_missing(new_p))
           .then(new_p => traveling.evaluate_traveling(new_p))
           .then(new_p => update_packing.set(new_p))

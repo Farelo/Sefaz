@@ -6,7 +6,7 @@
         <li><a routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
         <li *ngIf="currentUser?.profile === 'AdminFactory'"><a routerLinkActive="active"  routerLink="/rc/importar">IMPORTAR DADOS</a></li>
         <li><a routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
-        <li *ngIf="currentUser?.profile === 'AdminFactory'"><a routerLinkActive="active"  routerLink="/rc/bpline">BPline</a></li>
+        <li *ngIf="currentUser?.profile === 'AdminFactory' && this.authenticationService.currentUser()?.gc16 === true"><a routerLinkActive="active"  routerLink="/rc/bpline">BPline</a></li>
 
         <li class="scroll usuario placementBottom"
         [ngbPopover]= 'popContent'
@@ -56,8 +56,9 @@
       <p *ngIf="currentUser?.profile === 'StaffSupplier'">Funcionário do Fornecedor.</p>
       <hr>
       
-      <p>{{this.currentUser.user}} </p><hr>
+      <p>{{this.authenticationService.currentUser().user}} </p><hr>
       <button class="gerenciar"  *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'" (click)="p.close();openModal()"><div>GERENCIAR USUÁRIOS</div></button><br class="brgone">
+      <button class="gerenciar"  *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'" (click)="p.close();openSettings()"><div>CONFIGURAÇÕES</div></button><br class="brgone">
       <button class="medio" (click)="p.close();openModalEditar()"><div>EDITAR</div></button>
       <button class="medio2" (click)="logout()"><div>SAIR</div></button>
     </div>
@@ -72,7 +73,7 @@
         <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
         <li *ngIf="currentUser?.profile === 'AdminFactory'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/importar">IMPORTAR DADOS</a></li>
         <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
-        <li *ngIf="currentUser?.profile === 'AdminFactory'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">BPline</a></li>
+        <li *ngIf="currentUser?.profile === 'AdminFactory' && this.authenticationService.currentUser()?.gc16 === true"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">BPline</a></li>
         <li class="opcaoEscondida"><a (click)="mudar()">SAIR</a></li>
 
       </ul>
@@ -95,10 +96,11 @@
   <p *ngIf="currentUser?.profile === 'StaffSupplier'">Funcionário do Fornecedor.</p>
   <hr>
   
-  <p>{{this.currentUser.user}} </p>
+  <p>{{this.authenticationService.currentUser().user}} </p>
   <hr>
 
   <button class="gerenciar" *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
+  <button class="gerenciar"  *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'" (click)="p.close(); a.close();openSettings()"><div>CONFIGURAÇÕES</div></button><br class="brgone">
   <button class="medio" (click)="p.close(); a.close(); openModalEditar()"><div>EDITAR</div></button>
   <button class="medio2" (click)="logout()"><div>SAIR</div></button>
 </ng-template>

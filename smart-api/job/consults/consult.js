@@ -12,7 +12,10 @@ module.exports = function () {
       .populate('supplier')
       .populate('routes')
       .populate('project')
-      .populate('gc16'), schemas.plant().find({}).populate('logistic_operator')];
+      .populate('gc16'), 
+      schemas.plant().find({}).populate('logistic_operator'), 
+      schemas.settings().findOne({_id: 1})
+    ];
 
   return arrayOfPromises;
 }

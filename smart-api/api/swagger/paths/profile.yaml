@@ -102,6 +102,44 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
+  /profile/recover/{password}/{email}:
+      x-swagger-router-controller: profile_controller
+      get:
+        tags:
+          - "Profile"
+        summary: "Realyze recover of the profile using password and email from profile"
+        description: ""
+        operationId: profile_recover
+        security:
+          - Bearer: []
+        parameters:
+        - in: "path"
+          name: "password"
+          description: "Recover profile related this password"
+          required: true
+          type: string
+        - in: "path"
+          name: "email"
+          description: "Recover profile related this email"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Successfully"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
   /profile/list/pagination/{limit}/{page}:
     x-swagger-router-controller: profile_controller
     get:

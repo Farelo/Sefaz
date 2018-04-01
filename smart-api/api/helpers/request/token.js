@@ -1,6 +1,10 @@
 const request      = require('request');
 const constants    = require('../utils/constants');
 
+
+/**
+ * Realiza a autenticação do usuário para recuperar um token de acesso
+ */
 module.exports = function () {
     return new Promise(function (resolve, reject) {
         var options = {

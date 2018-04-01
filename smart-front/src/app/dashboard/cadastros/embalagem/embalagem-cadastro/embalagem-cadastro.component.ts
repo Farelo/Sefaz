@@ -66,7 +66,7 @@ export class EmbalagemCadastroComponent implements OnInit {
 
 
   changeCode(value){
-
+    //verifica se existe gc16 relacionado a esse embalagem com essas configurações
     this.PackingService.retrievePackingBySupplierAndCodeAndProject(value.code,value.supplier._id,value.project._id)
         .subscribe(result => {
 

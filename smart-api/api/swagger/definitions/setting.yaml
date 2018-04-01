@@ -1,0 +1,19 @@
+definitions:
+  Setting:
+    type: object
+    properties:
+      battery_level:
+        type: number
+      clean:
+        type: number
+      range_radius:
+        type: number
+        format: double
+      register_gc16:
+        type: object
+        properties:
+          enable:
+            type: boolean
+          id:
+            type: string
+  

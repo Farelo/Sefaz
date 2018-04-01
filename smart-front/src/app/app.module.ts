@@ -6,6 +6,8 @@ import { HttpModule } from '@angular/http';
 import { NgbModule, NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { NgProgressBrowserXhr, NgProgressModule , NgProgressInterceptor} from 'ngx-progressbar';
 import { NgxPaginationModule} from 'ngx-pagination';
+import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as $ from 'jquery';
 import { AppComponent } from './app.component';
 import { ModalRastComponent } from './shared/modal-rast/modal-rast.component';
@@ -17,6 +19,7 @@ import { ModalSupplierEditarComponent } from './shared/modal-user/modal-editar-s
 import { ModalLogisticEditarComponent } from './shared/modal-user/modal-editar-logistic/modal-editar-logistic.component';
 import { ModalCurrentEditarComponent } from './shared/modal-current-edit/modal-editar-current.component';
 import { ModalStaffEditarComponent } from './shared/modal-user/modal-editar-staff/modal-editar-staff.component';
+import { ModalSettings } from './shared/modal-settings/modal-settings.component';
 import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { ApplicationPipes } from './shared/pipes/application.pipes';
@@ -26,6 +29,7 @@ import { LayerModalComponent } from './shared/modal-packing/layer.component';
 import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.component';
 import { AlertsService } from './servicos/alerts.service';
 import { ImportService } from './servicos/import.service';
+import { SettingsService } from './servicos/settings.service';
 import { DashboardModuleAdmin } from './dashboard/dashboard.module';
 import { ToastService } from './servicos/toast.service';
 import { InventoryService } from './servicos/inventory.service';
@@ -51,7 +55,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { ToastyModule } from 'ng2-toasty';
-
+import { NouisliderModule } from 'ng2-nouislider';
 
 @NgModule({
   declarations: [
@@ -62,6 +66,7 @@ import { ToastyModule } from 'ng2-toasty';
     ModalSupplierEditarComponent,
     ModalInvComponent,
     ModalDeleteComponent,
+    ModalSettings,
     LayerModalComponent,
     ModalSupplierRegisterComponent,
     ModalLogisticRegisterComponent,
@@ -74,10 +79,13 @@ import { ToastyModule } from 'ng2-toasty';
     BrowserModule,
     FormsModule,
     HttpModule,
+    JWBootstrapSwitchModule,
     HttpClientModule,
+    NouisliderModule,
     NgbModule.forRoot(),
     AlertModule.forRoot(),
     ToastyModule.forRoot(),
+    BrowserAnimationsModule,
     DashboardModuleAdmin,
     AngularMultiSelectModule,
     ReactiveFormsModule,
@@ -100,6 +108,7 @@ import { ToastyModule } from 'ng2-toasty';
     PlantsService,
     RoutesService,
     SuppliersService,
+    SettingsService,
     TagsService,
     CheckpointService,
     InventoryLogisticService,
@@ -130,7 +139,7 @@ import { ToastyModule } from 'ng2-toasty';
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
-  entryComponents: [ModalRastComponent,AlertaModalComponent,ModalCurrentEditarComponent,LayerModalComponent,ModalStaffEditarComponent, ModalUserComponent, ModalStaffRegisterComponent,ModalLogisticEditarComponent,ModalInvComponent, ModalLogisticRegisterComponent,ModalDeleteComponent,ModalSupplierRegisterComponent,ModalSupplierEditarComponent]
+  entryComponents: [ModalRastComponent, AlertaModalComponent,ModalSettings,ModalCurrentEditarComponent,LayerModalComponent,ModalStaffEditarComponent, ModalUserComponent, ModalStaffRegisterComponent,ModalLogisticEditarComponent,ModalInvComponent, ModalLogisticRegisterComponent,ModalDeleteComponent,ModalSupplierRegisterComponent,ModalSupplierEditarComponent]
 })
 
 export class AppModule { }

@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate');
+const mongoose                  = require('mongoose');
+const mongoosePaginate          = require('mongoose-paginate');
 const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 
@@ -100,16 +100,23 @@ const packingSchema = new mongoose.Schema({
 
 packingSchema.post('remove', function(next) {
   let packing  = this;
-  // Remove all the assignment docs that reference the removed person.
+  // Remove all the assignment docs that reference the removed packing.
   packing.model('Alerts').remove({packing: packing._id})
           .then(() => packing.model('HistoricPackings').remove({packing: packing._id}))
-          .then(() => evaluete(Promise.all([this.model('Packing').find({gc16: packing.gc16}), packing.model('Packing').find({routes: {$in: packing.routes}})]), next,packing));
+          .then(() =>  schema.model('Settings').find({}))
+          .then(settings => {
+            if (settings[0].register_gc16.enable){//se o gc16  estiver habilitado realiza o passo de verificação
+              evaluete(Promise.all([this.model('Packing').find({ gc16: packing.gc16 }), packing.model('Packing').find({ routes: { $in: packing.routes } })]), next, packing)
+            }else{
+              next;
+            }
+          });
 
 });
 
 mongoose.model('Packing', packingSchema);
 
-
+//verifica se existe alguma embalagem com o GC16, caso contrario, o GC16 é
 function evaluete(promise, next, p) {
 
   promise.then(result => {

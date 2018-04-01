@@ -22,8 +22,4 @@ exports.queries = {
 
         }
     }]
-
-
-
-
 }

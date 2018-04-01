@@ -17,6 +17,7 @@ exports.profile_create = function (req, res) {
     .catch(_.partial(responses.errorHandler, res, 'Error to create Profile'))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
+
 /**
  * Show the current Profile
  */
@@ -38,6 +39,7 @@ exports.profile_read = function (req, res) {
     })
     .catch(_.partial(responses.errorHandler, res, 'Error to read profile'));
 };
+
 /**
  * Show the current Profile
  */
@@ -57,6 +59,28 @@ exports.profile_read_by_email = function (req, res) {
     })
     .catch(_.partial(responses.errorHandler, res, 'Error to read profile'));
 };
+
+/**
+ * Show the current Profile
+ */
+exports.profile_recover = function (req, res) {
+
+  var credentials = {
+    email: req.swagger.params.email.value,
+    password: req.swagger.params.password.value
+  };
+
+  if (credentials.hasOwnProperty('email') && credentials.hasOwnProperty('password')) {
+    Promise.all([schemas.profile().aggregate(query.queries.login(credentials.password, credentials.email)), schemas.settings().find({})])
+      .then( data => {
+        let user = data[0][0];
+        user.gc16 = data[1][0].register_gc16.enable
+        user.token = req.user.refresh_token;
+        responses.successHandler(res, req.user.refresh_token, user);
+      })
+      .catch(_.partial(responses.authFail, res));
+  }
+};
 /**
  * Show the current Profile
  */
@@ -68,11 +92,12 @@ exports.profile_auth = function (req, res) {
   };
 
   if (credentials.hasOwnProperty('email') && credentials.hasOwnProperty('password')) {
-    schemas.profile().aggregate(query.queries.login(credentials.password, credentials.email))
+    Promise.all([schemas.profile().aggregate(query.queries.login(credentials.password, credentials.email)), schemas.settings().find({})])
       .then(_.partial(responses.authSuccess, res, credentials))
       .catch(_.partial(responses.authFail, res));
   }
 };
+
 /**
  * Update a Profile
  */

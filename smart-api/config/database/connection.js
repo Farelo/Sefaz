@@ -5,27 +5,17 @@ const constants   = require('../../api/helpers/utils/constants');
 const schemas     = require('../database/import_schemas');
 
 
-function tryReconect(dbURI) {
-	setTimeout(function () {
-		mongoose.connect(dbURI, constants.database_options);
-	},
-		5000
-	);
-}
 
 module.exports = {
 	open: function (environment) {
 
 		const dbURI = `mongodb://${environment.urldatabase}/${environment.database}`;
 
+		mongoose.set('bufferCommands', false);
 		mongoose.connect(dbURI, constants.database_options);
 
 		mongoose.connection.on('error', function (e) {
 			console.log("db: mongodb error " + e);
-			// reconnect here
-			mongoose.connection.close();
-			tryReconect(dbURI);
-
 		});
 
 		mongoose.connection.on('connected', function (e) {
@@ -46,8 +36,6 @@ module.exports = {
 
 		mongoose.connection.on('timeout', function (e) {
 			console.log("db: mongodb timeout " + e);
-			mongoose.connection.close();
-			tryReconect(dbURI);
 		});
 
 

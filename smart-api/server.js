@@ -30,14 +30,13 @@ module.exports = app; // for testing
 
 //conexão com o banco de dados do mongo
 require('./config/database/connection').open(environment);
-require('./config/initial/create_user'); //criando o usuário
+require('./config/initial/system_settings'); //configurando o sistema
 
 //JOB =================================================
 require('./job/main');
 
 //adicionando a auth no middleware
 require('./api/auth/auth')(app);
-
 
 
 ////////////////////// TESTANTO SOCKET IO PARA REALIZAR APLICAÇÃO REAL TIME
