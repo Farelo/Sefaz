@@ -9,7 +9,7 @@ const update_packing             = require('../updates/update_packing');
 const incorrect_local            = require('../alerts/incorrect_local');
 
 
-module.exports  = function(p,plant,department){
+module.exports = function (p, plant, department, settings){
   return new Promise(function(resolve, reject) {
     if(p.actual_plant.plant){
       //Indefitico que ja foi encontrada em uma planta

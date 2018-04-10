@@ -40,14 +40,14 @@ function analysis(data){
         console.log("PACKING HAS PLANT");
         evaluate_department(plant,p).then(department => {
             if(p.routes.length > 0){ //Evaluete if the packing has route ---------------------- EMBALAGENS QUE TEM  ROTA
-              with_route(p,plant,department).then(result =>{
+              with_route(p, plant, department, settings).then(result =>{
                 count_packing++;
                 verify_finish(result,total_packing,count_packing)
               });
 
             //embalagen que não estão associadas as rotas ------------------- SEGUNDA LOGICA
             }else{
-              without_route(p,plant,department).then(result =>{
+              without_route(p, plant, department, settings).then(result =>{
                 count_packing++;
                 verify_finish(result,total_packing,count_packing)
               });

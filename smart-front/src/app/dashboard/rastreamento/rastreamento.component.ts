@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { PackingService } from '../../servicos/packings.service';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
 import { AuthenticationService } from '../../servicos/auth.service';
+import { Pagination } from '../../shared/models/pagination';
 declare var $: any;
 declare var google: any;
 
@@ -18,7 +19,7 @@ declare var google: any;
 })
 
 export class RastreamentoComponent implements OnInit {
-
+  public data: Pagination = new Pagination({ meta: { page: 1 } });
   public logged_user: any;
   autocomplete: any;
   address: any = {};
@@ -27,19 +28,21 @@ export class RastreamentoComponent implements OnInit {
   plantSearch = null;
   departments: Department[];
   options = [];
-  zoom = 12;
+  circles = [];
+  zoom = 14;
   marker = {
+    target: null,
+    opt: null,
     display: true,
     lat: null,
     lng: null,
     plant: null,
-    departments: null,
-    packings: null,
+    departments: new Pagination({ meta: { page: 1 } }),
+    packings: new Pagination({ meta: { page: 1 } }),
     department: null,
     packing: null,
     nothing: null,
     profile: null
-
   };
   numero: 1;
   plants = [];
@@ -68,6 +71,7 @@ export class RastreamentoComponent implements OnInit {
       let user = this.auth.currentUser();
       this.plantsService.retrieveGeneralLogistic(this.logged_user,user._id )
         .subscribe(result => {
+         
           this.plants = result.data;
           if (result.data.length > 0) {
             for (let data of result.data) {
@@ -83,6 +87,7 @@ export class RastreamentoComponent implements OnInit {
     }else{
       this.plantsService.retrieveGeneral(this.logged_user)
         .subscribe(result => {
+         
           this.plants = result.data;
           if (result.data.length > 0) {
             for (let data of result.data) {
@@ -93,8 +98,12 @@ export class RastreamentoComponent implements OnInit {
               }else{
                 this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "normal" });
               }
-            }
+            }  
+           
+            this.options.forEach(opt => this.circles.push({ position: { lat: opt.position[0], lng: opt.position[1] }, radius: this.auth.currentUser().radius}))
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
+           
+
           }
         }, err => { console.log(err) });
     }
@@ -102,15 +111,19 @@ export class RastreamentoComponent implements OnInit {
 
   onChange(event) {
     this.center = { lat: event.lat, lng: event.lng };
-    this.zoom = 18;
+    this.zoom = 14;
   }
 
   clicked(_a, opt) {
     var marker = _a.target;
+    this.marker.target = _a
+    this.marker.opt = opt
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
-
-    this.departmentService.retrieveByPlants(10, 1, opt.id).subscribe(result => {
+    this.marker.departments = new Pagination({ meta: { page: 1 } })
+    this.marker.packings = new Pagination({ meta: { page: 1 } })
+      
+    this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
       this.marker.plant = opt.name;
       this.marker.profile = opt.profile;
       if (result.data.length > 0) {
@@ -120,7 +133,8 @@ export class RastreamentoComponent implements OnInit {
         this.marker.departments = result;
         this.startWindow(marker);
       } else {
-        this.packingService.retrieveByPlants(10, 1, opt.id).subscribe(result => {
+        this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
+          console.log(result.data)
           if (result.data.length > 0) {
             this.marker.department = false;
             this.marker.packing = true;
@@ -128,8 +142,8 @@ export class RastreamentoComponent implements OnInit {
             this.marker.packings = result;
             this.startWindow(marker);
           } else {
-            this.marker.department = false;
-            this.marker.packing = false;
+            this.marker.department = null
+            this.marker.packing = null
             this.marker.nothing = true;
             this.startWindow(marker);
           }
@@ -138,9 +152,62 @@ export class RastreamentoComponent implements OnInit {
     })
   }
 
+  retrievePackings(_a, opt){
+    var marker = _a.target;
+    this.marker.target = _a
+    this.marker.opt = opt
+    this.marker.lat = marker.getPosition().lat();
+    this.marker.lng = marker.getPosition().lng();
+    this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
+     
+      if (result.data.length > 0) {
+        this.marker.department = false;
+        this.marker.packing = true;
+        this.marker.nothing = false;
+        this.marker.packings = result;
+        this.startWindow(marker);
+      } else {
+        this.marker.department = null
+        this.marker.packing = null
+        this.marker.nothing = true;
+        this.startWindow(marker);
+      }
+    })
+  }
+
+  retrieveDepartments(_a, opt){
+    var marker = _a.target;
+    this.marker.target = _a
+    this.marker.opt = opt
+    this.marker.lat = marker.getPosition().lat();
+    this.marker.lng = marker.getPosition().lng();
+
+    this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
+      this.marker.plant = opt.name;
+      this.marker.profile = opt.profile;
+      if (result.data.length > 0) {
+        this.marker.department = true;
+        this.marker.packing = false;
+        this.marker.nothing = false;
+        this.marker.departments = result;
+        this.startWindow(marker);
+      }
+    })
+  }
+
   ngOnInit() {
     this.loadDepartmentsByPlant();
     this.carregarTamanho();
+  }
+
+  pageChangedDepart(page: any): void {
+    this.marker.departments.meta.page = page;
+    this.retrieveDepartments(this.marker.target, this.marker.opt);
+  }
+  
+  pageChangedPacking(page: any): void {
+    this.marker.packings.meta.page = page;
+    this.retrievePackings(this.marker.target, this.marker.opt);
   }
 
   open(id) {
@@ -188,7 +255,6 @@ export class RastreamentoComponent implements OnInit {
       $(this).css({ opacity: '0.5' });
     });
 
-    console.log(iwCloseBtn)
   }
 
   funcaoTop() {
@@ -201,5 +267,10 @@ export class RastreamentoComponent implements OnInit {
   }
   close() {
     close();
+  }
+
+  onMapReady(map) {
+  
+    console.log('map', map);
   }
 }

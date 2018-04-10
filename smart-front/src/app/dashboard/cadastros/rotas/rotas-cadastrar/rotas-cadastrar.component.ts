@@ -29,6 +29,7 @@ export class RotasCadastrarComponent implements OnInit {
     destination: '',
     travelMode: 'DRIVING'
   };
+
   public autocomplete: any;
   public address: any = {};
   public center: any;
@@ -42,7 +43,6 @@ export class RotasCadastrarComponent implements OnInit {
   public packings = [];
   public choiced = false;
   public choice_equipament = false;
-
 
   constructor(
     private PlantsService: PlantsService,
@@ -111,14 +111,12 @@ export class RotasCadastrarComponent implements OnInit {
 
   onChangeFactory(event: any) {
     if (event) {
-      console.log("PASSOU EVIRYBODY")
       this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
       this.showDirection();
     }
   }
 
   onChangePacking(event: any) {
-    console.log("Change Packings")
     if (typeof event != 'string') {
       this.choice_equipament = true;
       this.route['controls'].plant_supplier.setValue(event.plant);
@@ -132,7 +130,6 @@ export class RotasCadastrarComponent implements OnInit {
   }
 
   loadPackings(event): void {
-    console.log("Load Packings")
     this.route['controls'].packing_code.setValue(undefined);
     this.route['controls'].plant_factory.setValue(undefined);
     this.route['controls'].plant_supplier.setValue(undefined);
@@ -176,7 +173,6 @@ export class RotasCadastrarComponent implements OnInit {
   ngOnInit() {
     this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
       this.directionsRenderer = directionsRenderer;
-      console.log(this.directionsRenderer)
     });
 
     this.route = this.fb.group({

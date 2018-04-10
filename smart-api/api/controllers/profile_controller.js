@@ -75,12 +75,14 @@ exports.profile_recover = function (req, res) {
       .then( data => {
         let user = data[0][0];
         user.gc16 = data[1][0].register_gc16.enable
+        user.radius = Math.floor(data[1][0].range_radius*1000)
         user.token = req.user.refresh_token;
         responses.successHandler(res, req.user.refresh_token, user);
       })
       .catch(_.partial(responses.authFail, res));
   }
 };
+
 /**
  * Show the current Profile
  */
