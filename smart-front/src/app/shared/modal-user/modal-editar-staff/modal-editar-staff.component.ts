@@ -1,15 +1,11 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProfileService } from '../../../servicos/profile.service';
-import { CEPService } from '../../../servicos/cep.service';
 import { ModalUserComponent } from '../modal-user.component';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
-import { ToastService } from '../../../servicos/toast.service';
-
-import { AuthenticationService } from '../../../servicos/auth.service';
+import { AuthenticationService, ToastService, CEPService, ProfileService } from '../../../servicos/index.service';
 
 declare var $:any;
 
@@ -128,7 +124,7 @@ export class ModalStaffEditarComponent implements OnInit {
 
 
   onSubmit({ value, valid }: { value: any, valid: boolean }):void {
-      console.log(value);
+     
 
       if(valid && !this.invalidEmail){
 

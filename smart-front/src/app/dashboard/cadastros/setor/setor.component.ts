@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DepartmentService } from '../../../servicos/departments.service';
+import { DepartmentService } from '../../../servicos/index.service';
 import { Department } from '../../../shared/models/department';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';

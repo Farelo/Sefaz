@@ -1,15 +1,17 @@
 import { Component, OnInit, Input ,ChangeDetectorRef,Output,EventEmitter} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProjectService } from '../../servicos/projects.service';
-import { GC16Service } from '../../servicos/gc16.service';
-import { ProfileService } from '../../servicos/profile.service';
-import { PackingService } from '../../servicos/packings.service';
-import { DepartmentService } from '../../servicos/departments.service';
-import { RoutesService } from '../../servicos/routes.service';
-import { TagsService } from '../../servicos/tags.service';
-import { PlantsService } from '../../servicos/plants.service';
-import { ToastService } from '../../servicos/toast.service';
-import { CEPService } from '../../servicos/cep.service';
+import {
+  CEPService, 
+  ProjectService, 
+  GC16Service, 
+  ProfileService, 
+  PackingService,
+  DepartmentService, 
+  RoutesService, 
+  TagsService, 
+  PlantsService, 
+  ToastService
+} from '../../servicos/index.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';

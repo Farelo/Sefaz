@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TagsService } from '../../../../servicos/tags.service';
-import { ToastService } from '../../../../servicos/toast.service';
+import { ToastService, TagsService } from '../../../../servicos/index.service';
 import { Tag } from '../../../../shared/models/tag';
 import { Router,ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';

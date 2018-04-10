@@ -1,14 +1,10 @@
 import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
-import { PackingService } from '../../../../servicos/packings.service';;
 import { Packing } from '../../../../shared/models/packing';
-import { SuppliersService } from '../../../../servicos/suppliers.service';
 import { Supplier } from '../../../../shared/models/supplier';
-import { PlantsService } from '../../../../servicos/plants.service';
-import { RoutesService } from '../../../../servicos/routes.service';;
 import { Route } from '../../../../shared/models/route';
 import { Router,ActivatedRoute } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
-import { ToastService } from '../../../../servicos/toast.service';
+import { ToastService, RoutesService, PlantsService, SuppliersService, PackingService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs/Rx';

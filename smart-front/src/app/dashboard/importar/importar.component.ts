@@ -2,14 +2,7 @@ import { Component, OnInit  } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import * as Handsontable from 'handsontable/dist/handsontable.full.js';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import { ImportService } from '../../servicos/import.service';
-import { TagsService } from '../../servicos/tags.service';
-import { ProjectService } from '../../servicos/projects.service';
-import { PlantsService } from '../../servicos/plants.service';
-import { ToastService } from '../../servicos/toast.service';
-import { PackingService } from '../../servicos/packings.service';
-import { RoutesService } from '../../servicos/routes.service';
-import { DepartmentService } from '../../servicos/departments.service';
+import { DepartmentService, RoutesService, PackingService, ToastService, PlantsService, ProjectService, TagsService, ImportService } from '../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 declare var $:any;
 

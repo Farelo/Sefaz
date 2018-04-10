@@ -3,7 +3,7 @@ import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbModalOptions } from '
 import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
 import { ModalCurrentEditarComponent } from '../../shared/modal-current-edit/modal-editar-current.component';
 import { ModalSettings } from '../../shared/modal-settings/modal-settings.component';
-import { AuthenticationService } from '../../servicos/auth.service';
+import { AuthenticationService } from '../../servicos/index.service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare var $:any;
 

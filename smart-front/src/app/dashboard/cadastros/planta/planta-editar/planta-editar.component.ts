@@ -1,12 +1,10 @@
 import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plant } from '../../../../shared/models/plant';
-import { PlantsService } from '../../../../servicos/plants.service';
-import { GeocodingService } from '../../../../servicos/geocoding.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ToastService } from '../../../../servicos/toast.service';
+import { ToastService, GeocodingService, PlantsService } from '../../../../servicos/index.service';
 
 @Component({
   selector: 'app-planta-editar',

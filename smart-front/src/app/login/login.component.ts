@@ -1,7 +1,6 @@
 import { Component, OnInit, Injectable, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '../servicos/auth.service';
-import { ToastService } from '../servicos/toast.service';
+import { ToastService, AuthenticationService } from '../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -20,6 +19,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+    console.log(value)
     if(valid){
       this.authenticationService.login(value.password, value.email).subscribe(result =>  {
 

@@ -1,9 +1,5 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SuppliersService } from '../../servicos/suppliers.service';
-import { ProfileService } from '../../servicos/profile.service';
-import { PlantsService } from '../../servicos/plants.service';
-import { CEPService } from '../../servicos/cep.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
@@ -16,11 +12,9 @@ import { ModalSupplierEditarComponent } from './modal-editar-supplier/modal-edit
 import { ModalLogisticEditarComponent } from './modal-editar-logistic/modal-editar-logistic.component';
 import { ModalStaffEditarComponent } from './modal-editar-staff/modal-editar-staff.component';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
-import { GeocodingService } from '../../servicos/geocoding.service';
-import { ToastService } from '../../servicos/toast.service';
 import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
 import { Pagination } from '../../shared/models/pagination';
-import { AuthenticationService } from '../../servicos/auth.service';
+import { AuthenticationService, ToastService, GeocodingService, CEPService, PlantsService, ProfileService, SuppliersService } from '../../servicos/index.service';
 import { constants } from '../../../environments/constants';
 declare var $:any;
 
@@ -61,14 +55,14 @@ export class ModalUserComponent implements OnInit {
 
   getUsers(){
     if(this.authenticationService.currentUser().supplier){
-      this.profileService.getProfilePaginationSupplier(10,this.data.meta.page,this.authenticationService.currentUser().supplier._id).subscribe(result => {console.log(result);this.data = result});
+      this.profileService.getProfilePaginationSupplier(10,this.data.meta.page,this.authenticationService.currentUser().supplier._id).subscribe(result => this.data = result);
       this.isAdmin = false;
     }else if(this.authenticationService.currentUser().logistic){
-      this.profileService.getProfilePaginationLogistic(10,this.data.meta.page,this.authenticationService.currentUser().logistic._id).subscribe(result => {console.log(result);this.data = result});
+      this.profileService.getProfilePaginationLogistic(10,this.data.meta.page,this.authenticationService.currentUser().logistic._id).subscribe(result => this.data = result);
       this.isAdmin = false;
     }else{
       this.isAdmin = true;
-      this.profileService.getProfilePagination(10,this.data.meta.page).subscribe(result => {console.log(result);this.data = result});
+      this.profileService.getProfilePagination(10,this.data.meta.page).subscribe(result => this.data = result);
     }
 
   }

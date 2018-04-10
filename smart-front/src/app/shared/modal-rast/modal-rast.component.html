@@ -13,7 +13,7 @@
         <thead>
           <tr class="cabecalho">
             <th class="semBorda">Codigo</th>
-            <th  class="semBorda">Tag</th>
+            <th  class="semBorda">Serial</th>
             <th  class="semBorda">Fornecedor</th>
           </tr>
         </thead>
@@ -24,7 +24,7 @@
                                                           currentPage: data.meta.page,
                                                           totalItems: data.meta.total_docs}">
             <td>{{packing.code}}</td>
-            <td>{{packing.tag.code}}</td>
+            <td>{{packing.serial}}</td>
             <td>{{packing.supplier.name}}</td>
           </tr>
         </tbody>

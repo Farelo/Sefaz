@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { Pagination } from '../../shared/models/pagination';
-import { PackingService } from '../../servicos/packings.service';
+import { PackingService } from '../../servicos/index.service';
 
 @Component({
   selector: 'app-modal-rast',
@@ -27,7 +27,7 @@ export class ModalRastComponent implements OnInit {
   }
 
   getPackings(){
-    this.packingService.getPackingsByDepartment(this.department, 10, this.data.meta.page).subscribe(result => {console.log(result);this.data = result});
+    this.packingService.getPackingsByDepartment(this.department, 10, this.data.meta.page).subscribe(result => this.data = result);
   }
 
   pageChanged(page: any): void{

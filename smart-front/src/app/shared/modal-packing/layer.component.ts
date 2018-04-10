@@ -3,7 +3,7 @@ import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { PackingService } from '../../servicos/packings.service';
+import { PackingService } from '../../servicos/index.service';
 
 
 @Component({
@@ -35,7 +35,6 @@ public marker = {
     private router: Router) { }
 
   ngOnInit() {
-    console.log(this.packing);
     this.getPositions();
   }
 
@@ -44,7 +43,6 @@ public marker = {
       this.center = result.data.positions[0];
       this.path = result.data.positions;
       this.markers  = result.data.markers;
-      console.log(result.data);
     })
   }
 
@@ -90,6 +88,5 @@ iwCloseBtn.css({
   }
 
   getPosition(event:any){
-    console.log(event);
   }
 }

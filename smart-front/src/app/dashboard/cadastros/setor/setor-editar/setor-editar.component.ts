@@ -1,11 +1,8 @@
 import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
-import { DepartmentService } from '../../../../servicos/departments.service';
 import { Department } from '../../../../shared/models/department';
-import { PlantsService } from '../../../../servicos/plants.service';
 import { Router,ActivatedRoute } from '@angular/router';
-import { ToastService } from '../../../../servicos/toast.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { GeocodingService } from '../../../../servicos/geocoding.service';
+import { GeocodingService, ToastService, PlantsService, DepartmentService } from '../../../../servicos/index.service';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({

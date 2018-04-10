@@ -3,15 +3,11 @@ import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { InventoryService } from '../../servicos/inventory.service';
-import { SuppliersService } from '../../servicos/suppliers.service';
-import { PackingService } from '../../servicos/packings.service';
 import { Pagination } from '../../shared/models/pagination';
 import { Alert } from '../../shared/models/alert';
 import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
 import { LayerModalComponent } from '../../shared/modal-packing/layer.component';
-import { AuthenticationService } from '../../servicos/auth.service';
-import { InventoryLogisticService } from '../../servicos/inventory_logistic.service';
+import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service';
 import { ChatService } from '../../servicos/teste';
 declare var $: any;
 
@@ -138,17 +134,17 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   generalInventoryEquipament() {
     if (this.logged_user instanceof Array) {
-      this.inventoryLogisticService.getInventoryGeneralPackings(10, this.general_equipament.meta.page, this.generalEquipamentSearch, this.logged_user).subscribe(result => { this.general_equipament = result; console.log(result) }, err => { console.log(err) });
+      this.inventoryLogisticService.getInventoryGeneralPackings(10, this.general_equipament.meta.page, this.generalEquipamentSearch, this.logged_user).subscribe(result =>  this.general_equipament = result, err => { console.log(err) });
     } else {
-      this.inventoryService.getInventoryGeneralPackings(10, this.general_equipament.meta.page, this.generalEquipamentSearch, this.logged_user).subscribe(result => { this.general_equipament = result; console.log(result) }, err => { console.log(err) });
+      this.inventoryService.getInventoryGeneralPackings(10, this.general_equipament.meta.page, this.generalEquipamentSearch, this.logged_user).subscribe(result => this.general_equipament = result, err => { console.log(err) });
     }
   }
 
   quantityInventory() {
     if (this.logged_user instanceof Array) {
-      this.inventoryLogisticService.getInventoryQuantity(10, this.quantity.meta.page, this.quantitySearch, this.logged_user).subscribe(result => { console.log(result); this.quantity = result }, err => { console.log(err) });
+      this.inventoryLogisticService.getInventoryQuantity(10, this.quantity.meta.page, this.quantitySearch, this.logged_user).subscribe(result => this.quantity = result , err => { console.log(err) });
     } else {
-      this.inventoryService.getInventoryQuantity(10, this.quantity.meta.page, this.quantitySearch, this.logged_user).subscribe(result => { console.log(result); this.quantity = result }, err => { console.log(err) });
+      this.inventoryService.getInventoryQuantity(10, this.quantity.meta.page, this.quantitySearch, this.logged_user).subscribe(result => this.quantity = result , err => { console.log(err) });
     }
 
   }
@@ -187,13 +183,13 @@ export class InventarioComponent implements OnInit, OnDestroy  {
         this.serials = result.data;
         this.inventoryService
           .getInventoryPermanence(10, this.permanence.meta.page, this.permanenceSearchEquipamento.packing)
-          .subscribe(result => { this.permanence = result, console.log(result) }, err => { console.log(err) });
+          .subscribe(result => this.permanence = result, err => { console.log(err) });
       }, err => { console.log(err) })
 
   }
 
   loadSuppliers(): void {
-    this.suppliersService.retrieveAll().subscribe(result => { this.suppliers = result.data }, err => { console.log(err) });
+    this.suppliersService.retrieveAll().subscribe(result => this.suppliers = result.data , err => { console.log(err) });
   }
 
   open(packing) {
@@ -228,12 +224,12 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   loadPackings() {
     if (this.logged_user instanceof Array) {
-      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => { this.packings = result.data; console.log(this.packings) }, err => { console.log(err) });
+      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result =>  this.packings = result.data, err => { console.log(err) });
 
     } else if (this.logged_user) {
-      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => { this.packings = result.data; console.log(this.packings) }, err => { console.log(err) });
+      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result =>  this.packings = result.data, err => { console.log(err) });
     } else {
-      this.packingService.getPackingsDistincts().subscribe(result => { this.packings = result.data; console.log(this.packings) }, err => { console.log(err) });
+      this.packingService.getPackingsDistincts().subscribe(result =>  this.packings = result.data, err => { console.log(err) });
 
     }
   }

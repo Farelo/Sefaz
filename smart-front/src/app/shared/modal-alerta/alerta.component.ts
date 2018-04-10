@@ -3,7 +3,7 @@ import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { InventoryService } from '../../servicos/inventory.service';
+import { InventoryService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 
 

@@ -1,13 +1,10 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProfileService } from '../../servicos/profile.service';
-import { CEPService } from '../../servicos/cep.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
-import { ToastService } from '../../servicos/toast.service';
-import { AuthenticationService } from '../../servicos/auth.service';
+import { AuthenticationService, CEPService, ToastService, ProfileService } from '../../servicos/index.service';
 
 declare var $:any;
 
@@ -87,7 +84,7 @@ export class ModalCurrentEditarComponent implements OnInit {
       this.ProfileService.retrieveProfile(this.authenticationService.currentUser()._id).subscribe(response => {
         let result = response.data;
 
-        console.log(result);
+       
         (this.staff)
                   .patchValue(result, { onlySelf: true });
 
@@ -115,12 +112,13 @@ export class ModalCurrentEditarComponent implements OnInit {
 
 
   onSubmit({ value, valid }: { value: any, valid: boolean }):void {
-      console.log(value);
+      
 
       if(valid ){
 
         this.ProfileService.updateProfile(value._id,value).subscribe(result => {
             this.toastService.edit('','Funcionário');
+            this.authenticationService.updateCurrentUser();
             this.closeModal();
              }, err => this.toastService.error(err));
 

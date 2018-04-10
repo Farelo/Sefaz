@@ -1,13 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DepartmentService } from '../../servicos/departments.service';
-import { PlantsService } from '../../servicos/plants.service';
 import { Department } from '../../shared/models/department';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { PackingService } from '../../servicos/packings.service';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService } from '../../servicos/auth.service';
+import { AuthenticationService, PackingService, PlantsService, DepartmentService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 declare var $: any;
 declare var google: any;
@@ -134,7 +131,7 @@ export class RastreamentoComponent implements OnInit {
         this.startWindow(marker);
       } else {
         this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
-          console.log(result.data)
+         
           if (result.data.length > 0) {
             this.marker.department = false;
             this.marker.packing = true;
@@ -270,7 +267,5 @@ export class RastreamentoComponent implements OnInit {
   }
 
   onMapReady(map) {
-  
-    console.log('map', map);
   }
 }

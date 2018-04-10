@@ -1,11 +1,8 @@
 import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
-import { DepartmentService } from '../../../../servicos/departments.service';
 import { Department } from '../../../../shared/models/department';
-import { PlantsService } from '../../../../servicos/plants.service';
 import { Router } from '@angular/router';
-import { ToastService } from '../../../../servicos/toast.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { GeocodingService } from '../../../../servicos/geocoding.service';
+import { GeocodingService, ToastService, PlantsService, DepartmentService} from '../../../../servicos/index.service';
 
 @Component({
   selector: 'app-setor-cadastrar',
@@ -19,6 +16,10 @@ export class SetorCadastrarComponent implements OnInit {
   public center: any;
   public pos: any;
   public zoom = 14;
+  public default = {
+    lat: 0,
+    lng: 0
+  }
   public geocoder = new google.maps.Geocoder;
 
   constructor(
@@ -52,9 +53,9 @@ export class SetorCadastrarComponent implements OnInit {
   }
 
   onMapReady(map) {
-
-    this.department.controls.lat.setValue(map.center.lat());
-    this.department.controls.lng.setValue(map.center.lng());
+  
+    this.department.controls.lat.setValue(map.center ? map.center.lat() : this.default.lat);
+    this.department.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
   }
 
   onClick(event, str) {

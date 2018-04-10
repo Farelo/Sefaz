@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GC16 } from '../../../shared/models/gc16'
-import { GC16Service } from '../../../servicos/gc16.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ToastService } from '../../../servicos/toast.service';
+import { ToastService, GC16Service } from '../../../servicos/index.service';
 
 @Component({
   selector: 'app-gc16-editar',

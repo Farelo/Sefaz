@@ -1,20 +1,14 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SuppliersService } from '../../../servicos/suppliers.service';
-import { ProfileService } from '../../../servicos/profile.service';
-import { PlantsService } from '../../../servicos/plants.service';
-import { CEPService } from '../../../servicos/cep.service';
 import { ModalUserComponent } from '../modal-user.component';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { Supplier } from '../../../shared/models/supplier';
-import { LogisticService } from '../../../servicos/logistic.service';
 import { Profile } from '../../../shared/models/profile';
 import { Plant } from '../../../shared/models/plant';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
-import { GeocodingService } from '../../../servicos/geocoding.service';
-import { ToastService } from '../../../servicos/toast.service';
+import { ToastService, GeocodingService, LogisticService, CEPService, PlantsService, ProfileService, SuppliersService } from '../../../servicos/index.service';
 
 declare var $:any;
 

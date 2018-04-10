@@ -27,22 +27,19 @@ exports.profile_read = function (req, res) {
     _id: req.swagger.params.profile_id.value
   })
     .then(data => {
-      console.log(data.password)
       try {
         data.password = hashPassword.decrypt(data.password);
       } catch (error) {
         responses.successHandler(res, req.user.refresh_token, data);
       }
-
       responses.successHandler(res, req.user.refresh_token, data);
-
     })
     .catch(_.partial(responses.errorHandler, res, 'Error to read profile'));
 };
 
 /**
  * Show the current Profile
- */
+ **/
 exports.profile_read_by_email = function (req, res) {
   let email = req.swagger.params.email.value;
   schemas.profile().find({
@@ -54,7 +51,6 @@ exports.profile_read_by_email = function (req, res) {
       } catch (error) {
         responses.successHandler(res, req.user.refresh_token, data);
       }
-
       responses.successHandler(res, req.user.refresh_token, data);
     })
     .catch(_.partial(responses.errorHandler, res, 'Error to read profile'));
@@ -62,7 +58,7 @@ exports.profile_read_by_email = function (req, res) {
 
 /**
  * Show the current Profile
- */
+ **/
 exports.profile_recover = function (req, res) {
 
   var credentials = {
@@ -87,12 +83,12 @@ exports.profile_recover = function (req, res) {
  * Show the current Profile
  */
 exports.profile_auth = function (req, res) {
-
+  
   var credentials = {
     email: req.swagger.params.email.value,
     password: hashPassword.encrypt(req.swagger.params.password.value)
   };
-
+  
   if (credentials.hasOwnProperty('email') && credentials.hasOwnProperty('password')) {
     Promise.all([schemas.profile().aggregate(query.queries.login(credentials.password, credentials.email)), schemas.settings().find({})])
       .then(_.partial(responses.authSuccess, res, credentials))
@@ -114,6 +110,7 @@ exports.profile_update = function (req, res) {
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update profile'));
 };
+
 /**
  * Delete an Profile
  */
@@ -128,6 +125,7 @@ exports.profile_delete = function (req, res) {
     .catch(_.partial(responses.errorHandler, res, 'Error to delete profile'));
 
 };
+
 /**
  * List of all Profiles
  */
@@ -136,6 +134,7 @@ exports.profile_list = function (req, res) {
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to list of all profiles'));
 };
+
 /**
  * List of all Profiles by pagination
  */
@@ -146,6 +145,7 @@ exports.profile_listPagination = function (req, res) {
     { page: parseInt(req.swagger.params.page.value), limit: parseInt(req.swagger.params.limit.value) },
     _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, req.swagger.params.page.value, req.swagger.params.limit.value));
 };
+
 /**
  * List of all Profiles by pagination
  */
@@ -155,6 +155,7 @@ exports.profile_listPagination_supplier = function (req, res) {
     { page: parseInt(req.swagger.params.page.value), limit: parseInt(req.swagger.params.limit.value) },
     _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, req.swagger.params.page.value, req.swagger.params.limit.value));
 };
+
 /**
  * List of all Profiles by pagination by logistic
  */

@@ -1,12 +1,11 @@
 import { Component, OnInit, Input,OnDestroy, NgZone, ComponentRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { AlertsService } from '../../../servicos/alerts.service';
 import { Alert } from '../../../shared/models/alert';
-import { ChatService }       from '../../../servicos/teste';
+import { ChatService } from '../../../servicos/teste';
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Pagination } from '../../../shared/models/pagination';
-import { AuthenticationService } from '../../../servicos/auth.service';
+import { AuthenticationService, AlertsService } from '../../../servicos/index.service';
 declare var $:any;
 
 @Component({
@@ -80,7 +79,7 @@ export class TimelineComponent implements OnInit {
           });
     }else{
       this.AlertsService.getAlerts(16, this.data.meta.page, this.logged_user)
-        .subscribe(alerts => { console.log(alerts); this.data = alerts },
+        .subscribe(alerts =>  this.data = alerts ,
           err => {
             console.log(err);
         });

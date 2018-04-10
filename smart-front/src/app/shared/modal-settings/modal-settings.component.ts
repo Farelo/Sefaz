@@ -1,14 +1,10 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProfileService } from '../../servicos/profile.service';
-import { CEPService } from '../../servicos/cep.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
-import { ToastService } from '../../servicos/toast.service';
-import { AuthenticationService } from '../../servicos/auth.service';
-import { SettingsService } from '../../servicos/settings.service';
+import { SettingsService, AuthenticationService, ToastService, CEPService, ProfileService } from '../../servicos/index.service';
 import { MeterFormatter} from '../pipes/meter_formatter'
 import { WeekFormatter} from '../pipes/week_formatter'
 import { ChargeFormatter} from '../pipes/charge_formatter'

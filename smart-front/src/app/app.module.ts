@@ -21,33 +21,12 @@ import { ModalCurrentEditarComponent } from './shared/modal-current-edit/modal-e
 import { ModalStaffEditarComponent } from './shared/modal-user/modal-editar-staff/modal-editar-staff.component';
 import { ModalSettings } from './shared/modal-settings/modal-settings.component';
 import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
-import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { ApplicationPipes } from './shared/pipes/application.pipes';
 import { ValidatorsModule, EmailValidators} from 'ngx-validators'
 import { AlertaModalComponent } from './shared/modal-alerta/alerta.component';
 import { LayerModalComponent } from './shared/modal-packing/layer.component';
 import { ModalDeleteComponent } from './shared/modal-delete/modal-delete.component';
-import { AlertsService } from './servicos/alerts.service';
-import { ImportService } from './servicos/import.service';
-import { SettingsService } from './servicos/settings.service';
 import { DashboardModuleAdmin } from './dashboard/dashboard.module';
-import { ToastService } from './servicos/toast.service';
-import { InventoryService } from './servicos/inventory.service';
-import { DepartmentService } from './servicos/departments.service';
-import { PackingService } from './servicos/packings.service';
-import { LogisticService } from './servicos/logistic.service';
-import { InventoryLogisticService } from './servicos/inventory_logistic.service';
-import { PlantsService } from './servicos/plants.service';
-import { RoutesService } from './servicos/routes.service';
-import { SuppliersService } from './servicos/suppliers.service';
-import { TagsService } from './servicos/tags.service';
-import { AuthenticationService } from './servicos/auth.service';
-import { CheckpointService } from './servicos/checkpoints.service';
-import { GeocodingService } from './servicos/geocoding.service';
-import { ProjectService } from './servicos/projects.service';
-import { ProfileService } from './servicos/profile.service';
-import { CEPService } from './servicos/cep.service';
-import { GC16Service } from './servicos/gc16.service';
 import { ChatService } from './servicos/teste';
 import { NguiMapModule } from '@ngui/map';
 import { AppRoutingModule } from './app.routing.module';
@@ -56,6 +35,8 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { ToastyModule } from 'ng2-toasty';
 import { NouisliderModule } from 'ng2-nouislider';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { ServicesModule, AuthInterceptor } from './servicos/service.module';
 
 @NgModule({
   declarations: [
@@ -77,6 +58,7 @@ import { NouisliderModule } from 'ng2-nouislider';
   ],
   imports: [
     BrowserModule,
+    ServicesModule,
     FormsModule,
     HttpModule,
     JWBootstrapSwitchModule,
@@ -85,6 +67,7 @@ import { NouisliderModule } from 'ng2-nouislider';
     NgbModule.forRoot(),
     AlertModule.forRoot(),
     ToastyModule.forRoot(),
+    Ng4LoadingSpinnerModule.forRoot(),
     BrowserAnimationsModule,
     DashboardModuleAdmin,
     AngularMultiSelectModule,
@@ -102,27 +85,7 @@ import { NouisliderModule } from 'ng2-nouislider';
 
   ],
   providers: [
-    AlertsService,
-    DepartmentService,
-    PackingService,
-    PlantsService,
-    RoutesService,
-    SuppliersService,
-    SettingsService,
-    TagsService,
-    CheckpointService,
-    InventoryLogisticService,
-    ProjectService,
     ChatService,
-    GC16Service,
-    GeocodingService,
-    ProfileService,
-    InventoryService,
-    CEPService,
-    LogisticService,
-    ToastService,
-    ImportService,
-    AuthenticationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

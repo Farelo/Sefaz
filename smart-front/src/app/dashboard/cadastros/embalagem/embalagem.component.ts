@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit ,ViewChild} from '@angular/core';
-import { PackingService } from '../../../servicos/packings.service';
+import { PackingService } from '../../../servicos/index.service';
 import { Packing } from '../../../shared/models/packing';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';

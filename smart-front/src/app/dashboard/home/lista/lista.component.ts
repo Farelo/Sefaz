@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { AlertaModalComponent } from '../../../shared/modal-alerta/alerta.component';
-import { AlertsService } from '../../../servicos/alerts.service';
+import { AlertsService } from '../../../servicos/index.service';
 import { Alert } from '../../../shared/models/alert';
 import { Pagination } from '../../../shared/models/pagination';
 

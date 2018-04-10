@@ -1,12 +1,8 @@
 import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { GC16 } from '../../../shared/models/gc16';
 import { Project } from '../../../shared/models/project';
-import { SuppliersService } from '../../../servicos/suppliers.service';
 import { Supplier } from '../../../shared/models/supplier';
-import { PackingService } from '../../../servicos/packings.service';
-import { ProjectService } from '../../../servicos/projects.service';
-import { GC16Service } from '../../../servicos/gc16.service';
-import { ToastService } from '../../../servicos/toast.service';
+import { ToastService, GC16Service, ProjectService, PackingService, SuppliersService } from '../../../servicos/index.service';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import * as $ from 'jquery'

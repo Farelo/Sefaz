@@ -1,10 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plant } from '../../../../shared/models/plant';
-import { PlantsService } from '../../../../servicos/plants.service';;
-import { ToastService } from '../../../../servicos/toast.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { GeocodingService } from '../../../../servicos/geocoding.service';
+import { GeocodingService, ToastService, PlantsService } from '../../../../servicos/index.service';
 
 @Component({
   selector: 'app-planta-cadastrar',
@@ -18,6 +16,10 @@ export class PlantaCadastrarComponent implements OnInit {
   public address: any = {};
   public center: any;
   public zoom = 14;
+  public default = {
+    lat: 0,
+    lng: 0
+  }
   public pos: any;
   public geocoder = new google.maps.Geocoder;
 
@@ -66,10 +68,15 @@ export class PlantaCadastrarComponent implements OnInit {
   }
 
   onMapReady(map) {
-    let origin  = new google.maps.LatLng(map.center.lat(), map.center.lng());
-    this.geocodingService.geocode(origin).subscribe(results => this.plant.controls.location.setValue(results[1].formatted_address))
-    this.plant.controls.lat.setValue(map.center.lat());
-    this.plant.controls.lng.setValue(map.center.lng());
+    
+    let origin = new google.maps.LatLng(map.center ? map.center.lat() : this.default.lat, map.center ? map.center.lng() : this.default.lng);
+    
+    if (map.center){
+      this.geocodingService.geocode(origin).subscribe(results => this.plant.controls.location.setValue(results[1].formatted_address), err => console.log(err))
+    }
+    
+    this.plant.controls.lat.setValue(map.center ? map.center.lat() : this.default.lat);
+    this.plant.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
   }
 
   onClick(event, str) {
