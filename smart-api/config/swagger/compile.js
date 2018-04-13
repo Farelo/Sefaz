@@ -26,8 +26,8 @@ glob("api/swagger/index.yaml", function(er, files) {
       const merged = contents.reduce(extend);
       console.log("Generating swagger.yaml, swagger.json");
       fs.existsSync("api/swagger") || fs.mkdirSync("api/swagger");
-      fs.writeFile("api/swagger/swagger.yaml", YAML.dump(merged));
-      fs.writeFile("api/swagger/swagger.json", JSON.stringify(merged, null, 2));
+      fs.writeFileSync("api/swagger/swagger.yaml", YAML.dump(merged));
+      fs.writeFileSync("api/swagger/swagger.json", JSON.stringify(merged, null, 2));
 
     });
   });
