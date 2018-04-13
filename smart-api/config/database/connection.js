@@ -4,13 +4,18 @@ const mongoose    = require('mongoose');
 const constants   = require('../../api/helpers/utils/constants');
 const schemas     = require('../database/import_schemas');
 
-
+function tryReconect(dbURI, environment) {
+	setTimeout(function () {
+		mongoose.connect(dbURI, environment.database_options);
+	},
+		5000
+	);
+}
 
 module.exports = {
 	open: function (environment) {
 		let dbURI = `mongodb://${environment.urldatabase}/${environment.database}`;
-		console.log(process.env.DATABASE)
-		console.log(process.env.DATABASE_SERVICE)
+	
 		if (process.env.NODE_ENV === 'production') {//verifica se esta em produção
 			if (process.env.DATABASE && process.env.DATABASE_SERVICE){//se sim avalia se os dados foram inserido corretamente
 				dbURI = `mongodb://${process.env.DATABASE_SERVICE}/${process.env.DATABASE}`;
@@ -22,6 +27,8 @@ module.exports = {
 
 		mongoose.connection.on('error', function (e) {
 			console.log("db: mongodb error " + e);
+			mongoose.connection.close();
+			tryReconect(dbURI, environment);
 		});
 
 		mongoose.connection.on('connected', function (e) {
@@ -42,6 +49,8 @@ module.exports = {
 
 		mongoose.connection.on('timeout', function (e) {
 			console.log("db: mongodb timeout " + e);
+			mongoose.connection.close();
+			tryReconect(dbURI, environment);
 		});
 
 
