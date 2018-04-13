@@ -1,91 +1,59 @@
 version: "2.0"
 services:
-  smart-front:
+  cliente-gm:
     build:
       context: 'smart-front'
-      dockerfile: Dockerfile.prod
-    container_name: smart_front
-    depends_on:
-      - smart-api
+      dockerfile: Dockerfile
+      args: 
+        baseurl: http://localhost:8005/api/
+        port: 8000
+    container_name: cliente-gm
     ports:
-      - '8000:8000'
-  smart-front1:
+      - '8000:8000'    #obrigratorio
+  cliente-cebrace:
     build:
-      context: 'smart-front1'
-      dockerfile: Dockerfile.prod
-    container_name: smart_front1
-    depends_on:
-      - smart-api1
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args:  #URL de acesso a API que será consultada por esse serviço (cliente)
+        baseurl: http://localhost:8006/api/
+        port: 8001   #//porta em que o sistema será executado  (essa informação será consumida pelo nginx)
+    container_name: cliente-cebrace   #nome do serviço
     ports:
-      - '8006:8006'
-  smart-front2:
-    build:
-      context: 'smart-front2'
-      dockerfile: Dockerfile.prod
-    container_name: smart_front2
-    depends_on:
-      - smart-api2
-    ports:
-      - '8007:8007'
-  admin-front:
-    build:
-      context: 'admin-front'
-      dockerfile: Dockerfile.prod
-    container_name: admin-front
-    depends_on:
-      - admin-api
-    ports:
-      - '8001:8001'
-  smart-api:
+      - '8001:8001'    #Definir uma porta em que o sistema irá executar
+  cebrace: #finalizado 
     build:
       context: 'smart-api'
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     command: npm start
-    container_name: smart-api
+    container_name: cebrace
     environment:
       NODE_ENV: production
+      HOST: localhost           #obrigatorios caso não coloque o DNS
+      PORT: 8005                    #obrigatorios caso não coloque o DNS 
+      DATABASE: reciclopac2          #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+      # DNS:                
     tty: true
     ports:
-      - '8004:8004'
+      - '8005:8005'        #obrigratorio
     depends_on:
       - mongo
-  smart-api1:
+  gm: #finalizado 
     build:
-      context: 'smart-api1'
-      dockerfile: Dockerfile.prod
+      context: 'smart-api'  
+      dockerfile: Dockerfile           #dockerfile que será utilizado para dar build na imagem
     command: npm start
-    container_name: smart-api1
+    container_name: gm                 #definir o nome do serviço que irá executar
     environment:
       NODE_ENV: production
+      HOST: localhost           #obrigatorios caso não coloque o DNS
+      PORT: 8006                    #obrigatorios caso não coloque o DNS 
+      DATABASE: reciclopac3          #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+      # DNS:                
     tty: true
     ports:
-      - '8009:8009'
-    depends_on:
-      - mongo
-  smart-api2:
-    build:
-      context: 'smart-api2'
-      dockerfile: Dockerfile.prod
-    command: npm start
-    container_name: smart-api2
-    environment:
-      NODE_ENV: production
-    tty: true
-    ports:
-      - '8010:8010'
-    depends_on:
-      - mongo
-  admin-api:
-    build:
-      context: 'admin-api'
-      dockerfile: Dockerfile.prod
-    command: npm start
-    container_name: admin-api
-    environment:
-      NODE_ENV: production
-    tty: true
-    ports:
-      - '8005:8005'
+      - '8006:8006'        #obrigratorio
     depends_on:
       - mongo
   mongo:
@@ -93,6 +61,16 @@ services:
     container_name: mongo
     ports:
       - '27017:27017'
-    volumes:
-      - ./data/db:/data/db
-      - ./data/backup:/data/backup
+    # volumes:
+    #   - ./data/db:/data/db
+    #   - ./data/backup:/data/backup
+    networks: #definindo uma rede de IP fixo para o banco de dados utilizando o network do docker
+      net-recicla:
+        ipv4_address: 172.18.0.2
+networks:
+  net-recicla:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.18.0.0/16
+         gateway: 172.18.0.1

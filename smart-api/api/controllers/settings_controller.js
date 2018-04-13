@@ -21,7 +21,7 @@ exports.settings_retrieve = function (req, res) {
  */
 exports.settings_update = function (req, res) {
     schemas.settings().findOne({_id: 1})
-    .then(setting =>{
+    .then(setting => {
     
         if(setting.register_gc16.enable != req.body.register_gc16.enable){
             if (setting.register_gc16.enable ){ //se ja estava habilitado

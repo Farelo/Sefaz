@@ -14,6 +14,7 @@ schemas.settings().find({}).then(setting => { //inserindo as configurações de 
                     "_id": 1,
                     "battery_level": constants.battery_level,
                     "clean": 604800000, // a cada semana os dados historicos são removidos de cada uma das embalagens
+                    "update_clean": false,
                     "register_gc16": {
                         enable: constants.register_gc16.enable,
                         "days": constants.register_gc16.days
@@ -25,6 +26,7 @@ schemas.settings().find({}).then(setting => { //inserindo as configurações de 
                     "_id": 1,
                     "battery_level": constants.battery_level,
                     "clean": 604800000, // a cada semana os dados historicos são removidos de cada uma das embalagens
+                    "update_clean": false,
                     "register_gc16": {
                         enable: true,
                         "days": constants.register_gc16.days

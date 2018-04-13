@@ -63,8 +63,24 @@ require('./api/auth/auth')(app);
 
 
 //////////////////////
+//verifica se o servidor esta rodando em produção e avalia as variaveis do mesmo
+if (process.env.NODE_ENV === 'production'){
+  if (process.env.DNS || process.env.HOST || process.env.PORT){
+    if (process.env.HOST){
+      swaggerObject.host = `${process.env.HOST}:${process.env.PORT}`;
+    } else if (process.env.DNS){
+      swaggerObject.host = `${process.env.DNS}`;
+    }else{
+      console.log("faltou inserir algumas variaveis de ambiente")
+      swaggerObject.host = `${environment.url}:${environment.port}`;
+    }
+  }else{//caso contrario utiliza as variaveis de ambiente padrão
+    swaggerObject.host = `${environment.url}:${environment.port}`;
+  }
+}else{//caso o copntrario uitiliza as variaveis de ambiente em desenvolvimento
+  swaggerObject.host = `${environment.url}:${environment.port}`;
+}
 
-swaggerObject.host = `${environment.url}:${environment.port}`;
 
 //START middleware SWAGGER //em obras
 swaggerTools.initializeMiddleware(swaggerObject, function(middleware) {
@@ -91,6 +107,17 @@ swaggerTools.initializeMiddleware(swaggerObject, function(middleware) {
     app.use(middleware.swaggerUi());
 
     http.listen(port, () => {
-      console.log(`started on port ${environment.port}`);
+      if (process.env.NODE_ENV === 'production'){
+        if (process.env.HOST) {
+          console.log(`started on ${process.env.HOST}:${process.env.PORT}`)
+        } else if (process.env.DNS) {
+          console.log(`started on ${process.env.DNS}`)
+        } else {
+          console.log(`started on ${environment.url}:${environment.port}`);
+        }
+        
+      }else{
+        console.log(`started on ${environment.url}:${environment.port}`);
+      }
     });
 });

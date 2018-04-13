@@ -8,8 +8,14 @@ const schemas     = require('../database/import_schemas');
 
 module.exports = {
 	open: function (environment) {
-
-		const dbURI = `mongodb://${environment.urldatabase}/${environment.database}`;
+		let dbURI = `mongodb://${environment.urldatabase}/${environment.database}`;
+		console.log(process.env.DATABASE)
+		console.log(process.env.DATABASE_SERVICE)
+		if (process.env.NODE_ENV === 'production') {//verifica se esta em produção
+			if (process.env.DATABASE && process.env.DATABASE_SERVICE){//se sim avalia se os dados foram inserido corretamente
+				dbURI = `mongodb://${process.env.DATABASE_SERVICE}/${process.env.DATABASE}`;
+			}//caso contrario utiliza as variaveis default
+		}
 
 		mongoose.set('bufferCommands', false);
 		mongoose.connect(dbURI, constants.database_options);
