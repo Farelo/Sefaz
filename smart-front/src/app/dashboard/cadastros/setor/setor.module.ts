@@ -1,3 +1,4 @@
+
 /**
  * Created by david on 7/09/17.
  */
@@ -16,6 +17,7 @@ import {SetorComponent} from './setor.component';
 import {SetorRoutingModule} from './setor.routing.module';
 import { NguiMapModule } from '@ngui/map';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { constants } from './../../../../environments/constants';
 
 @NgModule({
   imports: [
@@ -30,7 +32,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     ReactiveFormsModule,
     NguiMapModule.forRoot({
-      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ' +
+      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}` +
       '&libraries=visualization,places,drawing',
     })
 

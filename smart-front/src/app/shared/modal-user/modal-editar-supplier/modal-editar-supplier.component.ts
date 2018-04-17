@@ -1,9 +1,6 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalUserComponent } from '../modal-user.component';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { Supplier } from '../../../shared/models/supplier';
 import { Profile } from '../../../shared/models/profile';
 import { Plant } from '../../../shared/models/plant';
@@ -32,19 +29,14 @@ export class ModalSupplierEditarComponent implements OnInit {
   public invalidPlant = false;
   public center: any;
   public pos : any;
-  public users = [];
-  public newcep = '';
-  public newtelefone = '';
   public mask = [/[0-9]/, /\d/, /\d/,'.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,'-', /\d/, /\d/];
   public maskCep = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
   public maskTel = ['(', /[0-9]/, /\d/,')', /\d/,/\d/, /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, /\d/];
   public maskCel = ['(', /[0-9]/, /\d/,')', /\d/,/\d/, /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, /\d/];
-  public alerts: any = [];
+
 
   constructor(
     public activeModal: NgbActiveModal,
-    private route: ActivatedRoute,
-    private router: Router,
     private modalService: NgbModal,
     private SuppliersService : SuppliersService,
     private ProfileService : ProfileService,

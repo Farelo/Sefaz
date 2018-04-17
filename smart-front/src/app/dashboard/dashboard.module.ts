@@ -9,7 +9,6 @@ import { CadastrosModule } from './cadastros/cadastros.module';
 import { ModalModule ,TooltipModule,PopoverModule} from 'ngx-bootstrap'
 import { DashboardRoutingModule } from './dashboard.routing.module';
 import { NgbModule, NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { Select2Module } from 'ng2-select2';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule} from '@angular/forms';
 import {ToastyModule} from 'ng2-toasty';
@@ -33,8 +32,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     ApplicationPipes,
     DashboardRoutingModule,
-    NgxPaginationModule,
-    Select2Module
+    NgxPaginationModule
 
   ],
   declarations: [

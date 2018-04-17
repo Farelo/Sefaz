@@ -1,8 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { PackingService } from '../../servicos/index.service';
 
 
@@ -15,8 +12,6 @@ export class LayerModalComponent implements OnInit {
 @Input() packing;
 public path = [];
 public center: any;
-public pos: any;
-public inscricao: Subscription;
 public markers = [];
 public marker = {
   display: true,
@@ -30,9 +25,8 @@ public marker = {
 
   constructor(
     public activeLayer: NgbActiveModal,
-    private route: ActivatedRoute,
-    private packingService: PackingService,
-    private router: Router) { }
+    private packingService: PackingService
+  ) { }
 
   ngOnInit() {
     this.getPositions();

@@ -10,5 +10,6 @@ export const constants = {
     supplier: "FORNECEDOR",
     staff: "FUNCIONÁRIO",
     logistic: "OPERADOR LOGÍSTICO"
-  }
+  },
+  GOOGLE_API_KEY: "AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ"
 };

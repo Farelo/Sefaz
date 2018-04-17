@@ -1,8 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { InventoryService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 
@@ -15,13 +12,12 @@ import { Pagination } from '../../shared/models/pagination';
 export class AlertaModalComponent implements OnInit {
 @Input() alerta;
 public historicFlag = false;
-public historic: Pagination = new Pagination({meta: {page : 1}});
-inscricao: Subscription;
+public historic: Pagination = new Pagination({meta: {page : 1}})
+
   constructor(
     public activeAlerta: NgbActiveModal,
-    private route: ActivatedRoute,
     private inventoryService: InventoryService,
-    private router: Router) { }
+    ) { }
 
   ngOnInit() {
     console.log(this.alerta);
@@ -29,11 +25,8 @@ inscricao: Subscription;
 
   getHistoric(){
     this.inventoryService.getInventoryPackingHistoric(10,this.historic.meta.page,this.alerta.data.packing.serial,this.alerta.data.packing.code).subscribe(result => {
-      console.log(result)
       this.historic = result;
      }, err => {console.log(err)});
   }
-
-
 
 }

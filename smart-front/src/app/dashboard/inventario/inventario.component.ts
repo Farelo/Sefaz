@@ -1,8 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy  } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { Pagination } from '../../shared/models/pagination';
 import { Alert } from '../../shared/models/alert';
 import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
@@ -11,6 +8,7 @@ import { InventoryLogisticService, AuthenticationService, PackingService, Suppli
 import { ChatService } from '../../servicos/teste';
 declare var $: any;
 
+//fazer uma refatoração esta muito grande e com o HTML gigantesco
 @Component({
   selector: 'app-inventario',
   templateUrl: './inventario.component.html',
@@ -22,7 +20,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public name_supplier: any = '';
   public escolhaGeral: any = 'GERAL';
   public escolhaEquipamento = "";
-  public verModal: boolean = true;
   public packings: any[];
   public escolhas: any[];
   public serials: any[];
@@ -56,8 +53,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     private inventoryService: InventoryService,
     private suppliersService: SuppliersService,
     private packingService: PackingService,
-    private router: Router,
-    private route: ActivatedRoute,
     private modalService: NgbModal,
     private modalActive: NgbActiveModal,
     private ref: ChangeDetectorRef,
@@ -113,14 +108,18 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   }
 
   supplierInventory(event: any): void {
-
-    if (event) {
-
+    if (event){
       this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, event._id).subscribe(result => {
         this.supplier = result;
         this.name_supplier = result.data[0];
       }, err => { console.log(err) });
-    }
+   }else{
+      this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, this.name_supplier._id.supplier).subscribe(result => {
+        this.supplier = result;
+      }, err => { console.log(err) });
+   }
+      
+    
   }
 
   // Bateria inventario  ----------------------------------

@@ -61,7 +61,6 @@ export class Gc16EditarComponent implements OnInit {
 
       if ((containerDays || containerDays == 0) && (QuantTotalDays || QuantTotalDays == 0) && (percentage || percentage == 0)) {
         //secutiryFactor
-        console.log(containerDays)
         this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.setValue(Math.ceil(((((1 + (percentage / 100)) * containerDays) * QuantTotalDays))));
 
         this.gc16['controls'].secutiryFactor['controls'].QuantContainer.setValue(Math.ceil(((percentage * this.gc16['controls'].secutiryFactor['controls'].QuantTotalBuilt.value) / 100)));

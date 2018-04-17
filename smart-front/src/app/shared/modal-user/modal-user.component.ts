@@ -1,8 +1,5 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { Supplier } from '../../shared/models/supplier';
 import { Profile } from '../../shared/models/profile';
 import { Plant } from '../../shared/models/plant';
@@ -32,9 +29,7 @@ export class ModalUserComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private profileService: ProfileService,
-    private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private router: Router,
     private modalService: NgbModal,
   ) { }
 

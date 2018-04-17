@@ -12,9 +12,6 @@ import {
   PlantsService, 
   ToastService
 } from '../../servicos/index.service';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { Supplier } from '../../shared/models/supplier';
 import { Profile } from '../../shared/models/profile';
 import { Plant } from '../../shared/models/plant';
@@ -30,18 +27,8 @@ export class ModalDeleteComponent implements OnInit {
   @Input() view;
   @Input() type;
 
-
-  private perfil = 'FORNECEDOR';
-  public autocomplete: google.maps.places.Autocomplete;
-  public address: any = {};
-  public center: any;
-  public pos : any;
-  public users: any;
-
   constructor(
     public activeModal: NgbActiveModal,
-    private route: ActivatedRoute,
-    private router: Router,
     private departmentService : DepartmentService,
     private tagsService : TagsService,
     private profileService : ProfileService,
@@ -56,8 +43,7 @@ export class ModalDeleteComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.view);
-    console.log(this.type);
+
   }
 
   delete(){

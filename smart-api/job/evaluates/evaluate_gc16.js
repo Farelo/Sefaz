@@ -76,7 +76,7 @@ module.exports = {
         console.log("INSERT GC16 FACTORY TO PACKING:",p._id);
       }
     }
-    // console.log(p);
+    
     return p;
   }
 

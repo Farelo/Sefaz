@@ -1,8 +1,5 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 import { SettingsService, AuthenticationService, ToastService, CEPService, ProfileService } from '../../servicos/index.service';
 import { MeterFormatter} from '../pipes/meter_formatter'
@@ -51,8 +48,6 @@ export class ModalSettings implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private route: ActivatedRoute,
-    private router: Router,
     private settingsService: SettingsService,
     private authenticationService: AuthenticationService,
     private modalService: NgbModal,
@@ -96,25 +91,14 @@ export class ModalSettings implements OnInit {
 
     this.settingsService.retrieve().subscribe(response => {
         let result = response.data[0];
-
-      
-       
         (this.settings)
                   .patchValue(result, { onlySelf: true });
 
-    
-     
       })
-
-
 
   }
 
-
-
-
   onSubmit({ value, valid }: { value: any, valid: boolean }):void {
-
 
       if(valid ){
 

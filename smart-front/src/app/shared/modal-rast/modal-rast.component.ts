@@ -1,8 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { Pagination } from '../../shared/models/pagination';
 import { PackingService } from '../../servicos/index.service';
 
@@ -17,9 +14,7 @@ export class ModalRastComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private route: ActivatedRoute,
-    private packingService: PackingService,
-    private router: Router
+    private packingService: PackingService
   ) { }
 
   ngOnInit() {

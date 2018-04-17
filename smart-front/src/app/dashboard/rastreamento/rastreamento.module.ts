@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NguiMapModule } from '@ngui/map';
@@ -6,6 +7,7 @@ import { RastreamentoRoutingModule } from './rastreamento.routing.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { constants } from './../../../environments/constants';
 @NgModule({
   imports: [
     CommonModule,
@@ -14,7 +16,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RastreamentoRoutingModule,
     NgxPaginationModule,
     NguiMapModule.forRoot({
-      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
+      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}` +
       '&libraries=visualization,places,drawing',
     })
   ],

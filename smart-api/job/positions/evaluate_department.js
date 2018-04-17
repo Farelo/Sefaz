@@ -21,7 +21,7 @@ function getNearDepartment(department, p,r) {
     }
   });
 
-  r(result);
+  r(result); //resolve o resultado
 }
 
 

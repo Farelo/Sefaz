@@ -4,7 +4,7 @@ import { ModalUserComponent } from '../../shared/modal-user/modal-user.component
 import { ModalCurrentEditarComponent } from '../../shared/modal-current-edit/modal-editar-current.component';
 import { ModalSettings } from '../../shared/modal-settings/modal-settings.component';
 import { AuthenticationService } from '../../servicos/index.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 declare var $:any;
 
 @Component({
@@ -15,10 +15,6 @@ declare var $:any;
 export class NavbarComponent implements OnInit {
 public menuAparecer: boolean = false;
 public currentUser  : any;
-public telaGrande: boolean = false;
-public altura: any;
-public largura: any;
-public closeResult: string;
 
   constructor(
     private ngZone:NgZone,

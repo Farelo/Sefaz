@@ -2,6 +2,7 @@
 
 const request = require('request');
 
+//refatorar isso utilizando request-promise
 module.exports = function (token) {
     return new Promise(function(resolve, reject) {
         var options = {

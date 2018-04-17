@@ -1,8 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
+import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap'
 import { InventoryService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 
@@ -14,13 +11,11 @@ import { Pagination } from '../../shared/models/pagination';
 })
 export class ModalInvComponent implements OnInit {
   @Input() packing;
-  public inscricao: Subscription;
   public data: Pagination = new Pagination({meta: {page : 1}});
   constructor(
     public activeAlerta: NgbActiveModal,
-    private route: ActivatedRoute,
-    private inventoryService: InventoryService,
-    private router: Router) { }
+    private inventoryService: InventoryService
+  ) { }
 
   ngOnInit() {
     this.loadInventory();

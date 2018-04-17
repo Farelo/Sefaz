@@ -1,14 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
 import { AuthenticationService, PackingService, PlantsService, DepartmentService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 declare var $: any;
 declare var google: any;
 
+//refatorar esse modulo esta muito grande e com coisas confusas
 @Component({
   selector: 'app-rastreamento',
   templateUrl: './rastreamento.component.html',
@@ -49,8 +48,6 @@ export class RastreamentoComponent implements OnInit {
     private departmentService: DepartmentService,
     private plantsService: PlantsService,
     private packingService: PackingService,
-    private router: Router,
-    private route: ActivatedRoute,
     private modalService: NgbModal,
     private auth: AuthenticationService
 

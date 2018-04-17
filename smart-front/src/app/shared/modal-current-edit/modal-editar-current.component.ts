@@ -1,8 +1,5 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 import { AuthenticationService, CEPService, ToastService, ProfileService } from '../../servicos/index.service';
 
@@ -15,17 +12,10 @@ declare var $:any;
 })
 export class ModalCurrentEditarComponent implements OnInit {
 
-  public next = false;
-  private perfil = "FUNCIONÁRIO";
   public staff :  FormGroup;
   public address: any = {};
-  public submitted = false;
   public invalidEmail = false;
-  public center: any;
-  public pos : any;
-  public users = [];
-  public newcep = '';
-  public newtelefone = '';
+
   public mask = [/[0-9]/, /\d/, /\d/,'.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,'-', /\d/, /\d/];
   public maskCep = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
   public maskTel = ['(', /[0-9]/, /\d/,')', /\d/,/\d/, /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, /\d/];
@@ -34,10 +24,7 @@ export class ModalCurrentEditarComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private route: ActivatedRoute,
-    private router: Router,
     private authenticationService: AuthenticationService,
-    private modalService: NgbModal,
     private ProfileService : ProfileService,
     private CEPService : CEPService,
     private ref: ChangeDetectorRef,
@@ -84,7 +71,6 @@ export class ModalCurrentEditarComponent implements OnInit {
       this.ProfileService.retrieveProfile(this.authenticationService.currentUser()._id).subscribe(response => {
         let result = response.data;
 
-       
         (this.staff)
                   .patchValue(result, { onlySelf: true });
 

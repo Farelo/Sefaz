@@ -19,7 +19,6 @@ export class TimelineComponent implements OnInit {
   public data: Pagination = new Pagination({meta: {page : 1}});
   public isModalShown:boolean = false;
   public grande = false;
-
   public logged_user : any;
   private telaGrande: boolean = false;
   altura: any;

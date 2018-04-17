@@ -3,9 +3,6 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalUserComponent } from '../modal-user.component';
 import { ModalLogisticRegisterComponent } from '../modal-register-logistic/modal-register-logistic.component';
 import { ModalStaffRegisterComponent } from '../modal-register-staff/modal-register-staff.component';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 import { ToastService, LogisticService, GeocodingService, CEPService, PlantsService, ProfileService, SuppliersService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
@@ -32,9 +29,6 @@ export class ModalSupplierRegisterComponent implements OnInit {
   public invalidPlant = false;
   public center: any;
   public pos : any;
-  public users = [];
-  public newcep = '';
-  public newtelefone = '';
   public mask = [/[0-9]/, /\d/, /\d/,'.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,'-', /\d/, /\d/];
   public maskCep = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
   public maskTel = ['(', /[0-9]/, /\d/,')', /\d/,/\d/, /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, /\d/];
@@ -43,8 +37,6 @@ export class ModalSupplierRegisterComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private route: ActivatedRoute,
-    private router: Router,
     private modalService: NgbModal,
     private SuppliersService : SuppliersService,
     private ProfileService : ProfileService,

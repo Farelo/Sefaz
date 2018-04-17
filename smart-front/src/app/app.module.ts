@@ -35,8 +35,8 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { ToastyModule } from 'ng2-toasty';
 import { NouisliderModule } from 'ng2-nouislider';
-import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { ServicesModule, AuthInterceptor } from './servicos/service.module';
+import { constants } from './../environments/constants';
 
 @NgModule({
   declarations: [
@@ -67,7 +67,6 @@ import { ServicesModule, AuthInterceptor } from './servicos/service.module';
     NgbModule.forRoot(),
     AlertModule.forRoot(),
     ToastyModule.forRoot(),
-    Ng4LoadingSpinnerModule.forRoot(),
     BrowserAnimationsModule,
     DashboardModuleAdmin,
     AngularMultiSelectModule,
@@ -79,7 +78,7 @@ import { ServicesModule, AuthInterceptor } from './servicos/service.module';
     NgxPaginationModule,
     ApplicationPipes,
     NguiMapModule.forRoot({
-      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ' +
+      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}` +
       '&libraries=visualization,places,drawing',
     })
 
@@ -97,8 +96,6 @@ import { ServicesModule, AuthInterceptor } from './servicos/service.module';
       multi: true
     }
 
-    // FormBuilder,
-    // RadioControlRegistry
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],

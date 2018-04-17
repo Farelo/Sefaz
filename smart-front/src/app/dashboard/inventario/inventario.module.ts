@@ -5,7 +5,6 @@ import {NgModule}   from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {InventarioComponent} from './inventario.component';
 import {InventarioRoutingModule} from './inventario.routing.module';
-import { Select2Module } from 'ng2-select2';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule} from 'ngx-pagination';
@@ -16,7 +15,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
   imports: [
     NgSelectModule,
     InventarioRoutingModule,
-    Select2Module,
     CommonModule,
     FormsModule,
     RouterModule,

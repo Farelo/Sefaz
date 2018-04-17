@@ -3,7 +3,7 @@
 const request       = require('request');
 const constants     = require('../../api/helpers/utils/constants')
 
-
+//refatorar isso utilizando request-promise
 module.exports = function () {
     return new Promise(function (resolve, reject) {
         var options = {
