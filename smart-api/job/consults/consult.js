@@ -4,7 +4,7 @@
 const schemas    = require('../../config/database/require_schemas')
 
 module.exports = function () {
-  var arrayOfPromises = [
+  return [
     schemas.packing().find({})
       .populate('tag')
       .populate('actual_plant.plant')
@@ -16,6 +16,4 @@ module.exports = function () {
       schemas.plant().find({}).populate('logistic_operator'), 
       schemas.settings().findOne({_id: 1})
     ];
-
-  return arrayOfPromises;
 }

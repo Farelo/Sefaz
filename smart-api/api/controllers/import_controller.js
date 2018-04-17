@@ -11,7 +11,7 @@ const maps                       = require('../helpers/request/google_maps');
 // REFACTOR THIS PORTION OF THE CODE
 // /UPLOAD OF THE TAGS BY EXCEL/
 exports.uploadTag = function (req, res) {
-  var datetimestamp = Date.now();
+  let datetimestamp = Date.now();
   fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err, data) {
 
     xlsxtojson({
@@ -24,8 +24,8 @@ exports.uploadTag = function (req, res) {
         responses.errorHandler(res, 'Error to create packing', err);
       }
       //colocar as inferências em relação ao arquivo
-      var dataErros = []
-      var typeError = []
+      let dataErros = []
+      let typeError = []
       result = result.filter(o => {
         if (!o.code) {
           typeError.push("O codigo não foi inserida");
@@ -55,7 +55,7 @@ exports.uploadTag = function (req, res) {
 };
 // /UPLOAD OF THE PLANTS BY EXCEL/
 exports.uploadPlant = function (req, res) {
-  var datetimestamp = Date.now();
+  let datetimestamp = Date.now();
 
   fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err, data) {
 
@@ -70,8 +70,8 @@ exports.uploadPlant = function (req, res) {
       }
 
       //colocar as inferências em relação ao arquivo
-      var dataErros = []
-      var typeError = []
+      let dataErros = []
+      let typeError = []
       Promise.all(result.map(o => maps.reverseGeocode(o.lat ? parseFloat(o.lat) : 0, o.lng ? parseFloat(o.lng) : 0)))
         .then(data => {
           
@@ -134,7 +134,7 @@ exports.uploadPlant = function (req, res) {
 };
 // /UPLOAD OF THE PROJECTS BY EXCEL/
 exports.uploadProject = function (req, res) {
-  var datetimestamp = Date.now();
+  let datetimestamp = Date.now();
   fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err, data) {
 
     xlsxtojson({
@@ -147,8 +147,8 @@ exports.uploadProject = function (req, res) {
         responses.errorHandler(res, 'Error to create packing', err);
       }
       //colocar as inferências em relação ao arquivo
-      var dataErros = []
-      var typeError = []
+      let dataErros = []
+      let typeError = []
       result = result.filter((o, index) => {
 
         if (!o.name) {
@@ -180,7 +180,7 @@ exports.uploadProject = function (req, res) {
 
 // /UPLOAD OF THE DEPARTMENTS BY EXCEL/
 exports.uploadDepartment = function (req, res) {
-  var datetimestamp = Date.now();
+  let datetimestamp = Date.now();
   fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err, data) {
 
     xlsxtojson({
@@ -193,8 +193,8 @@ exports.uploadDepartment = function (req, res) {
         responses.errorHandler(res, 'Error to create packing', err);
       }
       //colocar as inferências em relação ao arquivo
-      var dataErros = []
-      var typeError = []
+      let dataErros = []
+      let typeError = []
       Promise.all(result.map(o => schemas.plant().findOne({ "plant_name": o.plant })))
         .then(data => {
 
@@ -251,7 +251,7 @@ exports.uploadDepartment = function (req, res) {
 };
 // /UPLOAD OF THE PACKINGS BY EXCEL/
 exports.uploadPacking = function (req, res) {
-  var datetimestamp = Date.now();
+  let datetimestamp = Date.now();
   fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err, data) {
 
     xlsxtojson({
@@ -266,8 +266,8 @@ exports.uploadPacking = function (req, res) {
       //colocar as inferências em relação ao arquivo
       let count = 0;
       let supplier_data, tag_data, project_data = {};
-      var dataErros = []
-      var typeError = []
+      let dataErros = []
+      let typeError = []
 
       Promise.all(result.map(o => schemas.tags().findOne({ "code": o.tag })))
         .then(data => {
@@ -366,7 +366,7 @@ exports.uploadPacking = function (req, res) {
 };
 // /UPLOAD OF THE ROUTES BY EXCEL/
 exports.uploadRoute = function (req, res) {
-  var datetimestamp = Date.now();
+  let datetimestamp = Date.now();
   fs.writeFile(`./uploads/${datetimestamp}${req.swagger.params.upfile.value.originalname}`, req.swagger.params.upfile.value.buffer, function (err, data) {
 
     xlsxtojson({
@@ -380,8 +380,8 @@ exports.uploadRoute = function (req, res) {
       }
       //colocar as inferências em relação ao arquivo
       let supplier_data, factory_data, project_data = [];
-      var dataErros = []
-      var typeError = []
+      let dataErros = []
+      let typeError = []
       Promise.all(result.map(o => schemas.supplier().findOne({ "name": o.supplier, 'duns': o.duns }).populate('plant')))
         .then(data => {
           supplier_data = data;

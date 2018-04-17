@@ -21,8 +21,8 @@ exports.alert_create = function (req, res) {
  * Show the current Alert
  */
 exports.alert_read_by_packing = function (req, res) {
-  let packing_id = req.swagger.params.packing_id.value;
-  let status = req.swagger.params.status.value;
+  let packing_id = req.swagger.params.packing_id.value
+  let status = req.swagger.params.status.value
 
   schemas.alert().findOne({
     packing: packing_id,

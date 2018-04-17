@@ -17,7 +17,7 @@ const traveling                  = require('./alerts/traveling');
 const remove_dependencies        = require('./updates/remove_dependencies');
 const environment                = require('../config/environment');
 
-var task = cron.schedule(`*/${environment.time} * * * * *`, function() {
+let task = cron.schedule(`*/${environment.time} * * * * *`, function() {
     token()
       .then(token => devices(token))//Get All devices from SIGFOX LOKA-API
       .then(devices => Promise.all(updateDevices(devices))) //UPDATE ALL PACKINGS WITH INFORMATION FROM LOKA-API

@@ -1,36 +1,56 @@
 version: "2.0"
 services:
-  cliente-gm:
+  ###################################### PILOTO 1 ####################################
+  piloto-cliente-1:
     build:
       context: 'smart-front'
       dockerfile: Dockerfile
       args: 
-        baseurl: http://localhost:8005/api/
+        baseurl: http://35.169.169.38:8001/api/
         port: 8000
-    container_name: cliente-gm
+    container_name: piloto-cliente-1
     ports:
       - '8000:8000'    #obrigratorio
-  cliente-cebrace:
-    build:
-      context: 'smart-front'
-      dockerfile: Dockerfile
-      args:  #URL de acesso a API que será consultada por esse serviço (cliente)
-        baseurl: http://localhost:8006/api/
-        port: 8001   #//porta em que o sistema será executado  (essa informação será consumida pelo nginx)
-    container_name: cliente-cebrace   #nome do serviço
-    ports:
-      - '8001:8001'    #Definir uma porta em que o sistema irá executar
-  cebrace: #finalizado 
+  piloto-api-1: #finalizado 
     build:
       context: 'smart-api'
       dockerfile: Dockerfile
     command: npm start
-    container_name: cebrace
+    container_name: piloto-api-1
     environment:
       NODE_ENV: production
-      HOST: localhost           #obrigatorios caso não coloque o DNS
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8001                    #obrigatorios caso não coloque o DNS 
+      DATABASE: reciclopac          #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+      # DNS:                
+    tty: true
+    ports:
+      - '8001:8001'        #obrigratorio
+    depends_on:
+      - mongo
+  ###################################### PILOTO 2 ####################################
+  piloto-cliente-2:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args: 
+        baseurl: http://35.169.169.38:8005/api/
+        port: 8004
+    container_name: piloto-cliente-2
+    ports:
+      - '8004:8004'    #obrigratorio
+  piloto-api-2: #finalizado 
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: piloto-api-2
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
       PORT: 8005                    #obrigatorios caso não coloque o DNS 
-      DATABASE: reciclopac2          #obrigatorios
+      DATABASE: reciclopac1          #obrigatorios
       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
       # DNS:                
     tty: true
@@ -38,35 +58,165 @@ services:
       - '8005:8005'        #obrigratorio
     depends_on:
       - mongo
-  gm: #finalizado 
-    build:
-      context: 'smart-api'  
-      dockerfile: Dockerfile           #dockerfile que será utilizado para dar build na imagem
-    command: npm start
-    container_name: gm                 #definir o nome do serviço que irá executar
-    environment:
-      NODE_ENV: production
-      HOST: localhost           #obrigatorios caso não coloque o DNS
-      PORT: 8006                    #obrigatorios caso não coloque o DNS 
-      DATABASE: reciclopac3          #obrigatorios
-      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
-      # DNS:                
-    tty: true
-    ports:
-      - '8006:8006'        #obrigratorio
-    depends_on:
-      - mongo
+  ###################################### PILOTO 3 ####################################
+    piloto-cliente-3:
+      build:
+        context: 'smart-front'
+        dockerfile: Dockerfile
+        args: 
+          baseurl: http://35.169.169.38:8007/api/
+          port: 8006
+      container_name: piloto-cliente-3
+      ports:
+        - '8006:8006'    #obrigratorio
+    piloto-api-3: #finalizado 
+      build:
+        context: 'smart-api'
+        dockerfile: Dockerfile
+      command: npm start
+      container_name: piloto-api-3
+      environment:
+        NODE_ENV: production
+        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+        PORT: 8007                    #obrigatorios caso não coloque o DNS 
+        DATABASE: reciclopac2          #obrigatorios
+        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+        # DNS:                
+      tty: true
+      ports:
+        - '8007:8007'        #obrigratorio
+      depends_on:
+        - mongo
+  ###################################### PILOTO 4 ####################################
+    piloto-cliente-4:
+      build:
+        context: 'smart-front'
+        dockerfile: Dockerfile
+        args: 
+          baseurl: http://35.169.169.38:8009/api/
+          port: 8008
+      container_name: piloto-cliente-4
+      ports:
+        - '8008:8008'    #obrigratorio
+    piloto-api-4: #finalizado 
+      build:
+        context: 'smart-api'
+        dockerfile: Dockerfile
+      command: npm start
+      container_name: piloto-api-4
+      environment:
+        NODE_ENV: production
+        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+        PORT: 8009                    #obrigatorios caso não coloque o DNS 
+        DATABASE: reciclopac3          #obrigatorios
+        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+        # DNS:                
+      tty: true
+      ports:
+        - '8009:8009'        #obrigratorio
+      depends_on:
+        - mongo
+  ###################################### PILOTO 5 ####################################
+    piloto-cliente-5:
+      build:
+        context: 'smart-front'
+        dockerfile: Dockerfile
+        args: 
+          baseurl: http://35.169.169.38:8011/api/
+          port: 8010
+      container_name: piloto-cliente-5
+      ports:
+        - '8010:8010'    #obrigratorio
+    piloto-api-5: #finalizado 
+      build:
+        context: 'smart-api'
+        dockerfile: Dockerfile
+      command: npm start
+      container_name: piloto-api-5
+      environment:
+        NODE_ENV: production
+        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+        PORT: 8011                    #obrigatorios caso não coloque o DNS 
+        DATABASE: reciclopac4          #obrigatorios
+        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+        # DNS:                
+      tty: true
+      ports:
+        - '8011:8011'        #obrigratorio
+      depends_on:
+        - mongo
+  ###################################### PILOTO 6 ####################################
+    piloto-cliente-6:
+      build:
+        context: 'smart-front'
+        dockerfile: Dockerfile
+        args: 
+          baseurl: http://35.169.169.38:8014/api/
+          port: 8012
+      container_name: piloto-cliente-6
+      ports:
+        - '8012:8012'    #obrigratorio
+    piloto-api-6: #finalizado 
+      build:
+        context: 'smart-api'
+        dockerfile: Dockerfile
+      command: npm start
+      container_name: piloto-api-6
+      environment:
+        NODE_ENV: production
+        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+        PORT: 8014                    #obrigatorios caso não coloque o DNS 
+        DATABASE: reciclopac5          #obrigatorios
+        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+        # DNS:                
+      tty: true
+      ports:
+        - '8014:8014'        #obrigratorio
+      depends_on:
+        - mongo
+  ###################################### PILOTO 7 ####################################
+    piloto-cliente-7:
+      build:
+        context: 'smart-front'
+        dockerfile: Dockerfile
+        args: 
+          baseurl: http://35.169.169.38:8016/api/
+          port: 8015
+      container_name: piloto-cliente-7
+      ports:
+        - '8015:8015'    #obrigratorio
+    piloto-api-7: #finalizado 
+      build:
+        context: 'smart-api'
+        dockerfile: Dockerfile
+      command: npm start
+      container_name: piloto-api-7
+      environment:
+        NODE_ENV: production
+        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+        PORT: 8016                    #obrigatorios caso não coloque o DNS 
+        DATABASE: reciclopac6          #obrigatorios
+        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+        # DNS:                
+      tty: true
+      ports:
+        - '8016:8016'        #obrigratorio
+      depends_on:
+        - mongo
+  ###################################### CONFIGURAÇÕES DO MONGO  ####################################
   mongo:
     image: 'mongo:latest'
     container_name: mongo
     ports:
       - '27017:27017'
-    # volumes:
-    #   - ./data/db:/data/db
-    #   - ./data/backup:/data/backup
+    volumes:
+      - ./data/db:/data/db
+      - ./data/backup:/data/backup
     networks: #definindo uma rede de IP fixo para o banco de dados utilizando o network do docker
       net-recicla:
         ipv4_address: 172.18.0.2
+
+###################################### DEFININDO UMA REDE DE CONEXÃO ####################################
 networks:
   net-recicla:
     driver: bridge

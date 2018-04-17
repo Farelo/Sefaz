@@ -20,14 +20,12 @@ module.exports = {
     return new Promise(function(resolve, reject) {
       if (!p.missing) {
 
-
-        var date = new Date();
-        var diff = Math.round(date.getTime() - p.permanence.date);
+        let convertMili = Infinity
+        let date = new Date();
+        let diff = Math.round(date.getTime() - p.permanence.date);
 
         if(p.actual_gc16){
-          var convertMili = 1000 * 60 * 60 * 24 * p.actual_gc16.days;// milliseconds*seconds*minutes*hours*days
-        }else{
-          var convertMili = Infinity;
+          convertMili = 1000 * 60 * 60 * 24 * p.actual_gc16.days;// milliseconds*seconds*minutes*hours*days
         }
 
 

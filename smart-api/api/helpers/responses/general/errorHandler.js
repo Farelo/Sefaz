@@ -1,18 +1,19 @@
 "use strict";
 
-const HTTPStatus = require("http-status");
+const HTTPStatus         = require("http-status");
+const constants          = require('../../utils/constants')
+const errorHandlerLoka   = require('../errors/errorHandlerLoka')
+const errorHandlerMongo  = require('../errors/errorHandlerMongo')
 
+//melhorar o handler de erro
 function onError(res, message, err) {
 
-    res.status(HTTPStatus.BAD_REQUEST).send({
-        jsonapi: { "version": "1.0" },
-        error: {
-            "name": err ? err.name : "Undefined" ,
-            "message": err ? err.message : "Undefined",
-            "error": err ? err.errors : "Undefined",
-            "detail": message
-        }
-    });
+    if (err === constants.lokaError){
+        errorHandlerLoka(res, message, err);
+    } else if (err.name === constants.mongoError){
+        errorHandlerMongo(res, message, err);
+    }
+    
 }
 
-module.exports = onError;
+module.exports = onError

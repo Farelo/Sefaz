@@ -10,7 +10,7 @@ function authSuccess(res, credentials, data) {
     const isMatch = (credentials.password == user.password);
   
     if (isMatch) {
-        var payload = { id: user._id };
+        let payload = { id: user._id };
         user.gc16 = data[1][0].register_gc16.enable
         user.radius = Math.floor(data[1][0].range_radius*1000)
         res.status(HttpStatus.OK).json({ jsonapi: { "version": "1.0" }, token: `JWT ${jwt.sign(payload, environment.secret, { expiresIn: environment.expiresIn })}` , data: user});

@@ -5,7 +5,7 @@ const request = require('request');
 //refatorar isso utilizando request-promise
 module.exports = function (token) {
     return new Promise(function(resolve, reject) {
-        var options = {
+        let options = {
             url: 'https://loka-app.com/api/deviceList',
             method: 'POST',
             headers : {
@@ -14,12 +14,12 @@ module.exports = function (token) {
             }
         }
 
-        var callback = function(error, response, body) {
+        let callback = function(error, response, body) {
             if (error)
                 reject(error);
 
             try {
-              var info = JSON.parse(body);
+              let info = JSON.parse(body);
               resolve(info);
             }
             catch(err) {

@@ -5,7 +5,7 @@ const constants = require('../utils/constants');
 module.exports = {
   reverseGeocode: function(lat,lng) {
 
-      var googleMapsClient = require('@google/maps').createClient({
+      let googleMapsClient = require('@google/maps').createClient({
         key: constants.google_api.key,
         Promise: Promise // 'Promise' is the native constructor.
       });
@@ -16,7 +16,7 @@ module.exports = {
 
   },
   directions: function(origin,destination) {
-    var googleMapsClient = require('@google/maps').createClient({
+    let googleMapsClient = require('@google/maps').createClient({
       key: constants.google_api.key,
       Promise: Promise // 'Promise' is the native constructor.
     });

@@ -11,8 +11,8 @@ module.exports = function(p) {
 
     if(p.missing){
       console.log("MISSING: ALERT ALREADY EXIST TO PACKING:",p._id);
-      var date = new Date()
-      var time = Math.floor(date.getTime()-p.packing_missing.date);
+      let date = new Date()
+      let time = Math.floor(date.getTime()-p.packing_missing.date);
 
       p.packing_missing = {
         "date": p.packing_missing.date,

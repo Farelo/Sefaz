@@ -24,8 +24,8 @@ module.exports = {
   create: function(p) {
     return new Promise(function(resolve, reject) {
 
-      var date = new Date()
-      var time = Math.floor(date.getTime()-p.trip.date);
+      let date = new Date()
+      let time = Math.floor(date.getTime()-p.trip.date);
 
       let result = p.routes.filter(r => {
         return r.time.max < time;
@@ -72,9 +72,9 @@ module.exports = {
       if(p.traveling){
         if (p.trip.time_exceeded) {
           console.log("TRAVELING TIME: ALERT ALREADY EXIST TO PACKING:", p._id);
-          var date = new Date()
+          let date = new Date()
 
-          var time = Math.floor(date.getTime()-p.trip.date);
+          let time = Math.floor(date.getTime()-p.trip.date);
 
           let result = p.routes.filter(r => {
             return r.time.max < time;

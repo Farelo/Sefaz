@@ -78,24 +78,3 @@ exports.queries = {
   ]
 }
 
-
-
-
-//quantidades de embalagens
-  // ('packings').find({}).count()
-
-  // quantidade de embalagens perdidas 
-  // ('packings').find({ missing: true }).count()
-
-  //quantiade de embalagens incorretas
-  // ('packings').find({ problem: true }).count()
-
-  //quantiade de balagens em viagem
-  // ('packings').find({'$and' : [{'trip.time_countdown': {'$gt': 0}}, {'trip.time_exceeded': false}]}).count()
-
-  //quantidade que excederam o tempo  de permanencia 
-  //('packings').find({'permanence.time_exceeded': true})
-
-
-   //quantidade que excederam o tempo  de viagem 
-  // ('packings').find({ 'trip.time_exceeded': true })

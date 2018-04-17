@@ -61,7 +61,7 @@ exports.profile_read_by_email = function (req, res) {
  **/
 exports.profile_recover = function (req, res) {
 
-  var credentials = {
+  let credentials = {
     email: req.swagger.params.email.value,
     password: req.swagger.params.password.value
   };
@@ -84,7 +84,7 @@ exports.profile_recover = function (req, res) {
  */
 exports.profile_auth = function (req, res) {
   
-  var credentials = {
+  let credentials = {
     email: req.swagger.params.email.value,
     password: hashPassword.encrypt(req.swagger.params.password.value)
   };

@@ -1,16 +1,18 @@
+'use strict';
+
 const passport                                  = require("passport");
 const passport_jwt                              = require("passport-jwt");
 const schemas                                   = require('../../config/database/require_schemas');
 const environment                               = require('../../config/environment')
 const jwt                                       = require('jsonwebtoken');
 
-var opts = {
+let opts = {
   secretOrKey: environment.secret,
   jwtFromRequest: passport_jwt.ExtractJwt.fromAuthHeaderWithScheme('jwt')
 };
 
 function verify(jwtPayload, done) {
-  var expirationDate = new Date(jwtPayload.exp * 1000) //multiplica por 1000 para vira milisegundos
+  let expirationDate = new Date(jwtPayload.exp * 1000) //multiplica por 1000 para vira milisegundos
   
   if (expirationDate < new Date()) { //verifica se o token expirou
     return done(null, false);
@@ -21,7 +23,7 @@ function verify(jwtPayload, done) {
         _id: jwtPayload.id
       })
       .then(function (profile) {
-        var payload = { id: profile._id };
+        let payload = { id: profile._id };
         
         if (profile) {
           return done(null, {

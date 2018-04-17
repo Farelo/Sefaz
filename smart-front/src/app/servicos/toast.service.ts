@@ -20,9 +20,7 @@ export class ToastService {
 
   warningunathorized() {
     // Add see all possible types in one shot
-    
-    
-    
+
       var toastOptions: ToastOptions = {
         title: "Erro na autenticação",
         msg: "Login ou Senha estão invalidos",
@@ -42,25 +40,12 @@ export class ToastService {
 
   error(status: any) {
     // Add see all possible types in one shot
-
-    if(status.status.errmsg){
-      var toastOptions: ToastOptions = {
-        title: "Erro no cadastro",
-        msg: "Elemento ja foi registrado",
-        showClose: true,
-        timeout: 5000,
-        theme: 'material',
-        onAdd: (toast: ToastData) => {
-          console.log('Toast ' + toast.id + ' has been added!');
-        },
-        onRemove: function(toast: ToastData) {
-          console.log('Toast ' + toast.id + ' has been removed!');
-        }
-      };
-    }else{
+   
+    
+    console.log(status.error.error)
       var toastOptions: ToastOptions = {
         title: "Erro no cadastro!",
-        msg: status.status,
+        msg: status.error.error,
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -71,7 +56,7 @@ export class ToastService {
           console.log('Toast ' + toast.id + ' has been removed!');
         }
       };
-    }
+    
     this.toastyService.error(toastOptions);
   }
 

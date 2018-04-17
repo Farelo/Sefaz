@@ -5,6 +5,8 @@ module.exports = {
   STAFF_LOGISTIC: "StaffLogistic",
   ADMIN: "AdminFactory",
   STAFF_FACTORY: "StaffFactory",
+  lokaError: 'Code not exist in the system',
+  mongoError: 'MongoError',
   system_user: [
     {
       profile: "AdminFactory",

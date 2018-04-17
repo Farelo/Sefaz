@@ -6,7 +6,7 @@ const constants     = require('../../api/helpers/utils/constants')
 //refatorar isso utilizando request-promise
 module.exports = function () {
     return new Promise(function (resolve, reject) {
-        var options = {
+        let options = {
             url: 'https://loka-app.com/api/login',
             method: 'POST',
             headers: {
@@ -18,12 +18,12 @@ module.exports = function () {
             })
         }
 
-        var callback = function (error, response, body) {
+        let callback = function (error, response, body) {
             if (error)
                 reject(error);
 
             try {
-                var info = JSON.parse(body);
+                let info = JSON.parse(body);
                 resolve(info.access_token);
             }
             catch (err) {

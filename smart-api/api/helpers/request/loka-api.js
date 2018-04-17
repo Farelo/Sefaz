@@ -11,7 +11,7 @@ module.exports = {
  */
 function confirmDevice(token, device) {
     return new Promise(function (resolve, reject) {
-        var options = {
+        let options = {
             url: `https://loka-app.com/api/deviceDetails?deviceId=${device}`,
             method: 'POST',
             headers: {
@@ -20,13 +20,13 @@ function confirmDevice(token, device) {
             }
         }
 
-        var callback = function (error, response, body) {
+        let callback = function (error, response, body) {
             if (error)
                 reject(error);
 
             try {
                 if (!body.match(`Device ${device} not found`)) {
-                    var info = JSON.parse(body);
+                    let info = JSON.parse(body);
                     resolve("Exist device in the system");
                 } else {
                     reject("Code not exist in the system");
@@ -53,7 +53,7 @@ function positions(token, device) {
         let start = date.getTime() - (1000 * 60 * 60 * 24 * 10);
         let end = date.getTime();
 
-        var options = {
+        let options = {
             url: `https://loka-app.com/api/deviceDetails?deviceId=${device}`,
             method: 'POST',
             headers: {
@@ -62,15 +62,15 @@ function positions(token, device) {
             }
         }
 
-        var callback = function (error, response, body) {
+        let callback = function (error, response, body) {
             console.log(error);
             if (error)
                 reject(error);
 
             try {
                 if (!body.match(`Device ${device} not found`)) {
-                    var info = JSON.parse(body);
-                    var array = {
+                    let info = JSON.parse(body);
+                    let array = {
                         markers: [],
                         positions: []
                     };
