@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
-import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import {
     AlertsService,
@@ -29,8 +28,7 @@ import {
 @NgModule({
     imports: [
         CommonModule,
-        HttpModule,
-        Ng4LoadingSpinnerModule
+        HttpModule
     ],
     providers: [
         AlertsService,

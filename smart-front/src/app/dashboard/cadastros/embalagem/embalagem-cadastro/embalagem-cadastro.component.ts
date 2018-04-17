@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Packing } from '../../../../shared/models/packing';
 import { Supplier } from '../../../../shared/models/supplier';
 import { Router } from '@angular/router';
-import { Select2Module } from 'ng2-select2';
 import { ToastService, ProjectService, SuppliersService, TagsService, PackingService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
