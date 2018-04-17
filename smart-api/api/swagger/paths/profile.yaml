@@ -76,15 +76,16 @@ paths:
         operationId: profile_auth
         parameters:
         - in: "path"
-          name: "password"
-          description: "Auth profile related this password"
+          name: "email"
+          description: "Recover profile related this email"
           required: true
           type: string
         - in: "path"
-          name: "email"
-          description: "Auth profile related this email"
+          name: "password"
+          description: "Recover profile related this password"
           required: true
           type: string
+          format: password
         responses:
           200:
             description: "Successfully"
@@ -114,15 +115,16 @@ paths:
           - Bearer: []
         parameters:
         - in: "path"
-          name: "password"
-          description: "Recover profile related this password"
-          required: true
-          type: string
-        - in: "path"
           name: "email"
           description: "Recover profile related this email"
           required: true
           type: string
+        - in: "path"
+          name: "password"
+          description: "Recover profile related this password"
+          required: true
+          type: string
+          format: password
         responses:
           200:
             description: "Successfully"

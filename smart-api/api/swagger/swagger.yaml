@@ -2828,6 +2828,71 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/ErrorResponse'
+  '/packing/list/quantiy/per/plant/{limit}/{page}':
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Retrieve a quantity packing  per plant list  with pagination
+      description: ''
+      operationId: packing_per_plant
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: limit
+          description: The limit of packings that will be retrieved
+          required: true
+          type: string
+        - in: path
+          name: page
+          description: Retrieve packings related this page
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successfully
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: Client Error
+          schema:
+            $ref: '#/definitions/Error400'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /packing/quantity/per/condition:
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Packing
+      summary: Retrieve a quantity packing by status
+      description: ''
+      operationId: packing_quantity_per_condition
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: Successfully
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: Client Error
+          schema:
+            $ref: '#/definitions/Error400'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   '/packing/list/all/nobinded/{supplier}':
     x-swagger-router-controller: packing_controller
     get:
@@ -3602,15 +3667,16 @@ paths:
       operationId: profile_auth
       parameters:
         - in: path
-          name: password
-          description: Auth profile related this password
+          name: email
+          description: Recover profile related this email
           required: true
           type: string
         - in: path
-          name: email
-          description: Auth profile related this email
+          name: password
+          description: Recover profile related this password
           required: true
           type: string
+          format: password
       responses:
         '200':
           description: Successfully
@@ -3640,15 +3706,16 @@ paths:
         - Bearer: []
       parameters:
         - in: path
-          name: password
-          description: Recover profile related this password
-          required: true
-          type: string
-        - in: path
           name: email
           description: Recover profile related this email
           required: true
           type: string
+        - in: path
+          name: password
+          description: Recover profile related this password
+          required: true
+          type: string
+          format: password
       responses:
         '200':
           description: Successfully

@@ -3,41 +3,34 @@
  */
 import {NgModule}     from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {HomeComponent} from './home.component';
-import {HomeRoutingModule} from './home.routing.module';
+import {TimelineComponent} from './timeline/timeline.component';
+import {ListaComponent} from './lista/lista.component';
+import {alertsRoutingModule} from './alerts.routing.module';
 import { CommonModule } from '@angular/common'
 import { NgxPaginationModule} from 'ngx-pagination';
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
-import { ModalModule ,TooltipModule} from 'ngx-bootstrap'
+import { ModalModule ,TooltipModule, PopoverModule} from 'ngx-bootstrap'
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Select2Module } from 'ng2-select2';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule} from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
-    HomeRoutingModule,
-    NgSelectModule,
+    alertsRoutingModule,
     CommonModule,
     RouterModule,
-    Select2Module,
     NgxPaginationModule,
     ApplicationPipes,
+    PopoverModule.forRoot(),
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
-    FormsModule,
-    ReactiveFormsModule,
-    NgxChartsModule
 
   ],
   declarations: [
-    HomeComponent
+    ListaComponent,
+    TimelineComponent
   ],
   providers: [
     NgbActiveModal
   ],
 })
-export class HomeModule { }
+export class AlertsModule { }

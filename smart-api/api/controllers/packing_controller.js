@@ -5,9 +5,11 @@
 const responses                                 = require('../helpers/responses/index')
 const schemas                                   = require("../../config/database/require_schemas")
 const query                                     = require('../helpers/queries/complex_queries_packing');
+const query_plant                               = require('../helpers/queries/complex_queries_plants');
 const loka_api                                  = require('../helpers/request/loka-api');
 const _                                         = require("lodash");
 const token                                     = require('../helpers/request/token');
+const evaluate                                  = require('../helpers/utils/evaluate_packing');
 const ObjectId                                  = schemas.ObjectId
 /**
  * Create the current Packing
@@ -104,82 +106,19 @@ exports.list_packing_department = function (req, res) {
  * Update a Packing
  */
 exports.packing_update = function (req, res) {
-  schemas.packing().findOne({
-    "code": req.body.code,
-    "supplier": new ObjectId(req.body.supplier._id),
-    "project": new ObjectId(req.body.project._id)
-  }
-  )
-    .then(result => {
-      console.log(result);
-      if (result === null) {
-        let partial = Object.assign({}, req.body);
-        partial.routes = [];
-        delete partial.gc16;
-        delete partial.actual_gc16;
-        return schemas.packing().update({
-          _id: req.swagger.params.packing_id.value
-        }, { $unset: { actual_gc16: 1, gc16: 1 }, $set: partial });
-      } else if (result.gc16 && result.routes) {
-        let partial = Object.assign({}, req.body);
-        partial.gc16 = result.gc16;
-        partial.routes = result.routes;
-        return schemas.packing().update({
-          _id: req.swagger.params.packing_id.value
-        }, partial);
-      } else if (result.gc16) {
-        let partial = Object.assign({}, req.body);
-        partial.gc16 = result.gc16;
-        partial.routes = [];
-        return schemas.packing().update({
-          _id: req.swagger.params.packing_id.value
-        }, { $set: partial });
-      } else if (result.routes) {
-        let partial = Object.assign({}, req.body);
-        partial.routes = result.routes;
-        delete partial.gc16;
-        delete partial.actual_gc16;
-        return schemas.packing().update({
-          _id: req.swagger.params.packing_id.value
-        }, { $unset: { actual_gc16: 1, gc16: 1 }, $set: partial });
-      }
 
+  schemas.packing()
+    .findOne({
+      "code": req.body.code,
+      "supplier": new ObjectId(req.body.supplier._id),
+      "project": new ObjectId(req.body.project._id)
     })
-    .then(() => {
-      return evaluete(Promise.all([schemas.packing().find({ gc16: new ObjectId(req.body.gc16) }), schemas.packing().find({ routes: { $in: req.body.routes } })]), req.body);
-    })
+    .then(result => evaluate.searching(result, req.body, req.swagger.params.packing_id.value ))
+    .then(() => evaluate.existAncestor(req.body.gc16, req.body.routes, req.body))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update packings'));
 };
 
-function evaluete(promise, p) {
-
-  return promise.then(result => {
-
-    if (result[0].length === 0 && result[1].length === 0) {
-      return schemas.GC16().remove({
-        _id: p.gc16
-      })
-        .then(() => schemas.route().remove({
-          _id: {
-            $in: p.routes
-          }
-        }));
-    } else if (result[0].length === 0) {
-      return schemas.GC16().remove({
-        _id: p.gc16
-      });
-    } else if (result[1].length === 0) {
-      return schemas.route().remove({
-        _id: {
-          $in: p.routes
-        }
-      });
-    } else {
-      return schemas.packing().findOne({ _id: p._id });
-    }
-  });
-}
 /*
  * Update a Packing by code
  */
@@ -355,6 +294,38 @@ exports.packing_list_packing_no_binded_with_code = function (req, res) {
 };
 
 /**
+ * TODO a quantidade de embalagens por planta
+ */
+exports.packing_per_plant = function (req, res) {
+
+  let aggregate = schemas.packing().aggregate(query_plant.queries.packings_per_plant);
+
+  schemas.plant().aggregatePaginate(aggregate,
+    { page: parseInt(req.swagger.params.page.value), limit: parseInt(req.swagger.params.limit.value) },
+    _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, req.swagger.params.page.value, req.swagger.params.limit.value));
+};
+
+/**
+ * TODO a quantiade de embalagens por condição
+ */
+exports.packing_quantity_per_condition = function (req, res) {
+
+    Promise.all([
+      schemas.packing().find({}).count(),
+      schemas.packing().find({ missing: true }).count(),
+      schemas.packing().find({ problem: true }).count(),
+      schemas.packing().find({ '$and': [{ 'trip.time_countdown': { '$gt': 0 } }, { 'trip.time_exceeded': false }] }).count(),
+      schemas.packing().find({ 'permanence.time_exceeded': true }).count(),
+      schemas.packing().find({ 'trip.time_exceeded': true }).count()
+    ])
+    .then(data => {
+      responses.successHandler(res, req.user.refresh_token, evaluate.createObject(data));
+    })
+    .catch(_.partial(responses.errorHandler, res, 'Error to calculate packings quantity'));
+
+};
+
+/**
  * list of general pagickings inventory
  **/
 exports.general_inventory_packing = function (req, res) {
@@ -395,6 +366,8 @@ exports.quantity_inventory = function (req, res) {
     { page: parseInt(req.swagger.params.page.value), limit: parseInt(req.swagger.params.limit.value) },
     _.partial(responses.successHandlerPaginationAggregateQuantity, res, req.user.refresh_token, req.swagger.params.code.value, req.swagger.params.page.value, req.swagger.params.limit.value));
 };
+
+
 /**
  * List of packings analysis battery
  */
@@ -446,8 +419,6 @@ exports.inventory_packing_historic = function (req, res) {
   let code = req.swagger.params.code.value;
   let attr = req.swagger.params.attr.value;
 
-  console.log(serial);
-  console.log(code);
 
   schemas.historicPackings().paginate(
     attr ? { "supplier": new ObjectId(attr), "serial": serial, "packing_code": code } : { "serial": serial, "packing_code": code },

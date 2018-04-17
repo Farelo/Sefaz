@@ -1,0 +1,61 @@
+<div class="painel">
+  <div class="corpo">
+    
+      
+      <h1>EMBALAGENS DO SISTEMA</h1>
+      
+    <div class="row ">
+      
+      <div class="col-md-12">
+        <h2>RESUMO DAS EMBALAGENS </h2>
+        <ngx-charts-advanced-pie-chart [scheme]="colorScheme" label="Total de Embalagens" [results]="packingsPerCondition.data" [gradient]="gradient">
+        </ngx-charts-advanced-pie-chart>
+      
+      </div>
+      
+      <div class="col-md-12 table-plant" >
+        <h2>TABELA DA QUANTIDADE DE EMBALAGENS POR PLANTA </h2>
+        <div class="table-responsive meuInventario">
+          <!-- Table -->
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th>Planta</th>
+                <th>Localização</th>
+                <th>Quantidade de Embalagens</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let packing of packingsPerPlant.data | paginate: {   id:'packingsPerPlant',
+                                                              itemsPerPage: packingsPerPlant.meta.limit,
+                                                              currentPage: packingsPerPlant.meta.page,
+                                                              totalItems: packingsPerPlant.meta.total_docs}">
+                <td>{{packing.plant_name}}</td>
+                <td>{{packing.location}}</td>
+                <td>{{packing.quantity_packings}}</td>
+                
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="has-text-centered">
+          <pagination-controls id="packingsPerPlant" (pageChange)="pageChanged($event)" autoHide="true" directionLinks="false"></pagination-controls>
+        </div>
+        
+        
+        
+        <div class="classVazio" *ngIf="packingsPerPlant.data?.length < 1">
+          Não foram registradas plantas no sistema
+        </div>
+      </div>
+      
+    </div>  
+
+
+
+
+
+ 
+  </div>
+</div>

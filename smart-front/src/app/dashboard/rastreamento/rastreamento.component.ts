@@ -212,6 +212,7 @@ export class RastreamentoComponent implements OnInit {
     modalRef.componentInstance.department = id;
   }
 
+  
   carregarTamanho() {
     var map = $('#map');
     var nguimap = map.children(':nth-child(1)');

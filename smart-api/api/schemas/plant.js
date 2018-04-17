@@ -1,5 +1,6 @@
-const mongoose          = require('mongoose');
-const mongoosePaginate  = require('mongoose-paginate');
+const mongoose                   = require('mongoose');
+const mongoosePaginate           = require('mongoose-paginate');
+const mongooseAggregatePaginate  = require('mongoose-aggregate-paginate');
 
 const plantSchema = new mongoose.Schema({
     plant_name:{type: String, required: true, unique: true},
@@ -15,7 +16,9 @@ const plantSchema = new mongoose.Schema({
     },
     location: String
 
-}).plugin(mongoosePaginate);
+})
+.plugin(mongoosePaginate)
+.plugin(mongooseAggregatePaginate);
 
 plantSchema.pre('remove', function(next) {
     let plant  = this;

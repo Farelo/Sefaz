@@ -131,4 +131,14 @@ export class PackingService {
       .catch(this.handleError);
   }
 
+  loadingPackingPerPlant(limit: number, page: number): Observable<any>{
+    return this.http.get(`${environment.url}packing/list/quantiy/per/plant/${limit}/${page}`)
+      .catch(this.handleError);
+  }
+
+  loadingPackingPerCondition(): Observable<any>{
+    return this.http.get(`${environment.url}packing/quantity/per/condition`)
+      .catch(this.handleError);
+  }
+
 }

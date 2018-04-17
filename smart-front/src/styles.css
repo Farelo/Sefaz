@@ -3,6 +3,64 @@ body {
   font-size: 15px;
 }
 
+/* g {
+
+  transform: translate(50px, 50px)!important;
+} */
+
+
+
+
+/* @media (max-width: 576px) {
+  .advanced-pie {
+    float: none !important;
+  }
+
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .advanced-pie {
+    float: none !important;
+  }
+
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .advanced-pie {
+    float: none !important;
+  }
+
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+  .advanced-pie {
+    float: left !important;
+  }
+
+}
+
+@media (min-width: 1200px) {
+  .advanced-pie {
+    float: left !important;
+  }
+
+}
+
+@media (min-width: 1400px) {
+  .advanced-pie {
+    float: left !important;
+  }
+
+}
+
+@media (min-width: 1700px) {
+  .advanced-pie {
+    float: left !important;
+  }
+
+} */
+
+
 
 .noUi-target {
   background: #6382c9 !important;
