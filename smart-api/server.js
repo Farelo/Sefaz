@@ -27,13 +27,16 @@ app.use(compression());
 
 module.exports = app; // for testing
 
+app.get('/', function (req, res) {  //todo aguenta 
+  res.redirect('/docs');
+});
 
 //conexão com o banco de dados do mongo
 require('./config/database/connection').open(environment);
 require('./config/initial/system_settings'); //configurando o sistema
 
 //JOB =================================================
-require('./job/main');
+// require('./job/main');
 
 //adicionando a auth no middleware
 require('./api/auth/auth')(app);
@@ -99,12 +102,13 @@ swaggerTools.initializeMiddleware(swaggerObject, function(middleware) {
       }
     };
 
+    middleware.swaggerUi({})
   // adicionando os middlewaeres do swagger na aplicação
     app.use(middleware.swaggerMetadata());
     app.use(middleware.swaggerValidator());
     app.use(middleware.swaggerSecurity(option));
     app.use(middleware.swaggerRouter({useStubs: true, controllers: './api/controllers'}));
-    app.use(middleware.swaggerUi());
+    app.use(middleware.swaggerUi({docExpansion: ['none']}));
 
     http.listen(port, () => {
       if (process.env.NODE_ENV === 'production'){
