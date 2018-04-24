@@ -3,6 +3,7 @@ const mongoosePaginate          = require('mongoose-paginate');
 const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 const hashPassword              = require('../helpers/utils/encrypt')
 
+
 const profileSchema = new mongoose.Schema({
       profile:{type: String, required: true},
       password: {type: String, required: true},
