@@ -21,7 +21,7 @@ services:
       NODE_ENV: production
       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
       PORT: 8001                    #obrigatorios caso não coloque o DNS 
-      DATABASE: ferralone           #obrigatorios
+      DATABASE: reciclopac           #obrigatorios
       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
       # DNS:                
     tty: true
@@ -50,7 +50,7 @@ services:
       NODE_ENV: production
       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
       PORT: 8005                    #obrigatorios caso não coloque o DNS 
-      DATABASE: cebrace          #obrigatorios
+      DATABASE: reciclopac1          #obrigatorios
       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
       # DNS:                
     tty: true
@@ -79,7 +79,7 @@ services:
         NODE_ENV: production
         HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
         PORT: 8007                    #obrigatorios caso não coloque o DNS 
-        DATABASE: gm                  #obrigatorios
+        DATABASE: reciclopac2                  #obrigatorios
         DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
         # DNS:                
       tty: true
@@ -108,7 +108,7 @@ services:
         NODE_ENV: production
         HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
         PORT: 8009                    #obrigatorios caso não coloque o DNS 
-        DATABASE: nestle          #obrigatorios
+        DATABASE: reciclopac3          #obrigatorios
         DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
         # DNS:                
       tty: true
@@ -137,7 +137,7 @@ services:
         NODE_ENV: production
         HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
         PORT: 8011                    #obrigatorios caso não coloque o DNS 
-        DATABASE: test-interno        #obrigatorios
+        DATABASE: reciclopac4        #obrigatorios
         DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
         # DNS:                
       tty: true
