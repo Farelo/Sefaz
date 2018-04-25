@@ -59,92 +59,92 @@ services:
     depends_on:
       - mongo
   ###################################### GM ####################################
-    gm-cliente:
-      build:
-        context: 'smart-front'
-        dockerfile: Dockerfile
-        args: 
-          baseurl: http://35.169.169.38:8007/api/
-          port: 8006
-      container_name: gm-cliente
-      ports:
-        - '8006:8006'    #obrigratorio
-    gm-api: #finalizado 
-      build:
-        context: 'smart-api'
-        dockerfile: Dockerfile
-      command: npm start
-      container_name: gm-api
-      environment:
-        NODE_ENV: production
-        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-        PORT: 8007                    #obrigatorios caso não coloque o DNS 
-        DATABASE: reciclopac2                  #obrigatorios
-        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+  gm-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args: 
+        baseurl: http://35.169.169.38:8007/api/
+        port: 8006
+    container_name: gm-cliente
+    ports:
+      - '8006:8006'    #obrigratorio
+  gm-api: #finalizado 
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: gm-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8007                    #obrigatorios caso não coloque o DNS 
+      DATABASE: reciclopac2                  #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
         # DNS:                
-      tty: true
-      ports:
-        - '8007:8007'        #obrigratorio
-      depends_on:
-        - mongo
+    tty: true
+    ports:
+      - '8007:8007'        #obrigratorio
+    depends_on:
+      - mongo
   ###################################### NESTLE ####################################
-    nestle-cliente:
-      build:
-        context: 'smart-front'
-        dockerfile: Dockerfile
-        args: 
-          baseurl: http://35.169.169.38:8009/api/
-          port: 8008
-      container_name: nestle-cliente
-      ports:
-        - '8008:8008'    #obrigratorio
-    nestle-api: #finalizado 
-      build:
-        context: 'smart-api'
-        dockerfile: Dockerfile
-      command: npm start
-      container_name: nestle-api
-      environment:
-        NODE_ENV: production
-        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-        PORT: 8009                    #obrigatorios caso não coloque o DNS 
-        DATABASE: reciclopac3          #obrigatorios
-        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
-        # DNS:                
-      tty: true
-      ports:
-        - '8009:8009'        #obrigratorio
-      depends_on:
-        - mongo
+  nestle-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args: 
+        baseurl: http://35.169.169.38:8009/api/
+        port: 8008
+    container_name: nestle-cliente
+    ports:
+      - '8008:8008'    #obrigratorio
+  nestle-api: #finalizado 
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: nestle-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8009                    #obrigatorios caso não coloque o DNS 
+      DATABASE: reciclopac3          #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+      # DNS:                
+    tty: true
+    ports:
+      - '8009:8009'        #obrigratorio
+    depends_on:
+      - mongo
   ###################################### TESTE ITERNO ####################################
-    test-interno-cliente:
-      build:
-        context: 'smart-front'
-        dockerfile: Dockerfile
-        args: 
-          baseurl: http://35.169.169.38:8011/api/
-          port: 8010
-      container_name: test-interno-cliente
-      ports:
-        - '8010:8010'    #obrigratorio
-    test-interno-api: #finalizado 
-      build:
-        context: 'smart-api'
-        dockerfile: Dockerfile
-      command: npm start
-      container_name: test-interno-api
-      environment:
-        NODE_ENV: production
-        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-        PORT: 8011                    #obrigatorios caso não coloque o DNS 
-        DATABASE: reciclopac4        #obrigatorios
-        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+  test-interno-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args: 
+        baseurl: http://35.169.169.38:8011/api/
+        port: 8010
+    container_name: test-interno-cliente
+    ports:
+      - '8010:8010'    #obrigratorio
+  test-interno-api: #finalizado 
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: test-interno-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8011                    #obrigatorios caso não coloque o DNS 
+      DATABASE: reciclopac4        #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
         # DNS:                
-      tty: true
-      ports:
-        - '8011:8011'        #obrigratorio
-      depends_on:
-        - mongo
+    tty: true
+    ports:
+      - '8011:8011'        #obrigratorio
+    depends_on:
+      - mongo
   # ###################################### PILOTO 6 ####################################
   #   piloto-cliente-6:
   #     build:
