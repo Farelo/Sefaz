@@ -3,15 +3,13 @@
  * Module dependencies.
  */
 
-const schemas = require("../../../config/database/require_schemas")
-
+const schemas  = require("../../../config/database/require_schemas")
 const ObjectId = schemas.ObjectId
 
 module.exports = {
     searching: searching,
     existAncestor: existAncestor,
-    createObject: createObject
-    
+    createObject: createObject  
 }
 
 function searching(body, result, id) {
@@ -54,7 +52,6 @@ async function existAncestor(gc16, routes, p) {
         schemas.packing().find({ gc16: new ObjectId(gc16) }),
         schemas.packing().find({ routes: { $in: routes } })
     ])
-
 
     if (result[0].length === 0 && result[1].length === 0) { //caso não existe nenhum ancestral com esses dados deleta-los
         return schemas.GC16().remove({

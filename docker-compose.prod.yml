@@ -1,27 +1,27 @@
 version: "2.0"
 services:
-  ###################################### PILOTO 1 ####################################
-  piloto-cliente-1:
+  ###################################### Ferrolene ####################################
+  ferrolene-cliente:
     build:
       context: 'smart-front'
       dockerfile: Dockerfile
       args: 
         baseurl: http://35.169.169.38:8001/api/
         port: 8000
-    container_name: piloto-cliente-1
+    container_name: ferrolene-cliente
     ports:
       - '8000:8000'    #obrigratorio
-  piloto-api-1: #finalizado 
+  ferrolene-api: #finalizado 
     build:
       context: 'smart-api'
       dockerfile: Dockerfile
     command: npm start
-    container_name: piloto-api-1
+    container_name: Ferrolene-api
     environment:
       NODE_ENV: production
       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
       PORT: 8001                    #obrigatorios caso não coloque o DNS 
-      DATABASE: reciclopac          #obrigatorios
+      DATABASE: reciclopac           #obrigatorios
       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
       # DNS:                
     tty: true
@@ -29,23 +29,23 @@ services:
       - '8001:8001'        #obrigratorio
     depends_on:
       - mongo
-  ###################################### PILOTO 2 ####################################
-  piloto-cliente-2:
+  ###################################### CEBRACE ####################################
+  cebrace-cliente:
     build:
       context: 'smart-front'
       dockerfile: Dockerfile
       args: 
         baseurl: http://35.169.169.38:8005/api/
         port: 8004
-    container_name: piloto-cliente-2
+    container_name: cebrace-cliente
     ports:
       - '8004:8004'    #obrigratorio
-  piloto-api-2: #finalizado 
+  cebrace-api: #finalizado 
     build:
       context: 'smart-api'
       dockerfile: Dockerfile
     command: npm start
-    container_name: piloto-api-2
+    container_name: cebrace-api
     environment:
       NODE_ENV: production
       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
@@ -58,28 +58,28 @@ services:
       - '8005:8005'        #obrigratorio
     depends_on:
       - mongo
-  ###################################### PILOTO 3 ####################################
-    piloto-cliente-3:
+  ###################################### GM ####################################
+    gm-cliente:
       build:
         context: 'smart-front'
         dockerfile: Dockerfile
         args: 
           baseurl: http://35.169.169.38:8007/api/
           port: 8006
-      container_name: piloto-cliente-3
+      container_name: gm-cliente
       ports:
         - '8006:8006'    #obrigratorio
-    piloto-api-3: #finalizado 
+    gm-api: #finalizado 
       build:
         context: 'smart-api'
         dockerfile: Dockerfile
       command: npm start
-      container_name: piloto-api-3
+      container_name: gm-api
       environment:
         NODE_ENV: production
         HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
         PORT: 8007                    #obrigatorios caso não coloque o DNS 
-        DATABASE: reciclopac2          #obrigatorios
+        DATABASE: reciclopac2                  #obrigatorios
         DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
         # DNS:                
       tty: true
@@ -87,23 +87,23 @@ services:
         - '8007:8007'        #obrigratorio
       depends_on:
         - mongo
-  ###################################### PILOTO 4 ####################################
-    piloto-cliente-4:
+  ###################################### NESTLE ####################################
+    nestle-cliente:
       build:
         context: 'smart-front'
         dockerfile: Dockerfile
         args: 
           baseurl: http://35.169.169.38:8009/api/
           port: 8008
-      container_name: piloto-cliente-4
+      container_name: nestle-cliente
       ports:
         - '8008:8008'    #obrigratorio
-    piloto-api-4: #finalizado 
+    nestle-api: #finalizado 
       build:
         context: 'smart-api'
         dockerfile: Dockerfile
       command: npm start
-      container_name: piloto-api-4
+      container_name: nestle-api
       environment:
         NODE_ENV: production
         HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
@@ -116,28 +116,28 @@ services:
         - '8009:8009'        #obrigratorio
       depends_on:
         - mongo
-  ###################################### PILOTO 5 ####################################
-    piloto-cliente-5:
+  ###################################### TESTE ITERNO ####################################
+    test-interno-cliente:
       build:
         context: 'smart-front'
         dockerfile: Dockerfile
         args: 
           baseurl: http://35.169.169.38:8011/api/
           port: 8010
-      container_name: piloto-cliente-5
+      container_name: test-interno-cliente
       ports:
         - '8010:8010'    #obrigratorio
-    piloto-api-5: #finalizado 
+    test-interno-api: #finalizado 
       build:
         context: 'smart-api'
         dockerfile: Dockerfile
       command: npm start
-      container_name: piloto-api-5
+      container_name: test-interno-api
       environment:
         NODE_ENV: production
         HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
         PORT: 8011                    #obrigatorios caso não coloque o DNS 
-        DATABASE: reciclopac4          #obrigatorios
+        DATABASE: reciclopac4        #obrigatorios
         DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
         # DNS:                
       tty: true
@@ -145,64 +145,64 @@ services:
         - '8011:8011'        #obrigratorio
       depends_on:
         - mongo
-  ###################################### PILOTO 6 ####################################
-    piloto-cliente-6:
-      build:
-        context: 'smart-front'
-        dockerfile: Dockerfile
-        args: 
-          baseurl: http://35.169.169.38:8014/api/
-          port: 8012
-      container_name: piloto-cliente-6
-      ports:
-        - '8012:8012'    #obrigratorio
-    piloto-api-6: #finalizado 
-      build:
-        context: 'smart-api'
-        dockerfile: Dockerfile
-      command: npm start
-      container_name: piloto-api-6
-      environment:
-        NODE_ENV: production
-        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-        PORT: 8014                    #obrigatorios caso não coloque o DNS 
-        DATABASE: reciclopac5          #obrigatorios
-        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
-        # DNS:                
-      tty: true
-      ports:
-        - '8014:8014'        #obrigratorio
-      depends_on:
-        - mongo
-  ###################################### PILOTO 7 ####################################
-    piloto-cliente-7:
-      build:
-        context: 'smart-front'
-        dockerfile: Dockerfile
-        args: 
-          baseurl: http://35.169.169.38:8016/api/
-          port: 8015
-      container_name: piloto-cliente-7
-      ports:
-        - '8015:8015'    #obrigratorio
-    piloto-api-7: #finalizado 
-      build:
-        context: 'smart-api'
-        dockerfile: Dockerfile
-      command: npm start
-      container_name: piloto-api-7
-      environment:
-        NODE_ENV: production
-        HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-        PORT: 8016                    #obrigatorios caso não coloque o DNS 
-        DATABASE: reciclopac6          #obrigatorios
-        DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
-        # DNS:                
-      tty: true
-      ports:
-        - '8016:8016'        #obrigratorio
-      depends_on:
-        - mongo
+  # ###################################### PILOTO 6 ####################################
+  #   piloto-cliente-6:
+  #     build:
+  #       context: 'smart-front'
+  #       dockerfile: Dockerfile
+  #       args: 
+  #         baseurl: http://35.169.169.38:8014/api/
+  #         port: 8012
+  #     container_name: piloto-cliente-6
+  #     ports:
+  #       - '8012:8012'    #obrigratorio
+  #   piloto-api-6: #finalizado 
+  #     build:
+  #       context: 'smart-api'
+  #       dockerfile: Dockerfile
+  #     command: npm start
+  #     container_name: piloto-api-6
+  #     environment:
+  #       NODE_ENV: production
+  #       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+  #       PORT: 8014                    #obrigatorios caso não coloque o DNS 
+  #       DATABASE: reciclopac5          #obrigatorios
+  #       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+  #       # DNS:                
+  #     tty: true
+  #     ports:
+  #       - '8014:8014'        #obrigratorio
+  #     depends_on:
+  #       - mongo
+  # ###################################### PILOTO 7 ####################################
+  #   piloto-cliente-7:
+  #     build:
+  #       context: 'smart-front'
+  #       dockerfile: Dockerfile
+  #       args: 
+  #         baseurl: http://35.169.169.38:8016/api/
+  #         port: 8015
+  #     container_name: piloto-cliente-7
+  #     ports:
+  #       - '8015:8015'    #obrigratorio
+  #   piloto-api-7: #finalizado 
+  #     build:
+  #       context: 'smart-api'
+  #       dockerfile: Dockerfile
+  #     command: npm start
+  #     container_name: piloto-api-7
+  #     environment:
+  #       NODE_ENV: production
+  #       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+  #       PORT: 8016                    #obrigatorios caso não coloque o DNS 
+  #       DATABASE: reciclopac6          #obrigatorios
+  #       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do 
+  #       # DNS:                
+  #     tty: true
+  #     ports:
+  #       - '8016:8016'        #obrigratorio
+  #     depends_on:
+  #       - mongo
   ###################################### CONFIGURAÇÕES DO MONGO  ####################################
   mongo:
     image: 'mongo:latest'
