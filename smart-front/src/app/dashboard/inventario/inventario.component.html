@@ -435,12 +435,12 @@
         </tbody>
       </table>
 
-      <div class="classVazio" *ngIf="permanence.data?.length < 1">
+      <div class="classVazio" *ngIf="absence.data?.length < 1">
         Realize uma pesquisa valida.
       </div>
     </div>
     <div class="has-text-centered">
-      <pagination-controls class="my-pagination" id="permanence" (pageChange)="permanence.meta.page = $event;permanenceInventory()"
+      <pagination-controls class="my-pagination" id="absence" (pageChange)="absence.meta.page = $event;absenceInventoryChangePage()"
         directionLinks="false" autoHide="true">
       </pagination-controls>
     </div>

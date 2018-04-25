@@ -210,16 +210,13 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   }
 
   absenceInventory() {
-    console.log(this.absenceSearchEquipamento);
-    console.log(this.absenceTime);
-    console.log(this.absenceSearchSerial);
-    console.log(this.escolhaLocal);
+    this.absence = new Pagination({ meta: { page: 1 } });
     let oLocal;
 
     if (this.escolhaLocal == "Plantas do Fornecedor") { oLocal = 'supplier'}
     if (this.escolhaLocal == "Plantas dos Clientes") { oLocal = 'factory' }
 
-    console.log(oLocal);
+   
 
     if (this.absenceSearchEquipamento) {
       if (this.absenceSearchEquipamento.packing == "Todos") {
@@ -232,7 +229,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
             if (result.data) {
 
               this.absence = result
-              console.log(result.data)
             }
           }, err => { console.log(err) });
 
@@ -245,12 +241,58 @@ export class InventarioComponent implements OnInit, OnDestroy  {
             this.inventoryService
               .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, oLocal)
               .subscribe(result => {
-                console.log("aquii")
-                console.log(result.data)
+               
                 if (result.data){
                  
                   this.absence = result
-                  console.log(result.data)
+                }
+              }, err => { console.log(err) });
+          }, err => { console.log(err) })
+      }
+    }else{
+      this.absenceSearchSerial = "";
+      this.abserial = false;
+      this.abserials = [];
+    }
+
+  }
+
+  absenceInventoryChangePage() {
+    
+    let oLocal;
+
+    if (this.escolhaLocal == "Plantas do Fornecedor") { oLocal = 'supplier'}
+    if (this.escolhaLocal == "Plantas dos Clientes") { oLocal = 'factory' }
+
+   
+
+    if (this.absenceSearchEquipamento) {
+      if (this.absenceSearchEquipamento.packing == "Todos") {
+        this.absenceSearchSerial = "";
+        this.abserial = false;
+        this.abserials = [];
+        this.inventoryService
+          .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, oLocal)
+          .subscribe(result => {
+            if (result.data) {
+
+              this.absence = result
+            }
+          }, err => { console.log(err) });
+
+      } else{
+
+        this.packingService
+          .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
+          .subscribe(result => {
+            this.abserials = result.data;
+            this.inventoryService
+              .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, oLocal)
+              .subscribe(result => {
+               
+                if (result.data){
+                 
+                  this.absence = result
                 }
               }, err => { console.log(err) });
           }, err => { console.log(err) })

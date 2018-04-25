@@ -1,7 +1,6 @@
 const mongoose                  = require('mongoose');
 const mongoosePaginate          = require('mongoose-paginate');
-const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
-
+const mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskuse');
 
 const packingSchema = new mongoose.Schema({
   code: {

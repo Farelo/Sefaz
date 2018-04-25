@@ -56,8 +56,8 @@ exports.queries = {
               $filter: {
                 input: '$historic',
                 as: "num",
-                 cond: { '$or': [{ '$eq': ['$$num.plant.local', 'Factory'], '$eq': ['$$num.plant.local', 'Supplier'] }] }
-                // cond: { '$eq': ['$$num.plant.local', 'Factory'] }
+                cond: { '$or': [{ '$eq': ['$$num.plant.local', 'Factory']}, {'$eq': ['$$num.plant.local', 'Supplier'] }] }
+          
               }
             },
             'historic_geral': '$historic',
@@ -88,7 +88,7 @@ exports.queries = {
             "foreignField": "_id",
             "as": "lplants"
           }
-      }, { '$unwind': '$lplants' },
+      }, { '$unwind': '$lplants' }
       // time ? { '$match': { '$gt': [{ 'base_time': time * 86400000 }] } } : { '$match': { '$exists': [{ 'code': true }] } }
     ]},
   inventory_general: function(supplier_array){

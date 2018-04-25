@@ -32,7 +32,7 @@ module.exports = {
     // If not connected, return errors immediately rather than waiting for reconnect
     bufferMaxEntries: 0,
     socketTimeoutMS: 0,
-    keepAlive: true
+    keepAlive: true,
   },
   google_api: {
     key: 'AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ'
