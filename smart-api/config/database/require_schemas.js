@@ -14,6 +14,7 @@ module.exports = {
     plant: plant, //retorna o schema de packing
     department: department, //retorna o schema de department
     historicPackings: historicPackings, //retorna o schema de historicPackings
+    packingAbsence: packingAbsence, //retorna o schema de packingAbsence
     GC16: GC16, //retorna o schema de GC16
     supplier: supplier, //retorna o schema de supplier
     project: project, //retorna o schema de project
@@ -57,6 +58,11 @@ function department() {
 //retorna o schema de historicPackings
 function historicPackings() {
     return mongoose.model('HistoricPackings');
+}
+
+//retorna o schema de packingAbsence
+function packingAbsence() {
+    return mongoose.model('PackingAbsence');
 }
 
 //retorna o schema de supplier

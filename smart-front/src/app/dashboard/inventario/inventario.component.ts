@@ -21,12 +21,17 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public escolhaGeral: any = 'GERAL';
   public escolhaEquipamento = "";
   public packings: any[];
+  public abpackings: any[];
+  public ab_packings: any[];
   public escolhas: any[];
   public serials: any[];
+  public abserials: any[];
+  public locals: any[];
   public general: Pagination = new Pagination({ meta: { page: 1 } });
   public supplier: Pagination = new Pagination({ meta: { page: 1 } });
   public battery: Pagination = new Pagination({ meta: { page: 1 } });
   public permanence: Pagination = new Pagination({ meta: { page: 1 } });
+  public absence: Pagination = new Pagination({ meta: { page: 1 } });
   public quantity: Pagination = new Pagination({ meta: { page: 1 } });
   public general_equipament: Pagination = new Pagination({ meta: { page: 1 } });
   public supplierSearch = null;
@@ -34,8 +39,13 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public quantitySearch = "";
   public permanenceSearchEquipamento: any;
   public permanenceSearchSerial = "";
+  public absenceSearchEquipamento: any;
+  public absenceSearchSerial: any;
+  public absenceTime: any;
+  public escolhaLocal: any;
   public generalEquipamentSearch = "";
   public serial = false;
+  public abserial = false;
   public activeModal: any;
 
   ////////////// // REAL TIME SOCKER IO TEST
@@ -155,7 +165,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
       this.inventoryService.getInventoryGeneral(10, this.general.meta.page, this.logged_user).subscribe(result => this.general = result, err => { console.log(err) });
     }
   }
-
+  
   choiced(event: any) {
     if (event === "FORNECEDOR") {
       this.loadSuppliers();
@@ -171,21 +181,89 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   }
 
+  absenceInventorySerial() {
+    this.serial = true;
+
+    this.inventoryService.getInventoryAbsencePacking(10, this.permanence.meta.page, this.absenceSearchSerial, this.absenceSearchEquipamento.packing, this.logged_user).subscribe(result => {
+      this.permanence = result;
+    }, err => { console.log(err) });
+
+  }
+
   //TODO MANY OTHER SERVICES TO RECOVER PACKINGS 
   permanenceInventory() {
     this.permanenceSearchSerial = "";
     this.serial = false;
+    this.serials = [];
 
-    this.packingService
-      .getPackingsEquals(this.permanenceSearchEquipamento.supplier._id, this.permanenceSearchEquipamento.project._id, this.permanenceSearchEquipamento.packing)
-      .subscribe(result => {
-        this.serials = result.data;
+    if (this.permanenceSearchEquipamento.packing != "Todos"){
+      
+      this.packingService
+        .getPackingsEquals(this.permanenceSearchEquipamento.supplier._id, this.permanenceSearchEquipamento.project._id, this.permanenceSearchEquipamento.packing)
+        .subscribe(result => {
+          this.serials = result.data;
+          this.inventoryService
+            .getInventoryPermanence(10, this.permanence.meta.page, this.permanenceSearchEquipamento.packing)
+            .subscribe(result => this.permanence = result, err => { console.log(err) });
+        }, err => { console.log(err) })
+    } 
+  }
+
+  absenceInventory() {
+    console.log(this.absenceSearchEquipamento);
+    console.log(this.absenceTime);
+    console.log(this.absenceSearchSerial);
+    console.log(this.escolhaLocal);
+    let oLocal;
+
+    if (this.escolhaLocal == "Plantas do Fornecedor") { oLocal = 'supplier'}
+    if (this.escolhaLocal == "Plantas dos Clientes") { oLocal = 'factory' }
+
+    console.log(oLocal);
+
+    if (this.absenceSearchEquipamento) {
+      if (this.absenceSearchEquipamento.packing == "Todos") {
+        this.absenceSearchSerial = "";
+        this.abserial = false;
+        this.abserials = [];
         this.inventoryService
-          .getInventoryPermanence(10, this.permanence.meta.page, this.permanenceSearchEquipamento.packing)
-          .subscribe(result => this.permanence = result, err => { console.log(err) });
-      }, err => { console.log(err) })
+          .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, oLocal)
+          .subscribe(result => {
+            if (result.data) {
+
+              this.absence = result
+              console.log(result.data)
+            }
+          }, err => { console.log(err) });
+
+      } else{
+
+        this.packingService
+          .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
+          .subscribe(result => {
+            this.abserials = result.data;
+            this.inventoryService
+              .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, oLocal)
+              .subscribe(result => {
+                console.log("aquii")
+                console.log(result.data)
+                if (result.data){
+                 
+                  this.absence = result
+                  console.log(result.data)
+                }
+              }, err => { console.log(err) });
+          }, err => { console.log(err) })
+      }
+    }else{
+      this.absenceSearchSerial = "";
+      this.abserial = false;
+      this.abserials = [];
+    }
 
   }
+
+ 
 
   loadSuppliers(): void {
     this.suppliersService.retrieveAll().subscribe(result => this.suppliers = result.data , err => { console.log(err) });
@@ -206,6 +284,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     this.generalInventory();
     this.tamanhoSelect();
     this.loadPackings();
+    this.loadAbPackings();
+    this.loadLocals();
 
     // REAL TIME SOCKER IO TEST
     // this.connection = this.chatService.getMessages().subscribe(message => {
@@ -221,15 +301,35 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   }
 
+  loadLocals() {
+    this.locals = [ { "local" : "Todos"} , {"local": "Fornecedor"}, { "local": "Clientes"} ];
+  }
+
   loadPackings() {
     if (this.logged_user instanceof Array) {
-      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result =>  this.packings = result.data, err => { console.log(err) });
+      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
 
     } else if (this.logged_user) {
-      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result =>  this.packings = result.data, err => { console.log(err) });
+      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
     } else {
-      this.packingService.getPackingsDistincts().subscribe(result =>  this.packings = result.data, err => { console.log(err) });
+      this.packingService.getPackingsDistincts().subscribe(result => {this.packings = result.data}, err => { console.log(err) });
+    }
+  }
 
+  loadAbPackings() {
+    if (this.logged_user instanceof Array) {
+      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => this.ab_packings = result.data, err => { console.log(err) });
+
+    } else if (this.logged_user) {
+      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.ab_packings = result.data, err => { console.log(err) });
+    } else {
+      this.packingService.getPackingsDistincts().subscribe(result =>  {
+        this.ab_packings = []
+        this.ab_packings.push({ "packing": "Todos" }) 
+        this.ab_packings = this.ab_packings.concat(result.data);
+        this.absenceTime = 10;
+        console.log(this.ab_packings)
+      }, err => { console.log(err) });
     }
   }
 

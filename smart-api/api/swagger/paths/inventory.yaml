@@ -90,6 +90,64 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
+  /inventory/absence/{limit}/{page}/{code}:
+      x-swagger-router-controller: packing_controller
+      get:
+        tags:
+          - "Inventory"
+        summary: "Retrieve all information about permancence of the equipaments on the system with pagination and some filters. Groups equipaments with the same code, supplier and project to generate inventory"
+        description: ""
+        operationId: inventory_absence
+        security:
+          - Bearer: []
+        parameters:
+        - in: "path"
+          name: "limit"
+          description: "The limit of packings that will be returned"
+          required: true
+          type: string
+        - in: "path"
+          name: "page"
+          description: "Retrieve inventory related this page"
+          required: true
+          type: string
+        - in: "path"
+          name: "code"
+          description: "Retrieve inventory related this packing code"
+          required: true
+          type: string
+        - in: "query"
+          name: "plant"
+          description: "Retrieve inventory related this supplier id related to packing"
+          required: false
+          type: string
+        - in: "query"
+          name: "time"
+          description: "Retrieve inventory related this supplier id related to packing"
+          required: false
+          type: string
+        - in: "query"
+          name: "serial"
+          description: "Retrieve inventory related this supplier id related to packing"
+          required: false
+          type: string
+        responses:
+          200:
+            description: "Successfully"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"            
   /inventory/quantity/{limit}/{page}/{code}:
       x-swagger-router-controller: packing_controller
       get:

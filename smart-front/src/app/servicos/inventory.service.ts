@@ -30,6 +30,11 @@ export class InventoryService {
       .catch(this.handleError);
   }
 
+  getAbsencePermanence(limit: number, page: number, code: string, time: number = 10, serial: string = '', plant: string = ''): Observable<any> {
+    return this.http.get(`${environment.url}inventory/absence/${limit}/${page}/${code}?serial=${serial}&time=${time}&plant=${plant}`)
+      .catch(this.handleError);
+  }
+
   getInventoryQuantity(limit: number, page: number, code: string, attr: string = ''): Observable<any> {
 
     return this.http.get(`${environment.url}inventory/quantity/${limit}/${page}/${code}?attr=${attr}`)
@@ -39,6 +44,11 @@ export class InventoryService {
   getInventoryPackingHistoric(limit: number, page: number, serial: string, code: string, attr: string = ''): Observable<any> {
 
     return this.http.get(`${environment.url}inventory/packing/historic/${limit}/${page}/${serial}/${code}?attr=${attr}`)
+      .catch(this.handleError);
+  }
+
+  getInventoryAbsencePacking(limit: number, page: number, serial: string, code: string, attr: string = ''): Observable<any> {
+    return this.http.get(`${environment.url}inventory/packing/absence/${limit}/${page}/${serial}/${code}?attr=${attr}`)
       .catch(this.handleError);
   }
 

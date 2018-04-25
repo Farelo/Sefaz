@@ -5,7 +5,8 @@ const ObjectId = schemas.ObjectId
 
 exports.queries = {
   inventory_general: function(attr){
-    return [ attr ?  {"$match": {"supplier": new ObjectId(attr) }} : {"$match": { "supplier": { "$exists": true}}},
+    return [ 
+      attr ?  {"$match": {"supplier": new ObjectId(attr) }} : {"$match": { "supplier": { "$exists": true}}},
       {
         "$lookup": {
           "from": "suppliers",
