@@ -17,6 +17,7 @@ module.exports = function () {
 	require('../../api/schemas/alerts');
 	require('../../api/schemas/gc16');
 	require('../../api/schemas/settings');
+	require('../../api/schemas/packing_absence');
 
 }
 

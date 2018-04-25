@@ -2,6 +2,95 @@
 
 
 exports.queries = {
+  absence_general: function (equipamento, serial, time, local)  {
+    const code = equipamento;//equipamento ? { 'code': equipamento } : {};
+    console.log(local)
+    return [
+      serial ? { '$match': { 'serial': serial } } : { '$match': { 'code': { '$exists': true } } },
+      code ? { '$match': { 'code': code } } : { '$match': { 'code': { '$exists': true } } },
+      {
+        '$lookup':
+          {
+            "from": "historicpackings",
+            "localField": "_id",
+            "foreignField": "packing",
+            "as": "historic"
+          }
+      },
+      local ? (local=="supplier" ? 
+        {
+          '$project': {
+            'historico_last': {
+              $filter: {
+                input: '$historic',
+                as: "num",
+                cond: { '$eq': ['$$num.plant.local', 'Supplier'] }
+              }
+            },
+            'historic_geral': '$historic',
+            "actual_plant": "$actual_plant",
+            "serial": "$serial",
+            "code": "$code",
+          }
+        }
+      : 
+        {
+          '$project': {
+            'historico_last': {
+              $filter: {
+                input: '$historic',
+                as: "num",
+                cond: { '$eq': ['$$num.plant.local', 'Factory'] }
+              }
+            },
+            'historic_geral': '$historic',
+            "actual_plant": "$actual_plant",
+            "serial": "$serial",
+            "code": "$code",
+          }
+        }
+      ): 
+        {
+          '$project': {
+            'historico_last': {
+              $filter: {
+                input: '$historic',
+                as: "num",
+                 cond: { '$or': [{ '$eq': ['$$num.plant.local', 'Factory'], '$eq': ['$$num.plant.local', 'Supplier'] }] }
+                // cond: { '$eq': ['$$num.plant.local', 'Factory'] }
+              }
+            },
+            'historic_geral': '$historic',
+            "actual_plant": "$actual_plant",
+            "serial": "$serial",
+            "code": "$code",
+          }
+        }
+      ,
+      { '$unwind': '$historico_last' },
+      { "$sort": { "historico_last.date": -1 } },
+      {
+        '$group': {
+          '_id': '$_id',
+
+          "base_time": { "$first": { '$subtract': [(new Date()).getTime(), { '$sum': ['$historico_last.date', '$historico_last.permanence_time'] }] } },
+          "historic": { "$first": "$historic_geral" },
+          "actual_plant": { "$first": "$actual_plant" },
+          "serial": { "$first": "$serial" },
+          "code": { "$first": "$code" },
+        }
+      }, 
+      {
+        '$lookup':
+          {
+            "from": "plants",
+            "localField": "actual_plant.plant",
+            "foreignField": "_id",
+            "as": "lplants"
+          }
+      }, { '$unwind': '$lplants' },
+      // time ? { '$match': { '$gt': [{ 'base_time': time * 86400000 }] } } : { '$match': { '$exists': [{ 'code': true }] } }
+    ]},
   inventory_general: function(supplier_array){
     return [ {"$match": {"supplier": { "$in": supplier_array } }},
       {

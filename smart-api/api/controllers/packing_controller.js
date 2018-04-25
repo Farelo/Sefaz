@@ -5,6 +5,7 @@
 const responses                                 = require('../helpers/responses/index')
 const schemas                                   = require("../../config/database/require_schemas")
 const query                                     = require('../helpers/queries/complex_queries_packing');
+const query_inventory                           = require('../helpers/queries/complex_queries_inventory');
 const query_plant                               = require('../helpers/queries/complex_queries_plants');
 const loka_api                                  = require('../helpers/request/loka-api');
 const _                                         = require("lodash");
@@ -412,6 +413,25 @@ exports.inventory_permanence = function (req, res) {
     .catch(_.partial(responses.errorHandler, res, 'Error to list inventory permanence'));
 };
 /**
+ * List of packings analysis by permanence time
+ */
+exports.inventory_absence = function (req, res) {
+  let code = req.swagger.params.code.value;
+  let undef;
+  let page = req.swagger.params.page.value;
+  let limit = req.swagger.params.limit.value;
+  let _serial = req.swagger.params.serial.value;
+  let _time = req.swagger.params.time.value;
+  let _plant = req.swagger.params.plant.value ? req.swagger.params.plant.value : undefined ;
+  
+  console.log(query_inventory.queries.absence_general(req.swagger.params.code.value == 'Todos' ? undef : code, _serial, _time, _plant))
+  let aggregate = schemas.packing().aggregate(query_inventory.queries.absence_general(req.swagger.params.code.value == 'Todos' ? undef : code, _serial, _time, _plant)); //projeto, fornecedor, equipamento, serial, time, local
+
+  schemas.packing().aggregatePaginate(aggregate,
+    { page: parseInt(req.swagger.params.page.value), limit: parseInt(req.swagger.params.limit.value) },
+    _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, req.swagger.params.page.value, req.swagger.params.limit.value))
+};
+/**
  * Historic of packings by serial
  */
 exports.inventory_packing_historic = function (req, res) {
@@ -432,6 +452,29 @@ exports.inventory_packing_historic = function (req, res) {
     })
     .then(_.partial(responses.successHandlerPagination, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to list inventory permanence'));
+};
+/**
+ * Historic of packings by serial
+ */
+exports.inventory_packing_absence = function (req, res) {
+  let serial = req.swagger.params.serial.value;
+  let code = req.swagger.params.code.value;
+  let attr = req.swagger.params.attr.value;
+  
+
+  schemas.historicPackings().paginate(
+    attr ? { "supplier": new ObjectId(attr), "serial": serial, "packing_code": code } : { "serial": serial, "packing_code": code },
+    {
+      page: parseInt(req.swagger.params.page.value),
+      populate: query.queries.populate,
+      sort: {
+        'date': -1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(responses.successHandlerPagination, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to list inventory permanence'));
+  
 };
 /**
  * All packings inventory

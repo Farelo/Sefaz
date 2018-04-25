@@ -87,6 +87,27 @@ exports.inventory_permanence = function (req, res) {
 /**
  * Historic of packings by serial
  */
+exports.inventory_packing_absence = function (req, res) {
+  let serial = req.swagger.params.serial.value;
+  let code = req.swagger.params.code.value;
+  let map = req.body.map(o => new ObjectId(o));
+
+  schemas.historicPackings().paginate(
+    { "supplier": { "$in": map }, "serial": serial, "packing_code": code },
+    {
+      page: parseInt(req.swagger.params.page.value),
+      populate: query.queries.populate,
+      sort: {
+        'date': -1
+      },
+      limit: parseInt(req.swagger.params.limit.value)
+    })
+    .then(_.partial(responses.successHandlerPagination, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to list inventory permanence'));
+};
+/**
+ * Historic of packings by serial
+ */
 exports.inventory_packing_historic = function (req, res) {
   let serial = req.swagger.params.serial.value;
   let code = req.swagger.params.code.value;
