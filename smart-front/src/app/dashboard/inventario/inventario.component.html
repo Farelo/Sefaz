@@ -176,24 +176,12 @@
 
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de ausência')">
         <p>LOCAL DA AUSÊNCIA</p>
-        <!--ng-select [(ngModel)]="permanenceSearchPlants" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="locals"
-          bindLabel="serial" bindValue="serial" placeholder="Selecione um Local de Ausência">
-          <ng-template ng-label-tmp let-item="item">
-            {{item.serial}}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-              <small><b>{{item.local}}</b></small>
-            </div>
-          </ng-template>
-        </ng-select-->
+        
         <select [(ngModel)]="escolhaLocal" (clear)="onClear()" data-style="btn-primary" (change)="absenceInventory()" (ngModelChange)="changeSelect($event)"
-
-        class="selectEq" bindLabel="ablocal">
-
-          <option [value]="Todos">Todos</option>
-          <option>Plantas do Fornecedor</option>
-          <option>Plantas dos Clientes</option>
+        class="selectEq" >
+          
+          <option value="Supplier">Plantas do Fornecedor</option>
+          <option value="Factory">Plantas dos Clientes</option>
         </select>
       </div>
 

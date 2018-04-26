@@ -42,7 +42,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public absenceSearchEquipamento: any;
   public absenceSearchSerial: any;
   public absenceTime: any;
-  public escolhaLocal: any;
+  public escolhaLocal = "Factory";
   public generalEquipamentSearch = "";
   public serial = false;
   public abserial = false;
@@ -196,7 +196,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     this.serial = false;
     this.serials = [];
 
-    if (this.permanenceSearchEquipamento.packing != "Todos"){
+    if (this.permanenceSearchEquipamento.packing){
       
       this.packingService
         .getPackingsEquals(this.permanenceSearchEquipamento.supplier._id, this.permanenceSearchEquipamento.project._id, this.permanenceSearchEquipamento.packing)
@@ -211,35 +211,16 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   absenceInventory() {
     this.absence = new Pagination({ meta: { page: 1 } });
-    let oLocal;
-
-    if (this.escolhaLocal == "Plantas do Fornecedor") { oLocal = 'supplier'}
-    if (this.escolhaLocal == "Plantas dos Clientes") { oLocal = 'factory' }
-
-   
-
+  
     if (this.absenceSearchEquipamento) {
-      if (this.absenceSearchEquipamento.packing == "Todos") {
-        this.absenceSearchSerial = "";
-        this.abserial = false;
-        this.abserials = [];
-        this.inventoryService
-          .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, oLocal)
-          .subscribe(result => {
-            if (result.data) {
-
-              this.absence = result
-            }
-          }, err => { console.log(err) });
-
-      } else{
+      
 
         this.packingService
           .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
           .subscribe(result => {
             this.abserials = result.data;
             this.inventoryService
-              .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, oLocal)
+              .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
               .subscribe(result => {
                
                 if (result.data){
@@ -248,46 +229,27 @@ export class InventarioComponent implements OnInit, OnDestroy  {
                 }
               }, err => { console.log(err) });
           }, err => { console.log(err) })
-      }
+      
     }else{
       this.absenceSearchSerial = "";
       this.abserial = false;
       this.abserials = [];
+      this.absence.data = []
     }
 
   }
 
   absenceInventoryChangePage() {
     
-    let oLocal;
-
-    if (this.escolhaLocal == "Plantas do Fornecedor") { oLocal = 'supplier'}
-    if (this.escolhaLocal == "Plantas dos Clientes") { oLocal = 'factory' }
-
-   
-
     if (this.absenceSearchEquipamento) {
-      if (this.absenceSearchEquipamento.packing == "Todos") {
-        this.absenceSearchSerial = "";
-        this.abserial = false;
-        this.abserials = [];
-        this.inventoryService
-          .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, oLocal)
-          .subscribe(result => {
-            if (result.data) {
-
-              this.absence = result
-            }
-          }, err => { console.log(err) });
-
-      } else{
+      
 
         this.packingService
           .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
           .subscribe(result => {
             this.abserials = result.data;
             this.inventoryService
-              .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, oLocal)
+              .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
               .subscribe(result => {
                
                 if (result.data){
@@ -296,7 +258,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
                 }
               }, err => { console.log(err) });
           }, err => { console.log(err) })
-      }
+      
     }else{
       this.absenceSearchSerial = "";
       this.abserial = false;
@@ -366,11 +328,9 @@ export class InventarioComponent implements OnInit, OnDestroy  {
       this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.ab_packings = result.data, err => { console.log(err) });
     } else {
       this.packingService.getPackingsDistincts().subscribe(result =>  {
-        this.ab_packings = []
-        this.ab_packings.push({ "packing": "Todos" }) 
-        this.ab_packings = this.ab_packings.concat(result.data);
+        
+        this.ab_packings = result.data;
         this.absenceTime = 10;
-        console.log(this.ab_packings)
       }, err => { console.log(err) });
     }
   }
