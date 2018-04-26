@@ -1,0 +1,35 @@
+<div class="modalFilho">
+  <div class="header">
+  <h1><span >Detalhes do Embalagem </span> </h1><br>
+  <p>Código: {{packing.code}}</p>
+  <p>Serial: {{packing.serial}}</p>
+  </div>
+  <button type="button" class="close" aria-label="Close" (click)="activeLayer.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+<div class="modalBody">
+  <ngui-map  [center]="center" mapTypeId="terrain" scrollwheel="false" >
+      <polyline
+
+        [path]="path"
+        [geodesic]="true"
+        [strokeColor]="'#3c763d'"
+        [strokeOpacity]="2"
+        [strokeWeight]="3"></polyline>
+        <marker *ngFor="let pos of markers" [position]="pos.position" (click)="clicked($event,pos)">
+          <info-window id="iw">
+            <div class="iw-title">INFORMAÇÕES</div>
+              <div *ngIf="marker.display">
+                    <p><span class="bold">Data de entrada:</span> {{ marker.start |  date: 'dd/MM/yyyy - hh:mm a' }}</p>
+                    <p><span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end |  date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
+                    <p><span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
+              </div>
+
+          </info-window>
+        </marker>
+    </ngui-map>
+
+</div>
+
+</div>

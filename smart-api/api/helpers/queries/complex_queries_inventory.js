@@ -7,7 +7,7 @@ exports.queries = {
     
     return [
       serial ? { '$match': { 'serial': serial } } : { '$match': { 'code': { '$exists': true } } },
-      code ? { '$match': { 'code': code } } : { '$match': { 'code': { '$exists': true } } },
+      (code!="todos") ? { '$match': { 'code': code } } : { '$match': { 'code': { '$exists': true } } },
       {
         '$lookup':
           {
@@ -32,6 +32,7 @@ exports.queries = {
             "last_plant": "$last_plant",
             "serial": "$serial",
             "code": "$code",
+            "code_tag": "$code_tag"
           }
         }
       :
@@ -50,6 +51,7 @@ exports.queries = {
             "last_plant": "$last_plant",
             "serial": "$serial",
             "code": "$code",
+            "code_tag": "$code_tag"
           }
         }
       ,
@@ -61,7 +63,8 @@ exports.queries = {
           "base_time": {
             "$first": {
               "$subtract": [
-                1524702771308,
+                //1524702771308,
+                (new Date()).getTime(),
                 {
                   "$sum": [
                     "$historico_last.date",
@@ -85,6 +88,9 @@ exports.queries = {
           },
           "last_plant": {
             "$first": "$last_plant"
+          },
+          "code_tag": {
+            "$first": "$code_tag"
           }
         }
       },
@@ -111,6 +117,9 @@ exports.queries = {
           },
           "last_plant": {
             "$first": "$last_plant"
+          },
+          "code_tag": {
+            "$first": "$code_tag"
           }
         }
       },
@@ -155,6 +164,7 @@ exports.queries = {
           "code": 1,
           "serial": 1,
           "base_time": 1,
+          "code_tag": 1,
           "lastplant": {
             '$cond': {
               if: '$actualplant',

@@ -5,10 +5,10 @@ import { PackingService } from '../../servicos/index.service';
 
 @Component({
   selector: 'app-alerta',
-  templateUrl: './layer.component.html',
-  styleUrls: ['./layer.component.css']
+  templateUrl: './abscense.component.html',
+  styleUrls: ['./abscense.component.css']
 })
-export class LayerModalComponent implements OnInit {
+export class AbscenseModalComponent implements OnInit {
 @Input() packing;
 public path = [];
 public center: any;
@@ -33,7 +33,6 @@ public marker = {
   }
 
   getPositions(){
-    console.log()
     this.packingService.getPositions(this.packing.code_tag).subscribe(result => {
       this.center = result.data.positions[0];
       this.path = result.data.positions;

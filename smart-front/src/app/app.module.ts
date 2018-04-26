@@ -19,6 +19,7 @@ import { ModalSupplierEditarComponent } from './shared/modal-user/modal-editar-s
 import { ModalLogisticEditarComponent } from './shared/modal-user/modal-editar-logistic/modal-editar-logistic.component';
 import { ModalCurrentEditarComponent } from './shared/modal-current-edit/modal-editar-current.component';
 import { ModalStaffEditarComponent } from './shared/modal-user/modal-editar-staff/modal-editar-staff.component';
+import { AbscenseModalComponent } from './shared/modal-packing-absence/abscense.component';
 import { ModalSettings } from './shared/modal-settings/modal-settings.component';
 import { ModalInvComponent } from './shared/modal-inv/modal-inv.component';
 import { ApplicationPipes } from './shared/pipes/application.pipes';
@@ -54,7 +55,8 @@ import { constants } from './../environments/constants';
     ModalLogisticEditarComponent,
     ModalStaffRegisterComponent,
     ModalStaffEditarComponent,
-    ModalCurrentEditarComponent
+    ModalCurrentEditarComponent,
+    AbscenseModalComponent
   ],
   imports: [
     BrowserModule,
@@ -99,7 +101,7 @@ import { constants } from './../environments/constants';
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
-  entryComponents: [ModalRastComponent, AlertaModalComponent,ModalSettings,ModalCurrentEditarComponent,LayerModalComponent,ModalStaffEditarComponent, ModalUserComponent, ModalStaffRegisterComponent,ModalLogisticEditarComponent,ModalInvComponent, ModalLogisticRegisterComponent,ModalDeleteComponent,ModalSupplierRegisterComponent,ModalSupplierEditarComponent]
+  entryComponents: [ModalRastComponent, AbscenseModalComponent, AlertaModalComponent,ModalSettings,ModalCurrentEditarComponent,LayerModalComponent,ModalStaffEditarComponent, ModalUserComponent, ModalStaffRegisterComponent,ModalLogisticEditarComponent,ModalInvComponent, ModalLogisticRegisterComponent,ModalDeleteComponent,ModalSupplierRegisterComponent,ModalSupplierEditarComponent]
 })
 
 export class AppModule { }

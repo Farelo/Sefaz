@@ -4,6 +4,7 @@ import { Pagination } from '../../shared/models/pagination';
 import { Alert } from '../../shared/models/alert';
 import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
 import { LayerModalComponent } from '../../shared/modal-packing/layer.component';
+import { AbscenseModalComponent } from '../../shared/modal-packing-absence/abscense.component';
 import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service';
 import { ChatService } from '../../servicos/teste';
 declare var $: any;
@@ -105,6 +106,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
       this.batteryInventory();
     } else if (event === "Geral") {
       this.generalInventoryEquipament();
+    } else if (event === "Tempo de ausência") {
+      this.absenceInventory();
     }
   }
 
@@ -213,8 +216,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     this.absence = new Pagination({ meta: { page: 1 } });
   
     if (this.absenceSearchEquipamento) {
-      
-
         this.packingService
           .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
           .subscribe(result => {
@@ -229,14 +230,21 @@ export class InventarioComponent implements OnInit, OnDestroy  {
                 }
               }, err => { console.log(err) });
           }, err => { console.log(err) })
-      
     }else{
+      this.inventoryService
+        .getAbsencePermanence(10, this.absence.meta.page, "todos", this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
+        .subscribe(result => {
+
+          if (result.data) {
+
+            this.absence = result
+          }
+        }, err => { console.log(err) });
       this.absenceSearchSerial = "";
       this.abserial = false;
       this.abserials = [];
       this.absence.data = []
     }
-
   }
 
   absenceInventoryChangePage() {
@@ -260,6 +268,15 @@ export class InventarioComponent implements OnInit, OnDestroy  {
           }, err => { console.log(err) })
       
     }else{
+      this.inventoryService
+        .getAbsencePermanence(10, this.absence.meta.page, "todos", this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
+        .subscribe(result => {
+
+          if (result.data) {
+
+            this.absence = result
+          }
+        }, err => { console.log(err) });
       this.absenceSearchSerial = "";
       this.abserial = false;
       this.abserials = [];
@@ -280,6 +297,11 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   openLayer(packing) {
     const modalRef = this.modalService.open(LayerModalComponent, { backdrop: "static", size: "lg" });
+    modalRef.componentInstance.packing = packing;
+  }
+
+  openAbsence(packing) {
+    const modalRef = this.modalService.open(AbscenseModalComponent, { backdrop: "static", size: "lg" });
     modalRef.componentInstance.packing = packing;
   }
 
