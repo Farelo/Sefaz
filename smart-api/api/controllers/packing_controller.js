@@ -424,7 +424,7 @@ exports.inventory_absence = function (req, res) {
   let _time = req.swagger.params.time.value;
   let _plant = req.swagger.params.plant.value ? req.swagger.params.plant.value : undefined ;
 
-  // console.log(JSON.stringify(query_inventory.queries.absence_general(req.swagger.params.code.value == 'Todos' ? undef : code, _serial, _time, _plant)))
+  console.log(JSON.stringify(query_inventory.queries.absence_general(req.swagger.params.code.value == 'Todos' ? undef : code, _serial, _time, _plant)))
   let aggregate = schemas.packing().aggregate(query_inventory.queries.absence_general(req.swagger.params.code.value == 'Todos' ? undef : code, _serial, _time, _plant)); //projeto, fornecedor, equipamento, serial, time, local
 
   schemas.packing().aggregatePaginate(aggregate,

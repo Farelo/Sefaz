@@ -27,8 +27,8 @@ exports.queries = {
                 cond: { '$eq': ['$$num.plant.local', 'Supplier'] }
               }
             },
-            'historic_geral': '$historic',
             "actual_plant": "$actual_plant",
+            "last_plant": "$last_plant",
             "serial": "$serial",
             "code": "$code",
           }
@@ -43,8 +43,8 @@ exports.queries = {
                 cond: { '$eq': ['$$num.plant.local', 'Factory'] }
               }
             },
-            'historic_geral': '$historic',
             "actual_plant": "$actual_plant",
+            "last_plant": "$last_plant",
             "serial": "$serial",
             "code": "$code",
           }
@@ -60,8 +60,8 @@ exports.queries = {
           
               }
             },
-            'historic_geral': '$historic',
             "actual_plant": "$actual_plant",
+            "last_plant": "$last_plant",
             "serial": "$serial",
             "code": "$code",
           }
@@ -70,25 +70,81 @@ exports.queries = {
       { '$unwind': '$historico_last' },
       { "$sort": { "historico_last.date": -1 } },
       {
-        '$group': {
-          '_id': '$_id',
-
-          "base_time": { "$first": { '$subtract': [(new Date()).getTime(), { '$sum': ['$historico_last.date', '$historico_last.permanence_time'] }] } },
-          "historic": { "$first": "$historic_geral" },
-          "actual_plant": { "$first": "$actual_plant" },
-          "serial": { "$first": "$serial" },
-          "code": { "$first": "$code" },
+        "$group": {
+          "_id": "$_id",
+          "base_time": {
+            "$first": {
+              "$subtract": [
+                1524702771308,
+                {
+                  "$sum": [
+                    "$historico_last.date",
+                    "$historico_last.permanence_time"
+                  ]
+                }
+              ]
+            }
+          },
+          "serial": {
+            "$first": "$serial"
+          },
+          "code": {
+            "$first": "$code"
+          },
+          "actual_plant": {
+            "$first": "$actual_plant"
+          },
+          "last_plant": {
+            "$first": "$last_plant"
+          }
         }
-      }, 
+      },
+
       {
         '$lookup':
           {
             "from": "plants",
             "localField": "actual_plant.plant",
             "foreignField": "_id",
-            "as": "lplants"
+            "as": "actualplant"
           }
-      }, { '$unwind': '$lplants' }
+      },
+      {
+        '$lookup':
+          {
+            "from": "plants",
+            "localField": "last_plant.plant",
+            "foreignField": "_id",
+            "as": "lastplant"
+          }
+      },
+      {
+        '$unwind': {
+          "path": "$actualplant",
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        '$unwind': {
+          "path": "$lastplant",
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        $project: {
+          "_id": 1,
+          "code": 1,
+          "serial": 1,
+          "base_time": 1,
+          "lastplant": {
+            '$cond': {
+              if: '$actualplant',
+              then: '$actualplant',
+              else: '$lastplant'
+            }
+          }
+        }
+      }
       // time ? { '$match': { '$gt': [{ 'base_time': time * 86400000 }] } } : { '$match': { '$exists': [{ 'code': true }] } }
     ]},
   inventory_general: function(supplier_array){

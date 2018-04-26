@@ -426,8 +426,8 @@
                                                         totalItems: absence.meta.total_docs}">
             <td>{{packing.code || '-'}}</td>
             <td>{{packing.serial || '-'}}</td>
-            <td>{{packing.lplants.plant_name}}</td>
-            <td>{{packing.base_time | time}}</td>
+            <td>{{packing.lastplant.plant_name}}</td>
+            <td>{{packing.base_time | time }}</td>
             <!--td>{{packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro'}}</td-->
             <td>{{packing.supplier?.name || '-'}}</td>
 
