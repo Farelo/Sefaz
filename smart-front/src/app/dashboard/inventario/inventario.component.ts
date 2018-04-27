@@ -107,6 +107,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     } else if (event === "Geral") {
       this.generalInventoryEquipament();
     } else if (event === "Tempo de ausência") {
+      this.escolhaLocal = "Supplier";
       this.absenceInventory();
     }
   }
