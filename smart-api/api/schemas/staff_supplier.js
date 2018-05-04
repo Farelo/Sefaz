@@ -14,4 +14,4 @@ const sttafSupplierSchema = new mongoose.Schema({
       }
 }).plugin(mongoosePaginate);
 
-mongoose.model('StaffSupplier', sttafSupplierSchema);
+module.exports = mongoose.model('StaffSupplier', sttafSupplierSchema);

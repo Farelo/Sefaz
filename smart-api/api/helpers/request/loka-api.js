@@ -63,7 +63,7 @@ function positions(token, device) {
         }
 
         let callback = function (error, response, body) {
-            console.log(error);
+           
             if (error)
                 reject(error);
 
@@ -78,7 +78,7 @@ function positions(token, device) {
 
 
                     info.positions.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude] }))
-                    console.log(array.positions);
+                  
                     // array.markers.sort(function(a,b){
                     //   if (a.start < b.start) {
                     //     return 1;

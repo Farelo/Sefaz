@@ -113,7 +113,7 @@ packingSchema.post('remove', function(next) {
 
 });
 
-mongoose.model('Packing', packingSchema);
+module.exports = mongoose.model('Packing', packingSchema);
 
 //verifica se existe alguma embalagem com o GC16, caso contrario, o GC16 é
 function evaluete(promise, next, p) {

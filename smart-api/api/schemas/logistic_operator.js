@@ -28,4 +28,4 @@ logisticOperatorSchema.pre('remove', function(next) {
         });
 });
 
-mongoose.model('LogisticOperator', logisticOperatorSchema);
+module.exports = mongoose.model('LogisticOperator', logisticOperatorSchema);

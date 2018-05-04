@@ -46,4 +46,4 @@ routeSchema.pre('remove', function(next) {
 
 });
 
-mongoose.model('Route', routeSchema);
+module.exports = mongoose.model('Route', routeSchema);

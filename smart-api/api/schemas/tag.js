@@ -13,4 +13,4 @@ tagSchema.pre('remove', function(next) {
     next();
 }).plugin(mongoosePaginate);
 
-mongoose.model('Tags', tagSchema);
+module.exports = mongoose.model('Tags', tagSchema);

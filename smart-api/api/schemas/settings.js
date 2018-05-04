@@ -17,4 +17,4 @@ var settingsSchema = new mongoose.Schema({
     "range_radius": Number
 });
 
-mongoose.model('Settings', settingsSchema);
+module.exports = mongoose.model('Settings', settingsSchema);

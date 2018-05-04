@@ -3,13 +3,13 @@
  * Module dependencies.
  */
 const responses                  = require('../helpers/responses/index')
-const schemas                    = require("../../config/database/require_schemas")
+const schemas                    = require("../schemas/require_schemas")
 const _                          = require("lodash");
 /**
  * Create a Project
  */
 exports.project_create = function (req, res) {
-  schemas.project().create(req.body)
+  schemas.project.create(req.body)
     .catch(_.partial(responses.errorHandler, res, 'Error to create a project'))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
@@ -17,7 +17,7 @@ exports.project_create = function (req, res) {
  * Create a Project
  */
 exports.project_create_array = function (req, res) {
-  schemas.project().create(req.body)
+  schemas.project.create(req.body)
     .catch(_.partial(responses.errorHandler, res, 'Error to create a project'))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
@@ -25,7 +25,7 @@ exports.project_create_array = function (req, res) {
  * Show the current Project
  */
 exports.project_read = function (req, res) {
-  schemas.project().findOne({
+  schemas.project.findOne({
     _id: req.swagger.params.project_id.value
   })
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -35,7 +35,7 @@ exports.project_read = function (req, res) {
  * Update a Project
  */
 exports.project_update = function (req, res) {
-  schemas.project().update( {
+  schemas.project.update( {
     _id: req.swagger.params.project_id.value
   }, req.body)
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -45,7 +45,7 @@ exports.project_update = function (req, res) {
  * Delete an Project
  */
 exports.project_delete = function (req, res) {
-  schemas.project().findOne({
+  schemas.project.findOne({
     _id: req.swagger.params.project_id.value
   }).exec()
     .then(doc => doc.remove())
@@ -56,7 +56,7 @@ exports.project_delete = function (req, res) {
  * List of Projets by pagination
  */
 exports.project_listPagination = function (req, res) {
-  schemas.project().paginate(req.swagger.params.attr.value ? { "name": req.swagger.params.attr.value } : {}, {
+  schemas.project.paginate(req.swagger.params.attr.value ? { "name": req.swagger.params.attr.value } : {}, {
     page: parseInt(req.swagger.params.page.value),
     sort: {
       _id: 1
@@ -71,7 +71,7 @@ exports.project_listPagination = function (req, res) {
  */
 exports.project_list = function (req, res) {
 
-  schemas.project().find({})
+  schemas.project.find({})
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to list all projects'));
 };

@@ -1,7 +1,6 @@
 "use strict";
 
 const HTTPStatus   = require("http-status");
-const query        = require('../../queries/complex_queries_packing');
 
 
 function onSuccess(res, refresh_token, code, page, limit, err, data, pages, amount) {

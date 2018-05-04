@@ -2,7 +2,7 @@
 
 const passport                                  = require("passport");
 const passport_jwt                              = require("passport-jwt");
-const schemas                                   = require('../../config/database/require_schemas');
+const schemas                                   = require('../../api/schemas/require_schemas');
 const environment                               = require('../../config/environment')
 const jwt                                       = require('jsonwebtoken');
 
@@ -18,7 +18,7 @@ function verify(jwtPayload, done) {
     return done(null, false);
   }else{
 
-    schemas.profile()
+    schemas.profile
       .findOne({
         _id: jwtPayload.id
       })

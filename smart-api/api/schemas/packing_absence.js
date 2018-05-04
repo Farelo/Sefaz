@@ -46,4 +46,4 @@ const packingAbsenceSchema = new mongoose.Schema({
 }).plugin(mongoosePaginate);
 
 
-mongoose.model('PackingAbsence', packingAbsenceSchema);
+module.exports = mongoose.model('PackingAbsence', packingAbsenceSchema);

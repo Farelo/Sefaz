@@ -1,6 +1,6 @@
 'use strict';
 
-const schemas = require("../../../config/database/require_schemas")
+const schemas  = require("../../schemas/require_schemas")
 const ObjectId = schemas.ObjectId
 
 exports.queries = {

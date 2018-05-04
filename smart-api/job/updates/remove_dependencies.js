@@ -1,6 +1,6 @@
 'use strict';
 
-const schemas      = require('../../config/database/require_schemas')
+const schemas      = require("../../api/schemas/require_schemas")
 const alerts_type  = require('../alerts/alerts_type');
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
               "time_countdown": 0
             };
 
-            schemas.alert().remove({
+            schemas.alert.remove({
               "packing": p._id,
               "status": { '$in': [ alerts_type.INCORRECT_LOCAL, alerts_type.TRAVELING , alerts_type.MISSING ] }
             }).then(() => resolve(p));
@@ -43,7 +43,7 @@ module.exports = {
           "date" : 0,
           "time_exceeded" : false
         };
-        schemas.alert().remove({
+        schemas.alert.remove({
           "packing": p._id,
           "status": { '$in': [ alerts_type.INCORRECT_LOCAL, alerts_type.PERMANENCE] }
         }).then(() => resolve(p));

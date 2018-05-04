@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 const responses                  = require('../helpers/responses/index')
-const schemas                    = require("../../config/database/require_schemas")
+const schemas                    = require("../schemas/require_schemas")
 const _                          = require("lodash");
 const query                      = require('../helpers/queries/complex_queries_plants');
 const ObjectId                   = schemas.ObjectId
@@ -11,7 +11,7 @@ const ObjectId                   = schemas.ObjectId
  * Create a Plant
  */
 exports.plant_create = function (req, res) {
-  schemas.plant().create(req.body)
+  schemas.plant.create(req.body)
     .catch(_.partial(responses.errorHandler, res, 'Error to create plant'))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
@@ -19,7 +19,7 @@ exports.plant_create = function (req, res) {
  * Create a Plant
  */
 exports.plant_create_array = function (req, res) {
-  schemas.plant().create(req.body)
+  schemas.plant.create(req.body)
     .catch(_.partial(responses.errorHandler, res, 'Error to create plant'))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
@@ -28,7 +28,7 @@ exports.plant_create_array = function (req, res) {
  */
 exports.plant_read = function (req, res) {
 
-  schemas.plant().findOne({
+  schemas.plant.findOne({
     _id: req.swagger.params.plant_id.value
   })
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -39,7 +39,7 @@ exports.plant_read = function (req, res) {
  */
 exports.plant_read_by_name = function (req, res) {
 
-  schemas.plant().find({
+  schemas.plant.find({
     plant_name: req.swagger.params.plant_name.value
   })
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -50,7 +50,7 @@ exports.plant_read_by_name = function (req, res) {
  * Update a Plant
  */
 exports.plant_update = function (req, res) {
-  schemas.plant().update( {
+  schemas.plant.update( {
     _id: req.swagger.params.plant_id.value
   }, req.body)
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -61,7 +61,7 @@ exports.plant_update = function (req, res) {
  */
 exports.plant_delete = function (req, res) {
 
-  schemas.plant().findOne({
+  schemas.plant.findOne({
     _id: req.swagger.params.plant_id.value
   }).exec()
     .then(doc => doc.remove())
@@ -72,7 +72,7 @@ exports.plant_delete = function (req, res) {
  * List of all Plants without supplier and logistic_operator
  */
 exports.list_all = function (req, res) {
-  schemas.plant().find({
+  schemas.plant.find({
     "supplier": { $exists: false },
     "logistic_operator": { $exists: false }
   })
@@ -83,7 +83,7 @@ exports.list_all = function (req, res) {
  * List of all Plants without supplier and logistic_operator no binded with route
  */
 exports.list_all_nobinded = function (req, res) {
-  schemas.plant().aggregate(query.queries.plant_filter(req.swagger.params.code.value, req.swagger.params.supplier.value, req.swagger.params.project.value))
+  schemas.plant.aggregate(query.queries.plant_filter(req.swagger.params.code.value, req.swagger.params.supplier.value, req.swagger.params.project.value))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
@@ -93,7 +93,7 @@ exports.list_all_nobinded = function (req, res) {
 exports.list_all_general = function (req, res) {
   let attr = req.swagger.params.attr.value;
 
-  schemas.plant().find(attr ? { "supplier": new ObjectId(attr) } : {})
+  schemas.plant.find(attr ? { "supplier": new ObjectId(attr) } : {})
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
@@ -104,7 +104,7 @@ exports.list_all_general_logistic = function (req, res) {
   let map = req.body.map(o => new ObjectId(o));
   let logistic_id = req.swagger.params.logistic_id.value;
  
-  schemas.plant().find({ $or: [{ "supplier": { "$in": map } }, { logistic_operator: logistic_id }] } )
+  schemas.plant.find({ $or: [{ "supplier": { "$in": map } }, { logistic_operator: logistic_id }] } )
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
@@ -113,7 +113,7 @@ exports.list_all_general_logistic = function (req, res) {
  */
 exports.plant_listPagination = function (req, res) {
 
-  schemas.plant().paginate(req.swagger.params.attr.value ? { "name": req.swagger.params.attr.value, "supplier": { $exists: false }, "logistic_operator": { $exists: false } } :
+  schemas.plant.paginate(req.swagger.params.attr.value ? { "name": req.swagger.params.attr.value, "supplier": { $exists: false }, "logistic_operator": { $exists: false } } :
     { "supplier": { $exists: false }, "logistic_operator": { $exists: false } }, {
       page: parseInt(req.swagger.params.page.value),
       sort: {

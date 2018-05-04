@@ -30,4 +30,4 @@ departmentSchema.pre('update', function(next) {
 });
 
 
-mongoose.model('Department', departmentSchema);
+module.exports = mongoose.model('Department', departmentSchema);

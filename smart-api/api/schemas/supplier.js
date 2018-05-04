@@ -37,4 +37,4 @@ supplierSchema.pre('remove', function(next) {
 
 });
 
-mongoose.model('Supplier', supplierSchema);
+module.exports = mongoose.model('Supplier', supplierSchema);

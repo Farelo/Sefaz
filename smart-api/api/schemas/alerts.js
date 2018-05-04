@@ -38,4 +38,4 @@ const alertsSchema = new mongoose.Schema({
 .plugin(mongooseAggregatePaginate)
 .plugin(mongoosePaginate);
 
-mongoose.model('Alerts', alertsSchema);
+module.exports = mongoose.model('Alerts', alertsSchema);

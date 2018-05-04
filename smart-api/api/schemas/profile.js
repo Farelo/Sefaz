@@ -57,4 +57,4 @@ profileSchema.pre('save', function(next) {
 
 
 
-mongoose.model('Profile', profileSchema);
+module.exports = mongoose.model('Profile', profileSchema);

@@ -61,4 +61,4 @@ gc16Schema.pre('remove', function(next) {
 
 });
 
-mongoose.model('GC16', gc16Schema);
+module.exports = mongoose.model('GC16', gc16Schema);

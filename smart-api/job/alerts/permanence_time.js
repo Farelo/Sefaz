@@ -1,6 +1,6 @@
 'use strict';
 
-const schemas       = require('../../config/database/require_schemas')
+const schemas       = require("../../api/schemas/require_schemas")
 const alerts_type   = require('./alerts_type')
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
     console.log("CHANGE: PACKING: " + p._id);
     return new Promise(function(resolve, reject) {
       //remove qualquer alerta de permanencia referente a essa embalagem
-    schemas.alert().remove({
+    schemas.alert.remove({
         "packing": p._id,
         "status": alerts_type.PERMANENCE
       }).then(() => resolve(p));
@@ -34,13 +34,13 @@ module.exports = {
 
         if(p.permanence.amount_days > convertMili){
           p.permanence.time_exceeded = true;
-          schemas.alert().find({ //Verifica se o alerta ja existe
+          schemas.alert.find({ //Verifica se o alerta ja existe
             "packing": p._id,
             "status": alerts_type.PERMANENCE
           }).then( result => {
             if(result.length === 0){ //Caso o alerta não exista, simplestemente cria o alerta
               console.log("PERMANENCE TIME: ALERT CREATE TO PACKING:",p._id);
-              schemas.alert().create({
+              schemas.alert.create({
                 "actual_plant": p.actual_plant,
                 "department": p.department,
                 "packing": p._id,
@@ -53,7 +53,7 @@ module.exports = {
               }).then(() => resolve(p));
             }else{
               console.log("PERMANENCE TIME: ALERT ALREADY EXIST TO PACKING:",p._id);
-              schemas.alert().update({ //Verifica se o alerta ja existe
+              schemas.alert.update({ //Verifica se o alerta ja existe
                 "packing": p._id,
                 "status": alerts_type.PERMANENCE
               },{
@@ -69,7 +69,7 @@ module.exports = {
           });
         }else{
           console.log("PERMANENCE TIME: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
-          schemas.alert().remove({
+          schemas.alert.remove({
             "packing": p._id,
             "status": alerts_type.PERMANENCE
           }).then(() => resolve(p));
@@ -81,7 +81,7 @@ module.exports = {
           "time_exceeded": false
         };
         console.log("PERMANENCE TIME: NO CONFORMIDADE ABOUT THE PACKING:",p._id);
-        schemas.alert().remove({
+        schemas.alert.remove({
           "packing": p._id,
           "status": 5
         }).then(() => resolve(p));
