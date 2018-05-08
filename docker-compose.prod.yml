@@ -145,64 +145,64 @@ services:
       - '8011:8011'        #obrigratorio
     depends_on:
       - mongo
-  # ###################################### PILOTO 6 ####################################
-  #   piloto-cliente-6:
-  #     build:
-  #       context: 'smart-front'
-  #       dockerfile: Dockerfile
-  #       args:
-  #         baseurl: http://35.169.169.38:8014/api/
-  #         port: 8012
-  #     container_name: piloto-cliente-6
-  #     ports:
-  #       - '8012:8012'    #obrigratorio
-  #   piloto-api-6: #finalizado
-  #     build:
-  #       context: 'smart-api'
-  #       dockerfile: Dockerfile
-  #     command: npm start
-  #     container_name: piloto-api-6
-  #     environment:
-  #       NODE_ENV: production
-  #       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-  #       PORT: 8014                    #obrigatorios caso não coloque o DNS
-  #       DATABASE: reciclopac5          #obrigatorios
-  #       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
-  #       # DNS:
-  #     tty: true
-  #     ports:
-  #       - '8014:8014'        #obrigratorio
-  #     depends_on:
-  #       - mongo
-  # ###################################### PILOTO 7 ####################################
-  #   piloto-cliente-7:
-  #     build:
-  #       context: 'smart-front'
-  #       dockerfile: Dockerfile
-  #       args:
-  #         baseurl: http://35.169.169.38:8016/api/
-  #         port: 8015
-  #     container_name: piloto-cliente-7
-  #     ports:
-  #       - '8015:8015'    #obrigratorio
-  #   piloto-api-7: #finalizado
-  #     build:
-  #       context: 'smart-api'
-  #       dockerfile: Dockerfile
-  #     command: npm start
-  #     container_name: piloto-api-7
-  #     environment:
-  #       NODE_ENV: production
-  #       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-  #       PORT: 8016                    #obrigatorios caso não coloque o DNS
-  #       DATABASE: reciclopac6          #obrigatorios
-  #       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
-  #       # DNS:
-  #     tty: true
-  #     ports:
-  #       - '8016:8016'        #obrigratorio
-  #     depends_on:
-  #       - mongo
+  ###################################### JSL ####################################
+  jsl-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args:
+        baseurl: http://35.169.169.38:8014/api/
+        port: 8012
+    container_name: jsl-cliente
+    ports:
+      - '8012:8012'    #obrigratorio
+  jsl-api: #finalizado
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: jsl-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8014                    #obrigatorios caso não coloque o DNS
+      DATABASE: jsl                 #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
+      # DNS:
+    tty: true
+    ports:
+      - '8014:8014'        #obrigratorio
+    depends_on:
+      - mongo
+  ###################################### NISSAN ####################################
+  nissan-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args:
+        baseurl: http://35.169.169.38:8016/api/
+        port: 8015
+    container_name: nissan-cliente
+    ports:
+      - '8015:8015'    #obrigratorio
+  nissan-api: #finalizado
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: nissan-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8016                    #obrigatorios caso não coloque o DNS
+      DATABASE: nissan          #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
+      # DNS:
+    tty: true
+    ports:
+      - '8016:8016'        #obrigratorio
+    depends_on:
+      - mongo
   ###################################### CONFIGURAÇÕES DO MONGO  ####################################
   mongo:
     image: 'mongo:latest'

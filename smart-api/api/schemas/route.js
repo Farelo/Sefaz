@@ -42,8 +42,7 @@ const routeSchema = new mongoose.Schema({
 routeSchema.pre('remove', function(next) {
     // Remove all the assignment docs that reference the removed person.
     this.model('Packing').update({routes: { $in: [this._id] }}, {$pull: {routes: this._id},  $set: {"traveling": false}}, {multi: true}, next);
-
-
 });
+
 
 module.exports = mongoose.model('Route', routeSchema);
