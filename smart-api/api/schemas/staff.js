@@ -9,4 +9,4 @@ const staffSchema = new mongoose.Schema({
       }
 }).plugin(mongoosePaginate);
 
-mongoose.model('Staff', staffSchema);
+module.exports = mongoose.model('Staff', staffSchema);

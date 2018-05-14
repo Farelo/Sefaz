@@ -44,4 +44,4 @@ plantSchema.pre('remove', function(next) {
 
 });
 
-mongoose.model('Plant', plantSchema);
+module.exports = mongoose.model('Plant', plantSchema);

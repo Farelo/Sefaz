@@ -36,7 +36,7 @@ require('./config/database/connection').open(environment);
 require('./config/initial/system_settings'); //configurando o sistema
 
 //JOB =================================================
-// require('./job/main');
+require('./job/main');
 
 //adicionando a auth no middleware
 require('./api/auth/auth')(app);

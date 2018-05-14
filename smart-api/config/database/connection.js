@@ -2,7 +2,6 @@
 
 const mongoose    = require('mongoose');
 const constants   = require('../../api/helpers/utils/constants');
-const schemas     = require('../database/import_schemas');
 
 function tryReconect(dbURI, environment) {
 	setTimeout(function () {
@@ -75,4 +74,3 @@ module.exports = {
 
 }
 
-schemas();

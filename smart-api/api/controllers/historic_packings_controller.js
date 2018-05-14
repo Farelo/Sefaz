@@ -3,14 +3,14 @@
  * Module dependencies.
  */
 const responses                  = require('../helpers/responses/index')
-const schemas                    = require("../../config/database/require_schemas")
+const schemas                    = require("../schemas/require_schemas")
 const _                          = require("lodash");
 
 /**
  * Create a Historic
  */
 exports.historic_packings_create = function (req, res) {
-  schemas.historic_packings().create(req.body)
+  schemas.historicPackings.create(req.body)
     .catch(_.partial(responses.errorHandler, res, 'Error to create Historic'))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
@@ -18,7 +18,7 @@ exports.historic_packings_create = function (req, res) {
  * Show the current Historic
  */
 exports.historic_packings_read = function (req, res) {
-  schemas.historic_packings().findOne({
+  schemas.historicPackings.findOne({
     packing: req.swagger.params.historic_packings_id.value
   })
     .populate('historic.plant')
@@ -31,7 +31,7 @@ exports.historic_packings_read = function (req, res) {
  * Update a Historic
  */
 exports.historic_packings_update = function (req, res) {
-  schemas.historic_packings().update( {
+  schemas.historicPackings.update( {
     _id: req.swagger.params.historic_packings_id.value
   }, req.body)
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -41,7 +41,7 @@ exports.historic_packings_update = function (req, res) {
  * Delete an Historic
  */
 exports.historic_packings_delete = function (req, res) {
-  schemas.historic_packings().remove({
+  schemas.historicPackings.remove({
     _id: req.swagger.params.historic_packings_id.value
   })
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -52,7 +52,7 @@ exports.historic_packings_delete = function (req, res) {
  * List of all Historics
  */
 exports.historic_packings_list = function (req, res) {
-  schemas.historic_packings().find({})
+  schemas.historicPackings.find({})
     .populate('historic.plant')
     .populate('packing')
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -62,7 +62,7 @@ exports.historic_packings_list = function (req, res) {
  * List of all Historics by pagination
  */
 exports.historic_packings_listPagination = function (req, res) {
-  schemas.historic_packings().paginate({}, {
+  schemas.historicPackings.paginate({}, {
     page: parseInt(req.swagger.params.page.value),
     populate: ['historic.plant', 'packing'],
     sort: {

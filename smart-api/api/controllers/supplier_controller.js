@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 const responses                   = require('../helpers/responses/index')
-const schemas                     = require("../../config/database/require_schemas")
+const schemas                     = require("../schemas/require_schemas")
 const _                           = require("lodash");
 const hashPassword                = require('../helpers/utils/encrypt')
 /**
@@ -11,7 +11,7 @@ const hashPassword                = require('../helpers/utils/encrypt')
  */
 exports.supplier_create = function (req, res) {
 
-  schemas.supplier().create(req.body)
+  schemas.supplier.create(req.body)
     .catch(_.partial(responses.errorHandler, res, 'Error to create supplier'))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token));
 };
@@ -21,7 +21,7 @@ exports.supplier_create = function (req, res) {
 exports.supplier_read = function (req, res) {
 
 
-  schemas.supplier().findOne({
+  schemas.supplier.findOne({
     _id: req.swagger.params.supplier_id.value
   })
     .populate('profile')
@@ -44,7 +44,7 @@ exports.supplier_read = function (req, res) {
  * Show the current Supplier by DUNS
  */
 exports.supplier_read_by_duns = function (req, res) {
-  schemas.supplier().findOne({
+  schemas.supplier.findOne({
     "duns": req.swagger.params.supplier_duns.value
   })
     .populate('profile')
@@ -56,7 +56,7 @@ exports.supplier_read_by_duns = function (req, res) {
  * Show the current Supplier by DUNS and supplier
  */
 exports.supplier_read_by_dunsAndSupplier = function (req, res) {
-  schemas.supplier().find({
+  schemas.supplier.find({
     "duns": req.swagger.params.duns.value,
     "name": req.swagger.params.name.value,
   })
@@ -69,7 +69,7 @@ exports.supplier_read_by_dunsAndSupplier = function (req, res) {
  * Update a Supplier
  */
 exports.supplier_update = function (req, res) {
-  schemas.supplier().update( {
+  schemas.supplier.update( {
     _id: req.swagger.params.supplier_id.value
   }, req.body)
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
@@ -80,7 +80,7 @@ exports.supplier_update = function (req, res) {
  */
 exports.supplier_delete = function (req, res) {
 
-  schemas.supplier().findOne({
+  schemas.supplier.findOne({
     _id: req.swagger.params.supplier_id.value
   }).exec()
     .then(doc => doc.remove())
@@ -92,7 +92,7 @@ exports.supplier_delete = function (req, res) {
  * List of Suppliers by pagination
  */
 exports.supplier_list_pagination = function (req, res) {
-  schemas.supplier().paginate({}, {
+  schemas.supplier.paginate({}, {
     page: parseInt(req.swagger.params.page.value),
     populate: ['profile', 'plant'],
     sort: {
@@ -108,8 +108,8 @@ exports.supplier_list_pagination = function (req, res) {
  * List of all Suppliers
  */
 exports.supplier_list_all = function (req, res) {
-  // supplier.find({})
-  schemas.supplier().find({})
+
+  schemas.supplier.find({})
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to list all suppliers'));
 };

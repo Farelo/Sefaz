@@ -2,7 +2,7 @@
 
 const xlsxtojson                 = require("xlsx-to-json-lc");
 const responses                  = require('../helpers/responses/index')
-const schemas                    = require("../../config/database/require_schemas")
+const schemas                    = require("../schemas/require_schemas")
 const fs                         = require('fs');
 const _                          = require("lodash");
 const NodeGeocoder               = require('node-geocoder');
@@ -195,7 +195,7 @@ exports.uploadDepartment = function (req, res) {
       //colocar as inferências em relação ao arquivo
       let dataErros = []
       let typeError = []
-      Promise.all(result.map(o => schemas.plant().findOne({ "plant_name": o.plant })))
+      Promise.all(result.map(o => schemas.plant.findOne({ "plant_name": o.plant })))
         .then(data => {
 
           result.forEach((o, index) => {
@@ -269,14 +269,14 @@ exports.uploadPacking = function (req, res) {
       let dataErros = []
       let typeError = []
 
-      Promise.all(result.map(o => schemas.tags().findOne({ "code": o.tag })))
+      Promise.all(result.map(o => schemas.tags.findOne({ "code": o.tag })))
         .then(data => {
           tag_data = data;
-          return Promise.all(result.map(o => schemas.supplier().findOne({ "name": o.supplier, 'duns': o.duns })));
+          return Promise.all(result.map(o => schemas.supplier.findOne({ "name": o.supplier, 'duns': o.duns })));
         })
         .then(data => {
           supplier_data = data;
-          return Promise.all(result.map(o => schemas.project().findOne({ "name": o.project })));
+          return Promise.all(result.map(o => schemas.project.findOne({ "name": o.project })));
         })
         .then(data => {
           project_data = data;
@@ -382,14 +382,14 @@ exports.uploadRoute = function (req, res) {
       let supplier_data, factory_data, project_data = [];
       let dataErros = []
       let typeError = []
-      Promise.all(result.map(o => schemas.supplier().findOne({ "name": o.supplier, 'duns': o.duns }).populate('plant')))
+      Promise.all(result.map(o => schemas.supplier.findOne({ "name": o.supplier, 'duns': o.duns }).populate('plant')))
         .then(data => {
           supplier_data = data;
-          return Promise.all(result.map(o => schemas.plant().findOne({ "plant_name": o.plant_factory })));
+          return Promise.all(result.map(o => schemas.plant.findOne({ "plant_name": o.plant_factory })));
         })
         .then(data => {
           factory_data = data;
-          return Promise.all(result.map(o => schemas.project().findOne({ "name": o.project })));
+          return Promise.all(result.map(o => schemas.project.findOne({ "name": o.project })));
         })
         .then(data => {
           project_data = data;

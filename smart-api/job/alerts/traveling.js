@@ -1,7 +1,7 @@
 'use strict';
 
 
-const schemas        = require('../../config/database/require_schemas')
+const schemas        = require("../../api/schemas/require_schemas")
 const historic       = require('../historic/historic');
 const alerts_type    = require('./alerts_type');
 const historic_types = require('../historic/historic_type')
@@ -41,7 +41,7 @@ module.exports = {
           'time_countdown':time
         };
 
-        schemas.alert().create({
+        schemas.alert.create({
           "routes": p.routes,
           "packing": p._id,
           "supplier": p.supplier,
@@ -87,7 +87,7 @@ module.exports = {
               'time_countdown':time
             };
 
-            schemas.alert().update({ //Verifica se o alerta ja existe
+            schemas.alert.update({ //Verifica se o alerta ja existe
               "packing": p._id,
               "status": alerts_type.TRAVELING
             }, {
@@ -107,7 +107,7 @@ module.exports = {
               'time_countdown':time
             };
 
-            schemas.alert().remove({
+            schemas.alert.remove({
               "packing": p._id,
               "status":  alerts_type.TRAVELING
             })

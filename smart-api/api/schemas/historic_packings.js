@@ -45,4 +45,4 @@ const historicPackingsSchema = new mongoose.Schema({
   status: String
 }).plugin(mongoosePaginate);
 
-mongoose.model('HistoricPackings', historicPackingsSchema);
+module.exports = mongoose.model('HistoricPackings', historicPackingsSchema);

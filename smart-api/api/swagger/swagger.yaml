@@ -192,7 +192,7 @@ paths:
         - Alerts
       summary: Retrieve all alerts from the system with pagination
       description: ''
-      operationId: alert_list_hashing
+      operationId: alert_list_packing
       security:
         - Bearer: []
       parameters:
@@ -257,7 +257,7 @@ paths:
         Retrieve all alerts from the system with pagination related the logistic
         operator
       description: ''
-      operationId: alert_list_hashing_logistic
+      operationId: alert_list_packing_logistic
       security:
         - Bearer: []
       parameters:

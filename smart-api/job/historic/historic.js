@@ -1,12 +1,12 @@
 'use strict';
 
-const schemas = require('../../config/database/require_schemas')
-const types = require('./historic_type')
+const schemas = require("../../api/schemas/require_schemas")
+const types   = require('./historic_type')
 
 
 module.exports = {
   create: function(p) {
-    return schemas.historicPackings().create({
+    return schemas.historicPackings.create({
       "actual_gc16":  p.actual_gc16,
       "plant": p.actual_plant,
       "department": p.department,
@@ -21,7 +21,7 @@ module.exports = {
     });
   },
   create_from_alert: function (p, status, date, time) {
-    return schemas.historicPackings().create({
+    return schemas.historicPackings.create({
       "actual_gc16":  p.actual_gc16,
       "date": date,
       "temperature": p.temperature,
@@ -37,7 +37,7 @@ module.exports = {
     return new Promise(function(resolve, reject) {
       if (!p.missing) {
 
-        schemas.historicPackings().update({
+        schemas.historicPackings.update({
             "packing": p._id,
             "date": p.permanence.date
           }, {
@@ -62,7 +62,7 @@ module.exports = {
   update_from_alert: function(p, status, date, time) {
     return new Promise(function(resolve, reject) {
      
-        schemas.historicPackings().update({
+        schemas.historicPackings.update({
             "packing": p._id,
           "date": date
           }, {

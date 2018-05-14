@@ -1,11 +1,11 @@
 'use strict';
 
-const schemas = require('../../config/database/require_schemas')
+const schemas = require("../../api/schemas/require_schemas")
 
 
 module.exports = function (plant,p) {
   return new Promise(function(resolve, reject) {
-      schemas.department().find({"plant": plant._id}).then(d => getNearDepartment(d,p,resolve));
+      schemas.department.find({"plant": plant._id}).then(d => getNearDepartment(d,p,resolve));
   });
 }
 

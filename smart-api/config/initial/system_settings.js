@@ -1,13 +1,13 @@
 'use strict';
 
 const constants          = require('../../api/helpers/utils/constants');
-const schemas            = require('../database/require_schemas')
+const schemas            = require("../../api/schemas/require_schemas")
 
 
-schemas.settings().find({}).then(setting => { //inserindo as configurações de usuário
+schemas.settings.find({}).then(setting => { //inserindo as configurações de usuário
     
     if (!setting.length){//se não existe configuração no sistema a cria 
-        schemas.GC16().find({}).then(gc16 => {
+        schemas.GC16.find({}).then(gc16 => {
             let config = {}
             if (!gc16.length) { //caso o sistema ja estivcesse rodando (essa alteração foi posta quando o sistema estava em produção)
                 config = {
@@ -35,22 +35,22 @@ schemas.settings().find({}).then(setting => { //inserindo as configurações de 
                 }
             }
 
-            schemas.settings().create(config)
-                .then(settings => schemas.profile().create(constants.system_user))
-                .then(user => schemas.settings().update({ _id: 1 }))
+            schemas.settings.create(config)
+                .then(settings => schemas.profile.create(constants.system_user))
+                .then(user => schemas.settings.update({ _id: 1 }))
                 .then(() => {
                     if (!constants.register_gc16.enable) {
-                        return schemas.GC16().create(constants.register_gc16.register)
+                        return schemas.GC16.create(constants.register_gc16.register)
                     } else {
-                        return schemas.GC16().find()
+                        return schemas.GC16.find()
                     }
                 })
                 .then(gc16 => {
 
                     if (!constants.register_gc16.enable) {
-                        return schemas.settings().update({ _id: 1 }, { "register_gc16.id": gc16._id })
+                        return schemas.settings.update({ _id: 1 }, { "register_gc16.id": gc16._id })
                     } else {
-                        return schemas.settings().find()
+                        return schemas.settings.find()
                     }
                 })
                 .then(() => console.log("Sistema Configurado"))
@@ -62,13 +62,3 @@ schemas.settings().find({}).then(setting => { //inserindo as configurações de 
     }
 })
 
-
-
-// Background caso o index do cpf volte a aparecer no cadastro
-// schemas.logisticOperator().collection.dropIndex("cpf_1", function (err, results) {
-//     if(err){
-//         console.log(err)
-//     }else{
-//         console.log(results)
-//     }
-// })

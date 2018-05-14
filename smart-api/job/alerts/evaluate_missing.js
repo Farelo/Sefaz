@@ -1,6 +1,6 @@
 'use strict';
 
-const schemas           = require('../../config/database/require_schemas')
+const schemas           = require("../../api/schemas/require_schemas")
 const historic          = require('../historic/historic');
 const alerts_type       = require('./alerts_type');
 const historic_types    = require('../historic/historic_type')
@@ -18,7 +18,7 @@ module.exports = function(p) {
         "date": p.packing_missing.date,
         "time_countdown": time
       };
-      schemas.alert().update({ //Verifica se o alerta ja existe
+      schemas.alert.update({ //Verifica se o alerta ja existe
         "packing": p._id,
         "status": alerts_type.MISSING
       }, {
@@ -45,7 +45,7 @@ module.exports = function(p) {
         };
         p.last_plant = p.actual_plant;
         p.last_department = p.department;
-        schemas.alert().create({
+        schemas.alert.create({
             "packing": p._id,
             "department": p.department,
             "actual_plant": p.last_plant,
@@ -56,7 +56,7 @@ module.exports = function(p) {
             "serial": p.serial,
             "date": new Date().getTime()
           })
-        .then(() => schemas.alert().remove({"packing": p._id,"status": alerts_type.TRAVELING}))
+        .then(() => schemas.alert.remove({"packing": p._id,"status": alerts_type.TRAVELING}))
         .then(() => historic.create_from_alert(p, historic_types.MISSING, p.packing_missing.date, p.packing_missing.time_countdown))
         .then(() => resolve(p));
       }

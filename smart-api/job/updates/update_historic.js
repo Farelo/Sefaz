@@ -1,11 +1,11 @@
 'use strict';
 
-const schemas       = require('../../config/database/require_schemas')
-const historic_type = require('../historic/historic_type')
+const schemas        = require("../../api/schemas/require_schemas")
+const historic_type  = require('../historic/historic_type')
 
 module.exports = function (p) {
 
-    return schemas.historicPackings().remove({ 
+    return schemas.historicPackings.remove({ 
         packing_code: p.code, 
         serial: p.serial,
         permanence_time: 0, 
