@@ -16,6 +16,6 @@ Um modulo utilizado para contruir o documento swagger que será utilizado para a
 
 * dump do database do MongoDB `mongodump -d <nome da base de dados> -o <directory backup>`
 * importar o database para o MongoDB utilizando o seguinte codigo no terminal  `mongorestore -d <nome da base de dados> <directory backup>`
-* rodar no terminal o comnado `mongod` para start o banco de dados
+* rodar no terminal o comando `mongod` para start o banco de dados
 * entrar no bash do mongo no servidor em produção `docker exec -it mongo bash`
 * avaliar o ip do container criado para o mongo `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mongo`

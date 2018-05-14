@@ -25,7 +25,7 @@ app.use(logger('dev'));
 app.use(cors());
 app.use(compression());
 
-module.exports = app; // for testing
+// module.exports = app; // for testing
 
 app.get('/', function (req, res) {  //todo aguenta 
   res.redirect('/docs');
@@ -125,3 +125,5 @@ swaggerTools.initializeMiddleware(swaggerObject, function(middleware) {
       }
     });
 });
+
+module.exports = app

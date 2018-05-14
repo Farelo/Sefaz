@@ -44,14 +44,17 @@
   },
   "devDependencies": {
     "extensify": "^1.0.2",
+    "jest": "^22.4.3",
     "should": "^7.1.0",
-    "supertest": "^1.0.0"
+    "supertest": "3.0.0"
   },
   "scripts": {
     "build": "node ./config/swagger/compile",
     "deploy:prod": "docker-compose -f ../docker-compose.prod.yml up --build",
     "develop": "set NODE_ENV=development&& nodemon server.js",
+    "develop-linux": "export NODE_ENV=development && nodemon server.js",
     "start": "node server.js",
-    "test": "swagger project test"
+    "test": "swagger project test",
+    "test-jest": "export NODE_ENV=test && jest"
   }
 }
