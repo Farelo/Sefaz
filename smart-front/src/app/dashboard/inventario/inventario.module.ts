@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule} from 'ngx-pagination';
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -19,8 +20,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     RouterModule,
     NgxPaginationModule,
-    ApplicationPipes
-
+    ApplicationPipes,
+    NgbModule
   ],
   declarations: [
     InventarioComponent
