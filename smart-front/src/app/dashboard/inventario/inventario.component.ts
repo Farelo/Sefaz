@@ -49,6 +49,113 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public abserial = false;
   public activeModal: any;
 
+  public isCollapsed = false;
+  public dataList: any[] = [{
+    "Fornecedor": "BRUNING TECNOMETAL S/A.",
+    "Equipamento": "30-1301",
+    "TotalEquipamentos": 100,
+    "QuantidadeNasPlantas": 50,
+    "QuantidadeFornecedor": 30,
+    "QuantidadeTransito": 10,
+    "QuantidadeLocalIncorreto": 10,
+    "TotalInventarioOnline": 100,
+    "Diferenca": 0,
+    "Alertas": {
+      "Atraso": 1,
+      "TempoPermanencia": 1,
+      "ObjetoAusente": 0
+    },
+    "Plantas":[
+      { "Localizacao": "GM - SCS", "Quantidade":20 },
+      { "Localizacao": "GM - GVT", "Quantidade": 20 },
+      { "Localizacao": "Fornecedor", "Quantidade": 20 }
+    ]
+  },
+  {
+    "Fornecedor": "MAHLE BEHR GERE",
+    "Equipamento": "30-1676",
+    "TotalEquipamentos": 100,
+    "QuantidadeNasPlantas": 40,
+    "QuantidadeFornecedor": 40,
+    "QuantidadeTransito": 10,
+    "QuantidadeLocalIncorreto": 8,
+    "TotalInventarioOnline": 98,
+    "Diferenca": 2,
+    "Alertas": {
+      "Atraso": 0,
+      "TempoPermanencia": 0,
+      "ObjetoAusente": 2
+    },
+    "Plantas": [
+      { "Localizacao": "GM - SCS", "Quantidade": 20 },
+      { "Localizacao": "GM - GVT", "Quantidade": 20 },
+      { "Localizacao": "Fornecedor", "Quantidade": 20 }
+    ]
+  },
+  {
+    "Fornecedor": "MAGNETI MARELLI ESCAPAMENTOS AMPARO",
+    "Equipamento": "30-1605",
+    "TotalEquipamentos": 100,
+    "QuantidadeNasPlantas": 10,
+    "QuantidadeFornecedor": 20,
+    "QuantidadeTransito": 50,
+    "QuantidadeLocalIncorreto": 20,
+    "TotalInventarioOnline": 100,
+    "Diferenca": 0,
+    "Alertas": {
+      "Atraso": 2,
+      "TempoPermanencia": 5,
+      "ObjetoAusente": 0
+    },
+    "Plantas": [
+      { "Localizacao": "GM - SCS", "Quantidade": 20 },
+      { "Localizacao": "GM - GVT", "Quantidade": 20 },
+      { "Localizacao": "Fornecedor", "Quantidade": 20 }
+    ]
+  },
+  {
+    "Fornecedor": "BENTELER COMPON",
+    "Equipamento": "30-1107",
+    "TotalEquipamentos": 100,
+    "QuantidadeNasPlantas": 45,
+    "QuantidadeFornecedor": 25,
+    "QuantidadeTransito": 15,
+    "QuantidadeLocalIncorreto": 10,
+    "TotalInventarioOnline": 95,
+    "Diferenca": 5,
+    "Alertas": {
+      "Atraso": 0,
+      "TempoPermanencia": 0,
+      "ObjetoAusente": 5
+    },
+    "Plantas": [
+      { "Localizacao": "GM - SCS", "Quantidade": 20 },
+      { "Localizacao": "GM - GVT", "Quantidade": 20 },
+      { "Localizacao": "Fornecedor", "Quantidade": 20 }
+    ]
+  },
+  {
+    "Fornecedor": "MAGNETI MARELLI",
+    "Equipamento": "30-1648",
+    "TotalEquipamentos": 100,
+    "QuantidadeNasPlantas": 30,
+    "QuantidadeFornecedor": 30,
+    "QuantidadeTransito": 40,
+    "QuantidadeLocalIncorreto": 0,
+    "TotalInventarioOnline": 100,
+    "Diferenca": 0,
+    "Alertas": {
+      "Atraso": 0,
+      "TempoPermanencia": 0,
+      "ObjetoAusente": 0
+    },
+    "Plantas": [
+      { "Localizacao": "GM - SCS", "Quantidade": 20 },
+      { "Localizacao": "GM - GVT", "Quantidade": 20 },
+      { "Localizacao": "Fornecedor", "Quantidade": 20 }
+    ]
+  }];
+
   ////////////// // REAL TIME SOCKER IO TEST
   // messages = [];
 
@@ -308,6 +415,10 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   ngOnInit() {
 
+    this.dataList.map(o => {
+      o.isCollapsed = true;
+      return o; 
+    })
     this.generalInventory();
     this.tamanhoSelect();
     this.loadPackings();
