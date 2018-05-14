@@ -121,7 +121,7 @@ exports.packing_update = function (req, res) {
       "supplier": new ObjectId(req.body.supplier._id),
       "project": new ObjectId(req.body.project._id)
     })
-    .then(result => evaluate.searching(result, req.body, req.swagger.params.packing_id.value ))
+    .then(result => evaluate.searching(req.body, result, req.swagger.params.packing_id.value ))
     .then(() => evaluate.existAncestor(req.body.gc16, req.body.routes, req.body))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update packings'));

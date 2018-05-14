@@ -7,7 +7,7 @@ exports.queries = {
     
     return [
       serial ? { '$match': { 'serial': serial } } : { '$match': { 'code': { '$exists': true } } },
-      (code!="todos") ? { '$match': { 'code': code } } : { '$match': { 'code': { '$exists': true } } },
+      (code!="Todos") ? { '$match': { 'code': code } } : { '$match': { 'code': { '$exists': true } } },
       {
         '$lookup':
           {
