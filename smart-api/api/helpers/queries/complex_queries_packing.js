@@ -6,7 +6,8 @@ const ObjectId = schemas.ObjectId
 exports.queries = {
   by_supplier_and_code: (supplier_id, package_code) => (
     [
-      supplier_id ? { "$match": { "supplier": new ObjectId(supplier_id), "code": package_code } } : { "$match": { "supplier": { "$exists": true } } },
+      supplier_id ? { "$match": { "supplier": new ObjectId(supplier_id) } } : { "$match": { "supplier": { "$exists": true } } },
+      package_code ? { "$match": { "code": package_code } } : { "$match": { "code": { "$exists": true } } },
       {
         "$lookup": {
           "from": "suppliers",
