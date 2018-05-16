@@ -348,13 +348,13 @@ exports.packing_quantity_per_condition = function (req, res) {
  * created by Sérgio Santos, 15/02/2018
  **/
 exports.detailed_inventory = (req, res)=> {
-
   let supplier_id = req.swagger.params.supplier_id.value
   let package_code = req.swagger.params.package_code.value
 
-
   schemas.packing.aggregate(query.queries.by_supplier_and_code(supplier_id, package_code))
     .then(data=> {
+      console.log(data);
+      
       responses.successHandler(res, req.user.refresh_token, data)
     })
     .catch(error=> {

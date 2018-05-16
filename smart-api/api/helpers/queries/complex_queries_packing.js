@@ -4,9 +4,9 @@ const schemas  = require("../../schemas/require_schemas")
 const ObjectId = schemas.ObjectId
 
 exports.queries = {
-  by_supplier_and_code: (supplier_id, package_code, condition)=> (
+  by_supplier_and_code: (supplier_id, package_code) => (
     [
-      supplier_id ? {"$match": {"supplier": new ObjectId(supplier_id), "code": package_code}} : {"$match": { "supplier": { "$exists": true}}},
+      supplier_id ? { "$match": { "supplier": new ObjectId(supplier_id), "code": package_code } } : { "$match": { "supplier": { "$exists": true } } },
       {
         "$lookup": {
           "from": "suppliers",
@@ -115,106 +115,6 @@ exports.queries = {
           }
         }
       }
-    ]
-  ),
-  by_is_traveling: (supplier_id, package_code)=> (
-    [ 
-      db.getCollection('packings').aggregate([
-        { "$match": { "supplier": { "$exists": true } } },
-        {
-          "$lookup": {
-            "from": "suppliers",
-            "localField": "supplier",
-            "foreignField": "_id",
-            "as": "supplierObject"
-          }
-        },
-        {
-          "$lookup": {
-            "from": "plants",
-            "localField": "actual_plant.plant",
-            "foreignField": "_id",
-            "as": "plantObject"
-          }
-        },
-        {
-          "$lookup": {
-            "from": "projects",
-            "localField": "project",
-            "foreignField": "_id",
-            "as": "projectObject"
-          }
-        },
-        {
-          "$lookup": {
-            "from": "gc16",
-            "localField": "gc16",
-            "foreignField": "_id",
-            "as": "gc16Object"
-          }
-        },
-        {
-          "$lookup": {
-            "from": "historicpackings",
-            "localField": "_id",
-            "foreignField": "packing",
-            "as": "historicpackingsObject"
-          }
-        },
-        {
-          "$unwind": {
-            "path": "$supplierObject",
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          "$unwind": {
-            "path": "$projectObject",
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          "$unwind": {
-            "path": "$plantObject",
-            'preserveNullAndEmptyArrays': true
-          }
-        },
-        {
-          "$unwind": {
-            "path": "$gc16Object",
-            'preserveNullAndEmptyArrays': true
-          }
-        },
-        {
-          "$group": {
-            "_id": {
-              "code": "$code",
-              "plant": "$actual_plant.plant",
-              "supplier": "$supplier",
-              "project": "$project",
-            },
-            "code": {
-              "$first": "$code"
-            },
-            "supplier": {
-              "$first": "$supplierObject"
-            },
-            "actual_plant": {
-              "$first": {
-                "plant": '$plantObject',
-                "local": '$actual_plant.local'
-              }
-            },
-            "project": {
-              "$first": "$projectObject"
-            },
-            "quantityTotal": {
-              "$sum": 1
-            },
-            "quantityTraveling": {
-              "$sum": { "$cond": [{ "$eq": ["$traveling", true] }, 1, 0] }
-            },
-          }
-        }
-      ])
     ]
   ),
   inventory_general: function(attr){
