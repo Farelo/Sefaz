@@ -326,4 +326,16 @@ hr {
   padding: 0px 8px;
   border: 0px;
 }
+.badge-atrasado{
+  background-color: #4dc9ff;
+}
+.badge-incorreto{
+  background-color: #f77737;
+}
+.badge-permanencia{
+  background-color: #4c7bff;
+}
+.badge-ausente{
+  background-color: #ef5562;
+}
 /* [Emanoel] FIM: DASHBOARD GERAL */

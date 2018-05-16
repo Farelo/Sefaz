@@ -52,7 +52,7 @@
     "build": "node ./config/swagger/compile",
     "deploy:prod": "docker-compose -f ../docker-compose.prod.yml up --build",
     "develop": "set NODE_ENV=development&& nodemon server.js",
-    "develop-linux": "export NODE_ENV=development && nodemon server.js",
+    "dev-linux": "export NODE_ENV=development && nodemon server.js",
     "start": "node server.js",
     "test": "swagger project test",
     "test-jest": "export NODE_ENV=test && jest"

@@ -22,6 +22,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public escolhaGeral: any = 'GERAL';
   public escolhaEquipamento = "";
   public packings: any[];
+  public detailedGeneralpackings: any[];
   public abpackings: any[];
   public ab_packings: any[];
   public escolhas: any[];
@@ -35,6 +36,10 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public absence: Pagination = new Pagination({ meta: { page: 1 } });
   public quantity: Pagination = new Pagination({ meta: { page: 1 } });
   public general_equipament: Pagination = new Pagination({ meta: { page: 1 } });
+  public detailedGeneralInventory: Pagination = new Pagination({ meta: { page: 1 } });
+  public detailedInventorySupplierSearch = null;
+  public detailedInventoryEquipamentSearch = null;
+  public detailedInventorySearchSerial = "";
   public supplierSearch = null;
   public batterySearch = "";
   public quantitySearch = "";
@@ -62,6 +67,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     "Diferenca": 0,
     "Alertas": {
       "Atraso": 1,
+      "ObjetoIncorreto": 1,
       "TempoPermanencia": 1,
       "ObjetoAusente": 0
     },
@@ -83,6 +89,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     "Diferenca": 2,
     "Alertas": {
       "Atraso": 0,
+      "ObjetoIncorreto": 1,
       "TempoPermanencia": 0,
       "ObjetoAusente": 2
     },
@@ -104,6 +111,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     "Diferenca": 0,
     "Alertas": {
       "Atraso": 2,
+      "ObjetoIncorreto": 0,
       "TempoPermanencia": 5,
       "ObjetoAusente": 0
     },
@@ -125,6 +133,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     "Diferenca": 5,
     "Alertas": {
       "Atraso": 0,
+      "ObjetoIncorreto": 2,
       "TempoPermanencia": 0,
       "ObjetoAusente": 5
     },
@@ -146,6 +155,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     "Diferenca": 0,
     "Alertas": {
       "Atraso": 0,
+      "ObjetoIncorreto": 2,
       "TempoPermanencia": 0,
       "ObjetoAusente": 0
     },
@@ -179,7 +189,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   ) {
 
     let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();;
+    let current_user = this.auth.currentUser();
     this.logged_user = (user.supplier ? user.supplier._id : (
       user.official_supplier ? user.official_supplier : (
         user.logistic ? user.logistic.suppliers : (
@@ -216,6 +226,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     } else if (event === "Tempo de ausência") {
       this.escolhaLocal = "Supplier";
       this.absenceInventory();
+    } else if (event === "Inventário Geral") {
+      this.loadSuppliers();
     }
   }
 
@@ -234,13 +246,11 @@ export class InventarioComponent implements OnInit, OnDestroy  {
         this.supplier = result;
         this.name_supplier = result.data[0];
       }, err => { console.log(err) });
-   }else{
-      this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, this.name_supplier._id.supplier).subscribe(result => {
-        this.supplier = result;
-      }, err => { console.log(err) });
-   }
-      
-    
+    }else{
+        this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, this.name_supplier._id.supplier).subscribe(result => {
+          this.supplier = result;
+        }, err => { console.log(err) });
+    } 
   }
 
   // Bateria inventario  ----------------------------------
@@ -280,7 +290,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   choiced(event: any) {
     if (event === "FORNECEDOR") {
       this.loadSuppliers();
-    }
+    } 
   }
 
   permanenceInventorySerial() {
@@ -482,6 +492,48 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     this.permanenceSearchSerial = "";
   }
 
+  /**
+   * Emanoel
+   * Inventário Geral
+   */
+  // public detailedInventorySupplierSearch   = null;
+  // public detailedInventoryEquipamentSearch = null;
 
+  //<ng-select [ngModel]="supplierSearch" (change)="supplierInventory($event)" [items]="suppliers"
+  supplierDetailedInventory(event: any): void {
+    console.log('suppliers:' + JSON.stringify(this.suppliers));
+    
+    if (event) {
+      console.log('click on: ' + JSON.stringify(event));
+      console.log('_id: ' + JSON.stringify(event._id));
+      
+      this.packingService.getPackingsDistinctsBySupplier(event._id).subscribe(result => {
+        console.log('result' + JSON.stringify(result));
+        
+        this.detailedGeneralpackings = result.data;
+        //this.name_supplier = result.data[0];
+      }, err => { console.log(err) });
+    } 
+  }
+
+  equipamentDetailedInventoryInventory(){
+    console.log('equipamentDetailedInventoryInventory');
+  }
+
+  detailedGeneralInventoryChangePage(event: any): void {
+    console.log('detailedGeneralInventoryChangePage');
+    
+    // if (event) {
+    //   this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, event._id).subscribe(result => {
+    //     this.supplier = result;
+    //     this.name_supplier = result.data[0];
+    //   }, err => { console.log(err) });
+    // } else {
+    //   this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, this.name_supplier._id.supplier).subscribe(result => {
+    //     this.supplier = result;
+    //   }, err => { console.log(err) });
+    // }
+
+  }
 
 }
