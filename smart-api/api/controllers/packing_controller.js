@@ -121,7 +121,7 @@ exports.packing_update = function (req, res) {
       "supplier": new ObjectId(req.body.supplier._id),
       "project": new ObjectId(req.body.project._id)
     })
-    .then(result => evaluate.searching(result, req.body, req.swagger.params.packing_id.value ))
+    .then(result => evaluate.searching(req.body, result, req.swagger.params.packing_id.value ))
     .then(() => evaluate.existAncestor(req.body.gc16, req.body.routes, req.body))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to update packings'));
@@ -342,6 +342,29 @@ exports.packing_quantity_per_condition = function (req, res) {
     .catch(_.partial(responses.errorHandler, res, 'Error to calculate packings quantity'));
 
 };
+
+/*
+ * list of general pagickings by supplier or by packing
+ * created by Sérgio Santos, 15/02/2018
+ **/
+exports.detailed_inventory = (req, res)=> {
+
+  let supplier_id = req.swagger.params.supplier_id.value
+  let package_code = req.swagger.params.package_code.value
+
+
+  schemas.packing.aggregate(query.queries.by_supplier_and_code(supplier_id, package_code))
+    .then(data=> {
+      responses.successHandler(res, req.user.refresh_token, data)
+    })
+    .catch(error=> {
+      responses.errorHandler(res, "Não existe equipamento cadastrado no banco!", error)
+    })
+
+
+  // schemas.packing.aggregatePaginate(aggregate,
+  //   _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, 0, 0));
+}
 
 /**
  * list of general pagickings inventory
