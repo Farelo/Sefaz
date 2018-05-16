@@ -280,3 +280,62 @@ hr {
 .help:focus {
   outline: none;
 }
+
+
+/* [Emanoel] INICIO: DASHBOARD GERAL */
+.hiddenRow {
+    padding: 0 !important;
+}
+.super-table{
+  font-size: 14px;
+}
+.super-table > thead tr th{
+  border: none;
+}
+.super-th{
+  text-align: center;
+  position: relative;
+}
+.super-th:after {
+    position: absolute;
+    content: '';
+    border-bottom: 2px solid #ddd;
+    width: 99%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    bottom: -1px;
+    left: 50%;
+}
+.super-th-atraso{
+  border-left: 2px solid #4dc9ff;
+}
+.super-th-permanencia{
+  border-left: 2px solid #4c7bff;
+}
+.super-th-ausente{
+  border-left: 2px solid #ef5562;
+}
+.empty-super-th{
+  border-bottom: 1px solid #6382c9;
+}
+.inner-table{
+  width: fit-content;
+  min-width: 40%;
+}
+.super-table > tbody > tr:nth-child(2) > td {
+  padding: 0px 8px;
+  border: 0px;
+}
+.badge-atrasado{
+  background-color: #4dc9ff;
+}
+.badge-incorreto{
+  background-color: #f77737;
+}
+.badge-permanencia{
+  background-color: #4c7bff;
+}
+.badge-ausente{
+  background-color: #ef5562;
+}
+/* [Emanoel] FIM: DASHBOARD GERAL */

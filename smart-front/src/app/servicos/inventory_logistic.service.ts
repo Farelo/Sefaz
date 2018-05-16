@@ -55,5 +55,11 @@ export class InventoryLogisticService {
       .catch(this.handleError);
   }
 
+  /**
+   * Emanoel
+   */
+  getDetailedGeneralInventory(limit: number, page: number, code: string, supplier: string, project: string): Observable<any> {
+    return null;
+  }
 
 }

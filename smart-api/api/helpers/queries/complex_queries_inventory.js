@@ -1,644 +1,657 @@
 'use strict';
 
-
 exports.queries = {
-  absence_general: function (equipamento, serial, time, local)  {
-    const code = equipamento;//equipamento ? { 'code': equipamento } : {};
-    
+  absence_general: function(equipamento, serial, time, local) {
+    const code = equipamento; //equipamento ? { 'code': equipamento } : {};
+
     return [
-      serial ? { '$match': { 'serial': serial } } : { '$match': { 'code': { '$exists': true } } },
-      (code!="todos") ? { '$match': { 'code': code } } : { '$match': { 'code': { '$exists': true } } },
+      serial
+        ? { $match: { serial: serial } }
+        : { $match: { code: { $exists: true } } },
+      code != 'todos'
+        ? { $match: { code: code } }
+        : { $match: { code: { $exists: true } } },
       {
-        '$lookup':
-          {
-            "from": "historicpackings",
-            "localField": "_id",
-            "foreignField": "packing",
-            "as": "historic"
-          }
+        $lookup: {
+          from: 'historicpackings',
+          localField: '_id',
+          foreignField: 'packing',
+          as: 'historic',
+        },
       },
-      local ?   
-        {
-          '$project': {
-            'historico_last': {
-              $filter: {
-                input: '$historic',
-                as: "num",
-                cond: { '$eq': ['$$num.plant.local', local] }
-              }
+      local
+        ? {
+            $project: {
+              historico_last: {
+                $filter: {
+                  input: '$historic',
+                  as: 'num',
+                  cond: { $eq: ['$$num.plant.local', local] },
+                },
+              },
+              historic: '$historic',
+              actual_plant: '$actual_plant',
+              last_plant: '$last_plant',
+              serial: '$serial',
+              code: '$code',
+              code_tag: '$code_tag',
             },
-            'historic': '$historic',
-            "actual_plant": "$actual_plant",
-            "last_plant": "$last_plant",
-            "serial": "$serial",
-            "code": "$code",
-            "code_tag": "$code_tag"
           }
-        }
-      :
-        {
-          '$project': {
-            'historico_last': {
-              $filter: {
-                input: '$historic',
-                as: "num",
-                cond: { '$or': [{ '$eq': ['$$num.plant.local', 'Factory']}, {'$eq': ['$$num.plant.local', 'Supplier'] }] }
-          
-              }
+        : {
+            $project: {
+              historico_last: {
+                $filter: {
+                  input: '$historic',
+                  as: 'num',
+                  cond: {
+                    $or: [
+                      { $eq: ['$$num.plant.local', 'Factory'] },
+                      { $eq: ['$$num.plant.local', 'Supplier'] },
+                    ],
+                  },
+                },
+              },
+              historic: '$historic',
+              actual_plant: '$actual_plant',
+              last_plant: '$last_plant',
+              serial: '$serial',
+              code: '$code',
+              code_tag: '$code_tag',
             },
-            'historic': '$historic',
-            "actual_plant": "$actual_plant",
-            "last_plant": "$last_plant",
-            "serial": "$serial",
-            "code": "$code",
-            "code_tag": "$code_tag"
-          }
-        }
-      ,
-      { '$unwind': '$historico_last' },
-      { "$sort": { "historico_last.date": -1 } },
+          },
+      { $unwind: '$historico_last' },
+      { $sort: { 'historico_last.date': -1 } },
       {
-        "$group": {
-          "_id": "$_id",
-          "base_time": {
-            "$first": {
-              "$subtract": [
+        $group: {
+          _id: '$_id',
+          base_time: {
+            $first: {
+              $subtract: [
                 //1524702771308,
-                (new Date()).getTime(),
+                new Date().getTime(),
                 {
-                  "$sum": [
-                    "$historico_last.date",
-                    "$historico_last.permanence_time"
-                  ]
-                }
-              ]
-            }
+                  $sum: [
+                    '$historico_last.date',
+                    '$historico_last.permanence_time',
+                  ],
+                },
+              ],
+            },
           },
-          "historic": {
-            "$first": "$historic"
+          historic: {
+            $first: '$historic',
           },
-          "serial": {
-            "$first": "$serial"
+          serial: {
+            $first: '$serial',
           },
-          "code": {
-            "$first": "$code"
+          code: {
+            $first: '$code',
           },
-          "actual_plant": {
-            "$first": "$actual_plant"
+          actual_plant: {
+            $first: '$actual_plant',
           },
-          "last_plant": {
-            "$first": "$last_plant"
+          last_plant: {
+            $first: '$last_plant',
           },
-          "code_tag": {
-            "$first": "$code_tag"
-          }
-        }
+          code_tag: {
+            $first: '$code_tag',
+          },
+        },
       },
-      { '$unwind': '$historic' },
-      { "$sort": { "historic.date": -1 } },
+      { $unwind: '$historic' },
+      { $sort: { 'historic.date': -1 } },
       {
-        "$group": {
-          "_id": "$_id",
-          "base_time": {
-            "$first": '$base_time'
-              
+        $group: {
+          _id: '$_id',
+          base_time: {
+            $first: '$base_time',
           },
-          "historic": {
-            "$first": "$historic"
+          historic: {
+            $first: '$historic',
           },
-          "serial": {
-            "$first": "$serial"
+          serial: {
+            $first: '$serial',
           },
-          "code": {
-            "$first": "$code"
+          code: {
+            $first: '$code',
           },
-          "actual_plant": {
-            "$first": "$actual_plant"
+          actual_plant: {
+            $first: '$actual_plant',
           },
-          "last_plant": {
-            "$first": "$last_plant"
+          last_plant: {
+            $first: '$last_plant',
           },
-          "code_tag": {
-            "$first": "$code_tag"
-          }
-        }
-      },
-      {
-        "$match": {
-          "historic.plant.local": { '$ne': local }
-        }
+          code_tag: {
+            $first: '$code_tag',
+          },
+        },
       },
       {
-        '$lookup':
-          {
-            "from": "plants",
-            "localField": "actual_plant.plant",
-            "foreignField": "_id",
-            "as": "actualplant"
-          }
+        $match: {
+          'historic.plant.local': { $ne: local },
+        },
       },
       {
-        '$lookup':
-          {
-            "from": "plants",
-            "localField": "last_plant.plant",
-            "foreignField": "_id",
-            "as": "lastplant"
-          }
+        $lookup: {
+          from: 'plants',
+          localField: 'actual_plant.plant',
+          foreignField: '_id',
+          as: 'actualplant',
+        },
       },
       {
-        '$unwind': {
-          "path": "$actualplant",
-          'preserveNullAndEmptyArrays': true
-        }
+        $lookup: {
+          from: 'plants',
+          localField: 'last_plant.plant',
+          foreignField: '_id',
+          as: 'lastplant',
+        },
       },
       {
-        '$unwind': {
-          "path": "$lastplant",
-          'preserveNullAndEmptyArrays': true
-        }
+        $unwind: {
+          path: '$actualplant',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$lastplant',
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
         $project: {
-          "_id": 1,
-          "code": 1,
-          "serial": 1,
-          "base_time": 1,
-          "code_tag": 1,
-          "lastplant": {
-            '$cond': {
+          _id: 1,
+          code: 1,
+          serial: 1,
+          base_time: 1,
+          code_tag: 1,
+          lastplant: {
+            $cond: {
               if: '$actualplant',
               then: '$actualplant',
-              else: '$lastplant'
-            }
-          }
-        }
+              else: '$lastplant',
+            },
+          },
+        },
       },
-      time ? { '$match': { 'base_time': { '$gte': time * 86400000 } } } : { '$match': { '$exists': [{ 'code': true }] } }
-    ]},
-  inventory_general: function(supplier_array){
-    return [ {"$match": {"supplier": { "$in": supplier_array } }},
+      time
+        ? { $match: { base_time: { $gte: time * 86400000 } } }
+        : { $match: { $exists: [{ code: true }] } },
+    ];
+  },
+  inventory_general: function(supplier_array) {
+    return [
+      { $match: { supplier: { $in: supplier_array } } },
       {
-        "$lookup": {
-          "from": "suppliers",
-          "localField": "supplier",
-          "foreignField": "_id",
-          "as": "supplierObject"
-        }
-      },
-      {
-        "$lookup": {
-          "from": "projects",
-          "localField": "project",
-          "foreignField": "_id",
-          "as": "projectObject"
-        }
+        $lookup: {
+          from: 'suppliers',
+          localField: 'supplier',
+          foreignField: '_id',
+          as: 'supplierObject',
+        },
       },
       {
-        "$lookup": {
-          "from": "gc16",
-          "localField": "gc16",
-          "foreignField": "_id",
-          "as": "gc16Object"
-        }
+        $lookup: {
+          from: 'projects',
+          localField: 'project',
+          foreignField: '_id',
+          as: 'projectObject',
+        },
+      },
+      {
+        $lookup: {
+          from: 'gc16',
+          localField: 'gc16',
+          foreignField: '_id',
+          as: 'gc16Object',
+        },
       },
 
       {
-        "$unwind": {
-          "path": "$supplierObject",
-          'preserveNullAndEmptyArrays': true
-        }
-      }, {
-        "$unwind": {
-          "path": "$projectObject",
-          'preserveNullAndEmptyArrays': true
-        }
-      }, {
-        "$unwind": {
-          "path": "$gc16Object",
-          'preserveNullAndEmptyArrays': true
-        }
+        $unwind: {
+          path: '$supplierObject',
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
-        "$group": {
-          "_id": {
-            "code": "$code",
-            "supplier": "$supplier",
-            "project": "$project",
-          },
-          "code": {
-            "$first": "$code"
-          },
-          "supplier": {
-            "$first": "$supplierObject"
-          },
-          "description": {
-            "$first": "$type"
-          },
-          "project": {
-            "$first": "$projectObject"
-          },
-          "quantity": {
-            "$sum": 1
-          },
-          "gc16": {
-            "$first": "$gc16Object"
-          }
-        }
-      }
-    ]
-  },
-  inventory_general_by_plant: function(code, supplier,project, attr) {
-    return [
-      {
-        "$match": {
-          "supplier": supplier,
-          "code": code,
-          "project": project,
-        }
+        $unwind: {
+          path: '$projectObject',
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
-        "$lookup": {
-          "from": "suppliers",
-          "localField": "supplier",
-          "foreignField": "_id",
-          "as": "supplierObject"
-        }
+        $unwind: {
+          path: '$gc16Object',
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
-        "$lookup": {
-          "from": "plants",
-          "localField": "actual_plant.plant",
-          "foreignField": "_id",
-          "as": "plantObject"
-        }
+        $group: {
+          _id: {
+            code: '$code',
+            supplier: '$supplier',
+            project: '$project',
+          },
+          code: {
+            $first: '$code',
+          },
+          supplier: {
+            $first: '$supplierObject',
+          },
+          description: {
+            $first: '$type',
+          },
+          project: {
+            $first: '$projectObject',
+          },
+          quantity: {
+            $sum: 1,
+          },
+          gc16: {
+            $first: '$gc16Object',
+          },
+        },
       },
-      {
-        "$lookup": {
-          "from": "projects",
-          "localField": "project",
-          "foreignField": "_id",
-          "as": "projectObject"
-        }
-      },
-      {
-        "$lookup": {
-          "from": "gc16",
-          "localField": "gc16",
-          "foreignField": "_id",
-          "as": "gc16Object"
-        }
-      },
-      {
-        "$unwind": {
-          "path": "$supplierObject",
-          'preserveNullAndEmptyArrays': true
-        }
-      }, {
-        "$unwind": {
-          "path": "$projectObject",
-          'preserveNullAndEmptyArrays': true
-        }
-      }, {
-        "$unwind": {
-          "path": "$plantObject",
-          'preserveNullAndEmptyArrays': true
-        }
-      },
-      {
-        "$unwind": {
-          "path": "$gc16Object",
-          'preserveNullAndEmptyArrays': true
-        }
-      },
-      {
-        "$match": {
-            "actual_plant.plant": { "$exists": true, "$ne": null }
-        }
-      },
-      {
-        "$group": {
-          "_id": {
-            "code": "$code",
-            "plant": "$actual_plant.plant",
-            "supplier": "$supplier",
-            "project": "$project",
-            "missing": "$missing"
-          },
-          "code": {
-            "$first": "$code"
-          },
-          "supplier": {
-            "$first": "$supplierObject"
-          },
-          "actual_plant": {
-            "$first": {
-              "plant":'$plantObject',
-              "local":'$actual_plant.local'
-            }
-          },
-          "description": {
-            "$first": "$type"
-          },
-          "project": {
-            "$first": "$projectObject"
-          },
-          "quantity": {
-            "$sum": 1
-          },
-          "gc16": {
-            "$first": "$gc16Object"
-          }
-        }
-      }
-    ]
-  },
-  historic_packing: function(serial,supplier_array) {
-    return [
-      {"$match": {"supplier": { "$in": supplier_array }, "serial": serial}},
-      {
-        "$lookup": {
-          "from": "suppliers",
-          "localField": "supplier",
-          "foreignField": "_id",
-          "as": "supplierObject"
-        }
-      },
-      {
-        "$lookup": {
-          "from": "plants",
-          "localField": "actual_plant.plant",
-          "foreignField": "_id",
-          "as": "plantObject"
-        }
-      },
-      {
-        "$lookup": {
-          "from": "projects",
-          "localField": "project",
-          "foreignField": "_id",
-          "as": "projectObject"
-        }
-      },
-      {
-        "$lookup": {
-          "from": "gc16",
-          "localField": "gc16",
-          "foreignField": "_id",
-          "as": "gc16Object"
-        }
-      },
-      {
-        "$lookup": {
-          "from": "historicpackings",
-          "localField": "_id",
-          "foreignField": "packing",
-          "as": "historicpackingsObject"
-        }
-      },
-      {
-        "$unwind": {
-          "path": "$historicpackingsObject",
-          'preserveNullAndEmptyArrays': true
-        }
-      },
-      {
-        "$unwind": {
-          "path": "$supplierObject",
-          'preserveNullAndEmptyArrays': true
-        }
-      }, {
-        "$unwind": {
-          "path": "$projectObject",
-          'preserveNullAndEmptyArrays': true
-        }
-      }, {
-        "$unwind": {
-          "path": "$plantObject",
-          'preserveNullAndEmptyArrays': true
-        }
-      },
-      {
-        "$unwind": {
-          "path": "$gc16Object",
-          'preserveNullAndEmptyArrays': true
-        }
-      },
-      {
-        "$group": {
-          "_id": {
-            "code": "$code",
-            "plant": "$actual_plant.plant",
-            "supplier": "$supplier",
-            "missing": "$missing"
-          },
-          "code": {
-            "$first": "$code"
-          },
-          "supplier": {
-            "$first": "$supplierObject"
-          },
-          "actual_plant": {
-            "$first": {
-              "plant":'$plantObject',
-              "local":'$actual_plant.local'
-            }
-          },
-          "description": {
-            "$first": "$type"
-          },
-          "project": {
-            "$first": "$projectObject"
-          },
-          "quantity": {
-            "$sum": 1
-          },
-          "gc16": {
-            "$first": "$gc16Object"
-          },
-          "historic": {
-            "$first": "$historicpackingsObject"
-          }
-        }
-      }
-    ]
-  },
-  quantity_total: function(code){
-    return [
-       {
-        "$match": {
-          "code": code,
-        }
-      },
-      {
-        "$group": {
-          "_id": {
-            "missing": "$missing"
-          },
-          "quantity": {
-            "$sum": 1
-          },
-          "missing": {
-            "$first": "$missing"
-          }
-        }
-      }
     ];
   },
-  quantity_inventory: function(code,supplier_array){
+  inventory_general_by_plant: function(code, supplier, project, attr) {
     return [
-      {"$match": {"supplier": { "$in": supplier_array }, "code": code}},
       {
-        "$lookup": {
-          "from": "suppliers",
-          "localField": "supplier",
-          "foreignField": "_id",
-          "as": "supplierObject"
-        }
+        $match: {
+          supplier: supplier,
+          code: code,
+          project: project,
+        },
       },
       {
-        "$lookup": {
-          "from": "plants",
-          "localField": "actual_plant.plant",
-          "foreignField": "_id",
-          "as": "plantObject"
-        }
+        $lookup: {
+          from: 'suppliers',
+          localField: 'supplier',
+          foreignField: '_id',
+          as: 'supplierObject',
+        },
       },
       {
-        "$lookup": {
-          "from": "projects",
-          "localField": "project",
-          "foreignField": "_id",
-          "as": "projectObject"
-        }
+        $lookup: {
+          from: 'plants',
+          localField: 'actual_plant.plant',
+          foreignField: '_id',
+          as: 'plantObject',
+        },
       },
       {
-        "$lookup": {
-          "from": "gc16",
-          "localField": "gc16",
-          "foreignField": "_id",
-          "as": "gc16Object"
-        }
+        $lookup: {
+          from: 'projects',
+          localField: 'project',
+          foreignField: '_id',
+          as: 'projectObject',
+        },
       },
       {
-        "$lookup": {
-          "from": "historicpackings",
-          "localField": "_id",
-          "foreignField": "packing",
-          "as": "historicpackingsObject"
-        }
+        $lookup: {
+          from: 'gc16',
+          localField: 'gc16',
+          foreignField: '_id',
+          as: 'gc16Object',
+        },
       },
       {
-        "$unwind": {
-        "path": "$supplierObject",
-        'preserveNullAndEmptyArrays': true
-      }
-      }, {
-        "$unwind": {
-        "path": "$projectObject",
-        'preserveNullAndEmptyArrays': true
-      }
-      },{
-        "$unwind": {
-        "path": "$plantObject",
-        'preserveNullAndEmptyArrays': true
-      }
-      },
-       {
-        "$unwind": {
-        "path": "$gc16Object",
-        'preserveNullAndEmptyArrays': true
-      }
+        $unwind: {
+          path: '$supplierObject',
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
-        "$group": {
-          "_id": {
-            "code": "$code",
-            "plant": "$actual_plant.plant",
-            "supplier": "$supplier",
-            "supplier": "$supplier",
-            "missing": "$missing",
-            "problem": "$problem",
-            "traveling": "$traveling",
-            "project": "$project",
+        $unwind: {
+          path: '$projectObject',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$plantObject',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$gc16Object',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $match: {
+          'actual_plant.plant': { $exists: true, $ne: null },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            code: '$code',
+            plant: '$actual_plant.plant',
+            supplier: '$supplier',
+            project: '$project',
+            missing: '$missing',
           },
-          "code": {
-            "$first": "$code"
+          code: {
+            $first: '$code',
           },
-          "supplier": {
-            "$first": "$supplierObject"
+          supplier: {
+            $first: '$supplierObject',
           },
-          "actual_plant": {
-            "$first": {
-              "plant":'$plantObject',
-              "local":'$actual_plant.local'
-            }
+          actual_plant: {
+            $first: {
+              plant: '$plantObject',
+              local: '$actual_plant.local',
+            },
           },
-          "description": {
-            "$first": "$type"
+          description: {
+            $first: '$type',
           },
-          "project": {
-            "$first": "$projectObject"
+          project: {
+            $first: '$projectObject',
           },
-          "quantity": {
-            "$sum": 1
+          quantity: {
+            $sum: 1,
           },
-          "gc16": {
-            "$first": "$gc16Object"
+          gc16: {
+            $first: '$gc16Object',
           },
-          "actual_gc16": {
-            "$first": "$actual_gc16"
+        },
+      },
+    ];
+  },
+  historic_packing: function(serial, supplier_array) {
+    return [
+      { $match: { supplier: { $in: supplier_array }, serial: serial } },
+      {
+        $lookup: {
+          from: 'suppliers',
+          localField: 'supplier',
+          foreignField: '_id',
+          as: 'supplierObject',
+        },
+      },
+      {
+        $lookup: {
+          from: 'plants',
+          localField: 'actual_plant.plant',
+          foreignField: '_id',
+          as: 'plantObject',
+        },
+      },
+      {
+        $lookup: {
+          from: 'projects',
+          localField: 'project',
+          foreignField: '_id',
+          as: 'projectObject',
+        },
+      },
+      {
+        $lookup: {
+          from: 'gc16',
+          localField: 'gc16',
+          foreignField: '_id',
+          as: 'gc16Object',
+        },
+      },
+      {
+        $lookup: {
+          from: 'historicpackings',
+          localField: '_id',
+          foreignField: 'packing',
+          as: 'historicpackingsObject',
+        },
+      },
+      {
+        $unwind: {
+          path: '$historicpackingsObject',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$supplierObject',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$projectObject',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$plantObject',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$gc16Object',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            code: '$code',
+            plant: '$actual_plant.plant',
+            supplier: '$supplier',
+            missing: '$missing',
           },
-          "missing": {
-            "$first": "$missing"
+          code: {
+            $first: '$code',
           },
-          "serial": {
-            "$first": "$serial"
+          supplier: {
+            $first: '$supplierObject',
           },
-          "problem": {
-            "$first": "$problem"
+          actual_plant: {
+            $first: {
+              plant: '$plantObject',
+              local: '$actual_plant.local',
+            },
           },
-          "traveling": {
-            "$first": "$traveling"
+          description: {
+            $first: '$type',
           },
-          "historic": {
-              "$first": "$historicpackingsObject"
-          }
-        }
-      }
+          project: {
+            $first: '$projectObject',
+          },
+          quantity: {
+            $sum: 1,
+          },
+          gc16: {
+            $first: '$gc16Object',
+          },
+          historic: {
+            $first: '$historicpackingsObject',
+          },
+        },
+      },
+    ];
+  },
+  quantity_total: function(code) {
+    return [
+      {
+        $match: {
+          code: code,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            missing: '$missing',
+          },
+          quantity: {
+            $sum: 1,
+          },
+          missing: {
+            $first: '$missing',
+          },
+        },
+      },
+    ];
+  },
+  quantity_inventory: function(code, supplier_array) {
+    return [
+      { $match: { supplier: { $in: supplier_array }, code: code } },
+      {
+        $lookup: {
+          from: 'suppliers',
+          localField: 'supplier',
+          foreignField: '_id',
+          as: 'supplierObject',
+        },
+      },
+      {
+        $lookup: {
+          from: 'plants',
+          localField: 'actual_plant.plant',
+          foreignField: '_id',
+          as: 'plantObject',
+        },
+      },
+      {
+        $lookup: {
+          from: 'projects',
+          localField: 'project',
+          foreignField: '_id',
+          as: 'projectObject',
+        },
+      },
+      {
+        $lookup: {
+          from: 'gc16',
+          localField: 'gc16',
+          foreignField: '_id',
+          as: 'gc16Object',
+        },
+      },
+      {
+        $lookup: {
+          from: 'historicpackings',
+          localField: '_id',
+          foreignField: 'packing',
+          as: 'historicpackingsObject',
+        },
+      },
+      {
+        $unwind: {
+          path: '$supplierObject',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$projectObject',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$plantObject',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$gc16Object',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            code: '$code',
+            plant: '$actual_plant.plant',
+            supplier: '$supplier',
+            supplier: '$supplier',
+            missing: '$missing',
+            problem: '$problem',
+            traveling: '$traveling',
+            project: '$project',
+          },
+          code: {
+            $first: '$code',
+          },
+          supplier: {
+            $first: '$supplierObject',
+          },
+          actual_plant: {
+            $first: {
+              plant: '$plantObject',
+              local: '$actual_plant.local',
+            },
+          },
+          description: {
+            $first: '$type',
+          },
+          project: {
+            $first: '$projectObject',
+          },
+          quantity: {
+            $sum: 1,
+          },
+          gc16: {
+            $first: '$gc16Object',
+          },
+          actual_gc16: {
+            $first: '$actual_gc16',
+          },
+          missing: {
+            $first: '$missing',
+          },
+          serial: {
+            $first: '$serial',
+          },
+          problem: {
+            $first: '$problem',
+          },
+          traveling: {
+            $first: '$traveling',
+          },
+          historic: {
+            $first: '$historicpackingsObject',
+          },
+        },
+      },
     ];
   },
   populate: [
-    "plant.plant",
-    "supplier",
-    "packing",
+    'plant.plant',
+    'supplier',
+    'packing',
     {
       path: 'packing',
       populate: {
         path: 'supplier',
-        model: 'Supplier'
-      }
+        model: 'Supplier',
+      },
     },
     {
       path: 'packing',
       populate: {
         path: 'project',
-        model: 'Project'
-      }
+        model: 'Project',
+      },
     },
     {
       path: 'packing',
       populate: {
         path: 'actual_plant.plant',
-        model: 'Plant'
-      }
+        model: 'Plant',
+      },
     },
     {
       path: 'packing',
       populate: {
         path: 'gc16',
-        model: 'GC16'
-      }
-    }
-  ]
-}
+        model: 'GC16',
+      },
+    },
+  ],
+};

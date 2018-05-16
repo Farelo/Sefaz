@@ -314,6 +314,7 @@ label {
   display: inline-block;
   margin-left: 0.4%;
   margin-right: 0.4%;
+  cursor: pointer;
 }
 
 .status1 {
