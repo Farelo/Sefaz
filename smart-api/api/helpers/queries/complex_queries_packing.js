@@ -118,6 +118,58 @@ exports.queries = {
       }
     ]
   ),
+  by_plant_and_supplier: (supplier_id, package_code)=> (
+    [
+      { "$match": { "supplier": new ObjectId(supplier_id) } },
+      { "$match": { "code": package_code } },
+      {
+        "$lookup": {
+          "from": "suppliers",
+          "localField": "supplier",
+          "foreignField": "_id",
+          "as": "supplierObject"
+        }
+      },
+
+      {
+        "$lookup": {
+          "from": "plants",
+          "localField": "actual_plant.plant",
+          "foreignField": "_id",
+          "as": "plantObject"
+        }
+      },
+      {
+        "$unwind": {
+          "path": "$supplierObject",
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        "$unwind": {
+          "path": "$plantObject",
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        "$group": {
+          "_id": {
+            "supplier": "$supplier",
+            "plant": "$actual_plant.plant",
+          },
+          "current_plant": {
+            "$first": {
+              "plant": '$plantObject',
+              "local": '$actual_plant.local'
+            }
+          },
+          "quantityTotal": {
+            "$sum": 1
+          },
+        }
+      }
+    ]
+  ),
   inventory_general: function(attr){
     return [ 
       attr ?  {"$match": {"supplier": new ObjectId(attr) }} : {"$match": { "supplier": { "$exists": true}}},

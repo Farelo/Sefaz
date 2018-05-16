@@ -358,6 +358,19 @@ exports.detailed_inventory = (req, res)=> {
     }, _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, req.swagger.params.page.value, req.swagger.params.limit.value))
 }
 
+exports.detailed_inventory_by_plant = (req, res)=> {
+  let supplier_id = req.swagger.params.supplier_id.value
+  let package_code = req.swagger.params.package_code.value
+
+  schemas.packing.aggregate(query.queries.by_plant_and_supplier(supplier_id, package_code))
+    .then(data=> {
+      responses.successHandler(res, req.user.refresh_token, data)
+    })
+    .catch(error=> {
+      responses.errorHandler(res, "Não foi possível completar a requisição", error)
+    })
+}
+
 /**
  * list of general pagickings inventory
  **/
