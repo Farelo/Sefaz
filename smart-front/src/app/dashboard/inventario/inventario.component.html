@@ -6,8 +6,8 @@
       <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal" (ngModelChange)="choiced($event)">
         <option *ngFor="let obj of escolhas" [ngValue]="obj.name">{{obj.name}}</option>
       </select>
-<!-- TEST SOCKER IO REAL TIME   -->
- <!-- {{messages.length}} -->
+      <!-- TEST SOCKER IO REAL TIME   -->
+      <!-- {{messages.length}} -->
 
 
       <ng-template #content>
@@ -66,7 +66,8 @@
       <div class="col-sm-4">
 
         <p>TIPO</p>
-        <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" (ngModelChange)="changeSelect($event)" class="selectEq">
+        <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" (ngModelChange)="changeSelect($event)"
+          class="selectEq">
           <option value="">Escolha</option>
           <option>Inventário Geral</option>
           <option>Tempo de permanência</option>
@@ -105,21 +106,21 @@
           </ng-template>
           <ng-template ng-option-tmp let-item="item">
             <div>
-        
+
               <b>Embalagem:</b> {{item.packing}}
             </div>
             <div>
               <small>
                 <b>Fornecedor:</b> {{item.supplier.name}}
               </small>
-        
+
             </div>
             <div>
               <small>
                 <b> Projeto:</b> {{item.project.name}}
               </small>
             </div>
-        
+
           </ng-template>
         </ng-select>
       </div>
@@ -128,15 +129,15 @@
       <!--TEMPO DE PERMANêNCIA -->
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
         <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="permanenceSearchEquipamento" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings" bindLabel="packing"
-          placeholder="Selecione um Equipamento">
+        <ng-select [(ngModel)]="permanenceSearchEquipamento" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings"
+          bindLabel="packing" placeholder="Selecione um Equipamento">
           <ng-template ng-label-tmp let-item="item">
             {{item.packing}}
           </ng-template>
-          <ng-template ng-option-tmp let-item="item" >
+          <ng-template ng-option-tmp let-item="item">
             <div>
-             
-                <b>Embalagem:</b> {{item.packing}}
+
+              <b>Embalagem:</b> {{item.packing}}
             </div>
             <div>
               <small>
@@ -157,8 +158,8 @@
 
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de permanência')">
         <p>SERIAL</p>
-        <ng-select [(ngModel)]="permanenceSearchSerial" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="serials" bindLabel="serial" bindValue="serial"
-          placeholder="Selecione um Serial">
+        <ng-select [(ngModel)]="permanenceSearchSerial" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="serials"
+          bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial">
           <ng-template ng-label-tmp let-item="item">
             {{item.serial}}
           </ng-template>
@@ -187,23 +188,23 @@
               <small>
                 <b>Fornecedor:</b> {{item.supplier.name}}
               </small>
-      
+
             </div>
             <div *ngIf="(item.packing != 'Todos')">
               <small>
                 <b> Projeto:</b> {{item.project.name}}
               </small>
             </div>
-      
-      
+
+
           </ng-template>
         </ng-select>
-      
+
       </div>
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de ausência')">
         <p>SERIAL</p>
         <ng-select [(ngModel)]="absenceSearchSerial" (clear)="absenceInventory()" (change)="absenceInventory()" [items]="abserials"
-        bindLabel="abserial" bindValue="serial" placeholder="Selecione um Serial">
+          bindLabel="abserial" bindValue="serial" placeholder="Selecione um Serial">
           <ng-template ng-label-tmp let-item="item">
             {{item.serial}}
           </ng-template>
@@ -218,16 +219,17 @@
 
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de ausência')">
         <p>TEMPO DE AUSÊNCIA</p>
-  <input [(ngModel)]="absenceTime" aria-describedby="basic-addon1" class="form-control meuInput ng-pristine ng-valid ng-touched" placeholder="Tempo" bindLabel="abtime" type="text" (change)="absenceInventory()" value="10">
+        <input [(ngModel)]="absenceTime" aria-describedby="basic-addon1" class="form-control meuInput ng-pristine ng-valid ng-touched"
+          placeholder="Tempo" bindLabel="abtime" type="text" (change)="absenceInventory()" value="10">
 
         <!--_ngcontent-c6="1" ng-reflect-model="absenceTime" -->
       </div>
 
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Tempo de ausência')">
         <p>LOCAL DA AUSÊNCIA</p>
-        
+
         <select [(ngModel)]="escolhaLocal" (clear)="onClear()" data-style="btn-primary" (change)="absenceInventory()" (ngModelChange)="changeSelect($event)"
-        class="selectEq" >
+          class="selectEq">
           <option value="Supplier">Plantas da CEBRACE</option>
           <!--option value="Factory">Plantas dos Clientes</option-->
         </select>
@@ -393,7 +395,7 @@
     </div>
   </div>
 
-  <div *ngIf="(escolhaGeral == 'FORNECEDOR')" >
+  <div *ngIf="(escolhaGeral == 'FORNECEDOR')">
     <h2 class="tituloClaro">FORNECEDOR</h2>
     <br />
     <br />
@@ -563,10 +565,10 @@
                                                         itemsPerPage: 10,
                                                         currentPage: absence.meta.page,
                                                         totalItems: absence.meta.total_docs}">
-            <td>{{packing.code || '-'}}</td>
-            <td>{{packing.serial || '-'}}</td>
-            <td>{{packing.lastplant.plant_name}}</td>
-            <td>{{packing.base_time | time }}</td>
+            <td>{{packing?.code || '-'}}</td>
+            <td>{{packing?.serial || '-'}}</td>
+            <td>{{packing?.lastplant?.plant_name || 'Sem Registro'}}</td>
+            <td>{{packing?.base_time | time }}</td>
             <!--td>{{packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro'}}</td-->
             <td style="text-align: center;">
               <div class="bigger" (click)="openAbsence(packing)">
@@ -605,7 +607,7 @@
             <th>Tempo na Planta</th>
             <th>DUNS</th>
             <th>Fornecedor</th>
-  
+
           </tr>
         </thead>
         <tbody>
@@ -624,11 +626,11 @@
             <td>{{packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro'}}</td>
             <td>{{packing.supplier?.duns || '-'}}</td>
             <td>{{packing.supplier?.name || '-'}}</td>
-  
+
           </tr>
         </tbody>
       </table>
-  
+
       <div class="classVazio" *ngIf="permanence.data?.length < 1">
         Realize uma pesquisa valida.
       </div>
@@ -724,7 +726,7 @@
             <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
               (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
             <td>{{packing.battery >= 0 ? (packing.battery | round) : 'Sem Registro'}} %</td>
-        
+
             <td>{{packing?.battery > 80 ? 'Alta' : (packing?.battery > 40 ? 'Medio' : 'Baixa') }}</td>
 
           </tr>
@@ -870,13 +872,13 @@
 
 </div>
 
-<div >
+<div>
 
-  
-<!-- TEST SOCKER IO REAL TIME   -->
-<!-- 
+
+  <!-- TEST SOCKER IO REAL TIME   -->
+  <!-- 
 <input type="text"  [(ngModel)]="message">
 <button (click)="sendMessage()"></button> -->
 
-  
+
 </div>
