@@ -2620,7 +2620,7 @@
         }
       }
     },
-    "/inventory/detailed": {
+    "/inventory/detailed/{limit}/{page}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
         "tags": [
@@ -2635,6 +2635,20 @@
           }
         ],
         "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of information about packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "Return inventory related this page",
+            "required": true,
+            "type": "string"
+          },
           {
             "in": "query",
             "name": "supplier_id",

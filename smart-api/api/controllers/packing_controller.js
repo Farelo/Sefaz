@@ -351,20 +351,11 @@ exports.detailed_inventory = (req, res)=> {
   let supplier_id = req.swagger.params.supplier_id.value
   let package_code = req.swagger.params.package_code.value
 
-
-  schemas.packing.aggregate(query.queries.by_supplier_and_code(supplier_id, package_code))
-    .then(data=> {
-      console.log(data);
-      
-      responses.successHandler(res, req.user.refresh_token, data)
-    })
-    .catch(error=> {
-      responses.errorHandler(res, "Não existe equipamento cadastrado no banco!", error)
-    })
-
-
-  // schemas.packing.aggregatePaginate(aggregate,
-  //   _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, 0, 0));
+  let aggregate = schemas.packing.aggregate(query.queries.by_supplier_and_code(supplier_id, package_code))
+  schemas.packing.aggregatePaginate(aggregate, { 
+      page: parseInt(req.swagger.params.page.value),
+      limit: parseInt(req.swagger.params.limit.value)
+    }, _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, req.swagger.params.page.value, req.swagger.params.limit.value))
 }
 
 /**
