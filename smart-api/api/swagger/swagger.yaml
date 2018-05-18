@@ -1808,6 +1808,44 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/ErrorResponse'
+  /inventory/detailed/plant:
+    x-swagger-router-controller: packing_controller
+    get:
+      tags:
+        - Inventory
+      summary: Retrieve all information detailed about the packages
+      description: ''
+      operationId: detailed_inventory_by_plant
+      security:
+        - Bearer: []
+      parameters:
+        - in: query
+          name: supplier_id
+          description: Filter the packages by supplier
+          required: true
+          type: string
+        - in: query
+          name: package_code
+          description: Filter the packages by code
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successfully
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: Client Error
+          schema:
+            $ref: '#/definitions/Error400'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error500'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   '/inventory/general/{limit}/{page}':
     x-swagger-router-controller: packing_controller
     get:
