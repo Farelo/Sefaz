@@ -12,56 +12,59 @@ const _                                         = require("lodash");
 const token                                     = require('../helpers/request/token');
 const evaluate                                  = require('../helpers/utils/evaluate_packing');
 const ObjectId                                  = schemas.ObjectId
-const util                                      = require('util')
-const promisify                                 = util.promisify
-const detailedInventoryData = {
-  _id: {
+
+
+function object(){
+  return {_id: {
     code: '',
-    plant: '',
-    supplier: '',
-    project: '',
+      plant: '',
+        supplier: '',
+          project: '',
   },
   code: '',
-  supplier: {
+    supplier: {
     _id: '',
-    name:'',
-    duns: '',
-    plant: '',
-    cnpj: '',
-    profile: '',
-    __v: 0
+      name: '',
+        duns: '',
+          plant: '',
+            cnpj: '',
+              profile: '',
+                __v: 0
   },
   actual_plant: {
     local: ''
   },
   project: {
     _id: '',
-    name: '',
-    __v: 0
+      name: '',
+        __v: 0
   },
   quantityTotal: 0,
-  quantityTraveling: 0,
-  quantityProblem: 0,
-  quantityMissing: 0,
-  quantityInFactory: 0, 
-  quantityInSupplier: 0,
-  quantityTimeExceeded: 0,
-  all_plants: [],
-  all_alerts: []
+    quantityTraveling: 0,
+      quantityProblem: 0,
+        quantityMissing: 0,
+          quantityInFactory: 0,
+            quantityInSupplier: 0,
+              quantityTimeExceeded: 0,
+                all_plants: [],
+                  all_alerts: []
+}
 }
 
-function generatePromise(supplier_id, package_code, options){
-  return new Promise((resolve, reject )=> {
+  
+
+const generatePromise = ((supplier_id, package_code, options)=> {
+  return new Promise((resolve, reject) => {
     schemas.packing.aggregatePaginate(schemas.packing.aggregate(query.queries.detailed_inventory(supplier_id, package_code)), options, (err, results, pageCount, count) => {
       resolve(
         { results, pageCount, count }
       )
     })
   })
-}
+})
 
 const buildDetailedInvetoryArray = async (supplier_id, package_code, options)=> {
-  let arrayToAgroup = null
+  let arrayToAgroup = []
   let aggregate = null
   try {
 
@@ -75,48 +78,52 @@ const buildDetailedInvetoryArray = async (supplier_id, package_code, options)=> 
       aggregate.count = aggregatePaginate.count
     }
 
-    const aggregatePlantList = await Promise.all(
+    let aggregatePlantList = await Promise.all(
       aggregate.map(item => schemas.packing.aggregate(query.queries.detailed_inventory_by_plant(item.supplier._id, item.code)))
     )
-    const aggregateAlertList = await Promise.all(
+    let aggregateAlertList = await Promise.all(
       aggregate.map(item => schemas.alert.aggregate(query.queries.detailed_inventory_by_alert(item.supplier._id)))
     )
 
     arrayToAgroup = aggregate.map((item, index)=> {
+      let obj = object();
+      console.log('====================================');
+      console.log(item.code);
+      console.log('====================================');
 
-      detailedInventoryData._id.code = item._id.code
-      detailedInventoryData._id.plant = item._id.plant
-      detailedInventoryData._id.supplier = item._id.supplier
-      detailedInventoryData._id.project = item._id.project
+      obj._id.code = item._id.code
+      obj._id.plant = item._id.plant
+      obj._id.supplier = item._id.supplier
+      obj._id.project = item._id.project
 
-      detailedInventoryData.code = item.code
+      obj.code = item.code
 
-      detailedInventoryData.supplier._id = item.supplier._id
-      detailedInventoryData.supplier.name = item.supplier.name
-      detailedInventoryData.supplier.duns = item.supplier.duns
-      detailedInventoryData.supplier.plant = item.supplier.plant
-      detailedInventoryData.supplier.cnpj = item.supplier.cnpj
-      detailedInventoryData.supplier.profile = item.supplier.profile
-      detailedInventoryData.supplier.__v = item.supplier.__v
+      obj.supplier._id = item.supplier._id
+      obj.supplier.name = item.supplier.name
+      obj.supplier.duns = item.supplier.duns
+      obj.supplier.plant = item.supplier.plant
+      obj.supplier.cnpj = item.supplier.cnpj
+      obj.supplier.profile = item.supplier.profile
+      obj.supplier.__v = item.supplier.__v
 
-      detailedInventoryData.actual_plant = item.actual_plant
+      obj.actual_plant = item.actual_plant
 
-      detailedInventoryData.project._id = item.project._id
-      detailedInventoryData.project.name = item.project.name
-      detailedInventoryData.project.__v = item.project.__v
+      obj.project._id = item.project._id
+      obj.project.name = item.project.name
+      obj.project.__v = item.project.__v
 
-      detailedInventoryData.quantityTotal = item.quantityTotal
-      detailedInventoryData.quantityTraveling = item.quantityTraveling
-      detailedInventoryData.quantityProblem = item.quantityProblem
-      detailedInventoryData.quantityMissing = item.quantityMissing
-      detailedInventoryData.quantityInFactory = item.quantityInFactory
-      detailedInventoryData.quantityInSupplier = item.quantityInSupplier
-      detailedInventoryData.quantityTimeExceeded = item.quantityTimeExceeded
+      obj.quantityTotal = item.quantityTotal
+      obj.quantityTraveling = item.quantityTraveling
+      obj.quantityProblem = item.quantityProblem
+      obj.quantityMissing = item.quantityMissing
+      obj.quantityInFactory = item.quantityInFactory
+      obj.quantityInSupplier = item.quantityInSupplier
+      obj.quantityTimeExceeded = item.quantityTimeExceeded
 
-      detailedInventoryData.all_plants = aggregatePlantList[index]
-      detailedInventoryData.all_alerts = aggregateAlertList[index]
+      obj.all_plants = aggregatePlantList[index]
+      obj.all_alerts = aggregateAlertList[index]
 
-      return detailedInventoryData
+      return obj
     })
 
   } catch (error) {
