@@ -12,6 +12,94 @@ const _                                         = require("lodash");
 const token                                     = require('../helpers/request/token');
 const evaluate                                  = require('../helpers/utils/evaluate_packing');
 const ObjectId                                  = schemas.ObjectId
+const detailedInventoryData = {
+  _id: {
+    code: '',
+    plant: '',
+    supplier: '',
+    project: '',
+  },
+  code: '',
+  supplier: {
+    _id: '',
+    name:'',
+    duns: '',
+    plant: '',
+    cnpj: '',
+    profile: '',
+    __v: 0
+  },
+  actual_plant: {
+    local: ''
+  },
+  project: {
+    _id: '',
+    name: '',
+    __v: 0
+  },
+  quantityTotal: 0,
+  quantityTraveling: 0,
+  quantityProblem: 0,
+  quantityMissing: 0,
+  quantityInFactory: 0, 
+  quantityInSupplier: 0,
+  quantityTimeExceeded: 0,
+  all_plants: [],
+  all_alerts: []
+}
+
+
+const buildAggregateArray = async (supplier_id, package_code)=> {
+  let array
+  try {
+    const aggregate = await schemas.packing.aggregate(query.queries.by_supplier_and_code(supplier_id, package_code))
+    const aggregatePlantList = await Promise.all(
+      aggregate.map(item => schemas.packing.aggregate(query.queries.by_plant_and_supplier(item.supplier._id, item.code)))
+    )
+
+    array = aggregate.map((item, index)=> {
+
+      detailedInventoryData._id.code = item._id.code
+      detailedInventoryData._id.plant = item._id.plant
+      detailedInventoryData._id.supplier = item._id.supplier
+      detailedInventoryData._id.project = item._id.project
+
+      detailedInventoryData.code = item.code
+
+      detailedInventoryData.supplier._id = item.supplier._id
+      detailedInventoryData.supplier.name = item.supplier.name
+      detailedInventoryData.supplier.duns = item.supplier.duns
+      detailedInventoryData.supplier.plant = item.supplier.plant
+      detailedInventoryData.supplier.cnpj = item.supplier.cnpj
+      detailedInventoryData.supplier.profile = item.supplier.profile
+      detailedInventoryData.supplier.__v = item.supplier.__v
+
+      detailedInventoryData.actual_plant = item.actual_plant
+
+      detailedInventoryData.project._id = item.project._id
+      detailedInventoryData.project.name = item.project.name
+      detailedInventoryData.project.__v = item.project.__v
+
+      detailedInventoryData.quantityTotal = item.quantityTotal
+      detailedInventoryData.quantityTraveling = item.quantityTraveling
+      detailedInventoryData.quantityProblem = item.quantityProblem
+      detailedInventoryData.quantityMissing = item.quantityMissing
+      detailedInventoryData.quantityInFactory = item.quantityInFactory
+      detailedInventoryData.quantityInSupplier = item.quantityInSupplier
+      detailedInventoryData.quantityTimeExceeded = item.quantityTimeExceeded
+
+      detailedInventoryData.all_plants = aggregatePlantList[index]
+      // detailedInventoryData.all_alerts = []
+
+      return detailedInventoryData
+    })
+
+  } catch (error) {
+    console.error(error)
+  }
+  
+  return array
+}
 
 /**
  * Create the current Packing
@@ -356,6 +444,15 @@ exports.detailed_inventory = (req, res)=> {
       page: parseInt(req.swagger.params.page.value),
       limit: parseInt(req.swagger.params.limit.value)
     }, _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, req.swagger.params.page.value, req.swagger.params.limit.value))
+}
+
+exports.detailed_inventory_csv = (req, res) => {
+  let supplier_id = req.swagger.params.supplier_id.value
+  let package_code = req.swagger.params.package_code.value
+
+  let aggregate = buildAggregateArray(supplier_id, package_code)
+    .then(data => responses.successHandler(res, req.user.refresh_token, data))
+    .catch(error => responses.errorHandler(res, "Não foi possível completar a requisição", error))
 }
 
 exports.detailed_inventory_by_plant = (req, res)=> {
