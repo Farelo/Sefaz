@@ -524,12 +524,12 @@
           <td>{{dayData.quantityProblem}}</td>
           <td>{{dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling + dayData.quantityProblem}}</td>
           <td>{{dayData.quantityTotal - (dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling + dayData.quantityProblem)}}</td>
-          <td><span class="badge badge-pill badge-atrasado">{{dayData.Alertas?.Atraso || '0'}}</span></td>
-          <td><span class="badge badge-pill badge-incorreto">{{dayData.Alertas?.ObjetoIncorreto || '0'}}</span></td>
-          <td><span class="badge badge-pill badge-permanencia">{{dayData.Alertas?.TempoPermanencia || '0'}}</span></td>
-          <td><span class="badge badge-pill badge-ausente">{{dayData.Alertas?.ObjetoAusente || '0'}}</span></td>
+          <td><a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 4]"><span class="badge badge-pill badge-atrasado">{{dayData.all_alerts[0]?.late_object || '0'}}</span></a></td>
+          <td><a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 2]"><span class="badge badge-pill badge-incorreto">{{dayData.all_alerts[0]?.incorrect_object || '0'}}</span></a></td>
+          <td><a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 5]"><span class="badge badge-pill badge-permanencia">{{dayData.all_alerts[0]?.permanence_time || '0'}}</span></a></td>
+          <td><a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 1]"><span class="badge badge-pill badge-ausente">{{dayData.all_alerts[0]?.lost_object || '0'}}</span></a></td>
         </tr>
-
+<!-- [routerLink]="['list/',alert.packing.code, alert.project._id, alert.supplier._id, alert.status ]"> -->
         <tr>
           <td colspan="13">
             <div [attr.id]="dayData.Fornecedor" [ngbCollapse]="dayData.isCollapsed">

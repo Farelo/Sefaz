@@ -487,11 +487,10 @@ export class InventarioComponent implements OnInit, OnDestroy  {
         quantityProblem: obj.quantityProblem,
         totalOnline: (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling) + parseInt(obj.quantityProblem)),
         quantityDifference: (parseInt(obj.quantityTotal) - (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling) + parseInt(obj.quantityProblem))),
-        lostObject: obj.all_alerts.lost_object,
-        incorrectObject: obj.all_alerts.incorrect_object,
-        lowBattery: obj.all_alerts.low_battery,
-        lateObject: obj.all_alerts.late_object,
-        permanenceTime: obj.all_alerts.permanence_time
+        lostObject: obj.all_alerts[0].lost_object,
+        incorrectObject: obj.all_alerts[0].incorrect_object,
+        lateObject: obj.all_alerts[0].late_object,
+        permanenceTime: obj.all_alerts[0].permanence_time
       };
     });
 
