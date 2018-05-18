@@ -9,8 +9,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule} from 'ngx-pagination';
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
+//import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TooltipModule } from 'ngx-bootstrap'
 
 @NgModule({
   imports: [
@@ -21,7 +23,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule,
     NgxPaginationModule,
     ApplicationPipes,
-    NgbModule
+    NgbModule,
+    TooltipModule,
+    //Angular2Csv
   ],
   declarations: [
     InventarioComponent

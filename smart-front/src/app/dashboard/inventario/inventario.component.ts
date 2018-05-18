@@ -7,6 +7,7 @@ import { LayerModalComponent } from '../../shared/modal-packing/layer.component'
 import { AbscenseModalComponent } from '../../shared/modal-packing-absence/abscense.component';
 import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service';
 import { ChatService } from '../../servicos/teste';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 declare var $: any;
 
 //fazer uma refatoração esta muito grande e com o HTML gigantesco
@@ -55,116 +56,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public activeModal: any;
 
   public isCollapsed = false;
-  public dataList: any[] = [{
-    "Fornecedor": "BRUNING TECNOMETAL S/A.",
-    "Equipamento": "30-1301",
-    "TotalEquipamentos": 100,
-    "QuantidadeNasPlantas": 50,
-    "QuantidadeFornecedor": 30,
-    "QuantidadeTransito": 10,
-    "QuantidadeLocalIncorreto": 10,
-    "TotalInventarioOnline": 100,
-    "Diferenca": 0,
-    "Alertas": {
-      "Atraso": 1,
-      "ObjetoIncorreto": 1,
-      "TempoPermanencia": 1,
-      "ObjetoAusente": 0
-    },
-    "Plantas":[
-      { "Localizacao": "GM - SCS", "Quantidade":20 },
-      { "Localizacao": "GM - GVT", "Quantidade": 20 },
-      { "Localizacao": "Fornecedor", "Quantidade": 20 }
-    ]
-  },
-  {
-    "Fornecedor": "MAHLE BEHR GERE",
-    "Equipamento": "30-1676",
-    "TotalEquipamentos": 100,
-    "QuantidadeNasPlantas": 40,
-    "QuantidadeFornecedor": 40,
-    "QuantidadeTransito": 10,
-    "QuantidadeLocalIncorreto": 8,
-    "TotalInventarioOnline": 98,
-    "Diferenca": 2,
-    "Alertas": {
-      "Atraso": 0,
-      "ObjetoIncorreto": 1,
-      "TempoPermanencia": 0,
-      "ObjetoAusente": 2
-    },
-    "Plantas": [
-      { "Localizacao": "GM - SCS", "Quantidade": 20 },
-      { "Localizacao": "GM - GVT", "Quantidade": 20 },
-      { "Localizacao": "Fornecedor", "Quantidade": 20 }
-    ]
-  },
-  {
-    "Fornecedor": "MAGNETI MARELLI ESCAPAMENTOS AMPARO",
-    "Equipamento": "30-1605",
-    "TotalEquipamentos": 100,
-    "QuantidadeNasPlantas": 10,
-    "QuantidadeFornecedor": 20,
-    "QuantidadeTransito": 50,
-    "QuantidadeLocalIncorreto": 20,
-    "TotalInventarioOnline": 100,
-    "Diferenca": 0,
-    "Alertas": {
-      "Atraso": 2,
-      "ObjetoIncorreto": 0,
-      "TempoPermanencia": 5,
-      "ObjetoAusente": 0
-    },
-    "Plantas": [
-      { "Localizacao": "GM - SCS", "Quantidade": 20 },
-      { "Localizacao": "GM - GVT", "Quantidade": 20 },
-      { "Localizacao": "Fornecedor", "Quantidade": 20 }
-    ]
-  },
-  {
-    "Fornecedor": "BENTELER COMPON",
-    "Equipamento": "30-1107",
-    "TotalEquipamentos": 100,
-    "QuantidadeNasPlantas": 45,
-    "QuantidadeFornecedor": 25,
-    "QuantidadeTransito": 15,
-    "QuantidadeLocalIncorreto": 10,
-    "TotalInventarioOnline": 95,
-    "Diferenca": 5,
-    "Alertas": {
-      "Atraso": 0,
-      "ObjetoIncorreto": 2,
-      "TempoPermanencia": 0,
-      "ObjetoAusente": 5
-    },
-    "Plantas": [
-      { "Localizacao": "GM - SCS", "Quantidade": 20 },
-      { "Localizacao": "GM - GVT", "Quantidade": 20 },
-      { "Localizacao": "Fornecedor", "Quantidade": 20 }
-    ]
-  },
-  {
-    "Fornecedor": "MAGNETI MARELLI",
-    "Equipamento": "30-1648",
-    "TotalEquipamentos": 100,
-    "QuantidadeNasPlantas": 30,
-    "QuantidadeFornecedor": 30,
-    "QuantidadeTransito": 40,
-    "QuantidadeLocalIncorreto": 0,
-    "TotalInventarioOnline": 100,
-    "Diferenca": 0,
-    "Alertas": {
-      "Atraso": 0,
-      "ObjetoIncorreto": 2,
-      "TempoPermanencia": 0,
-      "ObjetoAusente": 0
-    },
-    "Plantas": [
-      { "Localizacao": "GM - SCS", "Quantidade": 20 },
-      { "Localizacao": "GM - GVT", "Quantidade": 20 },
-      { "Localizacao": "Fornecedor", "Quantidade": 20 }
-    ]
-  }];
+  public dataList: any[] = [];
 
   ////////////// // REAL TIME SOCKER IO TEST
   // messages = [];
@@ -173,7 +65,28 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   // message;
 
+  ngOnInit() {
 
+    
+    this.generalInventory();
+    this.tamanhoSelect();
+    this.loadPackings();
+    this.loadAbPackings();
+    this.loadLocals();
+
+    // REAL TIME SOCKER IO TEST
+    // this.connection = this.chatService.getMessages().subscribe(message => {
+    //   console.log(this.messages.length)
+    //   this.messages.push(message);
+
+    // })
+  }
+
+  // <!--TEST SOCKER IO REAL TIME-- >
+  ngOnDestroy() {
+
+    // this.connection.unsubscribe();
+  }
 
   /////////////
   constructor(
@@ -185,7 +98,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     private modalActive: NgbActiveModal,
     private ref: ChangeDetectorRef,
     private auth: AuthenticationService,
-    private chatService: ChatService,
+    private chatService: ChatService
   ) {
 
     let user = this.auth.currentUser();
@@ -228,6 +141,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
       this.absenceInventory();
     } else if (event === "Inventário Geral") {
       this.loadSuppliers();
+      this.loadDetailedInventory();
     }
   }
 
@@ -404,9 +318,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
  
 
-  loadSuppliers(): void {
-    this.suppliersService.retrieveAll().subscribe(result => this.suppliers = result.data , err => { console.log(err) });
-  }
+  
 
   open(packing) {
     const modalRef = this.modalService.open(ModalInvComponent);
@@ -423,30 +335,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     modalRef.componentInstance.packing = packing;
   }
 
-  ngOnInit() {
-
-    this.dataList.map(o => {
-      o.isCollapsed = true;
-      return o; 
-    })
-    this.generalInventory();
-    this.tamanhoSelect();
-    this.loadPackings();
-    this.loadAbPackings();
-    this.loadLocals();
-
-    // REAL TIME SOCKER IO TEST
-    // this.connection = this.chatService.getMessages().subscribe(message => {
-    //   console.log(this.messages.length)
-    //   this.messages.push(message);
-
-    // })
-  }
-// <!--TEST SOCKER IO REAL TIME-- >
-  ngOnDestroy() {
-
-    // this.connection.unsubscribe();
-
+  loadSuppliers(): void {
+    this.suppliersService.retrieveAll().subscribe(result => this.suppliers = result.data , err => { console.log(err) });
   }
 
   loadLocals() {
@@ -499,41 +389,104 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   // public detailedInventorySupplierSearch   = null;
   // public detailedInventoryEquipamentSearch = null;
 
-  //<ng-select [ngModel]="supplierSearch" (change)="supplierInventory($event)" [items]="suppliers"
+  setInitialCollapse(state: boolean){
+    this.dataList.map(o => {
+      o.isCollapsed = state;
+      return o;
+    })
+  }
+  /**
+   * Loads the initial list of detailed inventory
+   */
+  loadDetailedInventory(): void {
+    this.inventoryService.getDetailedGeneralInventory(10, this.permanence.meta.page).subscribe(result => {
+      this.dataList = result.data;
+      this.setInitialCollapse(true);
+    }, err => { console.log(err) });
+  }
+
+  /**
+   * Loads the list of plants in the details of a table row
+   * @param event The object that represents the entire clicked row 
+   */
+  loadPlantsInDetailedInventory(event: any): void {
+    console.log('Estou aqui');
+    console.log(event);
+    console.log(JSON.stringify(event));
+  }
+
+  /**
+   * A supplier was selected
+   */
   supplierDetailedInventory(event: any): void {
-    console.log('suppliers:' + JSON.stringify(this.suppliers));
     
     if (event) {
       console.log('click on: ' + JSON.stringify(event));
-      console.log('_id: ' + JSON.stringify(event._id));
       
       this.packingService.getPackingsDistinctsBySupplier(event._id).subscribe(result => {
-        console.log('result' + JSON.stringify(result));
-        
         this.detailedGeneralpackings = result.data;
-        //this.name_supplier = result.data[0];
       }, err => { console.log(err) });
     } 
   }
 
+  /**
+   * An equipment was selected
+   */
   equipamentDetailedInventoryInventory(){
     console.log('equipamentDetailedInventoryInventory');
   }
 
+
   detailedGeneralInventoryChangePage(event: any): void {
     console.log('detailedGeneralInventoryChangePage');
-    
-    // if (event) {
-    //   this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, event._id).subscribe(result => {
-    //     this.supplier = result;
-    //     this.name_supplier = result.data[0];
-    //   }, err => { console.log(err) });
-    // } else {
-    //   this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, this.name_supplier._id.supplier).subscribe(result => {
-    //     this.supplier = result;
-    //   }, err => { console.log(err) });
-    // }
+  }
 
+  private dataToCsv = [
+    {
+      name: "Emanoel Carlos",
+      age: "emanoel.carlos@email.com",
+      average: 8.2,
+      approved: true,
+      description: "Descrição sobre Emanoel ..."
+    },
+    {
+      name: "Serginho",
+      age: "serginho.sanntos@email.com",
+      average: 10,
+      approved: true,
+      description: "Descrição sobre Serginho ..."
+    }
+  ];
+
+  private csvOptions = {
+    fieldSeparator: ';'
+  };
+
+  downloadExcel(): void {
+    console.log('Download on excel');
+
+    let data = new Angular2Csv(this.dataToCsv, 'My Report', this.csvOptions);
+    console.log(data);
+    
+    this.downloadFile(data);
+  }
+
+  downloadFile(data: any) {
+    let parsedResponse = data;
+    let blob = new Blob([parsedResponse], { type: 'text/csv' });
+    let url = window.URL.createObjectURL(blob);
+
+    if (navigator.msSaveOrOpenBlob) {
+      navigator.msSaveBlob(blob, 'File.csv');
+    } else {
+      let a = document.createElement('a');
+      a.href = url;
+      a.download = 'File.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+    window.URL.revokeObjectURL(url);
   }
 
 }

@@ -454,8 +454,30 @@
 
 <!--[Emanoel] INICIO: DASHBOARD GERAL -->
 <div *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Inventário Geral') )">
-  <h2 class="tituloClaro">INVENTÁRIO GERAL</h2>
-  <br />
+  <!-- <div>
+    <h2 class="tituloClaro">INVENTÁRIO GERAL</h2>
+    <button class="help">
+      <div class="bigger">
+        <i class="fa fa-download botao-download"></i>
+      </div>
+    </button>
+  </div> -->
+
+
+  <div class="row">
+    <div class="col-xs-10">
+      <h2 class="tituloClaro">INVENTÁRIO GERAL</h2>
+    </div>
+  
+    <div class="col-xs-2">
+      <button class="botao-opcao" tooltip="Exportar dados para o Excel" (click)="downloadExcel()">
+        <div class="bigger">
+          <i class="fa fa-download botao-download"></i>
+        </div>
+      </button>
+    </div>
+  </div>
+
   <br />
 
   <div class="table-responsive meuInventario">
@@ -475,7 +497,7 @@
           <th>Quantidade no Fornecedor (B)</th>
           <th>Quantidade no Transito (C)</th>
           <th>Quantidade em Local Incorreto (D)</th>
-          <th>Total do Inventário On Line (TIOL = A+B+C+D+E)</th>
+          <th>Total do Inventário On Line (TIOL = A+B+C+D)</th>
           <th>Diferença (TEF - TIOL)</th>
           <th>Atraso de Rota</th>
           <th>Local Incorreto</th>
@@ -485,45 +507,48 @@
       </thead>
 
       <tbody *ngFor="let dayData of dataList">
-        <tr [attr.aria-controls]="dayData.Fornecedor" (click)="dayData.isCollapsed = !dayData.isCollapsed" [attr.aria-expanded]="!dayData.isCollapsed">
-          <td>{{dayData.Fornecedor}}</td>
-          <td>{{dayData.Equipamento}}</td>
-          <td>{{dayData.TotalEquipamentos}}</td>
-          <td>{{dayData.QuantidadeNasPlantas}}</td>
-          <td>{{dayData.QuantidadeFornecedor}}</td>
-          <td>{{dayData.QuantidadeTransito}}</td>
-          <td>{{dayData.QuantidadeLocalIncorreto}}</td>
-          <td>{{dayData.TotalInventarioOnline}}</td>
-          <td>{{dayData.Diferenca}}</td>
-          <td><span class="badge badge-pill badge-atrasado">{{dayData.Alertas.Atraso == 0 ? '' : dayData.Alertas.Atraso}}</span></td>
-          <td><span class="badge badge-pill badge-incorreto">{{dayData.Alertas.ObjetoIncorreto == 0 ? '' : dayData.Alertas.ObjetoIncorreto}}</span></td>
-          <td><span class="badge badge-pill badge-permanencia">{{dayData.Alertas.TempoPermanencia == 0 ? '' : dayData.Alertas.TempoPermanencia}}</span></td>
-          <td><span class="badge badge-pill badge-ausente">{{dayData.Alertas.ObjetoAusente == 0 ? '' : dayData.Alertas.ObjetoAusente}}</span></td>
+        <tr [attr.aria-controls]="dayData.Fornecedor" (click)="loadPlantsInDetailedInventory(dayData); dayData.isCollapsed = !dayData.isCollapsed" [attr.aria-expanded]="!dayData.isCollapsed">
+          <td>{{dayData?.supplier?.name || '-'}}</td>
+          <td>{{dayData.code}}</td>
+          <td>{{dayData.quantityTotal}}</td>
+          <td>{{dayData.quantityInFactory}}</td>
+          <td>{{dayData.quantityInSupplier}}</td>
+          <td>{{dayData.quantityTraveling}}</td>
+          <td>{{dayData.quantityProblem}}</td>
+          <td>{{dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling + dayData.quantityProblem}}</td>
+          <td>{{dayData.quantityTotal - (dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling + dayData.quantityProblem)}}</td>
+          <td><span class="badge badge-pill badge-atrasado">{{dayData.Alertas?.Atraso || '0'}}</span></td>
+          <td><span class="badge badge-pill badge-incorreto">{{dayData.Alertas?.ObjetoIncorreto || '0'}}</span></td>
+          <td><span class="badge badge-pill badge-permanencia">{{dayData.Alertas?.TempoPermanencia || '0'}}</span></td>
+          <td><span class="badge badge-pill badge-ausente">{{dayData.Alertas?.ObjetoAusente || '0'}}</span></td>
         </tr>
 
-        <tr >
-        <!-- <tr [attr.id]="dayData.Fornecedor" [ngbCollapse]="isCollapsed"> -->
+        <tr>
           <td colspan="13">
-            <!-- <div class="table-responsive meuInventario" > -->
-            <div [attr.id]="dayData.Fornecedor" [ngbCollapse]="dayData.isCollapsed" class="table-responsive meuInventario inner-table">
-              <table class="table">
-                <thead>
-                  <tr class="cabecalho">
-                    <th>Localização</th>
-                    <th>Quantidade</th>
-                  </tr>
-                </thead>
+            <div [attr.id]="dayData.Fornecedor" [ngbCollapse]="dayData.isCollapsed">
+              <div style="float: left; height: 34px; width: 34px;">
+                <!-- <i class="fa fa-level-down-alt" data-fa-transform="rotate-90"></i> -->
+                <i class="fa fa-level-down icon-inner-level" aria-hidden="true"></i>
+              </div>
+              <div class="table-responsive meuInventario inner-table">
+                <table class="table">
+                  <thead>
+                    <tr class="cabecalho">
+                      <th>Localização</th>
+                      <th>Quantidade</th>
+                    </tr>
+                  </thead>
 
-                <tbody>
-                  <tr *ngFor="let plantas of dayData.Plantas">
-                    <td>{{plantas.Localizacao}}</td>
-                    <td>{{plantas.Quantidade}}</td>
-                  </tr>
-                </tbody>
-              </table>
+                  <tbody>
+                    <tr *ngFor="let plantas of dayData.Plantas">
+                      <td>{{plantas.Localizacao}}</td>
+                      <td>{{plantas.Quantidade}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </td>
-          <!-- <td colspan="6"></td> -->
         </tr>
       </tbody>
       
