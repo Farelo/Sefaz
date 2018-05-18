@@ -81,7 +81,9 @@
       <!--[Emanoel] INICIO: DASHBOARD GERAL -->
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Inventário Geral')">
           <p>FORNECEDOR</p>
-          <ng-select [ngModel]="detailedInventorySupplierSearch" (change)="supplierDetailedInventory($event)" [items]="suppliers" bindLabel="duns" placeholder="Selecione um Fornecedor">
+          <ng-select [items]="suppliers" [(ngModel)]="selectedSupplier" bindLabel="duns" (change)="supplierDetailedInventory($event)" 
+             placeholder="Selecione um Fornecedor">
+
             <ng-template ng-label-tmp let-item="item">
               {{item.duns}}
             </ng-template>
@@ -99,7 +101,7 @@
 
       <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Inventário Geral')">
         <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="detailedInventoryEquipamentSearch" (clear)="onClear()" (change)="equipamentDetailedInventoryInventory()" [items]="detailedGeneralpackings"
+        <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="equipamentDetailedInventory($event)" [items]="detailedGeneralpackings"
           bindLabel="packing" placeholder="Selecione um Equipamento">
           <ng-template ng-label-tmp let-item="item">
             {{item.packing}}
@@ -506,7 +508,12 @@
         </tr>
       </thead>
 
-      <tbody *ngFor="let dayData of dataList">
+      <tbody *ngFor="let dayData of detailedGeneralInventory.data  | paginate: { 
+                                                    id:'detailedGeneralInventory', 
+                                                    itemsPerPage: 10, 
+                                                    currentPage: detailedGeneralInventory.meta.page, 
+                                                    totalItems: detailedGeneralInventory.meta.total_docs}">
+
         <tr [attr.aria-controls]="dayData.Fornecedor" (click)="loadPlantsInDetailedInventory(dayData); dayData.isCollapsed = !dayData.isCollapsed" [attr.aria-expanded]="!dayData.isCollapsed">
           <td>{{dayData?.supplier?.name || '-'}}</td>
           <td>{{dayData.code}}</td>
@@ -531,7 +538,11 @@
                 <i class="fa fa-level-down icon-inner-level" aria-hidden="true"></i>
               </div>
               <div class="table-responsive meuInventario inner-table">
-                <table class="table">
+                <div class="classVazio" *ngIf="detailedGeneralInventory.data?.length < 1">
+                  Não há registros a serem exibidos.
+                </div>
+
+                <table class="table" *ngIf="detailedGeneralInventory.data?.length > 0">
                   <thead>
                     <tr class="cabecalho">
                       <th>Localização</th>
@@ -554,15 +565,15 @@
       
     </table>
   
-    <div class="classVazio" *ngIf="dataList.length < 1">
+    <div class="classVazio" *ngIf="detailedGeneralInventory.data?.length < 1">
       Não há registros a serem exibidos.
     </div>
   </div>
 
   <div class="has-text-centered">
-    <pagination-controls class="my-pagination" id="detailedGeneralInventory" (pageChange)="detailedGeneralInventory.meta.page = $event; detailedGeneralInventoryChangePage()"
-      directionLinks="false" autoHide="true">
-    </pagination-controls>
+    <pagination-controls class="my-pagination" id="detailedGeneralInventory" 
+        (pageChange)="detailedGeneralInventory.meta.page = $event; loadDetailedInventory()" 
+        directionLinks="false" autoHide="true"> </pagination-controls>
   </div>
   
 </div>

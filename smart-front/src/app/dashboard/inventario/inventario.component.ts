@@ -30,12 +30,12 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public serials: any[];
   public abserials: any[];
   public locals: any[];
-  public general: Pagination = new Pagination({ meta: { page: 1 } });
-  public supplier: Pagination = new Pagination({ meta: { page: 1 } });
-  public battery: Pagination = new Pagination({ meta: { page: 1 } });
-  public permanence: Pagination = new Pagination({ meta: { page: 1 } });
-  public absence: Pagination = new Pagination({ meta: { page: 1 } });
-  public quantity: Pagination = new Pagination({ meta: { page: 1 } });
+  public general:     Pagination = new Pagination({ meta: { page: 1 } });
+  public supplier:    Pagination = new Pagination({ meta: { page: 1 } });
+  public battery:     Pagination = new Pagination({ meta: { page: 1 } });
+  public permanence:  Pagination = new Pagination({ meta: { page: 1 } });
+  public absence:     Pagination = new Pagination({ meta: { page: 1 } });
+  public quantity:    Pagination = new Pagination({ meta: { page: 1 } });
   public general_equipament: Pagination = new Pagination({ meta: { page: 1 } });
   public detailedGeneralInventory: Pagination = new Pagination({ meta: { page: 1 } });
   public detailedInventorySupplierSearch = null;
@@ -56,7 +56,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public activeModal: any;
 
   public isCollapsed = false;
-  public dataList: any[] = [];
+  //public dataList: any[] = [];
 
   ////////////// // REAL TIME SOCKER IO TEST
   // messages = [];
@@ -386,21 +386,24 @@ export class InventarioComponent implements OnInit, OnDestroy  {
    * Emanoel
    * Inventário Geral
    */
-  // public detailedInventorySupplierSearch   = null;
-  // public detailedInventoryEquipamentSearch = null;
 
+  /**
+  * Initial configuration of all collapses
+  * @param  Initial state: true(collapsed) or false(expanded)
+  */
   setInitialCollapse(state: boolean){
-    this.dataList.map(o => {
+    this.detailedGeneralInventory.data.map(o => {
       o.isCollapsed = state;
       return o;
     })
   }
+
   /**
    * Loads the initial list of detailed inventory
    */
   loadDetailedInventory(): void {
-    this.inventoryService.getDetailedGeneralInventory(10, this.permanence.meta.page).subscribe(result => {
-      this.dataList = result.data;
+    this.inventoryService.getDetailedGeneralInventory(10, this.detailedGeneralInventory.meta.page).subscribe(result => {      
+      this.detailedGeneralInventory = result;
       this.setInitialCollapse(true);
     }, err => { console.log(err) });
   }
@@ -410,10 +413,11 @@ export class InventarioComponent implements OnInit, OnDestroy  {
    * @param event The object that represents the entire clicked row 
    */
   loadPlantsInDetailedInventory(event: any): void {
-    console.log('Estou aqui');
-    console.log(event);
     console.log(JSON.stringify(event));
   }
+
+  private selectedSupplier: any;
+  private selectedEquipament: any;
 
   /**
    * A supplier was selected
@@ -421,19 +425,24 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   supplierDetailedInventory(event: any): void {
     
     if (event) {
-      console.log('click on: ' + JSON.stringify(event));
-      
+      this.selectedSupplier = event;
       this.packingService.getPackingsDistinctsBySupplier(event._id).subscribe(result => {
         this.detailedGeneralpackings = result.data;
       }, err => { console.log(err) });
+
+      console.log('selectedSupplier: ' + JSON.stringify(this.selectedSupplier));
     } 
   }
 
   /**
    * An equipment was selected
    */
-  equipamentDetailedInventoryInventory(){
-    console.log('equipamentDetailedInventoryInventory');
+  equipamentDetailedInventory(event: any){
+    if(event){
+      this.selectedEquipament = event;
+
+      console.log('selectedEquipament: ' + JSON.stringify(this.selectedEquipament));
+    }
   }
 
 
@@ -441,52 +450,54 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     console.log('detailedGeneralInventoryChangePage');
   }
 
-  private dataToCsv = [
-    {
-      name: "Emanoel Carlos",
-      age: "emanoel.carlos@email.com",
-      average: 8.2,
-      approved: true,
-      description: "Descrição sobre Emanoel ..."
-    },
-    {
-      name: "Serginho",
-      age: "serginho.sanntos@email.com",
-      average: 10,
-      approved: true,
-      description: "Descrição sobre Serginho ..."
-    }
-  ];
-
   private csvOptions = {
+    showLabels: true,
     fieldSeparator: ';'
   };
 
   downloadExcel(): void {
     console.log('Download on excel');
 
-    let data = new Angular2Csv(this.dataToCsv, 'My Report', this.csvOptions);
-    console.log(data);
     
-    this.downloadFile(data);
+    let params = {};
+    if (this.selectedSupplier) params['selectedSupplier'] = this.selectedSupplier._id;
+    if (this.selectedEquipament) params['selectedEquipament'] = this.selectedEquipament._id.code;
+    
+    this.inventoryService.getDataToCsv(params).subscribe(result => {
+      
+      new Angular2Csv(this.shapeObject(result.data), 'InventarioGeral', this.csvOptions);
+    }, err => { console.log(err) });
+
   }
 
-  downloadFile(data: any) {
-    let parsedResponse = data;
-    let blob = new Blob([parsedResponse], { type: 'text/csv' });
-    let url = window.URL.createObjectURL(blob);
+  /**
+   * Retrieves the data in the server and shape the object to the csv library
+   * @param array The array of objects to save in the csv. Each object represents a row in the file
+   */
+  shapeObject(array: any){
+    
+    let plain = array.map(obj => {
+      return {
+        supplierName: obj.supplier.name,
+        equipmentCode: obj._id.code,
+        quantityTotal: obj.quantityTotal,
+        quantityInFactory: obj.quantityInFactory,
+        quantityInSupplier: obj.quantityInSupplier,
+        quantityTraveling: obj.quantityTraveling,
+        quantityProblem: obj.quantityProblem,
+        totalOnline: (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling) + parseInt(obj.quantityProblem)),
+        quantityDifference: (parseInt(obj.quantityTotal) - (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling) + parseInt(obj.quantityProblem))),
+        lostObject: obj.all_alerts.lost_object,
+        incorrectObject: obj.all_alerts.incorrect_object,
+        lowBattery: obj.all_alerts.low_battery,
+        lateObject: obj.all_alerts.late_object,
+        permanenceTime: obj.all_alerts.permanence_time
+      };
+    });
 
-    if (navigator.msSaveOrOpenBlob) {
-      navigator.msSaveBlob(blob, 'File.csv');
-    } else {
-      let a = document.createElement('a');
-      a.href = url;
-      a.download = 'File.csv';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-    window.URL.revokeObjectURL(url);
+    //console.log('plain: ' + JSON.stringify(plain));
+
+    return plain;
   }
 
 }

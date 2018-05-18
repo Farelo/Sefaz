@@ -70,18 +70,50 @@ export class InventoryService {
       .catch(this.handleError);
   }
 
-  /**
+  /** ########################################### 
    * Emanoel
+   */
+
+  /**
+   * Get all the data to populate the csv file
+   */
+  getDataToCsv(params): Observable<any>{
+    var queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    if (queryString){ queryString = '?' + queryString; }
+    
+    console.log('queryString: ' + queryString);
+    
+    return this.http.get(`${environment.url}inventory/detailed/csv${queryString}`)
+      .catch(this.handleError);
+  }
+
+  /**
+   * Populate the detailed table with pagination
+   * @param limit The number of results per page
+   * @param page  The actual page
    */
   getDetailedGeneralInventory(limit: number, page: number): Observable<any> {
     return this.http.get(`${environment.url}inventory/detailed/${limit}/${page}`)
       .catch(this.handleError);
   }
 
+  /**
+   * Populate the detailed table with supplier filter
+   * @param limit The number of results per page
+   * @param page  The actual page
+   * @param supplier The supplier code
+   */
   getDetailedGeneralInventoryBySupplier(limit: number, page: number, supplier: string): Observable<any> {
     return null;
   }
 
+  /**
+   * Populate the detailed table with supplier and equipment filter
+   * @param limit The number of results per page
+   * @param page  The actual page
+   * @param supplier The supplier code
+   * @param code The equipment code
+   */
   getDetailedGeneralInventoryBySupplierAndEquipment(limit: number, page: number, supplier: string, code: string): Observable<any> {
     return null;
   }
