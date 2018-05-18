@@ -73,7 +73,16 @@ export class InventoryService {
   /**
    * Emanoel
    */
-  getDetailedGeneralInventory(limit: number, page: number, code: string, supplier: string, project: string): Observable<any> {
+  getDetailedGeneralInventory(limit: number, page: number): Observable<any> {
+    return this.http.get(`${environment.url}inventory/detailed/${limit}/${page}`)
+      .catch(this.handleError);
+  }
+
+  getDetailedGeneralInventoryBySupplier(limit: number, page: number, supplier: string): Observable<any> {
+    return null;
+  }
+
+  getDetailedGeneralInventoryBySupplierAndEquipment(limit: number, page: number, supplier: string, code: string): Observable<any> {
     return null;
   }
 

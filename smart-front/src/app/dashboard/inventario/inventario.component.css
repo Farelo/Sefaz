@@ -1,3 +1,5 @@
+@import '~font-awesome/css/font-awesome.css';
+
 * {
   font-family: 'Roboto', sans-serif;
 }
@@ -283,6 +285,25 @@ hr {
 
 
 /* [Emanoel] INICIO: DASHBOARD GERAL */
+.icon-inner-level{
+  margin-left: 15px;
+  transform: rotate(270deg) scaleX(-1);
+  color: #adb5bd;
+}
+.botao-opcao{
+  width: 100%;
+  background-color: #6382c9;
+  padding: 5px;
+  color: white;
+  border: none;
+  height: 34px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 15px;
+}
+.botao-download{
+  color: white;
+}
 .hiddenRow {
     padding: 0 !important;
 }
@@ -321,6 +342,8 @@ hr {
 .inner-table{
   width: fit-content;
   min-width: 40%;
+  float:left;
+  margin-left: 15px;
 }
 .super-table > tbody > tr:nth-child(2) > td {
   padding: 0px 8px;
