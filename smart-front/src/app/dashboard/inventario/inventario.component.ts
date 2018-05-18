@@ -145,6 +145,9 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     }
   }
 
+  public getChild(parent: any = { plant_name: ''}) {
+    return parent.plant_name
+  }
 
   tamanhoSelect() {
     $(window).resize(function () {
@@ -423,15 +426,23 @@ export class InventarioComponent implements OnInit, OnDestroy  {
    * A supplier was selected
    */
   supplierDetailedInventory(event: any): void {
-    
+
     if (event) {
       this.selectedSupplier = event;
       this.packingService.getPackingsDistinctsBySupplier(event._id).subscribe(result => {
         this.detailedGeneralpackings = result.data;
+        
+        this.inventoryService.getDetailedGeneralInventoryBySupplier(10, this.detailedGeneralInventory.meta.page, event._id).subscribe(res => {
+          this.detailedGeneralInventory = res;
+          this.setInitialCollapse(true);
+        }, err => { console.log(err) });
       }, err => { console.log(err) });
 
       console.log('selectedSupplier: ' + JSON.stringify(this.selectedSupplier));
-    } 
+    } else {
+      this.loadDetailedInventory()
+      this.selectedSupplier = null
+    }
   }
 
   /**
@@ -440,8 +451,12 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   equipamentDetailedInventory(event: any){
     if(event){
       this.selectedEquipament = event;
-
-      console.log('selectedEquipament: ' + JSON.stringify(this.selectedEquipament));
+      console.log(event)
+      this.inventoryService.getDetailedGeneralInventoryBySupplierAndEquipment(10, this.detailedGeneralInventory.meta.page, this.selectedSupplier._id, event.packing).subscribe(res => {
+        console.log(res)
+        this.detailedGeneralInventory = res;
+        this.setInitialCollapse(true);
+      }, err => { console.log(err) });
     }
   }
 
@@ -460,8 +475,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
     
     let params = {};
-    if (this.selectedSupplier) params['selectedSupplier'] = this.selectedSupplier._id;
-    if (this.selectedEquipament) params['selectedEquipament'] = this.selectedEquipament._id.code;
+    if (this.selectedSupplier) params['supplier_id'] = this.selectedSupplier._id;
+    if (this.selectedEquipament) params['package_code'] = this.selectedEquipament._id.code;
     
     this.inventoryService.getDataToCsv(params).subscribe(result => {
       
@@ -487,10 +502,10 @@ export class InventarioComponent implements OnInit, OnDestroy  {
         quantityProblem: obj.quantityProblem,
         totalOnline: (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling) + parseInt(obj.quantityProblem)),
         quantityDifference: (parseInt(obj.quantityTotal) - (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling) + parseInt(obj.quantityProblem))),
-        lostObject: obj.all_alerts[0].lost_object,
-        incorrectObject: obj.all_alerts[0].incorrect_object,
         lateObject: obj.all_alerts[0].late_object,
-        permanenceTime: obj.all_alerts[0].permanence_time
+        incorrectObject: obj.all_alerts[0].incorrect_object,
+        permanenceTime: obj.all_alerts[0].permanence_time,
+        lostObject: obj.all_alerts[0].lost_object
       };
     });
 

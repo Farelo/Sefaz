@@ -74,7 +74,6 @@ exports.queries = {
         "$group": {
           "_id": {
             "code": "$code",
-            "plant": "$actual_plant.plant",
             "supplier": "$supplier",
             "project": "$project",
           },
@@ -83,12 +82,6 @@ exports.queries = {
           },
           "supplier": {
             "$first": "$supplierObject"
-          },
-          "actual_plant": {
-            "$first": {
-              "plant": '$plantObject',
-              "local": '$actual_plant.local'
-            }
           },
           "project": {
             "$first": "$projectObject"
@@ -156,6 +149,7 @@ exports.queries = {
           "_id": {
             "supplier": "$supplier",
             "plant": "$actual_plant.plant",
+            "code": "$code"
           },
           "current_plant": {
             "$first": {

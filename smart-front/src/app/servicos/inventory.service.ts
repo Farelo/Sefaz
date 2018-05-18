@@ -104,7 +104,8 @@ export class InventoryService {
    * @param supplier The supplier code
    */
   getDetailedGeneralInventoryBySupplier(limit: number, page: number, supplier: string): Observable<any> {
-    return null;
+    return this.http.get(`${environment.url}inventory/detailed/${limit}/${page}/?supplier_id=${supplier}`)
+      .catch(this.handleError);
   }
 
   /**
@@ -114,8 +115,9 @@ export class InventoryService {
    * @param supplier The supplier code
    * @param code The equipment code
    */
-  getDetailedGeneralInventoryBySupplierAndEquipment(limit: number, page: number, supplier: string, code: string): Observable<any> {
-    return null;
+  getDetailedGeneralInventoryBySupplierAndEquipment(limit: number, page: number, supplier: number, code: number): Observable<any> {
+    return this.http.get(`${environment.url}inventory/detailed/${limit}/${page}/?supplier_id=${supplier}&package_code=${code}`)
+      .catch(this.handleError);
   }
 
 }

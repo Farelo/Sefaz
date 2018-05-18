@@ -85,7 +85,7 @@
              placeholder="Selecione um Fornecedor">
 
             <ng-template ng-label-tmp let-item="item">
-              {{item.duns}}
+              {{item.name}}
             </ng-template>
             <ng-template ng-option-tmp let-item="item">
               <div>
@@ -99,7 +99,7 @@
           </ng-select>
       </div>
 
-      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Inventário Geral')">
+      <div class="col-sm-4" *ngIf="(escolhaEquipamento == 'Inventário Geral') && selectedSupplier">
         <p>EQUIPAMENTO</p>
         <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="equipamentDetailedInventory($event)" [items]="detailedGeneralpackings"
           bindLabel="packing" placeholder="Selecione um Equipamento">
@@ -551,9 +551,9 @@
                   </thead>
 
                   <tbody>
-                    <tr *ngFor="let plantas of dayData.Plantas">
-                      <td>{{plantas.Localizacao}}</td>
-                      <td>{{plantas.Quantidade}}</td>
+                    <tr *ngFor="let plantas of dayData.all_plants" [ngClass]="{'hidden': !getChild(plantas.current_plant.plant)}">
+                      <td>{{getChild(plantas.current_plant.plant)}}</td>
+                      <td>{{plantas.quantityTotal}}</td>
                     </tr>
                   </tbody>
                 </table>
