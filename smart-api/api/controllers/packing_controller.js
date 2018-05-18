@@ -12,6 +12,8 @@ const _                                         = require("lodash");
 const token                                     = require('../helpers/request/token');
 const evaluate                                  = require('../helpers/utils/evaluate_packing');
 const ObjectId                                  = schemas.ObjectId
+const util                                      = require('util')
+const promisify                                 = util.promisify
 const detailedInventoryData = {
   _id: {
     code: '',
@@ -48,16 +50,39 @@ const detailedInventoryData = {
   all_alerts: []
 }
 
+function generatePromise(supplier_id, package_code, options){
+  return new Promise((resolve, reject )=> {
+    schemas.packing.aggregatePaginate(schemas.packing.aggregate(query.queries.detailed_inventory(supplier_id, package_code)), options, (err, results, pageCount, count) => {
+      resolve(
+        { results, pageCount, count }
+      )
+    })
+  })
+}
 
-const buildAggregateArray = async (supplier_id, package_code)=> {
-  let array
+const buildDetailedInvetoryArray = async (supplier_id, package_code, options)=> {
+  let arrayToAgroup = null
+  let aggregate = null
   try {
-    const aggregate = await schemas.packing.aggregate(query.queries.by_supplier_and_code(supplier_id, package_code))
+
+    if(!options.limit) {
+      aggregate = await schemas.packing.aggregate(query.queries.detailed_inventory(supplier_id, package_code))
+    } else {
+      let aggregatePaginate  = await generatePromise(supplier_id, package_code, options)
+
+      aggregate = aggregatePaginate.results
+      aggregate.pageCount = aggregatePaginate.pageCount
+      aggregate.count = aggregatePaginate.count
+    }
+
     const aggregatePlantList = await Promise.all(
-      aggregate.map(item => schemas.packing.aggregate(query.queries.by_plant_and_supplier(item.supplier._id, item.code)))
+      aggregate.map(item => schemas.packing.aggregate(query.queries.detailed_inventory_by_plant(item.supplier._id, item.code)))
+    )
+    const aggregateAlertList = await Promise.all(
+      aggregate.map(item => schemas.alert.aggregate(query.queries.detailed_inventory_by_alert(item.supplier._id)))
     )
 
-    array = aggregate.map((item, index)=> {
+    arrayToAgroup = aggregate.map((item, index)=> {
 
       detailedInventoryData._id.code = item._id.code
       detailedInventoryData._id.plant = item._id.plant
@@ -89,7 +114,7 @@ const buildAggregateArray = async (supplier_id, package_code)=> {
       detailedInventoryData.quantityTimeExceeded = item.quantityTimeExceeded
 
       detailedInventoryData.all_plants = aggregatePlantList[index]
-      // detailedInventoryData.all_alerts = []
+      detailedInventoryData.all_alerts = aggregateAlertList[index]
 
       return detailedInventoryData
     })
@@ -98,7 +123,7 @@ const buildAggregateArray = async (supplier_id, package_code)=> {
     console.error(error)
   }
   
-  return array
+  return arrayToAgroup
 }
 
 /**
@@ -438,34 +463,27 @@ exports.packing_quantity_per_condition = function (req, res) {
 exports.detailed_inventory = (req, res)=> {
   let supplier_id = req.swagger.params.supplier_id.value
   let package_code = req.swagger.params.package_code.value
+  let options = {
+    limit: parseInt(req.swagger.params.limit.value),
+    page: parseInt(req.swagger.params.page.value)
+  }
 
-  let aggregate = schemas.packing.aggregate(query.queries.by_supplier_and_code(supplier_id, package_code))
-  schemas.packing.aggregatePaginate(aggregate, { 
-      page: parseInt(req.swagger.params.page.value),
-      limit: parseInt(req.swagger.params.limit.value)
-    }, _.partial(responses.successHandlerPaginationAggregate, res, req.user.refresh_token, req.swagger.params.page.value, req.swagger.params.limit.value))
+  buildDetailedInvetoryArray(supplier_id, package_code, options)
+    .then(data => responses.successHandlerPaginationAggregate(res, req.user.refresh_token, options.page, options.limit, _, data))
+    .catch(error => responses.errorHandler(res, "Não foi possível construir o array para o invetário geral", error))
 }
 
 exports.detailed_inventory_csv = (req, res) => {
   let supplier_id = req.swagger.params.supplier_id.value
   let package_code = req.swagger.params.package_code.value
+  let options = {
+    limit: null,
+    page: null
+  }
 
-  let aggregate = buildAggregateArray(supplier_id, package_code)
+  buildDetailedInvetoryArray(supplier_id, package_code, options)
     .then(data => responses.successHandler(res, req.user.refresh_token, data))
     .catch(error => responses.errorHandler(res, "Não foi possível completar a requisição", error))
-}
-
-exports.detailed_inventory_by_plant = (req, res)=> {
-  let supplier_id = req.swagger.params.supplier_id.value
-  let package_code = req.swagger.params.package_code.value
-
-  schemas.packing.aggregate(query.queries.by_plant_and_supplier(supplier_id, package_code))
-    .then(data=> {
-      responses.successHandler(res, req.user.refresh_token, data)
-    })
-    .catch(error=> {
-      responses.errorHandler(res, "Não foi possível completar a requisição", error)
-    })
 }
 
 /**

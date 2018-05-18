@@ -4,7 +4,7 @@ const schemas  = require("../../schemas/require_schemas")
 const ObjectId = schemas.ObjectId
 
 exports.queries = {
-  by_supplier_and_code: (supplier_id, package_code) => (
+  detailed_inventory: (supplier_id, package_code) => (
     [
       supplier_id ? { "$match": { "supplier": new ObjectId(supplier_id) } } : { "$match": { "supplier": { "$exists": true } } },
       package_code ? { "$match": { "code": package_code } } : { "$match": { "code": { "$exists": true } } },
@@ -118,7 +118,7 @@ exports.queries = {
       }
     ]
   ),
-  by_plant_and_supplier: (supplier_id, package_code)=> (
+  detailed_inventory_by_plant: (supplier_id, package_code)=> (
     [
       { "$match": { "supplier": new ObjectId(supplier_id) } },
       { "$match": { "code": package_code } },
@@ -165,6 +165,51 @@ exports.queries = {
           },
           "quantityTotal": {
             "$sum": 1
+          },
+        }
+      }
+    ]
+  ),
+  detailed_inventory_by_alert: (supplier_id)=> (
+    [
+      { "$match": { "supplier": new ObjectId(supplier_id) } },
+      {
+        "$lookup": {
+          "from": "packings",
+          "localField": "packing",
+          "foreignField": "_id",
+          "as": "packingObject"
+        }
+      },
+      {
+        "$unwind": {
+          "path": "$packingObject",
+          'preserveNullAndEmptyArrays': true
+        }
+      },
+      {
+        "$group": {
+          "_id": {
+            "packing_code": "$packingObject.code",
+            "supplier": "$supplier"
+          },
+          "package_code": {
+            "$first": "$packingObject.code"
+          },
+          "lost_object": {
+            "$sum": { "$cond": [{ "$eq": ["$status", 1] }, 1, 0] }
+          },
+          "incorrect_object": {
+            "$sum": { "$cond": [{ "$eq": ["$status", 2] }, 1, 0] }
+          },
+          "low_battery": {
+            "$sum": { "$cond": [{ "$eq": ["$status", 3] }, 1, 0] }
+          },
+          "late_object": {
+            "$sum": { "$cond": [{ "$eq": ["$status", 4] }, 1, 0] }
+          },
+          "permanence_time": {
+            "$sum": { "$cond": [{ "$eq": ["$status", 5] }, 1, 0] }
           },
         }
       }
