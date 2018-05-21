@@ -444,7 +444,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
       this.selectedSupplier = null
     }
   }
-
+  
   /**
    * An equipment was selected
    */

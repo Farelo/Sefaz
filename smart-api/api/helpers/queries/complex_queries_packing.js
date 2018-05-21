@@ -164,9 +164,10 @@ exports.queries = {
       }
     ]
   ),
-  detailed_inventory_by_alert: (supplier_id)=> (
+  detailed_inventory_by_alert: (supplier_id, package_code)=> (
     [
       { "$match": { "supplier": new ObjectId(supplier_id) } },
+      { "$match": { "code": package_code } },
       {
         "$lookup": {
           "from": "packings",

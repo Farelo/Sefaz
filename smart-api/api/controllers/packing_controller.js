@@ -82,7 +82,7 @@ const buildDetailedInvetoryArray = async (supplier_id, package_code, options)=> 
       aggregate.map(item => schemas.packing.aggregate(query.queries.detailed_inventory_by_plant(item.supplier._id, item.code)))
     )
     let aggregateAlertList = await Promise.all(
-      aggregate.map(item => schemas.alert.aggregate(query.queries.detailed_inventory_by_alert(item.supplier._id)))
+      aggregate.map(item => schemas.alert.aggregate(query.queries.detailed_inventory_by_alert(item.supplier._id, item.code)))
     )
 
     arrayToAgroup = aggregate.map((item, index)=> {
