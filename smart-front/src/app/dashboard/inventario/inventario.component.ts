@@ -444,7 +444,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
       this.selectedSupplier = null
     }
   }
-  
+
   /**
    * An equipment was selected
    */
@@ -500,18 +500,35 @@ export class InventarioComponent implements OnInit, OnDestroy  {
         quantityInSupplier: obj.quantityInSupplier,
         quantityTraveling: obj.quantityTraveling,
         quantityProblem: obj.quantityProblem,
-        totalOnline: (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling) + parseInt(obj.quantityProblem)),
-        quantityDifference: (parseInt(obj.quantityTotal) - (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling) + parseInt(obj.quantityProblem))),
-        lateObject: obj.all_alerts[0].late_object,
-        incorrectObject: obj.all_alerts[0].incorrect_object,
-        permanenceTime: obj.all_alerts[0].permanence_time,
-        lostObject: obj.all_alerts[0].lost_object
+        totalOnline: (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling)),
+        quantityDifference: (parseInt(obj.quantityTotal) - (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling))),
+        lateObject: obj.all_alerts[0] == undefined ? 0 : obj.all_alerts[0].late_object,
+        incorrectObject: obj.all_alerts[0] == undefined ? 0 : obj.all_alerts[0].incorrect_object,
+        permanenceTime: obj.all_alerts[0] == undefined ? 0 : obj.all_alerts[0].permanence_time,
+        lostObject: obj.all_alerts[0] == undefined ? 0 : obj.all_alerts[0].lost_object
       };
     });
 
-    //console.log('plain: ' + JSON.stringify(plain));
+    let cabecalho = {
+      supplierName: 'Fornecedor',
+      equipmentCode: 'Equipamento',
+      quantityTotal: 'Total de Equipamentos do Fornecedor(TEF)',
+      quantityInFactory: 'Quantidade nas Plantas GM(A)',
+      quantityInSupplier: 'Quantidade no Fornecedor(B)',
+      quantityTraveling: 'Quantidade no Transito(C)',
+      quantityProblem: 'Quantidade em Local Incorreto',
+      totalOnline: 'Total do Inventário On Line(TIOL = A + B + C)',
+      quantityDifference: 'Diferença(TEF - TIOL)',
+      lateObject: 'Atraso de Rota',
+      incorrectObject: 'Local Incorreto',
+      permanenceTime: 'Tempo de Permanencia',
+      lostObject: 'Embalagem Ausente'
+    }
 
+    plain.unshift(cabecalho);
+    
     return plain;
+    
   }
 
 }
