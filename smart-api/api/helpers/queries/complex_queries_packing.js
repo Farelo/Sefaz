@@ -149,7 +149,8 @@ exports.queries = {
           "_id": {
             "supplier": "$supplier",
             "plant": "$actual_plant.plant",
-            "code": "$code"
+            "code": "$code",
+            "problem": "$problem"
           },
           "current_plant": {
             "$first": {
@@ -164,10 +165,9 @@ exports.queries = {
       }
     ]
   ),
-  detailed_inventory_by_alert: (supplier_id, package_code)=> (
+  detailed_inventory_by_alert: (supplier_id)=> (
     [
       { "$match": { "supplier": new ObjectId(supplier_id) } },
-      { "$match": { "code": package_code } },
       {
         "$lookup": {
           "from": "packings",

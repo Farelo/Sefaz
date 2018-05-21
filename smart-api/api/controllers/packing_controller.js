@@ -82,7 +82,7 @@ const buildDetailedInvetoryArray = async (supplier_id, package_code, options)=> 
       aggregate.map(item => schemas.packing.aggregate(query.queries.detailed_inventory_by_plant(item.supplier._id, item.code)))
     )
     let aggregateAlertList = await Promise.all(
-      aggregate.map(item => schemas.alert.aggregate(query.queries.detailed_inventory_by_alert(item.supplier._id, item.code)))
+      aggregate.map(item => schemas.alert.aggregate(query.queries.detailed_inventory_by_alert(item.supplier._id)))
     )
 
     arrayToAgroup = aggregate.map((item, index)=> {
@@ -121,7 +121,12 @@ const buildDetailedInvetoryArray = async (supplier_id, package_code, options)=> 
       obj.quantityTimeExceeded = item.quantityTimeExceeded
 
       obj.all_plants = aggregatePlantList[index]
-      obj.all_alerts = aggregateAlertList[index]
+
+      for (let alert of aggregateAlertList[index]) {
+        if (item.code === alert.package_code) obj.all_alerts.push(alert)
+      }
+      
+      // obj.all_alerts = aggregateAlertList[index][0]
 
       return obj
     })

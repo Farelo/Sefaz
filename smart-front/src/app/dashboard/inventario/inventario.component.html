@@ -498,8 +498,8 @@
           <th>Quantidade nas Plantas GM (A)</th>
           <th>Quantidade no Fornecedor (B)</th>
           <th>Quantidade no Transito (C)</th>
-          <th>Quantidade em Local Incorreto (D)</th>
-          <th>Total do Inventário On Line (TIOL = A+B+C+D)</th>
+          <th>Quantidade em Local Incorreto</th>
+          <th>Total do Inventário On Line (TIOL = A+B+C)</th>
           <th>Diferença (TEF - TIOL)</th>
           <th>Atraso de Rota</th>
           <th>Local Incorreto</th>
@@ -522,8 +522,8 @@
           <td>{{dayData.quantityInSupplier}}</td>
           <td>{{dayData.quantityTraveling}}</td>
           <td>{{dayData.quantityProblem}}</td>
-          <td>{{dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling + dayData.quantityProblem}}</td>
-          <td>{{dayData.quantityTotal - (dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling + dayData.quantityProblem)}}</td>
+          <td>{{dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling }}</td>
+          <td>{{dayData.quantityTotal - (dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling)}}</td>
           <td><a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 4]"><span class="badge badge-pill badge-atrasado">{{dayData.all_alerts[0]?.late_object || '0'}}</span></a></td>
           <td><a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 2]"><span class="badge badge-pill badge-incorreto">{{dayData.all_alerts[0]?.incorrect_object || '0'}}</span></a></td>
           <td><a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 5]"><span class="badge badge-pill badge-permanencia">{{dayData.all_alerts[0]?.permanence_time || '0'}}</span></a></td>
@@ -553,7 +553,8 @@
                   <tbody>
                     <tr *ngFor="let plantas of dayData.all_plants" [ngClass]="{'hidden': !getChild(plantas.current_plant.plant)}">
                       <td>{{getChild(plantas.current_plant.plant)}}</td>
-                      <td>{{plantas.quantityTotal}}</td>
+                      <!-- <td>{{plantas.quantityTotal}} - {{plantas._id.problem}}</td> -->
+                      <td>{{plantas.quantityTotal}} <span *ngIf="plantas._id.problem == true" class="badge badge-secondary">Incorreto</span></td>
                     </tr>
                   </tbody>
                 </table>
