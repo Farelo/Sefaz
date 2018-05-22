@@ -513,7 +513,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
       supplierName: 'Fornecedor',
       equipmentCode: 'Equipamento',
       quantityTotal: 'Total de Equipamentos do Fornecedor(TEF)',
-      quantityInFactory: 'Quantidade nas Plantas GM(A)',
+      quantityInFactory: 'Quantidade nas Plantas(A)',
       quantityInSupplier: 'Quantidade no Fornecedor(B)',
       quantityTraveling: 'Quantidade no Transito(C)',
       quantityProblem: 'Quantidade em Local Incorreto',
