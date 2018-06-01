@@ -1,13 +1,14 @@
 <div class="modalFilho">
   <div class="header">
      <h1><span >Detalhes do Alerta </span> </h1><br>
-     <p>Data do alerta: {{alerta.data.date | date: 'dd/MM/yyyy'}}</p>
-     <p>Código: {{alerta.data.packing?.code}}</p>
-     <p>Tipo: <span >{{alerta.data.status === 1 ? 'Objeto perdido' :
+     <p>Código: <span>{{alerta.data.packing?.code}}</span>; Serial: <span>{{alerta.data.packing?.serial}}</span>; TAG: <span>{{alerta.data.packing?.code_tag}}</span></p>
+    <p>Data do alerta: {{alerta.data.date | date: 'dd/MM/yyyy'}}</p>
+    <p>Hora do alerta: {{alerta.data.date | date:'mediumTime'}}</p>
+     <p></p>
+     <p>Tipo: <span >{{alerta.data.status === 1 ? 'Embalagem perdida' :
        (alerta.data.status === 2 ? 'Local Incorreto' :
        (alerta.data.status === 3 ? 'Bateria Baixa' :
-       (alerta.data.status === 4 ? 'Objeto Atrasado' : 'Tempo de Permanência')))}}</span></p>
-       <p>Hora do alerta: {{alerta.data.date | date:'mediumTime'}}</p>
+       (alerta.data.status === 4 ? 'Embalagam Atrasada' : 'Tempo de Permanência Elevado')))}}</span></p>
   </div>
   <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -127,9 +128,10 @@
 
 <div class="modalBody" *ngIf="alerta.data.status === 5">
 
-  <p><span>Tempo de Permanência:</span> {{alerta.data?.packing.permanence >= 0 ? (alerta.data?.packing.permanence.amount_days | time ): 'Sem Registro' }}</p>
+  <p><span>Tempo de Permanência Programado:</span> {{alerta.data?.packing.actual_gc16.days >= 0 ? (alerta.data?.packing.actual_gc16.days | time ): 'Sem Registro' }}</p>
+  <p><span>Tempo de Permanência Atual:</span> {{alerta.data?.packing.permanence.amount_days >= 0 ? (alerta.data?.packing.permanence.amount_days | time ): 'Sem Registro' }}</p>
   <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}}</p>
-  <p><span>Data de Entrada:</span> {{alerta.data?.packing.permanence >= 0 ? (alerta.data?.packing.permanence?.date | date) : 'Sem Registro'}}</p>
+  <p><span>Data de Entrada:</span> {{alerta.data?.packing.permanence.date >= 0 ? (alerta.data?.packing.permanence?.date | date) : 'Sem Registro'}}</p>
   <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Sem Registro'}}</p>
 
 </div>

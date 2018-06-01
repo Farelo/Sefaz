@@ -510,6 +510,14 @@ exports.queries = {
       },
       {
         "$lookup": {
+          "from": "tags",
+          "localField": "actual_plant.plant",
+          "foreignField": "_id",
+          "as": "plantObject"
+        }
+      },
+      {
+        "$lookup": {
           "from": "projects",
           "localField": "project",
           "foreignField": "_id",
@@ -528,8 +536,8 @@ exports.queries = {
         "$lookup": {
           "from": "historicpackings",
           "localField": "_id",
-          "foreignField": "packing",
-          "as": "historicpackingsObject"
+          "foreignField": "_id",
+          "as": "packingtag"
         }
       },
       {

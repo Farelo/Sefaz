@@ -80,11 +80,11 @@ async function existAncestor(gc16, routes, p) {
 
 function createObject(data){
     return [
-        { name: "Objetos Controlados", value: data[0] - (data[1] + data[2] + data[3] + data[4] + data[5]) },
-        { name: "Objetos Perdidos", value: data[1] },
-        { name: "Objetos Incorretos", value: data[2] },
-        { name: "Objetos Viajando", value: data[3] },
+        { name: "Embalagens Controladas", value: data[0] - (data[1] + data[2] + data[3] + data[4] + data[5]) },
+        { name: "Embalagens Perdidas", value: data[1] },
+        { name: "Embalagens Incorretas", value: data[2] },
+        { name: "Embalagens Viajando", value: data[3] },
         { name: "Tempo de Permanencia Excedido", value: data[4] },
-        { name: "Objetos Atrasados", value: data[5] }
+        { name: "Embalagens Atrasadas", value: data[5] }
     ]
 }
