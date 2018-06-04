@@ -4,7 +4,7 @@ stage 'Checkout'
   checkout scm
  }
  
-stage 'Build & Archive Apk'
+stage 'Build docker'
  node('master') {
      sh 'docker-compose -f docker-compose.prod.yml up -d'
  }
