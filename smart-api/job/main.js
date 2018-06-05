@@ -60,7 +60,7 @@ function analysis(data){
         remove_dependencies.without_plant(p)
           .then(new_p => evaluate_battery(new_p, settings))
           .then(new_p => evaluate_missing(new_p))
-          .then(new_p => traveling.evaluate_traveling(new_p))
+          .then(new_p => traveling.isLate(new_p))
           .then(new_p => update_packing.set(new_p))
           .then(() => update_packing.unset(p))
           .then(result =>{

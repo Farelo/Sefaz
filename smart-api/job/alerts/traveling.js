@@ -1,6 +1,8 @@
 'use strict';
 
-
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
+const debug          = require('debug')('job:traveling')
 const schemas        = require("../../api/schemas/require_schemas")
 const historic       = require('../historic/historic');
 const alerts_type    = require('./alerts_type');
@@ -20,6 +22,91 @@ module.exports = {
       .then(() => resolve(p) )
       
     });
+  },
+  isLate: (packing) => {
+    return new Promise((resolve, reject) => {
+      try {
+        if (packing.traveling) {
+          if (packing.trip.time_exceeded) {
+            let currentDate = new Date()
+            let timeInterval = Math.floor(currentDate.getTime() - packing.trip.date)
+
+            let delayedRoutes = packing.routes.filter(route => {
+              return timeInterval > route.time.max
+            })
+
+            if (delayedRoutes.length > 0) {
+
+              debug(`PACKING IS LATE, WHE'RE CREATING A ALERT TO: ${packing._id}`)
+              packing.trip = {
+                time_exceeded: true,
+                date: packing.trip.date,
+                time_countdown: timeInterval
+              }
+
+              let missingPackaging = packing.routes.filter(route => {
+                // return timeInterval > (route.time.max - 1528306478348)
+                return timeInterval > (route.time.max + route.time.to_be_late)
+              })
+
+              if (missingPackaging.length > 0) {
+                debug(`PACKING IS MISSING: ${packing._id}`)
+              }
+
+              schemas.alert.find({ packing: new ObjectId(packing._id) }).then(alerts => {
+                if (!alerts.length > 0) {
+                  debug(`PACKING DON'T HAVE ALERTS: ${packing._id}`)
+
+                  schemas.alert.create({
+                    "routes": packing.routes,
+                    "packing": packing._id,
+                    "supplier": packing.supplier,
+                    "status": alerts_type.TRAVELING,
+                    "hashpacking": packing.hashPacking,
+                    "serial": packing.serial,
+                    "project": packing.project,
+                    "date": new Date().getTime()
+                  })
+                    .then(() => historic.update_from_alert(packing, historic_types.TRAVELING, packing.trip.date, packing.trip.time_countdown))
+                    .then(() => resolve(packing))
+                } else {
+                  debug(`PACKING HAVE ALERTS: ${packing._id}`)
+                  schemas.alert.update({ //Verifica se o alerta ja existe
+                    "packing": packing._id,
+                    "status": alerts_type.TRAVELING
+                  }, {
+                      "routes": packing.routes,
+                      "supplier": packing.supplier,
+                      "hashpacking": packing.hashPacking,
+                      "project": packing.project,
+                      "serial": packing.serial
+                    })
+                    .then(() => historic.update_from_alert(packing, historic_types.TRAVELING, packing.trip.date, packing.trip.time_countdown))
+                    .then(() => resolve(packing))
+                }
+              })
+
+            } else {
+              debug(`TRAVELING TIME: NO CONFORMIDADE ABOUT THE PACKING: ${packing._id}`);
+              packing.trip = {
+                time_exceeded: false,
+                date: packing.trip.date,
+                time_countdown: timeInterval
+              }
+
+              historic.update_from_alert(packing, historic_types.TRAVELING, packing.trip.date, packing.trip.time_countdown)
+                .then(() => resolve(packing))
+            }
+          } else {
+            module.exports.create(packing).then(new_packing => resolve(new_packing))
+          }
+        } else {
+          resolve(packing)
+        }
+      } catch (error) {
+        reject(new Error(error))
+      }
+    })
   },
   create: function(p) {
     return new Promise(function(resolve, reject) {
