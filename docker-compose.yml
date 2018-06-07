@@ -27,5 +27,3 @@ services:
     tty: true
     ports:
       - '8011:8011'        #obrigratorio
-    depends_on:
-      - mongo
