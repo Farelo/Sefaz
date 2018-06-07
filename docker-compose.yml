@@ -23,7 +23,10 @@ services:
       PORT: 8011                    #obrigatorios caso não coloque o DNS
       DATABASE: testeinterno        #obrigatorios
       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
+      DEBUG: job:evaluate_missing
+      DEBUG: job:traveling
         # DNS:
     tty: true
     ports:
       - '8011:8011'        #obrigratorio
+    network_mode: recicla_default
