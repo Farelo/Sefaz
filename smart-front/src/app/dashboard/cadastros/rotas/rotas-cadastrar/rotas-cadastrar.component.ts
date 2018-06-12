@@ -18,6 +18,7 @@ export class RotasCadastrarComponent implements OnInit {
   @ViewChild(DirectionsRenderer) directionsRendererDirective: DirectionsRenderer;
   public time_min: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
   public time_max: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
+  public time_range_atraso: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
   public directionsRenderer: google.maps.DirectionsRenderer;
   public directionsResult: google.maps.DirectionsResult;
   public direction: any = {
@@ -59,6 +60,7 @@ export class RotasCadastrarComponent implements OnInit {
     let partial_min = this.time_min.hour * 1000 * 60 * 60 * 24 ;
     partial_min = partial_min + this.time_min.minute * 1000 * 60 * 60  ;
     partial_min = partial_min + this.time_min.second * 1000 * 60 ;
+    
     let partial_max = this.time_max.hour * 1000 * 60 * 60 * 24 ;
     partial_max = partial_max + this.time_max.minute * 1000 * 60 * 60  ;
     partial_max = partial_max + this.time_max.second * 1000 * 60 ;

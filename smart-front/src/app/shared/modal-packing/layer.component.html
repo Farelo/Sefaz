@@ -24,12 +24,13 @@
   <div class="map-filters form-row">
     <div class="col-md-2">
       <!-- <label for="dateBegin" class="col-form-label-sm">Data inicial</label> -->
-      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker [bsConfig]="datePickerConfig">
+      <!-- <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDaterangepicker [(ngModel)]="initialDate" [bsConfig]="datePickerConfig" placement="right"> -->
+      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker [(ngModel)]="initialDate" [bsConfig]="datePickerConfig">
     </div>
 
     <div class="col-md-2">
       <!-- <label for="dateEnd" class="col-form-label-sm">Data final</label> -->
-      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker [bsConfig]="datePickerConfig">
+      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker [(ngModel)]="finalDate" [bsConfig]="datePickerConfig">
     </div>
 
     <span style="padding-top: 5px;" class="col-auto">Acurácia:</span>
@@ -37,7 +38,7 @@
       <!-- <nouislider id="accuracyRange" [min]="0" [max]="32" [step]="0.1" [(ngModel)]="someRange3" [tooltips]="[true]"></nouislider> -->
     <!-- </div> -->
 
-    <div class="form-group col-md-3"> 
+    <div class="form-group col-md-2"> 
       <div class="input-group-accuracy">
         <span class="input-group-accuracy-btn">
           <button type="button" class="btn btn-default btn-left-accuracy" (click)="decrementRange()">-</button>
@@ -61,8 +62,11 @@
   </div>
 
   <div class="modalBody">
-    <ngui-map [center]="center" mapTypeId="terrain" scrollwheel="false">
-      <polyline [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3"></polyline>
+    <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false">
+      <polyline [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3" [icons]="icons"></polyline>
+
+      <!-- ///////////// -->
+      <!-- Package markers -->
       <marker *ngFor="let pos of markers" [position]="pos.position" (click)="clicked($event,pos)">
         <info-window id="iw">
           <div class="iw-title">INFORMAÇÕES</div>
@@ -73,10 +77,36 @@
               <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
             <p>
               <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
-          </div>
-
+          </div> 
         </info-window>
       </marker>
+
+      <circle *ngFor="let posRadius of markers" 
+          [center]="posRadius.latLng" 
+          [fillColor]="'#6382c9'" [fillOpacity]="0.3" 
+          [strokeColor]="'#6382c9'" [strokeOpacity]="0.7" [strokeWeight]="1"
+          radius="100"></circle>
+
+      <!-- ///////////// -->
+      <!-- Plant markers -->
+      <marker *ngFor="let posPlants of plants" [position]="[posPlants.lat, posPlants.lng]" (click)="clickedPlant($event,posPlants)">
+        <info-window id="pw">
+          <div class="iw-title">INFORMAÇÕES</div> 
+          <div *ngIf="plant.display">
+            <p>
+              <span class="bold">Planta:</span> {{ plant.name }}</p>
+            <!-- <p>
+              <span class="bold">Localização:</span> {{ plant.location }}</p> -->
+          </div>
+        </info-window>
+      </marker>
+      
+      <circle *ngFor="let posPlantsRadius of plants" 
+          [center]="posPlantsRadius.latLng"
+          [fillColor]="'#ffc107'" [fillOpacity]="0.3"
+          [strokeColor]="'#ffc107'" [strokeOpacity]="0.7" [strokeWeight]="1" 
+          radius="500"></circle>
+        
     </ngui-map>
 
   </div>

@@ -219,12 +219,19 @@ img {
   font-size: 14px;
 }
 
+div#collapseExample > p{
+  font-weight: normal;
+  margin-bottom: 4px;
+}
 
-::ng-deep .modal-xl .modal-dialog{
+ngui-map {
+  height: calc( 60vh ) !important;
+}
+/* ::ng-deep .modal-xl .modal-dialog{
   max-width: 1490px !important;
   min-width: 971px !important;   
   width: 95% !important;
-}
+} */
 
 /* @media (min-width: 970px) {
   .modal-xl > .modal-lg {

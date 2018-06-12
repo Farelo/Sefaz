@@ -141,4 +141,20 @@ export class PackingService {
       .catch(this.handleError);
   }
 
+  //
+  /**
+   * This method retrieves the packing positions that matches the 'initial date', 'final date' and 'max accuracy error'.
+   * If final date isn't given, then consider finalDate = today, because there is no position generated from tomorrow. :)
+   * 
+   * @param code The package code
+   * @param initialDate The first date to generate position in the map
+   * @param finalDate The last  date to generate position in the map
+   * @param accuracy The max accuracy error
+   * 
+   */
+  getFilteredPositions(code: string, initialDate: string, finalDate: string, accuracy: string): Observable<any> {
+    return this.http.get(`${environment.url}packing/position/${code}/${initialDate}/${finalDate}/${accuracy}`)
+      .catch(this.handleError);
+  }
+
 }
