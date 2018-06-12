@@ -85,7 +85,7 @@
           [center]="posRadius.latLng" 
           [fillColor]="'#6382c9'" [fillOpacity]="0.3" 
           [strokeColor]="'#6382c9'" [strokeOpacity]="0.7" [strokeWeight]="1"
-          radius="100"></circle>
+          radius="{{ posRadius.accuracy }}"></circle>
 
       <!-- ///////////// -->
       <!-- Plant markers -->
@@ -105,7 +105,7 @@
           [center]="posPlantsRadius.latLng"
           [fillColor]="'#ffc107'" [fillOpacity]="0.3"
           [strokeColor]="'#ffc107'" [strokeOpacity]="0.7" [strokeWeight]="1" 
-          radius="500"></circle>
+          radius="300"></circle>
         
     </ngui-map>
 
