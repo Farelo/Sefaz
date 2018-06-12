@@ -132,24 +132,6 @@
           </div>
 
         </div>
-
-        <div class="campo" formGroupName="time">
-          <p class="descricao">DEFINA A TOELRÂNCIA MÁXIMA DE ATRASO</p>
-          <p class="explicacao"></p>
-          <div class="col-md-6">
-            <ngb-timepicker [(ngModel)]="time_min" [seconds]="true" formControlName="min"></ngb-timepicker>
-            <!-- <timepicker [(ngModel)]="min" formControlName="min"></timepicker> -->
-            <p class="requiredText" *ngIf="(route.get('time.min').hasError('required') && route.get('time.min').touched)
-                  || (route.get('time.min').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-          </div>
-          <div class="col-md-6">
-            <p>Dias: {{time_atraso.hour}}</p>
-            <p>Horas: {{time_atraso.minute }}</p>
-            <p>Minutos: {{time_atraso.second }}</p>
-          </div>
-        
-        </div>
-
       </div>
 
     </div>
