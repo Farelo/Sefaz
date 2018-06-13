@@ -38,12 +38,12 @@
       <!-- <nouislider id="accuracyRange" [min]="0" [max]="32" [step]="0.1" [(ngModel)]="someRange3" [tooltips]="[true]"></nouislider> -->
     <!-- </div> -->
 
-    <div class="form-group col-md-2"> 
+    <div class="form-group col-auto"> 
       <div class="input-group-accuracy">
         <span class="input-group-accuracy-btn">
           <button type="button" class="btn btn-default btn-left-accuracy" (click)="decrementRange()">-</button>
         </span>
-        <input id="after" class="form-control" type="text" min="1" max="10" style="text-align: center;" [(ngModel)]="accuracyRange">
+        <input id="after" class="form-control" type="text" min="1" max="10" style="width: 80px !important; text-align: center;" [(ngModel)]="accuracyRange">
         <span class="input-group-accuracy-btn">
           <button type="button" class="btn btn-default btn-right-accuracy" (click)="incrementRange()">+</button>
         </span>
@@ -53,7 +53,7 @@
     <div class="form-group form-check">
       <div class="checkbox">
         <label>
-          <input type="checkbox" value="">
+          <input type="checkbox" value="" [(ngModel)]="showLastPosition">
           <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
           Apenas Última posição
         </label>
@@ -77,7 +77,7 @@
   <div class="modalBody">
     <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false">
       <polyline [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3" [icons]="icons"></polyline>
-
+      
       <!-- ///////////// -->
       <!-- Plant -->
       <marker *ngFor="let posPlants of plants" [position]="[posPlants.lat, posPlants.lng]" 
@@ -127,22 +127,32 @@
 
       <!-- ///////////// -->
       <!-- rack markers -->
-      <marker *ngFor="let pos of markers" [position]="pos.position" (click)="clicked($event,pos)">
-        <info-window id="iw">
-          <div class="iw-title">INFORMAÇÕES</div>
-          <div *ngIf="marker.display">
-            <p>
-              <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
-            <p>
-              <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
-            <p>
-              <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
-          </div>
-        </info-window>
-      </marker>
+      <ng-container *ngFor="let pos of markers">
+        <marker *ngIf="pos.accuracy <= accuracyRange && (showLastPosition? (last? true : false) : true)" [position]="pos.position" (click)="clicked($event,pos)">
+          <info-window id="iw">
+            <div class="iw-title">INFORMAÇÕES</div>
+            <div *ngIf="marker.display">
+              <p>
+                <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+              <p>
+                <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
+              <p>
+                <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
+            </div>
+          </info-window>
+        </marker>
+      </ng-container>
       
-      <circle *ngFor="let posRadius of markers" [center]="posRadius.latLng" [fillColor]="'#6382c9'" [fillOpacity]="0.3" [strokeColor]="'#6382c9'"
-        [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ posRadius.accuracy || 0 }}"></circle>
+      <ng-container *ngFor="let posRadius of markers">
+        <circle *ngIf="posRadius.accuracy <= accuracyRange" 
+              [center]="posRadius.latLng" 
+              [fillColor]="'#6382c9'" 
+              [fillOpacity]="0.2" 
+              [strokeColor]="'#6382c9'"
+              [strokeOpacity]="0.7" 
+              [strokeWeight]="1" 
+              radius="{{ posRadius.accuracy || 0 }}"></circle>
+      </ng-container>
 
     </ngui-map>
 

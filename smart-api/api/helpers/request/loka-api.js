@@ -75,12 +75,13 @@ function positions(token, device) {
                         positions: []
                     };
 
-                    console.log("#######################################");
+                    console.log('====================================');
                     console.log(info);
-                    console.log("#######################################");
-                    
+                    console.log('====================================');
 
-                    info.positions.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude] }))
+
+
+                    info.positions.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude], 'accuracy': o.accuracy}))
                   
                     // array.markers.sort(function(a,b){
                     //   if (a.start < b.start) {

@@ -6,5 +6,5 @@ stage 'Checkout'
  
 stage 'Build docker'
  node('master') {
-     sh 'sudo docker-compose -f docker-compose.prod.yml up -d'
+     sh 'sudo docker-compose up -d'
  }

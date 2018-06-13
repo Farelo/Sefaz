@@ -56,10 +56,12 @@ export class LayerModalComponent implements OnInit {
 
   incrementRange(){
     this.accuracyRange = parseInt(this.accuracyRange) + 10;
+    this.updatePaths();
   }
 
   decrementRange() {
     this.accuracyRange = parseInt(this.accuracyRange) - 10;
+    this.updatePaths();
   }
 
   @Input() packing;
@@ -72,7 +74,8 @@ export class LayerModalComponent implements OnInit {
     lng: null,
     start: null,
     end: null,
-    battery: null
+    battery: null,
+    accuracy: null
   };
 
   public plants = [];
@@ -98,6 +101,8 @@ export class LayerModalComponent implements OnInit {
     plant: null,
     cnpj: null
   };
+
+  public showLastPosition: boolean = false;
 
   public showControlledPlants: boolean = true;
   toggleShowControlledPlants(){
@@ -139,14 +144,21 @@ export class LayerModalComponent implements OnInit {
     console.log()
     this.packingService.getPositions(this.packing.code_tag).subscribe(result => {
       this.center = result.data.positions[0];
-      this.path = result.data.positions;
+      //this.path = result.data.positions;
       this.markers = result.data.markers;
 
-      this.markers.map(e => { 
-        e.latLng = new google.maps.LatLng(e.position[0], e.position[1]);
-        return e;
+      this.markers.map((elem, index) => { 
+        elem.latLng = new google.maps.LatLng(elem.position[0], elem.position[1]);
+        console.log('index: ' + index);
+        console.log('this.markers.lenght: ' + this.markers.length);
+        elem.lastPosition = (index == (this.markers.length - 1));
+        return elem;
       })
 
+      this.updatePaths();
+
+      console.log('center: ' + JSON.stringify(this.center));
+      console.log('path: ' + JSON.stringify(this.path));
       console.log('markers: ' + JSON.stringify(this.markers));
     })
   }
@@ -299,8 +311,31 @@ export class LayerModalComponent implements OnInit {
 
 
 
+  /**
+   * ///////////////////////////////////////
+   * Util
+   */
   parseToLatLng(s1, s2){
     return new google.maps.LatLng(s1, s2);
   }
   
+  isInsideRange(r:any){
+    return r < this.accuracyRange;
+  }
+
+  updatePaths(){
+    this.path = [];
+
+    this.markers.forEach(m =>{
+      console.log('m.accuracy: ' + m.accuracy);
+      console.log('m.latLng.lat: ' + m.position[0]);
+      console.log('m.latLng.lng: ' + m.position[1]);
+
+      if(m.accuracy <= this.accuracyRange){
+        this.path.push({ "lat": m.position[0], "lng": m.position[1]});
+      }
+    });
+
+    console.log('this.path: ' + JSON.stringify(this.path));
+  }
 }
