@@ -57,11 +57,13 @@ export class LayerModalComponent implements OnInit {
   incrementRange(){
     this.accuracyRange = parseInt(this.accuracyRange) + 10;
     this.updatePaths();
+    this.getLastPostition();
   }
 
   decrementRange() {
     this.accuracyRange = parseInt(this.accuracyRange) - 10;
     this.updatePaths();
+    this.getLastPostition();
   }
 
   @Input() packing;
@@ -77,6 +79,7 @@ export class LayerModalComponent implements OnInit {
     battery: null,
     accuracy: null
   };
+  public lastPosition: any;
 
   public plants = [];
   public plant = {
@@ -220,6 +223,14 @@ export class LayerModalComponent implements OnInit {
     })
   }
 
+  getLastPostition(){
+    let auxArray = this.markers.filter(elem => {
+      return elem.accuracy <= this.accuracyRange;
+    });
+
+    this.lastPosition = auxArray[this.markers.length - 1];
+  }
+
   clicked(_a, opt) {
     var marker = _a.target; 
     
@@ -320,7 +331,7 @@ export class LayerModalComponent implements OnInit {
   }
   
   isInsideRange(r:any){
-    return r < this.accuracyRange;
+    return r <= this.accuracyRange;
   }
 
   updatePaths(){

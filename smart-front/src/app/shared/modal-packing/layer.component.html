@@ -154,6 +154,30 @@
               radius="{{ posRadius.accuracy || 0 }}"></circle>
       </ng-container>
 
+      <!-- ///////////// -->
+      <!-- rack last marker -->
+      <ng-container *ngFor="let pos of markers">
+        <marker *ngIf="pos.accuracy <= accuracyRange && (showLastPosition? (last? true : false) : true)" [position]="pos.position"
+          (click)="clicked($event,pos)">
+          <info-window id="iw">
+            <div class="iw-title">INFORMAÇÕES</div>
+            <div *ngIf="marker.display">
+              <p>
+                <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+              <p>
+                <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
+              <p>
+                <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
+            </div>
+          </info-window>
+        </marker>
+      </ng-container>
+      
+      <ng-container *ngFor="let posRadius of markers">
+        <circle *ngIf="posRadius.accuracy <= accuracyRange" [center]="posRadius.latLng" [fillColor]="'#6382c9'" [fillOpacity]="0.2"
+          [strokeColor]="'#6382c9'" [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ posRadius.accuracy || 0 }}"></circle>
+      </ng-container>
+
     </ngui-map>
 
   </div>
