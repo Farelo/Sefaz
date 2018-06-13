@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PackingService, PlantsService } from '../../servicos/index.service';
+import { PackingService, PlantsService, LogisticService, SuppliersService } from '../../servicos/index.service';
 import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { MeterFormatter } from '../pipes/meter_formatter';
 import { NouiFormatter } from 'ng2-nouislider';
@@ -84,10 +84,33 @@ export class LayerModalComponent implements OnInit {
     location: null
   };
 
+  public logistics = [];
+  public logistic = {
+    display: true,
+    name: null
+  }
+
+  public suppliers = [];
+  supplier = {
+    display: true,
+    name: null,
+    duns: null,
+    plant: null,
+    cnpj: null
+  };
+
+  public showControlledPlants: boolean = true;
+  toggleShowControlledPlants(){
+    console.log('before: ' + this.showControlledPlants);
+    this.showControlledPlants = !this.showControlledPlants;
+    console.log('after: ' + this.showControlledPlants);
+  }
 
   constructor(
     public activeLayer: NgbActiveModal,
     private plantsService: PlantsService,
+    private logisticService: LogisticService,
+    private supplierService: SuppliersService,
     private packingService: PackingService,
     private localeService: BsLocaleService) {
 
@@ -119,15 +142,63 @@ export class LayerModalComponent implements OnInit {
       this.path = result.data.positions;
       this.markers = result.data.markers;
 
-      this.markers.map(e => {
-        //e.position = [e.lat, e.lng];
-        //e.position = [e.lat, e.lng];
+      this.markers.map(e => { 
         e.latLng = new google.maps.LatLng(e.position[0], e.position[1]);
         return e;
       })
+
+      console.log('markers: ' + JSON.stringify(this.markers));
     })
   }
-  
+
+  /*
+ * Plants
+ */
+  getPlants() {
+    this.plantsService.retrieveAll().subscribe(result => {
+      this.plants = result.data;
+
+      this.plants.map(e => {
+        //e.position = [e.lat, e.lng];
+        //e.position = [e.lat, e.lng];
+        e.latLng = new google.maps.LatLng(e.lat, e.lng);
+        return e;
+      })
+
+      console.log('plants: ' + JSON.stringify(this.plants));
+    })
+  }
+
+  /*
+   * Logistic operator
+   */
+  getLogisticOperators() {
+    this.logisticService.listLogistic(99999, 1).subscribe(result => {
+      this.logistics = result.data;
+
+      // this.logistics.map(e => {
+      //   //e.position = [e.lat, e.lng];
+      //   //e.position = [e.lat, e.lng];
+      //   e.latLng = new google.maps.LatLng(e.lat, e.lng);
+      //   return e;
+      // })
+      console.log('logistics: ' + JSON.stringify(this.logistics));
+    })
+  }
+
+  getSuppliers(){
+    this.supplierService.retrieveAll().subscribe(result => {
+      this.suppliers = result.data;
+
+      this.suppliers.map(e => { 
+        e.latLng = new google.maps.LatLng(e.lat, e.lng);
+        return e;
+      })
+      console.log('suppliers: ' + JSON.stringify(this.suppliers));
+    })
+  }
+
+
   //TODO
   getFilteredPositions(){
     this.packingService.getPositions(this.packing.code_tag).subscribe(result => {
@@ -147,23 +218,9 @@ export class LayerModalComponent implements OnInit {
     this.marker.end = opt.end;
     this.startWindow(marker);
   }
-  
 
   clickedPlant(_a, opt) {
     var p = _a.target;
-    /*
-    public plant = {
-    display: true,
-    lat: null,
-    lng: null,
-    name: null,
-    location: null };
-  */
-    console.log('p.lat ' + p.getPosition().lat());
-    console.log('p.lng ' + p.getPosition().lng());
-    console.log('p.name ' + opt.plant_name);
-    console.log('p.location ' + opt.location);
- 
     this.plant.lat = p.lat;
     this.plant.lng = p.lng;
     this.plant.name = opt.plant_name;
@@ -172,6 +229,9 @@ export class LayerModalComponent implements OnInit {
     this.startPlantDetail(p);
   }
 
+  /*
+   * Info window
+   */
   startPlantDetail(plant) {
     plant.nguiMapComponent.openInfoWindow('pw', plant);
     var iwOuter = $('.gm-style-iw');
@@ -237,23 +297,7 @@ export class LayerModalComponent implements OnInit {
   getPosition(event: any) {
   }
 
-  /*
-   * Plants
-   */
-  getPlants(){
-    this.plantsService.retrieveAll().subscribe(result => {
-      this.plants = result.data;
-            
-      this.plants.map(e => {
-        //e.position = [e.lat, e.lng];
-        //e.position = [e.lat, e.lng];
-        e.latLng = new google.maps.LatLng(e.lat, e.lng);
-        return e;
-      })
 
-      console.log(JSON.stringify(this.plants));
-    })
-  }
 
   parseToLatLng(s1, s2){
     return new google.maps.LatLng(s1, s2);
