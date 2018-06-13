@@ -1,4 +1,5 @@
 const request = require('request');
+const _ = require('lodash')
 
 module.exports = {
     confirmDevice: confirmDevice,
@@ -46,7 +47,7 @@ function confirmDevice(token, device) {
  * Avalia a posição de um beacon no sistema através do
  * seu ID.
  */
-function positions(token, device) {
+function positions(token, device, accuracy) {
 
     return new Promise(function (resolve, reject) {
         let date = new Date();
@@ -75,18 +76,16 @@ function positions(token, device) {
                         positions: []
                     };
 
-                    info.positions.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude], 'accuracy': o.accuracy}))
-                  
-                    // array.markers.sort(function(a,b){
-                    //   if (a.start < b.start) {
-                    //     return 1;
-                    //   }
-                    //   if (a.start > b.start) {
-                    //     return -1;
-                    //   }
-                    //   // a must be equal to b
-                    //   return 0;
-                    // });
+                    // console.log(info)
+
+                    if(!accuracy){
+                        info.positions.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude], 'accuracy': o.accuracy}))
+                    } else {
+                        let markersFiltered = _.filter(info.positions, (position) => position.accuracy < accuracy)
+                        markersFiltered.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude], 'accuracy': o.accuracy }))
+                    }
+                    console.log(array.markers);
+                 
                     array.markers.forEach(o => array.positions.push({ lat: o.position[0], lng: o.position[1] }));
 
                     resolve(array);
@@ -104,4 +103,14 @@ function positions(token, device) {
         request(options, callback);
     });
 
+}
+
+const filterByAccuracy = async (positions, accuracy) => {
+    let positionFiltered = _.filter(positions.markers, (item) => item.accuracy < accuracy)
+
+    console.log('====================================')
+    console.log(positionFiltered)
+    console.log('====================================')
+
+    return positions
 }
