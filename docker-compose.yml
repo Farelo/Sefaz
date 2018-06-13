@@ -27,8 +27,7 @@ services:
     tty: true
     ports:
       - '8001:8001'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### CEBRACE ####################################
   cebrace-cliente:
     build:
@@ -56,8 +55,7 @@ services:
     tty: true
     ports:
       - '8005:8005'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### GM ####################################
   gm-cliente:
     build:
@@ -85,8 +83,7 @@ services:
     tty: true
     ports:
       - '8007:8007'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### NESTLE ####################################
   nestle-cliente:
     build:
@@ -114,8 +111,7 @@ services:
     tty: true
     ports:
       - '8009:8009'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### TESTE ITERNO ####################################
   test-interno-homologacao:
     build:
@@ -143,8 +139,7 @@ services:
     tty: true
     ports:
       - '8011:8011'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### JSL ####################################
   jsl-cliente:
     build:
@@ -172,8 +167,7 @@ services:
     tty: true
     ports:
       - '8014:8014'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### NISSAN ####################################
   nissan-cliente:
     build:
@@ -201,22 +195,4 @@ services:
     tty: true
     ports:
       - '8016:8016'        #obrigratorio
-    depends_on:
-      - mongo
-  ###################################### CONFIGURAÇÕES DO MONGO  ####################################
-  mongo:
-    image: 'mongo:latest'
-    container_name: mongo
-    ports:
-      - '27017:27017'
-    volumes:
-      - ./data/db:/data/db
-      - ./data/backup:/data/backup
-###################################### DEFININDO UMA REDE DE CONEXÃO ####################################
-networks:
-  net-recicla:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: 172.16.0.0/24
-         gateway: 172.16.0.254
+    network_mode: mongo_net
