@@ -112,34 +112,6 @@ services:
     ports:
       - '8009:8009'        #obrigratorio
     network_mode: mongo_net
-  ###################################### TESTE ITERNO ####################################
-  test-interno-homologacao:
-    build:
-      context: 'smart-front'
-      dockerfile: Dockerfile
-      args:
-        baseurl: http://35.169.169.38:8011/api/
-        port: 8010
-    container_name: test-interno-homologacao
-    ports:
-      - '8010:8010'    #obrigratorio
-  test-interno-api-homologacao: #finalizado
-    build:
-      context: 'smart-api'
-      dockerfile: Dockerfile
-    command: npm start
-    container_name: test-interno-api-homologacao
-    environment:
-      NODE_ENV: production
-      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-      PORT: 8011                    #obrigatorios caso não coloque o DNS
-      DATABASE: testeinterno        #obrigatorios
-      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
-        # DNS:
-    tty: true
-    ports:
-      - '8011:8011'        #obrigratorio
-    network_mode: mongo_net
   ###################################### JSL ####################################
   jsl-cliente:
     build:
