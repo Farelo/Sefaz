@@ -24,7 +24,7 @@
     <div class="col-md-6">
       <p>FILTRAR POR:</p>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" *ngIf="path.length > 0">
       <p class="text-right"> {{ path.length }} resultados encontrados</p>
     </div>
   </div>
@@ -62,7 +62,7 @@
         <label>
           <input type="checkbox" value="" [(ngModel)]="showLastPosition">
           <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
-          Apenas Última posição
+          Apenas última posição
         </label>
       </div>
     </div>
