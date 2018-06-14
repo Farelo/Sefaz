@@ -28,7 +28,7 @@
     <div class="col-md-6">
       <p>FILTRAR POR:</p>
     </div>
-    <div class="col-md-6" *ngIf="path.length > 0">
+    <div class="col-md-6">
       <p class="text-right"> {{ path.length }} resultados encontrados</p>
     </div>
   </div>
@@ -124,7 +124,7 @@
         [position]="[posSuppliers.plant.lat, posSuppliers.plant.lng]" 
         (click)="clickedSupplier($event, posSuppliers)"
         [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" 
-        [hidden]="showControlledPlants">
+        [visible]="showControlledPlants">
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="sw">
           <div class="iw-title">INFORMAÇÕES</div>
@@ -143,11 +143,11 @@
 
       <!-- ///////////// -->
       <!-- rack markers -->
-      <ng-container *ngFor="let pos of markers">
+      <ng-container *ngFor="let pos of markers; let i = index">
         <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)" 
           [position]="pos.position" 
           (click)="clicked($event,pos)"
-          [icon]="{ url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }" >
+          [icon]="getPin(i)" >
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display">

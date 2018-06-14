@@ -36,7 +36,6 @@
 
 .header p {
   font-weight: bold;
-  width: 245px;
 }
 
 .modalBody span {
@@ -99,6 +98,7 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
 img {
   float: right;
   margin: 0 5px 5px 10px;

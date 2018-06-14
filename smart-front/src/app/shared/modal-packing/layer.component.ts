@@ -389,4 +389,16 @@ export class LayerModalComponent implements OnInit {
     console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
   }
 
+  getPin(i: number){
+    let pin = null;
+
+    if(this.markers.length>1){
+      if (i==0) pin = { url: '../../../assets/images/pin_normal_first.png', size: [28, 43], scaledSize: [28, 43] }
+      if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_normal_final.png', size: [28, 43], scaledSize: [28, 43] }
+      if (i > 0 && i < (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }
+    }else{
+      pin = { url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }
+    }
+    return pin;
+  }
 }
