@@ -84,6 +84,7 @@ function positions(token, device, accuracy) {
                         let markersFiltered = _.filter(info.positions, (position) => position.accuracy < accuracy)
                         markersFiltered.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude], 'accuracy': o.accuracy }))
                     }
+                    
                     console.log(array.markers);
                  
                     array.markers.forEach(o => array.positions.push({ lat: o.position[0], lng: o.position[1] }));

@@ -23,45 +23,24 @@ export class LayerModalComponent implements OnInit {
    * DataPicker
    */
   datePickerConfig = new BsDaterangepickerConfig(); //Configurations
-  initialDate: Date;  //Initial date
-  finalDate: Date;    //Initial date
+  public initialDate: Date;  //Initial date
+  public finalDate: Date;    //Initial date
 
   /*
    * Accuracy
    */
-  accuracyRange: any = 1000;
-
-  /*
-   * Map
-   */
-  plantMarker = {
-    url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-    size: [20, 32],
-    origin: [0, 0],
-    anchor: [0, 32]
-  };
-  
-  /* 
-  {
-    "_id": "5ac17f8b8431ce000f973d87",
-    "plant_name": "GM Gravatai",
-    "lat": -29.938966806881297,
-    "lng": -50.917041044414304,
-    "location": "Vila Morada Gaúcha, Gravataí - RS, Brasil",
-    "__v": 0
-  }
-  */
-
-
-
+  public accuracyRange: any = 1000;
   incrementRange(){
     this.accuracyRange = parseInt(this.accuracyRange) + 10;
-    this.updatePaths();
-    this.getLastPostition();
+    this.rangechanged();
   }
 
   decrementRange() {
     this.accuracyRange = parseInt(this.accuracyRange) - 10;
+    this.rangechanged();
+  }
+
+  rangechanged(){
     this.updatePaths();
     this.getLastPostition();
   }
@@ -109,9 +88,7 @@ export class LayerModalComponent implements OnInit {
 
   public showControlledPlants: boolean = true;
   toggleShowControlledPlants(){
-    console.log('before: ' + this.showControlledPlants);
     this.showControlledPlants = !this.showControlledPlants;
-    console.log('after: ' + this.showControlledPlants);
   }
 
   constructor(
@@ -125,7 +102,9 @@ export class LayerModalComponent implements OnInit {
       defineLocale('pt-br', ptBrLocale);
       this.localeService.use('pt-br');
 
-      this.initialDate = new Date();
+      //Initialize 7 days before now
+      let sub = new Date().getTime() - (7 * 24 * 60 * 60 * 1000);
+      this.initialDate = new Date(sub);
       this.finalDate = new Date();
 
       this.datePickerConfig.showWeekNumbers = false;
@@ -135,16 +114,42 @@ export class LayerModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPositions();
+    //this.getPositions();
+    this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), this.finalDate.getTime(), 32000);
     this.getPlants();
   }
-
+ 
   onDateChange(newDate: Date) {
-    console.log(newDate);
+    
+    this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), this.finalDate.getTime(), 32000);
+  }
+
+  /**
+   * Get the package positions with the filter applied
+   */
+  getFilteredPositions(codeTag: string, startDate: any, finalDate: any, accuracy: any){
+
+    this.packingService.getFilteredPositions(codeTag, startDate, finalDate, accuracy).subscribe(result => {
+          this.center = result.data.positions[0];
+          //this.path = result.data.positions;
+          this.markers = result.data.markers;
+
+          this.markers.map((elem, index) => { 
+            elem.latLng = new google.maps.LatLng(elem.position[0], elem.position[1]);
+            return elem;
+          })
+
+          this.updatePaths();
+          this.getLastPostition();
+
+          console.log('center: ' + JSON.stringify(this.center));
+          console.log('path: ' + JSON.stringify(this.path));
+          console.log('markers: ' + JSON.stringify(this.markers));
+          console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
+        })
   }
 
   getPositions() {
-    console.log()
     this.packingService.getPositions(this.packing.code_tag).subscribe(result => {
       this.center = result.data.positions[0];
       //this.path = result.data.positions;
@@ -152,17 +157,16 @@ export class LayerModalComponent implements OnInit {
 
       this.markers.map((elem, index) => { 
         elem.latLng = new google.maps.LatLng(elem.position[0], elem.position[1]);
-        console.log('index: ' + index);
-        console.log('this.markers.lenght: ' + this.markers.length);
-        elem.lastPosition = (index == (this.markers.length - 1));
         return elem;
       })
 
       this.updatePaths();
+      this.getLastPostition();
 
       console.log('center: ' + JSON.stringify(this.center));
       console.log('path: ' + JSON.stringify(this.path));
       console.log('markers: ' + JSON.stringify(this.markers));
+      console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
     })
   }
 
@@ -180,7 +184,7 @@ export class LayerModalComponent implements OnInit {
         return e;
       })
 
-      console.log('plants: ' + JSON.stringify(this.plants));
+      //console.log('plants: ' + JSON.stringify(this.plants));
     })
   }
 
@@ -211,24 +215,6 @@ export class LayerModalComponent implements OnInit {
       })
       console.log('suppliers: ' + JSON.stringify(this.suppliers));
     })
-  }
-
-
-  //TODO
-  getFilteredPositions(){
-    this.packingService.getPositions(this.packing.code_tag).subscribe(result => {
-      this.center = result.data.positions[0];
-      this.path = result.data.positions;
-      this.markers = result.data.markers;
-    })
-  }
-
-  getLastPostition(){
-    let auxArray = this.markers.filter(elem => {
-      return elem.accuracy <= this.accuracyRange;
-    });
-
-    this.lastPosition = auxArray[this.markers.length - 1];
   }
 
   clicked(_a, opt) {
@@ -338,15 +324,26 @@ export class LayerModalComponent implements OnInit {
     this.path = [];
 
     this.markers.forEach(m =>{
-      console.log('m.accuracy: ' + m.accuracy);
-      console.log('m.latLng.lat: ' + m.position[0]);
-      console.log('m.latLng.lng: ' + m.position[1]);
-
       if(m.accuracy <= this.accuracyRange){
         this.path.push({ "lat": m.position[0], "lng": m.position[1]});
       }
     });
-
-    console.log('this.path: ' + JSON.stringify(this.path));
   }
+  
+  getLastPostition() {
+    let auxArray = this.markers.filter(elem => {
+      return elem.accuracy <= this.accuracyRange;
+    });
+
+    console.log('auxArray: ' + JSON.stringify(auxArray)); 
+    if(auxArray.length>0){
+      this.lastPosition = auxArray[auxArray.length - 1];
+      this.center = this.lastPosition.latLng;
+
+    }else{
+      this.lastPosition = null;
+    }
+    console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
+  }
+
 }
