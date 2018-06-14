@@ -152,8 +152,8 @@ export class PackingService {
    * @param accuracy The max accuracy error
    * 
    */
-  getFilteredPositions(code: string, initialDate: number, finalDate: number, accuracy: number): Observable<any> {
-    return this.http.get(`${environment.url}packing/position/${code}?initial_date=${initialDate}&final_date=${finalDate}&accuracy=${accuracy}`)
+  getFilteredPositions(code: string, initialDate: number, finalDate: number): Observable<any> {
+    return this.http.get(`${environment.url}packing/position/${code}?initial_date=${initialDate}&final_date=${finalDate}`)
       .catch(this.handleError);
   }
 

@@ -47,7 +47,7 @@ function confirmDevice(token, device) {
  * Avalia a posição de um beacon no sistema através do
  * seu ID.
  */
-function positions(token, device, accuracy) {
+function positions(token, device, initial_date, final_date) {
 
     return new Promise(function (resolve, reject) {
         let date = new Date();
@@ -76,20 +76,21 @@ function positions(token, device, accuracy) {
                         positions: []
                     };
 
-                    // console.log(info)
-
-                    if(!accuracy){
+                    if (!initial_date){
                         info.positions.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude], 'accuracy': o.accuracy}))
                     } else {
-                        let markersFiltered = _.filter(info.positions, (position) => position.accuracy < accuracy)
-                        markersFiltered.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude], 'accuracy': o.accuracy }))
+                        let markersFiltered = _.filter(info.positions, (position) => {
+                            let positionDate = new Date(position.date * 1000)
+                            if (final_date) return positionDate >= initial_date && positionDate <= final_date
+                            return positionDate >= initial_date
+                        })
+                        markersFiltered.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude], 'accuracy': o.accuracy}))
                     }
                     
-                    console.log(array.markers);
-                 
-                    array.markers.forEach(o => array.positions.push({ lat: o.position[0], lng: o.position[1] }));
-
-                    resolve(array);
+                    array.markers.forEach(o => array.positions.push({ lat: o.position[0], lng: o.position[1] }))
+                    
+                    console.log(array)
+                    resolve(array)
                 } else {
                     reject("Code not exist in the system");
                 }
@@ -106,12 +107,12 @@ function positions(token, device, accuracy) {
 
 }
 
-const filterByAccuracy = async (positions, accuracy) => {
-    let positionFiltered = _.filter(positions.markers, (item) => item.accuracy < accuracy)
+// const filterByAccuracy = async (positions, accuracy) => {
+//     let positionFiltered = _.filter(positions.markers, (item) => item.accuracy < accuracy)
 
-    console.log('====================================')
-    console.log(positionFiltered)
-    console.log('====================================')
+//     console.log('====================================')
+//     console.log(positionFiltered)
+//     console.log('====================================')
 
-    return positions
-}
+//     return positions
+// }

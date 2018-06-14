@@ -196,12 +196,10 @@ exports.packing_read = function (req, res) {
  * Show the positions by LOKA-API about the Packing
  */
 exports.packing_position = function (req, res) {
-  let accuracy = req.swagger.params.accuracy.value
-  let final_date = req.swagger.params.accuracy.value
-
+  let initial_date = req.swagger.params.initial_date.value
+  let final_date = req.swagger.params.final_date.value
   token()
-    .then(token => loka_api.positions(token, req.swagger.params.code.value, accuracy))
-    // .then(array => console.log(array)))
+    .then(token => loka_api.positions(token, req.swagger.params.code.value, initial_date, final_date))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to retrive position by loka-api about the packing'))
 };

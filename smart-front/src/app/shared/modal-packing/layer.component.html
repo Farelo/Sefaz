@@ -91,9 +91,11 @@
       
       <!-- ///////////// -->
       <!-- Plant -->
-      <marker *ngFor="let posPlants of plants" [position]="[posPlants.lat, posPlants.lng]" 
-      (click)="clickedPlant($event,posPlants)" 
-      [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" [visible]="showControlledPlants">
+      <marker *ngFor="let posPlants of plants" 
+      [position]="[posPlants.lat, posPlants.lng]" 
+      (click)="clickedPlant($event, posPlants)" 
+      [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
+      [visible]="showControlledPlants">
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="pw">
           <div class="iw-title">INFORMAÇÕES</div> 
@@ -118,10 +120,13 @@
 
       <!-- ///////////// -->
       <!-- Supplier -->
-      <marker *ngFor="let posSuppliers of suppliers" [position]="[posSuppliers.lat, posSuppliers.lng]" (click)="clickedPlant($event,posSuppliers)"
-        [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" [hidden]="showControlledPlants">
+      <marker *ngFor="let posSuppliers of suppliers" 
+        [position]="[posSuppliers.plant.lat, posSuppliers.plant.lng]" 
+        (click)="clickedSupplier($event, posSuppliers)"
+        [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" 
+        [hidden]="showControlledPlants">
         <!-- <div class="custom-icon-map-plant"></div> -->
-        <info-window id="pw">
+        <info-window id="sw">
           <div class="iw-title">INFORMAÇÕES</div>
           <div *ngIf="supplier.display">
             <p>
@@ -139,7 +144,10 @@
       <!-- ///////////// -->
       <!-- rack markers -->
       <ng-container *ngFor="let pos of markers">
-        <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)" [position]="pos.position" (click)="clicked($event,pos)">
+        <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)" 
+          [position]="pos.position" 
+          (click)="clicked($event,pos)"
+          [icon]="{ url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }" >
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display">

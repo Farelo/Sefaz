@@ -3771,13 +3771,6 @@
             "description": "Retrieve a packing position ordered by final date",
             "required": false,
             "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "accuracy",
-            "description": "Retrieve a packing position ordered by accuracy",
-            "required": false,
-            "type": "string"
           }
         ],
         "responses": {
