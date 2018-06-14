@@ -109,7 +109,7 @@ exports.supplier_list_pagination = function (req, res) {
  */
 exports.supplier_list_all = function (req, res) {
 
-  schemas.supplier.find({})
+  schemas.supplier.find({}).populate('plant')
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to list all suppliers'));
 };
