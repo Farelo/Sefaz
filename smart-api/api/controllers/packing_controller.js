@@ -663,9 +663,9 @@ exports.inventory_packings = function (req, res) {
   let code = req.swagger.params.code.value;
   let attr = req.swagger.params.attr.value;
 
-  schemas.packing.paginate(attr && code ? { "supplier": new ObjectId(attr), "code": code } :
+  schemas.packing.paginate(attr && code ? { "supplier": new ObjectId(attr), "code_tag": code } :
     (attr ? { "supplier": new ObjectId(attr) } :
-      (code ? { "code": code } : {})), {
+      (code ? { "code_tag": code } : {})), {
       page: parseInt(req.swagger.params.page.value),
       populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {

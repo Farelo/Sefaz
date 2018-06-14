@@ -1,79 +1,92 @@
 <div class="modalFilho">
   <div class="header">
-     <h1><span >Detalhes do Alerta </span> </h1><br>
-     <p>Código: <span>{{alerta.data.packing?.code}}</span>; Serial: <span>{{alerta.data.packing?.serial}}</span>; TAG: <span>{{alerta.data.packing?.code_tag}}</span></p>
-    <p>Data do alerta: {{alerta.data.date | date: 'dd/MM/yyyy'}}</p>
-    <p>Hora do alerta: {{alerta.data.date | date:'mediumTime'}}</p>
-     <p></p>
-     <p>Tipo: <span >{{alerta.data.status === 1 ? 'Embalagem perdida' :
-       (alerta.data.status === 2 ? 'Local Incorreto' :
-       (alerta.data.status === 3 ? 'Bateria Baixa' :
-       (alerta.data.status === 4 ? 'Embalagam Atrasada' : 'Tempo de Permanência Elevado')))}}</span></p>
+
+    <h1>Detalhes do Alerta</h1>
+
+    <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <p>
+      <span class="badge badge-secondary">Código: {{alerta.data.packing?.code}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{alerta.data.packing?.serial}}</span> 
+      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{alerta.data.packing?.code_tag}}</span>
+    </p>
+
+    <p id="visuslize-on-map"> <span id="ver-no-mapa" (click)="visualizeOnMap()">Visualizar no mapa</span> </p>
+    
+    <p>Momento do alerta: {{alerta.data.date | date: 'dd/MM/yyyy'}} às {{alerta.data.date | date:'mediumTime'}}</p>
+
+    <p>Tipo: <span >{{alerta.data.status === 1 ? 'Embalagem ausente' :
+      (alerta.data.status === 2 ? 'Local Incorreto' :
+      (alerta.data.status === 3 ? 'Bateria Baixa' :
+      (alerta.data.status === 4 ? 'Embalagam Atrasada' : 'Tempo de Permanência Elevado')))}}</span>
+    </p>
   </div>
-  <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
-<div class="modalBody" *ngIf="alerta.data.status === 1">
+  
 
-  <p><span>Ultima Planta que foi visto:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}}</p>
-  <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Sem Registro'}}</p>
-  <p><span>Tempo de sumiço:</span> {{alerta.data.packing?.packing_missing?.time_countdown >= 0 ? (alerta.data.packing?.packing_missing?.time_countdown | time) : 'Sem Registro'}}</p>
-  <div class="divBotao">
+  <div class="modalBody" *ngIf="alerta.data.status === 1">
+    <p><span>Ultima Planta que foi visto:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}}</p>
+    <p><span>Ultimo departamento visto:</span> {{alerta.data.department  ? alerta.data.department?.name : 'Sem Registro'}}</p>
+    <p><span>Tempo de ausência:</span> {{alerta.data.packing?.packing_missing?.time_countdown >= 0 ? (alerta.data.packing?.packing_missing?.time_countdown | time) : 'Sem Registro'}}</p>
+    <div class="divBotao">
+      <button type="button" class="botaoVisualizar" (click)="getHistoric();historicFlag = true" *ngIf="!historicFlag">Visualizar Historico</button>
+      <button type="button" class="botaoVisualizar" (click)="historicFlag = false" *ngIf="historicFlag">Fechar Historico</button>
+      <br>
+      <div style="padding-top: 20px" class="table-responsive tabela" *ngIf="historicFlag">
+        <table class="table">
+          <thead>
+            <tr class="cabecalho">
+              <th>Data de Entrada</th>
+              <th>Hora de Entrada</th>
+              <th>Fornecedor</th>
+              <th>Local</th>
+              <th>Tempo na Planta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let packing of historic.data | paginate: {
+                                                            id: 'historic',
+                                                            itemsPerPage: 10,
+                                                            currentPage: historic.meta.page,
+                                                            totalItems: historic.meta.total_docs}">
+              <td>{{packing.date | date: 'dd/MM/yyyy'}}</td>
+              <td>{{packing.date | date: 'mediumTime'}}</td>
+              <td>{{packing.supplier?.name || '-'}}</td>
+              <td>{{packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status == 'MISSING' ? 'Embalagem Ausente' : 'Embalagem
+                  Viajando') }}</td>
+              <td>{{packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro'}}</td>
+            </tr>
 
-  <button type="button" class="botaoVisualizar" (click)="getHistoric();historicFlag = true" *ngIf="!historicFlag">Visualizar Historico</button>
-  <button type="button" class="botaoVisualizar" (click)="historicFlag = false" *ngIf="historicFlag">Fechar Historico</button>
-  <br>
-  <div style="padding-top: 20px" class="table-responsive tabela" *ngIf="historicFlag">
-    <table class="table">
-      <thead>
-        <tr class="cabecalho">
-          <th>Data de Entrada</th>
-          <th>Hora de Entrada</th>
-          <th>Fornecedor</th>
-          <th>Local</th>
-          <th>Tempo na Planta</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let packing of historic.data | paginate: {
-                                                        id: 'historic',
-                                                        itemsPerPage: 10,
-                                                        currentPage: historic.meta.page,
-                                                        totalItems: historic.meta.total_docs}">
-          <td>{{packing.date | date: 'dd/MM/yyyy'}}</td>
-          <td>{{packing.date | date: 'mediumTime'}}</td>
-          <td>{{packing.supplier?.name || '-'}}</td>
-            <td>{{packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status == 'MISSING' ? 'Embalagem Perdida' : 'Embalagem
-              Viajando') }}</td>
-          <td>{{packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro'}}</td>
-        </tr>
-
-      </tbody>
-    </table>
-    <div class="has-text-centered">
-        <pagination-controls id='historic' class="my-pagination"
-        (pageChange)="historic.meta.page = $event;getHistoric()"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
+          </tbody>
+        </table>
+        <div class="has-text-centered">
+            <pagination-controls id='historic' class="my-pagination"
+            (pageChange)="historic.meta.page = $event;getHistoric()"
+            directionLinks="false"
+            autoHide="true">
+            </pagination-controls>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-</div>
 
 <div class="modalBody" *ngIf="alerta.data.status === 2 ">
   <p><span>Planta Atual:</span> {{alerta.data.actual_plant  ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}}</p>
   <p><span>Departamento:</span> {{alerta.data.department  ? alerta.data.department.name : 'Sem Registro'}}</p>
-  <p><span>Rotas da embalagem </span> </p>
+
   <div class="table-responsive tabela">
     <table class="table">
       <thead>
         <tr class="cabecalho">
+          <th colspan="5" class="text-center"> Rotas da embalagem </th>
+        </tr>
+        <tr class="cabecalho">
           <th class="semBorda">Fornecedor</th>
-          <th  class="semBorda">Planta da Fábrica</th>
-          <th  class="semBorda">Planta do Fornecedor</th>
-          <th  class="semBorda">Tempo Min.</th>
-          <th  class="semBorda">Tempo Max.</th>
+          <th class="semBorda">Planta da Fábrica</th>
+          <th class="semBorda">Planta do Fornecedor</th>
+          <th class="semBorda">Tempo Min.</th>
+          <th class="semBorda">Tempo Max.</th>
         </tr>
       </thead>
       <tbody >

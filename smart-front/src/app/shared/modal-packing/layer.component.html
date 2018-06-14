@@ -3,16 +3,20 @@
     <h1>
       <span>Detalhes da Embalagem </span>
     </h1>
+    
+    <p>
+      <span class="badge badge-secondary">Código: {{packing.code}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{packing.serial}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.code_tag}}</span>
+    </p>
 
     <div id="collapseExample" [ngbCollapse]="detailsIsCollapsed">
-      <p>Código: {{packing.code}}</p>
-      <p>Serial: {{packing.serial}}</p>
       <p>Projeto: {{packing.project.name}}</p>
       <p>Fornecedor: {{packing.supplier.name}}</p>
       <p>Planta Atual: {{packing.actual_plant?.plant?.plant_name ? packing.actual_plant?.plant?.plant_name : "Sem informação"}}</p>
     </div>
 
-    <span (click)="detailsIsCollapsed = !detailsIsCollapsed" [attr.aria-expanded]="!detailsIsCollapsed" aria-controls="collapseExample"
+    <span id="showDetails" (click)="detailsIsCollapsed = !detailsIsCollapsed" [attr.aria-expanded]="!detailsIsCollapsed" aria-controls="collapseExample"
       style="cursor: pointer;">{{ detailsIsCollapsed == true ? 'Mostrar detalhes' : 'Esconder detalhes' }}</span>
   </div>
 

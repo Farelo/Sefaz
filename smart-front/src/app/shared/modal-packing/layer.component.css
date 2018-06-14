@@ -24,8 +24,14 @@
   margin-bottom: 15px;
 }
 
-.header span {
-  color: #6382c9;
+#showDetails {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#showDetails:hover {
+  text-decoration: underline;
 }
 
 .header p {
@@ -225,7 +231,7 @@ div#collapseExample > p{
 }
 
 ngui-map {
-  height: calc( 60vh ) !important;
+  height: calc( 50vh ) !important;
 }
 
 .custom-icon-map-plant{

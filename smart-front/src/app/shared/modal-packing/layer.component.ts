@@ -117,6 +117,7 @@ export class LayerModalComponent implements OnInit {
     //this.getPositions();
     this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), this.finalDate.getTime(), 32000);
     this.getPlants();
+    //this.getSuppliers();
   }
  
   onDateChange(newDate: Date) {
