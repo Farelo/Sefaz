@@ -29,4 +29,4 @@ services:
     tty: true
     ports:
       - '8011:8011'        #obrigratorio
-    network_mode: recicla_default
+    network_mode: mongo_net

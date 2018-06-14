@@ -74,31 +74,33 @@
             <input class="form-control" aria-describedby="basic-addon2" [value]="route['controls'].plant_supplier.value ? route['controls'].plant_supplier.value.plant_name : ''" disabled/>
           </div>
         </div>
+
+        <div class="campo" [hidden]="!choice_equipament">
+          <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
+          <p class="explicacao"></p>
+        
+          <ng-select (change)="onChangeFactory($event)" [items]="plants?.data" bindLabel="duns" placeholder="Associe uma Planta" formControlName="plant_factory"
+            [ngClass]="{'required': (route.get('plant_factory').hasError('required') && route.get('plant_factory').touched) || (route.get('plant_factory').hasError('required')
+                && formDir.submitted)}">
+            <ng-template ng-label-tmp let-item="item">
+              {{item.plant_name}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                {{item.plant_name}}
+              </div>
+            </ng-template>
+          </ng-select>
+        
+          <p class="requiredText" *ngIf="(route.get('plant_factory').hasError('required') && route.get('plant_factory').touched)
+                || (route.get('plant_factory').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+        </div>
+
       </div>
 
 
       <div class="col-md-6" [hidden]="!choice_equipament">
-        <div class="campo">
-          <p class="descricao">ASSOCIE A PLANTA DA FABRICA</p>
-          <p class="explicacao"></p>
-
-        <ng-select  (change)="onChangeFactory($event)" [items]="plants?.data" bindLabel="duns" 
-        placeholder="Associe uma Planta" formControlName="plant_factory" [ngClass]="{'required': (route.get('plant_factory').hasError('required') && route.get('plant_factory').touched) || (route.get('plant_factory').hasError('required')
-        && formDir.submitted)}">
-          <ng-template ng-label-tmp let-item="item">
-            {{item.plant_name}}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-               {{item.plant_name}}
-            </div>
-          </ng-template>
-        </ng-select>
-
-          <p class="requiredText" *ngIf="(route.get('plant_factory').hasError('required') && route.get('plant_factory').touched)
-        || (route.get('plant_factory').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-        </div>
-
+        <!-- Tempo máximo de viagem  -->
         <div class="campo" formGroupName="time">
           <p class="descricao">DEFINA UM TEMPO MÁXIMO DE VIAGEM</p>
           <p class="explicacao"></p>
@@ -116,6 +118,7 @@
 
         </div>
 
+        <!-- Tempo minimo de viagem  -->
         <div class="campo" formGroupName="time">
           <p class="descricao">DEFINA UM TEMPO MÍNIMO DE VIAGEM</p>
           <p class="explicacao"></p>
@@ -130,7 +133,24 @@
             <p>Horas: {{time_min.minute }}</p>
             <p>Minutos: {{time_min.second }}</p>
           </div>
+        </div>
 
+        <!-- Tolerância de atraso -->
+        <div class="campo" formGroupName="time">
+          <p class="descricao">DEFINA A TOLERÂNCIA MÁXIMA DE ATRASO</p>
+          <p class="explicacao"></p>
+          <div class="col-md-6">
+            <ngb-timepicker [(ngModel)]="time_delay" [seconds]="true" formControlName="delay"></ngb-timepicker>
+            <!-- <timepicker [(ngModel)]="min" formControlName="min"></timepicker> -->
+            <p class="requiredText" *ngIf="(route.get('time.to_be_late').hasError('required') && route.get('time.to_be_late').touched)
+                  || (route.get('time.to_be_late').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          </div>
+          <div class="col-md-6">
+            <p>Dias: {{time_delay.hour}}</p>
+            <p>Horas: {{time_delay.minute }}</p>
+            <p>Minutos: {{time_delay.second }}</p>
+          </div>
+        
         </div>
       </div>
 

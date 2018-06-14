@@ -14,11 +14,15 @@ export class LogisticService {
       return Observable.throw(error);
   }
 
+  listLogistic(limit: any, page: any): Observable<any> {
+    return this.http.get(`${environment.url}logistic_operator/list/pagination/${limit}/${page}`)
+      .catch(this.handleError);
+  }
+
   retrieveLogistic(id: string): Observable<any>{
     return this.http.get(`${environment.url}logistic_operator/retrieve/${id}`)
       .catch(this.handleError);
   }
-
 
   updateLogistic(id: string, logistic: any): Observable<any>{
     return this.http.put(`${environment.url}logistic_operator/update/${id}`,logistic)

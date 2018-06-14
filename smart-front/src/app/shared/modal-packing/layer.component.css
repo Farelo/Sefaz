@@ -24,8 +24,14 @@
   margin-bottom: 15px;
 }
 
-.header span {
-  color: #6382c9;
+#showDetails {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#showDetails:hover {
+  text-decoration: underline;
 }
 
 .header p {
@@ -225,8 +231,34 @@ div#collapseExample > p{
 }
 
 ngui-map {
-  height: calc( 60vh ) !important;
+  height: calc( 50vh ) !important;
 }
+
+.custom-icon-map-plant{
+  background-image: url("../../../assets/images/pin_plant.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  /*height: 43px;*/
+  background-size: auto 43px;
+}
+
+.custom-icon-map-supplier{
+  background-image: url("../../../assets/images/pin_supplier.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  /*height: 43px;*/
+  background-size: auto 43px;
+}
+
+.custom-icon-map-logistic{
+  background-image: url("../../../assets/images/pin_logistic.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  /*height: 43px;*/
+  background-size: auto 43px;
+}
+
+
 /* ::ng-deep .modal-xl .modal-dialog{
   max-width: 1490px !important;
   min-width: 971px !important;   

@@ -423,7 +423,7 @@
             <td>{{packing.description || '-'}}</td>
             <td>{{packing.project?.name || '-'}}</td>
             <td>{{packing.quantity || '-'}}</td>
-            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Perdida"
+            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
               : "Embalagem em Viagem")}}</td>
             <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
               (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
@@ -656,7 +656,7 @@
             <td>{{packing.code || '-'}}</td>
             <td>{{packing.serial || '-'}}</td>
             <td>{{packing.project?.name || '-'}}</td>
-            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Perdida"
+            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
               : "Embalagem em Viagem")}}</td>
             <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
               (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
@@ -709,7 +709,7 @@
             <td>{{packing.supplier?.duns || '-'}}</td>
             <td>{{packing.supplier?.name || '-'}}</td>
             <td>{{packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status
-              == 'MISSING' ? 'Embalagem Perdida' : 'Embalagem Viajando') }}</td>
+              == 'MISSING' ? 'Embalagem Ausente' : 'Embalagem Viajando') }}</td>
             <td>{{packing.plant?.local === 'Factory' ? 'Fábrica' : (packing.plant?.local === 'Supplier' ? 'Fornecedor': (packing.plant?.local
               === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
             <td>{{packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro'}}</td>
@@ -758,7 +758,7 @@
             <td>{{packing.code || '-'}}</td>
             <td>{{packing.serial || '-'}}</td>
             <td>{{packing.project?.name || '-'}}</td>
-            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Perdida"
+            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
               : "Embalagem em Viagem")}}</td>
             <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
               (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
@@ -812,7 +812,7 @@
             <td>{{packing?.serial || '-'}}</td>
             <td>{{packing.project?.name || '-'}}</td>
             <td>{{packing.supplier?.name || '-'}}</td>
-            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Perdida"
+            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
               : "Embalagem em Viagem")}}</td>
             <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
               (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
@@ -870,7 +870,7 @@
             <td>{{packing.supplier?.duns || '-'}}</td>
             <td>{{packing.project?.name || '-'}}</td>
             <td>{{packing.supplier?.name || '-'}}</td>
-            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Perdida"
+            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
               : "Embalagem em Viagem")}}</td>
             <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
               (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
@@ -880,7 +880,7 @@
             <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min)
               : (packing.actual_gc16?.max
               < packing.quantity ? packing.quantity-packing.actual_gc16?.max : 'NP')) : '-' }}</td>
-                <td>{{packing.missing ? 'Perdida': (packing.problem ? 'Local Errado' : (packing.traveling ? 'Viajando' : 'Sem
+                <td>{{packing.missing ? 'Ausente': (packing.problem ? 'Local Errado' : (packing.traveling ? 'Viajando' : 'Sem
                   Anormalidade')) }}</td>
 
           </tr>
