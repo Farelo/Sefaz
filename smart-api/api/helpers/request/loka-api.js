@@ -7,7 +7,7 @@ module.exports = {
 }
 
 /**
- * Realiza a requisição para API da LOKA avaliando se 
+ * Realiza a requisição para API da LOKA avaliando se
  * o ID inserido no sistema realmente existe no sistema da loka.
  */
 function confirmDevice(token, device) {
@@ -64,7 +64,7 @@ function positions(token, device, initial_date, final_date) {
         }
 
         let callback = function (error, response, body) {
-           
+
             if (error)
                 reject(error);
 
@@ -86,9 +86,9 @@ function positions(token, device, initial_date, final_date) {
                         })
                         markersFiltered.forEach(o => array.markers.push({ 'start': new Date(o.date * 1000), 'end': (o.to == null ? null : new Date(o.to * 1000)), 'battery': o.battery, 'position': [o.latitude, o.longitude], 'accuracy': o.accuracy}))
                     }
-                    
+
                     array.markers.forEach(o => array.positions.push({ lat: o.position[0], lng: o.position[1] }))
-                    
+
                     console.log(array)
                     resolve(array)
                 } else {
