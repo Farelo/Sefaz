@@ -180,7 +180,7 @@ services:
     container_name: cnh-mg-cliente
     ports:
       - '8019:8019'    #obrigratorio
-  nissan-api: #finalizado
+  cnh-mg-api: #finalizado
     build:
       context: 'smart-api'
       dockerfile: Dockerfile
@@ -208,7 +208,7 @@ services:
     container_name: cnh-cdp-cliente
     ports:
       - '8021:8021'    #obrigratorio
-  nissan-api: #finalizado
+  cnh-cdp-api: #finalizado
     build:
       context: 'smart-api'
       dockerfile: Dockerfile
@@ -236,7 +236,7 @@ services:
     container_name: gm-manufatura-cliente
     ports:
       - '8023:8023'    #obrigratorio
-  nissan-api: #finalizado
+  gm-manufatura-api: #finalizado
     build:
       context: 'smart-api'
       dockerfile: Dockerfile
@@ -264,7 +264,7 @@ services:
     container_name: jj-cliente
     ports:
       - '8025:8025'    #obrigratorio
-  nissan-api: #finalizado
+  jj-api: #finalizado
     build:
       context: 'smart-api'
       dockerfile: Dockerfile
