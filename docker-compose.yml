@@ -204,10 +204,10 @@ services:
       dockerfile: Dockerfile
       args:
         baseurl: http://35.169.169.38:8022/api/
-        port: 8030
+        port: 8020
     container_name: cnh-cdp-cliente
     ports:
-      - '8021:8021'    #obrigratorio
+      - '8020:8020'    #obrigratorio
   nissan-api: #finalizado
     build:
       context: 'smart-api'
