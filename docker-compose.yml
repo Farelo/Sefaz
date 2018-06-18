@@ -264,7 +264,7 @@ services:
     container_name: jj-cliente
     ports:
       - '8025:8025'    #obrigratorio
-  jj-api: #finalizado
+  jej-api: #finalizado
     build:
       context: 'smart-api'
       dockerfile: Dockerfile
