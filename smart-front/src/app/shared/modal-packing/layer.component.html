@@ -36,12 +36,12 @@
     <div class="col-md-2">
       <!-- <label for="dateBegin" class="col-form-label-sm">Data inicial</label> -->
       <!-- <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDaterangepicker [(ngModel)]="initialDate" [bsConfig]="datePickerConfig" placement="right"> -->
-      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker (ngModel)="initialDate" [bsValue]="initialDate" (bsValueChange)="onDateChange($event)" [bsConfig]="datePickerConfig">
+      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker [(ngModel)]="initialDate" [bsValue]="initialDate" (bsValueChange)="onFirstDateChange($event)" [bsConfig]="datePickerConfig">
     </div>
 
     <div class="col-md-2">
       <!-- <label for="dateEnd" class="col-form-label-sm">Data final</label> -->
-      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker (ngModel)="finalDate" [bsValue]="finalDate" (bsValueChange)="onDateChange($event)" [bsConfig]="datePickerConfig">
+      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker [(ngModel)]="finalDate" [bsValue]="finalDate" (bsValueChange)="onFinalDateChange($event)" [bsConfig]="datePickerConfig">
     </div>
 
     <span style="padding-top: 5px;" class="col-auto">Acurácia:</span>
@@ -177,7 +177,8 @@
       <!-- rack last marker -->
       <ng-container *ngIf="lastPosition">
         <marker *ngIf="showLastPosition" [position]="lastPosition.position"
-          (click)="clicked($event,lastPosition)">
+          (click)="clicked($event,lastPosition)"
+           [icon]="{ url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }">
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display">

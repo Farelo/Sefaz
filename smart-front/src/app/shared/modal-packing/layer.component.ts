@@ -119,10 +119,16 @@ export class LayerModalComponent implements OnInit {
     this.getSuppliers();
   }
  
-  onDateChange(newDate: Date) {
-    
-    this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), this.finalDate.getTime(), 32000);
+  onFirstDateChange(newDate: Date) { 
+
+    this.getFilteredPositions(this.packing.code_tag, newDate.getTime(), this.finalDate.getTime(), 32000);
   }
+
+  onFinalDateChange(newDate: Date) { 
+
+    this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), newDate.getTime(), 32000);
+  }
+  
 
   /**
    * Get the package positions with the filter applied
