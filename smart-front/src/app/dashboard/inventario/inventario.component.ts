@@ -329,7 +329,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   }
 
   openLayer(packing) {
-    const modalRef = this.modalService.open(LayerModalComponent, { backdrop: "static", size: "lg" });
+    const modalRef = this.modalService.open(LayerModalComponent, { backdrop: "static", size: "lg", windowClass: 'modal-xl' });
     modalRef.componentInstance.packing = packing;
   }
 

@@ -3757,6 +3757,20 @@
             "description": "Retrieve a packing position related this packing code",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "initial_date",
+            "description": "Retrieve a packing position ordered by initial date",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "final_date",
+            "description": "Retrieve a packing position ordered by final date",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {

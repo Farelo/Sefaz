@@ -1,7 +1,8 @@
 .close {
   font-size: 20px;
   text-align: right;
-  margin-right: 5px;
+  position: absolute;
+  right: 15px;
 }
 
 .botaoVisualizar {
@@ -12,6 +13,7 @@
 .botaoVisualizar:focus {
   outline: none;
 }
+
 * { font-family: 'Roboto', sans-serif; }
 
 .header {
@@ -20,19 +22,7 @@
   border-bottom-color: grey;
   border-bottom-width: thin;
   margin-bottom: 15px;
-}
-
-.header span {
-  color: #ef5562;
-}
-
-.header p {
-  font-weight: bold;
-  width: 300px;
-}
-
-.modalBody span {
-  font-weight: bold;
+  width: 100%;
 }
 
 .botaoVisualizar {
@@ -77,15 +67,17 @@
 .btn {
   font-size: 16px;
 }
+
 * { font-family: 'Roboto', sans-serif; }
 
 .table {
+  margin-top: 10px;
   font-size: 14px;
 }
 
 .cabecalho {
   background-color: #6382c9;
-  color: white;
+  color: white; 
 }
 
 td { background-color: white; }
@@ -102,11 +94,25 @@ td { background-color: white; }
   color: #4c7bff;
 }
 
-.header p {
-  font-weight: bold;
-  width: 300px;
-}
 
 th {
   border-bottom: none !important;
+}
+
+p {
+  margin-bottom: 2px;
+}
+
+#visuslize-on-map {
+  margin-bottom: 15px;
+}
+
+#ver-no-mapa {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#ver-no-mapa:hover {
+  text-decoration: underline;
 }
