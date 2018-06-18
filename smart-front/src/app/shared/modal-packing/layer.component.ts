@@ -119,10 +119,16 @@ export class LayerModalComponent implements OnInit {
     this.getSuppliers();
   }
  
-  onDateChange(newDate: Date) {
-    
-    this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), this.finalDate.getTime(), 32000);
+  onFirstDateChange(newDate: Date) { 
+
+    this.getFilteredPositions(this.packing.code_tag, newDate.getTime(), this.finalDate.getTime(), 32000);
   }
+
+  onFinalDateChange(newDate: Date) { 
+
+    this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), newDate.getTime(), 32000);
+  }
+  
 
   /**
    * Get the package positions with the filter applied
@@ -391,14 +397,65 @@ export class LayerModalComponent implements OnInit {
 
   getPin(i: number){
     let pin = null;
-
+    
+    pin = { url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }
     if(this.markers.length>1){
       if (i==0) pin = { url: '../../../assets/images/pin_normal_first.png', size: [28, 43], scaledSize: [28, 43] }
       if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_normal_final.png', size: [28, 43], scaledSize: [28, 43] }
-      if (i > 0 && i < (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }
-    }else{
-      pin = { url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }
     }
+
     return pin;
   }
+
+  getPinWithAlert(i: number, alertCode: number) {
+    let pin = null;
+
+    switch (alertCode){
+      case 1:
+        pin = { url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }
+        if (this.markers.length > 1) {
+          if (i == 0) pin = { url: '../../../assets/images/pin_normal_first.png', size: [28, 43], scaledSize: [28, 43] }
+          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_normal_final.png', size: [28, 43], scaledSize: [28, 43] }
+        }
+        break;
+
+      case 2:
+        pin = { url: '../../../assets/images/pin_incorreto.png', size: [28, 43], scaledSize: [28, 43] }
+        if (this.markers.length > 1) {
+          if (i == 0) pin = { url: '../../../assets/images/pin_incorreto_first.png', size: [28, 43], scaledSize: [28, 43] }
+          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_incorreto_final.png', size: [28, 43], scaledSize: [28, 43] }
+        }
+        break;
+
+      case 3:
+        pin = { url: '../../../assets/images/pin_bateria.png', size: [28, 43], scaledSize: [28, 43] }
+        if (this.markers.length > 1) {
+          if (i == 0) pin = { url: '../../../assets/images/pin_bateria_first.png', size: [28, 43], scaledSize: [28, 43] }
+          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_bateria_final.png', size: [28, 43], scaledSize: [28, 43] }
+        }
+        break;
+
+      case 4:
+        pin = { url: '../../../assets/images/pin_atrasado.png', size: [28, 43], scaledSize: [28, 43] }
+        if (this.markers.length > 1) {
+          if (i == 0) pin = { url: '../../../assets/images/pin_atrasado_first.png', size: [28, 43], scaledSize: [28, 43] }
+          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_atrasado_final.png', size: [28, 43], scaledSize: [28, 43] }
+        }
+        break;
+
+      case 5:
+        pin = { url: '../../../assets/images/pin_permanencia.png', size: [28, 43], scaledSize: [28, 43] }
+        if (this.markers.length > 1) {
+          if (i == 0) pin = { url: '../../../assets/images/pin_permanencia_first.png', size: [28, 43], scaledSize: [28, 43] }
+          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_permanencia_final.png', size: [28, 43], scaledSize: [28, 43] }
+        }
+        break;
+
+      case 6:
+        break;
+    }
+    
+    return pin;
+  }
+
 }
