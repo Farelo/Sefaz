@@ -175,7 +175,7 @@ services:
       context: 'smart-front'
       dockerfile: Dockerfile
       args:
-        baseurl: http://35.169.169.38:8021/api/
+        baseurl: http://35.169.169.38:8020/api/
         port: 8019
     container_name: cnh-mg-cliente
     ports:
@@ -189,13 +189,13 @@ services:
     environment:
       NODE_ENV: production
       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-      PORT: 8021                   #obrigatorios caso não coloque o DNS
-      DATABASE: cnh_mg            #obrigatorios
+      PORT: 8020                   #obrigatorios caso não coloque o DNS
+      DATABASE: cnhmg            #obrigatorios
       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
       # DNS:
     tty: true
     ports:
-      - '8021:8021'        #obrigratorio
+      - '8020:8020'        #obrigratorio
     network_mode: mongo_net
   ###################################### CNH CDP  ####################################
   cnh-cdp-cliente:
@@ -204,10 +204,10 @@ services:
       dockerfile: Dockerfile
       args:
         baseurl: http://35.169.169.38:8022/api/
-        port: 8020
+        port: 8021
     container_name: cnh-cdp-cliente
     ports:
-      - '8020:8020'    #obrigratorio
+      - '8021:8021'    #obrigratorio
   nissan-api: #finalizado
     build:
       context: 'smart-api'
@@ -218,7 +218,7 @@ services:
       NODE_ENV: production
       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
       PORT: 8022                  #obrigatorios caso não coloque o DNS
-      DATABASE: cnh_cdp          #obrigatorios
+      DATABASE: cnhcdp          #obrigatorios
       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
       # DNS:
     tty: true
@@ -246,7 +246,7 @@ services:
       NODE_ENV: production
       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
       PORT: 8024                  #obrigatorios caso não coloque o DNS
-      DATABASE: gm_manufatura          #obrigatorios
+      DATABASE: gmmanufatura          #obrigatorios
       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
       # DNS:
     tty: true
