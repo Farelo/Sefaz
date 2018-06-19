@@ -258,6 +258,9 @@ ngui-map {
   background-size: auto 43px;
 }
 
+div.info-window-content > p {
+  margin-bottom: 4px;
+}
 
 /* ::ng-deep .modal-xl .modal-dialog{
   max-width: 1490px !important;
