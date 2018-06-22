@@ -107,16 +107,17 @@ span {
 .det {
   width: 15px;
   height: 15px;
-  -webkit-mask-box-image: url("../../../assets/images/mais.png");
+  background-image: url("../../../assets/images/icon_plus_white.png");
+  background-size: 15px 15px;
   cursor: pointer;
   left: 50%;
-  margin-left: 38%;
-  background-color: white;
+  margin-left: 38%; 
 }
 
 .mais:hover .det {
-  background-color: #6382c9;
+  background-image: url("../../../assets/images/icon_plus_blue.png");
   -webkit-transition: background-color 0.3s;
+  -mozkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
 

@@ -108,11 +108,15 @@
         </info-window>
       </marker>
       
-      <!-- <circle *ngFor="let posPlantsRadius of plants" 
+      <circle *ngFor="let posPlantsRadius of plants" 
           [center]="posPlantsRadius.latLng"
-          [fillColor]="'#ffc107'" [fillOpacity]="0.3"
-          [strokeColor]="'#ffc107'" [strokeOpacity]="0.7" [strokeWeight]="1" 
-          radius="300"></circle> -->
+          [fillColor]="'#0044a8'"
+          [fillOpacity]="0.2"
+          [strokeColor]="'#0044a8'"
+          [strokeOpacity]="0.4" 
+          [strokeWeight]="1" 
+          [visible]="showControlledPlants"
+          radius="{{ settings.range_radius }}"></circle>
       
       <!-- ///////////// -->
       <!-- Logistic operator -->
@@ -137,8 +141,15 @@
         </info-window>
       </marker>
       
-      <!-- <circle *ngFor="let posSuppliersRadius of suppliers" [center]="posSuppliersRadius.latLng" [fillColor]="'#ffc107'" [fillOpacity]="0.3"
-        [strokeColor]="'#000'" [strokeOpacity]="0.5" [strokeWeight]="1" radius="300"></circle> -->
+      <circle *ngFor="let posSuppliersRadius of suppliers" 
+        [center]="posSuppliersRadius.latLng" 
+        [fillColor]="'#4d4d4d'" 
+        [fillOpacity]="0.2"
+        [strokeColor]="'#4d4d4d'" 
+        [strokeOpacity]="0.4" 
+        [strokeWeight]="1" 
+        [visible]="showControlledPlants"
+        radius="{{ settings.range_radius }}"></circle>
 
 
       <!-- ///////////// -->
@@ -167,9 +178,9 @@
       <ng-container *ngFor="let posRadius of rangedMarkers">
         <circle *ngIf="(posRadius.accuracy <= accuracyRange) && (!showLastPosition)"
               [center]="posRadius.latLng" 
-              [fillColor]="'#6382c9'" 
+              [fillColor]="'#027f01'" 
               [fillOpacity]="0.2" 
-              [strokeColor]="'#6382c9'"
+              [strokeColor]="'#027f01'"
               [strokeOpacity]="0.7" 
               [strokeWeight]="1" 
               radius="{{ posRadius.accuracy || 0 }}"></circle>
@@ -196,8 +207,14 @@
           </info-window>
         </marker>
         
-        <circle *ngIf="showLastPosition" [center]="lastPosition.latLng" [fillColor]="'#6382c9'" [fillOpacity]="0.2"
-          [strokeColor]="'#6382c9'" [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ lastPosition.accuracy || 0 }}"></circle>
+        <circle *ngIf="showLastPosition" 
+          [center]="lastPosition.latLng" 
+          [fillColor]="'#027f01'" 
+          [fillOpacity]="0.2"
+          [strokeColor]="'#027f01'" 
+          [strokeOpacity]="0.7" 
+          [strokeWeight]="1" 
+          radius="{{ lastPosition.accuracy || 0 }}"></circle>
       </ng-container> 
     </ngui-map>
 
