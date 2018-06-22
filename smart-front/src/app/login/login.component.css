@@ -1,3 +1,5 @@
+@import '~font-awesome/css/font-awesome.css';
+
 * { font-family: 'Roboto', sans-serif; }
 
 .teste {
@@ -16,7 +18,7 @@
   background-color: rgba(0,0,0,.8);
   display: inline-block;
   text-align: -webkit-center;
-  padding: 20px;
+  padding: 20px 40px 20px 40px; 
   position: absolute;
   top: 50%;
   left: 50%;
@@ -101,7 +103,9 @@ p {
 }
 
 .esqueci {
-  margin-top: 25px;
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 25px;
 }
 
 .esqueci:hover {
@@ -141,7 +145,16 @@ button:focus {
 }
 
 span {
-  background-image: url("../../assets/images/lock.png");
+  /* background-image: url("../../assets/images/lock.png"); */
+}
+
+.requiredText { 
+  text-align: center; 
+  text-align: -webkit-center; 
+}
+
+.input-group{
+  width: min-content;
 }
 
 .senhaIncorreta2,
