@@ -21,7 +21,8 @@ const routeSchema = new mongoose.Schema({
       packing_code: String,
       time: {
         max: Number,
-        min: Number
+        min: Number,
+        to_be_late: Number
       },
       location : {
         distance: {

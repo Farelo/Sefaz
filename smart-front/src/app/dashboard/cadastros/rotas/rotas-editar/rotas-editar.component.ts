@@ -19,6 +19,8 @@ export class RotasEditarComponent implements OnInit {
   @ViewChild(DirectionsRenderer) directionsRendererDirective: DirectionsRenderer;
   public time_min: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
   public time_max: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
+  public time_delay: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+
   public directionsRenderer: google.maps.DirectionsRenderer;
   public directionsResult: google.maps.DirectionsResult;
   public direction: any = {
@@ -62,7 +64,8 @@ export class RotasEditarComponent implements OnInit {
       __v: ['', [Validators.required]],
       time: this.fb.group({
         max:  ['', [Validators.required]],
-        min:  ['', [Validators.required]]
+        min:  ['', [Validators.required]],
+        delay: ['', [Validators.required]]
       }),
       location: this.fb.group({
         distance: this.fb.group({
@@ -89,15 +92,20 @@ export class RotasEditarComponent implements OnInit {
     let partial_min = this.time_min.hour * 1000 * 60 * 60 * 24 ;
     partial_min = partial_min + this.time_min.minute * 1000 * 60 * 60  ;
     partial_min = partial_min + this.time_min.second * 1000 * 60 ;
+
     let partial_max = this.time_max.hour * 1000 * 60 * 60 * 24 ;
     partial_max = partial_max + this.time_max.minute * 1000 * 60 * 60  ;
     partial_max = partial_max + this.time_max.second * 1000 * 60 ;
 
+    let partial_delay = this.time_delay.hour * 1000 * 60 * 60 * 24;
+    partial_delay = partial_delay + this.time_delay.minute * 1000 * 60 * 60;
+    partial_delay = partial_delay + this.time_delay.second * 1000 * 60;
 
     this.route['controls'].hashPacking.setValue(this.route['controls'].supplier.value._id + this.route['controls'].packing_code.value.id);
     value.hashPacking = this.route['controls'].supplier.value._id + this.route['controls'].packing_code.value.id;
     value.time.max = partial_max;
     value.time.min = partial_min;
+    value.time.to_be_late = partial_delay;
 
     if(this.route.valid){
 
@@ -156,6 +164,15 @@ export class RotasEditarComponent implements OnInit {
              second: (parseInt((time / (1000 * 60)).toString()) % 60)
            };
 
+
+          time = result.data.time.to_be_late || '0';
+          time = parseInt(time.toString());
+          this.time_delay = {
+            hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
+            minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
+            second: (parseInt((time / (1000 * 60)).toString()) % 60)
+          };
+          
            delete result.data.time;
           (<FormGroup>this.route)
                   .patchValue(result.data, { onlySelf: true });

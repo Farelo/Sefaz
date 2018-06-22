@@ -1,3 +1,5 @@
+@import '~font-awesome/css/font-awesome.css';
+
 .close {
   font-size: 20px;
   text-align: right;
@@ -22,8 +24,14 @@
   margin-bottom: 15px;
 }
 
-.header span {
-  color: #6382c9;
+#showDetails {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#showDetails:hover {
+  text-decoration: underline;
 }
 
 .header p {
@@ -122,3 +130,145 @@ img {
 .bold {
   font-weight: 700;
 }
+
+/*--------*/
+/*Checkboxes*/
+.checkbox label:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.checkbox .cr {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #a9a9a9;
+  border-radius: .25em;
+  width: 1.3em;
+  height: 1.3em;
+  float: left;
+  margin-right: .5em;
+}
+
+.checkbox .cr .cr-icon {
+  position: absolute;
+  font-size: .8em;
+  line-height: 0;
+  top: 50%;
+  left: 15%;
+}
+
+.checkbox label input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox label input[type="checkbox"]+.cr>.cr-icon {
+  opacity: 0;
+}
+
+.checkbox label input[type="checkbox"]:checked+.cr>.cr-icon {
+  opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled+.cr {
+  opacity: .5;
+}
+
+/* ------ */
+.input-group-accuracy {
+    display: table; 
+}
+
+.input-group-accuracy-btn {
+    vertical-align: middle;
+}
+
+.btn-left-accuracy {
+    margin-right: -2px;
+}
+
+.btn-right-accuracy {
+    margin-left: -2px;
+}
+
+.input-group-accuracy-btn > .btn {
+    position: relative;
+}
+
+.btn {
+    padding: 6px 12px; 
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+}
+
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.input-group-accuracy {
+    border-radius: 0;
+}
+
+.input-group-accuracy .form-control, .input-group-accuracy-btn {
+    display: table-cell;
+}
+
+.input-group-accuracy .form-control {
+    width: 100%;
+}
+
+.form-control{
+  width: 100% !important;
+  font-size: 14px;
+}
+
+div#collapseExample > p{
+  font-weight: normal;
+  margin-bottom: 4px;
+}
+
+ngui-map {
+  height: calc( 50vh ) !important;
+}
+
+.custom-icon-map-plant{
+  background-image: url("../../../assets/images/pin_plant.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  /*height: 43px;*/
+  background-size: auto 43px;
+}
+
+.custom-icon-map-supplier{
+  background-image: url("../../../assets/images/pin_supplier.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  /*height: 43px;*/
+  background-size: auto 43px;
+}
+
+.custom-icon-map-logistic{
+  background-image: url("../../../assets/images/pin_logistic.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  /*height: 43px;*/
+  background-size: auto 43px;
+}
+
+
+/* ::ng-deep .modal-xl .modal-dialog{
+  max-width: 1490px !important;
+  min-width: 971px !important;   
+  width: 95% !important;
+} */
+
+/* @media (min-width: 970px) {
+  .modal-xl > .modal-lg {
+    max-width: 1490px !important;
+    min-width: 971px !important;   
+    width: 95% !important;
+  }
+} */

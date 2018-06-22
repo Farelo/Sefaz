@@ -27,8 +27,7 @@ services:
     tty: true
     ports:
       - '8001:8001'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### CEBRACE ####################################
   cebrace-cliente:
     build:
@@ -56,8 +55,7 @@ services:
     tty: true
     ports:
       - '8005:8005'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### GM ####################################
   gm-cliente:
     build:
@@ -85,8 +83,7 @@ services:
     tty: true
     ports:
       - '8007:8007'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### NESTLE ####################################
   nestle-cliente:
     build:
@@ -114,37 +111,7 @@ services:
     tty: true
     ports:
       - '8009:8009'        #obrigratorio
-    depends_on:
-      - mongo
-  ###################################### TESTE ITERNO ####################################
-  test-interno-homologacao:
-    build:
-      context: 'smart-front'
-      dockerfile: Dockerfile
-      args:
-        baseurl: http://35.169.169.38:8011/api/
-        port: 8010
-    container_name: test-interno-homologacao
-    ports:
-      - '8010:8010'    #obrigratorio
-  test-interno-api-homologacao: #finalizado
-    build:
-      context: 'smart-api'
-      dockerfile: Dockerfile
-    command: npm start
-    container_name: test-interno-api-homologacao
-    environment:
-      NODE_ENV: production
-      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-      PORT: 8011                    #obrigatorios caso não coloque o DNS
-      DATABASE: testeinterno        #obrigatorios
-      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
-        # DNS:
-    tty: true
-    ports:
-      - '8011:8011'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### JSL ####################################
   jsl-cliente:
     build:
@@ -172,8 +139,7 @@ services:
     tty: true
     ports:
       - '8014:8014'        #obrigratorio
-    depends_on:
-      - mongo
+    network_mode: mongo_net
   ###################################### NISSAN ####################################
   nissan-cliente:
     build:
@@ -201,22 +167,117 @@ services:
     tty: true
     ports:
       - '8016:8016'        #obrigratorio
-    depends_on:
-      - mongo
-  ###################################### CONFIGURAÇÕES DO MONGO  ####################################
-  mongo:
-    image: 'mongo:latest'
-    container_name: mongo
+    network_mode: mongo_net
+
+  ###################################### CNH MG  ####################################
+  cnh-mg-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args:
+        baseurl: http://35.169.169.38:8020/api/
+        port: 8019
+    container_name: cnh-mg-cliente
     ports:
-      - '27017:27017'
-    volumes:
-      - ./data/db:/data/db
-      - ./data/backup:/data/backup
-###################################### DEFININDO UMA REDE DE CONEXÃO ####################################
-networks:
-  net-recicla:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: 172.16.0.0/24
-         gateway: 172.16.0.254
+      - '8019:8019'    #obrigratorio
+  cnh-mg-api: #finalizado
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: cnh-mg-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8020                   #obrigatorios caso não coloque o DNS
+      DATABASE: cnhmg            #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
+      # DNS:
+    tty: true
+    ports:
+      - '8020:8020'        #obrigratorio
+    network_mode: mongo_net
+  ###################################### CNH CDP  ####################################
+  cnh-cdp-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args:
+        baseurl: http://35.169.169.38:8022/api/
+        port: 8021
+    container_name: cnh-cdp-cliente
+    ports:
+      - '8021:8021'    #obrigratorio
+  cnh-cdp-api: #finalizado
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: cnh-cdp-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8022                  #obrigatorios caso não coloque o DNS
+      DATABASE: cnhcdp          #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
+      # DNS:
+    tty: true
+    ports:
+      - '8022:8022'        #obrigratorio
+    network_mode: mongo_net
+  ###################################### GM Manufatura  ####################################
+  gm-manufatura-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args:
+        baseurl: http://35.169.169.38:8024/api/
+        port: 8023
+    container_name: gm-manufatura-cliente
+    ports:
+      - '8023:8023'    #obrigratorio
+  gm-manufatura-api: #finalizado
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: gm-manufatura-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8024                  #obrigatorios caso não coloque o DNS
+      DATABASE: gmmanufatura          #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
+      # DNS:
+    tty: true
+    ports:
+      - '8024:8024'        #obrigratorio
+    network_mode: mongo_net
+  ###################################### J&J  ####################################
+  jj-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args:
+        baseurl: http://35.169.169.38:8026/api/
+        port: 8025
+    container_name: jj-cliente
+    ports:
+      - '8025:8025'    #obrigratorio
+  jej-api: #finalizado
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: jj-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8026                  #obrigatorios caso não coloque o DNS
+      DATABASE: jj          #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
+      # DNS:
+    tty: true
+    ports:
+      - '8026:8026'        #obrigratorio
+    network_mode: mongo_net
