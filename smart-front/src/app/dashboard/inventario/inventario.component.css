@@ -190,31 +190,33 @@ hr {
 .det {
   width: 15px;
   height: 15px;
-  -webkit-mask-box-image: url("../../../assets/images/mais.png");
+  background-image: url("../../../assets/images/icon_plus_blue.png");
+  background-size: 15px 15px;
   cursor: pointer;
   left: 50%;
   margin-left: 36%;
-  background-color: #6382c9;
 }
 
 .det:hover {
-  background-color: #777;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
+  background-image: url("../../../assets/images/icon_plus_gray.png");
+  -webkit-transition: background-image 0.3s ease-in-out;
+  -moz-transition: background-image 0.3s ease-in-out;
+  transition: background-image 0.3s ease-in-out;
 }
 
 .det2 {
   width: 25px;
   height: 25px;
-  -webkit-mask-box-image: url("../../../assets/images/interrogacao.png");
+  background-image: url("../../../assets/images/icon_question_dark.png");
+  background-size: 25px 25px;
   cursor: pointer;
-  background-color: #6382c9;
 }
 
 .det2:hover {
-  background-color: #777;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
+  background-image: url("../../../assets/images/icon_question_gray.png");
+  -webkit-transition: background-image 0.3s;
+  -moz-transition: background-image 0.3s;
+  transition: background-image 0.3s;
 }
 
 .bigger {
@@ -362,3 +364,9 @@ hr {
   background-color: #ef5562;
 }
 /* [Emanoel] FIM: DASHBOARD GERAL */
+
+/* ::ng-deep .modal-xl .modal-dialog{
+  max-width: 1490px !important;
+  min-width: 971px !important;   
+  width: 95% !important;
+} */

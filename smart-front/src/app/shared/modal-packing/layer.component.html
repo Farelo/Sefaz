@@ -1,38 +1,223 @@
 <div class="modalFilho">
   <div class="header">
-  <h1><span >Detalhes do Embalagem </span> </h1><br>
-  <p>Código: {{packing.code}}</p>
-  <p>Serial: {{packing.serial}}</p>
-  <p>Projeto: {{packing.project.name}}</p>
-  <p>Fornecedor: {{packing.supplier.name}}</p>
-  <p>Planta Atual: {{packing.actual_plant?.plant?.plant_name ? packing.actual_plant?.plant?.plant_name : "Sem informação"}}</p>
+    <h1>
+      <span>Detalhes da Embalagem </span>
+    </h1>
+    
+    <p>
+      <span class="badge badge-secondary">Código: {{packing.code}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{packing.serial}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.code_tag}}</span>
+    </p>
+
+    <div id="collapseExample" [ngbCollapse]="detailsIsCollapsed">
+      <p>Projeto: {{packing.project.name}}</p>
+      <p>Fornecedor: {{packing.supplier.name}}</p>
+      <p>Planta Atual: {{packing.actual_plant?.plant?.plant_name ? packing.actual_plant?.plant?.plant_name : "Sem informação"}}</p>
+    </div>
+
+    <span id="showDetails" (click)="detailsIsCollapsed = !detailsIsCollapsed" [attr.aria-expanded]="!detailsIsCollapsed" aria-controls="collapseExample"
+      style="cursor: pointer;">{{ detailsIsCollapsed == true ? 'Mostrar detalhes' : 'Esconder detalhes' }}</span>
   </div>
+
   <button type="button" class="close" aria-label="Close" (click)="activeLayer.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 
-<div class="modalBody">
-  <ngui-map  [center]="center" mapTypeId="terrain" scrollwheel="false" >
-      <polyline
+  <div class="row">
+    <div class="col-md-6">
+      <p>FILTRAR POR:</p>
+    </div>
+    <div class="col-md-6">
+      <p class="text-right"> {{ path.length }} resultados encontrados</p>
+    </div>
+  </div>
+  <div class="map-filters form-row">
+    <div class="col-md-2">
+      <!-- <label for="dateBegin" class="col-form-label-sm">Data inicial</label> -->
+      <!-- <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDaterangepicker [(ngModel)]="initialDate" [bsConfig]="datePickerConfig" placement="right"> -->
+      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker [(ngModel)]="initialDate" (ngModelChange)="onFirstDateChange($event)" [bsConfig]="datePickerConfig">
+    </div>
 
-        [path]="path"
-        [geodesic]="true"
-        [strokeColor]="'#3c763d'"
-        [strokeOpacity]="2"
-        [strokeWeight]="3"></polyline>
-        <marker *ngFor="let pos of markers" [position]="pos.position" (click)="clicked($event,pos)">
+    <div class="col-md-2">
+      <!-- <label for="dateEnd" class="col-form-label-sm">Data final</label> -->
+      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker [(ngModel)]="finalDate" (ngModelChange)="onFinalDateChange($event)" [bsConfig]="datePickerConfig">
+    </div>
+
+    <span style="padding-top: 5px;" class="col-auto">Acurácia:</span>
+    <!-- <div class="col-md-4"> -->
+      <!-- <nouislider id="accuracyRange" [min]="0" [max]="32" [step]="0.1" [(ngModel)]="someRange3" [tooltips]="[true]"></nouislider> -->
+    <!-- </div> -->
+
+    <div class="form-group col-auto"> 
+      <div class="input-group-accuracy">
+        <span class="input-group-accuracy-btn">
+          <button type="button" class="btn btn-default btn-left-accuracy" (click)="decrementRange()">-</button>
+        </span>
+        <input id="after" class="form-control" type="text" min="1" max="10" style="width: 80px !important; text-align: center;" [(ngModel)]="accuracyRange" (ngModelChange)="rangechanged()">
+        <span class="input-group-accuracy-btn">
+          <button type="button" class="btn btn-default btn-right-accuracy" (click)="incrementRange()">+</button>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group form-check">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="" [(ngModel)]="showLastPosition">
+          <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
+          Apenas última posição
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group form-check">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="" [ngModel]="showControlledPlants" (ngModelChange)="toggleShowControlledPlants()">
+          <span class="cr">
+            <i class="cr-icon fa fa-check"> </i>
+          </span> 
+          Mostrar plantas controladas
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modalBody">
+    <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false">
+      <polyline *ngIf="!showLastPosition" [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3" [icons]="icons"></polyline>
+      
+      <!-- ///////////// -->
+      <!-- Plant -->
+      <marker *ngFor="let posPlants of plants" 
+      [position]="[posPlants.lat, posPlants.lng]" 
+      (click)="clickedPlant($event, posPlants)" 
+      [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
+      [visible]="showControlledPlants">
+        <!-- <div class="custom-icon-map-plant"></div> -->
+        <info-window id="pw">
+          <div class="iw-title">INFORMAÇÕES</div> 
+          <div *ngIf="plant.display">
+            <p>
+              <span class="bold">Planta:</span> {{ plant.name }}</p> 
+            <!-- <p>
+              <span class="bold">Localização:</span> {{ plant.location }}</p> -->
+          </div>
+        </info-window>
+      </marker>
+      
+      <circle *ngFor="let posPlantsRadius of plants" 
+          [center]="posPlantsRadius.latLng"
+          [fillColor]="'#0044a8'"
+          [fillOpacity]="0.2"
+          [strokeColor]="'#0044a8'"
+          [strokeOpacity]="0.4" 
+          [strokeWeight]="1" 
+          [visible]="showControlledPlants"
+          radius="{{ settings.range_radius }}"></circle>
+      
+      <!-- ///////////// -->
+      <!-- Logistic operator -->
+      
+
+      <!-- ///////////// -->
+      <!-- Supplier -->
+      <marker *ngFor="let posSuppliers of suppliers" 
+        [position]="[posSuppliers.plant.lat, posSuppliers.plant.lng]" 
+        (click)="clickedSupplier($event, posSuppliers)"
+        [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" 
+        [visible]="showControlledPlants">
+        <!-- <div class="custom-icon-map-plant"></div> -->
+        <info-window id="sw">
+          <div class="iw-title">INFORMAÇÕES</div>
+          <div *ngIf="supplier.display">
+            <p>
+              <span class="bold">Fornecedor:</span> {{ supplier.name }}</p>
+            <!-- <p>
+                    <span class="bold">Localização:</span> {{ plant.location }}</p> -->
+          </div>
+        </info-window>
+      </marker>
+      
+      <circle *ngFor="let posSuppliersRadius of suppliers" 
+        [center]="posSuppliersRadius.latLng" 
+        [fillColor]="'#4d4d4d'" 
+        [fillOpacity]="0.2"
+        [strokeColor]="'#4d4d4d'" 
+        [strokeOpacity]="0.4" 
+        [strokeWeight]="1" 
+        [visible]="showControlledPlants"
+        radius="{{ settings.range_radius }}"></circle>
+
+
+      <!-- ///////////// -->
+      <!-- rack markers -->
+      <ng-container *ngFor="let pos of rangedMarkers; let i = index">
+        <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)" 
+          [position]="pos.position" 
+          (click)="clicked($event,pos)"
+          [icon]="getPin(i)" >
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
-              <div *ngIf="marker.display">
-                    <p><span class="bold">Data de entrada:</span> {{ marker.start |  date: 'dd/MM/yyyy - hh:mm a' }}</p>
-                    <p><span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end |  date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
-                    <p><span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
-              </div>
-
+            <div *ngIf="marker.display" class="info-window-content">
+              <p>
+                <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+              <p>
+                <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
+              <p>
+                <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
+              <p>
+                <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
+            </div>
           </info-window>
         </marker>
+      </ng-container>
+      
+      <ng-container *ngFor="let posRadius of rangedMarkers">
+        <circle *ngIf="(posRadius.accuracy <= accuracyRange) && (!showLastPosition)"
+              [center]="posRadius.latLng" 
+              [fillColor]="'#027f01'" 
+              [fillOpacity]="0.2" 
+              [strokeColor]="'#027f01'"
+              [strokeOpacity]="0.7" 
+              [strokeWeight]="1" 
+              radius="{{ posRadius.accuracy || 0 }}"></circle>
+      </ng-container> 
+
+      <!-- ///////////// -->
+      <!-- rack last marker -->
+      <ng-container *ngIf="lastPosition">
+        <marker *ngIf="showLastPosition" [position]="lastPosition.position"
+          (click)="clicked($event,lastPosition)"
+           [icon]="{ url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }">
+          <info-window id="iw">
+            <div class="iw-title">INFORMAÇÕES</div>
+            <div *ngIf="marker.display" class="info-window-content">
+              <p>
+                <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+              <p>
+                <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
+              <p>
+                <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
+              <p>
+                <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
+            </div>
+          </info-window>
+        </marker>
+        
+        <circle *ngIf="showLastPosition" 
+          [center]="lastPosition.latLng" 
+          [fillColor]="'#027f01'" 
+          [fillOpacity]="0.2"
+          [strokeColor]="'#027f01'" 
+          [strokeOpacity]="0.7" 
+          [strokeWeight]="1" 
+          radius="{{ lastPosition.accuracy || 0 }}"></circle>
+      </ng-container> 
     </ngui-map>
 
-</div>
+  </div>
 
 </div>

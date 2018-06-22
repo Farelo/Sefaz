@@ -6,14 +6,51 @@
         <strong>Atenção!</strong> Usuário ou senha invalidos!.
       </alert>
 
-      <h1>RECICLAPAC</h1>
+      <h1>RECICLAPAC</h1> 
+      <br/>
       <form novalidate (ngSubmit)="onSubmit(login)" [formGroup]="login" #formDir="ngForm">
-        <div class="form-group wrapper">
+        <div class="form-group pagination-centered"> 
+          <div class="input-group">
+            <img class="spanMail" src="../../assets/images/mail.png">
+            <input class="inputMail" type="email" placeholder="e-mail" aria-describedby="basic-addon2" name="email" id="email" required
+              [(ngModel)]="email" formControlName="email" [ngClass]="{'required': (login.get('email').hasError('required') && login.get('email').touched)
+                          || (login.get('email').hasError('required') && formDir.submitted)}">
+          </div>
+          <span class="requiredText" [ngClass]="{'help-block': (login.get('email').hasError('required') && login.get('email').touched)
+              || (login.get('email').hasError('required') && formDir.submitted)}"
+
+            *ngIf="(login.get('email').hasError('required') && login.get('email').touched)
+              || (login.get('email').hasError('required') && formDir.submitted)">
+               Campo Obrigatório</span> 
+        </div>
+
+        <br/>
+
+        <div class="form-group">
+          <div class="input-group pagination-centered">
+            <img class="spanLock" src="../../assets/images/lock.png">
+            <input class="inputSenha" type="password" placeholder="senha" aria-describedby="basic-addon2" name="senha" id="senha" required
+              [(ngModel)]="password" formControlName="password" [ngClass]="{'required': (login.get('password').hasError('required') && login.get('password').touched)
+                        || (login.get('password').hasError('required') && formDir.submitted)}">
+          </div>
+          <span class="requiredText" [ngClass]="{'help-block': (login.get('email').hasError('required') && login.get('email').touched)
+                      || (login.get('email').hasError('required') && formDir.submitted)}" 
+            
+            *ngIf="(login.get('password').hasError('required') && login.get('password').touched) || (login.get('password').hasError('required')
+                      && formDir.submitted)">Campo Obrigatório</span>
+        </div>
+
+        <div class="esqueci pagination-centered" routerLink="/esqueciMinhaSenha">
+          Esqueci minha senha
+        </div>
+        
+        <!-- <div class="form-group wrapper">
           <img src="../../assets/images/mail.png" class="spanMail">
           <div>
-            <input class="inputMail" type="email" placeholder="e-mail" aria-describedby="basic-addon2" name="email" id="email" required [(ngModel)]="email" formControlName="email"
-            [ngClass]="{'required': (login.get('email').hasError('required') && login.get('email').touched)
-            || (login.get('email').hasError('required') && formDir.submitted)}">
+            <input class="inputMail" type="email" placeholder="e-mail" 
+              aria-describedby="basic-addon2" name="email" id="email" required [(ngModel)]="email" formControlName="email"
+              [ngClass]="{'required': (login.get('email').hasError('required') && login.get('email').touched)
+              || (login.get('email').hasError('required') && formDir.submitted)}">
 
           </div>
           <p class="requiredText" *ngIf="(login.get('email').hasError('required') && login.get('email').touched)
@@ -32,9 +69,8 @@
           </div>
           <p class="requiredText" *ngIf="(login.get('password').hasError('required') && login.get('password').touched)
           || (login.get('password').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-        </div>
+        </div> -->
 
-        <br />
         <button type="submit">ENTRAR</button>
       </form>
     </div>

@@ -426,3 +426,17 @@ hotTable {
   font-family: 'Roboto', sans-serif;
   font-size: 10px;
 }
+
+
+/**/
+@media (min-width: 970px) {
+  .modal-xl > .modal-lg {
+    max-width: 1490px !important;
+    min-width: 971px !important;   
+    width: 95% !important;
+  }
+}
+
+.modal-content {
+  margin-top: 40px;
+}

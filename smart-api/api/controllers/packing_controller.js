@@ -196,10 +196,10 @@ exports.packing_read = function (req, res) {
  * Show the positions by LOKA-API about the Packing
  */
 exports.packing_position = function (req, res) {
-
- 
+  let initial_date = req.swagger.params.initial_date.value
+  let final_date = req.swagger.params.final_date.value
   token()
-    .then(token => loka_api.positions(token, req.swagger.params.code.value))
+    .then(token => loka_api.positions(token, req.swagger.params.code.value, initial_date, final_date))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to retrive position by loka-api about the packing'))
 };
@@ -661,9 +661,9 @@ exports.inventory_packings = function (req, res) {
   let code = req.swagger.params.code.value;
   let attr = req.swagger.params.attr.value;
 
-  schemas.packing.paginate(attr && code ? { "supplier": new ObjectId(attr), "code": code } :
+  schemas.packing.paginate(attr && code ? { "supplier": new ObjectId(attr), "code_tag": code } :
     (attr ? { "supplier": new ObjectId(attr) } :
-      (code ? { "code": code } : {})), {
+      (code ? { "code_tag": code } : {})), {
       page: parseInt(req.swagger.params.page.value),
       populate: ['supplier', 'project', 'tag', 'actual_plant.plant', 'department', 'gc16'],
       sort: {

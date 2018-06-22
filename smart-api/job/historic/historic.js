@@ -64,7 +64,7 @@ module.exports = {
      
         schemas.historicPackings.update({
             "packing": p._id,
-          "date": date
+            "date": date
           }, {
             "date": date,
             "temperature": p.temperature,
