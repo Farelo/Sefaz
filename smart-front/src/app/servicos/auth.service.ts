@@ -10,8 +10,8 @@ export class AuthenticationService {
     constructor(private http: HttpClient) { }
 
     login(password: string, username: string): Observable<any> {
-        console.log(password)
-        console.log(username)
+        // console.log(password)
+        // console.log(username)
       return this.http.get(`${environment.url}profile/auth/${password}/${username}`)
         .map(response =>  this.auth(response))
         .catch(this.handleError);

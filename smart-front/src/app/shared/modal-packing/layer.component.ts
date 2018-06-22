@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PackingService, PlantsService, LogisticService, SuppliersService } from '../../servicos/index.service';
+import { PackingService, PlantsService, LogisticService, SuppliersService, SettingsService } from '../../servicos/index.service';
 import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { MeterFormatter } from '../pipes/meter_formatter';
 import { NouiFormatter } from 'ng2-nouislider';
@@ -85,6 +85,8 @@ export class LayerModalComponent implements OnInit {
     lng: null,
   };
 
+  public settings: any;
+
   public showLastPosition: boolean = false;
 
   public showControlledPlants: boolean = true;
@@ -98,6 +100,7 @@ export class LayerModalComponent implements OnInit {
     private logisticService: LogisticService,
     private supplierService: SuppliersService,
     private packingService: PackingService,
+    private settingsService: SettingsService,
     private localeService: BsLocaleService) {
 
       defineLocale('pt-br', ptBrLocale);
@@ -119,11 +122,21 @@ export class LayerModalComponent implements OnInit {
     console.log('ngOnInit');
 
     //this.getPositions();
+    this.getPlantRadius();
     this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), this.finalDate.getTime(), 32000);
     this.getPlants();
     this.getSuppliers();
   }
- 
+  
+  getPlantRadius(){
+    this.settingsService.retrieve().subscribe(response => {
+      let result = response.data[0];
+      this.settings = result;
+      this.settings.range_radius = this.settings.range_radius*1000;
+      console.log('this.settings: ' + JSON.stringify(this.settings));
+    })
+  }
+
   onFirstDateChange(newDate: Date) { 
     console.log('onFirstDateChange');
 
