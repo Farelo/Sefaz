@@ -108,7 +108,7 @@
             <ngb-timepicker [(ngModel)]="time_max" [seconds]="true" formControlName="max"></ngb-timepicker>
             <!-- <timepicker [(ngModel)]="max" formControlName="max"></timepicker> -->
             <p class="requiredText" *ngIf="(route.get('time.max').hasError('required') && route.get('time.max').touched)
-          || (route.get('time.max').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+              || (route.get('time.max').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
           </div>
           <div class="col-md-6">
             <p>Dias: {{time_max.hour}}</p>
@@ -126,7 +126,7 @@
             <ngb-timepicker [(ngModel)]="time_min" [seconds]="true" formControlName="min"></ngb-timepicker>
             <!-- <timepicker [(ngModel)]="min" formControlName="min"></timepicker> -->
             <p class="requiredText" *ngIf="(route.get('time.min').hasError('required') && route.get('time.min').touched)
-          || (route.get('time.min').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+              || (route.get('time.min').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
           </div>
           <div class="col-md-6">
             <p>Dias: {{time_min.hour}}</p>
@@ -142,8 +142,8 @@
           <div class="col-md-6">
             <ngb-timepicker [(ngModel)]="time_delay" [seconds]="true" formControlName="delay"></ngb-timepicker>
             <!-- <timepicker [(ngModel)]="min" formControlName="min"></timepicker> -->
-            <p class="requiredText" *ngIf="(route.get('time.to_be_late').hasError('required') && route.get('time.to_be_late').touched)
-                  || (route.get('time.to_be_late').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+            <p class="requiredText" *ngIf="(route.get('time.delay').hasError('required') && route.get('time.delay').touched)
+              || (route.get('time.delay').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
           </div>
           <div class="col-md-6">
             <p>Dias: {{time_delay.hour}}</p>
