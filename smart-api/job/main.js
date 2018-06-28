@@ -63,10 +63,10 @@ function analysis(data){
           .then(new_p => traveling.evaluate_traveling(new_p))
           .then(new_p => update_packing.set(new_p))
           .then(() => update_packing.unset(p))
-          // .then(result =>{
-          //   count_packing++;
-          //   verify_finish("FINISH VERTENTE SEM PLANTA",total_packing,count_packing)
-          // });
+          .then(result =>{
+            count_packing++;
+            verify_finish("FINISH VERTENTE SEM PLANTA",total_packing,count_packing)
+          });
 
       }
 
