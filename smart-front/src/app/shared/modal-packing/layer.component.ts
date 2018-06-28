@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PackingService, PlantsService, LogisticService, SuppliersService } from '../../servicos/index.service';
+import { PackingService, PlantsService, LogisticService, SuppliersService, SettingsService } from '../../servicos/index.service';
 import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { MeterFormatter } from '../pipes/meter_formatter';
 import { NouiFormatter } from 'ng2-nouislider';
@@ -41,8 +41,10 @@ export class LayerModalComponent implements OnInit {
   }
 
   rangechanged(){
+    console.log('rangechanged ----');
+
     this.updatePaths();
-    this.getLastPostition();
+    // this.getLastPostition();
   }
 
   @Input() packing;
@@ -83,6 +85,8 @@ export class LayerModalComponent implements OnInit {
     lng: null,
   };
 
+  public settings: any;
+
   public showLastPosition: boolean = false;
 
   public showControlledPlants: boolean = true;
@@ -96,6 +100,7 @@ export class LayerModalComponent implements OnInit {
     private logisticService: LogisticService,
     private supplierService: SuppliersService,
     private packingService: PackingService,
+    private settingsService: SettingsService,
     private localeService: BsLocaleService) {
 
       defineLocale('pt-br', ptBrLocale);
@@ -113,18 +118,35 @@ export class LayerModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+    console.log('ngOnInit');
+
     //this.getPositions();
+    this.getPlantRadius();
     this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), this.finalDate.getTime(), 32000);
     this.getPlants();
     this.getSuppliers();
   }
- 
+  
+  getPlantRadius(){
+    this.settingsService.retrieve().subscribe(response => {
+      let result = response.data[0];
+      this.settings = result;
+      this.settings.range_radius = this.settings.range_radius*1000;
+      console.log('this.settings: ' + JSON.stringify(this.settings));
+    })
+  }
+
   onFirstDateChange(newDate: Date) { 
+    console.log('onFirstDateChange');
+
     if (newDate !== null && this.finalDate !== null )
       this.getFilteredPositions(this.packing.code_tag, newDate.getTime(), this.finalDate.getTime(), 32000);
   }
 
   onFinalDateChange(newDate: Date) { 
+    console.log('onFinalDateChange');
+
     if (this.initialDate !== null && newDate !== null )
       this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), newDate.getTime(), 32000);
   }
@@ -134,6 +156,8 @@ export class LayerModalComponent implements OnInit {
    * Get the package positions with the filter applied
    */
   getFilteredPositions(codeTag: string, startDate: any, finalDate: any, accuracy: any){
+
+    console.log('getFilteredPositions');
 
     this.packingService.getFilteredPositions(codeTag, startDate, finalDate).subscribe(result => {
       // this.generciService.getPackAlert(`${codeTag}`).subscribe(alert => this.currentPackingAlert = alert)
@@ -147,7 +171,7 @@ export class LayerModalComponent implements OnInit {
           })
 
           this.updatePaths();
-          this.getLastPostition();
+          // this.getLastPostition();
 
           console.log('center: ' + JSON.stringify(this.center));
           console.log('path: ' + JSON.stringify(this.path));
@@ -156,26 +180,29 @@ export class LayerModalComponent implements OnInit {
         })
   }
 
-  getPositions() {
-    this.packingService.getPositions(this.packing.code_tag).subscribe(result => {
-      this.center = result.data.positions[0];
-      //this.path = result.data.positions;
-      this.markers = result.data.markers;
+  // getPositions() {
 
-      this.markers.map((elem, index) => { 
-        elem.latLng = new google.maps.LatLng(elem.position[0], elem.position[1]);
-        return elem;
-      })
+  //   console.log('getPositions');
 
-      this.updatePaths();
-      this.getLastPostition();
+  //   this.packingService.getPositions(this.packing.code_tag).subscribe(result => {
+  //     this.center = result.data.positions[0];
+  //     //this.path = result.data.positions;
+  //     this.markers = result.data.markers;
 
-      console.log('center: ' + JSON.stringify(this.center));
-      console.log('path: ' + JSON.stringify(this.path));
-      console.log('markers: ' + JSON.stringify(this.markers));
-      console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
-    })
-  }
+  //     this.markers.map((elem, index) => { 
+  //       elem.latLng = new google.maps.LatLng(elem.position[0], elem.position[1]);
+  //       return elem;
+  //     })
+
+  //     this.updatePaths();
+  //     this.getLastPostition();
+
+  //     console.log('center: ' + JSON.stringify(this.center));
+  //     console.log('path: ' + JSON.stringify(this.path));
+  //     console.log('markers: ' + JSON.stringify(this.markers));
+  //     console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
+  //   })
+  // }
 
   /*
  * Plants
@@ -232,6 +259,8 @@ export class LayerModalComponent implements OnInit {
     this.marker.start = opt.start;
     this.marker.battery = opt.battery;
     this.marker.end = opt.end;
+    this.marker.accuracy = opt.accuracy;
+
     this.startWindow(marker);
   }
 
@@ -369,39 +398,69 @@ export class LayerModalComponent implements OnInit {
     return r <= this.accuracyRange;
   }
 
+  /**
+   * This method updates the array 'path' with markers that satisfies the given accuracy.
+   */
+  rangedMarkers = [];
   updatePaths(){
     this.path = [];
-
-    this.markers.forEach(m =>{
+    
+    // 
+    this.rangedMarkers = this.markers.filter(elem => {
+      return elem.accuracy <= this.accuracyRange;
+    });
+    
+    this.rangedMarkers.forEach(m =>{
       if(m.accuracy <= this.accuracyRange){
         this.path.push({ "lat": m.position[0], "lng": m.position[1]});
       }
     });
+
+    this.getLastPostition();
+
+    console.log('-');
+    console.log('rangedMarkers: ' + JSON.stringify(this.rangedMarkers));
+    console.log('rangedMarkers: ' + JSON.stringify(this.path));
+    console.log('this.markers: ' + JSON.stringify(this.markers));
+    console.log('-');
   }
   
+  /**
+   * This method updates the array 'path' with markers that satisfies the given accuracy.
+   */
   getLastPostition() {
-    let auxArray = this.markers.filter(elem => {
-      return elem.accuracy <= this.accuracyRange;
-    });
+    console.log('getLastPostition');
 
-    console.log('auxArray: ' + JSON.stringify(auxArray)); 
-    if(auxArray.length>0){
-      this.lastPosition = auxArray[auxArray.length - 1];
+    // let auxArray = this.markers.filter(elem => {
+    //   return elem.accuracy <= this.accuracyRange;
+    // });
+
+    // console.log('Filtered markers: ' + JSON.stringify(auxArray)); 
+    // if(auxArray.length>0){
+    //   this.lastPosition = auxArray[auxArray.length - 1];
+    //   this.center = this.lastPosition.latLng;
+
+    // }else{
+    //   this.lastPosition = null;
+    // }
+    if (this.rangedMarkers.length>0){
+      this.lastPosition = this.rangedMarkers[this.rangedMarkers.length - 1];
       this.center = this.lastPosition.latLng;
 
     }else{
       this.lastPosition = null;
     }
     console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
+    console.log('center: ' + JSON.stringify(this.center));
   }
 
   getPin(i: number){
     let pin = null;
     
     pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-    if(this.markers.length>1){
+    if (this.rangedMarkers.length>1){
       if (i==0) pin = { url: '../../../assets/images/pin_normal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-      if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_normal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+      if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_normal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
     }
 
     return pin;
@@ -413,41 +472,41 @@ export class LayerModalComponent implements OnInit {
     switch (alertCode){
       case 1:
         pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-        if (this.markers.length > 1) {
+        if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_normal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_normal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_normal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case 2:
         pin = { url: '../../../assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-        if (this.markers.length > 1) {
+        if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_incorreto_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_incorreto_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_incorreto_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case 3:
         pin = { url: '../../../assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-        if (this.markers.length > 1) {
+        if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_bateria_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_bateria_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_bateria_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case 4:
         pin = { url: '../../../assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-        if (this.markers.length > 1) {
+        if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_atrasado_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_atrasado_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_atrasado_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case 5:
         pin = { url: '../../../assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-        if (this.markers.length > 1) {
+        if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_permanencia_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.markers.length - 1)) pin = { url: '../../../assets/images/pin_permanencia_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_permanencia_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 

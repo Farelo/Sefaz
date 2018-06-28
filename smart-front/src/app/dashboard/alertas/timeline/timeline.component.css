@@ -102,37 +102,32 @@
 .f6 {
   width: 10px;
   height: 10px;
+  background-size: 10px 10px;
   vertical-align: middle;
 }
 
 .f1 {
-  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
-  background-color: #ef5562;
+  background-image: url("../../../../assets/images/icon_user1.png");
 }
 
 .f2 {
-  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
-  background-color: #f77737;
+  background-image: url("../../../../assets/images/icon_user2.png");
 }
 
 .f3 {
-  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
-  background-color: #f8bd37;
+  background-image: url("../../../../assets/images/icon_user3.png");
 }
 
 .f4 {
-  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
-  background-color: #4dc9ff;
+  background-image: url("../../../../assets/images/icon_user4.png");
 }
 
 .f5 {
-  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
-  background-color: #4c7bff;
+  background-image: url("../../../../assets/images/icon_user5.png");
 }
 
 .f6 {
-  -webkit-mask-box-image: url("../../../../assets/images/usuario1.png");
-  background-color: #9f8cc1;
+  background-image: url("../../../../assets/images/icon_user6.png");
 }
 
 .interrogacao1 {

@@ -36,12 +36,12 @@
     <div class="col-md-2">
       <!-- <label for="dateBegin" class="col-form-label-sm">Data inicial</label> -->
       <!-- <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDaterangepicker [(ngModel)]="initialDate" [bsConfig]="datePickerConfig" placement="right"> -->
-      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker [(ngModel)]="initialDate" [bsValue]="initialDate" (bsValueChange)="onFirstDateChange($event)" [bsConfig]="datePickerConfig">
+      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker [(ngModel)]="initialDate" (ngModelChange)="onFirstDateChange($event)" [bsConfig]="datePickerConfig">
     </div>
 
     <div class="col-md-2">
       <!-- <label for="dateEnd" class="col-form-label-sm">Data final</label> -->
-      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker [(ngModel)]="finalDate" [bsValue]="finalDate" (bsValueChange)="onFinalDateChange($event)" [bsConfig]="datePickerConfig">
+      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker [(ngModel)]="finalDate" (ngModelChange)="onFinalDateChange($event)" [bsConfig]="datePickerConfig">
     </div>
 
     <span style="padding-top: 5px;" class="col-auto">Acurácia:</span>
@@ -108,11 +108,15 @@
         </info-window>
       </marker>
       
-      <!-- <circle *ngFor="let posPlantsRadius of plants" 
+      <circle *ngFor="let posPlantsRadius of plants" 
           [center]="posPlantsRadius.latLng"
-          [fillColor]="'#ffc107'" [fillOpacity]="0.3"
-          [strokeColor]="'#ffc107'" [strokeOpacity]="0.7" [strokeWeight]="1" 
-          radius="300"></circle> -->
+          [fillColor]="'#0044a8'"
+          [fillOpacity]="0.2"
+          [strokeColor]="'#0044a8'"
+          [strokeOpacity]="0.4" 
+          [strokeWeight]="1" 
+          [visible]="showControlledPlants"
+          radius="{{ settings.range_radius }}"></circle>
       
       <!-- ///////////// -->
       <!-- Logistic operator -->
@@ -137,37 +141,46 @@
         </info-window>
       </marker>
       
-      <!-- <circle *ngFor="let posSuppliersRadius of suppliers" [center]="posSuppliersRadius.latLng" [fillColor]="'#ffc107'" [fillOpacity]="0.3"
-        [strokeColor]="'#000'" [strokeOpacity]="0.5" [strokeWeight]="1" radius="300"></circle> -->
+      <circle *ngFor="let posSuppliersRadius of suppliers" 
+        [center]="posSuppliersRadius.latLng" 
+        [fillColor]="'#4d4d4d'" 
+        [fillOpacity]="0.2"
+        [strokeColor]="'#4d4d4d'" 
+        [strokeOpacity]="0.4" 
+        [strokeWeight]="1" 
+        [visible]="showControlledPlants"
+        radius="{{ settings.range_radius }}"></circle>
 
 
       <!-- ///////////// -->
       <!-- rack markers -->
-      <ng-container *ngFor="let pos of markers; let i = index">
+      <ng-container *ngFor="let pos of rangedMarkers; let i = index">
         <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)" 
           [position]="pos.position" 
           (click)="clicked($event,pos)"
           [icon]="getPin(i)" >
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
-            <div *ngIf="marker.display">
+            <div *ngIf="marker.display" class="info-window-content">
               <p>
                 <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
               <p>
                 <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
               <p>
                 <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
+              <p>
+                <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
             </div>
           </info-window>
         </marker>
       </ng-container>
       
-      <ng-container *ngFor="let posRadius of markers">
+      <ng-container *ngFor="let posRadius of rangedMarkers">
         <circle *ngIf="(posRadius.accuracy <= accuracyRange) && (!showLastPosition)"
               [center]="posRadius.latLng" 
-              [fillColor]="'#6382c9'" 
+              [fillColor]="'#027f01'" 
               [fillOpacity]="0.2" 
-              [strokeColor]="'#6382c9'"
+              [strokeColor]="'#027f01'"
               [strokeOpacity]="0.7" 
               [strokeWeight]="1" 
               radius="{{ posRadius.accuracy || 0 }}"></circle>
@@ -181,19 +194,27 @@
            [icon]="{ url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43] }">
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
-            <div *ngIf="marker.display">
+            <div *ngIf="marker.display" class="info-window-content">
               <p>
                 <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
               <p>
                 <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
               <p>
                 <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
+              <p>
+                <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
             </div>
           </info-window>
         </marker>
         
-        <circle *ngIf="showLastPosition" [center]="lastPosition.latLng" [fillColor]="'#6382c9'" [fillOpacity]="0.2"
-          [strokeColor]="'#6382c9'" [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ lastPosition.accuracy || 0 }}"></circle>
+        <circle *ngIf="showLastPosition" 
+          [center]="lastPosition.latLng" 
+          [fillColor]="'#027f01'" 
+          [fillOpacity]="0.2"
+          [strokeColor]="'#027f01'" 
+          [strokeOpacity]="0.7" 
+          [strokeWeight]="1" 
+          radius="{{ lastPosition.accuracy || 0 }}"></circle>
       </ng-container> 
     </ngui-map>
 

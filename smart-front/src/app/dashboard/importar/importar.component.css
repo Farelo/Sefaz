@@ -288,14 +288,16 @@ tbody {
 .det2 {
   width: 25px;
   height: 25px;
-  -webkit-mask-box-image: url("../../../assets/images/interrogacao.png");
+  background-image: url("../../../assets/images/icon_question_dark.png");
+  background-size: 25px 25px;
+  background-repeat: no-repeat; 
   cursor: pointer;
-  background-color: #6382c9;
 }
 
 .det2:hover {
-  background-color: #777;
+  background-image: url("../../../assets/images/icon_question_gray.png");
   -webkit-transition: background-color 0.3s;
+  -mozkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
 
