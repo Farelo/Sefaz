@@ -149,7 +149,12 @@
       <div class="col-md-12">
         <br>
         <ngui-map zoom="13" [center]="center">
-          <directions-renderer [suppressMarkers]="false" [draggable]="true" panel="#my-panel" (directions_changed)="directionsChanged()" [directions-request]="direction">
+          <directions-renderer 
+            [suppressMarkers]="false" 
+            [draggable]="true" 
+            panel="#my-panel" 
+            (directions_changed)="directionsChanged()" 
+            [directions-request]="direction">
           </directions-renderer>
         </ngui-map>
       </div>

@@ -2,12 +2,12 @@ import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Packing } from '../../../../shared/models/packing';
 import { Supplier } from '../../../../shared/models/supplier';
 import { Route } from '../../../../shared/models/route';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
 import { ToastService, RoutesService, PlantsService, SuppliersService, PackingService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx'; 
 declare var $:any;
 
 @Component({
@@ -50,8 +50,8 @@ export class RotasEditarComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
-    private fb: FormBuilder
-  ) {
+    private fb: FormBuilder,
+    ) {
 
     this.route = this.fb.group({
       supplier:['', [Validators.required]],
@@ -82,7 +82,7 @@ export class RotasEditarComponent implements OnInit {
       })
     });
 
-
+    this.retrieveRoute();
 
   }
 
@@ -126,6 +126,10 @@ export class RotasEditarComponent implements OnInit {
       this.route['controls'].location['controls'].duration.patchValue(this.directionsResult.routes[0].legs[0].duration);
       this.route['controls'].location['controls'].start_address.setValue(this.directionsResult.routes[0].legs[0].start_address);
       this.route['controls'].location['controls'].end_address.setValue(this.directionsResult.routes[0].legs[0].end_address);
+
+      console.log('[directionsChanged] this.directionsResult: ' + JSON.stringify(this.directionsResult));
+      console.log('[directionsChanged] this.direction: ' + JSON.stringify(this.direction));
+      
     } else {
       this.directions = false;
     }
@@ -143,11 +147,18 @@ export class RotasEditarComponent implements OnInit {
 
   ngOnInit() {
 
+    //this.retrieveRoute();
 
+  }
+
+  retrieveRoute(){
     this.inscricao = this.routeActive.params.subscribe(
-      (params: any)=>{
-        let id = params ['id'];
+      (params: any) => {
+        let id = params['id'];
         this.RoutesService.retrieveRoute(id).subscribe(result => {
+
+          console.log('[ngOnInit] result: ' + JSON.stringify(result));
+          console.log('[ngOnInit] this.direction: ' + JSON.stringify(this.direction));
 
           let time = parseInt((result.data.time.min).toString());
           this.time_min = {
@@ -157,12 +168,12 @@ export class RotasEditarComponent implements OnInit {
           };
 
 
-           time = parseInt((result.data.time.max).toString());
-           this.time_max = {
-             hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
-             minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
-             second: (parseInt((time / (1000 * 60)).toString()) % 60)
-           };
+          time = parseInt((result.data.time.max).toString());
+          this.time_max = {
+            hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
+            minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
+            second: (parseInt((time / (1000 * 60)).toString()) % 60)
+          };
 
 
           time = result.data.time.to_be_late || '0';
@@ -172,21 +183,20 @@ export class RotasEditarComponent implements OnInit {
             minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
             second: (parseInt((time / (1000 * 60)).toString()) % 60)
           };
-          
-           delete result.data.time;
+
+          delete result.data.time;
           (<FormGroup>this.route)
-                  .patchValue(result.data, { onlySelf: true });
+            .patchValue(result.data, { onlySelf: true });
 
 
-            this.direction.origin = new google.maps.LatLng(result.data.plant_factory.lat, result.data.plant_factory.lng);
-            this.direction.destination = new google.maps.LatLng(result.data.plant_supplier.lat, result.data.plant_supplier.lng);
-            this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
-              this.directionsRenderer = directionsRenderer;
-            });
+          this.direction.origin = new google.maps.LatLng(result.data.plant_factory.lat, result.data.plant_factory.lng);
+          this.direction.destination = new google.maps.LatLng(result.data.plant_supplier.lat, result.data.plant_supplier.lng);
+          this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
+            this.directionsRenderer = directionsRenderer;
+          });
         });
       }
-    )
-
+    );
   }
 
 }

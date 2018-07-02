@@ -4,6 +4,7 @@ import { Route } from '../../../shared/models/route';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DirectionsRenderer } from '@ngui/map';
 
 @Component({
   selector: 'app-rotas',
