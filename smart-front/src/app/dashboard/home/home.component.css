@@ -119,6 +119,7 @@ h1 {
 
 .meuInventario {
   margin-top: 20px;
+  margin-bottom: 25px;
   box-shadow: 0px 0px 7px #000;
 }
 
@@ -269,4 +270,99 @@ span {
 
 .teste {
   text-align: right;
+}
+
+.card-condition{
+  height: 65px;
+  padding-left: 6px;
+  background-color: #3e4f5f;
+  position: relative;
+
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+
+.status-color{
+  height: 7px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  -webkit-border-bottom-right-radius: 6px;
+  -webkit-border-bottom-left-radius: 6px;
+  -moz-border-radius-bottomright: 6px;
+  -moz-border-radius-bottomleft: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+#status-controlada{
+  background-color: #666666;
+}
+
+#status-perdida{
+  background-color: #ef5562;
+}
+
+#status-incorreta{
+  background-color: #f77737;
+}
+
+#status-viajando{
+  background-color: #027f01;
+}
+
+#status-permanencia{
+  background-color: #4dc9ff;
+}
+
+#status-atrasada{
+  background-color: #4c7bff;
+}
+
+.clear-padding{
+  padding: 0px;
+  padding-left: 6px;
+}
+
+.status-content{
+  color: #f2f2f2
+}
+
+.status-content ul{
+  list-style-type: none;
+  padding: 0px;
+}
+
+.status-content ul > li{
+  margin-right: 0px;
+  padding: 0px;
+}
+
+.status-number{
+  font-size: 24px;
+}
+
+.status-type{
+  margin-top: -4px;
+}
+
+.row-resume{
+  margin-bottom: 6px;
+}
+
+.status-resume-number{
+  font-size: 30px;
+}
+
+.status-resume-description{
+  font-size: 22px;
+}
+
+td{
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
