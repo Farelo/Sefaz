@@ -157,9 +157,6 @@ export class RotasEditarComponent implements OnInit {
         let id = params['id'];
         this.RoutesService.retrieveRoute(id).subscribe(result => {
 
-          console.log('[ngOnInit] result: ' + JSON.stringify(result));
-          console.log('[ngOnInit] this.direction: ' + JSON.stringify(this.direction));
-
           let time = parseInt((result.data.time.min).toString());
           this.time_min = {
             hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
@@ -194,6 +191,9 @@ export class RotasEditarComponent implements OnInit {
           this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
             this.directionsRenderer = directionsRenderer;
           });
+
+          console.log('[retrieveRoute] result: ' + JSON.stringify(result));
+          console.log('[retrieveRoute] this.direction: ' + JSON.stringify(this.direction));
         });
       }
     );
