@@ -82,6 +82,8 @@ export class RotasEditarComponent implements OnInit {
       })
     });
 
+    console.log('[constructor] center: ' + this.center);
+
     this.retrieveRoute();
 
   }
