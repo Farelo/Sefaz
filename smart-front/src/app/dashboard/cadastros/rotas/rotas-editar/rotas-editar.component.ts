@@ -195,6 +195,7 @@ export class RotasEditarComponent implements OnInit {
             this.directionsRenderer = directionsRenderer;
           });
 
+          console.log('[retrieveRoute] this.center: ' + JSON.stringify(this.center));
           console.log('[retrieveRoute] result: ' + JSON.stringify(result));
           console.log('[retrieveRoute] this.direction: ' + JSON.stringify(this.direction));
         });
