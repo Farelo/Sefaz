@@ -7,19 +7,16 @@
       <span aria-hidden="true">&times;</span>
     </button>
 
-    <div>
-      <div class="col-xs-12 no-padding">
-        <p style="float: left;">
-          <span class="badge badge-secondary">Código: {{alerta.data.packing?.code}}</span>
-          <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{alerta.data.packing?.serial}}</span>
-          <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{alerta.data.packing?.code_tag}}</span>
-        </p>
-        
-        <img src="../../../assets/images/distancia.png" height="25" style="float: right;">
-      </div>
+    <div class="col-xs-12 no-padding tags-row">
+      <p style="float: left;">
+        <span class="badge badge-secondary">Código: {{alerta.data.packing?.code}}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{alerta.data.packing?.serial}}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{alerta.data.packing?.code_tag}}</span>
+      </p>
+    
+      <img id="ver-no-mapa" (click)="visualizeOnMap()" tooltip="Visualizar no mapa" placement="left" src="../../../assets/images/distancia.png"
+        height="25" style="float: right;">
     </div>
-
-    <p id="visuslize-on-map"> <span id="ver-no-mapa" (click)="visualizeOnMap()">Visualizar no mapa</span> </p>
     
     <p>Momento do alerta: {{alerta.data.date | date: 'dd/MM/yyyy'}} às {{alerta.data.date | date:'mediumTime'}}</p>
 

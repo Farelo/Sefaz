@@ -39,6 +39,7 @@ import { NouisliderModule } from 'ng2-nouislider';
 import { ServicesModule, AuthInterceptor } from './servicos/service.module';
 import { constants } from './../environments/constants';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TooltipModule } from 'ngx-bootstrap'
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     AlertModule.forRoot(),
     ToastyModule.forRoot(),
     BsDatepickerModule.forRoot(), 
+    TooltipModule.forRoot(),
     BrowserAnimationsModule,
     DashboardModuleAdmin,
     AngularMultiSelectModule,
