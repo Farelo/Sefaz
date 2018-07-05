@@ -31,7 +31,7 @@ export class RotasEditarComponent implements OnInit {
   public inscricao: Subscription;
   public autocomplete: any;
   public address: any = {};
-  public center: any;
+  public center: any = [];
   public pos: any;
   public directions = false;
   public plant_factory: any = "";
@@ -188,6 +188,9 @@ export class RotasEditarComponent implements OnInit {
 
           this.direction.origin = new google.maps.LatLng(result.data.plant_factory.lat, result.data.plant_factory.lng);
           this.direction.destination = new google.maps.LatLng(result.data.plant_supplier.lat, result.data.plant_supplier.lng);
+
+          this.center = [ result.data.plant_factory.lat, result.data.plant_factory.lng ];
+
           this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
             this.directionsRenderer = directionsRenderer;
           });
