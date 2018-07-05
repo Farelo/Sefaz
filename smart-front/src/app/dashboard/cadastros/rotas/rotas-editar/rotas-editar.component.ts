@@ -189,7 +189,7 @@ export class RotasEditarComponent implements OnInit {
           this.direction.origin = new google.maps.LatLng(result.data.plant_factory.lat, result.data.plant_factory.lng);
           this.direction.destination = new google.maps.LatLng(result.data.plant_supplier.lat, result.data.plant_supplier.lng);
 
-          this.center = [ result.data.plant_factory.lat, result.data.plant_factory.lng ];
+          this.center = this.direction.origin;
 
           this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
             this.directionsRenderer = directionsRenderer;
