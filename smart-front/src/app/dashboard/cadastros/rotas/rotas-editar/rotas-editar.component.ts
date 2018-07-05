@@ -24,8 +24,8 @@ export class RotasEditarComponent implements OnInit {
   public directionsRenderer: google.maps.DirectionsRenderer;
   public directionsResult: google.maps.DirectionsResult;
   public direction: any = {
-    origin: '0.0',
-    destination: '0.0',
+    origin: new google.maps.LatLng(0, 0),
+    destination: new google.maps.LatLng(0, 0),
     travelMode: 'DRIVING'
   };
   public inscricao: Subscription;
