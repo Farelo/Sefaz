@@ -24,14 +24,14 @@ export class RotasEditarComponent implements OnInit {
   public directionsRenderer: google.maps.DirectionsRenderer;
   public directionsResult: google.maps.DirectionsResult;
   public direction: any = {
-    origin: '',
-    destination: '',
+    origin: '0.0',
+    destination: '0.0',
     travelMode: 'DRIVING'
   };
   public inscricao: Subscription;
   public autocomplete: any;
   public address: any = {};
-  public center: any = [];
+  public center: any = new google.maps.LatLng(0, 0);
   public pos: any;
   public directions = false;
   public plant_factory: any = "";
@@ -185,16 +185,16 @@ export class RotasEditarComponent implements OnInit {
           (<FormGroup>this.route)
             .patchValue(result.data, { onlySelf: true });
 
-
           this.direction.origin = new google.maps.LatLng(result.data.plant_factory.lat, result.data.plant_factory.lng);
           this.direction.destination = new google.maps.LatLng(result.data.plant_supplier.lat, result.data.plant_supplier.lng);
 
-          this.center = [ result.data.plant_factory.lat, result.data.plant_factory.lng ];
+          this.center = this.direction.origin;
 
           this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
             this.directionsRenderer = directionsRenderer;
           });
 
+          console.log('[retrieveRoute] this.center: ' + JSON.stringify(this.center));
           console.log('[retrieveRoute] result: ' + JSON.stringify(result));
           console.log('[retrieveRoute] this.direction: ' + JSON.stringify(this.direction));
         });
