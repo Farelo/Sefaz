@@ -591,7 +591,7 @@
           <tr class="cabecalho">
             <th>Equipamento</th>
             <th>Serial</th>
-            <th>Último local conhecido</th>
+            <th>Ultima Planta Conhecida</th>
             <th>Tempo de Ausência</th>
             <th>Posição</th>
           </tr>
@@ -796,7 +796,6 @@
             <th>Local</th>
             <th>Tag</th>
             <th>Bateria</th>
-            <th>Projeto</th>
             <th>Temperatura</th>
             <th>Posições</th>
           </tr>
@@ -818,7 +817,6 @@
               (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
             <td>{{packing.tag?.code || '-'}}</td>
             <td>{{packing.battery >= 0 ? (packing.battery | round) : 'Sem Registro'}} %</td>
-            <td>{{packing.project?.name || '-'}}</td>
             <td>{{packing?.temperature || '-'}} ∘</td>
             <td style="text-align: center;">
               <div class="bigger" (click)="openLayer(packing)">
