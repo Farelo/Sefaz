@@ -82,7 +82,7 @@ export class RotasEditarComponent implements OnInit {
       })
     });
 
-    console.log('[constructor] center: ' + JSON.stringify(this.center));
+    //console.log('[constructor] center: ' + JSON.stringify(this.center));
 
     this.retrieveRoute();
 
@@ -129,8 +129,8 @@ export class RotasEditarComponent implements OnInit {
       this.route['controls'].location['controls'].start_address.setValue(this.directionsResult.routes[0].legs[0].start_address);
       this.route['controls'].location['controls'].end_address.setValue(this.directionsResult.routes[0].legs[0].end_address);
 
-      console.log('[directionsChanged] this.directionsResult: ' + JSON.stringify(this.directionsResult));
-      console.log('[directionsChanged] this.direction: ' + JSON.stringify(this.direction));
+      // console.log('[directionsChanged] this.directionsResult: ' + JSON.stringify(this.directionsResult));
+      // console.log('[directionsChanged] this.direction: ' + JSON.stringify(this.direction));
 
     } else {
       this.directions = false;
@@ -196,9 +196,9 @@ export class RotasEditarComponent implements OnInit {
 
           this.center = this.direction.origin;
           
-          console.log('[retrieveRoute] this.center: ' + JSON.stringify(this.center));
-          console.log('[retrieveRoute] result: ' + JSON.stringify(result));
-          console.log('[retrieveRoute] this.direction: ' + JSON.stringify(this.direction));
+          // console.log('[retrieveRoute] this.center: ' + JSON.stringify(this.center));
+          // console.log('[retrieveRoute] result: ' + JSON.stringify(result));
+          // console.log('[retrieveRoute] this.direction: ' + JSON.stringify(this.direction));
 
           this.showDirection();
         });
