@@ -150,6 +150,9 @@ export class RotasEditarComponent implements OnInit {
   ngOnInit() {
 
     //this.retrieveRoute();
+    this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
+      this.directionsRenderer = directionsRenderer;
+    });
 
   }
 
@@ -187,18 +190,33 @@ export class RotasEditarComponent implements OnInit {
           (<FormGroup>this.route)
             .patchValue(result.data, { onlySelf: true });
 
-          this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
-            this.directionsRenderer = directionsRenderer;
-          });
-          
           this.direction.origin = new google.maps.LatLng(result.data.plant_factory.lat, result.data.plant_factory.lng);
           this.direction.destination = new google.maps.LatLng(result.data.plant_supplier.lat, result.data.plant_supplier.lng);
 
           this.center = this.direction.origin;
-
+          
           console.log('[retrieveRoute] this.center: ' + JSON.stringify(this.center));
           console.log('[retrieveRoute] result: ' + JSON.stringify(result));
           console.log('[retrieveRoute] this.direction: ' + JSON.stringify(this.direction));
+
+
+
+
+          this.directionsResult = this.directionsRenderer.getDirections();
+          if (this.directionsResult) {
+            console.log('[directionsResult]');
+
+            this.directions = true;
+            this.route['controls'].location['controls'].distance.patchValue(this.directionsResult.routes[0].legs[0].distance);
+            this.route['controls'].location['controls'].duration.patchValue(this.directionsResult.routes[0].legs[0].duration);
+            this.route['controls'].location['controls'].start_address.setValue(this.directionsResult.routes[0].legs[0].start_address);
+            this.route['controls'].location['controls'].end_address.setValue(this.directionsResult.routes[0].legs[0].end_address);
+
+          } else {
+            console.log('[directionsResult false]');
+            this.directions = false;
+          }
+          this.ref.detectChanges();
         });
       }
     );
