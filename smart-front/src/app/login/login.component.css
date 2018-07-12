@@ -73,7 +73,7 @@ h1 {
 }
 
 input { 
-  padding:15px;
+  padding: 13px 15px;
   background:rgba(0,0,0,0.2); 
   border-style: solid;
   border-bottom-color: white;
@@ -151,7 +151,7 @@ p {
 
 button {
   width: calc( 100% - 60px );
-  padding: 5px 40px;
+  padding: 10px 40px;
   background-color: transparent;
   border-radius: 5px;
   color: white;
