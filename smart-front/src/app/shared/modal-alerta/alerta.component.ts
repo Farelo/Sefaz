@@ -33,9 +33,9 @@ public historic: Pagination = new Pagination({meta: {page : 1}})
   }
 
   visualizeOnMap(){
-    console.log('open map');
-    console.log('alerta: ' + JSON.stringify(this.alerta));
-    console.log('alerta: ' + JSON.stringify(this.alerta.data.packing));
+    //console.log('open map');
+    //console.log('alerta: ' + JSON.stringify(this.alerta));
+    //console.log('[alerta-component] alerta: ' + JSON.stringify(this.alerta.data.packing));
 
     //http://localhost:8984/api/inventory/general/packings/10/1?code=5039991
 
@@ -43,10 +43,11 @@ public historic: Pagination = new Pagination({meta: {page : 1}})
       .subscribe(result => {
         
         let actualPackage = result.data;
-        console.log('actualPackage: ' + JSON.stringify(actualPackage[0]));
+        //console.log('actualPackage: ' + JSON.stringify(actualPackage[0]));
         
         this.activeAlerta.dismiss('open map');
         const modalRef = this.modalService.open(LayerModalComponent, { backdrop: "static", size: "lg", windowClass: 'modal-xl' });
+        actualPackage[0].alertCode = this.alerta.data.status;
         modalRef.componentInstance.packing = actualPackage[0];
       },err => {
         console.log(err)

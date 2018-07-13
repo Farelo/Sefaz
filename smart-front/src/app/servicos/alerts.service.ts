@@ -44,4 +44,9 @@ export class AlertsService {
         .catch(this.handleError);
   }
 
+  retrievePackingAlert(packing_id : string){
+    return this.http.get(`${environment.url}alerts/packing/${packing_id}`)
+      .catch(this.handleError);
+  }
+  
 }

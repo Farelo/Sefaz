@@ -14,9 +14,9 @@
     public packingsPerCondition: Pagination = new Pagination({meta: {page : 1}});
     public search  = "";
     public colorScheme = {  
-      domain: ['#666', '#ef5562', '#f77737', '#4c7bff', '#4dc9ff', '#9f8cc1' ]
+      domain: ['#666666', '#ef5562', '#f77737', '#027f01', '#4dc9ff', '#4c7bff' ]
     };
-    
+
     // pie
     public showLabels = true;
     public explodeSlices = false;
@@ -24,7 +24,7 @@
     public showLegend = true;
 
     constructor(
-      private packingService: PackingService,
+      private packingService: PackingService
     ) { }
 
     searchEvent(): void{
@@ -36,6 +36,8 @@
         .loadingPackingPerPlant(10, this.packingsPerPlant.meta.page )
         .subscribe(result => {
           this.packingsPerPlant = result;
+
+          console.log('[this.packingsPerPlant]: ' + JSON.stringify(result));
         },err => {  console.log(err)});
     }
 
@@ -43,7 +45,10 @@
       this.packingService
         .loadingPackingPerCondition( )
         .subscribe(result => {
+          //console.log('[this.packingsPerCondition]: ' + JSON.stringify(result));
+
           this.packingsPerCondition = result;
+          this.getPackingSum();
         },err => {  console.log(err)});
     }
 
@@ -54,8 +59,31 @@
     }
 
     ngOnInit() {
-      this.loadPackingPerPlant()
-      this.loadPackingPerCondition()
+      this.loadPackingPerPlant();
+      this.loadPackingPerCondition();
+    }
+
+    /**
+     * Misc methods
+     */
+    private packingSum: number = 0;
+    getPackingSum(){
+
+      if (this.packingsPerCondition.data != undefined) {
+        this.packingSum = this.packingsPerCondition.data.reduce((sum, elem)=> sum + elem.value, 0);
+      }
+
+      return this.packingSum;
+    }
+
+    getSumByCondition(i: number){
+      let result = 0;
+      
+      if (this.packingsPerCondition.data != undefined){
+        result = this.packingsPerCondition.data[i].value;
+      }
+
+      return result;
     }
 
   }

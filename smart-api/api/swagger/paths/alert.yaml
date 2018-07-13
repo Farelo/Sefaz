@@ -38,6 +38,39 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
+  /alerts/packing/{packing_id}:
+      x-swagger-router-controller: alert_controller
+      get:
+        tags:
+          - "Alerts"
+        summary: "Retrieve a alert by status from the system"
+        description: ""
+        operationId: alert_packings
+        security:
+          - Bearer: []
+        parameters:
+        - in: "path"
+          name: "packing_id"
+          description: "Retrieve a alert related this packing id"
+          required: true
+          type: string
+        responses:
+          200:
+            description: "Successfully"
+            schema:
+              $ref: "#/definitions/SuccessResponse"
+          400:
+            description: "Client Error"
+            schema:
+              $ref: "#/definitions/Error400"
+          500:
+            description: "Server Error"
+            schema:
+              $ref: "#/definitions/Error500"
+          default:
+            description: "Error"
+            schema:
+              $ref: "#/definitions/ErrorResponse"
   /alert/list/pagination/{limit}/{page}:
     x-swagger-router-controller: alert_controller
     get:

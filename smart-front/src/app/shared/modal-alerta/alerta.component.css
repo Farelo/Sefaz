@@ -116,3 +116,11 @@ p {
 #ver-no-mapa:hover {
   text-decoration: underline;
 }
+
+.no-padding{
+  padding: 0px;
+}
+
+.tags-row{
+  margin-bottom: 15px;
+}

@@ -66,6 +66,16 @@ exports.alert_read_by_packing = function (req, res) {
     .catch(_.partial(responses.errorHandler, res, 'Error to read alert'));
 };
 
+exports.alert_packings = function (req, res) {
+  let packing_id = req.swagger.params.packing_id.value
+
+  schemas.alert.find({
+    packing: packing_id
+  })
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to read alert'))
+}
+
 /**
  * Update an Alert
  */
