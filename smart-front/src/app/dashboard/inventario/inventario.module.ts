@@ -13,6 +13,8 @@ import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TooltipModule } from 'ngx-bootstrap'
+import { GeralComponent } from './geral/geral.component';
+import { InventarioGeralComponent } from './inventario-geral/inventario-geral.component';
 
 @NgModule({
   imports: [
@@ -28,7 +30,9 @@ import { TooltipModule } from 'ngx-bootstrap'
     //Angular2Csv
   ],
   declarations: [
-    InventarioComponent
+    InventarioComponent,
+    GeralComponent,
+    InventarioGeralComponent
   ],
   providers: [
   ],

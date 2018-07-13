@@ -1,21 +1,22 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy  } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Pagination } from '../../shared/models/pagination';
-import { Alert } from '../../shared/models/alert';
+import { Pagination } from '../../shared/models/pagination'; 
 import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
 import { LayerModalComponent } from '../../shared/modal-packing/layer.component';
 import { AbscenseModalComponent } from '../../shared/modal-packing-absence/abscense.component';
 import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service';
 import { ChatService } from '../../servicos/teste';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv'; 
+
 declare var $: any;
 
 //fazer uma refatoração esta muito grande e com o HTML gigantesco
 @Component({
-  selector: 'app-inventario',
+  selector: 'app-inventario', 
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.css']
 })
+
 export class InventarioComponent implements OnInit, OnDestroy  {
   public logged_user: any;
   public suppliers: any;
@@ -98,7 +99,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     private modalActive: NgbActiveModal,
     private ref: ChangeDetectorRef,
     private auth: AuthenticationService,
-    private chatService: ChatService
+    private chatService: ChatService,
   ) {
 
     let user = this.auth.currentUser();
@@ -438,7 +439,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
         }, err => { console.log(err) });
       }, err => { console.log(err) });
 
-      console.log('selectedSupplier: ' + JSON.stringify(this.selectedSupplier));
     } else {
       this.loadDetailedInventory()
       this.selectedSupplier = null
@@ -449,15 +449,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
    * An equipment was selected
    */
   equipamentDetailedInventory(event: any){
-    if(event){
+    if(event)
       this.selectedEquipament = event;
-      console.log(event)
-      this.inventoryService.getDetailedGeneralInventoryBySupplierAndEquipment(10, this.detailedGeneralInventory.meta.page, this.selectedSupplier._id, event.packing).subscribe(res => {
-        console.log(res)
-        this.detailedGeneralInventory = res;
-        this.setInitialCollapse(true);
-      }, err => { console.log(err) });
-    }
   }
 
 
