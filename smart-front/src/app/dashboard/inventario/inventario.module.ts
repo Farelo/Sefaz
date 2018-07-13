@@ -15,6 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TooltipModule } from 'ngx-bootstrap'
 import { GeralComponent } from './geral/geral.component';
 import { InventarioGeralComponent } from './inventario-geral/inventario-geral.component';
+import { InventarioPermanenciaComponent } from './inventario-permanencia/inventario-permanencia.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { InventarioGeralComponent } from './inventario-geral/inventario-geral.co
   declarations: [
     InventarioComponent,
     GeralComponent,
-    InventarioGeralComponent
+    InventarioGeralComponent,
+    InventarioPermanenciaComponent
   ],
   providers: [
   ],

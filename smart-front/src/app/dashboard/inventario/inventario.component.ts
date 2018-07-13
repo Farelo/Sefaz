@@ -28,13 +28,11 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public abpackings: any[];
   public ab_packings: any[];
   public escolhas: any[];
-  public serials: any[];
   public abserials: any[];
   public locals: any[];
   public general:     Pagination = new Pagination({ meta: { page: 1 } });
   public supplier:    Pagination = new Pagination({ meta: { page: 1 } });
-  public battery:     Pagination = new Pagination({ meta: { page: 1 } });
-  public permanence:  Pagination = new Pagination({ meta: { page: 1 } });
+  public battery:     Pagination = new Pagination({ meta: { page: 1 } });  
   public absence:     Pagination = new Pagination({ meta: { page: 1 } });
   public quantity:    Pagination = new Pagination({ meta: { page: 1 } });
   public general_equipament: Pagination = new Pagination({ meta: { page: 1 } });
@@ -44,27 +42,22 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public detailedInventorySearchSerial = "";
   public supplierSearch = null;
   public batterySearch = "";
-  public quantitySearch = "";
-  public permanenceSearchEquipamento: any;
-  public permanenceSearchSerial = "";
+  public quantitySearch = "";  
   public absenceSearchEquipamento: any;
   public absenceSearchSerial: any;
   public absenceTime: any;
   public escolhaLocal = "Factory";
   public generalEquipamentSearch = "";
-  public serial = false;
   public abserial = false;
   public activeModal: any;
-
   public isCollapsed = false;
-  //public dataList: any[] = [];
 
-  ////////////// // REAL TIME SOCKER IO TEST
-  // messages = [];
-
-  // connection;
-
-  // message;
+  //Tempo de permanência
+  public permanenceSearchSerial = null;
+  public serials: any[];
+  public serial = false;
+  public permanence: Pagination = new Pagination({ meta: { page: 1 } });
+  public permanenceSearchEquipamento: any; 
 
   ngOnInit() {
 
@@ -146,10 +139,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     }
   }
 
-  public getChild(parent: any = { plant_name: ''}) {
-    return parent.plant_name
-  }
-
   tamanhoSelect() {
     $(window).resize(function () {
       var largura = $('.select2-container').width();
@@ -212,12 +201,15 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   }
 
   permanenceInventorySerial() {
-    this.serial = true;
+    console.log('serial chenaged to: ' + this.permanenceSearchSerial);
+    //this.permanenceSearchSerial = undefined;
+    // if ((this.permanenceSearchSerial !== null) && (this.permanenceSearchSerial !== undefined)){
+    //   this.serial = true;
 
-    this.inventoryService.getInventoryPackingHistoric(10, this.permanence.meta.page, this.permanenceSearchSerial, this.permanenceSearchEquipamento.packing, this.logged_user).subscribe(result => {
-      this.permanence = result;
-    }, err => { console.log(err) });
-
+    //   this.inventoryService.getInventoryPackingHistoric(10, this.permanence.meta.page, this.permanenceSearchSerial, this.permanenceSearchEquipamento.packing, this.logged_user).subscribe(result => {
+    //     this.permanence = result;
+    //   }, err => { console.log(err) });
+    // }
   }
 
   absenceInventorySerial() {
@@ -231,19 +223,21 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   //TODO MANY OTHER SERVICES TO RECOVER PACKINGS 
   permanenceInventory() {
-    this.permanenceSearchSerial = "";
+    this.permanenceSearchSerial = null;
     this.serial = false;
     this.serials = [];
 
-    if (this.permanenceSearchEquipamento.packing){
+    if (this.permanenceSearchEquipamento !== null){
       
+      console.log('this.permanenceSearchEquipamento.packing: ' + this.permanenceSearchEquipamento);
+
       this.packingService
         .getPackingsEquals(this.permanenceSearchEquipamento.supplier._id, this.permanenceSearchEquipamento.project._id, this.permanenceSearchEquipamento.packing)
         .subscribe(result => {
           this.serials = result.data;
-          this.inventoryService
-            .getInventoryPermanence(10, this.permanence.meta.page, this.permanenceSearchEquipamento.packing)
-            .subscribe(result => this.permanence = result, err => { console.log(err) });
+          // this.inventoryService
+          //   .getInventoryPermanence(10, this.permanence.meta.page, this.permanenceSearchEquipamento.packing)
+          //   .subscribe(result => this.permanence = result, err => { console.log(err) });
         }, err => { console.log(err) })
     } 
   }
@@ -379,11 +373,12 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   }
 
   onClear() {
+    console.log('clear equipment');
     this.serial = false;
     this.serials = [];
     this.permanence = new Pagination({ meta: { page: 1 } })
     this.permanence.data =  []
-    this.permanenceSearchSerial = "";
+    this.permanenceSearchSerial = null;
   }
 
   /**
