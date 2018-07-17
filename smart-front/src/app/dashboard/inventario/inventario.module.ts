@@ -16,6 +16,11 @@ import { TooltipModule } from 'ngx-bootstrap'
 import { GeralComponent } from './geral/geral.component';
 import { InventarioGeralComponent } from './inventario-geral/inventario-geral.component';
 import { InventarioPermanenciaComponent } from './inventario-permanencia/inventario-permanencia.component';
+import { InventarioBateriaComponent } from './inventario-bateria/inventario-bateria.component';
+import { InventarioQuantidadeComponent } from './inventario-quantidade/inventario-quantidade.component';
+import { InventarioEquipamentoGeralComponent } from './inventario-equipamento-geral/inventario-equipamento-geral.component';
+import { FornecedorComponent } from './fornecedor/fornecedor.component';
+import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-ausencia.component';
 
 @NgModule({
   imports: [
@@ -34,9 +39,13 @@ import { InventarioPermanenciaComponent } from './inventario-permanencia/inventa
     InventarioComponent,
     GeralComponent,
     InventarioGeralComponent,
-    InventarioPermanenciaComponent
+    InventarioPermanenciaComponent,
+    InventarioBateriaComponent,
+    InventarioQuantidadeComponent,
+    InventarioEquipamentoGeralComponent,
+    FornecedorComponent,
+    InventarioAusenciaComponent
   ],
-  providers: [
-  ],
+  providers: [],
 })
 export class InventarioModule { }

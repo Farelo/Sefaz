@@ -20,6 +20,8 @@ export class InventarioGeralComponent implements OnInit {
   public detailedGeneralInventory: Pagination = new Pagination({ meta: { page: 1 } });
   public detailedGeneralpackings: any[];
   public suppliers: any;
+  private selectedSupplier: any;
+  private selectedEquipament: any;
   
   constructor(
     private inventoryLogisticService: InventoryLogisticService,
@@ -63,6 +65,19 @@ export class InventarioGeralComponent implements OnInit {
     return parent.plant_name
   }
   
+  onClearSupplier(){
+    console.log('clear supplier');
+    this.selectedEquipament = null;
+  }
+
+  /**
+   * Equipment select was cleared
+   */
+  onClear() {
+    console.log('clear equipment');
+    this.supplierDetailedInventory(this.selectedSupplier);
+  }
+
   /**
   * Initial configuration of all collapses
   * @param  Initial state: true(collapsed) or false(expanded)
@@ -114,9 +129,6 @@ export class InventarioGeralComponent implements OnInit {
   loadPlantsInDetailedInventory(event: any): void {
     //console.log(JSON.stringify(event));
   }
-
-  private selectedSupplier: any;
-  private selectedEquipament: any;
 
   /**
    * A supplier was selected

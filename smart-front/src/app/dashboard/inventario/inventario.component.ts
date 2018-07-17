@@ -32,17 +32,17 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public locals: any[];
   public general:     Pagination = new Pagination({ meta: { page: 1 } });
   public supplier:    Pagination = new Pagination({ meta: { page: 1 } });
-  public battery:     Pagination = new Pagination({ meta: { page: 1 } });  
+  
   public absence:     Pagination = new Pagination({ meta: { page: 1 } });
-  public quantity:    Pagination = new Pagination({ meta: { page: 1 } });
+  
   public general_equipament: Pagination = new Pagination({ meta: { page: 1 } });
   public detailedGeneralInventory: Pagination = new Pagination({ meta: { page: 1 } });
   public detailedInventorySupplierSearch = null;
   public detailedInventoryEquipamentSearch = null;
   public detailedInventorySearchSerial = "";
   public supplierSearch = null;
-  public batterySearch = "";
-  public quantitySearch = "";  
+  
+  
   public absenceSearchEquipamento: any;
   public absenceSearchSerial: any;
   public absenceTime: any;
@@ -127,7 +127,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   changeSelect(event) {
     if (event === "Bateria") {
-      this.batteryInventory();
+      
     } else if (event === "Geral") {
       this.generalInventoryEquipament();
     } else if (event === "Tempo de ausência") {
@@ -147,27 +147,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     });
   }
 
-  supplierInventory(event: any): void {
-    if (event){
-      this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, event._id).subscribe(result => {
-        this.supplier = result;
-        this.name_supplier = result.data[0];
-      }, err => { console.log(err) });
-    }else{
-        this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, this.name_supplier._id.supplier).subscribe(result => {
-          this.supplier = result;
-        }, err => { console.log(err) });
-    } 
-  }
+  
 
-  // Bateria inventario  ----------------------------------
-  batteryInventory() {
-    if (this.logged_user instanceof Array) {
-      this.inventoryLogisticService.getInventoryBattery(10, this.battery.meta.page, this.batterySearch, this.logged_user).subscribe(result => this.battery = result, err => { console.log(err) });
-    } else {
-      this.inventoryService.getInventoryBattery(10, this.battery.meta.page, this.batterySearch, this.logged_user).subscribe(result => this.battery = result, err => { console.log(err) });
-    }
-  }
 
   generalInventoryEquipament() {
     if (this.logged_user instanceof Array) {
@@ -177,14 +158,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     }
   }
 
-  quantityInventory() {
-    if (this.logged_user instanceof Array) {
-      this.inventoryLogisticService.getInventoryQuantity(10, this.quantity.meta.page, this.quantitySearch, this.logged_user).subscribe(result => this.quantity = result , err => { console.log(err) });
-    } else {
-      this.inventoryService.getInventoryQuantity(10, this.quantity.meta.page, this.quantitySearch, this.logged_user).subscribe(result => this.quantity = result , err => { console.log(err) });
-    }
-
-  }
+  
 
   generalInventory() {
     if (this.logged_user instanceof Array) {
@@ -314,19 +288,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   }
 
- 
 
-  
-
-  open(packing) {
-    const modalRef = this.modalService.open(ModalInvComponent);
-    modalRef.componentInstance.packing = packing;
-  }
-
-  openLayer(packing) {
-    const modalRef = this.modalService.open(LayerModalComponent, { backdrop: "static", size: "lg", windowClass: 'modal-xl' });
-    modalRef.componentInstance.packing = packing;
-  }
 
   openAbsence(packing) {
     const modalRef = this.modalService.open(AbscenseModalComponent, { backdrop: "static", size: "lg" });

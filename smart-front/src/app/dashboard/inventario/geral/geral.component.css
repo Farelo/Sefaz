@@ -18,7 +18,7 @@ td {
 }
 
 .cabecalho {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
 }
 
@@ -38,7 +38,7 @@ h3 {
 
 hr {
   margin: 20px 0px 20px 0px;
-  border-color: #6382c9;
+  border-color: #3E4F60;
   border-width: thin;
 }
 
@@ -73,4 +73,15 @@ hr {
 .super-table > tbody > tr:nth-child(2) > td {
   padding: 0px 8px;
   border: 0px;
+}
+
+.base-bg{
+  background-color: white;
+  padding: 20px 20px;
+  box-shadow: 0px 0px 7px #000;
+  -webkit-box-shadow: 0px 0px 7px #000;
+}
+
+.clear-padding {
+  padding: 0px;
 }

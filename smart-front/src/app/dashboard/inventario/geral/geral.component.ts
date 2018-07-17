@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../../servicos/index.service';
 import { Pagination } from '../../../shared/models/pagination';
+import { ModalInvComponent } from '../../../shared/modal-inv/modal-inv.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-geral',
@@ -16,7 +18,8 @@ export class GeralComponent implements OnInit {
   public isCollapsed = false;
   constructor(
     private inventoryLogisticService: InventoryLogisticService,
-    private inventoryService: InventoryService,  
+    private inventoryService: InventoryService,
+    private modalService: NgbModal,
     private auth: AuthenticationService,
     
   ) {
@@ -41,4 +44,9 @@ export class GeralComponent implements OnInit {
     }
   }
 
+  open(packing) {
+    const modalRef = this.modalService.open(ModalInvComponent);
+    modalRef.componentInstance.packing = packing;
+  }
+  
 }

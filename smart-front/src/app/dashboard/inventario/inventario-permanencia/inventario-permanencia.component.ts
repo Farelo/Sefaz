@@ -16,6 +16,7 @@ export class InventarioPermanenciaComponent implements OnInit {
   public serials: any[];
   public serial = false;
   public permanence: Pagination = new Pagination({ meta: { page: 1 } }); 
+  public packings: any[];
 
   constructor(
     private inventoryService: InventoryService,
@@ -32,6 +33,16 @@ export class InventarioPermanenciaComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadPackings();
+  }
+
+  onClear() {
+    console.log('clear equipment');
+    this.serial = false;
+    this.serials = [];
+    this.permanence = new Pagination({ meta: { page: 1 } })
+    this.permanence.data = []
+    this.selectedSerial = null;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -55,6 +66,17 @@ export class InventarioPermanenciaComponent implements OnInit {
     }
   }
 
+  loadPackings() {
+    if (this.logged_user instanceof Array) {
+      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
+
+    } else if (this.logged_user) {
+      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
+    } else {
+      this.packingService.getPackingsDistincts().subscribe(result => { this.packings = result.data }, err => { console.log(err) });
+    }
+  }
+
   /**
    * Filtro Equipamento selecionado
    */
@@ -63,7 +85,7 @@ export class InventarioPermanenciaComponent implements OnInit {
     this.serial = false;
     this.serials = [];
 
-    if (this.selectedEquipament.packing) {
+    if (this.selectedEquipament) {
 
       this.packingService
         .getPackingsEquals(this.selectedEquipament.supplier._id, this.selectedEquipament.project._id, this.selectedEquipament.packing)

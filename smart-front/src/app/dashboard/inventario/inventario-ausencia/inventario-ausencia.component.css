@@ -162,5 +162,14 @@ hr {
 }
 
 .clear-padding {
-  padding: 0px;
+  padding-left: 0px;
+}
+
+.meuInput {
+  margin-bottom: 10px;
+  border-radius: 0em;
+}
+
+.form-control {
+  font-size: 15px;
 }

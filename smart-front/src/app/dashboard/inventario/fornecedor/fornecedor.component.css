@@ -164,3 +164,12 @@ hr {
 .clear-padding {
   padding: 0px;
 }
+
+.form-control {
+  font-size: 15px;
+}
+
+.meuInput {
+  margin-bottom: 10px;
+  border-radius: 0em;
+}

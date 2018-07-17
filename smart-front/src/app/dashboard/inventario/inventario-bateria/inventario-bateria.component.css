@@ -4,17 +4,16 @@
   font-family: 'Roboto', sans-serif;
 }
 
-.meuInventario {
-  box-shadow: 0px 0px 5px #000;
-  margin-bottom: 25px;
-}
-
 .table {
   margin-bottom: 0px;
 }
 
 td {
   background-color: white;
+}
+
+.form-control {
+  font-size: 15px;
 }
 
 .cabecalho {
@@ -50,14 +49,11 @@ hr {
   border-width: thin;
 }
 
-.tituloClaro {
-  color: white;
-}
-
 .classVazio {
   background-color: white;
   margin: 0px;
-  padding: 20px; 
+  padding: 20px;
+  box-shadow: 0px 0px 7px #000;
 }
 
 .base-bg{
