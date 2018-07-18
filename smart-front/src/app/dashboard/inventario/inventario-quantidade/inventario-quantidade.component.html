@@ -93,6 +93,8 @@
     <h3 class="numero">{{quantity.meta?.missing || 0}}</h3>
   </div>
 
+  <br>
+  
   <div class="has-text-centered">
     <pagination-controls id='quantity' class="my-pagination" (pageChange)="quantity.meta.page = $event;quantityInventory()" directionLinks="false"
       autoHide="true">

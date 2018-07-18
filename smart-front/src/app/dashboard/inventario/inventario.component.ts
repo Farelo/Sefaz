@@ -57,7 +57,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public serials: any[];
   public serial = false;
   public permanence: Pagination = new Pagination({ meta: { page: 1 } });
-  public permanenceSearchEquipamento: any; 
+  public permanenceSearchEquipamento: any;
 
   ngOnInit() {
 

@@ -53,24 +53,27 @@
       
       <div class="col-sm-4 clear-padding">
         <p>TEMPO DE AUSÊNCIA</p>
-        <input [(ngModel)]="absenceTime" aria-describedby="basic-addon1" class="form-control meuInput ng-pristine ng-valid ng-touched"
-          placeholder="Tempo" bindLabel="abtime" type="text" (change)="absenceInventory()" value="10">
+        <input [(ngModel)]="absenceTime" aria-describedby="basic-addon1" class="form-control meuInput"
+          placeholder="Tempo" bindLabel="abtime" type="text" (change)="absenceInventory()">
       </div>
       
       <div class="col-sm-4 clear-padding">
         <p>LOCAL DA AUSÊNCIA</p>
-        <select [(ngModel)]="escolhaLocal" (clear)="onClear()" data-style="btn-primary" (change)="absenceInventory()" (ngModelChange)="changeSelect($event)"
-          class="selectEq">
+        <!-- <select [(ngModel)]="escolhaLocal" (clear)="onClear()" data-style="btn-primary" (change)="absenceInventory()" (ngModelChange)="changeSelect($event)"
+          class="selectEq" style="width: 100%; margin-left: 0px;">
           <option value="Supplier">Plantas das Embarcadoras</option>
-          <!--option value="Factory">Plantas dos Clientes</option-->
-        </select>
+
+        </select> -->
+
+        <ng-select [(ngModel)]="escolhaLocal" (change)="changeLocal()" 
+          [items]="locals" bindLabel="local" bindValue="local" placeholder="Selecione um Local"></ng-select>
       </div>
 
     </div>
 
   </div>
 
-  <div class="table-responsive">
+  <div class="table-responsive" style="margin-top: 20px;">
     <table class="table">
       <thead>
         <tr class="cabecalho">
@@ -78,7 +81,7 @@
           <th>Serial</th>
           <th>Ultima Planta Conhecida</th>
           <th>Tempo de Ausência</th>
-          <th>Posição</th>
+          <th style="text-align: center;">Posição</th>
         </tr>
       </thead>
       <tbody>
@@ -103,14 +106,18 @@
     </table>
 
     <div class="classVazio" *ngIf="absence.data?.length < 1">
-      Realize uma pesquisa válida.
+      Sem resultado para os parâmetros informados.
     </div>
   </div>
+
+  <br>
+  
   <div class="has-text-centered">
     <pagination-controls class="my-pagination" id="absence" (pageChange)="absence.meta.page = $event;absenceInventoryChangePage()"
       directionLinks="false" autoHide="true">
     </pagination-controls>
   </div>
+
 </div>
 
 <br>

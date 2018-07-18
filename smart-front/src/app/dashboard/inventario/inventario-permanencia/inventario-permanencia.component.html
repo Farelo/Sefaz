@@ -97,6 +97,9 @@
         Selecione um equipamento.
       </div>
     </div>
+
+    <br>
+    
     <div class="has-text-centered">
       <pagination-controls class="my-pagination" id="permanence" (pageChange)="permanence.meta.page = $event;permanenceInventory()"
         directionLinks="false" autoHide="true">
@@ -136,17 +139,17 @@
               === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
             <td>{{packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro'}}</td>
             <td>{{packing.actual_gc16?.days >= 0 ? packing.actual_gc16?.days : '-'}}</td>
-  
           </tr>
-  
         </tbody>
-  
-  
       </table>
+
       <div class="classVazio" *ngIf="permanence.data?.length < 1">
         Não existem embalagens cadastradas com estes parâmetros.
       </div>
     </div>
+
+    <br> 
+
     <div class="has-text-centered">
       <pagination-controls class="my-pagination" id="permanenceHistoric" (pageChange)="permanence.meta.page = $event;permanenceInventorySerial()"
         directionLinks="false" autoHide="true">

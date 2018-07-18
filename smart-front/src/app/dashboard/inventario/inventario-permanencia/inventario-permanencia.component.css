@@ -13,10 +13,6 @@
   margin-bottom: 0px;
 }
 
-td {
-  background-color: white;
-}
-
 .cabecalho {
   background-color: #3E4F60;
   color: white;
@@ -69,4 +65,12 @@ hr {
 
 .clear-padding {
   padding: 0px;
+}
+
+/* td {
+  background-color: white;
+} */
+
+tbody > tr:nth-child(even) {
+    background-color: #f9f9f9;
 }

@@ -8,10 +8,6 @@
   margin-bottom: 0px;
 }
 
-td {
-  background-color: white;
-}
-
 .cabecalho {
   background-color: #3E4F60;
   color: white;
@@ -51,24 +47,23 @@ hr {
 }
 
 .det {
-  width: 15px;
-  height: 15px;
-  background-image: url("../../../../assets/images/icon_plus_blue.png");
-  background-size: 15px 15px;
+  width: 20px;
+  height: 20px;
+  background-image: url("../../../../assets/images/icon_circle_plus_blue.png");
+  background-size: 20px;
   cursor: pointer;
-  left: 50%;
-  margin-left: 36%;
+  display: inline-block;
 }
 
 .det:hover {
-  background-image: url("../../../../assets/images/icon_plus_gray.png");
+  background-image: url("../../../../assets/images/icon_circle_plus_gray.png");
   -webkit-transition: background-image 0.3s ease-in-out;
   -moz-transition: background-image 0.3s ease-in-out;
   transition: background-image 0.3s ease-in-out;
 }
 
 .bigger {
-  position: relative;
+  text-align: center;
 }
 
 .classVazio {
@@ -87,4 +82,12 @@ hr {
 
 .clear-padding {
   padding: 0px;
+}
+
+/* td {
+  background-color: white;
+} */
+
+tbody > tr:nth-child(even) {
+    background-color: #f9f9f9;
 }

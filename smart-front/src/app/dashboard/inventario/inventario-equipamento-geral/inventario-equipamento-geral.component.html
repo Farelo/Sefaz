@@ -9,7 +9,7 @@
       <div class="col-sm-4">
         <p>EQUIPAMENTO</p>
         <ng-select [(ngModel)]="generalEquipamentSearch" 
-          (change)="generalInventoryEquipament()" 
+          (change)="generalInventoryEquipamentChanged()" 
           bindValue="packing" 
           [items]="packings"
           bindLabel="packing" 
@@ -89,6 +89,8 @@
     </div>
   </div>
 
+  <br>
+  
   <div class="has-text-centered">
     <pagination-controls class="my-pagination" id='general' (pageChange)="general_equipament.meta.page = $event;generalInventoryEquipament()"
       directionLinks="false" autoHide="true">

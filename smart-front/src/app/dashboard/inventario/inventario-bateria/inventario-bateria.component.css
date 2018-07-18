@@ -8,10 +8,6 @@
   margin-bottom: 0px;
 }
 
-td {
-  background-color: white;
-}
-
 .form-control {
   font-size: 15px;
 }
@@ -65,4 +61,12 @@ hr {
 
 .clear-padding {
   padding: 0px;
+}
+
+/* td {
+  background-color: white;
+} */
+
+tbody > tr:nth-child(even) {
+    background-color: #f9f9f9;
 }

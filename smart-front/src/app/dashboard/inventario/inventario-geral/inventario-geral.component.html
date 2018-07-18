@@ -161,7 +161,7 @@
                     </tr>
                   </thead>
 
-                  <tbody>
+                  <tbody class="">
                     <tr *ngFor="let plantas of dayData.all_plants" [ngClass]="{'hidden': !getChild(plantas.current_plant.plant)}">
                       <td>{{getChild(plantas.current_plant.plant)}}</td>
                       <!-- <td>{{plantas.quantityTotal}} - {{plantas._id.problem}}</td> -->
@@ -190,6 +190,8 @@
     
   </div>
 
+  <br>
+  
   <div class="has-text-centered">
     <pagination-controls class="my-pagination" id="detailedGeneralInventory" (pageChange)="detailedGeneralInventory.meta.page = $event; loadDetailedInventory()"
       directionLinks="false" autoHide="true"> </pagination-controls>

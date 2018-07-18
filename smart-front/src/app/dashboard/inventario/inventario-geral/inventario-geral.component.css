@@ -13,10 +13,6 @@
   margin-bottom: 0px;
 }
 
-td {
-  background-color: white;
-}
-
 .cabecalho {
   background-color: #3E4F60;
   color: white;
@@ -119,6 +115,7 @@ hr {
 }
 
 .inner-table{
+  margin-top: 10px;
   width: fit-content;
   min-width: 40%;
   float:left;
@@ -163,4 +160,16 @@ hr {
 
 .clear-padding {
   padding: 0px;
+}
+
+/* td {
+  background-color: white;
+} */
+
+.inner-table > table > tbody > tr{
+  background-color: #fff;
+}
+
+tbody > tr:nth-child(even) {
+  background-color: #f9f9f9;
 }

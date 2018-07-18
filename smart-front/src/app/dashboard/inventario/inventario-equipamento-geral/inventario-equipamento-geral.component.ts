@@ -78,6 +78,18 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
         }, err => { console.log(err) });
     }
   }
+  
+  generalInventoryEquipamentChanged(){
+    if (this.generalEquipamentSearch){
+      this.packingService.getPackingsByPackingCode(this.generalEquipamentSearch).subscribe(result => {
+        this.general_equipament = result;
+        console.log('generalInventoryEquipamentChanged this.general_equipament: ' + JSON.stringify(this.general_equipament));
+      }, err => { console.log(err) });
+
+    }else{
+      this.generalInventoryEquipament();
+    }
+  }
 
   openLayer(packing) {
     const modalRef = this.modalService.open(LayerModalComponent, { backdrop: "static", size: "lg", windowClass: 'modal-xl' });
