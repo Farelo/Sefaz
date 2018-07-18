@@ -301,7 +301,11 @@ exports.packing_update_all_by_route = function (req, res) {
 };
 
 exports.packing_list_by_code = function (req, res) {
-  schemas.packing.find({ code: req.swagger.params.code.value })
+
+  schemas.packing
+    .paginate(
+      { code: req.swagger.params.code.value },
+      { page: parseInt(req.swagger.params.page.value), limit: parseInt(req.swagger.params.limit.value) })
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to retrieve packings'));
 };
