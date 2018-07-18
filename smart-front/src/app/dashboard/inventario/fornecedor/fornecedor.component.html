@@ -1,0 +1,86 @@
+<div class="base-bg">
+  <h2>FORNECEDOR</h2>
+  
+  <!-- Linha divisória -->
+  <hr style="margin-top: 10px;">
+
+  <div class="row">
+    <div class="col-sm-12">
+      <!-- Filtros de  FORNECEDOR -->
+      <div class="row escolhaFornecedor">
+        <div class="col-sm-6">
+          <p>DUNS</p>
+      
+          <ng-select [ngModel]="supplierSearch" (change)="supplierInventory($event)" [items]="suppliers" bindLabel="duns" placeholder="Selecione um Fornecedor">
+            <ng-template ng-label-tmp let-item="item">
+              {{item.duns}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                <b>Nome:</b> {{item.name}}
+              </div>
+              <small>
+                <b>DUNS:</b> {{item.duns}}
+              </small>
+      
+            </ng-template>
+          </ng-select>
+      
+        </div>
+        <div class="col-sm-6" *ngIf="name_supplier">
+          <p>FORNECEDOR:</p>
+          <input type="text" class="form-control meuInput" [ngModel]="name_supplier?.supplier?.name" disabled>
+      
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="table-responsive meuInventario">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th>Equipamento</th>
+          <th>Descrição</th>
+          <th>Projeto</th>
+          <th>Quantidade Encontrada</th>
+          <th>Planta Atual</th>
+          <th>Local</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let packing of supplier.data | paginate: {
+                                                        id:'supplier',
+                                                        itemsPerPage: 10,
+                                                        currentPage: supplier.meta.page,
+                                                        totalItems: supplier.meta.total_docs}">
+          <td>{{packing.code || '-'}}</td>
+          <td>{{packing.description || '-'}}</td>
+          <td>{{packing.project?.name || '-'}}</td>
+          <td>{{packing.quantity || '-'}}</td>
+          <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
+            : "Embalagem em Viagem")}}</td>
+          <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
+            (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="classVazio" *ngIf="supplier.data?.length < 1">
+      Selecione um Fornecedor.
+    </div>
+
+  </div>
+
+  <div class="has-text-centered">
+    <pagination-controls class="my-pagination" id='supplier' (pageChange)="supplier.meta.page = $event; supplierInventory()" directionLinks="false"
+      autoHide="true">
+    </pagination-controls>
+  </div>
+
+</div>
+
+<br>

@@ -1,0 +1,50 @@
+<div class="base-bg">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr class="cabecalho">
+          <th>Equipamento</th>
+          <th>Projeto</th>
+          <th>Descrição</th>
+          <th>Fornecedor</th>
+          <th>Quantidade</th>
+          <th style="width: 80px">Detalhes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let packing of general.data | paginate: {
+                                                        id: 'geral',
+                                                        itemsPerPage: 10,
+                                                        currentPage: general.meta.page,
+                                                        totalItems: general.meta.total_docs}">
+          <td>{{packing.code || '-'}}</td>
+          <td>{{packing.project?.name || '-'}}</td>
+          <td>{{packing.description || '-'}}</td>
+          <td>{{packing.supplier?.name || '-'}}</td>
+          <td>{{packing.quantity >= 0 ? packing.quantity : '-'}}</td>
+
+          <td style="text-align: center;">
+            <div class="bigger">
+              <div class="det" (click)="open(packing)">
+              </div>
+            </div>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="classVazio" *ngIf="general.data?.length < 1">
+      Ainda não existem embalagens cadastradas no sistema.
+    </div>
+  </div>
+
+  <br>
+  
+  <div class="has-text-centered">
+    <pagination-controls class="my-pagination" id='geral' (pageChange)="general.meta.page = $event;generalInventory()" directionLinks="false"
+      autoHide="true">
+    </pagination-controls>
+  </div>
+</div>
+<br>

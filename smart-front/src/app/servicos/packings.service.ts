@@ -64,6 +64,11 @@ export class PackingService {
       .catch(this.handleError);
   }
 
+  getPackingsByPackingCode(code: string){
+    return this.http.get(`${environment.url}packing/list/distinct/${code}`)
+      .catch(this.handleError);
+  }
+
   retrieveByPlants(limit: number, page: number, id: string): Observable<any> {
     return this.http.get(`${environment.url}packing/list/pagination/${limit}/${page}/plant/${id}`)
       .catch(this.handleError);

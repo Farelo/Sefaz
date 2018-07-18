@@ -10,8 +10,8 @@
   </div>
 </div>
 
-<div class="table-responsive tabela">
-  <table class="table">
+<div class="table-responsive">
+  <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
         <th>Embalagem</th>
@@ -19,7 +19,7 @@
         <th>Projeto</th>
         <th>Planta do Fornecedor</th>
         <th>Planta da Fábrica</th>
-        <th class="opcoes">Opções</th>
+        <th class="opcoes"></th>
       </tr>
     </thead>
     <tbody>
@@ -27,15 +27,21 @@
                                                       id:'routes',
                                                       itemsPerPage: data.meta.limit,
                                                       currentPage: data.meta.page,
-                                                      totalItems: data.meta.total_docs}">
+                                                      totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
         <td>{{route.packing_code}}</td>
         <td>{{route.supplier.name}}</td>
         <td>{{route.project.name}}</td>
         <td>{{route.plant_supplier.plant_name}}</td>
         <td>{{route.plant_factory.plant_name}}</td>
         <td class="teste">
-          <button class="editar botaoPlanta"  [routerLink]="['editar/', route._id]" >Editar</button>
-          <button class="excluir" (click)="removeRoutes(route)">Excluir</button>
+          <div *ngIf="index==hoveredIndex">
+            <button class="editar botaoPlanta"  [routerLink]="['editar/', route._id]" >
+              <i class="fa fa-edit"></i>
+            </button>
+            <button class="excluir" (click)="removeRoutes(route)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>

@@ -5,7 +5,6 @@
   border: none;
   padding: 2px;
   color: grey;
-  box-shadow: 0px 0px 7px #000;
   -webkit-transition: background-color 0.5s;
   transition: background-color 0.5s;
   font-family: 'Raleway', sans-serif;
@@ -37,7 +36,7 @@ h1 {
 }
 
 .cadastroMenu:hover {
-  background-color: #6382c9;
+  background-color: #6d8297;
 }
 
 .cadastroMenu div:hover {
@@ -46,7 +45,7 @@ h1 {
 }
 
 .cadastroMenu:active {
-  background-color: #6382c9;
+  background-color: #6d8297;
 }
 
 .cadastroMenu div:active {
@@ -55,7 +54,7 @@ h1 {
 }
 
 .active {
-  background-color: #6382c9;
+  background-color: #3E4F60;
 }
 
 .active div {
@@ -70,7 +69,7 @@ h1 {
 .meuInput {
   width: 100%;
   margin-bottom: 10px;
-  box-shadow: 0px 0px 3px #000;
+  box-shadow: 0px 0px 3px lightgray;
   display: inline-block;
   border-radius: 0em;
   border: none;
@@ -78,10 +77,9 @@ h1 {
 
 .mais {
   width: 100%;
-  background-color: #6382c9;
+  background-color: #3E4F60;
   padding: 5px;
-  color: white;
-  box-shadow: 0px 0px 7px #000;
+  color: white; 
   border: none;
   height: 34px;
   /*background-image: url("../../../../assets/images/mais.png");*/
@@ -89,8 +87,9 @@ h1 {
   background-position: center;
   background-size: 15px;
 }
+
 .mais:hover {
-  background-color: white;
+  background-color: #6d8297;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
@@ -109,8 +108,9 @@ h1 {
    margin-left: 43%;
 
  }
+
  .mais:hover .det {
-   background-image: url("../../../assets/images/icon_plus_blue.png");
+   background-image: url("../../../assets/images/icon_plus_white.png");
    -webkit-transition: background-color 0.3s;
    -mozkit-transition: background-color 0.3s;
    transition: background-color 0.3s;
@@ -121,30 +121,31 @@ h1 {
 }
 
 .cabecalho {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
 }
 
 td {
   background-color: white;
+  height: 50px;
 }
 
 .editar {
-  background-color: #3b5d93;
+  background-color: #3E4F60;
 }
 
 .excluir {
-  background-color: #1d416b;
+  background-color: #3E4F60;
 }
 
 .editar:hover {
-  background-color: #6382c9;
+  background-color: #6d8297;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
 
 .excluir:hover {
-  background-color: #102b40;
+  background-color: #6d8297;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
@@ -167,11 +168,13 @@ td {
 
 .teste {
   text-align: right;
+  width: 180px;
+  padding: 8px 0px;
 }
 
 .opcoes {
   text-align: right;
-  padding-right: 123px;
+  width: 180px;
 }
 
 @media (max-width: 768px) {
@@ -194,7 +197,7 @@ h1,
 
 h1 {
   padding-bottom: 15px;
-  border-bottom-color: #6382c9;
+  border-bottom-color: #3E4F60;
   border-width: thin;
   border-bottom-style: solid;
 }
@@ -216,19 +219,23 @@ h1 {
 .campo {
   margin-bottom: 20px;
 }
+
 .campo span {
   display: inline;
     font-weight: 600;
     font-family: 'Raleway', sans-serif;
     font-size: 13px;
 }
+
 .time .form-control {
   font-size: 1.4rem!important;
   padding: .2rem .5rem!important;
 }
+
 .time .titulo {
-  color:  #6382c9;
+  color:  #3E4F60;
 }
+
 input {
   font-size: 13px;
   border-radius: 0em !important;
@@ -263,12 +270,12 @@ input {
 
 .botaoRegistrar {
   background-color: white;
-  color: #6382c9;
-  border-color: #6382c9;
+  color: #3E4F60;
+  border-color: #3E4F60;
 }
 
 .botaoRegistrar:hover {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
 }
 
@@ -333,7 +340,7 @@ option:hover {
   background-color: white;
   margin: 0px;
   padding: 20px;
-  box-shadow: 0px 0px 7px #000;
+  /* box-shadow: 0px 0px 7px #000; */
 }
 
 .inputMapa {
@@ -388,8 +395,8 @@ h3 {
 }
 
 .divisoria {
-  color: #6382c9;
-  border-color: #6382c9;
+  color: #3E4F60;
+  border-color: #3E4F60;
   border-width: thin;
   margin-bottom: 25px;
 }
@@ -409,3 +416,13 @@ h3 {
     padding: 0px;
   }
 }
+
+.table>thead>tr>th {
+    border-bottom: unset;
+}
+
+.table>tbody>tr>td {
+    border-bottom: 1px solid #ddd !important;
+    border-top: unset !important;
+}
+ 
