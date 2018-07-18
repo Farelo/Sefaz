@@ -300,6 +300,12 @@ exports.packing_update_all_by_route = function (req, res) {
     .catch(_.partial(responses.errorHandler, res, 'Error to update all packings by route'));
 };
 
+exports.packing_list_by_code = function (req, res) {
+  schemas.packing.find({ code: req.swagger.params.code.value })
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to retrieve packings'));
+};
+
 /**
  * Delete an Packing
  */
