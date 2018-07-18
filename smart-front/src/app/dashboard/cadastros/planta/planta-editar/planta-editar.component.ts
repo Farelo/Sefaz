@@ -16,10 +16,10 @@ export class PlantaEditarComponent implements OnInit {
   public plant: FormGroup;
   public autocomplete: any;
   public address: any = {};
-  public center: any;
-  public pos : any;
+  public center: any = new google.maps.LatLng(0.000000, 0.000000);
+  public pos: any = new google.maps.LatLng(0.000000, 0.000000);
   public zoom = 14;
-
+  
   constructor(
     private PlantsService: PlantsService,
     private router: Router,
@@ -87,8 +87,8 @@ export class PlantaEditarComponent implements OnInit {
             (<FormGroup>this.plant)
                     .setValue(result.data, { onlySelf: true });
 
-            this.center = { lat: this.plant.controls.lat.value, lng: this.plant.controls.lng.value };
-            this.pos = [this.plant.controls.lat.value,this.plant.controls.lng.value];
+            this.center = new google.maps.LatLng(this.plant.controls.lat.value, this.plant.controls.lng.value);
+            this.pos = new google.maps.LatLng(this.plant.controls.lat.value, this.plant.controls.lng.value);
           });
         }
       )
