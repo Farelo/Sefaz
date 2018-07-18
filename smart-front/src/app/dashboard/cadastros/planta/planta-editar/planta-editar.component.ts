@@ -79,7 +79,6 @@ export class PlantaEditarComponent implements OnInit {
 
 
     ngOnInit() {
-
       this.inscricao = this.route.params.subscribe(
         (params: any)=>{
           let id = params ['id'];
