@@ -5049,7 +5049,7 @@
         }
       }
     },
-    "/packing/list/distinct/{code}": {
+    "/packing/list/distinct/{code}/{limit}/{page}": {
       "x-swagger-router-controller": "packing_controller",
       "get": {
         "tags": [
@@ -5068,6 +5068,20 @@
             "in": "path",
             "name": "code",
             "description": "Update packings related this code",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "Retrieve packings related this page",
             "required": true,
             "type": "string"
           }
