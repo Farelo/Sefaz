@@ -159,6 +159,7 @@ module.exports = {
             .then(() => resolve(p))
 
           } else {
+            p.traveling = true
             p.trip = {
               'time_exceeded': false,
               'date': p.trip.date,
