@@ -30,8 +30,6 @@ module.exports = {
         return r.time.max < time
       })
 
-      p.traveling = true
-
       if (result.length > 0) { //Make sure the current plant belongs to the route
         console.log("TRAVELING TIME: ALERT CREATE TO PACKING:", p._id)
         p.trip = {
@@ -54,6 +52,7 @@ module.exports = {
           .then(() => resolve(p))
       } else {
         console.log("TRAVELING TIME: NO CONFORMIDADE ABOUT THE PACKING:", p._id)
+        p.traveling = true
         p.trip = {
           'time_exceeded': false,
           'date': p.trip.date,
@@ -128,7 +127,7 @@ module.exports = {
   },
   evaluate_traveling: function(p) {
     return new Promise(function(resolve, reject) {
-      if(p.traveling){
+      // if(p.traveling){
         if (p.trip.time_exceeded) {
           debug("TRAVELING TIME: ALERT ALREADY EXIST TO PACKING:", p._id)
           let date = new Date()
@@ -176,9 +175,9 @@ module.exports = {
         } else {
           module.exports.create(p).then(new_p => resolve(new_p))
         }
-      }else {
-        resolve(p)
-      }
+      // }else {
+      //   resolve(p)
+      // }
     })
   }
 }
