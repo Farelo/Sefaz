@@ -10,19 +10,16 @@
         <li *ngIf="currentUser?.profile === 'AdminFactory' && this.authenticationService.currentUser()?.gc16 === true"><a routerLinkActive="active"  routerLink="/rc/bpline">BPline</a></li>
 
         <li class="scroll usuario placementBottom"
-        [ngbPopover]= 'popContent'
-        placement="bottom"
-        #a="ngbPopover"
-      >
-          <a class="botaoUsuario"
-          routerLinkActive="active"></a>
+          [ngbPopover]= 'popContent'
+          placement="bottom"
+          #a="ngbPopover">
+          <a class="botaoUsuario"routerLinkActive="active"></a>
         </li>
 
         <li class="scroll usuario placementLeft"
-        [ngbPopover]= 'popContent'
-        placement="left"
-        #p="ngbPopover"
-        >
+          [ngbPopover]= 'popContent'
+          placement="left"
+          #p="ngbPopover"> 
           <a class="botaoUsuario"
           routerLinkActive="active"></a>
         </li>
@@ -70,6 +67,7 @@
         <li *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'" class="opcaoEscondida"><a (click)="p.close();openModal()">GERENCIAR USUÁRIOS</a></li>
         <li class="opcaoEscondida"><a (click)="p.close();openModalEditar()">EDITAR</a></li>
         <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/home">HOME</a></li>
+        <li *ngIf="currentUser?.profile === 'AdminFactory'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/alertas">ALERTAS</a></li>
         <li *ngIf="currentUser?.profile === 'AdminFactory'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/cadastros">CADASTROS</a></li>
         <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
         <li *ngIf="currentUser?.profile === 'AdminFactory'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/importar">IMPORTAR DADOS</a></li>
