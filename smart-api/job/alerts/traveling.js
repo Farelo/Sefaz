@@ -139,6 +139,7 @@ module.exports = {
           })
 
           if (result.length > 0) {
+            p.traveling = true
             p.trip = {
               'time_exceeded': true,
               'date': p.trip.date,
