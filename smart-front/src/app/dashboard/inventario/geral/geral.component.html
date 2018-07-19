@@ -7,7 +7,7 @@
           <th>Projeto</th>
           <th>Descrição</th>
           <th>Fornecedor</th>
-          <th>Quantidade</th>
+          <th style="text-align: center;">Quantidade</th>
           <th style="width: 80px">Detalhes</th>
         </tr>
       </thead>
@@ -21,7 +21,7 @@
           <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.description || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
-          <td>{{packing.quantity >= 0 ? packing.quantity : '-'}}</td>
+          <td style="text-align: center;">{{packing.quantity >= 0 ? packing.quantity : '-'}}</td>
 
           <td style="text-align: center;">
             <div class="bigger">
