@@ -56,6 +56,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   
   generalInventoryEquipament() {
     
+    console.log('=====generalInventoryEquipament');
     console.log('this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
 
     if (this.logged_user instanceof Array) {
@@ -81,12 +82,32 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   
   generalInventoryEquipamentChanged(){
     if (this.generalEquipamentSearch){
-      this.packingService.getPackingsByPackingCode(this.generalEquipamentSearch).subscribe(result => {
+      console.log('.generalInventoryEquipamentChanged this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
+      this.packingService.getPackingsByPackingCode(this.generalEquipamentSearch, 10, this.general_equipament.meta.page).subscribe(result => {
+        
+        result.meta = {
+          page: result.data.page,
+          limit: result.data.limit,
+          total_pages: result.data.pages,
+          total_docs: result.data.total
+        };
+
+        result.data = result.data.docs;
+
+        console.log('.generalInventoryEquipamentChanged ...result: ' + JSON.stringify(result));
+
+        // this.general_equipament = new Pagination({ meta: { page: 1 } });
         this.general_equipament = result;
-        console.log('generalInventoryEquipamentChanged this.general_equipament: ' + JSON.stringify(this.general_equipament));
+
+        console.log('.generalInventoryEquipamentChanged ...this.general_equipament: ' + JSON.stringify(this.general_equipament));
       }, err => { console.log(err) });
 
     }else{
+      console.log('..generalInventoryEquipamentChanged this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
+
+      this.general_equipament = new Pagination({ meta: { page: 1 } });
+      this.generalEquipamentSearch = "";
+      this.general_equipament.data = [];
       this.generalInventoryEquipament();
     }
   }
