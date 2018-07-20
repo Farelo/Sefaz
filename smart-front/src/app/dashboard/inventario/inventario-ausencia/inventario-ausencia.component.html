@@ -10,8 +10,12 @@
 
       <div class="col-sm-4 clear-padding">
         <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="absenceSearchEquipamento" (clear)="onClear()" (change)="absenceInventory()" [items]="ab_packings"
-          bindLabel="abpacking" placeholder="Selecione um Equipamento">
+        <ng-select [(ngModel)]="absenceSearchEquipamento" 
+          (clear)="onClear()" 
+          (change)="absenceInventory()" 
+          [items]="ab_packings"
+          bindLabel="packing" 
+          placeholder="Selecione um Equipamento">
 
           <ng-template ng-label-tmp let-item="item">
             {{item.packing}}
@@ -35,8 +39,13 @@
       
       <div class="col-sm-4 clear-padding">
         <p>SERIAL</p>
-        <ng-select [(ngModel)]="absenceSearchSerial" (clear)="serialCleared()" (change)="absenceInventory()" [items]="abserials"
-          bindLabel="abserial" bindValue="serial" placeholder="Selecione um Serial">
+        <ng-select [(ngModel)]="absenceSearchSerial" 
+          (clear)="serialCleared()" 
+          (change)="absenceInventory()" 
+          [items]="abserials"
+          bindLabel="serial" 
+          bindValue="serial" 
+          placeholder="Selecione um Serial">
 
           <ng-template ng-label-tmp let-item="item">
             {{item.serial}}
@@ -53,8 +62,13 @@
       
       <div class="col-sm-4 clear-padding">
         <p>TEMPO DE AUSÊNCIA</p>
-        <input [(ngModel)]="absenceTime" aria-describedby="basic-addon1" class="form-control meuInput"
-          placeholder="Tempo" bindLabel="abtime" type="text" (change)="absenceInventory()">
+        <input [(ngModel)]="absenceTime" 
+          aria-describedby="basic-addon1" 
+          class="form-control meuInput"
+          placeholder="Tempo" 
+          bindLabel="abtime" 
+          type="text" 
+          (change)="absenceInventory()">
       </div>
       
       <div class="col-sm-4 clear-padding">
@@ -65,12 +79,14 @@
 
         </select> -->
 
-        <ng-select [(ngModel)]="escolhaLocal" (change)="changeLocal()" 
-          [items]="locals" bindLabel="local" bindValue="local" placeholder="Selecione um Local"></ng-select>
+        <ng-select [(ngModel)]="escolhaLocal" 
+          (change)="changeLocal()" 
+          [items]="locals" 
+          bindLabel="local" 
+          bindValue="local" 
+          placeholder="Selecione um Local"></ng-select>
       </div>
-
     </div>
-
   </div>
 
   <div class="table-responsive" style="margin-top: 20px;">
