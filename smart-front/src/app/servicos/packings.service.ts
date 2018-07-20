@@ -64,8 +64,8 @@ export class PackingService {
       .catch(this.handleError);
   }
 
-  getPackingsByPackingCode(code: string){
-    return this.http.get(`${environment.url}packing/list/distinct/${code}`)
+  getPackingsByPackingCode(code: string, limit: number, page: number){
+    return this.http.get(`${environment.url}packing/list/distinct/${code}/${limit}/${page}`)
       .catch(this.handleError);
   }
 

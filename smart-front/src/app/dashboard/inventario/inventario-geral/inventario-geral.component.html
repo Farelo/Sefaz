@@ -48,8 +48,12 @@
       <!-- Equipamentos -->
       <div class="col-sm-4" *ngIf="selectedSupplier">
         <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="equipamentDetailedInventory($event)" [items]="detailedGeneralpackings"
-          bindLabel="packing" placeholder="Selecione um Equipamento">
+        <ng-select [(ngModel)]="selectedEquipament" 
+          (clear)="onClear()" 
+          (change)="equipamentDetailedInventory($event)" 
+          [items]="detailedGeneralpackings"
+          bindLabel="packing" 
+          placeholder="Selecione um Equipamento">
       
           <ng-template ng-label-tmp let-item="item">
             {{item.packing}}

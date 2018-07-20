@@ -12,7 +12,6 @@ export class FornecedorComponent implements OnInit {
 
   public logged_user: any;
   public name_supplier: any = '';
-  public supplierSearch = null;
   public suppliers: any;
   public supplier: Pagination = new Pagination({ meta: { page: 1 } });
     
@@ -41,14 +40,20 @@ export class FornecedorComponent implements OnInit {
 
   supplierInventory(event: any): void {
     if (event) {
+      console.log('.')
       this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, event._id).subscribe(result => {
         this.supplier = result;
         this.name_supplier = result.data[0];
       }, err => { console.log(err) });
+
     } else {
-      this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, this.name_supplier._id.supplier).subscribe(result => {
-        this.supplier = result;
-      }, err => { console.log(err) });
+      console.log('..')
+      this.supplier.data = [];
+      this.name_supplier = "";
+
+      // this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, this.name_supplier._id.supplier).subscribe(result => {
+      //   this.supplier = result;
+      // }, err => { console.log(err) });
     }
   }
 

@@ -66,24 +66,24 @@
   <app-geral *ngIf="(escolhaGeral == 'GERAL')"></app-geral>
 
   <!-- Relatório Inventário Geral -->
-  <app-inventario-geral *ngIf="escolhaEquipamento == 'Inventário Geral'" ></app-inventario-geral>
+  <app-inventario-geral *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Inventário Geral')" ></app-inventario-geral>
 
   <!-- Relatório de Tempo de Permanência -->
-  <app-inventario-permanencia *ngIf="escolhaEquipamento == 'Tempo de permanência'"></app-inventario-permanencia>
-  
+  <app-inventario-permanencia *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Tempo de permanência')"></app-inventario-permanencia>
+
+  <!-- Relatório de Ausência -->
+  <app-inventario-ausencia *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Tempo de ausência')"></app-inventario-ausencia>
+
   <!-- Relatório de Bateria -->
-  <app-inventario-bateria *ngIf="escolhaEquipamento == 'Bateria'"></app-inventario-bateria>
+  <app-inventario-bateria *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Bateria')"></app-inventario-bateria>
 
   <!-- Relatório de Quantidade -->
-  <app-inventario-quantidade *ngIf="escolhaEquipamento == 'Quantidade'"></app-inventario-quantidade>
+  <app-inventario-quantidade *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Quantidade')"></app-inventario-quantidade>
 
   <!-- Relatório Equipamento Geral -->
-  <app-inventario-equipamento-geral *ngIf="escolhaEquipamento == 'Geral'"></app-inventario-equipamento-geral>
+  <app-inventario-equipamento-geral *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Geral')"></app-inventario-equipamento-geral>
 
   <!-- Relatório Fornecedor -->
   <app-fornecedor *ngIf="(escolhaGeral == 'FORNECEDOR')"></app-fornecedor>
 
-  <!-- Relatório de Ausência -->
-  <app-inventario-ausencia *ngIf="((escolhaGeral == 'EQUIPAMENTO')&&(escolhaEquipamento == 'Tempo de ausência') )"></app-inventario-ausencia>
-  
 </div>
