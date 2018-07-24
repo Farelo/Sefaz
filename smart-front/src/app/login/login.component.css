@@ -151,7 +151,8 @@ p {
 }
 
 button {
-  width: calc( 100% - 60px );
+  /* width: calc( 100% - 60px ); */
+  width: 100%;
   padding: 10px 40px;
   background-color: transparent;
   border-radius: 5px;

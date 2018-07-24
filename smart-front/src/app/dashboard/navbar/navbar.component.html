@@ -1,4 +1,191 @@
-<div class="menu1">
+<div class="m-navbar" (window:resize)="onResize($event)">
+  <div class="brand">
+    <h1>RECICLAPAC</h1>
+  </div>
+
+  <ul class="lista-menu">
+    <li>
+      <a routerLinkActive="active" routerLink="/rc/home">Home</a>
+    </li>
+    <li *ngIf="currentUser?.profile === 'AdminFactory'">
+      <a routerLinkActive="active" routerLink="/rc/alertas">Alertas</a>
+    </li>
+    <li *ngIf="currentUser?.profile === 'AdminFactory'">
+      <a routerLinkActive="active" routerLink="/rc/cadastros">Cadastros</a>
+    </li>
+    <li>
+      <a routerLinkActive="active" routerLink="/rc/inventario">Inventário</a>
+    </li>
+    <li *ngIf="currentUser?.profile === 'AdminFactory'">
+      <a routerLinkActive="active" routerLink="/rc/importar">Importar Dados</a>
+    </li>
+    <li>
+      <a routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
+    </li>
+    <li *ngIf="currentUser?.profile === 'AdminFactory' && this.authenticationService.currentUser()?.gc16 === true">
+      <a routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
+    </li>
+    <li class="usuario" [ngbPopover]='popContent' placement="bottom-right" triggers="manual" #p="ngbPopover" (click)="p.toggle()" (shown)="posicionarPopOver()"> 
+      <a class="botaoUsuario" routerLinkActive="active"></a>
+    </li>
+  </ul>
+
+  <button class="button-menu" (click)="mudar()">
+    <span class="button-line"></span>
+    <span class="button-line"></span>
+    <span class="button-line"></span>
+  </button>
+
+</div>
+
+<div class="menu-secundario" [ngClass]="{ 'desaparecer': menuAparecer == false, 'aparecer': menuAparecer == true}">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 bloco-1">
+      <ul class="listaEscondida">
+        
+        <li>
+          <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/home">Home</a>
+        </li>
+
+        <li *ngIf="currentUser?.profile === 'AdminFactory'">
+          <a routerLinkActive="active" routerLink="/rc/alertas">Alertas</a>
+        </li>
+
+        <li *ngIf="currentUser?.profile === 'AdminFactory'">
+          <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/cadastros">Cadastros</a>
+        </li>
+
+        <li>
+          <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/inventario">Inventário</a>
+        </li>
+
+        <li *ngIf="currentUser?.profile === 'AdminFactory'">
+          <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/importar">Importar Dados</a>
+        </li>
+
+        <li>
+          <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
+        </li>
+
+        <li *ngIf="currentUser?.profile === 'AdminFactory' && this.authenticationService.currentUser()?.gc16 === true">
+          <!-- <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">BPline</a> -->
+          <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
+        </li>
+    
+      </ul>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 bloco-2">
+      <ul class="lista-menu-escondido">
+        <li>
+          <div>
+            <div style="float: left;">
+              <img width="50" *ngIf="currentUser?.profile === 'AdminFactory'" src="../../../assets/images/icon_a.png">
+            </div>
+            <div style="float: left;">
+              <p id="username">{{this.authenticationService.currentUser().user}} </p>
+
+              <p class="user-type" *ngIf="currentUser?.profile === 'AdminFactory'">Administrador da Fábrica.</p>
+              <p class="user-type" *ngIf="currentUser?.profile === 'StaffFactory'">Funcionário da Fábrica.</p>
+              <p class="user-type" *ngIf="currentUser?.profile === 'Logistic'">Op. Logistico Administrador.</p>
+              <p class="user-type" *ngIf="currentUser?.profile === 'StaffLogistic'">Funcionário do Op. Logistico.</p>
+              <p class="user-type" *ngIf="currentUser?.profile === 'Supplier'">Fornecedor Administrador.</p>
+              <p class="user-type" *ngIf="currentUser?.profile === 'StaffSupplier'">Funcionário do Fornecedor.</p>
+            </div>
+          </div>
+        </li>
+
+        <li style="clear: both; padding: 5px 0px;">
+          <hr>
+        </li>
+
+        <li>
+          <a *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'"
+            (click)="p.close();openModal()">
+            Gerenciar usuários </a>
+        </li>
+
+        <li>
+          <a *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'"
+            (click)="p.close();openSettings()">
+            Configurações </a>
+        </li>
+
+        <li>
+          <a (click)="p.close();openModalEditar()"> Editar </a>
+        </li>
+
+        <li style="padding: 5px 0px;"> <hr> </li>
+
+        <li>
+          <a (click)="logout()"> Sair </a>
+        </li>
+      </ul>
+    </div> 
+  </div>
+</div>
+
+<ng-template #popContent id="m-popover">
+  <div id="pop-over-content">
+    <ul class="lista-menu-escondido">
+      <li>
+        <div>
+          <div style="float: left;">
+            
+            <img width="50" *ngIf="currentUser?.profile === 'AdminFactory'" src="../../../assets/images/icon_a.png">
+            <img *ngIf="currentUser?.profile === 'Logistic'" src="../../../assets/images/icon_o.png">
+            <img *ngIf="currentUser?.profile === 'Supplier'" src="../../../assets/images/icon_f.png">
+
+            <img *ngIf="currentUser?.profile === 'StaffFactory'" src="../../../assets/images/icon_f.png">
+            <img *ngIf="currentUser?.profile === 'StaffLogistic'" src="../../../assets/images/icon_f.png">
+            <img *ngIf="currentUser?.profile === 'StaffSupplier'" src="../../../assets/images/icon_f.png">
+          </div>
+
+          <div style="float: left;">
+
+            <p id="username">{{this.authenticationService.currentUser().user}} </p>
+    
+            <p class="user-type" *ngIf="currentUser?.profile === 'AdminFactory'">Administrador da Fábrica.</p>
+            <p class="user-type" *ngIf="currentUser?.profile === 'StaffFactory'">Funcionário da Fábrica.</p>
+            <p class="user-type" *ngIf="currentUser?.profile === 'Logistic'">Op. Logistico Administrador.</p>
+            <p class="user-type" *ngIf="currentUser?.profile === 'StaffLogistic'">Funcionário do Op. Logistico.</p>
+            <p class="user-type" *ngIf="currentUser?.profile === 'Supplier'">Fornecedor Administrador.</p>
+            <p class="user-type" *ngIf="currentUser?.profile === 'StaffSupplier'">Funcionário do Fornecedor.</p>
+          </div>
+        </div>
+      </li>
+    
+      <li style="clear: both; padding: 5px 0px;">
+        <hr>
+      </li>
+    
+      <li>
+        <a *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'"
+          (click)="p.close(); openModal()">
+          Gerenciar usuários </a>
+      </li>
+    
+      <li>
+        <a *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'"
+          (click)="p.close(); openSettings()">
+          Configurações </a>
+      </li>
+    
+      <li>
+        <a (click)="p.close(); openModalEditar()"> Editar </a>
+      </li>
+    
+      <li style="padding: 5px 0px;">
+        <hr> </li>
+    
+      <li>
+        <a (click)="logout()"> Sair </a>
+      </li>
+    </ul>
+  </div>
+</ng-template>
+
+<!-- <div class="menu1">
     <h1 style="float: left">RECICLAPAC</h1>
     <ul class="lista"style=" list-style-type:none; float: right">
         <li><a routerLinkActive="active" routerLink="/rc/home" >HOME</a></li>
@@ -12,19 +199,15 @@
         <li class="scroll usuario placementBottom"
         [ngbPopover]= 'popContent'
         placement="bottom"
-        #a="ngbPopover"
-      >
-          <a class="botaoUsuario"
-          routerLinkActive="active"></a>
+        #a="ngbPopover">
+          <a class="botaoUsuario" routerLinkActive="active"></a>
         </li>
 
         <li class="scroll usuario placementLeft"
         [ngbPopover]= 'popContent'
         placement="left"
-        #p="ngbPopover"
-        >
-          <a class="botaoUsuario"
-          routerLinkActive="active"></a>
+        #p="ngbPopover">
+          <a class="botaoUsuario" routerLinkActive="active"></a>
         </li>
     </ul>
 
@@ -63,7 +246,7 @@
       <button class="medio" (click)="p.close();openModalEditar()"><div>EDITAR</div></button>
       <button class="medio2" (click)="logout()"><div>SAIR</div></button>
     </div>
-    <!-- (click)="openModal()" -->
+    
 
     <div class="col-sm-6">
       <ul class="listaEscondida"style=" ">
@@ -82,26 +265,4 @@
   </div>
 </div>
 
-<ng-template #popContent >
-  <img *ngIf="currentUser?.profile === 'AdminFactory'" src="../../../assets/images/perfil1.png">
-  <p *ngIf="currentUser?.profile === 'AdminFactory'">Administrador da Fábrica.</p>
-  <img *ngIf="currentUser?.profile === 'StaffFactory'" src="../../../assets/images/perfil-funcionario.png">
-  <p *ngIf="currentUser?.profile === 'StaffFactory'">Funcionário da Fábrica.</p>
-  <img *ngIf="currentUser?.profile === 'Logistic'" src="../../../assets/images/perfil-operador.png">
-  <p *ngIf="currentUser?.profile === 'Logistic'">Op. Logistico Administrador.</p>
-  <img *ngIf="currentUser?.profile === 'StaffLogistic'" src="../../../assets/images/perfil-funcionario.png">
-  <p *ngIf="currentUser?.profile === 'StaffLogistic'">Funcionário do Op. Logistico.</p>
-  <img *ngIf="currentUser?.profile === 'Supplier'" src="../../../assets/images/perfil-fornecedor.png">
-  <p *ngIf="currentUser?.profile === 'Supplier'">Fornecedor Administrador.</p>
-  <img *ngIf="currentUser?.profile === 'StaffSupplier'" src="../../../assets/images/perfil-funcionario.png">
-  <p *ngIf="currentUser?.profile === 'StaffSupplier'">Funcionário do Fornecedor.</p>
-  <hr>
-  
-  <p>{{this.authenticationService.currentUser().user}} </p>
-  <hr>
-
-  <button class="gerenciar" *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'" (click)="p.close(); a.close(); openModal()"><div>GERENCIAR USUÁRIOS</div></button><br>
-  <button class="gerenciar"  *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'" (click)="p.close(); a.close();openSettings()"><div>CONFIGURAÇÕES</div></button><br class="brgone">
-  <button class="medio" (click)="p.close(); a.close(); openModalEditar()"><div>EDITAR</div></button>
-  <button class="medio2" (click)="logout()"><div>SAIR</div></button>
-</ng-template>
+ -->
