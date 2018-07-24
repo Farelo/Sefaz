@@ -20,16 +20,14 @@ public currentUser  : any;
     private ngZone:NgZone,
     private modalService: NgbModal,
     private authenticationService: AuthenticationService,
-    private router: Router,
-  ) {
-  
-  }
+    private router: Router) {
+
+    }
 
   ngOnInit() {
     this.funcaoTop();
     this.menuAparecer = false;
     this.currentUser = this.authenticationService.currentUser();
-
   }
 
   funcaoTop(){
@@ -39,12 +37,14 @@ public currentUser  : any;
     });
   }
 
+  posicionarPopOver() {
+    $('.arrow').css({ 
+      top: -12
+    });
+  }
+
   mudar(){
-    if(this.menuAparecer == false ){
-      this.menuAparecer = true;
-    } else{
-      this.menuAparecer = false;
-    }
+    this.menuAparecer = !this.menuAparecer;
   }
 
   openModal(){
@@ -56,7 +56,6 @@ public currentUser  : any;
   openModalEditar(){
     this.mudar();
     const modalRef = this.modalService.open(ModalCurrentEditarComponent,{backdrop: "static", size: "lg"});
-
   }
 
   openSettings(){
@@ -67,5 +66,11 @@ public currentUser  : any;
   logout(){
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+  }
+
+  onResize(event) {
+    if(event.target.innerWidth > 890){
+      this.menuAparecer = false;
+    }
   }
 }
