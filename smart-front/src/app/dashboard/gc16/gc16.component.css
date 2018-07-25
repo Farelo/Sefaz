@@ -1,3 +1,5 @@
+@import '~font-awesome/css/font-awesome.css';
+
 * {
   font-family: 'Roboto', sans-serif;
 }
@@ -6,12 +8,9 @@
   background-color: white;
   margin: 0px;
   padding: 20px;
-  box-shadow: 0px 0px 7px #000;
+  /* box-shadow: 0px 0px 7px #000; */
 }
 
-.meuInventario {
-  box-shadow: 0px 0px 7px #000;
-}
 
 .table {
   margin-bottom: 0px;
@@ -28,8 +27,8 @@
   border-radius: 1em;
 }
 
-td {
-  background-color: white;
+td { 
+  height: 50px;
 }
 
 .form-control {
@@ -51,7 +50,7 @@ td {
 }
 
 .cabecalho {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
 }
 
@@ -66,13 +65,16 @@ span {
 }
 
 .inicial {
-  margin-bottom: 10px !important;
-  height: 35px;
+  margin-bottom: 10px !important; 
 }
 
-.buscar {
-  width: 200px;
-  box-shadow: 0px 0px 2px #000;
+.meuInput {
+  width: 100%;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 3px lightgray;
+  display: inline-block;
+  border-radius: 0em;
+  border: none;
 }
 
 @media (min-width: 600px) {
@@ -82,20 +84,18 @@ span {
 }
 
 .mais {
-  width: 80px;
-  background-color: #6382c9;
-  padding: 5px;
-  color: white;
-  box-shadow: 0px 0px 7px #000;
-  border: none;
+  width: 140px;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #3E4F60;
   height: 34px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 15px;
+  border-radius: 5px;
+  float: right;
 }
 
 .mais:hover {
-  background-color: white;
+  background-color: #3E4F60;
+  color: #fff;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
@@ -111,11 +111,12 @@ span {
   background-size: 15px 15px;
   cursor: pointer;
   left: 50%;
-  margin-left: 38%; 
+  margin-left: 43%;
+
 }
 
 .mais:hover .det {
-  background-image: url("../../../assets/images/icon_plus_blue.png");
+  background-image: url("../../../assets/images/icon_plus_white.png");
   -webkit-transition: background-color 0.3s;
   -mozkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
@@ -128,35 +129,61 @@ span {
 .i2 {
   float: right;
 }
-.editar { background-color: #3b5d93; }
 
-.excluir { background-color: #1d416b; }
-
-.editar:hover {
-  background-color: #6382c9;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
-}
-
-.excluir:hover {
-  background-color: #102b40;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
-}
-
-.editar,
-.excluir {
+.editar, 
+.excluir{ 
+  background-color: transparent;
+  border: 1px solid #e6e6e6;
+  color: #444444;
+  border-radius: 5px;
   width: 80px;
-  color: white;
-  border: none;
-  padding: 5px 10px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.editar:hover, 
+.excluir:hover {
+  background-color: #3E4F60;
+  border: 1px solid #3E4F60;
+  color: #fff;
+
+  transition: background-color 0.3s;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
+
+  transition: border-color 0.3s;
+  -webkit-transition: border-color 0.3s;
+  -moz-transition: border-color 0.3s;
+}
+
+.excluir {
+  margin-left: 5px;
+}
+
+.fa-edit {
+  color: black;
+}
+
+.fa-trash {
+  color: black;
 }
 
 .opcoes {
-  text-align: right;
-  padding-right: 123px;
+  text-align: center;
+  width: 200px;
 }
 
 .teste {
   text-align: right;
+}
+
+.base-bg{
+  background-color: white;
+  padding: 20px 20px;
+  box-shadow: 0px 0px 7px #000;
+  -webkit-box-shadow: 0px 0px 7px #000;
+}
+
+tbody > tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
