@@ -124,7 +124,7 @@ h1 {
 }
 
 td {
-  background-color: white;
+  /* background-color: white; */
   height: 50px;
 }
 
@@ -425,3 +425,6 @@ h3 {
     border-top: unset !important;
 }
  
+tbody > tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
