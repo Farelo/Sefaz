@@ -43,7 +43,6 @@ export class Gc16Component implements OnInit {
       .getGC16sPagination(10, this.data.meta.page, this.equipamentSearch)
       .subscribe(result => {
          this.data = result;
-        console.log('result: ' + JSON.stringify(result));
        },err => {  console.log(err)});
   }
 
@@ -53,25 +52,21 @@ export class Gc16Component implements OnInit {
     if (this.logged_user instanceof Array) {
       this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => {
         this.packings = result.data;
-        console.log('this.packings: ' + JSON.stringify(this.packings));
       }, err => { console.log(err) });
 
     } else if (this.logged_user) {
       this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => {
         this.packings = result.data;
-        console.log('this.packings: ' + JSON.stringify(this.packings));
       }, err => { console.log(err) });
 
     } else {
       this.packingService.getPackingsDistincts().subscribe(result => {
         this.packings = result.data;
-        console.log('this.packings: ' + JSON.stringify(this.packings));
       }, err => { console.log(err) });
     }
   }
 
   equipamentChanged(){
-    console.log('equipamentChanged');
     if (this.equipamentSearch == null) this.equipamentSearch = "";
     this.loadGC16();
   }

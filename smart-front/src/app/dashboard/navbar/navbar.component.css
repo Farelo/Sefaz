@@ -55,6 +55,10 @@ hr {
   margin: 5px auto;
 }
 
+.active {
+  color: #6382c9 !important;
+}
+
 .usuario {
   width: 34px;
   height: 40px;
@@ -246,9 +250,7 @@ hr {
   }
 }
 
-.active {
-  color: #6382c9 !important;
-}
+
 
 .usuario {
   width: 34px;
