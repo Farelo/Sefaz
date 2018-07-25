@@ -7,7 +7,7 @@
   </div>
   <div class="col-xs-3">
     <button class="mais" routerLink="cadastrar">
-      <div class="bigger"><div class="det"></div></div>
+      Novo
     </button>
   </div>
 </div>
@@ -30,10 +30,10 @@
         <td class="teste">
           <div *ngIf="index==hoveredIndex">
             <button class="editar" [routerLink]="['editar/', tag._id]">
-              <i class="fa fa-edit"></i>
+              EDITAR
             </button>
             <button class="excluir" (click)="removeTags(tag)" [disabled]="tag.status == 1">
-              <i class="fa fa-trash"></i>
+              EXCLUIR
             </button>
           </div>
         </td>

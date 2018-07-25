@@ -6,7 +6,7 @@
 
   </div>
   <div class="col-xs-3">
-    <button class="mais" routerLink="cadastrar"><div class="bigger"><div class="det"></div></div></button>
+    <button class="mais" routerLink="cadastrar">Novo</button>
   </div>
 </div>
 <div class="table-responsive">
@@ -35,10 +35,10 @@
         <td class="teste">
           <div *ngIf="index==hoveredIndex">
             <button class="editar" [routerLink]="['editar/', packing._id]">
-              <i class="fa fa-edit"></i>
+              EDITAR
             </button>
             <button class="excluir" (click) ="removePacking(packing)">
-              <i class="fa fa-trash"></i>
+              EXCLUIR
             </button>
           </div>
         </td>

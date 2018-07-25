@@ -6,7 +6,7 @@
 
   </div>
   <div class="col-xs-3">
-    <button class="mais"  routerLink="cadastrar"><div class="bigger"><div class="det"></div></div></button>
+    <button class="mais"  routerLink="cadastrar">Novo</button>
   </div>
 </div>
 
@@ -36,10 +36,10 @@
         <td class="teste">
           <div *ngIf="index==hoveredIndex">
             <button class="editar botaoPlanta"  [routerLink]="['editar/', route._id]" >
-              <i class="fa fa-edit"></i>
+              EDITAR
             </button>
             <button class="excluir" (click)="removeRoutes(route)">
-              <i class="fa fa-trash"></i>
+              EXCLUIR
             </button>
           </div>
         </td>
