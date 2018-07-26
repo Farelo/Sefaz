@@ -6,7 +6,6 @@ const consultDatabase = require('./consults/consult')
 const updateDevices = require('./updates/update_devices')
 const with_route = require('./routes/with_route')
 const without_route = require('./routes/without_route')
-// const evaluates_battery = require('./alerts/evaluate_battery')
 const evaluates_battery = require('./evaluators/evaluates_battery')
 const actual_plant = require('./positions/actual_plant')
 const evaluate_department = require('./positions/evaluate_department')
@@ -37,40 +36,29 @@ const status_analysis = (data) => {
 	packings.forEach(packing => {
 		// Avalia a bateria das embalagens
 		evaluates_battery(packing, settings)
+		// Embalagem perdeu sinal?
+
 
 		if (packing.routes) { // Tem rota?
-			const current_packing_plan = actual_plant(packing, plants, settings) // Recupera a planta atual onde o pacote está atualmente
-			if (current_packing_plan != null) { // Está em alguma planta atualmente?
-				// Avalia a Bateria
-				// Embalagem perdeu sinal?
+			const current_plan = actual_plant(packing, plants, settings) // Recupera a planta atual onde o pacote está atualmente
+			if (current_plan != null) { // Está em alguma planta atualmente?
+				// Está no local correto?
+					// Se estiver no local correto para de atualizar o trip.date da embalagem e o actual_plant do banco
+					// Se estiver no local incorreto eu só atualizo o trip.date da embalagem e o actual_plant no banco
+
+				// Adicionar ou atualizar a minha actual_plant da embalagem no banco
+				// Adicionar ou atualizar a minha last_plant da embalagem no banco
 				// Tempo de permanência (CEBRACE: em qualquer ponto de controle)
-				// Está no local correto?
-				// Está viajando?
-				// Se estiver viajando
+			} else { // Está viajando
+				// Remover o actual_plant da embalagem
 				// Tempo excedido? Atrasada
 				// Tempo excedido > tempo para ficar perdida? Ausente/Perdida
-				// evaluates_battery(packing, settings)
-				// 	.then(verified_packing => debug('verified_packing', verified_packing._id))
-				// 	.catch(error => debug(`Algo deu errado: ${error.messages}`))
-			} else {
-				// Avaliamos 3 coisas:
-				// Tempo de permanência
-				// Está no local correto?
-				// Está viajando?
-				// Se estiver viajando
-				// Tempo excedido? Atrasada
-				// Tempo excedido > tempo para ficar perdida? Ausente/Perdida
+				
 			}
 
 		} else {
 			debug('Packing without route.')
 			// TODO: Tratar esse caso da melhor forma
-			// Avaliar:
-			// Bateria
-			// Embalagem perdeu sinal?
-			// evaluates_battery(packing, settings)
-			// 	.then(verified_packing)
-			// 	.catch(error => debug(`Algo deu errado: ${error.messages}`))
 		}
 	})
 
