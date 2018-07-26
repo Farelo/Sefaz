@@ -51,7 +51,7 @@
                   <div class="status-content">
                     <ul>
                       <li class="status-number">{{ getSumByCondition(1) }}</li>
-                      <li class="status-type">Perdidas</li>
+                      <li class="status-type">Ausentes</li>
                     </ul>
                   </div>
                   <div class="status-color" id="status-perdida"></div>
@@ -123,7 +123,7 @@
               <tr class="cabecalho">
                 <th style="width: 30%">Planta</th>
                 <th style="width: 50%">Localização</th>
-                <th style="width: 10%">Quantidade</th>
+                <th style="width: 10%" class="m-text-center">Quantidade</th>
               </tr>
             </thead>
             <tbody>
@@ -134,7 +134,7 @@
                                                                   totalItems: packingsPerPlant.meta.total_docs}">
                 <td>{{packing.plant_name}}</td>
                 <td>{{packing.location}}</td>
-                <td>{{packing.quantity_packings}}</td>
+                <td class="m-text-center">{{packing.quantity_packings}}</td>
                 
               </tr>
             </tbody>
@@ -150,9 +150,7 @@
 
         </div>
 
-        
-        
-        
+            
         
         <div class="classVazio" *ngIf="packingsPerPlant.data?.length < 1">
           Não foram registradas plantas no sistema
@@ -161,9 +159,8 @@
       
     
 
-
-
-
     </div>
   </div>
 </div>
+
+<br>

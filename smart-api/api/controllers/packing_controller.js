@@ -300,6 +300,20 @@ exports.packing_update_all_by_route = function (req, res) {
     .catch(_.partial(responses.errorHandler, res, 'Error to update all packings by route'));
 };
 
+exports.packing_list_by_code = function (req, res) {
+
+  schemas.packing
+    .paginate(
+      { code: req.swagger.params.code.value },
+      { page: parseInt(req.swagger.params.page.value), 
+        limit: parseInt(req.swagger.params.limit.value),
+        populate: ['project', 'supplier']
+      },
+    )
+    .then(_.partial(responses.successHandler, res, req.user.refresh_token))
+    .catch(_.partial(responses.errorHandler, res, 'Error to retrieve packings'));
+};
+
 /**
  * Delete an Packing
  */

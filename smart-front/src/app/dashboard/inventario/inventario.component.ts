@@ -1,21 +1,22 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy  } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Pagination } from '../../shared/models/pagination';
-import { Alert } from '../../shared/models/alert';
+import { Pagination } from '../../shared/models/pagination'; 
 import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
 import { LayerModalComponent } from '../../shared/modal-packing/layer.component';
 import { AbscenseModalComponent } from '../../shared/modal-packing-absence/abscense.component';
 import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service';
 import { ChatService } from '../../servicos/teste';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv'; 
+
 declare var $: any;
 
 //fazer uma refatoração esta muito grande e com o HTML gigantesco
 @Component({
-  selector: 'app-inventario',
+  selector: 'app-inventario', 
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.css']
 })
+
 export class InventarioComponent implements OnInit, OnDestroy  {
   public logged_user: any;
   public suppliers: any;
@@ -27,43 +28,36 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public abpackings: any[];
   public ab_packings: any[];
   public escolhas: any[];
-  public serials: any[];
   public abserials: any[];
   public locals: any[];
   public general:     Pagination = new Pagination({ meta: { page: 1 } });
   public supplier:    Pagination = new Pagination({ meta: { page: 1 } });
-  public battery:     Pagination = new Pagination({ meta: { page: 1 } });
-  public permanence:  Pagination = new Pagination({ meta: { page: 1 } });
+  
   public absence:     Pagination = new Pagination({ meta: { page: 1 } });
-  public quantity:    Pagination = new Pagination({ meta: { page: 1 } });
+  
   public general_equipament: Pagination = new Pagination({ meta: { page: 1 } });
   public detailedGeneralInventory: Pagination = new Pagination({ meta: { page: 1 } });
   public detailedInventorySupplierSearch = null;
   public detailedInventoryEquipamentSearch = null;
   public detailedInventorySearchSerial = "";
   public supplierSearch = null;
-  public batterySearch = "";
-  public quantitySearch = "";
-  public permanenceSearchEquipamento: any;
-  public permanenceSearchSerial = "";
+  
+  
   public absenceSearchEquipamento: any;
   public absenceSearchSerial: any;
   public absenceTime: any;
   public escolhaLocal = "Factory";
   public generalEquipamentSearch = "";
-  public serial = false;
   public abserial = false;
   public activeModal: any;
-
   public isCollapsed = false;
-  //public dataList: any[] = [];
 
-  ////////////// // REAL TIME SOCKER IO TEST
-  // messages = [];
-
-  // connection;
-
-  // message;
+  //Tempo de permanência
+  public permanenceSearchSerial = null;
+  public serials: any[];
+  public serial = false;
+  public permanence: Pagination = new Pagination({ meta: { page: 1 } });
+  public permanenceSearchEquipamento: any;
 
   ngOnInit() {
 
@@ -98,7 +92,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     private modalActive: NgbActiveModal,
     private ref: ChangeDetectorRef,
     private auth: AuthenticationService,
-    private chatService: ChatService
+    private chatService: ChatService,
   ) {
 
     let user = this.auth.currentUser();
@@ -133,7 +127,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   changeSelect(event) {
     if (event === "Bateria") {
-      this.batteryInventory();
+      
     } else if (event === "Geral") {
       this.generalInventoryEquipament();
     } else if (event === "Tempo de ausência") {
@@ -145,10 +139,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     }
   }
 
-  public getChild(parent: any = { plant_name: ''}) {
-    return parent.plant_name
-  }
-
   tamanhoSelect() {
     $(window).resize(function () {
       var largura = $('.select2-container').width();
@@ -157,27 +147,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     });
   }
 
-  supplierInventory(event: any): void {
-    if (event){
-      this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, event._id).subscribe(result => {
-        this.supplier = result;
-        this.name_supplier = result.data[0];
-      }, err => { console.log(err) });
-    }else{
-        this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, this.name_supplier._id.supplier).subscribe(result => {
-          this.supplier = result;
-        }, err => { console.log(err) });
-    } 
-  }
+  
 
-  // Bateria inventario  ----------------------------------
-  batteryInventory() {
-    if (this.logged_user instanceof Array) {
-      this.inventoryLogisticService.getInventoryBattery(10, this.battery.meta.page, this.batterySearch, this.logged_user).subscribe(result => this.battery = result, err => { console.log(err) });
-    } else {
-      this.inventoryService.getInventoryBattery(10, this.battery.meta.page, this.batterySearch, this.logged_user).subscribe(result => this.battery = result, err => { console.log(err) });
-    }
-  }
 
   generalInventoryEquipament() {
     if (this.logged_user instanceof Array) {
@@ -187,14 +158,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     }
   }
 
-  quantityInventory() {
-    if (this.logged_user instanceof Array) {
-      this.inventoryLogisticService.getInventoryQuantity(10, this.quantity.meta.page, this.quantitySearch, this.logged_user).subscribe(result => this.quantity = result , err => { console.log(err) });
-    } else {
-      this.inventoryService.getInventoryQuantity(10, this.quantity.meta.page, this.quantitySearch, this.logged_user).subscribe(result => this.quantity = result , err => { console.log(err) });
-    }
-
-  }
+  
 
   generalInventory() {
     if (this.logged_user instanceof Array) {
@@ -211,12 +175,15 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   }
 
   permanenceInventorySerial() {
-    this.serial = true;
+    console.log('serial chenaged to: ' + this.permanenceSearchSerial);
+    //this.permanenceSearchSerial = undefined;
+    // if ((this.permanenceSearchSerial !== null) && (this.permanenceSearchSerial !== undefined)){
+    //   this.serial = true;
 
-    this.inventoryService.getInventoryPackingHistoric(10, this.permanence.meta.page, this.permanenceSearchSerial, this.permanenceSearchEquipamento.packing, this.logged_user).subscribe(result => {
-      this.permanence = result;
-    }, err => { console.log(err) });
-
+    //   this.inventoryService.getInventoryPackingHistoric(10, this.permanence.meta.page, this.permanenceSearchSerial, this.permanenceSearchEquipamento.packing, this.logged_user).subscribe(result => {
+    //     this.permanence = result;
+    //   }, err => { console.log(err) });
+    // }
   }
 
   absenceInventorySerial() {
@@ -230,19 +197,21 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   //TODO MANY OTHER SERVICES TO RECOVER PACKINGS 
   permanenceInventory() {
-    this.permanenceSearchSerial = "";
+    this.permanenceSearchSerial = null;
     this.serial = false;
     this.serials = [];
 
-    if (this.permanenceSearchEquipamento.packing){
+    if (this.permanenceSearchEquipamento !== null){
       
+      console.log('this.permanenceSearchEquipamento.packing: ' + this.permanenceSearchEquipamento);
+
       this.packingService
         .getPackingsEquals(this.permanenceSearchEquipamento.supplier._id, this.permanenceSearchEquipamento.project._id, this.permanenceSearchEquipamento.packing)
         .subscribe(result => {
           this.serials = result.data;
-          this.inventoryService
-            .getInventoryPermanence(10, this.permanence.meta.page, this.permanenceSearchEquipamento.packing)
-            .subscribe(result => this.permanence = result, err => { console.log(err) });
+          // this.inventoryService
+          //   .getInventoryPermanence(10, this.permanence.meta.page, this.permanenceSearchEquipamento.packing)
+          //   .subscribe(result => this.permanence = result, err => { console.log(err) });
         }, err => { console.log(err) })
     } 
   }
@@ -319,19 +288,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   }
 
- 
 
-  
-
-  open(packing) {
-    const modalRef = this.modalService.open(ModalInvComponent);
-    modalRef.componentInstance.packing = packing;
-  }
-
-  openLayer(packing) {
-    const modalRef = this.modalService.open(LayerModalComponent, { backdrop: "static", size: "lg", windowClass: 'modal-xl' });
-    modalRef.componentInstance.packing = packing;
-  }
 
   openAbsence(packing) {
     const modalRef = this.modalService.open(AbscenseModalComponent, { backdrop: "static", size: "lg" });
@@ -378,11 +335,12 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   }
 
   onClear() {
+    console.log('clear equipment');
     this.serial = false;
     this.serials = [];
     this.permanence = new Pagination({ meta: { page: 1 } })
     this.permanence.data =  []
-    this.permanenceSearchSerial = "";
+    this.permanenceSearchSerial = null;
   }
 
   /**
@@ -438,7 +396,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
         }, err => { console.log(err) });
       }, err => { console.log(err) });
 
-      console.log('selectedSupplier: ' + JSON.stringify(this.selectedSupplier));
     } else {
       this.loadDetailedInventory()
       this.selectedSupplier = null
@@ -449,15 +406,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
    * An equipment was selected
    */
   equipamentDetailedInventory(event: any){
-    if(event){
+    if(event)
       this.selectedEquipament = event;
-      console.log(event)
-      this.inventoryService.getDetailedGeneralInventoryBySupplierAndEquipment(10, this.detailedGeneralInventory.meta.page, this.selectedSupplier._id, event.packing).subscribe(res => {
-        console.log(res)
-        this.detailedGeneralInventory = res;
-        this.setInitialCollapse(true);
-      }, err => { console.log(err) });
-    }
   }
 
 

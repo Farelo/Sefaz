@@ -1,0 +1,202 @@
+<div class="base-bg">
+  <div class="row">
+    <div class="col-xs-10">
+      <h2>INVENTÁRIO GERAL</h2>
+    </div>
+
+    <div class="col-xs-2">
+      <button class="botao-opcao" tooltip="Exportar dados para o Excel" (click)="downloadExcel()">
+        <div class="bigger">
+          <i class="fa fa-download botao-download"></i>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Linha divisória -->
+  <hr style="margin-top: 10px;">
+
+  <!-- Filtros -->
+  <div class="row">
+
+    <div class="col-sm-12 clear-padding">
+      <!-- Fornecedor -->
+      <div class="col-sm-4">
+        <p>FORNECEDOR</p>
+        <ng-select [items]="suppliers" 
+          [(ngModel)]="selectedSupplier" 
+          (change)="supplierDetailedInventory($event)" 
+          (clear)="onClearSupplier()"
+          bindLabel="duns"
+          placeholder="Selecione um Fornecedor">
+      
+          <ng-template ng-label-tmp let-item="item">
+            {{item.name}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+              <b>Nome:</b> {{item.name}}
+            </div>
+            <small>
+              <b>DUNS:</b> {{item.duns}}
+            </small>
+      
+          </ng-template>
+        </ng-select>
+      </div>
+      
+      <!-- Equipamentos -->
+      <div class="col-sm-4" *ngIf="selectedSupplier">
+        <p>EQUIPAMENTO</p>
+        <ng-select [(ngModel)]="selectedEquipament" 
+          (clear)="onClear()" 
+          (change)="equipamentDetailedInventory($event)" 
+          [items]="detailedGeneralpackings"
+          bindLabel="packing" 
+          placeholder="Selecione um Equipamento">
+      
+          <ng-template ng-label-tmp let-item="item">
+            {{item.packing}}
+          </ng-template>
+      
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+              <b>Embalagem:</b> {{item.packing}} </div>
+      
+            <div>
+              <small>
+                <b>Fornecedor:</b> {{item.supplier.name}} </small>
+            </div>
+      
+            <div>
+              <small>
+                <b> Projeto:</b> {{item.project.name}} </small>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <div class="table-responsive meuInventario">
+    <table class="table super-table">
+      <thead>
+        <tr class="cabecalho">
+          <th class="empty-super-th"></th>
+          <th class="super-th" colspan="2">Inventário Físico</th>
+          <th class="super-th" colspan="6">Inventário On Line</th>
+          <th class="super-th" colspan="4">Alertas</th>
+        </tr>
+        <tr class="cabecalho">
+          <th>Fornecedor</th>
+          <th>Equipamento</th>
+          <th>Total de Equipamentos do Fornecedor (TEF)</th>
+          <th>Quantidade nas Plantas (A)</th>
+          <th>Quantidade no Fornecedor (B)</th>
+          <th>Quantidade no Transito (C)</th>
+          <th>Quantidade em Local Incorreto</th>
+          <th>Total do Inventário On Line (TIOL = A+B+C)</th>
+          <th>Diferença (TEF - TIOL)</th>
+          <th>Atraso de Rota</th>
+          <th>Local Incorreto</th>
+          <th>Tempo de Permanencia</th>
+          <th>Embalagem Ausente</th>
+        </tr>
+      </thead>
+
+      <tbody *ngFor="let dayData of detailedGeneralInventory.data  | paginate: { 
+                                                      id:'detailedGeneralInventory', 
+                                                      itemsPerPage: 10, 
+                                                      currentPage: detailedGeneralInventory.meta.page, 
+                                                      totalItems: detailedGeneralInventory.meta.total_docs}">
+
+        <tr [attr.aria-controls]="dayData.Fornecedor" (click)="loadPlantsInDetailedInventory(dayData); dayData.isCollapsed = !dayData.isCollapsed"
+          [attr.aria-expanded]="!dayData.isCollapsed">
+          <td>{{dayData?.supplier?.name || '-'}}</td>
+          <td>{{dayData.code}}</td>
+          <td>{{dayData.quantityTotal}}</td>
+          <td>{{dayData.quantityInFactory}}</td>
+          <td>{{dayData.quantityInSupplier}}</td>
+          <td>{{dayData.quantityTraveling}}</td>
+          <td>{{dayData.quantityProblem}}</td>
+          <td>{{dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling }}</td>
+          <td>{{dayData.quantityTotal - (dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling)}}</td>
+          <td>
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 4]">
+              <span class="badge badge-pill badge-atrasado">{{dayData.all_alerts[0]?.late_object || '0'}}</span>
+            </a>
+          </td>
+          <td>
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 2]">
+              <span class="badge badge-pill badge-incorreto">{{dayData.all_alerts[0]?.incorrect_object || '0'}}</span>
+            </a>
+          </td>
+          <td>
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 5]">
+              <span class="badge badge-pill badge-permanencia">{{dayData.all_alerts[0]?.permanence_time || '0'}}</span>
+            </a>
+          </td>
+          <td>
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 1]">
+              <span class="badge badge-pill badge-ausente">{{dayData.all_alerts[0]?.lost_object || '0'}}</span>
+            </a>
+          </td>
+        </tr>
+        <!-- [routerLink]="['list/',alert.packing.code, alert.project._id, alert.supplier._id, alert.status ]"> -->
+        <tr>
+          <td colspan="13">
+            <div [attr.id]="dayData.Fornecedor" [ngbCollapse]="dayData.isCollapsed">
+              <div style="float: left; height: 34px; width: 34px;">
+                <!-- <i class="fa fa-level-down-alt" data-fa-transform="rotate-90"></i> -->
+                <i class="fa fa-level-down icon-inner-level" aria-hidden="true"></i>
+              </div>
+
+              <div class="" *ngIf="thereResult(dayData.all_plants) < 1">
+                Não há registros a serem exibidos.
+              </div>
+
+              <div *ngIf="thereResult(dayData.all_plants) > 0" class="table-responsive meuInventario inner-table">
+                <table class="table">
+                  <thead>
+                    <tr class="cabecalho">
+                      <th>Localização</th>
+                      <th>Quantidade</th>
+                    </tr>
+                  </thead>
+
+                  <tbody class="">
+                    <tr *ngFor="let plantas of dayData.all_plants" [ngClass]="{'hidden': !getChild(plantas.current_plant.plant)}">
+                      <td>{{getChild(plantas.current_plant.plant)}}</td>
+                      <!-- <td>{{plantas.quantityTotal}} - {{plantas._id.problem}}</td> -->
+                      <td>{{plantas.quantityTotal}}
+                        <span *ngIf="plantas._id.problem == true" class="badge badge-secondary">Incorreto</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+      <tbody *ngIf="detailedGeneralInventory.data?.length < 1 ">
+        <tr>
+          <td colspan=13>
+            <div class="classVazio">
+              Não há registros a serem exibidos.
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="has-text-centered">
+    <pagination-controls class="my-pagination" id="detailedGeneralInventory" (pageChange)="detailedGeneralInventory.meta.page = $event; loadDetailedInventory()"
+      directionLinks="false" autoHide="true"> </pagination-controls>
+  </div>
+</div>
+
+<br>

@@ -1,0 +1,93 @@
+@import '~font-awesome/css/font-awesome.css';
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+.table {
+  margin-bottom: 0px;
+}
+
+.cabecalho {
+  background-color: #3E4F60;
+  color: white;
+}
+
+span {
+  cursor: pointer;
+}
+
+h2,
+h3 {
+  display: inline-flex;
+  font-family: 'Raleway', sans-serif;
+  margin: 0px;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+select {
+  height: 34px;
+  margin-left: 10px;
+  background-color: WHITE;
+  line-height: 1.25;
+  border:1px solid rgba(0, 0, 0, 0.15);
+  text-align: left;
+}
+
+.selectEq {
+  width: 100%;
+  margin: 0px 0px 10px 0px;
+}
+
+hr {
+  margin: 20px 0px 20px 0px;
+  border-color: #6382c9;
+  border-width: thin;
+}
+
+.det {
+  width: 20px;
+  height: 20px;
+  background-image: url("../../../../assets/images/icon_circle_plus_blue.png");
+  background-size: 20px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.det:hover {
+  background-image: url("../../../../assets/images/icon_circle_plus_gray.png");
+  -webkit-transition: background-image 0.3s ease-in-out;
+  -moz-transition: background-image 0.3s ease-in-out;
+  transition: background-image 0.3s ease-in-out;
+}
+
+.bigger {
+  text-align: center;
+}
+
+.classVazio {
+  background-color: white;
+  margin: 0px;
+  padding: 20px;
+  box-shadow: 0px 0px 7px #000;
+}
+
+.base-bg{
+  background-color: white;
+  padding: 20px 20px;
+  box-shadow: 0px 0px 7px #000;
+  -webkit-box-shadow: 0px 0px 7px #000;
+}
+
+.clear-padding {
+  padding: 0px;
+}
+
+/* td {
+  background-color: white;
+} */
+
+tbody > tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

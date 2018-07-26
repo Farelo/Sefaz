@@ -6,17 +6,19 @@
 
   </div>
   <div class="col-xs-3">
-    <button class="mais" routerLink="cadastrar"><div class="bigger"><div class="det"></div></div></button>
+    <button class="mais" routerLink="cadastrar">
+      Novo
+    </button>
   </div>
 </div>
 
-<div class="table-responsive tabela">
-  <table class="table">
+<div class="table-responsive">
+  <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
         <th>Nome</th>
 
-        <th class="opcoes">Opções</th>
+        <th class="opcoes"></th>
       </tr>
     </thead>
     <tbody>
@@ -24,12 +26,18 @@
                                                       id:'plant',
                                                       itemsPerPage: data.meta.limit,
                                                       currentPage: data.meta.page,
-                                                      totalItems: data.meta.total_docs}">
+                                                      totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
         <td>{{plant.plant_name}}</td>
 
         <td class="teste">
-          <button class="editar" [routerLink]="['editar/', plant._id]">Editar</button>
-          <button class="excluir" (click)="removePlant(plant)">Excluir</button>
+          <div *ngIf="index==hoveredIndex">
+            <button class="editar" [routerLink]="['editar/', plant._id]">
+              EDITAR
+            </button>
+            <button class="excluir" (click)="removePlant(plant)">
+              EXCLUIR
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>

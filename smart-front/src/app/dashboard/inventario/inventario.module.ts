@@ -13,6 +13,14 @@ import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TooltipModule } from 'ngx-bootstrap'
+import { GeralComponent } from './geral/geral.component';
+import { InventarioGeralComponent } from './inventario-geral/inventario-geral.component';
+import { InventarioPermanenciaComponent } from './inventario-permanencia/inventario-permanencia.component';
+import { InventarioBateriaComponent } from './inventario-bateria/inventario-bateria.component';
+import { InventarioQuantidadeComponent } from './inventario-quantidade/inventario-quantidade.component';
+import { InventarioEquipamentoGeralComponent } from './inventario-equipamento-geral/inventario-equipamento-geral.component';
+import { FornecedorComponent } from './fornecedor/fornecedor.component';
+import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-ausencia.component';
 
 @NgModule({
   imports: [
@@ -28,9 +36,16 @@ import { TooltipModule } from 'ngx-bootstrap'
     //Angular2Csv
   ],
   declarations: [
-    InventarioComponent
+    InventarioComponent,
+    GeralComponent,
+    InventarioGeralComponent,
+    InventarioPermanenciaComponent,
+    InventarioBateriaComponent,
+    InventarioQuantidadeComponent,
+    InventarioEquipamentoGeralComponent,
+    FornecedorComponent,
+    InventarioAusenciaComponent
   ],
-  providers: [
-  ],
+  providers: [],
 })
 export class InventarioModule { }

@@ -6,11 +6,11 @@
 
   </div>
   <div class="col-xs-3">
-    <button class="mais" routerLink="cadastrar"><div class="bigger"><div class="det"></div></div></button>
+    <button class="mais" routerLink="cadastrar">Novo</button>
   </div>
 </div>
-<div class="table-responsive tabela">
-  <table class="table">
+<div class="table-responsive">
+  <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
         <th>Código</th>
@@ -18,7 +18,7 @@
         <th>Fornecedor</th>
         <th>Projeto</th>
         <th>Tag</th>
-        <th class="opcoes">Opções</th>
+        <th class="opcoes"></th>
       </tr>
     </thead>
     <tbody>
@@ -26,15 +26,21 @@
                                                       id:'packing',
                                                       itemsPerPage: data.meta.limit,
                                                       currentPage: data.meta.page,
-                                                      totalItems: data.meta.total_docs}">
+                                                      totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
         <td>{{packing.code}}</td>
         <td>{{packing.serial}}</td>
         <td>{{packing.supplier?.name}}</td>
         <td>{{packing.project?.name}}</td>
         <td>{{packing.code_tag}}</td>
         <td class="teste">
-          <button class="editar" [routerLink]="['editar/', packing._id]">Editar</button>
-          <button class="excluir" (click) ="removePacking(packing)">Excluir</button>
+          <div *ngIf="index==hoveredIndex">
+            <button class="editar" [routerLink]="['editar/', packing._id]">
+              EDITAR
+            </button>
+            <button class="excluir" (click) ="removePacking(packing)">
+              EXCLUIR
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>

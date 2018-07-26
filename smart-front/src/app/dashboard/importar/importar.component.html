@@ -1,12 +1,15 @@
-<div class="painel">
+<div class="base-bg">
   <div class="corpo">
     <div class="container">
+
       <button class="help" (click)="openHelp(content)">
         <div class="bigger">
           <div class="det2"></div>
         </div>
       </button>
+
       <h1>IMPORTAR DADOS</h1>
+
       <ng-template #content>
         <div class="modalFilho">
           <div class="header">
@@ -98,7 +101,6 @@
         </div>
       </ng-template>
 
-
       <form novalidate (ngSubmit)="onSubmit(import)" [formGroup]="import" #formDir="ngForm">
         <div class="row">
           <div class="col-md-4 importar">
@@ -171,7 +173,6 @@
         </div>
       </form>
 
-
       <br />
       <br />
 
@@ -182,10 +183,10 @@
         <div class="col-md-12">
           <div *ngFor="let error of data.row_missing">
             <div class="col-md-12" style="border: solid;margin: 2px;
-    border-color: #dc3545;background: #dc3545;
-    border-radius: 10px;">
+              border-color: #dc3545;background: #dc3545;
+              border-radius: 10px;">
               <div class="col-md-6" style="text-align: center;
-    padding: 15px;">
+                padding: 15px;">
                 <span class="lg2">{{error.line}}</span>
               </div>
               <div class="col-md-6" style=" padding: 15px;">

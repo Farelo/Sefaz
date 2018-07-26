@@ -1,52 +1,97 @@
-<div class="inicial">
-  <div class="i1"><input type="text" class="form-control buscar" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()"></div>
-  <div class="i2">
-    <button class="mais" routerLink="/rc/bpline/adicionar">
-      <div class="bigger"><div class="det"></div></div>
-  </button>
-</div>
-</div>
+<div class="base-bg">
+  <div class="inicial">
 
-<div class="table-responsive meuInventario">
-  <!-- Table -->
-  <table class="table">
-    <thead>
-      <tr class="cabecalho">
-        <th>Volume Anual</th>
-        <th>Capacidade</th>
-        <th>Dias Produtivos</th>
-        <th>Fornecedor</th>
-        <th>Equipamento</th>
-        <th class="opcoes">Opções</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let gc of data.data | paginate: {   id:'gc16',
-                                                      itemsPerPage: data.meta.limit,
-                                                      currentPage: data.meta.page,
-                                                      totalItems: data.meta.total_docs}">
-        <td>{{gc.annualVolume}}</td>
-        <td>{{gc.capacity}}</td>
-        <td>{{gc.productiveDays}}</td>
-        <td>{{gc.supplier.name}}</td>
-        <td>{{gc.packing}}</td>
-        <td class="teste">
-          <button class="editar" [routerLink]="['editar/', gc._id]">Editar</button>
-          <button class="excluir" (click)="removeGC16(gc)" >Excluir</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <div class="row" style="margin-bottom: 15px;">
+      <div class="col-xs-7">
 
-<div class="has-text-centered">
-    <pagination-controls id="gc16" (pageChange)="pageChanged($event)"
-                         autoHide="true"
-                         directionLinks="false"></pagination-controls>
-</div>
+          <ng-select [(ngModel)]="equipamentSearch" 
+            (change)="equipamentChanged()" 
+            bindValue="packing" 
+            [items]="packings"
+            bindLabel="packing" 
+            placeholder="Selecione um Equipamento">
+          
+            <ng-template ng-label-tmp let-item="item">
+              {{item.packing}}
+            </ng-template>
+          
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                <b>Embalagem:</b> {{item.packing}}
+              </div>
+          
+              <div>
+                <small>
+                  <b>Fornecedor:</b> {{item.supplier.name}} </small>
+              </div>
+          
+              <div>
+                <small>
+                  <b> Projeto:</b> {{item.project.name}} </small>
+              </div>
+          
+            </ng-template>
+          </ng-select>
+          
+      </div>
 
+      <div class="col-xs-2">
 
+      </div>
+      <div class="col-xs-3">
+        <button class="mais" routerLink="/rc/bpline/adicionar">Novo</button>
+      </div>
+    </div>
+    
+    <div class="table-responsive">
+      <!-- Table -->
+      <table class="table" (mouseleave)="hoveredIndex=null">
+        <thead>
+          <tr class="cabecalho">
+            <th>Volume Anual</th>
+            <th>Capacidade</th>
+            <th>Dias Produtivos</th>
+            <th>Fornecedor</th>
+            <th>Equipamento</th>
+            <th class="opcoes">Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let gc of data.data | paginate: {   id:'gc16',
+                                                          itemsPerPage: data.meta.limit,
+                                                          currentPage: data.meta.page,
+                                                          totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
+            <td>{{gc.annualVolume}}</td>
+            <td>{{gc.capacity}}</td>
+            <td>{{gc.productiveDays}}</td>
+            <td>{{gc.supplier.name}}</td>
+            <td>{{gc.packing}}</td>
+            <td class="teste">
+              <!-- <div *ngIf="index==hoveredIndex"> -->
+              <div *ngIf="true">
+                <button class="editar" [routerLink]="['editar/', gc._id]">
+                  EDITAR
+                </button>
+                <button class="excluir" (click)="removeGC16(gc)" >
+                  EXCLUIR
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-<div class="classVazio" *ngIf="data.data?.length < 1">
-  Ainda não existem registros BPline cadastrados.
+    <div class="has-text-centered">
+      <pagination-controls id="gc16" (pageChange)="pageChanged($event)"
+                          autoHide="true"
+                          directionLinks="false"></pagination-controls>
+    </div>
+ 
+    <div class="classVazio" *ngIf="data.data?.length < 1">
+      Ainda não existem registros BPline cadastrados.
+    </div>
+
+  </div>
+
 </div>
