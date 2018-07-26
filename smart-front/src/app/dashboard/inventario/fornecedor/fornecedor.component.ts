@@ -35,7 +35,10 @@ export class FornecedorComponent implements OnInit {
   }
 
   loadSuppliers(): void {
-    this.suppliersService.retrieveAll().subscribe(result => this.suppliers = result.data, err => { console.log(err) });
+    this.suppliersService.retrieveAll().subscribe(result => {
+      this.suppliers = result.data;
+      console.log('suppliers: ' + JSON.stringify(this.suppliers));
+    }, err => { console.log(err) });
   }
 
   supplierInventory(event: any): void {
