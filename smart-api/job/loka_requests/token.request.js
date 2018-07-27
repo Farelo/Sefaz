@@ -23,7 +23,7 @@ module.exports = async () => {
 
         return access_token
     } catch (error) {
-        throw new Error('Failed to get token from loka api.', error)
         debug('Failed to get token from loka api.')
+        throw new Error('Failed to get token from loka api.', error)
     }
 }

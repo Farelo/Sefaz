@@ -17,7 +17,7 @@ module.exports = async (token) => {
 
         return response
     } catch (error) {
-        throw new Error('Failed to get devices from loka api.')
         debug('Failed to get devices from loka api.')
+        throw new Error('Failed to get devices from loka api.')
     }
 }

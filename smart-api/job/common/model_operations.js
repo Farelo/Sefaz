@@ -19,7 +19,8 @@ module.exports.find_all_packings_plants_and_setting = async () => {
 
         return data
     } catch (error) {
-        
+        debug('Failed to gel all packings, plants and setting ok.')        
+        throw new Error(error)
     }
 }
 
@@ -31,7 +32,7 @@ module.exports.update_devices = async (devices) => {
         const response = await Promise.all(arrayOfPromises)
         debug(`Devices updated.`)
     } catch (error) {
-        throw new Error('Failed to update devices in db: ', error)
         debug('Failed to update devices in db.')
+        throw new Error(error)
     }
 }

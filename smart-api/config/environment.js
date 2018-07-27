@@ -13,10 +13,10 @@ const environment = {
   "development": {
     url:"localhost",
     port: '8984',
-    database: 'cebrace', //base de dados utilizada
+    database: 'gm', //base de dados utilizada
     //database: 'testeinterno',      //base de dados utilizada
     urldatabase: "localhost",  //url de acesso a base de dados 
-    time: "10",          //tempo da execução do job em segundos 1-59
+    time: "30",          //tempo da execução do job em segundos 1-59
     secret: 'S3cr3t',    //chave privada da tokenização
     expiresIn: '2h'     //tempo em que o token irá expirar
   },
