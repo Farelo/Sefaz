@@ -1,5 +1,10 @@
 const debug = require('debug')('job:main')
 const cron = require('node-cron')
+
+const token_request = require('./loka_requests/token.request')
+const devices_request = require('./loka_requests/devices.request')
+const model_operations = require('./common/model_operations')
+
 const token = require('./consults/token')
 const devices = require('./consults/devices')
 const consultDatabase = require('./consults/consult')
@@ -18,6 +23,20 @@ const environment = require('../config/environment')
 
 // O analysis_loop executa a cada X segundos uma rotina 
 const analysis_loop = cron.schedule(`*/${environment.time} * * * * *`, async () => {
+	try {
+		const token_r = await token_request() // Recupera o token para acessar a API da LOKA
+		const devices_array = await devices_request(token_r) // Recupera todos os devices da API da LOKA
+		model_operations.update_devices(devices_array) // Atualiza todas as embalagens com os dados da API da LOKA
+		const data = model_operations.find_all_packings_plants_and_setting() // Recupera um array de todos as embalagens do banco depois de atualizados
+		
+		// Analisa o status de todas as embalagens
+		status_analysis(data)
+	} catch (error) {
+		
+	}
+	
+
+	
 	token() // Recupera o token para acessar a API da LOKA
 		.then(token => devices(token)) // Recupera todos os devices da API da LOKA
 		.then(devices => Promise.all(updateDevices(devices))) // Atualiza todas as embalagens com os dados da API da LOKA
@@ -37,7 +56,6 @@ const status_analysis = (data) => {
 		// Avalia a bateria das embalagens
 		evaluates_battery(packing, settings)
 		// Embalagem perdeu sinal?
-
 
 		if (packing.routes) { // Tem rota?
 			const current_plan = actual_plant(packing, plants, settings) // Recupera a planta atual onde o pacote está atualmente

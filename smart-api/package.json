@@ -35,6 +35,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "request": "^2.75.0",
+    "request-promise": "^4.2.2",
     "socket.io": "^2.0.4",
     "swagger-express-mw": "^0.7.0",
     "swagger-tools": "^0.10.3",
