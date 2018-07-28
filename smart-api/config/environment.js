@@ -16,7 +16,7 @@ const environment = {
     database: 'gm', //base de dados utilizada
     //database: 'testeinterno',      //base de dados utilizada
     urldatabase: "localhost",  //url de acesso a base de dados 
-    time: "30",          //tempo da execução do job em segundos 1-59
+    time: "50",          //tempo da execução do job em segundos 1-59
     secret: 'S3cr3t',    //chave privada da tokenização
     expiresIn: '2h'     //tempo em que o token irá expirar
   },

@@ -7,7 +7,7 @@ module.exports = async (packing, settings) => {
         debug(`Battery low! packing: ${packing._id}`)
         let alert = await schemas.alert.find({ packing: packing._id, status: alerts_type.BATTERY })
 
-        if (alert) {
+        if (alert.length > 0) {
             try {
                 alert = await schemas.alert.update({ packing: packing._id, "status": alerts_type.BATTERY }, {
                     department: packing.department,
