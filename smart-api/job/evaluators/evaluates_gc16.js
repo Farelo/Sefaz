@@ -16,7 +16,6 @@ module.exports = async (packing, current_plant, current_department) => {
             return edited_packing
         }
 
-
         return packing
     } catch (error) {
         debug('Something failed when evaluates gc16')        
