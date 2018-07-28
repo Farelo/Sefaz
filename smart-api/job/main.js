@@ -9,21 +9,10 @@ const evaluates_current_plant = require('./evaluators/evaluates_current_plant')
 const evaluates_current_department = require('./evaluators/evaluates_current_department')
 const evaluates_correct_location = require('./evaluators/evaluates_correct_location')
 const evaluates_gc16 = require('./evaluators/evaluates_gc16')
-
-// const token = require('./consults/token')
-// const devices = require('./consults/devices')
-// const consultDatabase = require('./consults/consult')
-// const updateDevices = require('./updates/update_devices')
-// const with_route = require('./routes/with_route')
-// const without_route = require('./routes/without_route')
-// const actual_plant = require('./positions/actual_plant')
-// const evaluate_department = require('./positions/evaluate_department')
-// const verify_finish = require('./evaluates/verify_finish')
-// const evaluate_missing = require('./alerts/evaluate_missing')
-// const update_packing = require('./updates/update_packing')
-// const traveling = require('./alerts/traveling')
-// const remove_dependencies = require('./updates/remove_dependencies')
-
+const evaluates_permanence_time = require('./evaluators/evaluates_permanence_time')
+const evaluates_historic = require('./evaluators/evaluates_historic')
+const evaluates_traveling = require('./evaluators/evaluates_traveling')
+const alerts_type = require('./common/alerts_type')
 const environment = require('../config/environment')
 
 // O analysis_loop executa a cada X segundos uma rotina 
@@ -59,7 +48,7 @@ const status_analysis = async (data) => {
 		if (packing.routes.length > 0) { // Tem rota?
 			const current_plant = await evaluates_current_plant(packing, plants, setting) // Recupera a planta atual onde o pacote está atualmente
 			if (current_plant != null) { // Está em alguma planta atualmente?
-				// Avaliar o departamento
+				// Avaliar sem tem departamento e o recupera
 				const current_department = await evaluates_current_department(packing, current_plant)
 				// Está no local correto?
 				const correct_location = await evaluates_correct_location(packing, current_plant)
@@ -69,84 +58,66 @@ const status_analysis = async (data) => {
 					// TODO: Trocar o packing.problem por packing.correct_location na collection
 					packing.problem = false
 					packing.traveling = false
+					packing.missing = false
 					packing = await evaluates_gc16(packing, current_plant, current_department)
+					packing = await evaluates_permanence_time.when_correct_location(packing)
 
 					// Se estiver no local correto para de atualizar o trip.date da embalagem e o actual_plant do banco
 					// Adicionar ou atualizar a minha actual_plant da embalagem no banco
 					// Adicionar ou atualizar a minha last_plant da embalagem no banco
 					// Tempo de permanência (CEBRACE: em qualquer ponto de controle)
-					
-					await model_operations.update_alert_when_location_is_correct(packing)
+
+					await model_operations.remove_alert(packing, alerts_type.INCORRECT_LOCAL)
+					await evaluates_historic(packing, current_plant)
 					await model_operations.update_packing(packing)
 				} else {
-					// debug('Embalagem está no local incorreto')
-
+					debug('Embalagem está no local incorreto')
+					
 					// TODO: Trocar o packing.problem por packing.correct_location na collection
 					packing.problem = true
 					packing.traveling = false
-
+					packing.missing = false
+					packing = await evaluates_gc16(packing, current_plant, current_department)
+					packing = await evaluates_permanence_time.when_incorrect_location(packing)
+					
 					// Se estiver no local incorreto eu só atualizo o trip.date da embalagem e o actual_plant no banco
 					// Tempo de permanência (CEBRACE: em qualquer ponto de controle)
-					await model_operations.update_alert_when_location_is_not_correct(packing)
+					await model_operations.update_alert(packing, alerts_type.INCORRECT_LOCAL)
+					await evaluates_historic(packing, current_plant)
 					await model_operations.update_packing(packing)
 				}
 
 			} else { // Está viajando
-				debug(`Packing is traveling packing:  ${packing._id}`)
-				packing.traveling = true
+				debug(`Packing is traveling packing: ${packing._id}`)
+				packing = await evaluates_traveling(packing)
 
+				await model_operations.remove_alert(packing, alerts_type.PERMANENCE)
+				await model_operations.remove_alert(packing, alerts_type.INCORRECT_LOCAL)
 				await model_operations.update_packing_and_remove_actual_plant(packing)
+				await evaluates_historic(packing, current_plant)
 				await model_operations.update_packing(packing)
-				// Remover o actual_plant da embalagem
-				// Tempo excedido? Atrasada
-				// Tempo excedido > tempo para ficar perdida? Ausente/Perdida
-				
 			}
 
 		} else {
 			debug('Packing without route.')
-			// TODO: Tratar esse caso da melhor forma
+			packing.problem = false
+			packing.missing = false
+			packing.traveling = false
+			packing.packing_missing = {
+				date: 0,
+				time_countdown: 0
+			}
+			packing.trip = {
+				time_exceeded: false,
+				time_countdown: 0
+			}
+
+			await model_operations.remove_alert(packing, alerts_type.MISSING)
+			await model_operations.remove_alert(packing, alerts_type.LATE)
+			await model_operations.remove_alert(packing, alerts_type.PERMANENCE)
+			await model_operations.remove_alert(packing, alerts_type.INCORRECT_LOCAL)
+			await model_operations.update_packing_and_remove_actual_plant(packing)
+			await model_operations.update_packing(packing)
 		}
 	}
-	// })
-
 }
-
-// packings.forEach(packing => {
-//   const current_pant = actual_plant(packing, plants, settings); // Recupera a planta atual onde o pacote está atualmente
-
-//   if (current_pant != null) {
-//     console.log("PACKING HAS PLANT");
-//     evaluate_department(current_pant, packing).then(department => {
-//       if (packing.routes.length > 0) { //Evaluete if the packing has route ---------------------- EMBALAGENS QUE TEM  ROTA
-//         with_route(packing, current_pant, department, settings).then(result => {
-//           count_packing++;
-//           verify_finish(result, total_packing, count_packing)
-//         });
-
-//         //embalagen que não estão associadas as rotas ------------------- SEGUNDA LOGICA
-//       } else {
-//         without_route(packing, current_pant, department, settings).then(result => {
-//           count_packing++;
-//           verify_finish(result, total_packing, count_packing)
-//         });
-//       }
-//     });
-//   } else {
-
-//     //para embalagens que não foram econtradas dentro de uma planta
-//     console.log("PACKING HAS NOT PLANT");
-//     remove_dependencies.without_plant(packing)
-//       .then(new_packing => evaluate_battery(new_packing, settings))
-//       .then(new_packing => evaluate_missing(new_packing))
-//       .then(new_packing => traveling.evaluate_traveling(new_packing))
-//       .then(new_packing => update_packing.set(new_packing))
-//       .then(() => update_packing.unset(packing))
-//       .then(result => {
-//         count_packing++;
-//         verify_finish("FINISH VERTENTE SEM PLANTA", total_packing, count_packing)
-//       })
-
-//   }
-
-// })

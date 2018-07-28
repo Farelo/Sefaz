@@ -9,24 +9,20 @@ module.exports = async (packing, current_plant, current_department) => {
             packing.actual_plant.plant.equals(current_plant._id) ? 
                 edited_packing = fixed(packing, current_plant, current_department) : edited_packing = change(packing, current_plant, current_department)
             
-            debug('A porra do pacote foi editado', edited_packing._id)
+            debug('The actual_plant is ok!', edited_packing._id)
             return edited_packing
         } else {
+            debug('The actual_plant is not ok, actual_plant is changed', edited_packing._id)
             edited_packing = change(packing, current_plant, current_department)
             return edited_packing
         }
-
-        return packing
     } catch (error) {
         debug('Something failed when evaluates gc16')        
         throw new Error(error)
     }
 }
 
-
 const fixed = (packing, current_plant, department) => {
-    debug('CAIU NO FIXED!')
-    
     // Verifica se o departamento atual existe e se existir ele verifica se está batendo com planta atual
     if (department.name) {
         packing.department = department._id
@@ -62,8 +58,6 @@ const fixed = (packing, current_plant, department) => {
 }
 
 const change = (packing, current_plant, department) => {
-    debug('CAIU NO CHANGE!')
-
     // Verifica se o departamento atual existe e se existir ele verifica se está batendo com planta atual
     if (department.name) {
         packing.department = department._id

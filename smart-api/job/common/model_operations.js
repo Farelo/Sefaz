@@ -1,6 +1,7 @@
 const debug = require('debug')('job:common:model_operations')
 const schemas = require("../../api/schemas/require_schemas")
 const alerts_type = require('./alerts_type')
+const historic_type = require('./historic_type')
 
 module.exports.find_all_packings_plants_and_setting = async () => {
     try {
@@ -44,7 +45,7 @@ module.exports.update_devices = async (devices) => {
 module.exports.update_packing = async (packing) => {
     const options = { new: true }
     try {
-        const packing_updated = await schemas.packing.findByIdAndUpdate(packing._id, packing, options)
+        const update_packing = await schemas.packing.findByIdAndUpdate(packing._id, packing, options)
         debug(`Packing updated: ${packing._id}`)
     } catch (error) {
         debug('Failed to update packing in db.')
@@ -52,35 +53,12 @@ module.exports.update_packing = async (packing) => {
     }
 }
 
-
-module.exports.update_packing_and_remove_actual_plant = async (packing) => {
+module.exports.update_alert = async (packing, alert_type) => {
     try {
-        const packing_updated = await schemas.packing.update({ "_id": packing._id }, { $unset: { 'actual_plant': 1, 'department': 1 } })
-    } catch (error) {
-        debug('Failed to update packing in db.')
-        throw new Error(error)
-    }
-}
+        const alert = await schemas.alert.find({ packing: packing._id, status: alert_type })
 
-module.exports.update_alert_when_location_is_correct = async (packing) => {
-    try {
-        const alert = await schemas.alert.find({ packing: packing._id, status: alerts_type.INCORRECT_LOCAL })
         if (alert.length > 0) {
-            const response = await schemas.alert.remove({packing: packing._id, status: alerts_type.INCORRECT_LOCAL })
-            debug(`Alert removed from packing: ${packing._id}`)
-        }
-    } catch (error) {
-        debug('Failed to update alert in db.')
-        throw new Error(error)
-    }
-}
-
-module.exports.update_alert_when_location_is_not_correct = async (packing) => {
-    try {
-        const alert = await schemas.alert.find({ packing: packing._id, status: alerts_type.INCORRECT_LOCAL })
-        
-        if (alert.length > 0) {
-            const update_alert = await schemas.alert.update({ packing: packing._id, status: alerts_type.INCORRECT_LOCAL }, {
+            const update_alert = await schemas.alert.update({ packing: packing._id, status: alert_type }, {
                 department: packing.department,
                 routes: packing.routes,
                 project: packing.project,
@@ -92,18 +70,20 @@ module.exports.update_alert_when_location_is_not_correct = async (packing) => {
 
             debug(`Alert updated from packing: ${packing._id}`)
         } else {
-            const new_alert = await schemas.alert.create({
-                department: packing.department,
-                routes: packing.routes,
+            const new_alert = new schemas.alert({
                 actual_plant: packing.actual_plant,
+                department: packing.department,
                 packing: packing._id,
+                routes: packing.routes,
                 project: packing.project,
                 supplier: packing.supplier,
-                status: alerts_type.INCORRECT_LOCAL,
+                status: alerts_type.BATTERY,
                 hashpacking: packing.hashPacking,
                 serial: packing.serial,
                 date: new Date().getTime()
             })
+
+            await new_alert.save()
             debug(`Alert created from packing: ${packing._id}`)
         }
     } catch (error) {
@@ -112,3 +92,71 @@ module.exports.update_alert_when_location_is_not_correct = async (packing) => {
     }
 }
 
+module.exports.remove_alert = async (packing, alert_type) => {
+    try {
+        const alert = await schemas.alert.find({ packing: packing._id, status: alert_type })
+        if (alert.length > 0) {
+            const response = await schemas.alert.remove({packing: packing._id, status: alert_type })
+            debug(`Alert removed from packing: ${packing._id}`)
+        }
+    } catch (error) {
+        debug('Failed to update alert in db.')
+        throw new Error(error)
+    }
+}
+
+module.exports.create_historic = async (packing) => {
+    try {
+        const new_historic = await new schemas.historicPackings({
+            actual_gc16: packing.actual_gc16,
+            plant: packing.actual_plant,
+            department: packing.department,
+            date: packing.permanence.date,
+            temperature: packing.temperature,
+            permanence_time: packing.permanence.amount_days,
+            serial: packing.serial,
+            supplier: packing.supplier,
+            packing: packing._id,
+            packing_code: packing.code,
+            status: historic_type.NORMAL
+        })
+
+        await new_historic.save()
+        debug(`Historic created with success ${packing._id}`)
+    } catch (error) {
+        debug('Failed to create a historic in db.')
+        throw new Error(error)
+    }
+}
+
+module.exports.update_historic = async (packing) => {
+    try {
+        const update_historic = await schemas.historicPackings.update({ packing: packing._id, date: packing.permanence.date }, {
+            actual_gc16: packing.actual_gc16,
+            department: packing.department,
+            plant: packing.actual_plant,
+            date: packing.permanence.date,
+            temperature: packing.temperature,
+            permanence_time: packing.permanence.amount_days,
+            serial: packing.serial,
+            supplier: packing.supplier,
+            packing: packing._id,
+            packing_code: packing.code,
+            status: historic_type.NORMAL
+        })
+
+        debug(`Historic updated with success ${packing._id}`)
+    } catch (error) {
+        debug('Failed to create a historic in db.')
+        throw new Error(error)
+    }
+}
+
+module.exports.update_packing_and_remove_actual_plant = async (packing) => {
+    try {
+        const update_packing = await schemas.packing.update({ "_id": packing._id }, { $unset: { 'actual_plant': 1, 'department': 1 } })
+    } catch (error) {
+        debug('Failed to update packing in db.')
+        throw new Error(error)
+    }
+}
