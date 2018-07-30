@@ -36,8 +36,8 @@ const status_analysis = async (data) => {
 	const packings = data[0] // Recupera todas as embalagens do banco
 	const plants = data[1] // Recupera todas plantas do banco
 	const setting = data[2] // Recupera o setting do banco
-	let total_packing = packings.length // Recupera a soma de pacotes no sistema
-	let count_packing = 0 // Contador das embalagens
+	// let total_packing = packings.length // Recupera a soma de pacotes no sistema
+	// let count_packing = 0 // Contador das embalagens
 
 	// packings.forEach( async (packing) => {
 	for (let packing of packings) {
@@ -103,6 +103,7 @@ const status_analysis = async (data) => {
 			packing.problem = false
 			packing.missing = false
 			packing.traveling = false
+			packing.permanence.time_exceeded = false
 			packing.packing_missing = {
 				date: 0,
 				time_countdown: 0

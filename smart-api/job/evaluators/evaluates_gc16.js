@@ -41,6 +41,12 @@ const fixed = (packing, current_plant, department) => {
                     min: packing.gc16.supplierStock.QuantContainerSs,
                 }
                 debug(`GC16 supplier added to packing: ${packing._id}`)
+            } else {
+                packing.actual_gc16 = {
+                    days: 1,
+                    max: 1,
+                    min: 1,
+                }
             }
         }
     } else {
@@ -51,8 +57,15 @@ const fixed = (packing, current_plant, department) => {
                 min: packing.gc16.factoryStock.QuantContainerfs,
             }
             debug(`GC16 factory added to packing: ${packing._id}`)
+        } else {
+            packing.actual_gc16 = {
+                days: 1,
+                max: 1,
+                min: 1,
+            }
         }
     }
+    packing.permanence.date = new Date().getTime()
 
     return packing
 }
@@ -76,6 +89,12 @@ const change = (packing, current_plant, department) => {
                     min: packing.gc16.supplierStock.QuantContainerSs,
                 }
                 debug(`GC16 supplier added to packing: ${packing._id}`)
+            } else {
+                packing.actual_gc16 = {
+                    days: 1,
+                    max: 1,
+                    min: 1,
+                }
             }
         }
     } else {
@@ -86,6 +105,12 @@ const change = (packing, current_plant, department) => {
                 min: packing.gc16.factoryStock.QuantContainerfs,
             }
             debug(`GC16 factory added to packing: ${packing._id}`)
+        } else {
+            packing.actual_gc16 = {
+                days: 1,
+                max: 1,
+                min: 1,
+            }
         }
     }
 

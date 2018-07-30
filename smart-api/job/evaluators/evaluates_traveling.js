@@ -13,6 +13,7 @@ module.exports = async (packing) => {
         if (missing_routes.length > 0) {
             debug(`Packing is missing! ${packing._id}`)
 
+            packing.problem = false
             packing.traveling = false
             packing.missing = true
             packing.packing_missing = {
@@ -38,6 +39,8 @@ module.exports = async (packing) => {
             if (late_routes.length > 0) {
                 debug(`Packing is late! ${packing._id}`)
 
+                packing.problem = false
+                packing.traveling = false
                 packing.missing = false
                 packing.packing_missing = {
                     date: 0,
@@ -55,6 +58,7 @@ module.exports = async (packing) => {
                 debug(`Packing is traveling! ${packing._id}`)
                 packing.problem = false
                 packing.traveling = true
+                packing.missing = false
                 packing.packing_missing = {
                     date: 0,
                     time_countdown: 0

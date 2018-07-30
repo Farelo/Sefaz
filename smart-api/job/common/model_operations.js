@@ -77,7 +77,7 @@ module.exports.update_alert = async (packing, alert_type) => {
                 routes: packing.routes,
                 project: packing.project,
                 supplier: packing.supplier,
-                status: alerts_type.BATTERY,
+                status: alert_type,
                 hashpacking: packing.hashPacking,
                 serial: packing.serial,
                 date: new Date().getTime()

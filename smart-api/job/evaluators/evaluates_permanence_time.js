@@ -10,7 +10,6 @@ module.exports.when_correct_location = async (packing) => {
 
     if (packing.actual_gc16) days_in_milliseconds = 1000 * 60 * 60 * 24 * packing.actual_gc16.days // milliseconds*seconds*minutes*hours*days
     packing.permanence.amount_days = time_interval
-    packing.permanence.date = date_today
 
     if (packing.permanence.amount_days > days_in_milliseconds) {
         debug(`Packing permanence exceeded. ${packing._id}`)
