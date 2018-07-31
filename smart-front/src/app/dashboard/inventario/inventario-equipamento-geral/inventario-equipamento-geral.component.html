@@ -67,7 +67,7 @@
           <td>{{packing?.serial || '-'}}</td>
           <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
-          <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
+          <td [tooltip]="getFormatedData(packing.lastCommunication)" style="cursor: default;">{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
             : "Embalagem em Viagem")}}</td>
           <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
             (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>

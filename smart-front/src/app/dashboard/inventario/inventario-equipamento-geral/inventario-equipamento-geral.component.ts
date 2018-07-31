@@ -117,4 +117,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     modalRef.componentInstance.packing = packing;
   }
 
+  getFormatedData(t: any){
+    return (new Date(t*1000).toLocaleString());
+  }
 }
