@@ -1,6 +1,30 @@
 <div class="row">
   <div class="col-xs-7">
-    <input type="text" class="form-control meuInput" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()">
+    <!-- <input type="text" class="form-control meuInput" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()"> -->
+    <ng-select [(ngModel)]="generalEquipamentSearch" (change)="equipamentChanged()" bindValue="packing" [items]="packings"
+      bindLabel="packing" placeholder="Buscar" style="margin-bottom: 10px;">
+    
+      <ng-template ng-label-tmp let-item="item">
+        {{item.packing}}
+      </ng-template>
+    
+      <ng-template ng-option-tmp let-item="item">
+        <div>
+          <b>Embalagem:</b> {{item.packing}}
+        </div>
+    
+        <div>
+          <small>
+            <b>Fornecedor:</b> {{item.supplier.name}} </small>
+        </div>
+    
+        <div>
+          <small>
+            <b> Projeto:</b> {{item.project.name}} </small>
+        </div>
+    
+      </ng-template>
+    </ng-select>
   </div>
   <div class="col-xs-2">
 
