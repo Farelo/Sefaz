@@ -1,5 +1,5 @@
 module.exports = {
-    MISSING: "MISSING",
-    TRAVELING: "TRAVELING",
-    NORMAL: "NORMAL"
-} 
+  MISSING: 'MISSING',
+  TRAVELING: 'TRAVELING',
+  NORMAL: 'NORMAL',
+};
