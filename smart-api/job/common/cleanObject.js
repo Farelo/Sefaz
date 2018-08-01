@@ -1,3 +1,5 @@
+const debug = require('debug')('job:clean object');
+
 /**
  * Limpa informações sobre a viagem
  * @param {Object} packing

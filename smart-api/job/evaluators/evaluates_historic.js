@@ -1,13 +1,15 @@
 const modelOperations = require('../common/model_operations');
 
-module.exports = (packing, currentPlant) => {
+async function init(packing, currentPlant) {
   if (packing.actual_plant.plant && currentPlant) {
     if (packing.actual_plant.plant.equals(currentPlant._id)) {
-      modelOperations.update_historic(packing);
+      await modelOperations.update_historic(packing);
     } else {
-      modelOperations.create_historic(packing);
+      await modelOperations.create_historic(packing);
     }
   } else {
-    modelOperations.create_historic(packing);
+    await modelOperations.create_historic(packing);
   }
-};
+}
+
+module.exports = { init };

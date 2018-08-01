@@ -125,6 +125,11 @@ module.exports.remove_alert = async (packing, alertType) => {
   }
 };
 
+/**
+ * Cria o historico da embalagem, armazenando toda a trajetoria
+ * da embalagem no sistema
+ * @param {Object} packing
+ */
 module.exports.create_historic = async (packing) => {
   try {
     const newHistoric = await new schemas.historicPackings({
@@ -149,6 +154,11 @@ module.exports.create_historic = async (packing) => {
   }
 };
 
+/**
+ * Atualiza o historico da embalagem, armazenando toda a trajetoria
+ * da embalagem no sistema
+ * @param {Object} packing
+ */
 module.exports.update_historic = async (packing) => {
   try {
     await schemas.historicPackings.update(
@@ -186,6 +196,7 @@ module.exports.update_packing_and_remove_actual_plant = async (packing) => {
       { _id: packing._id },
       { $unset: { actual_plant: 1, department: 1 } },
     );
+    debug('Remove Actual Plant .');
   } catch (error) {
     debug('Failed to update packing in db.');
     throw new Error(error);

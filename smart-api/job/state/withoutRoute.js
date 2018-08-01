@@ -1,7 +1,8 @@
 const debug = require('debug')('job:without route');
-
 const evaluatesCurrentDepartment = require('../evaluators/evaluates_current_department');
 const evaluatesPlantInformation = require('../evaluators/evaluates_plant_information');
+const evaluatesPermanenceTime = require('../evaluators/evaluates_permanence_time');
+const evaluatesHistoric = require('../evaluators/evaluates_historic');
 const modelOperations = require('../common/model_operations');
 const cleanObject = require('../common/cleanObject');
 const alertsType = require('../common/alerts_type');
@@ -28,8 +29,13 @@ async function evaluate(packing, currentPlant) {
     packing = cleanObject.cleanFlags(packing); // limpa as flags
     packing = cleanObject.cleanMissing(packing); // limpa as informações sobre embalagem perdida
     packing = cleanObject.cleanTrip(packing); // limpa informações sobre a embalagem em viagem
+
+    // Retorna informações sobre o tempo de permanencia da embalagem
+    packing = await evaluatesPermanenceTime.evaluate(packing, currentPlant);
     // Coleta informações sobre a localização da embalagem
     packing = await evaluatesPlantInformation(packing, currentPlant, currentDepartment);
+
+    await modelOperations.update_packing(packing);
   } else {
     // embalagem sem planta não há como inferir informações sobre
     // tempo de permanencia e outros alertas além do de bateria
@@ -41,6 +47,7 @@ async function evaluate(packing, currentPlant) {
     packing = cleanObject.cleanTrip(packing); // limpa informações sobre a embalagem em viagem
     await modelOperations.remove_alert(packing, alertsType.PERMANENCE);
     // remove informações sobre a planta atual, pois a mesma pode ter sido relacionada anteriormente a uma planta
+    await modelOperations.update_packing(packing);
     await modelOperations.update_packing_and_remove_actual_plant(packing);
     // quando a embalagem não esta associada a nenhuma rota e não esta em nnehuma planta é interessante saber
     // se a mesma ja  era vinculada a alguma planta , caso a mesma for é inserida informação sobre a ultima planta
@@ -55,7 +62,9 @@ async function evaluate(packing, currentPlant) {
   // Não existe a necessidade de remover informações de planta da embalagem mesmo a mesma não
   // apresentando rota, pois ela pode estar associada a alguma planta no sistema mesmo não
   // tendo rota
-  await modelOperations.update_packing(packing);
+
+  // atualiza o historico da embalagem do sistema
+  await evaluatesHistoric.init(packing, currentPlant);
 }
 
 /**

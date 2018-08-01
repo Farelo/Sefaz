@@ -38,7 +38,7 @@ module.exports = async (packing, plant) => {
     // Recupera todas os departamentos associados a planta
     const departments = await schemas.department.find({ plant: plant._id });
 
-    if (departments.length == 0) {
+    if (departments.length > 0) {
       debug(`Exist department relationed to packing: ${packing._id}`);
       // recupera o departamento mais proximo da planta
       return getNearDepartment(packing, departments);

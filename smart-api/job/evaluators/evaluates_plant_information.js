@@ -1,5 +1,4 @@
-const debug = require('debug')('job:evaluators:evaluates_gc16');
-const evaluatesPermanenceTime = require('../evaluators/evaluates_permanence_time');
+const debug = require('debug')('job:evaluators:plant_information');
 
 /**
  * Define informações de permanencia e de estoque das embalagens
@@ -45,7 +44,7 @@ function definePermanenceDays(currentPlant, packing) {
 const fixed = (packing, currentPlant, department) => {
   // Verifica se o departamento atual existe e se existir ele verifica se está batendo com planta atual
 
-  if (department.name) {
+  if (department) {
     // verifica se o departamento existe
     packing.department = department._id;
   } else if (packing.actual_plant && packing.department) {
@@ -57,7 +56,6 @@ const fixed = (packing, currentPlant, department) => {
 
   packing = definePermanenceDays(currentPlant, packing);
 
-  packing = evaluatesPermanenceTime.same_plant(packing);
   // se atulizar a data, toda vez ela sempre estará em pouco tempo na fábrica
   //   packing.permanence.date = new Date().getTime();
 
@@ -73,7 +71,7 @@ const fixed = (packing, currentPlant, department) => {
  */
 const changeLocation = (packing, currentPlant, department) => {
   // Verifica se o departamento atual existe e se existir ele verifica se está batendo com planta atual
-  if (department.name) {
+  if (department) {
     packing.department = department._id;
   } else if (packing.actual_plant && packing.department) {
     if (!packing.actual_plant.plant._id.equals(packing.department.plant)) packing.department = null;
@@ -93,9 +91,6 @@ const changeLocation = (packing, currentPlant, department) => {
         ? 'Logistic'
         : 'Factory',
   };
-
-  // define as informações sobre o tempo de permanencia  da embalagem
-  packing = evaluatesPermanenceTime.change_plant(packing);
 
   return packing;
 };
