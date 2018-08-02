@@ -1,80 +1,288 @@
-'use strict';
+const historicType = require('../common/historic_type');
+const schemas = require('../../api/schemas/require_schemas');
+const debug = require('debug')('job:historic');
 
-const schemas = require("../../api/schemas/require_schemas")
-const types   = require('./historic_type')
+async function updateIncontidaStatus(packing) {
+  await schemas.historicPackings.update(
+    {
+      packing: packing._id,
+      date: packing.incontida.date,
+      status: historicType.INCONTIDA,
+    },
+    {
+      date: packing.incontida.date,
+      temperature: packing.temperature,
+      permanence_time: packing.incontida.time,
+      serial: packing.serial,
+      supplier: packing.supplier,
+      packing: packing._id,
+      packing_code: packing.code,
+    },
+  );
 
+  debug(`Historic incontida updated with success ${packing._id}`);
+}
+async function updateNormalStatus(packing) {
+  await schemas.historicPackings.update(
+    {
+      packing: packing._id,
+      date: packing.permanence.date,
+      status: historicType.NORMAL,
+    },
+    {
+      actual_gc16: packing.actual_gc16,
+      department: packing.department,
+      plant: packing.actual_plant,
+      date: packing.permanence.date,
+      temperature: packing.temperature,
+      permanence_time: packing.permanence.amount_days,
+      serial: packing.serial,
+      supplier: packing.supplier,
+      packing: packing._id,
+      packing_code: packing.code,
+      status: historicType.NORMAL,
+    },
+  );
 
-module.exports = {
-  create: function(p) {
-    return schemas.historicPackings.create({
-      "actual_gc16":  p.actual_gc16,
-      "plant": p.actual_plant,
-      "department": p.department,
-      "date": p.permanence.date,
-      "temperature": p.temperature,
-      "permanence_time": p.permanence.amount_days,
-      "serial": p.serial,
-      "supplier": p.supplier,
-      "packing": p._id,
-      "packing_code": p.code,
-      "status": types.NORMAL
-    });
-  },
-  create_from_alert: function (p, status, date, time) {
-    return schemas.historicPackings.create({
-      "actual_gc16":  p.actual_gc16,
-      "date": date,
-      "temperature": p.temperature,
-      "permanence_time": time,
-      "serial": p.serial,
-      "supplier": p.supplier,
-      "packing": p._id,
-      "packing_code": p.code,
-      "status": status
-    });
-  },
-  update: function(p) {
-    return new Promise(function(resolve, reject) {
-      if (!p.missing) {
+  debug(`Historic normal updated with success ${packing._id}`);
+}
 
-        schemas.historicPackings.update({
-            "packing": p._id,
-            "date": p.permanence.date
-          }, {
-            "actual_gc16":  p.actual_gc16 ,
-            "department": p.department  ,
-            "plant": p.actual_plant,
-            "date": p.permanence.date,
-            "temperature": p.temperature,
-            "permanence_time": p.permanence.amount_days,
-            "serial": p.serial,
-            "supplier": p.supplier,
-            "packing": p._id,
-            "packing_code": p.code,
-            "status": types.NORMAL
-          }).then(() => resolve("OK"));
+async function updateIncorrectStatus(packing) {
+  await schemas.historicPackings.update(
+    {
+      _id: packing._id,
+      date: packing.permanence.date,
+      status: historicType.INCORRECT_LOCAL,
+    },
+    {
+      actual_gc16: packing.actual_gc16,
+      department: packing.department,
+      plant: packing.actual_plant,
+      date: packing.permanence.date,
+      temperature: packing.temperature,
+      permanence_time: packing.permanence.amount_days,
+      serial: packing.serial,
+      supplier: packing.supplier,
+      packing: packing._id,
+      packing_code: packing.code,
+      status: historicType.INCORRECT_LOCAL,
+    },
+  );
 
-      } else {
-        resolve("OK");
-      }
-    });
-  },
-  update_from_alert: function(p, status, date, time) {
-    return new Promise(function(resolve, reject) {
-     
-        schemas.historicPackings.update({
-            "packing": p._id,
-            "date": date
-          }, {
-            "date": date,
-            "temperature": p.temperature,
-            "permanence_time": time,
-            "serial": p.serial,
-            "supplier": p.supplier,
-            "packing": p._id,
-            "packing_code": p.code,
-            "status": status
-          }).then(() => resolve("OK"));
-    });
+  debug(`Historic normal updated with success ${packing._id}`);
+}
+
+async function updateMissingStatus(packing) {
+  await schemas.historicPackings.update(
+    {
+      packing: packing._id,
+      date: packing.packing_missing.date,
+      status: historicType.MISSING,
+    },
+    {
+      date: packing.packing_missing.date,
+      temperature: packing.temperature,
+      permanence_time: packing.packing_missing.time_countdown,
+      serial: packing.serial,
+      supplier: packing.supplier,
+      packing: packing._id,
+      packing_code: packing.code,
+      status: historicType.MISSING,
+    },
+  );
+
+  debug(`Historic missing updated with success ${packing._id}`);
+}
+
+async function updateTravelingStatus(packing) {
+  await schemas.historicPackings.update(
+    {
+      packing: packing._id,
+      date: packing.trip.date,
+      status: historicType.TRAVELING,
+    },
+    {
+      date: packing.trip.date,
+      temperature: packing.temperature,
+      permanence_time: packing.trip.time_countdown,
+      serial: packing.serial,
+      supplier: packing.supplier,
+      packing: packing._id,
+      packing_code: packing.code,
+      status: historicType.TRAVELING,
+    },
+  );
+
+  debug(`Historic traveling updated with success ${packing._id}`);
+}
+
+async function updateLateStatus(packing) {
+  await schemas.historicPackings.update(
+    {
+      packing: packing._id,
+      date: packing.trip.date_late,
+      status: historicType.LATE,
+    },
+    {
+      date: packing.trip.date_late,
+      temperature: packing.temperature,
+      permanence_time: packing.trip.time_late,
+      serial: packing.serial,
+      supplier: packing.supplier,
+      packing: packing._id,
+      packing_code: packing.code,
+      status: historicType.LATE,
+    },
+  );
+
+  debug(`Historic late updated with success ${packing._id}`);
+}
+
+async function createIncontidaStatus(packing) {
+  const newHistoric = await new schemas.historicPackings({
+    actual_gc16: packing.actual_gc16,
+    date: packing.incontida.date,
+    temperature: packing.temperature,
+    permanence_time: packing.incontida.time,
+    serial: packing.serial,
+    supplier: packing.supplier,
+    packing: packing._id,
+    packing_code: packing.code,
+    status: historicType.INCONTIDA,
+  });
+  await newHistoric.save();
+  debug(`Historic incontida created with success ${packing._id}`);
+}
+
+async function createNormalStatus(packing) {
+  const newHistoric = await new schemas.historicPackings({
+    actual_gc16: packing.actual_gc16,
+    plant: packing.actual_plant,
+    department: packing.department,
+    date: packing.permanence.date,
+    temperature: packing.temperature,
+    permanence_time: packing.permanence.amount_days,
+    serial: packing.serial,
+    supplier: packing.supplier,
+    packing: packing._id,
+    packing_code: packing.code,
+    status: historicType.NORMAL,
+  });
+  await newHistoric.save();
+  debug(`Historic normal created with success ${packing._id}`);
+}
+
+async function createIncorrectStatus(packing) {
+  const newHistoric = await new schemas.historicPackings({
+    actual_gc16: packing.actual_gc16,
+    plant: packing.actual_plant,
+    department: packing.department,
+    date: packing.permanence.date,
+    temperature: packing.temperature,
+    permanence_time: packing.permanence.amount_days,
+    serial: packing.serial,
+    supplier: packing.supplier,
+    packing: packing._id,
+    packing_code: packing.code,
+    status: historicType.INCORRECT_LOCAL,
+  });
+  await newHistoric.save();
+  debug(`Historic normal created with success ${packing._id}`);
+}
+
+async function createMissingStatus(packing) {
+  const newHistoric = await new schemas.historicPackings({
+    actual_gc16: packing.actual_gc16,
+    date: packing.packing_missing.date,
+    temperature: packing.temperature,
+    permanence_time: packing.packing_missing.time_countdown,
+    serial: packing.serial,
+    supplier: packing.supplier,
+    packing: packing._id,
+    packing_code: packing.code,
+    status: historicType.MISSING,
+  });
+  await newHistoric.save();
+  debug(`Historic missing created with success ${packing._id}`);
+}
+
+async function createTravelingStatus(packing) {
+  const newHistoric = await new schemas.historicPackings({
+    actual_gc16: packing.actual_gc16,
+    date: packing.trip.date,
+    temperature: packing.temperature,
+    permanence_time: packing.trip.time_countdown,
+    serial: packing.serial,
+    supplier: packing.supplier,
+    packing: packing._id,
+    packing_code: packing.code,
+    status: historicType.TRAVELING,
+  });
+  await newHistoric.save();
+  debug(`Historic traveling created with success ${packing._id}`);
+}
+
+async function createLateStatus(packing) {
+  const newHistoric = await new schemas.historicPackings({
+    actual_gc16: packing.actual_gc16,
+    date: packing.trip.date_late,
+    temperature: packing.temperature,
+    permanence_time: packing.trip.time_late,
+    serial: packing.serial,
+    supplier: packing.supplier,
+    packing: packing._id,
+    packing_code: packing.code,
+    status: historicType.LATE,
+  });
+  await newHistoric.save();
+  debug(`Historic late created with success ${packing._id}`);
+}
+
+async function initNormal(packing, oldPlant, currentPlant) {
+  if (oldPlant && currentPlant) {
+    if (oldPlant.equals(currentPlant._id)) {
+      await updateNormalStatus(packing);
+    } else {
+      await createNormalStatus(packing);
+    }
+  } else {
+    await createNormalStatus(packing);
   }
 }
+
+async function initIncorrectLocal(packing, oldPlant, currentPlant) {
+  if (oldPlant && currentPlant) {
+    if (oldPlant.equals(currentPlant._id)) {
+      await updateIncorrectStatus(packing);
+    } else {
+      await createIncorrectStatus(packing);
+    }
+  } else {
+    await createIncorrectStatus(packing);
+  }
+}
+
+async function removeHistoric(packing, date, status) {
+  await schemas.historicPackings.remove({
+    packing_code: packing.code,
+    serial: packing.serial,
+    supplier: packing.supplier._id,
+    packing: packing._id,
+    status,
+    date,
+  });
+}
+
+module.exports = {
+  updateIncontidaStatus,
+  updateTravelingStatus,
+  updateMissingStatus,
+  updateLateStatus,
+  createIncontidaStatus,
+  createTravelingStatus,
+  createMissingStatus,
+  createLateStatus,
+  initNormal,
+  initIncorrectLocal,
+  removeHistoric,
+};

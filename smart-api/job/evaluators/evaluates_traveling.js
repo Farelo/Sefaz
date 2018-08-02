@@ -2,7 +2,8 @@ const debug = require('debug')('job:evaluators:evaluates_traveling');
 const modelOperations = require('../common/model_operations');
 const alertsType = require('../common/alerts_type');
 const cleanObject = require('../common/cleanObject');
-
+const historic = require('../historic/historic');
+const historicType = require('../common/historic_type');
 /**
  * Verifica se a embalagem esta atrasada
  * @param {Object} packing
@@ -60,15 +61,15 @@ module.exports = async (packing) => {
           packing.missing = true;
 
           packing.packing_missing = {
-            date: new Date().getTime,
-            time_countdown: timeTnterval,
+            date: new Date().getTime(),
+            time_countdown: 0,
           };
-          packing.trip.time_exceeded = true;
+          packing.trip.time_exceeded = false;
 
           await modelOperations.update_alert(packing, alertsType.MISSING);
           await modelOperations.remove_alert(packing, alertsType.LATE);
           // historic.update_from_alert(packing, historic_types.MISSING, packing.packing_missing.date, packing.packing_missing.time_countdown)
-
+          await historic.createMissingStatus(packing);
           return packing;
         }
 
@@ -79,17 +80,36 @@ module.exports = async (packing) => {
           packing = cleanObject.cleanPermanence(packing);
           packing = cleanObject.cleanMissing(packing);
 
-          packing.trip.time_exceeded = true;
+          if (packing.trip.time_exceeded) {
+            packing.trip.time_late = Math.floor(dateToday - packing.trip.date_late);
+            await historic.updateLateStatus(packing);
+          } else {
+            packing.trip.time_exceeded = true;
+            packing.trip.date_late = new Date().getTime();
+            packing.trip.time_late = 0;
+            await historic.createLateStatus(packing);
+          }
 
           await modelOperations.update_alert(packing, alertsType.LATE);
-
           return packing;
         }
+
+        // verifica se ele não estava true antes , no caso
+        // houve alguma alteração e forçou o mesmo a ir para false
+
+        if (packing.trip.time_exceeded) {
+          packing.trip.time_exceeded = false;
+          // remove antes de realizar a alteraçõa
+          await historic.removeHistoric(packing, packing.trip.date_late, historicType.LATE);
+          packing.trip.date_late = 0;
+          packing.trip.time_late = 0;
+        }
+
+        await historic.updateTravelingStatus(packing);
 
         // caso nenhuma das considerações sejam aceitas, então
         // a embalagem não esta mais atrasada e tambem não esta perdida (O segundo caso mais
         // dificil de acontecer)
-        packing.trip.time_exceeded = false;
         await modelOperations.remove_alert(packing, alertsType.LATE);
         return packing;
       }
@@ -99,13 +119,14 @@ module.exports = async (packing) => {
       packing = cleanObject.cleanFlags(packing);
       packing = cleanObject.cleanPermanence(packing);
       packing = cleanObject.cleanMissing(packing);
+      packing = cleanObject.cleanTrip(packing);
       packing.traveling = true;
 
       packing.trip.date = new Date().getTime();
 
       await modelOperations.remove_alert(packing, alertsType.MISSING);
       await modelOperations.remove_alert(packing, alertsType.LATE);
-
+      await historic.createTravelingStatus(packing);
       return packing;
     }
 
@@ -121,15 +142,40 @@ module.exports = async (packing) => {
       if (isLate(packing, timeTnterval)) {
         // verifica se realmente ele esta atrasado
         packing.trip.time_exceeded = true;
+        packing.trip.time_late = Math.floor(dateToday - packing.trip.date_late);
+        // isso pode acontecer quando uma determinada embalagem passa de imediato para ausente
+        // sem passar por late, então esse problema pode ser gerado
+
+        if (packing.trip.date_late === 0) {
+          packing.trip.date_late = new Date().getTime();
+          packing.trip.time_late = 0;
+          await historic.createLateStatus(packing);
+        } else {
+          await historic.updateLateStatus(packing);
+        }
+
         await modelOperations.update_alert(packing, alertsType.LATE);
+
+        // remove historico de ausente
+        await historic.removeHistoric(packing, packing.packing_missing.date, historicType.MISSING);
       } else {
         // verifica se realmente ele esta atrasado
         packing.trip.time_exceeded = false;
+        packing.trip.time_late = 0;
+        packing.trip.date_late = 0;
       }
       await modelOperations.remove_alert(packing, alertsType.MISSING);
       packing = cleanObject.cleanMissing(packing);
       packing = cleanObject.cleanFlags(packing);
+
       packing.traveling = true;
+      if (!packing.trip.time_exceeded) {
+        // remove o historico de atrasado
+        await historic.removeHistoric(packing, packing.trip.date_late, historicType.LATE);
+        await historic.updateTravelingStatus(packing);
+      }
+    } else {
+      await historic.updateMissingStatus(packing);
     }
 
     return packing;

@@ -1,5 +1,9 @@
 module.exports = {
   MISSING: 'MISSING',
   TRAVELING: 'TRAVELING',
+  LATE: 'LATE',
   NORMAL: 'NORMAL',
+  INCORRECT_LOCAL: 'INCORRECT_LOCAL',
+  LOW_BATTERY: 'LOW_BATTERY',
+  INCONTIDA: 'INCONTIDA', // Sem rota e sem planta
 };

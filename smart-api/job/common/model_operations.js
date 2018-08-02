@@ -1,6 +1,5 @@
 const debug = require('debug')('job:common:model_operations');
 const schemas = require('../../api/schemas/require_schemas');
-const historicType = require('./historic_type');
 
 module.exports.find_all_packings_plants_and_setting = async () => {
   try {
@@ -130,21 +129,36 @@ module.exports.remove_alert = async (packing, alertType) => {
  * da embalagem no sistema
  * @param {Object} packing
  */
-module.exports.create_historic = async (packing) => {
+module.exports.create_historic = async (packing, status) => {
   try {
-    const newHistoric = await new schemas.historicPackings({
-      actual_gc16: packing.actual_gc16,
-      plant: packing.actual_plant,
-      department: packing.department,
-      date: packing.permanence.date,
-      temperature: packing.temperature,
-      permanence_time: packing.permanence.amount_days,
-      serial: packing.serial,
-      supplier: packing.supplier,
-      packing: packing._id,
-      packing_code: packing.code,
-      status: historicType.NORMAL,
-    });
+    let newHistoric = null;
+    if (packing.missing) {
+      newHistoric = await new schemas.historicPackings({
+        actual_gc16: packing.actual_gc16,
+        date: packing.packing_missing.date,
+        temperature: packing.temperature,
+        permanence_time: packing.packing_missing.time_countdown,
+        serial: packing.serial,
+        supplier: packing.supplier,
+        packing: packing._id,
+        packing_code: packing.code,
+        status,
+      });
+    } else {
+      newHistoric = await new schemas.historicPackings({
+        actual_gc16: packing.actual_gc16,
+        plant: packing.actual_plant,
+        department: packing.department,
+        date: packing.permanence.date,
+        temperature: packing.temperature,
+        permanence_time: packing.permanence.amount_days,
+        serial: packing.serial,
+        supplier: packing.supplier,
+        packing: packing._id,
+        packing_code: packing.code,
+        status,
+      });
+    }
 
     await newHistoric.save();
     debug(`Historic created with success ${packing._id}`);
@@ -159,24 +173,43 @@ module.exports.create_historic = async (packing) => {
  * da embalagem no sistema
  * @param {Object} packing
  */
-module.exports.update_historic = async (packing) => {
+module.exports.update_historic = async (packing, status) => {
   try {
-    await schemas.historicPackings.update(
-      { packing: packing._id, date: packing.permanence.date },
-      {
-        actual_gc16: packing.actual_gc16,
-        department: packing.department,
-        plant: packing.actual_plant,
-        date: packing.permanence.date,
-        temperature: packing.temperature,
-        permanence_time: packing.permanence.amount_days,
-        serial: packing.serial,
-        supplier: packing.supplier,
-        packing: packing._id,
-        packing_code: packing.code,
-        status: historicType.NORMAL,
-      },
-    );
+    if (packing.missing) {
+      await schemas.historicPackings.update(
+        {
+          packing: packing._id,
+          date: packing.packing_missing.date,
+        },
+        {
+          date: packing.packing_missing.date,
+          temperature: packing.temperature,
+          permanence_time: packing.permanence.amount_days,
+          serial: packing.serial,
+          supplier: packing.supplier,
+          packing: packing._id,
+          packing_code: packing.code,
+          status,
+        },
+      );
+    } else {
+      await schemas.historicPackings.update(
+        { packing: packing._id, date: packing.permanence.date },
+        {
+          actual_gc16: packing.actual_gc16,
+          department: packing.department,
+          plant: packing.actual_plant,
+          date: packing.permanence.date,
+          temperature: packing.temperature,
+          permanence_time: packing.permanence.amount_days,
+          serial: packing.serial,
+          supplier: packing.supplier,
+          packing: packing._id,
+          packing_code: packing.code,
+          status,
+        },
+      );
+    }
 
     debug(`Historic updated with success ${packing._id}`);
   } catch (error) {

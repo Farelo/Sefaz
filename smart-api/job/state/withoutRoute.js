@@ -2,7 +2,7 @@ const debug = require('debug')('job:without route');
 const evaluatesCurrentDepartment = require('../evaluators/evaluates_current_department');
 const evaluatesPlantInformation = require('../evaluators/evaluates_plant_information');
 const evaluatesPermanenceTime = require('../evaluators/evaluates_permanence_time');
-const evaluatesHistoric = require('../evaluators/evaluates_historic');
+const historic = require('../historic/historic');
 const modelOperations = require('../common/model_operations');
 const cleanObject = require('../common/cleanObject');
 const alertsType = require('../common/alerts_type');
@@ -17,6 +17,7 @@ const alertsType = require('../common/alerts_type');
  * @param {Object} currentPlant
  */
 async function evaluate(packing, currentPlant) {
+  const oldPlant = packing.actual_plant.plant;
   debug('Packing without route.');
   // Verifica se embalagem esta em alguma planta
   if (currentPlant != null) {
@@ -29,12 +30,14 @@ async function evaluate(packing, currentPlant) {
     packing = cleanObject.cleanFlags(packing); // limpa as flags
     packing = cleanObject.cleanMissing(packing); // limpa as informações sobre embalagem perdida
     packing = cleanObject.cleanTrip(packing); // limpa informações sobre a embalagem em viagem
+    packing = cleanObject.cleanIncontida(packing); // limpa informações sobre a embalagem em viagem
 
     // Retorna informações sobre o tempo de permanencia da embalagem
     packing = await evaluatesPermanenceTime.evaluate(packing, currentPlant);
     // Coleta informações sobre a localização da embalagem
     packing = await evaluatesPlantInformation(packing, currentPlant, currentDepartment);
 
+    await historic.initNormal(packing, oldPlant, currentPlant);
     await modelOperations.update_packing(packing);
   } else {
     // embalagem sem planta não há como inferir informações sobre
@@ -47,13 +50,29 @@ async function evaluate(packing, currentPlant) {
     packing = cleanObject.cleanTrip(packing); // limpa informações sobre a embalagem em viagem
     await modelOperations.remove_alert(packing, alertsType.PERMANENCE);
     // remove informações sobre a planta atual, pois a mesma pode ter sido relacionada anteriormente a uma planta
-    await modelOperations.update_packing(packing);
-    await modelOperations.update_packing_and_remove_actual_plant(packing);
+
     // quando a embalagem não esta associada a nenhuma rota e não esta em nnehuma planta é interessante saber
     // se a mesma ja  era vinculada a alguma planta , caso a mesma for é inserida informação sobre a ultima planta
     // em que foi vista
     packing.last_plant = packing.actual_plant;
     packing.last_department = packing.department;
+
+    // atualiza informações sobre a mesma esta a primeira vez ou não incontida
+    if (!packing.incontida.isIncontida) {
+      packing.incontida = {
+        date: new Date().getTime(),
+        time: 0,
+        isIncontida: true,
+      };
+      await historic.createIncontidaStatus(packing);
+    } else {
+      const timeInterval = new Date().getTime() - packing.incontida.date;
+      packing.incontida.time = timeInterval;
+      await historic.updateIncontidaStatus(packing);
+    }
+
+    await modelOperations.update_packing(packing);
+    await modelOperations.update_packing_and_remove_actual_plant(packing);
   }
 
   await modelOperations.remove_alert(packing, alertsType.MISSING);
@@ -62,9 +81,6 @@ async function evaluate(packing, currentPlant) {
   // Não existe a necessidade de remover informações de planta da embalagem mesmo a mesma não
   // apresentando rota, pois ela pode estar associada a alguma planta no sistema mesmo não
   // tendo rota
-
-  // atualiza o historico da embalagem do sistema
-  await evaluatesHistoric.init(packing, currentPlant);
 }
 
 /**

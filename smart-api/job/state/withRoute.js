@@ -9,6 +9,7 @@ const cleanObject = require('../common/cleanObject');
 const alertsType = require('../common/alerts_type');
 const evaluatesTraveling = require('../evaluators/evaluates_traveling');
 const evaluatesHistoric = require('../evaluators/evaluates_historic');
+const historic = require('../historic/historic');
 
 /**
  * Avalia o status da embalagem que apresenta rota.
@@ -19,6 +20,8 @@ const evaluatesHistoric = require('../evaluators/evaluates_historic');
  * @param {Object} currentPlant
  */
 async function evaluate(packing, currentPlant) {
+  const oldPlant = packing.actual_plant.plant;
+
   if (currentPlant != null) {
     // Avaliar sem tem departamento e o recupera
     const currentDepartment = await evaluatesCurrentDepartment(packing, currentPlant);
@@ -37,6 +40,7 @@ async function evaluate(packing, currentPlant) {
       packing = cleanObject.cleanFlags(packing); // limpa as flags
       packing = cleanObject.cleanMissing(packing); // limpa as informações sobre embalagem perdida
       packing = cleanObject.cleanTrip(packing); // limpa informações sobre a embalagem em viagem
+      packing = cleanObject.cleanIncontida(packing); // limpa informações sobre a embalagem em viagem
 
       // Se estiver no local correto para de atualizar o trip.date da embalagem e o
       // actual_plant do banco
@@ -44,6 +48,7 @@ async function evaluate(packing, currentPlant) {
       // Adicionar ou atualizar a minha last_plant da embalagem no banco
       // Tempo de permanência (CEBRACE: em qualquer ponto de controle)
       await modelOperations.update_packing(packing);
+      await historic.initNormal(packing, oldPlant, currentPlant);
     } else {
       // PAra este fluxo apenas o alerta de LOCAL INCORRETO que pode explodir
       debug('Embalagem está no local incorreto');
@@ -52,6 +57,7 @@ async function evaluate(packing, currentPlant) {
       packing = cleanObject.cleanFlags(packing); // limpa as flags
       packing = cleanObject.cleanMissing(packing); // limpa as informações sobre embalagem perdida
       packing = cleanObject.cleanTrip(packing); // limpa informações sobre a embalagem em viagem
+      packing = cleanObject.cleanIncontida(packing); // limpa informações sobre a embalagem em viagem
       packing.problem = true;
       packing = await evaluatesPermanenceTime.evaluate(packing, currentPlant, false);
       packing = await evaluatesPlantInformation(packing, currentPlant, currentDepartment);
@@ -61,6 +67,7 @@ async function evaluate(packing, currentPlant) {
       await modelOperations.update_alert(packing, alertsType.INCORRECT_LOCAL);
 
       await modelOperations.update_packing(packing);
+      await historic.initIncorrectLocal(packing, oldPlant, currentPlant);
     }
 
     await modelOperations.remove_alert(packing, alertsType.LATE);
@@ -74,11 +81,9 @@ async function evaluate(packing, currentPlant) {
 
     await modelOperations.remove_alert(packing, alertsType.PERMANENCE);
     await modelOperations.remove_alert(packing, alertsType.INCORRECT_LOCAL);
-    await modelOperations.update_packing_and_remove_actual_plant(packing);
     await modelOperations.update_packing(packing);
+    await modelOperations.update_packing_and_remove_actual_plant(packing);
   }
-
-  await evaluatesHistoric.init(packing, currentPlant);
 }
 
 module.exports = {

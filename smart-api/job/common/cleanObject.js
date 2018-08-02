@@ -9,6 +9,20 @@ function cleanTrip(packing) {
     time_exceeded: false,
     date: 0,
     time_countdown: 0,
+    date_late: 0,
+    time_late: 0,
+  };
+  return packing;
+}
+/**
+ * Limpa informações sobre a viagem
+ * @param {Object} packing
+ */
+function cleanIncontida(packing) {
+  packing.incontida = {
+    date: 0,
+    time: 0,
+    isIncontida: false,
   };
   return packing;
 }
@@ -51,4 +65,5 @@ module.exports = {
   cleanPermanence,
   cleanMissing,
   cleanFlags,
+  cleanIncontida,
 };
