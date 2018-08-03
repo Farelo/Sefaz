@@ -48,18 +48,18 @@ public currentUser  : any;
   }
 
   openModal(){
-    this.mudar();
+    //this.mudar();
     const modalRef = this.modalService.open(ModalUserComponent,{backdrop: "static", size: "lg"});
     modalRef.componentInstance.view = 'GERENCIAR';
   }
 
   openModalEditar(){
-    this.mudar();
+    //this.mudar();
     const modalRef = this.modalService.open(ModalCurrentEditarComponent,{backdrop: "static", size: "lg"});
   }
 
   openSettings(){
-    this.mudar();
+    //this.mudar();
     const modalRef = this.modalService.open(ModalSettings, { size: "sm"});
   }
 

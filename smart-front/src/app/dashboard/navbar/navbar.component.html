@@ -161,7 +161,7 @@
     
       <li>
         <a *ngIf="currentUser?.profile === 'AdminFactory' || currentUser?.profile === 'Logistic' || currentUser?.profile === 'Supplier'"
-          (click)="p.close(); openModal()">
+           (click)="p.toggle(); openModal()">
           Gerenciar usuários </a>
       </li>
     
