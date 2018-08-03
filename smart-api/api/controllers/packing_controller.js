@@ -695,22 +695,16 @@ exports.packing_per_plant = function(req, res) {
 /**
  * TODO a quantiade de embalagens por condição
  */
-exports.packing_quantity_per_condition = function(req, res) {
-  Promise.all([
-    schemas.packing.find({}).count(),
-    schemas.packing.find({ missing: true }).count(),
-    schemas.packing.find({ problem: true }).count(),
-    schemas.packing
-      .find({
-        $and: [
-          { 'trip.time_countdown': { $gt: 0 } },
-          { 'trip.time_exceeded': false },
-        ],
-      })
-      .count(),
-    schemas.packing.find({ 'permanence.time_exceeded': true }).count(),
-    schemas.packing.find({ 'trip.time_exceeded': true }).count(),
-  ])
+exports.packing_quantity_per_condition = function (req, res) {
+
+    Promise.all([
+      schemas.packing.find({}).count(),
+      schemas.packing.find({ missing: true }).count(),
+      schemas.packing.find({ problem: true }).count(),
+      schemas.packing.find({ traveling: true }).count(),
+      schemas.packing.find({ 'permanence.time_exceeded': true }).count(),
+      schemas.packing.find({ 'trip.time_exceeded': true }).count()
+    ])
     .then(data => {
       responses.successHandler(
         res,
