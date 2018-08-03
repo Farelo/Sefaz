@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit ,ViewChild} from '@angular/core';
-import { PackingService } from '../../../servicos/index.service';
+import { PackingService, AuthenticationService } from '../../../servicos/index.service';
 import { Packing } from '../../../shared/models/packing';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
@@ -14,10 +14,24 @@ export class EmbalagemComponent implements OnInit {
   public data: Pagination = new Pagination({meta: {page : 1}});
   public search  = "";
 
+  public logged_user: any;
+  public packings: any[];
+  public generalEquipamentSearch = "";
+
   constructor(
+    private packingService: PackingService,
     private PackingService : PackingService,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+    private auth: AuthenticationService) {
+
+    let user = this.auth.currentUser();
+    let current_user = this.auth.currentUser();
+    
+    this.logged_user = (user.supplier ? user.supplier._id : (
+      user.official_supplier ? user.official_supplier : (
+        user.logistic ? user.logistic.suppliers : (
+          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
+  }
 
   searchEvent(): void{
       this.loadPackings();
@@ -49,7 +63,58 @@ export class EmbalagemComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadSelect();
     this.loadPackings();
+  }
+
+  /**
+   * Select
+   */
+  loadSelect(){
+    if (this.logged_user instanceof Array) {
+      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
+
+    } else if (this.logged_user) {
+      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
+
+    } else {
+      this.packingService.getPackingsDistincts().subscribe(result => {
+        this.packings = result.data;
+        console.log('this.packings: ' + JSON.stringify(this.packings));
+      }, err => { console.log(err) });
+    }
+  }
+
+  equipamentChanged(){
+    if (this.generalEquipamentSearch){
+      console.log('.generalInventoryEquipamentChanged this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
+      this.packingService.getPackingsByPackingCode(this.generalEquipamentSearch, 10, this.data.meta.page).subscribe(result => {
+        
+        result.meta = {
+          page: result.data.page,
+          limit: result.data.limit,
+          total_pages: result.data.pages,
+          total_docs: result.data.total
+        };
+
+        result.data = result.data.docs;
+
+        console.log('.generalInventoryEquipamentChanged ...result: ' + JSON.stringify(result));
+
+        // this.general_equipament = new Pagination({ meta: { page: 1 } });
+        this.data = result;
+
+        console.log('.generalInventoryEquipamentChanged ...this.general_equipament: ' + JSON.stringify(this.data));
+      }, err => { console.log(err) });
+
+    }else{
+      console.log('..generalInventoryEquipamentChanged this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
+
+      this.data = new Pagination({ meta: { page: 1 } });
+      this.generalEquipamentSearch = "";
+      this.data.data = [];
+      this.loadPackings();
+    }
   }
 
 }

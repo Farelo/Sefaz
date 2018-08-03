@@ -9,16 +9,16 @@
       <!-- Filtros de  FORNECEDOR -->
       <div class="row escolhaFornecedor">
         <div class="col-sm-6">
-          <p>DUNS</p>
+          <p>FORNECEDOR</p>
       
           <ng-select [ngModel]="supplierSearch" 
             (change)="supplierInventory($event)" 
             [items]="suppliers" 
-            bindLabel="duns" 
+            bindLabel="name" 
             placeholder="Selecione um Fornecedor">
             
             <ng-template ng-label-tmp let-item="item">
-              {{item.duns}}
+              {{item.name}}
             </ng-template>
             <ng-template ng-option-tmp let-item="item">
               <div>
