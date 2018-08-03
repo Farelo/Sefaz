@@ -1,74 +1,57 @@
-'use strict';
+const debug = require('debug')('job:main');
+const cron = require('node-cron');
 
-const cron                       = require('node-cron');
-const token                      = require('./consults/token');
-const devices                    = require('./consults/devices');
-const consultDatabase            = require('./consults/consult');
-const updateDevices              = require('./updates/update_devices');
-const with_route                 = require('./routes/with_route');
-const without_route              = require('./routes/without_route');
-const evaluate_battery           = require('./alerts/evaluate_battery');
-const actual_plant               = require('./positions/actual_plant');
-const evaluate_department        = require('./positions/evaluate_department');
-const verify_finish              = require('./evaluates/verify_finish');
-const evaluate_missing           = require('./alerts/evaluate_missing');
-const update_packing             = require('./updates/update_packing');
-const traveling                  = require('./alerts/traveling');
-const remove_dependencies        = require('./updates/remove_dependencies');
-const environment                = require('../config/environment');
+const tokenRequest = require('./loka_requests/token.request');
+const devicesRequest = require('./loka_requests/devices.request');
+const modelOperations = require('./common/model_operations');
+const evaluatesBattery = require('./evaluators/evaluates_battery');
+const evaluatesCurrentPlant = require('./evaluators/evaluates_current_plant');
+const environment = require('../config/environment');
+const withoutRoute = require('./state/withoutRoute');
+const withRoute = require('./state/withRoute');
 
-let task = cron.schedule(`*/${environment.time} * * * * *`, function() {
-    token()
-      .then(token => devices(token))//Get All devices from SIGFOX LOKA-API
-      .then(devices => Promise.all(updateDevices(devices))) //UPDATE ALL PACKINGS WITH INFORMATION FROM LOKA-API
-      .then(() =>  Promise.all(consultDatabase())) //RECEIVE ARRAY GET ALL PACKINGS AFTER UPDATE AND PLANTS
-      .then(data => analysis(data)) //EVALUETE ALL PACKINGS, TO SEARCH SOME PROBLEM
-      .catch(err => console.log(err))
+const statusAnalysis = async (data) => {
+  const packings = data[0]; // Recupera todas as embalagens do banco
+  const plants = data[1]; // Recupera todas plantas do banco
+  const setting = data[2]; // Recupera o setting do banco
+  // let total_packing = packings.length // Recupera a soma de pacotes no sistema
+  // let count_packing = 0 // Contador das embalagens
+
+  // packings.forEach( async (packing) => {
+  for (const packing of packings) {
+    // Avalia a bateria das embalagens
+    await evaluatesBattery(packing, setting);
+    // Embalagem perdeu sinal?
+
+    // A verificação de um possivel local que a embalagem possa esta presenta
+    // pode ser aplicada tambem para embalagens que não apresentam rotas
+    // Está em alguma planta atualmente?
+    const currentPlant = await evaluatesCurrentPlant(packing, plants, setting);
+
+    if (packing.routes.length > 0) {
+      // Tem rota?
+      // Recupera a planta atual onde o pacote está atualmente
+      withRoute.evaluate(packing, currentPlant);
+    } else {
+      // Qando não existe rota no sistema
+      withoutRoute.evaluate(packing, currentPlant);
+    }
+  }
+};
+
+// O analysis_loop executa a cada X segundos uma rotina
+cron.schedule(`*/${environment.time} * * * * *`, async () => {
+  try {
+    const token = await tokenRequest(); // Recupera o token para acessar a API da LOKA
+    const devicesArray = await devicesRequest(token); // Recupera todos os devices da API da LOKA
+    await modelOperations.update_devices(devicesArray); // Atualiza todas as embalagens com os dados da API da LOKA
+    const data = await modelOperations.find_all_packings_plants_and_setting(); // Recupera um array de todos as embalagens do banco depois de atualizados
+
+    // Analisa o status de todas as embalagens
+    await statusAnalysis(data);
+  } catch (error) {
+    debug('Something failed when startup the analysis_loop method.');
+    debug(error);
+    throw new Error(error);
+  }
 });
-
-function analysis(data){
-  let packings      = data[0]; //GET ALL PACKINGS
-  let plants        = data[1]; //GET ALL PLANTS
-  let settings      = data[2] //get seetings
-  let total_packing = packings.length; //get amount the packings on the system
-  let count_packing = 0; //count the amount of packings
-
-  packings.forEach(p => {
-    let plant = actual_plant(p, plants, settings); //calculate a distance from packing to plants
-
-      if(plant != null){
-        console.log("PACKING HAS PLANT");
-        evaluate_department(plant,p).then(department => {
-            if(p.routes.length > 0){ //Evaluete if the packing has route ---------------------- EMBALAGENS QUE TEM  ROTA
-              with_route(p, plant, department, settings).then(result =>{
-                count_packing++;
-                verify_finish(result,total_packing,count_packing)
-              });
-
-            //embalagen que não estão associadas as rotas ------------------- SEGUNDA LOGICA
-            }else{
-              without_route(p, plant, department, settings).then(result =>{
-                count_packing++;
-                verify_finish(result,total_packing,count_packing)
-              });
-            }
-        });
-      }else{
-
-        //para embalagens que não foram econtradas dentro de uma planta
-        console.log("PACKING HAS NOT PLANT");
-        remove_dependencies.without_plant(p)
-          .then(new_p => evaluate_battery(new_p, settings))
-          .then(new_p => evaluate_missing(new_p))
-          .then(new_p => traveling.evaluate_traveling(new_p))
-          .then(new_p => update_packing.set(new_p))
-          .then(() => update_packing.unset(p))
-          .then(result =>{
-            count_packing++;
-            verify_finish("FINISH VERTENTE SEM PLANTA",total_packing,count_packing)
-          });
-
-      }
-
-    });
-}

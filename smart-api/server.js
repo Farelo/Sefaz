@@ -1,24 +1,24 @@
 'use strict';
 
-const express          = require('express');
-const logger           = require('morgan');
-const bodyParser       = require('body-parser');
-const methodOverride   = require('method-override');
-const swaggerTools     = require('swagger-tools');
-const environment      = require('./config/environment');
-const passport         = require("passport");
-const HttpStatus       = require("http-status");
-const swaggerObject    = require('./api/swagger/swagger.json');
-const cors             = require('cors');
-const compression      = require('compression');
-const app              = express();
-const http             = require('http').Server(app);
-const port             = process.env.PORT || environment.port;
-const io               = require('socket.io')(http);
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const swaggerTools = require('swagger-tools');
+const environment = require('./config/environment');
+const passport = require('passport');
+const HttpStatus = require('http-status');
+const swaggerObject = require('./api/swagger/swagger.json');
+const cors = require('cors');
+const compression = require('compression');
+const app = express();
+const http = require('http').Server(app);
+const port = process.env.PORT || environment.port;
+const io = require('socket.io')(http);
 
 //sentando configurações do middleware
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true}));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 app.use(logger('dev'));
@@ -27,7 +27,8 @@ app.use(compression());
 
 // module.exports = app; // for testing
 
-app.get('/', function (req, res) {  //todo aguenta 
+app.get('/', function(req, res) {
+  //todo aguenta
   res.redirect('/docs');
 });
 
@@ -41,14 +42,11 @@ require('./job/main');
 //adicionando a auth no middleware
 require('./api/auth/auth')(app);
 
-
 ////////////////////// TESTANTO SOCKET IO PARA REALIZAR APLICAÇÃO REAL TIME
 
 // io.on('connection', (socket) => {
 
 //   console.log('USER CONNECTED');
-
-
 
 //   socket.on('disconnect', function () {
 
@@ -64,66 +62,79 @@ require('./api/auth/auth')(app);
 
 // });
 
-
 //////////////////////
 //verifica se o servidor esta rodando em produção e avalia as variaveis do mesmo
-if (process.env.NODE_ENV === 'production'){
-  if (process.env.DNS || process.env.HOST || process.env.PORT){
-    if (process.env.HOST){
+if (process.env.NODE_ENV === 'production') {
+  if (process.env.DNS || process.env.HOST || process.env.PORT) {
+    if (process.env.HOST) {
       swaggerObject.host = `${process.env.HOST}:${process.env.PORT}`;
-    } else if (process.env.DNS){
+    } else if (process.env.DNS) {
       swaggerObject.host = `${process.env.DNS}`;
-    }else{
-      console.log("faltou inserir algumas variaveis de ambiente")
+    } else {
+      console.log('faltou inserir algumas variaveis de ambiente');
       swaggerObject.host = `${environment.url}:${environment.port}`;
     }
-  }else{//caso contrario utiliza as variaveis de ambiente padrão
+  } else {
+    //caso contrario utiliza as variaveis de ambiente padrão
     swaggerObject.host = `${environment.url}:${environment.port}`;
   }
-}else{//caso o copntrario uitiliza as variaveis de ambiente em desenvolvimento
+} else {
+  //caso o copntrario uitiliza as variaveis de ambiente em desenvolvimento
   swaggerObject.host = `${environment.url}:${environment.port}`;
 }
 
-
 //START middleware SWAGGER //em obras
 swaggerTools.initializeMiddleware(swaggerObject, function(middleware) {
+  var option = {
+    Bearer: function(req, authOrSecDef, scopesOrApiKey, callback) {
+      passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        if (err)
+          return req.res
+            .status(HttpStatus.UNAUTHORIZED)
+            .json({
+              jsonapi: { version: '1.0' },
+              UNAUTHORIZED: 'The credentials are invalid!',
+            });
+        if (!user)
+          return req.res
+            .status(HttpStatus.UNAUTHORIZED)
+            .json({
+              jsonapi: { version: '1.0' },
+              UNAUTHORIZED: 'The credentials are invalid!',
+            });
 
-    var option = {
-      Bearer: function (req, authOrSecDef, scopesOrApiKey, callback) {
+        req.user = user;
+        callback();
+      })(req, null, callback);
+    },
+  };
 
-        passport.authenticate('jwt', { session: false }, (err, user, info) => {
-
-            if (err) return req.res.status(HttpStatus.UNAUTHORIZED).json({ jsonapi: { "version": "1.0" }, UNAUTHORIZED: 'The credentials are invalid!' });
-            if (!user) return req.res.status(HttpStatus.UNAUTHORIZED).json({ jsonapi: { "version": "1.0" }, UNAUTHORIZED: 'The credentials are invalid!' });
-
-            req.user = user;
-            callback();
-        })(req, null, callback);
-      }
-    };
-
-    middleware.swaggerUi({})
+  middleware.swaggerUi({});
   // adicionando os middlewaeres do swagger na aplicação
-    app.use(middleware.swaggerMetadata());
-    app.use(middleware.swaggerValidator());
-    app.use(middleware.swaggerSecurity(option));
-    app.use(middleware.swaggerRouter({useStubs: true, controllers: './api/controllers'}));
-    app.use(middleware.swaggerUi({docExpansion: ['none']}));
+  app.use(middleware.swaggerMetadata());
+  app.use(middleware.swaggerValidator());
+  app.use(middleware.swaggerSecurity(option));
+  app.use(
+    middleware.swaggerRouter({
+      useStubs: true,
+      controllers: './api/controllers',
+    }),
+  );
+  app.use(middleware.swaggerUi({ docExpansion: ['none'] }));
 
-    http.listen(port, () => {
-      if (process.env.NODE_ENV === 'production'){
-        if (process.env.HOST) {
-          console.log(`started on ${process.env.HOST}:${process.env.PORT}`)
-        } else if (process.env.DNS) {
-          console.log(`started on ${process.env.DNS}`)
-        } else {
-          console.log(`started on ${environment.url}:${environment.port}`);
-        }
-        
-      }else{
+  http.listen(port, () => {
+    if (process.env.NODE_ENV === 'production') {
+      if (process.env.HOST) {
+        console.log(`started on ${process.env.HOST}:${process.env.PORT}`);
+      } else if (process.env.DNS) {
+        console.log(`started on ${process.env.DNS}`);
+      } else {
         console.log(`started on ${environment.url}:${environment.port}`);
       }
-    });
+    } else {
+      console.log(`started on ${environment.url}:${environment.port}`);
+    }
+  });
 });
 
-module.exports = app
+module.exports = app;

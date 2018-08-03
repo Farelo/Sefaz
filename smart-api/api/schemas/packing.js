@@ -1,11 +1,11 @@
-const mongoose                  = require('mongoose');
-const mongoosePaginate          = require('mongoose-paginate');
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskuse');
 
 const packingSchema = new mongoose.Schema({
   code: {
     type: String,
-    required: true
+    required: true,
   },
   type: String,
   weigth: Number,
@@ -17,16 +17,24 @@ const packingSchema = new mongoose.Schema({
   problem: Boolean,
   missing: Boolean,
   traveling: Boolean,
+  incorrect_local: Boolean,
+  incontida: {
+    date: Number,
+    time: Number,
+    isIncontida: Boolean,
+  },
   lastCommunication: Number,
   permanence: {
     time_exceeded: Boolean,
     date: Number,
-    amount_days: Number
+    amount_days: Number,
   },
   trip: {
     time_exceeded: Boolean,
     date: Number,
     time_countdown: Number,
+    date_late: Number,
+    time_late: Number,
   },
   packing_missing: {
     date: Number,
@@ -36,7 +44,7 @@ const packingSchema = new mongoose.Schema({
     latitude: Number,
     longitude: Number,
     accuracy: Number,
-    date: Number
+    date: Number,
   },
   actual_gc16: {
     days: Number,
@@ -46,37 +54,39 @@ const packingSchema = new mongoose.Schema({
   temperature: Number,
   serial: {
     type: String,
-    required: true
+    required: true,
   },
   gc16: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'GC16'
+    ref: 'GC16',
   },
-  routes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Route'
-  }],
+  routes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Route',
+    },
+  ],
   last_plant: {
     plant: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Plant'
-    }
+      ref: 'Plant',
+    },
   },
   last_department: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Department'
+    ref: 'Department',
   },
   actual_plant: {
     plant: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Plant'
+      ref: 'Plant',
     },
-    local: String
+    local: String,
   },
   tag: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Tags',
-    unique: true
+    unique: true,
   },
   code_tag: String,
   department: {
@@ -85,60 +95,72 @@ const packingSchema = new mongoose.Schema({
   },
   supplier: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Supplier'
+    ref: 'Supplier',
   },
   project: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Project'
+    ref: 'Project',
   },
-  hashPacking: String
-
+  hashPacking: String,
 })
-.plugin(mongooseAggregatePaginate)
-.plugin(mongoosePaginate);
+  .plugin(mongooseAggregatePaginate)
+  .plugin(mongoosePaginate);
 
-packingSchema.post('remove', function(next) {
-  let packing  = this;
+packingSchema.post('remove', function (next) {
+  const packing = this;
   // Remove all the assignment docs that reference the removed packing.
-  packing.model('Alerts').remove({packing: packing._id})
-          .then(() => packing.model('HistoricPackings').remove({packing: packing._id}))
-          .then(() =>  schema.model('Settings').find({}))
-          .then(settings => {
-            if (settings[0].register_gc16.enable){//se o gc16  estiver habilitado realiza o passo de verificação
-              evaluete(Promise.all([this.model('Packing').find({ gc16: packing.gc16 }), packing.model('Packing').find({ routes: { $in: packing.routes } })]), next, packing)
-            }else{
-              next;
-            }
-          });
-
+  packing
+    .model('Alerts')
+    .remove({ packing: packing._id })
+    .then(() => packing.model('HistoricPackings').remove({ packing: packing._id }))
+    .then(() => schema.model('Settings').find({}))
+    .then((settings) => {
+      if (settings[0].register_gc16.enable) {
+        // se o gc16  estiver habilitado realiza o passo de verificação
+        evaluete(
+          Promise.all([
+            this.model('Packing').find({ gc16: packing.gc16 }),
+            packing.model('Packing').find({ routes: { $in: packing.routes } }),
+          ]),
+          next,
+          packing,
+        );
+      } else {
+        next;
+      }
+    });
 });
 
 module.exports = mongoose.model('Packing', packingSchema);
 
-//verifica se existe alguma embalagem com o GC16, caso contrario, o GC16 é
+// verifica se existe alguma embalagem com o GC16, caso contrario, o GC16 é
 function evaluete(promise, next, p) {
-
-  promise.then(result => {
+  promise.then((result) => {
     if (result[0].length === 0 && result[1].length === 0) {
-      p.model('GC16').remove({
-          _id: p.gc16
+      p.model('GC16')
+        .remove({
+          _id: p.gc16,
         })
         .then(() => p.model('Route').remove({
           _id: {
-            $in: p.routes
-          }
+            $in: p.routes,
+          },
         }))
         .then(() => next);
     } else if (result[0].length === 0) {
-      p.model('GC16').remove({
-        _id: p.gc16
-      }).then(() => next);
+      p.model('GC16')
+        .remove({
+          _id: p.gc16,
+        })
+        .then(() => next);
     } else if (result[1].length === 0) {
-      p.model('Route').remove({
-        _id: {
-          $in: p.routes
-        }
-      }).then(() => next);
+      p.model('Route')
+        .remove({
+          _id: {
+            $in: p.routes,
+          },
+        })
+        .then(() => next);
     } else {
       next;
     }
