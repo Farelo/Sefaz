@@ -11,7 +11,7 @@
   })
   export class HomeComponent implements OnInit {
     public packingsPerPlant: Pagination = new Pagination({meta: {page : 1}});
-    public packingsPerCondition: Pagination = new Pagination({meta: {page : 1}});
+    public packingsPerCondition: Pagination = new Pagination({meta: {page : 1}}); 
     public search  = "";
     public colorScheme = {  
       domain: ['#666666', '#ef5562', '#f77737', '#027f01', '#4c7bff', '#4dc9ff' ]
