@@ -59,6 +59,8 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     
     console.log('=====generalInventoryEquipament');
     console.log('this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
+    
+    if (this.generalEquipamentSearch == null) this.generalEquipamentSearch = '';
 
     if (this.logged_user instanceof Array) {
       this.inventoryLogisticService.getInventoryGeneralPackings(10, 
