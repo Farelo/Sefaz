@@ -54,15 +54,18 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     }
   }
   
+  //getInventoryGeneralPackings(limit: number, page: number, code: string, attr: string = '', code_packing: string =''): Observable<any> {
   generalInventoryEquipament() {
     
     console.log('=====generalInventoryEquipament');
     console.log('this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
+    
+    if (this.generalEquipamentSearch == null) this.generalEquipamentSearch = '';
 
     if (this.logged_user instanceof Array) {
       this.inventoryLogisticService.getInventoryGeneralPackings(10, 
         this.general_equipament.meta.page, 
-        this.generalEquipamentSearch, 
+        this.generalEquipamentSearch,
         this.logged_user).subscribe(result => {
           this.general_equipament = result;
           console.log('this.general_equipament: ' + JSON.stringify(this.general_equipament));
@@ -72,8 +75,9 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     } else {
       this.inventoryService.getInventoryGeneralPackings(10, 
         this.general_equipament.meta.page, 
-        this.generalEquipamentSearch, 
-        this.logged_user).subscribe(result => {
+        '',
+        this.logged_user,
+        this.generalEquipamentSearch).subscribe(result => {
           this.general_equipament = result;
           console.log('this.general_equipament: ' + JSON.stringify(this.general_equipament));
         }, err => { console.log(err) });
@@ -117,4 +121,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     modalRef.componentInstance.packing = packing;
   }
 
+  getFormatedData(t: any){
+    return (new Date(t*1000).toLocaleString());
+  }
 }

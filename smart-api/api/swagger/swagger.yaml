@@ -2288,6 +2288,11 @@ paths:
           required: false
           type: string
         - in: query
+          name: code_packing
+          description: The especific code packing that returns packings related a this code
+          required: false
+          type: string
+        - in: query
           name: attr
           description: Retrieve inventory related this supplier id related to packing
           required: false
