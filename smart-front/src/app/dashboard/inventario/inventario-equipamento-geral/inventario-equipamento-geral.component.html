@@ -8,8 +8,8 @@
     <div class="col-sm-12 clear-padding">
       <div class="col-sm-4">
         <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="generalEquipamentSearch" 
-          (change)="generalInventoryEquipamentChanged()" 
+        <ng-select [(ngModel)]="generalEquipamentSearch"
+          (change)="generalInventoryEquipament()" 
           bindValue="packing" 
           [items]="packings"
           bindLabel="packing" 
@@ -67,7 +67,7 @@
           <td>{{packing?.serial || '-'}}</td>
           <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
-          <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
+          <td [tooltip]="getFormatedData(packing.lastCommunication)" style="cursor: default;">{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
             : "Embalagem em Viagem")}}</td>
           <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
             (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
@@ -92,7 +92,7 @@
   <br>
   
   <div class="has-text-centered">
-    <pagination-controls class="my-pagination" id='general' (pageChange)="general_equipament.meta.page = $event; generalInventoryEquipamentChanged()"
+    <pagination-controls class="my-pagination" id='general' (pageChange)="general_equipament.meta.page = $event; generalInventoryEquipament()"
       directionLinks="false" autoHide="true">
     </pagination-controls>
   </div>

@@ -19,8 +19,8 @@ export class InventoryService {
       .catch(this.handleError);
   }
 
-  getInventoryGeneralPackings(limit: number, page: number, code: string, attr: string = ''): Observable<any> {
-    return this.http.get(`${environment.url}inventory/general/packings/${limit}/${page}?code=${code}&attr=${attr}`)
+  getInventoryGeneralPackings(limit: number, page: number, code: string, attr: string = '', code_packing: string =''): Observable<any> {
+    return this.http.get(`${environment.url}inventory/general/packings/${limit}/${page}?code=${code}&attr=${attr}&code_packing=${code_packing}`)
       .catch(this.handleError);
   }
 
