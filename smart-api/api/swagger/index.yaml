@@ -30,6 +30,8 @@ tags:
   description: "All information about your Inventory"
 - name: "Inventory Logistic"
   description: "All information about your Inventory to Op. Logistic"
+- name: "Historic Movement"
+  description: "All information about your Historic Movement"
 - name: "Profile"
   description: "All information about your Profiles"
 - name: "Project"
