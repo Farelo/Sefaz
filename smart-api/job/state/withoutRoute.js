@@ -4,8 +4,10 @@ const evaluatesPlantInformation = require('../evaluators/evaluates_plant_informa
 const evaluatesPermanenceTime = require('../evaluators/evaluates_permanence_time');
 const historic = require('../historic/historic');
 const modelOperations = require('../common/model_operations');
+const statusType = require('../common/status_type');
 const cleanObject = require('../common/cleanObject');
 const alertsType = require('../common/alerts_type');
+
 /**
  * Avalia informações sobre a embalagem que não apresenta rota.
  * Os Alertas que podem ser geradors nesse modulo são apenas o de PERMANÊNCIA.
@@ -17,10 +19,10 @@ const alertsType = require('../common/alerts_type');
  * @param {Object} currentPlant
  */
 async function evaluate(packing, currentPlant) {
-  const oldPlant = packing.actual_plant.plant;
   debug('Packing without route.');
   // Verifica se embalagem esta em alguma planta
   if (currentPlant != null) {
+    const oldPlant = packing.actual_plant.plant;
     // Quando uma embalagem esta em uma planta e a mesma não apresenta rotas, então
     // Apenas algumas alertas podem explodir, como tempo de permanencia (BASEADO NO GC16, SE O MESMO EXISTIR)
     // E tambem a questão da Bateria analisado previamente (O mesmo com perda de sinal)
@@ -36,8 +38,9 @@ async function evaluate(packing, currentPlant) {
     packing = await evaluatesPermanenceTime.evaluate(packing, currentPlant);
     // Coleta informações sobre a localização da embalagem
     packing = await evaluatesPlantInformation(packing, currentPlant, currentDepartment);
-
+    packing.status = statusType.NORMAL;
     await historic.initNormal(packing, oldPlant, currentPlant);
+
     await modelOperations.update_packing(packing);
   } else {
     // embalagem sem planta não há como inferir informações sobre
@@ -48,7 +51,7 @@ async function evaluate(packing, currentPlant) {
     packing = cleanObject.cleanMissing(packing); // limpa as informações sobre embalagem perdida
     packing = cleanObject.cleanPermanence(packing); // limpa informações sobre o tempo de permanencia
     packing = cleanObject.cleanTrip(packing); // limpa informações sobre a embalagem em viagem
-    await modelOperations.remove_alert(packing, alertsType.PERMANENCE);
+
     // remove informações sobre a planta atual, pois a mesma pode ter sido relacionada anteriormente a uma planta
 
     // quando a embalagem não esta associada a nenhuma rota e não esta em nnehuma planta é interessante saber
@@ -56,7 +59,7 @@ async function evaluate(packing, currentPlant) {
     // em que foi vista
     packing.last_plant = packing.actual_plant;
     packing.last_department = packing.department;
-
+    packing.status = statusType.INCONTIDA;
     // atualiza informações sobre a mesma esta a primeira vez ou não incontida
     if (!packing.incontida.isIncontida) {
       packing.incontida = {
@@ -75,6 +78,7 @@ async function evaluate(packing, currentPlant) {
     await modelOperations.update_packing_and_remove_actual_plant(packing);
   }
 
+  await modelOperations.remove_alert(packing, alertsType.PERMANENCE);
   await modelOperations.remove_alert(packing, alertsType.MISSING);
   await modelOperations.remove_alert(packing, alertsType.LATE);
   await modelOperations.remove_alert(packing, alertsType.INCORRECT_LOCAL);

@@ -1,0 +1,66 @@
+#-------------------------------------------START HISTORY MOVIMENT CRUD ----------------------------------
+paths:
+  /historic/movement/pagination/{limit}/{page}:
+    x-swagger-router-controller: historic_packings_controller
+    get:
+      tags:
+        - "Historic Packings"
+      summary: "Retrieve all historic packing from the system with pagination"
+      description: ""
+      operationId: historic_packings_listPagination
+      security:
+        - Bearer: []
+      parameters:
+      - in: "path"
+        name: "limit"
+        description: "The limit of historic that will be Retrieveed"
+        required: true
+        type: string
+      - in: "path"
+        name: "page"
+        description: "Retrieve historic related this page"
+        required: true
+        type: string
+      - in: "query"
+        name: "packingId"
+        description: "Retrieve historic related this packingId"
+        required: false
+        type: string
+      - in: "query"
+        name: "supplierId"
+        description: "Retrieve historic related this supplierId"
+        required: false
+        type: string
+      - in: "query"
+        name: "packing_code"
+        description: "Retrieve historic related this packing_code"
+        required: false
+        type: string
+      - in: "query"
+        name: "status"
+        description: "Retrieve historic related this status"
+        required: false
+        type: string
+      - in: "query"
+        name: "serial"
+        description: "Retrieve historic related this serial"
+        required: false
+        type: string
+      responses:
+        200:
+          description: "Successfully"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        400:
+          description: "Client Error"
+          schema:
+            $ref: "#/definitions/Error400"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Error500"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
