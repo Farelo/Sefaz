@@ -39,7 +39,7 @@ export class Packing {
   gc16: string;
   route: string;
   correct_plant_supplier: string;
-  actual_plant: string;
+  actual_plant: any;
   tag: string;
   code_tag: string;
   department: string;
