@@ -1,165 +1,244 @@
 <div class="painel">
   <div class="corpo">
-    
-    <h1>EMBALAGENS DO SISTEMA</h1>
-      
-    <!-- <div class="row ">
-      
-      <div class="col-md-12">
-        <h2>RESUMO DAS EMBALAGENS </h2>
-        <ngx-charts-advanced-pie-chart [scheme]="colorScheme" label="Total de Embalagens" [results]="packingsPerCondition.data" [gradient]="gradient">
-        </ngx-charts-advanced-pie-chart>
-      </div>
-    </div> -->
 
-    <div class="row ">
-      <div class="col-md-12">
-        <h2>RESUMO DAS EMBALAGENS </h2>
+    <h2>Embalagens do Sistema</h2>
+
+    <hr>
+
+    <section class="bg-resumo">
+      <span class="total-embalagens">120 Embalagens totais</span>
+
+      <br>
+      <br>
+
+      <div class="grid">
+        <div class="item tipo-barra">Pontos de Controle</div>
+        <div class="item">
+          <div class="progress">
+            <div class="progress-bar progress-bar-full" style="width: 25%"></div>
+            <div class="progress-bar progress-bar-empty" style="width: 75%"></div>
+          </div>
+        </div>
+
+        <div class="item tipo-barra">Em viagem</div>
+        <div class="item">
+          <div class="progress">
+            <div class="progress-bar progress-bar-empty" style="width: 25%"></div>
+            <div class="progress-bar progress-bar-full" style="width: 60%"></div>
+            <div class="progress-bar progress-bar-empty" style="width: 15%"></div>
+          </div>
+        </div>
+
+        <div class="item tipo-barra">Sem sinal</div>
+        <div class="item">
+          <div class="progress">
+            <div class="progress-bar progress-bar-empty" style="width: 25%"></div>
+            <div class="progress-bar progress-bar-full" style="width: 60%"></div>
+            <div class="progress-bar progress-bar-empty" style="width: 15%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ////////////////////////////////////////////////////////////////////// -->
+    <!-- ////////////////////////////////////////////////////////////////////// -->
+
+    <!-- ////////////////////////////////////////////////////////////////////// -->
+    <!-- Nos Pontos de Controle -->
+    <section class="grupo-categoria">
+      <h3>Nos Pontos de Controle</h3>
+
+      <div class="categoria-progress">
+        <div class="progress-bar status-incorreta" style="width: 5%"></div>
+        <div class="progress-bar status-permanencia" style="width: 10%"></div>
+        <div class="progress-bar progress-bar-empty" style="width: 85%"></div>
       </div>
 
-      <div class="col-md-2">
-        <ngx-charts-pie-chart [scheme]="colorScheme" label="Total de Embalagens" [results]="packingsPerCondition.data" [gradient]="gradient">
-        </ngx-charts-pie-chart>
-      </div>
+      <!-- Local Incorreto -->
+      <section>
+        <div class="linha-categoria status-incorreta">
+          <div class="tick-categoria">
 
-      <div class="col-md-10">
-        <div class="container-fluid">
-          
-          <div class="row">
-            <div class="col-md-12 clear-padding row-resume">
-              <span class="status-resume-number">
-                {{ packingSum }}</span>
-              <span class="status-resume-description">embalagens totais</span>
+            <div class="quantidade-categoria status-incorreta">
+              10
             </div>
-          </div>
 
-          <div class="row ">
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(0) }}</li>
-                      <li class="status-type">Controladas</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-controlada"></div>
-                </div>
-              </div>
+            <span class="nome-categoria">Local Incorreto</span>
 
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(1) }}</li>
-                      <li class="status-type">Ausentes</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-perdida"></div>
-                </div>
-              </div>
+            <button class="botao-collapse" (click)="localIncorretoCollapsed = !localIncorretoCollapsed" [attr.aria-controls]="conteudoLocalIncorreto">
 
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(2) }}</li>
-                      <li class="status-type">Incorretas</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-incorreta"></div>
-                </div>
-              </div>
-
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(3) }}</li>
-                      <li class="status-type">Viajando</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-viajando"></div>
-                </div>
-              </div>
-
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(5) }}</li>
-                      <li class="status-type">Atrasadas</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-permanencia"></div>
-                </div>
-              </div>
-
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(4) }}</li>
-                      <li class="status-type">Permanência</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-atrasada"></div>
-                </div>
-                
-              </div>
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+            </button>
 
           </div>
         </div>
-      </div>
 
-    </div>
-    <div class="row ">
+        <!-- Conteúdo Local Incorreto -->
+        <div [attr.id]="conteudoLocalIncorreto" [ngbCollapse]="!localIncorretoCollapsed">
+          <div class="">
+            Hello, local incorreto!
+          </div>
+        </div> 
+      </section>
 
-      <div class="col-md-12 table-plant" >
-        <h2>TABELA DA QUANTIDADE DE EMBALAGENS POR PLANTA </h2>
-        <div class="table-responsive meuInventario">
-          <!-- Table -->
-          <table class="table col-md-12">
-            <thead>
-              <tr class="cabecalho">
-                <th style="width: 30%">Planta</th>
-                <th style="width: 50%">Localização</th>
-                <th style="width: 10%" class="m-text-center">Quantidade</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let packing of packingsPerPlant.data | paginate: {   
-                                                                  id: 'packingsPerPlant',
-                                                                  itemsPerPage: packingsPerPlant.meta.limit,
-                                                                  currentPage: packingsPerPlant.meta.page,
-                                                                  totalItems: packingsPerPlant.meta.total_docs}">
-                <td>{{packing.plant_name}}</td>
-                <td>{{packing.location}}</td>
-                <td class="m-text-center">{{packing.quantity_packings}}</td>
-                
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="has-text-centered">
-          <!-- <pagination-controls id="packingsPerPlant" (pageChange)="pageChanged($event)" autoHide="true" directionLinks="false"></pagination-controls> -->
-
-          <pagination-controls id="packingsPerPlant" (pageChange)="packingsPerPlant.meta.page = $event; loadPackingPerPlant()" directionLinks="false"
-            autoHide="true">
-          </pagination-controls>
-
-        </div>
-
-            
-        
-        <div class="classVazio" *ngIf="packingsPerPlant.data?.length < 1">
-          Não foram registradas plantas no sistema
-        </div>
-      </div>
+      <!-- ////////////////////////////////////////////////////////////////////// -->
+      <!-- Tempo de Permanência -->
+      <section>
+        <div class="linha-categoria status-permanencia">
+          <div class="tick-categoria">
       
-    
+            <div class="quantidade-categoria status-permanencia">
+              10
+            </div>
+      
+            <span class="nome-categoria">Tempo de Permanência</span>
+      
+            <button class="botao-collapse" (click)="tempoDePermanenciaCollapsed = !tempoDePermanenciaCollapsed" [attr.aria-controls]="conteudoTempoDePermanencia">
+      
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+            </button>
+      
+          </div>
+        </div>
+      
+        <!-- Conteúdo Tempo de Permanência -->
+        <div [attr.id]="conteudoTempoDePermanencia" [ngbCollapse]="!tempoDePermanenciaCollapsed">
+          <div class="">
+            Hello, Tempo de Permanência!
+          </div>
+        </div>
+      </section>
 
-    </div>
+    </section>
+
+
+    <!-- ////////////////////////////////////////////////////////////////////// -->
+    <!-- ////////////////////////////////////////////////////////////////////// -->
+
+
+    <!-- ////////////////////////////////////////////////////////////////////// -->
+    <!-- Em Viagem -->
+    <section class="grupo-categoria">
+      <h3>Em Viagem</h3>
+    
+      <div class="categoria-progress">
+        <div class="progress-bar status-atrasada" style="width: 25%"></div>
+        <div class="progress-bar status-ausente" style="width: 10%"></div>
+        <div class="progress-bar progress-bar-empty" style="width: 65%"></div>
+      </div>
+    
+      <!-- Embalagens Atrasadas -->
+      <section>
+        <div class="linha-categoria status-atrasada">
+          <div class="tick-categoria">
+    
+            <div class="quantidade-categoria status-atrasada">
+              10
+            </div>
+    
+            <span class="nome-categoria">Embalagens Atrasadas</span>
+    
+            <button class="botao-collapse" (click)="localIncorretoCollapsed = !localIncorretoCollapsed" [attr.aria-controls]="conteudoLocalIncorreto">
+    
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+            </button>
+    
+          </div>
+        </div>
+    
+        <!-- Conteúdo Embalagens Atrasadas -->
+        <div [attr.id]="conteudoLocalIncorreto" [ngbCollapse]="!localIncorretoCollapsed">
+          <div class="">
+            Hello, Embalagens Atrasadas!
+          </div>
+        </div>
+      </section>
+    
+      <!-- ////////////////////////////////////////////////////////////////////// -->
+      <!-- Embalagens Ausentes -->
+      <section>
+        <div class="linha-categoria status-ausente">
+          <div class="tick-categoria">
+    
+            <div class="quantidade-categoria status-ausente">
+              10
+            </div>
+    
+            <span class="nome-categoria">Embalagens Ausentes</span>
+    
+            <button class="botao-collapse" (click)="tempoDePermanenciaCollapsed = !tempoDePermanenciaCollapsed" [attr.aria-controls]="conteudoTempoDePermanencia">
+    
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+            </button>
+    
+          </div>
+        </div>
+    
+        <!-- Conteúdo Embalagens Atrasadas -->
+        <div [attr.id]="conteudoTempoDePermanencia" [ngbCollapse]="!tempoDePermanenciaCollapsed">
+          <div class="">
+            Hello, Embalagens Atrasadas!
+          </div>
+        </div>
+      </section>
+    
+    </section>
+
+
+    <!-- ////////////////////////////////////////////////////////////////////// -->
+    <!-- ////////////////////////////////////////////////////////////////////// -->
+
+    <!-- ////////////////////////////////////////////////////////////////////// -->
+    <!-- Sem Sinal -->
+    <section class="grupo-categoria">
+      <h3>Sem Sinal</h3>
+    
+      <div class="categoria-progress">
+        <div class="progress-bar status-sem-sinal" style="width: 5%"></div>
+        <div class="progress-bar progress-bar-empty" style="width: 95%"></div>
+      </div>
+    
+      <!-- Embalagens Sem Sinal -->
+      <section>
+        <div class="linha-categoria status-sem-sinal">
+          <div class="tick-categoria">
+    
+            <div class="quantidade-categoria status-sem-sinal">
+              10
+            </div>
+    
+            <span class="nome-categoria">Embalagens Sem Sinal</span>
+    
+            <button class="botao-collapse" (click)="semSinalCollapsed = !semSinalCollapsed" [attr.aria-controls]="conteudoSemSinalCollapsed">
+    
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+              <span class="button-line"></span>
+            </button>
+    
+          </div>
+        </div>
+    
+        <!-- Conteúdo Embalagens Sem Sinal -->
+        <div [attr.id]="conteudoSemSinalCollapsed" [ngbCollapse]="!semSinalCollapsed">
+          <div class="">
+            Hello, Sem Sinal!
+          </div>
+        </div>
+      </section>
+    
+    </section>
+
+
   </div>
 </div>
 
