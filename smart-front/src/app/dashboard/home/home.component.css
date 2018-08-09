@@ -48,7 +48,7 @@ hr {
 }
 
 .tipo-barra {
-  font-size: 14px;
+  font-size: 13px;
   padding-right: 20px;
   text-align: right;
 }
@@ -70,7 +70,7 @@ hr {
 }
 
 .categoria-progress {
-  height: 5px;
+  height: 4px;
   margin-bottom: 5px;
 }
 
@@ -194,6 +194,10 @@ hr {
 
 .status-sem-sinal {
   background-color: #808080;
+}
+
+.status-bateria {
+  background-color: #f8bd37;
 }
 
 .clear-padding{

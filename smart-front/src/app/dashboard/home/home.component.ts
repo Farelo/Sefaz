@@ -12,6 +12,9 @@
     public localIncorretoCollapsed = false;
     public tempoDePermanenciaCollapsed = false;
     public semSinalCollapsed = false;
+    public atrasadaCollapsed = false;
+    public ausenteCollapsed = false;
+    public bateriaBaixaCollapsed = false;
 
     constructor(private packingService: PackingService) {
 
