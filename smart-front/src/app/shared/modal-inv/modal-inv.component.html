@@ -1,13 +1,17 @@
 <div class="modalFilho">
   <div class="header">
-     <p>Detalhes da Embalagem </p>
-     <p>Código: <span>{{packing.code}}</span></p>
-     <p>Fornecedor: <span>{{packing.supplier?.name}}</span></p>
+    <p>Detalhes da Embalagem </p>
+    <p>Código:
+      <span>{{packing.code}}</span>
+    </p>
+    <p>Fornecedor:
+      <span>{{packing.supplier?.name}}</span>
+    </p>
   </div>
   <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
-<div class="modalBody">
+  <div class="modalBody">
 
     <div class="table-responsive tabela">
       <table class="table">
@@ -20,27 +24,26 @@
 
           </tr>
         </thead>
-        <tbody >
+        <tbody>
           <tr *ngFor="let packing of data.data | paginate: {
                                                           id:'component',
                                                           itemsPerPage: 10,
                                                           currentPage: data.meta.page,
                                                           totalItems: data.meta.total_docs}">
-            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente" : "Embalagem em Viagem")}}</td>
+            <td>{{packing.status}}</td>
             <td>{{packing.quantity}}</td>
             <td>{{packing.project?.name}}</td>
-            <td>{{packing.actual_plant?.plant ? (packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor': (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Não Registrado'))) : '-'}}</td>
+            <td>{{packing.actual_plant?.plant ? (packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local
+              === 'Supplier' ? 'Fornecedor': (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Não Registrado')))
+              : 'Sem registro'}}</td>
 
           </tr>
         </tbody>
       </table>
     </div>
     <div class="has-text-centered">
-        <pagination-controls id='component' class="my-pagination"
-        (pageChange)="pageChanged($event)"
-        directionLinks="false"
-        autoHide="true">
-        </pagination-controls>
+      <pagination-controls id='component' class="my-pagination" (pageChange)="pageChanged($event)" directionLinks="false" autoHide="true">
+      </pagination-controls>
     </div>
 
   </div>

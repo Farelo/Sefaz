@@ -41,11 +41,12 @@ function object() {
     },
     quantityTotal: 0,
     quantityTraveling: 0,
-    quantityProblem: 0,
+    quantityIncorrectLocal: 0,
     quantityMissing: 0,
     quantityInFactory: 0,
     quantityInSupplier: 0,
     quantityTimeExceeded: 0,
+    quantityIncontida: 0,
     all_plants: [],
     all_alerts: [],
   };
