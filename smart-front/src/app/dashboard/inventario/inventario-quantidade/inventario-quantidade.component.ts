@@ -49,11 +49,6 @@ export class InventarioQuantidadeComponent implements OnInit {
         .subscribe(
           result => {
             this.packings = result.data;
-
-            this.packings = this.packings.map(elem => {
-              elem.status = constants[elem.status];
-              return elem;
-            });
           },
           err => {
             console.log(err);
@@ -65,11 +60,6 @@ export class InventarioQuantidadeComponent implements OnInit {
         .subscribe(
           result => {
             this.packings = result.data;
-
-            this.packings = this.packings.map(elem => {
-              elem.status = constants[elem.status];
-              return elem;
-            });
           },
           err => {
             console.log(err);
@@ -79,11 +69,6 @@ export class InventarioQuantidadeComponent implements OnInit {
       this.packingService.getPackingsDistincts().subscribe(
         result => {
           this.packings = result.data;
-
-          this.packings = this.packings.map(elem => {
-            elem.status = constants[elem.status];
-            return elem;
-          });
         },
         err => {
           console.log(err);
@@ -102,7 +87,17 @@ export class InventarioQuantidadeComponent implements OnInit {
           this.logged_user,
         )
         .subscribe(
-          result => (this.quantity = result),
+          result => {
+            this.quantity = result;
+
+            this.quantity.data = this.quantity.data.map(elem => {
+              elem.status = constants[elem.status];
+              return elem;
+            });
+
+            console.log('this.quantity.data: ' + JSON.stringify(this.quantity.data));
+
+          },
           err => {
             console.log(err);
           },
@@ -116,7 +111,17 @@ export class InventarioQuantidadeComponent implements OnInit {
           this.logged_user,
         )
         .subscribe(
-          result => (this.quantity = result),
+          result => {
+            this.quantity = result;
+ 
+            this.quantity.data = this.quantity.data.map(elem => {
+              elem.status = constants[elem.status];
+              return elem;
+            });
+
+            console.log('this.quantity.data: ' + JSON.stringify(this.quantity.data));
+
+          },
           err => {
             console.log(err);
           },

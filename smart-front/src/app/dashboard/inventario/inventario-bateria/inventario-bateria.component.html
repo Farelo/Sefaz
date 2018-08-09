@@ -63,10 +63,8 @@
               <td>{{packing.code || '-'}}</td>
               <td>{{packing.serial || '-'}}</td>
               <td>{{packing.project?.name || '-'}}</td>
-              <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
-                : "Embalagem em Viagem")}}</td>
-              <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
-                (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
+              <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta"}}</td>
+              <td>{{packing.actual_plant | type}}</td>
               <td>{{packing.battery >= 0 ? (packing.battery | round) : 'Sem Registro'}} %</td>
 
               <td>{{packing?.battery > 80 ? 'Alta' : (packing?.battery > 40 ? 'Medio' : 'Baixa') }}</td>
