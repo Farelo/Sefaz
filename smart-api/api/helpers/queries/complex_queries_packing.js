@@ -1,5 +1,3 @@
-
-
 const schemas = require('../../schemas/require_schemas');
 
 const ObjectId = schemas.ObjectId;
@@ -152,7 +150,7 @@ exports.queries = {
           supplier: '$supplier',
           plant: '$actual_plant.plant',
           code: '$code',
-          problem: '$problem',
+          status: '$status',
         },
         current_plant: {
           $first: {
@@ -467,13 +465,16 @@ exports.queries = {
             plant: '$actual_plant.plant',
             supplier: '$supplier',
             project: '$project',
-            missing: '$missing',
+            status: '$status',
           },
           code: {
             $first: '$code',
           },
           supplier: {
             $first: '$supplierObject',
+          },
+          status: {
+            $first: '$status',
           },
           actual_plant: {
             $first: {
@@ -499,9 +500,7 @@ exports.queries = {
   },
   historic_packing(serial, attr) {
     return [
-      attr
-        ? { $match: { supplier: new ObjectId(attr), serial } }
-        : { $match: { serial } },
+      attr ? { $match: { supplier: new ObjectId(attr), serial } } : { $match: { serial } },
       {
         $lookup: {
           from: 'suppliers',
@@ -586,7 +585,7 @@ exports.queries = {
             code: '$code',
             plant: '$actual_plant.plant',
             supplier: '$supplier',
-            missing: '$missing',
+            status: '$status',
           },
           code: {
             $first: '$code',
@@ -599,6 +598,9 @@ exports.queries = {
               plant: '$plantObject',
               local: '$actual_plant.local',
             },
+          },
+          status: {
+            $first: '$status',
           },
           description: {
             $first: '$type',
@@ -714,10 +716,7 @@ exports.queries = {
             code: '$code',
             plant: '$actual_plant.plant',
             supplier: '$supplier',
-            supplier: '$supplier',
-            missing: '$missing',
-            problem: '$problem',
-            traveling: '$traveling',
+            status: '$status',
             project: '$project',
           },
           code: {
@@ -741,23 +740,17 @@ exports.queries = {
           quantity: {
             $sum: 1,
           },
+          status: {
+            $first: '$status',
+          },
           gc16: {
             $first: '$gc16Object',
           },
           actual_gc16: {
             $first: '$actual_gc16',
           },
-          missing: {
-            $first: '$missing',
-          },
           serial: {
             $first: '$serial',
-          },
-          problem: {
-            $first: '$problem',
-          },
-          traveling: {
-            $first: '$traveling',
           },
           historic: {
             $first: '$historicpackingsObject',
@@ -1064,9 +1057,6 @@ exports.queries = {
             department: '$departmentObject._id',
             plant: '$plantObject._id',
             supplier: '$ObjectSupplier._id',
-          },
-          supplier: {
-            $first: '$ObjectSupplier.name',
           },
           quantity: {
             $sum: 1,
@@ -1493,9 +1483,6 @@ exports.queries = {
           $sum: 1,
         },
         missing: {
-          $first: '$missing',
-        },
-        missing: {
           $sum: 1,
         },
       },
@@ -1681,9 +1668,6 @@ exports.queries = {
           department: '$departmentObject._id',
           plant: '$plantObject._id',
           supplier: '$ObjectSupplier._id',
-        },
-        supplier: {
-          $first: '$ObjectSupplier.name',
         },
         quantity: {
           $sum: 1,
