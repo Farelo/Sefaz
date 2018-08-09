@@ -62,16 +62,14 @@
           <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
           <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta"}}</td>
-          <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
-            (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
+          <td>{{packing.actual_plant | type}}</td>
           <td>{{packing.quantity || '-'}}</td>
           <td>{{packing.actual_gc16 ? (packing.actual_gc16.min == 0 ? 0 : packing.actual_gc16.min) : '-'}}</td>
           <td>{{packing.actual_gc16 ? (packing.actual_gc16.max == 0 ? 0 : packing.actual_gc16.max) : '-'}}</td>
           <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min)
             : (packing.actual_gc16?.max
             < packing.quantity ? packing.quantity-packing.actual_gc16?.max : 'NP')) : '-' }}</td>
-              <td>{{packing.status}}
-              </td>
+          <td>{{packing.status}}</td>
         </tr>
       </tbody>
     </table>

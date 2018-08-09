@@ -11,6 +11,7 @@ export const constants = {
     logistic: 'OPERADOR LOGÍSTICO',
   },
   GOOGLE_API_KEY: 'AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ',
+
   MISSING: 'Embalagem Ausente',
   LATE: 'Embalagem Atrasada',
   INCORRECT_LOCAL: 'Local Incorreto',
@@ -29,4 +30,11 @@ export const constants = {
     INCONTIDA: 'INCONTIDA',
     NO_SIGNAL: 'NO_SIGNAL',
   },
+
+  PLANT_TYPE: {
+    FACTORY: 'Fábrica',
+    SUPPLIER: 'Fornecedor',
+    LOGISTIC: 'Operador Logístico',
+  }
+  
 };
