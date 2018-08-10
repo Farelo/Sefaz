@@ -190,16 +190,16 @@ exports.queries = {
         packageCode: {
           $first: '$packingObject.code',
         },
-        lost_object: {
+        missing: {
           $sum: { $cond: [{ $eq: ['$status', 1] }, 1, 0] },
         },
-        incorrect_object: {
+        incorrect_local: {
           $sum: { $cond: [{ $eq: ['$status', 2] }, 1, 0] },
         },
         low_battery: {
           $sum: { $cond: [{ $eq: ['$status', 3] }, 1, 0] },
         },
-        late_object: {
+        late: {
           $sum: { $cond: [{ $eq: ['$status', 4] }, 1, 0] },
         },
         permanence_time: {
