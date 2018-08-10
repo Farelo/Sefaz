@@ -1,42 +1,38 @@
-const app = require('../../../server')
-const passport = require('passport')
-const request = require('supertest')
+const passport = require('passport');
+const request = require('supertest');
+const app = require('../../../server');
 
-beforeAll((done)=> {
-    app.use((req, res, nex)=> {
-        req.user = {
-            id: 1
-        }
+beforeAll((done) => {
+  app.use((req, res, nex) => {
+    req.user = {
+      id: 1,
+    };
 
-        req.isAuthenticated = ()=> true
+    req.isAuthenticated = () => true;
 
-        next()
-    })
-    done()
-})
+    next();
+  });
+  done();
+});
 
-test('GET /tags', (done)=> {
-    return request(app)
-        .get('/api/tags/list/pagination/2/1')
-        .then(response=> {
-            expect(response.status).toBe(401)
-            done()
-        })
-        .catch(fail)
-})
+test('GET /tags', done => request(app)
+  .get('/api/tags/list/pagination/2/1')
+  .then((response) => {
+    expect(response.status).toBe(401);
+    done();
+  })
+  .catch(fail));
 
-test('POST /tags', (done)=> {
-    return request(app)
-        .post('/api/tags/create')
-        .send({
-            code: '5040563'
-        })
-        .then(response=> {
-            expect(response.status).toBe(200)
-            expect(response.body._id).toBeDefined()
-            expect(response.body.code).toBe('5040563')
+test('POST /tags', done => request(app)
+  .post('/api/tags/create')
+  .send({
+    code: '5040563',
+  })
+  .then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.body._id).toBeDefined();
+    expect(response.body.code).toBe('5040563');
 
-            done()
-        })
-        .catch(fail)
-})
+    done();
+  })
+  .catch(fail));

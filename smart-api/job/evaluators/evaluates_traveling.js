@@ -4,6 +4,8 @@ const alertsType = require('../common/alerts_type');
 const cleanObject = require('../common/cleanObject');
 const historic = require('../historic/historic');
 const historicType = require('../common/historic_type');
+const statusType = require('../common/status_type');
+
 /**
  * Verifica se a embalagem esta atrasada
  * @param {Object} packing
@@ -55,7 +57,7 @@ module.exports = async (packing) => {
         if (isMissing(packing, timeTnterval)) {
           // Nesse fluxo so pode ser gerada os alertas relacionados a uma embalagem que esta perdida
           debug(`Packing is missing! ${packing._id}`);
-
+          packing.status = statusType.MISSING;
           packing = cleanObject.cleanFlags(packing);
           packing = cleanObject.cleanPermanence(packing);
           packing.missing = true;
@@ -72,15 +74,16 @@ module.exports = async (packing) => {
           await historic.createMissingStatus(packing);
           return packing;
         }
-
         // avalia se a embalagem realmente esta atrasada
         if (isLate(packing, timeTnterval)) {
           debug(`Packing is late! ${packing._id}`);
           packing = cleanObject.cleanFlags(packing);
           packing = cleanObject.cleanPermanence(packing);
           packing = cleanObject.cleanMissing(packing);
-
+          packing.status = statusType.LATE;
           if (packing.trip.time_exceeded) {
+            // medida provisória ja que ja existia algumas informações na base antiga
+            if (!packing.trip.date_late) packing.trip.date_late = dateToday;
             packing.trip.time_late = Math.floor(dateToday - packing.trip.date_late);
             await historic.updateLateStatus(packing);
           } else {
@@ -93,7 +96,6 @@ module.exports = async (packing) => {
           await modelOperations.update_alert(packing, alertsType.LATE);
           return packing;
         }
-
         // verifica se ele não estava true antes , no caso
         // houve alguma alteração e forçou o mesmo a ir para false
 
@@ -105,7 +107,16 @@ module.exports = async (packing) => {
           packing.trip.time_late = 0;
         }
 
-        await historic.updateTravelingStatus(packing);
+        // TODO: Remover esse código e colar esse await historic.updateTravelingStatus(packing);
+        if (!packing.trip.date) {
+          packing = cleanObject.cleanTrip(packing);
+          packing.trip.date = new Date().getTime();
+          packing.status = statusType.TRAVELING;
+          await historic.createTravelingStatus(packing);
+        } else {
+          packing.status = statusType.TRAVELING;
+          await historic.updateTravelingStatus(packing);
+        }
 
         // caso nenhuma das considerações sejam aceitas, então
         // a embalagem não esta mais atrasada e tambem não esta perdida (O segundo caso mais
@@ -121,7 +132,7 @@ module.exports = async (packing) => {
       packing = cleanObject.cleanMissing(packing);
       packing = cleanObject.cleanTrip(packing);
       packing.traveling = true;
-
+      packing.status = statusType.TRAVELING;
       packing.trip.date = new Date().getTime();
 
       await modelOperations.remove_alert(packing, alertsType.MISSING);
@@ -145,7 +156,7 @@ module.exports = async (packing) => {
         packing.trip.time_late = Math.floor(dateToday - packing.trip.date_late);
         // isso pode acontecer quando uma determinada embalagem passa de imediato para ausente
         // sem passar por late, então esse problema pode ser gerado
-
+        packing.status = statusType.LATE;
         if (packing.trip.date_late === 0) {
           packing.trip.date_late = new Date().getTime();
           packing.trip.time_late = 0;
@@ -170,6 +181,7 @@ module.exports = async (packing) => {
 
       packing.traveling = true;
       if (!packing.trip.time_exceeded) {
+        packing.status = statusType.TRAVELING;
         // remove o historico de atrasado
         await historic.removeHistoric(packing, packing.trip.date_late, historicType.LATE);
         await historic.updateTravelingStatus(packing);

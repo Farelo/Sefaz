@@ -1,80 +1,82 @@
-'use strict';
 
-const schemas  = require("../../schemas/require_schemas")
-const ObjectId = schemas.ObjectId
+
+const schemas = require('../../schemas/require_schemas');
+
+const ObjectId = schemas.ObjectId;
 
 exports.queries = {
-  plant_filter: function(code, supplier,project) {
-    return [{
-        "$lookup": {
-          "from": "routes",
-          "localField": "_id",
-          "foreignField": "plant_factory",
-          "as": "ObjectPlant"
-        }
+  plant_filter(code, supplier, project) {
+    return [
+      {
+        $lookup: {
+          from: 'routes',
+          localField: '_id',
+          foreignField: 'plant_factory',
+          as: 'ObjectPlant',
+        },
       },
 
       {
-        "$unwind": {
-          "path": "$ObjectPlant",
-          'preserveNullAndEmptyArrays': true
-        }
+        $unwind: {
+          path: '$ObjectPlant',
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
-        "$match": {
-          $or: [{
-              "ObjectPlant.supplier": {
-                $ne: new ObjectId(supplier)
-              }
+        $match: {
+          $or: [
+            {
+              'ObjectPlant.supplier': {
+                $ne: new ObjectId(supplier),
+              },
             },
             {
-              "ObjectPlant.packing_code": {
-                $ne: code
-              }
+              'ObjectPlant.packing_code': {
+                $ne: code,
+              },
             },
             {
-              "ObjectPlant.project": {
-                $ne: new ObjectId(project)
-              }
-            }
+              'ObjectPlant.project': {
+                $ne: new ObjectId(project),
+              },
+            },
           ],
 
-          "supplier": {
-            $exists: false
+          supplier: {
+            $exists: false,
           },
 
-          "logistic_operator": {
-            $exists: false
-          }
-        }
-      }
-    ]
+          logistic_operator: {
+            $exists: false,
+          },
+        },
+      },
+    ];
   },
   packings_per_plant: [
     {
-      "$lookup": {
-        "from": "packings",
-        "localField": "_id",
-        "foreignField": "actual_plant.plant",
-        "as": "packings"
-      }
+      $lookup: {
+        from: 'packings',
+        localField: '_id',
+        foreignField: 'actual_plant.plant',
+        as: 'packings',
+      },
     },
     {
-      "$unwind": {
-        "path": "$packings",
-        'preserveNullAndEmptyArrays': true
-      }
+      $unwind: {
+        path: '$packings',
+        preserveNullAndEmptyArrays: true,
+      },
     },
     {
-      '$group': {
-        '_id': '$_id',
-        'quantity_packings': { '$sum': { '$cond': ['$packings', 1, 0] } },
-        'plant_name': { '$first': '$plant_name' },
-        'lat': { '$first': '$lat' },
-        'lng': { '$first': '$lng' },
-        'location': { '$first': '$location' },
-      }
-    }
-  ]
-}
-
+      $group: {
+        _id: '$_id',
+        quantity_packings: { $sum: { $cond: ['$packings', 1, 0] } },
+        plant_name: { $first: '$plant_name' },
+        lat: { $first: '$lat' },
+        lng: { $first: '$lng' },
+        location: { $first: '$location' },
+      },
+    },
+  ],
+};

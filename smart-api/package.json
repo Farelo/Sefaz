@@ -9,6 +9,7 @@
   "main": "server.js",
   "dependencies": {
     "@google/maps": "^0.4.3",
+    "app-root-path": "^2.1.0",
     "body-parser": "^1.15.2",
     "compression": "^1.7.2",
     "cors": "^2.8.4",
@@ -17,8 +18,12 @@
     "express": "^4.12.3",
     "extendify": "^1.0.0",
     "glob": "^7.1.2",
+    "glob-promise": "^3.4.0",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1",
     "http-status": "^1.0.1",
     "joi": "^10.2.2",
+    "js-yaml": "^3.12.0",
     "jsonwebtoken": "^7.4.3",
     "jwt-simple": "^0.5.1",
     "lodash": "^4.17.4",
@@ -40,6 +45,7 @@
     "swagger-express-mw": "^0.7.0",
     "swagger-tools": "^0.10.3",
     "validator": "^6.0.0",
+    "winston": "^3.0.0",
     "xlsx": "^0.11.3",
     "xlsx-to-json-lc": "^0.5.0"
   },
@@ -56,8 +62,8 @@
   "scripts": {
     "build": "node ./config/swagger/compile",
     "deploy:prod": "docker-compose -f ../docker-compose.prod.yml up --build",
-    "develop": "set NODE_ENV=development&&set DEBUG=job:*,-not_this&& nodemon server.js",
-    "dev-linux": "export NODE_ENV=development && export DEBUG=job:* && nodemon server.js",
+    "develop": "set NODE_ENV=development&&set DEBUG=job:* &&gulp",
+    "dev-linux": "export NODE_ENV=development && export DEBUG=job:* && nodemon app.js",
     "start": "node server.js",
     "test": "swagger project test",
     "test-jest": "export NODE_ENV=test && jest"

@@ -3,7 +3,7 @@
 
   <!-- Linha divisória -->
   <hr style="margin-top: 10px;">
-  
+
   <div class="row">
 
     <div class="col-sm-4">
@@ -17,13 +17,15 @@
           <div>
             <b>Embalagem:</b> {{item.packing}}
           </div>
-          
+
           <div>
-            <small> <b>Fornecedor:</b> {{item.supplier.name}} </small>
+            <small>
+              <b>Fornecedor:</b> {{item.supplier.name}} </small>
           </div>
 
           <div>
-            <small> <b> Projeto:</b> {{item.project.name}} </small>
+            <small>
+              <b> Projeto:</b> {{item.project.name}} </small>
           </div>
         </ng-template>
       </ng-select>
@@ -59,18 +61,15 @@
           <td>{{packing.supplier?.duns || '-'}}</td>
           <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
-          <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
-            : "Embalagem em Viagem")}}</td>
-          <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
-            (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
+          <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta"}}</td>
+          <td>{{packing.actual_plant | type}}</td>
           <td>{{packing.quantity || '-'}}</td>
           <td>{{packing.actual_gc16 ? (packing.actual_gc16.min == 0 ? 0 : packing.actual_gc16.min) : '-'}}</td>
           <td>{{packing.actual_gc16 ? (packing.actual_gc16.max == 0 ? 0 : packing.actual_gc16.max) : '-'}}</td>
           <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min)
             : (packing.actual_gc16?.max
             < packing.quantity ? packing.quantity-packing.actual_gc16?.max : 'NP')) : '-' }}</td>
-              <td>{{packing.missing ? 'Ausente': (packing.problem ? 'Local Errado' : (packing.traveling ? 'Viajando' : 'Sem Anormalidade'))
-                }}</td>
+          <td>{{packing.status}}</td>
         </tr>
       </tbody>
     </table>
@@ -80,21 +79,21 @@
     </div>
 
   </div>
-  
+
   <br>
 
   <div class="resumo">
     <h3 class="definicao">TOTAL: </h3>
     <h3 class="numero">{{quantity.meta?.total_packings || 0}}</h3>
   </div>
-  
+
   <div class="resumo">
     <h3 class="definicao">DIFERENÇA: </h3>
     <h3 class="numero">{{quantity.meta?.missing || 0}}</h3>
   </div>
 
   <br>
-  
+
   <div class="has-text-centered">
     <pagination-controls id='quantity' class="my-pagination" (pageChange)="quantity.meta.page = $event;quantityInventory()" directionLinks="false"
       autoHide="true">

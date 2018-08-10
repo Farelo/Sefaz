@@ -1,19 +1,15 @@
 <div class="base-bg">
   <h2 class="tituloClaro">EQUIPAMENTOS</h2>
-  
+
   <!-- Linha divisória -->
   <hr style="margin-top: 10px;">
-  
+
   <div class="row">
     <div class="col-sm-12 clear-padding">
       <div class="col-sm-4">
         <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="generalEquipamentSearch"
-          (change)="generalInventoryEquipament()" 
-          bindValue="packing" 
-          [items]="packings"
-          bindLabel="packing" 
-          placeholder="Selecione um Equipamento">
+        <ng-select [(ngModel)]="generalEquipamentSearch" (change)="generalInventoryEquipament()" bindValue="packing" [items]="packings"
+          bindLabel="packing" placeholder="Selecione um Equipamento">
 
           <ng-template ng-label-tmp let-item="item">
             {{item.packing}}
@@ -25,13 +21,15 @@
             </div>
 
             <div>
-              <small> <b>Fornecedor:</b> {{item.supplier.name}} </small>
+              <small>
+                <b>Fornecedor:</b> {{item.supplier.name}} </small>
             </div>
 
             <div>
-              <small> <b> Projeto:</b> {{item.project.name}} </small>
+              <small>
+                <b> Projeto:</b> {{item.project.name}} </small>
             </div>
-      
+
           </ng-template>
         </ng-select>
       </div>
@@ -46,13 +44,16 @@
         <tr class="cabecalho">
           <th>Equipamento</th>
           <th>Serial</th>
-          <th>Projeto</th>
-          <th>Fornecedor</th>
-          <th>Planta Atual</th>
-          <th>Local</th>
           <th>Tag</th>
+
+          <th>Fornecedor</th>
+          <th>Status Atual</th>
+          <th>Planta Atual</th>
+
+          <th>Local</th>
           <th>Bateria</th>
           <th>Temperatura</th>
+
           <th>Posições</th>
         </tr>
       </thead>
@@ -65,34 +66,34 @@
 
           <td>{{packing?.code || '-'}}</td>
           <td>{{packing?.serial || '-'}}</td>
-          <td>{{packing.project?.name || '-'}}</td>
-          <td>{{packing.supplier?.name || '-'}}</td>
-          <td [tooltip]="getFormatedData(packing.lastCommunication)" style="cursor: default;">{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
-            : "Embalagem em Viagem")}}</td>
-          <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
-            (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
           <td>{{packing.tag?.code || '-'}}</td>
+
+          <td>{{packing.supplier?.name || '-'}}</td>
+          <td>{{packing.status}}</td>
+          <td [tooltip]="getFormatedData(packing.lastCommunication)" style="cursor: default;">{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta"}}</td>
+
+          <td>{{packing.actual_plant | type}}</td>
           <td>{{packing.battery >= 0 ? (packing.battery | round) : 'Sem Registro'}} %</td>
           <td>{{packing?.temperature || '-'}} ∘</td>
+
           <td style="text-align: center;">
             <div class="bigger" (click)="openLayer(packing)">
-              <div class="det">
-              </div>
+              <div class="det"> </div>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
-    
+
     <div class="classVazio" *ngIf="general_equipament.data?.length < 1">
       Ainda não foram cadastradas embalagens no sistema.
     </div>
   </div>
 
   <br>
-  
+
   <div class="has-text-centered">
-    <pagination-controls class="my-pagination" id='general' (pageChange)="general_equipament.meta.page = $event; generalInventoryEquipamentChanged()"
+    <pagination-controls class="my-pagination" id='general' (pageChange)="general_equipament.meta.page = $event; generalInventoryEquipament()"
       directionLinks="false" autoHide="true">
     </pagination-controls>
   </div>

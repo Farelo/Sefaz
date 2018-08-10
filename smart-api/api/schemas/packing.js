@@ -7,6 +7,11 @@ const packingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    enum: ['NORMAL', 'INCONTIDA', 'MISSING', 'LATE', 'INCORRECT_LOCAL', 'TRAVELING', 'NO_SIGNAL'],
+    default: 'NORMAL',
+  },
   type: String,
   weigth: Number,
   width: Number,
@@ -25,8 +30,10 @@ const packingSchema = new mongoose.Schema({
   },
   lastCommunication: Number,
   permanence: {
-    time_exceeded: Boolean,
+    time_exceeded: Number,
     date: Number,
+    date_exceeded: Number,
+    amount_days_exceeded: Number,
     amount_days: Number,
   },
   trip: {
@@ -113,7 +120,7 @@ packingSchema.post('remove', function (next) {
     .model('Alerts')
     .remove({ packing: packing._id })
     .then(() => packing.model('HistoricPackings').remove({ packing: packing._id }))
-    .then(() => schema.model('Settings').find({}))
+    .then(() => packing.model('Settings').find({}))
     .then((settings) => {
       if (settings[0].register_gc16.enable) {
         // se o gc16  estiver habilitado realiza o passo de verificação
@@ -126,7 +133,7 @@ packingSchema.post('remove', function (next) {
           packing,
         );
       } else {
-        next;
+        next();
       }
     });
 });
@@ -162,7 +169,7 @@ function evaluete(promise, next, p) {
         })
         .then(() => next);
     } else {
-      next;
+      next();
     }
   });
 }
