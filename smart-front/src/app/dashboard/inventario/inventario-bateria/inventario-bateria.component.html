@@ -48,9 +48,11 @@
               <th>Equipamento</th>
               <th>Serial</th>
               <th>Projeto</th>
+
               <th>Planta Atual</th>
               <th>Local</th>
               <th>Bateria</th>
+
               <th>Nível</th>
             </tr>
           </thead>
@@ -63,6 +65,7 @@
               <td>{{packing.code || '-'}}</td>
               <td>{{packing.serial || '-'}}</td>
               <td>{{packing.project?.name || '-'}}</td>
+              
               <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta"}}</td>
               <td>{{packing.actual_plant | type}}</td>
               <td>{{packing.battery >= 0 ? (packing.battery | round) : 'Sem Registro'}} %</td>

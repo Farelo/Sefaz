@@ -1,12 +1,14 @@
 <div class="modalFilho">
   <div class="header">
-    <p>Detalhes da Embalagem </p>
-    <p>Código:
-      <span>{{packing.code}}</span>
+    <h1>Detalhes da Embalagem</h1>
+    
+    <p>
+      <span class="badge badge-secondary">Código: {{packing.code}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{packing.serial}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.code_tag}}</span>
     </p>
-    <p>Fornecedor:
-      <span>{{packing.supplier?.name}}</span>
-    </p>
+
+    <p>Fornecedor: {{packing.supplier?.name}} </p>
   </div>
   <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>

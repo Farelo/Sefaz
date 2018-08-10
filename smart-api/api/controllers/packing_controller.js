@@ -45,10 +45,10 @@ function object() {
     quantityMissing: 0,
     quantityInFactory: 0,
     quantityInSupplier: 0,
-    quantityTimeExceeded: 0,
+    quantityLate: 0,
     quantityIncontida: 0,
     all_plants: [],
-    all_alerts: [],
+    all_alerts: []
   };
 }
 
@@ -108,11 +108,15 @@ const buildDetailedInvetoryArray = async (
       ),
     );
 
+    console.log('====================================');
+    console.log(aggregateAlertList);
+    console.log('====================================');
+
     arrayToAgroup = aggregate.map((item, index) => {
       let obj = object();
-      console.log('====================================');
-      console.log(item.code);
-      console.log('====================================');
+      // console.log('====================================');
+      // console.log(item.code);
+      // console.log('====================================');
 
       obj._id.code = item._id.code;
       obj._id.plant = item._id.plant;
@@ -137,16 +141,16 @@ const buildDetailedInvetoryArray = async (
 
       obj.quantityTotal = item.quantityTotal;
       obj.quantityTraveling = item.quantityTraveling;
-      obj.quantityProblem = item.quantityProblem;
+      obj.quantityIncorrectLocal = item.quantityIncorrectLocal;
       obj.quantityMissing = item.quantityMissing;
       obj.quantityInFactory = item.quantityInFactory;
       obj.quantityInSupplier = item.quantityInSupplier;
-      obj.quantityTimeExceeded = item.quantityTimeExceeded;
+      obj.quantityLate = item.quantityLate;
 
       obj.all_plants = aggregatePlantList[index];
 
       for (let alert of aggregateAlertList[index]) {
-        if (item.code === alert.package_code) obj.all_alerts.push(alert);
+        if (item.code === alert.packageCode) obj.all_alerts.push(alert);
       }
 
       // obj.all_alerts = aggregateAlertList[index][0]
