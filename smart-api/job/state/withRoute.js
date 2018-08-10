@@ -41,7 +41,13 @@ async function evaluate(packing, currentPlant) {
       packing = cleanObject.cleanMissing(packing); // limpa as informações sobre embalagem perdida
       packing = cleanObject.cleanTrip(packing); // limpa informações sobre a embalagem em viagem
       packing = cleanObject.cleanIncontida(packing); // limpa informações sobre a embalagem em viagem
-      packing.status = statusType.NORMAL;
+
+      if (packing.permanence.time_exceeded) {
+        packing.status = statusType.PERMANENCE_EXCEEDED;
+      } else {
+        packing.status = statusType.NORMAL;
+        await historic.initNormal(packing, oldPlant, currentPlant);
+      }
       // Se estiver no local correto para de atualizar o trip.date da embalagem e o
       // actual_plant do banco
       // Adicionar ou atualizar a minha actual_plant da embalagem no banco

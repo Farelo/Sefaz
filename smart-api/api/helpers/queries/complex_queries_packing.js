@@ -1,13 +1,14 @@
 const schemas = require('../../schemas/require_schemas');
+const statusType = require('../../../job/common/status_type');
 
 const ObjectId = schemas.ObjectId;
 
 exports.queries = {
-  detailed_inventory: (supplier_id, package_code) => [
-    supplier_id
-      ? { $match: { supplier: new ObjectId(supplier_id) } }
+  detailed_inventory: (supplierId, packageCode) => [
+    supplierId
+      ? { $match: { supplier: new ObjectId(supplierId) } }
       : { $match: { supplier: { $exists: true } } },
-    package_code ? { $match: { code: package_code } } : { $match: { code: { $exists: true } } },
+    packageCode ? { $match: { code: packageCode } } : { $match: { code: { $exists: true } } },
     {
       $lookup: {
         from: 'suppliers',
@@ -92,13 +93,13 @@ exports.queries = {
           $sum: 1,
         },
         quantityTraveling: {
-          $sum: { $cond: [{ $eq: ['$traveling', true] }, 1, 0] },
+          $sum: { $cond: [{ $eq: ['$status', statusType.TRAVELING] }, 1, 0] },
         },
-        quantityProblem: {
-          $sum: { $cond: [{ $eq: ['$problem', true] }, 1, 0] },
+        quantityIncorrectLocal: {
+          $sum: { $cond: [{ $eq: ['$status', statusType.INCORRECT_LOCAL] }, 1, 0] },
         },
         quantityMissing: {
-          $sum: { $cond: [{ $eq: ['$missing', true] }, 1, 0] },
+          $sum: { $cond: [{ $eq: ['$status', statusType.MISSING] }, 1, 0] },
         },
         quantityInFactory: {
           $sum: { $cond: [{ $eq: ['$actual_plant.local', 'Factory'] }, 1, 0] },
@@ -106,15 +107,15 @@ exports.queries = {
         quantityInSupplier: {
           $sum: { $cond: [{ $eq: ['$actual_plant.local', 'Supplier'] }, 1, 0] },
         },
-        quantityTimeExceeded: {
-          $sum: { $cond: [{ $eq: ['$trip.time_exceeded', true] }, 1, 0] },
+        quantityLate: {
+          $sum: { $cond: [{ $eq: ['$status', statusType.LATE] }, 1, 0] },
         },
       },
     },
   ],
-  detailed_inventory_by_plant: (supplier_id, package_code) => [
-    { $match: { supplier: new ObjectId(supplier_id) } },
-    { $match: { code: package_code } },
+  detailed_inventory_by_plant: (supplierId, packageCode) => [
+    { $match: { supplier: new ObjectId(supplierId) } },
+    { $match: { code: packageCode } },
     {
       $lookup: {
         from: 'suppliers',
@@ -164,8 +165,8 @@ exports.queries = {
       },
     },
   ],
-  detailed_inventory_by_alert: supplier_id => [
-    { $match: { supplier: new ObjectId(supplier_id) } },
+  detailed_inventory_by_alert: supplierId => [
+    { $match: { supplier: new ObjectId(supplierId) } },
     {
       $lookup: {
         from: 'packings',
@@ -186,7 +187,7 @@ exports.queries = {
           packing_code: '$packingObject.code',
           supplier: '$supplier',
         },
-        package_code: {
+        packageCode: {
           $first: '$packingObject.code',
         },
         lost_object: {

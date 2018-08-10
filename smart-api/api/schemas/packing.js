@@ -30,8 +30,10 @@ const packingSchema = new mongoose.Schema({
   },
   lastCommunication: Number,
   permanence: {
-    time_exceeded: Boolean,
+    time_exceeded: Number,
     date: Number,
+    date_exceeded: Number,
+    amount_days_exceeded: Number,
     amount_days: Number,
   },
   trip: {

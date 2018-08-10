@@ -74,7 +74,6 @@ module.exports = async (packing) => {
           await historic.createMissingStatus(packing);
           return packing;
         }
-
         // avalia se a embalagem realmente esta atrasada
         if (isLate(packing, timeTnterval)) {
           debug(`Packing is late! ${packing._id}`);
@@ -97,7 +96,6 @@ module.exports = async (packing) => {
           await modelOperations.update_alert(packing, alertsType.LATE);
           return packing;
         }
-
         // verifica se ele não estava true antes , no caso
         // houve alguma alteração e forçou o mesmo a ir para false
 
@@ -109,7 +107,16 @@ module.exports = async (packing) => {
           packing.trip.time_late = 0;
         }
 
-        await historic.updateTravelingStatus(packing);
+        // TODO: Remover esse código e colar esse await historic.updateTravelingStatus(packing);
+        if (!packing.trip.date) {
+          packing = cleanObject.cleanTrip(packing);
+          packing.trip.date = new Date().getTime();
+          packing.status = statusType.TRAVELING;
+          await historic.createTravelingStatus(packing);
+        } else {
+          packing.status = statusType.TRAVELING;
+          await historic.updateTravelingStatus(packing);
+        }
 
         // caso nenhuma das considerações sejam aceitas, então
         // a embalagem não esta mais atrasada e tambem não esta perdida (O segundo caso mais
