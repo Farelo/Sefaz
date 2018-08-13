@@ -32,7 +32,7 @@ export class InventoryLogisticService {
 
   getInventoryQuantity(limit: number, page: number, code: string, array: any): Observable<any> {
 
-    return this.http.post(`${environment.url}inventory/logistic/quantity/${limit}/${page}/${code}`, array)
+    return this.http.post(`${environment.url}inventory/logistic/quantity/${limit}/${page}?code=${code}`, array)
       .catch(this.handleError);
   }
 

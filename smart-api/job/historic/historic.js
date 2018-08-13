@@ -1,6 +1,7 @@
 const historicType = require('../common/historic_type');
 const schemas = require('../../api/schemas/require_schemas');
 const debug = require('debug')('job:historic');
+const historicMovement = require('./historicMovement');
 
 async function updateIncontidaStatus(packing) {
   await schemas.historicPackings.update(
@@ -21,7 +22,9 @@ async function updateIncontidaStatus(packing) {
   );
 
   debug(`Historic incontida updated with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.INCONTIDA);
 }
+
 async function updateNormalStatus(packing) {
   await schemas.historicPackings.update(
     {
@@ -45,12 +48,39 @@ async function updateNormalStatus(packing) {
   );
 
   debug(`Historic normal updated with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.NORMAL);
+}
+
+async function updatePermanenceStatus(packing) {
+  await schemas.historicPackings.update(
+    {
+      packing: packing._id,
+      date: packing.permanence.date,
+      status: historicType.NORMAL,
+    },
+    {
+      actual_gc16: packing.actual_gc16,
+      department: packing.department,
+      plant: packing.actual_plant,
+      date: packing.permanence.date_exceeded,
+      temperature: packing.temperature,
+      permanence_time: packing.permanence.amount_days_exceeded,
+      serial: packing.serial,
+      supplier: packing.supplier,
+      packing: packing._id,
+      packing_code: packing.code,
+      status: historicType.PERMANENCE_EXCEEDED,
+    },
+  );
+
+  debug(`Historic Permanence updated with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.NORMAL);
 }
 
 async function updateIncorrectStatus(packing) {
   await schemas.historicPackings.update(
     {
-      _id: packing._id,
+      packing: packing._id,
       date: packing.permanence.date,
       status: historicType.INCORRECT_LOCAL,
     },
@@ -69,7 +99,8 @@ async function updateIncorrectStatus(packing) {
     },
   );
 
-  debug(`Historic normal updated with success ${packing._id}`);
+  debug(`Historic Incorrect Local updated with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.INCORRECT_LOCAL);
 }
 
 async function updateMissingStatus(packing) {
@@ -92,6 +123,7 @@ async function updateMissingStatus(packing) {
   );
 
   debug(`Historic missing updated with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.MISSING);
 }
 
 async function updateTravelingStatus(packing) {
@@ -114,6 +146,7 @@ async function updateTravelingStatus(packing) {
   );
 
   debug(`Historic traveling updated with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.TRAVELING);
 }
 
 async function updateLateStatus(packing) {
@@ -136,6 +169,7 @@ async function updateLateStatus(packing) {
   );
 
   debug(`Historic late updated with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.LATE);
 }
 
 async function createIncontidaStatus(packing) {
@@ -152,6 +186,7 @@ async function createIncontidaStatus(packing) {
   });
   await newHistoric.save();
   debug(`Historic incontida created with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.INCONTIDA);
 }
 
 async function createNormalStatus(packing) {
@@ -170,6 +205,26 @@ async function createNormalStatus(packing) {
   });
   await newHistoric.save();
   debug(`Historic normal created with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.NORMAL);
+}
+
+async function createPermanenceStatus(packing) {
+  const newHistoric = await new schemas.historicPackings({
+    actual_gc16: packing.actual_gc16,
+    plant: packing.actual_plant,
+    department: packing.department,
+    date: packing.permanence.date_exceeded,
+    temperature: packing.temperature,
+    permanence_time: packing.permanence.amount_days_exceeded,
+    serial: packing.serial,
+    supplier: packing.supplier,
+    packing: packing._id,
+    packing_code: packing.code,
+    status: historicType.PERMANENCE_EXCEEDED,
+  });
+  await newHistoric.save();
+  debug(`Historic Permanence created with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.NORMAL);
 }
 
 async function createIncorrectStatus(packing) {
@@ -188,6 +243,7 @@ async function createIncorrectStatus(packing) {
   });
   await newHistoric.save();
   debug(`Historic normal created with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.INCORRECT_LOCAL);
 }
 
 async function createMissingStatus(packing) {
@@ -204,6 +260,7 @@ async function createMissingStatus(packing) {
   });
   await newHistoric.save();
   debug(`Historic missing created with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.MISSING);
 }
 
 async function createTravelingStatus(packing) {
@@ -220,6 +277,7 @@ async function createTravelingStatus(packing) {
   });
   await newHistoric.save();
   debug(`Historic traveling created with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.TRAVELING);
 }
 
 async function createLateStatus(packing) {
@@ -236,6 +294,7 @@ async function createLateStatus(packing) {
   });
   await newHistoric.save();
   debug(`Historic late created with success ${packing._id}`);
+  await historicMovement.verifyMovementPacking(packing, historicType.LATE);
 }
 
 async function initNormal(packing, oldPlant, currentPlant) {
@@ -285,4 +344,6 @@ module.exports = {
   initNormal,
   initIncorrectLocal,
   removeHistoric,
+  updatePermanenceStatus,
+  createPermanenceStatus,
 };

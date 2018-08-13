@@ -17,7 +17,7 @@ const statusAnalysis = async (data) => {
   // let total_packing = packings.length // Recupera a soma de pacotes no sistema
   // let count_packing = 0 // Contador das embalagens
 
-  // packings.forEach( async (packing) => {
+  // packings.forEach(async (packing) => {
   for (const packing of packings) {
     // Avalia a bateria das embalagens
     await evaluatesBattery(packing, setting);
@@ -37,10 +37,11 @@ const statusAnalysis = async (data) => {
       withoutRoute.evaluate(packing, currentPlant);
     }
   }
+  // });
 };
 
 // O analysis_loop executa a cada X segundos uma rotina
-cron.schedule(`*/${environment.time} * * * * *`, async () => {
+const job = cron.schedule(`*/${environment.time} * * * * *`, async () => {
   try {
     const token = await tokenRequest(); // Recupera o token para acessar a API da LOKA
     const devicesArray = await devicesRequest(token); // Recupera todos os devices da API da LOKA
@@ -55,3 +56,5 @@ cron.schedule(`*/${environment.time} * * * * *`, async () => {
     throw new Error(error);
   }
 });
+
+module.exports = job;

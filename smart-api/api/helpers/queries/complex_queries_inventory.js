@@ -1,16 +1,10 @@
-'use strict';
-
 exports.queries = {
-  absence_general: function(equipamento, serial, time, local) {
-    const code = equipamento; //equipamento ? { 'code': equipamento } : {};
+  absence_general(equipamento, serial, time, local) {
+    const code = equipamento; // equipamento ? { 'code': equipamento } : {};
 
     return [
-      serial
-        ? { $match: { serial: serial } }
-        : { $match: { code: { $exists: true } } },
-      code != 'todos'
-        ? { $match: { code: code } }
-        : { $match: { code: { $exists: true } } },
+      serial ? { $match: { serial } } : { $match: { code: { $exists: true } } },
+      code != 'todos' ? { $match: { code } } : { $match: { code: { $exists: true } } },
       {
         $lookup: {
           from: 'historicpackings',
@@ -21,44 +15,44 @@ exports.queries = {
       },
       local
         ? {
-            $project: {
-              historico_last: {
-                $filter: {
-                  input: '$historic',
-                  as: 'num',
-                  cond: { $eq: ['$$num.plant.local', local] },
-                },
+          $project: {
+            historico_last: {
+              $filter: {
+                input: '$historic',
+                as: 'num',
+                cond: { $eq: ['$$num.plant.local', local] },
               },
-              historic: '$historic',
-              actual_plant: '$actual_plant',
-              last_plant: '$last_plant',
-              serial: '$serial',
-              code: '$code',
-              code_tag: '$code_tag',
             },
-          }
-        : {
-            $project: {
-              historico_last: {
-                $filter: {
-                  input: '$historic',
-                  as: 'num',
-                  cond: {
-                    $or: [
-                      { $eq: ['$$num.plant.local', 'Factory'] },
-                      { $eq: ['$$num.plant.local', 'Supplier'] },
-                    ],
-                  },
-                },
-              },
-              historic: '$historic',
-              actual_plant: '$actual_plant',
-              last_plant: '$last_plant',
-              serial: '$serial',
-              code: '$code',
-              code_tag: '$code_tag',
-            },
+            historic: '$historic',
+            actual_plant: '$actual_plant',
+            last_plant: '$last_plant',
+            serial: '$serial',
+            code: '$code',
+            code_tag: '$code_tag',
           },
+        }
+        : {
+          $project: {
+            historico_last: {
+              $filter: {
+                input: '$historic',
+                as: 'num',
+                cond: {
+                  $or: [
+                    { $eq: ['$$num.plant.local', 'Factory'] },
+                    { $eq: ['$$num.plant.local', 'Supplier'] },
+                  ],
+                },
+              },
+            },
+            historic: '$historic',
+            actual_plant: '$actual_plant',
+            last_plant: '$last_plant',
+            serial: '$serial',
+            code: '$code',
+            code_tag: '$code_tag',
+          },
+        },
       { $unwind: '$historico_last' },
       { $sort: { 'historico_last.date': -1 } },
       {
@@ -67,13 +61,10 @@ exports.queries = {
           base_time: {
             $first: {
               $subtract: [
-                //1524702771308,
+                // 1524702771308,
                 new Date().getTime(),
                 {
-                  $sum: [
-                    '$historico_last.date',
-                    '$historico_last.permanence_time',
-                  ],
+                  $sum: ['$historico_last.date', '$historico_last.permanence_time'],
                 },
               ],
             },
@@ -180,7 +171,7 @@ exports.queries = {
         : { $match: { $exists: [{ code: true }] } },
     ];
   },
-  inventory_general: function(supplier_array) {
+  inventory_general(supplier_array) {
     return [
       { $match: { supplier: { $in: supplier_array } } },
       {
@@ -255,13 +246,13 @@ exports.queries = {
       },
     ];
   },
-  inventory_general_by_plant: function(code, supplier, project, attr) {
+  inventory_general_by_plant(code, supplier, project, attr) {
     return [
       {
         $match: {
-          supplier: supplier,
-          code: code,
-          project: project,
+          supplier,
+          code,
+          project,
         },
       },
       {
@@ -332,10 +323,13 @@ exports.queries = {
             plant: '$actual_plant.plant',
             supplier: '$supplier',
             project: '$project',
-            missing: '$missing',
+            status: '$status',
           },
           code: {
             $first: '$code',
+          },
+          status: {
+            $first: '$status',
           },
           supplier: {
             $first: '$supplierObject',
@@ -362,9 +356,9 @@ exports.queries = {
       },
     ];
   },
-  historic_packing: function(serial, supplier_array) {
+  historic_packing(serial, supplier_array) {
     return [
-      { $match: { supplier: { $in: supplier_array }, serial: serial } },
+      { $match: { supplier: { $in: supplier_array }, serial } },
       {
         $lookup: {
           from: 'suppliers',
@@ -441,10 +435,13 @@ exports.queries = {
             code: '$code',
             plant: '$actual_plant.plant',
             supplier: '$supplier',
-            missing: '$missing',
+            status: '$status',
           },
           code: {
             $first: '$code',
+          },
+          status: {
+            $first: '$status',
           },
           supplier: {
             $first: '$supplierObject',
@@ -474,11 +471,11 @@ exports.queries = {
       },
     ];
   },
-  quantity_total: function(code) {
+  quantity_total(code) {
     return [
       {
         $match: {
-          code: code,
+          code,
         },
       },
       {
@@ -496,9 +493,9 @@ exports.queries = {
       },
     ];
   },
-  quantity_inventory: function(code, supplier_array) {
+  quantity_inventory(code, supplier_array) {
     return [
-      { $match: { supplier: { $in: supplier_array }, code: code } },
+      { $match: { supplier: { $in: supplier_array }, code } },
       {
         $lookup: {
           from: 'suppliers',
@@ -569,14 +566,14 @@ exports.queries = {
             code: '$code',
             plant: '$actual_plant.plant',
             supplier: '$supplier',
-            supplier: '$supplier',
-            missing: '$missing',
-            problem: '$problem',
-            traveling: '$traveling',
+            status: '$status',
             project: '$project',
           },
           code: {
             $first: '$code',
+          },
+          status: {
+            $first: '$status',
           },
           supplier: {
             $first: '$supplierObject',
@@ -602,17 +599,8 @@ exports.queries = {
           actual_gc16: {
             $first: '$actual_gc16',
           },
-          missing: {
-            $first: '$missing',
-          },
           serial: {
             $first: '$serial',
-          },
-          problem: {
-            $first: '$problem',
-          },
-          traveling: {
-            $first: '$traveling',
           },
           historic: {
             $first: '$historicpackingsObject',
