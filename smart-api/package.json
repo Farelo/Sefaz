@@ -64,7 +64,7 @@
     "deploy:prod": "docker-compose -f ../docker-compose.prod.yml up --build",
     "develop": "set NODE_ENV=development&&set DEBUG=job:* &&gulp",
     "dev-linux": "export NODE_ENV=development && export DEBUG=job:* && nodemon app.js",
-    "start": "node server.js",
+    "start": "node app.js",
     "test": "swagger project test",
     "test-jest": "export NODE_ENV=test && jest"
   }

@@ -9,33 +9,33 @@
     <div class="col-sm-12 clear-padding">
       <div class="col-sm-4">
         <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings"
-          bindLabel="packing" placeholder="Selecione um Equipamento">
+        <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings" bindLabel="packing"
+          placeholder="Selecione um Equipamento">
           <ng-template ng-label-tmp let-item="item">
             {{item.packing}}
           </ng-template>
           <ng-template ng-option-tmp let-item="item">
             <div>
-      
+
               <b>Embalagem:</b> {{item.packing}}
             </div>
             <div>
               <small>
                 <b>Fornecedor:</b> {{item.supplier.name}}
               </small>
-      
+
             </div>
             <div>
               <small>
                 <b> Projeto:</b> {{item.project.name}}
               </small>
             </div>
-      
-      
+
+
           </ng-template>
         </ng-select>
       </div>
-      
+
       <!--TEMPO DE PERMANÊNCIA: filtro Serial -->
       <div class="col-sm-4 clear-padding">
         <p>SERIAL</p>
@@ -101,7 +101,7 @@
     </div>
 
     <br>
-    
+
     <div class="has-text-centered">
       <pagination-controls class="my-pagination" id="permanence" (pageChange)="permanence.meta.page = $event;permanenceInventory()"
         directionLinks="false" autoHide="true">
@@ -116,15 +116,15 @@
         <thead>
           <tr class="cabecalho">
             <th>Data</th>
-            <th>Hora</th>
+            <th>Horário</th>
             <th>Duns</th>
 
             <th>Fornecedor</th>
             <th>Status</th>
             <th>Local</th>
-
+            
             <th>Tempo no Status</th>
-            <th style="text-align: center;">Tempo de Referência <br> BPline (Dias)</th>
+            <th>Tempo de Referência BPline (Dias)</th>
           </tr>
         </thead>
         <tbody>
@@ -153,7 +153,7 @@
       </div>
     </div>
 
-    <br> 
+    <br>
 
     <div class="has-text-centered">
       <pagination-controls class="my-pagination" id="permanenceHistoric" (pageChange)="permanence.meta.page = $event;permanenceInventorySerial()"
