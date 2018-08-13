@@ -40,6 +40,7 @@ export class InventarioQuantidadeComponent implements OnInit {
 
   ngOnInit() {
     this.loadPackings();
+    this.quantityInventory();
   }
 
   loadPackings() {
@@ -78,6 +79,8 @@ export class InventarioQuantidadeComponent implements OnInit {
   }
 
   quantityInventory() {
+    this.quantitySearch = this.quantitySearch ? this.quantitySearch : '';
+
     if (this.logged_user instanceof Array) {
       this.inventoryLogisticService
         .getInventoryQuantity(

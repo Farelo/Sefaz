@@ -863,7 +863,7 @@ exports.quantity_inventory = function (req, res) {
   let aggregate = schemas.packing.aggregate(
     query.queries.quantity_inventory(
       req.swagger.params.code.value,
-      req.swagger.params.attr.value,
+      req.swagger.params.supplier_id.value
     ),
   );
 
