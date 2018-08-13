@@ -64,12 +64,13 @@
             <th>Equipamento</th>
             <th>Serial</th>
             <th>Projeto</th>
+
             <th>Planta Atual</th>
             <th>Local</th>
             <th>Tempo na Planta</th>
+
             <th>DUNS</th>
             <th>Fornecedor</th>
-
           </tr>
         </thead>
         <tbody>
@@ -78,16 +79,17 @@
                                                               itemsPerPage: 10,
                                                               currentPage: permanence.meta.page,
                                                               totalItems: permanence.meta.total_docs}">
-            <td>{{packing.code || '-'}}</td>
-            <td>{{packing.serial || '-'}}</td>
-            <td>{{packing.project?.name || '-'}}</td>
-            <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
-              : "Embalagem em Viagem")}}</td>
-            <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
-              (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
-            <td>{{packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro'}}</td>
-            <td>{{packing.supplier?.duns || '-'}}</td>
-            <td>{{packing.supplier?.name || '-'}}</td>
+            <td>{{ packing.code || '-' }}</td>
+            <td>{{ packing.serial || '-' }}</td>
+            <td>{{ packing.project?.name || '-' }}</td>
+
+            <td>{{ packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
+              : "Embalagem em Viagem") }}</td>
+            <td>{{ packing.actual_plant | type }}</td>
+            <td>{{ packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro' }}</td>
+
+            <td>{{ packing.supplier?.duns || '-' }}</td>
+            <td>{{ packing.supplier?.name || '-' }}</td>
 
           </tr>
         </tbody>
@@ -114,13 +116,24 @@
         <thead>
           <tr class="cabecalho">
             <th>Data</th>
+<<<<<<< HEAD
             <th>Horário</th>
+=======
+            <th>Hora</th>
+>>>>>>> 0ec09b09bd3321ab784a84cd75a3267d7ae7055c
             <th>Duns</th>
+
             <th>Fornecedor</th>
             <th>Status</th>
             <th>Local</th>
+<<<<<<< HEAD
             <th>Tempo no Status</th>
             <th>Tempo de Referência BPline (Dias)</th>
+=======
+
+            <th>Tempo no Status</th>
+            <th style="text-align: center;">Tempo de Referência <br> BPline (Dias)</th>
+>>>>>>> 0ec09b09bd3321ab784a84cd75a3267d7ae7055c
           </tr>
         </thead>
         <tbody>
@@ -129,6 +142,7 @@
                                                             itemsPerPage: 10,
                                                             currentPage: permanence.meta.page,
                                                             totalItems: permanence.meta.total_docs}">
+<<<<<<< HEAD
             <td>{{packing.date | date: 'dd/MM/yyyy'}}</td>
             <td>{{packing.date | date:'MM:HH:ss'}}</td>
             <td>{{packing.supplier?.duns || '-'}}</td>
@@ -138,6 +152,19 @@
               === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
             <td>{{packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro'}}</td>
             <td>{{packing.actual_gc16?.days >= 0 ? packing.actual_gc16?.days : '-'}}</td>
+=======
+            <td>{{ packing.date | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ packing.date | date:'HH:MM:ss' }}</td>
+            <td>{{ packing.supplier?.duns || '-' }}</td>
+
+            <td>{{ packing.supplier?.name || '-' }}</td>
+            <td>{{ packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status
+              == 'MISSING' ? 'Embalagem Ausente' : 'Embalagem Viajando') }}</td>
+            <td>{{ packing.plant | type }}</td>
+
+            <td>{{ packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro' }}</td>
+            <td style="text-align: center;">{{ packing.actual_gc16?.days >= 0 ? packing.actual_gc16?.days : '-' }}</td>
+>>>>>>> 0ec09b09bd3321ab784a84cd75a3267d7ae7055c
           </tr>
         </tbody>
       </table>
