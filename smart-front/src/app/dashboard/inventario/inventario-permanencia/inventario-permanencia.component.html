@@ -9,33 +9,33 @@
     <div class="col-sm-12 clear-padding">
       <div class="col-sm-4">
         <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings"
-          bindLabel="packing" placeholder="Selecione um Equipamento">
+        <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings" bindLabel="packing"
+          placeholder="Selecione um Equipamento">
           <ng-template ng-label-tmp let-item="item">
             {{item.packing}}
           </ng-template>
           <ng-template ng-option-tmp let-item="item">
             <div>
-      
+
               <b>Embalagem:</b> {{item.packing}}
             </div>
             <div>
               <small>
                 <b>Fornecedor:</b> {{item.supplier.name}}
               </small>
-      
+
             </div>
             <div>
               <small>
                 <b> Projeto:</b> {{item.project.name}}
               </small>
             </div>
-      
-      
+
+
           </ng-template>
         </ng-select>
       </div>
-      
+
       <!--TEMPO DE PERMANÊNCIA: filtro Serial -->
       <div class="col-sm-4 clear-padding">
         <p>SERIAL</p>
@@ -99,7 +99,7 @@
     </div>
 
     <br>
-    
+
     <div class="has-text-centered">
       <pagination-controls class="my-pagination" id="permanence" (pageChange)="permanence.meta.page = $event;permanenceInventory()"
         directionLinks="false" autoHide="true">
@@ -113,13 +113,13 @@
       <table class="table">
         <thead>
           <tr class="cabecalho">
-            <th>Data de Entrada</th>
-            <th>Horário de Entrada</th>
+            <th>Data</th>
+            <th>Horário</th>
             <th>Duns</th>
             <th>Fornecedor</th>
-            <th>Permaneceu na Planta </th>
+            <th>Status</th>
             <th>Local</th>
-            <th>Tempo na Planta</th>
+            <th>Tempo no Status</th>
             <th>Tempo de Referência BPline (Dias)</th>
           </tr>
         </thead>
@@ -130,11 +130,10 @@
                                                             currentPage: permanence.meta.page,
                                                             totalItems: permanence.meta.total_docs}">
             <td>{{packing.date | date: 'dd/MM/yyyy'}}</td>
-            <td>{{packing.date | date:'mediumTime'}}</td>
+            <td>{{packing.date | date:'MM:HH:ss'}}</td>
             <td>{{packing.supplier?.duns || '-'}}</td>
             <td>{{packing.supplier?.name || '-'}}</td>
-            <td>{{packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status
-              == 'MISSING' ? 'Embalagem Ausente' : 'Embalagem Viajando') }}</td>
+            <td>{{packing.status }}</td>
             <td>{{packing.plant?.local === 'Factory' ? 'Fábrica' : (packing.plant?.local === 'Supplier' ? 'Fornecedor': (packing.plant?.local
               === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
             <td>{{packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro'}}</td>
@@ -148,7 +147,7 @@
       </div>
     </div>
 
-    <br> 
+    <br>
 
     <div class="has-text-centered">
       <pagination-controls class="my-pagination" id="permanenceHistoric" (pageChange)="permanence.meta.page = $event;permanenceInventorySerial()"
