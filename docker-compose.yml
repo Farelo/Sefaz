@@ -1,4 +1,4 @@
-version: "2.0"
+﻿version: "2.0"
 services:
   ###################################### TESTE ITERNO ####################################
   test-interno-homologacao:
@@ -6,7 +6,7 @@ services:
       context: 'smart-front'
       dockerfile: Dockerfile
       args:
-        baseurl: http://35.169.169.38:8011/api/
+        baseurl: http://35.169.169.38:8003/api/
         port: 8010
     container_name: test-interno-homologacao
     ports:
@@ -20,7 +20,7 @@ services:
     environment:
       NODE_ENV: production
       HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
-      PORT: 8011                    #obrigatorios caso não coloque o DNS
+      PORT: 8003                    #obrigatorios caso não coloque o DNS
       DATABASE: testeinterno        #obrigatorios
       DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
       DEBUG: job:evaluate_missing
@@ -28,5 +28,5 @@ services:
         # DNS:
     tty: true
     ports:
-      - '8011:8011'        #obrigratorio
+      - '8003:8003'        #obrigratorio
     network_mode: mongo_net
