@@ -644,9 +644,10 @@ exports.queries = {
       },
     ];
   },
-  quantity_inventory(code, attr) {
+  quantity_inventory(code, supplier_id) {
     return [
-      attr ? { $match: { supplier: new ObjectId(attr), code } } : { $match: { code } },
+      code ? { $match: { code: code } } : { $match: { code: { $exists: true } } },
+      supplier_id ? { $match: { supplier: new ObjectId(supplier_id) } } : { $match: { supplier: { $exists: true } } },
       {
         $lookup: {
           from: 'suppliers',

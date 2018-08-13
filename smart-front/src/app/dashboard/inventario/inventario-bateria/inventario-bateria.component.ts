@@ -39,6 +39,8 @@ export class InventarioBateriaComponent implements OnInit {
 
   ngOnInit() {
     this.loadPackings();
+
+    this.batteryInventory();
   }
 
   batteryInventory() {

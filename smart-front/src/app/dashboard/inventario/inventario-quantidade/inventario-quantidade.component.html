@@ -42,12 +42,15 @@
           <th>DUNS</th>
           <th>Projeto</th>
           <th>Fornecedor</th>
+
           <th>Planta</th>
           <th>Local</th>
-          <th>Quantidade</th>
+          
           <th>Min</th>
+          <th style="text-align:center;">Quantidade</th>
           <th>Max</th>
-          <th>Diferença</th>
+
+          <!-- <th>Diferença</th> -->
           <th>Status</th>
         </tr>
       </thead>
@@ -57,18 +60,20 @@
                                                         itemsPerPage: 10,
                                                         currentPage: quantity.meta.page,
                                                         totalItems: quantity.meta.total_docs}">
-
           <td>{{packing.supplier?.duns || '-'}}</td>
           <td>{{packing.project?.name || '-'}}</td>
           <td>{{packing.supplier?.name || '-'}}</td>
+
           <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta"}}</td>
           <td>{{packing.actual_plant | type}}</td>
-          <td>{{packing.quantity || '-'}}</td>
-          <td>{{packing.actual_gc16 ? (packing.actual_gc16.min == 0 ? 0 : packing.actual_gc16.min) : '-'}}</td>
-          <td>{{packing.actual_gc16 ? (packing.actual_gc16.max == 0 ? 0 : packing.actual_gc16.max) : '-'}}</td>
-          <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min)
+
+          <td style="text-align:center;">{{packing.actual_gc16 ? (packing.actual_gc16.min == 0 ? 0 : packing.actual_gc16.min) : '-'}}</td>
+          <td style="text-align:center;">{{packing.quantity || '-'}}</td>
+          <td style="text-align:center;">{{packing.actual_gc16 ? (packing.actual_gc16.max == 0 ? 0 : packing.actual_gc16.max) : '-'}}</td>
+
+          <!-- <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min)
             : (packing.actual_gc16?.max
-            < packing.quantity ? packing.quantity-packing.actual_gc16?.max : 'NP')) : '-' }}</td>
+            < packing.quantity ? packing.quantity-packing.actual_gc16?.max : 'NP')) : '-' }}</td> -->
           <td>{{packing.status}}</td>
         </tr>
       </tbody>

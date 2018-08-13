@@ -234,7 +234,7 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"            
-  /inventory/quantity/{limit}/{page}/{code}:
+  /inventory/quantity/{limit}/{page}:
       x-swagger-router-controller: packing_controller
       get:
         tags:
@@ -255,13 +255,13 @@ paths:
           description: "Return inventory related this page"
           required: true
           type: string
-        - in: "path"
+        - in: "query"
           name: "code"
           description: "Return inventory related this packing code"
-          required: true
+          required: false
           type: string
         - in: "query"
-          name: "attr"
+          name: "supplier_id"
           description: "Retrieve inventory related this supplier id related to packing"
           required: false
           type: string
