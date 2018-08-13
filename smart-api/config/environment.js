@@ -11,8 +11,8 @@ const environment = {
   development: {
     url: 'localhost',
     port: '8984',
-    database: 'gm', // base de dados utilizada
-    //database: 'reciclatest', // base de dados utilizada
+    //database: 'testeiterno', // base de dados utilizada
+    database: 'reciclatest', // base de dados utilizada
     urldatabase: 'localhost', // url de acesso a base de dados
     time: '50', // tempo da execução do job em segundos 1-59
     secret: 'S3cr3t', // chave privada da tokenização
