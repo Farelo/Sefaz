@@ -54,7 +54,6 @@ async function evaluate(packing, currentPlant) {
       // Adicionar ou atualizar a minha last_plant da embalagem no banco
       // Tempo de permanência (CEBRACE: em qualquer ponto de controle)
       await modelOperations.update_packing(packing);
-      await historic.initNormal(packing, oldPlant, currentPlant);
     } else {
       // PAra este fluxo apenas o alerta de LOCAL INCORRETO que pode explodir
       debug('Embalagem está no local incorreto');
