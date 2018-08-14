@@ -1,0 +1,74 @@
+<section class="grupo-categoria">
+  <div style="display: flex;">
+    <h3>Nos Pontos de Controle</h3>
+    <div class="quantidade-total-categoria">80</div>
+  </div>
+
+  <div class="categoria-progress">
+    <div class="progress-bar status-incorreta" style="width: 5%"></div>
+    <div class="progress-bar status-permanencia" style="width: 10%"></div>
+    <div class="progress-bar progress-bar-empty" style="width: 85%"></div>
+  </div>
+
+  <!-- Local Incorreto -->
+  <section>
+    <div class="linha-categoria status-incorreta">
+      <div class="tick-categoria">
+
+        <div class="quantidade-categoria status-incorreta">
+          10
+        </div>
+
+        <span class="nome-categoria">Local Incorreto</span>
+
+        <button class="hamburger hamburger--squeeze" type="button" (click)="localIncorretoCollapsed = !localIncorretoCollapsed" [attr.aria-controls]="conteudoLocalIncorreto"
+          [ngClass]="{ 'is-active':localIncorretoCollapsed == true}">
+        
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Conteúdo Local Incorreto -->
+    <div [attr.id]="conteudoLocalIncorreto" [ngbCollapse]="!localIncorretoCollapsed">
+      <div class="">
+        Hello, local incorreto!
+      </div>
+    </div>
+  </section>
+
+  <!-- ////////////////////////////////////////////////////////////////////// -->
+  <!-- Tempo de Permanência -->
+  <section>
+    <div class="linha-categoria status-permanencia">
+      <div class="tick-categoria">
+
+        <div class="quantidade-categoria status-permanencia">
+          10
+        </div>
+
+        <span class="nome-categoria">Tempo de Permanência</span>
+
+        <button class="hamburger hamburger--squeeze" type="button" (click)="tempoDePermanenciaCollapsed = !tempoDePermanenciaCollapsed"
+          [attr.aria-controls]="conteudoTempoDePermanencia" [ngClass]="{ 'is-active':tempoDePermanenciaCollapsed == true}">
+        
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Conteúdo Tempo de Permanência -->
+    <div [attr.id]="conteudoTempoDePermanencia" [ngbCollapse]="!tempoDePermanenciaCollapsed">
+      <div class="">
+        Hello, Tempo de Permanência!
+      </div>
+    </div>
+  </section>
+
+</section>

@@ -1,0 +1,42 @@
+<section class="grupo-categoria">
+  <h3>Bateria Baixa</h3>
+
+  <div class="categoria-progress">
+    <div class="progress-bar status-bateria" style="width: 5%"></div>
+    <div class="progress-bar progress-bar-empty" style="width: 95%"></div>
+  </div>
+
+  <!-- Embalagens Bateria Baixa -->
+  <section>
+    <div class="linha-categoria status-bateria">
+      <div class="tick-categoria">
+
+        <div class="quantidade-categoria status-bateria">
+          10
+        </div>
+
+        <span class="nome-categoria">Embalagens com Bateria Baixa</span>
+
+        <button class="hamburger hamburger--squeeze" 
+          type="button" 
+          (click)="bateriaBaixaCollapsed = !bateriaBaixaCollapsed" 
+          [attr.aria-controls]="bateriaCollapsed" 
+          [ngClass]="{ 'is-active':bateriaBaixaCollapsed == true}">
+
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>  
+      
+      </div>
+    </div>
+
+    <!-- Conteúdo Embalagens Bateria Baixa -->
+    <div [attr.id]="bateriaCollapsed" [ngbCollapse]="!bateriaBaixaCollapsed">
+      <div class="">
+        Hello, Bateria Baixa!
+      </div>
+    </div>
+  </section>
+
+</section>

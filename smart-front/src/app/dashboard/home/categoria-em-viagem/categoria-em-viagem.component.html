@@ -1,0 +1,75 @@
+<section class="grupo-categoria">
+
+  <div style="display: flex;">
+    <h3>Em Viagem</h3>
+    <div class="quantidade-total-categoria">20</div>
+  </div>
+
+  <div class="categoria-progress">
+    <div class="progress-bar status-atrasada" style="width: 25%"></div>
+    <div class="progress-bar status-ausente" style="width: 10%"></div>
+    <div class="progress-bar progress-bar-empty" style="width: 65%"></div>
+  </div>
+
+  <!-- Embalagens Atrasadas -->
+  <section>
+    <div class="linha-categoria status-atrasada">
+      <div class="tick-categoria">
+
+        <div class="quantidade-categoria status-atrasada">
+          10
+        </div>
+
+        <span class="nome-categoria">Embalagens Atrasadas</span>
+
+        <button class="hamburger hamburger--squeeze" type="button" (click)="atrasadaCollapsed = !atrasadaCollapsed" [attr.aria-controls]="conteudoAtrasada"
+          [ngClass]="{ 'is-active':atrasadaCollapsed == true}">
+        
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Conteúdo Embalagens Atrasadas -->
+    <div [attr.id]="conteudoAtrasada" [ngbCollapse]="!atrasadaCollapsed">
+      <div class="">
+        Hello, Embalagens Atrasadas!
+      </div>
+    </div>
+  </section>
+
+  <!-- ////////////////////////////////////////////////////////////////////// -->
+  <!-- Embalagens Ausentes -->
+  <section>
+    <div class="linha-categoria status-ausente">
+      <div class="tick-categoria">
+
+        <div class="quantidade-categoria status-ausente">
+          10
+        </div>
+
+        <span class="nome-categoria">Embalagens Ausentes</span>
+
+        <button class="hamburger hamburger--squeeze" type="button" (click)="ausenteCollapsed = !ausenteCollapsed" [attr.aria-controls]="conteudoAusente"
+          [ngClass]="{ 'is-active':ausenteCollapsed == true}">
+        
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Conteúdo Embalagens Atrasadas -->
+    <div [attr.id]="conteudoAusente" [ngbCollapse]="!ausenteCollapsed">
+      <div class="">
+        Hello, Embalagens Atrasadas!
+      </div>
+    </div>
+  </section>
+
+</section>
