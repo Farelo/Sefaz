@@ -22,8 +22,7 @@ async function compileSwagger() {
 
     const merged = contents.reduce(extend);
     console.log('Generating swagger.yaml, swagger.json');
-    fs.existsSync('api/swagger') || fs.mkdirSync('api/swagger');
-    fs.writeFileSync('api/swagger/swagger.yaml', YAML.dump(merged));
+    // fs.writeFileSync('api/swagger/swagger.yaml', YAML.dump(merged));
     fs.writeFileSync('api/swagger/swagger.json', JSON.stringify(merged, null, 2));
   } catch (error) {
     return 'Erro na Criação da documentação do Swagger';
@@ -31,6 +30,8 @@ async function compileSwagger() {
 
   return 'Criação da documentação do Swagger';
 }
+
+compileSwagger().then(() => console.log("compileSwagger"))
 
 module.exports = {
   compileSwagger,

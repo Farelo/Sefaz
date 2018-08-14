@@ -41,14 +41,19 @@ async function evaluate(packing, currentPlant) {
       packing = cleanObject.cleanMissing(packing); // limpa as informações sobre embalagem perdida
       packing = cleanObject.cleanTrip(packing); // limpa informações sobre a embalagem em viagem
       packing = cleanObject.cleanIncontida(packing); // limpa informações sobre a embalagem em viagem
-      packing.status = statusType.NORMAL;
+
+      if (packing.permanence.time_exceeded) {
+        packing.status = statusType.PERMANENCE_EXCEEDED;
+      } else {
+        packing.status = statusType.NORMAL;
+        await historic.initNormal(packing, oldPlant, currentPlant);
+      }
       // Se estiver no local correto para de atualizar o trip.date da embalagem e o
       // actual_plant do banco
       // Adicionar ou atualizar a minha actual_plant da embalagem no banco
       // Adicionar ou atualizar a minha last_plant da embalagem no banco
       // Tempo de permanência (CEBRACE: em qualquer ponto de controle)
       await modelOperations.update_packing(packing);
-      await historic.initNormal(packing, oldPlant, currentPlant);
     } else {
       // PAra este fluxo apenas o alerta de LOCAL INCORRETO que pode explodir
       debug('Embalagem está no local incorreto');

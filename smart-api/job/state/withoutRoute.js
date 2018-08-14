@@ -38,8 +38,13 @@ async function evaluate(packing, currentPlant) {
     packing = await evaluatesPermanenceTime.evaluate(packing, currentPlant);
     // Coleta informações sobre a localização da embalagem
     packing = await evaluatesPlantInformation(packing, currentPlant, currentDepartment);
-    packing.status = statusType.NORMAL;
-    await historic.initNormal(packing, oldPlant, currentPlant);
+
+    if (packing.permanence.time_exceeded) {
+      packing.status = statusType.PERMANENCE_EXCEEDED;
+    } else {
+      packing.status = statusType.NORMAL;
+      await historic.initNormal(packing, oldPlant, currentPlant);
+    }
 
     await modelOperations.update_packing(packing);
   } else {

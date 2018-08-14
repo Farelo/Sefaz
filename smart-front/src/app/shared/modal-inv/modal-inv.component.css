@@ -1,7 +1,8 @@
 .close {
   font-size: 20px;
-  text-align: right;
-  margin-right: 5px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
 
 .botaoVisualizar {
@@ -13,23 +14,6 @@
   outline: none;
 }
 * { font-family: 'Roboto', sans-serif; }
-
-.header {
-  display: inline-grid;
-  border-bottom-style: solid;
-  border-bottom-color: grey;
-  border-bottom-width: thin;
-  margin-bottom: 15px;
-}
-
-.header span {
-  color: #6382c9;
-}
-
-.header p {
-  font-weight: bold;
-  width: 200px;
-}
 
 .modalBody span {
   font-weight: bold;
@@ -75,21 +59,8 @@
 
 td { background-color: white; }
 
-.header {
-  display: inline-grid;
-  border-bottom-style: solid;
-  border-bottom-color: grey;
-  border-bottom-width: thin;
-  margin-bottom: 15px;
-}
-
 .header span {
-  color: #6382c9;
-}
-
-.header p {
-  font-weight: bold;
-  width: 200px;
+  color: #fff;
 }
 
 th,

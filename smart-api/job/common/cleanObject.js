@@ -35,6 +35,8 @@ function cleanPermanence(packing) {
     amount_days: 0,
     date: 0,
     time_exceeded: false,
+    date_exceeded: 0,
+    amount_days_exceeded: 0,
   };
   return packing;
 }
