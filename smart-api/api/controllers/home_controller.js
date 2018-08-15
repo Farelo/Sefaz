@@ -5,15 +5,6 @@ const responses = require('../helpers/responses/index');
 
 exports.getStats = async (req, res) => {
     const aggregate = await schemas.packing.aggregate(queries_packing.queries.home_stats());
-    // const packingStats = {
-    //     control_points: {
-    //         quantityIncorrectLocal: aggregate[0].quantityIncorrectLocal,
-
-    //     },
-    //     traveling: aggregate[0].quantityTraveling + aggregate[0].quantityLate + aggregate[0].quantityMissing,
-    //     no_signal: 0,
-    //     packing_total: aggregate[0].quantityTotal
-    // };
     res.json(aggregate[0]);
 };
 

@@ -29,8 +29,14 @@ exports.queries = {
         },
         quantityTimeExceeded: {
           $sum: { $cond: [{ $eq: ['$permanence.time_exceeded', true] }, 1, 0] },
-        }       
-      },
+        },
+        quantityInFactory: {
+          $sum: { $cond: [{ $eq: ['$actual_plant.local', 'Factory'] }, 1, 0] },
+        },
+        quantityInSupplier: {
+          $sum: { $cond: [{ $eq: ['$actual_plant.local', 'Supplier'] }, 1, 0] },
+        }  
+      }
     }
   ],
   detailed_inventory: (supplierId, packageCode) => [
