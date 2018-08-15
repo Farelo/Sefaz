@@ -1,6 +1,7 @@
 body {
   background-image: url("./assets/images/textura.png");
   font-size: 15px;
+  overflow-y: scroll;
 }
 
 /* g {
