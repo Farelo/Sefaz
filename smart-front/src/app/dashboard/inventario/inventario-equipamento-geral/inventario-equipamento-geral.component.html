@@ -64,17 +64,17 @@
                                                         currentPage: general_equipament.meta.page,
                                                         totalItems: general_equipament.meta.total_docs}">
 
-          <td>{{packing?.code || '-'}}</td>
-          <td>{{packing?.serial || '-'}}</td>
-          <td>{{packing.tag?.code || '-'}}</td>
+          <td>{{ packing?.code || '-' }}</td>
+          <td>{{ packing?.serial || '-' }}</td>
+          <td>{{ packing.tag?.code || '-' }}</td>
 
-          <td>{{packing.supplier?.name || '-'}}</td>
-          <td>{{packing.status}}</td>
-          <td [tooltip]="getFormatedData(packing.lastCommunication)" style="cursor: default;">{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta"}}</td>
+          <td>{{ packing.supplier?.name || '-' }}</td>
+          <td>{{ packing.status }}</td>
+          <td [tooltip]="getFormatedData(packing.lastCommunication)" style="cursor: default;">{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta" }}</td>
 
-          <td>{{packing.actual_plant | type}}</td>
-          <td>{{packing.battery >= 0 ? (packing.battery | round) : 'Sem Registro'}} %</td>
-          <td>{{packing?.temperature || '-'}} ∘</td>
+          <td>{{ packing.actual_plant | type }} </td>
+          <td>{{ (packing.battery != undefined && packing.battery >= 0) ? ((packing.battery | round) + '%') : 'Sem Registro' }} </td>
+          <td style="text-align: center;">{{ packing?.temperature || '-' }} ∘</td>
 
           <td style="text-align: center;">
             <div class="bigger" (click)="openLayer(packing)">
