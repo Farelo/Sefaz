@@ -186,7 +186,7 @@ body {
 
 @media (max-width: 1199px) { .menu1 .bs-popover-bottom { display: none !important; } }
 
-.modal-content {
+/* .modal-content {
   border-radius: 0em !important;
   background-color: transparent;
   border-style: solid;
@@ -194,8 +194,13 @@ body {
   border-width: thin;
   padding: 5px;
   margin: auto;
-  margin-top: 70px;
+  margin-top: 40px;
+} */
+
+.modal-content {
+  padding: 5px;
 }
+
 .modalPequeno { width: 250px; }
 
 .modal-dialog { margin-top: 20px !important; }
@@ -437,14 +442,6 @@ hotTable {
     width: 95% !important;
   }
 }
-
-.modal-content {
-  margin-top: 40px;
-}
-
-
-
-
 
 .arrow::before {
   content: none !important;

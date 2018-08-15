@@ -40,11 +40,21 @@ import { ServicesModule, AuthInterceptor } from './servicos/service.module';
 import { constants } from './../environments/constants';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap'
+import { AlertaAusenteComponent } from './shared/modal-alerta/alerta-ausente/alerta-ausente.component';
+import { AlertaBateriaBaixaComponent } from './shared/modal-alerta/alerta-bateria-baixa/alerta-bateria-baixa.component';
+import { AlertaEmbalagemAtrasadaComponent } from './shared/modal-alerta/alerta-embalagem-atrasada/alerta-embalagem-atrasada.component';
+import { AlertaLocalIncorretoComponent } from './shared/modal-alerta/alerta-local-incorreto/alerta-local-incorreto.component';
+import { AlertaPermanenciaComponent } from './shared/modal-alerta/alerta-permanencia/alerta-permanencia.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AlertaModalComponent,
+    AlertaAusenteComponent,
+    AlertaBateriaBaixaComponent,
+    AlertaEmbalagemAtrasadaComponent,
+    AlertaLocalIncorretoComponent,
+    AlertaPermanenciaComponent,
     ModalRastComponent,
     ModalUserComponent,
     ModalSupplierEditarComponent,
@@ -105,7 +115,28 @@ import { TooltipModule } from 'ngx-bootstrap'
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
-  entryComponents: [ModalRastComponent, AbscenseModalComponent, AlertaModalComponent,ModalSettings,ModalCurrentEditarComponent,LayerModalComponent,ModalStaffEditarComponent, ModalUserComponent, ModalStaffRegisterComponent,ModalLogisticEditarComponent,ModalInvComponent, ModalLogisticRegisterComponent,ModalDeleteComponent,ModalSupplierRegisterComponent,ModalSupplierEditarComponent]
+  entryComponents: [
+    ModalRastComponent, 
+    AbscenseModalComponent, 
+    AlertaModalComponent, 
+    AlertaAusenteComponent, 
+    AlertaBateriaBaixaComponent,
+    AlertaEmbalagemAtrasadaComponent,
+    AlertaLocalIncorretoComponent,
+    AlertaPermanenciaComponent,
+    ModalSettings, 
+    ModalCurrentEditarComponent,
+    LayerModalComponent,
+    ModalStaffEditarComponent, 
+    ModalUserComponent, 
+    ModalStaffRegisterComponent,
+    ModalLogisticEditarComponent,
+    ModalInvComponent, 
+    ModalLogisticRegisterComponent,
+    ModalDeleteComponent,
+    ModalSupplierRegisterComponent,
+    ModalSupplierEditarComponent
+  ]
 })
 
 export class AppModule { }

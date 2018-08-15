@@ -7,6 +7,7 @@ import { AlertaModalComponent } from '../../../shared/modal-alerta/alerta.compon
 import { AlertsService } from '../../../servicos/index.service';
 import { Alert } from '../../../shared/models/alert';
 import { Pagination } from '../../../shared/models/pagination';
+import { AlertaAusenteComponent } from '../../../shared/modal-alerta/alerta-ausente/alerta-ausente.component';
 
 @Component({
   selector: 'lista',
@@ -61,16 +62,22 @@ export class ListaComponent implements OnInit {
     this.AlertsService.retrieveAlertByPacking(embalagem,status)
       .subscribe(result => {
        
-
+        // if (status == 1 ){
+        //   const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static", size: "lg" });
+        //   modalRef.componentInstance.alerta = result;
+        // }else{
+        //   const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static" });
+        //   modalRef.componentInstance.alerta = result;
+        // }
+       
         if (status == 1 ){
-          const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static", size: "lg" });
+          const modalRef = this.modalService.open(AlertaAusenteComponent, { backdrop: "static", size: "lg" });
           modalRef.componentInstance.alerta = result;
+          
         }else{
           const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static" });
           modalRef.componentInstance.alerta = result;
-        }
-       
-        
+        } 
 
       },
       err => {
