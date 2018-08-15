@@ -14,7 +14,6 @@ export class AlertaAusenteComponent implements OnInit {
 
   @Input()
   alerta;
-  public historicFlag = false;
   public historic: Pagination = new Pagination({ meta: { page: 1 } });
 
   constructor(
@@ -26,6 +25,7 @@ export class AlertaAusenteComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.alerta);
+    this.getHistoric();
   }
 
   getHistoric() {

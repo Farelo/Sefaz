@@ -8,6 +8,8 @@ import { AlertsService } from '../../../servicos/index.service';
 import { Alert } from '../../../shared/models/alert';
 import { Pagination } from '../../../shared/models/pagination';
 import { AlertaAusenteComponent } from '../../../shared/modal-alerta/alerta-ausente/alerta-ausente.component';
+import { AlertaLocalIncorretoComponent } from '../../../shared/modal-alerta/alerta-local-incorreto/alerta-local-incorreto.component';
+import { AlertaBateriaBaixaComponent } from '../../../shared/modal-alerta/alerta-bateria-baixa/alerta-bateria-baixa.component';
 
 @Component({
   selector: 'lista',
@@ -70,10 +72,20 @@ export class ListaComponent implements OnInit {
         //   modalRef.componentInstance.alerta = result;
         // }
        
+        // Embalagem Ausente
         if (status == 1 ){
           const modalRef = this.modalService.open(AlertaAusenteComponent, { backdrop: "static", size: "lg" });
           modalRef.componentInstance.alerta = result;
-          
+        
+        // Local Incorreto
+        }else if (status == 2) {
+          const modalRef = this.modalService.open(AlertaLocalIncorretoComponent, { backdrop: "static"});
+          modalRef.componentInstance.alerta = result;
+
+        } else if (status == 3) {
+          const modalRef = this.modalService.open(AlertaBateriaBaixaComponent, { backdrop: "static" });
+          modalRef.componentInstance.alerta = result;
+
         }else{
           const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static" });
           modalRef.componentInstance.alerta = result;

@@ -18,10 +18,10 @@ export class TimePipe {
 
    
     if(days != 0){
-      return  (days > 1 ? ( days + " Dias ") : ( days + " Dia ") ) + (hours > 1 ? ( hours + " Horas e ") : ( hours + " Hora e ") ) + (minutes > 1 ? ( minutes + " Minutos") : ( minutes + " Minuto") );
+      return  (days > 1 ? ( days + " Dias ") : ( days + " Dia ") ) + (hours > 1 ? ( hours + " h ") : ( hours + " h ") ) + (minutes > 1 ? ( minutes + " min") : ( minutes + " min") );
 
     }else{
-      return (hours > 1 ? ( hours + " Horas e ") : ( hours + " Hora e ") ) + (minutes > 1 ? ( minutes + " Minutos ") : ( minutes + " Minuto") ) ;
+      return (hours > 1 ? ( hours + " Horas ") : ( hours + " Hora ") ) + (minutes > 1 ? ( minutes + " min ") : ( minutes + " min") ) ;
     }
 
   }
