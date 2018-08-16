@@ -1,6 +1,8 @@
 const debug = require('debug')('job:evaluators:evaluates_permancence_time');
 const modelOperations = require('../common/model_operations');
 const alertsType = require('../common/alerts_type');
+const historicType = require('../common/historic_type');
+const historic = require('../historic/historic');
 
 /**
  * Avalia o tempo de permanencia sobre uma determinada embalagem
@@ -23,14 +25,38 @@ async function samePlant(packing, coorrectLocation = true) {
     // verifica se passou da quantidade de dias delimitados pelo GC16
     if (packing.permanence.amount_days > daysInMilliseconds) {
       debug(`Packing permanence exceeded. ${packing._id}`);
-      packing.permanence.time_exceeded = true;
-      await modelOperations.update_alert(packing, alertsType.PERMANENCE);
 
+      if (packing.permanence.time_exceeded) {
+        const dataBase = new Date().getTime();
+        packing.permanence.amount_days_exceeded = dataBase - packing.permanence.date_exceeded;
+        // atualiza historico de permanencia
+        await historic.updatePermanenceStatus(packing);
+      } else {
+        packing.permanence.time_exceeded = true;
+        packing.permanence.date_exceeded = new Date().getTime();
+        packing.permanence.amount_days_exceeded = 0;
+        // cria historico da permanencia da embalagem no sistema
+        await historic.createPermanenceStatus(packing);
+      }
+      await modelOperations.update_alert(packing, alertsType.PERMANENCE);
       return packing;
     }
     // Caso contrario a embalagem não ultrapassou dessa quantidade de dias
     debug(`Packing permanence time ok. ${packing._id}`);
+
+    if (packing.permanence.time_exceeded) {
+      // remove historico anterior
+      await historic.removeHistoric(
+        packing,
+        packing.permanence.date_exceeded,
+        historicType.PERMANENCE_EXCEEDED,
+      );
+    }
+
     packing.permanence.time_exceeded = false;
+    packing.permanence.date_exceeded = 0;
+    packing.permanence.amount_days_exceeded = 0;
+
     await modelOperations.remove_alert(packing, alertsType.PERMANENCE);
 
     return packing;

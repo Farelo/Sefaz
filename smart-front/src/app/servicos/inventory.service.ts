@@ -37,7 +37,7 @@ export class InventoryService {
 
   getInventoryQuantity(limit: number, page: number, code: string, attr: string = ''): Observable<any> {
 
-    return this.http.get(`${environment.url}inventory/quantity/${limit}/${page}/${code}?attr=${attr}`)
+    return this.http.get(`${environment.url}inventory/quantity/${limit}/${page}?code=${code}&attr=${attr}`)
       .catch(this.handleError);
   }
 
