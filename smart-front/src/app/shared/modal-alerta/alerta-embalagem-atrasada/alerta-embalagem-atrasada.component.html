@@ -58,20 +58,20 @@
           <table class="table">
             <thead>
               <tr class="cabecalho">
-                <th class="semBorda">Fornecedor</th>
+        
                 <th class="semBorda">Planta da Fábrica</th>
                 <th class="semBorda">Planta do Fornecedor</th>
-                <th class="semBorda">Tempo Min.</th>
-                <th class="semBorda">Tempo Max.</th>
+                <th class="semBorda">Tempo Máximo</th>
+                <th class="semBorda">Tempo Gasto</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let route of alerta.data.routes">
-                <td>{{route.supplier.name}}</td>
+        
                 <td>{{route.plant_factory.plant_name}}</td>
                 <td>{{route.plant_supplier.plant_name}}</td>
-                <td>{{route.time.min | time}}</td>
                 <td>{{route.time.max | time}}</td>
+                <td>{{alerta.data.packing?.trip.time_countdown | time }}</td>
               </tr>
             </tbody>
           </table>

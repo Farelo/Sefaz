@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InventoryService, InventoryLogisticService } from '../../../servicos/index.service';
 
 @Component({
   selector: 'app-alerta-permanencia',
@@ -7,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlertaPermanenciaComponent implements OnInit {
 
-  constructor() { }
+  @Input() alerta;
+  constructor(public activeAlerta: NgbActiveModal){ }
 
   ngOnInit() {
   }

@@ -11,6 +11,7 @@ import { AlertaAusenteComponent } from '../../../shared/modal-alerta/alerta-ause
 import { AlertaLocalIncorretoComponent } from '../../../shared/modal-alerta/alerta-local-incorreto/alerta-local-incorreto.component';
 import { AlertaBateriaBaixaComponent } from '../../../shared/modal-alerta/alerta-bateria-baixa/alerta-bateria-baixa.component';
 import { AlertaEmbalagemAtrasadaComponent } from '../../../shared/modal-alerta/alerta-embalagem-atrasada/alerta-embalagem-atrasada.component';
+import { AlertaPermanenciaComponent } from '../../../shared/modal-alerta/alerta-permanencia/alerta-permanencia.component';
 
 @Component({
   selector: 'lista',
@@ -93,10 +94,14 @@ export class ListaComponent implements OnInit {
           const modalRef = this.modalService.open(AlertaEmbalagemAtrasadaComponent, { backdrop: "static" });
           modalRef.componentInstance.alerta = result;
 
-        }else{
-          const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static" });
+        } else if (status == 5) {
+          const modalRef = this.modalService.open(AlertaPermanenciaComponent, { backdrop: "static" });
           modalRef.componentInstance.alerta = result;
-        } 
+        }
+        // }else{
+        //   const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static" });
+        //   modalRef.componentInstance.alerta = result;
+        // } 
 
       },
       err => {

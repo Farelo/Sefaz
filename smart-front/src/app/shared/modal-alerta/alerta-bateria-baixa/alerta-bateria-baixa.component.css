@@ -107,10 +107,18 @@ table>thead>tr>th {
 
 .header {
   display: inline-grid;
-  border-bottom-style: solid;
-  border-bottom-color: grey;
-  border-bottom-width: thin;
+  background-color: #f5f9fc;
+  padding: 15px 15px 0px 15px;
   margin-bottom: 15px;
+  border: none;
+}
+
+.modalFilho {
+  padding: 0px !important; 
+}
+
+.modalBody {
+  padding: 0px 15px 0px 15px;
 }
 
 .header span.alert{
