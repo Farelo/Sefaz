@@ -164,10 +164,10 @@ export class LayerModalComponent implements OnInit {
   }
 
   onFirstDateChange(newDate: Date) { 
-    //console.log('onFirstDateChange');
-
-    if (newDate !== null && this.finalDate !== null )
+    if (newDate !== null && this.finalDate !== null ){
+      newDate.setHours(0, 0, 0, 0);
       this.getFilteredPositions(this.packing.code_tag, newDate.getTime(), this.finalDate.getTime(), 32000);
+    }
   }
 
   onFinalDateChange(newDate: Date) { 
@@ -183,9 +183,15 @@ export class LayerModalComponent implements OnInit {
    */
   getFilteredPositions(codeTag: string, startDate: any, finalDate: any, accuracy: any){
 
-    console.log('[getFilteredPositions] codeTag, startDate, finalDate: ' + codeTag + ", " + startDate + ", " + finalDate);
+    let normalizeStartDate = new Date(startDate);
+    normalizeStartDate.setHours(0, 0, 0, 0);
 
-    this.packingService.getFilteredPositions(codeTag, startDate, finalDate).subscribe(result => {
+    let normalizeEndDate = new Date(finalDate);
+    normalizeEndDate.setHours(23, 59, 59, 0);
+
+    console.log('[getFilteredPositions] codeTag, startDate, finalDate: ' + codeTag + ", " + normalizeStartDate.getTime() + ", " + normalizeEndDate.getTime());
+
+    this.packingService.getFilteredPositions(codeTag, normalizeStartDate.getTime(), normalizeEndDate.getTime()).subscribe(result => {
       // this.generciService.getPackAlert(`${codeTag}`).subscribe(alert => this.currentPackingAlert = alert)
       this.center = result.data.positions[0];
       //this.path = result.data.positions;
