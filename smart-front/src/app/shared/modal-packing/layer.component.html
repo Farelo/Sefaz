@@ -86,7 +86,7 @@
   </div>
 
   <div class="modalBody">
-    <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false">
+    <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false" [scrollwheel]="true">
       <polyline *ngIf="!showLastPosition" [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3" [icons]="icons"></polyline>
       
       <!-- ///////////// -->
