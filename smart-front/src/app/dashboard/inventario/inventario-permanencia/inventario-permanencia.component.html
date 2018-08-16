@@ -1,108 +1,165 @@
 <div class="base-bg">
-  <h2> QUANTIDADE</h2>
+  <h2>TEMPO DE PERMANÊNCIA</h2>
+  <br />
 
   <!-- Linha divisória -->
   <hr style="margin-top: 10px;">
 
-  <div class="row">
+  <div class="row" style="margin-bottom: 20px;">
+    <div class="col-sm-12 clear-padding">
+      <div class="col-sm-4">
+        <p>EQUIPAMENTO</p>
+        <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings"
+          bindLabel="packing" placeholder="Selecione um Equipamento">
+          <ng-template ng-label-tmp let-item="item">
+            {{item.packing}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+      
+              <b>Embalagem:</b> {{item.packing}}
+            </div>
+            <div>
+              <small>
+                <b>Fornecedor:</b> {{item.supplier.name}}
+              </small>
+      
+            </div>
+            <div>
+              <small>
+                <b> Projeto:</b> {{item.project.name}}
+              </small>
+            </div>
+      
+      
+          </ng-template>
+        </ng-select>
+      </div>
+      
+      <!--TEMPO DE PERMANÊNCIA: filtro Serial -->
+      <div class="col-sm-4 clear-padding">
+        <p>SERIAL</p>
+        <ng-select [(ngModel)]="selectedSerial" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="serials"
+          bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial">
+          <ng-template ng-label-tmp let-item="item">
+            {{item.serial}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+              <small>
+                <b>Serial:</b> {{item.serial}}</small>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+  </div>
 
-    <div class="col-sm-4">
-      <p>EQUIPAMENTO</p>
-      <ng-select [(ngModel)]="quantitySearch" (change)="quantityInventory()" bindValue="packing" [items]="packings" bindLabel="packing"
-        placeholder="Selecione um Equipamento">
-        <ng-template ng-label-tmp let-item="item">
-          {{item.packing}}
-        </ng-template>
-        <ng-template ng-option-tmp let-item="item">
-          <div>
-            <b>Embalagem:</b> {{item.packing}}
-          </div>
+  <!-- Taela SEM serial selecionado -->
+  <div *ngIf="!selectedSerial">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr class="cabecalho">
+            <th>Equipamento</th>
+            <th>Serial</th>
+            <th>Projeto</th>
 
-          <div>
-            <small>
-              <b>Fornecedor:</b> {{item.supplier.name}} </small>
-          </div>
+            <th>Planta Atual</th>
+            <th>Local</th>
+            <th>Tempo na Planta</th>
 
-          <div>
-            <small>
-              <b> Projeto:</b> {{item.project.name}} </small>
-          </div>
-        </ng-template>
-      </ng-select>
+            <th>DUNS</th>
+            <th>Fornecedor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let packing of permanence.data | paginate: {
+                                                              id:'permanence',
+                                                              itemsPerPage: 10,
+                                                              currentPage: permanence.meta.page,
+                                                              totalItems: permanence.meta.total_docs}">
+            <td>{{ packing.code || '-' }}</td>
+            <td>{{ packing.serial || '-' }}</td>
+            <td>{{ packing.project?.name || '-' }}</td>
+
+            <td>{{ packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
+              : "Embalagem em Viagem") }}</td>
+            <td>{{ packing.actual_plant | type }}</td>
+            <td>{{ packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro' }}</td>
+
+            <td>{{ packing.supplier?.duns || '-' }}</td>
+            <td>{{ packing.supplier?.name || '-' }}</td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="classVazio" *ngIf="permanence.data?.length < 1">
+        Selecione um equipamento.
+      </div>
     </div>
 
+    <br>
+    
+    <div class="has-text-centered">
+      <pagination-controls class="my-pagination" id="permanence" (pageChange)="permanence.meta.page = $event;permanenceInventory()"
+        directionLinks="false" autoHide="true">
+      </pagination-controls>
+    </div>
   </div>
 
-  <br>
+  <!-- Taela COM serial selecionado -->
+  <div *ngIf="selectedSerial">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr class="cabecalho">
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Duns</th>
 
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr class="cabecalho">
-          <th>DUNS</th>
-          <th>Projeto</th>
-          <th>Fornecedor</th>
+            <th>Fornecedor</th>
+            <th>Status</th>
+            <th>Local</th>
 
-          <th>Planta</th>
-          <th>Local</th>
+            <th>Tempo no Status</th>
+            <th style="text-align: center;">Tempo de Referência <br> BPline (Dias)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let packing of permanence.data | paginate: {
+                                                            id: 'permanenceHistoric',
+                                                            itemsPerPage: 10,
+                                                            currentPage: permanence.meta.page,
+                                                            totalItems: permanence.meta.total_docs}">
+            <td>{{ packing.date | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ packing.date | date:'HH:MM:ss' }}</td>
+            <td>{{ packing.supplier?.duns || '-' }}</td>
 
-          <th>Min</th>
-          <th style="text-align:center;">Quantidade</th>
-          <th>Max</th>
+            <td>{{ packing.supplier?.name || '-' }}</td>
+            <td>{{ packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status
+              == 'MISSING' ? 'Embalagem Ausente' : 'Embalagem Viajando') }}</td>
+            <td>{{ packing.plant | type }}</td>
 
-          <!-- <th>Diferença</th> -->
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let packing of quantity.data | paginate: {
-                                                        id:'quantity',
-                                                        itemsPerPage: 10,
-                                                        currentPage: quantity.meta.page,
-                                                        totalItems: quantity.meta.total_docs}">
-          <td>{{packing.supplier?.duns || '-'}}</td>
-          <td>{{packing.project?.name || '-'}}</td>
-          <td>{{packing.supplier?.name || '-'}}</td>
+            <td>{{ packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro' }}</td>
+            <td style="text-align: center;">{{ packing.actual_gc16?.days >= 0 ? packing.actual_gc16?.days : '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-          <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta"}}</td>
-          <td>{{packing.actual_plant | type}}</td>
-
-          <td style="text-align:center;">{{packing.actual_gc16 ? (packing.actual_gc16.min == 0 ? 0 : packing.actual_gc16.min) : '-'}}</td>
-          <td style="text-align:center;">{{packing.quantity || '-'}}</td>
-          <td style="text-align:center;">{{packing.actual_gc16 ? (packing.actual_gc16.max == 0 ? 0 : packing.actual_gc16.max) : '-'}}</td>
-
-          <!-- <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min)
-            : (packing.actual_gc16?.max
-            < packing.quantity ? packing.quantity-packing.actual_gc16?.max : 'NP')) : '-' }}</td> -->
-          <td>{{packing.status}}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="classVazio" *ngIf="quantity.data?.length < 1">
-      Selecione um equipamento
+      <div class="classVazio" *ngIf="permanence.data?.length < 1">
+        Não existem embalagens cadastradas com estes parâmetros.
+      </div>
     </div>
 
-  </div>
+    <br> 
 
-  <br>
-
-  <div class="resumo">
-    <h3 class="definicao">TOTAL: </h3>
-    <h3 class="numero">{{quantity.meta?.total_packings || 0}}</h3>
-  </div>
-
-  <div class="resumo">
-    <h3 class="definicao">DIFERENÇA: </h3>
-    <h3 class="numero">{{quantity.meta?.missing || 0}}</h3>
-  </div>
-
-  <br>
-
-  <div class="has-text-centered">
-    <pagination-controls id='quantity' class="my-pagination" (pageChange)="quantity.meta.page = $event;quantityInventory()" directionLinks="false"
-      autoHide="true">
-    </pagination-controls>
+    <div class="has-text-centered">
+      <pagination-controls class="my-pagination" id="permanenceHistoric" (pageChange)="permanence.meta.page = $event;permanenceInventorySerial()"
+        directionLinks="false" autoHide="true">
+      </pagination-controls>
+    </div>
   </div>
 
 </div>
