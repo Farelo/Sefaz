@@ -12,7 +12,7 @@ async function createHistoricMovement(packing, status) {
     department: packing.department,
     plant: packing.actual_plant,
     date: new Date().getTime(),
-    temperature: packing.temperature,
+    temperature: packing.temperature || 0,
     permanence: 0,
     serial: packing.serial,
     supplier: packing.supplier,
@@ -21,7 +21,7 @@ async function createHistoricMovement(packing, status) {
     latitude: packing.position.latitude,
     longitude: packing.position.longitude,
     accuracy: packing.position.accuracy,
-    battery: packing.battery,
+    battery: packing.battery || 0,
     status,
   });
   await newHistoric.save();
@@ -43,13 +43,13 @@ async function updateHistoricMovement(packing, status, id, permanence) {
     {
       department: packing.department,
       plant: packing.actual_plant,
-      temperature: packing.temperature,
+      temperature: packing.temperature || 0,
       permanence,
       serial: packing.serial,
       supplier: packing.supplier,
       packing: packing._id,
       packing_code: packing.code,
-      battery: packing.battery,
+      battery: packing.battery || 0,
       status,
     },
   );
