@@ -1,5 +1,5 @@
 <section class="bg-resumo">
-  <span class="total-embalagens">120 Embalagens totais</span>
+  <span class="total-embalagens">{{ resume.quantityTotal }} Embalagens totais</span>
 
   <br>
   <br>
@@ -8,26 +8,26 @@
     <div class="item tipo-barra">Pontos de Controle</div>
     <div class="item">
       <div class="progress">
-        <div class="progress-bar progress-bar-full" style="width: 25%"></div>
-        <div class="progress-bar progress-bar-empty" style="width: 75%"></div>
+        <div class="progress-bar progress-bar-full" [style.width.%]="progressControle[0]"></div>
+        <div class="progress-bar progress-bar-empty" [style.width.%]="progressControle[1]"></div>
       </div>
     </div>
 
     <div class="item tipo-barra">Em viagem</div>
     <div class="item">
       <div class="progress">
-        <div class="progress-bar progress-bar-empty" style="width: 25%"></div>
-        <div class="progress-bar progress-bar-full" style="width: 60%"></div>
-        <div class="progress-bar progress-bar-empty" style="width: 15%"></div>
+        <div class="progress-bar progress-bar-empty" [style.width.%]="progressViagem[0]"></div>
+        <div class="progress-bar progress-bar-full" [style.width.%]="progressViagem[1]"></div>
+        <div class="progress-bar progress-bar-empty" [style.width.%]="progressViagem[2]"></div>
       </div>
     </div>
 
-    <div class="item tipo-barra">Sem sinal</div>
+    <!-- <div class="item tipo-barra">Sem sinal</div>
     <div class="item">
       <div class="progress">
         <div class="progress-bar progress-bar-empty" style="width: 85%"></div>
         <div class="progress-bar progress-bar-full" style="width: 15%"></div>
       </div>
-    </div>
+    </div> -->
   </div>
 </section>

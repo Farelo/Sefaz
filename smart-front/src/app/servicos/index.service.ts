@@ -20,5 +20,6 @@ export  { CEPService } from './cep.service';
 export  { AuthenticationService } from './auth.service';
 export  { AlertsService } from './alerts.service';
 export  { AuthInterceptor } from '../interceptor/auth.interceptor';
+export  { HomeService } from './home.service';
 
 

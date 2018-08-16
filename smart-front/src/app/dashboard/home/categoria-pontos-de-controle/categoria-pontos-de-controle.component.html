@@ -1,13 +1,13 @@
 <section class="grupo-categoria">
   <div style="display: flex;">
     <h3>Nos Pontos de Controle</h3>
-    <div class="quantidade-total-categoria">80</div>
+    <div class="quantidade-total-categoria">{{ resume.quantityIncorrectLocal + resume.quantityTimeExceeded }}</div>
   </div>
 
   <div class="categoria-progress">
-    <div class="progress-bar status-incorreta" style="width: 5%"></div>
-    <div class="progress-bar status-permanencia" style="width: 10%"></div>
-    <div class="progress-bar progress-bar-empty" style="width: 85%"></div>
+    <div class="progress-bar status-incorreta" [style.width.%]="progressControle[0]"></div>
+    <div class="progress-bar status-permanencia" [style.width.%]="progressControle[1]"></div>
+    <div class="progress-bar progress-bar-empty" [style.width.%]="progressControle[2]"></div>
   </div>
 
   <!-- Local Incorreto -->
@@ -16,7 +16,7 @@
       <div class="tick-categoria">
 
         <div class="quantidade-categoria status-incorreta">
-          10
+           {{ resume.quantityIncorrectLocal }}
         </div>
 
         <span class="nome-categoria">Local Incorreto</span>
@@ -47,7 +47,7 @@
       <div class="tick-categoria">
 
         <div class="quantidade-categoria status-permanencia">
-          10
+           {{ resume.quantityTimeExceeded }}
         </div>
 
         <span class="nome-categoria">Tempo de Permanência</span>
