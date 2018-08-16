@@ -17,11 +17,12 @@
 
   <ngui-map [zoom]="zoom" [center]="center" [fullscreenControl]="true" (mapReady$)="onMapReady($event)">
     <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
-      
+
     </marker>
-     
-      <circle *ngFor="let circle of circles" [center]="circle.position" [visible]="true" [strokeColor]="'#6382c9'" [strokeOpacity]="0.5" [strokeWeight]="1" [radius]="this.auth.currentUser().radius">
-      </circle>
+
+    <circle *ngFor="let circle of circles" [center]="circle.position" [visible]="true" [strokeColor]="'#6382c9'" [strokeOpacity]="0.5"
+      [strokeWeight]="1" [radius]="this.auth.currentUser().radius">
+    </circle>
 
     <info-window id="iw" width="400" maxWidth="500">
       <div *ngIf="marker.display">

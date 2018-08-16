@@ -221,6 +221,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   }
 
   getFormatedData(t: any) {
+    if (t == undefined) return "Sem Registro";
     return new Date(t * 1000).toLocaleString();
   }
 }
