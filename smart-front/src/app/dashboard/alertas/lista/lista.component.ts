@@ -10,6 +10,7 @@ import { Pagination } from '../../../shared/models/pagination';
 import { AlertaAusenteComponent } from '../../../shared/modal-alerta/alerta-ausente/alerta-ausente.component';
 import { AlertaLocalIncorretoComponent } from '../../../shared/modal-alerta/alerta-local-incorreto/alerta-local-incorreto.component';
 import { AlertaBateriaBaixaComponent } from '../../../shared/modal-alerta/alerta-bateria-baixa/alerta-bateria-baixa.component';
+import { AlertaEmbalagemAtrasadaComponent } from '../../../shared/modal-alerta/alerta-embalagem-atrasada/alerta-embalagem-atrasada.component';
 
 @Component({
   selector: 'lista',
@@ -81,9 +82,15 @@ export class ListaComponent implements OnInit {
         }else if (status == 2) {
           const modalRef = this.modalService.open(AlertaLocalIncorretoComponent, { backdrop: "static"});
           modalRef.componentInstance.alerta = result;
-
+        
+        // Bateria Baixa
         } else if (status == 3) {
           const modalRef = this.modalService.open(AlertaBateriaBaixaComponent, { backdrop: "static" });
+          modalRef.componentInstance.alerta = result;
+
+        // Embalagem Atrasada
+        } else if (status == 4) {
+          const modalRef = this.modalService.open(AlertaEmbalagemAtrasadaComponent, { backdrop: "static" });
           modalRef.componentInstance.alerta = result;
 
         }else{

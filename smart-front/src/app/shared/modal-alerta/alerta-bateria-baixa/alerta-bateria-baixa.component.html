@@ -1,7 +1,7 @@
 <div class="modalFilho">
   <div class="header">
 
-    <h1 style="color: #354052;">Local Incorreto</h1>
+    <h1 style="color: #354052; font-weight: bold;">Local Incorreto</h1>
 
     <div class="col-xs-12 no-padding tags-row">
       <p class="alerta-badges">
@@ -42,7 +42,7 @@
       <div class="col-xs-12 col-md-6">
         <p class="titulo-modal">NÍVEL DA BATERIA:</p>
         <br>
-        <p> {{alerta.data?.packing?.battery >=0 ? (alerta.data?.packing?.battery | round) : 'Sem Registro'}}% </p>
+        <p style="font-weight: bold;"> {{alerta.data?.packing?.battery >=0 ? (alerta.data?.packing?.battery | round) : 'Sem Registro'}}% </p>
       </div>
     </div>
      

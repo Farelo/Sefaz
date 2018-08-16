@@ -1,3 +1,83 @@
-<p>
-  alerta-embalagem-atrasada works!
-</p>
+<div class="modalFilho">
+  <div class="header">
+
+    <h1 style="color: #354052;  font-weight: bold;">Embalagem Atrasada</h1>
+
+    <div class="col-xs-12 no-padding tags-row">
+      <p class="alerta-badges">
+        <span class="badge badge-secondary">Código: {{alerta.data.packing?.code}}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{alerta.data.packing?.serial}}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">Tag: {{alerta.data.packing?.code_tag}}</span>
+      </p>
+
+      <img id="ver-no-mapa" (click)="visualizeOnMap()" tooltip="Visualizar no mapa" placement="left" src="../../../assets/images/distancia.png"
+        height="25" style="float: right;">
+    </div>
+
+    <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modalBody">
+
+    <div class="row">
+      <div class="col-xs-12">
+        <p class="titulo-modal">EMITIDO EM:</p>
+        <br>
+        <p> {{alerta.data.date | date: 'dd/MM/yy'}} | {{alerta.data.date | date:'HH:MM:ss'}} </p>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <p class="titulo-modal">ÚLTIMA LOCALIZAÇÃO:</p>
+        <br>
+        <p> {{ lastPlant.plant_name }} </p>
+        <p> {{ lastPlant.location }} </p>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <p class="titulo-modal">TEMPO EM VIAGEM:</p>
+        <br>
+        <p> {{alerta.data.packing?.trip.time_countdown | time }} </p>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <p class="titulo-modal">ROTAS DA EMBALAGEM:</p>
+      </div>
+
+      <div class="col-xs-12">
+        <div class="table-responsive tabela">
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th class="semBorda">Fornecedor</th>
+                <th class="semBorda">Planta da Fábrica</th>
+                <th class="semBorda">Planta do Fornecedor</th>
+                <th class="semBorda">Tempo Min.</th>
+                <th class="semBorda">Tempo Max.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let route of alerta.data.routes">
+                <td>{{route.supplier.name}}</td>
+                <td>{{route.plant_factory.plant_name}}</td>
+                <td>{{route.plant_supplier.plant_name}}</td>
+                <td>{{route.time.min | time}}</td>
+                <td>{{route.time.max | time}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

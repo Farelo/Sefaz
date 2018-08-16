@@ -24,7 +24,7 @@ export class AlertaAusenteComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.alerta);
+    console.log(JSON.stringify(this.alerta));
     this.getHistoric();
   }
 
