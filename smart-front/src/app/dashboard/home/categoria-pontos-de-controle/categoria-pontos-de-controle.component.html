@@ -1,7 +1,7 @@
 <section class="grupo-categoria">
   <div style="display: flex;">
     <h3>Nos Pontos de Controle</h3>
-    <div class="quantidade-total-categoria">{{ resume.quantityIncorrectLocal + resume.quantityTimeExceeded }}</div>
+    <div class="quantidade-total-categoria">{{ resume.quantityInFactory + resume.quantityInSupplier}}</div>
   </div>
 
   <div class="categoria-progress">
@@ -35,7 +35,41 @@
     <!-- Conteúdo Local Incorreto -->
     <div [attr.id]="conteudoLocalIncorreto" [ngbCollapse]="!localIncorretoCollapsed">
       <div class="">
-        Hello, local incorreto!
+        <div *ngIf="listIncorrectLocal.meta.total_docs < 1">
+          Não há embalagens nesta situação.
+        </div>
+
+        <div *ngIf="listIncorrectLocal.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th>Code</th>
+                <th>Serial</th>
+                <th>Tag</th>
+                <th>Local Atual</th>
+                <th>Bateria</th>
+                <th>Último sinal</th>
+              </tr>
+            </thead>
+        
+            <tbody class="">
+              <tr *ngFor="let itemIncorrect of listIncorrectLocal.data">
+                <td>{{ itemIncorrect.code }}</td>
+                <td>{{ itemIncorrect.serial }}</td>
+                <td>{{ itemIncorrect.code_tag }}</td>
+                <td>{{ itemIncorrect.actual_plant.plant.plant_name }}</td>
+                <td>{{ ((itemIncorrect.battery | round) + '%') }}</td>
+                <td>{{ itemIncorrect.lastCommunication | date: 'dd/MM/yyyy - hh:mm a' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="has-text-centered">
+          <pagination-controls class="my-pagination" id='listIncorrectLocal' (pageChange)="listIncorrectLocal.meta.page = $event; incorrectLocalChange()"
+            directionLinks="false" autoHide="true">
+          </pagination-controls>
+        </div>
       </div>
     </div>
   </section>
@@ -66,7 +100,39 @@
     <!-- Conteúdo Tempo de Permanência -->
     <div [attr.id]="conteudoTempoDePermanencia" [ngbCollapse]="!tempoDePermanenciaCollapsed">
       <div class="">
-        Hello, Tempo de Permanência!
+        <div *ngIf="listPermanenceTime.meta.total_docs < 1"> 
+          Não há embalagens nesta situação.
+        </div>
+        <div *ngIf="listPermanenceTime.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th>Code</th>
+                <th>Serial</th>
+                <th>Tag</th>
+                <th>Local Atual</th>
+                <th>Bateria</th>
+                <th>Último sinal</th>
+              </tr>
+            </thead>
+        
+            <tbody class="">
+              <tr *ngFor="let item of listPermanenceTime.data">
+                <td>{{ item.code }}</td>
+                <td>{{ item.serial }}</td>
+                <td>{{ item.code_tag }}</td>
+                <td>{{ item.actual_plant.plant }}</td>
+                <td>{{ ((item.battery | round) + '%') }}</td>
+                <td>{{ item.lastCommunication | date: 'dd/MM/yyyy - hh:mm a' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="has-text-centered">
+          <pagination-controls class="my-pagination" id='listPermanenceTime' (pageChange)="listPermanenceTime.meta.page = $event; permanenceTimeChange()"
+            directionLinks="false" autoHide="true">
+          </pagination-controls>
+        </div>
       </div>
     </div>
   </section>

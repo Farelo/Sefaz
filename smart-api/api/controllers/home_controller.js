@@ -16,7 +16,7 @@ exports.getPackingsByStatus = (req, res) => {
     };
 
     schemas.packing
-        .paginate({ status: params.status}, { limit: params.limit, page: params.page })
+        .paginate({ status: params.status}, { limit: params.limit, page: params.page, populate: ['actual_plant.plant', 'last_plant.plant']})
         .then(
             _.partial(
                 responses.successHandlerPagination,

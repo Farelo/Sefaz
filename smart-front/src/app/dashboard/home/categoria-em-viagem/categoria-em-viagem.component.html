@@ -2,13 +2,13 @@
 
   <div style="display: flex;">
     <h3>Em Viagem</h3>
-    <div class="quantidade-total-categoria">20</div>
+    <div class="quantidade-total-categoria">{{ resume.quantityTraveling + resume.quantityLate + resume.quantityMissing }}</div>
   </div>
 
   <div class="categoria-progress">
-    <div class="progress-bar status-atrasada" style="width: 25%"></div>
-    <div class="progress-bar status-ausente" style="width: 10%"></div>
-    <div class="progress-bar progress-bar-empty" style="width: 65%"></div>
+    <div class="progress-bar status-atrasada" [style.width.%]="progressEmViagem[0]"></div>
+    <div class="progress-bar status-ausente" [style.width.%]="progressEmViagem[1]"></div>
+    <div class="progress-bar progress-bar-empty" [style.width.%]="progressEmViagem[2]"></div>
   </div>
 
   <!-- Embalagens Atrasadas -->
@@ -17,14 +17,14 @@
       <div class="tick-categoria">
 
         <div class="quantidade-categoria status-atrasada">
-          10
+          {{ resume.quantityLate }}
         </div>
 
         <span class="nome-categoria">Embalagens Atrasadas</span>
 
         <button class="hamburger hamburger--squeeze" type="button" (click)="atrasadaCollapsed = !atrasadaCollapsed" [attr.aria-controls]="conteudoAtrasada"
           [ngClass]="{ 'is-active':atrasadaCollapsed == true}">
-        
+
           <span class="hamburger-box">
             <span class="hamburger-inner"></span>
           </span>
@@ -36,7 +36,43 @@
     <!-- Conteúdo Embalagens Atrasadas -->
     <div [attr.id]="conteudoAtrasada" [ngbCollapse]="!atrasadaCollapsed">
       <div class="">
-        Hello, Embalagens Atrasadas!
+        <div *ngIf="listLate.meta.total_docs < 1">
+          Não há embalagens nesta situação.
+        </div>
+
+        <div *ngIf="listLate.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th>Code</th>
+                <th>Serial</th>
+                <th>Tag</th>
+                <th>Última Planta</th>
+                <th>Tempo de Viagem</th>
+              </tr>
+            </thead>
+
+            <tbody class="">
+              <tr *ngFor="let itemLate of listLate.data | paginate: { 
+                                                              id:'listLate', 
+                                                              itemsPerPage: 10, 
+                                                              currentPage: listLate.meta.page, 
+                                                              totalItems: listLate.meta.total_docs}">
+                <td>{{ itemLate.code }}</td>
+                <td>{{ itemLate.serial }}</td>
+                <td>{{ itemLate.code_tag }}</td>
+                <td>{{ itemLate?.last_plant?.plant?.plant_name || 'Sem Registro' }}</td>
+                <td>{{ itemLate?.trip?.time_countdown | time }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="has-text-centered">
+          <pagination-controls class="my-pagination" id='listLate' (pageChange)="listLate.meta.page = $event; lateChange()"
+            directionLinks="false" autoHide="true">
+          </pagination-controls>
+        </div>
       </div>
     </div>
   </section>
@@ -48,14 +84,14 @@
       <div class="tick-categoria">
 
         <div class="quantidade-categoria status-ausente">
-          10
+          {{ resume.quantityMissing }}
         </div>
 
         <span class="nome-categoria">Embalagens Ausentes</span>
 
         <button class="hamburger hamburger--squeeze" type="button" (click)="ausenteCollapsed = !ausenteCollapsed" [attr.aria-controls]="conteudoAusente"
           [ngClass]="{ 'is-active':ausenteCollapsed == true}">
-        
+
           <span class="hamburger-box">
             <span class="hamburger-inner"></span>
           </span>
@@ -64,10 +100,40 @@
       </div>
     </div>
 
-    <!-- Conteúdo Embalagens Atrasadas -->
+    <!-- Conteúdo Embalagens Ausentes -->
     <div [attr.id]="conteudoAusente" [ngbCollapse]="!ausenteCollapsed">
       <div class="">
-        Hello, Embalagens Atrasadas!
+        <div *ngIf="listMissing.meta.total_docs < 1">
+          Não há embalagens nesta situação.
+        </div>
+        <div *ngIf="listMissing.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th>Code</th>
+                <th>Serial</th>
+                <th>Tag</th>
+                <th>Última Planta</th>
+                <th>Tempo de Ausência</th>
+              </tr>
+            </thead>
+
+            <tbody class="">
+              <tr *ngFor="let item of listMissing.data">
+                <td>{{ item.code }}</td>
+                <td>{{ item.serial }}</td>
+                <td>{{ item.code_tag }}</td>
+                <td>{{ item?.last_plant?.plant?.plant_name || 'Sem Registro' }}</td>
+                <td>{{ itemLate?.packing_missing?.time_countdown | time }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="has-text-centered">
+          <pagination-controls class="my-pagination" id='listMissing' (pageChange)="listMissing.meta.page = $event; missingChange()" directionLinks="false"
+            autoHide="true">
+          </pagination-controls>
+        </div>
       </div>
     </div>
   </section>

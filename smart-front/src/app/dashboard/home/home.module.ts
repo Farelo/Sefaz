@@ -17,6 +17,7 @@ import { CategoriaBateriaBaixaComponent } from './categoria-bateria-baixa/catego
 
 @NgModule({
   imports: [
+    ApplicationPipes,
     HomeRoutingModule,
     CommonModule,
     NgxPaginationModule,

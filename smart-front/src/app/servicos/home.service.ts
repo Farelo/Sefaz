@@ -17,4 +17,9 @@ export class HomeService {
         return this.http.get(`${environment.url}home/packings/stats`)
             .catch(this.handleError);
     }
+
+    getStatusList(limit: number, page: number, statusType: string): Observable<any> {
+        return this.http.get(`${environment.url}home/packings/${limit}/${page}/${statusType}`)
+            .catch(this.handleError);
+    }
 }
