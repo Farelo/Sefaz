@@ -5,7 +5,7 @@ import { HomeService } from '../../../servicos/home.service';
 @Component({
   selector: 'app-categoria-em-viagem',
   templateUrl: './categoria-em-viagem.component.html',
-  styleUrls: ['./categoria-em-viagem.component.css']
+  styleUrls: ['../../../../hamburgers.css', './categoria-em-viagem.component.css']
 })
 export class CategoriaEmViagemComponent implements OnInit {
 
@@ -23,23 +23,28 @@ export class CategoriaEmViagemComponent implements OnInit {
   }
 
   ngOnChanges() {
+    //console.log(this.resume);
     this.calculateProgress();
   }
 
   calculateProgress() {
     if (this.resume.quantityLate + this.resume.quantityMissing > 0) {
       //Categoria em pontos de controle
-      this.progressEmViagem.push((parseFloat(this.resume.quantityLate) / parseFloat(this.resume.quantityLate + this.resume.quantityMissing) * 100));
-      this.progressEmViagem.push((parseFloat(this.resume.quantityMissing) / parseFloat(this.resume.quantityLate + this.resume.quantityMissing) * 100));
+      this.progressEmViagem.push((parseFloat(this.resume.quantityLate) / parseFloat(this.resume.quantityTotal)) * 100);
+      this.progressEmViagem.push((parseFloat(this.resume.quantityMissing) / parseFloat(this.resume.quantityTotal) * 100));
       this.progressEmViagem.push(100 - this.progressEmViagem[0] - this.progressEmViagem[1]);
 
-      console.log(this.progressEmViagem);
+      // this.progressEmViagem.push((parseFloat(this.resume.quantityLate) / parseFloat(this.resume.quantityLate + this.resume.quantityMissing) * 100));
+      // this.progressEmViagem.push((parseFloat(this.resume.quantityMissing) / parseFloat(this.resume.quantityLate + this.resume.quantityMissing) * 100));
+      // this.progressEmViagem.push(100 - this.progressEmViagem[0] - this.progressEmViagem[1]);
+
+      //console.log('this.progressEmViagem: ' + this.progressEmViagem);
     }
   }
 
   getListIncorrectLocal() {
     this.homeService.getStatusList(10, this.listLate.meta.page, 'LATE').subscribe(result => {
-      console.log('LATE: ' + JSON.stringify(result));
+      //console.log('LATE: ' + JSON.stringify(result));
       this.listLate = result;
 
     }, err => { console.log(err) });
@@ -47,7 +52,7 @@ export class CategoriaEmViagemComponent implements OnInit {
 
   getListPermanenceTime() {
     this.homeService.getStatusList(10, this.listMissing.meta.page, 'MISSING').subscribe(result => {
-      console.log('MISSING: ' + JSON.stringify(result));
+      //.log('MISSING: ' + JSON.stringify(result));
       this.listMissing = result;
 
     }, err => { console.log(err) });

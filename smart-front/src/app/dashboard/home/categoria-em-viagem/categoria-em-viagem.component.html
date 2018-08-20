@@ -119,7 +119,11 @@
             </thead>
 
             <tbody class="">
-              <tr *ngFor="let item of listMissing.data">
+              <tr *ngFor="let item of listMissing.data | paginate: { 
+                                                            id:'listMissing', 
+                                                            itemsPerPage: 10, 
+                                                            currentPage: listMissing.meta.page, 
+                                                            totalItems: listLate.meta.total_docs}">
                 <td>{{ item.code }}</td>
                 <td>{{ item.serial }}</td>
                 <td>{{ item.code_tag }}</td>

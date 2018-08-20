@@ -173,3 +173,15 @@
     bottom: -6px;
     background-color: #969eab;
 }
+
+/* Pagination */
+.ngx-pagination li {
+  margin-left: none !important;
+}
+
+.ngx-pagination {
+  margin-left: 0;
+  margin-bottom: 1rem;
+  box-shadow: 0px 0px 7px #ddd;
+  display: inline-block;
+}
