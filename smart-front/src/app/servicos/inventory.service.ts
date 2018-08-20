@@ -58,6 +58,12 @@ export class InventoryService {
       .catch(this.handleError);
   }
 
+  getLowBattery(limit: number, page: number): Observable<any> {
+
+    return this.http.get(`${environment.url}home/packings/low_battery/${limit}/${page}`)
+      .catch(this.handleError);
+  }
+
   getInventorySupplier(limit: number, page: number, supplier: string): Observable<any> {
 
     return this.http.get(`${environment.url}inventory/supplier/${limit}/${page}/${supplier}`)

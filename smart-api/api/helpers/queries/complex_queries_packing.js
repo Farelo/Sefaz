@@ -35,9 +35,15 @@ exports.queries = {
         },
         quantityInSupplier: {
           $sum: { $cond: [{ $eq: ['$actual_plant.local', 'Supplier'] }, 1, 0] },
-        }  
+        },
+        quantityLowBattery: {
+          $sum: { $cond: [{ $lte: ['$battery', 20] }, 1, 0] },
+        }
       }
     }
+  ],
+  home_packings_low_battery: () => [
+    { $match: { battery: { $lte: 20 } } }
   ],
   detailed_inventory: (supplierId, packageCode) => [
     supplierId
@@ -196,9 +202,9 @@ exports.queries = {
         },
         quantityTotal: {
           $sum: 1,
-        },
-      },
-    },
+        }
+      }
+    }
   ],
   detailed_inventory_by_alert: supplierId => [
     { $match: { supplier: new ObjectId(supplierId) } },

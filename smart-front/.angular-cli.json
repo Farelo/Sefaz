@@ -22,7 +22,6 @@
         "../node_modules/bootstrap/dist/css/bootstrap.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "styles.css",
-        "hamburgers.css",
         "../node_modules/ng2-toasty/style-bootstrap.css",
         "../node_modules/ng2-toasty/style-default.css",
         "../node_modules/ng2-toasty/style-material.css",

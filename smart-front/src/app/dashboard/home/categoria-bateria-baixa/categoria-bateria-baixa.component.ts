@@ -28,7 +28,7 @@ export class CategoriaBateriaBaixaComponent implements OnInit {
 
   getListIncorrectLocal() {
     this.inventoryService
-      .getInventoryBattery(10, this.listBattery.meta.page, '', '').subscribe(result => {
+      .getLowBattery(10, this.listBattery.meta.page).subscribe(result => {
         this.listBattery = result;
 
         console.log('this.listBattery: ' + JSON.stringify(this.listBattery));

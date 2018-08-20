@@ -2079,6 +2079,64 @@
         }
       }
     },
+    "/home/packings/low_battery/{limit}/{page}": {
+      "x-swagger-router-controller": "home_controller",
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "Get stats from all packings",
+        "description": "",
+        "operationId": "getPackingsLowBattery",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "Retrieve packings related this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/home/packings/{limit}/{page}/{status}": {
       "x-swagger-router-controller": "home_controller",
       "get": {
