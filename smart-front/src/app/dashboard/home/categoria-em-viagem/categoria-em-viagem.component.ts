@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
-import { HomeService } from '../../../servicos/home.service';
-import '../../../../hamburgers.css'
+import { HomeService } from '../../../servicos/home.service'; 
 
 @Component({
   selector: 'app-categoria-em-viagem',

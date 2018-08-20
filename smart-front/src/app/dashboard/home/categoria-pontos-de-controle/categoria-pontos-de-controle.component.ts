@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HomeService } from '../../../servicos/home.service';
-import { Pagination } from '../../../shared/models/pagination';
-import '../../../../hamburgers.css'
+import { Pagination } from '../../../shared/models/pagination'; 
 
 @Component({
   selector: 'app-categoria-pontos-de-controle',

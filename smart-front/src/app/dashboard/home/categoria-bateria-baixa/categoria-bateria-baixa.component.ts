@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { HomeService } from '../../../servicos/home.service';
 import { Pagination } from '../../../shared/models/pagination';
-import { InventoryService } from '../../../servicos/index.service';
-import '../../../../hamburgers.css'
+import { InventoryService } from '../../../servicos/index.service'; 
 
 @Component({
   selector: 'app-categoria-bateria-baixa',
@@ -12,7 +11,7 @@ import '../../../../hamburgers.css'
 export class CategoriaBateriaBaixaComponent implements OnInit {
 
   @Input() resume: any;
-  public listBattery: Pagination = new Pagination({ meta: { page: 1, total_docs:0 } });
+  public listBattery: Pagination = new Pagination({ meta: { page: 1 } });
   public progressBateria: any = [];
 
   constructor(private homeService: HomeService, private inventoryService: InventoryService) { }
@@ -41,7 +40,7 @@ export class CategoriaBateriaBaixaComponent implements OnInit {
   calculateProgress() {
     if (this.resume.quantityTotal > 0) {
       //Categoria em pontos de controle
-      this.progressBateria.push((parseFloat(this.resume.quantityBattery) / parseFloat(this.resume.quantityTotal)) * 100);
+      this.progressBateria.push((parseFloat(this.resume.quantityLowBattery) / parseFloat(this.resume.quantityTotal)) * 100);
       this.progressBateria.push(100 - this.progressBateria[0]);
 
       console.log('this.progressBateria: ' + this.progressBateria);
