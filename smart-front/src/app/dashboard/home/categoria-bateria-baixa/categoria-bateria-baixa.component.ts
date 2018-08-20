@@ -2,11 +2,12 @@ import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { HomeService } from '../../../servicos/home.service';
 import { Pagination } from '../../../shared/models/pagination';
 import { InventoryService } from '../../../servicos/index.service';
+import '../../../../hamburgers.css'
 
 @Component({
   selector: 'app-categoria-bateria-baixa',
   templateUrl: './categoria-bateria-baixa.component.html',
-  styleUrls: ['../../../../hamburgers.css', './categoria-bateria-baixa.component.css']
+  styleUrls: ['./categoria-bateria-baixa.component.css']
 })
 export class CategoriaBateriaBaixaComponent implements OnInit {
 

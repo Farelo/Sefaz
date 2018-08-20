@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HomeService } from '../../../servicos/home.service';
 import { Pagination } from '../../../shared/models/pagination';
+import '../../../../hamburgers.css'
 
 @Component({
   selector: 'app-categoria-pontos-de-controle',
   templateUrl: './categoria-pontos-de-controle.component.html',
-  styleUrls: ['../../../../hamburgers.css', './categoria-pontos-de-controle.component.css']
+  styleUrls: ['./categoria-pontos-de-controle.component.css']
 })
 export class CategoriaPontosDeControleComponent implements OnInit {
 
