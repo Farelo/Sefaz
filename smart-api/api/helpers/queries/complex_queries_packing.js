@@ -42,6 +42,9 @@ exports.queries = {
       }
     }
   ],
+  home_packings_low_battery: () => [
+    { $match: { battery: { $lte: 20 } } }
+  ],
   detailed_inventory: (supplierId, packageCode) => [
     supplierId
       ? { $match: { supplier: new ObjectId(supplierId) } }
