@@ -192,7 +192,7 @@ exports.queries = {
           supplier: '$supplier',
           plant: '$actual_plant.plant',
           code: '$code',
-          status: '$status',
+          incorrect_local: { $cond: [{ $eq: ['$status', 'INCORRECT_LOCAL'] }, true, false] }
         },
         current_plant: {
           $first: {
