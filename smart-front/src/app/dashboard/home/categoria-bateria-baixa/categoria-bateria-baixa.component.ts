@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { HomeService } from '../../../servicos/home.service';
 import { Pagination } from '../../../shared/models/pagination';
 import { InventoryService } from '../../../servicos/index.service';
@@ -40,7 +40,7 @@ export class CategoriaBateriaBaixaComponent implements OnInit {
   calculateProgress() {
     if (this.resume.quantityTotal > 0) {
       //Categoria em pontos de controle
-      this.progressBateria.push((parseFloat(this.listBattery.meta.total_docs) / parseFloat(this.resume.quantityTotal)) * 100);
+      this.progressBateria.push((parseFloat(this.resume.quantityBattery) / parseFloat(this.resume.quantityTotal)) * 100);
       this.progressBateria.push(100 - this.progressBateria[0]);
 
       console.log('this.progressBateria: ' + this.progressBateria);
