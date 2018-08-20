@@ -172,7 +172,7 @@
                       <td>{{getChild(plantas.current_plant.plant)}}</td>
                       <!-- <td>{{plantas.quantityTotal}} - {{plantas._id.problem}}</td> -->
                       <td>{{plantas.quantityTotal}}
-                        <span *ngIf="plantas._id.problem == true" class="badge badge-secondary">Incorreto</span>
+                        <span *ngIf="plantas._id.incorrect_local == true" class="badge badge-secondary">Incorreto</span>
                       </td>
                     </tr>
                   </tbody>

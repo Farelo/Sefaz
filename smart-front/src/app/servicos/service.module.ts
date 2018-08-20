@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 
 import {
+    HomeService,
     AlertsService,
     DepartmentService,
     PackingService,
@@ -31,6 +32,7 @@ import {
         HttpModule
     ],
     providers: [
+        HomeService,
         AlertsService,
         DepartmentService,
         PackingService,

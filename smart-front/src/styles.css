@@ -1,3 +1,5 @@
+@import "assets/hamburgers.css";
+
 body {
   background-image: url("./assets/images/textura.png");
   font-size: 15px;
@@ -275,7 +277,7 @@ body {
 }
 
 .ngx-pagination li {
-  margin-left: 10px !important;
+  margin-left: 10px;
 }
 
 .ngx-pagination li:hover {

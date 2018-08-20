@@ -1,0 +1,140 @@
+<section class="grupo-categoria">
+  <div style="display: flex;">
+    <h3>Nos Pontos de Controle</h3>
+    <div class="quantidade-total-categoria">{{ resume.quantityInFactory + resume.quantityInSupplier}}</div>
+  </div>
+
+  <div class="categoria-progress">
+    <div class="progress-bar status-incorreta" [style.width.%]="progressControle[0]"></div>
+    <div class="progress-bar status-permanencia" [style.width.%]="progressControle[1]"></div>
+    <div class="progress-bar progress-bar-empty" [style.width.%]="progressControle[2]"></div>
+  </div>
+
+  <!-- Local Incorreto -->
+  <section>
+    <div class="linha-categoria status-incorreta">
+      <div class="tick-categoria">
+
+        <div class="quantidade-categoria status-incorreta">
+           {{ resume.quantityIncorrectLocal }}
+        </div>
+
+        <span class="nome-categoria">Local Incorreto</span>
+
+        <button class="hamburger hamburger--squeeze" type="button" (click)="localIncorretoCollapsed = !localIncorretoCollapsed" [attr.aria-controls]="conteudoLocalIncorreto"
+          [ngClass]="{ 'is-active':localIncorretoCollapsed == true}">
+        
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Conteúdo Local Incorreto -->
+    <div [attr.id]="conteudoLocalIncorreto" [ngbCollapse]="!localIncorretoCollapsed">
+      <div class="">
+        <div *ngIf="listIncorrectLocal.meta.total_docs < 1">
+          Não há embalagens nesta situação.
+        </div>
+
+        <div *ngIf="listIncorrectLocal.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th>Code</th>
+                <th>Serial</th>
+                <th>Tag</th>
+                <th>Local Atual</th>
+                <th>Bateria</th>
+                <th>Último sinal</th>
+              </tr>
+            </thead>
+        
+            <tbody class="">
+              <tr *ngFor="let itemIncorrect of listIncorrectLocal.data">
+                <td>{{ itemIncorrect.code }}</td>
+                <td>{{ itemIncorrect.serial }}</td>
+                <td>{{ itemIncorrect.code_tag }}</td>
+                <td>{{ itemIncorrect.actual_plant.plant.plant_name }}</td>
+                <td>{{ ((itemIncorrect.battery | round) + '%') }}</td>
+                <td>{{ itemIncorrect.lastCommunication | date: 'dd/MM/yyyy - hh:mm a' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="has-text-centered">
+          <pagination-controls class="my-pagination" id='listIncorrectLocal' (pageChange)="listIncorrectLocal.meta.page = $event; incorrectLocalChange()"
+            directionLinks="false" autoHide="true">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ////////////////////////////////////////////////////////////////////// -->
+  <!-- Tempo de Permanência -->
+  <section>
+    <div class="linha-categoria status-permanencia">
+      <div class="tick-categoria">
+
+        <div class="quantidade-categoria status-permanencia">
+           {{ resume.quantityTimeExceeded }}
+        </div>
+
+        <span class="nome-categoria">Tempo de Permanência</span>
+
+        <button class="hamburger hamburger--squeeze" type="button" (click)="tempoDePermanenciaCollapsed = !tempoDePermanenciaCollapsed"
+          [attr.aria-controls]="conteudoTempoDePermanencia" [ngClass]="{ 'is-active':tempoDePermanenciaCollapsed == true}">
+        
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Conteúdo Tempo de Permanência -->
+    <div [attr.id]="conteudoTempoDePermanencia" [ngbCollapse]="!tempoDePermanenciaCollapsed">
+      <div class="">
+        <div *ngIf="listPermanenceTime.meta.total_docs < 1"> 
+          Não há embalagens nesta situação.
+        </div>
+        <div *ngIf="listPermanenceTime.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th>Code</th>
+                <th>Serial</th>
+                <th>Tag</th>
+                <th>Local Atual</th>
+                <th>Bateria</th>
+                <th>Último sinal</th>
+              </tr>
+            </thead>
+        
+            <tbody class="">
+              <tr *ngFor="let item of listPermanenceTime.data">
+                <td>{{ item.code }}</td>
+                <td>{{ item.serial }}</td>
+                <td>{{ item.code_tag }}</td>
+                <td>{{ item.actual_plant.plant }}</td>
+                <td>{{ ((item.battery | round) + '%') }}</td>
+                <td>{{ item.lastCommunication | date: 'dd/MM/yyyy - hh:mm a' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="has-text-centered">
+          <pagination-controls class="my-pagination" id='listPermanenceTime' (pageChange)="listPermanenceTime.meta.page = $event; permanenceTimeChange()"
+            directionLinks="false" autoHide="true">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</section>

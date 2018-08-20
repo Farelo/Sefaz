@@ -4,6 +4,47 @@ const statusType = require('../../../job/common/status_type');
 const ObjectId = schemas.ObjectId;
 
 exports.queries = {
+  home_stats: () => [
+    {
+      $group: {
+        _id: {
+          list: {
+            $sum: 1,
+          },
+        },
+        quantityTotal: {
+          $sum: 1,
+        },
+        quantityTraveling: {
+          $sum: { $cond: [{ $eq: ['$status', statusType.TRAVELING] }, 1, 0] },
+        },
+        quantityIncorrectLocal: {
+          $sum: { $cond: [{ $eq: ['$status', statusType.INCORRECT_LOCAL] }, 1, 0] },
+        },
+        quantityMissing: {
+          $sum: { $cond: [{ $eq: ['$status', statusType.MISSING] }, 1, 0] },
+        },
+        quantityLate: {
+          $sum: { $cond: [{ $eq: ['$status', statusType.LATE] }, 1, 0] },
+        },
+        quantityTimeExceeded: {
+          $sum: { $cond: [{ $eq: ['$permanence.time_exceeded', true] }, 1, 0] },
+        },
+        quantityInFactory: {
+          $sum: { $cond: [{ $eq: ['$actual_plant.local', 'Factory'] }, 1, 0] },
+        },
+        quantityInSupplier: {
+          $sum: { $cond: [{ $eq: ['$actual_plant.local', 'Supplier'] }, 1, 0] },
+        },
+        quantityLowBattery: {
+          $sum: { $cond: [{ $lte: ['$battery', 20] }, 1, 0] },
+        }
+      }
+    }
+  ],
+  home_packings_low_battery: () => [
+    { $match: { battery: { $lte: 20 } } }
+  ],
   detailed_inventory: (supplierId, packageCode) => [
     supplierId
       ? { $match: { supplier: new ObjectId(supplierId) } }
@@ -151,7 +192,7 @@ exports.queries = {
           supplier: '$supplier',
           plant: '$actual_plant.plant',
           code: '$code',
-          status: '$status',
+          incorrect_local: { $cond: [{ $eq: ['$status', 'INCORRECT_LOCAL'] }, true, false] }
         },
         current_plant: {
           $first: {
@@ -161,9 +202,9 @@ exports.queries = {
         },
         quantityTotal: {
           $sum: 1,
-        },
-      },
-    },
+        }
+      }
+    }
   ],
   detailed_inventory_by_alert: supplierId => [
     { $match: { supplier: new ObjectId(supplierId) } },

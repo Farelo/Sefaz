@@ -1,9 +1,9 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import {HomeComponent} from './home.component';
+import { HomeComponent } from './home.component';
 
 const homeRoutes = [
-  { path: '', component: HomeComponent}
+  { path: '', component: HomeComponent }
 
   // {path: 'list/:hashing/:status', component: ListaComponent}
 ];
@@ -13,4 +13,4 @@ const homeRoutes = [
   exports: [RouterModule]
 })
 
-export class HomeRoutingModule {}
+export class HomeRoutingModule { }

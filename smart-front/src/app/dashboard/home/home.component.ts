@@ -1,8 +1,6 @@
   import { Component, OnInit } from '@angular/core';
-  import { PackingService } from '../../servicos/index.service';
-  import { Pagination } from '../../shared/models/pagination';
-  import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
-  import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+  import { PackingService, HomeService } from '../../servicos/index.service';
+  import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
   @Component({
     selector: 'app-home',
@@ -10,80 +8,37 @@
     styleUrls: ['./home.component.css']
   })
   export class HomeComponent implements OnInit {
-    public packingsPerPlant: Pagination = new Pagination({meta: {page : 1}});
-    public packingsPerCondition: Pagination = new Pagination({meta: {page : 1}}); 
-    public search  = "";
-    public colorScheme = {  
-      domain: ['#666666', '#ef5562', '#f77737', '#027f01', '#4c7bff', '#4dc9ff' ]
+    
+    public localIncorretoCollapsed = false;
+    public tempoDePermanenciaCollapsed = false;
+    public semSinalCollapsed = false;
+    public atrasadaCollapsed = false;
+    public ausenteCollapsed = false;
+    public bateriaBaixaCollapsed = false;
+
+    public resume: any = {
+      quantityTotal: 0,
+      quantityTraveling: 0,
+      quantityIncorrectLocal: 0,
+      quantityMissing: 0,
+      quantityLate: 0,
+      quantityTimeExceeded: 0,
+      quantityInFactory: 0,
+      quantityInSupplier: 0,
+      quantityNoSignal: 0
     };
 
-    // pie
-    public showLabels = true;
-    public explodeSlices = false;
-    public doughnut = false;
-    public showLegend = true;
-
-    constructor(
-      private packingService: PackingService
-    ) { }
-
-    searchEvent(): void{
-      
-    }
-
-    loadPackingPerPlant() {
-      this.packingService
-        .loadingPackingPerPlant(10, this.packingsPerPlant.meta.page )
-        .subscribe(result => {
-          this.packingsPerPlant = result;
-
-          console.log('[this.packingsPerPlant]: ' + JSON.stringify(result));
-        },err => {  console.log(err)});
-    }
-
-    loadPackingPerCondition() {
-      this.packingService
-        .loadingPackingPerCondition( )
-        .subscribe(result => {
-          //console.log('[this.packingsPerCondition]: ' + JSON.stringify(result));
-
-          this.packingsPerCondition = result;
-          this.getPackingSum();
-        },err => {  console.log(err)});
-    }
-
-    
-
-    pageChanged(page: any): void{
-      this.packingsPerPlant.meta.page = page;
-    }
+    constructor(private homeService: HomeService) { }
 
     ngOnInit() {
-      this.loadPackingPerPlant();
-      this.loadPackingPerCondition();
+      this.getResume();
     }
 
-    /**
-     * Misc methods
-     */
-    private packingSum: number = 0;
-    getPackingSum(){
+    getResume() {
+      this.homeService.getResumeHome().subscribe(result => {
+        console.log('result: ' + JSON.stringify(result));
+        this.resume = result;
 
-      if (this.packingsPerCondition.data != undefined) {
-        this.packingSum = this.packingsPerCondition.data.reduce((sum, elem)=> sum + elem.value, 0);
-      }
-
-      return this.packingSum;
+      }, err => { console.log(err) });
     }
-
-    getSumByCondition(i: number){
-      let result = 0;
-      
-      if (this.packingsPerCondition.data != undefined){
-        result = this.packingsPerCondition.data[i].value;
-      }
-
-      return result;
-    }
-
   }
