@@ -22,7 +22,7 @@ import { CategoriaBateriaBaixaComponent } from './categoria-bateria-baixa/catego
     CommonModule,
     NgxPaginationModule,
     NgxChartsModule,
-    NgbModule
+    NgbModule,
   ],
   declarations: [
     HomeComponent,
