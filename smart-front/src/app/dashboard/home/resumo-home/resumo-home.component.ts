@@ -12,7 +12,7 @@ export class ResumoHomeComponent implements OnInit {
   resume: any;
 
   public progressControle: any = [];
-  public progressViagem: any = [];  
+  public progressViagem: any = [];
   public progressSemSinal: any = [];
 
   constructor() { }
@@ -21,28 +21,31 @@ export class ResumoHomeComponent implements OnInit {
 
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     this.calculateProgress();
   }
 
-  calculateProgress(){
-    if (this.resume.quantityTotal > 0){
+  calculateProgress() {
+    if (this.resume.quantityTotal > 0) {
       //Categoria em pontos de controle
       /*
       progressControle = permanência + fábrica + fornecedor
       local incorreto?
       */
-      this.progressControle.push((parseFloat(this.resume.quantityTimeExceeded + this.resume.quantityInFactory + this.resume.quantityInSupplier) / parseFloat(this.resume.quantityTotal)) * 100);
+      this.progressControle.push((parseFloat(this.resume.quantityInFactory + this.resume.quantityInSupplier) / parseFloat(this.resume.quantityTotal)) * 100);
       this.progressControle.push(100 - this.progressControle[0]);
+
+      console.log('this.progressControle: ' + this.progressControle);
 
       //Categoria em viagem
       /*
       progressViagem = atrasado + ausente + viajando
       */
       this.progressViagem.push(this.progressControle[0]);
-      this.progressViagem.push((parseFloat(this.resume.quantityLate + this.resume.quantityMissing + this.resume.quantityTraveling) / parseFloat(this.resume.quantityTotal))*100);
+      this.progressViagem.push((parseFloat(this.resume.quantityLate + this.resume.quantityMissing + this.resume.quantityTraveling) / parseFloat(this.resume.quantityTotal)) * 100);
       this.progressViagem.push(100 - this.progressViagem[0] - this.progressViagem[1]);
 
+      console.log('this.progressViagem: ' + this.progressViagem);
       //Categoria sem sinal
     }
   }
