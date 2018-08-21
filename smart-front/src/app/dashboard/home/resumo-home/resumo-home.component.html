@@ -8,7 +8,7 @@
     <div class="item tipo-barra">Pontos de Controle</div>
     <div class="item">
       <div class="progress">
-        <div class="progress-bar progress-bar-full" [style.width.%]="progressControle[0]"></div>
+        <div class="progress-bar progress-bar-full" [tooltip]="getTooltipControle()" [style.width.%]="progressControle[0]"></div>
         <div class="progress-bar progress-bar-empty" [style.width.%]="progressControle[1]"></div>
       </div>
     </div>
@@ -17,7 +17,7 @@
     <div class="item">
       <div class="progress">
         <div class="progress-bar progress-bar-empty" [style.width.%]="progressViagem[0]"></div>
-        <div class="progress-bar progress-bar-full" [style.width.%]="progressViagem[1]"></div>
+        <div class="progress-bar progress-bar-full" [tooltip]="getTooltipViagem()" [style.width.%]="progressViagem[1]"></div>
         <div class="progress-bar progress-bar-empty" [style.width.%]="progressViagem[2]"></div>
       </div>
     </div>

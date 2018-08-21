@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HomeService } from '../../../servicos/home.service';
 
 @Component({
   selector: 'app-resumo-home',
@@ -48,5 +47,13 @@ export class ResumoHomeComponent implements OnInit {
       console.log('this.progressViagem: ' + this.progressViagem);
       //Categoria sem sinal
     }
+  }
+
+  getTooltipControle(){
+    return `${this.resume.quantityInFactory + this.resume.quantityInSupplier + this.resume.quantityInOpLogistic} embalagens de ${this.resume.quantityTotal}`;
+  }
+
+  getTooltipViagem() {
+    return `${this.resume.quantityLate + this.resume.quantityMissing + this.resume.quantityTraveling} embalagens de ${this.resume.quantityTotal}`;
   }
 }
