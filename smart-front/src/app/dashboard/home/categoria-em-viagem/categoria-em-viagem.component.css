@@ -36,6 +36,36 @@
   background-color: #666666;
 }
 
+.bg-bateria {
+  background-color: #f8bd37;
+}
+
+/* bg categoria status*/
+.bg-controlada{
+  background-image: linear-gradient(to right, #666666 , transparent);
+}
+
+.bg-ausente{
+  background-image: linear-gradient(to right, #ef5562 , transparent);
+}
+
+.bg-incorreta{ 
+  background-image: linear-gradient(to right, #f77737 , transparent);
+}
+
+.bg-viajando{ 
+  background-image: linear-gradient(to right, #027f01 , transparent);
+}
+
+.bg-permanencia{ 
+  background-image: linear-gradient(to right, #4c7bff , transparent);
+}
+
+.bg-atrasada{ 
+  background-image: linear-gradient(to right, #4dc9ff , transparent);
+}
+
+/* Badge status*/
 .status-ausente{
   background-color: #ef5562;
 }
