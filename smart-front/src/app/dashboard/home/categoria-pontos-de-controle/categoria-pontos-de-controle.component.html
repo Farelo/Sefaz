@@ -92,6 +92,7 @@
 
         <button class="hamburger hamburger--squeeze" type="button" (click)="tempoDePermanenciaCollapsed = !tempoDePermanenciaCollapsed"
           [attr.aria-controls]="conteudoTempoDePermanencia" [ngClass]="{ 'is-active':tempoDePermanenciaCollapsed == true}">
+        <!-- <button class="hamburger hamburger--squeeze" type="button" (click)="animatePermanenciaCollapse()"> -->
 
           <span class="hamburger-box">
             <span class="hamburger-inner"></span>
@@ -103,6 +104,7 @@
 
     <!-- Conteúdo Tempo de Permanência -->
     <div [attr.id]="conteudoTempoDePermanencia" [ngbCollapse]="!tempoDePermanenciaCollapsed">
+    <!-- <div [@animatePermanenciaCollapse]="tempoDePermanenciaCollapsed"> -->
       <div class="">
         <div *ngIf="listPermanenceTime.meta.total_docs < 1">
           Não há embalagens nesta situação.

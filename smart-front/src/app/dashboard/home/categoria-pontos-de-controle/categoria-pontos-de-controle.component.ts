@@ -15,6 +15,9 @@ export class CategoriaPontosDeControleComponent implements OnInit {
   public listIncorrectLocal: Pagination = new Pagination({ meta: { page: 1 } });
   public listPermanenceTime: Pagination = new Pagination({ meta: { page: 1 } });
   
+  public tempoDePermanenciaCollapsed: boolean = false;
+  public localIncorretoCollapsed: boolean = false;
+
   constructor(private homeService: HomeService) { }
 
   ngOnInit() {
@@ -68,5 +71,6 @@ export class CategoriaPontosDeControleComponent implements OnInit {
     console.log('permanenceTime');
     this.getListPermanenceTime();
   }
+
 }
 
