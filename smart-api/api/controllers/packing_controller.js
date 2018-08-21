@@ -45,6 +45,7 @@ function object() {
     quantityMissing: 0,
     quantityInFactory: 0,
     quantityInSupplier: 0,
+    quantityInOpLogistic: 0,
     quantityLate: 0,
     quantityIncontida: 0,
     all_plants: [],
@@ -145,6 +146,7 @@ const buildDetailedInvetoryArray = async (
       obj.quantityMissing = item.quantityMissing;
       obj.quantityInFactory = item.quantityInFactory;
       obj.quantityInSupplier = item.quantityInSupplier;
+      obj.quantityInOpLogistic = item.quantityInOpLogistic;
       obj.quantityLate = item.quantityLate;
 
       obj.all_plants = aggregatePlantList[index];

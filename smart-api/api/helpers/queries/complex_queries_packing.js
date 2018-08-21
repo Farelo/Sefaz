@@ -151,6 +151,9 @@ exports.queries = {
         quantityInSupplier: {
           $sum: { $cond: [{ $eq: ['$actual_plant.local', 'Supplier'] }, 1, 0] },
         },
+        quantityInOpLogistic: {
+          $sum: { $cond: [{ $eq: ['$actual_plant.local', 'Logistic'] }, 1, 0] },
+        },
         quantityLate: {
           $sum: { $cond: [{ $eq: ['$status', statusType.LATE] }, 1, 0] },
         },

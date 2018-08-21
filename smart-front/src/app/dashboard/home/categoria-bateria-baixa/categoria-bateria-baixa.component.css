@@ -57,8 +57,8 @@
   background-image: linear-gradient(to right, #4dc9ff , transparent);
 }
 
-.bg-bateria {
-  background-color: #f8bd37;
+.bg-bateria { 
+  background-image: linear-gradient(to right, #f8bd37 , transparent);
 }
 
 /* Status badge */

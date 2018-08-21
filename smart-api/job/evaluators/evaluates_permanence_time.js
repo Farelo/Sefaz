@@ -18,7 +18,7 @@ async function samePlant(packing, coorrectLocation = true) {
 
   // Avalia se a embalagem apresenta atual GC16 e esta no local correto
   if (packing.actual_gc16 && coorrectLocation) {
-    daysInMilliseconds = 1000 * 60 * 60 * 24 * packing.actual_gc16.days; // milliseconds*seconds*minutes*hours*days
+    daysInMilliseconds = 1000 * 60 * 60 * 24 * packing.actual_gc16.days || 0; // milliseconds*seconds*minutes*hours*days
 
     packing.permanence.amount_days = timeInterval;
 
@@ -28,7 +28,9 @@ async function samePlant(packing, coorrectLocation = true) {
 
       if (packing.permanence.time_exceeded) {
         const dataBase = new Date().getTime();
-        packing.permanence.amount_days_exceeded = dataBase - packing.permanence.date_exceeded;
+        debug(`SEM TEMPO EXECEEDED: ${packing.permanence.date_exceeded}`)
+        const date_exceeded = packing.permanence.date_exceeded ? packing.permanence.date_exceeded : new Date().getTime();
+        packing.permanence.amount_days_exceeded = dataBase - date_exceeded;
         // atualiza historico de permanencia
         await historic.updatePermanenceStatus(packing);
       } else {
