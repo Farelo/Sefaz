@@ -18,8 +18,8 @@ export class CategoriaEmViagemComponent implements OnInit {
   constructor(private homeService: HomeService) { }
 
   ngOnInit() {
-    this.getListIncorrectLocal();
-    this.getListPermanenceTime();
+    this.getListLate();
+    this.getListMissing();
   }
 
   ngOnChanges() {
@@ -42,7 +42,7 @@ export class CategoriaEmViagemComponent implements OnInit {
     }
   }
 
-  getListIncorrectLocal() {
+  getListLate() {
     this.homeService.getStatusList(10, this.listLate.meta.page, 'LATE').subscribe(result => {
       //console.log('LATE: ' + JSON.stringify(result));
       this.listLate = result;
@@ -50,9 +50,9 @@ export class CategoriaEmViagemComponent implements OnInit {
     }, err => { console.log(err) });
   }
 
-  getListPermanenceTime() {
+  getListMissing() {
     this.homeService.getStatusList(10, this.listMissing.meta.page, 'MISSING').subscribe(result => {
-      //.log('MISSING: ' + JSON.stringify(result));
+      //console.log('MISSING: ' + JSON.stringify(result));
       this.listMissing = result;
 
     }, err => { console.log(err) });
@@ -64,9 +64,12 @@ export class CategoriaEmViagemComponent implements OnInit {
 
   lateChange(){
     console.log('lateChange');
+    this.getListLate();
   }
 
   missingChange(){
     console.log('lateChange');
+    this.getListMissing();
   }
+
 }

@@ -12,7 +12,7 @@ export class ResumoHomeComponent implements OnInit {
   resume: any;
 
   public progressControle: any = [];
-  public progressViagem: any = [];  
+  public progressViagem: any = [];
   public progressSemSinal: any = [];
 
   constructor() { }
@@ -21,12 +21,12 @@ export class ResumoHomeComponent implements OnInit {
 
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     this.calculateProgress();
   }
 
-  calculateProgress(){
-    if (this.resume.quantityTotal > 0){
+  calculateProgress() {
+    if (this.resume.quantityTotal > 0) {
       //Categoria em pontos de controle
       /*
       progressControle = permanência + fábrica + fornecedor
@@ -42,7 +42,7 @@ export class ResumoHomeComponent implements OnInit {
       progressViagem = atrasado + ausente + viajando
       */
       this.progressViagem.push(this.progressControle[0]);
-      this.progressViagem.push((parseFloat(this.resume.quantityLate + this.resume.quantityMissing + this.resume.quantityTraveling) / parseFloat(this.resume.quantityTotal))*100);
+      this.progressViagem.push((parseFloat(this.resume.quantityLate + this.resume.quantityMissing + this.resume.quantityTraveling) / parseFloat(this.resume.quantityTotal)) * 100);
       this.progressViagem.push(100 - this.progressViagem[0] - this.progressViagem[1]);
 
       console.log('this.progressViagem: ' + this.progressViagem);
