@@ -44,17 +44,15 @@ export class CategoriaPontosDeControleComponent implements OnInit {
 
   getListIncorrectLocal(){
     this.homeService.getStatusList(10, this.listIncorrectLocal.meta.page, 'INCORRECT_LOCAL').subscribe(result => {
-      //console.log('INCORRECT_LOCAL: ' + JSON.stringify(result));
       this.listIncorrectLocal = result;
-
+      //console.log('listIncorrectLocal: ' + JSON.stringify(this.listIncorrectLocal));
     }, err => { console.log(err) });
   }
 
   getListPermanenceTime() {
-    this.homeService.getStatusList(10, this.listIncorrectLocal.meta.page, 'PERMANENCE_EXCEEDED').subscribe(result => {
-      //console.log('PERMANENCE_EXCEEDED: ' + JSON.stringify(result));
+    this.homeService.getStatusList(10, this.listPermanenceTime.meta.page, 'PERMANENCE_EXCEEDED').subscribe(result => {
       this.listPermanenceTime = result;
-
+      //console.log('PERMANENCE_EXCEEDED: ' + JSON.stringify(this.listPermanenceTime));
     }, err => { console.log(err) });
   }
 
@@ -63,10 +61,12 @@ export class CategoriaPontosDeControleComponent implements OnInit {
   */
   incorrectLocalChange(){
     console.log('incorrectLocal');
+    this.getListIncorrectLocal();
   }
 
   permanenceTimeChange(){
     console.log('permanenceTime');
+    this.getListPermanenceTime();
   }
 }
 
