@@ -33,44 +33,47 @@ exports.getPackingsByStatus = (req, res) => {
 };
 
 exports.getPackingsLowBattery = (req, res) => {
-    const query = { battery: { $lte: 20 } }
     const params = {
         limit: parseInt(req.swagger.params.limit.value),
         page: parseInt(req.swagger.params.page.value)
     };
 
-    // schemas.packing.paginate(query, { page: params.page, limit: params.limit})
-        // .then(
-        //     _.partial(
-        //         responses.successHandlerPagination,
-        //         res,
-        //         req.user.refresh_token,
-        //     )
-        // )
-        // .catch(
-        //     _.partial(
-        //         responses.errorHandler,
-        //         res,
-        //         'Error to packings with low battery',
-        //     )
-        // );
+    schemas.settings.find({})
+        .then(settings => {
+            const query = { battery: { $lte: settings[0].battery_level } }
+            schemas.packing.paginate(query, { page: params.page, limit: params.limit, populate: ['actual_plant.plant', 'last_plant.plant'] })
+                .then(
+                    _.partial(
+                        responses.successHandlerPagination,
+                        res,
+                        req.user.refresh_token,
+                    )
+                )
+                .catch(
+                    _.partial(
+                        responses.errorHandler,
+                        res,
+                        'Error to packings with low battery',
+                    )
+            );
+    });
     
-    const aggregate = schemas.packing.aggregate(
-        queries_packing.queries.home_packings_low_battery()
-    );
+    // const aggregate = schemas.packing.aggregate(
+    //     queries_packing.queries.home_packings_low_battery()
+    // );
 
-    schemas.packing.aggregatePaginate(
-        aggregate,
-        {
-            page: params.page,
-            limit: params.limit
-        },
-        _.partial(
-            responses.successHandlerPaginationAggregate,
-            res,
-            req.user.refresh_token,
-            req.swagger.params.page.value,
-            req.swagger.params.limit.value,
-        ),
-    );
+    // schemas.packing.aggregatePaginate(
+    //     aggregate,
+    //     {
+    //         page: params.page,
+    //         limit: params.limit
+    //     },
+    //     _.partial(
+    //         responses.successHandlerPaginationAggregate,
+    //         res,
+    //         req.user.refresh_token,
+    //         req.swagger.params.page.value,
+    //         req.swagger.params.limit.value,
+    //     ),
+    // );
 };

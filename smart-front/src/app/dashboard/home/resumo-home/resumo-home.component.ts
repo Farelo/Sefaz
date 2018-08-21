@@ -32,7 +32,7 @@ export class ResumoHomeComponent implements OnInit {
       progressControle = permanência + fábrica + fornecedor
       local incorreto?
       */
-      this.progressControle.push((parseFloat(this.resume.quantityInFactory + this.resume.quantityInSupplier) / parseFloat(this.resume.quantityTotal)) * 100);
+      this.progressControle.push((parseFloat(this.resume.quantityInFactory + this.resume.quantityInSupplier + this.resume.quantityInOpLogistic) / parseFloat(this.resume.quantityTotal)) * 100);
       this.progressControle.push(100 - this.progressControle[0]);
 
       console.log('this.progressControle: ' + this.progressControle);
