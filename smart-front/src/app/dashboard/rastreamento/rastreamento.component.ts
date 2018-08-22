@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService, PackingService, PlantsService, DepartmentService } from '../../servicos/index.service';
+import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 declare var $: any;
 declare var google: any;
@@ -43,10 +43,25 @@ export class RastreamentoComponent implements OnInit {
   numero: 1;
   plants = [];
 
+  //selects
+  public serials: any[];
+  public packings: any[];
+
+  //array de pinos
+  public listOfFactories: any = [];
+  public listOfSuppliers: any = [];
+  public listOfLogistic: any = [];
+
+  //show markers
+  public showControlledPlants: boolean = true;
+  public showControlledLogistics: boolean = true;
+  public showControlledSuppliers: boolean = true;
+
   constructor(
     private ref: ChangeDetectorRef,
     private departmentService: DepartmentService,
     private plantsService: PlantsService,
+    private settingsService: SettingsService,
     private packingService: PackingService,
     private modalService: NgbModal,
     private auth: AuthenticationService
@@ -60,6 +75,19 @@ export class RastreamentoComponent implements OnInit {
 
   }
 
+  ngOnInit() {
+    this.loadDepartmentsByPlant();
+    this.getPlantRadius();
+  }
+
+  onChange(event) {
+    this.center = { lat: event.lat, lng: event.lng };
+    this.zoom = 14;
+  }
+
+  /**
+   * Carrega os fornecedores no select Fornecedor
+   */
   loadDepartmentsByPlant() {
     if (this.logged_user instanceof Array) {
       let user = this.auth.currentUser();
@@ -70,12 +98,24 @@ export class RastreamentoComponent implements OnInit {
           if (result.data.length > 0) {
             for (let data of result.data) {
               if (data.supplier) {
-                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "supplier" });
+                this.listOfSuppliers.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "supplier" });
+
+              } else if (data.logistic_operator) {
+                this.listOfLogistic.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "logistic" });
+
               } else {
-                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "logistic" });
+                this.listOfFactories.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "normal" });
               } 
             }
+            
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
+
+            console.log('this.options: ' + JSON.stringify(this.options));
+            console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
+            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
+            console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
+            console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
+            
           }
         }, err => { console.log(err) });
     }else{
@@ -86,28 +126,60 @@ export class RastreamentoComponent implements OnInit {
           if (result.data.length > 0) {
             for (let data of result.data) {
               if (data.supplier) {
-                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "supplier" });
+                this.listOfSuppliers.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "supplier" });
+
               } else if(data.logistic_operator) {
-                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "logistic" });
+                this.listOfLogistic.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "logistic" });
+
               }else{
-                this.options.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "normal" });
+                this.listOfFactories.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "normal" });
               }
             }  
            
             this.options.forEach(opt => this.circles.push({ position: { lat: opt.position[0], lng: opt.position[1] }, radius: this.auth.currentUser().radius}))
-            this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
-           
 
+            console.log('this.options: ' + JSON.stringify(this.options));
+            console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
+            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
+            console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
+            console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
+
+            this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
           }
         }, err => { console.log(err) });
     }
   }
 
-  onChange(event) {
-    this.center = { lat: event.lat, lng: event.lng };
-    this.zoom = 14;
+  getPlantRadius() {
+    this.settingsService.retrieve().subscribe(response => {
+      let result = response.data[0];
+      this.settings = result;
+      this.settings.range_radius = this.settings.range_radius * 1000;
+      //console.log('this.settings: ' + JSON.stringify(this.settings));
+    })
   }
 
+  /**
+   * Exibir/Ocultar as fábricas
+   */
+  toggleShowPlants(){
+    this.showControlledPlants = !this.showControlledPlants;
+  }
+
+  /**
+   * Exibir/Ocultar os fornecedores
+   */
+  toggleShowSupplier(){
+    this.showControlledSuppliers = !this.showControlledSuppliers;
+  }
+
+  /**
+   * Exibir/Ocultar os operadores logísticos
+   */
+  toggleShowLogistic(){
+    this.showControlledLogistics = !this.showControlledLogistics;
+  }
+  
   clicked(_a, opt) {
     var marker = _a.target;
     this.marker.target = _a
@@ -189,11 +261,6 @@ export class RastreamentoComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
-    this.loadDepartmentsByPlant();
-    //this.carregarTamanho();
-  }
-
   pageChangedDepart(page: any): void {
     this.marker.departments.meta.page = page;
     this.retrieveDepartments(this.marker.target, this.marker.opt);
@@ -207,14 +274,6 @@ export class RastreamentoComponent implements OnInit {
   open(id) {
     const modalRef = this.modalService.open(ModalRastComponent);
     modalRef.componentInstance.department = id;
-  }
-
-  
-  carregarTamanho() {
-    var map = $('#map');
-    var nguimap = map.children(':nth-child(1)');
-    var googleMap = nguimap.children(':nth-child(1)').css({ 'position': 'absolute' });
-    googleMap.css({ 'height': 'calc(100% - 42px)' });
   }
 
   startWindow(marker) {
@@ -260,6 +319,7 @@ export class RastreamentoComponent implements OnInit {
       iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
     });
   }
+
   close() {
     close();
   }

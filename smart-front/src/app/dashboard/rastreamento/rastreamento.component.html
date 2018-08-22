@@ -1,7 +1,8 @@
 <div class="row no-gutters m-container">
   <!-- Filtros -->
   <div class="col-sm-12 col-md-3 m-filtros">
-    <form>
+    <p>Filtros:</p>
+    <section>
       <div class="form-group">
         <label>Fornecedor</label>
         <ng-select [ngModel]="plantSearch" (change)="onChange($event)" [items]="plants" bindLabel="plant_name" placeholder="Escolha uma Planta">
@@ -44,6 +45,7 @@
           </ng-template>
         </ng-select>
       </div>
+
       <div class="form-group">
         <label>Serial</label>
         <ng-select [(ngModel)]="selectedSerial" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="serials"
@@ -59,7 +61,45 @@
           </ng-template>
         </ng-select>
       </div>
-    </form>
+    </section>
+
+    <p style="margin-top: 40px">Exibição:</p>
+
+    <div class="form-group form-check">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="" [ngModel]="showControlledPlants" (ngModelChange)="toggleShowPlants()">
+          <span class="cr">
+            <i class="cr-icon fa fa-check"> </i>
+          </span>
+          Mostrar Fábricas
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group form-check">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="" [ngModel]="showControlledSuppliers" (ngModelChange)="toggleShowSupplier()">
+          <span class="cr">
+            <i class="cr-icon fa fa-check"> </i>
+          </span>
+          Mostrar Fornecedores
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group form-check">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="" [ngModel]="showControlledLogistics" (ngModelChange)="toggleShowLogistic()">
+          <span class="cr">
+            <i class="cr-icon fa fa-check"> </i>
+          </span>
+          Mostrar Operadores Logísticos
+        </label>
+      </div>
+    </div>
   </div>
 
   <!-- Mapa Geolocalização -->
@@ -67,14 +107,69 @@
     <div id="map">  
       <!-- [fullscreenControl]="true" -->
       <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="onMapReady($event)">
-        <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
-  
+
+        <!-- <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
         </marker>
   
         <circle *ngFor="let circle of circles" [center]="circle.position" [visible]="true" [strokeColor]="'#6382c9'" [strokeOpacity]="0.5"
           [strokeWeight]="1" [radius]="this.auth.currentUser().radius">
-        </circle>
-  
+        </circle> -->
+        
+
+        <!-- ///////////// -->
+        <!-- Plant -->
+        <marker *ngFor="let posPlants of listOfFactories" [position]="posPlants.position" (click)="clicked($event, posPlants)"
+          [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" [visible]="showControlledPlants">
+        </marker>
+
+        <circle *ngFor="let posPlantsRadius of listOfFactories" [center]="posPlantsRadius.latLng" [fillColor]="'#0044a8'" [fillOpacity]="0.2"
+          [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
+
+        
+        <!-- ///////////// -->
+        <!-- Logistic operator -->
+        <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" (click)="clicked($event, posLogistic)"
+          [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }" [visible]="showControlledLogistics">
+        </marker>
+
+        <circle *ngFor="let posLogisticRadius of listOfLogistic" [center]="posLogisticRadius.latLng" [fillColor]="'#4d4d4d'" [fillOpacity]="0.15"
+          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
+        
+
+        <!-- ///////////// -->
+        <!-- Supplier -->
+        <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position" (click)="clicked($event, posSuppliers)"
+          [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" [visible]="showControlledSuppliers">
+        </marker>
+
+        <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.latLng" [fillColor]="'#4d4d4d'" [fillOpacity]="0.2"
+          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <info-window id="iw" width="400" maxWidth="500">
           <div *ngIf="marker.display">
             <div>
