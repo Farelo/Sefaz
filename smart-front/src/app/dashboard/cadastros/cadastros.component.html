@@ -1,26 +1,40 @@
-<div class="row">
+<div class="conteudoTop">
+  <div class="row">
 
-  <div class="col-md-3">
-    <div class="menu" style="background-color: white; padding: 15px 15px; -webkit-box-shadow: 0px 0px 7px #000; box-shadow: 0px 0px 7px #000;">
-      <button routerLinkActive="active" routerLink="/rc/cadastros/tags" class="cadastroMenu"><div>Tags</div></button>
-      <!-- <button routerLinkActive="active" routerLink="scanner" class="cadastroMenu"><div>Scanner</div></button> -->
-      <button routerLinkActive="active" routerLink="planta" class="cadastroMenu"><div>Plantas</div></button>
-      <button routerLinkActive="active" routerLink="plataforma" class="cadastroMenu"><div>Plataformas\Projetos</div></button>
-      <!-- <button routerLinkActive="active" routerLink="fornecedor" class="cadastroMenu"><div>Fornecedor</div></button> -->
-      <button routerLinkActive="active" routerLink="embalagem" class="cadastroMenu"><div>Embalagens</div></button>
-      <button routerLinkActive="active" routerLink="setor" class="cadastroMenu"><div>Setores</div></button>
-      <button routerLinkActive="active" routerLink="rotas" class="cadastroMenu"><div>Rotas</div></button>  
+    <div class="col-md-3">
+      <div class="menu" style="background-color: white; padding: 15px 15px; -webkit-box-shadow: 0px 0px 7px #000; box-shadow: 0px 0px 7px #000;">
+        <button routerLinkActive="active" routerLink="/rc/cadastros/tags" class="cadastroMenu">
+          <div>Tags</div>
+        </button>
+        <!-- <button routerLinkActive="active" routerLink="scanner" class="cadastroMenu"><div>Scanner</div></button> -->
+        <button routerLinkActive="active" routerLink="planta" class="cadastroMenu">
+          <div>Plantas</div>
+        </button>
+        <button routerLinkActive="active" routerLink="plataforma" class="cadastroMenu">
+          <div>Plataformas\Projetos</div>
+        </button>
+        <!-- <button routerLinkActive="active" routerLink="fornecedor" class="cadastroMenu"><div>Fornecedor</div></button> -->
+        <button routerLinkActive="active" routerLink="embalagem" class="cadastroMenu">
+          <div>Embalagens</div>
+        </button>
+        <button routerLinkActive="active" routerLink="setor" class="cadastroMenu">
+          <div>Setores</div>
+        </button>
+        <button routerLinkActive="active" routerLink="rotas" class="cadastroMenu">
+          <div>Rotas</div>
+        </button>
+      </div>
     </div>
+
+    <div class="col-md-9">
+      <div class="menu" style="background-color: white; padding: 15px 15px; -webkit-box-shadow: 0px 0px 7px #000; box-shadow: 0px 0px 7px #000;">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
   </div>
 
-  <div class="col-md-9">
-    <div class="menu" style="background-color: white; padding: 15px 15px; -webkit-box-shadow: 0px 0px 7px #000; box-shadow: 0px 0px 7px #000;">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+  <br />
 
+  <ng2-toasty [position]="'top-left'"></ng2-toasty>
 </div>
-
-<br />
-
-<ng2-toasty [position]="'top-left'"></ng2-toasty>

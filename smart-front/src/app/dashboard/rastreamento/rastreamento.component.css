@@ -1,3 +1,8 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
 #map {
   margin: 0;
   padding: 0;
@@ -9,13 +14,11 @@
 }
 
 ngui-map {
-  height: calc(100vh - 45px);
-  margin-top: -40px;
+  height: calc(100vh - 45px); 
   width: 100%;
 }
 
 .campo ng-select {
-
   position: absolute !important;
   margin-top: 51px;
   height: 30px;
@@ -23,63 +26,6 @@ ngui-map {
   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
   border-radius: 2px;
   border-color: transparent;
-}
-
-@media (max-width: 576px) {
-  ngui-map { margin-left: -30px; }
-  .campo ng-select {
-
-    margin-left: -20px;
-  }
-
-}
-
-@media (min-width: 576px) and (max-width: 768px) {
-	ngui-map { margin-left: -30px; }
-  .campo ng-select {
-    margin-left: -20px;
-  }
-
-}
-
-@media (min-width: 768px) and (max-width: 992px) {
-	ngui-map { margin-left: -40px; }
-  .campo ng-select {
-    margin-left: -30px;
-  }
-
-}
-
-@media (min-width: 992px) and (max-width: 1200px) {
-	ngui-map { margin-left: -70px; }
-  .campo ng-select {
-    margin-left: -60px;
-  }
-
-}
-
-@media (min-width: 1200px) {
-	ngui-map { margin-left: -130px; }
-  .campo ng-select {
-    margin-left: -120px;
-  }
-
-}
-
-@media (min-width: 1400px) {
-  ngui-map { margin-left: -270px; }
-  .campo ng-select {
-    margin-left: -260px;
-  }
-
-}
-
-@media (min-width: 1700px) {
-	ngui-map { margin-left: -450px; }
-  .campo ng-select {
-    margin-left: -300px;
-  }
-
 }
 
 .gm-style-iw {
@@ -215,4 +161,38 @@ info-window {
   margin: 0px;
   padding: 20px;
   box-shadow: 0px 0px 7px #000;
+}
+
+/* Emanoel */
+.m-navbar {
+  margin-bottom: 0px !important;
+}
+
+.m-container {
+  margin-top: -45px;
+}
+
+.m-filtros {
+  background-color: #fff;
+  padding: 15px;
+}
+
+/* Responsividade dos filtros */
+@media (max-width: 769px) {
+  /* ngui-map {
+    height: none;
+  }
+  .m-filtros {
+    width: 100% !important;
+  } */
+}
+
+@media (min-width: 768px) {
+  /* .m-filtros {
+    width: 220px !important;
+  }
+  */
+  .m-mapa {
+    flex-grow: 1;
+  }
 }

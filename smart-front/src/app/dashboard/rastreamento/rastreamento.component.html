@@ -1,89 +1,143 @@
-<div class="campo" style="z-index: 1;position: relative">
-
-
-  <ng-select [ngModel]="plantSearch" (change)="onChange($event)" [items]="plants" bindLabel="plant_name" placeholder="Escolha uma Planta">
-    <ng-template ng-label-tmp let-item="item">
-      {{item.plant_name}}
-    </ng-template>
-    <ng-template ng-option-tmp let-item="item">
-      <div>
-        {{item.plant_name}}
+<div class="row no-gutters m-container">
+  <!-- Filtros -->
+  <div class="col-sm-12 col-md-3 m-filtros">
+    <form>
+      <div class="form-group">
+        <label>Fornecedor</label>
+        <ng-select [ngModel]="plantSearch" (change)="onChange($event)" [items]="plants" bindLabel="plant_name" placeholder="Escolha uma Planta">
+          <ng-template ng-label-tmp let-item="item">
+            {{item.plant_name}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+              {{item.plant_name}}
+            </div>
+          </ng-template>
+        </ng-select>
       </div>
-    </ng-template>
-  </ng-select>
-</div>
 
-<div id="map">
+      <div class="form-group">
+        <label for="selectCode">Embalagem</label>
+        <ng-select id="selectCode" [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings" bindLabel="packing"
+          placeholder="Selecione um Equipamento">
+          <ng-template ng-label-tmp let-item="item">
+            {{item.packing}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+        
+              <b>Embalagem:</b> {{item.packing}}
+            </div>
+            <div>
+              <small>
+                <b>Fornecedor:</b> {{item.supplier.name}}
+              </small>
+        
+            </div>
+            <div>
+              <small>
+                <b> Projeto:</b> {{item.project.name}}
+              </small>
+            </div>
+        
+        
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group">
+        <label>Serial</label>
+        <ng-select [(ngModel)]="selectedSerial" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="serials"
+          bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial">
+          <ng-template ng-label-tmp let-item="item">
+            {{item.serial}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div>
+              <small>
+                <b>Serial:</b> {{item.serial}}</small>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+    </form>
+  </div>
 
-  <ngui-map [zoom]="zoom" [center]="center" [fullscreenControl]="true" (mapReady$)="onMapReady($event)">
-    <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
-
-    </marker>
-
-    <circle *ngFor="let circle of circles" [center]="circle.position" [visible]="true" [strokeColor]="'#6382c9'" [strokeOpacity]="0.5"
-      [strokeWeight]="1" [radius]="this.auth.currentUser().radius">
-    </circle>
-
-    <info-window id="iw" width="400" maxWidth="500">
-      <div *ngIf="marker.display">
-        <div>
-          <div class="iw-title"> PLANTA {{marker.profile === "supplier" ? 'FORNECEDOR' : (marker.profile === "normal" ? 'FÁBRICA' : 'OP. LOGÍSTICO')}}
-            {{marker.plant}} </div>
-
-          <div>
-            <div class="table-responsive tabela">
-              <table class="table" [hidden]="marker.nothing">
-                <thead>
-                  <tr class="cabecalho" [hidden]="!marker.department">
-                    <th>Setor/Área Interna</th>
-                    <th class="teste">Opções</th>
-                  </tr>
-                  <tr class="cabecalho" [hidden]="!marker.packing">
-                    <th>Embalagens na planta</th>
-                    <th>Serial</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-
-                  <tr [hidden]="!marker.department" *ngFor="let dept of marker.departments?.data | paginate: { id:'departmentmap', 
-                                                                      itemsPerPage: marker.departments.meta.limit, 
-                                                                      currentPage: marker.departments.meta.page, 
-                                                                      totalItems:marker.departments.meta.total_docs}">
-                    <td>{{dept.name}}</td>
-                    <td class="teste2">
-                      <button class="edit" (click)="open(dept._id)" type="button" name="button">Visualizar</button>
-                    </td>
-                  </tr>
-                  <tr [hidden]="!marker.packing" *ngFor="let packing of marker.packings?.data | paginate: { id:'packingmap', 
-                                                                                      itemsPerPage: marker.packings.meta.limit, 
-                                                                                      currentPage:marker.packings.meta.page, 
-                                                                                      totalItems:marker.packings.meta.total_docs}">
-                    <td>{{packing.code}}</td>
-                    <td>{{packing.serial}}</td>
-
-                  </tr>
-
-                </tbody>
-              </table>
-
-              <div class="has-text-centered" [hidden]="!marker.department">
-                <pagination-controls id="departmentmap" (pageChange)="pageChangedDepart($event)" autoHide="true" directionLinks="false"></pagination-controls>
+  <!-- Mapa Geolocalização -->
+  <div class="col-sm-12 col-md-9 m-mapa">
+    <div id="map">  
+      <!-- [fullscreenControl]="true" -->
+      <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="onMapReady($event)">
+        <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
+  
+        </marker>
+  
+        <circle *ngFor="let circle of circles" [center]="circle.position" [visible]="true" [strokeColor]="'#6382c9'" [strokeOpacity]="0.5"
+          [strokeWeight]="1" [radius]="this.auth.currentUser().radius">
+        </circle>
+  
+        <info-window id="iw" width="400" maxWidth="500">
+          <div *ngIf="marker.display">
+            <div>
+              <div class="iw-title"> PLANTA {{marker.profile === "supplier" ? 'FORNECEDOR' : (marker.profile === "normal" ? 'FÁBRICA' : 'OP. LOGÍSTICO')}}
+                {{marker.plant}} </div>
+  
+              <div>
+                <div class="table-responsive tabela">
+                  <table class="table" [hidden]="marker.nothing">
+                    <thead>
+                      <tr class="cabecalho" [hidden]="!marker.department">
+                        <th>Setor/Área Interna</th>
+                        <th class="teste">Opções</th>
+                      </tr>
+                      <tr class="cabecalho" [hidden]="!marker.packing">
+                        <th>Embalagens na planta</th>
+                        <th>Serial</th>
+  
+                      </tr>
+                    </thead>
+                    <tbody>
+  
+                      <tr [hidden]="!marker.department" *ngFor="let dept of marker.departments?.data | paginate: { id:'departmentmap', 
+                                                                          itemsPerPage: marker.departments.meta.limit, 
+                                                                          currentPage: marker.departments.meta.page, 
+                                                                          totalItems:marker.departments.meta.total_docs}">
+                        <td>{{dept.name}}</td>
+                        <td class="teste2">
+                          <button class="edit" (click)="open(dept._id)" type="button" name="button">Visualizar</button>
+                        </td>
+                      </tr>
+                      <tr [hidden]="!marker.packing" *ngFor="let packing of marker.packings?.data | paginate: { id:'packingmap', 
+                                                                                          itemsPerPage: marker.packings.meta.limit, 
+                                                                                          currentPage:marker.packings.meta.page, 
+                                                                                          totalItems:marker.packings.meta.total_docs}">
+                        <td>{{packing.code}}</td>
+                        <td>{{packing.serial}}</td>
+  
+                      </tr>
+  
+                    </tbody>
+                  </table>
+  
+                  <div class="has-text-centered" [hidden]="!marker.department">
+                    <pagination-controls id="departmentmap" (pageChange)="pageChangedDepart($event)" autoHide="true" directionLinks="false"></pagination-controls>
+                  </div>
+  
+                  <div class="has-text-centered" [hidden]="!marker.packing">
+                    <pagination-controls id="packingmap" (pageChange)="pageChangedPacking($event)" autoHide="true" directionLinks="false"></pagination-controls>
+                  </div>
+  
+                  <div class="classVazio" [hidden]="!marker.nothing">
+                    Não existe embalagens nessa planta.
+                  </div>
+  
+                </div>
               </div>
-
-              <div class="has-text-centered" [hidden]="!marker.packing">
-                <pagination-controls id="packingmap" (pageChange)="pageChangedPacking($event)" autoHide="true" directionLinks="false"></pagination-controls>
-              </div>
-
-              <div class="classVazio" [hidden]="!marker.nothing">
-                Não existe embalagens nessa planta.
-              </div>
-
+  
             </div>
           </div>
+        </info-window>
+      </ngui-map>
+    </div>
+  </div>
 
-        </div>
-      </div>
-    </info-window>
-  </ngui-map>
 </div>

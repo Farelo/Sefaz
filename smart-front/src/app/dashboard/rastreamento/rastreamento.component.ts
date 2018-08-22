@@ -191,7 +191,7 @@ export class RastreamentoComponent implements OnInit {
 
   ngOnInit() {
     this.loadDepartmentsByPlant();
-    this.carregarTamanho();
+    //this.carregarTamanho();
   }
 
   pageChangedDepart(page: any): void {
