@@ -1148,3 +1148,18 @@ exports.inventory_packings = function (req, res) {
       ),
   );
 };
+
+exports.find_all_packings = async (req, res) => {
+  try {
+    const family = req.swagger.params.family.value;
+    const serial = req.swagger.params.serial.value;
+  
+    const packings = await schemas.packing.find(
+      family && serial ? { code: family, serial: serial } : family ? { code: family } : serial ? { serial: serial } : {}
+    );
+  
+    responses.successHandler(res, req.user.refresh_token, packings);
+  } catch (error) {
+    responses.errorHandler(res, 'Algo falhou na busca de embalagens', error)
+  }
+};

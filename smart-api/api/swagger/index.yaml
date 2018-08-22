@@ -26,6 +26,8 @@ produces:
 tags:
 - name: "Home"
   description: "All information to Home page"
+- name: "Maps"
+  description: "All information to maps page"
 - name: "Plant"
   description: "All information about your Plants"
 - name: "Inventory"
