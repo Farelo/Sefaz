@@ -4,6 +4,7 @@ import { HttpModule } from '@angular/http';
 
 import {
     HomeService,
+    MapsService,
     AlertsService,
     DepartmentService,
     PackingService,
@@ -33,6 +34,7 @@ import {
     ],
     providers: [
         HomeService,
+        MapsService,
         AlertsService,
         DepartmentService,
         PackingService,

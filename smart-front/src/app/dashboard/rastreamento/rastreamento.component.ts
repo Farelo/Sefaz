@@ -4,6 +4,7 @@ import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
 import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
+import { MapsService } from '../../servicos/maps.service';
 declare var $: any;
 declare var google: any;
 
@@ -45,8 +46,13 @@ export class RastreamentoComponent implements OnInit {
 
   //selects
   public serials: any[];
-  public packings: any[];
+  public codes: any[];
+  public listPackings: any[];
 
+  //Bind dos selects
+  public selectedEquipament;
+  public selectedSerial;
+  
   //array de pinos
   public listOfFactories: any = [];
   public listOfSuppliers: any = [];
@@ -57,16 +63,20 @@ export class RastreamentoComponent implements OnInit {
   public showControlledLogistics: boolean = true;
   public showControlledSuppliers: boolean = true;
 
+  //misc
+  public settings: any;
+
   constructor(
     private ref: ChangeDetectorRef,
     private departmentService: DepartmentService,
     private plantsService: PlantsService,
     private settingsService: SettingsService,
     private packingService: PackingService,
+    private mapsService: MapsService,
     private modalService: NgbModal,
     private auth: AuthenticationService
 
-  ) { 
+  ) {
     let user = this.auth.currentUser();
     this.logged_user = (user.supplier ? user.supplier._id : (
       user.official_supplier ? user.official_supplier : (
@@ -76,8 +86,9 @@ export class RastreamentoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadDepartmentsByPlant();
     this.getPlantRadius();
+    this.loadDepartmentsByPlant();
+    this.loadPackings();
   }
 
   onChange(event) {
@@ -86,14 +97,26 @@ export class RastreamentoComponent implements OnInit {
   }
 
   /**
+   * Recupera o radius das plantas, configurado pelo usuário.
+   */
+  getPlantRadius() {
+    this.settingsService.retrieve().subscribe(response => {
+      let result = response.data[0];
+      this.settings = result;
+      this.settings.range_radius = this.settings.range_radius * 1000;
+      //console.log('this.settings: ' + JSON.stringify(this.settings));
+    })
+  }
+
+  /**
    * Carrega os fornecedores no select Fornecedor
    */
   loadDepartmentsByPlant() {
     if (this.logged_user instanceof Array) {
       let user = this.auth.currentUser();
-      this.plantsService.retrieveGeneralLogistic(this.logged_user,user._id )
+      this.plantsService.retrieveGeneralLogistic(this.logged_user, user._id)
         .subscribe(result => {
-         
+
           this.plants = result.data;
           if (result.data.length > 0) {
             for (let data of result.data) {
@@ -105,9 +128,9 @@ export class RastreamentoComponent implements OnInit {
 
               } else {
                 this.listOfFactories.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "normal" });
-              } 
+              }
             }
-            
+
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
 
             console.log('this.options: ' + JSON.stringify(this.options));
@@ -115,28 +138,28 @@ export class RastreamentoComponent implements OnInit {
             console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
             console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
             console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
-            
+
           }
         }, err => { console.log(err) });
-    }else{
+    } else {
       this.plantsService.retrieveGeneral(this.logged_user)
         .subscribe(result => {
-         
+
           this.plants = result.data;
           if (result.data.length > 0) {
             for (let data of result.data) {
               if (data.supplier) {
                 this.listOfSuppliers.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "supplier" });
 
-              } else if(data.logistic_operator) {
+              } else if (data.logistic_operator) {
                 this.listOfLogistic.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "logistic" });
 
-              }else{
+              } else {
                 this.listOfFactories.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "normal" });
               }
-            }  
-           
-            this.options.forEach(opt => this.circles.push({ position: { lat: opt.position[0], lng: opt.position[1] }, radius: this.auth.currentUser().radius}))
+            }
+
+            this.options.forEach(opt => this.circles.push({ position: { lat: opt.position[0], lng: opt.position[1] }, radius: this.auth.currentUser().radius }))
 
             console.log('this.options: ' + JSON.stringify(this.options));
             console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
@@ -150,36 +173,43 @@ export class RastreamentoComponent implements OnInit {
     }
   }
 
-  getPlantRadius() {
-    this.settingsService.retrieve().subscribe(response => {
-      let result = response.data[0];
-      this.settings = result;
-      this.settings.range_radius = this.settings.range_radius * 1000;
-      //console.log('this.settings: ' + JSON.stringify(this.settings));
-    })
+  /**
+   * Carrega todos os pacotes do mapa
+   */
+  loadPackings() {
+
+    let auxArray = [];
+    if (this.selectedEquipament) auxArray.push(this.selectedEquipament);
+    if (this.selectedSerial) auxArray.push(this.selectedSerial);
+
+    this.mapsService.getPackings().subscribe(result => {
+      this.listPackings = result.data;
+
+      console.log('this.listPackings: ' + JSON.stringify(this.listPackings));
+    }, err => { console.log(err) });
   }
 
   /**
    * Exibir/Ocultar as fábricas
    */
-  toggleShowPlants(){
+  toggleShowPlants() {
     this.showControlledPlants = !this.showControlledPlants;
   }
 
   /**
    * Exibir/Ocultar os fornecedores
    */
-  toggleShowSupplier(){
+  toggleShowSupplier() {
     this.showControlledSuppliers = !this.showControlledSuppliers;
   }
 
   /**
    * Exibir/Ocultar os operadores logísticos
    */
-  toggleShowLogistic(){
+  toggleShowLogistic() {
     this.showControlledLogistics = !this.showControlledLogistics;
   }
-  
+
   clicked(_a, opt) {
     var marker = _a.target;
     this.marker.target = _a
@@ -188,7 +218,7 @@ export class RastreamentoComponent implements OnInit {
     this.marker.lng = marker.getPosition().lng();
     this.marker.departments = new Pagination({ meta: { page: 1 } })
     this.marker.packings = new Pagination({ meta: { page: 1 } })
-      
+
     this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
       this.marker.plant = opt.name;
       this.marker.profile = opt.profile;
@@ -200,7 +230,7 @@ export class RastreamentoComponent implements OnInit {
         this.startWindow(marker);
       } else {
         this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
-         
+
           if (result.data.length > 0) {
             this.marker.department = false;
             this.marker.packing = true;
@@ -218,14 +248,14 @@ export class RastreamentoComponent implements OnInit {
     })
   }
 
-  retrievePackings(_a, opt){
+  retrievePackings(_a, opt) {
     var marker = _a.target;
     this.marker.target = _a
     this.marker.opt = opt
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
     this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
-     
+
       if (result.data.length > 0) {
         this.marker.department = false;
         this.marker.packing = true;
@@ -241,7 +271,7 @@ export class RastreamentoComponent implements OnInit {
     })
   }
 
-  retrieveDepartments(_a, opt){
+  retrieveDepartments(_a, opt) {
     var marker = _a.target;
     this.marker.target = _a
     this.marker.opt = opt
@@ -265,7 +295,7 @@ export class RastreamentoComponent implements OnInit {
     this.marker.departments.meta.page = page;
     this.retrieveDepartments(this.marker.target, this.marker.opt);
   }
-  
+
   pageChangedPacking(page: any): void {
     this.marker.packings.meta.page = page;
     this.retrievePackings(this.marker.target, this.marker.opt);
@@ -285,12 +315,12 @@ export class RastreamentoComponent implements OnInit {
     iwBackground.children(':nth-child(3)').css({ 'z-index': '1' });
     iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
     iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
-    
-    
+
+
     var iwCloseBtn = iwOuter.next();
-    
+
     var altura = $('.iw-title').height();
-    
+
     iwCloseBtn.css({
       opacity: '0.5', // by default the close button has an opacity of 0.7
       // right: '0px',
@@ -303,7 +333,7 @@ export class RastreamentoComponent implements OnInit {
     iwCloseBtn.css({ 'background-size': '13px' });
 
     // iwCloseBtn.css({'background' : 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAXCAYAAAD3CERpAAAACXBIWXMAAAsSAAALEgHS3X78AAABGklEQVRIx+2W4U3DMBCFv1gZIBtQNsgG0AkoI7BBRjAbZBPKBt4AukG6gTvB488VRZYb4hSChHhSfsTn+PNdni+pJAF0wI6f1WCciKRe6+ldEpUs1RX1WCcDB8AD8RshHfAwum/JlGCQtJPElVcrKWTW9y6zsxvgBdgDmwWZNVatN+AuOyPZxT65j5K6guzurVKpecZjPoVOPdhOwJoLG/YWD19Bz4v4zPvoLTYGdgYYK0jajObMgk6Z4Wy0XCxeMGERdCqbOVXIQt1MR/bm5NdM7ABsP1vcDLmCoxCtP2+BI3ACnoEWCCVnql5wDoOBGmvixaoXtrZ4Tat0/IL+oX8Pmrp3jb+IWEka7Bu6lm6ddZnjCrAT8AQMH3jl/HRbCP5BAAAAAElFTkSuQmCC) no-repeat left center'});
-    iwOuter.next().next().css({ 'top': '15px'})
+    iwOuter.next().next().css({ 'top': '15px' })
     iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
     iwCloseBtn.mouseout(function () {
       $(this).css({ opacity: '0.5' });
@@ -325,5 +355,40 @@ export class RastreamentoComponent implements OnInit {
   }
 
   onMapReady(map) {
+  }
+
+  /**
+   * Recupera o pino da embalagem de acordo com seu alerta
+   */
+  getPinWithAlert(pack: any) {
+    let pin = null;
+
+    switch (pack.status) {
+      case 'MISSING':
+        pin = { url: '../../../assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+
+      case 'INCORRECT_LOCAL':
+        pin = { url: '../../../assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+
+      // case 'bateria':
+      //   pin = { url: '../../../assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+      //   break;
+
+      case 'LATE':
+        pin = { url: '../../../assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+
+      case 'PERMANENCE_EXCEEDED':
+        pin = { url: '../../../assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+
+      default:
+        pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+    }
+
+    return pin;
   }
 }
