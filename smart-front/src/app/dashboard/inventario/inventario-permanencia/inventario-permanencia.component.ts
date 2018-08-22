@@ -13,9 +13,9 @@ export class InventarioPermanenciaComponent implements OnInit {
   @Input() selectedSerial: any;
 
   public logged_user: any; 
-  public serials: any[];
   public serial = false;
   public permanence: Pagination = new Pagination({ meta: { page: 1 } }); 
+  public serials: any[];
   public packings: any[];
 
   constructor(
