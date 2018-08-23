@@ -1,3 +1,5 @@
+const HTTPStatus = require("http-status");
+
 'use strict';
 /**
  * Module dependencies.
@@ -1107,6 +1109,7 @@ exports.inventory_packings = async (req, res) => {
     const code_packing = req.swagger.params.code_packing.value;
     const attr = req.swagger.params.attr.value;
 
+    const alerts = await schemas.alert.find({});
     const packings = await schemas.packing.paginate(
       attr && code
         ? { supplier: new ObjectId(attr), code_tag: code }
@@ -1124,7 +1127,7 @@ exports.inventory_packings = async (req, res) => {
           'tag',
           'actual_plant.plant',
           'department',
-          'gc16',
+          'gc16'
         ],
         sort: {
           _id: 1,
@@ -1132,23 +1135,68 @@ exports.inventory_packings = async (req, res) => {
         limit: parseInt(req.swagger.params.limit.value),
         page: parseInt(req.swagger.params.page.value)
       });
-
-    // const alerts = await schemas.alert.find({});
-
-    // packings.docs.map((packing, index) => {
-    //   const alert = _.find(alerts, { packing: packing._id });
-    //   if (alert) {
-    //     Object.defineProperty(packings.docs[index], 'alertssss', {
-    //       value: alert,
-    //       enumerable: true,
-    //       configurable: true
-    //     });
-    //   }
-    // });
     
-    // console.log(packings.docs);
+    const allPackingWithAlert = packings.docs.map((packing, index) => {
+      let item = {};
+      const alert = _.find(alerts, {packing: packing._id})
+      // const alert = schemas.alert.findOne({ packing: packing._id });
+      if (alert != null) {
+        item = {
+          _id: packing._id,
+          code: packing.code,
+          status: packing.status,
+          type: packing.type,
+          weigth: packing.weigth,
+          width: packing.width,
+          heigth: packing.heigth,
+          length: packing.length,
+          capacity: packing.capacity,
+          battery: packing.battery,
+          problem: packing.problem,
+          missing: packing.missing,
+          traveling: packing.traveling,
+          incorrect_local: packing.incorrect_local,
+          incontida: packing.incontida,
+          lastCommunication: packing.lastCommunication,
+          permanence: packing.permanence,
+          trip: packing.trip,
+          packing_missing: packing.packing_missing,
+          position: packing.position,
+          actual_gc16: packing.actual_gc16,
+          temperature: packing.temperature,
+          serial: packing.serial,
+          gc16: packing.gc16,
+          routes: packing.routes,
+          last_plant: packing.last_plant,
+          last_department: packing.last_department,
+          actual_plant: packing.actual_plant,
+          tag: packing.tag,
+          code_tag: packing.code_tag,
+          department: packing.department,
+          supplier: packing.supplier,
+          project: packing.project,
+          hashPacking: packing.hashPacking,
+          alert: alert
+        }
+        return item
+      }
+      return packing 
+    });
+    
+    res.status(HTTPStatus.OK).json({ 
+      jsonapi: { 
+        "version": "1.0" 
+      },
+      "refresh_token": req.user.refresh_token, 
+      meta: { 
+        "limit": packings.limit,
+        "page": packings.page,
+        "total_pages": packings.pages,
+        "total_docs": packings.total 
+      },
+      data: allPackingWithAlert
+    });
 
-    responses.successHandlerPagination(res, req.user.refresh_token, packings);
   } catch (error) {
     responses.errorHandler(res, 'Algo falhou na busca de embalagens', error)
   }
