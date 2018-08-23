@@ -1162,8 +1162,17 @@ exports.find_all_packings = async (req, res) => {
     const packings = await schemas.packing.find(
       family && serial ? { code: family, serial: serial } : family ? { code: family } : serial ? { serial: serial } : {}
     );
-  
-    responses.successHandler(res, req.user.refresh_token, packings);
+
+    const historicMoviment = await Promise.all(
+      packings.map(item =>{
+        return schemas.historyMovement
+          .findOne({ packing: item._id })
+          .sort({ $natural: -1})
+          .limit(1)
+      }) 
+    );
+
+    responses.successHandler(res, req.user.refresh_token, historicMoviment);
   } catch (error) {
     responses.errorHandler(res, 'Algo falhou na busca de embalagens', error)
   }
