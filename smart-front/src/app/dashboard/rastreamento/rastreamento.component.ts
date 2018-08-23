@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService } from '../../servicos/index.service';
+import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
 declare var $: any;
@@ -47,10 +47,10 @@ export class RastreamentoComponent implements OnInit {
   //selects
   public serials: any[];
   public codes: any[];
-  public listPackings: any[];
+  public plotedPackings: any[];
 
   //Bind dos selects
-  public selectedEquipament;
+  public selectedCode;
   public selectedSerial;
   
   //array de pinos
@@ -59,12 +59,13 @@ export class RastreamentoComponent implements OnInit {
   public listOfLogistic: any = [];
 
   //show markers
-  public showControlledPlants: boolean = true;
-  public showControlledLogistics: boolean = true;
-  public showControlledSuppliers: boolean = true;
+  public showControlledPlants: boolean = false;
+  public showControlledLogistics: boolean = false;
+  public showControlledSuppliers: boolean = false;
 
   //misc
   public settings: any;
+  public permanence: Pagination = new Pagination({ meta: { page: 1 } }); 
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -72,6 +73,7 @@ export class RastreamentoComponent implements OnInit {
     private plantsService: PlantsService,
     private settingsService: SettingsService,
     private packingService: PackingService,
+    private inventoryService: InventoryService,
     private mapsService: MapsService,
     private modalService: NgbModal,
     private auth: AuthenticationService
@@ -87,6 +89,7 @@ export class RastreamentoComponent implements OnInit {
 
   ngOnInit() {
     this.getPlantRadius();
+    this.loadPackingsOnSelect();
     this.loadDepartmentsByPlant();
     this.loadPackings();
   }
@@ -179,13 +182,13 @@ export class RastreamentoComponent implements OnInit {
   loadPackings() {
 
     let auxArray = [];
-    if (this.selectedEquipament) auxArray.push(this.selectedEquipament);
+    if (this.selectedCode) auxArray.push(this.selectedCode);
     if (this.selectedSerial) auxArray.push(this.selectedSerial);
 
     this.mapsService.getPackings().subscribe(result => {
-      this.listPackings = result.data;
+      this.plotedPackings = result.data;
 
-      console.log('this.listPackings: ' + JSON.stringify(this.listPackings));
+      console.log('this.plotedPackings: ' + JSON.stringify(this.plotedPackings));
     }, err => { console.log(err) });
   }
 
@@ -208,6 +211,39 @@ export class RastreamentoComponent implements OnInit {
    */
   toggleShowLogistic() {
     this.showControlledLogistics = !this.showControlledLogistics;
+  }
+
+  /**
+   * Carrega todos os equipamentos no select
+   */
+  loadPackingsOnSelect() {
+    if (this.logged_user instanceof Array) {
+      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => this.codes = result.data, err => { console.log(err) });
+
+    } else if (this.logged_user) {
+      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.codes = result.data, err => { console.log(err) });
+
+    } else {
+      this.packingService.getPackingsDistincts().subscribe(result => { this.codes = result.data }, err => { console.log(err) });
+    } 
+  }
+  
+  loadSerialsOfSelectedEquipment(){
+    this.selectedSerial = null;
+    //this.serial = false;
+    this.serials = [];
+
+    if (this.selectedCode) {
+
+      this.packingService
+        .getPackingsEquals(this.selectedCode.supplier._id, this.selectedCode.project._id, this.selectedCode.packing)
+        .subscribe(result => {
+          this.serials = result.data;
+          // this.inventoryService
+          //   .getInventoryPermanence(10, this.permanence.meta.page, this.selectedCode.packing)
+          //   .subscribe(result => this.permanence = result, err => { console.log(err) });
+        }, err => { console.log(err) })
+    } 
   }
 
   clicked(_a, opt) {

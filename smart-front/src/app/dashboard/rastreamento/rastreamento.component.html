@@ -19,7 +19,7 @@
 
       <div class="form-group">
         <label for="selectCode">Embalagem</label>
-        <ng-select id="selectCode" [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings"
+        <ng-select id="selectCode" [(ngModel)]="selectedCode" (clear)="onClear()" (change)="loadSerialsOfSelectedEquipment()" [items]="codes"
           bindLabel="packing" placeholder="Selecione um Equipamento">
           <ng-template ng-label-tmp let-item="item">
             {{item.packing}}
@@ -49,7 +49,7 @@
       <div class="form-group">
         <label>Serial</label>
         <ng-select [(ngModel)]="selectedSerial" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="serials"
-          bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial">
+          bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial" [disabled]="!selectedCode">
           <ng-template ng-label-tmp let-item="item">
             {{item.serial}}
           </ng-template>
@@ -167,7 +167,7 @@
           </marker>
         </ng-container>
 
-        <ng-container *ngFor="let posRadius of rangedMarkers">
+        <ng-container *ngFor="let posRadius of listPackings">
           <circle *ngIf="(posRadius.accuracy <= accuracyRange) && (!showLastPosition)" [center]="posRadius.latLng" [fillColor]="getRadiusWithAlert()"
             [fillOpacity]="0.2" [strokeColor]="getRadiusWithAlert()" [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ posRadius.accuracy || 0 }}"></circle>
         </ng-container>
