@@ -100,6 +100,18 @@
         </label>
       </div>
     </div>
+
+    <div class="form-group form-check">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="" [ngModel]="showPackings" (ngModelChange)="toggleShowPackings()">
+          <span class="cr">
+            <i class="cr-icon fa fa-check"> </i>
+          </span>
+          Mostrar Embalagens
+        </label>
+      </div>
+    </div>
   </div>
 
   <!-- Mapa Geolocalização -->
@@ -122,7 +134,7 @@
           [visible]="showControlledPlants">
         </marker>
 
-        <circle *ngFor="let posPlantsRadius of listOfFactories" [center]="posPlantsRadius.latLng" [fillColor]="'#0044a8'" [fillOpacity]="0.2"
+        <circle *ngFor="let posPlantsRadius of listOfFactories" [center]="posPlantsRadius.position" [fillColor]="'#0044a8'" [fillOpacity]="0.2"
           [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
 
 
@@ -132,8 +144,8 @@
           [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }" [visible]="showControlledLogistics">
         </marker>
 
-        <circle *ngFor="let posLogisticRadius of listOfLogistic" [center]="posLogisticRadius.latLng" [fillColor]="'#4d4d4d'" [fillOpacity]="0.15"
-          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
+        <circle *ngFor="let posLogisticRadius of listOfLogistic" [center]="posLogisticRadius.position" [fillColor]="'#4d4d4d'" [fillOpacity]="0.15"
+          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledLogistics" radius="{{ settings.range_radius }}"></circle>
 
 
         <!-- ///////////// -->
@@ -142,35 +154,35 @@
           [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" [visible]="showControlledSuppliers">
         </marker>
 
-        <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.latLng" [fillColor]="'#4d4d4d'" [fillOpacity]="0.2"
-          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
+        <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.position" [fillColor]="'#4d4d4d'" [fillOpacity]="0.2"
+          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledSuppliers" radius="{{ settings.range_radius }}"></circle>
 
 
         <!-- ///////////// -->
         <!-- Embalagens -->
-        <ng-container *ngFor="let pack of listPackings;">
-          <marker *ngIf="(pack.accuracy <= accuracyRange) && (!showLastPosition)" [position]="pack.position" (click)="clicked($event,pack)"
-            [icon]="getPinWithAlert(pack)">
-            <!-- <info-window id="iw">
-              <div class="iw-title">INFORMAÇÕES</div>
-              <div *ngIf="marker.display" class="info-window-content">
-                <p>
-                  <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
-                <p>
-                  <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
-                <p>
-                  <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
-                <p>
-                  <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
-              </div>
-            </info-window> -->
-          </marker>
-        </ng-container>
+        <marker *ngFor="let pack of plotedPackings" [position]="pack.position" (click)="clicked($event, pack)"
+          [icon]="pack.pin" [visible]="showPackings">
+        </marker>
+        
+          <!--<info-window id="iw">
+            <div class="iw-title">INFORMAÇÕES</div>
+            <div *ngIf="marker.display" class="info-window-content">
+              <p>
+                <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+              <p>
+                <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
+              <p>
+                <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
+              <p>
+                <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
+            </div>
+          </info-window>-->
+        
 
-        <ng-container *ngFor="let posRadius of listPackings">
-          <circle *ngIf="(posRadius.accuracy <= accuracyRange) && (!showLastPosition)" [center]="posRadius.latLng" [fillColor]="getRadiusWithAlert()"
+        <!-- <ng-container *ngFor="let posRadius of plotedPackings">
+          <circle *ngIf="showPackings" [center]="[pack.latitude, pack.longitude]" [fillColor]="getRadiusWithAlert()"
             [fillOpacity]="0.2" [strokeColor]="getRadiusWithAlert()" [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ posRadius.accuracy || 0 }}"></circle>
-        </ng-container>
+        </ng-container> -->
 
 
 

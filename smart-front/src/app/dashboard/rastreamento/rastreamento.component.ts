@@ -62,6 +62,7 @@ export class RastreamentoComponent implements OnInit {
   public showControlledPlants: boolean = false;
   public showControlledLogistics: boolean = false;
   public showControlledSuppliers: boolean = false;
+  public showPackings: boolean = false;
 
   //misc
   public settings: any;
@@ -124,16 +125,17 @@ export class RastreamentoComponent implements OnInit {
           if (result.data.length > 0) {
             for (let data of result.data) {
               if (data.supplier) {
-                this.listOfSuppliers.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "supplier" });
+                this.listOfSuppliers.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "supplier" });
 
               } else if (data.logistic_operator) {
-                this.listOfLogistic.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "logistic" });
+                this.listOfLogistic.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "logistic" });
 
               } else {
-                this.listOfFactories.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "normal" });
+                this.listOfFactories.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "normal" });
               }
             }
 
+            
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
 
             // console.log('this.options: ' + JSON.stringify(this.options));
@@ -152,13 +154,13 @@ export class RastreamentoComponent implements OnInit {
           if (result.data.length > 0) {
             for (let data of result.data) {
               if (data.supplier) {
-                this.listOfSuppliers.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "supplier" });
+                this.listOfSuppliers.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "supplier" });
 
               } else if (data.logistic_operator) {
-                this.listOfLogistic.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "logistic" });
+                this.listOfLogistic.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "logistic" });
 
               } else {
-                this.listOfFactories.push({ id: data._id, name: data.plant_name, position: [data.lat, data.lng], profile: "normal" });
+                this.listOfFactories.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "normal" });
               }
             }
 
@@ -187,6 +189,16 @@ export class RastreamentoComponent implements OnInit {
 
     this.mapsService.getPackings(params).subscribe(result => {
       this.plotedPackings = result.data;
+
+      this.plotedPackings.map(elem => {
+        elem.pin = this.getPinWithAlert(elem.status);
+        elem.position = (new google.maps.LatLng(elem.latitude, elem.longitude));
+
+        return elem;
+      });
+
+      
+      console.log('plotedPackings: ' + JSON.stringify(this.plotedPackings));
     }, err => { console.log(err) });
   }
 
@@ -209,6 +221,13 @@ export class RastreamentoComponent implements OnInit {
    */
   toggleShowLogistic() {
     this.showControlledLogistics = !this.showControlledLogistics;
+  }
+
+  /**
+   * Exibir/Ocultar as embalagens
+   */
+  toggleShowPackings() {
+    this.showPackings = !this.showPackings;
   }
 
   /**
@@ -256,7 +275,7 @@ export class RastreamentoComponent implements OnInit {
     this.selectedSerial = null;
     
     this.loadPackings();
-    
+
     console.log('new this.selectedCode: ' + this.selectedCode);
     console.log('new this.selectedSerial: ' + this.selectedSerial);
   }
@@ -411,10 +430,12 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Recupera o pino da embalagem de acordo com seu alerta
    */
-  getPinWithAlert(pack: any) {
+  getPinWithAlert(status: any) {
     let pin = null;
 
-    switch (pack.status) {
+    console.log(status);
+
+    switch (status) {
       case 'MISSING':
         pin = { url: '../../../assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
@@ -435,6 +456,14 @@ export class RastreamentoComponent implements OnInit {
         pin = { url: '../../../assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
+      case 'TRAVELING':
+        pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+
+      case 'NORMAL':
+        pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+
       default:
         pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
@@ -442,4 +471,5 @@ export class RastreamentoComponent implements OnInit {
 
     return pin;
   }
+
 }
