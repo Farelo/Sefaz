@@ -17,7 +17,7 @@ export class MapsService {
         var queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
         if (queryString) { queryString = '?' + queryString; }
 
-        console.log('queryString: ' + queryString);
+        //console.log('queryString: ' + queryString);
 
         return this.http.get(`${environment.url}maps/packings${queryString}`)
             .catch(this.handleError);

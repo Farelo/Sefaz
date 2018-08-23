@@ -136,11 +136,11 @@ export class RastreamentoComponent implements OnInit {
 
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
 
-            console.log('this.options: ' + JSON.stringify(this.options));
-            console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
-            console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
-            console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
+            // console.log('this.options: ' + JSON.stringify(this.options));
+            // console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
+            // console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
+            // console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
+            // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
 
           }
         }, err => { console.log(err) });
@@ -164,11 +164,11 @@ export class RastreamentoComponent implements OnInit {
 
             this.options.forEach(opt => this.circles.push({ position: { lat: opt.position[0], lng: opt.position[1] }, radius: this.auth.currentUser().radius }))
 
-            console.log('this.options: ' + JSON.stringify(this.options));
-            console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
-            console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
-            console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
+            // console.log('this.options: ' + JSON.stringify(this.options));
+            // console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
+            // console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
+            // console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
+            // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
 
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
           }
@@ -177,18 +177,16 @@ export class RastreamentoComponent implements OnInit {
   }
 
   /**
-   * Carrega todos os pacotes do mapa
+   * Carrega todos os pacotes do mapa 
    */
   loadPackings() {
 
-    let auxArray = [];
-    if (this.selectedCode) auxArray.push(this.selectedCode);
-    if (this.selectedSerial) auxArray.push(this.selectedSerial);
+    let params = {};
+    if (this.selectedCode) params['family'] = this.selectedCode.packing;
+    if (this.selectedSerial) params['serial'] = this.selectedSerial;
 
-    this.mapsService.getPackings().subscribe(result => {
+    this.mapsService.getPackings(params).subscribe(result => {
       this.plotedPackings = result.data;
-
-      console.log('this.plotedPackings: ' + JSON.stringify(this.plotedPackings));
     }, err => { console.log(err) });
   }
 
@@ -228,12 +226,16 @@ export class RastreamentoComponent implements OnInit {
     } 
   }
   
+  /**
+   * An equipment was selected. This method fill the Serial Select.
+   */
   loadSerialsOfSelectedEquipment(){
-    this.selectedSerial = null;
-    //this.serial = false;
-    this.serials = [];
 
-    if (this.selectedCode) {
+    if (this.selectedCode){
+      this.loadPackings();
+
+      this.selectedSerial = null;
+      this.serials = [];
 
       this.packingService
         .getPackingsEquals(this.selectedCode.supplier._id, this.selectedCode.project._id, this.selectedCode.packing)
@@ -244,6 +246,19 @@ export class RastreamentoComponent implements OnInit {
           //   .subscribe(result => this.permanence = result, err => { console.log(err) });
         }, err => { console.log(err) })
     } 
+  }
+
+  /**
+   * Equipment select was cleared.
+   * Clear e disable the Serial Select.
+   */
+  onEquipmentSelectClear(){
+    this.selectedSerial = null;
+    
+    this.loadPackings();
+    
+    console.log('new this.selectedCode: ' + this.selectedCode);
+    console.log('new this.selectedSerial: ' + this.selectedSerial);
   }
 
   clicked(_a, opt) {
