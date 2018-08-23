@@ -1101,13 +1101,13 @@ exports.inventory_packing_absence = function (req, res) {
 /**
  * All packings inventory
  */
-exports.inventory_packings = function (req, res) {
-  let code = req.swagger.params.code.value;
-  let code_packing = req.swagger.params.code_packing.value;
-  let attr = req.swagger.params.attr.value;
+exports.inventory_packings = async (req, res) => {
+  try {
+    const code = req.swagger.params.code.value;
+    const code_packing = req.swagger.params.code_packing.value;
+    const attr = req.swagger.params.attr.value;
 
-  schemas.packing
-    .paginate(
+    const packings = await schemas.packing.paginate(
       attr && code
         ? { supplier: new ObjectId(attr), code_tag: code }
         : attr
@@ -1118,7 +1118,6 @@ exports.inventory_packings = function (req, res) {
               ? { code: code_packing }
               : {},
       {
-        page: parseInt(req.swagger.params.page.value),
         populate: [
           'supplier',
           'project',
@@ -1131,22 +1130,28 @@ exports.inventory_packings = function (req, res) {
           _id: 1,
         },
         limit: parseInt(req.swagger.params.limit.value),
-      },
-  )
-    .then(
-      _.partial(
-        responses.successHandlerPagination,
-        res,
-        req.user.refresh_token,
-      ),
-  )
-    .catch(
-      _.partial(
-        responses.errorHandler,
-        res,
-        'Error to list inventory permanence',
-      ),
-  );
+        page: parseInt(req.swagger.params.page.value)
+      });
+
+    // const alerts = await schemas.alert.find({});
+
+    // packings.docs.map((packing, index) => {
+    //   const alert = _.find(alerts, { packing: packing._id });
+    //   if (alert) {
+    //     Object.defineProperty(packings.docs[index], 'alertssss', {
+    //       value: alert,
+    //       enumerable: true,
+    //       configurable: true
+    //     });
+    //   }
+    // });
+    
+    // console.log(packings.docs);
+
+    responses.successHandlerPagination(res, req.user.refresh_token, packings);
+  } catch (error) {
+    responses.errorHandler(res, 'Algo falhou na busca de embalagens', error)
+  }
 };
 
 exports.find_all_packings = async (req, res) => {
