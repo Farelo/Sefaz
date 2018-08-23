@@ -32,8 +32,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     ApplicationPipes,
     DashboardRoutingModule,
-    NgxPaginationModule
-
+    NgxPaginationModule,
+    ApplicationPipes
   ],
   declarations: [
     DashboardComponent,

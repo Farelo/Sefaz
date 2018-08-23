@@ -48,6 +48,10 @@ gm-style-iw {
   background-color: green;
 }
 
+.bold {
+  font-weight: 700;
+}
+
 th {
   border-bottom: none !important;
 }
