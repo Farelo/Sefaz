@@ -31,7 +31,7 @@ ngui-map {
 }
 
 .gm-style-iw {
-  top: 15px !important;
+  top: 0px !important;
   left: 0px !important;
   background-color: #fff;
   box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
@@ -41,11 +41,6 @@ ngui-map {
 
 #iw-container {
   margin-bottom: 10px;
-}
-
-#iw,
-gm-style-iw {
-  background-color: green;
 }
 
 .bold {
@@ -63,8 +58,12 @@ th {
   margin: 0px;
   border-radius: 2px 2px 0 0;
   background-color: #3e4f5f;
-  padding: 10px 40px 10px 10px;
-  text-align: center;
+  padding: 10px 10px 10px 10px;
+  text-align: left;
+}
+
+.gm-style-iw > div{
+  display: block !important;
 }
 
 #iw-container .iw-content {
@@ -94,7 +93,9 @@ button {
 }
 
 td {
+  background-color: white;
   vertical-align: baseline !important;
+  padding: 5px !important;
 }
 
 .teste {
@@ -134,12 +135,6 @@ img {
   padding: 5px 0;
 }
 
-.gm-style-iw {
-  top: 0 !important;
-  left: 0 !important;
-  border-radius: 2px 2px 0 0;
-}
-
 .iw-bottom-gradient {
   position: absolute;
   height: 25px;
@@ -155,8 +150,6 @@ img {
   background-color: #6382c9;
   color: white;
 }
-
-td { background-color: white; }
 
 info-window {
   background-color: pink;

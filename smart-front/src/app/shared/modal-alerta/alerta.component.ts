@@ -27,7 +27,7 @@ export class AlertaModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.alerta);
+    //console.log(JSON.stringify(this.alerta));
   }
 
   getHistoric() {
