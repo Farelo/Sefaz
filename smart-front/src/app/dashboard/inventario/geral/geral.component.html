@@ -3,11 +3,17 @@
     <table class="table">
       <thead>
         <tr class="cabecalho">
-          <th>Equipamento</th>
+          <!-- <i class="fas fa-caret-down"></i> -->
+          <th *ngFor="let item of headers"> 
+            <span (click)="headerClick(item)">
+              {{ item.name }} <i class="fa fa-caret-down" [ngClass]="{'esconder': !item.status}"></i>
+            </span>
+          </th>
+          <!-- <th>Equipamento</th>
           <th>Projeto</th>
           <th>Descrição</th>
-          <th>Fornecedor</th>
-          <th style="text-align: center;">Quantidade</th>
+          <th>Fornecedor<i class="fa fa-caret-up"></i></th>
+          <th style="text-align: center;">Quantidade</th> -->
           <th style="width: 80px">Detalhes</th>
         </tr>
       </thead>

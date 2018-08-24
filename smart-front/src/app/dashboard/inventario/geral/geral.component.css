@@ -84,3 +84,11 @@ hr {
 tbody > tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
+.fa-caret-up {
+  margin-left: 6px;
+}
+
+.esconder {
+  visibility:hidden;
+}

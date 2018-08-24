@@ -33,7 +33,43 @@ export class GeralComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadTableHeaders();
     this.generalInventory();
+  }
+
+  public headers: any = [];
+
+  loadTableHeaders(){
+    this.headers.push({name: 'Equipamento', label: 'code', status: false});
+    this.headers.push({ name: 'Projeto', label: 'project', status: false });
+    this.headers.push({ name: 'Descrição', label: 'description', status: false });
+    this.headers.push({ name: 'Fornecedor', label: 'supplier', status: false });
+    this.headers.push({ name: 'Quantidade', label: 'quantity', status: false });
+
+    console.log('this.headers: ' + JSON.stringify(this.headers));
+  }
+
+  headerClick(item: any){
+    
+    let index = this.headers.indexOf(item);
+    
+    //atualizar status em todos
+    if(item.status == true) {
+      this.headers[index].status = false;
+      
+    }else{
+      this.headers.map(elem => elem.status = false);
+      this.headers[index].status = true;
+    }
+
+    this.orderTable();
+
+    console.log('item: ' + JSON.stringify(item), ' index: ' + this.headers.indexOf(item)); 
+  }
+
+  //TODO
+  orderTable(){
+
   }
 
   generalInventory() {

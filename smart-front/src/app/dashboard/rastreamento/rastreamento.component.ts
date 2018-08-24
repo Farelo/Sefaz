@@ -435,7 +435,6 @@ export class RastreamentoComponent implements OnInit {
     // iwCloseBtn.mouseout(function () {
     //   $(this).css({ opacity: '0.5' });
     // });
-
   }
 
   startPackWindow(marker) {
