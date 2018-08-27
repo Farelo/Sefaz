@@ -124,7 +124,7 @@ export class RastreamentoComponent implements OnInit {
   }
 
   /**
-   * Carrega os fornecedores no select Fornecedor
+   * Carrega os fornecedores, fábricas e op logísticos no select Fornecedor
    */
   loadDepartmentsByPlant() {
     if (this.logged_user instanceof Array) {
@@ -149,11 +149,11 @@ export class RastreamentoComponent implements OnInit {
             
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
 
+            // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
             // console.log('this.options: ' + JSON.stringify(this.options));
             // console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            // console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
+            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
             // console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
-            // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
 
           }
         }, err => { console.log(err) });
@@ -177,11 +177,11 @@ export class RastreamentoComponent implements OnInit {
 
             this.options.forEach(opt => this.circles.push({ position: { lat: opt.position[0], lng: opt.position[1] }, radius: this.auth.currentUser().radius }))
 
-            // console.log('this.options: ' + JSON.stringify(this.options));
-            // console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            // console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
-            // console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
             // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
+            // console.log('this.options: ' + JSON.stringify(this.options));
+            console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
+            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
+            console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
 
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
           }

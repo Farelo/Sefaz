@@ -92,12 +92,15 @@
           <th>Fornecedor</th>
           <th>Equipamento</th>
           <th>Total de Equipamentos do Fornecedor (TEF)</th>
+
           <th>Quantidade nas Plantas (A)</th>
           <th>Quantidade no Fornecedor (B)</th>
           <th>Quantidade no Transito (C)</th>
-          <th>Quantidade em Local Incorreto</th>
+
+          <th>Quantidade no Operator Logístico</th>
           <th>Total do Inventário On Line (TIOL = A+B+C)</th>
           <th>Diferença (TEF - TIOL)</th>
+
           <th>Atraso de Rota</th>
           <th>Local Incorreto</th>
           <th>Tempo de Permanencia</th>
@@ -116,10 +119,12 @@
           <td>{{dayData?.supplier?.name || '-'}}</td>
           <td>{{dayData.code}}</td>
           <td>{{dayData.quantityTotal}}</td>
+
           <td>{{dayData.quantityInFactory}}</td>
           <td>{{dayData.quantityInSupplier}}</td>
           <td>{{dayData.quantityTraveling + (dayData.all_alerts[0]?.late || 0) }}</td>
-          <td>{{dayData.quantityIncorrectLocal}}</td>
+         
+          <td>{{dayData.quantityInOpLogistic}}</td>
           <td>{{dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling }}</td>
           <td>{{dayData.quantityTotal - (dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling) - (dayData.all_alerts[0]?.late || 0)}}</td>
 
@@ -139,6 +144,7 @@
               <span class="badge badge-pill badge-permanencia">{{dayData.all_alerts[0]?.permanence_time || '0'}}</span>
             </a>
           </td>
+
           <td>
             <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 1]">
               <span class="badge badge-pill badge-ausente">{{dayData.all_alerts[0]?.missing || '0'}}</span>

@@ -226,7 +226,7 @@ export class LayerModalComponent implements OnInit {
         return e;
       })
 
-      //console.log('plants: ' + JSON.stringify(this.plants));
+      console.log('plants: ' + JSON.stringify(this.plants));
     })
   }
 
@@ -345,8 +345,8 @@ export class LayerModalComponent implements OnInit {
 
     iwCloseBtn.css({
       opacity: '0.5',
-      top: '38px',
-      right: '57px'
+      top: '20px !important',
+      right: '20px !important'
     });
     iwOuter.next().next().css({ 'top': '15px', right: '44px' })
     iwCloseBtn.css({ 'background-color': 'red' });

@@ -38,13 +38,14 @@ export class GeralComponent implements OnInit {
   }
 
   public headers: any = [];
+  public sort: any = ['none', 'asc', 'desc'];
 
   loadTableHeaders(){
-    this.headers.push({name: 'Equipamento', label: 'code', status: false});
-    this.headers.push({ name: 'Projeto', label: 'project', status: false });
-    this.headers.push({ name: 'Descrição', label: 'description', status: false });
-    this.headers.push({ name: 'Fornecedor', label: 'supplier', status: false });
-    this.headers.push({ name: 'Quantidade', label: 'quantity', status: false });
+    this.headers.push({ name: 'Equipamento', label: 'code', status: this.sort[0]});
+    this.headers.push({ name: 'Projeto', label: 'project', status: this.sort[0] });
+    this.headers.push({ name: 'Descrição', label: 'description', status: this.sort[0] });
+    this.headers.push({ name: 'Fornecedor', label: 'supplier', status: this.sort[0] });
+    this.headers.push({ name: 'Quantidade', label: 'quantity', status: this.sort[0] });
 
     console.log('this.headers: ' + JSON.stringify(this.headers));
   }
@@ -54,17 +55,13 @@ export class GeralComponent implements OnInit {
     let index = this.headers.indexOf(item);
     
     //atualizar status em todos
-    if(item.status == true) {
-      this.headers[index].status = false;
-      
-    }else{
-      this.headers.map(elem => elem.status = false);
-      this.headers[index].status = true;
-    }
-
+    this.headers[index].status = this.sort[(this.sort.indexOf(item.status) + 1) % 3];
+    this.headers.map(elem => {
+      if (elem.name !== this.headers[index].name) return elem.status = this.sort[0];
+      else return elem;
+    });
+    
     this.orderTable();
-
-    console.log('item: ' + JSON.stringify(item), ' index: ' + this.headers.indexOf(item)); 
   }
 
   //TODO
