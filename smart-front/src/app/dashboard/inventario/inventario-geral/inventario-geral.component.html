@@ -97,8 +97,8 @@
           <th>Quantidade no Fornecedor (B)</th>
           <th>Quantidade no Transito (C)</th>
 
-          <th>Quantidade no Operator Logístico</th>
-          <th>Total do Inventário On Line (TIOL = A+B+C)</th>
+          <th>Quantidade no Operator Logístico (D)</th>
+          <th>Total do Inventário On Line (TIOL = A+B+C+D)</th>
           <th>Diferença (TEF - TIOL)</th>
 
           <th>Atraso de Rota</th>
@@ -126,7 +126,12 @@
          
           <td>{{dayData.quantityInOpLogistic}}</td>
           <td>{{dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling }}</td>
-          <td>{{dayData.quantityTotal - (dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling) - (dayData.all_alerts[0]?.late || 0)}}</td>
+          <td>{{dayData.quantityTotal - 
+                (dayData.quantityInFactory + 
+                dayData.quantityInSupplier + 
+                dayData.quantityTraveling + 
+                dayData.quantityInOpLogistic) - 
+                (dayData.all_alerts[0]?.late || 0)}}</td>
 
           <!-- Alertas -->
           <td>

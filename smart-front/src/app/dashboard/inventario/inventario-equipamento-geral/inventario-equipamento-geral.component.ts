@@ -72,7 +72,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       this.packingService.getPackingsDistincts().subscribe(
         result => {
           this.packings = result.data;
-          console.log('this.packings: ' + JSON.stringify(this.packings));
+          //console.log('this.packings: ' + JSON.stringify(this.packings));
         },
         err => {
           console.log(err);
@@ -83,11 +83,11 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
   //getInventoryGeneralPackings(limit: number, page: number, code: string, attr: string = '', code_packing: string =''): Observable<any> {
   generalInventoryEquipament() {
-    console.log('=====generalInventoryEquipament');
-    console.log(
-      'this.generalEquipamentSearch: ' +
-        JSON.stringify(this.generalEquipamentSearch),
-    );
+    // console.log('=====generalInventoryEquipament');
+    // console.log(
+    //   'this.generalEquipamentSearch: ' +
+    //     JSON.stringify(this.generalEquipamentSearch),
+    // );
 
     if (this.generalEquipamentSearch == null) this.generalEquipamentSearch = '';
 
@@ -139,10 +139,10 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
               },
             );
 
-            console.log(
-              'this.general_equipament: ' +
-                JSON.stringify(this.general_equipament),
-            );
+            // console.log(
+            //   'this.general_equipament: ' +
+            //     JSON.stringify(this.general_equipament),
+            // );
           },
           err => {
             console.log(err);
