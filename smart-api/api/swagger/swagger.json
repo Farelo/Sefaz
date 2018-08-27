@@ -3583,7 +3583,21 @@
           },
           {
             "in": "query",
+            "name": "supplier",
+            "description": "Retrieve inventory related this supplier id related to packing",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
             "name": "attr",
+            "description": "Retrieve inventory related this supplier id related to packing",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "order",
             "description": "Retrieve inventory related this supplier id related to packing",
             "required": false,
             "type": "string"
