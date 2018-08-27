@@ -65,6 +65,7 @@ exports.logistic_operator_delete = function (req, res) {
 exports.logistic_operator_list = function (req, res) {
   schemas.logisticOperator.find({})
     .populate('profile')
+    .populate('plant')
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to list of all Logistic Operator'));
 };

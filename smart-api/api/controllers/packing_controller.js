@@ -1107,14 +1107,18 @@ exports.inventory_packings = async (req, res) => {
   try {
     const code = req.swagger.params.code.value;
     const code_packing = req.swagger.params.code_packing.value;
+    const supplier = req.swagger.params.supplier.value;
     const attr = req.swagger.params.attr.value;
+    const order = req.swagger.params.order.value === 'asc' ? 1 : -1;
+    const sort = {}
+    sort[attr] = order
 
     const alerts = await schemas.alert.find({});
     const packings = await schemas.packing.paginate(
-      attr && code
-        ? { supplier: new ObjectId(attr), code_tag: code }
-        : attr
-          ? { supplier: new ObjectId(attr) }
+      supplier && code
+        ? { supplier: new ObjectId(supplier), code_tag: code }
+        : supplier
+          ? { supplier: new ObjectId(supplier) }
           : code
             ? { code_tag: code }
             : code_packing
@@ -1129,11 +1133,9 @@ exports.inventory_packings = async (req, res) => {
           'department',
           'gc16'
         ],
-        sort: {
-          _id: 1,
-        },
         limit: parseInt(req.swagger.params.limit.value),
-        page: parseInt(req.swagger.params.page.value)
+        page: parseInt(req.swagger.params.page.value),
+        sort: attr && order ? sort : { _id: 1 }
       });
     
     const allPackingWithAlert = packings.docs.map((packing, index) => {
