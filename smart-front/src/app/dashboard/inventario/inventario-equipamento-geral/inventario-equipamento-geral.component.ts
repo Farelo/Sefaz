@@ -60,7 +60,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     this.headers.push({ name: 'Local', label: 'actual_plant', status: this.sort[0] });
     this.headers.push({ name: 'Bateria', label: 'battery', status: this.sort[0] });
     this.headers.push({ name: 'Temperatura', label: 'temperature', status: this.sort[0] });
-    
+
     console.log('this.headers: ' + JSON.stringify(this.headers));
   }
 
@@ -79,23 +79,25 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   }
 
   orderTable(elem: any) {
-    if (elem.status == this.sort[0]){
+    if (elem.status == this.sort[0]) {
       this.generalInventoryEquipament('', '');
 
-    }else{
+    } else {
       this.generalInventoryEquipament(elem.label, elem.status);
     }
   }
 
-  paginationChanged(){
+  paginationChanged() {
     let orderedBy = this.headers.filter(elem => {
       return elem.status != this.sort[0];
     });
 
     console.log('orderedBy: ' + JSON.stringify(orderedBy));
 
-    if(orderedBy.length > 0)
+    if (orderedBy.length > 0)
       this.orderTable(orderedBy[0]);
+    else
+      this.generalInventoryEquipament();
   }
   /**
    * Carrega a lista de embalagens no select
@@ -133,7 +135,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   }
 
   //getInventoryGeneralPackings(limit: number, page: number, code: string, attr: string = '', code_packing: string =''): Observable<any> {
-  generalInventoryEquipament(sort_by:string='', order:string='') {
+  generalInventoryEquipament(sort_by: string = '', order: string = '') {
     // console.log('=====generalInventoryEquipament');
     // console.log(
     //   'this.generalEquipamentSearch: ' +
@@ -173,7 +175,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
             console.log(
               'this.general_equipament: ' +
-                JSON.stringify(this.general_equipament),
+              JSON.stringify(this.general_equipament),
             );
           },
           err => {
@@ -217,7 +219,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     if (this.generalEquipamentSearch) {
       console.log(
         '.generalInventoryEquipamentChanged this.generalEquipamentSearch: ' +
-          JSON.stringify(this.generalEquipamentSearch),
+        JSON.stringify(this.generalEquipamentSearch),
       );
       this.packingService
         .getPackingsByPackingCode(
@@ -238,7 +240,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
             console.log(
               '.generalInventoryEquipamentChanged ...result: ' +
-                JSON.stringify(result),
+              JSON.stringify(result),
             );
 
             // this.general_equipament = new Pagination({ meta: { page: 1 } });
@@ -253,7 +255,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
             console.log(
               '.generalInventoryEquipamentChanged ...this.general_equipament: ' +
-                JSON.stringify(this.general_equipament),
+              JSON.stringify(this.general_equipament),
             );
           },
           err => {
@@ -263,7 +265,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     } else {
       console.log(
         '..generalInventoryEquipamentChanged this.generalEquipamentSearch: ' +
-          JSON.stringify(this.generalEquipamentSearch),
+        JSON.stringify(this.generalEquipamentSearch),
       );
 
       this.general_equipament = new Pagination({ meta: { page: 1 } });
