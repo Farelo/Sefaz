@@ -19,9 +19,13 @@ export class InventoryService {
       .catch(this.handleError);
   }
 
-  getInventoryGeneralPackings(limit: number, page: number, code: string, supplier: string = '', code_packing: string =''): Observable<any> {
-    //TODO: adicionar atributos de sort
-    return this.http.get(`${environment.url}inventory/general/packings/${limit}/${page}?code=${code}&supplier=${supplier}&code_packing=${code_packing}`)
+  getInventoryGeneralPackings(limit: number, page: number, code: string, 
+    supplier: string = '', code_packing: string ='', 
+    sort: string = '', order: string = ''): Observable<any> {
+    
+    let filtered = ((sort !== '') && (order !== '')) ? `&attr=${sort}&order=${order}`: '';
+    // if ((sort !== '') && (order !== '')) filtered = `&attr=${sort}&order=${order}`;
+    return this.http.get(`${environment.url}inventory/general/packings/${limit}/${page}?code=${code}&supplier=${supplier}&code_packing=${code_packing}${filtered}`)
       .catch(this.handleError);
   }
 
