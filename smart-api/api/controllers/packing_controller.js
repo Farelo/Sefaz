@@ -1,3 +1,5 @@
+const HTTPStatus = require("http-status");
+
 'use strict';
 /**
  * Module dependencies.
@@ -1101,50 +1103,127 @@ exports.inventory_packing_absence = function (req, res) {
 /**
  * All packings inventory
  */
-exports.inventory_packings = function (req, res) {
-  let code = req.swagger.params.code.value;
-  let code_packing = req.swagger.params.code_packing.value;
-  let attr = req.swagger.params.attr.value;
+exports.inventory_packings = async (req, res) => {
+  try {
+    const code = req.swagger.params.code.value;
+    const code_packing = req.swagger.params.code_packing.value;
+    const supplier = req.swagger.params.supplier.value;
+    const attr = req.swagger.params.attr.value;
+    const order = req.swagger.params.order.value === 'asc' ? 1 : -1;
+    const sort = {}
+    sort[attr] = order
 
-  schemas.packing
-    .paginate(
-      attr && code
-        ? { supplier: new ObjectId(attr), code_tag: code }
-        : attr
-          ? { supplier: new ObjectId(attr) }
+    const alerts = await schemas.alert.find({});
+    const packings = await schemas.packing.paginate(
+      supplier && code
+        ? { supplier: new ObjectId(supplier), code_tag: code }
+        : supplier
+          ? { supplier: new ObjectId(supplier) }
           : code
             ? { code_tag: code }
             : code_packing
               ? { code: code_packing }
               : {},
       {
-        page: parseInt(req.swagger.params.page.value),
         populate: [
           'supplier',
           'project',
           'tag',
           'actual_plant.plant',
           'department',
-          'gc16',
+          'gc16'
         ],
-        sort: {
-          _id: 1,
-        },
         limit: parseInt(req.swagger.params.limit.value),
+        page: parseInt(req.swagger.params.page.value),
+        sort: attr && order ? sort : { _id: 1 }
+      });
+    
+    const allPackingWithAlert = packings.docs.map((packing, index) => {
+      let item = {};
+      const alert = _.find(alerts, {packing: packing._id})
+      // const alert = schemas.alert.findOne({ packing: packing._id });
+      if (alert != null) {
+        item = {
+          _id: packing._id,
+          code: packing.code,
+          status: packing.status,
+          type: packing.type,
+          weigth: packing.weigth,
+          width: packing.width,
+          heigth: packing.heigth,
+          length: packing.length,
+          capacity: packing.capacity,
+          battery: packing.battery,
+          problem: packing.problem,
+          missing: packing.missing,
+          traveling: packing.traveling,
+          incorrect_local: packing.incorrect_local,
+          incontida: packing.incontida,
+          lastCommunication: packing.lastCommunication,
+          permanence: packing.permanence,
+          trip: packing.trip,
+          packing_missing: packing.packing_missing,
+          position: packing.position,
+          actual_gc16: packing.actual_gc16,
+          temperature: packing.temperature,
+          serial: packing.serial,
+          gc16: packing.gc16,
+          routes: packing.routes,
+          last_plant: packing.last_plant,
+          last_department: packing.last_department,
+          actual_plant: packing.actual_plant,
+          tag: packing.tag,
+          code_tag: packing.code_tag,
+          department: packing.department,
+          supplier: packing.supplier,
+          project: packing.project,
+          hashPacking: packing.hashPacking,
+          alert: alert
+        }
+        return item
+      }
+      return packing 
+    });
+    
+    res.status(HTTPStatus.OK).json({ 
+      jsonapi: { 
+        "version": "1.0" 
       },
-  )
-    .then(
-      _.partial(
-        responses.successHandlerPagination,
-        res,
-        req.user.refresh_token,
-      ),
-  )
-    .catch(
-      _.partial(
-        responses.errorHandler,
-        res,
-        'Error to list inventory permanence',
-      ),
-  );
+      "refresh_token": req.user.refresh_token, 
+      meta: { 
+        "limit": packings.limit,
+        "page": packings.page,
+        "total_pages": packings.pages,
+        "total_docs": packings.total 
+      },
+      data: allPackingWithAlert
+    });
+
+  } catch (error) {
+    responses.errorHandler(res, 'Algo falhou na busca de embalagens', error)
+  }
+};
+
+exports.find_all_packings = async (req, res) => {
+  try {
+    const family = req.swagger.params.family.value;
+    const serial = req.swagger.params.serial.value;
+  
+    const packings = await schemas.packing.find(
+      family && serial ? { code: family, serial: serial } : family ? { code: family } : serial ? { serial: serial } : {}
+    );
+
+    const historicMoviment = await Promise.all(
+      packings.map(item =>{
+        return schemas.historyMovement
+          .findOne({ packing: item._id })
+          .sort({ $natural: -1})
+          .limit(1)
+      }) 
+    );
+
+    responses.successHandler(res, req.user.refresh_token, historicMoviment);
+  } catch (error) {
+    responses.errorHandler(res, 'Algo falhou na busca de embalagens', error)
+  }
 };

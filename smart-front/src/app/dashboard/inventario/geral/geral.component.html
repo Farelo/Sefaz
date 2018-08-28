@@ -1,13 +1,36 @@
+<!-- <ng-template #popTemplate>
+  <div class="sort-template">
+    <h4>Ordem</h4>
+    <ul class="sort-ul">
+      <li class="sort-ul-item">Crescente</li>
+      <li class="sort-ul-item">Decrescente</li>
+    </ul>
+
+  </div>
+</ng-template> -->
+
 <div class="base-bg">
   <div class="table-responsive">
     <table class="table">
       <thead>
         <tr class="cabecalho">
-          <th>Equipamento</th>
+          <!-- <i class="fas fa-caret-down"></i> -->
+          <th *ngFor="let item of headers"> 
+            <span class="noselect" (click)="headerClick(item)">
+              {{ item.name }}
+              <span class="sort-icons noselect">
+                <i class="fa fa-sort" *ngIf="item.status == sort[0]"></i>
+                <i class="fa fa-caret-up" *ngIf="item.status == sort[1]"></i>
+                <i class="fa fa-caret-down" *ngIf="item.status == sort[2]"></i>
+                 <!-- [ngClass]="{'esconder': item.status !== sort[2]}" -->
+              </span>
+            </span>
+          </th>
+          <!-- <th>Equipamento</th>
           <th>Projeto</th>
           <th>Descrição</th>
-          <th>Fornecedor</th>
-          <th style="text-align: center;">Quantidade</th>
+          <th>Fornecedor<i class="fa fa-caret-up"></i></th>
+          <th style="text-align: center;">Quantidade</th> -->
           <th style="width: 80px">Detalhes</th>
         </tr>
       </thead>
