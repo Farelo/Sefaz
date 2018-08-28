@@ -102,38 +102,3 @@ tbody > tr:nth-child(even) {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
-
-/* .sort-template { 
-}
-
-.sort-ul {
-  list-style: none;
-  padding: 4px 8px 4px 8px;
-  margin: 0px;
-}
-
-.sort-ul-item {
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 14px;
-  line-height: 22px;
-  font-weight: 400;
-  text-align: left;
-  cursor: pointer;
-  outline: none;
-  background-color: transparent;
-  border: none;
-  text-decoration: none;
-  display: block;
-  padding: 0;
-  margin: 0;
-  background-clip: border-box;
-}
-
-.sort-ul-item:hover{
-  background-color: #f7f9fa;
-}
-
-.popover.top>.arrow {
-  border-top-color: unset !important;
-} */

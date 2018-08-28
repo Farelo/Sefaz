@@ -41,7 +41,7 @@ export class InventoryService {
     return this.http.get(`${environment.url}inventory/quantity/${limit}/${page}?code=${code}&attr=${attr}`)
       .catch(this.handleError);
   }
-
+  
   getInventoryPackingHistoric(limit: number, page: number, serial: string, code: string, attr: string = ''): Observable<any> {
 
     return this.http.get(`${environment.url}inventory/packing/historic/${limit}/${page}/${serial}/${code}?attr=${attr}`)

@@ -15,22 +15,21 @@
       <thead>
         <tr class="cabecalho">
           <!-- <i class="fas fa-caret-down"></i> -->
-          <th *ngFor="let item of headers"> 
+          <!-- <th *ngFor="let item of headers"> 
             <span class="noselect" (click)="headerClick(item)">
               {{ item.name }}
               <span class="sort-icons noselect">
                 <i class="fa fa-sort" *ngIf="item.status == sort[0]"></i>
                 <i class="fa fa-caret-up" *ngIf="item.status == sort[1]"></i>
                 <i class="fa fa-caret-down" *ngIf="item.status == sort[2]"></i>
-                 <!-- [ngClass]="{'esconder': item.status !== sort[2]}" -->
               </span>
             </span>
-          </th>
-          <!-- <th>Equipamento</th>
+          </th> -->
+          <th>Equipamento</th>
           <th>Projeto</th>
           <th>Descrição</th>
-          <th>Fornecedor<i class="fa fa-caret-up"></i></th>
-          <th style="text-align: center;">Quantidade</th> -->
+          <th>Fornecedor</th>
+          <th style="text-align: center;">Quantidade</th>
           <th style="width: 80px">Detalhes</th>
         </tr>
       </thead>
