@@ -183,22 +183,10 @@ td {
   }
 }
 
-h1,
-.botaoSalvar {
-  font-family: 'Montserrat', sans-serif;
-}
-
 .base {
   background-color: white;
   padding: 15px;
   box-shadow: 0px 0px 7px #000;
-}
-
-h1 {
-  padding-bottom: 15px;
-  border-bottom-color: #3E4F60;
-  border-width: thin;
-  border-bottom-style: solid;
 }
 
 .descricao {
@@ -250,8 +238,7 @@ input {
   border-width: 2px;
   padding: 5px 0px;
   width: 100px;
-  font-size: 13px;
-  font-family: 'Montserrat', sans-serif;
+  font-size: 13px; 
 }
 
 .botaoRegistrar:hover,
@@ -484,4 +471,8 @@ tbody > tr:nth-child(even) {
     margin-left: 450px;
     margin-right: 450px;
   }
+}
+
+.scroll-number {
+  height: 36px;
 }

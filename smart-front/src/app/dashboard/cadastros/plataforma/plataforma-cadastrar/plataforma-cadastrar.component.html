@@ -1,23 +1,26 @@
 <div class="">
-  <h1>REGISTRAR PLATAFORMA</h1>
-  <br />
+  <h2>Registrar Plataforma</h2>
+  <hr>
+
   <form novalidate (ngSubmit)="onSubmit(project)" [formGroup]="project" #formDir="ngForm">
     <div class="campo">
       <p class="descricao">NOME</p>
       <p class="explicacao">Ex. "Plataforma B1"</p>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Digite o nome do projeto" aria-describedby="basic-addon2" [(ngModel)]="name" formControlName="name"
-        [ngClass]="{'required': (project.get('name').hasError('required') && project.get('name').touched)
+        <input type="text" class="form-control" placeholder="Digite o nome do projeto" aria-describedby="basic-addon2" [(ngModel)]="name"
+          formControlName="name" [ngClass]="{'required': (project.get('name').hasError('required') && project.get('name').touched)
         || (project.get('name').hasError('required') && formDir.submitted)}">
       </div>
       <p class="requiredText" *ngIf="(project.get('name').hasError('required') && project.get('name').touched)
       || (project.get('name').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
     </div>
-    <br />
+
+    <br/>
+    
     <div class="botoes">
-      <button routerLink="/rc/cadastros/plataforma" class="botaoVoltar">Voltar</button>
+      <button routerLink="/rc/cadastros/plataforma" class="botaoVoltar">VOLTAR</button>
       <button type="submit" class="botaoRegistrar">REGISTRAR</button>
     </div>
-    <Br />
+    <br/>
   </form>
 </div>

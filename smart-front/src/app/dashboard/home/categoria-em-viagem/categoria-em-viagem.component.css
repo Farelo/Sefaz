@@ -1,3 +1,6 @@
+h5 {
+  margin-bottom: 4px;
+}
 .grupo-categoria {
   margin-top: 30px;
 }
@@ -124,8 +127,7 @@
   color: white;
 }
 
-.nome-categoria {
-  font-size: 1.4rem;
+.nome-categoria { 
   font-weight: bold;
   color: #354052;
   margin-left: 15px;

@@ -1,11 +1,11 @@
 <section class="grupo-categoria">
 
   <div style="display: flex;">
-    <h3>Em Viagem</h3>
+    <h5>Em Viagem</h5>
     <div class="quantidade-total-categoria">{{ resume.quantityTraveling + resume.quantityLate + resume.quantityMissing }}</div>
   </div>
 
-  <div class="categoria-progress">
+  <div class="progress categoria-progress">
     <div class="progress-bar status-atrasada" [style.width.%]="progressEmViagem[0]"></div>
     <div class="progress-bar status-ausente" [style.width.%]="progressEmViagem[1]"></div>
     <div class="progress-bar progress-bar-empty" [style.width.%]="progressEmViagem[2]"></div>
