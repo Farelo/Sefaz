@@ -91,6 +91,16 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
     if (this.generalEquipamentSearch == null) this.generalEquipamentSearch = '';
 
+    /**
+     * getInventoryGeneralPackings(
+     *    limit: number, 
+     *    page: number, 
+     *    code: string, 
+     *    supplier: string = '', 
+     *    code_packing: string =''): Observable<any> { }
+     */
+    console.log('this.logged_user: ' + this.logged_user);
+
     if (this.logged_user instanceof Array) {
       this.inventoryLogisticService
         .getInventoryGeneralPackings(
