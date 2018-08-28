@@ -41,7 +41,7 @@
   <div class="table-responsive">
     <table class="table">
       <thead>
-        <tr class="cabecalho">
+        <!-- <tr class="cabecalho">
           <th>Equipamento</th>
           <th>Serial</th>
           <th>Tag</th>
@@ -56,8 +56,23 @@
 
           <th>Status</th>
           <th>Posições</th>
+        </tr> -->
+        <tr class="cabecalho">
+          <th *ngFor="let item of headers">
+            <span class="noselect" (click)="headerClick(item)">
+              {{ item.name }}
+              <span class="sort-icons noselect">
+                <i class="fa fa-sort" *ngIf="item.status == sort[0]"></i>
+                <i class="fa fa-caret-up" *ngIf="item.status == sort[1]"></i>
+                <i class="fa fa-caret-down" *ngIf="item.status == sort[2]"></i>
+                <!-- [ngClass]="{'esconder': item.status !== sort[2]}" -->
+              </span>
+            </span>
+          </th>
+          <th>Posições</th>
         </tr>
       </thead>
+
       <tbody>
         <tr *ngFor="let packing of general_equipament.data | paginate: {
                                                         id:'general',
@@ -77,7 +92,7 @@
           <td>{{ (packing.battery != undefined && packing.battery >= 0) ? ((packing.battery | round) + '%') : 'Sem Registro' }} </td>
           <td style="text-align: center;">{{ packing?.temperature || '-' }} ∘</td>
 
-          <td>{{ packing.status }}</td>
+          <!-- <td>{{ packing.status }}</td> -->
           <td style="text-align: center;">
             <div class="bigger" (click)="openLayer(packing)">
               <div class="det"> </div>
@@ -95,7 +110,7 @@
   <br>
 
   <div class="has-text-centered">
-    <pagination-controls class="my-pagination" id='general' (pageChange)="general_equipament.meta.page = $event; generalInventoryEquipament()"
+    <pagination-controls class="my-pagination" id='general' (pageChange)="general_equipament.meta.page = $event; paginationChanged()"
       directionLinks="false" autoHide="true">
     </pagination-controls>
   </div>
