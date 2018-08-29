@@ -7,6 +7,7 @@ import { HomeRoutingModule } from './home.routing.module';
 import { CommonModule } from '@angular/common'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule} from 'ngx-pagination';
+import { TooltipModule, PopoverModule } from 'ngx-bootstrap'
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ResumoHomeComponent } from './resumo-home/resumo-home.component';
@@ -22,7 +23,9 @@ import { CategoriaBateriaBaixaComponent } from './categoria-bateria-baixa/catego
     CommonModule,
     NgxPaginationModule,
     NgxChartsModule,
-    NgbModule
+    NgbModule,
+    TooltipModule, 
+    PopoverModule
   ],
   declarations: [
     HomeComponent,

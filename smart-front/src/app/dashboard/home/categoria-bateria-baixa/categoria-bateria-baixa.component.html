@@ -8,7 +8,7 @@
 
   <!-- Embalagens Bateria Baixa -->
   <section>
-    <div class="linha-categoria status-bateria">
+    <div class="linha-categoria bg-bateria">
       <div class="tick-categoria">
 
         <div class="quantidade-categoria status-bateria">
@@ -55,7 +55,7 @@
                                                           totalItems: listBattery.meta.total_docs}">
                 <td>{{ item.code || '-' }}</td>
                 <td>{{ item.serial || '-' }}</td>
-                <td>{{ item.project?.name || '-' }}</td>
+                <td>{{ item.code_tag || '-' }}</td>
 
                 <td>{{ item.actual_plant?.plant ? item.actual_plant?.plant?.plant_name : "Sem Planta" }}</td>
                 <td>{{ item.actual_plant | type }}</td>

@@ -62,7 +62,7 @@ async function updatePermanenceStatus(packing) {
       actual_gc16: packing.actual_gc16,
       department: packing.department,
       plant: packing.actual_plant,
-      date: packing.permanence.date_exceeded,
+      date: packing.permanence.date_exceeded || 0,
       temperature: packing.temperature || 0,
       permanence_time: packing.permanence.amount_days_exceeded,
       serial: packing.serial,
@@ -213,7 +213,7 @@ async function createPermanenceStatus(packing) {
     actual_gc16: packing.actual_gc16,
     plant: packing.actual_plant,
     department: packing.department,
-    date: packing.permanence.date_exceeded,
+    date: packing.permanence.date_exceeded || 0,
     temperature: packing.temperature || 0,
     permanence_time: packing.permanence.amount_days_exceeded,
     serial: packing.serial,
@@ -332,6 +332,11 @@ async function removeHistoric(packing, date, status) {
   });
 }
 
+async function hasHistoricPacking(packing) {
+  const historicPacking = await schemas.historicPackings.find({ packing: packing._id })
+  return historicPacking.length > 0 ? true : false
+}
+
 module.exports = {
   updateIncontidaStatus,
   updateTravelingStatus,
@@ -346,4 +351,5 @@ module.exports = {
   removeHistoric,
   updatePermanenceStatus,
   createPermanenceStatus,
+  hasHistoricPacking
 };

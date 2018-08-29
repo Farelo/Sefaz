@@ -89,6 +89,7 @@
     <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false" [scrollwheel]="true">
       <polyline *ngIf="!showLastPosition" [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3" [icons]="icons"></polyline>
       
+
       <!-- ///////////// -->
       <!-- Plant -->
       <marker *ngFor="let posPlants of plants" 
@@ -118,8 +119,28 @@
           [visible]="showControlledPlants"
           radius="{{ settings.range_radius }}"></circle>
       
+
       <!-- ///////////// -->
       <!-- Logistic operator -->
+      <marker *ngFor="let posLogistic of logistics" 
+        [position]="[posLogistic.plant.lat, posLogistic.plant.lng]" 
+        (click)="clickedLogistic($event, posLogistic)"
+        [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }" 
+        [visible]="showControlledPlants">
+        <!-- <div class="custom-icon-map-plant"></div> -->
+        <info-window id="lw">
+          <div class="iw-title">INFORMAÇÕES</div>
+          <div *ngIf="plant.display">
+            <p>
+              <span class="bold">Operador Logístico:</span> {{ logistic.name }}</p>
+            <!-- <p>
+                    <span class="bold">Localização:</span> {{ plant.location }}</p> -->
+          </div>
+        </info-window>
+      </marker>
+      
+      <circle *ngFor="let posLogisticRadius of logistics" [center]="posLogisticRadius.latLng" [fillColor]="'#0044a8'" [fillOpacity]="0.15"
+        [strokeColor]="'#0044a8'" [strokeOpacity]="0.35" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
       
 
       <!-- ///////////// -->

@@ -14,8 +14,8 @@ export class LogisticService {
       return Observable.throw(error);
   }
 
-  listLogistic(limit: any, page: any): Observable<any> {
-    return this.http.get(`${environment.url}logistic_operator/list/pagination/${limit}/${page}`)
+  listLogistic(): Observable<any> {
+    return this.http.get(`${environment.url}logistic_operator/list/`)
       .catch(this.handleError);
   }
 

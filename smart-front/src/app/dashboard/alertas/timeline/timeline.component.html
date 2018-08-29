@@ -1,49 +1,62 @@
-<div class="conteudoHome">
-  <div class="header">
-    Timeline
+<div class="conteudoTop">
+  <div class="conteudoHome">
+    <div class="header">
+      Timeline
 
-    <button type="button" class="interrogacao1" [ngbPopover]='popContent' placement="left" *ngIf="telaGrande == false" triggers='hover' (click)="openHelp(content)">
-    </button>
+      <button type="button" class="interrogacao1" [ngbPopover]='popContent' placement="left" *ngIf="telaGrande == false" triggers='hover'
+        (click)="openHelp(content)">
+      </button>
 
-    <button type="button" class="interrogacao2" [ngbPopover]='popContent' placement="bottom" *ngIf="telaGrande == true" triggers='hover' (click)="openHelp(content)">
-    </button>
+      <button type="button" class="interrogacao2" [ngbPopover]='popContent' placement="bottom" *ngIf="telaGrande == true" triggers='hover'
+        (click)="openHelp(content)">
+      </button>
 
-    <ng-template #popContent>
-      <p class="tit1">Alertas e seus significados</p>
-      <span class="lg1">EMBALAGEM AUSENTE</span><br />
-      <span class="lg2">LOCAL INCORRETO</span><br />
-      <span class="lg3">BATERIA BAIXA</span><br />
-      <span class="lg4">EMBALAGEM ATRASADA</span><br />
-      <span class="lg5">TEMPO DE PERMANÊNCIA</span><br />
-      <!-- <span class="lg6"></span><br /> -->
-    </ng-template>
-
-    <ng-template #content>
-      <div class="modalFilho">
+      <ng-template #popContent>
         <p class="tit1">Alertas e seus significados</p>
-        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click');">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <div class="modalBody" style="text-align: center">
+        <span class="lg1">EMBALAGEM AUSENTE</span>
+        <br />
+        <span class="lg2">LOCAL INCORRETO</span>
+        <br />
+        <span class="lg3">BATERIA BAIXA</span>
+        <br />
+        <span class="lg4">EMBALAGEM ATRASADA</span>
+        <br />
+        <span class="lg5">TEMPO DE PERMANÊNCIA</span>
+        <br />
+        <!-- <span class="lg6"></span><br /> -->
+      </ng-template>
 
-          <span class="lg1">EMBALAGEM AUSENTE</span><br />
-          <span class="lg2">LOCAL INCORRETO</span><br />
-          <span class="lg3">BATERIA BAIXA</span><br />
-          <span class="lg4">EMBALAGEM ATRASADA</span><br />
-          <span class="lg5">TEMPO DE PERMANÊNCIA</span><br />
+      <ng-template #content>
+        <div class="modalFilho">
+          <p class="tit1">Alertas e seus significados</p>
+          <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click');">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="modalBody" style="text-align: center">
+
+            <span class="lg1">EMBALAGEM AUSENTE</span>
+            <br />
+            <span class="lg2">LOCAL INCORRETO</span>
+            <br />
+            <span class="lg3">BATERIA BAIXA</span>
+            <br />
+            <span class="lg4">EMBALAGEM ATRASADA</span>
+            <br />
+            <span class="lg5">TEMPO DE PERMANÊNCIA</span>
+            <br />
+          </div>
         </div>
-      </div>
-    </ng-template>
+      </ng-template>
 
-  </div>
-
+    </div>
 
     <div class="painel">
 
       <div class="row quadradoPequeno" tooltip="Alerta de {{alert.status == 1 ? 'Embalagem ausente' :
        (alert.status == 2 ? 'Embalagem em local incorreto':
        (alert.status == 3 ? 'Embalagem com bateria baixa':
-       (alert.status == 4 ? 'Embalagem em viagem': 'Embalagem com tempo de permanência elevado')))}}" placement="bottom" *ngFor="let alert of data?.data | paginate: {   id:'alerts',
+       (alert.status == 4 ? 'Embalagem em viagem': 'Embalagem com tempo de permanência elevado')))}}" placement="bottom"
+        *ngFor="let alert of data?.data | paginate: {   id:'alerts',
                                                         itemsPerPage: 16,
                                                         currentPage: data.meta.page,
                                                         totalItems: data.meta.total_docs}" [ngClass]="{
@@ -56,7 +69,8 @@
         }" [routerLink]="['list/',alert.packing.code, alert.project._id, alert.supplier._id, alert.status ]">
 
         <div class="col-sm-6 esquerda">
-          <span class="codigo" tooltip="Código da Embalagem">{{alert.packing?.code}}</span><br />
+          <span class="codigo" tooltip="Código da Embalagem">{{alert.packing?.code}}</span>
+          <br />
           <span class="descricao" tooltip="Descrição">{{alert.packing?.type}}</span>
         </div>
 
@@ -84,22 +98,24 @@
           }">{{alert.quantity }}</span>
         </div>
 
-
-    </div>
-
-    <div style="width: 100%;" *ngIf="data?.data?.length > 0 ">
-      <br />
-      <div class="has-text-centered">
-        <pagination-controls id='alerts' class="my-pagination" (pageChange)="pageChanged($event)" directionLinks="false" autoHide="true">
-        </pagination-controls>
       </div>
-    </div>
 
-    <div class="externa" *ngIf="data?.data?.length < 1 ">
-      <div class="row interna">
-        
-        <div class="col-sm-9 divTexto center">
-          <p class="texto">VOCÊ NÃO TEM NENHUM ALERTA</p>
+      <div style="width: 100%;" *ngIf="data?.data?.length > 0 ">
+        <br />
+        <div class="has-text-centered">
+          <pagination-controls id='alerts' class="my-pagination" (pageChange)="pageChanged($event)" directionLinks="false" autoHide="true">
+          </pagination-controls>
+        </div>
+      </div>
+
+      <div class="externa" *ngIf="data?.data?.length < 1 ">
+        <div class="row interna">
+
+          <div class="col-sm-9 divTexto center">
+            <p class="texto">VOCÊ NÃO TEM NENHUM ALERTA</p>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+</div>

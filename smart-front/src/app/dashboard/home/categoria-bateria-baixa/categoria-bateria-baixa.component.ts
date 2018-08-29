@@ -22,16 +22,15 @@ export class CategoriaBateriaBaixaComponent implements OnInit {
 
   ngOnChanges() {
     //console.log(this.resume);
-    this.getListIncorrectLocal();
+    this.getListLowBattery();
   }
 
-  getListIncorrectLocal() {
+  getListLowBattery() {
     this.inventoryService
       .getLowBattery(10, this.listBattery.meta.page).subscribe(result => {
         this.listBattery = result;
 
-        console.log('this.listBattery: ' + JSON.stringify(this.listBattery));
-
+        //console.log('this.listBattery: ' + JSON.stringify(this.listBattery));
         this.calculateProgress();
 
       },err => {console.log(err);});
@@ -43,7 +42,7 @@ export class CategoriaBateriaBaixaComponent implements OnInit {
       this.progressBateria.push((parseFloat(this.resume.quantityLowBattery) / parseFloat(this.resume.quantityTotal)) * 100);
       this.progressBateria.push(100 - this.progressBateria[0]);
 
-      console.log('this.progressBateria: ' + this.progressBateria);
+      //console.log('this.progressBateria: ' + this.progressBateria);
       //console.log('this.progressEmViagem: ' + this.progressBateria);
     }
   }
@@ -53,6 +52,7 @@ export class CategoriaBateriaBaixaComponent implements OnInit {
    */
   batteryChange() {
     console.log('batteryChange');
+    this.getListLowBattery();
   }
 
 }
