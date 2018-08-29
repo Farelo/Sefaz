@@ -57,7 +57,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     this.headers.push({ name: 'Fornecedor', label: 'supplier.name', status: this.sort[0] });
     this.headers.push({ name: 'Status Atual', label: 'status', status: this.sort[0] });
     this.headers.push({ name: 'Planta Atual', label: 'actual_plant.plant.plant_name', status: this.sort[0] });
-    this.headers.push({ name: 'Local', label: 'actual_plant', status: this.sort[0] });
+    this.headers.push({ name: 'Local', label: 'actual_plant.local', status: this.sort[0] });
     this.headers.push({ name: 'Bateria', label: 'battery', status: this.sort[0] });
     this.headers.push({ name: 'Temperatura', label: 'temperature', status: this.sort[0] });
 
