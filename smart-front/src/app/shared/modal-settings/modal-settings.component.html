@@ -4,42 +4,30 @@
       <span aria-hidden="true">&times;</span>
     </button>
 
-    <h2 class="titulo">EDITAR CONFIGURAÇÕES DO SISTEMA</h2>
-    <br />
+    <h2>Editar Configurações do Sistema</h2>
     <hr />
-
-
+    
     <form novalidate (ngSubmit)="onSubmit(settings)" [formGroup]="settings" #formDir="ngForm">
 
       <div class="row">
-
-
         <div class="col-sm-6" >
-
           <p class="descricao">DEFINIR NIVEL DA BATERIA PARA GERTA ALERTA</p>
-
           <nouislider [config]="someChargeConfig" style="margin-top: 4em;" [formControl]="settings.controls.battery_level"></nouislider>
-
         </div>
 
         <div class="col-sm-6 temp" formGroupName="register_gc16">
-
           <p class="descricao">ATIVAR BPLINE</p>
           <div style="padding: 42px;">
             <bSwitch [switch-off-text]="'Desativado'" [switch-on-text]="'Ativado'" [switch-on-color]="'info'" [switch-off-color]="'danger'"
               [switch-size]="'normal'" [switch-animate]="true" [switch-base-class]="'bootstrap-switch'" formControlName="enable">
             </bSwitch>
           </div>
-
         </div>
 
         <div class="col-sm-12">
           <p class="descricao">DEFINIR O RAIO DE ALCANCE DA PLANTA EM RELAÇÃO A SUA GEOLOCALIZAÇÃO</p>
-
           <nouislider [config]="someMeterConfig" style="margin-top: 4em;" [formControl]="settings.controls.range_radius"></nouislider>
-
-        </div>
-        
+        </div>     
 
         <div class="col-sm-12">
           <div class="botoes">

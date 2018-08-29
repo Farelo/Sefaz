@@ -135,8 +135,16 @@ img {
   font-weight: 700;
 }
 
+.input-group {
+  width: unset;
+}
+
 /*--------*/
 /*Checkboxes*/
+.checkbox {
+  margin: 6px 0px 0px 6px;
+}
+
 .checkbox label:after {
   content: '';
   display: table;
@@ -266,16 +274,13 @@ div.info-window-content > p {
   margin-bottom: 4px;
 }
 
-/* ::ng-deep .modal-xl .modal-dialog{
-  max-width: 1490px !important;
-  min-width: 971px !important;   
-  width: 95% !important;
-} */
+/* --- */
+.input-group>.input-group-prepend>.btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
 
-/* @media (min-width: 970px) {
-  .modal-xl > .modal-lg {
-    max-width: 1490px !important;
-    min-width: 971px !important;   
-    width: 95% !important;
-  }
-} */
+.input-group>.input-group-append>.btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

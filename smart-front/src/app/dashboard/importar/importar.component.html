@@ -9,7 +9,7 @@
           </div>
         </button>
 
-        <h1>IMPORTAR DADOS</h1>
+        <h2>IMPORTAR DADOS</h2>
 
         <ng-template #content>
           <div class="modalFilho">
@@ -22,19 +22,21 @@
             <p style="border: none; font-weight: none!important; width: 564px;">Para cadastrar informações no sistema via planilha excel, é preciso carregar arquivos (.xlsx) e seguir o template
               conforme demonstrado nos exemplos abaixo (seguindo a ordem de colunas e nomenclaturas).</p>
             <div class="modalBody">
-              <h1>Tag</h1>
+              <h4>Tag</h4>
               <p>
                 <span class="lg1">CODE</span>
               </p>
               <p>code: Código do beacon</p>
               <br>
-              <h1>Projeto</h1>
+              
+              <h4>Projeto</h4>
               <p>
                 <span class="lg1">NAME</span>
               </p>
               <p>name: Nome do projeto</p>
               <br>
-              <h1>Planta</h1>
+              
+              <h4>Planta</h4>
               <p>
                 <span class="lg1">PLANT_NAME</span>
                 <span class="lg1">LAT</span>
@@ -44,7 +46,8 @@
               <p>lat: Latitude da planta</p>
               <p>lng: Longitude da planta</p>
               <br>
-              <h1>Departamento</h1>
+              
+              <h4>Departamento</h4>
               <p>
                 <span class="lg1">NAME</span>
                 <span class="lg1">PLANT</span>
@@ -56,7 +59,8 @@
               <p>lat: Latitude da planta</p>
               <p>lng: Longitude da planta</p>
               <br>
-              <h1>Embalagem</h1>
+              
+              <h4>Embalagem</h4>
               <p>
                 <span class="lg1">CODE</span>
                 <span class="lg1">SERIAL</span>
@@ -83,7 +87,8 @@
               <p>height: Altura da embalagem</p>
               <p>length: Comprimento da Embalagem</p>
               <br>
-              <h1>Rota</h1>
+              
+              <h4>Rota</h4>
               <p>
                 <span class="lg1">SUPPLIER</span>
                 <span class="lg1">DUNS</span>
@@ -104,7 +109,7 @@
 
         <form novalidate (ngSubmit)="onSubmit(import)" [formGroup]="import" #formDir="ngForm">
           <div class="row">
-            <div class="col-md-4 importar">
+            <div class="col-sm-12 col-md-4 importar">
               <p>Escolha um arquivo xlxs para importar</p>
               <form>
                 <div class="form-group">
@@ -117,7 +122,7 @@
               </form>
             </div>
 
-            <div class="col-md-8">
+            <div class="col-sm-12 col-md-8">
               <div class="table-responsive tabela">
                 <table class="table">
                   <thead>

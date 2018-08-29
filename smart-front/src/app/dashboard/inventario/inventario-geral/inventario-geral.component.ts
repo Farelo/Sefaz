@@ -62,7 +62,8 @@ export class InventarioGeralComponent implements OnInit {
   }
 
   public getChild(parent: any = { plant_name: '' }) {
-    return parent.plant_name
+    console.log('parent.plant_name: ' + parent.plant_name);
+    return parent.plant_name;
   }
   
   onClearSupplier(){

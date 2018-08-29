@@ -5,7 +5,7 @@
       <!-- Cabeçalho -->
       <div class="headerInventario">
 
-        <h2>BUSCA POR </h2>
+        <h4 id="titulo-busca">BUSCA POR </h4>
 
         <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal" (ngModelChange)="choiced($event)">
           <option *ngFor="let obj of escolhas" [ngValue]="obj.name">{{obj.name}}</option>

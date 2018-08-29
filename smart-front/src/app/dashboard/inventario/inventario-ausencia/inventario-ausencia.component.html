@@ -1,92 +1,91 @@
 <div class="base-bg">
   
-  <h2>TEMPO DE AUSÊNCIA</h2>
+  <h3>Tempo de Ausência</h3>
 
   <!-- Linha divisória -->
   <hr style="margin-top: 10px;">
     
   <div class="row">
-    <div class="col-sm-12">
 
-      <div class="col-sm-4 clear-padding">
-        <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="absenceSearchEquipamento" 
-          (clear)="onClear()" 
-          (change)="absenceInventory()" 
-          [items]="ab_packings"
-          bindLabel="packing" 
-          placeholder="Selecione um Equipamento">
+    <div class="col-sm-4">
+      <p>EQUIPAMENTO</p>
+      <ng-select [(ngModel)]="absenceSearchEquipamento" 
+        (clear)="onClear()" 
+        (change)="absenceInventory()" 
+        [items]="ab_packings"
+        bindLabel="packing" 
+        placeholder="Selecione um Equipamento">
 
-          <ng-template ng-label-tmp let-item="item">
-            {{item.packing}}
-          </ng-template>
+        <ng-template ng-label-tmp let-item="item">
+          {{item.packing}}
+        </ng-template>
 
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-              <b>Embalagem:</b> {{item.packing }}
-            </div>
+        <ng-template ng-option-tmp let-item="item">
+          <div>
+            <b>Embalagem:</b> {{item.packing }}
+          </div>
 
-            <div *ngIf="(item.packing != 'Todos')">
-              <small> <b>Fornecedor:</b> {{item.supplier.name}} </small>
-            </div>
+          <div *ngIf="(item.packing != 'Todos')">
+            <small> <b>Fornecedor:</b> {{item.supplier.name}} </small>
+          </div>
 
-            <div *ngIf="(item.packing != 'Todos')">
-              <small> <b> Projeto:</b> {{item.project.name}} </small>
-            </div>
-          </ng-template>
-        </ng-select>
-      </div>
-      
-      <div class="col-sm-4 clear-padding">
-        <p>SERIAL</p>
-        <ng-select [(ngModel)]="absenceSearchSerial" 
-          (clear)="serialCleared()" 
-          (change)="absenceInventory()" 
-          [items]="abserials"
-          bindLabel="serial" 
-          bindValue="serial" 
-          placeholder="Selecione um Serial">
-
-          <ng-template ng-label-tmp let-item="item">
-            {{item.serial}}
-          </ng-template>
-
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-              <small><b>Serial:</b> {{item.serial}}</small>
-            </div>
-          </ng-template>
-
-        </ng-select>
-      </div>
-      
-      <div class="col-sm-4 clear-padding">
-        <p>TEMPO DE AUSÊNCIA</p>
-        <input [(ngModel)]="absenceTime" 
-          aria-describedby="basic-addon1" 
-          class="form-control meuInput"
-          placeholder="Tempo" 
-          bindLabel="abtime" 
-          type="text" 
-          (change)="absenceInventory()">
-      </div>
-      
-      <div class="col-sm-4 clear-padding">
-        <p>LOCAL DA AUSÊNCIA</p>
-        <!-- <select [(ngModel)]="escolhaLocal" (clear)="onClear()" data-style="btn-primary" (change)="absenceInventory()" (ngModelChange)="changeSelect($event)"
-          class="selectEq" style="width: 100%; margin-left: 0px;">
-          <option value="Supplier">Plantas das Embarcadoras</option>
-
-        </select> -->
-
-        <ng-select [(ngModel)]="escolhaLocal" 
-          (change)="changeLocal()" 
-          [items]="locals" 
-          bindLabel="local" 
-          bindValue="local" 
-          placeholder="Selecione um Local"></ng-select>
-      </div>
+          <div *ngIf="(item.packing != 'Todos')">
+            <small> <b> Projeto:</b> {{item.project.name}} </small>
+          </div>
+        </ng-template>
+      </ng-select>
     </div>
+    
+    <div class="col-sm-4">
+      <p>SERIAL</p>
+      <ng-select [(ngModel)]="absenceSearchSerial" 
+        (clear)="serialCleared()" 
+        (change)="absenceInventory()" 
+        [items]="abserials"
+        bindLabel="serial" 
+        bindValue="serial" 
+        placeholder="Selecione um Serial">
+
+        <ng-template ng-label-tmp let-item="item">
+          {{item.serial}}
+        </ng-template>
+
+        <ng-template ng-option-tmp let-item="item">
+          <div>
+            <small><b>Serial:</b> {{item.serial}}</small>
+          </div>
+        </ng-template>
+
+      </ng-select>
+    </div>
+    
+    <div class="col-sm-4">
+      <p>TEMPO DE AUSÊNCIA</p>
+      <input [(ngModel)]="absenceTime" 
+        aria-describedby="basic-addon1" 
+        class="form-control meuInput"
+        placeholder="Tempo" 
+        bindLabel="abtime" 
+        type="text" 
+        (change)="absenceInventory()">
+    </div>
+    
+    <div class="col-sm-4">
+      <p>LOCAL DA AUSÊNCIA</p>
+      <!-- <select [(ngModel)]="escolhaLocal" (clear)="onClear()" data-style="btn-primary" (change)="absenceInventory()" (ngModelChange)="changeSelect($event)"
+        class="selectEq" style="width: 100%; margin-left: 0px;">
+        <option value="Supplier">Plantas das Embarcadoras</option>
+
+      </select> -->
+
+      <ng-select [(ngModel)]="escolhaLocal" 
+        (change)="changeLocal()" 
+        [items]="locals" 
+        bindLabel="local" 
+        bindValue="local" 
+        placeholder="Selecione um Local"></ng-select>
+    </div> 
+    
   </div>
 
   <div class="table-responsive" style="margin-top: 20px;">

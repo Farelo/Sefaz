@@ -378,6 +378,13 @@ hr {
   flex-wrap: wrap;
 }
 
+#titulo-busca {
+  display: inline-flex;
+  margin: 0px;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
 /* Teste wraper */
 @media (max-width: 576px) {
   .conteudoTop {

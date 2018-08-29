@@ -84,9 +84,9 @@ hr {
   padding: 0px;
 }
 
-/* td {
-  background-color: white;
-} */
+table td, table th {
+  padding: .5rem;
+}
 
 tbody > tr:nth-child(even) {
     background-color: #f9f9f9;

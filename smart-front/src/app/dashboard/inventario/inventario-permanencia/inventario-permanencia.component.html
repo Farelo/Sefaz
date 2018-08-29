@@ -1,57 +1,55 @@
 <div class="base-bg">
-  <h2>TEMPO DE PERMANÊNCIA</h2>
-  <br />
+  <h3>Tempo de Permanência</h3>
+  <br>
 
   <!-- Linha divisória -->
   <hr style="margin-top: 10px;">
 
   <div class="row" style="margin-bottom: 20px;">
-    <div class="col-sm-12 clear-padding">
-      <div class="col-sm-4">
-        <p>EQUIPAMENTO</p>
-        <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings"
-          bindLabel="packing" placeholder="Selecione um Equipamento">
-          <ng-template ng-label-tmp let-item="item">
-            {{item.packing}}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-      
-              <b>Embalagem:</b> {{item.packing}}
-            </div>
-            <div>
-              <small>
-                <b>Fornecedor:</b> {{item.supplier.name}}
-              </small>
-      
-            </div>
-            <div>
-              <small>
-                <b> Projeto:</b> {{item.project.name}}
-              </small>
-            </div>
-      
-      
-          </ng-template>
-        </ng-select>
-      </div>
-      
-      <!--TEMPO DE PERMANÊNCIA: filtro Serial -->
-      <div class="col-sm-4 clear-padding">
-        <p>SERIAL</p>
-        <ng-select [(ngModel)]="selectedSerial" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="serials"
-          bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial">
-          <ng-template ng-label-tmp let-item="item">
-            {{item.serial}}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-              <small>
-                <b>Serial:</b> {{item.serial}}</small>
-            </div>
-          </ng-template>
-        </ng-select>
-      </div>
+    <div class="col-sm-4">
+      <p>EQUIPAMENTO</p>
+      <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings"
+        bindLabel="packing" placeholder="Selecione um Equipamento">
+        <ng-template ng-label-tmp let-item="item">
+          {{item.packing}}
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item">
+          <div>
+    
+            <b>Embalagem:</b> {{item.packing}}
+          </div>
+          <div>
+            <small>
+              <b>Fornecedor:</b> {{item.supplier.name}}
+            </small>
+    
+          </div>
+          <div>
+            <small>
+              <b> Projeto:</b> {{item.project.name}}
+            </small>
+          </div>
+    
+    
+        </ng-template>
+      </ng-select>
+    </div>
+    
+    <!--TEMPO DE PERMANÊNCIA: filtro Serial -->
+    <div class="col-sm-4 clear-padding">
+      <p>SERIAL</p>
+      <ng-select [(ngModel)]="selectedSerial" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="serials"
+        bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial">
+        <ng-template ng-label-tmp let-item="item">
+          {{item.serial}}
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item">
+          <div>
+            <small>
+              <b>Serial:</b> {{item.serial}}</small>
+          </div>
+        </ng-template>
+      </ng-select>
     </div>
   </div>
 

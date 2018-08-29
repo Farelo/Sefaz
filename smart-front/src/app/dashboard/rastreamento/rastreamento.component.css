@@ -20,6 +20,10 @@ ngui-map {
   width: 100%;
 }
 
+p {
+  margin: 8px 0px 0px 0px !important;
+}
+
 .campo ng-select {
   position: absolute !important;
   margin-top: 51px;
@@ -79,6 +83,10 @@ th {
 
 .table {
   font-size: 14px;
+}
+
+.table td, .table th {
+  padding: .5rem;
 }
 
 span {

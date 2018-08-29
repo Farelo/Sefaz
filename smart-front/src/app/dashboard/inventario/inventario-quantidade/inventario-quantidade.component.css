@@ -40,17 +40,19 @@ select {
   background-color: white;
   color: black;
   padding: 10px;
+  margin: 0px;
 }
 
 .definicao {
   background-color: #3E4F60;
   color: white;
   padding: 10px;
+  margin: 0px !important;
 }
 
 .resumo {
   display: inline-flex;
-  margin-right: 20px;
+  margin: 0px 20px 0px 0px!important;
   box-shadow: 0px 0px 5px #999;
   -webkit-box-shadow: 0px 0px 7px #999;
 }

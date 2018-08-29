@@ -1,8 +1,8 @@
 <div class="modalFilho">
   <div class="header">
-    <h1>
+    <h2>
       <span>Detalhes da Embalagem </span>
-    </h1>
+    </h2>
     
     <p>
       <span class="badge badge-secondary">Código: {{packing.code}}</span>
@@ -49,7 +49,7 @@
       <!-- <nouislider id="accuracyRange" [min]="0" [max]="32" [step]="0.1" [(ngModel)]="someRange3" [tooltips]="[true]"></nouislider> -->
     <!-- </div> -->
 
-    <div class="form-group col-auto"> 
+    <!-- <div class="form-group col-auto"> 
       <div class="input-group-accuracy">
         <span class="input-group-accuracy-btn">
           <button type="button" class="btn btn-default btn-left-accuracy" (click)="decrementRange()">-</button>
@@ -58,6 +58,16 @@
         <span class="input-group-accuracy-btn">
           <button type="button" class="btn btn-default btn-right-accuracy" (click)="incrementRange()">+</button>
         </span>
+      </div>
+    </div> -->
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-secondary" type="button" (click)="decrementRange()">-</button>
+      </div>
+      <input type="text" style="width: 80px !important; text-align: center;" class="form-control" [(ngModel)]="accuracyRange" (ngModelChange)="rangechanged()">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" (click)="incrementRange()">+</button>
       </div>
     </div>
 

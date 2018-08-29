@@ -1,7 +1,7 @@
 <div class="modalFilho">
   <div class="listaUsuarios">
     <div class="inicio">
-      <h2 class="titulo">GERENCIAR USUÁRIOS</h2>
+      <h3 class="titulo">Gerenciar Usuários</h3>
       <div class="i2"><button class="mais" (click)="addUsers()"></button></div>
     </div>
     <br />
@@ -82,12 +82,13 @@
             </tr>
           </tbody>
         </table>
+
         <div class="classVazio" *ngIf="data.data?.length < 1">
           Ainda não existem usuários cadastrados.
         </div>
 
-      </div>
-      <br />
+      </div> 
+
       <div class="has-text-centered">
           <pagination-controls id='supplierManage' class="my-pagination"
           (pageChange)="pageChanged($event)"
@@ -95,10 +96,12 @@
           autoHide="true">
           </pagination-controls>
       </div>
+
     </div>
 
     <div class="botoes">
       <button class="botaoVoltar" (click)="activeModal.dismiss('Cross click')">VOLTAR</button>
     </div>
+    
   </div>
 </div>
