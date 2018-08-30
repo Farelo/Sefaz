@@ -5,6 +5,7 @@ const cleanObject = require('../common/cleanObject');
 const historic = require('../historic/historic');
 const historicType = require('../common/historic_type');
 const statusType = require('../common/status_type');
+const statusTypePt = require('../common/status_type_pt');
 
 /**
  * Verifica se a embalagem esta atrasada
@@ -58,6 +59,7 @@ module.exports = async (packing) => {
           // Nesse fluxo so pode ser gerada os alertas relacionados a uma embalagem que esta perdida
           debug(`Packing is missing! ${packing._id}`);
           packing.status = statusType.MISSING;
+          packing.status_pt = statusTypePt.MISSING;
           packing = cleanObject.cleanFlags(packing);
           packing = cleanObject.cleanPermanence(packing);
           packing.missing = true;
@@ -81,6 +83,7 @@ module.exports = async (packing) => {
           packing = cleanObject.cleanPermanence(packing);
           packing = cleanObject.cleanMissing(packing);
           packing.status = statusType.LATE;
+          packing.status_pt = statusTypePt.LATE;
           if (packing.trip.time_exceeded) {
             // medida provisória ja que ja existia algumas informações na base antiga
             if (!packing.trip.date_late) packing.trip.date_late = dateToday;
@@ -112,9 +115,11 @@ module.exports = async (packing) => {
           packing = cleanObject.cleanTrip(packing);
           packing.trip.date = new Date().getTime();
           packing.status = statusType.TRAVELING;
+          packing.status_pt = statusTypePt.TRAVELING;
           await historic.createTravelingStatus(packing);
         } else {
           packing.status = statusType.TRAVELING;
+          packing.status_pt = statusTypePt.TRAVELING;
           await historic.updateTravelingStatus(packing);
         }
 
@@ -133,6 +138,7 @@ module.exports = async (packing) => {
       packing = cleanObject.cleanTrip(packing);
       packing.traveling = true;
       packing.status = statusType.TRAVELING;
+      packing.status_pt = statusTypePt.TRAVELING;
       packing.trip.date = new Date().getTime();
 
       await modelOperations.remove_alert(packing, alertsType.MISSING);
@@ -157,6 +163,7 @@ module.exports = async (packing) => {
         // isso pode acontecer quando uma determinada embalagem passa de imediato para ausente
         // sem passar por late, então esse problema pode ser gerado
         packing.status = statusType.LATE;
+        packing.status_pt = statusTypePt.LATE;
         if (packing.trip.date_late === 0) {
           packing.trip.date_late = new Date().getTime();
           packing.trip.time_late = 0;
@@ -182,6 +189,7 @@ module.exports = async (packing) => {
       packing.traveling = true;
       if (!packing.trip.time_exceeded) {
         packing.status = statusType.TRAVELING;
+        packing.status_pt = statusTypePt.TRAVELING;
         // remove o historico de atrasado
         await historic.removeHistoric(packing, packing.trip.date_late, historicType.LATE);
         await historic.updateTravelingStatus(packing);
