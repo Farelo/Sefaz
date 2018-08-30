@@ -17,10 +17,10 @@ export class PlantType {
         if (String(actual_plant.local) === 'Logistic') return constants.PLANT_TYPE.LOGISTIC;
 
       } else {
-        return 'Sem registro';
+        return '-';
       }
     } else {
-      return 'Sem registro';
+      return '-';
     }
     
   }
