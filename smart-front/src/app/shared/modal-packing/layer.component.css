@@ -279,7 +279,7 @@ div.info-window-content > p {
   margin-bottom: 4px;
 }
 
-/* --- */
+/* filtro acurácia */
 .input-group>.input-group-prepend>.btn {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -296,4 +296,8 @@ div.info-window-content > p {
   margin-left: -1px;
   left: -2px;
   position: relative;
+}
+
+.btn-outline-secondary {
+  border-color: #ced4da;
 }
