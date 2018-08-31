@@ -1,5 +1,11 @@
 @import '~font-awesome/css/font-awesome.css';
 
+* { font-family: 'Roboto', sans-serif; }
+
+h2 {
+  margin-bottom: 0px;
+}
+
 .close {
   font-size: 20px;
   text-align: right;
@@ -14,7 +20,6 @@
 .botaoVisualizar:focus {
   outline: none;
 }
-* { font-family: 'Roboto', sans-serif; }
 
 .header {
   display: inline-grid;
@@ -278,9 +283,17 @@ div.info-window-content > p {
 .input-group>.input-group-prepend>.btn {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  height: 100%;
+  padding: 6px 13px;
+  right: -2px;
+  position: relative;
 }
 
 .input-group>.input-group-append>.btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  height: 100%;
+  margin-left: -1px;
+  left: -2px;
+  position: relative;
 }
