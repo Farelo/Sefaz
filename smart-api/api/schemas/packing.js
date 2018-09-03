@@ -68,7 +68,7 @@ const packingSchema = new mongoose.Schema({
   },
   temperature: Number,
   serial: {
-    type: Number,
+    type: String,
     required: true,
   },
   gc16: {
