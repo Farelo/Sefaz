@@ -105,7 +105,7 @@
   font-family: 'Roboto', sans-serif;
 }
 
-@media (max-width: 576px) {
+/* @media (max-width: 576px) {
   .conteudoHome {
     padding: 0px;
   }
@@ -145,7 +145,7 @@
   .conteudoHome {
     padding: 0px 60px;
   }
-}
+} */
 
 .info {
   padding: 10px 4% 10px 10px;

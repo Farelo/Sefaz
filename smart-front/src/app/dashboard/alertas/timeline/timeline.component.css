@@ -33,7 +33,6 @@
   color: black;
 }
 
-.tit1,
 .lg1,
 .lg2,
 .lg3,
@@ -54,7 +53,7 @@
   color: white;
   padding: 5px;
   margin-bottom: 5px;
-  width: 150px !important;
+  width: 100%;
   text-align: center;
 }
 
@@ -183,14 +182,14 @@ label {
   font-size: 12px;
 }
 
-.conteudoHome .popover.bs-popover-bottom .arrow {
+/* .conteudoHome .popover.bs-popover-bottom .arrow {
   top: -12px !important;
-}
+} */
 
-.conteudoHome .bs-popover-top[_nghost-c7] .arrow[_ngcontent-c7],
+/* .conteudoHome .bs-popover-top[_nghost-c7] .arrow[_ngcontent-c7],
 .bs-popover-bottom[_nghost-c7] .arrow[_ngcontent-c7] {
   margin-left: -11px !important;
-}
+} */
 
 .botaoOk {
   padding: 3px 15px;
@@ -466,7 +465,7 @@ label {
   height: 90px;
 }
 
-@media (max-width: 576px) {
+/* @media (max-width: 576px) {
   .conteudoHome {
     padding: 0px;
   }
@@ -506,7 +505,7 @@ label {
   .conteudoHome {
     padding: 0px 60px;
   }
-}
+} */
 
 .externa,
 .interna {
@@ -638,4 +637,15 @@ label {
     margin-left: 450px;
     margin-right: 450px;
   }
+}
+
+
+.conteudoHome .popover.bs-popover-bottom .arrow {
+  top: 0px !important;
+  max-width: 220px !important;
+}
+
+.popover .bs-popover-bottom{
+  width: 150px !important;
+  max-width: 220px !important;
 }
