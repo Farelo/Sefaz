@@ -110,3 +110,7 @@ tbody > tr:nth-child(even) {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+.default-order {
+  color: rgba(255, 255, 255, 0.5);
+}

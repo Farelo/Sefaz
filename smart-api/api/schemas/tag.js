@@ -2,7 +2,7 @@ const mongoose          = require('mongoose');
 const mongoosePaginate  = require('mongoose-paginate');
 
 const tagSchema = new mongoose.Schema({
-  code: {type: String, required: true, unique: true}
+  code: {type: Number, required: true, unique: true}
 });
 
 tagSchema.pre('remove', function(next) {

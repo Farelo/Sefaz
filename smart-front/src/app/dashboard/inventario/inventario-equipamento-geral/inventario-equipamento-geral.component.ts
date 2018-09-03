@@ -53,13 +53,14 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   loadTableHeaders() {
     this.headers.push({ name: 'Equipamento', label: 'code', status: this.sort[0] });
     this.headers.push({ name: 'Serial', label: 'serial', status: this.sort[0] });
-    this.headers.push({ name: 'Tag', label: 'tag', status: this.sort[0] });
-    this.headers.push({ name: 'Fornecedor', label: 'supplier', status: this.sort[0] });
-    this.headers.push({ name: 'Status Atual', label: 'status', status: this.sort[0] });
-    this.headers.push({ name: 'Planta Atual', label: 'actual_plant', status: this.sort[0] });
-    this.headers.push({ name: 'Local', label: 'actual_plant', status: this.sort[0] });
+    this.headers.push({ name: 'Tag', label: 'tag.code', status: this.sort[0] });
+    this.headers.push({ name: 'Fornecedor', label: 'supplier.name', status: this.sort[0] });
+    this.headers.push({ name: 'Status Atual', label: 'status_pt', status: this.sort[0] });
+    this.headers.push({ name: 'Planta Atual', label: 'actual_plant.plant', status: this.sort[0] });
+    this.headers.push({ name: 'Local', label: 'actual_plant.local', status: this.sort[0] });
     this.headers.push({ name: 'Bateria', label: 'battery', status: this.sort[0] });
-    this.headers.push({ name: 'Temperatura', label: 'temperature', status: this.sort[0] });
+    this.headers.push({ name: 'Acurácia', label: 'position.accuracy', status: this.sort[0] });
+    // this.headers.push({ name: 'Temperatura', label: 'temperature', status: this.sort[0] });
 
     console.log('this.headers: ' + JSON.stringify(this.headers));
   }
@@ -282,6 +283,10 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       windowClass: 'modal-xl',
     });
     modalRef.componentInstance.packing = packing;
+  }
+
+  getFormatedMeter(m: any){
+    return `Acurácia de ${m} metros`;
   }
 
   getFormatedData(t: any) {

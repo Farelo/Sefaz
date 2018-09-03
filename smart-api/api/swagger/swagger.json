@@ -4524,6 +4524,15 @@
             "Bearer": []
           }
         ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "description": "Retrieve packings related with family",
+            "required": false,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successfully",

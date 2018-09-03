@@ -5,6 +5,7 @@ const evaluatesPermanenceTime = require('../evaluators/evaluates_permanence_time
 const historic = require('../historic/historic');
 const modelOperations = require('../common/model_operations');
 const statusType = require('../common/status_type');
+const statusTypePt = require('../common/status_type_pt');
 const cleanObject = require('../common/cleanObject');
 const alertsType = require('../common/alerts_type');
 
@@ -41,8 +42,10 @@ async function evaluate(packing, currentPlant) {
 
     if (packing.permanence.time_exceeded) {
       packing.status = statusType.PERMANENCE_EXCEEDED;
+      packing.status_pt = statusTypePt.PERMANENCE_EXCEEDED;
     } else {
       packing.status = statusType.NORMAL;
+      packing.status_pt = statusTypePt.NORMAL;
       await historic.initNormal(packing, oldPlant, currentPlant);
     }
 
@@ -65,6 +68,7 @@ async function evaluate(packing, currentPlant) {
     packing.last_plant = packing.actual_plant;
     packing.last_department = packing.department;
     packing.status = statusType.INCONTIDA;
+    packing.status_pt = statusTypePt.INCONTIDA;
     // atualiza informações sobre a mesma esta a primeira vez ou não incontida
     if (!packing.incontida.isIncontida) {
       packing.incontida = {

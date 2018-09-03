@@ -555,7 +555,7 @@ exports.packing_list_all = function (req, res) {
  */
 exports.packing_list_distinct = function (req, res) {
   schemas.packing
-    .aggregate(query.queries.listPackingDistinct)
+    .aggregate(query.queries.listPackingDistinct(req.swagger.params.code.value))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(
       _.partial(responses.errorHandler, res, 'Error to list distinct packings'),
@@ -1109,9 +1109,12 @@ exports.inventory_packings = async (req, res) => {
     const code_packing = req.swagger.params.code_packing.value;
     const supplier = req.swagger.params.supplier.value;
     const attr = req.swagger.params.attr.value;
-    const order = req.swagger.params.order.value === 'asc' ? 1 : -1;
+    // const order = req.swagger.params.order.value === 'asc' ? 'asc' : 'desc';
+    const order = req.swagger.params.order.value === 'asc' ? `${attr}` : `-${attr}`;
     const sort = {}
     sort[attr] = order
+
+    console.log(sort);
 
     const alerts = await schemas.alert.find({});
     const packings = await schemas.packing.paginate(
@@ -1135,7 +1138,7 @@ exports.inventory_packings = async (req, res) => {
         ],
         limit: parseInt(req.swagger.params.limit.value),
         page: parseInt(req.swagger.params.page.value),
-        sort: attr && order ? sort : { _id: 1 }
+        sort: attr && order ? order : { _id: 1 }
       });
     
     const allPackingWithAlert = packings.docs.map((packing, index) => {
