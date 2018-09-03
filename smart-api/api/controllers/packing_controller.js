@@ -555,7 +555,7 @@ exports.packing_list_all = function (req, res) {
  */
 exports.packing_list_distinct = function (req, res) {
   schemas.packing
-    .aggregate(query.queries.listPackingDistinct)
+    .aggregate(query.queries.listPackingDistinct(req.swagger.params.code.value))
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(
       _.partial(responses.errorHandler, res, 'Error to list distinct packings'),
