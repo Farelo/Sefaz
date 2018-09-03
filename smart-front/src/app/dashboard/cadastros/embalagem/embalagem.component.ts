@@ -33,10 +33,15 @@ export class EmbalagemComponent implements OnInit {
           user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
+  
   searchEvent(): void{
-      this.loadPackings();
+    this.loadPackings();
   }
 
+
+  /**
+   * Carregar todos os pacotes com paginação e sem filtro
+   */
   loadPackings(): void{
 
     this.PackingService
@@ -46,6 +51,7 @@ export class EmbalagemComponent implements OnInit {
       }, err => {console.log(err)});
   }
 
+  
   removePacking(packing):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.view = packing;
@@ -57,18 +63,15 @@ export class EmbalagemComponent implements OnInit {
 
   }
 
-  pageChanged(page: any): void{
-    this.data.meta.page = page;
-    this.loadPackings();
-  }
 
   ngOnInit() {
     this.loadSelect();
     this.loadPackings();
   }
 
+
   /**
-   * Select
+   * Preencher o select de equipamentos
    */
   loadSelect(){
     if (this.logged_user instanceof Array) {
@@ -85,9 +88,15 @@ export class EmbalagemComponent implements OnInit {
     }
   }
 
+
+  /**
+   * Um Equipamento foi selecionado
+   */
   equipamentChanged(){
+    
+    //Quando um equipamento está selecionado
     if (this.generalEquipamentSearch){
-      console.log('.generalInventoryEquipamentChanged this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
+      console.log('.equipamentChanged if this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
       this.packingService.getPackingsByPackingCode(this.generalEquipamentSearch, 10, this.data.meta.page).subscribe(result => {
         
         result.meta = {
@@ -99,22 +108,34 @@ export class EmbalagemComponent implements OnInit {
 
         result.data = result.data.docs;
 
-        console.log('.generalInventoryEquipamentChanged ...result: ' + JSON.stringify(result));
+        //console.log('.generalInventoryEquipamentChanged ...result: ' + JSON.stringify(result));
 
         // this.general_equipament = new Pagination({ meta: { page: 1 } });
         this.data = result;
 
-        console.log('.generalInventoryEquipamentChanged ...this.general_equipament: ' + JSON.stringify(this.data));
+        console.log('.equipamentChanged this.data: ' + JSON.stringify(this.data));
       }, err => { console.log(err) });
 
+    //Quando um equipamento foi deselecionado (clear)
     }else{
-      console.log('..generalInventoryEquipamentChanged this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
+      console.log('..equipamentChanged else this.generalEquipamentSearch: ' + JSON.stringify(this.generalEquipamentSearch));
 
-      this.data = new Pagination({ meta: { page: 1 } });
-      this.generalEquipamentSearch = "";
-      this.data.data = [];
+      //this.data = new Pagination({ meta: { page: 1 } });
+      //this.generalEquipamentSearch = "";
+      //this.data.data = [];
       this.loadPackings();
     }
+  }
+
+
+  /**
+   * 
+   * @param Mudou a paginação
+   */
+  pageChanged(page: any): void {
+    this.data.meta.page = page;
+
+    this.equipamentChanged();
   }
 
 }
