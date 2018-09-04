@@ -452,3 +452,6 @@ hotTable {
   content: none !important;
 }
 
+button {
+  cursor: pointer;
+}
