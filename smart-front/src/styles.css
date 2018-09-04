@@ -445,9 +445,6 @@ hotTable {
 }
 
 
-
-
-
 .arrow::before {
   content: none !important;
 }
