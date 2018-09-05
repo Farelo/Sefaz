@@ -4,16 +4,18 @@ import { CadastrosRoutingModule } from './cadastros.routing.module';
 import {ToastyModule} from 'ng2-toasty'
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
     CadastrosRoutingModule,
     ToastyModule.forRoot(),
     AlertModule.forRoot(),
-    NgSelectModule
+    NgSelectModule,
+    ApplicationPipes
   ],
   declarations: [
-    CadastrosComponent
+    CadastrosComponent,
   ]
 })
 export class CadastrosModule { }

@@ -7,16 +7,23 @@
   <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
-        <th>Nome</th>
-
+        <th *ngFor="let header of headers">
+          <span class="noselect d-flex" (click)="headerClick(header)">
+            {{ header.label }}
+            <span class="sort-icons noselect">
+              <i class="fa fa-sort default-order" *ngIf="(header.name !== sort.name)"></i>
+              <i class="fa fa-caret-up" *ngIf="(header.name == sort.name) && (sort.order == 'asc')"></i>
+              <i class="fa fa-caret-down" *ngIf="(header.name == sort.name) && (sort.order == 'desc')"></i> 
+            </span>
+          </span>
+        </th>
         <th class="opcoes"></th>
       </tr>
     </thead>
-    <tbody>
-      <tr  *ngFor="let plant of data.data | paginate: {
-                                                      id:'plant',
-                                                      itemsPerPage: data.meta.limit,
-                                                      currentPage: data.meta.page,
+    <tbody> 
+      <tr  *ngFor="let plant of data.data | paginate: { 
+                                                      itemsPerPage: 10,
+                                                      currentPage: p,
                                                       totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
         <td>{{plant.plant_name}}</td>
 
@@ -39,8 +46,8 @@
 </div>
 <br />
 <div class="has-text-centered">
-    <pagination-controls id='plant' class="my-pagination"
-    (pageChange)="pageChanged($event)"
+    <pagination-controls class="my-pagination"
+    (pageChange)="p = $event"
     directionLinks="false"
     autoHide="true">
     </pagination-controls>
