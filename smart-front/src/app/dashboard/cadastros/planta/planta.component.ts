@@ -12,7 +12,8 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class PlantaComponent implements OnInit {
   
-  public data: Pagination = new Pagination({meta: {page : 1}});
+  public temp: any[] = [];
+  public data: any[] = [];
   public search  = "";
 
   public p: number = 1; //página atual
@@ -22,17 +23,13 @@ export class PlantaComponent implements OnInit {
     private modalService: NgbModal
   ) {  }
 
-  searchEvent(): void{
-      this.loadPlants();
-  }
-
   loadPlants(){
     this.PlantsService
     // .getPlantsPagination(10,this.data.meta.page,this.search)
-    .getPlantsPagination(99999999, this.data.meta.page, this.search)
-      .subscribe( data => {
-        this.data = data;
-        this.data.data = this.customSort(this.data.data, ['code']);
+    .getPlantsPagination(99999999, 1, this.search)
+      .subscribe( result => {
+        this.temp = result.data;
+        this.data = this.customSort(result.data, ['code']);
 
       }, err => {console.log(err)});
   }
@@ -72,8 +69,24 @@ export class PlantaComponent implements OnInit {
     console.log('---');
     console.log('this.sort: ' + JSON.stringify(this.sort));
 
-    this.data.data = this.customSort(this.data.data, item.name.split("."), this.sort.order);
+    this.data = this.customSort(this.data, item.name.split("."), this.sort.order);
   }
+
+
+  searchEvent(event): void {
+    const val = event.target.value.toLowerCase();
+
+    // filter our data
+    const temp = this.temp.filter(function (item) {
+      return item.plant_name.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+
+    // update the rows
+    this.data = temp;
+    // Whenever the filter changes, always go back to the first page
+    this.p = 0;
+  }
+
 
   /**
    * 

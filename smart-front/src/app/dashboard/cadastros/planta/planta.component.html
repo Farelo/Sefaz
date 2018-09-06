@@ -1,5 +1,5 @@
 <div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" class="form-control mr-4" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()">
+  <input type="text" class="form-control mr-4" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup)="searchEvent($event)">
   <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
 </div>
 
@@ -21,10 +21,10 @@
       </tr>
     </thead>
     <tbody> 
-      <tr  *ngFor="let plant of data.data | paginate: { 
+      <tr *ngFor="let plant of data | paginate: { 
                                                       itemsPerPage: 10,
                                                       currentPage: p,
-                                                      totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
+                                                      totalItems: data.length}; index as index" (mouseover)='hoveredIndex = index'>
         <td>{{plant.plant_name}}</td>
 
         <td class="teste">
@@ -41,7 +41,7 @@
     </tbody>
   </table>
 </div>
-<div class="classVazio" *ngIf="data.data?.length < 1">
+<div class="classVazio" *ngIf="data.length < 1">
   Ainda não existem plantas cadastradas.
 </div>
 <br />
