@@ -133,7 +133,7 @@
                 <td>{{ item.code_tag }}</td>
                 <td>{{ item.actual_plant.plant.plant_name }}</td>
                 <td>{{ ((item.battery | round) + '%') }}</td>
-                <td>{{ item.lastCommunication | date: 'dd/MM/yyyy - hh:mm a' }}</td>
+                <td>{{ item.lastCommunication*1000 | date: 'dd/MM/yyyy - hh:mm a' }}</td>
               </tr>
             </tbody>
           </table>
