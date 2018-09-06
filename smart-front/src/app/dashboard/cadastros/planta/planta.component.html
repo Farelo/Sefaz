@@ -22,9 +22,9 @@
     </thead>
     <tbody> 
       <tr *ngFor="let plant of data | paginate: { 
-                                                      itemsPerPage: 10,
-                                                      currentPage: p,
-                                                      totalItems: data.length}; index as index" (mouseover)='hoveredIndex = index'>
+                                                  itemsPerPage: 10,
+                                                  currentPage: p,
+                                                  totalItems: data.length}; index as index" (mouseover)='hoveredIndex = index'>
         <td>{{plant.plant_name}}</td>
 
         <td class="teste">
@@ -41,7 +41,7 @@
     </tbody>
   </table>
 </div>
-<div class="classVazio" *ngIf="data.length < 1">
+<div class="classVazio" *ngIf="data.length < 1"> 
   Ainda não existem plantas cadastradas.
 </div>
 <br />
