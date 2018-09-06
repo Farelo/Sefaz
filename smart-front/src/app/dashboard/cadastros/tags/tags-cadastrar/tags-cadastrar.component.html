@@ -1,32 +1,32 @@
 <div class="">
-  <h1>REGISTRAR TAG</h1>
-  <br />
+  <h2>Registrar Tag</h2>
+  <hr>
 
-<form novalidate (ngSubmit)="onSubmit(tag)" [formGroup]="tag" #formDir="ngForm">
-  <div class="campo">
-    <p class="descricao">CÓDIGO DA TAG</p>
-    <p class="explicacao">Ex: "1881160"</p>
-    <div class="input-group">
-      <input type="text" class="form-control required" placeholder="Digite o código" aria-describedby="basic-addon2" [(ngModel)]="code" formControlName="code"
-      [ngClass]="{'required': (tag.get('code').hasError('required') && tag.get('code').touched)
+  <form novalidate (ngSubmit)="onSubmit(tag)" [formGroup]="tag" #formDir="ngForm">
+    <div class="campo">
+      <p class="descricao">CÓDIGO DA TAG</p>
+      <p class="explicacao">Ex: "1881160"</p>
+      <div class="input-group">
+        <input type="text" class="form-control required" placeholder="Digite o código" aria-describedby="basic-addon2" [(ngModel)]="code"
+          formControlName="code" [ngClass]="{'required': (tag.get('code').hasError('required') && tag.get('code').touched)
       || (tag.get('code').hasError('required') && formDir.submitted)
       || (tag.get('code').hasError('minlength') && formDir.submitted)
       || (tag.get('code').hasError('maxlength') && formDir.submitted)
       }">
-    </div>
+      </div>
       <p class="requiredText" *ngIf="(tag.get('code').hasError('required') && tag.get('code').touched)
       || (tag.get('code').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       <p class="requiredText" *ngIf="(tag.get('code').hasError('required') && tag.get('code').touched)
       || (tag.get('code').hasError('minlength') && formDir.submitted)">Tamanho Mínimo de 7 caracteres</p>
       <p class="requiredText" *ngIf="(tag.get('code').hasError('required') && tag.get('code').touched)
       || (tag.get('code').hasError('maxlength') && formDir.submitted)">Tamanho Máximo de 7 caracteres</p>
-  </div>
+    </div>
 
-  <br />
-  <div class="botoes">
-    <button routerLink="/rc/cadastros/tags" class="botaoVoltar" >VOLTAR</button>
-    <button type="submit" class="botaoRegistrar" >REGISTRAR</button>
-  </div>
-</form>
+    <br />
+    <div class="botoes">
+      <button routerLink="/rc/cadastros/tags" class="botaoVoltar">VOLTAR</button>
+      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+    </div>
+  </form>
 
 </div>

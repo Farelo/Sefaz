@@ -8,8 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { constants } from './../../../environments/constants';
+import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 @NgModule({
   imports: [
+    ApplicationPipes,
     CommonModule,
     FormsModule,
     NgSelectModule,

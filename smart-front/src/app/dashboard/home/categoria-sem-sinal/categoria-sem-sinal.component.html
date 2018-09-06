@@ -1,0 +1,39 @@
+<section class="grupo-categoria">
+  <h3>Sem Sinal</h3>
+
+  <div class="categoria-progress">
+    <div class="progress-bar status-sem-sinal" style="width: 5%"></div>
+    <div class="progress-bar progress-bar-empty" style="width: 95%"></div>
+  </div>
+
+  <!-- Embalagens Sem Sinal -->
+  <section>
+    <div class="linha-categoria status-sem-sinal">
+      <div class="tick-categoria">
+
+        <div class="quantidade-categoria status-sem-sinal">
+          10
+        </div>
+
+        <span class="nome-categoria">Embalagens Sem Sinal</span>
+
+        <button class="hamburger hamburger--squeeze" type="button" (click)="semSinalCollapsed = !semSinalCollapsed" [attr.aria-controls]="conteudoSemSinalCollapsed"
+          [ngClass]="{ 'is-active':semSinalCollapsed == true}">
+        
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Conteúdo Embalagens Sem Sinal -->
+    <div [attr.id]="conteudoSemSinalCollapsed" [ngbCollapse]="!semSinalCollapsed">
+      <div class="">
+        Hello, Sem Sinal!
+      </div>
+    </div>
+  </section>
+
+</section>

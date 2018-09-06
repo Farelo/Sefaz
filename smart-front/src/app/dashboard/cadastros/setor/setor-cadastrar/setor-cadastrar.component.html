@@ -1,12 +1,13 @@
 <div class="">
-  <h1>REGISTRAR SETOR</h1>
-  <br />
+  <h2>Registrar Setor</h2>
+  <hr>
+
   <form novalidate (ngSubmit)="onSubmit(department)" [formGroup]="department"  #formDir="ngForm">
     <div class="row">
       <div class="col-md-12">
 
         <div class="campo">
-          <h3>LOCAL</h3>
+          <p class="descricao">LOCAL</p>
           <p>
             <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="onMapReady($event)" (click)="onClick($event)">
               <marker [position]="pos"></marker>
@@ -89,5 +90,4 @@
     </div>
     <br />
   </form>
-  <Br />
 </div>

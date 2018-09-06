@@ -19,8 +19,13 @@ export class InventoryService {
       .catch(this.handleError);
   }
 
-  getInventoryGeneralPackings(limit: number, page: number, code: string, attr: string = '', code_packing: string =''): Observable<any> {
-    return this.http.get(`${environment.url}inventory/general/packings/${limit}/${page}?code=${code}&attr=${attr}&code_packing=${code_packing}`)
+  getInventoryGeneralPackings(limit: number, page: number, code: string, 
+    supplier: string = '', code_packing: string ='', 
+    sort: string = '', order: string = ''): Observable<any> {
+    
+    let filtered = ((sort !== '') && (order !== '')) ? `&attr=${sort}&order=${order}`: '';
+    // if ((sort !== '') && (order !== '')) filtered = `&attr=${sort}&order=${order}`;
+    return this.http.get(`${environment.url}inventory/general/packings/${limit}/${page}?code=${code}&supplier=${supplier}&code_packing=${code_packing}${filtered}`)
       .catch(this.handleError);
   }
 
@@ -40,7 +45,7 @@ export class InventoryService {
     return this.http.get(`${environment.url}inventory/quantity/${limit}/${page}?code=${code}&attr=${attr}`)
       .catch(this.handleError);
   }
-
+  
   getInventoryPackingHistoric(limit: number, page: number, serial: string, code: string, attr: string = ''): Observable<any> {
 
     return this.http.get(`${environment.url}inventory/packing/historic/${limit}/${page}/${serial}/${code}?attr=${attr}`)
@@ -55,6 +60,12 @@ export class InventoryService {
   getInventoryBattery(limit: number, page: number, code: string, attr: string = ''): Observable<any> {
 
     return this.http.get(`${environment.url}inventory/battery/${limit}/${page}?code=${code}&attr=${attr}`)
+      .catch(this.handleError);
+  }
+
+  getLowBattery(limit: number, page: number): Observable<any> {
+
+    return this.http.get(`${environment.url}home/packings/low_battery/${limit}/${page}`)
       .catch(this.handleError);
   }
 

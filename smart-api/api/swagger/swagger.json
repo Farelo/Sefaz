@@ -25,6 +25,14 @@
   ],
   "tags": [
     {
+      "name": "Home",
+      "description": "All information to Home page"
+    },
+    {
+      "name": "Maps",
+      "description": "All information to maps page"
+    },
+    {
       "name": "Plant",
       "description": "All information about your Plants"
     },
@@ -2033,6 +2041,171 @@
         }
       }
     },
+    "/home/packings/stats": {
+      "x-swagger-router-controller": "home_controller",
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "Get stats from all packings",
+        "description": "",
+        "operationId": "getStats",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/home/packings/low_battery/{limit}/{page}": {
+      "x-swagger-router-controller": "home_controller",
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "Get stats from all packings",
+        "description": "",
+        "operationId": "getPackingsLowBattery",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "Retrieve packings related this page",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/home/packings/{limit}/{page}/{status}": {
+      "x-swagger-router-controller": "home_controller",
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "Get stats from all packings",
+        "description": "",
+        "operationId": "getPackingsByStatus",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "description": "The limit of packings that will be returned",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "page",
+            "description": "Retrieve packings related this page",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "status",
+            "description": "The status of packings that will be returned",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/upload/tag": {
       "x-swagger-router-controller": "import_controller",
       "post": {
@@ -3410,7 +3583,21 @@
           },
           {
             "in": "query",
+            "name": "supplier",
+            "description": "Retrieve inventory related this supplier id related to packing",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
             "name": "attr",
+            "description": "Retrieve inventory related this supplier id related to packing",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "order",
             "description": "Retrieve inventory related this supplier id related to packing",
             "required": false,
             "type": "string"
@@ -3639,7 +3826,7 @@
         }
       }
     },
-    "/logistic_operator/list/pagination/{limit}/{page}": {
+    "/logistic_operator/list/": {
       "x-swagger-router-controller": "logistic_operator_controller",
       "get": {
         "tags": [
@@ -3647,26 +3834,10 @@
         ],
         "summary": "Retrieve all logistic operators on the system with pagination",
         "description": "",
-        "operationId": "logistic_operator_listPagination",
+        "operationId": "logistic_operator_list",
         "security": [
           {
             "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "limit",
-            "description": "The limit of logistic operators that will be returned",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "page",
-            "description": "Retrieve a logistic operators related this page",
-            "required": true,
-            "type": "string"
           }
         ],
         "responses": {
@@ -3831,6 +4002,64 @@
             "schema": {
               "$ref": "#/definitions/Logistic_operator"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            }
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/maps/packings": {
+      "x-swagger-router-controller": "packing_controller",
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "summary": "Get all information to maps",
+        "description": "",
+        "operationId": "find_all_packings",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "family",
+            "description": "Search by family",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "serial",
+            "description": "Search by serial",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -4293,6 +4522,15 @@
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "description": "Retrieve packings related with family",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {

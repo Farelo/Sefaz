@@ -1,437 +1,442 @@
-<div class="base">
-  <h1>BPline</h1>
-  <br />
-  <form novalidate (ngSubmit)="onSubmit(gc16)" [formGroup]="gc16"  #formDir="ngForm">
-    <div class="row diferente2">
-      <div class="col-sm-4">
-        <div class="campo">
-          <p class="descricao">ASSOCIE UM FORNECEDOR</p><br>
+<div class="conteudoTop">
+  <div class="base">
+    <h1>BPline</h1>
+    <br />
+    <form novalidate (ngSubmit)="onSubmit(gc16)" [formGroup]="gc16" #formDir="ngForm">
+      <div class="row diferente2">
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">ASSOCIE UM FORNECEDOR</p>
+            <br>
 
 
-          <ng-select [ngModel]="supplier" (change)="loadPackings($event)" [items]="suppliers"
-          bindLabel="duns" placeholder="Associe um Fornecedor" formControlName="supplier" [ngClass]="{'required': (gc16.get('supplier').hasError('required') && gc16.get('supplier').touched) || (gc16.get('supplier').hasError('required')
+            <ng-select [ngModel]="supplier" (change)="loadPackings($event)" [items]="suppliers" bindLabel="duns" placeholder="Associe um Fornecedor"
+              formControlName="supplier" [ngClass]="{'required': (gc16.get('supplier').hasError('required') && gc16.get('supplier').touched) || (gc16.get('supplier').hasError('required')
           && formDir.submitted)}">
-            <ng-template ng-label-tmp let-item="item">
-              {{item.name}}
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item">
-              <div>
-                <b>Nome:</b> {{item.name}}
-              </div>
-              <small>
-                <b>DUNS:</b> {{item.duns}}
-              </small>
+              <ng-template ng-label-tmp let-item="item">
+                {{item.name}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div>
+                  <b>Nome:</b> {{item.name}}
+                </div>
+                <small>
+                  <b>DUNS:</b> {{item.duns}}
+                </small>
 
-            </ng-template>
-          </ng-select>
-          <p class="requiredText" *ngIf="(gc16.get('supplier').hasError('required') && gc16.get('supplier').touched)
+              </ng-template>
+            </ng-select>
+            <p class="requiredText" *ngIf="(gc16.get('supplier').hasError('required') && gc16.get('supplier').touched)
         || (gc16.get('supplier').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
 
+          </div>
         </div>
-      </div>
-      <div class="col-sm-4">
-      <div class="campo"  >
-        <p class="descricao">EQUIPAMENTO</p>
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">EQUIPAMENTO</p>
 
-        <ng-select  [ngModel]="packing" (change)="loadProject($event)" [items]="packings" bindLabel="packing"
-          placeholder="Escolha um Equipamento" formControlName="packing" [ngClass]="{'required': (gc16.get('packing').hasError('required') && gc16.get('packing').touched) || (gc16.get('packing').hasError('required')
+            <ng-select [ngModel]="packing" (change)="loadProject($event)" [items]="packings" bindLabel="packing" placeholder="Escolha um Equipamento"
+              formControlName="packing" [ngClass]="{'required': (gc16.get('packing').hasError('required') && gc16.get('packing').touched) || (gc16.get('packing').hasError('required')
           && formDir.submitted)}">
-          <ng-template ng-label-tmp let-item="item">
-            {{item.packing}}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-              <b>Embalagem:</b> {{item.packing}}
-            </div>
-            <small>
-              <b>Projeto:</b> {{item.project.name}}
-            </small>
+              <ng-template ng-label-tmp let-item="item">
+                {{item.packing}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div>
+                  <b>Embalagem:</b> {{item.packing}}
+                </div>
+                <small>
+                  <b>Projeto:</b> {{item.project.name}}
+                </small>
 
-          </ng-template>
-        </ng-select>
-        <p class="requiredText" *ngIf="(gc16.get('packing').hasError('required') && gc16.get('packing').touched)
+              </ng-template>
+            </ng-select>
+            <p class="requiredText" *ngIf="(gc16.get('packing').hasError('required') && gc16.get('packing').touched)
         || (gc16.get('packing').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="campo">
-        <p class="descricao">PROJETO/PLATAFORMA</p>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="" [value]="gc16['controls'].project.value?.name ? gc16['controls'].project.value?.name : ''"   disabled >
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">PROJETO/PLATAFORMA</p>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="" [value]="gc16['controls'].project.value?.name ? gc16['controls'].project.value?.name : ''"
+                disabled>
 
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    </div>
 
-    <div class="row diferente2">
-      <div class="col-sm-4">
-        <div class="campo">
-          <p class="descricao">VOLUME ANUAL</p>
-          <p class="explicacao">Ex. "10000"</p>
-          <div class="input-group">
-            <input type="number" class="form-control" placeholder="" [(ngModel)]="annualVolume" (blur)="onBlurMethod()" formControlName="annualVolume"
-            [ngClass]="{'required': (gc16.get('annualVolume').hasError('required') && gc16.get('annualVolume').touched)
+      <div class="row diferente2">
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">VOLUME ANUAL</p>
+            <p class="explicacao">Ex. "10000"</p>
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="" [(ngModel)]="annualVolume" (blur)="onBlurMethod()" formControlName="annualVolume"
+                [ngClass]="{'required': (gc16.get('annualVolume').hasError('required') && gc16.get('annualVolume').touched)
             || (gc16.get('annualVolume').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(gc16.get('annualVolume').hasError('required') && gc16.get('annualVolume').touched)
+            </div>
+            <p class="requiredText" *ngIf="(gc16.get('annualVolume').hasError('required') && gc16.get('annualVolume').touched)
           || (gc16.get('annualVolume').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          </div>
         </div>
-      </div>
 
-      <div class="col-sm-4">
-        <div class="campo">
-          <p class="descricao">DIAS PRODUTIVOS</p>
-          <p class="explicacao">Ex. "240 Dias"</p>
-          <div class="input-group">
-            <input type="number" class="form-control" placeholder="" [(ngModel)]="productiveDays" (blur)="onBlurMethod()" formControlName="productiveDays"
-            [ngClass]="{'required': (gc16.get('productiveDays').hasError('required') && gc16.get('productiveDays').touched)
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">DIAS PRODUTIVOS</p>
+            <p class="explicacao">Ex. "240 Dias"</p>
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="" [(ngModel)]="productiveDays" (blur)="onBlurMethod()" formControlName="productiveDays"
+                [ngClass]="{'required': (gc16.get('productiveDays').hasError('required') && gc16.get('productiveDays').touched)
             || (gc16.get('productiveDays').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(gc16.get('productiveDays').hasError('required') && gc16.get('productiveDays').touched)
+            </div>
+            <p class="requiredText" *ngIf="(gc16.get('productiveDays').hasError('required') && gc16.get('productiveDays').touched)
           || (gc16.get('productiveDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          </div>
         </div>
-      </div>
 
-      <div class="col-sm-2">
-        <div class="campo">
-          <p class="descricao">CAPACIDADE</p>
-          <p class="explicacao">Ex. "26"</p>
-          <div class="input-group">
-            <input type="number" class="form-control" placeholder="" [(ngModel)]="capacity" (blur)="onBlurMethod()" formControlName="capacity"
-            [ngClass]="{'required': (gc16.get('capacity').hasError('required') && gc16.get('capacity').touched)
+        <div class="col-sm-2">
+          <div class="campo">
+            <p class="descricao">CAPACIDADE</p>
+            <p class="explicacao">Ex. "26"</p>
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="" [(ngModel)]="capacity" (blur)="onBlurMethod()" formControlName="capacity"
+                [ngClass]="{'required': (gc16.get('capacity').hasError('required') && gc16.get('capacity').touched)
             || (gc16.get('capacity').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(gc16.get('capacity').hasError('required') && gc16.get('capacity').touched)
+            </div>
+            <p class="requiredText" *ngIf="(gc16.get('capacity').hasError('required') && gc16.get('capacity').touched)
           || (gc16.get('capacity').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-2">
-        <div class="campo">
-          <p class="descricao">CONTAINERS/DIA</p>
-          <span class="testeSaco"></span>
-          <div class="input-group">
-            <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="containerDays" formControlName="containerDays">
+        <div class="col-sm-2">
+          <div class="campo">
+            <p class="descricao">CONTAINERS/DIA</p>
+            <span class="testeSaco"></span>
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="containerDays" formControlName="containerDays">
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div formGroupName="factoryStock" class="row diferente2">
-      <div class="col-md-4">
-        <div class="campo">
-          <p class="descricao">ESTOQUE PLANTA MONTADORA</p>
-          <p class="explicacao">Ex. "5 Dias"</p>
-          <div class="placeholder" data-placeholder="DIAS">
-            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fsDays" formControlName="fsDays" (blur)="onBlurMethod()"
-            [ngClass]="{'required': (gc16.get('factoryStock.fsDays').hasError('required') && gc16.get('factoryStock.fsDays').touched)
+      <div formGroupName="factoryStock" class="row diferente2">
+        <div class="col-md-4">
+          <div class="campo">
+            <p class="descricao">ESTOQUE PLANTA MONTADORA</p>
+            <p class="explicacao">Ex. "5 Dias"</p>
+            <div class="placeholder" data-placeholder="DIAS">
+              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fsDays" formControlName="fsDays"
+                (blur)="onBlurMethod()" [ngClass]="{'required': (gc16.get('factoryStock.fsDays').hasError('required') && gc16.get('factoryStock.fsDays').touched)
             || (gc16.get('factoryStock.fsDays').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(gc16.get('factoryStock.fsDays').hasError('required') && gc16.get('factoryStock.fsDays').touched)
+            </div>
+            <p class="requiredText" *ngIf="(gc16.get('factoryStock.fsDays').hasError('required') && gc16.get('factoryStock.fsDays').touched)
           || (gc16.get('factoryStock.fsDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4 dois">
+        <div class="col-md-4 dois">
 
-        <div class="row diferente">
-          <div class="col-xs-4 colEsq">
-            <div class="campo campoE">
-              <p class="descricao dp">EM</p>
-              <span class="testeSaco"></span>
-              <div class="placeholder" data-placeholder="%">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="fs" formControlName="fs">
+          <div class="row diferente">
+            <div class="col-xs-4 colEsq">
+              <div class="campo campoE">
+                <p class="descricao dp">EM</p>
+                <span class="testeSaco"></span>
+                <div class="placeholder" data-placeholder="%">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="fs" formControlName="fs">
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-xs-8 colDir">
+            <div class="col-xs-8 colDir">
 
 
-            <div class="campo campoG">
-              <p class="descricao dp">QNT. CONTAINER</p>
-              <span class="testeSaco"></span>
-              <div class="input-group test2">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerfs" formControlName="QuantContainerfs">
+              <div class="campo campoG">
+                <p class="descricao dp">QNT. CONTAINER</p>
+                <span class="testeSaco"></span>
+                <div class="input-group test2">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerfs" formControlName="QuantContainerfs">
+                </div>
               </div>
             </div>
-          </div>
 
-        </div>
-
-      </div>
-
-
-      <div class="col-md-4 dois">
-        <div class="row diferente">
-          <div class="col-xs-4 colEsq">
-            <div class="campo campoE">
-              <p class="descricao dp">EM MÁX.</p>
-              <span class="testeSaco"></span>
-              <div class="placeholder" data-placeholder="%">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="fsMax" formControlName="fsMax">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xs-8 colDir">
-
-
-            <div class="campo campoG">
-              <p class="descricao dp">QNT. CONTAINER</p>
-              <span class="testeSaco"></span>
-              <div class="input-group test2">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerfsMax" formControlName="QuantContainerfsMax">
-              </div>
-            </div>
           </div>
 
         </div>
+
+
+        <div class="col-md-4 dois">
+          <div class="row diferente">
+            <div class="col-xs-4 colEsq">
+              <div class="campo campoE">
+                <p class="descricao dp">EM MÁX.</p>
+                <span class="testeSaco"></span>
+                <div class="placeholder" data-placeholder="%">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="fsMax" formControlName="fsMax">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-8 colDir">
+
+
+              <div class="campo campoG">
+                <p class="descricao dp">QNT. CONTAINER</p>
+                <span class="testeSaco"></span>
+                <div class="input-group test2">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerfsMax" formControlName="QuantContainerfsMax">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
-    </div>
 
 
-    <div formGroupName="supplierStock" class="row diferente2">
-      <div class="col-md-4">
-        <div class="campo">
-          <p class="descricao">ESTOQUE FORNECEDOR</p>
-          <p class="explicacao">Ex. "5 Dias"</p>
-          <div class="placeholder" data-placeholder="DIAS">
-            <input type="number" min="0" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="ssDays" formControlName="ssDays" (blur)="onBlurMethod()"
-            [ngClass]="{'required': (gc16.get('supplierStock.ssDays').hasError('required') && gc16.get('supplierStock.ssDays').touched)
+      <div formGroupName="supplierStock" class="row diferente2">
+        <div class="col-md-4">
+          <div class="campo">
+            <p class="descricao">ESTOQUE FORNECEDOR</p>
+            <p class="explicacao">Ex. "5 Dias"</p>
+            <div class="placeholder" data-placeholder="DIAS">
+              <input type="number" min="0" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="ssDays" formControlName="ssDays"
+                (blur)="onBlurMethod()" [ngClass]="{'required': (gc16.get('supplierStock.ssDays').hasError('required') && gc16.get('supplierStock.ssDays').touched)
             || (gc16.get('supplierStock.ssDays').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(gc16.get('supplierStock.ssDays').hasError('required') && gc16.get('supplierStock.ssDays').touched)
+            </div>
+            <p class="requiredText" *ngIf="(gc16.get('supplierStock.ssDays').hasError('required') && gc16.get('supplierStock.ssDays').touched)
           || (gc16.get('supplierStock.ssDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-        </div>
-      </div>
-       <div class="col-md-4 dois">
-
-        <div class="row diferente">
-          <div class="col-xs-4 colEsq">
-            <div class="campo campoE">
-              <p class="descricao dp">EF</p>
-              <span class="testeSaco"></span>
-              <div class="placeholder" data-placeholder="%">
-                <input type="number" class="form-control" disabled [(ngModel)]="ss" formControlName="ss">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xs-8 colDir">
-            <div class="campo campoG">
-              <p class="descricao dp">QNT. CONTAINER</p>
-              <span class="testeSaco"></span>
-              <div class="input-group test2">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerSs" formControlName="QuantContainerSs">
-              </div>
-            </div>
           </div>
         </div>
-      </div>
+        <div class="col-md-4 dois">
 
-      <div class="col-md-4 dois">
-        <div class="row diferente">
-          <div class="col-xs-4 colEsq">
-            <div class="campo campoE">
-              <p class="descricao dp">EF MÁX.</p>
-              <span class="testeSaco"></span>
-              <div class="placeholder" data-placeholder="%">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="ssMax" formControlName="ssMax">
+          <div class="row diferente">
+            <div class="col-xs-4 colEsq">
+              <div class="campo campoE">
+                <p class="descricao dp">EF</p>
+                <span class="testeSaco"></span>
+                <div class="placeholder" data-placeholder="%">
+                  <input type="number" class="form-control" disabled [(ngModel)]="ss" formControlName="ss">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-8 colDir">
+              <div class="campo campoG">
+                <p class="descricao dp">QNT. CONTAINER</p>
+                <span class="testeSaco"></span>
+                <div class="input-group test2">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerSs" formControlName="QuantContainerSs">
+                </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="col-xs-8 colDir">
-            <div class="campo campoG">
-              <p class="descricao dp">QNT. CONTAINER</p>
-              <span class="testeSaco"></span>
-              <div class="input-group test2">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerSsMax" formControlName="QuantContainerSsMax">
+        <div class="col-md-4 dois">
+          <div class="row diferente">
+            <div class="col-xs-4 colEsq">
+              <div class="campo campoE">
+                <p class="descricao dp">EF MÁX.</p>
+                <span class="testeSaco"></span>
+                <div class="placeholder" data-placeholder="%">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="ssMax" formControlName="ssMax">
+                </div>
               </div>
             </div>
-          </div>
 
+            <div class="col-xs-8 colDir">
+              <div class="campo campoG">
+                <p class="descricao dp">QNT. CONTAINER</p>
+                <span class="testeSaco"></span>
+                <div class="input-group test2">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerSsMax" formControlName="QuantContainerSsMax">
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
 
 
-    <div formGroupName="transportationGoing" class="row diferente2">
-      <div class="col-sm-4">
-        <div class="campo">
-          <p class="descricao">TRANSP. IDA</p>
-          <p class="explicacao">Ex. "2 Dias"</p>
-          <div class="placeholder" data-placeholder="DIAS">
-            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tgDays" formControlName="tgDays" (blur)="onBlurMethod()"
-            [ngClass]="{'required': (gc16.get('transportationGoing.tgDays').hasError('required') && gc16.get('transportationGoing.tgDays').touched)
+      <div formGroupName="transportationGoing" class="row diferente2">
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">TRANSP. IDA</p>
+            <p class="explicacao">Ex. "2 Dias"</p>
+            <div class="placeholder" data-placeholder="DIAS">
+              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tgDays" formControlName="tgDays"
+                (blur)="onBlurMethod()" [ngClass]="{'required': (gc16.get('transportationGoing.tgDays').hasError('required') && gc16.get('transportationGoing.tgDays').touched)
             || (gc16.get('transportationGoing.tgDays').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(gc16.get('transportationGoing.tgDays').hasError('required') && gc16.get('transportationGoing.tgDays').touched)
+            </div>
+            <p class="requiredText" *ngIf="(gc16.get('transportationGoing.tgDays').hasError('required') && gc16.get('transportationGoing.tgDays').touched)
           || (gc16.get('transportationGoing.tgDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-8">
-        <div class="row diferente">
-          <div class="col-xs-4 colEsq">
-            <div class="campo">
-              <p class="descricao">TI</p>
-              <span class="testeSaco"></span>
-              <div class="placeholder" data-placeholder="%">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="tg" formControlName="tg">
+        <div class="col-sm-8">
+          <div class="row diferente">
+            <div class="col-xs-4 colEsq">
+              <div class="campo">
+                <p class="descricao">TI</p>
+                <span class="testeSaco"></span>
+                <div class="placeholder" data-placeholder="%">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="tg" formControlName="tg">
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-xs-8 colDir">
-            <div class="campo">
-              <p class="descricao">QNT. CONTAINER</p>
-              <span class="testeSaco"></span>
-              <div class="input-group">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerTg" formControlName="QuantContainerTg">
+            <div class="col-xs-8 colDir">
+              <div class="campo">
+                <p class="descricao">QNT. CONTAINER</p>
+                <span class="testeSaco"></span>
+                <div class="input-group">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerTg" formControlName="QuantContainerTg">
+                </div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
-    </div>
 
 
-    <div formGroupName="transportantionBack" class="row diferente2">
-      <div class="col-sm-4">
-        <div class="campo">
-          <p class="descricao">TRANSP. VOLTA</p>
-          <p class="explicacao">Ex. "2 Dias"</p>
-          <div class="placeholder" data-placeholder="DIAS">
-            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tbDays" formControlName="tbDays" (blur)="onBlurMethod()"
-            [ngClass]="{'required': (gc16.get('transportantionBack.tbDays').hasError('required') && gc16.get('transportantionBack.tbDays').touched)
+      <div formGroupName="transportantionBack" class="row diferente2">
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">TRANSP. VOLTA</p>
+            <p class="explicacao">Ex. "2 Dias"</p>
+            <div class="placeholder" data-placeholder="DIAS">
+              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tbDays" formControlName="tbDays"
+                (blur)="onBlurMethod()" [ngClass]="{'required': (gc16.get('transportantionBack.tbDays').hasError('required') && gc16.get('transportantionBack.tbDays').touched)
             || (gc16.get('transportantionBack.tbDays').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(gc16.get('transportantionBack.tbDays').hasError('required') && gc16.get('transportantionBack.tbDays').touched)
+            </div>
+            <p class="requiredText" *ngIf="(gc16.get('transportantionBack.tbDays').hasError('required') && gc16.get('transportantionBack.tbDays').touched)
           || (gc16.get('transportantionBack.tbDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-8">
-        <div class="row diferente">
-          <div class="col-xs-4  colEsq">
-            <div class="campo">
-              <p class="descricao">TV</p>
-              <span class="testeSaco"></span>
-              <div class="placeholder" data-placeholder="%">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="tb" formControlName="tb">
+        <div class="col-sm-8">
+          <div class="row diferente">
+            <div class="col-xs-4  colEsq">
+              <div class="campo">
+                <p class="descricao">TV</p>
+                <span class="testeSaco"></span>
+                <div class="placeholder" data-placeholder="%">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="tb" formControlName="tb">
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-8  colDir">
+              <div class="campo">
+                <p class="descricao">QNT. CONTAINER</p>
+                <span class="testeSaco"></span>
+                <div class="input-group">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerTb" formControlName="QuantContainerTb">
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-xs-8  colDir">
-            <div class="campo">
-              <p class="descricao">QNT. CONTAINER</p>
-              <span class="testeSaco"></span>
-              <div class="input-group">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerTb" formControlName="QuantContainerTb">
-              </div>
-            </div>
-          </div>
         </div>
+
       </div>
 
-    </div>
 
 
+      <div formGroupName="frequency" class="row diferente2">
+        <div class="col-md-4">
+          <div class="campo">
+            <p class="descricao">FREQUÊNCIA</p>
+            <p class="explicacao">Ex. "3 Dias"</p>
+            <div class="placeholder" data-placeholder="DIAS">
 
-    <div formGroupName="frequency" class="row diferente2">
-      <div class="col-md-4">
-        <div class="campo">
-          <p class="descricao">FREQUÊNCIA</p>
-          <p class="explicacao">Ex. "3 Dias"</p>
-          <div class="placeholder" data-placeholder="DIAS">
-
-            <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fDays" formControlName="fDays" (blur)="onBlurMethod()"
-            [ngClass]="{'required': (gc16.get('frequency.fDays').hasError('required') && gc16.get('frequency.fDays').touched)
+              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fDays" formControlName="fDays"
+                (blur)="onBlurMethod()" [ngClass]="{'required': (gc16.get('frequency.fDays').hasError('required') && gc16.get('frequency.fDays').touched)
             || (gc16.get('frequency.fDays').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(gc16.get('frequency.fDays').hasError('required') && gc16.get('frequency.fDays').touched)
+            </div>
+            <p class="requiredText" *ngIf="(gc16.get('frequency.fDays').hasError('required') && gc16.get('frequency.fDays').touched)
           || (gc16.get('frequency.fDays').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-        </div>
-      </div>
-      <div class="col-md-8">
-        <div class="row diferente">
-          <div class="col-sm-4 campoEsq">
-            <div class="campo">
-              <p class="descricao">FR</p>
-              <span class="testeSaco"></span>
-              <div class="placeholder" data-placeholder="%">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="fr" formControlName="fr">
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 campoMeio">
-            <div class="campo">
-              <p class="descricao">QNT. CONTAINER</p>
-              <span class="testeSaco"></span>
-              <div class="input-group">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainer" formControlName="QuantContainer">
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 campoDir">
-            <div class="campo">
-              <p class="descricao">TOTAL DE DIAS</p>
-              <span class="testeSaco"></span>
-              <div class="placeholder" data-placeholder="%">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantTotalDays" formControlName="QuantTotalDays">
-              </div>
-            </div>
           </div>
         </div>
+        <div class="col-md-8">
+          <div class="row diferente">
+            <div class="col-sm-4 campoEsq">
+              <div class="campo">
+                <p class="descricao">FR</p>
+                <span class="testeSaco"></span>
+                <div class="placeholder" data-placeholder="%">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="fr" formControlName="fr">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 campoMeio">
+              <div class="campo">
+                <p class="descricao">QNT. CONTAINER</p>
+                <span class="testeSaco"></span>
+                <div class="input-group">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainer" formControlName="QuantContainer">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 campoDir">
+              <div class="campo">
+                <p class="descricao">TOTAL DE DIAS</p>
+                <span class="testeSaco"></span>
+                <div class="placeholder" data-placeholder="%">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantTotalDays" formControlName="QuantTotalDays">
+                </div>
+              </div>
+            </div>
+          </div>
 
+        </div>
       </div>
-    </div>
 
-    <div formGroupName="secutiryFactor" class="row diferente2">
-      <div class="col-md-4">
-        <div class="campo">
-          <p class="descricao">FATOR DE SEGURANÇA</p>
-          <p class="explicacao">Ex. "10"</p>
-          <div class="placeholder" data-placeholder="%">
-            <input type="number" class="form-control" placeholder="" [(ngModel)]="percentage" formControlName="percentage" (blur)="onBlurMethod()"
-            [ngClass]="{'required': (gc16.get('secutiryFactor.percentage').hasError('required') && gc16.get('secutiryFactor.percentage').touched)
+      <div formGroupName="secutiryFactor" class="row diferente2">
+        <div class="col-md-4">
+          <div class="campo">
+            <p class="descricao">FATOR DE SEGURANÇA</p>
+            <p class="explicacao">Ex. "10"</p>
+            <div class="placeholder" data-placeholder="%">
+              <input type="number" class="form-control" placeholder="" [(ngModel)]="percentage" formControlName="percentage" (blur)="onBlurMethod()"
+                [ngClass]="{'required': (gc16.get('secutiryFactor.percentage').hasError('required') && gc16.get('secutiryFactor.percentage').touched)
             || (gc16.get('secutiryFactor.percentage').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(gc16.get('secutiryFactor.percentage').hasError('required') && gc16.get('secutiryFactor.percentage').touched)
+            </div>
+            <p class="requiredText" *ngIf="(gc16.get('secutiryFactor.percentage').hasError('required') && gc16.get('secutiryFactor.percentage').touched)
           || (gc16.get('secutiryFactor.percentage').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          </div>
         </div>
-      </div>
-      <div class="col-md-8">
-        <div class="row diferente">
-          <div class="col-sm-6 campoEsq">
-            <div class="campo">
-              <p class="descricao">QUANT. CONTAINER</p>
-              <span class="testeSaco"></span>
-              <div class="input-group">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainer" formControlName="QuantContainer">
+        <div class="col-md-8">
+          <div class="row diferente">
+            <div class="col-sm-6 campoEsq">
+              <div class="campo">
+                <p class="descricao">QUANT. CONTAINER</p>
+                <span class="testeSaco"></span>
+                <div class="input-group">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainer" formControlName="QuantContainer">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-sm-6 campoDir">
-            <div class="campo">
-              <p class="descricao">QUANT. TOTAL CONSTRUÍDA</p>
-              <span class="testeSaco desaparecer"></span>
-              <div class="input-group">
-                <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantTotalBuilt" formControlName="QuantTotalBuilt">
+            <div class="col-sm-6 campoDir">
+              <div class="campo">
+                <p class="descricao">QUANT. TOTAL CONSTRUÍDA</p>
+                <span class="testeSaco desaparecer"></span>
+                <div class="input-group">
+                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantTotalBuilt" formControlName="QuantTotalBuilt">
+                </div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
-    </div>
-    <br>
-    <div class="botoes">
-      <button routerLink="/rc/bpline" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoSalvar">REGISTRAR</button>
-    </div>
-    <br>
-  </form>
+      <br>
+      <div class="botoes">
+        <button routerLink="/rc/bpline" class="botaoVoltar">VOLTAR</button>
+        <button type="submit" class="botaoSalvar">REGISTRAR</button>
+      </div>
+      <br>
+    </form>
+  </div>
+  <br />
+  <br />
+
 </div>
-<br />
-<br />

@@ -12,7 +12,7 @@ import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 //import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TooltipModule } from 'ngx-bootstrap'
+import { TooltipModule, PopoverModule } from 'ngx-bootstrap'
 import { GeralComponent } from './geral/geral.component';
 import { InventarioGeralComponent } from './inventario-geral/inventario-geral.component';
 import { InventarioPermanenciaComponent } from './inventario-permanencia/inventario-permanencia.component';
@@ -30,6 +30,7 @@ import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-au
     FormsModule,
     RouterModule,
     NgxPaginationModule,
+    PopoverModule.forRoot(),
     ApplicationPipes,
     NgbModule,
     TooltipModule,

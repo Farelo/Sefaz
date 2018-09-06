@@ -62,7 +62,8 @@ export class InventarioGeralComponent implements OnInit {
   }
 
   public getChild(parent: any = { plant_name: '' }) {
-    return parent.plant_name
+    console.log('parent.plant_name: ' + parent.plant_name);
+    return parent.plant_name;
   }
   
   onClearSupplier(){
@@ -97,7 +98,7 @@ export class InventarioGeralComponent implements OnInit {
     for (let i = 0; i < all_plants.length; i++){
 
       if (all_plants[i].current_plant.plant !== undefined){
-        console.log('current_plant: ' + JSON.stringify(all_plants[i].current_plant));
+        //console.log('current_plant: ' + JSON.stringify(all_plants[i].current_plant));
         acum++;
         break;
       }
@@ -118,7 +119,7 @@ export class InventarioGeralComponent implements OnInit {
     this.inventoryService.getDetailedGeneralInventory(10, this.detailedGeneralInventory.meta.page).subscribe(result => {
       this.detailedGeneralInventory = result;
       this.setInitialCollapse(true);
-      console.log('this.detailedGeneralInventory: ' + JSON.stringify(this.detailedGeneralInventory));
+      //console.log('this.detailedGeneralInventory: ' + JSON.stringify(this.detailedGeneralInventory));
     }, err => { console.log(err) });
   }
 
@@ -146,7 +147,7 @@ export class InventarioGeralComponent implements OnInit {
         }, err => { console.log(err) });
       }, err => { console.log(err) });
 
-      console.log('selectedSupplier: ' + JSON.stringify(this.selectedSupplier));
+      //console.log('selectedSupplier: ' + JSON.stringify(this.selectedSupplier));
     } else {
       this.loadDetailedInventory()
       this.selectedSupplier = null

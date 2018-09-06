@@ -42,10 +42,64 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadTableHeaders();
     this.loadPackings();
     this.generalInventoryEquipament();
   }
 
+  public headers: any = [];
+  public sort: any = ['none', 'asc', 'desc'];
+
+  loadTableHeaders() {
+    this.headers.push({ name: 'Equipamento', label: 'code', status: this.sort[0] });
+    this.headers.push({ name: 'Serial', label: 'serial', status: this.sort[0] });
+    this.headers.push({ name: 'Tag', label: 'tag.code', status: this.sort[0] });
+    this.headers.push({ name: 'Fornecedor', label: 'supplier.name', status: this.sort[0] });
+    this.headers.push({ name: 'Status Atual', label: 'status_pt', status: this.sort[0] });
+    this.headers.push({ name: 'Planta Atual', label: 'actual_plant.plant', status: this.sort[0] });
+    this.headers.push({ name: 'Local', label: 'actual_plant.local', status: this.sort[0] });
+    this.headers.push({ name: 'Bateria', label: 'battery', status: this.sort[0] });
+    this.headers.push({ name: 'Acurácia', label: 'position.accuracy', status: this.sort[0] });
+    // this.headers.push({ name: 'Temperatura', label: 'temperature', status: this.sort[0] });
+
+    console.log('this.headers: ' + JSON.stringify(this.headers));
+  }
+
+  headerClick(item: any) {
+
+    let index = this.headers.indexOf(item);
+
+    //atualizar status em todos
+    this.headers[index].status = this.sort[(this.sort.indexOf(item.status) + 1) % 3];
+    this.headers.map(elem => {
+      if (elem.name !== this.headers[index].name) return elem.status = this.sort[0];
+      else return elem;
+    });
+
+    this.orderTable(this.headers[index]);
+  }
+
+  orderTable(elem: any) {
+    if (elem.status == this.sort[0]) {
+      this.generalInventoryEquipament('', '');
+
+    } else {
+      this.generalInventoryEquipament(elem.label, elem.status);
+    }
+  }
+
+  paginationChanged() {
+    let orderedBy = this.headers.filter(elem => {
+      return elem.status != this.sort[0];
+    });
+
+    console.log('orderedBy: ' + JSON.stringify(orderedBy));
+
+    if (orderedBy.length > 0)
+      this.orderTable(orderedBy[0]);
+    else
+      this.generalInventoryEquipament();
+  }
   /**
    * Carrega a lista de embalagens no select
    */
@@ -72,7 +126,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       this.packingService.getPackingsDistincts().subscribe(
         result => {
           this.packings = result.data;
-          console.log('this.packings: ' + JSON.stringify(this.packings));
+          //console.log('this.packings: ' + JSON.stringify(this.packings));
         },
         err => {
           console.log(err);
@@ -82,14 +136,24 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   }
 
   //getInventoryGeneralPackings(limit: number, page: number, code: string, attr: string = '', code_packing: string =''): Observable<any> {
-  generalInventoryEquipament() {
-    console.log('=====generalInventoryEquipament');
-    console.log(
-      'this.generalEquipamentSearch: ' +
-        JSON.stringify(this.generalEquipamentSearch),
-    );
+  generalInventoryEquipament(sort_by: string = '', order: string = '') {
+    // console.log('=====generalInventoryEquipament');
+    // console.log(
+    //   'this.generalEquipamentSearch: ' +
+    //     JSON.stringify(this.generalEquipamentSearch),
+    // );
 
     if (this.generalEquipamentSearch == null) this.generalEquipamentSearch = '';
+
+    /**
+     * getInventoryGeneralPackings(
+     *    limit: number, 
+     *    page: number, 
+     *    code: string, 
+     *    supplier: string = '', 
+     *    code_packing: string =''): Observable<any> { }
+     */
+    console.log('this.logged_user: ' + this.logged_user);
 
     if (this.logged_user instanceof Array) {
       this.inventoryLogisticService
@@ -112,7 +176,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
             console.log(
               'this.general_equipament: ' +
-                JSON.stringify(this.general_equipament),
+              JSON.stringify(this.general_equipament),
             );
           },
           err => {
@@ -127,7 +191,8 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
           '',
           this.logged_user,
           this.generalEquipamentSearch,
-        )
+          sort_by,
+          order)
         .subscribe(
           result => {
             this.general_equipament = result;
@@ -139,10 +204,10 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
               },
             );
 
-            console.log(
-              'this.general_equipament: ' +
-                JSON.stringify(this.general_equipament),
-            );
+            // console.log(
+            //   'this.general_equipament: ' +
+            //     JSON.stringify(this.general_equipament),
+            // );
           },
           err => {
             console.log(err);
@@ -155,7 +220,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     if (this.generalEquipamentSearch) {
       console.log(
         '.generalInventoryEquipamentChanged this.generalEquipamentSearch: ' +
-          JSON.stringify(this.generalEquipamentSearch),
+        JSON.stringify(this.generalEquipamentSearch),
       );
       this.packingService
         .getPackingsByPackingCode(
@@ -176,7 +241,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
             console.log(
               '.generalInventoryEquipamentChanged ...result: ' +
-                JSON.stringify(result),
+              JSON.stringify(result),
             );
 
             // this.general_equipament = new Pagination({ meta: { page: 1 } });
@@ -191,7 +256,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
             console.log(
               '.generalInventoryEquipamentChanged ...this.general_equipament: ' +
-                JSON.stringify(this.general_equipament),
+              JSON.stringify(this.general_equipament),
             );
           },
           err => {
@@ -201,7 +266,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     } else {
       console.log(
         '..generalInventoryEquipamentChanged this.generalEquipamentSearch: ' +
-          JSON.stringify(this.generalEquipamentSearch),
+        JSON.stringify(this.generalEquipamentSearch),
       );
 
       this.general_equipament = new Pagination({ meta: { page: 1 } });
@@ -220,7 +285,12 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     modalRef.componentInstance.packing = packing;
   }
 
+  getFormatedMeter(m: any){
+    return `Acurácia de ${m} metros`;
+  }
+
   getFormatedData(t: any) {
+    if (t == undefined) return "Sem Registro";
     return new Date(t * 1000).toLocaleString();
   }
 }

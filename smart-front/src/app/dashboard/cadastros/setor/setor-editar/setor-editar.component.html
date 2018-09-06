@@ -1,12 +1,13 @@
 <div class="">
-  <h1>EDITAR SETOR</h1>
-  <br />
+  <h2>Editar Setor</h2>
+  <hr>
+
   <form novalidate (ngSubmit)="onSubmit(department)" [formGroup]="department"  #formDir="ngForm">
     <div class="row">
       <div class="col-md-12">
 
         <div class="campo">
-          <h3>LOCAL</h3>
+          <p class="descricao">LOCAL</p>
           <p>
             <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="onMapReady($event)" (click)="onClick($event)">
               <marker [position]="pos"></marker>
@@ -16,13 +17,12 @@
       </div>
 
       <div class="col-md-12 informacoes" >
-
-          <div class="bigger2">
-            <div class="fromSun"></div>
-          </div>
-          <span class="forn" >{{department.value.plant?.location || 'Nenhuma informação sobre a localidade'}}</span>
-
+        <div class="bigger2">
+          <div class="fromSun"></div>
+        </div>
+        <span class="forn" >{{department.value.plant?.location || 'Nenhuma informação sobre a localidade'}}</span>
       </div>
+      
       <div class="col-md-6">
         <p class="descricao">LATITUDE</p>
         <div class="input-group">
@@ -33,6 +33,7 @@
         <p class="requiredText" *ngIf="(department.get('lat').hasError('required') && department.get('lat').touched)
         || (department.get('lat').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       </div>
+
       <div class="col-md-6">
         <p class="descricao">LONGITUDE</p>
         <div class="input-group">
@@ -43,6 +44,7 @@
         <p class="requiredText" *ngIf="(department.get('lng').hasError('required') && department.get('lng').touched)
         || (department.get('lng').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
       </div>
+      
       <br />
 
       <div class="col-md-6">
@@ -57,8 +59,8 @@
           <p class="requiredText" *ngIf="(department.get('name').hasError('required') && department.get('name').touched)
           || (department.get('name').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
-
       </div>
+
       <div class="col-md-6">
         <div class="campo">
           <p class="descricao">ASSOCIE A PLANTA</p>
@@ -78,14 +80,15 @@
           <p class="requiredText" *ngIf="(department.get('plant').hasError('required') && department.get('plant').touched)
           || (department.get('plant').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
         </div>
+      </div>
     </div>
-    </div>
+
     <br />
+
     <div class="botoes">
       <button routerLink="/rc/cadastros/setor" class="botaoVoltar">VOLTAR</button>
       <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
     </div>
     <br />
   </form>
-  <Br />
 </div>
