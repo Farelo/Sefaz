@@ -13,14 +13,14 @@
             <span class="sort-icons noselect">
               <i class="fa fa-sort default-order" *ngIf="(header.name !== sort.name)"></i>
               <i class="fa fa-caret-up" *ngIf="(header.name == sort.name) && (sort.order == 'asc')"></i>
-              <i class="fa fa-caret-down" *ngIf="(header.name == sort.name) && (sort.order == 'desc')"></i> 
+              <i class="fa fa-caret-down" *ngIf="(header.name == sort.name) && (sort.order == 'desc')"></i>
             </span>
           </span>
         </th>
         <th class="opcoes"></th>
       </tr>
     </thead>
-    <tbody> 
+    <tbody>
       <tr *ngFor="let plant of data | paginate: { 
                                                   itemsPerPage: 10,
                                                   currentPage: p,
@@ -41,14 +41,11 @@
     </tbody>
   </table>
 </div>
-<div class="classVazio" *ngIf="data.length < 1"> 
+<div class="classVazio" *ngIf="data.length < 1">
   Ainda não existem plantas cadastradas.
 </div>
 <br />
 <div class="has-text-centered">
-    <pagination-controls class="my-pagination"
-    (pageChange)="p = $event"
-    directionLinks="false"
-    autoHide="true">
-    </pagination-controls>
+  <pagination-controls class="my-pagination" (pageChange)="p = $event" directionLinks="false" autoHide="true">
+  </pagination-controls>
 </div>
