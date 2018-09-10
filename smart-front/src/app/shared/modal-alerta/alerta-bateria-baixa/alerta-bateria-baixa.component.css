@@ -14,6 +14,20 @@
   border-radius: 0rem;
 }
 
+.modal-title {
+  font-size: 18px;
+  text-align: left;
+  display: inline-block;
+}
+
+.modal-header {
+  display: block;
+}
+
+.modalBody {
+  padding: 0px 15px 15px 15px;
+}
+
 .titulo-modal {
   font-size: 13px;
   font-weight: bold;
@@ -71,16 +85,6 @@
   margin-top: 20px;
 }
 
-.modal-title {
-  font-size: 18px;
-  text-align: left;
-  display: inline-block;
-}
-
-.modal-header {
-  display: block;
-}
-
 .btn {
   font-size: 16px;
 }
@@ -115,10 +119,6 @@ table>thead>tr>th {
 
 .modalFilho {
   padding: 0px !important; 
-}
-
-.modalBody {
-  padding: 0px 15px 0px 15px;
 }
 
 .header span.alert{
