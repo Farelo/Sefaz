@@ -118,7 +118,10 @@
   <div class="col-sm-12 col-md-9 m-mapa">
     <div id="map">
       <!-- [fullscreenControl]="true" -->
-      <ngui-map [zoom]="zoom" [center]="center">
+      <!-- <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="configClusteredMarkers($event)"> -->
+      <!-- <ngui-map [zoom]="zoom" [center]="center" #myMap> -->
+      <ngui-map [center]="center" [zoom]="3" (mapReady$)="onInitMap($event)">
+        
 
         <!-- <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
         </marker>
@@ -130,40 +133,40 @@
 
         <!-- ///////////// -->
         <!-- Plant -->
-        <marker *ngFor="let posPlants of listOfFactories" [position]="posPlants.position"
+        <!-- <marker *ngFor="let posPlants of listOfFactories" [position]="posPlants.position"
           [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
           [visible]="showControlledPlants" [title]="posPlants.name" (click)="clicked($event, posPlants)">
         </marker>
 
         <circle *ngFor="let posPlantsRadius of listOfFactories" [center]="posPlantsRadius.position" [fillColor]="'#0044a8'" [fillOpacity]="0.2"
-          [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
+          [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle> -->
 
 
         <!-- ///////////// -->
         <!-- Logistic operator -->
-        <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" 
+        <!-- <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" 
           [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }" 
           [visible]="showControlledLogistics" [title]="posLogistic.name" (click)="clicked($event, posLogistic)">
         </marker>
 
         <circle *ngFor="let posLogisticRadius of listOfLogistic" [center]="posLogisticRadius.position" [fillColor]="'#4d4d4d'" [fillOpacity]="0.15"
-          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledLogistics" radius="{{ settings.range_radius }}"></circle>
+          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledLogistics" radius="{{ settings.range_radius }}"></circle> -->
 
 
         <!-- ///////////// -->
         <!-- Supplier -->
-        <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position"
+        <!-- <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position"
           [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" 
           [visible]="showControlledSuppliers" [title]="posSuppliers.name" (click)="clicked($event, posSuppliers)">
         </marker>
 
         <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.position" [fillColor]="'#4d4d4d'" [fillOpacity]="0.2"
-          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledSuppliers" radius="{{ settings.range_radius }}"></circle>
+          [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledSuppliers" radius="{{ settings.range_radius }}"></circle> -->
 
 
         <!-- ///////////// -->
         <!-- Embalagens.  -->
-        <ng-container *ngFor="let pack of plotedPackings">
+        <!-- <ng-container *ngFor="let pack of plotedPackings">
           <marker *ngIf="pack.status == 'MISSING'" [icon]="{ url: '../../../assets/images/pin_ausente.png', size: [28, 43], scaledSize: [28, 43]}" 
             [position]="pack.position"
             [visible]="showPackings"
@@ -197,7 +200,7 @@
             [visible]="showPackings"
             (click)="clickedPack($event, pack)">
           </marker>
-        </ng-container>
+        </ng-container> -->
           <!--<info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display" class="info-window-content">

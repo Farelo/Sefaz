@@ -1,12 +1,16 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
 import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
+import './markercluster';
+
 declare var $: any;
 declare var google: any;
+declare var MarkerClusterer: any;
 
 //refatorar esse modulo esta muito grande e com coisas confusas
 @Component({
@@ -20,7 +24,7 @@ export class RastreamentoComponent implements OnInit {
   public logged_user: any;
   autocomplete: any;
   address: any = {};
-  center: any;
+  center: any = { lat: 0, lng: 0 };
   pos: any;
   plantSearch = null;
   departments: Department[];
@@ -58,13 +62,13 @@ export class RastreamentoComponent implements OnInit {
   //selects
   public serials: any[];
   public codes: any[];
-  public plotedPackings: any[];
-
+  
   //Bind dos selects
   public selectedCode;
   public selectedSerial;
   
   //array de pinos
+  public plotedPackings: any[] = [];
   public listOfFactories: any = [];
   public listOfSuppliers: any = [];
   public listOfLogistic: any = [];
@@ -78,6 +82,8 @@ export class RastreamentoComponent implements OnInit {
   //misc
   public settings: any;
   public permanence: Pagination = new Pagination({ meta: { page: 1 } }); 
+
+  @ViewChild('myMap') myMap: any;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -99,11 +105,31 @@ export class RastreamentoComponent implements OnInit {
 
   }
 
+  locations = [
+    { lat: -31.563910, lng: 147.154312 }
+  ];
+
+
   ngOnInit() {
+    
     this.getPlantRadius();
     this.loadPackingsOnSelect();
     this.loadDepartmentsByPlant();
     this.loadPackings();
+  }
+
+
+  onInitMap(map) { 
+    
+    const markers = this.plotedPackings.map((location, i) =>{
+      return new google.maps.Marker({
+        position: location.position, 
+        icon: this.getPinWithAlert(location.status)
+      }
+    )});
+    
+    const marker = new MarkerClusterer(map, markers,
+      { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
   }
 
   onChange(event) {
@@ -152,7 +178,7 @@ export class RastreamentoComponent implements OnInit {
             // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
             // console.log('this.options: ' + JSON.stringify(this.options));
             // console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
+            //console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
             // console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
 
           }
@@ -179,9 +205,9 @@ export class RastreamentoComponent implements OnInit {
 
             // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
             // console.log('this.options: ' + JSON.stringify(this.options));
-            console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
-            console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
+            // console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
+            // console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
+            // console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
 
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
           }
@@ -206,7 +232,6 @@ export class RastreamentoComponent implements OnInit {
         return elem;
       });
 
-      
       console.log('plotedPackings: ' + JSON.stringify(this.plotedPackings));
     }, err => { console.log(err) });
   }
@@ -285,8 +310,8 @@ export class RastreamentoComponent implements OnInit {
     
     this.loadPackings();
 
-    console.log('new this.selectedCode: ' + this.selectedCode);
-    console.log('new this.selectedSerial: ' + this.selectedSerial);
+    //console.log('new this.selectedCode: ' + this.selectedCode);
+    //console.log('new this.selectedSerial: ' + this.selectedSerial);
   }
 
   clicked(_a, opt) {
@@ -340,7 +365,7 @@ export class RastreamentoComponent implements OnInit {
     this.packMarker.serial = opt.serial;
     this.packMarker.accuracy = opt.accuracy;
 
-    console.log('packMarker: ' + JSON.stringify(this.packMarker));
+    //console.log('packMarker: ' + JSON.stringify(this.packMarker));
     
     this.startPackWindow(mkr);
   }
@@ -450,7 +475,6 @@ export class RastreamentoComponent implements OnInit {
     close();
   }
 
-  
   /**
    * Recupera o pino da embalagem de acordo com seu alerta
    */
