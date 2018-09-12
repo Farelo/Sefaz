@@ -115,21 +115,34 @@ export class RastreamentoComponent implements OnInit {
     this.getPlantRadius();
     this.loadPackingsOnSelect();
     this.loadDepartmentsByPlant();
-    this.loadPackings();
   }
 
+  /** 
+    <canvas id="myCanvas" width="400" height="400" style="border:1px solid #c3c3c3;"></canvas>
+    <script type="text/javascript">
+        var c=document.getElementById("myCanvas");
+        var cxt=c.getContext("2d");
+        var centerX = 200;
+        var centerY = 200;
+        cxt.moveTo(centerX, centerY);
+
+        var STEPS_PER_ROTATION = 60;
+        var increment = 2*Math.PI/STEPS_PER_ROTATION;
+        var theta = increment;
+
+        while( theta < 200*Math.PI) {
+          var newX = (centerX + (theta) * Math.cos(theta/30));
+          var newY = (centerY + (theta) * Math.sin(theta/30));
+          cxt.lineTo(newX, newY);
+          theta = theta + increment;
+        }
+        cxt.stroke(); 
+   */
 
   onInitMap(map) { 
-    
-    const markers = this.plotedPackings.map((location, i) =>{
-      return new google.maps.Marker({
-        position: location.position, 
-        icon: this.getPinWithAlert(location.status)
-      }
-    )});
-    
-    const marker = new MarkerClusterer(map, markers,
-      { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+    // console.log('time map: ' + (new Date()).getTime());
+    this.loadPackings(map);
+   
   }
 
   onChange(event) {
@@ -218,21 +231,66 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Carrega todos os pacotes do mapa 
    */
-  loadPackings() {
+  public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
+  loadPackings(map) {
 
     let params = {};
     if (this.selectedCode) params['family'] = this.selectedCode.packing;
     if (this.selectedSerial) params['serial'] = this.selectedSerial;
     
     this.mapsService.getPackings(params).subscribe(result => {
+
       this.plotedPackings = result.data;
 
       this.plotedPackings.map(elem => {
         elem.position = (new google.maps.LatLng(elem.latitude, elem.longitude));
         return elem;
       });
-
+      
       console.log('plotedPackings: ' + JSON.stringify(this.plotedPackings));
+
+      /**
+       * Related to marker clustering
+       */
+      const markers = this.plotedPackings.map((location, i) => {
+        let m = new google.maps.Marker({
+          packing_code: location.packing_code,
+          serial: location.serial,
+          position: location.position,
+          icon: this.getPinWithAlert(location.status)
+        })
+        
+        //this.infoWin.close();
+        
+        google.maps.event.addListener(m, 'click', (evt) => {
+          console.log('click location:' + JSON.stringify(location));
+          
+          this.infoWin.setContent(
+            `<p class="iw-title">INFORMAÇÕES</p>
+              <div>
+                <p>
+                  <span class="bold">Embalagem:</span> ${location.packing_code}</p>
+                <p>
+                  <span class="bold">Serial:</span> ${location.serial}</p>
+                <p>
+                  <span class="bold">Latitude:</span> ${location.latitude}</p>
+                <p>
+                  <span class="bold">Longitude:</span> ${location.longitude}</p>
+              </div>`);
+
+            this.infoWin.open(map, m);
+        });
+
+        return m;
+      });
+
+      console.log('markers: ' + JSON.stringify(markers.map(elem => elem.position)));
+
+      const marker = new MarkerClusterer(map, markers, {
+        maxZoom: 14,
+        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+      });
+
     }, err => { console.log(err) });
   }
 

@@ -360,7 +360,7 @@ MarkerClusterer.prototype.calculator_ = function (markers, numStyles) {
     var count = markers.length;
     var dv = count;
     while (dv !== 0) {
-        dv = parseInt(dv / 10, 10);
+        dv = parseInt(String(dv / 10), 10);
         index++;
     }
 
@@ -762,7 +762,7 @@ MarkerClusterer.prototype.addToClosestCluster_ = function (marker) {
     if (clusterToAddTo && clusterToAddTo.isMarkerInClusterBounds(marker)) {
         clusterToAddTo.addMarker(marker);
     } else {
-        var cluster = new Cluster(this);
+        var cluster:any = new Cluster(this);
         cluster.addMarker(marker);
         this.clusters_.push(cluster);
     }
@@ -1053,9 +1053,13 @@ ClusterIcon.prototype.triggerClusterClick = function (event) {
     // Trigger the clusterclick event.
     google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_, event);
 
+
     if (markerClusterer.isZoomOnClick()) {
+        console.log('zoom.');
         // Zoom into the cluster.
         this.map_.fitBounds(this.cluster_.getBounds());
+    } else{
+        console.log('zoom..');
     }
 };
 
@@ -1106,8 +1110,8 @@ ClusterIcon.prototype.getPosFromLatLng_ = function (latlng) {
         pos.x -= this.iconAnchor_[0];
         pos.y -= this.iconAnchor_[1];
     } else {
-        pos.x -= parseInt(this.width_ / 2, 10);
-        pos.y -= parseInt(this.height_ / 2, 10);
+        pos.x -= parseInt(String(this.width_ / 2), 10);
+        pos.y -= parseInt(String(this.height_ / 2), 10);
     }
     return pos;
 };
