@@ -139,11 +139,13 @@ export class RastreamentoComponent implements OnInit {
         cxt.stroke(); 
    */
 
-  onInitMap(map) { 
-    // console.log('time map: ' + (new Date()).getTime());
-    this.loadPackings(map);
-   
+  public mMap:any;
+  onInitMap(map) {
+
+    this.mMap = map;
+    this.loadPackings();
   }
+
 
   onChange(event) {
     this.center = { lat: event.lat, lng: event.lng };
@@ -232,7 +234,7 @@ export class RastreamentoComponent implements OnInit {
    * Carrega todos os pacotes do mapa 
    */
   public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
-  loadPackings(map) {
+  loadPackings() {
 
     let params = {};
     if (this.selectedCode) params['family'] = this.selectedCode.packing;
@@ -278,7 +280,7 @@ export class RastreamentoComponent implements OnInit {
                   <span class="bold">Longitude:</span> ${location.longitude}</p>
               </div>`);
 
-            this.infoWin.open(map, m);
+          this.infoWin.open(this.mMap, m);
         });
 
         return m;
@@ -286,10 +288,97 @@ export class RastreamentoComponent implements OnInit {
 
       console.log('markers: ' + JSON.stringify(markers.map(elem => elem.position)));
 
-      const marker = new MarkerClusterer(map, markers, {
+      const marker = new MarkerClusterer(this.mMap, markers, {
         maxZoom: 14,
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
       });
+
+
+      /**
+       * Tratando os ícones empilhados
+       */
+      [
+        [{
+        "serial": "100",
+        "packing_code": "LJ",
+        "latitude": -8.047501,
+        "longitude": -34.877811,
+        "accuracy": 100,
+        "battery": 92
+      },
+        {
+          "serial": "200",
+          "packing_code": "LJ",
+          "latitude": -8.047501,
+          "longitude": -34.877811,
+          "accuracy": 20,
+          "battery": 73
+        },
+        {
+          "serial": "300",
+          "packing_code": "LJ",
+          "latitude": -8.047501,
+          "longitude": -34.877811,
+          "accuracy": 80,
+          "battery": 36
+        }]
+      ].map(array => {
+        /**
+         * 1. Do array plotar apenas o primeiro elemento.
+         * 2. No clique, calcular a posição dos demais ícones.
+         */
+
+        // 1
+        let m = new google.maps.Marker({
+          packing_code: array[0].packing_code,
+          serial: array[0].serial,
+          position: { lat: array[0].latitude, lng: array[0].longitude },
+          // icon: this.getPinWithAlert(array[0].status)
+        })
+        m.setMap(this.mMap);
+
+        // 2
+        let spiralCoordinates:any = [];
+       
+        var centerX = array[0].latitude;
+        var centerY = array[0].longitude;
+        //cxt.moveTo(centerX, centerY);
+
+        var STEPS_PER_ROTATION = 60;
+        var increment = 0.1 * Math.PI / STEPS_PER_ROTATION;
+        var theta = increment;
+
+        for (let i=1; i < 100; i++) {
+          // var newX = ((centerX + (theta) * Math.cos(theta * 389)));
+          // var newY = ((centerY + (theta) * Math.sin(theta * 389)));
+          var newX = ((centerX + (theta * 0.005) * Math.cos(theta*20)));
+          var newY = ((centerY + (theta * 0.005) * Math.sin(theta*20)));
+          
+          theta = theta + increment;
+          spiralCoordinates.push({ lat: newX, lng: newY });
+        }
+        
+        var flightPath = new google.maps.Polyline({
+          path: spiralCoordinates,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+        flightPath.setMap(this.mMap);
+
+        console.log('array: ' + JSON.stringify(array));
+        console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
+      });
+
+
+
+
+
+
+
+
+       
 
     }, err => { console.log(err) });
   }
