@@ -341,20 +341,18 @@ export class RastreamentoComponent implements OnInit {
         let spiralCoordinates:any = [];
        
         var centerX = array[0].latitude;
-        var centerY = array[0].longitude;
-        //cxt.moveTo(centerX, centerY);
+        var centerY = array[0].longitude; 
 
-        var STEPS_PER_ROTATION = 60;
+        var STEPS_PER_ROTATION = 40;
         var increment = 0.1 * Math.PI / STEPS_PER_ROTATION;
         var theta = increment;
 
-        for (let i=1; i < 100; i++) {
-          // var newX = ((centerX + (theta) * Math.cos(theta * 389)));
-          // var newY = ((centerY + (theta) * Math.sin(theta * 389)));
-          var newX = ((centerX + (theta * 0.005) * Math.cos(theta*20)));
-          var newY = ((centerY + (theta * 0.005) * Math.sin(theta*20)));
+        for (let i=1; i < 1000; i+=10) { 
+          var newX = ((centerX + (theta * 0.008) * Math.cos(theta*160)));
+          var newY = ((centerY + (theta * 0.008) * Math.sin(theta*160)));
           
           theta = theta + increment;
+          increment = increment*0.9
           spiralCoordinates.push({ lat: newX, lng: newY });
         }
         
