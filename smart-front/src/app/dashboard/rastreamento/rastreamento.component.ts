@@ -62,11 +62,11 @@ export class RastreamentoComponent implements OnInit {
   //selects
   public serials: any[];
   public codes: any[];
-  
+
   //Bind dos selects
   public selectedCode;
   public selectedSerial;
-  
+
   //array de pinos
   public plotedPackings: any[] = [];
   public listOfFactories: any = [];
@@ -81,7 +81,7 @@ export class RastreamentoComponent implements OnInit {
 
   //misc
   public settings: any;
-  public permanence: Pagination = new Pagination({ meta: { page: 1 } }); 
+  public permanence: Pagination = new Pagination({ meta: { page: 1 } });
 
   @ViewChild('myMap') myMap: any;
 
@@ -105,13 +105,8 @@ export class RastreamentoComponent implements OnInit {
 
   }
 
-  locations = [
-    { lat: -31.563910, lng: 147.154312 }
-  ];
-
-
   ngOnInit() {
-    
+
     this.getPlantRadius();
     this.loadPackingsOnSelect();
     this.loadDepartmentsByPlant();
@@ -139,8 +134,11 @@ export class RastreamentoComponent implements OnInit {
         cxt.stroke(); 
    */
 
-  public mMap:any;
+  public mMap: any;
   onInitMap(map) {
+
+    this.center = { lat: -8.047501, lng: -34.877811 };
+    this.zoom = 14;
 
     this.mMap = map;
     this.loadPackings();
@@ -187,7 +185,7 @@ export class RastreamentoComponent implements OnInit {
               }
             }
 
-            
+
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
 
             // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
@@ -233,13 +231,15 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Carrega todos os pacotes do mapa 
    */
+  public flightPath: google.maps.Polyline = new google.maps.Polyline();
   public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
+
   loadPackings() {
 
     let params = {};
     if (this.selectedCode) params['family'] = this.selectedCode.packing;
     if (this.selectedSerial) params['serial'] = this.selectedSerial;
-    
+
     this.mapsService.getPackings(params).subscribe(result => {
 
       this.plotedPackings = result.data;
@@ -248,7 +248,7 @@ export class RastreamentoComponent implements OnInit {
         elem.position = (new google.maps.LatLng(elem.latitude, elem.longitude));
         return elem;
       });
-      
+
       console.log('plotedPackings: ' + JSON.stringify(this.plotedPackings));
 
       /**
@@ -261,12 +261,12 @@ export class RastreamentoComponent implements OnInit {
           position: location.position,
           icon: this.getPinWithAlert(location.status)
         })
-        
+
         //this.infoWin.close();
-        
+
         google.maps.event.addListener(m, 'click', (evt) => {
           console.log('click location:' + JSON.stringify(location));
-          
+
           this.infoWin.setContent(
             `<p class="iw-title">INFORMAÇÕES</p>
               <div>
@@ -297,15 +297,16 @@ export class RastreamentoComponent implements OnInit {
       /**
        * Tratando os ícones empilhados
        */
+
       [
         [{
-        "serial": "100",
-        "packing_code": "LJ",
-        "latitude": -8.047501,
-        "longitude": -34.877811,
-        "accuracy": 100,
-        "battery": 92
-      },
+          "serial": "100",
+          "packing_code": "LJ",
+          "latitude": -8.047501,
+          "longitude": -34.877811,
+          "accuracy": 100,
+          "battery": 92
+        },
         {
           "serial": "200",
           "packing_code": "LJ",
@@ -338,45 +339,60 @@ export class RastreamentoComponent implements OnInit {
         m.setMap(this.mMap);
 
         // 2
-        let spiralCoordinates:any = [];
-       
-        var centerX = array[0].latitude;
-        var centerY = array[0].longitude; 
 
-        var STEPS_PER_ROTATION = 40;
-        var increment = 0.1 * Math.PI / STEPS_PER_ROTATION;
-        var theta = increment;
+        google.maps.event.addListener(m, 'click', (evt) => {
+          //console.log('click location:' + JSON.stringify(m));
 
-        for (let i=1; i < 1000; i+=10) { 
-          var newX = ((centerX + (theta * 0.008) * Math.cos(theta*160)));
-          var newY = ((centerY + (theta * 0.008) * Math.sin(theta*160)));
-          
-          theta = theta + increment;
-          increment = increment*0.9
-          spiralCoordinates.push({ lat: newX, lng: newY });
-        }
-        
-        var flightPath = new google.maps.Polyline({
-          path: spiralCoordinates,
-          geodesic: true,
-          strokeColor: '#FF0000',
-          strokeOpacity: 1.0,
-          strokeWeight: 2
+          console.log('this.flightPath.map: ' + this.flightPath.getMap());
+
+          if (this.flightPath.getMap()) {
+            console.log('.flightPath');
+            this.flightPath.setMap(null);
+
+          } else {
+            console.log('..flightPath');
+            let spiralCoordinates: any = [];
+
+            var centerX = array[0].latitude;
+            var centerY = array[0].longitude;
+
+            /**
+              var STEPS_PER_ROTATION = 60;
+              var increment = 2 * Math.PI / STEPS_PER_ROTATION;
+              var theta = increment;
+              for (let i=1; i < 100; i+=5) {
+                var newX = ((centerX + (theta * 0.00008) * Math.cos(theta)));
+                var newY = ((centerY + (theta * 0.00008) * Math.sin(theta)));
+              }
+             */
+            var STEPS_PER_ROTATION = 60;
+            var increment = 2 * Math.PI / STEPS_PER_ROTATION;
+            var theta = increment;
+
+            for (let i = 1; i < 100; i += 5) {
+              // 4-22
+              var newX = ((centerX + (theta) * Math.cos(theta)));
+              var newY = ((centerY + (theta) * Math.sin(theta)));
+
+              theta = increment * i;
+              spiralCoordinates.push({ lat: newX, lng: newY });
+            }
+
+            this.flightPath = new google.maps.Polyline({
+              path: spiralCoordinates,
+              geodesic: true,
+              strokeColor: '#FF0000',
+              strokeOpacity: 1.0,
+              strokeWeight: 2
+            });
+            this.flightPath.setMap(this.mMap);
+
+            console.log('array: ' + JSON.stringify(array));
+            console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
+          }
         });
-        flightPath.setMap(this.mMap);
 
-        console.log('array: ' + JSON.stringify(array));
-        console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
       });
-
-
-
-
-
-
-
-
-       
 
     }, err => { console.log(err) });
   }
@@ -421,15 +437,15 @@ export class RastreamentoComponent implements OnInit {
 
     } else {
       this.packingService.getPackingsDistincts().subscribe(result => { this.codes = result.data }, err => { console.log(err) });
-    } 
+    }
   }
-  
+
   /**
    * An equipment was selected. This method fill the Serial Select.
    */
-  loadSerialsOfSelectedEquipment(){
+  loadSerialsOfSelectedEquipment() {
 
-    if (this.selectedCode){
+    if (this.selectedCode) {
       this.loadPackings();
 
       this.selectedSerial = null;
@@ -443,16 +459,16 @@ export class RastreamentoComponent implements OnInit {
           //   .getInventoryPermanence(10, this.permanence.meta.page, this.selectedCode.packing)
           //   .subscribe(result => this.permanence = result, err => { console.log(err) });
         }, err => { console.log(err) })
-    } 
+    }
   }
 
   /**
    * Equipment select was cleared.
    * Clear e disable the Serial Select.
    */
-  onEquipmentSelectClear(){
+  onEquipmentSelectClear() {
     this.selectedSerial = null;
-    
+
     this.loadPackings();
 
     //console.log('new this.selectedCode: ' + this.selectedCode);
@@ -511,7 +527,7 @@ export class RastreamentoComponent implements OnInit {
     this.packMarker.accuracy = opt.accuracy;
 
     //console.log('packMarker: ' + JSON.stringify(this.packMarker));
-    
+
     this.startPackWindow(mkr);
   }
 

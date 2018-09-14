@@ -168,6 +168,8 @@ function MarkerClusterer(map, opt_markers, opt_options) {
     google.maps.event.addListener(this.map_, 'zoom_changed', function () {
         var zoom = that.map_.getZoom();
 
+        console.log('zoom: ' + zoom);
+
         if (that.prevZoom_ != zoom) {
             that.prevZoom_ = zoom;
             that.resetViewport();
@@ -1055,11 +1057,8 @@ ClusterIcon.prototype.triggerClusterClick = function (event) {
 
 
     if (markerClusterer.isZoomOnClick()) {
-        console.log('zoom.');
         // Zoom into the cluster.
         this.map_.fitBounds(this.cluster_.getBounds());
-    } else{
-        console.log('zoom..');
     }
 };
 
