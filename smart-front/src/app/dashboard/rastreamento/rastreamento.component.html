@@ -120,7 +120,7 @@
       <!-- [fullscreenControl]="true" -->
       <!-- <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="configClusteredMarkers($event)"> -->
       <!-- <ngui-map [zoom]="zoom" [center]="center" #myMap> -->
-      <ngui-map [center]="center" [zoom]="3" (mapReady$)="onInitMap($event)">
+      <ngui-map [center]="center" [zoom]="4" [minZoom]="4" (mapReady$)="onInitMap($event)">
         
 
         <!-- <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">

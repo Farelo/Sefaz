@@ -283,9 +283,20 @@ export class RastreamentoComponent implements OnInit {
           this.infoWin.open(this.mMap, m);
         });
 
+        google.maps.event.addListener(this.mMap, 'zoom_changed', () => {
+
+          console.log('zoom changed:' + JSON.stringify(this.mMap.getZoom()));
+
+          this.flightPath.setMap(null);
+          this.flightPath.setOptions({
+            path: []
+          });
+        });
+
         return m;
       });
 
+      
       console.log('markers: ' + JSON.stringify(markers.map(elem => elem.position)));
 
       const marker = new MarkerClusterer(this.mMap, markers, {
@@ -339,15 +350,18 @@ export class RastreamentoComponent implements OnInit {
         m.setMap(this.mMap);
 
         // 2
-
         google.maps.event.addListener(m, 'click', (evt) => {
           //console.log('click location:' + JSON.stringify(m));
 
-          console.log('this.flightPath.map: ' + this.flightPath.getMap());
+          console.log('entrou no event listener');
 
           if (this.flightPath.getMap()) {
-            console.log('.flightPath');
+            console.log('.flightPath path: ' + this.flightPath.getPath());
+            
             this.flightPath.setMap(null);
+            this.flightPath.setOptions({
+              path: []
+            });
 
           } else {
             console.log('..flightPath');
@@ -369,26 +383,53 @@ export class RastreamentoComponent implements OnInit {
             var increment = 2 * Math.PI / STEPS_PER_ROTATION;
             var theta = increment;
 
-            for (let i = 1; i < 100; i += 5) {
-              // 4-22
-              var newX = ((centerX + (theta) * Math.cos(theta)));
-              var newY = ((centerY + (theta) * Math.sin(theta)));
+            console.log('this.mMap.getZoom(): ' + this.mMap.getZoom());
+            
+            for (let i = 1; i < 100; i++) {
+              let ajuste = 1;
+              
+              if (this.mMap.getZoom() == 4) ajuste = 0.5;
+              if (this.mMap.getZoom() == 5) ajuste = 1;
+              if (this.mMap.getZoom() == 6) ajuste = 2;
+              if (this.mMap.getZoom() == 7) ajuste = 4;
+              if (this.mMap.getZoom() == 8) ajuste = 8;
+              if (this.mMap.getZoom() == 9) ajuste = 19;
+              if (this.mMap.getZoom() == 10) ajuste = 38;
+              if (this.mMap.getZoom() == 11) ajuste = 75;
+              if (this.mMap.getZoom() == 12) ajuste = 150;
+              if (this.mMap.getZoom() == 13) ajuste = 300;
+              if (this.mMap.getZoom() == 14) ajuste = 600;
+              if (this.mMap.getZoom() == 15) ajuste = 1200;
+              if (this.mMap.getZoom() == 16) ajuste = 2400;
+              if (this.mMap.getZoom() == 17) ajuste = 4800;
+              if (this.mMap.getZoom() == 18) ajuste = 9600;
+              if (this.mMap.getZoom() == 19) ajuste = 19200;
+              if (this.mMap.getZoom() == 20) ajuste = 38400;
+              if (this.mMap.getZoom() == 21) ajuste = 76800;
+              if (this.mMap.getZoom() == 22) ajuste = 153600;
+              if (this.mMap.getZoom() == 23) ajuste = 307200;
+              
+              console.log('ajuste: ' + ajuste);
+
+              // /(23 - this.mMap.getZoom())
+              var newX = centerX + (theta / (ajuste)) * Math.cos(theta*2.5);
+              var newY = centerY + (theta / (ajuste)) * Math.sin(theta*2.5);
 
               theta = increment * i;
               spiralCoordinates.push({ lat: newX, lng: newY });
             }
 
-            this.flightPath = new google.maps.Polyline({
+            this.flightPath.setOptions({
               path: spiralCoordinates,
-              geodesic: true,
+              geodesic: false,
               strokeColor: '#FF0000',
               strokeOpacity: 1.0,
               strokeWeight: 2
             });
             this.flightPath.setMap(this.mMap);
 
-            console.log('array: ' + JSON.stringify(array));
-            console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
+            //console.log('array: ' + JSON.stringify(array));
+            //console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
           }
         });
 
