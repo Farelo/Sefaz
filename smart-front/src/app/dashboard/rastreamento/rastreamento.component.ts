@@ -136,8 +136,7 @@ export class RastreamentoComponent implements OnInit {
 
   public mMap: any;
   onInitMap(map) {
-
-    this.center = { lat: -8.047501, lng: -34.877811 };
+ 
     this.zoom = 14;
 
     this.mMap = map;
@@ -231,7 +230,8 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Carrega todos os pacotes do mapa 
    */
-  public flightPath: google.maps.Polyline = new google.maps.Polyline();
+  public spiralPath: google.maps.Polyline = new google.maps.Polyline();
+  public spiralPoints: any = [];
   public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
 
   loadPackings() {
@@ -249,26 +249,94 @@ export class RastreamentoComponent implements OnInit {
         return elem;
       });
 
-      console.log('plotedPackings: ' + JSON.stringify(this.plotedPackings));
+      //console.log('plotedPackings: ' + JSON.stringify(this.plotedPackings));
+      this.resolveClustering();
 
-      /**
-       * Related to marker clustering
-       */
-      const markers = this.plotedPackings.map((location, i) => {
-        let m = new google.maps.Marker({
-          packing_code: location.packing_code,
-          serial: location.serial,
-          position: location.position,
-          icon: this.getPinWithAlert(location.status)
-        })
+    }, err => { console.log(err) });
+  }
+  
+  /**
+   * Tratando os ícones empilhados
+   */
+  resolveClustering(){
 
-        //this.infoWin.close();
+    this.normalizeDuplicatedPackages();
 
-        google.maps.event.addListener(m, 'click', (evt) => {
-          console.log('click location:' + JSON.stringify(location));
+    this.configureListeners();
+    
+    this.configureSpiral();
+  }
 
-          this.infoWin.setContent(
-            `<p class="iw-title">INFORMAÇÕES</p>
+  public duplicated: any = [];
+  normalizeDuplicatedPackages(){
+    //this.plotedPackings = [1, 2, 3, 1, 4, 5, 6, 1, 1, 7, 1, 2, 3, 2]; 
+    let auxDuplicated = [];
+
+    let i = 0;
+    let j = 0;
+    let l = this.plotedPackings.length;
+    console.log(`plotedPackings: ${JSON.stringify(this.plotedPackings)}`);
+
+    while (i < l) {
+      j = i + 1;
+      auxDuplicated = [];
+
+      while (j < l) {
+        // console.log(`i: ${i}, j: ${j}, l: ${l}`);
+
+        if ((this.plotedPackings[i].latitude == this.plotedPackings[j].latitude) &&
+          (this.plotedPackings[i].longitude == this.plotedPackings[j].longitude)) {
+          // console.log(`[i] ${this.plotedPackings[i]},  [j] ${this.plotedPackings[j]}`)
+          // console.log('this.duplicated.length: ' + auxDuplicated.length);
+
+          if (auxDuplicated.length == 0) {
+            // console.log('.');
+            auxDuplicated.push(this.plotedPackings[i], this.plotedPackings[j]);
+            this.plotedPackings.splice(j, 1);
+            l = this.plotedPackings.length;
+            j--;
+
+          } else {
+            // console.log('..');
+            auxDuplicated.push(this.plotedPackings[j]);
+            this.plotedPackings.splice(j, 1);
+            l = this.plotedPackings.length;
+            j--;
+          }
+        }
+        j++;
+      }
+
+      if (auxDuplicated.length > 0) this.duplicated.push(auxDuplicated);
+
+      i++;
+    }
+
+    //console.log('2. plotedPackings: ' + JSON.stringify(this.plotedPackings));
+    console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
+    //console.log('4. auxDuplicated: ' + JSON.stringify(auxDuplicated));
+  }
+
+  /**
+   * Plot all points, clusterize and set the listeners of click and zoom change
+   */
+  configureListeners() {
+
+    //console.log('listener this.plotedPackings: ' + this.plotedPackings);
+
+    const markers = this.plotedPackings.map((location, i) => {
+      let m = new google.maps.Marker({
+        packing_code: location.packing_code,
+        serial: location.serial,
+        position: location.position,
+        icon: this.getPinWithAlert(location.status)
+      })
+
+      google.maps.event.addListener(m, 'click', (evt) => {
+        console.log('click location:' + JSON.stringify(location));
+
+        this.infoWin.setContent(
+          `<p class="iw-title">INFORMAÇÕES</p>
               <div>
                 <p>
                   <span class="bold">Embalagem:</span> ${location.packing_code}</p>
@@ -280,162 +348,188 @@ export class RastreamentoComponent implements OnInit {
                   <span class="bold">Longitude:</span> ${location.longitude}</p>
               </div>`);
 
-          this.infoWin.open(this.mMap, m);
-        });
-
-        google.maps.event.addListener(this.mMap, 'zoom_changed', () => {
-
-          console.log('zoom changed:' + JSON.stringify(this.mMap.getZoom()));
-
-          this.flightPath.setMap(null);
-          this.flightPath.setOptions({
-            path: []
-          });
-        });
-
-        return m;
+        this.infoWin.open(this.mMap, m);
       });
 
-      
-      console.log('markers: ' + JSON.stringify(markers.map(elem => elem.position)));
+      google.maps.event.addListener(this.mMap, 'zoom_changed', () => {
+        console.log('zoom changed:' + JSON.stringify(this.mMap.getZoom()));
 
-      const marker = new MarkerClusterer(this.mMap, markers, {
-        maxZoom: 14,
-        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        this.spiralPath.setMap(null);
+        this.spiralPath.setOptions({ path: [] });
       });
 
+      return m;
+    });
+
+    markers.map(elem => {
+      elem.setMap(this.mMap);
+    });
+
+    // const marker = new MarkerClusterer(this.mMap, markers, { 
+    //   maxZoom: 14,
+    //   imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+    // });
+
+  }
+
+  
+  /**
+   * Resolve the spiral of repeated points
+   */
+  configureSpiral(){
+
+    /**
+     * 1. Do array plotar apenas o primeiro elemento.
+     * 2. No clique, calcular a posição dos demais ícones.
+     */
+    this.duplicated.map(array => {
 
       /**
-       * Tratando os ícones empilhados
+       * Plota um pino duplicado
        */
-
-      [
-        [{
-          "serial": "100",
-          "packing_code": "LJ",
-          "latitude": -8.047501,
-          "longitude": -34.877811,
-          "accuracy": 100,
-          "battery": 92
-        },
-        {
-          "serial": "200",
-          "packing_code": "LJ",
-          "latitude": -8.047501,
-          "longitude": -34.877811,
-          "accuracy": 20,
-          "battery": 73
-        },
-        {
-          "serial": "300",
-          "packing_code": "LJ",
-          "latitude": -8.047501,
-          "longitude": -34.877811,
-          "accuracy": 80,
-          "battery": 36
-        }]
-      ].map(array => {
-        /**
-         * 1. Do array plotar apenas o primeiro elemento.
-         * 2. No clique, calcular a posição dos demais ícones.
-         */
-
-        // 1
-        let m = new google.maps.Marker({
-          packing_code: array[0].packing_code,
-          serial: array[0].serial,
-          position: { lat: array[0].latitude, lng: array[0].longitude },
-          // icon: this.getPinWithAlert(array[0].status)
-        })
-        m.setMap(this.mMap);
-
-        // 2
-        google.maps.event.addListener(m, 'click', (evt) => {
-          //console.log('click location:' + JSON.stringify(m));
-
-          console.log('entrou no event listener');
-
-          if (this.flightPath.getMap()) {
-            console.log('.flightPath path: ' + this.flightPath.getPath());
-            
-            this.flightPath.setMap(null);
-            this.flightPath.setOptions({
-              path: []
-            });
-
-          } else {
-            console.log('..flightPath');
-            let spiralCoordinates: any = [];
-
-            var centerX = array[0].latitude;
-            var centerY = array[0].longitude;
-
-            /**
-              var STEPS_PER_ROTATION = 60;
-              var increment = 2 * Math.PI / STEPS_PER_ROTATION;
-              var theta = increment;
-              for (let i=1; i < 100; i+=5) {
-                var newX = ((centerX + (theta * 0.00008) * Math.cos(theta)));
-                var newY = ((centerY + (theta * 0.00008) * Math.sin(theta)));
-              }
-             */
-            var STEPS_PER_ROTATION = 60;
-            var increment = 2 * Math.PI / STEPS_PER_ROTATION;
-            var theta = increment;
-
-            console.log('this.mMap.getZoom(): ' + this.mMap.getZoom());
-            
-            for (let i = 1; i < 100; i++) {
-              let ajuste = 1;
-              
-              if (this.mMap.getZoom() == 4) ajuste = 0.5;
-              if (this.mMap.getZoom() == 5) ajuste = 1;
-              if (this.mMap.getZoom() == 6) ajuste = 2;
-              if (this.mMap.getZoom() == 7) ajuste = 4;
-              if (this.mMap.getZoom() == 8) ajuste = 8;
-              if (this.mMap.getZoom() == 9) ajuste = 19;
-              if (this.mMap.getZoom() == 10) ajuste = 38;
-              if (this.mMap.getZoom() == 11) ajuste = 75;
-              if (this.mMap.getZoom() == 12) ajuste = 150;
-              if (this.mMap.getZoom() == 13) ajuste = 300;
-              if (this.mMap.getZoom() == 14) ajuste = 600;
-              if (this.mMap.getZoom() == 15) ajuste = 1200;
-              if (this.mMap.getZoom() == 16) ajuste = 2400;
-              if (this.mMap.getZoom() == 17) ajuste = 4800;
-              if (this.mMap.getZoom() == 18) ajuste = 9600;
-              if (this.mMap.getZoom() == 19) ajuste = 19200;
-              if (this.mMap.getZoom() == 20) ajuste = 38400;
-              if (this.mMap.getZoom() == 21) ajuste = 76800;
-              if (this.mMap.getZoom() == 22) ajuste = 153600;
-              if (this.mMap.getZoom() == 23) ajuste = 307200;
-              
-              console.log('ajuste: ' + ajuste);
-
-              // /(23 - this.mMap.getZoom())
-              var newX = centerX + (theta / (ajuste)) * Math.cos(theta*2.5);
-              var newY = centerY + (theta / (ajuste)) * Math.sin(theta*2.5);
-
-              theta = increment * i;
-              spiralCoordinates.push({ lat: newX, lng: newY });
-            }
-
-            this.flightPath.setOptions({
-              path: spiralCoordinates,
-              geodesic: false,
-              strokeColor: '#FF0000',
-              strokeOpacity: 1.0,
-              strokeWeight: 2
-            });
-            this.flightPath.setMap(this.mMap);
-
-            //console.log('array: ' + JSON.stringify(array));
-            //console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
+      let m = new google.maps.Marker({
+        packing_code: array[0].packing_code,
+        serial: array[0].serial,
+        position: { lat: array[0].latitude, lng: array[0].longitude },
+        icon: { url: '../../../assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+      })
+      m.setMap(this.mMap);
+      
+      /**
+       * Trata o clique do pino duplicado
+       */
+      google.maps.event.addListener(m, 'click', (evt) => {
+        
+        console.log('entrou no event listener');
+        
+        if (this.spiralPath.getMap()) { //Se está exibindo o espiral, remove-o
+          
+          //removendo o espiral
+          this.spiralPath.setMap(null);
+          this.spiralPath.setOptions({
+            path: []
+          });
+          
+          //removendo os pontos da espiral
+          while(this.spiralPoints.length > 0) {
+            this.spiralPoints[0].setMap(null);
+            this.spiralPoints.shift();
+            console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].packing_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
           }
-        });
 
+          console.log('.this.spiralPoints.length: ' + this.spiralPoints.length); 
+          console.log('.flightPath path: ' + JSON.stringify(this.spiralPath.getPath())); 
+          
+        } else {  //Se não está exibindo o espiral, exibe-o
+
+          console.log('..flightPath');
+          let spiralCoordinates: any = [];
+
+          var centerX = array[0].latitude;
+          var centerY = array[0].longitude;
+
+          spiralCoordinates.push({ lat: centerX, lng: centerY });
+          
+          //distância entre as voltas da espiral
+          var radius = 6.5;
+ 
+          // distância enter dois pontos plotados
+          var chord = 1;
+
+          //normalizando as constantes de cada zoom
+          if (this.mMap.getZoom() == 4) { radius = 10.24; chord = 2.4; }; 
+          if (this.mMap.getZoom() == 5) { radius = 5.12; chord = 1.2; }; 
+          if (this.mMap.getZoom() == 6) { radius = 2.56; chord = 0.6; };
+          if (this.mMap.getZoom() == 7) { radius = 1.28; chord = 0.3; }; 
+          if (this.mMap.getZoom() == 8) { radius = 0.64; chord = 0.2; };
+          if (this.mMap.getZoom() == 9) { radius = 0.32; chord = 0.1; };
+          if (this.mMap.getZoom() == 10) { radius = 0.16; chord = 0.05; };
+          if (this.mMap.getZoom() == 11) { radius = 0.08; chord = 0.025; };
+          if (this.mMap.getZoom() == 12) { radius = 0.04; chord = 0.0125; };
+          if (this.mMap.getZoom() == 13) { radius = 0.02; chord = 0.00625; };
+          if (this.mMap.getZoom() == 14) { radius = 0.01; chord = 0.003125; };
+          if (this.mMap.getZoom() == 15) { radius = 0.005; chord = 0.0015625; };
+          if (this.mMap.getZoom() == 16) { radius = 0.0025; chord = 0.00078125; };
+          if (this.mMap.getZoom() == 17) { radius = 0.00125; chord = 0.000390625; };
+          if (this.mMap.getZoom() == 18) { radius = 0.000625; chord = 0.0001953125; };
+          if (this.mMap.getZoom() == 19) { radius = 0.0003125; chord = 0.00009765625; };
+          if (this.mMap.getZoom() == 20) { radius = 0.00015625; chord = 0.000048828125; };
+          if (this.mMap.getZoom() == 21) { radius = 0.000078125; chord = 0.0000244140625; };
+          if (this.mMap.getZoom() == 22) { radius = 0.0000390625; chord = 0.00001220703125; };
+          if (this.mMap.getZoom() == 23) { radius = 0.00001953125; chord = 0.000006103515625; };
+
+          // # de voltas da espiral
+          var coils = 4;
+
+          // value of theta corresponding to end of last coil
+          var thetaMax = coils * 2 * Math.PI;
+
+          // How far to step away from center for each side.
+          var awayStep = radius / thetaMax;
+
+          var rotation = 100;
+
+          // For every side, step around and away from center.
+          // start at the angle corresponding to a distance of chord 
+          // away from centre.
+          for (var theta = chord / awayStep, loop = 0; loop < array.length; loop++) {
+          //for (var theta = chord / awayStep; theta <= (chord / away) * array.length; ) {
+            //
+            // How far away from center
+            var away = awayStep * theta;
+            //
+            // How far around the center.
+            var around = theta + rotation;
+            //
+            // Convert 'around' and 'away' to X and Y.
+            var x = centerX + Math.cos(around) * away;
+            var y = centerY + Math.sin(around) * away; 
+
+            // Now that you know it, do it. 
+            spiralCoordinates.push({ lat: x, lng: y });
+
+            // to a first approximation, the points are on a circle
+            // so the angle between them is chord/radius
+            theta += chord / away;
+            //console.log(`theta: ${theta}. +=${chord / away}`);
+          }
+
+          /**
+           * Desenhar a espiral
+           */
+          this.spiralPath.setOptions({
+            path: spiralCoordinates,
+            geodesic: true,
+            strokeColor: '#47bac1',
+            strokeOpacity: 0.4,
+            strokeWeight: 2,
+            zIndex: 998
+          });
+          this.spiralPath.setMap(this.mMap);
+
+          /**
+           * Plotar os pontos na espiral
+           */
+          for (let sc = 1; sc <= array.length; sc++) {
+            console.log(`${array.length} array[sc-1].packing_code: ${array[sc - 1].packing_code}`);
+
+            let e = new google.maps.Marker({
+              packing_code: array[sc-1].packing_code,
+              serial: array[sc-1].serial,
+              position: spiralCoordinates[sc],
+              icon: { url: '../../../assets/images/pin_unique.png', size: (new google.maps.Size(20, 20)), scaledSize: (new google.maps.Size(20, 20)) },
+              zIndex: 999
+            })
+            e.setMap(this.mMap);
+            this.spiralPoints.push(e);
+          }
+
+          //console.log('array: ' + JSON.stringify(array));
+          //console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
+        }
       });
 
-    }, err => { console.log(err) });
+    });
   }
 
   /**
