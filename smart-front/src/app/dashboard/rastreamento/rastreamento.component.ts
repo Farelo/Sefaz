@@ -47,6 +47,7 @@ export class RastreamentoComponent implements OnInit {
   };
   public packMarker = {
     display: true,
+    position: null,
     lat: null,
     lng: null,
     start: null,
@@ -84,6 +85,7 @@ export class RastreamentoComponent implements OnInit {
   public permanence: Pagination = new Pagination({ meta: { page: 1 } });
 
   @ViewChild('myMap') myMap: any;
+  @ViewChild('myInfo') myInfo; 
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -320,14 +322,16 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Plot all points, clusterize and set the listeners of click and zoom change
    */
+  public markers:any[] = [];
   configureListeners() {
 
     //console.log('listener this.plotedPackings: ' + this.plotedPackings);
-
-    const markers = this.plotedPackings.map((location, i) => {
+    this.markers = this.plotedPackings.map((location, i) => {
       let m = new google.maps.Marker({
         packing_code: location.packing_code,
         serial: location.serial,
+        battery: location.battery,
+        accuracy: location.accuracy,
         position: location.position,
         icon: this.getPinWithAlert(location.status)
       })
@@ -336,17 +340,16 @@ export class RastreamentoComponent implements OnInit {
         console.log('click location:' + JSON.stringify(location));
 
         this.infoWin.setContent(
-          `<p class="iw-title">INFORMAÇÕES</p>
-              <div>
-                <p>
-                  <span class="bold">Embalagem:</span> ${location.packing_code}</p>
-                <p>
-                  <span class="bold">Serial:</span> ${location.serial}</p>
-                <p>
-                  <span class="bold">Latitude:</span> ${location.latitude}</p>
-                <p>
-                  <span class="bold">Longitude:</span> ${location.longitude}</p>
-              </div>`);
+          `<div id="m-iw" style="">
+            <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
+              INFORMAÇÕES</div>
+            <div style="padding: 0px 6px;">
+              <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${m.packing_code}</p>
+              <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${m.serial}</p>
+              <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${m.battery.toFixed(2)}%</p>
+              <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${m.accuracy || '-'}m</p>
+            </div>
+          </div>`);
 
         this.infoWin.open(this.mMap, m);
       });
@@ -354,38 +357,34 @@ export class RastreamentoComponent implements OnInit {
       google.maps.event.addListener(this.mMap, 'zoom_changed', () => {
         console.log('zoom changed:' + JSON.stringify(this.mMap.getZoom()));
 
-        this.spiralPath.setMap(null);
-        this.spiralPath.setOptions({ path: [] });
+        this.clearSpiral();
       });
 
       return m;
     });
 
-    markers.map(elem => {
-      elem.setMap(this.mMap);
-    });
-
-    // const marker = new MarkerClusterer(this.mMap, markers, { 
+    // const marker = new MarkerClusterer(this.mMap, this.markers, { 
     //   maxZoom: 14,
     //   imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
     // });
-
   }
 
   
   /**
    * Resolve the spiral of repeated points
    */
+  public iconsOfduplicated:any[] = [];
   configureSpiral(){
 
     /**
      * 1. Do array plotar apenas o primeiro elemento.
      * 2. No clique, calcular a posição dos demais ícones.
      */
+    this.iconsOfduplicated = [];
     this.duplicated.map(array => {
 
       /**
-       * Plota um pino duplicado
+       * Plota UM pino das embalagens duplicadas
        */
       let m = new google.maps.Marker({
         packing_code: array[0].packing_code,
@@ -393,7 +392,9 @@ export class RastreamentoComponent implements OnInit {
         position: { lat: array[0].latitude, lng: array[0].longitude },
         icon: { url: '../../../assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
       })
-      m.setMap(this.mMap);
+
+      this.iconsOfduplicated.push(m);
+      //m.setMap(this.mMap);
       
       /**
        * Trata o clique do pino duplicado
@@ -404,21 +405,7 @@ export class RastreamentoComponent implements OnInit {
         
         if (this.spiralPath.getMap()) { //Se está exibindo o espiral, remove-o
           
-          //removendo o espiral
-          this.spiralPath.setMap(null);
-          this.spiralPath.setOptions({
-            path: []
-          });
-          
-          //removendo os pontos da espiral
-          while(this.spiralPoints.length > 0) {
-            this.spiralPoints[0].setMap(null);
-            this.spiralPoints.shift();
-            console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].packing_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
-          }
-
-          console.log('.this.spiralPoints.length: ' + this.spiralPoints.length); 
-          console.log('.flightPath path: ' + JSON.stringify(this.spiralPath.getPath())); 
+          this.clearSpiral();
           
         } else {  //Se não está exibindo o espiral, exibe-o
 
@@ -517,11 +504,67 @@ export class RastreamentoComponent implements OnInit {
               packing_code: array[sc-1].packing_code,
               serial: array[sc-1].serial,
               position: spiralCoordinates[sc],
+              battery: array[sc - 1].battery,
+              accuracy: array[sc - 1].accuracy,
               icon: { url: '../../../assets/images/pin_unique.png', size: (new google.maps.Size(20, 20)), scaledSize: (new google.maps.Size(20, 20)) },
-              zIndex: 999
+              zIndex: 999,
+              map: this.mMap
             })
             e.setMap(this.mMap);
             this.spiralPoints.push(e);
+
+            /**
+            * Trata o clique do pino duplicado
+            */
+            e.addListener('click', () => {
+              console.log('Clique no pino interno');
+              console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lat));
+              console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
+
+              this.packMarker = {
+                display: true,
+                position: spiralCoordinates[sc],
+                lat: spiralCoordinates[sc].lat,
+                lng: spiralCoordinates[sc].lng,
+                start: null,
+                packing_code: e.packing_code,
+                serial: e.serial,
+                battery: `${e.battery.toFixed(2)}%`,
+                accuracy: `${e.accuracy || '-'}m`
+              };
+
+              //console.log('packMarker: ' + JSON.stringify(this.packMarker.display));
+              this.infoWin = new google.maps.InfoWindow({
+                content: `<div id="m-iw" style="">
+                  <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
+                    INFORMAÇÕES</div>
+                  <div style="padding: 0px 6px;">
+                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${e.packing_code}</p>
+                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${e.serial}</p>
+                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${e.battery.toFixed(2)}%</p>
+                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${e.accuracy || '-'}m</p>
+                  </div>
+                </div>`});
+
+              this.infoWin.setOptions({ maxWidth: 180 });
+              //   google.maps.event.addListener(this.infoWin, 'domready', function () {
+              //     console.log('domready aqui. ..');
+                
+              //     var iwOuter = $('.gm-style-iw');
+              //     // iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
+              //     // var iwCloseBtn = iwOuter.next();
+              //     // iwCloseBtn.css({
+              //     //   'right': '11px',
+              //     //   'top': '17px',
+              //     //   'background-repeat': 'no-repeat',
+              //     //   'background-position': 'center',
+              //     //   'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
+              //     // });
+              //     // iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
+              // });
+              this.infoWin.open(this.mMap, e);
+            });
+
           }
 
           //console.log('array: ' + JSON.stringify(array));
@@ -530,6 +573,30 @@ export class RastreamentoComponent implements OnInit {
       });
 
     });
+
+    // new MarkerClusterer(this.mMap, this.duplicated, {
+    //   maxZoom: 14,
+    //   imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+    // });
+  }
+
+  clearSpiral(){
+    //removendo o espiral
+    this.spiralPath.setMap(null);
+    this.spiralPath.setOptions({
+      path: []
+    });
+
+    //removendo os pontos da espiral
+    while (this.spiralPoints.length > 0) {
+      this.spiralPoints[0].setMap(null);
+      this.spiralPoints.shift();
+      if (this.spiralPoints[0] == undefined) console.log('[0] undefined');
+      else console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].packing_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
+    }
+
+    console.log('.this.spiralPoints.length: ' + this.spiralPoints.length);
+    console.log('.flightPath path: ' + JSON.stringify(this.spiralPath.getPath())); 
   }
 
   /**
@@ -558,6 +625,30 @@ export class RastreamentoComponent implements OnInit {
    */
   toggleShowPackings() {
     this.showPackings = !this.showPackings;
+
+    if (this.showPackings) {  
+
+      //Mostrar embalagens
+      this.markers.map(elem => {
+        elem.setMap(this.mMap);
+      });
+
+      //Mostrar embalagens duplicadas
+      this.iconsOfduplicated.map(elem => {
+        elem.setMap(this.mMap);
+      });
+      
+    }else{
+      //Esconder embalagens
+      this.markers.map(elem => {
+        elem.setMap(null);
+      });
+ 
+      //Esconder embalagens duplicadas
+      this.iconsOfduplicated.map(elem => {
+        elem.setMap(null);
+      });
+    }
   }
 
   /**
@@ -622,12 +713,14 @@ export class RastreamentoComponent implements OnInit {
     this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
       this.marker.plant = opt.name;
       this.marker.profile = opt.profile;
+
       if (result.data.length > 0) {
         this.marker.department = true;
         this.marker.packing = false;
         this.marker.nothing = false;
         this.marker.departments = result;
         this.startWindow(marker);
+
       } else {
         this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
 
@@ -637,6 +730,7 @@ export class RastreamentoComponent implements OnInit {
             this.marker.nothing = false;
             this.marker.packings = result;
             this.startWindow(marker);
+            
           } else {
             this.marker.department = null
             this.marker.packing = null
@@ -726,36 +820,36 @@ export class RastreamentoComponent implements OnInit {
 
   startWindow(marker) {
     marker.nguiMapComponent.openInfoWindow('iw', marker);
-    var iwOuter = $('.gm-style-iw');
-    iwOuter.children().css("display", "block");
+    // var iwOuter = $('.gm-style-iw');
+    // iwOuter.children().css("display", "block");
 
-    iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
-    var iwCloseBtn = iwOuter.next();
-    iwCloseBtn.css({
-      'right': '11px',
-      'top': '17px',
-      'background-repeat': 'no-repeat',
-      'background-position': 'center',
-      'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
-    });
-    iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
+    // iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
+    // var iwCloseBtn = iwOuter.next();
+    // iwCloseBtn.css({
+    //   'right': '11px',
+    //   'top': '17px',
+    //   'background-repeat': 'no-repeat',
+    //   'background-position': 'center',
+    //   'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
+    // });
+    // iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
   }
 
   startPackWindow(marker) {
     marker.nguiMapComponent.openInfoWindow('pw', marker);
-    var iwOuter = $('.gm-style-iw');
-    iwOuter.children().css("display", "block");
+    // var iwOuter = $('.gm-style-iw');
+    // iwOuter.children().css("display", "block");
 
-    iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
-    var iwCloseBtn = iwOuter.next();
-    iwCloseBtn.css({
-      'right': '11px',
-      'top': '17px',
-      'background-repeat': 'no-repeat',
-      'background-position': 'center',
-      'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
-    });
-    iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
+    // iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
+    // var iwCloseBtn = iwOuter.next();
+    // iwCloseBtn.css({
+    //   'right': '11px',
+    //   'top': '17px',
+    //   'background-repeat': 'no-repeat',
+    //   'background-position': 'center',
+    //   'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
+    // });
+    // iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
   }
 
   funcaoTop() {
