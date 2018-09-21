@@ -84,9 +84,6 @@ export class RastreamentoComponent implements OnInit {
   public settings: any;
   public permanence: Pagination = new Pagination({ meta: { page: 1 } });
 
-  @ViewChild('myMap') myMap: any;
-  @ViewChild('myInfo') myInfo; 
-
   constructor(
     private ref: ChangeDetectorRef,
     private departmentService: DepartmentService,
@@ -114,28 +111,6 @@ export class RastreamentoComponent implements OnInit {
     this.loadDepartmentsByPlant();
   }
 
-  /** 
-    <canvas id="myCanvas" width="400" height="400" style="border:1px solid #c3c3c3;"></canvas>
-    <script type="text/javascript">
-        var c=document.getElementById("myCanvas");
-        var cxt=c.getContext("2d");
-        var centerX = 200;
-        var centerY = 200;
-        cxt.moveTo(centerX, centerY);
-
-        var STEPS_PER_ROTATION = 60;
-        var increment = 2*Math.PI/STEPS_PER_ROTATION;
-        var theta = increment;
-
-        while( theta < 200*Math.PI) {
-          var newX = (centerX + (theta) * Math.cos(theta/30));
-          var newY = (centerY + (theta) * Math.sin(theta/30));
-          cxt.lineTo(newX, newY);
-          theta = theta + increment;
-        }
-        cxt.stroke(); 
-   */
-
   public mMap: any;
   onInitMap(map) {
  
@@ -158,8 +133,7 @@ export class RastreamentoComponent implements OnInit {
     this.settingsService.retrieve().subscribe(response => {
       let result = response.data[0];
       this.settings = result;
-      this.settings.range_radius = this.settings.range_radius * 1000;
-      //console.log('this.settings: ' + JSON.stringify(this.settings));
+      this.settings.range_radius = this.settings.range_radius * 1000; 
     })
   }
 
@@ -394,7 +368,6 @@ export class RastreamentoComponent implements OnInit {
       })
 
       this.iconsOfduplicated.push(m);
-      //m.setMap(this.mMap);
       
       /**
        * Trata o clique do pino duplicado
@@ -506,10 +479,11 @@ export class RastreamentoComponent implements OnInit {
               position: spiralCoordinates[sc],
               battery: array[sc - 1].battery,
               accuracy: array[sc - 1].accuracy,
-              icon: { url: '../../../assets/images/pin_unique.png', size: (new google.maps.Size(20, 20)), scaledSize: (new google.maps.Size(20, 20)) },
+              icon: this.getPinWithAlert(array[sc - 1].status, true),
               zIndex: 999,
               map: this.mMap
             })
+            e.set
             e.setMap(this.mMap);
             this.spiralPoints.push(e);
 
@@ -533,7 +507,6 @@ export class RastreamentoComponent implements OnInit {
                 accuracy: `${e.accuracy || '-'}m`
               };
 
-              //console.log('packMarker: ' + JSON.stringify(this.packMarker.display));
               this.infoWin = new google.maps.InfoWindow({
                 content: `<div id="m-iw" style="">
                   <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
@@ -546,22 +519,7 @@ export class RastreamentoComponent implements OnInit {
                   </div>
                 </div>`});
 
-              this.infoWin.setOptions({ maxWidth: 180 });
-              //   google.maps.event.addListener(this.infoWin, 'domready', function () {
-              //     console.log('domready aqui. ..');
-                
-              //     var iwOuter = $('.gm-style-iw');
-              //     // iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
-              //     // var iwCloseBtn = iwOuter.next();
-              //     // iwCloseBtn.css({
-              //     //   'right': '11px',
-              //     //   'top': '17px',
-              //     //   'background-repeat': 'no-repeat',
-              //     //   'background-position': 'center',
-              //     //   'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
-              //     // });
-              //     // iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
-              // });
+              this.infoWin.setOptions({ maxWidth: 180 }); 
               this.infoWin.open(this.mMap, e);
             });
 
@@ -693,12 +651,9 @@ export class RastreamentoComponent implements OnInit {
    * Clear e disable the Serial Select.
    */
   onEquipmentSelectClear() {
+    
     this.selectedSerial = null;
-
     this.loadPackings();
-
-    //console.log('new this.selectedCode: ' + this.selectedCode);
-    //console.log('new this.selectedSerial: ' + this.selectedSerial);
   }
 
   clicked(_a, opt) {
@@ -737,9 +692,9 @@ export class RastreamentoComponent implements OnInit {
             this.marker.nothing = true;
             this.startWindow(marker);
           }
-        })
+        });
       }
-    })
+    });
   }
 
   clickedPack(_a, opt) {
@@ -820,45 +775,14 @@ export class RastreamentoComponent implements OnInit {
 
   startWindow(marker) {
     marker.nguiMapComponent.openInfoWindow('iw', marker);
-    // var iwOuter = $('.gm-style-iw');
-    // iwOuter.children().css("display", "block");
-
-    // iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
-    // var iwCloseBtn = iwOuter.next();
-    // iwCloseBtn.css({
-    //   'right': '11px',
-    //   'top': '17px',
-    //   'background-repeat': 'no-repeat',
-    //   'background-position': 'center',
-    //   'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
-    // });
-    // iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
   }
 
   startPackWindow(marker) {
     marker.nguiMapComponent.openInfoWindow('pw', marker);
-    // var iwOuter = $('.gm-style-iw');
-    // iwOuter.children().css("display", "block");
-
-    // iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
-    // var iwCloseBtn = iwOuter.next();
-    // iwCloseBtn.css({
-    //   'right': '11px',
-    //   'top': '17px',
-    //   'background-repeat': 'no-repeat',
-    //   'background-position': 'center',
-    //   'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
-    // });
-    // iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
   }
 
   funcaoTop() {
-    // google.maps.event.addListener('iw', 'domready', function () {
-    //   var iwOuter = $('.gm-style-iw');
-    //   var iwBackground = iwOuter.prev();
-    //   iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
-    //   iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
-    // });
+
   }
 
   close() {
@@ -868,10 +792,8 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Recupera o pino da embalagem de acordo com seu alerta
    */
-  getPinWithAlert(status: any) {
+  getPinWithAlert(status: any, smallSize:boolean = false) {
     let pin = null;
-
-    //console.log(status); 
 
     switch (status) {
       case 'MISSING':
@@ -893,6 +815,12 @@ export class RastreamentoComponent implements OnInit {
       default:
         pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
+    }
+
+    if (smallSize){
+      console.log('small');
+      pin.size = (new google.maps.Size(21, 31));
+      pin.scaledSize = (new google.maps.Size(21, 31));
     }
 
     return pin;

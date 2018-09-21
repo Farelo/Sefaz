@@ -117,9 +117,7 @@
   <!-- Mapa Geolocalização -->  
   <div class="col-sm-12 col-md-9 m-mapa">
     <div id="map">
-      <!-- [fullscreenControl]="true" -->
-      <!-- <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="configClusteredMarkers($event)"> -->
-      <!-- <ngui-map [zoom]="zoom" [center]="center" #myMap> -->
+      
       <ngui-map [center]="center" [zoom]="4" [minZoom]="4" (mapReady$)="onInitMap($event)">
         
         <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
@@ -216,25 +214,6 @@
           <circle *ngIf="showPackings" [center]="[pack.latitude, pack.longitude]" [fillColor]="getRadiusWithAlert()"
             [fillOpacity]="0.2" [strokeColor]="getRadiusWithAlert()" [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ posRadius.accuracy || 0 }}"></circle>
         </ng-container> -->
-
-
-        <!-- <info-window id="mInfo" [position]="{lat: -24.3001847753399, lng: -47.94647489529684}" #myInfo>
-          <div *ngIf="true">
-          <div class="iw-title">INFORMAÇÕES</div>
-            <p>
-              <span class="bold">Embalagem:</span> {{ packMarker.packing_code }}</p>
-            <p>
-              <span class="bold">Serial:</span> {{ packMarker.serial }}</p>
-            <p>
-              <span class="bold">Bateria:</span> {{ packMarker.battery | round }} %</p>
-            <p>
-              <span class="bold">Acurácia:</span> {{ packMarker.accuracy || '-' }}m</p>
-          </div>
-        </info-window> -->
-
-
-
-
 
 
         <info-window id="iw" width="200" maxWidth="200">
