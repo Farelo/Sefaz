@@ -102,7 +102,6 @@ export class RastreamentoComponent implements OnInit {
       user.official_supplier ? user.official_supplier : (
         user.logistic ? user.logistic.suppliers : (
           user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
-
   }
 
   ngOnInit() {
@@ -116,7 +115,6 @@ export class RastreamentoComponent implements OnInit {
   onInitMap(map) {
  
     this.zoom = 14;
-
     this.mMap = map;
     this.loadPackings();
   }
@@ -161,14 +159,7 @@ export class RastreamentoComponent implements OnInit {
               }
             }
 
-
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
-
-            // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
-            // console.log('this.options: ' + JSON.stringify(this.options));
-            // console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            //console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
-            // console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
 
           }
         }, err => { console.log(err) });
@@ -191,13 +182,6 @@ export class RastreamentoComponent implements OnInit {
             }
 
             this.options.forEach(opt => this.circles.push({ position: { lat: opt.position[0], lng: opt.position[1] }, radius: this.auth.currentUser().radius }))
-
-            // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
-            // console.log('this.options: ' + JSON.stringify(this.options));
-            // console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            // console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
-            // console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
-
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
           }
         }, err => { console.log(err) });
@@ -229,7 +213,6 @@ export class RastreamentoComponent implements OnInit {
 
       //this.resolveClustering();
       this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
-
     }, err => { console.log(err) });
   }
 
@@ -284,18 +267,14 @@ export class RastreamentoComponent implements OnInit {
   loadSerialsOfSelectedEquipment() {
 
     if (this.selectedCode) {
-      this.loadPackings();
 
+      this.loadPackings();
       this.selectedSerial = null;
       this.serials = [];
-
       this.packingService
         .getPackingsEquals(this.selectedCode.supplier._id, this.selectedCode.project._id, this.selectedCode.packing)
         .subscribe(result => {
           this.serials = result.data;
-          // this.inventoryService
-          //   .getInventoryPermanence(10, this.permanence.meta.page, this.selectedCode.packing)
-          //   .subscribe(result => this.permanence = result, err => { console.log(err) });
         }, err => { console.log(err) })
     }
   }

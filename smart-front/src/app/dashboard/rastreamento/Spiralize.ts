@@ -28,7 +28,7 @@ export class Spiralize {
     constructor(list: any[], map: any, clustered: boolean=false) {
         this.listOfObjects = list;
         this.mMap = map;
-
+        this.clustered = clustered;
         this.resolveClustering();
     }
 
@@ -129,21 +129,21 @@ export class Spiralize {
             });
 
             google.maps.event.addListener(this.mMap, 'zoom_changed', () => {
-                console.log('zoom changed:' + JSON.stringify(this.mMap.getZoom()));
-
+                //console.log('zoom changed:' + JSON.stringify(this.mMap.getZoom()));
                 this.clearSpiral();
             });
 
             return m;
         });
 
-        if (this.clustered){
+        // if (this.clustered){
+        //     console.log('clustered');
 
-            const marker = new MarkerClusterer(this.mMap, this.markers, { 
-              maxZoom: 14,
-              imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-            });
-        }
+        //     const marker = new MarkerClusterer(this.mMap, this.markers, { 
+        //       maxZoom: 14,
+        //       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        //     });
+        // }
     }
 
 
@@ -335,13 +335,14 @@ export class Spiralize {
 
         });
 
-        if (this.clustered){
+        // if (this.clustered){
+        //     console.log('clusterize');
 
-            new MarkerClusterer(this.mMap, this.duplicated, {
-              maxZoom: 14,
-              imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-            });
-        }
+        //     new MarkerClusterer(this.mMap, this.duplicated, {
+        //       maxZoom: 14,
+        //       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        //     });
+        // }
     }
 
     clearSpiral() {
@@ -359,7 +360,7 @@ export class Spiralize {
             else console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].packing_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
         }
 
-        console.log('.this.spiralPoints.length: ' + this.spiralPoints.length);
+        //console.log('.this.spiralPoints.length: ' + this.spiralPoints.length);
         // console.log('.flightPath path: ' + JSON.stringify(this.spiralPath.getPath()));
     }
 
@@ -404,6 +405,7 @@ export class Spiralize {
 
         if (status) {
             console.log('.');
+                
             //Mostrar embalagens
             this.markers.map(elem => {
                 elem.setMap(this.mMap);
@@ -414,8 +416,24 @@ export class Spiralize {
                 elem.setMap(this.mMap);
             });
 
+
+            if (this.clustered) {
+                const marker = new MarkerClusterer(this.mMap, this.markers, {
+                    maxZoom: 14,
+                    imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+                });
+
+                console.log('clusterize');
+
+                new MarkerClusterer(this.mMap, this.duplicated, {
+                    maxZoom: 14,
+                    imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+                });
+            }
+
         } else {
             console.log('.');
+            
             //Esconder embalagens
             this.markers.map(elem => {
                 elem.setMap(null);
