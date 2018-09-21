@@ -7,6 +7,7 @@ import { AuthenticationService, PackingService, PlantsService, DepartmentService
 import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
 import './markercluster';
+import { Spiralize } from './Spiralize';
 
 declare var $: any;
 declare var google: any;
@@ -209,6 +210,7 @@ export class RastreamentoComponent implements OnInit {
   public spiralPath: google.maps.Polyline = new google.maps.Polyline();
   public spiralPoints: any = [];
   public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
+  public mSpiralize: Spiralize;
 
   loadPackings() {
 
@@ -225,336 +227,10 @@ export class RastreamentoComponent implements OnInit {
         return elem;
       });
 
-      //console.log('plotedPackings: ' + JSON.stringify(this.plotedPackings));
-      this.resolveClustering();
+      //this.resolveClustering();
+      this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
 
     }, err => { console.log(err) });
-  }
-  
-  /**
-   * Tratando os ícones empilhados
-   */
-  resolveClustering(){
-
-    this.normalizeDuplicatedPackages();
-
-    this.configureListeners();
-    
-    this.configureSpiral();
-  }
-
-  public duplicated: any = [];
-  normalizeDuplicatedPackages(){
-    //this.plotedPackings = [1, 2, 3, 1, 4, 5, 6, 1, 1, 7, 1, 2, 3, 2]; 
-    let auxDuplicated = [];
-
-    let i = 0;
-    let j = 0;
-    let l = this.plotedPackings.length;
-    console.log(`plotedPackings: ${JSON.stringify(this.plotedPackings)}`);
-
-    while (i < l) {
-      j = i + 1;
-      auxDuplicated = [];
-
-      while (j < l) {
-        // console.log(`i: ${i}, j: ${j}, l: ${l}`);
-
-        if ((this.plotedPackings[i].latitude == this.plotedPackings[j].latitude) &&
-          (this.plotedPackings[i].longitude == this.plotedPackings[j].longitude)) {
-          // console.log(`[i] ${this.plotedPackings[i]},  [j] ${this.plotedPackings[j]}`)
-          // console.log('this.duplicated.length: ' + auxDuplicated.length);
-
-          if (auxDuplicated.length == 0) {
-            // console.log('.');
-            auxDuplicated.push(this.plotedPackings[i], this.plotedPackings[j]);
-            this.plotedPackings.splice(j, 1);
-            l = this.plotedPackings.length;
-            j--;
-
-          } else {
-            // console.log('..');
-            auxDuplicated.push(this.plotedPackings[j]);
-            this.plotedPackings.splice(j, 1);
-            l = this.plotedPackings.length;
-            j--;
-          }
-        }
-        j++;
-      }
-
-      if (auxDuplicated.length > 0) this.duplicated.push(auxDuplicated);
-
-      i++;
-    }
-
-    //console.log('2. plotedPackings: ' + JSON.stringify(this.plotedPackings));
-    console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
-    //console.log('4. auxDuplicated: ' + JSON.stringify(auxDuplicated));
-  }
-
-  /**
-   * Plot all points, clusterize and set the listeners of click and zoom change
-   */
-  public markers:any[] = [];
-  configureListeners() {
-
-    //console.log('listener this.plotedPackings: ' + this.plotedPackings);
-    this.markers = this.plotedPackings.map((location, i) => {
-      let m = new google.maps.Marker({
-        packing_code: location.packing_code,
-        serial: location.serial,
-        battery: location.battery,
-        accuracy: location.accuracy,
-        position: location.position,
-        icon: this.getPinWithAlert(location.status)
-      })
-
-      google.maps.event.addListener(m, 'click', (evt) => {
-        console.log('click location:' + JSON.stringify(location));
-
-        this.infoWin.setContent(
-          `<div id="m-iw" style="">
-            <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
-              INFORMAÇÕES</div>
-            <div style="padding: 0px 6px;">
-              <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${m.packing_code}</p>
-              <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${m.serial}</p>
-              <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${m.battery.toFixed(2)}%</p>
-              <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${m.accuracy || '-'}m</p>
-            </div>
-          </div>`);
-
-        this.infoWin.open(this.mMap, m);
-      });
-
-      google.maps.event.addListener(this.mMap, 'zoom_changed', () => {
-        console.log('zoom changed:' + JSON.stringify(this.mMap.getZoom()));
-
-        this.clearSpiral();
-      });
-
-      return m;
-    });
-
-    // const marker = new MarkerClusterer(this.mMap, this.markers, { 
-    //   maxZoom: 14,
-    //   imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-    // });
-  }
-
-  
-  /**
-   * Resolve the spiral of repeated points
-   */
-  public iconsOfduplicated:any[] = [];
-  configureSpiral(){
-
-    /**
-     * 1. Do array plotar apenas o primeiro elemento.
-     * 2. No clique, calcular a posição dos demais ícones.
-     */
-    this.iconsOfduplicated = [];
-    this.duplicated.map(array => {
-
-      /**
-       * Plota UM pino das embalagens duplicadas
-       */
-      let m = new google.maps.Marker({
-        packing_code: array[0].packing_code,
-        serial: array[0].serial,
-        position: { lat: array[0].latitude, lng: array[0].longitude },
-        icon: { url: '../../../assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-      })
-
-      this.iconsOfduplicated.push(m);
-      
-      /**
-       * Trata o clique do pino duplicado
-       */
-      google.maps.event.addListener(m, 'click', (evt) => {
-        
-        console.log('entrou no event listener');
-        
-        if (this.spiralPath.getMap()) { //Se está exibindo o espiral, remove-o
-          
-          this.clearSpiral();
-          
-        } else {  //Se não está exibindo o espiral, exibe-o
-
-          console.log('..flightPath');
-          let spiralCoordinates: any = [];
-
-          var centerX = array[0].latitude;
-          var centerY = array[0].longitude;
-
-          spiralCoordinates.push({ lat: centerX, lng: centerY });
-          
-          //distância entre as voltas da espiral
-          var radius = 6.5;
- 
-          // distância enter dois pontos plotados
-          var chord = 1;
-
-          //normalizando as constantes de cada zoom
-          if (this.mMap.getZoom() == 4) { radius = 10.24; chord = 2.4; }; 
-          if (this.mMap.getZoom() == 5) { radius = 5.12; chord = 1.2; }; 
-          if (this.mMap.getZoom() == 6) { radius = 2.56; chord = 0.6; };
-          if (this.mMap.getZoom() == 7) { radius = 1.28; chord = 0.3; }; 
-          if (this.mMap.getZoom() == 8) { radius = 0.64; chord = 0.2; };
-          if (this.mMap.getZoom() == 9) { radius = 0.32; chord = 0.1; };
-          if (this.mMap.getZoom() == 10) { radius = 0.16; chord = 0.05; };
-          if (this.mMap.getZoom() == 11) { radius = 0.08; chord = 0.025; };
-          if (this.mMap.getZoom() == 12) { radius = 0.04; chord = 0.0125; };
-          if (this.mMap.getZoom() == 13) { radius = 0.02; chord = 0.00625; };
-          if (this.mMap.getZoom() == 14) { radius = 0.01; chord = 0.003125; };
-          if (this.mMap.getZoom() == 15) { radius = 0.005; chord = 0.0015625; };
-          if (this.mMap.getZoom() == 16) { radius = 0.0025; chord = 0.00078125; };
-          if (this.mMap.getZoom() == 17) { radius = 0.00125; chord = 0.000390625; };
-          if (this.mMap.getZoom() == 18) { radius = 0.000625; chord = 0.0001953125; };
-          if (this.mMap.getZoom() == 19) { radius = 0.0003125; chord = 0.00009765625; };
-          if (this.mMap.getZoom() == 20) { radius = 0.00015625; chord = 0.000048828125; };
-          if (this.mMap.getZoom() == 21) { radius = 0.000078125; chord = 0.0000244140625; };
-          if (this.mMap.getZoom() == 22) { radius = 0.0000390625; chord = 0.00001220703125; };
-          if (this.mMap.getZoom() == 23) { radius = 0.00001953125; chord = 0.000006103515625; };
-
-          // # de voltas da espiral
-          var coils = 4;
-
-          // value of theta corresponding to end of last coil
-          var thetaMax = coils * 2 * Math.PI;
-
-          // How far to step away from center for each side.
-          var awayStep = radius / thetaMax;
-
-          var rotation = 100;
-
-          // For every side, step around and away from center.
-          // start at the angle corresponding to a distance of chord 
-          // away from centre.
-          for (var theta = chord / awayStep, loop = 0; loop < array.length; loop++) {
-          //for (var theta = chord / awayStep; theta <= (chord / away) * array.length; ) {
-            //
-            // How far away from center
-            var away = awayStep * theta;
-            //
-            // How far around the center.
-            var around = theta + rotation;
-            //
-            // Convert 'around' and 'away' to X and Y.
-            var x = centerX + Math.cos(around) * away;
-            var y = centerY + Math.sin(around) * away; 
-
-            // Now that you know it, do it. 
-            spiralCoordinates.push({ lat: x, lng: y });
-
-            // to a first approximation, the points are on a circle
-            // so the angle between them is chord/radius
-            theta += chord / away;
-            //console.log(`theta: ${theta}. +=${chord / away}`);
-          }
-
-          /**
-           * Desenhar a espiral
-           */
-          this.spiralPath.setOptions({
-            path: spiralCoordinates,
-            geodesic: true,
-            strokeColor: '#47bac1',
-            strokeOpacity: 0.4,
-            strokeWeight: 2,
-            zIndex: 998
-          });
-          this.spiralPath.setMap(this.mMap);
-
-          /**
-           * Plotar os pontos na espiral
-           */
-          for (let sc = 1; sc <= array.length; sc++) {
-            console.log(`${array.length} array[sc-1].packing_code: ${array[sc - 1].packing_code}`);
-
-            let e = new google.maps.Marker({
-              packing_code: array[sc-1].packing_code,
-              serial: array[sc-1].serial,
-              position: spiralCoordinates[sc],
-              battery: array[sc - 1].battery,
-              accuracy: array[sc - 1].accuracy,
-              icon: this.getPinWithAlert(array[sc - 1].status, true),
-              zIndex: 999,
-              map: this.mMap
-            })
-            e.set
-            e.setMap(this.mMap);
-            this.spiralPoints.push(e);
-
-            /**
-            * Trata o clique do pino duplicado
-            */
-            e.addListener('click', () => {
-              console.log('Clique no pino interno');
-              console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lat));
-              console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
-
-              this.packMarker = {
-                display: true,
-                position: spiralCoordinates[sc],
-                lat: spiralCoordinates[sc].lat,
-                lng: spiralCoordinates[sc].lng,
-                start: null,
-                packing_code: e.packing_code,
-                serial: e.serial,
-                battery: `${e.battery.toFixed(2)}%`,
-                accuracy: `${e.accuracy || '-'}m`
-              };
-
-              this.infoWin = new google.maps.InfoWindow({
-                content: `<div id="m-iw" style="">
-                  <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
-                    INFORMAÇÕES</div>
-                  <div style="padding: 0px 6px;">
-                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${e.packing_code}</p>
-                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${e.serial}</p>
-                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${e.battery.toFixed(2)}%</p>
-                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${e.accuracy || '-'}m</p>
-                  </div>
-                </div>`});
-
-              this.infoWin.setOptions({ maxWidth: 180 }); 
-              this.infoWin.open(this.mMap, e);
-            });
-
-          }
-
-          //console.log('array: ' + JSON.stringify(array));
-          //console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
-        }
-      });
-
-    });
-
-    // new MarkerClusterer(this.mMap, this.duplicated, {
-    //   maxZoom: 14,
-    //   imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-    // });
-  }
-
-  clearSpiral(){
-    //removendo o espiral
-    this.spiralPath.setMap(null);
-    this.spiralPath.setOptions({
-      path: []
-    });
-
-    //removendo os pontos da espiral
-    while (this.spiralPoints.length > 0) {
-      this.spiralPoints[0].setMap(null);
-      this.spiralPoints.shift();
-      if (this.spiralPoints[0] == undefined) console.log('[0] undefined');
-      else console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].packing_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
-    }
-
-    console.log('.this.spiralPoints.length: ' + this.spiralPoints.length);
-    console.log('.flightPath path: ' + JSON.stringify(this.spiralPath.getPath())); 
   }
 
   /**
@@ -582,31 +258,9 @@ export class RastreamentoComponent implements OnInit {
    * Exibir/Ocultar as embalagens
    */
   toggleShowPackings() {
+
     this.showPackings = !this.showPackings;
-
-    if (this.showPackings) {  
-
-      //Mostrar embalagens
-      this.markers.map(elem => {
-        elem.setMap(this.mMap);
-      });
-
-      //Mostrar embalagens duplicadas
-      this.iconsOfduplicated.map(elem => {
-        elem.setMap(this.mMap);
-      });
-      
-    }else{
-      //Esconder embalagens
-      this.markers.map(elem => {
-        elem.setMap(null);
-      });
- 
-      //Esconder embalagens duplicadas
-      this.iconsOfduplicated.map(elem => {
-        elem.setMap(null);
-      });
-    }
+    this.mSpiralize.toggleShowPackings(this.showPackings);
   }
 
   /**
@@ -697,24 +351,6 @@ export class RastreamentoComponent implements OnInit {
     });
   }
 
-  clickedPack(_a, opt) {
-    console.log('clickedPack');
-
-    let mkr = _a.target;
-
-    this.packMarker.lat = mkr.getPosition().lat();
-    this.packMarker.lng = mkr.getPosition().lng();
-    this.packMarker.start = opt.start;
-    this.packMarker.battery = opt.battery;
-    this.packMarker.packing_code = opt.packing_code;
-    this.packMarker.serial = opt.serial;
-    this.packMarker.accuracy = opt.accuracy;
-
-    //console.log('packMarker: ' + JSON.stringify(this.packMarker));
-
-    this.startPackWindow(mkr);
-  }
-
   retrievePackings(_a, opt) {
     var marker = _a.target;
     this.marker.target = _a
@@ -779,14 +415,6 @@ export class RastreamentoComponent implements OnInit {
 
   startPackWindow(marker) {
     marker.nguiMapComponent.openInfoWindow('pw', marker);
-  }
-
-  funcaoTop() {
-
-  }
-
-  close() {
-    close();
   }
 
   /**
