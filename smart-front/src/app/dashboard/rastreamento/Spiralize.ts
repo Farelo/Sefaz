@@ -418,12 +418,10 @@ export class Spiralize {
 
 
             if (this.clustered) {
-                const marker = new MarkerClusterer(this.mMap, this.markers, {
+                new MarkerClusterer(this.mMap, this.markers, {
                     maxZoom: 14,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-
-                console.log('clusterize');
 
                 new MarkerClusterer(this.mMap, this.duplicated, {
                     maxZoom: 14,
