@@ -16,7 +16,7 @@
 }
 
 ngui-map {
-  height: calc(100vh - 45px); 
+  height: calc(100vh - 42px); 
   width: 100%;
 }
 
@@ -32,6 +32,17 @@ p {
   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
   border-radius: 2px;
   border-color: transparent;
+}
+
+.legend-list > li > span {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.legend-title {
+  line-height: 30px;
 }
 
 /* .gm-style-iw {
@@ -108,13 +119,6 @@ span {
   color: #3b5d93;
 }
 
-button {
-  background-color: #3b5d93;
-  color: white;
-  border: none;
-  padding: 5px;
-}
-
 td {
   background-color: white;
   vertical-align: baseline !important;
@@ -135,7 +139,7 @@ td {
 }
 
 button:hover {
-  background-color: #6382c9;
+  background-color: #e6e6e6;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
@@ -144,12 +148,6 @@ button:hover {
   margin-bottom: 0px !important;
   border: none !important;
   background-color: white;
-}
-
-img {
-  float: right;
-  margin: 0 5px 5px 10px;
-  background-color: red;
 }
 
 /* .iw-subTitle {
@@ -182,6 +180,48 @@ img {
 }
 
 /* Emanoel */
+.legend-button {
+  /* background-color: transparent;
+  border: none;
+  text-align: right;
+  float: right;
+  background-image: url("../../../assets/images/interrogacao.png");
+  background-size: 20px;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  vertical-align: baseline; */
+
+  /* z-index: 1;
+  position: absolute !important; 
+  top: 22px;
+  right: 60px;
+  border-color: transparent; */
+  background: none rgb(255, 255, 255);
+  border: 0px;
+  margin: 10px;
+  padding: 0px;
+  position: absolute;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 2px;
+  height: 40px;
+  width: 40px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+  overflow: hidden;
+  top: 0px;
+  left: 180px;
+  z-index: 1;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; 
+}
+
+.legend-button > img {
+  background-color: unset;
+  margin: 0;
+}
+
 .m-navbar {
   margin-bottom: 0px !important;
 }
@@ -214,6 +254,21 @@ img {
     flex-grow: 1;
   }
 }
+
+@media (min-width: 540px) {
+  .m-container {
+    height: calc( 100vh - 42px );
+  }
+
+  .m-filtros{
+    overflow-y: overlay;
+  }
+
+  ngui-map {
+    width: 100%;
+  }
+
+} 
 
 
 /*--------*/

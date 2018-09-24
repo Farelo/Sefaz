@@ -45,17 +45,19 @@ export class Spiralize {
 
     public duplicated: any = [];
     normalizeDuplicatedPackages() {
-        //this.listOfObjects = [1, 2, 3, 1, 4, 5, 6, 1, 1, 7, 1, 2, 3, 2]; 
         let auxDuplicated = [];
 
         let i = 0;
         let j = 0;
         let l = this.listOfObjects.length;
         console.log(`plotedPackings: ${JSON.stringify(this.listOfObjects)}`);
+        let removeI = false;
 
         while (i < l) {
             j = i + 1;
             auxDuplicated = [];
+
+            removeI = false;
 
             while (j < l) {
                 // console.log(`i: ${i}, j: ${j}, l: ${l}`);
@@ -64,6 +66,8 @@ export class Spiralize {
                     (this.listOfObjects[i].longitude == this.listOfObjects[j].longitude)) {
                     // console.log(`[i] ${this.listOfObjects[i]},  [j] ${this.listOfObjects[j]}`)
                     // console.log('this.duplicated.length: ' + auxDuplicated.length);
+                    
+                    removeI = true;
 
                     if (auxDuplicated.length == 0) {
                         // console.log('.');
@@ -83,12 +87,18 @@ export class Spiralize {
                 j++;
             }
 
+            if (removeI){
+                this.listOfObjects.splice(i, 1);
+                l = this.listOfObjects.length;
+                i--;
+            }
+
             if (auxDuplicated.length > 0) this.duplicated.push(auxDuplicated);
 
             i++;
         }
 
-        //console.log('2. listOfObjects: ' + JSON.stringify(this.listOfObjects));
+        console.log('2. listOfObjects: ' + JSON.stringify(this.listOfObjects));
         console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
         //console.log('4. auxDuplicated: ' + JSON.stringify(auxDuplicated));
     }
@@ -167,7 +177,8 @@ export class Spiralize {
                 packing_code: array[0].packing_code,
                 serial: array[0].serial,
                 position: { lat: array[0].latitude, lng: array[0].longitude },
-                icon: { url: '../../../assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                icon: { url: '../../../assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) },
+                // label: `${array.length}`
             })
 
             this.iconsOfduplicated.push(m);
@@ -263,7 +274,7 @@ export class Spiralize {
                     this.spiralPath.setOptions({
                         path: spiralCoordinates,
                         geodesic: true,
-                        strokeColor: '#47bac1',
+                        strokeColor: '#cbb7ed',
                         strokeOpacity: 0.4,
                         strokeWeight: 2,
                         zIndex: 998
