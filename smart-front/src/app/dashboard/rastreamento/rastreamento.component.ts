@@ -212,7 +212,14 @@ export class RastreamentoComponent implements OnInit {
       });
 
       //this.resolveClustering();
-      this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
+      if (this.mSpiralize){ 
+        this.mSpiralize.clearState();
+        this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, true);
+
+      } else{
+        this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
+      }
+
     }, err => { console.log(err) });
   }
 

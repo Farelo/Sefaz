@@ -10,7 +10,6 @@ export class Spiralize {
     public spiralPath: google.maps.Polyline = new google.maps.Polyline();
     public spiralPoints: any = [];
     public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
-    public listOfObjects;
     public mMap: any;
     public packMarker = {
         display: true,
@@ -25,6 +24,14 @@ export class Spiralize {
     };
     public clustered: boolean;
 
+    /**
+     * Arrays de pontos e markers
+     */
+    public markers: any[] = [];
+    public listOfObjects: any = [];
+    public duplicated: any = [];
+    public iconsOfduplicated: any[] = [];
+
     constructor(list: any[], map: any, clustered: boolean=false) {
         this.listOfObjects = list;
         this.mMap = map;
@@ -32,6 +39,39 @@ export class Spiralize {
         this.resolveClustering();
     }
 
+    clearState(){
+        this.markers.map(elem => {
+            elem.setMap(null);
+        });
+
+        this.iconsOfduplicated.map(elem => {
+            elem.setMap(null);
+        });
+    }
+
+    repaint(list: any[], map: any, clustered: boolean = false, showIcons: boolean = true) {
+        //Clearing previous state
+        this.clearSpiral();
+        this.iconsOfduplicated = [];
+        this.duplicated = [];
+        this.listOfObjects = [];
+        this.markers = [];
+        
+        this.listOfObjects = list;
+        this.mMap = map;
+        this.clustered = clustered;
+        this.resolveClustering();
+
+        if (showIcons){
+            this.markers.map(elem => {
+                elem.setMap(this.mMap);
+            });
+
+            this.iconsOfduplicated.map(elem => {
+                elem.setMap(this.mMap);
+            });
+        }        
+    }
 
     resolveClustering() {
 
@@ -43,7 +83,7 @@ export class Spiralize {
     }
 
 
-    public duplicated: any = [];
+    
     normalizeDuplicatedPackages() {
         let auxDuplicated = [];
 
@@ -106,7 +146,6 @@ export class Spiralize {
     /**
      * Plot all points, clusterize and set the listeners of click and zoom change
      */
-    public markers: any[] = [];
     configureListeners() {
 
         //console.log('listener this.listOfObjects: ' + this.listOfObjects);
@@ -160,7 +199,6 @@ export class Spiralize {
     /**
      * Resolve the spiral of repeated points
      */
-    public iconsOfduplicated: any[] = [];
     configureSpiral() {
 
         /**
@@ -296,8 +334,8 @@ export class Spiralize {
                             icon: this.getPinWithAlert(array[sc - 1].status, true),
                             zIndex: 999,
                             map: this.mMap
-                        })
-                        e.set
+                        });
+
                         e.setMap(this.mMap);
                         this.spiralPoints.push(e);
 
@@ -321,17 +359,17 @@ export class Spiralize {
                                 accuracy: `${e.accuracy || '-'}m`
                             };
 
-                            this.infoWin = new google.maps.InfoWindow({
-                                content: `<div id="m-iw" style="">
-                                        <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
-                                            INFORMAÇÕES</div>
-                                        <div style="padding: 0px 6px;">
-                                            <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${e.packing_code}</p>
-                                            <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${e.serial}</p>
-                                            <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${e.battery.toFixed(2)}%</p>
-                                            <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${e.accuracy || '-'}m</p>
-                                        </div>
-                                        </div>`});
+                            this.infoWin
+                                .setContent(`<div id="m-iw" style="">
+                                                <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
+                                                    INFORMAÇÕES</div>
+                                                <div style="padding: 0px 6px;">
+                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${e.packing_code}</p>
+                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${e.serial}</p>
+                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${e.battery.toFixed(2)}%</p>
+                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${e.accuracy || '-'}m</p>
+                                                </div>
+                                            </div>`);
 
                             this.infoWin.setOptions({ maxWidth: 180 });
                             this.infoWin.open(this.mMap, e);
@@ -441,7 +479,7 @@ export class Spiralize {
             }
 
         } else {
-            console.log('.');
+            console.log('..');
             
             //Esconder embalagens
             this.markers.map(elem => {
