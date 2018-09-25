@@ -432,7 +432,6 @@ export class RastreamentoComponent implements OnInit {
     }
 
     if (smallSize){
-      console.log('small');
       pin.size = (new google.maps.Size(21, 31));
       pin.scaledSize = (new google.maps.Size(21, 31));
     }

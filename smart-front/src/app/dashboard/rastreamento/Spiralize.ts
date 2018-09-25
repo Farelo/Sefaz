@@ -90,7 +90,7 @@ export class Spiralize {
         let i = 0;
         let j = 0;
         let l = this.listOfObjects.length;
-        console.log(`plotedPackings: ${JSON.stringify(this.listOfObjects)}`);
+        // console.log(`plotedPackings: ${JSON.stringify(this.listOfObjects)}`);
         let removeI = false;
 
         while (i < l) {
@@ -138,8 +138,8 @@ export class Spiralize {
             i++;
         }
 
-        console.log('2. listOfObjects: ' + JSON.stringify(this.listOfObjects));
-        console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
+        // console.log('2. listOfObjects: ' + JSON.stringify(this.listOfObjects));
+        // console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
         //console.log('4. auxDuplicated: ' + JSON.stringify(auxDuplicated));
     }
 
@@ -160,7 +160,7 @@ export class Spiralize {
             })
 
             google.maps.event.addListener(m, 'click', (evt) => {
-                console.log('click location:' + JSON.stringify(location));
+                // console.log('click location:' + JSON.stringify(location));
 
                 this.infoWin.setContent(
                     `<div id="m-iw" style="">
@@ -226,7 +226,7 @@ export class Spiralize {
              */
             google.maps.event.addListener(m, 'click', (evt) => {
 
-                console.log('entrou no event listener');
+                // console.log('entrou no event listener');
 
                 if (this.spiralPath.getMap()) { //Se está exibindo o espiral, remove-o
 
@@ -234,7 +234,7 @@ export class Spiralize {
 
                 } else {  //Se não está exibindo o espiral, exibe-o
 
-                    console.log('..flightPath');
+                    // console.log('..flightPath');
                     let spiralCoordinates: any = [];
 
                     var centerX = array[0].latitude;
@@ -323,7 +323,7 @@ export class Spiralize {
                      * Plotar os pontos na espiral
                      */
                     for (let sc = 1; sc <= array.length; sc++) {
-                        console.log(`${array.length} array[sc-1].packing_code: ${array[sc - 1].packing_code}`);
+                        //console.log(`${array.length} array[sc-1].packing_code: ${array[sc - 1].packing_code}`);
 
                         let e = new google.maps.Marker({
                             packing_code: array[sc - 1].packing_code,
@@ -343,9 +343,9 @@ export class Spiralize {
                         * Trata o clique do pino duplicado
                         */
                         e.addListener('click', () => {
-                            console.log('Clique no pino interno');
-                            console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lat));
-                            console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
+                            // console.log('Clique no pino interno');
+                            // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lat));
+                            // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
 
                             this.packMarker = {
                                 display: true,
@@ -405,8 +405,8 @@ export class Spiralize {
         while (this.spiralPoints.length > 0) {
             this.spiralPoints[0].setMap(null);
             this.spiralPoints.shift();
-            if (this.spiralPoints[0] == undefined) console.log('[0] undefined');
-            else console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].packing_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
+            // if (this.spiralPoints[0] == undefined) console.log('[0] undefined');
+            // else console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].packing_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
         }
 
         //console.log('.this.spiralPoints.length: ' + this.spiralPoints.length);
@@ -442,7 +442,7 @@ export class Spiralize {
         }
 
         if (smallSize) {
-            console.log('small');
+            // console.log('small');
             pin.size = (new google.maps.Size(21, 31));
             pin.scaledSize = (new google.maps.Size(21, 31));
         }
@@ -453,7 +453,7 @@ export class Spiralize {
     toggleShowPackings(status: any) {
 
         if (status) {
-            console.log('.');
+            // console.log('.');
                 
             //Mostrar embalagens
             this.markers.map(elem => {
@@ -479,7 +479,7 @@ export class Spiralize {
             }
 
         } else {
-            console.log('..');
+            // console.log('..');
             
             //Esconder embalagens
             this.markers.map(elem => {
