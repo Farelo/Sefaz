@@ -277,7 +277,7 @@
                                                                           totalItems:marker.departments.meta.total_docs}">
                         <td>{{dept.name}}</td>
                         <td class="teste2">
-                          <button class="edit" (click)="open(dept._id)" type="button" name="button">Visualizar</button>
+                          <button class="button-view" (click)="open(dept._id)" type="button" name="button">Visualizar</button>
                         </td>
                       </tr>
                       <tr [hidden]="!marker.packing" *ngFor="let packing of marker.packings?.data | paginate: { id:'packingmap', 

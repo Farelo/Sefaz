@@ -138,6 +138,19 @@ td {
   border-left-width: thin;
 }
 
+.button-view {
+  background-color: #3b5d93;
+  color: white;
+  border: none;
+  padding: 5px;
+}
+
+.button-view:hover {
+  background-color: #6382c9;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
 button:hover {
   background-color: #e6e6e6;
   -webkit-transition: background-color 0.3s;
@@ -181,22 +194,6 @@ button:hover {
 
 /* Emanoel */
 .legend-button {
-  /* background-color: transparent;
-  border: none;
-  text-align: right;
-  float: right;
-  background-image: url("../../../assets/images/interrogacao.png");
-  background-size: 20px;
-  background-repeat: no-repeat;
-  width: 20px;
-  height: 20px;
-  vertical-align: baseline; */
-
-  /* z-index: 1;
-  position: absolute !important; 
-  top: 22px;
-  right: 60px;
-  border-color: transparent; */
   background: none rgb(255, 255, 255);
   border: 0px;
   margin: 10px;
