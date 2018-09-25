@@ -47,7 +47,11 @@
 }
 
 .status6 {
-  background: linear-gradient(to right, #fff 0%, #fff 97%, #9f8cc1 97%, #9f8cc1 97.5%, #fff 97.5%, #fff 98%, #9f8cc1 98%, #9f8cc1 100%);
+  background: linear-gradient(to right, #fff 0%, #fff 97%, #9ecf99 97%, #9ecf99 97.5%, #fff 97.5%, #fff 98%, #9ecf99 98%, #9ecf99 100%);
+}
+
+.status7 {
+  background: linear-gradient(to right, #fff 0%, #fff 97%, #3a9ca6 97%, #3a9ca6 97.5%, #fff 97.5%, #fff 98%, #3a9ca6 98%, #3a9ca6 100%);
 }
 
 .status1:hover {
@@ -71,7 +75,11 @@
 }
 
 .status6:hover {
-  background: linear-gradient(to right, #e0e0e0 0%, #e0e0e0 97%, #9f8cc1 97%, #9f8cc1 97.5%, #e0e0e0 97.5%, #e0e0e0 98%, #9f8cc1 98%, #9f8cc1 100%);
+  background: linear-gradient(to right, #e0e0e0 0%, #e0e0e0 97%, #9ecf99 97%, #9ecf99 97.5%, #e0e0e0 97.5%, #e0e0e0 98%, #9ecf99 98%, #9ecf99 100%);
+}
+
+.status7:hover {
+  background: linear-gradient(to right, #e0e0e0 0%, #e0e0e0 97%, #3a9ca6 97%, #3a9ca6 97.5%, #e0e0e0 97.5%, #e0e0e0 98%, #3a9ca6 98%, #3a9ca6 100%);
 }
 
 .botaoVoltar {
@@ -104,48 +112,6 @@
 * {
   font-family: 'Roboto', sans-serif;
 }
-
-/* @media (max-width: 576px) {
-  .conteudoHome {
-    padding: 0px;
-  }
-}
-
-@media (min-width: 576px) and (max-width: 768px) {
-  .conteudoHome {
-    padding: 0px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 992px) {
-  .conteudoHome {
-    padding: 0px;
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1200px) {
-  .conteudoHome {
-    padding: 0px 30px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .conteudoHome {
-    padding: 0px 60px;
-  }
-}
-
-@media (min-width: 1400px) {
-  .conteudoHome {
-    padding: 0px 60px;
-  }
-}
-
-@media (min-width: 1700px) {
-  .conteudoHome {
-    padding: 0px 60px;
-  }
-} */
 
 .info {
   padding: 10px 4% 10px 10px;
@@ -217,7 +183,11 @@
 }
 
 .lg6 {
-  background-color: #9f8cc1;
+  background-color: #9ecf99;
+}
+
+.lg6 {
+  background-color: #3a9ca6;
 }
 
 .interrogacao1 {
@@ -353,10 +323,17 @@ label {
 }
 
 .status6 {
-  background: linear-gradient(to bottom, #9f8cc1 0%, #9f8cc1 10%, #fff 10%, #fff 13%, #9f8cc1 13%, #9f8cc1 16%, #fff 16%, #fff 100%);
-  border-left-color: #9f8cc1;
-  border-right-color: #9f8cc1;
-  border-bottom-color: #9f8cc1;
+  background: linear-gradient(to bottom, #9ecf99 0%, #9ecf99 10%, #fff 10%, #fff 13%, #9ecf99 13%, #9ecf99 16%, #fff 16%, #fff 100%);
+  border-left-color: #9ecf99;
+  border-right-color: #9ecf99;
+  border-bottom-color: #9ecf99;
+}
+
+.status7 {
+  background: linear-gradient(to bottom, #3a9ca6 0%, #3a9ca6 10%, #fff 10%, #fff 13%, #3a9ca6 13%, #3a9ca6 16%, #fff 16%, #fff 100%);
+  border-left-color: #3a9ca6;
+  border-right-color: #3a9ca6;
+  border-bottom-color: #3a9ca6;
 }
 
 .status1:hover {
@@ -395,10 +372,17 @@ label {
 }
 
 .status6:hover {
-  background: linear-gradient(to bottom, #9f8cc1 0%, #9f8cc1 10%, #d3d3d3 10%, #d3d3d3 13%, #9f8cc1 13%, #9f8cc1 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #9f8cc1;
-  border-right-color: #9f8cc1;
-  border-bottom-color: #9f8cc1;
+  background: linear-gradient(to bottom, #9ecf99 0%, #9ecf99 10%, #d3d3d3 10%, #d3d3d3 13%, #9ecf99 13%, #9ecf99 16%, #d3d3d3 16%, #d3d3d3 100%);
+  border-left-color: #9ecf99;
+  border-right-color: #9ecf99;
+  border-bottom-color: #9ecf99;
+}
+
+.status7:hover {
+  background: linear-gradient(to bottom, #3a9ca6 0%, #3a9ca6 10%, #d3d3d3 10%, #d3d3d3 13%, #3a9ca6 13%, #3a9ca6 16%, #d3d3d3 16%, #d3d3d3 100%);
+  border-left-color: #3a9ca6;
+  border-right-color: #3a9ca6;
+  border-bottom-color: #3a9ca6;
 }
 
 .esquerda {
@@ -453,31 +437,21 @@ label {
   background-image: url("../../../../assets/images/local6.png");
 }
 
+.fornecedor7 {
+  background-image: url("../../../../assets/images/local7.png");
+}
+
 .quantidade {
   background-size: 11px;
 }
 
-.quantidade1 {
-  background-image: url("../../../../assets/images/serial.png");
-}
-
-.quantidade2 {
-  background-image: url("../../../../assets/images/serial.png");
-}
-
-.quantidade3 {
-  background-image: url("../../../../assets/images/serial.png");
-}
-
-.quantidade4 {
-  background-image: url("../../../../assets/images/serial.png");
-}
-
-.quantidade5 {
-  background-image: url("../../../../assets/images/serial.png");
-}
-
-.quantidade6 {
+.quantidade1,
+.quantidade2,
+.quantidade3,
+.quantidade4,
+.quantidade5,
+.quantidade6,
+.quantidade7 {
   background-image: url("../../../../assets/images/serial.png");
 }
 

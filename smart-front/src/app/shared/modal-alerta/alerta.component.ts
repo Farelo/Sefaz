@@ -53,12 +53,10 @@ export class AlertaModalComponent implements OnInit {
   }
 
   visualizeOnMap() {
+
     //console.log('open map');
     //console.log('alerta: ' + JSON.stringify(this.alerta));
     //console.log('[alerta-component] alerta: ' + JSON.stringify(this.alerta.data.packing));
-
-    //http://localhost:8984/api/inventory/general/packings/10/1?code=5039991
-
     this.inventoryService
       .getInventoryGeneralPackings(10, 1, this.alerta.data.packing.code_tag, '')
       .subscribe(
