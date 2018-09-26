@@ -1,12 +1,17 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
 import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
+import './markercluster';
+import { Spiralize } from './Spiralize';
+
 declare var $: any;
 declare var google: any;
+declare var MarkerClusterer: any;
 
 //refatorar esse modulo esta muito grande e com coisas confusas
 @Component({
@@ -20,7 +25,7 @@ export class RastreamentoComponent implements OnInit {
   public logged_user: any;
   autocomplete: any;
   address: any = {};
-  center: any;
+  center: any = { lat: 0, lng: 0 };
   pos: any;
   plantSearch = null;
   departments: Department[];
@@ -43,6 +48,7 @@ export class RastreamentoComponent implements OnInit {
   };
   public packMarker = {
     display: true,
+    position: null,
     lat: null,
     lng: null,
     start: null,
@@ -58,13 +64,13 @@ export class RastreamentoComponent implements OnInit {
   //selects
   public serials: any[];
   public codes: any[];
-  public plotedPackings: any[];
 
   //Bind dos selects
   public selectedCode;
   public selectedSerial;
-  
+
   //array de pinos
+  public plotedPackings: any[] = [];
   public listOfFactories: any = [];
   public listOfSuppliers: any = [];
   public listOfLogistic: any = [];
@@ -77,7 +83,7 @@ export class RastreamentoComponent implements OnInit {
 
   //misc
   public settings: any;
-  public permanence: Pagination = new Pagination({ meta: { page: 1 } }); 
+  public permanence: Pagination = new Pagination({ meta: { page: 1 } });
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -96,15 +102,23 @@ export class RastreamentoComponent implements OnInit {
       user.official_supplier ? user.official_supplier : (
         user.logistic ? user.logistic.suppliers : (
           user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
-
   }
 
   ngOnInit() {
+
     this.getPlantRadius();
     this.loadPackingsOnSelect();
     this.loadDepartmentsByPlant();
+  }
+
+  public mMap: any;
+  onInitMap(map) {
+ 
+    this.zoom = 14;
+    this.mMap = map;
     this.loadPackings();
   }
+
 
   onChange(event) {
     this.center = { lat: event.lat, lng: event.lng };
@@ -118,8 +132,7 @@ export class RastreamentoComponent implements OnInit {
     this.settingsService.retrieve().subscribe(response => {
       let result = response.data[0];
       this.settings = result;
-      this.settings.range_radius = this.settings.range_radius * 1000;
-      //console.log('this.settings: ' + JSON.stringify(this.settings));
+      this.settings.range_radius = this.settings.range_radius * 1000; 
     })
   }
 
@@ -146,14 +159,7 @@ export class RastreamentoComponent implements OnInit {
               }
             }
 
-            
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
-
-            // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
-            // console.log('this.options: ' + JSON.stringify(this.options));
-            // console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
-            // console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
 
           }
         }, err => { console.log(err) });
@@ -176,13 +182,6 @@ export class RastreamentoComponent implements OnInit {
             }
 
             this.options.forEach(opt => this.circles.push({ position: { lat: opt.position[0], lng: opt.position[1] }, radius: this.auth.currentUser().radius }))
-
-            // console.log('this.currentUser: ' + JSON.stringify(this.auth.currentUser()));
-            // console.log('this.options: ' + JSON.stringify(this.options));
-            console.log('this.listOfFactories: ' + JSON.stringify(this.listOfFactories));
-            console.log('this.listOfSuppliers: ' + JSON.stringify(this.listOfSuppliers));
-            console.log('this.listOfLogistic: ' + JSON.stringify(this.listOfLogistic));
-
             this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
           }
         }, err => { console.log(err) });
@@ -192,13 +191,19 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Carrega todos os pacotes do mapa 
    */
+  public spiralPath: google.maps.Polyline = new google.maps.Polyline();
+  public spiralPoints: any = [];
+  public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
+  public mSpiralize: Spiralize;
+
   loadPackings() {
 
     let params = {};
     if (this.selectedCode) params['family'] = this.selectedCode.packing;
     if (this.selectedSerial) params['serial'] = this.selectedSerial;
-    
+
     this.mapsService.getPackings(params).subscribe(result => {
+
       this.plotedPackings = result.data;
 
       this.plotedPackings.map(elem => {
@@ -206,8 +211,15 @@ export class RastreamentoComponent implements OnInit {
         return elem;
       });
 
-      
-      console.log('plotedPackings: ' + JSON.stringify(this.plotedPackings));
+      //this.resolveClustering();
+      if (this.mSpiralize){ 
+        this.mSpiralize.clearState();
+        this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, true);
+
+      } else{
+        this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
+      }
+
     }, err => { console.log(err) });
   }
 
@@ -236,7 +248,9 @@ export class RastreamentoComponent implements OnInit {
    * Exibir/Ocultar as embalagens
    */
   toggleShowPackings() {
+
     this.showPackings = !this.showPackings;
+    this.mSpiralize.toggleShowPackings(this.showPackings);
   }
 
   /**
@@ -251,42 +265,35 @@ export class RastreamentoComponent implements OnInit {
 
     } else {
       this.packingService.getPackingsDistincts().subscribe(result => { this.codes = result.data }, err => { console.log(err) });
-    } 
+    }
   }
-  
+
   /**
    * An equipment was selected. This method fill the Serial Select.
    */
-  loadSerialsOfSelectedEquipment(){
+  loadSerialsOfSelectedEquipment() {
 
-    if (this.selectedCode){
+    if (this.selectedCode) {
+
       this.loadPackings();
-
       this.selectedSerial = null;
       this.serials = [];
-
       this.packingService
         .getPackingsEquals(this.selectedCode.supplier._id, this.selectedCode.project._id, this.selectedCode.packing)
         .subscribe(result => {
           this.serials = result.data;
-          // this.inventoryService
-          //   .getInventoryPermanence(10, this.permanence.meta.page, this.selectedCode.packing)
-          //   .subscribe(result => this.permanence = result, err => { console.log(err) });
         }, err => { console.log(err) })
-    } 
+    }
   }
 
   /**
    * Equipment select was cleared.
    * Clear e disable the Serial Select.
    */
-  onEquipmentSelectClear(){
-    this.selectedSerial = null;
+  onEquipmentSelectClear() {
     
+    this.selectedSerial = null;
     this.loadPackings();
-
-    console.log('new this.selectedCode: ' + this.selectedCode);
-    console.log('new this.selectedSerial: ' + this.selectedSerial);
   }
 
   clicked(_a, opt) {
@@ -301,12 +308,14 @@ export class RastreamentoComponent implements OnInit {
     this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
       this.marker.plant = opt.name;
       this.marker.profile = opt.profile;
+
       if (result.data.length > 0) {
         this.marker.department = true;
         this.marker.packing = false;
         this.marker.nothing = false;
         this.marker.departments = result;
         this.startWindow(marker);
+
       } else {
         this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
 
@@ -316,33 +325,16 @@ export class RastreamentoComponent implements OnInit {
             this.marker.nothing = false;
             this.marker.packings = result;
             this.startWindow(marker);
+            
           } else {
             this.marker.department = null
             this.marker.packing = null
             this.marker.nothing = true;
             this.startWindow(marker);
           }
-        })
+        });
       }
-    })
-  }
-
-  clickedPack(_a, opt) {
-    console.log('clickedPack');
-
-    let mkr = _a.target;
-
-    this.packMarker.lat = mkr.getPosition().lat();
-    this.packMarker.lng = mkr.getPosition().lng();
-    this.packMarker.start = opt.start;
-    this.packMarker.battery = opt.battery;
-    this.packMarker.packing_code = opt.packing_code;
-    this.packMarker.serial = opt.serial;
-    this.packMarker.accuracy = opt.accuracy;
-
-    console.log('packMarker: ' + JSON.stringify(this.packMarker));
-    
-    this.startPackWindow(mkr);
+    });
   }
 
   retrievePackings(_a, opt) {
@@ -405,59 +397,17 @@ export class RastreamentoComponent implements OnInit {
 
   startWindow(marker) {
     marker.nguiMapComponent.openInfoWindow('iw', marker);
-    var iwOuter = $('.gm-style-iw');
-    iwOuter.children().css("display", "block");
-
-    iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
-    var iwCloseBtn = iwOuter.next();
-    iwCloseBtn.css({
-      'right': '11px',
-      'top': '17px',
-      'background-repeat': 'no-repeat',
-      'background-position': 'center',
-      'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
-    });
-    iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
   }
 
   startPackWindow(marker) {
     marker.nguiMapComponent.openInfoWindow('pw', marker);
-    var iwOuter = $('.gm-style-iw');
-    iwOuter.children().css("display", "block");
-
-    iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
-    var iwCloseBtn = iwOuter.next();
-    iwCloseBtn.css({
-      'right': '11px',
-      'top': '17px',
-      'background-repeat': 'no-repeat',
-      'background-position': 'center',
-      'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
-    });
-    iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
   }
 
-  funcaoTop() {
-    // google.maps.event.addListener('iw', 'domready', function () {
-    //   var iwOuter = $('.gm-style-iw');
-    //   var iwBackground = iwOuter.prev();
-    //   iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
-    //   iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
-    // });
-  }
-
-  close() {
-    close();
-  }
-
-  
   /**
    * Recupera o pino da embalagem de acordo com seu alerta
    */
-  getPinWithAlert(status: any) {
+  getPinWithAlert(status: any, smallSize:boolean = false) {
     let pin = null;
-
-    //console.log(status); 
 
     switch (status) {
       case 'MISSING':
@@ -479,6 +429,11 @@ export class RastreamentoComponent implements OnInit {
       default:
         pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
+    }
+
+    if (smallSize){
+      pin.size = (new google.maps.Size(21, 31));
+      pin.scaledSize = (new google.maps.Size(21, 31));
     }
 
     return pin;

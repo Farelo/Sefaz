@@ -32,9 +32,7 @@ export class ListaComponent implements OnInit {
     private AlertsService: AlertsService,
     private router: Router,
     private route: ActivatedRoute,
-    private modalService: NgbModal
-
-  ) { }
+    private modalService: NgbModal ) { }
 
   ngOnInit() {
 
@@ -55,15 +53,17 @@ export class ListaComponent implements OnInit {
 
   getAlerts(){
     this.AlertsService.getAlertsPaginationByHashing(10,this.data.meta.page,this.code,this.project,this.supplier,this.status)
-      .subscribe(alerts => this.data = alerts,
+      .subscribe(alerts => {
+        this.data = alerts;
+      },
       err => {
         console.log(err);
       });
   }
 
-  open(embalagem,status) {
+  open(embalagem, status) {
 
-    this.AlertsService.retrieveAlertByPacking(embalagem,status)
+    this.AlertsService.retrieveAlertByPacking(embalagem, status)
       .subscribe(result => {
        
         // if (status == 1 ){
@@ -107,7 +107,6 @@ export class ListaComponent implements OnInit {
       err => {
         console.log(err);
       });
-
   }
 
   pageChanged(page: any): void{
@@ -115,4 +114,31 @@ export class ListaComponent implements OnInit {
     this.getAlerts();
   }
 
+  getAlertText(code: number): string {
+    let result: string = '';
+
+    switch (code) {
+      case 1:
+        result = 'Embalagem Ausente';
+        break;
+
+      case 2:
+        result = 'Embalagem em local incorreto';
+        break;
+
+      case 3:
+        result = 'Embalagem com bateria baixa';
+        break;
+
+      case 4:
+        result = 'Embalagem em viagem';
+        break;
+
+      case 5:
+        result = 'Embalagem com tempo de permanência elevado';
+        break;
+    }
+
+    return result;
+  }
 }

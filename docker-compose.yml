@@ -281,3 +281,31 @@ services:
     ports:
       - '8026:8026'        #obrigratorio
     network_mode: mongo_net
+ ###################################### MWM  ####################################
+  mwm-cliente:
+    build:
+      context: 'smart-front'
+      dockerfile: Dockerfile
+      args:
+        baseurl: http://35.169.169.38:8028/api/
+        port: 8027
+    container_name: mwm-cliente
+    ports:
+      - '8027:8027'    #obrigratorio
+  mwm-api: #finalizado
+    build:
+      context: 'smart-api'
+      dockerfile: Dockerfile
+    command: npm start
+    container_name: mwm-api
+    environment:
+      NODE_ENV: production
+      HOST: 35.169.169.38           #obrigatorios caso não coloque o DNS
+      PORT: 8028                  #obrigatorios caso não coloque o DNS
+      DATABASE: mwm          #obrigatorios
+      DATABASE_SERVICE: mongo       #qual o nome do seu banco Ex. o serviço mongo do docker é o nome do
+      # DNS:
+    tty: true
+    ports:
+      - '8028:8028'        #obrigratorio
+    network_mode: mongo_net

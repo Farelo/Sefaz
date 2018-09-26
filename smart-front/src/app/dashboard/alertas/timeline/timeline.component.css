@@ -98,7 +98,8 @@
 .f3,
 .f4,
 .f5,
-.f6 {
+.f6,
+.f7 {
   width: 10px;
   height: 10px;
   background-size: 10px 10px;
@@ -127,6 +128,10 @@
 
 .f6 {
   background-image: url("../../../../assets/images/icon_user6.png");
+}
+
+.f7 {
+  background-image: url("../../../../assets/images/icon_user7.png");
 }
 
 .interrogacao1 {
@@ -271,10 +276,17 @@ label {
 }
 
 .status6 {
-  background: linear-gradient(to bottom, #9f8cc1 0%, #9f8cc1 10%, #fff 10%, #fff 13%, #9f8cc1 13%, #9f8cc1 16%, #fff 16%, #fff 100%);
-  border-left-color: #9f8cc1;
-  border-right-color: #9f8cc1;
-  border-bottom-color: #9f8cc1;
+  background: linear-gradient(to bottom, #9ecf99 0%, #9ecf99 10%, #fff 10%, #fff 13%, #9ecf99 13%, #9ecf99 16%, #fff 16%, #fff 100%);
+  border-left-color: #9ecf99;
+  border-right-color: #9ecf99;
+  border-bottom-color: #9ecf99;
+}
+
+.status7 {
+  background: linear-gradient(to bottom, #3a9ca6 0%, #3a9ca6 10%, #fff 10%, #fff 13%, #3a9ca6 13%, #3a9ca6 16%, #fff 16%, #fff 100%);
+  border-left-color: #3a9ca6;
+  border-right-color: #3a9ca6;
+  border-bottom-color: #3a9ca6;
 }
 
 .status1:hover {
@@ -313,10 +325,17 @@ label {
 }
 
 .status6:hover {
-  background: linear-gradient(to bottom, #9f8cc1 0%, #9f8cc1 10%, #d3d3d3 10%, #d3d3d3 13%, #9f8cc1 13%, #9f8cc1 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #9f8cc1;
-  border-right-color: #9f8cc1;
-  border-bottom-color: #9f8cc1;
+  background: linear-gradient(to bottom, #9ecf99 0%, #9ecf99 10%, #d3d3d3 10%, #d3d3d3 13%, #9ecf99 13%, #9ecf99 16%, #d3d3d3 16%, #d3d3d3 100%);
+  border-left-color: #9ecf99;
+  border-right-color: #9ecf99;
+  border-bottom-color: #9ecf99;
+}
+
+.status6:hover {
+  background: linear-gradient(to bottom, #3a9ca6 0%, #3a9ca6 10%, #d3d3d3 10%, #d3d3d3 13%, #3a9ca6 13%, #3a9ca6 16%, #d3d3d3 16%, #d3d3d3 100%);
+  border-left-color: #3a9ca6;
+  border-right-color: #3a9ca6;
+  border-bottom-color: #3a9ca6;
 }
 
 .esquerda {
@@ -371,6 +390,10 @@ label {
   background-image: url("../../../../assets/images/local6.png");
 }
 
+.fornecedor7 {
+  background-image: url("../../../../assets/images/local7.png");
+}
+
 .quantidade {
   background-size: 11px;
 }
@@ -397,6 +420,10 @@ label {
 
 .quantidade6 {
   background-image: url("../../../../assets/images/quant6.png");
+}
+
+.quantidade7 {
+  background-image: url("../../../../assets/images/quant7.png");
 }
 
 @media (min-width: 1880px) {

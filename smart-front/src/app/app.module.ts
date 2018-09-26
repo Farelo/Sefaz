@@ -39,7 +39,7 @@ import { NouisliderModule } from 'ng2-nouislider';
 import { ServicesModule, AuthInterceptor } from './servicos/service.module';
 import { constants } from './../environments/constants';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { TooltipModule } from 'ngx-bootstrap'
+import { TooltipModule } from 'ngx-bootstrap' 
 import { AlertaAusenteComponent } from './shared/modal-alerta/alerta-ausente/alerta-ausente.component';
 import { AlertaBateriaBaixaComponent } from './shared/modal-alerta/alerta-bateria-baixa/alerta-bateria-baixa.component';
 import { AlertaEmbalagemAtrasadaComponent } from './shared/modal-alerta/alerta-embalagem-atrasada/alerta-embalagem-atrasada.component';

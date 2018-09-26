@@ -108,7 +108,7 @@
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="pw">
           <div class="iw-title">INFORMAÇÕES</div> 
-          <div *ngIf="plant.display">
+          <div *ngIf="plant.display" class="info-window-content">
             <p>
               <span class="bold">Planta:</span> {{ plant.name }}</p> 
             <!-- <p>
@@ -138,7 +138,7 @@
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="lw">
           <div class="iw-title">INFORMAÇÕES</div>
-          <div *ngIf="plant.display">
+          <div *ngIf="plant.display" class="info-window-content">
             <p>
               <span class="bold">Operador Logístico:</span> {{ logistic.name }}</p>
             <!-- <p>
@@ -161,7 +161,7 @@
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="sw">
           <div class="iw-title">INFORMAÇÕES</div>
-          <div *ngIf="supplier.display">
+          <div *ngIf="supplier.display" class="info-window-content">
             <p>
               <span class="bold">Fornecedor:</span> {{ supplier.name }}</p>
             <!-- <p>

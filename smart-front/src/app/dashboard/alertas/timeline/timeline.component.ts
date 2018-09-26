@@ -29,33 +29,34 @@ export class TimelineComponent implements OnInit {
   public activeModal : any;
 
   constructor(
-      private AlertsService: AlertsService,
-      private modalService: NgbModal,
-      private chatService: ChatService,
-      private ngZone:NgZone,
-      private modalTop: ModalModule,
-      private auth: AuthenticationService, 
-  ) {
+    private AlertsService: AlertsService,
+    private modalService: NgbModal,
+    private chatService: ChatService,
+    private ngZone:NgZone,
+    private modalTop: ModalModule,
+    private auth: AuthenticationService ) {
+
     window.onresize = (e) => {
-        ngZone.run(() => {
-            this.largura = window.innerWidth;
-            this.altura = window.innerHeight;
-        });
-        if(this.largura > 1200){
-          this.telaGrande = true;
-        } else {
-          this.telaGrande = false;
-        }
+      ngZone.run(() => {
+          this.largura = window.innerWidth;
+          this.altura = window.innerHeight;
+      });
+
+      if(this.largura > 1200)
+        this.telaGrande = true;
+      else
+        this.telaGrande = false;
     };
+
     ngZone.run(() => {
-        this.largura = window.innerWidth;
-        this.altura = window.innerHeight;
+      this.largura = window.innerWidth;
+      this.altura = window.innerHeight;
     });
-    if(this.largura > 1200){
+
+    if(this.largura > 1200)
       this.telaGrande = true;
-    } else {
+    else 
       this.telaGrande = false;
-    }
 
     //catch the user information when the users are supplier or logistc 
     let user = this.auth.currentUser();
@@ -66,24 +67,18 @@ export class TimelineComponent implements OnInit {
    
   }
 
-
-
   loadAlerts(){
    
     if (this.logged_user instanceof  Array ){
       this.AlertsService.getAlertsLogistic(20, this.data.meta.page, this.logged_user)
         .subscribe(alerts => this.data = alerts,
-          err => {
-            console.log(err);
-          });
+          err => { console.log(err); });
+
     }else{
       this.AlertsService.getAlerts(16, this.data.meta.page, this.logged_user)
-        .subscribe(alerts =>  this.data = alerts ,
-          err => {
-            console.log(err);
-        });
+        .subscribe(alerts => this.data = alerts,
+          err => { console.log(err); });
     }
-    
   }
 
   ngOnInit() {
@@ -102,4 +97,31 @@ export class TimelineComponent implements OnInit {
     this.activeModal = this.modalService.open(content,{size: "sm"});
   }
 
+  getAlertText(code: number):string {
+    let result:string = '';
+
+    switch(code){
+      case 1:
+        result = 'Embalagem Ausente';
+        break;
+
+      case 2:
+        result = 'Embalagem em local incorreto';
+        break;
+
+      case 3:
+        result = 'Embalagem com bateria baixa';
+        break;
+
+      case 4:
+        result = 'Embalagem em viagem';
+        break;
+
+      case 5:
+        result = 'Embalagem com tempo de permanência elevado';
+        break;
+    }
+
+    return result;
+  }
 }

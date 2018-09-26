@@ -7,51 +7,63 @@
 
 
     <div class="painel">
-      <div class="quadradoPequeno" tooltip="Alerta detalhado de {{alert.status == 1 ? 'Embalagem ausente' :
-   (alert.status == 2 ? 'Embalagem em local incorreto':
-   (alert.status == 3 ? 'Embalagem com bateria baixa':
-   (alert.status == 4 ? 'Embalagem em viagem': 'Embalagem com tempo de permanência elevado')))}}" placement="bottom" *ngFor="let alert of data?.data | paginate: {   id:'list',
+      <div class="quadradoPequeno" 
+        [tooltip]="getAlertText(alert.status)" 
+        placement="bottom" 
+        (click)="open(alert?.packing?._id,alert.status)"
+        [ngClass]="{
+          'status1' : alert.status == 1,
+          'status2' : alert.status == 2,
+          'status3' : alert.status == 3,
+          'status4' : alert.status == 4,
+          'status5' : alert.status == 5,
+          'status6' : alert.status == 6,
+          'status7' : alert.status == 7 }"
+        *ngFor="let alert of data?.data | paginate: {   id:'list',
                                                     itemsPerPage: 10,
                                                     currentPage: data.meta.page,
-                                                    totalItems: data.meta.total_docs}" [ngClass]="{
-      'status1' : alert.status == 1,
-      'status2' : alert.status == 2,
-      'status3' : alert.status == 3,
-      'status4' : alert.status == 4,
-      'status5' : alert.status == 5,
-      'status6' : alert.status == 6
-    }" (click)="open(alert?.packing?._id,alert.status)">
+                                                    totalItems: data.meta.total_docs}">
         <div class="esquerda">
           <span class="codigo" tooltip="Código da Embalagem">{{alert.packing?.code}}</span>
           <br />
           <span class="descricao" tooltip="Data do Alerta">{{alert.date | date}}</span>
         </div>
+
         <div class="direita">
-          <span class="fornecedor" tooltip="Ultima planta em que foi visto" *ngIf="alert.status == 1 || alert.status == 4" [ngClass]="{
-        'fornecedor1' : alert.status == 1,
-        'fornecedor2' : alert.status == 2,
-        'fornecedor3' : alert.status == 3,
-        'fornecedor4' : alert.status == 4,
-        'fornecedor5' : alert.status == 5,
-        'fornecedor6' : alert.status == 6
-      }">{{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}</span>
-          <span class="fornecedor" tooltip="Planta Atual" *ngIf="alert.status != 1 && alert.status != 4" [ngClass]="{
-        'fornecedor1' : alert.status == 1,
-        'fornecedor2' : alert.status == 2,
-        'fornecedor3' : alert.status == 3,
-        'fornecedor4' : alert.status == 4,
-        'fornecedor5' : alert.status == 5,
-        'fornecedor6' : alert.status == 6
-      }">{{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}</span>
-          <Br />
-          <span class="quantidade" tooltip="Código Serial da Embalagem" [ngClass]="{
-        'quantidade1' : alert.status == 1,
-        'quantidade2' : alert.status == 2,
-        'quantidade3' : alert.status == 3,
-        'quantidade4' : alert.status == 4,
-        'quantidade5' : alert.status == 5,
-        'quantidade6' : alert.status == 6
-      }">{{alert.serial}}</span>
+          <span class="fornecedor" 
+            tooltip="Ultima planta em que foi visto" 
+            *ngIf="alert.status == 1 || alert.status == 4" 
+            [ngClass]="{
+              'fornecedor1' : alert.status == 1,
+              'fornecedor2' : alert.status == 2,
+              'fornecedor3' : alert.status == 3,
+              'fornecedor4' : alert.status == 4,
+              'fornecedor5' : alert.status == 5,
+              'fornecedor6' : alert.status == 6,
+              'fornecedor7' : alert.status == 7 }"> {{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}
+          </span>
+          <span class="fornecedor" 
+            tooltip="Planta Atual" 
+            *ngIf="alert.status != 1 && alert.status != 4" 
+            [ngClass]="{
+              'fornecedor1' : alert.status == 1,
+              'fornecedor2' : alert.status == 2,
+              'fornecedor3' : alert.status == 3,
+              'fornecedor4' : alert.status == 4,
+              'fornecedor5' : alert.status == 5,
+              'fornecedor6' : alert.status == 6,
+              'fornecedor7' : alert.status == 7 }">{{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}</span>
+          <br />
+          <span class="quantidade" 
+            tooltip="Código Serial da Embalagem" 
+            [ngClass]="{
+              'quantidade1' : alert.status == 1,
+              'quantidade2' : alert.status == 2,
+              'quantidade3' : alert.status == 3,
+              'quantidade4' : alert.status == 4,
+              'quantidade5' : alert.status == 5,
+              'quantidade6' : alert.status == 6,
+              'quantidade7' : alert.status == 7 }">{{alert.serial}}</span>
         </div>
       </div>
 
@@ -62,6 +74,6 @@
           </pagination-controls>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
