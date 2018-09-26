@@ -17,8 +17,7 @@
           'status3' : alert.status == 3,
           'status4' : alert.status == 4,
           'status5' : alert.status == 5,
-          'status6' : alert.status == 6,
-          'status7' : alert.status == 7 }"
+          'status6' : alert.status == 6 }"
         *ngFor="let alert of data?.data | paginate: {   id:'list',
                                                     itemsPerPage: 10,
                                                     currentPage: data.meta.page,
@@ -39,8 +38,7 @@
               'fornecedor3' : alert.status == 3,
               'fornecedor4' : alert.status == 4,
               'fornecedor5' : alert.status == 5,
-              'fornecedor6' : alert.status == 6,
-              'fornecedor7' : alert.status == 7 }"> {{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}
+              'fornecedor6' : alert.status == 6 }"> {{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}
           </span>
           <span class="fornecedor" 
             tooltip="Planta Atual" 
@@ -51,8 +49,7 @@
               'fornecedor3' : alert.status == 3,
               'fornecedor4' : alert.status == 4,
               'fornecedor5' : alert.status == 5,
-              'fornecedor6' : alert.status == 6,
-              'fornecedor7' : alert.status == 7 }">{{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}</span>
+              'fornecedor6' : alert.status == 6 }">{{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}</span>
           <br />
           <span class="quantidade" 
             tooltip="Código Serial da Embalagem" 
@@ -62,8 +59,7 @@
               'quantidade3' : alert.status == 3,
               'quantidade4' : alert.status == 4,
               'quantidade5' : alert.status == 5,
-              'quantidade6' : alert.status == 6,
-              'quantidade7' : alert.status == 7 }">{{alert.serial}}</span>
+              'quantidade6' : alert.status == 6 }">{{alert.serial}}</span>
         </div>
       </div>
 

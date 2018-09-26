@@ -45,6 +45,7 @@ import { AlertaBateriaBaixaComponent } from './shared/modal-alerta/alerta-bateri
 import { AlertaEmbalagemAtrasadaComponent } from './shared/modal-alerta/alerta-embalagem-atrasada/alerta-embalagem-atrasada.component';
 import { AlertaLocalIncorretoComponent } from './shared/modal-alerta/alerta-local-incorreto/alerta-local-incorreto.component';
 import { AlertaPermanenciaComponent } from './shared/modal-alerta/alerta-permanencia/alerta-permanencia.component';
+import { AlertaEmbalagemPerdidaComponent } from './shared/modal-alerta/alerta-embalagem-perdida/alerta-embalagem-perdida.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { AlertaPermanenciaComponent } from './shared/modal-alerta/alerta-permane
     AlertaEmbalagemAtrasadaComponent,
     AlertaLocalIncorretoComponent,
     AlertaPermanenciaComponent,
+    AlertaEmbalagemPerdidaComponent,
     ModalRastComponent,
     ModalUserComponent,
     ModalSupplierEditarComponent,
@@ -116,14 +118,15 @@ import { AlertaPermanenciaComponent } from './shared/modal-alerta/alerta-permane
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
   entryComponents: [
-    ModalRastComponent, 
-    AbscenseModalComponent, 
-    AlertaModalComponent, 
-    AlertaAusenteComponent, 
+    AlertaModalComponent,
+    AlertaAusenteComponent,
     AlertaBateriaBaixaComponent,
     AlertaEmbalagemAtrasadaComponent,
     AlertaLocalIncorretoComponent,
     AlertaPermanenciaComponent,
+    AlertaEmbalagemPerdidaComponent,
+    ModalRastComponent, 
+    AbscenseModalComponent, 
     ModalSettings, 
     ModalCurrentEditarComponent,
     LayerModalComponent,

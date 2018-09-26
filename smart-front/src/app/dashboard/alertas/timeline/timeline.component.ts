@@ -76,7 +76,87 @@ export class TimelineComponent implements OnInit {
 
     }else{
       this.AlertsService.getAlerts(16, this.data.meta.page, this.logged_user)
-        .subscribe(alerts => this.data = alerts,
+        .subscribe(alerts => {
+          this.data = alerts;
+        
+          // this.data.data.push({
+          //   "_id": {
+          //     "supplier": "5ac188ed8431ce000f973d93",
+          //     "project": "5ac180a28431ce000f973d8a",
+          //     "code": "ISI",
+          //     "status": 6
+          //   },
+          //   "quantity": 2,
+          //   "packing": {
+          //     "_id": "5b3ba2fe6fc7e02f3077694d",
+          //     "code": "ISI",
+          //     "type": "ISI-teste",
+          //     "weigth": 1,
+          //     "width": 1,
+          //     "heigth": 1,
+          //     "length": 1,
+          //     "capacity": 1,
+          //     "problem": false,
+          //     "missing": true,
+          //     "traveling": false,
+          //     "serial": "001",
+          //     "tag": "5b3ba2726fc7e02f3077694b",
+          //     "code_tag": "5040223",
+          //     "supplier": "5ac188ed8431ce000f973d93",
+          //     "project": "5ac180a28431ce000f973d8a",
+          //     "hashPacking": "5ac188ed8431ce000f973d93ISI",
+          //     "routes": [
+          //       "5b58b8079d2b2539389b21ed"
+          //     ],
+          //     "__v": 0,
+          //     "position": {
+          //       "latitude": -8.0476,
+          //       "longitude": -34.8774,
+          //       "accuracy": 70,
+          //       "date": 1537977602
+          //     },
+          //     "temperature": 23,
+          //     "lastCommunication": 1537977602,
+          //     "battery": 71.3235,
+          //     "permanence": {
+          //       "amount_days": 0,
+          //       "date": 0,
+          //       "date_exceeded": 0,
+          //       "amount_days_exceeded": 0,
+          //       "time_exceeded": false
+          //     },
+          //     "status": "MISSING",
+          //     "trip": {
+          //       "time_exceeded": false,
+          //       "date": 1533934978752,
+          //       "time_countdown": 225790652,
+          //       "date_late": 1533935048223,
+          //       "time_late": 59552
+          //     },
+          //     "packing_missing": {
+          //       "date": 1534160769406,
+          //       "time_countdown": 3821026237
+          //     },
+          //     "status_pt": "NORMAL"
+          //   },
+          //   "supplier": {
+          //     "_id": "5ac188ed8431ce000f973d93",
+          //     "name": "MAHLE BEHR GERE",
+          //     "duns": "\t 899142806",
+          //     "plant": "5ac188ed8431ce000f973d92",
+          //     "cnpj": "",
+          //     "profile": "5ac188ed8431ce000f973d91",
+          //     "__v": 0
+          //   },
+          //   "project": {
+          //     "_id": "5ac180a28431ce000f973d8a",
+          //     "name": "Piloto1",
+          //     "__v": 0
+          //   },
+          //   "status": 6,
+          //   "hash": "5ac188ed8431ce000f973d93ISI"
+          // });
+        },
           err => { console.log(err); });
     }
   }
@@ -119,6 +199,10 @@ export class TimelineComponent implements OnInit {
 
       case 5:
         result = 'Embalagem com tempo de permanência elevado';
+        break;
+
+      case 6:
+        result = 'Embalagem perdida';
         break;
     }
 
