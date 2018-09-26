@@ -45,12 +45,12 @@ export class RedefinirSenhaComponent implements OnInit {
   ngOnInit() {
 this.imprimir();  }
   imprimir(){
-    console.log(this.password.value);
+    //console.log(this.password.value);
     // console.log(this.password.hasError(digitCharacterRule));
   }
   calcular(entrada, dirty, tamanho, minimo, numero, min, mai, especial){
     var i = 0;
-    console.log(entrada);
+    //console.log(entrada);
     if((!tamanho)){
       this.senhaFraca = false;
       this.senhaForte = false;

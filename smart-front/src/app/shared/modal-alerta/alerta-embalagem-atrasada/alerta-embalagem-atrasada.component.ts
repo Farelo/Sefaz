@@ -21,19 +21,19 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(JSON.stringify(this.alerta));
+    //console.log(JSON.stringify(this.alerta));
     this.getLastPlant();
   }
 
   getLastPlant() {
     if (this.alerta.data.packing.last_plant.plant !== undefined) {
       this.plantsService.retrievePlant(this.alerta.data.packing.last_plant.plant).subscribe(result => {
-        console.log('result: ' + JSON.stringify(result));
+        //console.log('result: ' + JSON.stringify(result));
 
         if (result.data.length != {}) {
           this.lastPlant = result.data;
 
-          console.log('this.lastPlant: ' + JSON.stringify(this.lastPlant));
+          //console.log('this.lastPlant: ' + JSON.stringify(this.lastPlant));
         }
       });
     }

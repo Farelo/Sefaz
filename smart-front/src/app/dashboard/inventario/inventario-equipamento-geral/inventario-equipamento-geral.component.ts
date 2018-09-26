@@ -62,7 +62,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     this.headers.push({ name: 'Acurácia', label: 'position.accuracy', status: this.sort[0] });
     // this.headers.push({ name: 'Temperatura', label: 'temperature', status: this.sort[0] });
 
-    console.log('this.headers: ' + JSON.stringify(this.headers));
+    //console.log('this.headers: ' + JSON.stringify(this.headers));
   }
 
   headerClick(item: any) {
@@ -93,7 +93,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       return elem.status != this.sort[0];
     });
 
-    console.log('orderedBy: ' + JSON.stringify(orderedBy));
+    //console.log('orderedBy: ' + JSON.stringify(orderedBy));
 
     if (orderedBy.length > 0)
       this.orderTable(orderedBy[0]);
@@ -153,7 +153,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
      *    supplier: string = '', 
      *    code_packing: string =''): Observable<any> { }
      */
-    console.log('this.logged_user: ' + this.logged_user);
+    //console.log('this.logged_user: ' + this.logged_user);
 
     if (this.logged_user instanceof Array) {
       this.inventoryLogisticService
@@ -174,10 +174,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
               },
             );
 
-            console.log(
-              'this.general_equipament: ' +
-              JSON.stringify(this.general_equipament),
-            );
+            //console.log('this.general_equipament: ' + JSON.stringify(this.general_equipament));
           },
           err => {
             console.log(err);
@@ -218,10 +215,10 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
   generalInventoryEquipamentChanged() {
     if (this.generalEquipamentSearch) {
-      console.log(
-        '.generalInventoryEquipamentChanged this.generalEquipamentSearch: ' +
-        JSON.stringify(this.generalEquipamentSearch),
-      );
+      // console.log(
+      //   '.generalInventoryEquipamentChanged this.generalEquipamentSearch: ' +
+      //   JSON.stringify(this.generalEquipamentSearch),
+      // );
       this.packingService
         .getPackingsByPackingCode(
           this.generalEquipamentSearch,
@@ -239,10 +236,10 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
             result.data = result.data.docs;
 
-            console.log(
-              '.generalInventoryEquipamentChanged ...result: ' +
-              JSON.stringify(result),
-            );
+            // console.log(
+            //   '.generalInventoryEquipamentChanged ...result: ' +
+            //   JSON.stringify(result),
+            // );
 
             // this.general_equipament = new Pagination({ meta: { page: 1 } });
             this.general_equipament = result;
@@ -254,20 +251,20 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
               },
             );
 
-            console.log(
-              '.generalInventoryEquipamentChanged ...this.general_equipament: ' +
-              JSON.stringify(this.general_equipament),
-            );
+            // console.log(
+            //   '.generalInventoryEquipamentChanged ...this.general_equipament: ' +
+            //   JSON.stringify(this.general_equipament),
+            // );
           },
           err => {
             console.log(err);
           },
         );
     } else {
-      console.log(
-        '..generalInventoryEquipamentChanged this.generalEquipamentSearch: ' +
-        JSON.stringify(this.generalEquipamentSearch),
-      );
+      // console.log(
+      //   '..generalInventoryEquipamentChanged this.generalEquipamentSearch: ' +
+      //   JSON.stringify(this.generalEquipamentSearch),
+      // );
 
       this.general_equipament = new Pagination({ meta: { page: 1 } });
       this.generalEquipamentSearch = '';
@@ -285,7 +282,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     modalRef.componentInstance.packing = packing;
   }
 
-  getFormatedMeter(m: any){
+  getFormatedMeter(m: any) {
     return `Acurácia de ${m} metros`;
   }
 

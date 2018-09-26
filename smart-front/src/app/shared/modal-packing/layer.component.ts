@@ -119,7 +119,7 @@ export class LayerModalComponent implements OnInit {
 
   ngOnInit() {
     
-    console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
+    //console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
 
     this.getPlantRadius();
     this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), this.finalDate.getTime(), 32000);
@@ -183,7 +183,7 @@ export class LayerModalComponent implements OnInit {
     let normalizeEndDate = new Date(finalDate);
     normalizeEndDate.setHours(23, 59, 59, 0);
 
-    console.log('[getFilteredPositions] codeTag, startDate, finalDate: ' + codeTag + ", " + normalizeStartDate.getTime() + ", " + normalizeEndDate.getTime());
+    //console.log('[getFilteredPositions] codeTag, startDate, finalDate: ' + codeTag + ", " + normalizeStartDate.getTime() + ", " + normalizeEndDate.getTime());
 
     this.packingService.getFilteredPositions(codeTag, normalizeStartDate.getTime(), normalizeEndDate.getTime()).subscribe(result => {
       
@@ -229,7 +229,7 @@ export class LayerModalComponent implements OnInit {
         e.latLng = new google.maps.LatLng(e.plant.lat, e.plant.lng);
         return e;
       })
-      console.log('logistics: ' + JSON.stringify(this.logistics));
+      //console.log('logistics: ' + JSON.stringify(this.logistics));
     })
   }
 

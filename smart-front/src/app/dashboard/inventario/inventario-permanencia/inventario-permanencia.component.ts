@@ -109,7 +109,7 @@ export class InventarioPermanenciaComponent implements OnInit {
         this.logged_user).subscribe(result => {
 
         this.permanence = result;
-        console.log('result: ' + result); 
+        //console.log('result: ' + result);
     }, err => { console.log(err) });
   }
 

@@ -34,7 +34,7 @@ export class ResumoHomeComponent implements OnInit {
       this.progressControle.push((parseFloat(this.resume.quantityInFactory + this.resume.quantityInSupplier + this.resume.quantityInOpLogistic) / parseFloat(this.resume.quantityTotal)) * 100);
       this.progressControle.push(100 - this.progressControle[0]);
 
-      console.log('this.progressControle: ' + this.progressControle);
+      //console.log('this.progressControle: ' + this.progressControle);
 
       //Categoria em viagem
       /*
@@ -44,7 +44,7 @@ export class ResumoHomeComponent implements OnInit {
       this.progressViagem.push((parseFloat(this.resume.quantityLate + this.resume.quantityMissing + this.resume.quantityTraveling) / parseFloat(this.resume.quantityTotal)) * 100);
       this.progressViagem.push(100 - this.progressViagem[0] - this.progressViagem[1]);
 
-      console.log('this.progressViagem: ' + this.progressViagem);
+      //console.log('this.progressViagem: ' + this.progressViagem);
       //Categoria sem sinal
     }
   }

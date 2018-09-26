@@ -168,7 +168,7 @@ function MarkerClusterer(map, opt_markers, opt_options) {
     google.maps.event.addListener(this.map_, 'zoom_changed', function () {
         var zoom = that.map_.getZoom();
 
-        console.log('zoom: ' + zoom);
+        //console.log('zoom: ' + zoom);
 
         if (that.prevZoom_ != zoom) {
             that.prevZoom_ = zoom;

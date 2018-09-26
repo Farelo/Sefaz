@@ -193,11 +193,11 @@ export class ModalLogisticRegisterComponent implements OnInit {
   }
 
   onItemSelect(item:any){
-    console.log(item);
+    //console.log(item);
   }
 
   OnItemDeSelect(item:any){
-    console.log(item);
+    //console.log(item);
   }
 
   onMapReady(map) {

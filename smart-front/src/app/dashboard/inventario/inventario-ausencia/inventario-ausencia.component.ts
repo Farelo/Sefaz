@@ -81,20 +81,20 @@ export class InventarioAusenciaComponent implements OnInit {
     if (this.logged_user instanceof Array) {
       this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => {
         this.ab_packings = result.data;
-        console.log('loadAbPackings logistic - this.ab_packings: ' + JSON.stringify(this.ab_packings));
+        //console.log('loadAbPackings logistic - this.ab_packings: ' + JSON.stringify(this.ab_packings));
       }, err => { console.log(err) });
 
     } else if (this.logged_user) {
       this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => {
         this.ab_packings = result.data;
-        console.log('loadAbPackings supplier  - this.ab_packings: ' + JSON.stringify(this.ab_packings));
+        //console.log('loadAbPackings supplier  - this.ab_packings: ' + JSON.stringify(this.ab_packings));
       }, err => { console.log(err) });
 
     } else {
       this.packingService.getPackingsDistincts().subscribe(result => {
         this.ab_packings = result.data;
         this.absenceTime = 10;
-        console.log('loadAbPackings distincit - this.ab_packings: ' + JSON.stringify(this.ab_packings));
+        //console.log('loadAbPackings distincit - this.ab_packings: ' + JSON.stringify(this.ab_packings));
       }, err => { console.log(err) });
     }
   }
@@ -107,13 +107,13 @@ export class InventarioAusenciaComponent implements OnInit {
     this.absence = new Pagination({ meta: { page: 1 } });
 
     if (this.absenceSearchEquipamento) {
-      console.log('.absenceSearchEquipamento: ' + JSON.stringify(this.absenceSearchEquipamento));
+      //console.log('.absenceSearchEquipamento: ' + JSON.stringify(this.absenceSearchEquipamento));
 
       this.packingService
         .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
         .subscribe(result => {
           this.abserials = result.data;
-          console.log('.abserials: ' + JSON.stringify(this.abserials));
+          //console.log('.abserials: ' + JSON.stringify(this.abserials));
 
           this.inventoryService
             .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
@@ -122,7 +122,7 @@ export class InventarioAusenciaComponent implements OnInit {
               if (result.data) {
 
                 this.absence = result;
-                console.log('.absence: ' + JSON.stringify(this.absence));
+                //console.log('.absence: ' + JSON.stringify(this.absence));
               }
             }, err => { console.log(err) });
         }, err => { console.log(err) })
@@ -137,7 +137,7 @@ export class InventarioAusenciaComponent implements OnInit {
           if (result.data) {
 
             this.absence = result;
-            console.log('..absence: ' + JSON.stringify(this.absence));
+            //console.log('..absence: ' + JSON.stringify(this.absence));
           }
         }, err => { console.log(err) });
       this.absenceSearchSerial = "";
@@ -148,7 +148,7 @@ export class InventarioAusenciaComponent implements OnInit {
   }
 
   serialCleared(){
-    console.log('serialCleared: ' + JSON.stringify(this.absenceSearchEquipamento));
+    //console.log('serialCleared: ' + JSON.stringify(this.absenceSearchEquipamento));
 
     this.inventoryService
       .getAbsencePermanence(10, this.absence.meta.page, "todos", this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
@@ -167,7 +167,7 @@ export class InventarioAusenciaComponent implements OnInit {
 
   absenceInventoryChangePage() {
 
-    console.log('absenceSearchEquipamento: ' + JSON.stringify(this.absenceSearchEquipamento));
+    //console.log('absenceSearchEquipamento: ' + JSON.stringify(this.absenceSearchEquipamento));
 
     if (this.absenceSearchEquipamento) {
 

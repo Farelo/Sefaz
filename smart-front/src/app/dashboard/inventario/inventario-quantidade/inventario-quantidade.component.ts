@@ -98,7 +98,7 @@ export class InventarioQuantidadeComponent implements OnInit {
               return elem;
             });
 
-            console.log('this.quantity.data: ' + JSON.stringify(this.quantity.data));
+            //console.log('this.quantity.data: ' + JSON.stringify(this.quantity.data));
 
           },
           err => {
@@ -122,7 +122,7 @@ export class InventarioQuantidadeComponent implements OnInit {
               return elem;
             });
 
-            console.log('this.quantity.data: ' + JSON.stringify(this.quantity.data));
+            //console.log('this.quantity.data: ' + JSON.stringify(this.quantity.data));
 
           },
           err => {
