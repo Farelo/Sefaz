@@ -51,7 +51,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   public sort: any = ['none', 'asc', 'desc'];
 
   loadTableHeaders() {
-    this.headers.push({ name: 'Equipamento', label: 'code', status: this.sort[0] });
+    this.headers.push({ name: 'Código', label: 'code', status: this.sort[0] });
     this.headers.push({ name: 'Serial', label: 'serial', status: this.sort[0] });
     this.headers.push({ name: 'Tag', label: 'tag.code', status: this.sort[0] });
     this.headers.push({ name: 'Fornecedor', label: 'supplier.name', status: this.sort[0] });

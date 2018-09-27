@@ -69,6 +69,7 @@
               </span>
             </span>
           </th>
+          <th>Data do sinal</th>
           <th>Posições</th>
         </tr>
       </thead>
@@ -86,15 +87,13 @@
 
           <td>{{ packing.supplier?.name || '-' }}</td>
           <td style="cursor: default;">{{ packing.status }}</td>
-          <td [tooltip]="getFormatedData(packing.lastCommunication)" style="cursor: default;">{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta" }}</td>
+          <td style="cursor: default;">{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta" }}</td>
 
           <td>{{ packing.actual_plant | type }} </td>
           <td class="text-center">{{ (packing.battery != undefined && packing.battery >= 0) ? ((packing.battery | round) + '%') : 'Sem Registro' }} </td>
           <td class="text-center">{{ packing.position.accuracy || '-' }} m</td>
-          <!-- <td class="text-center">{{ packing?.temperature || '-' }} ∘</td> -->
 
-
-          <!-- <td>{{ packing.status }}</td> -->
+          <td class="text-center">{{ getFormatedData(packing.lastCommunication) }}</td>
           <td style="text-align: center;">
             <div class="bigger" (click)="openLayer(packing)">
               <div class="det"> </div>
