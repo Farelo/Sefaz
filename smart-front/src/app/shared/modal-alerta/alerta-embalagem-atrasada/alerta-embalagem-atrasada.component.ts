@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService, InventoryLogisticService, PlantsService } from '../../../servicos/index.service';
+import { LayerModalComponent } from '../../modal-packing/layer.component';
 
 @Component({
   selector: 'app-alerta-embalagem-atrasada',
@@ -17,7 +18,10 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
 
   constructor(
     public activeAlerta: NgbActiveModal,
-    private plantsService: PlantsService
+    private inventoryService: InventoryService,
+    private inventoryLogisticService: InventoryLogisticService,
+    private plantsService: PlantsService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -32,10 +36,33 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
 
         if (result.data.length != {}) {
           this.lastPlant = result.data;
-
           //console.log('this.lastPlant: ' + JSON.stringify(this.lastPlant));
         }
       });
     }
+  }
+
+  visualizeOnMap() {
+
+    this.inventoryService
+      .getInventoryGeneralPackings(10, 1, this.alerta.data.packing.code_tag, '')
+      .subscribe(
+        result => {
+          let actualPackage = result.data;
+          //console.log('actualPackage: ' + JSON.stringify(actualPackage[0]));
+
+          this.activeAlerta.dismiss('open map');
+          const modalRef = this.modalService.open(LayerModalComponent, {
+            backdrop: 'static',
+            size: 'lg',
+            windowClass: 'modal-xl',
+          });
+          actualPackage[0].alertCode = this.alerta.data.status;
+          modalRef.componentInstance.packing = actualPackage[0];
+        },
+        err => {
+          console.log(err);
+        },
+      );
   }
 }

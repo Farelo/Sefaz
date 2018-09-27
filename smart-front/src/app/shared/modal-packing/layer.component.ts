@@ -406,6 +406,10 @@ export class LayerModalComponent implements OnInit {
         pin = { url: '../../../assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
+      case 6:
+        pin = { url: '../../../assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+
       default:
         pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
@@ -458,6 +462,14 @@ export class LayerModalComponent implements OnInit {
         }
         break;
       
+      case 5:
+        pin = { url: '../../../assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        if (this.rangedMarkers.length > 1) {
+          if (i == 0) pin = { url: '../../../assets/images/pin_perdido_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_perdido_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        }
+        break;
+
       default:
         pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {

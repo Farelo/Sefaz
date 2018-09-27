@@ -57,106 +57,174 @@ export class ListaComponent implements OnInit {
       .subscribe(alerts => {
         this.data = alerts;
 
-        this.data.data.push({
-          "_id": "5b5617276a8b8512bc8a62c2",
-          "quantity": 1,
-          "packing": {
-            "_id": "5ac81202f96dea00107babe3",
-            "code": "30-1605",
-            "type": "Rack do Escapamento",
-            "weigth": 185,
-            "width": 1.2,
-            "heigth": 1.25,
-            "length": 3.25,
-            "capacity": 16,
-            "problem": true,
-            "missing": false,
-            "traveling": false,
-            "serial": "009",
-            "tag": "5ac17e638431ce000f973d6d",
-            "code_tag": "5041405",
-            "supplier": "5ac186d18431ce000f973d90",
-            "project": "5ac180a28431ce000f973d8a",
-            "hashPacking": "5ac186d18431ce000f973d9030-1605",
-            "routes": [
-              "5ac83257f96dea00107bac0a"
-            ],
-            "__v": 0,
-            "battery": 18.3824,
-            "lastCommunication": 1531683547,
-            "position": {
-              "latitude": -23.6122,
-              "longitude": -46.5504,
-              "accuracy": 32000,
-              "date": 1531683547
-            },
-            "temperature": 13,
-            "packing_missing": {
-              "date": 0,
-              "time_countdown": 0
-            },
-            "permanence": {
-              "date": 1532368679156,
-              "amount_days": 5613476527,
-              "time_exceeded": false
-            },
-            "trip": {
-              "time_exceeded": false,
-              "date": 0,
-              "time_countdown": 0,
-              "date_late": 0,
-              "time_late": 0
-            },
-            "last_department": null,
-            "last_plant": {
-              "plant": "5ac17fed8431ce000f973d88"
-            },
-            "gc16": "5acf48eeeb3db0000f292f3f",
-            "actual_gc16": {
-              "days": 5,
-              "max": 4,
-              "min": 4
-            },
-            "department": null,
-            "actual_plant": {
-              "local": "Supplier",
-              "plant": "5ac18eab8431ce000f973d98"
-            },
-            "status": "INCORRECT_LOCAL",
-            "incontida": {
-              "date": 0,
-              "time": 0,
-              "isIncontida": false
-            },
-            "status_pt": "LOCAL_INCORRETO"
-          },
-          "supplier": {
-            "_id": "5ac186d18431ce000f973d90",
-            "name": "MAGNETI MARELLI ESCAPAMENTOS AMPARO",
-            "duns": "914577945",
-            "plant": "5ac186d18431ce000f973d8f",
-            "cnpj": "",
-            "profile": "5ac186d18431ce000f973d8e",
-            "__v": 0
-          },
-          "project": {
-            "_id": "5ac180a28431ce000f973d8a",
-            "name": "Piloto1",
-            "__v": 0
-          },
-          "plant": {
-            "_id": "5ac18eab8431ce000f973d98",
-            "plant_name": "BENTELER _ Syncreon",
-            "lat": -23.612092152852963,
-            "lng": -46.543718576431274,
-            "location": "Tamanduateí 2, Santo André - SP, Brasil",
-            "__v": 0,
-            "supplier": "5ac18eab8431ce000f973d99"
-          },
-          "status": 6,
-          "date": 1532368679173,
-          "serial": "009"
-        });
+        // this.data.data.push({
+        //   "_id": "5b742dad9aba123658a96c89",
+        //   "department": {
+        //     "_id": "5ace4592eb3db0000f292ebf",
+        //     "name": "CEVA LOGISTIC",
+        //     "lat": -29.93458030771551,
+        //     "lng": -50.910850672921015,
+        //     "plant": "5ac17f8b8431ce000f973d87",
+        //     "__v": 0
+        //   },
+        //   "packing": {
+        //     "_id": "5ace4014eb3db0000f292e2d",
+        //     "code": "30-1301",
+        //     "type": "Rack Painel Conj",
+        //     "weigth": 238,
+        //     "width": 1.2,
+        //     "heigth": 1.2,
+        //     "length": 1.65,
+        //     "capacity": 16,
+        //     "problem": false,
+        //     "missing": false,
+        //     "traveling": false,
+        //     "serial": "009",
+        //     "tag": "5ac17e638431ce000f973d81",
+        //     "code_tag": "5042512",
+        //     "supplier": "5ac18aa18431ce000f973d96",
+        //     "project": "5ac180a28431ce000f973d8a",
+        //     "hashPacking": "5ac18aa18431ce000f973d9630-1301",
+        //     "__v": 0,
+        //     "battery": 59.5588,
+        //     "lastCommunication": 1534153182,
+        //     "temperature": 19,
+        //     "last_department": "5ace4592eb3db0000f292ebf",
+        //     "gc16": "5acf485feb3db0000f292f3e",
+        //     "department": "5ace4592eb3db0000f292ebf",
+        //     "actual_plant": {
+        //       "plant": "5ac17f8b8431ce000f973d87",
+        //       "local": "Factory"
+        //     },
+        //     "last_plant": {
+        //       "plant": "5ac17f8b8431ce000f973d87"
+        //     },
+        //     "routes": [
+        //       "5acf3b01eb3db0000f292f20"
+        //     ],
+        //     "actual_gc16": {
+        //       "days": 2,
+        //       "max": 3,
+        //       "min": 2
+        //     },
+        //     "position": {
+        //       "latitude": -29.9346,
+        //       "longitude": -50.91,
+        //       "accuracy": 12010,
+        //       "date": 1534153182
+        //     },
+        //     "packing_missing": {
+        //       "date": 0,
+        //       "time_countdown": 0
+        //     },
+        //     "trip": {
+        //       "time_exceeded": false,
+        //       "date": 0,
+        //       "time_countdown": 0,
+        //       "date_late": 0,
+        //       "time_late": 0
+        //     },
+        //     "permanence": {
+        //       "amount_days_exceeded": 3712730124,
+        //       "date_exceeded": 1534340525395,
+        //       "amount_days": 3892486194,
+        //       "date": 1534160769324,
+        //       "time_exceeded": true
+        //     },
+        //     "incontida": {
+        //       "date": 0,
+        //       "time": 0,
+        //       "isIncontida": false
+        //     },
+        //     "status_pt": "TEMPO DE PERMANENCIA",
+        //     "status": "PERMANENCE_EXCEEDED"
+        //   },
+        //   "project": "5ac180a28431ce000f973d8a",
+        //   "supplier": {
+        //     "_id": "5ac18aa18431ce000f973d96",
+        //     "name": "BRUNING TECNOMETAL S/A.",
+        //     "duns": "897120846",
+        //     "plant": {
+        //       "_id": "5ac18aa18431ce000f973d95",
+        //       "plant_name": "BRUNING TECNOMETAL - PANAMBY",
+        //       "lat": -28.26500202094906,
+        //       "lng": -53.494277000427246,
+        //       "location": "Fritsch, Panambi - RS, 98280-000, Brasil",
+        //       "__v": 0,
+        //       "supplier": "5ac18aa18431ce000f973d96"
+        //     },
+        //     "cnpj": "",
+        //     "profile": "5ac18aa18431ce000f973d94",
+        //     "__v": 0
+        //   },
+        //   "status": 6,
+        //   "hashpacking": "5ac18aa18431ce000f973d9630-1301",
+        //   "serial": "009",
+        //   "date": 1534340525458,
+        //   "__v": 0,
+        //   "routes": [
+        //     {
+        //       "_id": "5acf3b01eb3db0000f292f20",
+        //       "supplier": {
+        //         "_id": "5ac18aa18431ce000f973d96",
+        //         "name": "BRUNING TECNOMETAL S/A.",
+        //         "duns": "897120846",
+        //         "plant": "5ac18aa18431ce000f973d95",
+        //         "cnpj": "",
+        //         "profile": "5ac18aa18431ce000f973d94",
+        //         "__v": 0
+        //       },
+        //       "project": "5ac180a28431ce000f973d8a",
+        //       "plant_factory": {
+        //         "_id": "5ac17f8b8431ce000f973d87",
+        //         "plant_name": "GM Gravatai",
+        //         "lat": -29.938966806881297,
+        //         "lng": -50.917041044414304,
+        //         "location": "Vila Morada Gaúcha, Gravataí - RS, Brasil",
+        //         "__v": 0
+        //       },
+        //       "plant_supplier": {
+        //         "_id": "5ac18aa18431ce000f973d95",
+        //         "plant_name": "BRUNING TECNOMETAL - PANAMBY",
+        //         "lat": -28.26500202094906,
+        //         "lng": -53.494277000427246,
+        //         "location": "Fritsch, Panambi - RS, 98280-000, Brasil",
+        //         "__v": 0,
+        //         "supplier": "5ac18aa18431ce000f973d96"
+        //       },
+        //       "packing_code": "30-1301",
+        //       "hashPacking": "5ac18aa18431ce000f973d96undefined",
+        //       "__v": 0,
+        //       "location": {
+        //         "start_address": "Rua Interna da General Motors Gravataí - Gravataí - RS, Brasil, 9504 - Vila Morada Gaúcha, Gravataí - RS, Brasil",
+        //         "end_address": "R. Vinte e Cinco de Julho, 903-1219 - Zona Norte, Panambi - RS, 98280-000, Brasil",
+        //         "duration": {
+        //           "text": "5 horas 6 minutos",
+        //           "value": 18387
+        //         },
+        //         "distance": {
+        //           "text": "398 km",
+        //           "value": 397698
+        //         }
+        //       },
+        //       "time": {
+        //         "max": 43200000,
+        //         "min": 28800000
+        //       }
+        //     }
+        //   ],
+        //   "actual_plant": {
+        //     "local": "Factory",
+        //     "plant": {
+        //       "_id": "5ac17f8b8431ce000f973d87",
+        //       "plant_name": "GM Gravatai",
+        //       "lat": -29.938966806881297,
+        //       "lng": -50.917041044414304,
+        //       "location": "Vila Morada Gaúcha, Gravataí - RS, Brasil",
+        //       "__v": 0
+        //     }
+        //   }
+        // });
       },
         err => {
           console.log(err);
@@ -202,60 +270,68 @@ export class ListaComponent implements OnInit {
 
         } else if (status == 6) {
           const modalRef = this.modalService.open(AlertaEmbalagemPerdidaComponent, { backdrop: "static" });
+          //modalRef.componentInstance.alerta = result;
           // modalRef.componentInstance.alerta = {
           //   "jsonapi": {
           //     "version": "1.0"
           //   },
-          //   "refresh_token": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZTNkMjEzYjg0ZjliMDAwZmEwMjM2OCIsImlhdCI6MTUzNzk4Mzk1MywiZXhwIjoxNTM3OTkxMTUzfQ.1lf0869IddF4KOpFvkgaWc-zIY6_lEZ6koT_g_qKKk4",
+          //   "refresh_token": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZTNkMjEzYjg0ZjliMDAwZmEwMjM2OCIsImlhdCI6MTUzODA1MzI2MSwiZXhwIjoxNTM4MDYwNDYxfQ.XP99hjrKNZUR5rNsIjXXytrDimVQmmsN838i2Y_zHP0",
           //   "status": 200,
           //   "data": {
-          //     "_id": "5b3a0d2c9d13612fe8170319",
-          //     "department": null,
+          //     "_id": "5b742dad9aba123658a96c89",
+          //     "department": {
+          //       "_id": "5ace4592eb3db0000f292ebf",
+          //       "name": "CEVA LOGISTIC",
+          //       "lat": -29.93458030771551,
+          //       "lng": -50.910850672921015,
+          //       "plant": "5ac17f8b8431ce000f973d87",
+          //       "__v": 0
+          //     },
           //     "packing": {
-          //       "_id": "5ac640688431ce000f973f1c",
-          //       "code": "30-1107",
-          //       "type": "Carrinho Amortecedor",
-          //       "weigth": 197,
-          //       "width": 0.8,
-          //       "heigth": 1.35,
-          //       "length": 1.03,
-          //       "capacity": 24,
+          //       "_id": "5ace4014eb3db0000f292e2d",
+          //       "code": "30-1301",
+          //       "type": "Rack Painel Conj",
+          //       "weigth": 238,
+          //       "width": 1.2,
+          //       "heigth": 1.2,
+          //       "length": 1.65,
+          //       "capacity": 16,
           //       "problem": false,
           //       "missing": false,
           //       "traveling": false,
-          //       "serial": "006",
-          //       "gc16": "5ac4b5db8431ce000f973e50",
-          //       "tag": "5ac17e638431ce000f973d5a",
-          //       "code_tag": "5040260",
-          //       "supplier": "5ac18eab8431ce000f973d99",
+          //       "serial": "009",
+          //       "tag": "5ac17e638431ce000f973d81",
+          //       "code_tag": "5042512",
+          //       "supplier": "5ac18aa18431ce000f973d96",
           //       "project": "5ac180a28431ce000f973d8a",
-          //       "hashPacking": "5ac18eab8431ce000f973d9930-1107",
+          //       "hashPacking": "5ac18aa18431ce000f973d9630-1301",
           //       "__v": 0,
-          //       "battery": 18.3824,
-          //       "lastCommunication": 1530505916,
-          //       "temperature": 18,
-          //       "last_department": null,
-          //       "department": null,
+          //       "battery": 59.5588,
+          //       "lastCommunication": 1534153182,
+          //       "temperature": 19,
+          //       "last_department": "5ace4592eb3db0000f292ebf",
+          //       "gc16": "5acf485feb3db0000f292f3e",
+          //       "department": "5ace4592eb3db0000f292ebf",
           //       "actual_plant": {
-          //         "plant": "5ac17fed8431ce000f973d88",
+          //         "plant": "5ac17f8b8431ce000f973d87",
           //         "local": "Factory"
           //       },
           //       "last_plant": {
-          //         "plant": "5ac17fed8431ce000f973d88"
+          //         "plant": "5ac17f8b8431ce000f973d87"
           //       },
           //       "routes": [
-          //         "5ac4268e8431ce000f973e06"
+          //         "5acf3b01eb3db0000f292f20"
           //       ],
           //       "actual_gc16": {
-          //         "days": 4,
+          //         "days": 2,
           //         "max": 3,
-          //         "min": 3
+          //         "min": 2
           //       },
           //       "position": {
-          //         "latitude": -23.6146,
-          //         "longitude": -46.5642,
-          //         "accuracy": 32000,
-          //         "date": 1530505717
+          //         "latitude": -29.9346,
+          //         "longitude": -50.91,
+          //         "accuracy": 12010,
+          //         "date": 1534153182
           //       },
           //       "packing_missing": {
           //         "date": 0,
@@ -269,9 +345,10 @@ export class ListaComponent implements OnInit {
           //         "time_late": 0
           //       },
           //       "permanence": {
-          //         "amount_days_exceeded": 0,
-          //         "amount_days": 7452788842,
-          //         "date": 1530531116620,
+          //         "amount_days_exceeded": 3712730124,
+          //         "date_exceeded": 1534340525395,
+          //         "amount_days": 3892486194,
+          //         "date": 1534160769324,
           //         "time_exceeded": true
           //       },
           //       "incontida": {
@@ -282,88 +359,88 @@ export class ListaComponent implements OnInit {
           //       "status_pt": "TEMPO DE PERMANENCIA",
           //       "status": "PERMANENCE_EXCEEDED"
           //     },
+          //     "project": "5ac180a28431ce000f973d8a",
           //     "supplier": {
-          //       "_id": "5ac18eab8431ce000f973d99",
-          //       "name": "BENTELER COMPON",
-          //       "duns": "901268607",
+          //       "_id": "5ac18aa18431ce000f973d96",
+          //       "name": "BRUNING TECNOMETAL S/A.",
+          //       "duns": "897120846",
           //       "plant": {
-          //         "_id": "5ac18eab8431ce000f973d98",
-          //         "plant_name": "BENTELER _ Syncreon",
-          //         "lat": -23.612092152852963,
-          //         "lng": -46.543718576431274,
-          //         "location": "Tamanduateí 2, Santo André - SP, Brasil",
+          //         "_id": "5ac18aa18431ce000f973d95",
+          //         "plant_name": "BRUNING TECNOMETAL - PANAMBY",
+          //         "lat": -28.26500202094906,
+          //         "lng": -53.494277000427246,
+          //         "location": "Fritsch, Panambi - RS, 98280-000, Brasil",
           //         "__v": 0,
-          //         "supplier": "5ac18eab8431ce000f973d99"
+          //         "supplier": "5ac18aa18431ce000f973d96"
           //       },
           //       "cnpj": "",
-          //       "profile": "5ac18eab8431ce000f973d97",
+          //       "profile": "5ac18aa18431ce000f973d94",
           //       "__v": 0
           //     },
-          //     "project": "5ac180a28431ce000f973d8a",
-          //     "status": 3,
-          //     "hashpacking": "5ac18eab8431ce000f973d9930-1107",
-          //     "serial": "006",
-          //     "date": 1530531116650,
+          //     "status": 6,
+          //     "hashpacking": "5ac18aa18431ce000f973d9630-1301",
+          //     "serial": "009",
+          //     "date": 1534340525458,
           //     "__v": 0,
           //     "routes": [
           //       {
-          //         "_id": "5ac4268e8431ce000f973e06",
+          //         "_id": "5acf3b01eb3db0000f292f20",
           //         "supplier": {
-          //           "_id": "5ac18eab8431ce000f973d99",
-          //           "name": "BENTELER COMPON",
-          //           "duns": "901268607",
-          //           "plant": "5ac18eab8431ce000f973d98",
+          //           "_id": "5ac18aa18431ce000f973d96",
+          //           "name": "BRUNING TECNOMETAL S/A.",
+          //           "duns": "897120846",
+          //           "plant": "5ac18aa18431ce000f973d95",
           //           "cnpj": "",
-          //           "profile": "5ac18eab8431ce000f973d97",
+          //           "profile": "5ac18aa18431ce000f973d94",
           //           "__v": 0
           //         },
           //         "project": "5ac180a28431ce000f973d8a",
           //         "plant_factory": {
-          //           "_id": "5ac17fed8431ce000f973d88",
-          //           "plant_name": "GM SCS - MASC",
-          //           "lat": -23.612841430156006,
-          //           "lng": -46.56609858076274,
-          //           "location": "Santa Paula, São Caetano do Sul - SP, Brasil",
+          //           "_id": "5ac17f8b8431ce000f973d87",
+          //           "plant_name": "GM Gravatai",
+          //           "lat": -29.938966806881297,
+          //           "lng": -50.917041044414304,
+          //           "location": "Vila Morada Gaúcha, Gravataí - RS, Brasil",
           //           "__v": 0
           //         },
           //         "plant_supplier": {
-          //           "_id": "5ac18eab8431ce000f973d98",
-          //           "plant_name": "BENTELER _ Syncreon",
-          //           "lat": -23.612092152852963,
-          //           "lng": -46.543718576431274,
-          //           "location": "Tamanduateí 2, Santo André - SP, Brasil",
+          //           "_id": "5ac18aa18431ce000f973d95",
+          //           "plant_name": "BRUNING TECNOMETAL - PANAMBY",
+          //           "lat": -28.26500202094906,
+          //           "lng": -53.494277000427246,
+          //           "location": "Fritsch, Panambi - RS, 98280-000, Brasil",
           //           "__v": 0,
-          //           "supplier": "5ac18eab8431ce000f973d99"
+          //           "supplier": "5ac18aa18431ce000f973d96"
           //         },
-          //         "packing_code": "30-1107",
-          //         "hashPacking": "5ac18eab8431ce000f973d99undefined",
+          //         "packing_code": "30-1301",
+          //         "hashPacking": "5ac18aa18431ce000f973d96undefined",
           //         "__v": 0,
           //         "location": {
-          //           "start_address": "R. João Pessoa, 73 - Prosperidade, São Caetano do Sul - SP, Brasil",
-          //           "end_address": "R. Interna Mercedes Benz, 381 - Distrito Industrial, Campinas - SP, Brasil",
+          //           "start_address": "Rua Interna da General Motors Gravataí - Gravataí - RS, Brasil, 9504 - Vila Morada Gaúcha, Gravataí - RS, Brasil",
+          //           "end_address": "R. Vinte e Cinco de Julho, 903-1219 - Zona Norte, Panambi - RS, 98280-000, Brasil",
           //           "duration": {
-          //             "text": "1 hora 30 minutos",
-          //             "value": 5391
+          //             "text": "5 horas 6 minutos",
+          //             "value": 18387
           //           },
           //           "distance": {
-          //             "text": "99,9 km",
-          //             "value": 99863
+          //             "text": "398 km",
+          //             "value": 397698
           //           }
           //         },
           //         "time": {
-          //           "max": 7200000,
-          //           "min": 3600000
+          //           "max": 43200000,
+          //           "min": 28800000
           //         }
           //       }
           //     ],
           //     "actual_plant": {
           //       "local": "Factory",
           //       "plant": {
-          //         "_id": "5ac17fed8431ce000f973d88",
-          //         "plant_name": "GM SCS - MASC",
-          //         "lat": -23.612841430156006,
-          //         "lng": -46.56609858076274,
-          //         "location": "Santa Paula, São Caetano do Sul - SP, Brasil",
+          //         "_id": "5ac17f8b8431ce000f973d87",
+          //         "plant_name": "GM Gravatai",
+          //         "lat": -29.938966806881297,
+          //         "lng": -50.917041044414304,
+          //         "location": "Vila Morada Gaúcha, Gravataí - RS, Brasil",
           //         "__v": 0
           //       }
           //     }
@@ -371,10 +448,6 @@ export class ListaComponent implements OnInit {
           // };
         }
 
-        // }else{
-        //   const modalRef = this.modalService.open(AlertaModalComponent, { backdrop: "static" });
-        //   modalRef.componentInstance.alerta = result;
-        // } 
       },
         err => {
           console.log(err);
