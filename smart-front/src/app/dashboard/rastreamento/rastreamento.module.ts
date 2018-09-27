@@ -11,6 +11,7 @@ import { constants } from './../../../environments/constants';
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { ModalModule, TooltipModule, PopoverModule } from 'ngx-bootstrap'
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SidebarModule } from 'ng-sidebar';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     NgSelectModule,
     RastreamentoRoutingModule,
     NgxPaginationModule,
+    SidebarModule.forRoot(),
     PopoverModule.forRoot(),
     NgbModule.forRoot(),
     NguiMapModule.forRoot({

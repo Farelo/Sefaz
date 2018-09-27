@@ -135,6 +135,10 @@ body {
   font-weight: 700;
 }
 
+.ng-sidebar {
+  background-color: #fff !important;
+}
+
 /* .conteudoHome .popover.bs-popover-bottom .arrow {
   top: -12px !important;
 }

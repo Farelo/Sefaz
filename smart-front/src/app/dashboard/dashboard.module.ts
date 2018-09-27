@@ -15,6 +15,7 @@ import {ToastyModule} from 'ng2-toasty';
 import { ApplicationPipes } from '../shared/pipes/application.pipes';
 import { AuthGuard } from '../guard/auth.guard';
 import { NgSelectModule } from '@ng-select/ng-select'; 
+import { SidebarModule } from 'ng-sidebar';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     PopoverModule.forRoot(),
     ToastyModule.forRoot(),
     TooltipModule.forRoot(),
+    SidebarModule.forRoot(),
     BrowserAnimationsModule,
     ReactiveFormsModule,
     ApplicationPipes,

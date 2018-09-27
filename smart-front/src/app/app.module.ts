@@ -46,6 +46,7 @@ import { AlertaEmbalagemAtrasadaComponent } from './shared/modal-alerta/alerta-e
 import { AlertaLocalIncorretoComponent } from './shared/modal-alerta/alerta-local-incorreto/alerta-local-incorreto.component';
 import { AlertaPermanenciaComponent } from './shared/modal-alerta/alerta-permanencia/alerta-permanencia.component';
 import { AlertaEmbalagemPerdidaComponent } from './shared/modal-alerta/alerta-embalagem-perdida/alerta-embalagem-perdida.component';
+import { SidebarModule } from 'ng-sidebar';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { AlertaEmbalagemPerdidaComponent } from './shared/modal-alerta/alerta-em
     ToastyModule.forRoot(),
     BsDatepickerModule.forRoot(), 
     TooltipModule.forRoot(),
+    SidebarModule.forRoot(),
     BrowserAnimationsModule,
     DashboardModuleAdmin,
     AngularMultiSelectModule,

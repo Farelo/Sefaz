@@ -157,6 +157,27 @@ button:hover {
   transition: background-color 0.3s;
 }
 
+.close-filter:hover {
+  background-color: #e6e6e6;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+button.close {
+  padding: 0px 3px;
+  
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
 .tabela {
   margin-bottom: 0px !important;
   border: none !important;
@@ -219,6 +240,26 @@ button:hover {
   margin: 0;
 }
 
+.filter-button {
+background: none rgb(255, 255, 255);
+  border: 0px;
+  margin: 10px;
+  padding: 0px 6px;
+  position: absolute;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 2px;
+  height: 40px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+  overflow: hidden;
+  top: 0px;
+  left: 230px;
+  z-index: 1;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; 
+}
+
 .m-navbar {
   margin-bottom: 0px !important;
 }
@@ -227,29 +268,19 @@ button:hover {
   margin-top: -45px;
 }
 
+.filter-wrapper {
+  height: 100%;
+  background-color: #fff;
+}
+
 .m-filtros {
   background-color: #fff;
-  padding: 15px;
+  padding: 15px; 
+  height: 100%;
 }
 
-/* Responsividade dos filtros */
-@media (max-width: 769px) {
-  /* ngui-map {
-    height: none;
-  }
-  .m-filtros {
-    width: 100% !important;
-  } */
-}
-
-@media (min-width: 768px) {
-  /* .m-filtros {
-    width: 220px !important;
-  }
-  */
-  .m-mapa {
-    flex-grow: 1;
-  }
+.ng-sidebar {
+  background-color: #fff !important;
 }
 
 @media (min-width: 540px) {
@@ -309,4 +340,9 @@ button:hover {
 
 .checkbox label input[type="checkbox"]:disabled+.cr {
   opacity: .5;
+}
+
+/* Relative to side-menu*/
+ng-sidebar-container {
+  height: calc( 100vh - 42px );
 }

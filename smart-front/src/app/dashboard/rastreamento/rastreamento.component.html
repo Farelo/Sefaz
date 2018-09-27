@@ -1,319 +1,334 @@
 <div class="row no-gutters m-container">
   
-  <!-- Menu lateral -->
-  <div class="col-sm-12 col-md-3 m-filtros">
+  <ng-sidebar-container>
+    <!-- Menu lateral -->
+    <ng-sidebar [(opened)]="_opened" [closeOnClickOutside]="false" [autoFocus]="false">
+      <div class="m-filtros">
 
-    <!-- Sessão de Filtros -->
-    <section>
+        <!-- Sessão de Filtros -->
+        <section>
 
-      <p>Filtros:</p>
-      <div class="form-group">
-        <label>Fornecedor</label>
-        <ng-select [ngModel]="plantSearch" (change)="onChange($event)" [items]="plants" bindLabel="plant_name"
-          placeholder="Escolha uma Planta">
-          <ng-template ng-label-tmp let-item="item">
-            {{item.plant_name}}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-              {{item.plant_name}}
-            </div>
-          </ng-template>
-        </ng-select>
-      </div>
+          <button type="button" class="close noselect" aria-label="Close" (click)="_toggleSidebar()">
+            <span aria-hidden="true">&times;</span>
+          </button>
 
-      <div class="form-group">
-        <label for="selectCode">Embalagem</label>
-        <ng-select id="selectCode" [(ngModel)]="selectedCode" (clear)="onEquipmentSelectClear()" (change)="loadSerialsOfSelectedEquipment()"
-          [items]="codes" bindLabel="packing" placeholder="Selecione um Equipamento">
-          <ng-template ng-label-tmp let-item="item">
-            {{item.packing}}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-
-              <b>Embalagem:</b> {{item.packing}}
-            </div>
-            <div>
-              <small>
-                <b>Fornecedor:</b> {{item.supplier.name}}
-              </small>
-
-            </div>
-            <div>
-              <small>
-                <b> Projeto:</b> {{item.project.name}}
-              </small>
-            </div>
-
-
-          </ng-template>
-        </ng-select>
-      </div>
-
-      <div class="form-group">
-        <label>Serial</label>
-        <ng-select [(ngModel)]="selectedSerial" (clear)="loadPackings()" (change)="loadPackings()" [items]="serials"
-          bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial" [disabled]="!selectedCode">
-          <ng-template ng-label-tmp let-item="item">
-            {{item.serial}}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-              <small>
-                <b>Serial:</b> {{item.serial}}</small>
-            </div>
-          </ng-template>
-        </ng-select>
-      </div>
-    </section>
-
-
-    <!-- Sessão de exibição -->
-    <section>
-      <p style="margin-top: 40px">Exibição:</p>
-
-      <div class="form-group form-check">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="" [ngModel]="showControlledPlants" (ngModelChange)="toggleShowPlants()">
-            <span class="cr">
-              <i class="cr-icon fa fa-check"> </i>
-            </span>
-            Mostrar Fábricas
-          </label>
-        </div>
-      </div>
-
-      <div class="form-group form-check">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="" [ngModel]="showControlledSuppliers" (ngModelChange)="toggleShowSupplier()">
-            <span class="cr">
-              <i class="cr-icon fa fa-check"> </i>
-            </span>
-            Mostrar Fornecedores
-          </label>
-        </div>
-      </div>
-
-      <div class="form-group form-check">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="" [ngModel]="showControlledLogistics" (ngModelChange)="toggleShowLogistic()">
-            <span class="cr">
-              <i class="cr-icon fa fa-check"> </i>
-            </span>
-            Mostrar Operadores Logísticos
-          </label>
-        </div>
-      </div>
-
-      <div class="form-group form-check">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="" [ngModel]="showPackings" (ngModelChange)="toggleShowPackings()">
-            <span class="cr">
-              <i class="cr-icon fa fa-check"> </i>
-            </span>
-            Mostrar Embalagens
-          </label>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- Mapa Geolocalização -->
-  <div class="col-sm-12 col-md-9 m-mapa">
-    
-    <!-- Botão da legenda dos ícones do mapa -->
-    <button type="button" class="legend-button" [ngbPopover]="popContent" placement="bottom" triggers='hover'>
-      <img width="20" height="20" src="data:image/svg+xml;base64,
-        PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDM3LjYgNDM3LjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQzNy42IDQzNy42OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGNsYXNzPSIiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIDEsIDAsIDApIj48Zz4KCTxnPgoJCTxnPgoJCQk8cGF0aCBkPSJNMTk0LDE0Mi44YzAuOCwxLjYsMS42LDMuMiwyLjQsNC40YzAuOCwxLjIsMiwyLjQsMi44LDMuNmMxLjIsMS4yLDIuNCwyLjQsNCwzLjZjMS4yLDAuOCwyLjgsMiw0LjgsMi40ICAgICBjMS42LDAuOCwzLjIsMS4yLDUuMiwxLjZjMiwwLjQsMy42LDAuNCw1LjIsMC40YzEuNiwwLDMuNiwwLDUuMi0wLjRjMS42LTAuNCwzLjItMC44LDQuNC0xLjZoMC40YzEuNi0wLjgsMy4yLTEuNiw0LjgtMi44ICAgICBjMS4yLTAuOCwyLjQtMiwzLjYtMy4ybDAuNC0wLjRjMS4yLTEuMiwyLTIuNCwyLjgtMy42czEuNi0yLjQsMi00YzAtMC40LDAtMC40LDAuNC0wLjhjMC44LTEuNiwxLjItMy42LDEuNi01LjIgICAgIGMwLjQtMS42LDAuNC0zLjYsMC40LTUuMnMwLTMuNi0wLjQtNS4yYy0wLjQtMS42LTAuOC0zLjItMS42LTUuMmMtMS4yLTIuOC0yLjgtNS4yLTQuOC03LjJjLTAuNC0wLjQtMC40LTAuNC0wLjgtMC44ICAgICBjLTEuMi0xLjItMi40LTItNC0zLjJjLTEuNi0wLjgtMi44LTEuNi00LjQtMi40Yy0xLjYtMC44LTMuMi0xLjItNC44LTEuNmMtMi0wLjQtMy42LTAuNC01LjItMC40Yy0xLjYsMC0zLjYsMC01LjIsMC40ICAgICBjLTEuNiwwLjQtMy4yLDAuOC00LjgsMS42SDIwOGMtMS42LDAuOC0zLjIsMS42LTQuNCwyLjRjLTEuNiwxLjItMi44LDItNCwzLjJjLTEuMiwxLjItMi40LDIuNC0zLjIsMy42ICAgICBjLTAuOCwxLjItMS42LDIuOC0yLjQsNC40Yy0wLjgsMS42LTEuMiwzLjItMS42LDQuOGMtMC40LDItMC40LDMuNi0wLjQsNS4yYzAsMS42LDAsMy42LDAuNCw1LjIgICAgIEMxOTIuOCwxMzkuNiwxOTMuNiwxNDEuMiwxOTQsMTQyLjh6IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBjbGFzcz0iYWN0aXZlLXBhdGgiIHN0eWxlPSJmaWxsOiM1NjU2NTYiIGRhdGEtb2xkX2NvbG9yPSIjNTc1NjU2Ij48L3BhdGg+CgkJCTxwYXRoIGQ9Ik0yNDkuNiwyODkuMmgtOS4ydi05OGMwLTUuNi00LjQtMTAuNC0xMC40LTEwLjRoLTQyYy01LjYsMC0xMC40LDQuNC0xMC40LDEwLjR2MjEuNmMwLDUuNiw0LjQsMTAuNCwxMC40LDEwLjRoOC40djY2LjQgICAgIEgxODhjLTUuNiwwLTEwLjQsNC40LTEwLjQsMTAuNHYyMS42YzAsNS42LDQuNCwxMC40LDEwLjQsMTAuNGg2MS42YzUuNiwwLDEwLjQtNC40LDEwLjQtMTAuNFYzMDAgICAgIEMyNjAsMjk0LDI1NS4yLDI4OS4yLDI0OS42LDI4OS4yeiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojNTY1NjU2IiBkYXRhLW9sZF9jb2xvcj0iIzU3NTY1NiI+PC9wYXRoPgoJCQk8cGF0aCBkPSJNMjE4LjgsMEM5OCwwLDAsOTgsMCwyMTguOHM5OCwyMTguOCwyMTguOCwyMTguOHMyMTguOC05OCwyMTguOC0yMTguOFMzMzkuNiwwLDIxOC44LDB6IE0yMTguOCw0MDguOCAgICAgYy0xMDQuOCwwLTE5MC04NS4yLTE5MC0xOTBzODUuMi0xOTAsMTkwLTE5MHMxOTAsODUuMiwxOTAsMTkwUzMyMy42LDQwOC44LDIxOC44LDQwOC44eiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojNTY1NjU2IiBkYXRhLW9sZF9jb2xvcj0iIzU3NTY1NiI+PC9wYXRoPgoJCTwvZz4KCTwvZz4KPC9nPjwvZz4gPC9zdmc+" />
-    </button>
-    
-    <!-- Balão da legenda dos ícones do mapa -->
-    <ng-template #popContent>
-      <!-- <p class="legend-title">LEGENDA:</p> -->
-      <h5>Legenda:</h5>
-
-      <ul class="list-unstyled legend-list">
-        <li> <span style="background-color: #ef5562;"></span> Embalagem Ausente</li>
-        <li> <span style="background-color: #f77737;"></span> Local Incorreto</li>
-        <li> <span style="background-color: #f8bd37;"></span> Bateria Baixa</li>
-        <li> <span style="background-color: #4dc9ff;"></span> Embalagem Atrasada</li>
-        <li> <span style="background-color: #4c7bff;"></span> Tempo de Permanência</li>
-        <li> <span style="background-color: #b39ddb;"></span> Embalagens empilhadas</li>
-      </ul>
-      <!-- <span class="lg6"></span><br /> -->
-    </ng-template>
-
-    <div id="map">
-
-      <ngui-map [center]="center" [zoom]="4" [minZoom]="4" (mapReady$)="onInitMap($event)">
-
-        <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
-        </marker>
-
-        <circle *ngFor="let circle of circles" [center]="circle.position" [visible]="true" [strokeColor]="'#6382c9'"
-          [strokeOpacity]="0.5" [strokeWeight]="1" [radius]="this.auth.currentUser().radius">
-        </circle>
-
-
-        <!-- ///////////// -->
-        <!-- Plant -->
-        <marker *ngFor="let posPlants of listOfFactories" [position]="posPlants.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
-          [visible]="showControlledPlants" [title]="posPlants.name" (click)="clicked($event, posPlants)">
-        </marker>
-
-        <circle *ngFor="let posPlantsRadius of listOfFactories" [center]="posPlantsRadius.position" [fillColor]="'#0044a8'"
-          [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"
-          radius="{{ settings.range_radius }}"></circle>
-
-
-        <!-- ///////////// -->
-        <!-- Logistic operator -->
-        <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }"
-          [visible]="showControlledLogistics" [title]="posLogistic.name" (click)="clicked($event, posLogistic)">
-        </marker>
-
-        <circle *ngFor="let posLogisticRadius of listOfLogistic" [center]="posLogisticRadius.position" [fillColor]="'#4d4d4d'"
-          [fillOpacity]="0.15" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledLogistics"
-          radius="{{ settings.range_radius }}"></circle>
-
-
-        <!-- ///////////// -->
-        <!-- Supplier -->
-        <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position" [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }"
-          [visible]="showControlledSuppliers" [title]="posSuppliers.name" (click)="clicked($event, posSuppliers)">
-        </marker>
-
-        <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.position" [fillColor]="'#4d4d4d'"
-          [fillOpacity]="0.2" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledSuppliers"
-          radius="{{ settings.range_radius }}"></circle>
-
-
-        <!-- ///////////// -->
-        <!-- Embalagens.  -->
-        <!-- <ng-container *ngFor="let pack of plotedPackings">
-          <marker *ngIf="pack.status == 'MISSING'" [icon]="{ url: '../../../assets/images/pin_ausente.png', size: [28, 43], scaledSize: [28, 43]}" 
-            [position]="pack.position"
-            [visible]="showPackings"
-            (click)="clickedPack($event, pack)">
-          </marker>
-
-          <marker *ngIf="pack.status == 'INCORRECT_LOCAL'" [icon]="{ url: '../../../assets/images/pin_incorreto.png', size: [28, 43], scaledSize: [28, 43]}"
-            [position]="pack.position"
-            [visible]="showPackings" 
-            (click)="clickedPack($event, pack)">
-          </marker>
-
-          <marker *ngIf="pack.status == 'LATE'" [icon]="{ url: '../../../assets/images/pin_atrasado.png', size: [28, 43], scaledSize: [28, 43]}"
-            [position]="pack.position"
-            [visible]="showPackings" 
-            (click)="clickedPack($event, pack)">
-          </marker>
-
-          <marker *ngIf="pack.status == 'PERMANENCE_EXCEEDED'" [icon]="{ url: '../../../assets/images/pin_permanencia.png', size: [28, 43], scaledSize: [28, 43]}"
-            [position]="pack.position"
-            [visible]="showPackings"
-            (click)="clickedPack($event, pack)">
-          </marker>
-
-          <marker *ngIf="(pack.status != 'MISSING') && 
-            (pack.status != 'INCORRECT_LOCAL') && 
-            (pack.status != 'LATE') && 
-            (pack.status != 'PERMANENCE_EXCEEDED')" 
-            [icon]="{ url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43]}"
-            [position]="pack.position"
-            [visible]="showPackings"
-            (click)="clickedPack($event, pack)">
-          </marker>
-        </ng-container> -->
-
-        <!-- <info-window id="iw">
-          <div class="iw-title">INFORMAÇÕES</div>
-          <div *ngIf="marker.display" class="info-window-content">
-            <p style="margin-bottom: 2px;"> <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
-            <p style="margin-bottom: 2px;"> <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
-            <p style="margin-bottom: 2px;"> <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
-            <p style="margin-bottom: 2px;"> <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
+          <h6>Filtros:</h6>
+          <div class="form-group">
+            <label>Fornecedor</label>
+            <ng-select [ngModel]="plantSearch" (change)="onChange($event)" [items]="plants" bindLabel="plant_name"
+              placeholder="Escolha uma Planta">
+              <ng-template ng-label-tmp let-item="item">
+                {{item.plant_name}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div>
+                  {{item.plant_name}}
+                </div>
+              </ng-template>
+            </ng-select>
           </div>
-        </info-window> -->
+
+          <div class="form-group">
+            <label for="selectCode">Embalagem</label>
+            <ng-select id="selectCode" [(ngModel)]="selectedCode" (clear)="onEquipmentSelectClear()" (change)="loadSerialsOfSelectedEquipment()"
+              [items]="codes" bindLabel="packing" placeholder="Selecione um Equipamento">
+              <ng-template ng-label-tmp let-item="item">
+                {{item.packing}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div>
+
+                  <b>Embalagem:</b> {{item.packing}}
+                </div>
+                <div>
+                  <small>
+                    <b>Fornecedor:</b> {{item.supplier.name}}
+                  </small>
+
+                </div>
+                <div>
+                  <small>
+                    <b> Projeto:</b> {{item.project.name}}
+                  </small>
+                </div>
 
 
-        <!-- <ng-container *ngFor="let posRadius of plotedPackings">
-          <circle *ngIf="showPackings" [center]="[pack.latitude, pack.longitude]" [fillColor]="getRadiusWithAlert()"
-            [fillOpacity]="0.2" [strokeColor]="getRadiusWithAlert()" [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ posRadius.accuracy || 0 }}"></circle>
-        </ng-container> -->
+              </ng-template>
+            </ng-select>
+          </div>
+
+          <div class="form-group">
+            <label>Serial</label>
+            <ng-select [(ngModel)]="selectedSerial" (clear)="loadPackings()" (change)="loadPackings()" [items]="serials"
+              bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial" [disabled]="!selectedCode">
+              <ng-template ng-label-tmp let-item="item">
+                {{item.serial}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div>
+                  <small>
+                    <b>Serial:</b> {{item.serial}}</small>
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+        </section>
 
 
-        <info-window id="iw" width="200" maxWidth="200">
-          <div *ngIf="marker.display">
-            <div>
-              <div class="iw-title"> PLANTA {{marker.profile === "supplier" ? 'FORNECEDOR' : (marker.profile ===
-                "normal" ? 'FÁBRICA' : 'OP. LOGÍSTICO')}}
-                {{marker.plant}} </div>
+        <!-- Sessão de exibição -->
+        <section>
+          <p style="margin-top: 40px">Exibição:</p>
 
-              <div>
-                <div class="table-responsive tabela">
-                  <table class="table" [hidden]="marker.nothing">
-                    <thead>
-                      <tr class="cabecalho" [hidden]="!marker.department">
-                        <th>Setor/Área Interna</th>
-                        <th class="teste">Opções</th>
-                      </tr>
-                      <tr class="cabecalho" [hidden]="!marker.packing">
-                        <th>Embalagens na planta</th>
-                        <th>Serial</th>
+          <div class="form-group form-check">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="" [ngModel]="showControlledPlants" (ngModelChange)="toggleShowPlants()">
+                <span class="cr">
+                  <i class="cr-icon fa fa-check"> </i>
+                </span>
+                Mostrar Fábricas
+              </label>
+            </div>
+          </div>
 
-                      </tr>
-                    </thead>
-                    <tbody>
+          <div class="form-group form-check">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="" [ngModel]="showControlledSuppliers" (ngModelChange)="toggleShowSupplier()">
+                <span class="cr">
+                  <i class="cr-icon fa fa-check"> </i>
+                </span>
+                Mostrar Fornecedores
+              </label>
+            </div>
+          </div>
 
-                      <tr [hidden]="!marker.department" *ngFor="let dept of marker.departments?.data | paginate: { id:'departmentmap', 
-                                                                          itemsPerPage: marker.departments.meta.limit, 
-                                                                          currentPage: marker.departments.meta.page, 
-                                                                          totalItems:marker.departments.meta.total_docs}">
-                        <td>{{dept.name}}</td>
-                        <td class="teste2">
-                          <button class="button-view" (click)="open(dept._id)" type="button" name="button">Visualizar</button>
-                        </td>
-                      </tr>
-                      <tr [hidden]="!marker.packing" *ngFor="let packing of marker.packings?.data | paginate: { id:'packingmap', 
-                                                                                          itemsPerPage: marker.packings.meta.limit, 
-                                                                                          currentPage:marker.packings.meta.page, 
-                                                                                          totalItems:marker.packings.meta.total_docs}">
-                        <td>{{packing.code}}</td>
-                        <td>{{packing.serial}}</td>
+          <div class="form-group form-check">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="" [ngModel]="showControlledLogistics" (ngModelChange)="toggleShowLogistic()">
+                <span class="cr">
+                  <i class="cr-icon fa fa-check"> </i>
+                </span>
+                Mostrar Operadores Logísticos
+              </label>
+            </div>
+          </div>
 
-                      </tr>
+          <div class="form-group form-check">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="" [ngModel]="showPackings" (ngModelChange)="toggleShowPackings()">
+                <span class="cr">
+                  <i class="cr-icon fa fa-check"> </i>
+                </span>
+                Mostrar Embalagens
+              </label>
+            </div>
+          </div>
+        </section>
+      </div>
+    </ng-sidebar>
 
-                    </tbody>
-                  </table>
+    <!-- Mapa Geolocalização -->
+    <div ng-sidebar-content>
+      <div class="m-mapa">
+        
+        <!-- Botão da legenda dos ícones do mapa -->
+        <button type="button" class="legend-button" [ngbPopover]="popContent" placement="bottom" triggers='hover'>
+          <img width="20" height="20" src="data:image/svg+xml;base64,
+            PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDM3LjYgNDM3LjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQzNy42IDQzNy42OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGNsYXNzPSIiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIDEsIDAsIDApIj48Zz4KCTxnPgoJCTxnPgoJCQk8cGF0aCBkPSJNMTk0LDE0Mi44YzAuOCwxLjYsMS42LDMuMiwyLjQsNC40YzAuOCwxLjIsMiwyLjQsMi44LDMuNmMxLjIsMS4yLDIuNCwyLjQsNCwzLjZjMS4yLDAuOCwyLjgsMiw0LjgsMi40ICAgICBjMS42LDAuOCwzLjIsMS4yLDUuMiwxLjZjMiwwLjQsMy42LDAuNCw1LjIsMC40YzEuNiwwLDMuNiwwLDUuMi0wLjRjMS42LTAuNCwzLjItMC44LDQuNC0xLjZoMC40YzEuNi0wLjgsMy4yLTEuNiw0LjgtMi44ICAgICBjMS4yLTAuOCwyLjQtMiwzLjYtMy4ybDAuNC0wLjRjMS4yLTEuMiwyLTIuNCwyLjgtMy42czEuNi0yLjQsMi00YzAtMC40LDAtMC40LDAuNC0wLjhjMC44LTEuNiwxLjItMy42LDEuNi01LjIgICAgIGMwLjQtMS42LDAuNC0zLjYsMC40LTUuMnMwLTMuNi0wLjQtNS4yYy0wLjQtMS42LTAuOC0zLjItMS42LTUuMmMtMS4yLTIuOC0yLjgtNS4yLTQuOC03LjJjLTAuNC0wLjQtMC40LTAuNC0wLjgtMC44ICAgICBjLTEuMi0xLjItMi40LTItNC0zLjJjLTEuNi0wLjgtMi44LTEuNi00LjQtMi40Yy0xLjYtMC44LTMuMi0xLjItNC44LTEuNmMtMi0wLjQtMy42LTAuNC01LjItMC40Yy0xLjYsMC0zLjYsMC01LjIsMC40ICAgICBjLTEuNiwwLjQtMy4yLDAuOC00LjgsMS42SDIwOGMtMS42LDAuOC0zLjIsMS42LTQuNCwyLjRjLTEuNiwxLjItMi44LDItNCwzLjJjLTEuMiwxLjItMi40LDIuNC0zLjIsMy42ICAgICBjLTAuOCwxLjItMS42LDIuOC0yLjQsNC40Yy0wLjgsMS42LTEuMiwzLjItMS42LDQuOGMtMC40LDItMC40LDMuNi0wLjQsNS4yYzAsMS42LDAsMy42LDAuNCw1LjIgICAgIEMxOTIuOCwxMzkuNiwxOTMuNiwxNDEuMiwxOTQsMTQyLjh6IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBjbGFzcz0iYWN0aXZlLXBhdGgiIHN0eWxlPSJmaWxsOiM1NjU2NTYiIGRhdGEtb2xkX2NvbG9yPSIjNTc1NjU2Ij48L3BhdGg+CgkJCTxwYXRoIGQ9Ik0yNDkuNiwyODkuMmgtOS4ydi05OGMwLTUuNi00LjQtMTAuNC0xMC40LTEwLjRoLTQyYy01LjYsMC0xMC40LDQuNC0xMC40LDEwLjR2MjEuNmMwLDUuNiw0LjQsMTAuNCwxMC40LDEwLjRoOC40djY2LjQgICAgIEgxODhjLTUuNiwwLTEwLjQsNC40LTEwLjQsMTAuNHYyMS42YzAsNS42LDQuNCwxMC40LDEwLjQsMTAuNGg2MS42YzUuNiwwLDEwLjQtNC40LDEwLjQtMTAuNFYzMDAgICAgIEMyNjAsMjk0LDI1NS4yLDI4OS4yLDI0OS42LDI4OS4yeiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojNTY1NjU2IiBkYXRhLW9sZF9jb2xvcj0iIzU3NTY1NiI+PC9wYXRoPgoJCQk8cGF0aCBkPSJNMjE4LjgsMEM5OCwwLDAsOTgsMCwyMTguOHM5OCwyMTguOCwyMTguOCwyMTguOHMyMTguOC05OCwyMTguOC0yMTguOFMzMzkuNiwwLDIxOC44LDB6IE0yMTguOCw0MDguOCAgICAgYy0xMDQuOCwwLTE5MC04NS4yLTE5MC0xOTBzODUuMi0xOTAsMTkwLTE5MHMxOTAsODUuMiwxOTAsMTkwUzMyMy42LDQwOC44LDIxOC44LDQwOC44eiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojNTY1NjU2IiBkYXRhLW9sZF9jb2xvcj0iIzU3NTY1NiI+PC9wYXRoPgoJCTwvZz4KCTwvZz4KPC9nPjwvZz4gPC9zdmc+" />
+        </button>
+        
+        <!-- Botão de filtros no mapa -->
+        <button type="button" class="filter-button" (click)="_toggleSidebar()">
+          Filtros
+        </button>
 
-                  <div class="has-text-centered" [hidden]="!marker.department">
-                    <pagination-controls id="departmentmap" (pageChange)="pageChangedDepart($event)" autoHide="true"
-                      directionLinks="false"></pagination-controls>
-                  </div>
+        <!-- Balão da legenda dos ícones do mapa -->
+        <ng-template #popContent>
+          <!-- <p class="legend-title">LEGENDA:</p> -->
+          <h5>Legenda:</h5>
 
-                  <div class="has-text-centered" [hidden]="!marker.packing">
-                    <pagination-controls id="packingmap" (pageChange)="pageChangedPacking($event)" autoHide="true"
-                      directionLinks="false"></pagination-controls>
-                  </div>
+          <ul class="list-unstyled legend-list">
+            <li> <span style="background-color: #ef5562;"></span> Embalagem Ausente</li>
+            <li> <span style="background-color: #f77737;"></span> Local Incorreto</li>
+            <li> <span style="background-color: #f8bd37;"></span> Bateria Baixa</li>
+            <li> <span style="background-color: #4dc9ff;"></span> Embalagem Atrasada</li>
+            <li> <span style="background-color: #4c7bff;"></span> Tempo de Permanência</li>
+            <li> <span style="background-color: #b39ddb;"></span> Embalagens empilhadas</li>
+          </ul>
+          <!-- <span class="lg6"></span><br /> -->
+        </ng-template>
 
-                  <div class="classVazio" [hidden]="!marker.nothing">
-                    Não existem embalagens nessa planta.
+        <div id="map">
+
+          <ngui-map [center]="center" [zoom]="4" [minZoom]="4" (mapReady$)="onInitMap($event)">
+
+            <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name" (click)="clicked($event,opt)">
+            </marker>
+
+            <circle *ngFor="let circle of circles" [center]="circle.position" [visible]="true" [strokeColor]="'#6382c9'"
+              [strokeOpacity]="0.5" [strokeWeight]="1" [radius]="this.auth.currentUser().radius">
+            </circle>
+
+
+            <!-- ///////////// -->
+            <!-- Plant -->
+            <marker *ngFor="let posPlants of listOfFactories" [position]="posPlants.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+              [visible]="showControlledPlants" [title]="posPlants.name" (click)="clicked($event, posPlants)">
+            </marker>
+
+            <circle *ngFor="let posPlantsRadius of listOfFactories" [center]="posPlantsRadius.position" [fillColor]="'#0044a8'"
+              [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"
+              radius="{{ settings.range_radius }}"></circle>
+
+
+            <!-- ///////////// -->
+            <!-- Logistic operator -->
+            <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }"
+              [visible]="showControlledLogistics" [title]="posLogistic.name" (click)="clicked($event, posLogistic)">
+            </marker>
+
+            <circle *ngFor="let posLogisticRadius of listOfLogistic" [center]="posLogisticRadius.position" [fillColor]="'#4d4d4d'"
+              [fillOpacity]="0.15" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledLogistics"
+              radius="{{ settings.range_radius }}"></circle>
+
+
+            <!-- ///////////// -->
+            <!-- Supplier -->
+            <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position" [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }"
+              [visible]="showControlledSuppliers" [title]="posSuppliers.name" (click)="clicked($event, posSuppliers)">
+            </marker>
+
+            <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.position" [fillColor]="'#4d4d4d'"
+              [fillOpacity]="0.2" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledSuppliers"
+              radius="{{ settings.range_radius }}"></circle>
+
+
+            <!-- ///////////// -->
+            <!-- Embalagens.  -->
+            <!-- <ng-container *ngFor="let pack of plotedPackings">
+              <marker *ngIf="pack.status == 'MISSING'" [icon]="{ url: '../../../assets/images/pin_ausente.png', size: [28, 43], scaledSize: [28, 43]}" 
+                [position]="pack.position"
+                [visible]="showPackings"
+                (click)="clickedPack($event, pack)">
+              </marker>
+
+              <marker *ngIf="pack.status == 'INCORRECT_LOCAL'" [icon]="{ url: '../../../assets/images/pin_incorreto.png', size: [28, 43], scaledSize: [28, 43]}"
+                [position]="pack.position"
+                [visible]="showPackings" 
+                (click)="clickedPack($event, pack)">
+              </marker>
+
+              <marker *ngIf="pack.status == 'LATE'" [icon]="{ url: '../../../assets/images/pin_atrasado.png', size: [28, 43], scaledSize: [28, 43]}"
+                [position]="pack.position"
+                [visible]="showPackings" 
+                (click)="clickedPack($event, pack)">
+              </marker>
+
+              <marker *ngIf="pack.status == 'PERMANENCE_EXCEEDED'" [icon]="{ url: '../../../assets/images/pin_permanencia.png', size: [28, 43], scaledSize: [28, 43]}"
+                [position]="pack.position"
+                [visible]="showPackings"
+                (click)="clickedPack($event, pack)">
+              </marker>
+
+              <marker *ngIf="(pack.status != 'MISSING') && 
+                (pack.status != 'INCORRECT_LOCAL') && 
+                (pack.status != 'LATE') && 
+                (pack.status != 'PERMANENCE_EXCEEDED')" 
+                [icon]="{ url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43]}"
+                [position]="pack.position"
+                [visible]="showPackings"
+                (click)="clickedPack($event, pack)">
+              </marker>
+            </ng-container> -->
+
+            <!-- <info-window id="iw">
+              <div class="iw-title">INFORMAÇÕES</div>
+              <div *ngIf="marker.display" class="info-window-content">
+                <p style="margin-bottom: 2px;"> <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+                <p style="margin-bottom: 2px;"> <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
+                <p style="margin-bottom: 2px;"> <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
+                <p style="margin-bottom: 2px;"> <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
+              </div>
+            </info-window> -->
+
+
+            <!-- <ng-container *ngFor="let posRadius of plotedPackings">
+              <circle *ngIf="showPackings" [center]="[pack.latitude, pack.longitude]" [fillColor]="getRadiusWithAlert()"
+                [fillOpacity]="0.2" [strokeColor]="getRadiusWithAlert()" [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ posRadius.accuracy || 0 }}"></circle>
+            </ng-container> -->
+
+
+            <info-window id="iw" width="200" maxWidth="200">
+              <div *ngIf="marker.display">
+                <div>
+                  <div class="iw-title"> PLANTA {{marker.profile === "supplier" ? 'FORNECEDOR' : (marker.profile ===
+                    "normal" ? 'FÁBRICA' : 'OP. LOGÍSTICO')}}
+                    {{marker.plant}} </div>
+
+                  <div>
+                    <div class="table-responsive tabela">
+                      <table class="table" [hidden]="marker.nothing">
+                        <thead>
+                          <tr class="cabecalho" [hidden]="!marker.department">
+                            <th>Setor/Área Interna</th>
+                            <th class="teste">Opções</th>
+                          </tr>
+                          <tr class="cabecalho" [hidden]="!marker.packing">
+                            <th>Embalagens na planta</th>
+                            <th>Serial</th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr [hidden]="!marker.department" *ngFor="let dept of marker.departments?.data | paginate: { id:'departmentmap', 
+                                                                              itemsPerPage: marker.departments.meta.limit, 
+                                                                              currentPage: marker.departments.meta.page, 
+                                                                              totalItems:marker.departments.meta.total_docs}">
+                            <td>{{dept.name}}</td>
+                            <td class="teste2">
+                              <button class="button-view" (click)="open(dept._id)" type="button" name="button">Visualizar</button>
+                            </td>
+                          </tr>
+                          <tr [hidden]="!marker.packing" *ngFor="let packing of marker.packings?.data | paginate: { id:'packingmap', 
+                                                                                              itemsPerPage: marker.packings.meta.limit, 
+                                                                                              currentPage:marker.packings.meta.page, 
+                                                                                              totalItems:marker.packings.meta.total_docs}">
+                            <td>{{packing.code}}</td>
+                            <td>{{packing.serial}}</td>
+
+                          </tr>
+
+                        </tbody>
+                      </table>
+
+                      <div class="has-text-centered" [hidden]="!marker.department">
+                        <pagination-controls id="departmentmap" (pageChange)="pageChangedDepart($event)" autoHide="true"
+                          directionLinks="false"></pagination-controls>
+                      </div>
+
+                      <div class="has-text-centered" [hidden]="!marker.packing">
+                        <pagination-controls id="packingmap" (pageChange)="pageChangedPacking($event)" autoHide="true"
+                          directionLinks="false"></pagination-controls>
+                      </div>
+
+                      <div class="classVazio" [hidden]="!marker.nothing">
+                        Não existem embalagens nessa planta.
+                      </div>
+
+                    </div>
                   </div>
 
                 </div>
               </div>
-
-            </div>
-          </div>
-        </info-window>
-      </ngui-map>
+            </info-window>
+          </ngui-map>
+        </div>
+      </div>
     </div>
-  </div>
-
+    
+  </ng-sidebar-container>
 </div>

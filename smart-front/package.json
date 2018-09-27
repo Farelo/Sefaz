@@ -41,6 +41,7 @@
     "jquery": "^3.2.1",
     "jsonfile": "^4.0.0",
     "jw-bootstrap-switch-ng2": "^1.0.10",
+    "ng-sidebar": "^8.0.0",
     "ng-tether": "^0.1.0",
     "ng2-bootstrap": "^1.6.3",
     "ng2-file-upload": "^1.2.1",

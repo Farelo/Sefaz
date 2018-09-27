@@ -439,4 +439,13 @@ export class RastreamentoComponent implements OnInit {
     return pin;
   }
 
+  /**
+   * Misc ...
+   * Relative to side-menu
+   */
+  private _opened: boolean = false;
+
+  private _toggleSidebar() {
+    this._opened = !this._opened;
+  }
 }
