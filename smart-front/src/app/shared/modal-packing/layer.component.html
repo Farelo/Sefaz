@@ -27,7 +27,8 @@
       <p>FILTRAR POR:</p>
     </div>
     <div class="col-md-6">
-      <p class="text-right"> {{ path.length }} resultados encontrados</p>
+      <p *ngIf="!isLoading" class="text-right"> {{ getResultQuantity() }} </p>
+      <p *ngIf="isLoading" class="text-right"> Carregando resultados </p>
     </div>
   </div>
   <div class="map-filters form-row">

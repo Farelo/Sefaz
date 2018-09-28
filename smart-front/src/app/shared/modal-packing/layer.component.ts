@@ -90,6 +90,26 @@ export class LayerModalComponent implements OnInit {
   public showLastPosition: boolean = false;
 
   public showControlledPlants: boolean = true;
+
+  public isLoading = true;
+
+  getResultQuantity(): string {
+    let result = '';
+
+    console.log('this.path.length: ' + this.path.length);
+    
+    if (this.path.length == 0)
+      result = "Sem resultados";
+    
+    if (this.path.length == 1)
+      result = "1 resultado encontrado";
+
+    if (this.path.length > 1)
+      result = `${this.path.length} resultados encontrados`;
+    
+    return result;
+  }
+
   toggleShowControlledPlants(){
     this.showControlledPlants = !this.showControlledPlants;
   }
@@ -159,7 +179,9 @@ export class LayerModalComponent implements OnInit {
   }
 
   onFirstDateChange(newDate: Date) { 
+
     if (newDate !== null && this.finalDate !== null ){
+      this.isLoading = true;
       newDate.setHours(0, 0, 0, 0);
       this.getFilteredPositions(this.packing.code_tag, newDate.getTime(), this.finalDate.getTime(), 32000);
     }
@@ -167,8 +189,10 @@ export class LayerModalComponent implements OnInit {
 
   onFinalDateChange(newDate: Date) { 
     
-    if (this.initialDate !== null && newDate !== null )
+    if (this.initialDate !== null && newDate !== null ){
+      this.isLoading = true;
       this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), newDate.getTime(), 32000);
+    }
   }
   
 
@@ -377,6 +401,8 @@ export class LayerModalComponent implements OnInit {
     }else{
       this.lastPosition = null;
     }
+
+    this.isLoading = false;
     //console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
     //console.log('center: ' + JSON.stringify(this.center));
   }
