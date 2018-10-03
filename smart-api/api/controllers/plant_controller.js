@@ -88,6 +88,7 @@ exports.list_all = function (req, res) {
     .then(_.partial(responses.successHandler, res, req.user.refresh_token))
     .catch(_.partial(responses.errorHandler, res, 'Error to read plant'));
 };
+
 /**
  * List of all Plants without supplier and logistic_operator no binded with route
  */

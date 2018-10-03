@@ -1,166 +1,28 @@
-<div class="painel">
-  <div class="corpo">
-    
-    <h1>EMBALAGENS DO SISTEMA</h1>
-      
-    <!-- <div class="row ">
-      
-      <div class="col-md-12">
-        <h2>RESUMO DAS EMBALAGENS </h2>
-        <ngx-charts-advanced-pie-chart [scheme]="colorScheme" label="Total de Embalagens" [results]="packingsPerCondition.data" [gradient]="gradient">
-        </ngx-charts-advanced-pie-chart>
-      </div>
-    </div> -->
+<div class="conteudoTop">
+  <div class="painel">
+    <div class="corpo">
 
-    <div class="row ">
-      <div class="col-md-12">
-        <h2>RESUMO DAS EMBALAGENS </h2>
-      </div>
+      <h3>Embalagens do Sistema</h3>
 
-      <div class="col-md-2">
-        <ngx-charts-pie-chart [scheme]="colorScheme" label="Total de Embalagens" [results]="packingsPerCondition.data" [gradient]="gradient">
-        </ngx-charts-pie-chart>
-      </div>
+      <hr>
 
-      <div class="col-md-10">
-        <div class="container-fluid">
-          
-          <div class="row">
-            <div class="col-md-12 clear-padding row-resume">
-              <span class="status-resume-number">
-                {{ packingSum }}</span>
-              <span class="status-resume-description">embalagens totais</span>
-            </div>
-          </div>
+      <!-- Resumo de quantidades da Home -->
+      <app-resumo-home [resume]="resume"></app-resumo-home>
 
-          <div class="row ">
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(0) }}</li>
-                      <li class="status-type">Controladas</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-controlada"></div>
-                </div>
-              </div>
+      <!-- Categoria Pontos de Controle -->
+      <app-categoria-pontos-de-controle [resume]="resume"></app-categoria-pontos-de-controle>
 
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(1) }}</li>
-                      <li class="status-type">Ausentes</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-perdida"></div>
-                </div>
-              </div>
+      <!-- Em Viagem -->
+      <app-categoria-em-viagem [resume]="resume"></app-categoria-em-viagem>
 
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(2) }}</li>
-                      <li class="status-type">Incorretas</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-incorreta"></div>
-                </div>
-              </div>
+      <!-- Sem Sinal -->
+      <!-- <app-categoria-sem-sinal></app-categoria-sem-sinal> -->
 
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(3) }}</li>
-                      <li class="status-type">Viajando</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-viajando"></div>
-                </div>
-              </div>
-
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(5) }}</li>
-                      <li class="status-type">Atrasadas</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-permanencia"></div>
-                </div>
-              </div>
-
-              <div class="col-sm-4 col-md-2 clear-padding">
-                <div class="card-condition">
-                  <div class="status-content">
-                    <ul>
-                      <li class="status-number">{{ getSumByCondition(4) }}</li>
-                      <li class="status-type">Permanência</li>
-                    </ul>
-                  </div>
-                  <div class="status-color" id="status-atrasada"></div>
-                </div>
-                
-              </div>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="row ">
-
-      <div class="col-md-12 table-plant" >
-        <h2>TABELA DA QUANTIDADE DE EMBALAGENS POR PLANTA </h2>
-        <div class="table-responsive meuInventario">
-          <!-- Table -->
-          <table class="table col-md-12">
-            <thead>
-              <tr class="cabecalho">
-                <th style="width: 30%">Planta</th>
-                <th style="width: 50%">Localização</th>
-                <th style="width: 10%" class="m-text-center">Quantidade</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let packing of packingsPerPlant.data | paginate: {   
-                                                                  id: 'packingsPerPlant',
-                                                                  itemsPerPage: packingsPerPlant.meta.limit,
-                                                                  currentPage: packingsPerPlant.meta.page,
-                                                                  totalItems: packingsPerPlant.meta.total_docs}">
-                <td>{{packing.plant_name}}</td>
-                <td>{{packing.location}}</td>
-                <td class="m-text-center">{{packing.quantity_packings}}</td>
-                
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="has-text-centered">
-          <!-- <pagination-controls id="packingsPerPlant" (pageChange)="pageChanged($event)" autoHide="true" directionLinks="false"></pagination-controls> -->
-
-          <pagination-controls id="packingsPerPlant" (pageChange)="packingsPerPlant.meta.page = $event; loadPackingPerPlant()" directionLinks="false"
-            autoHide="true">
-          </pagination-controls>
-
-        </div>
-
-            
-        
-        <div class="classVazio" *ngIf="packingsPerPlant.data?.length < 1">
-          Não foram registradas plantas no sistema
-        </div>
-      </div>
-      
-    
+      <!-- Bateria Baixa -->
+      <app-categoria-bateria-baixa [resume]="resume"></app-categoria-bateria-baixa>
 
     </div>
   </div>
-</div>
 
-<br>
+  <br>
+</div>

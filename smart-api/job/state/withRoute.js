@@ -7,6 +7,7 @@ const evaluatesPermanenceTime = require('../evaluators/evaluates_permanence_time
 const modelOperations = require('../common/model_operations');
 const cleanObject = require('../common/cleanObject');
 const alertsType = require('../common/alerts_type');
+const statusTypePt = require('../common/status_type_pt');
 const statusType = require('../common/status_type');
 const evaluatesTraveling = require('../evaluators/evaluates_traveling');
 const historic = require('../historic/historic');
@@ -44,8 +45,10 @@ async function evaluate(packing, currentPlant) {
 
       if (packing.permanence.time_exceeded) {
         packing.status = statusType.PERMANENCE_EXCEEDED;
+        packing.status_pt = statusTypePt.PERMANENCE_EXCEEDED;
       } else {
         packing.status = statusType.NORMAL;
+        packing.status_pt = statusTypePt.NORMAL;
         await historic.initNormal(packing, oldPlant, currentPlant);
       }
       // Se estiver no local correto para de atualizar o trip.date da embalagem e o
@@ -58,6 +61,7 @@ async function evaluate(packing, currentPlant) {
       // PAra este fluxo apenas o alerta de LOCAL INCORRETO que pode explodir
       debug('Embalagem está no local incorreto');
       packing.status = statusType.INCORRECT_LOCAL;
+      packing.status_pt = statusTypePt.INCORRECT_LOCAL;
       // TODO: Trocar o packing.problem por packing.correct_location na collection
       packing = cleanObject.cleanFlags(packing); // limpa as flags
       packing = cleanObject.cleanMissing(packing); // limpa as informações sobre embalagem perdida

@@ -1,6 +1,7 @@
 <div class="">
-  <h1>EDITAR PLATAFORMA</h1>
-  <br />
+  <h2>Editar Plataforma</h2>
+  <hr>
+
   <form novalidate (ngSubmit)="onSubmit(project)" [formGroup]="project">
     <div class="campo">
       <p class="descricao">NOME</p>
@@ -9,11 +10,13 @@
         <input type="text" class="form-control" placeholder="Digite o nome do projeto" aria-describedby="basic-addon2" [(ngModel)]="name" formControlName="name">
       </div>
     </div>
-    <br />
+
+    <br/>
+
     <div class="botoes">
-      <button routerLink="/rc/cadastros/plataforma" class="botaoVoltar">Voltar</button>
+      <button routerLink="/rc/cadastros/plataforma" class="botaoVoltar">VOLTAR</button>
       <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
     </div>
-    <Br />
+    <br/>
   </form>
 </div>

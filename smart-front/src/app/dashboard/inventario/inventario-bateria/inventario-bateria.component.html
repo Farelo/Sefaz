@@ -1,5 +1,5 @@
 <div class="base-bg">
-  <h2 class="">BATERIA BAIXA</h2>
+  <h3 class="">Bateria Baixa</h3>
   
   <!-- Linha divisória -->
   <hr style="margin-top: 10px;">
@@ -70,7 +70,7 @@
               <td>{{packing.actual_plant | type}}</td>
               <td>{{packing.battery >= 0 ? (packing.battery | round) : 'Sem Registro'}} %</td>
 
-              <td>{{packing?.battery > 80 ? 'Alta' : (packing?.battery > 40 ? 'Medio' : 'Baixa') }}</td>
+              <td>{{packing?.battery > 80 ? 'Alta' : (packing?.battery > 40 ? 'Médio' : 'Baixo') }}</td>
 
             </tr>
           </tbody>

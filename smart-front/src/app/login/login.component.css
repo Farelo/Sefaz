@@ -2,6 +2,10 @@
 
 * { font-family: 'Roboto', sans-serif; }
 
+.form-group {
+    margin-bottom: 0rem;
+}
+
 .teste {
   background-image: url("../../assets/images/img-fundo.png");
   background-position: center;
@@ -67,7 +71,7 @@
   width: 100%;
 }
 
-h1 {
+h2 {
   color: white;
   font-weight: bold;
   margin-top: 40px;

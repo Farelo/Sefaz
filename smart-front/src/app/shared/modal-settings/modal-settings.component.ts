@@ -1,4 +1,4 @@
-import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 import { SettingsService, AuthenticationService, ToastService, CEPService, ProfileService } from '../../servicos/index.service';

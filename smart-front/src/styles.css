@@ -1,6 +1,9 @@
+@import "assets/hamburgers.css";
+
 body {
   background-image: url("./assets/images/textura.png");
   font-size: 15px;
+  overflow-y: scroll;
 }
 
 /* g {
@@ -103,16 +106,40 @@ body {
   outline: none !important;
 }
 
+/* .gm-style-iw {
+  top: 0 !important;
+  left: 0 !important; 
+  right: 0 !important;
+  /* top: 20px !important; */
+  /* width: 100% !important; */
+  /*padding: 6px;
+} */
+
 .gm-style-iw {
   top: 0 !important;
-  left: 0 !important;
-  top: 20px !important;
+  left: 0 !important; 
+  right: 0 !important;
+  /* top: 20px !important; */
   width: 100% !important;
-  padding-top: 6px;
-  padding-left: 6px;
+  padding: 6px;
 }
 
-.conteudoHome .popover.bs-popover-bottom .arrow {
+.iw-title {
+  color: #3e4f5f; 
+  padding: 10px 6px; 
+  font-weight: 700; 
+  font-size: 16px;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.ng-sidebar {
+  background-color: #fff !important;
+}
+
+/* .conteudoHome .popover.bs-popover-bottom .arrow {
   top: -12px !important;
 }
 
@@ -145,7 +172,7 @@ body {
 
 .conteudoHome .popover.bs-popover-left::after,
 .popover.bs-tether-element-attached-right::after
-{ top: 15px !important; }
+{ top: 15px !important; } 
 
 .menu1 .popover-body { text-align: center; }
 
@@ -179,13 +206,13 @@ body {
 .menu1 .popover.bs-popover-left::after,
 .popover.bs-tether-element-attached-right::after {
   top: 15px !important;
-}
-
+} */
+/* 
 @media (min-width: 1200px) { .menu1 .bs-popover-left { display: none !important; } }
 
-@media (max-width: 1199px) { .menu1 .bs-popover-bottom { display: none !important; } }
+@media (max-width: 1199px) { .menu1 .bs-popover-bottom { display: none !important; } } */
 
-.modal-content {
+/* .modal-content {
   border-radius: 0em !important;
   background-color: transparent;
   border-style: solid;
@@ -193,8 +220,13 @@ body {
   border-width: thin;
   padding: 5px;
   margin: auto;
-  margin-top: 70px;
+  margin-top: 40px;
+} */
+
+.modal-content {
+  padding: 5px;
 }
+
 .modalPequeno { width: 250px; }
 
 .modal-dialog { margin-top: 20px !important; }
@@ -274,7 +306,7 @@ body {
 }
 
 .ngx-pagination li {
-  margin-left: 10px !important;
+  margin-left: 10px;
 }
 
 .ngx-pagination li:hover {
@@ -442,10 +474,10 @@ hotTable {
 }
 
 
-
-
-
 .arrow::before {
   content: none !important;
 }
 
+button {
+  cursor: pointer;
+}

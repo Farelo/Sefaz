@@ -1,16 +1,11 @@
 <div class="base-bg">
-  <div class="row">
-    <div class="col-xs-10">
-      <h2>INVENTÁRIO GERAL</h2>
-    </div>
-
-    <div class="col-xs-2">
-      <button class="botao-opcao" tooltip="Exportar dados para o Excel" (click)="downloadExcel()">
-        <div class="bigger">
-          <i class="fa fa-download botao-download"></i>
-        </div>
-      </button>
-    </div>
+  <div class="input-group mb-3 d-flex justify-content-between">
+    <h3>Inventário Geral</h3>
+    <button class="botao-opcao" tooltip="Exportar dados para o Excel" (click)="downloadExcel()">
+      <div class="bigger">
+        <i class="fa fa-download botao-download"></i>
+      </div>
+    </button>
   </div>
 
   <!-- Linha divisória -->
@@ -19,7 +14,6 @@
   <!-- Filtros -->
   <div class="row">
 
-    <div class="col-sm-12 clear-padding">
       <!-- Fornecedor -->
       <div class="col-sm-4">
         <p>FORNECEDOR</p>
@@ -75,7 +69,7 @@
           </ng-template>
         </ng-select>
       </div>
-    </div>
+    
   </div>
   <br />
 
@@ -92,12 +86,15 @@
           <th>Fornecedor</th>
           <th>Equipamento</th>
           <th>Total de Equipamentos do Fornecedor (TEF)</th>
+
           <th>Quantidade nas Plantas (A)</th>
           <th>Quantidade no Fornecedor (B)</th>
           <th>Quantidade no Transito (C)</th>
-          <th>Quantidade em Local Incorreto</th>
-          <th>Total do Inventário On Line (TIOL = A+B+C)</th>
+
+          <th>Quantidade no Operator Logístico (D)</th>
+          <th>Total do Inventário On Line (TIOL = A+B+C+D)</th>
           <th>Diferença (TEF - TIOL)</th>
+
           <th>Atraso de Rota</th>
           <th>Local Incorreto</th>
           <th>Tempo de Permanencia</th>
@@ -112,16 +109,23 @@
                                                       totalItems: detailedGeneralInventory.meta.total_docs}">
 
         <tr [attr.aria-controls]="dayData.Fornecedor" (click)="loadPlantsInDetailedInventory(dayData); dayData.isCollapsed = !dayData.isCollapsed"
-          [attr.aria-expanded]="!dayData.isCollapsed">
+          [attr.aria-expanded]="!dayData.isCollapsed" style="cursor: pointer;">
           <td>{{dayData?.supplier?.name || '-'}}</td>
           <td>{{dayData.code}}</td>
           <td>{{dayData.quantityTotal}}</td>
+
           <td>{{dayData.quantityInFactory}}</td>
           <td>{{dayData.quantityInSupplier}}</td>
           <td>{{dayData.quantityTraveling + (dayData.all_alerts[0]?.late || 0) }}</td>
-          <td>{{dayData.quantityIncorrectLocal}}</td>
-          <td>{{dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling }}</td>
-          <td>{{dayData.quantityTotal - (dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling) - (dayData.all_alerts[0]?.late || 0)}}</td>
+         
+          <td>{{dayData.quantityInOpLogistic}}</td>
+          <td>{{dayData.quantityInFactory + dayData.quantityInSupplier + dayData.quantityTraveling + dayData.quantityInOpLogistic}}</td>
+          <td>{{dayData.quantityTotal - 
+                (dayData.quantityInFactory + 
+                dayData.quantityInSupplier + 
+                dayData.quantityTraveling + 
+                dayData.quantityInOpLogistic) - 
+                (dayData.all_alerts[0]?.late || 0)}}</td>
 
           <!-- Alertas -->
           <td>
@@ -139,6 +143,7 @@
               <span class="badge badge-pill badge-permanencia">{{dayData.all_alerts[0]?.permanence_time || '0'}}</span>
             </a>
           </td>
+
           <td>
             <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', dayData.code, dayData.project._id, dayData.supplier._id, 1]">
               <span class="badge badge-pill badge-ausente">{{dayData.all_alerts[0]?.missing || '0'}}</span>
@@ -158,6 +163,9 @@
                 Não há registros a serem exibidos.
               </div>
 
+
+              <!-- ------------------ -->
+              <!-- Tabela interna -->
               <div *ngIf="thereResult(dayData.all_plants) > 0" class="table-responsive meuInventario inner-table">
                 <table class="table">
                   <thead>
@@ -167,12 +175,12 @@
                     </tr>
                   </thead>
 
-                  <tbody class="">
-                    <tr *ngFor="let plantas of dayData.all_plants" [ngClass]="{'hidden': !getChild(plantas.current_plant.plant)}">
+                  <tbody *ngFor="let plantas of dayData.all_plants">
+                    <tr *ngIf="getChild(plantas.current_plant.plant)" [ngClass]="{'hidden': !getChild(plantas.current_plant.plant)}">
                       <td>{{getChild(plantas.current_plant.plant)}}</td>
                       <!-- <td>{{plantas.quantityTotal}} - {{plantas._id.problem}}</td> -->
                       <td>{{plantas.quantityTotal}}
-                        <span *ngIf="plantas._id.problem == true" class="badge badge-secondary">Incorreto</span>
+                        <span *ngIf="plantas._id.incorrect_local == true" class="badge badge-secondary">Incorreto</span>
                       </td>
                     </tr>
                   </tbody>

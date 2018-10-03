@@ -1,8 +1,6 @@
 <div class="modalFilho">
   <div class="header">
-    <h1>
-      <span>Detalhes da Embalagem </span>
-    </h1>
+    <h2> Detalhes da Embalagem </h2>
     
     <p>
       <span class="badge badge-secondary">Código: {{packing.code}}</span>
@@ -29,7 +27,8 @@
       <p>FILTRAR POR:</p>
     </div>
     <div class="col-md-6">
-      <p class="text-right"> {{ path.length }} resultados encontrados</p>
+      <p *ngIf="!isLoading" class="text-right"> {{ getResultQuantity() }} </p>
+      <p *ngIf="isLoading" class="text-right"> Carregando resultados </p>
     </div>
   </div>
   <div class="map-filters form-row">
@@ -49,7 +48,7 @@
       <!-- <nouislider id="accuracyRange" [min]="0" [max]="32" [step]="0.1" [(ngModel)]="someRange3" [tooltips]="[true]"></nouislider> -->
     <!-- </div> -->
 
-    <div class="form-group col-auto"> 
+    <!-- <div class="form-group col-auto"> 
       <div class="input-group-accuracy">
         <span class="input-group-accuracy-btn">
           <button type="button" class="btn btn-default btn-left-accuracy" (click)="decrementRange()">-</button>
@@ -58,6 +57,16 @@
         <span class="input-group-accuracy-btn">
           <button type="button" class="btn btn-default btn-right-accuracy" (click)="incrementRange()">+</button>
         </span>
+      </div>
+    </div> -->
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-secondary" type="button" (click)="decrementRange()">-</button>
+      </div>
+      <input type="text" style="width: 80px !important; text-align: center;" class="form-control" [(ngModel)]="accuracyRange" (ngModelChange)="rangechanged()">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" (click)="incrementRange()">+</button>
       </div>
     </div>
 
@@ -86,9 +95,10 @@
   </div>
 
   <div class="modalBody">
-    <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false">
+    <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false" [scrollwheel]="true">
       <polyline *ngIf="!showLastPosition" [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3" [icons]="icons"></polyline>
       
+
       <!-- ///////////// -->
       <!-- Plant -->
       <marker *ngFor="let posPlants of plants" 
@@ -99,7 +109,7 @@
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="pw">
           <div class="iw-title">INFORMAÇÕES</div> 
-          <div *ngIf="plant.display">
+          <div *ngIf="plant.display" class="info-window-content">
             <p>
               <span class="bold">Planta:</span> {{ plant.name }}</p> 
             <!-- <p>
@@ -118,8 +128,28 @@
           [visible]="showControlledPlants"
           radius="{{ settings.range_radius }}"></circle>
       
+
       <!-- ///////////// -->
       <!-- Logistic operator -->
+      <marker *ngFor="let posLogistic of logistics" 
+        [position]="[posLogistic.plant.lat, posLogistic.plant.lng]" 
+        (click)="clickedLogistic($event, posLogistic)"
+        [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }" 
+        [visible]="showControlledPlants">
+        <!-- <div class="custom-icon-map-plant"></div> -->
+        <info-window id="lw">
+          <div class="iw-title">INFORMAÇÕES</div>
+          <div *ngIf="plant.display" class="info-window-content">
+            <p>
+              <span class="bold">Operador Logístico:</span> {{ logistic.name }}</p>
+            <!-- <p>
+                    <span class="bold">Localização:</span> {{ plant.location }}</p> -->
+          </div>
+        </info-window>
+      </marker>
+      
+      <circle *ngFor="let posLogisticRadius of logistics" [center]="posLogisticRadius.latLng" [fillColor]="'#0044a8'" [fillOpacity]="0.15"
+        [strokeColor]="'#0044a8'" [strokeOpacity]="0.35" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
       
 
       <!-- ///////////// -->
@@ -132,7 +162,7 @@
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="sw">
           <div class="iw-title">INFORMAÇÕES</div>
-          <div *ngIf="supplier.display">
+          <div *ngIf="supplier.display" class="info-window-content">
             <p>
               <span class="bold">Fornecedor:</span> {{ supplier.name }}</p>
             <!-- <p>

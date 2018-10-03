@@ -84,3 +84,21 @@ hr {
 tbody > tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
+
+/* Sort table*/
+.sort-icons {
+  width: 15px; 
+  text-align: center; 
+  font-size: 13px;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */ 
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}

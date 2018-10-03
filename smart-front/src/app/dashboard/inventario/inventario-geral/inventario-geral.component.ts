@@ -62,11 +62,12 @@ export class InventarioGeralComponent implements OnInit {
   }
 
   public getChild(parent: any = { plant_name: '' }) {
-    return parent.plant_name
+    //console.log('parent.plant_name: ' + parent.plant_name);
+    return parent.plant_name;
   }
   
   onClearSupplier(){
-    console.log('clear supplier');
+    //console.log('clear supplier');
     this.selectedEquipament = null;
   }
 
@@ -74,7 +75,7 @@ export class InventarioGeralComponent implements OnInit {
    * Equipment select was cleared
    */
   onClear() {
-    console.log('clear equipment');
+    //console.log('clear equipment');
     this.supplierDetailedInventory(this.selectedSupplier);
   }
 
@@ -97,13 +98,13 @@ export class InventarioGeralComponent implements OnInit {
     for (let i = 0; i < all_plants.length; i++){
 
       if (all_plants[i].current_plant.plant !== undefined){
-        console.log('current_plant: ' + JSON.stringify(all_plants[i].current_plant));
+        //console.log('current_plant: ' + JSON.stringify(all_plants[i].current_plant));
         acum++;
         break;
       }
     }
 
-    console.log('acum: ' + acum);
+    //console.log('acum: ' + acum);
     return acum;
   }
 
@@ -118,7 +119,7 @@ export class InventarioGeralComponent implements OnInit {
     this.inventoryService.getDetailedGeneralInventory(10, this.detailedGeneralInventory.meta.page).subscribe(result => {
       this.detailedGeneralInventory = result;
       this.setInitialCollapse(true);
-      console.log('this.detailedGeneralInventory: ' + JSON.stringify(this.detailedGeneralInventory));
+      //console.log('this.detailedGeneralInventory: ' + JSON.stringify(this.detailedGeneralInventory));
     }, err => { console.log(err) });
   }
 
@@ -146,7 +147,7 @@ export class InventarioGeralComponent implements OnInit {
         }, err => { console.log(err) });
       }, err => { console.log(err) });
 
-      console.log('selectedSupplier: ' + JSON.stringify(this.selectedSupplier));
+      //console.log('selectedSupplier: ' + JSON.stringify(this.selectedSupplier));
     } else {
       this.loadDetailedInventory()
       this.selectedSupplier = null
@@ -159,9 +160,9 @@ export class InventarioGeralComponent implements OnInit {
   equipamentDetailedInventory(event: any) {
     if (event) {
       this.selectedEquipament = event;
-      console.log(event)
+      //console.log(event)
       this.inventoryService.getDetailedGeneralInventoryBySupplierAndEquipment(10, this.detailedGeneralInventory.meta.page, this.selectedSupplier._id, event.packing).subscribe(res => {
-        console.log(res)
+        //console.log(res)
         this.detailedGeneralInventory = res;
         this.setInitialCollapse(true);
       }, err => { console.log(err) });
@@ -180,7 +181,6 @@ export class InventarioGeralComponent implements OnInit {
 
   downloadExcel(): void {
     console.log('Download on excel');
-
 
     let params = {};
     if (this.selectedSupplier) params['supplier_id'] = this.selectedSupplier._id;
@@ -236,7 +236,6 @@ export class InventarioGeralComponent implements OnInit {
     plain.unshift(cabecalho);
 
     return plain;
-
   }
 
 }

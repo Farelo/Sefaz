@@ -1,0 +1,169 @@
+.grupo-categoria {
+  margin-top: 30px;
+}
+
+.quantidade-total-categoria {
+  margin-left: auto;
+  border-radius: 4px;
+  background-color: #969eab;
+  color: #fff;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 20px;
+}
+
+.categoria-progress {
+  height: 4px;
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  box-shadow: unset;
+}
+
+.progress-bar-full {
+    background-color: #47bac1 !important;
+}
+
+.progress-bar-empty {
+    background-color: #cccccc !important;
+}
+
+.status-controlada{
+  background-color: #666666;
+}
+
+.status-ausente{
+  background-color: #ef5562;
+}
+
+.status-incorreta{
+  background-color: #f77737;
+}
+
+.status-viajando{
+  background-color: #027f01;
+}
+
+.status-permanencia{
+  background-color: #4c7bff;
+}
+
+.status-atrasada{
+  background-color: #4dc9ff;
+}
+
+.status-sem-sinal {
+  background-color: #808080;
+}
+
+.status-bateria {
+  background-color: #f8bd37;
+}
+
+/* Linha categoria */
+.linha-categoria{
+  margin-top: 6px;
+  border-radius: 5px;
+  display: flex;
+}
+
+.tick-categoria {
+  background-color: #f2f5fa;
+  height: 40px;
+  width: calc( 100% - 3px );
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  margin-left: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.quantidade-categoria {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+.nome-categoria {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #354052;
+  margin-left: 15px;
+}
+
+.botao-collapse {
+  margin-left: auto;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 30px;
+  display: flex;
+}
+
+.botao-collapse:hover {
+  background-color: #fcfcfc;
+}
+
+.button-line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: #969eab; 
+  border-radius: 5px;
+}
+
+/* Hamburguer */
+.hamburger{
+  padding: 4px 6px;
+  outline: none;
+
+  margin-left: auto;
+  border-radius: 4px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  height: 30px;
+}
+
+.hamburger:hover{
+  background-color: #fcfcfc;
+}
+
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+	width: 20px;
+	height: 2px;
+}
+.hamburger-box {
+  width: 20px;
+}
+
+.hamburger-inner {
+  background-color: #969eab;
+  margin-top: unset;
+  top: 40%;
+  width: 100%;
+}
+
+.hamburger-inner::before {
+    top: -6px;
+    background-color: #969eab;
+}
+
+.hamburger-inner::after {
+    bottom: -6px;
+    background-color: #969eab;
+}

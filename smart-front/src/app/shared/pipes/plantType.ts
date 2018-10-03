@@ -6,7 +6,7 @@ import { constants } from '../../../environments/constants';
 export class PlantType {
   transform(actual_plant: any) {
     
-    console.log('actual_plant:' + JSON.stringify(actual_plant));
+    //console.log('actual_plant:' + JSON.stringify(actual_plant));
     
     if (actual_plant){
       if (actual_plant.local) {
@@ -17,10 +17,10 @@ export class PlantType {
         if (String(actual_plant.local) === 'Logistic') return constants.PLANT_TYPE.LOGISTIC;
 
       } else {
-        return 'Sem registro';
+        return '-';
       }
     } else {
-      return 'Sem registro';
+      return '-';
     }
     
   }

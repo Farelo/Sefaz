@@ -1,5 +1,3 @@
-
-
 export  { TagsService } from './tags.service';
 export  { ToastService } from './toast.service';
 export  { SuppliersService } from './suppliers.service';
@@ -20,5 +18,5 @@ export  { CEPService } from './cep.service';
 export  { AuthenticationService } from './auth.service';
 export  { AlertsService } from './alerts.service';
 export  { AuthInterceptor } from '../interceptor/auth.interceptor';
-
-
+export  { HomeService } from './home.service';
+export  { MapsService } from './maps.service';

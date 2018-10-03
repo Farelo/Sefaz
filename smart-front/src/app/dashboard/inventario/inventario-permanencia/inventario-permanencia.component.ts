@@ -1,44 +1,35 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import { Pagination } from '../../../shared/models/pagination';
-import {
-  InventoryService,
-  PackingService,
-  AuthenticationService,
-} from '../../../servicos/index.service';
-import { constants } from '../../../../environments/constants';
+import { Pagination } from '../../../shared/models/pagination'; 
+import { InventoryService, PackingService, AuthenticationService } from '../../../servicos/index.service';
+
 @Component({
   selector: 'app-inventario-permanencia',
   templateUrl: './inventario-permanencia.component.html',
-  styleUrls: ['./inventario-permanencia.component.css'],
+  styleUrls: ['./inventario-permanencia.component.css']
 })
 export class InventarioPermanenciaComponent implements OnInit {
-  @Input()
-  selectedEquipament: any;
-  @Input()
-  selectedSerial: any;
 
-  public logged_user: any;
-  public serials: any[];
+  @Input() selectedEquipament: any;
+  @Input() selectedSerial: any;
+
+  public logged_user: any; 
   public serial = false;
-  public permanence: Pagination = new Pagination({ meta: { page: 1 } });
+  public permanence: Pagination = new Pagination({ meta: { page: 1 } }); 
+  public serials: any[];
   public packings: any[];
 
   constructor(
     private inventoryService: InventoryService,
     private packingService: PackingService,
-    private auth: AuthenticationService,
+    private auth: AuthenticationService
   ) {
+
     let user = this.auth.currentUser();
     let current_user = this.auth.currentUser();
-    this.logged_user = user.supplier
-      ? user.supplier._id
-      : user.official_supplier
-        ? user.official_supplier
-        : user.logistic
-          ? user.logistic.suppliers
-          : user.official_logistic
-            ? user.official_logistic.suppliers
-            : undefined; //works fine
+    this.logged_user = (user.supplier ? user.supplier._id : (
+      user.official_supplier ? user.official_supplier : (
+        user.logistic ? user.logistic.suppliers : (
+          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
   ngOnInit() {
@@ -49,68 +40,40 @@ export class InventarioPermanenciaComponent implements OnInit {
     console.log('clear equipment');
     this.serial = false;
     this.serials = [];
-    this.permanence = new Pagination({ meta: { page: 1 } });
-    this.permanence.data = [];
+    this.permanence = new Pagination({ meta: { page: 1 } })
+    this.permanence.data = []
     this.selectedSerial = null;
   }
 
   ngOnChanges(changes: SimpleChanges) {
+
     if (changes['selectedEquipament']) {
-      console.log(
-        'ngOnChanges selectedEquipament: ' +
-          JSON.stringify(this.selectedEquipament),
-      );
-      if (
-        this.selectedEquipament !== null &&
-        this.selectedEquipament !== undefined
-      )
+      console.log('ngOnChanges selectedEquipament: ' + JSON.stringify(this.selectedEquipament));
+      if ((this.selectedEquipament !== null) && (this.selectedEquipament !== undefined))
         this.permanenceInventory();
-      else this.permanence = new Pagination({ meta: { page: 1 } });
-      this.permanence.data = [];
+      else
+        this.permanence = new Pagination({ meta: { page: 1 } }); 
+        this.permanence.data = [];
     }
 
     if (changes['selectedSerial']) {
-      console.log(
-        'ngOnChanges selectedSerial: ' + JSON.stringify(this.selectedSerial),
-      );
-      if (this.selectedSerial !== null && this.selectedSerial !== undefined)
+      console.log('ngOnChanges selectedSerial: ' + JSON.stringify(this.selectedSerial));
+      if ((this.selectedSerial !== null) && (this.selectedSerial !== undefined))
         this.permanenceInventorySerial();
-      else if (
-        this.selectedEquipament !== null &&
-        this.selectedEquipament !== undefined
-      )
-        this.permanenceInventory();
+      else
+        if ((this.selectedEquipament !== null) && (this.selectedEquipament !== undefined))
+          this.permanenceInventory();
     }
   }
 
   loadPackings() {
     if (this.logged_user instanceof Array) {
-      this.packingService
-        .getPackingsDistinctsByLogistic(this.logged_user)
-        .subscribe(
-          result => (this.packings = result.data),
-          err => {
-            console.log(err);
-          },
-        );
+      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
+
     } else if (this.logged_user) {
-      this.packingService
-        .getPackingsDistinctsBySupplier(this.logged_user)
-        .subscribe(
-          result => (this.packings = result.data),
-          err => {
-            console.log(err);
-          },
-        );
+      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
     } else {
-      this.packingService.getPackingsDistincts().subscribe(
-        result => {
-          this.packings = result.data;
-        },
-        err => {
-          console.log(err);
-        },
-      );
+      this.packingService.getPackingsDistincts().subscribe(result => { this.packings = result.data }, err => { console.log(err) });
     }
   }
 
@@ -123,58 +86,31 @@ export class InventarioPermanenciaComponent implements OnInit {
     this.serials = [];
 
     if (this.selectedEquipament) {
+
       this.packingService
-        .getPackingsEquals(
-          this.selectedEquipament.supplier._id,
-          this.selectedEquipament.project._id,
-          this.selectedEquipament.packing,
-        )
-        .subscribe(
-          result => {
-            this.serials = result.data;
-            this.inventoryService
-              .getInventoryPermanence(
-                10,
-                this.permanence.meta.page,
-                this.selectedEquipament.packing,
-              )
-              .subscribe(
-                result => (this.permanence = result),
-                err => {
-                  console.log(err);
-                },
-              );
-          },
-          err => {
-            console.log(err);
-          },
-        );
+        .getPackingsEquals(this.selectedEquipament.supplier._id, this.selectedEquipament.project._id, this.selectedEquipament.packing)
+        .subscribe(result => {
+          this.serials = result.data;
+          this.inventoryService
+            .getInventoryPermanence(10, this.permanence.meta.page, this.selectedEquipament.packing)
+            .subscribe(result => this.permanence = result, err => { console.log(err) });
+        }, err => { console.log(err) })
     }
   }
 
   permanenceInventorySerial() {
     this.serial = true;
 
-    this.inventoryService
-      .getInventoryPackingHistoric(
-        10,
-        this.permanence.meta.page,
-        this.selectedSerial,
-        this.selectedEquipament.packing,
-        this.logged_user,
-      )
-      .subscribe(
-        result => {
-          this.permanence = result;
-          this.permanence.data = this.permanence.data.map(elem => {
-            elem.status = constants[elem.status];
-            return elem;
-          });
-          console.log('result: ', result);
-        },
-        err => {
-          console.log(err);
-        },
-      );
+    this.inventoryService.
+      getInventoryPackingHistoric(10, 
+        this.permanence.meta.page, 
+        this.selectedSerial, 
+        this.selectedEquipament.packing, 
+        this.logged_user).subscribe(result => {
+
+        this.permanence = result;
+        //console.log('result: ' + result);
+    }, err => { console.log(err) });
   }
+
 }

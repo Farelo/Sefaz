@@ -31,6 +31,8 @@ async function compileSwagger() {
   return 'Criação da documentação do Swagger';
 }
 
+compileSwagger().then(() => console.log("compileSwagger"))
+
 module.exports = {
   compileSwagger,
 };

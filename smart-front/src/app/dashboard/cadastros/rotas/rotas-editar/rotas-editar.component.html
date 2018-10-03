@@ -1,6 +1,7 @@
 <div class="">
-  <h1>EDITAR ROTA</h1>
-  <br />
+  <h2>Editar Rota</h2>
+  <hr>
+  
   <form novalidate (ngSubmit)="onSubmit(route)" [formGroup]="route" #formDir="ngForm">
 
     <div class="row">
@@ -52,10 +53,10 @@
           <p class="descricao">DEFINA UM TEMPO MÁXIMO DE VIAGEM</p>
           <p class="explicacao"></p>
           <div class="col-md-6">
-            <ngb-timepicker [(ngModel)]="time_max" [seconds]="true" formControlName="max"></ngb-timepicker>
+            <ngb-timepicker [(ngModel)]="time_max" [seconds]="true" formControlName="max" size="small"></ngb-timepicker>
             <!-- <timepicker [(ngModel)]="max" formControlName="max"></timepicker> -->
             <p class="requiredText" *ngIf="(route.get('time.max').hasError('required') && route.get('time.max').touched)
-          || (route.get('time.max').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+              || (route.get('time.max').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
           </div>
           <div class="col-md-6" style="padding-top: 5px;">
             <span class="titulo">DIAS: </span><span> {{time_max.hour}}</span><br>
@@ -69,10 +70,10 @@
           <p class="descricao">DEFINA UM TEMPO MÍNIMO DE VIAGEM</p>
           <p class="explicacao"></p>
           <div class="col-md-6">
-            <ngb-timepicker [(ngModel)]="time_min" [seconds]="true" formControlName="min">ppp</ngb-timepicker>
+            <ngb-timepicker [(ngModel)]="time_min" [seconds]="true" formControlName="min" size="small">ppp</ngb-timepicker>
             <!-- <timepicker [(ngModel)]="min" formControlName="min"></timepicker> -->
             <p class="requiredText" *ngIf="(route.get('time.min').hasError('required') && route.get('time.min').touched)
-          || (route.get('time.min').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+              || (route.get('time.min').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
           </div>
           <div class="col-md-6" style="padding-top: 5px;">
             <span class="titulo">DIAS: </span><span> {{time_min.hour}}</span><br>
@@ -86,7 +87,7 @@
           <p class="descricao">DEFINA A TOLERÂNCIA MÁXIMA DE ATRASO</p>
           <p class="explicacao"></p>
           <div class="col-md-6">
-            <ngb-timepicker [(ngModel)]="time_delay" [seconds]="true" formControlName="delay">ppp</ngb-timepicker>
+            <ngb-timepicker [(ngModel)]="time_delay" [seconds]="true" formControlName="delay" size="small">ppp</ngb-timepicker>
             <!-- <timepicker [(ngModel)]="min" formControlName="min"></timepicker> -->
             <p class="requiredText" *ngIf="(route.get('time.delay').hasError('required') && route.get('time.delay').touched)
                   || (route.get('time.delay').hasError('required') && formDir.submitted)">Campo Obrigatório</p>

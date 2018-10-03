@@ -12,7 +12,7 @@ async function updateIncontidaStatus(packing) {
     },
     {
       date: packing.incontida.date,
-      temperature: packing.temperature,
+      temperature: packing.temperature || 0,
       permanence_time: packing.incontida.time,
       serial: packing.serial,
       supplier: packing.supplier,
@@ -37,7 +37,7 @@ async function updateNormalStatus(packing) {
       department: packing.department,
       plant: packing.actual_plant,
       date: packing.permanence.date,
-      temperature: packing.temperature,
+      temperature: packing.temperature || 0,
       permanence_time: packing.permanence.amount_days,
       serial: packing.serial,
       supplier: packing.supplier,
@@ -62,8 +62,8 @@ async function updatePermanenceStatus(packing) {
       actual_gc16: packing.actual_gc16,
       department: packing.department,
       plant: packing.actual_plant,
-      date: packing.permanence.date_exceeded,
-      temperature: packing.temperature,
+      date: packing.permanence.date_exceeded || 0,
+      temperature: packing.temperature || 0,
       permanence_time: packing.permanence.amount_days_exceeded,
       serial: packing.serial,
       supplier: packing.supplier,
@@ -89,7 +89,7 @@ async function updateIncorrectStatus(packing) {
       department: packing.department,
       plant: packing.actual_plant,
       date: packing.permanence.date,
-      temperature: packing.temperature,
+      temperature: packing.temperature || 0,
       permanence_time: packing.permanence.amount_days,
       serial: packing.serial,
       supplier: packing.supplier,
@@ -112,7 +112,7 @@ async function updateMissingStatus(packing) {
     },
     {
       date: packing.packing_missing.date,
-      temperature: packing.temperature,
+      temperature: packing.temperature || 0,
       permanence_time: packing.packing_missing.time_countdown,
       serial: packing.serial,
       supplier: packing.supplier,
@@ -135,7 +135,7 @@ async function updateTravelingStatus(packing) {
     },
     {
       date: packing.trip.date,
-      temperature: packing.temperature,
+      temperature: packing.temperature || 0,
       permanence_time: packing.trip.time_countdown,
       serial: packing.serial,
       supplier: packing.supplier,
@@ -158,7 +158,7 @@ async function updateLateStatus(packing) {
     },
     {
       date: packing.trip.date_late,
-      temperature: packing.temperature,
+      temperature: packing.temperature || 0,
       permanence_time: packing.trip.time_late,
       serial: packing.serial,
       supplier: packing.supplier,
@@ -176,7 +176,7 @@ async function createIncontidaStatus(packing) {
   const newHistoric = await new schemas.historicPackings({
     actual_gc16: packing.actual_gc16,
     date: packing.incontida.date,
-    temperature: packing.temperature,
+    temperature: packing.temperature || 0,
     permanence_time: packing.incontida.time,
     serial: packing.serial,
     supplier: packing.supplier,
@@ -195,7 +195,7 @@ async function createNormalStatus(packing) {
     plant: packing.actual_plant,
     department: packing.department,
     date: packing.permanence.date,
-    temperature: packing.temperature,
+    temperature: packing.temperature || 0,
     permanence_time: packing.permanence.amount_days,
     serial: packing.serial,
     supplier: packing.supplier,
@@ -213,8 +213,8 @@ async function createPermanenceStatus(packing) {
     actual_gc16: packing.actual_gc16,
     plant: packing.actual_plant,
     department: packing.department,
-    date: packing.permanence.date_exceeded,
-    temperature: packing.temperature,
+    date: packing.permanence.date_exceeded || 0,
+    temperature: packing.temperature || 0,
     permanence_time: packing.permanence.amount_days_exceeded,
     serial: packing.serial,
     supplier: packing.supplier,
@@ -233,7 +233,7 @@ async function createIncorrectStatus(packing) {
     plant: packing.actual_plant,
     department: packing.department,
     date: packing.permanence.date,
-    temperature: packing.temperature,
+    temperature: packing.temperature || 0,
     permanence_time: packing.permanence.amount_days,
     serial: packing.serial,
     supplier: packing.supplier,
@@ -250,7 +250,7 @@ async function createMissingStatus(packing) {
   const newHistoric = await new schemas.historicPackings({
     actual_gc16: packing.actual_gc16,
     date: packing.packing_missing.date,
-    temperature: packing.temperature,
+    temperature: packing.temperature || 0,
     permanence_time: packing.packing_missing.time_countdown,
     serial: packing.serial,
     supplier: packing.supplier,
@@ -267,7 +267,7 @@ async function createTravelingStatus(packing) {
   const newHistoric = await new schemas.historicPackings({
     actual_gc16: packing.actual_gc16,
     date: packing.trip.date,
-    temperature: packing.temperature,
+    temperature: packing.temperature || 0,
     permanence_time: packing.trip.time_countdown,
     serial: packing.serial,
     supplier: packing.supplier,
@@ -284,7 +284,7 @@ async function createLateStatus(packing) {
   const newHistoric = await new schemas.historicPackings({
     actual_gc16: packing.actual_gc16,
     date: packing.trip.date_late,
-    temperature: packing.temperature,
+    temperature: packing.temperature || 0,
     permanence_time: packing.trip.time_late,
     serial: packing.serial,
     supplier: packing.supplier,
@@ -332,6 +332,11 @@ async function removeHistoric(packing, date, status) {
   });
 }
 
+async function hasHistoricPacking(packing) {
+  const historicPacking = await schemas.historicPackings.find({ packing: packing._id })
+  return historicPacking.length > 0 ? true : false
+}
+
 module.exports = {
   updateIncontidaStatus,
   updateTravelingStatus,
@@ -346,4 +351,5 @@ module.exports = {
   removeHistoric,
   updatePermanenceStatus,
   createPermanenceStatus,
+  hasHistoricPacking
 };

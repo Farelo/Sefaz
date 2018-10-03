@@ -70,7 +70,7 @@ export class RotasCadastrarComponent implements OnInit {
     partial_delay = partial_max + this.time_delay.minute * 1000 * 60 * 60;
     partial_delay = partial_max + this.time_delay.second * 1000 * 60;
 
-    console.log('partial_delay: ' + partial_delay);
+    //console.log('partial_delay: ' + partial_delay);
     
     this.route['controls'].hashPacking.setValue(this.route['controls'].supplier.value._id + this.route['controls'].packing_code.value.id);
     value.hashPacking = this.route['controls'].supplier.value._id + this.route['controls'].packing_code.value.id;
@@ -82,7 +82,7 @@ export class RotasCadastrarComponent implements OnInit {
       value.project = value.packing_code.project._id;
       value.packing_code = value.packing_code.id;
 
-      console.log('value: ' + JSON.stringify(value));
+      //console.log('value: ' + JSON.stringify(value));
 
       this.RoutesService.createRoute(value)
         .subscribe(result => {

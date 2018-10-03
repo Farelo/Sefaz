@@ -1,12 +1,13 @@
 <div class="">
-  <h1>EDITAR PLANTA</h1>
-  <br />
+  <h2>Editar Planta</h2>
+  <hr>
+  
   <form novalidate (ngSubmit)="onSubmit(plant)" [formGroup]="plant">
     <div class="row">
       <div class="col-md-12">
 
         <div class="campo">
-          <h3>LOCAL (Facilita a busca)</h3>
+          <p class="descricao">LOCAL (Facilita a busca)</p>
           <input places-auto-complete (place_changed)="placeChanged($event)" [types]="['geocode']" class="form-control" style="margin-bottom: 10px;" placeholder="Digite o local da planta" />
           <p>
             <ngui-map [zoom]="zoom" [center]="center" (click)="onClick($event)">

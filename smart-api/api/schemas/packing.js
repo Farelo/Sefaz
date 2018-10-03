@@ -9,8 +9,13 @@ const packingSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['NORMAL', 'INCONTIDA', 'MISSING', 'LATE', 'INCORRECT_LOCAL', 'TRAVELING', 'NO_SIGNAL'],
-    default: 'NORMAL',
+    enum: ['NORMAL', 'INCONTIDA', 'MISSING', 'LATE', 'INCORRECT_LOCAL', 'TRAVELING', 'NO_SIGNAL', 'PERMANENCE_EXCEEDED'],
+    default: 'NORMAL'
+  },
+  status_pt: {
+    type: String,
+    enum: ['NORMAL', 'INCONTIDA', 'AUSENTE', 'ATRASADA', 'LOCAL_INCORRETO', 'VIAJANDO', 'SEM_SINAL', 'TEMPO DE PERMANENCIA'],
+    default: 'NORMAL'
   },
   type: String,
   weigth: Number,
@@ -39,7 +44,10 @@ const packingSchema = new mongoose.Schema({
   },
   lastCommunication: Number,
   permanence: {
-    time_exceeded: Number,
+    time_exceeded: {
+      type: Boolean,
+      default: false
+    },
     date: Number,
     date_exceeded: Number,
     amount_days_exceeded: Number,

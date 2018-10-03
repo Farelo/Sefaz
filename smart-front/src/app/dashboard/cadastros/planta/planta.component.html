@@ -1,32 +1,30 @@
-<div class="row">
-  <div class="col-xs-7">
-    <input type="text" class="form-control meuInput" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()">
-  </div>
-  <div class="col-xs-2">
-
-  </div>
-  <div class="col-xs-3">
-    <button class="mais" routerLink="cadastrar">
-      Novo
-    </button>
-  </div>
+<div class="input-group mb-3 d-flex justify-content-between">
+  <input type="text" class="form-control mr-4" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup)="searchEvent($event)">
+  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
 </div>
 
 <div class="table-responsive">
   <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
-        <th>Nome</th>
-
+        <th *ngFor="let header of headers">
+          <span class="noselect d-flex" (click)="headerClick(header)">
+            {{ header.label }}
+            <span class="sort-icons noselect">
+              <i class="fa fa-sort default-order" *ngIf="(header.name !== sort.name)"></i>
+              <i class="fa fa-caret-up" *ngIf="(header.name == sort.name) && (sort.order == 'asc')"></i>
+              <i class="fa fa-caret-down" *ngIf="(header.name == sort.name) && (sort.order == 'desc')"></i>
+            </span>
+          </span>
+        </th>
         <th class="opcoes"></th>
       </tr>
     </thead>
     <tbody>
-      <tr  *ngFor="let plant of data.data | paginate: {
-                                                      id:'plant',
-                                                      itemsPerPage: data.meta.limit,
-                                                      currentPage: data.meta.page,
-                                                      totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
+      <tr *ngFor="let plant of data | paginate: { 
+                                                  itemsPerPage: 10,
+                                                  currentPage: p,
+                                                  totalItems: data.length}; index as index" (mouseover)='hoveredIndex = index'>
         <td>{{plant.plant_name}}</td>
 
         <td class="teste">
@@ -43,14 +41,11 @@
     </tbody>
   </table>
 </div>
-<div class="classVazio" *ngIf="data.data?.length < 1">
+<div class="classVazio" *ngIf="data.length < 1">
   Ainda não existem plantas cadastradas.
 </div>
 <br />
 <div class="has-text-centered">
-    <pagination-controls id='plant' class="my-pagination"
-    (pageChange)="pageChanged($event)"
-    directionLinks="false"
-    autoHide="true">
-    </pagination-controls>
+  <pagination-controls class="my-pagination" (pageChange)="p = $event" directionLinks="false" autoHide="true">
+  </pagination-controls>
 </div>

@@ -33,27 +33,16 @@ paths:
             description: "Error"
             schema:
               $ref: "#/definitions/ErrorResponse"
-  /logistic_operator/list/pagination/{limit}/{page}:
+  /logistic_operator/list/:
     x-swagger-router-controller: logistic_operator_controller
     get:
       tags:
         - "Logistic Operator"
       summary: "Retrieve all logistic operators on the system with pagination"
       description: ""
-      operationId: logistic_operator_listPagination
+      operationId: logistic_operator_list
       security:
         - Bearer: []
-      parameters:
-      - in: "path"
-        name: "limit"
-        description: "The limit of logistic operators that will be returned"
-        required: true
-        type: string
-      - in: "path"
-        name: "page"
-        description: "Retrieve a logistic operators related this page"
-        required: true
-        type: string
       responses:
         200:
           description: "Successfully"
