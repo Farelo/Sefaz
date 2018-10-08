@@ -32,7 +32,7 @@ module.exports = router
  *         in: body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/UserObject'
+ *           $ref: '#/definitions/UserSignInObject'
  *     responses:
  *       200:
  *         description: Is valid request
@@ -53,6 +53,8 @@ module.exports = router
  *   get:
  *     summary: All users
  *     description: Return all users
+ *     security:
+ *       - Bearer: []
  *     tags:
  *       - Users
  *     produces:
@@ -77,6 +79,8 @@ module.exports = router
  *   get:
  *     summary: Show a user
  *     description: Show a user by id
+ *     security:
+ *       - Bearer: []
  *     tags:
  *       - Users
  *     produces:
@@ -106,6 +110,8 @@ module.exports = router
  *   post:
  *     summary: Create a user
  *     description: Create a user to be logged in
+ *     security:
+ *       - Bearer: []
  *     tags:
  *       - Users
  *     produces:
@@ -137,6 +143,8 @@ module.exports = router
  *   patch:
  *     summary: Update a user
  *     description: Update a user by id
+ *     security:
+ *       - Bearer: []
  *     tags:
  *       - Users
  *     parameters:
@@ -168,6 +176,8 @@ module.exports = router
  *       - Users
  *     summary: Remove a user
  *     description:  Remove a user by id
+ *     security:
+ *       - Bearer: []
  *     parameters:
  *       - name: id
  *         description: User id
@@ -199,5 +209,21 @@ module.exports = router
  *       password:
  *         type: string
  *       company:
+ *         type: string
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   UserSignInObject:
+ *     type: object
+ *     required:
+ *       - email
+ *       - password
+ *     properties:
+ *       email:
+ *         type: string
+ *       password:
  *         type: string
  */

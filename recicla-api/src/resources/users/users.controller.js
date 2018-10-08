@@ -12,7 +12,7 @@ exports.sign_in = async (req, res) => {
     if (!valid_password) return res.status(400).send('Invalid password')
 
     const token = user.generateUserToken()
-    res.send({ email: user.email, accessToken: token })
+    res.send({ email: user.email, role: user.role, accessToken: token })
 }
 
 exports.all = async (req, res) => {
@@ -54,8 +54,7 @@ exports.update = async (req, res) => {
     let user = await User.findById(req.params.id)
     if (!user) return res.status(404).send('Invalid user')
 
-    const options = { runValidators: true, new: true }
-
+    const options = { new: true }
     user = await User.findByIdAndUpdate(req.params.id, req.body, options)
 
     res.json(_.pick(user, ['_id', 'email']))
