@@ -17,7 +17,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /api/users/sign_in:
+ * /users/sign_in:
  *   post:
  *     summary: Authenticate
  *     description: Authenticate a user to be logged in
@@ -48,7 +48,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /api/users:
+ * /users:
  *   get:
  *     summary: All users
  *     description: Return all users
@@ -72,7 +72,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /api/users/{id}:
+ * /users/{id}:
  *   get:
  *     summary: Show a user
  *     description: Show a user by id
@@ -101,7 +101,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /api/users:
+ * /users:
  *   post:
  *     summary: Create a user
  *     description: Create a user to be logged in
@@ -132,7 +132,7 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /api/users/{id}:
+ * /users/{id}:
  *   patch:
  *     summary: Update a user
  *     description: Update a user by id
@@ -161,7 +161,7 @@ module.exports = router
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /users/{id}:
  *   delete:
  *     tags:
  *       - Users

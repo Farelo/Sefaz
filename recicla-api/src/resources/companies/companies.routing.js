@@ -16,7 +16,7 @@ module.exports = router
 // GET '/'
 /**
  * @swagger
- * /api/companies:
+ * /companies:
  *   get:
  *     summary: Retrieve all companies
  *     description: Retrieve all companies on database
@@ -35,7 +35,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /api/companies/{id}:
+ * /companies/{id}:
  *   get:
  *     summary: Create a company
  *     description: Crete a company
@@ -65,7 +65,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /api/companies:
+ * /companies:
  *   post:
  *     summary: Create a company
  *     description: Crete a company
@@ -95,7 +95,7 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /api/companies/{id}:
+ * /companies/{id}:
  *   patch:
  *     summary: Update a company
  *     description: Update a company by id
@@ -125,7 +125,7 @@ module.exports = router
 // DELETE '/'
 /**
  * @swagger
- * /api/companies/{id}:
+ * /companies/{id}:
  *   delete:
  *     tags:
  *       - Companies

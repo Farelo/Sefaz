@@ -29,7 +29,7 @@ module.exports = (app) => {
             description: `Recicla 2.0 documentation.\n API http://${config.get('server.url',)}:${config.get('server.port')}/swagger-stats/ui`
         },
         host: `${config.get('server.url')}:${config.get('server.port')}`,
-        basePath: '/',
+        basePath: '/api',
         securityDefinitions: {
             Bearer: {
                 type: 'apiKey',
