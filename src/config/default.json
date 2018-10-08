@@ -1,0 +1,25 @@
+{
+    "server": {
+        "url": "localhost",
+        "port": 3000
+    },
+    "db": {
+        "url": "mongodb://localhost:27017/recicla"
+    },
+    "security": {
+        "jwtPrivateKey": "secr3t",
+        "saltRounds": 10,
+        "enableHTTPS": true,
+        "key": "/security/keys/key.pem",
+        "certificate": "/security/keys/cert.pem"
+    },
+    "swagger": {
+        "enabled": true,
+        "route": "/api-docs"
+    },
+    "log": {
+        "enabled": true,
+        "name": "",
+        "level": ""
+    }
+}
