@@ -7,13 +7,13 @@
     "start": "export NODE_CONFIG_DIR=src/config && export DEBUG=controller:* && nodemon src/server.js",
     "start-win": "set NODE_CONFIG_DIR=src/config&&set DEBUG=controller:*&&nodemon src/server.js",
     "test": "export NODE_CONFIG_DIR=src/config && export NODE_ENV=test && jest --watchAll --verbose --runInBand --no-cache",
-    "test-win": "set NODE_CONFIG_DIR=src/config && set NODE_ENV=test && jest --watchAll --verbose --runInBand --no-cache"
+    "test-win": "set NODE_CONFIG_DIR=src/config&&set NODE_ENV=test&&jest --watchAll --verbose --runInBand --no-cache"
   },
   "author": "Sergio Junior",
   "license": "ISC",
   "dependencies": {
     "app-root-path": "^2.1.0",
-    "bcrypt": "^3.0.0",
+    "bcrypt": "3.0.0",
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "config": "^2.0.0",
