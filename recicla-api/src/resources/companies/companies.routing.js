@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const companies_controller = require('./companies.controller')
+const auth = require('../../security/auth.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_companies } = require('./companies.model')

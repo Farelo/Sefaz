@@ -46,9 +46,8 @@ exports.create = async (req, res) => {
     await user.save()
     await company.save()
 
-    const token = user.generateUserToken()
-    res.header('Authorization', token)
-        .send(_.pick(user, ['_id', 'email']))
+    // const token = user.generateUserToken()
+    res.json(_.pick(user, ['_id', 'email']))
 }
 
 exports.update = async (req, res) => {
