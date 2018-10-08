@@ -7,14 +7,15 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthenticationService {
+
+    //REMOVE
     url: string = "http://localhost:3000/api/"
     
     constructor(private http: HttpClient) { }
 
-    login(password: string, username: string): Observable<any> {
-        // console.log(password)
-        // console.log(username)
-      return this.http.get(`${environment.url}profile/auth/${password}/${username}`)
+    login(password: string, username: string): Observable<any> { 
+      //return this.http.get(`${environment.url}profile/auth/${password}/${username}`)
+        return this.http.get(`${this.url}/users/sign_in`)
         .map(response =>  this.auth(response))
         .catch(this.handleError);
     }

@@ -8,10 +8,18 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class ProfileService {
 
+  //REMOVE
+  url: string = "http://localhost:3000/api"
+
   constructor(private http: HttpClient) { }
 
   private handleError(error: Response) {
       return Observable.throw(error);
+  }
+
+  getUsers() {
+    return this.http.get(`${this.url}/users`)
+      .catch(this.handleError);
   }
 
   getProfilePagination(limit: number, page: number): Observable<any> {

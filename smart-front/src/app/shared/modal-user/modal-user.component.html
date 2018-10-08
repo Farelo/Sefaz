@@ -13,25 +13,19 @@
             <tr class="cabecalho">
               <th class="semBorda">Nome</th>
               <th class="semBorda">Perfil</th>
-              <th class="semBorda">DUNS</th>
-              <th class="semBorda">Endereço</th>
-              <th class="semBorda">UF</th>
+              <th class="semBorda">Vínculo</th>
               <th class="opcoes">Opções</th>
             </tr>
           </thead>
-          <tbody *ngFor="let user of data.data | paginate: {
+          <tbody *ngFor="let user of userData | paginate: {
                                                           id:'adminManage',
                                                           itemsPerPage: 10,
-                                                          currentPage: data.meta.page,
-                                                          totalItems: data.meta.total_docs}">
+                                                          currentPage: userData.meta.page,
+                                                          totalItems: userData.meta.total_docs}">
             <tr>
-              <td>{{user.user?.name ?  user.user?.name : user.user}}</td>
-              <td>{{user.profile == "Supplier" ? 'Fornecedor' :
-                (user.profile == 'Logistic' ? 'Op. Logistico' :
-                (user.profile == 'AdminFactory' ? 'Admin. Fábrica' : 'Func. Fábrica'))}}</td>
-              <td>{{user.user?.duns || '-'}}</td>
-              <td>{{user.street}}</td>
-              <td>{{user.uf}}</td>
+              <td>{{ userData.name }}</td>
+              <td>{{ userData.role }}</td>
+              <td>{{ userData.company.name || '-' }}</td>
               <td class="teste">
                 <button class="editar botaoPlanta" (click)="editUser(user)">Editar</button>
                 <button class="excluir" (click)="removeProfile(user)">Excluir</button>
@@ -39,23 +33,27 @@
             </tr>
           </tbody>
         </table>
-        <div class="classVazio" *ngIf="data.data?.length < 1">
+
+        <div class="classVazio" *ngIf="userData.data?.length < 1">
           Ainda não existem usuários cadastrados.
         </div>
 
       </div>
+
       <br />
+
       <div class="has-text-centered">
-          <pagination-controls id='adminManage' class="my-pagination"
-          (pageChange)="pageChanged($event)"
-          directionLinks="false"
-          autoHide="true">
+          <pagination-controls 
+            id='adminManage' class="my-pagination"
+            (pageChange)="pageChanged($event)"
+            directionLinks="false"
+            autoHide="true">
           </pagination-controls>
       </div>
     </div>
 
 
-    <div class="" *ngIf="!isAdmin">
+    <!-- <div class="" *ngIf="!isAdmin">
       <div class="table-responsive tabela" >
         <table class="table">
           <thead>
@@ -97,7 +95,7 @@
           </pagination-controls>
       </div>
 
-    </div>
+    </div> -->
 
     <div class="botoes">
       <button class="botaoVoltar" (click)="activeModal.dismiss('Cross click')">VOLTAR</button>

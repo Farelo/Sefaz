@@ -21,10 +21,9 @@ declare var $:any;
   styleUrls: ['./modal-user.component.css']
 })
 export class ModalUserComponent implements OnInit {
+  
   @Input() view;
-  public isAdmin : any;
-  public data: Pagination = new Pagination({meta: {page : 1}});
-  public alerts: any = [];
+  public userData: any[] = [];
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -49,27 +48,33 @@ export class ModalUserComponent implements OnInit {
   }
 
   getUsers(){
-    if(this.authenticationService.currentUser().supplier){
-      this.profileService.getProfilePaginationSupplier(10,this.data.meta.page,this.authenticationService.currentUser().supplier._id).subscribe(result => {
-        this.data = result;
-        //console.log('this.data: ' + JSON.stringify(this.data));
-      });
-      this.isAdmin = false;
-      
-    }else if(this.authenticationService.currentUser().logistic){
-      this.profileService.getProfilePaginationLogistic(10,this.data.meta.page,this.authenticationService.currentUser().logistic._id).subscribe(result => {
-        this.data = result;
-        //console.log('this.data: ' + JSON.stringify(this.data));
-      });
-      this.isAdmin = false;
+    
+    this.profileService.getUsers().subscribe(result => {
+      console.log(result);
+      //this.userData = result;
+    });
 
-    }else{
-      this.isAdmin = true;
-      this.profileService.getProfilePagination(10,this.data.meta.page).subscribe(result => {
-        this.data = result;
-        //console.log('this.data: ' + JSON.stringify(this.data));
-      });
-    }
+    // if(this.authenticationService.currentUser().supplier){
+    //   this.profileService.getProfilePaginationSupplier(10,this.userData.meta.page,this.authenticationService.currentUser().supplier._id).subscribe(result => {
+    //     this.userData = result;
+    //     //console.log('this.userData: ' + JSON.stringify(this.userData));
+    //   });
+    //   this.isAdmin = false;
+      
+    // }else if(this.authenticationService.currentUser().logistic){
+    //   this.profileService.getProfilePaginationLogistic(10,this.userData.meta.page,this.authenticationService.currentUser().logistic._id).subscribe(result => {
+    //     this.userData = result;
+    //     //console.log('this.userData: ' + JSON.stringify(this.userData));
+    //   });
+    //   this.isAdmin = false;
+
+    // }else{
+    //   this.isAdmin = true;
+    //   this.profileService.getProfilePagination(10,this.userData.meta.page).subscribe(result => {
+    //     this.userData = result;
+    //     //console.log('this.userData: ' + JSON.stringify(this.userData));
+    //   });
+    // }
   }
 
 
@@ -78,25 +83,25 @@ export class ModalUserComponent implements OnInit {
       const modalRef = this.modalService.open(ModalSupplierEditarComponent,{backdrop: "static", size: "lg"});
       modalRef.componentInstance.id = user.user._id;
       this.activeModal.close();
+
     }else if(user.profile ===  constants.LOGISTIC){
       const modalRef = this.modalService.open(ModalLogisticEditarComponent,{backdrop: "static", size: "lg"});
       modalRef.componentInstance.id = user.user._id;
       this.activeModal.close();
+
     }else{
       const modalRef = this.modalService.open(ModalStaffEditarComponent,{backdrop: "static", size: "lg"});
       modalRef.componentInstance.id = user._id;
       this.activeModal.close();
     }
 
-
   }
 
   addUsers(){
     if(this.isAdmin){
-      const modalRef = this.modalService.open(ModalSupplierRegisterComponent,{backdrop: "static", size: "lg"});
+      const modalRef = this.modalService.open(ModalSupplierRegisterComponent, {backdrop: "static", size: "lg"});
     }else{
-      const modalRef = this.modalService.open(ModalStaffRegisterComponent,{backdrop: "static", size: "lg"});
-
+      const modalRef = this.modalService.open(ModalStaffRegisterComponent, {backdrop: "static", size: "lg"});
     }
     this.activeModal.close();
   }
@@ -111,10 +116,13 @@ export class ModalUserComponent implements OnInit {
     });
   }
 
-  pageChanged(page: any): void{
-    this.data.meta.page = page;
-    this.getUsers();
-  }
+  // pageChanged(page: any): void{
+  //   this.userData.meta.page = page;
+  //   this.getUsers();
+  // }
 
+  isAdmin(user: any) {
+    return user.role == 'admin';
+  }
 
 }
