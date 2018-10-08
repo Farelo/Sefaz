@@ -16,8 +16,11 @@ exports.findUsers = async () => {
 
 exports.findUser = async (id) => {
     try {
-        const user = await User.findById(id)
-        // if (!user) return false
+        const user = await User
+            .findById(id)
+            .select('-password')
+            .populate('company')
+            
         return user
     } catch (error) {
         throw new Error(error)

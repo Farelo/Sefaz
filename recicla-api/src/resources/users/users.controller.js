@@ -22,12 +22,7 @@ exports.all = async (req, res) => {
 }
 
 exports.show = async (req, res) => {
-    const user = await User
-        .findById(req.params.id)
-        .select('-password')
-        .populate('company')
-
-    // const user = users_service.findUser(req.params.id)
+    const user = await users_service.findUser(req.params.id)
     if (!user) return res.status(404).send('Invalid user')
 
     res.json(user)
@@ -51,9 +46,8 @@ exports.create = async (req, res) => {
     await user.save()
     await company.save()
 
-    const token = user.generateUserToken()
-    res.header('Authorization', token)
-        .send(_.pick(user, ['_id', 'email']))
+    // const token = user.generateUserToken()
+    res.json(_.pick(user, ['_id', 'email']))
 }
 
 exports.update = async (req, res) => {

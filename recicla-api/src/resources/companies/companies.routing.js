@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const companies_controller = require('./companies.controller')
+const auth = require('../../security/auth.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_companies } = require('./companies.model')
@@ -16,7 +17,7 @@ module.exports = router
 // GET '/'
 /**
  * @swagger
- * /api/companies:
+ * /companies:
  *   get:
  *     summary: Retrieve all companies
  *     description: Retrieve all companies on database
@@ -35,7 +36,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /api/companies/{id}:
+ * /companies/{id}:
  *   get:
  *     summary: Create a company
  *     description: Crete a company
@@ -65,7 +66,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /api/companies:
+ * /companies:
  *   post:
  *     summary: Create a company
  *     description: Crete a company
@@ -95,7 +96,7 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /api/companies/{id}:
+ * /companies/{id}:
  *   patch:
  *     summary: Update a company
  *     description: Update a company by id
@@ -125,7 +126,7 @@ module.exports = router
 // DELETE '/'
 /**
  * @swagger
- * /api/companies/{id}:
+ * /companies/{id}:
  *   delete:
  *     tags:
  *       - Companies

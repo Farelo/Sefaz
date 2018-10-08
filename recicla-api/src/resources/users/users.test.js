@@ -7,19 +7,55 @@ describe('api/users', () => {
     let server
     let company_id
     let newCompany
+    let token
     beforeEach(async () => {
         server = require('../../server')
 
         company_id = mongoose.Types.ObjectId()
-
         newCompany = new Company({ _id: company_id, name: 'CEBRACE TESTE'})
-
         await newCompany.save()
+
+        const user = {
+            email: "serginho@gmail.com",
+            password: "qwerty123",
+            company: {
+                _id: newCompany._id,
+                name: newCompany.name
+            }
+        }
+
+        const newUser = new User(user)
+        token = newUser.generateUserToken()
     })
     afterEach(async () => {
         await server.close()
         await User.deleteMany({})
         await Company.deleteMany({})
+    })
+
+    describe('auth middleware', () => {
+        const exec = () => {
+            return request(server)
+                .post('/api/users')
+                .set('Authorization', token)
+                .send({ email: "giorgiosaints@gmail.com", password: "12345678", role: 'admin', company: company_id })
+        }
+        it('should return 401 if no token is provided', async () => {
+            token = ''
+            const res = await exec()
+            expect(res.status).toBe(401)
+        })
+
+        it('should return 400 if token is invalid', async () => {
+            token = 'a'
+            const res = await exec()
+            expect(res.status).toBe(400)
+        })
+
+        it('should return 200 if token is valid', async () => {
+            const res = await exec()
+            expect(res.status).toBe(200)
+        })
     })
 
     describe('POST: api/users/sign_in', () => {
@@ -83,7 +119,8 @@ describe('api/users', () => {
                 { email: "email3@gmail.com", password: '12345678'}
             ])
 
-            const res = await request(server).get('/api/users')
+            const res = await request(server).get('/api/users').set('Authorization', token)
+
             expect(res.status).toBe(200)
             expect(res.body.length).toBe(3)
             expect(res.body.some(p => p.email === 'email1@gmail.com')).toBeTruthy()
@@ -97,14 +134,18 @@ describe('api/users', () => {
             const newUser = new User({ email: 'serginho@gmail.com', password: 'qwerty123' })
             await newUser.save()
 
-            const res = await request(server).get(`/api/users/${newUser._id}`)
+            const res = await request(server)
+                .get(`/api/users/${newUser._id}`)
+                .set('Authorization', token)
 
             expect(res.status).toBe(200)
             expect(res.body).toHaveProperty('email', newUser.email)
         })
 
         it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server).get(`/api/users/1a`)
+            const res = await request(server)
+                .get(`/api/users/1a`)
+                .set('Authorization', token)
             expect(res.status).toBe(404)
         })
     })
@@ -114,6 +155,7 @@ describe('api/users', () => {
         const exec = () => {
             return request(server)
                 .post('/api/users')
+                .set('Authorization', token)
                 .send({ email: user.email, password: user.password, company: company_id })
         }
         beforeEach(async () => {
@@ -170,17 +212,21 @@ describe('api/users', () => {
 
     describe('PATCH: /api/users/:id', () => {
         it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server).get(`/api/users/1`)
+            const res = await request(server)
+                .get(`/api/users/1`)
+                .set('Authorization', token)
             expect(res.status).toBe(404)
         })
 
         it('should return user edited if is valid request', async () => {
             const user = await request(server)
                 .post('/api/users')
-                .send({ email: 'emaill@email.com', password: '12345678', company: newCompany._id })
+                .set('Authorization', token)
+                .send({ email: 'emaill@email.com', password: '12345678', role: 'user', company: newCompany._id })
                     
             const res = await request(server)
                 .patch(`/api/users/${user.body._id}`)
+                .set('Authorization', token)
                 .send({ email: 'emailedited@email.com', password: '12345678' })
 
             expect(res.status).toBe(200)
@@ -190,7 +236,9 @@ describe('api/users', () => {
 
     describe('DELETE: /api/users/:id', () => {
         it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server).get(`/api/users/1`)
+            const res = await request(server)
+                .get(`/api/users/1`)
+                .set('Authorization', token)
             expect(res.status).toBe(404)
         })
         
@@ -198,7 +246,9 @@ describe('api/users', () => {
             const newUser = new User({ email: 'emailedited@email.com', password: '12345678' })
             await newUser.save()
 
-            const res = await request(server).delete(`/api/users/${newUser._id}`)
+            const res = await request(server)
+                .delete(`/api/users/${newUser._id}`)
+                .set('Authorization', token)
 
             expect(res.status).toBe(200)
             expect(res.body.message).toBe('Delete successfully')

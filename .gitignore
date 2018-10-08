@@ -8,6 +8,10 @@ smart-front/node_modules
 admin-api/node_modules
 admin-front/node_modules
 smart-front/dist
+recicla-api/node_modules
+recicla-api/coverage
+recicla-api/src/logs/
+recicla-api/package-lock.json
 # compiled output
 /dist
 /tmp
