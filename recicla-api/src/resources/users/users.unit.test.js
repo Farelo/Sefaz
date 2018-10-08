@@ -28,7 +28,7 @@ describe('User unit test', () => {
     })
 
     describe('passwordMatches()', () => {
-        it('should return a valid JWT', async () => {
+        it('should return the password matches', async () => {
             const salt = await bcrypt.genSalt(config.get('security.saltRounds'))
             const hashed_password = await bcrypt.hash('12345678', salt)
             const payload = {
