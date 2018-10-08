@@ -1,5 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 smart-api/node_modules
+recicla-api/node_modules
+recicla-api/coverage
+recicla-api/src/logs/
+recicla-api/package-lock.json
 smart-front/node_modules
 admin-api/node_modules
 admin-front/node_modules

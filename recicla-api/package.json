@@ -5,7 +5,9 @@
   "main": "src/server.js",
   "scripts": {
     "start": "export NODE_CONFIG_DIR=src/config && export DEBUG=controller:* && nodemon src/server.js",
-    "test": "export NODE_CONFIG_DIR=src/config && export NODE_ENV=test && jest --watchAll --verbose --runInBand --no-cache"
+    "start-win": "set NODE_CONFIG_DIR=src/config&&set DEBUG=controller:*&&nodemon src/server.js",
+    "test": "export NODE_CONFIG_DIR=src/config && export NODE_ENV=test && jest --watchAll --verbose --runInBand --no-cache",
+    "test-win": "set NODE_CONFIG_DIR=src/config && set NODE_ENV=test && jest --watchAll --verbose --runInBand --no-cache"
   },
   "author": "Sergio Junior",
   "license": "ISC",
