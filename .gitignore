@@ -2,7 +2,7 @@
 smart-api/node_modules
 recicla-api/node_modules
 recicla-api/coverage
-recicla-api/src/logs/
+recicla-api/src/logs/app.log
 recicla-api/package-lock.json
 smart-front/node_modules
 admin-api/node_modules
