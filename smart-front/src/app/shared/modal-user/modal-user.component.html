@@ -17,11 +17,7 @@
               <th class="opcoes">Opções</th>
             </tr>
           </thead>
-          <tbody *ngFor="let user of userData | paginate: {
-                                                          id:'adminManage',
-                                                          itemsPerPage: 10,
-                                                          currentPage: userData.meta.page,
-                                                          totalItems: userData.meta.total_docs}">
+          <tbody *ngFor="let user of userData">
             <tr>
               <td>{{ userData.name }}</td>
               <td>{{ userData.role }}</td>
@@ -34,7 +30,7 @@
           </tbody>
         </table>
 
-        <div class="classVazio" *ngIf="userData.data?.length < 1">
+        <div class="classVazio" *ngIf="userData.length < 1">
           Ainda não existem usuários cadastrados.
         </div>
 
@@ -64,11 +60,7 @@
               <th class="opcoes">Opções</th>
             </tr>
           </thead>
-          <tbody *ngFor="let user of data.data | paginate: {
-                                                          id:'supplierManage',
-                                                          itemsPerPage: 10,
-                                                          currentPage: data.meta.page,
-                                                          totalItems: data.meta.total_docs}">
+          <tbody *ngFor="let user of data.data">
             <tr>
               <td>{{user.user?.name ?  user.user?.name : user.name}}</td>
               <td>{{user.street}}</td>
@@ -81,7 +73,7 @@
           </tbody>
         </table>
 
-        <div class="classVazio" *ngIf="data.data?.length < 1">
+        <div class="classVazio" *ngIf="data.length < 1">
           Ainda não existem usuários cadastrados.
         </div>
 

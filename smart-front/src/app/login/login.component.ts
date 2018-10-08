@@ -11,6 +11,7 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 export class LoginComponent implements OnInit {
   public login: FormGroup;
   public  erroAuth = false;
+  
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -23,7 +24,9 @@ export class LoginComponent implements OnInit {
     if(valid){
       this.authenticationService.login(value.password, value.email).subscribe(result =>  {
 
-        if(result.length != 0){
+        console.log('result: ' + JSON.stringify(result));
+
+        if(result){
           this.erroAuth = false;
           this.router.navigate(['/rc/home'])
 

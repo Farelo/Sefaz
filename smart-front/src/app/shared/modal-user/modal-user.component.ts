@@ -50,7 +50,7 @@ export class ModalUserComponent implements OnInit {
   getUsers(){
     
     this.profileService.getUsers().subscribe(result => {
-      console.log(result);
+      console.log('result: ' + result);
       //this.userData = result;
     });
 

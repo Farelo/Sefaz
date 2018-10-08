@@ -9,17 +9,27 @@ import { environment } from '../../environments/environment';
 export class ProfileService {
 
   //REMOVE
-  url: string = "http://localhost:3000/api"
+  private url: string = "http://localhost:3000/api";
+  //private currentUser: any;
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient) { 
+  }
+  
   private handleError(error: Response) {
-      return Observable.throw(error);
+    return Observable.throw(error);
+  }
+
+  getHeaders(): HttpHeaders {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    let headers: HttpHeaders = new HttpHeaders().set('Authorization', currentUser.accessToken || '');
+    console.log('headers: ' + JSON.stringify(headers));
+    
+    return headers;
   }
 
   getUsers() {
-    return this.http.get(`${this.url}/users`)
-      .catch(this.handleError);
+    let mHeader: HttpHeaders = this.getHeaders();
+    return this.http.get(`${this.url}/users`, { headers: mHeader }).catch(this.handleError);
   }
 
   getProfilePagination(limit: number, page: number): Observable<any> {

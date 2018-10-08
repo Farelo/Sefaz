@@ -15,7 +15,7 @@ export class AuthenticationService {
 
     login(password: string, username: string): Observable<any> { 
       //return this.http.get(`${environment.url}profile/auth/${password}/${username}`)
-        return this.http.get(`${this.url}/users/sign_in`)
+        return this.http.post(`${this.url}users/sign_in`, { 'email': username, 'password': password })
         .map(response =>  this.auth(response))
         .catch(this.handleError);
     }
@@ -27,7 +27,7 @@ export class AuthenticationService {
 
     auth(response) {
         // login successful if there's a jwt token in the response
-        let user = response.data;
+        let user = response;
 
         if (user) {
           user.token = response.token;
