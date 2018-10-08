@@ -6,6 +6,11 @@ const config = require('config')
 const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
+    full_name: {
+        type: String,
+        minlength: 5,
+        maxlength: 255
+    },
     email: {
         type: String,
         required: true,
@@ -35,6 +40,7 @@ const userSchema = new mongoose.Schema({
 
 const validate_user = (user) => {
     const schema = {
+        full_name: Joi.string().min(5).max(255),
         email: Joi.string().min(5).max(255).required().email(),
         password: Joi.string().min(6).max(1024).required(),
         role: Joi.string(),
@@ -61,7 +67,7 @@ userSchema.statics.findByEmail = function (email, projection = '') {
 
 userSchema.methods.generateUserToken = function () {
     const token = jwt.sign({ _id: this._id, role: this.role }, config.get('security.jwtPrivateKey'))
-    return token
+    return `Bearer ${token}`
 }
 
 userSchema.methods.passwordMatches = function (password) {
@@ -86,7 +92,6 @@ const updateMiddleware = function (next) {
 }
 
 const removeMiddleware = function (next) {
-    console.log('CHAMA!')
     const user = this;
     user.model('Company').update(
         { users: user._id },

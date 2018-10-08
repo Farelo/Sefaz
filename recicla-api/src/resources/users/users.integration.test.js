@@ -16,6 +16,7 @@ describe('api/users', () => {
         await newCompany.save()
 
         const user = {
+            full_name: 'Teste Man',
             email: "serginho@gmail.com",
             password: "qwerty123",
             company: {
@@ -38,7 +39,7 @@ describe('api/users', () => {
             return request(server)
                 .post('/api/users')
                 .set('Authorization', token)
-                .send({ email: "giorgiosaints@gmail.com", password: "12345678", role: 'admin', company: company_id })
+                .send({ full_name: 'Teste Man', email: "giorgiosaints@gmail.com", password: "12345678", role: 'admin', company: company_id })
         }
         it('should return 401 if no token is provided', async () => {
             token = ''
@@ -63,10 +64,10 @@ describe('api/users', () => {
         const exec = () => {
             return request(server)
                 .post('/api/users/sign_in')
-                .send({ email: user.email, password: user.password })
+                .send({ full_name: 'Teste Man', email: user.email, password: user.password })
         }
         beforeEach(async () => {
-            user = { email: 'serginho@gmail.com', password: 'qwerty123' }
+            user = { full_name: 'Teste Man', email: 'serginho@gmail.com', password: 'qwerty123' }
             const newUser = new User(user)
 
             await newUser.save()
@@ -106,7 +107,7 @@ describe('api/users', () => {
             const res = await exec()
 
             expect(Object.keys(res.body)).toEqual(
-                expect.arrayContaining(['email', 'accessToken'])
+                expect.arrayContaining(['full_name', 'email', 'role', 'accessToken'])
             )
         })
     })
@@ -114,9 +115,9 @@ describe('api/users', () => {
     describe('GET api/users', () => {
         it('should return all users', async () => {
             await User.collection.insertMany([
-                { email: "email1@gmail.com", password: '12345678'},
-                { email: "email2@gmail.com", password: '12345678'},
-                { email: "email3@gmail.com", password: '12345678'}
+                { full_name: 'Teste Man', email: "email1@gmail.com", password: '12345678'},
+                { full_name: 'Teste Man', email: "email2@gmail.com", password: '12345678'},
+                { full_name: 'Teste Man', email: "email3@gmail.com", password: '12345678'}
             ])
 
             const res = await request(server).get('/api/users').set('Authorization', token)
@@ -131,7 +132,7 @@ describe('api/users', () => {
 
     describe('GET: api/users/:id', () => {
         it('should return a user if valid id is passed', async () => {
-            const newUser = new User({ email: 'serginho@gmail.com', password: 'qwerty123' })
+            const newUser = new User({ full_name: 'Teste Man', email: 'serginho@gmail.com', password: 'qwerty123' })
             await newUser.save()
 
             const res = await request(server)
@@ -156,10 +157,11 @@ describe('api/users', () => {
             return request(server)
                 .post('/api/users')
                 .set('Authorization', token)
-                .send({ email: user.email, password: user.password, company: company_id })
+                .send({ full_name: user.full_name, email: user.email, password: user.password, company: company_id })
         }
         beforeEach(async () => {
-            user = { 
+            user = {
+                full_name: 'Teste Man',
                 email: "serginho@gmail.com",
                 password: "qwerty123", 
                 company: { 
@@ -222,14 +224,15 @@ describe('api/users', () => {
             const user = await request(server)
                 .post('/api/users')
                 .set('Authorization', token)
-                .send({ email: 'emaill@email.com', password: '12345678', role: 'user', company: newCompany._id })
+                .send({ full_name: 'Teste Man', email: 'emaill@email.com', password: '12345678', role: 'user', company: newCompany._id })
                     
             const res = await request(server)
                 .patch(`/api/users/${user.body._id}`)
                 .set('Authorization', token)
-                .send({ email: 'emailedited@email.com', password: '12345678' })
+                .send({ full_name: 'Teste Edited', email: 'emailedited@email.com', password: '12345678' })
 
             expect(res.status).toBe(200)
+            expect(res.body).toHaveProperty('full_name', 'Teste Edited')
             expect(res.body).toHaveProperty('email', 'emailedited@email.com')
         })
     })
@@ -243,7 +246,7 @@ describe('api/users', () => {
         })
         
         it('should delete when given a valid _id', async () => {
-            const newUser = new User({ email: 'emailedited@email.com', password: '12345678' })
+            const newUser = new User({ full_name: 'Teste Man', email: 'emailedited@email.com', password: '12345678' })
             await newUser.save()
 
             const res = await request(server)

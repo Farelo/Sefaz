@@ -12,7 +12,7 @@ exports.sign_in = async (req, res) => {
     if (!valid_password) return res.status(400).send('Invalid password')
 
     const token = user.generateUserToken()
-    res.send({ email: user.email, role: user.role, accessToken: token })
+    res.send({ full_name: user.full_name, email: user.email, role: user.role, accessToken: token })
 }
 
 exports.all = async (req, res) => {
@@ -36,6 +36,7 @@ exports.create = async (req, res) => {
     if (!company) return res.status(400).send('Invalid company')
 
     user = new User({
+        full_name: req.body.full_name,
         email: req.body.email,
         password: req.body.password,
         company: company
@@ -57,7 +58,7 @@ exports.update = async (req, res) => {
     const options = { new: true }
     user = await User.findByIdAndUpdate(req.params.id, req.body, options)
 
-    res.json(_.pick(user, ['_id', 'email']))
+    res.json(_.pick(user, ['_id', 'full_name', 'email', 'role']))
 }
 
 exports.delete = async (req, res) => {
