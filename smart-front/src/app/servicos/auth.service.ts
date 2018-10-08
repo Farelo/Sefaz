@@ -7,6 +7,8 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthenticationService {
+    url: string = "http://localhost:3000/api/"
+    
     constructor(private http: HttpClient) { }
 
     login(password: string, username: string): Observable<any> {
