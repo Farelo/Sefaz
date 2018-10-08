@@ -1,10 +1,46 @@
-const user_service = require('./users.service')
+const mongoose = require('mongoose')
+const config = require('config')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+const { User } = require('./users.model')
 
-describe('findUser', () => {
-    it('should return a user by _id', () => {
-        const findUser = user_service.findUser = function(user_id) {
-            return {_id: '1234564', email: 'email@email.com'}
-        }
-        expect(findUser(1)).toHaveProperty('email', 'email@email.com')
+describe('User unit test', () => {
+    describe('validate_object_id', () => {
+        it('should validate a object_id', () => {
+            const obj_id = mongoose.Types.ObjectId()
+            const result = mongoose.Types.ObjectId.isValid(obj_id)
+            expect(result).toBe(true)
+        })
+    })
+
+    describe('generateUserToken()', () => {
+        it('should return a valid JWT', () => {
+            const payload = {
+                _id: new mongoose.Types.ObjectId().toHexString(),
+                role: 'user'
+            }
+            const user = new User(payload)
+            const token = user.generateUserToken()
+            const decoded = jwt.verify(token, config.get('security.jwtPrivateKey'))
+
+            expect(decoded).toMatchObject(payload)
+        })
+    })
+
+    describe('passwordMatches()', () => {
+        it('should return a valid JWT', async () => {
+            const salt = await bcrypt.genSalt(config.get('security.saltRounds'))
+            const hashed_password = await bcrypt.hash('12345678', salt)
+            const payload = {
+                _id: new mongoose.Types.ObjectId().toHexString(),
+                email: 'teste@teste.com',
+                password: hashed_password,
+                role: 'user'
+            }
+
+            const user = new User(payload)
+            const result = await user.passwordMatches('12345678')
+            expect(result).toBe(true)
+        })
     })
 })
