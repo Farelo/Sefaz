@@ -10,7 +10,7 @@ exports.all = async (req, res) => {
 }
 
 exports.show = async (req, res) => {
-    const company = await Company.findById(req.params.id)
+    const company = await Company.findById(req.params.id).populate('users', ['_id', 'email', 'role'])
     if (!company) return res.status(404).send('Invalid company')
 
     res.json(company)

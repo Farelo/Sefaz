@@ -8,7 +8,7 @@ const startupUser = async () => {
         const companies = await Company.find()
         if (!companies.length) {
             const newCompany = new Company({ name: config.get('company.name'), type: 'owner' })
-            const newUser = new User({ full_name: 'admin', email: 'admin@admin.smart', password: 'admin123', role: 'admin', company: newCompany })
+            const newUser = new User({ full_name: 'Admin', email: 'admin@admin.smart', password: 'admin123', role: 'admin', company: newCompany })
             newCompany.users.push(newUser._id)
             
             await newCompany.save()

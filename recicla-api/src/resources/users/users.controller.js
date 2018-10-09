@@ -13,7 +13,7 @@ exports.sign_in = async (req, res) => {
 
     const token = user.generateUserToken()
     // const { user, token } = await users_service.login(req, res)
-    res.send({ full_name: user.full_name, email: user.email, role: user.role, accessToken: token })
+    res.send({ _id: user._id, full_name: user.full_name, email: user.email, role: user.role, company: user.company, accessToken: token })
 }
 
 exports.all = async (req, res) => {
