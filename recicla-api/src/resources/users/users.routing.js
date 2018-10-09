@@ -135,7 +135,6 @@ module.exports = router
  *
  */
 
-
 // PATCH '/:id'
 /**
  * @swagger
@@ -200,13 +199,19 @@ module.exports = router
  *   UserObject:
  *     type: object
  *     required:
+ *       - full_name
  *       - email
  *       - password
+ *       - role
  *       - company
  *     properties:
+ *       full_name:
+ *         type: string
  *       email:
  *         type: string
  *       password:
+ *         type: string
+ *       role:
  *         type: string
  *       company:
  *         type: string
