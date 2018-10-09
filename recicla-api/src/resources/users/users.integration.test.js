@@ -19,6 +19,7 @@ describe('api/users', () => {
             full_name: 'Teste Man',
             email: "serginho@gmail.com",
             password: "qwerty123",
+            role: 'admin',
             company: {
                 _id: newCompany._id,
                 name: newCompany.name
@@ -34,7 +35,7 @@ describe('api/users', () => {
         await Company.deleteMany({})
     })
 
-    describe('auth middleware', () => {
+    describe('AUTH MIDDLEWARE', () => {
         const exec = () => {
             return request(server)
                 .post('/api/users')
@@ -54,6 +55,38 @@ describe('api/users', () => {
         })
 
         it('should return 200 if token is valid', async () => {
+            const res = await exec()
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('AUTHZ MIDDLEWARE', () => {
+        const exec = () => {
+            return request(server)
+                .post('/api/users')
+                .set('Authorization', token)
+                .send({ full_name: 'Teste Man', email: "giorgiosaints@gmail.com", password: "12345678", role: 'user', company: company_id })
+        }
+        it('should return 403 if user is not admin', async () => {
+            user = {
+                full_name: 'Teste Man',
+                email: "serginho@gmail.com",
+                password: "qwerty123",
+                role: 'user',
+                company: {
+                    _id: newCompany._id,
+                    name: newCompany.name
+                }
+            }
+
+            const newUser = new User(user)
+            token = newUser.generateUserToken()
+
+            const res = await exec()
+            expect(res.status).toBe(403)
+        })
+
+        it('should return 200 if user is admin', async () => {
             const res = await exec()
             expect(res.status).toBe(200)
         })

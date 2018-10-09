@@ -1,4 +1,8 @@
-{
+{   
+    "company": {
+        "name": "Test",
+        "enabled": false
+    },
     "server": {
         "url": "localhost",
         "port": 3001

@@ -2,16 +2,17 @@ const express = require('express')
 const router = express.Router()
 const users_controller = require('./users.controller')
 const auth = require('../../security/auth.middleware')
+const authz = require('../../security/authz.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_user } = require('./users.model')
 
 router.post('/sign_in', validate_joi(validate_user), users_controller.sign_in)
-router.get('/', auth, users_controller.all)
+router.get('/', [auth, authz], users_controller.all)
 router.get('/:id', [auth, validate_object_id], users_controller.show)
-router.post('/', [auth, validate_joi(validate_user)], users_controller.create)
+router.post('/', [auth, authz, validate_joi(validate_user)], users_controller.create)
 router.patch('/:id', [auth, validate_object_id, validate_joi(validate_user)], users_controller.update)
-router.delete('/:id', [auth, validate_object_id], users_controller.delete)
+router.delete('/:id', [auth, authz, validate_object_id], users_controller.delete)
 
 module.exports = router
 
@@ -135,7 +136,6 @@ module.exports = router
  *
  */
 
-
 // PATCH '/:id'
 /**
  * @swagger
@@ -200,13 +200,19 @@ module.exports = router
  *   UserObject:
  *     type: object
  *     required:
+ *       - full_name
  *       - email
  *       - password
+ *       - role
  *       - company
  *     properties:
+ *       full_name:
+ *         type: string
  *       email:
  *         type: string
  *       password:
+ *         type: string
+ *       role:
  *         type: string
  *       company:
  *         type: string
