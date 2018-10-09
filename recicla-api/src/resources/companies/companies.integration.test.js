@@ -1,19 +1,104 @@
 const request = require('supertest')
+const mongoose = require('mongoose')
 const { Company } = require('./companies.model')
+const { User } = require('../users/users.model')
 
 describe('api/companies', () => {
     let server
-    beforeEach(() => server = require('../../server'))
+    let company_id
+    let newCompany
+    let token
+    beforeEach(async () => {
+        server = require('../../server')
+
+        company_id = mongoose.Types.ObjectId()
+        newCompany = new Company({ _id: company_id, name: 'CEBRACE TESTE' })
+        // await newCompany.save()
+
+        const user = {
+            full_name: 'Teste Man',
+            email: "serginho@gmail.com",
+            password: "qwerty123",
+            role: 'admin',
+            company: {
+                _id: newCompany._id,
+                name: newCompany.name
+            }
+        }
+
+        const newUser = new User(user)
+        token = newUser.generateUserToken()
+    })
     afterEach(async () => {
         await server.close()
+        await User.deleteMany({})
         await Company.deleteMany({})
+    })
+
+    describe('AUTH MIDDLEWARE', () => {
+        const exec = () => {
+            return request(server)
+                .post('/api/companies')
+                .set('Authorization', token)
+                .send({ name: 'TESTE', type: 'client' })
+        }
+        it('should return 401 if no token is provided', async () => {
+            token = ''
+            const res = await exec()
+            expect(res.status).toBe(401)
+        })
+
+        it('should return 400 if token is invalid', async () => {
+            token = 'a'
+            const res = await exec()
+            expect(res.status).toBe(400)
+        })
+
+        it('should return 200 if token is valid', async () => {
+            const res = await exec()
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('AUTHZ MIDDLEWARE', () => {
+        const exec = () => {
+            return request(server)
+                .post('/api/companies')
+                .set('Authorization', token)
+                .send({ name: 'TESTE', type: 'client' })
+        }
+        it('should return 403 if user is not admin', async () => {
+            user = {
+                full_name: 'Teste Man',
+                email: "serginho@gmail.com",
+                password: "qwerty123",
+                role: 'user',
+                company: {
+                    _id: newCompany._id,
+                    name: newCompany.name
+                }
+            }
+
+            const newUser = new User(user)
+            token = newUser.generateUserToken()
+
+            const res = await exec()
+            expect(res.status).toBe(403)
+        })
+
+        it('should return 200 if user is admin', async () => {
+            const res = await exec()
+            expect(res.status).toBe(200)
+        })
     })
 
     describe('GET: /api/companies', () => {
         it('should return all companies', async () => {
             await Company.collection.insertMany([{ name: "Company 1" }, { name: "Company 2" }])
 
-            const res = await request(server).get('/api/companies')
+            const res = await request(server)
+                .get('/api/companies')
+                .set('Authorization', token)
 
             expect(res.status).toBe(200)
             expect(res.body.length).toBe(2)
@@ -27,13 +112,19 @@ describe('api/companies', () => {
             const company = new Company({ name: 'Company 1' })
             await company.save()
 
-            const res = await request(server).get(`/api/companies/${company._id}`)
+            const res = await request(server)
+                .get(`/api/companies/${company._id}`)
+                .set('Authorization', token)
+
             expect(res.status).toBe(200)
             expect(res.body).toHaveProperty('name', company.name)
         })
 
         it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server).get(`/api/companies/1a`)
+            const res = await request(server)
+                .get(`/api/companies/1a`)
+                .set('Authorization', token)
+
             expect(res.status).toBe(404)
         })
     })
@@ -43,6 +134,7 @@ describe('api/companies', () => {
         const exec = () => {
             return request(server)
                 .post('/api/companies')
+                .set('Authorization', token)
                 .send({ name: company.name })
         }
         beforeEach(() => {
@@ -77,16 +169,21 @@ describe('api/companies', () => {
         const exec = () => {
             return request(server)
                 .patch(`/api/companies/${resp.body._id}`)
+                .set('Authorization', token)
                 .send({ name: 'TesteName edited' })
         }
         beforeEach(async () => {
             resp = await request(server)
                 .post('/api/companies')
+                .set('Authorization', token)
                 .send({ name: 'company.name' })
         })
 
         it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server).get(`/api/companies/1`)
+            const res = await request(server)
+                .get(`/api/companies/1`)
+                .set('Authorization', token)
+
             expect(res.status).toBe(404)
         })
 
@@ -104,12 +201,15 @@ describe('api/companies', () => {
     describe('DELETE: /api/companies/:id', () => {
         let resp
         const exec = () => {
-            return request(server).delete(`/api/companies/${resp.body._id}`)
+            return request(server)
+                .delete(`/api/companies/${resp.body._id}`)
+                .set('Authorization', token)
         }
 
         it('should return 200 if deleted with success', async () => {
             resp = await request(server)
                 .post('/api/companies')
+                .set('Authorization', token)
                 .send({ name: 'company.name' })
 
             const res = await exec()

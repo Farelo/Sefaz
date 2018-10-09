@@ -35,7 +35,7 @@ describe('api/users', () => {
         await Company.deleteMany({})
     })
 
-    describe('auth middleware', () => {
+    describe('AUTH MIDDLEWARE', () => {
         const exec = () => {
             return request(server)
                 .post('/api/users')
@@ -60,7 +60,7 @@ describe('api/users', () => {
         })
     })
 
-    describe('authz middleware', () => {
+    describe('AUTHZ MIDDLEWARE', () => {
         const exec = () => {
             return request(server)
                 .post('/api/users')

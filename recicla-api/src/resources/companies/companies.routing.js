@@ -2,15 +2,16 @@ const express = require('express')
 const router = express.Router()
 const companies_controller = require('./companies.controller')
 const auth = require('../../security/auth.middleware')
+const authz = require('../../security/authz.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_companies } = require('./companies.model')
 
-router.get('/', companies_controller.all)
-router.get('/:id', validate_object_id, companies_controller.show)
-router.post('/', validate_joi(validate_companies), companies_controller.create)
-router.patch('/:id', [validate_object_id, validate_joi(validate_companies)], companies_controller.update)
-router.delete('/:id', validate_object_id, companies_controller.delete)
+router.get('/', [auth, authz],companies_controller.all)
+router.get('/:id', [auth, validate_object_id], companies_controller.show)
+router.post('/', [auth, authz, validate_joi(validate_companies)], companies_controller.create)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_companies)], companies_controller.update)
+router.delete('/:id', [auth, authz, validate_object_id], companies_controller.delete)
 
 module.exports = router
 
@@ -21,6 +22,8 @@ module.exports = router
  *   get:
  *     summary: Retrieve all companies
  *     description: Retrieve all companies on database
+ *     security:
+ *       - Bearer: []
  *     tags:
  *       - Companies
  *     responses:
@@ -40,6 +43,8 @@ module.exports = router
  *   get:
  *     summary: Create a company
  *     description: Crete a company
+ *     security:
+ *       - Bearer: []
  *     tags:
  *       - Companies
  *     produces:
@@ -70,6 +75,8 @@ module.exports = router
  *   post:
  *     summary: Create a company
  *     description: Crete a company
+ *     security:
+ *       - Bearer: []
  *     tags:
  *       - Companies
  *     produces:
@@ -100,6 +107,8 @@ module.exports = router
  *   patch:
  *     summary: Update a company
  *     description: Update a company by id
+ *     security:
+ *       - Bearer: []
  *     tags:
  *       - Companies
  *     parameters:
@@ -128,6 +137,8 @@ module.exports = router
  * @swagger
  * /companies/{id}:
  *   delete:
+ *     security:
+ *       - Bearer: []
  *     tags:
  *       - Companies
  *     summary: Delete a company
@@ -155,8 +166,43 @@ module.exports = router
  *     type: object
  *     required:
  *       - name
+ *       - phone
+ *       - cnpj
+ *       - address
+ *       - type
  *     properties:
  *       name:
+ *         type: string
+ *       phone:
+ *         type: string
+ *       cnpj:
+ *         type: string
+ *       address:
+ *         $ref: '#/definitions/AddressObject'
+ *       type:
+ *         type: string
+ *       
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   AddressObject:
+ *     type: object
+ *     required:
+ *       - city
+ *       - street
+ *       - cep
+ *       - uf
+ *     properties:
+ *       city:
+ *         type: string
+ *       street:
+ *         type: string
+ *       cep:
+ *         type: string
+ *       uf:
  *         type: string
  *       
  */
