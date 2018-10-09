@@ -1,6 +1,6 @@
 const debug = require('debug')('controller:users')
 const _ = require('lodash')
-const HttpStatus = require('http-status-codes');
+const HttpStatus = require('http-status-codes')
 const { User } = require('./users.model')
 const { Company } = require('../companies/companies.model')
 
