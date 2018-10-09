@@ -9,13 +9,13 @@ import { environment } from '../../environments/environment';
 export class AuthenticationService {
 
     //REMOVE
-    url: string = "http://localhost:3000/api/"
+    //url: string = "http://localhost:3000/api"
     
     constructor(private http: HttpClient) { }
 
     login(password: string, username: string): Observable<any> { 
       //return this.http.get(`${environment.url}profile/auth/${password}/${username}`)
-        return this.http.post(`${this.url}users/sign_in`, { 'email': username, 'password': password })
+        return this.http.post(`${environment.url}/users/sign_in`, { 'email': username, 'password': password })
         .map(response =>  this.auth(response))
         .catch(this.handleError);
     }
@@ -32,7 +32,7 @@ export class AuthenticationService {
         if (user) {
           user.token = response.token;
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(user));
+          localStorage.setItem('currentUser', JSON.stringify(user)); 
         }
 
         return user;

@@ -13,6 +13,7 @@ import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.com
 import { Pagination } from '../../shared/models/pagination';
 import { AuthenticationService, ToastService, GeocodingService, CEPService, PlantsService, ProfileService, SuppliersService } from '../../servicos/index.service';
 import { constants } from '../../../environments/constants';
+import { CreateUserComponent } from './create-user/create-user.component';
 declare var $:any;
 
 @Component({
@@ -50,33 +51,15 @@ export class ModalUserComponent implements OnInit {
   getUsers(){
     
     this.profileService.getUsers().subscribe(result => {
-      console.log('result: ' + result);
-      //this.userData = result;
+      console.log('result: ' + JSON.stringify(result));
+      this.userData = result;
     });
-
-    // if(this.authenticationService.currentUser().supplier){
-    //   this.profileService.getProfilePaginationSupplier(10,this.userData.meta.page,this.authenticationService.currentUser().supplier._id).subscribe(result => {
-    //     this.userData = result;
-    //     //console.log('this.userData: ' + JSON.stringify(this.userData));
-    //   });
-    //   this.isAdmin = false;
-      
-    // }else if(this.authenticationService.currentUser().logistic){
-    //   this.profileService.getProfilePaginationLogistic(10,this.userData.meta.page,this.authenticationService.currentUser().logistic._id).subscribe(result => {
-    //     this.userData = result;
-    //     //console.log('this.userData: ' + JSON.stringify(this.userData));
-    //   });
-    //   this.isAdmin = false;
-
-    // }else{
-    //   this.isAdmin = true;
-    //   this.profileService.getProfilePagination(10,this.userData.meta.page).subscribe(result => {
-    //     this.userData = result;
-    //     //console.log('this.userData: ' + JSON.stringify(this.userData));
-    //   });
-    // }
   }
 
+  createUser(){
+    const modalRef = this.modalService.open(CreateUserComponent, { backdrop: "static"});
+    this.activeModal.close();
+  }
 
   editUser(user: any){
     if(user.profile === constants.SUPPLIER){
@@ -121,8 +104,13 @@ export class ModalUserComponent implements OnInit {
   //   this.getUsers();
   // }
 
-  isAdmin(user: any) {
-    return user.role == 'admin';
+  isAdmin() {
+    if(JSON.parse(localStorage.getItem('currentUser'))) {
+      if (JSON.parse(localStorage.getItem('currentUser')).role == constants.ADMIN){
+        return true;
+      }
+    }
+    return false;
   }
 
 }

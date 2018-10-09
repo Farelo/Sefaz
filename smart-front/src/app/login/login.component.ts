@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 })
 export class LoginComponent implements OnInit {
   public login: FormGroup;
-  public  erroAuth = false;
+  public erroAuth = false;
   
   constructor(
     private router: Router,

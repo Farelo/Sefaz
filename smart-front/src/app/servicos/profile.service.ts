@@ -1,6 +1,6 @@
-import { Injectable }     from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+//import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Profile } from '../shared/models/profile';
 import { environment } from '../../environments/environment';
@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 export class ProfileService {
 
   //REMOVE
-  private url: string = "http://localhost:3000/api";
+  private url: string = "http://localhost:3000/api/";
   //private currentUser: any;
 
   constructor(private http: HttpClient) { 
@@ -22,14 +22,16 @@ export class ProfileService {
   getHeaders(): HttpHeaders {
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
     let headers: HttpHeaders = new HttpHeaders().set('Authorization', currentUser.accessToken || '');
-    console.log('headers: ' + JSON.stringify(headers));
-    
+        
     return headers;
   }
 
-  getUsers() {
-    let mHeader: HttpHeaders = this.getHeaders();
-    return this.http.get(`${this.url}/users`, { headers: mHeader }).catch(this.handleError);
+  getUsers(): Observable<any> {
+    // let mHeader: HttpHeaders = this.getHeaders();
+    // console.log('headers: ' + JSON.stringify(mHeader));
+
+    return this.http.get(`${this.url}users`)
+      .catch(this.handleError);
   }
 
   getProfilePagination(limit: number, page: number): Observable<any> {

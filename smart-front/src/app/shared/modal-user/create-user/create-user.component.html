@@ -1,0 +1,97 @@
+<div class="modalFilho">
+  <section class="header">
+    <h2 style="color: #354052; margin-bottom: 0px;">Cadastrar usuário</h2>
+
+    <div class="col-12 no-padding">
+      <p class="alerta-badges">Cadastrar um novo usuário no sistema</p>
+    </div>
+
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </section>
+
+  <section class="modalBody">
+    <form novalidate [formGroup]="newUser">
+      <div class="row">
+        <alert type="info" *ngIf="invalidEmail">
+          <strong>Atenção!</strong> O e-mail ja existe no sistema!
+        </alert>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <p class="descricao">EMPRESA VINCULADA</p>
+          <ng-select [ngModel]="mSelectedCompany" formControlName="company" (change)="selectedCompany($event)" [items]="companiesOnSelect"
+            bindLabel="name" placeholder="Selecione um Fornecedor">
+            <ng-template ng-label-tmp let-item="item">
+              {{ item.name }}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div>
+                <b>Nome:</b> {{item.name}}
+              </div>
+              <small>
+                <b>Tipo:</b> {{item.type}}
+              </small>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-12 col-md-6">
+          <p class="descricao">NOME DO USUÁRIO</p>
+          <input type="text" class="form-control" [(ngModel)]="name" placeholder="Digite o nome do usuário"
+            formControlName="name" [ngClass]="{'required': (newUser.get('name').hasError('required') && newUser.get('name').touched)
+              || (newUser.get('name').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(newUser.get('name').hasError('required') && newUser.get('name').touched)
+              || (newUser.get('name').hasError('required') && submitted)">Campo
+            Obrigatório</p>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-6">
+          <p class="descricao">E-MAIL</p>
+          <input type="text" class="form-control" [(ngModel)]="email" placeholder="Digite o email"
+            formControlName="email" [ngClass]="{'required': (newUser.get('email').hasError('required') && newUser.get('email').touched)
+              || (newUser.get('email').hasError('required') && submitted), 'requiredEmail': (newUser.get('email').hasError('email') && newUser.get('email').touched) && !newUser.get('email').hasError('required')}
+              || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))">
+          <p class="requiredText" *ngIf="(newUser.get('email').hasError('required') && newUser.get('email').touched)
+              || (newUser.get('email').hasError('required') && submitted)">Campo
+            Obrigatório</p>
+          <p class="requiredText" *ngIf="(newUser.get('email').hasError('email') && newUser.get('email').touched) && !newUser.get('email').hasError('required')
+              || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))">Formato
+            do email esta incorreto!</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-12 col-md-6">
+          <p class="descricao">PASSWORD</p>
+          <input type="password" class="form-control" [(ngModel)]="password" formControlName="password" placeholder="Digite a senha" [ngClass]="{'required': (newUser.get('password').hasError('required') && newUser.get('password').touched)
+                          || (newUser.get('password').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(newUser.get('password').hasError('required') && newUser.get('password').touched)
+                          || (newUser.get('password').hasError('required') && submitted)">Campo
+            Obrigatório</p>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-6">
+          <p class="descricao">CONFIRMAR PASSWORD</p>
+          <input type="password" class="form-control" [(ngModel)]="confirm_password" formControlName="confirm_password" placeholder="Digite a senha" [ngClass]="{'required': (newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
+                                  || (newUser.get('confirm_password').hasError('required') && submitted)}">
+          <p class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
+                                  || (newUser.get('confirm_password').hasError('required') && submitted)">Campo
+            Obrigatório</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 text-right">
+          <button class="botao-voltar" (click)="closeModal()">VOLTAR</button>
+          <button type="button" class="botao-registrar" (click)="evaluateForm()">CADASTRAR</button>
+        </div>
+      </div>
+
+    </form>
+  </section>
+</div>
