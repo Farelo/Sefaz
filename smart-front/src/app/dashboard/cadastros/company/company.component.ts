@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
 import { RoutesService } from '../../../servicos/index.service';
+import { CompaniesService } from '../../../servicos/companies.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../../../servicos/index.service';
+import { Router } from "@angular/router";
+
 
 @Component({
   selector: 'app-company',
@@ -13,27 +17,38 @@ export class CompanyComponent implements OnInit {
   public data: any = [];
   public search = "";
   
-  constructor(private RoutesService: RoutesService,
-    private modalService: NgbModal) { }
+  constructor(
+    private RoutesService: RoutesService,
+    private modalService: NgbModal,
+    protected companiesService: CompaniesService,
+    protected toastService: ToastService,
+    private router: Router
+    ) { }
 
   ngOnInit() {
-
-    this.loadPoints();
+    this.loadCompanies();
   }
 
   /**
    * Método para carregar a lista
    */
-  loadPoints() {
-
+  loadCompanies() {
+    this.companiesService
+      .getAllCompanies()
+      .subscribe(
+        result => this.data = result,
+        error => console.error(error)
+      )
   }
 
   /**
    * Click no botão excluir
    * @param route Rota a ser removida
    */
-  removePoint(route): void {
-
+  removeCompany(company: any) {
+    this.companiesService
+      .deleteCompany(company._id)
+      .subscribe(res => { this.toastService.successModal('Empresa deletada!'); this.router.navigate(['/rc/cadastros/company']); })
   }
 
   /**
@@ -41,14 +56,14 @@ export class CompanyComponent implements OnInit {
    */
   pageChanged(page: any): void {
     this.data.meta.page = page;
-    this.loadPoints();
+    this.loadCompanies();
   }
 
   /**
    * Método para busca de ponto de controle
    */
   searchEvent(): void {
-    this.loadPoints();
+    this.loadCompanies();
   }
 
   

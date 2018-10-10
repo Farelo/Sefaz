@@ -9,19 +9,23 @@
     <thead>
       <tr class="cabecalho">
         <th> Nome </th>
+        <th> Telefone </th>
+        <!-- <th> CNPJ </th> -->
         <th> Tipo </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let company of data" (mouseover)='hoveredIndex = index'>
         <td>{{ company.name }}</td>
+        <td>{{ company.phone ? company.phone : 'SEM TELEFONE' }}</td>
+        <!-- <td>{{ company.cnpj ? company.cnpj : 'SEM CNPJ'  }}</td> -->
         <td>{{ company.type }}</td>
         <td class="teste">
           <div *ngIf="index==hoveredIndex">
             <button class="editar" [routerLink]="['editar/', company._id]">
               EDITAR
             </button>
-            <button class="excluir" (click)="removePlant(company)">
+            <button class="excluir" (click)="removeCompany(company)">
               EXCLUIR
             </button>
           </div>

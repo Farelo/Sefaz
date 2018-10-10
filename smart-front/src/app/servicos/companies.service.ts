@@ -1,8 +1,7 @@
 import { Injectable }     from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Packing } from '../shared/models/packing';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -15,8 +14,17 @@ export class CompaniesService {
   }
 
   getAllCompanies(): Observable<any> {
-    
     return this.http.get(`${environment.url}/companies`)
+      .catch(this.handleError);
+  }
+
+  createCompany(newCompany: any): Observable<any> {
+    return this.http.post(`${environment.url}/companies`, newCompany)
+      .catch(this.handleError);
+  }
+
+  deleteCompany(companyId: any): Observable<any> {
+    return this.http.delete(`${environment.url}/companies/${companyId}`)
       .catch(this.handleError);
   }
 

@@ -14,6 +14,7 @@ import { CompanyRoutingModule } from './company.routing.module';
 import { CompanyCadastrarComponent } from './company-cadastrar/company-cadastrar.component'; 
 import { CompanyEditarComponent } from './company-editar/company-editar.component';
 import { CompanyComponent } from './company.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { CompanyComponent } from './company.component';
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
     FormsModule,
+    NgSelectModule,
     ReactiveFormsModule,
     NguiMapModule.forRoot({
       apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}` +

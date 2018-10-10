@@ -58,15 +58,14 @@ const validate_companies = (company) => {
     const schema = {
         name: Joi.string().min(5).max(50).required(),
         phone: Joi.string().min(6).max(50),
+        cnpj: Joi.string(),
         address: {
             city: Joi.string(),
             street: Joi.string(),
             cep: Joi.string(),
             uf: Joi.string()
         } ,
-        type: Joi.string(),
-        users: Joi.objectId(),
-        control_points: Joi.objectId()
+        type: Joi.string()
     }
 
     return Joi.validate(company, schema)
