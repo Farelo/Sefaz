@@ -1,9 +1,9 @@
 <div class="modalFilho">
   <section class="header">
-    <h2 style="color: #354052; margin-bottom: 0px;">Cadastrar usuário</h2>
+    <h2 style="color: #354052; margin-bottom: 0px;">Editar usuário</h2>
 
     <div class="col-12 no-padding">
-      <p class="alerta-badges">Cadastrar um novo usuário no sistema</p>
+      <p class="alerta-badges">Editar um usuário no sistema</p>
     </div>
 
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -23,7 +23,7 @@
         <div class="form-group col-sm-6">
           <p class="descricao">TIPO DE USUÁRIO</p>
           <ng-select formControlName="role" [(ngModel)]="userType" [items]="rolesOnSelect" [searchable]="false"
-            [markFirst] placeholder="Selecione um Tipo">
+            [markFirst] placeholder="Selecione um Tipo" bindValue="userType">
             <ng-template ng-label-tmp let-item="item">
               {{ item.label }}
             </ng-template>

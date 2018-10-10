@@ -12,6 +12,17 @@ import { constants } from '../../../../environments/constants';
 })
 export class EditUserComponent implements OnInit {
 
+  @Input() mUser: any;
+
+  public full_name: string;
+  public email: string;
+  public password: string;
+  public userType: any;
+  public userCompany: any;
+
+
+
+
   public newUser: FormGroup;
   public autocomplete: google.maps.places.Autocomplete;
   public submitted = false;
@@ -21,8 +32,6 @@ export class EditUserComponent implements OnInit {
   public companySearch: any = {};
 
   public rolesOnSelect: any = [];
-  public userType: any;
-  public userCompany: any;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -33,16 +42,17 @@ export class EditUserComponent implements OnInit {
     private fb: FormBuilder) { }
 
   ngOnInit() {
+    console.log('mUser onInit: ' + JSON.stringify(this.mUser));
     this.formProfile();
     this.fillSelectType();
     this.getCompaniesOnSelect();
+    this.fillActualUser();
   }
-
+  
   fillSelectType() {
     this.rolesOnSelect = [
       { label: "Administrador", name: "admin" },
-      { label: "Usuário", name: "user" },
-      { label: "Cliente", name: "client" }];
+      { label: "Usuário", name: "user" }];
   }
 
   formProfile() {
@@ -58,12 +68,38 @@ export class EditUserComponent implements OnInit {
       });
   }
 
+  fillActualUser(){
+    this.full_name = this.mUser.full_name;
+    this.email = this.mUser.email;
+    this.password = this.mUser.password;
+    this.userType = this.mUser.role;
+    this.userCompany = this.mUser.company;
+  }
+
   getCompaniesOnSelect() {
 
     this.companiesService.getAllCompanies().subscribe(result => {
-      console.log("result: " + JSON.stringify(result));
+      console.log("result.: " + JSON.stringify(result));
       this.companiesOnSelect = result;
+
+      this.getCompaniesIndex(this.userCompany); 
     });
+  }
+
+  getCompaniesIndex(elementToFind) {
+    console.log('elementToFind: ' + JSON.stringify(elementToFind));
+    console.log('companiesOnSelect: ' + JSON.stringify(this.companiesOnSelect));
+
+    let i = 0;
+    let index = 0;
+    while (i < this.companiesOnSelect.length) {
+      if (elementToFind._id == this.companiesOnSelect[i]._id){
+        index = i;
+        break;
+      }
+      i++;
+    }
+    console.log('actualCompany: ' + JSON.stringify(this.companiesOnSelect[i]));
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
