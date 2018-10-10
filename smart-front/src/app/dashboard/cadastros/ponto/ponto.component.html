@@ -1,0 +1,41 @@
+<div class="input-group mb-3 d-flex justify-content-between">
+  <input type="text" class="form-control mr-4" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search"
+    (keyup)="searchEvent($event)">
+  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+</div>
+
+<div class="table-responsive">
+  <table class="table" (mouseleave)="hoveredIndex=null">
+    <thead>
+      <tr class="cabecalho">
+        <th> Planta </th>
+        <th> Tipo </th>
+        <th> </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let point of data" (mouseover)='hoveredIndex = index'>
+        <td>{{ point.name }}</td>
+        <td>{{ point.type }}</td>
+        <td class="teste">
+          <div *ngIf="index==hoveredIndex">
+            <button class="editar" [routerLink]="['editar/', plant._id]">
+              EDITAR
+            </button>
+            <button class="excluir" (click)="removePlant(plant)">
+              EXCLUIR
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="classVazio" *ngIf="data.length < 1">
+  Ainda não existem plantas cadastradas.
+</div>
+<br />
+<div class="has-text-centered">
+  <pagination-controls class="my-pagination" (pageChange)="p = $event" directionLinks="false" autoHide="true">
+  </pagination-controls>
+</div>

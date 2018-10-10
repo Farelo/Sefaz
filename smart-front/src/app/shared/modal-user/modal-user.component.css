@@ -1,9 +1,19 @@
 
 * { font-family: 'Roboto', sans-serif; }
 
-a{
- padding: 0px 12px;
- cursor: pointer;
+a {
+  color: #333333;
+  padding: 0px 12px;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #6382c9; 
+}
+
+p {
+  margin-bottom: 2px;
+  color: #333333 !important;
 }
 
 .pointer {
@@ -143,11 +153,6 @@ table > thead > tr > th {
 
 th {
   border-bottom: none !important;
-}
-
-p {
-  margin-bottom: 2px;
-  color: #354052 !important;
 }
 
 #visuslize-on-map {

@@ -14,6 +14,7 @@ import { Pagination } from '../../shared/models/pagination';
 import { AuthenticationService, ToastService, GeocodingService, CEPService, PlantsService, ProfileService, SuppliersService } from '../../servicos/index.service';
 import { constants } from '../../../environments/constants';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 declare var $:any;
 
 @Component({
@@ -36,16 +37,6 @@ export class ModalUserComponent implements OnInit {
   ngOnInit() {
 
     this.getUsers();
-    this.tamanho();
-  }
-
-  tamanho(){
-    var mapa = $('.teste');
-    var filho = $('.modalFilho');
-    var pai1 = filho.parent();
-    var pai2 = pai1.parent();
-    var pai3 = pai2.parent();
-    pai3.css({'max-width': '800px'});
   }
 
   getUsers(){
@@ -62,22 +53,13 @@ export class ModalUserComponent implements OnInit {
   }
 
   editUser(user: any){
+    console.log('user: ' + JSON.stringify(user));
+
     if(user.profile === constants.SUPPLIER){
-      const modalRef = this.modalService.open(ModalSupplierEditarComponent,{backdrop: "static", size: "lg"});
-      modalRef.componentInstance.id = user.user._id;
-      this.activeModal.close();
-
-    }else if(user.profile ===  constants.LOGISTIC){
-      const modalRef = this.modalService.open(ModalLogisticEditarComponent,{backdrop: "static", size: "lg"});
-      modalRef.componentInstance.id = user.user._id;
-      this.activeModal.close();
-
-    }else{
-      const modalRef = this.modalService.open(ModalStaffEditarComponent,{backdrop: "static", size: "lg"});
-      modalRef.componentInstance.id = user._id;
-      this.activeModal.close();
+      const modalRef = this.modalService.open(EditUserComponent, { backdrop: "static" });
+      //modalRef.componentInstance.id = user.user._id;
+      //this.activeModal.close();
     }
-
   }
 
   addUsers(){
@@ -88,7 +70,6 @@ export class ModalUserComponent implements OnInit {
     }
     this.activeModal.close();
   }
-
 
   removeProfile(profile):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);

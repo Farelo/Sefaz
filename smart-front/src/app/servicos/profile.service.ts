@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 export class ProfileService {
 
   //REMOVE
-  private url: string = "http://localhost:3000/api/";
+  //private url: string = "http://localhost:3000/api/";
   //private currentUser: any;
 
   constructor(private http: HttpClient) { 
@@ -19,18 +19,8 @@ export class ProfileService {
     return Observable.throw(error);
   }
 
-  getHeaders(): HttpHeaders {
-    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    let headers: HttpHeaders = new HttpHeaders().set('Authorization', currentUser.accessToken || '');
-        
-    return headers;
-  }
-
   getUsers(): Observable<any> {
-    // let mHeader: HttpHeaders = this.getHeaders();
-    // console.log('headers: ' + JSON.stringify(mHeader));
-
-    return this.http.get(`${this.url}users`)
+    return this.http.get(`${environment.url}/users`)
       .catch(this.handleError);
   }
 

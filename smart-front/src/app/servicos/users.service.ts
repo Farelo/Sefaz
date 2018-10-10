@@ -15,7 +15,12 @@ export class UsersService {
   }
 
   getAllUsers(): Observable<any> {
-    return this.http.get(`${environment.url}users`)
+    return this.http.get(`${environment.url}/users`)
+      .catch(this.handleError);
+  }
+
+  createUser(newUser: any): Observable<any> {
+    return this.http.post(`${environment.url}/users`, newUser)
       .catch(this.handleError);
   }
 

@@ -22,12 +22,8 @@
       <div class="row">
         <div class="form-group col-sm-6">
           <p class="descricao">TIPO DE USUÁRIO</p>
-          <ng-select formControlName="role" 
-            [(ngModel)]="userType"
-            [items]="rolesOnSelect"
-            [searchable]="false"
-            [markFirst]
-            placeholder="Selecione um Tipo">
+          <ng-select formControlName="role" [(ngModel)]="userType" [items]="rolesOnSelect" [searchable]="false"
+            [markFirst] placeholder="Selecione um Tipo">
             <ng-template ng-label-tmp let-item="item">
               {{ item.label }}
             </ng-template>
@@ -41,10 +37,7 @@
       <div class="row">
         <div class="form-group col-sm-12">
           <p class="descricao">EMPRESA VINCULADA</p>
-          <ng-select formControlName="company" 
-            [(ngModel)]="userCompany"
-            [items]="companiesOnSelect"
-            bindLabel="name" 
+          <ng-select formControlName="company" [(ngModel)]="userCompany" [items]="companiesOnSelect" bindLabel="name"
             placeholder="Selecione um Fornecedor">
             <ng-template ng-label-tmp let-item="item">
               {{ item.name }}
@@ -59,7 +52,8 @@
             </ng-template>
           </ng-select>
           <p class="requiredText" *ngIf="(newUser.get('company').hasError('required') && newUser.get('company').touched)
-            || (newUser.get('company').hasError('required') && submitted)">Campo Obrigatório</p>
+            || (newUser.get('company').hasError('required') && submitted)">Campo
+            Obrigatório</p>
         </div>
       </div>
 
@@ -70,45 +64,54 @@
             formControlName="full_name" [ngClass]="{'required': (newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
               || (newUser.get('full_name').hasError('required') && submitted)}">
           <p class="requiredText" *ngIf="(newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
-              || (newUser.get('full_name').hasError('required') && submitted)">Campo Obrigatório</p>
+              || (newUser.get('full_name').hasError('required') && submitted)">Campo
+            Obrigatório</p>
         </div>
 
         <div class="form-group col-sm-12 col-md-6">
           <p class="descricao">E-MAIL</p>
-          <input type="text" class="form-control" [(ngModel)]="email" placeholder="Digite o email"
-            formControlName="email" [ngClass]="{'required': (newUser.get('email').hasError('required') && newUser.get('email').touched)
+          <input type="text" class="form-control" [(ngModel)]="email" placeholder="Digite o email" formControlName="email"
+            [ngClass]="{'required': (newUser.get('email').hasError('required') && newUser.get('email').touched)
               || (newUser.get('email').hasError('required') && submitted), 'requiredEmail': (newUser.get('email').hasError('email') && newUser.get('email').touched) && !newUser.get('email').hasError('required')}
               || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))">
           <p class="requiredText" *ngIf="(newUser.get('email').hasError('required') && newUser.get('email').touched)
-              || (newUser.get('email').hasError('required') && submitted)">Campo Obrigatório</p>
+              || (newUser.get('email').hasError('required') && submitted)">Campo
+            Obrigatório</p>
           <p class="requiredText" *ngIf="(newUser.get('email').hasError('email') && newUser.get('email').touched) && !newUser.get('email').hasError('required')
-              || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))">Formato do email esta incorreto!</p>
+              || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))">Formato
+            do email esta incorreto!</p>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-sm-12 col-md-6">
           <p class="descricao">PASSWORD</p>
-          <input type="password" class="form-control" [(ngModel)]="password" formControlName="password" placeholder="Digite a senha" [ngClass]="{'required': (newUser.get('password').hasError('required') && newUser.get('password').touched)
+          <input type="password" class="form-control" [(ngModel)]="password" formControlName="password" placeholder="Digite a senha"
+            [ngClass]="{'required': (newUser.get('password').hasError('required') && newUser.get('password').touched)
                           || (newUser.get('password').hasError('required') && submitted)}">
           <p class="requiredText" *ngIf="(newUser.get('password').hasError('required') && newUser.get('password').touched)
-                          || (newUser.get('password').hasError('required') && submitted)">Campo Obrigatório</p>
+                          || (newUser.get('password').hasError('required') && submitted)">Campo
+            Obrigatório</p>
           <p class="requiredText" *ngIf="(newUser.get('password').hasError('minlength') && newUser.get('password').touched)
-                                    || (newUser.get('password').hasError('minlength') && submitted)">Mínimo de 6 caracters</p>
-                          
+                                    || (newUser.get('password').hasError('minlength') && submitted)">Mínimo
+            de 6 caracters</p>
+
         </div>
 
         <div class="form-group col-sm-12 col-md-6">
           <p class="descricao">CONFIRMAR PASSWORD</p>
-          <input type="password" class="form-control" [(ngModel)]="confirm_password" formControlName="confirm_password" placeholder="Digite a senha" [ngClass]="{'required': (newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
+          <input type="password" class="form-control" [(ngModel)]="confirm_password" formControlName="confirm_password"
+            placeholder="Digite a senha" [ngClass]="{'required': (newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
             || (newUser.get('confirm_password').hasError('required') && submitted)}">
           <p class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
-            || (newUser.get('confirm_password').hasError('required') && submitted)">Campo Obrigatório</p>
+            || (newUser.get('confirm_password').hasError('required') && submitted)">Campo
+            Obrigatório</p>
           <p class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('minlength') && newUser.get('confirm_password').touched)
-            || (newUser.get('confirm_password').hasError('minlength') && submitted)">Mínimo de 6 caracters</p>
-          <p class="requiredText" 
-            *ngIf="(newUser.get('confirm_password').hasError('MatchPassword'))
-            || (newUser.get('confirm_password').hasError('MatchPassword') && submitted)">As senhas não coincidem</p>
+            || (newUser.get('confirm_password').hasError('minlength') && submitted)">Mínimo
+            de 6 caracters</p>
+          <p class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('MatchPassword'))
+            || (newUser.get('confirm_password').hasError('MatchPassword') && submitted)">As
+            senhas não coincidem</p>
         </div>
       </div>
 
