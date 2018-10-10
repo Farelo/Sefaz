@@ -8,21 +8,20 @@
   <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
-        <th> Planta </th>
+        <th> Nome </th>
         <th> Tipo </th>
-        <th> </th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let point of data" (mouseover)='hoveredIndex = index'>
-        <td>{{ point.name }}</td>
-        <td>{{ point.type }}</td>
+      <tr *ngFor="let company of data" (mouseover)='hoveredIndex = index'>
+        <td>{{ company.name }}</td>
+        <td>{{ company.type }}</td>
         <td class="teste">
           <div *ngIf="index==hoveredIndex">
-            <button class="editar" [routerLink]="['editar/', plant._id]">
+            <button class="editar" [routerLink]="['editar/', company._id]">
               EDITAR
             </button>
-            <button class="excluir" (click)="removePlant(plant)">
+            <button class="excluir" (click)="removePlant(company)">
               EXCLUIR
             </button>
           </div>

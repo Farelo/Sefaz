@@ -10,17 +10,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NguiMapModule } from '@ngui/map';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { constants } from '../../../../environments/constants'
-import { PontoRoutingModule } from './ponto.routing.module'; 
-import { PontoCadastrarComponent } from './ponto-cadastrar/ponto-cadastrar.component'; 
-import { PontoEditarComponent } from './ponto-editar/ponto-editar.component';
-import { PontoComponent } from './ponto.component';
+import { CompanyRoutingModule } from './company.routing.module'; 
+import { CompanyCadastrarComponent } from './company-cadastrar/company-cadastrar.component'; 
+import { CompanyEditarComponent } from './company-editar/company-editar.component';
+import { CompanyComponent } from './company.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     AlertModule,
-    PontoRoutingModule,
+    CompanyRoutingModule,
     NgxPaginationModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
@@ -34,12 +34,12 @@ import { PontoComponent } from './ponto.component';
 
   ],
   declarations: [
-    PontoCadastrarComponent,
-    PontoComponent,
-    PontoEditarComponent
+    CompanyCadastrarComponent,
+    CompanyComponent,
+    CompanyEditarComponent
   ],
   providers: [
     NgbActiveModal
   ],
 })
-export class PontoModule { }
+export class CompanyModule { }

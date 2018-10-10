@@ -4,11 +4,11 @@ import { RoutesService } from '../../../servicos/index.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-ponto',
-  templateUrl: './ponto.component.html',
+  selector: 'app-company',
+  templateUrl: './company.component.html',
   styleUrls: ['../cadastros.component.css']
 })
-export class PontoComponent implements OnInit {
+export class CompanyComponent implements OnInit {
   
   public data: any = [];
   public search = "";
