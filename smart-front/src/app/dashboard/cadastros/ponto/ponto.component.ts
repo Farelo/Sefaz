@@ -10,7 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class PontoComponent implements OnInit {
   
-  public data: Pagination = new Pagination({ meta: { page: 1 } });
+  public data: any = [];
   public search = "";
   
   constructor(private RoutesService: RoutesService,
