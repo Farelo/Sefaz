@@ -30,7 +30,7 @@
       </thead>
       <tbody *ngFor="let user of userData">
         <tr>
-          <td>{{ user.name || 'Sem nome'}}</td>
+          <td>{{ user.full_name }}</td>
           <td>{{ user.role }}</td>
           <td>{{ user.company.name || '-' }}</td>
           <td style="text-align: right">
