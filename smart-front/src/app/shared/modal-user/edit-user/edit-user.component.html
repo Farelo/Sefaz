@@ -23,7 +23,7 @@
         <div class="form-group col-sm-6">
           <p class="descricao">TIPO DE USUÁRIO</p>
           <ng-select formControlName="role" [(ngModel)]="userType" [items]="rolesOnSelect" [searchable]="false"
-            [markFirst] placeholder="Selecione um Tipo" bindValue="userType">
+            placeholder="Selecione um Tipo">
             <ng-template ng-label-tmp let-item="item">
               {{ item.label }}
             </ng-template>
@@ -118,7 +118,7 @@
       <div class="row">
         <div class="col-sm-12 text-right">
           <button class="botao-voltar" (click)="closeModal()">VOLTAR</button>
-          <button type="submit" class="botao-registrar">CADASTRAR</button>
+          <button type="submit" class="botao-registrar">ATUALIZAR</button>
         </div>
       </div>
 

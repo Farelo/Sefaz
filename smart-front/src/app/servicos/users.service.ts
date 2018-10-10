@@ -24,4 +24,9 @@ export class UsersService {
       .catch(this.handleError);
   }
 
+  editUser(userId:any, editUser: any): Observable<any> {
+    return this.http.patch(`${environment.url}/users/${userId}`, editUser)
+      .catch(this.handleError);
+  }
+
 }

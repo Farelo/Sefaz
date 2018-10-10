@@ -161,7 +161,7 @@ export class ToastService {
   successModal(type: string){
     var toastOptions:ToastOptions = {
         title: "Cadastrado com sucesso ",
-        msg: type + " cadastrado com suscesso no sistema!",
+        msg: type + " cadastrado com sucesso no sistema!",
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -176,6 +176,23 @@ export class ToastService {
 
   }
 
+
+  successUpdate(type: string) {
+    var toastOptions: ToastOptions = {
+      title: "Atualizado com sucesso ",
+      msg: type + " atualizado com sucesso no sistema!",
+      showClose: true,
+      timeout: 5000,
+      theme: 'material',
+      onAdd: (toast: ToastData) => {
+        console.log('Toast ' + toast.id + ' has been added!');
+      },
+      onRemove: function (toast: ToastData) {
+        console.log('Toast ' + toast.id + ' has been removed!');
+      }
+    };
+    this.toastyService.success(toastOptions);
+  }
 
   edit(route:string, type: string){
     var toastOptions:ToastOptions = {

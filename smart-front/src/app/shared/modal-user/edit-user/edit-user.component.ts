@@ -72,8 +72,13 @@ export class EditUserComponent implements OnInit {
     this.full_name = this.mUser.full_name;
     this.email = this.mUser.email;
     this.password = this.mUser.password;
-    this.userType = this.mUser.role;
     this.userCompany = this.mUser.company;
+
+    if (this.mUser.role == this.rolesOnSelect[0].name)
+      this.userType = this.rolesOnSelect[0];
+    if (this.mUser.role == this.rolesOnSelect[1].name)
+      this.userType = this.rolesOnSelect[1];
+    console.log("userType.: " + JSON.stringify(this.userType));
   }
 
   getCompaniesOnSelect() {
@@ -82,38 +87,23 @@ export class EditUserComponent implements OnInit {
       console.log("result.: " + JSON.stringify(result));
       this.companiesOnSelect = result;
 
-      this.getCompaniesIndex(this.userCompany); 
     });
-  }
-
-  getCompaniesIndex(elementToFind) {
-    console.log('elementToFind: ' + JSON.stringify(elementToFind));
-    console.log('companiesOnSelect: ' + JSON.stringify(this.companiesOnSelect));
-
-    let i = 0;
-    let index = 0;
-    while (i < this.companiesOnSelect.length) {
-      if (elementToFind._id == this.companiesOnSelect[i]._id){
-        index = i;
-        break;
-      }
-      i++;
-    }
-    console.log('actualCompany: ' + JSON.stringify(this.companiesOnSelect[i]));
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
     if (valid) {
-
       delete value.confirm_password;
       value.role = value.role.name;
       value.company = value.company._id;
+      
+      let userId = this.mUser._id
+      //console.log('userId: ' + userId);
 
-      this.usersService.createUser(value).subscribe(result => {
+      this.usersService.editUser(userId, value).subscribe(result => {
         //console.log("result: " + JSON.stringify(result));
         this.closeModal();
-        this.toastService.successModal('Usuário');
+        this.toastService.successUpdate('Usuário');
       });
     }
   }
