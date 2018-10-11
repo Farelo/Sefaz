@@ -29,4 +29,9 @@ export class UsersService {
       .catch(this.handleError);
   }
 
+  deleteUser(userId: any): Observable<any> {
+    return this.http.delete(`${environment.url}/users/${userId}`)
+  .catch(this.handleError);
+  }
+
 }

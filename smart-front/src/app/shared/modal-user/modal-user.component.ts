@@ -71,10 +71,11 @@ export class ModalUserComponent implements OnInit {
 
   removeProfile(profile):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.view = profile;
-    modalRef.componentInstance.type = "profile";
+    modalRef.componentInstance.mUser = profile;
     modalRef.result.then((result) => {
-      if(result === "remove") this.getUsers();
+
+      console.log('result...........: ' + result);
+      this.getUsers();
     });
   }
 
