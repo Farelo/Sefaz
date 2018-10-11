@@ -36,7 +36,7 @@
 
     getResume() {
       this.homeService.getResumeHome().subscribe(result => {
-        console.log('result: ' + JSON.stringify(result));
+        //console.log('result: ' + JSON.stringify(result));
         this.resume = result;
 
       }, err => { console.log(err) });

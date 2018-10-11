@@ -1,9 +1,17 @@
 export const constants = {
+  ADMIN: 'admin',
+
+
+
+
+
+
+
+  //Constantes antigas
   LOGISTIC: 'Logistic',
   SUPPLIER: 'Supplier',
   STAFF_SUPPLIER: 'StaffSupplier',
   STAFF_LOGISTIC: 'StaffLogistic',
-  ADMIN: 'AdminFactory',
   STAFF_FACTORY: 'StaffFactory',
   profile: {
     supplier: 'FORNECEDOR',

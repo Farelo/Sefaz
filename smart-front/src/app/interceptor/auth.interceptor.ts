@@ -10,17 +10,15 @@ export class AuthInterceptor implements HttpInterceptor {
   
   constructor(
     private injector: Injector,
-    private router: Router
-  ){ }
+    private router: Router){ }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
    
-    //console.log();
     if(JSON.parse(localStorage.getItem('currentUser'))){
-      req = req.clone({headers: req.headers.set('Authorization', JSON.parse(localStorage.getItem('currentUser')).token)});
+
+      req = req.clone({ headers: req.headers.set('Authorization', JSON.parse(localStorage.getItem('currentUser')).accessToken)});
     }
    
-
     return next
       .handle(req)
       .do((ev: HttpEvent<any>) => {
@@ -34,25 +32,24 @@ export class AuthInterceptor implements HttpInterceptor {
             localStorage.setItem('currentUser', JSON.stringify(user));
           }
          }
-        
-       
+               
         return ev;
       })
       .catch(error => {
       
         if (error instanceof HttpErrorResponse) {
+          //REMOVE
+          // if (error.status === 401) { // erro na autenticação
+          //   const auth = this.injector.get(AuthenticationService);
+          //   auth.logout();
+          //   this.router.navigate(['/login']);
+          // }
 
-          if (error.status === 401) { // erro na autenticação
-            const auth = this.injector.get(AuthenticationService);
-            auth.logout();
-            this.router.navigate(['/login']);
-          }
-
-          if (error.status === 0){ // o servidor não responde
-            const auth = this.injector.get(AuthenticationService);
-            auth.logout();
-            this.router.navigate(['/login']);
-          }
+          // if (error.status === 0){ // o servidor não responde
+          //   const auth = this.injector.get(AuthenticationService);
+          //   auth.logout();
+          //   this.router.navigate(['/login']);
+          // }
         }
         
         return Observable.throw(error);

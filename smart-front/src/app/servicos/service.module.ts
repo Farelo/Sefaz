@@ -24,7 +24,10 @@ import {
     ToastService,
     ImportService,
     AuthenticationService,
-    AuthInterceptor
+    AuthInterceptor,
+
+    CompaniesService,
+    UsersService
 } from './index.service';
 
 @NgModule({
@@ -54,7 +57,10 @@ import {
         ToastService,
         ImportService,
         AuthenticationService,
-        AuthInterceptor
+        AuthInterceptor,
+
+        CompaniesService,
+        UsersService
     ]
 })
 export class ServicesModule { }

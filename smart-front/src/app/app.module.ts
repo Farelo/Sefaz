@@ -47,6 +47,9 @@ import { AlertaLocalIncorretoComponent } from './shared/modal-alerta/alerta-loca
 import { AlertaPermanenciaComponent } from './shared/modal-alerta/alerta-permanencia/alerta-permanencia.component';
 import { AlertaEmbalagemPerdidaComponent } from './shared/modal-alerta/alerta-embalagem-perdida/alerta-embalagem-perdida.component';
 import { SidebarModule } from 'ng-sidebar';
+import { CreateUserComponent } from './shared/modal-user/create-user/create-user.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { EditUserComponent } from './shared/modal-user/edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +74,10 @@ import { SidebarModule } from 'ng-sidebar';
     ModalStaffRegisterComponent,
     ModalStaffEditarComponent,
     ModalCurrentEditarComponent,
-    AbscenseModalComponent
+    AbscenseModalComponent,
+
+    CreateUserComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,
@@ -87,6 +93,7 @@ import { SidebarModule } from 'ng-sidebar';
     BsDatepickerModule.forRoot(), 
     TooltipModule.forRoot(),
     SidebarModule.forRoot(),
+    NgSelectModule,
     BrowserAnimationsModule,
     DashboardModuleAdmin,
     AngularMultiSelectModule,
@@ -140,7 +147,10 @@ import { SidebarModule } from 'ng-sidebar';
     ModalLogisticRegisterComponent,
     ModalDeleteComponent,
     ModalSupplierRegisterComponent,
-    ModalSupplierEditarComponent
+    ModalSupplierEditarComponent,
+
+    CreateUserComponent,
+    EditUserComponent
   ]
 })
 

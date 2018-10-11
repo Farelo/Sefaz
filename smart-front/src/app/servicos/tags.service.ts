@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class TagsService {
 
+  url: string = "http://localhost:3000/api/"
+
   constructor(private http: HttpClient) { }
 
   private handleError(error: Response) {
@@ -15,7 +17,7 @@ export class TagsService {
   }
 
   getTagsPagination(limit: number, page: number, attr: any): Observable<any> {
-    return this.http.get(`${environment.url}tags/list/pagination/${limit}/${page}?attr=${attr}`)
+    return this.http.get(`${this.url}tags/list/pagination/${limit}/${page}?attr=${attr}`)
       .catch(this.handleError);
   }
 
