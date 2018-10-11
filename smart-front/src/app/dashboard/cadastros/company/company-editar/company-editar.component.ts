@@ -15,6 +15,7 @@ export class CompanyEditarComponent implements OnInit {
   public newCompany = this.fb.group({
     name: ['', [Validators.required]],
     phone: '',
+    cnpj: '',
     address: this.fb.group({
       street: '',
       city: '',
@@ -76,8 +77,8 @@ export class CompanyEditarComponent implements OnInit {
         let actualValues = {
           type: (result.type == this.typesOnSelect[0].name) ? this.typesOnSelect[0] : this.typesOnSelect[1],
           name: result.name,
-          phone: result.phone ? result.address.phone : '',
-          //cnpj: "",
+          phone: result.phone ? result.phone : '',
+          cnpj: result.cnpj ? result.cnpj : '',
           address: {
             street: result.address ? result.address.street : '',
             city: result.address ? result.address.city : '',
@@ -97,6 +98,7 @@ export class CompanyEditarComponent implements OnInit {
     this.newCompany = this.fb.group({
       name: ['', [Validators.required]],
       phone: '',
+      cnpj: '',
       address: this.fb.group({
         street: '',
         city: '',

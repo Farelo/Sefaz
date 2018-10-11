@@ -36,9 +36,18 @@
       <div class="form-group col-sm-12 col-md-4">
         <p class="descricao">TELEFONE</p>
         <!-- <input type="text" class="form-control" [(ngModel)]="phone" placeholder="Digite o telefone" formControlName="phone"> -->
-        <input [textMask]="{mask: maskTel}" class="form-control" [(ngModel)]="phone" type="text" formControlName="phone" placeholder="Número de telefone"/>
+        <input [textMask]="{mask: maskTel}" class="form-control" [(ngModel)]="phone" type="text" formControlName="phone" placeholder="Telefone"/>
       </div>
     </div>
+
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-6">
+        <p class="descricao">CNPJ</p>
+        <!-- <input type="text" class="form-control" [(ngModel)]="phone" placeholder="Digite o telefone" formControlName="phone"> -->
+        <input class="form-control" [(ngModel)]="cnpj" type="text" formControlName="cnpj" placeholder="CNPJ"/>
+      </div>
+    </div>
+
 
     <div class="row" formGroupName="address">
       <div class="form-group col-sm-12 col-md-8">
