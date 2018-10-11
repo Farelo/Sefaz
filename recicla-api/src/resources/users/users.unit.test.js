@@ -20,7 +20,12 @@ describe('User unit test', () => {
                 role: 'user'
             }
             const user = new User(payload)
-            const token = user.generateUserToken()
+            let token = user.generateUserToken()
+            
+            const parts = token.split(' ')
+            if (parts.length === 2 && parts[0] === 'Bearer') {
+                token = parts[1]
+            }
             const decoded = jwt.verify(token, config.get('security.jwtPrivateKey'))
 
             expect(decoded).toMatchObject(payload)
@@ -28,11 +33,12 @@ describe('User unit test', () => {
     })
 
     describe('passwordMatches()', () => {
-        it('should return a valid JWT', async () => {
+        it('should return the password matches', async () => {
             const salt = await bcrypt.genSalt(config.get('security.saltRounds'))
             const hashed_password = await bcrypt.hash('12345678', salt)
             const payload = {
                 _id: new mongoose.Types.ObjectId().toHexString(),
+                full_name: 'Teste Man',
                 email: 'teste@teste.com',
                 password: hashed_password,
                 role: 'user'

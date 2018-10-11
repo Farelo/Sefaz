@@ -1,10 +1,15 @@
-{
+{   
+    "company": {
+        "name": "Test",
+        "enabled": false
+    },
     "server": {
         "url": "localhost",
         "port": 3001
     },
     "db": {
-        "url": "mongodb://localhost:27017/recicla_test"
+        "url": "mongodb://localhost:27017/recicla_test",
+        "mongodb_container": "mongodb://db:27017/recicla_test"
     },
     "security": {
         "jwtPrivateKey": "secr3t",
@@ -21,5 +26,13 @@
         "enabled": false,
         "name": "",
         "level": ""
+    },
+    "database_options": {
+        "reconnectTries": 100000,
+        "reconnectInterval": 500,
+        "poolSize": 10,
+        "bufferMaxEntries": 0,
+        "socketTimeoutMS": 0,
+        "keepAlive": true
     }
 }

@@ -22,11 +22,13 @@ const extractToken = (req) => {
     const authorization = req.header('Authorization')
 
     if (authorization) {
-        token = authorization
-        // const parts = authorization.split(' ')
-        // if(parts.length === 2 && parts[0] === 'Bearer') {
-        //     token = parts[1]
-        // }
+        // token = authorization
+        const parts = authorization.split(' ')
+        if(parts.length === 2 && parts[0] === 'Bearer') {
+            token = parts[1]
+        } else {
+            token = authorization
+        }
     }
 
     return token

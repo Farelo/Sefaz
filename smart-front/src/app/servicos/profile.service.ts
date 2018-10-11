@@ -1,6 +1,6 @@
-import { Injectable }     from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+//import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Profile } from '../shared/models/profile';
 import { environment } from '../../environments/environment';
@@ -8,10 +8,20 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class ProfileService {
 
-  constructor(private http: HttpClient) { }
+  //REMOVE
+  //private url: string = "http://localhost:3000/api/";
+  //private currentUser: any;
 
+  constructor(private http: HttpClient) { 
+  }
+  
   private handleError(error: Response) {
-      return Observable.throw(error);
+    return Observable.throw(error);
+  }
+
+  getUsers(): Observable<any> {
+    return this.http.get(`${environment.url}/users`)
+      .catch(this.handleError);
   }
 
   getProfilePagination(limit: number, page: number): Observable<any> {

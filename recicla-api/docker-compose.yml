@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  front:
+    image: recicla-front
+    ports:
+      - "4200:80"
+    networks:
+      - front_net
+  back:
+    image: recicla-api
+    ports:
+      - "3000:3000"
+    networks:
+      - db_net
+      - front_net
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - db_net
+
+networks:
+  db_net:
+    driver: bridge
+  front_net:
+    driver: bridge

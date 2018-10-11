@@ -14,22 +14,12 @@ const companySchema = new mongoose.Schema({
         minlength: 6,
         maxlength: 50
     },
-    cnpj: {
-        type: String
-    },
+    cnpj: String,
     address: {
-        city: {
-            type: String
-        },
-        street: {
-            type: String
-        },
-        cep: {
-            type: String
-        },
-        uf: {
-            type: String
-        }
+        city: String,
+        street: String,
+        cep: String,
+        uf: String
     },
     type: {
         type: String,
@@ -38,7 +28,6 @@ const companySchema = new mongoose.Schema({
         lowercase: true,
         default: 'client',
         trim: true
-
     },
     users: [{
         type: mongoose.Schema.ObjectId,
@@ -58,15 +47,14 @@ const validate_companies = (company) => {
     const schema = {
         name: Joi.string().min(5).max(50).required(),
         phone: Joi.string().min(6).max(50),
+        cnpj: Joi.string(),
         address: {
             city: Joi.string(),
             street: Joi.string(),
             cep: Joi.string(),
             uf: Joi.string()
         } ,
-        type: Joi.string(),
-        users: Joi.objectId(),
-        control_points: Joi.objectId()
+        type: Joi.string()
     }
 
     return Joi.validate(company, schema)

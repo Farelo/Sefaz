@@ -1,107 +1,15 @@
 <div class="modalFilho">
-  <div class="detalhes" *ngIf="type === 'route'">
-     <h2>Detalhes da Rota </h2>
-     <hr>
-     <p>Partida: {{view.location?.start_address || 'Não Informado'}}</p>
-     <p>Destino: {{view.location?.end_address || 'Não Informado'}}</p>
-     <hr>
-     <div class="alerta">
-       <span class="alert" aria-hidden="true"></span>
-       <p>A remoção dessa Rota irá disvincular as Embalagens de código {{view.packing_code}} do Fornecedor {{view.supplier?.name}}.As informações serão perdidas, você tem certeza?</p>
-     </div>
-  </div>
-
-  <div  class="detalhes" *ngIf="type === 'packing'">
-    <h2>Detalhes da Embalagem </h2>
+  <div class="detalhes">
+    <h2> Deletar Usuário </h2>
     <hr>
-    <p>Projeto: {{view.project.name }}</p>
-    <p>Fornecedor: {{view.supplier.name }}</p>
-    <p>Serial: {{view.serial }}</p>
-    <p>Planta Atual: {{view.actual_plant?.plant.plant_name || 'Não Registrada'}}</p>
-    <hr>
-    <div class="alerta">
-      <span class="alert" aria-hidden="true"></span>
-      <p>A remoção da Embalagem {{view.code}} poderá remover o Registro BPline e as Rotas associadas a essa embalagem. As informações serão perdidas, você tem certeza?</p>
-    </div>
-  </div>
-
-  <div  class="detalhes" *ngIf="type === 'gc16'">
-    <h2>Detalhes do Registro BPline </h2>
-    <hr>
-    <p>Projeto: {{view.project.name }}</p>
-    <p>Fornecedor: {{view.supplier.name }}</p>
-    <p>Packing: {{view.packing}}</p>
-    <hr>
-    <div class="alerta">
-      <span class="alert" aria-hidden="true"></span>
-      <p>A remoção do Registro do BPline  irá disvincular as Embalagens de código {{view.packing}} do Fornecedor {{view.supplier?.name}}. As informações serão perdidas, você tem certeza?</p>
-    </div>
-  </div>
-
-  <div  class="detalhes" *ngIf="type === 'plant'">
-    <h2>Detalhes da Planta </h2>
-    <hr>
-    <p>Local: {{view.location }}</p>
-    <p>Nome: {{view.plant_name }}</p>
-    <hr>
-    <div class="alerta">
-      <span class="alert" aria-hidden="true"></span>
-      <p>A remoção dessa Planta poderá disvincular Embalagens associadas a essa localidade.As informações serão perdidas, você tem certeza?</p>
-    </div>
-  </div>
-
-  <div class="detalhes" *ngIf="type === 'tag'">
-    <h2>Detalhes da Tag </h2>
-    <hr>
-    <p>Código: {{view.code }}</p>
+    <p>Tipo: {{ mUser.role }}</p>
+    <p>Nome: {{ mUser.full_name }}</p>
+    <p>E-mail: {{ mUser.email }}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-    <p>A remoção dessa Tag {{view.name}} porederá desassociar Embalagens, Rotas e registros do BPline .As informações serão perdidas, você tem certeza?</p>
-    </div>
-  </div>
-  <div class="detalhes" *ngIf="type === 'project'">
-    <h2>Detalhes da Plataforma/Projeto </h2>
-    <hr>
-    <p>Nome: {{view.name }}</p>
-
-    <hr>
-    <div class="alerta">
-      <span class="alert" aria-hidden="true"></span>
-      <p>A remoção dessa Plataforma/Projeto {{view.code}} porederá desassociar Embalagens, Rotas e registros do BPline .As informações serão perdidas, você tem certeza?</p>
-    </div>
-  </div>
-  <div class="detalhes" *ngIf="type === 'profile'">
-    <h2>Detalhes do Perfil do Usuário </h2>
-    <hr>
-    <p>{{view.profile == "Supplier" ? 'Fornecedor' :
-      (view.profile == 'Logistic' ? 'Op. Logistico' :
-      (view.profile == 'AdminFactory' ? 'Admin. Fábrica' : 'Func. Fábrica'))}}</p>
-    <p>E-mail: {{view.email}}</p>
-    <p>Name: {{view.user?.name ? view.user?.name : view.name }}</p>
-    <div *ngIf="view.profile === 'Supplier'">
-      <p>DUNS: {{view.user.duns}}</p>
-    </div>
-
-    <hr>
-    <div class="alerta">
-      <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Perfil porederá desassociar Embalagens, Rotas e registros do BPline .As informações serão perdidas, você tem certeza?</p>
-    </div>
-  </div>
-
-  <div class="detalhes" *ngIf="type === 'department'">
-    <h2>Detalhes do Departamento </h2>
-    <hr>
-
-    <p>Nome: {{view.name}}</p>
-    <p>Planta: {{view.plant.plant_name}}</p>
-
-    <hr>
-    <div class="alerta">
-      <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse departmento porederá remover informações associadas as Plantas e Embalagens.As informações serão perdidas, você tem certeza?</p>
+      <p>A remoção desse Perfil porederá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 

@@ -14,6 +14,7 @@ const CadastrosRoutes = [
       { path: 'plataforma', loadChildren: 'app/dashboard/cadastros/plataforma/plataforma.module#PlataformaModule' },
       { path: 'rotas', loadChildren: 'app/dashboard/cadastros/rotas/rotas.module#RotasModule' },
       { path: 'planta', loadChildren: 'app/dashboard/cadastros/planta/planta.module#PlantaModule' },
+      { path: 'company', loadChildren: 'app/dashboard/cadastros/company/company.module#CompanyModule' }
     ]
   }
 ];
