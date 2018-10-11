@@ -12,14 +12,19 @@ import { Router } from "@angular/router";
 export class CompanyCadastrarComponent implements OnInit {
 
   public newCompany: FormGroup;
-  public typesOnSelect: any = [];
+  public typesOnSelect: any;
+  public companyType: any;
 
+  //Mask
+  public maskTel = ['(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
+  public maskCep = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
+  //public maskUF = [/[A-Z]/, /[A-Z]/];
+  
   constructor(
     protected companiesService: CompaniesService,
     protected toastService: ToastService,
     private fb: FormBuilder,
-    private router: Router
-  ) { }
+    private router: Router) { }
 
   ngOnInit() {
     this.formProfile();
@@ -49,7 +54,7 @@ export class CompanyCadastrarComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
     if (valid) {
       value.type = value.type.name;
-      console.log(value);
+      console.log('submit...:' + JSON.stringify(value));
 
       this.companiesService
         .createCompany(value)

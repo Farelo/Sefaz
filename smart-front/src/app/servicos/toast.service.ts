@@ -14,9 +14,7 @@ export class ToastService {
     private router: Router,
     private toastyService: ToastyService,
     private toastyConfig: ToastyConfig,
-    private route: ActivatedRoute
-  ) { }
-
+    private route: ActivatedRoute) { }
 
   warningunathorized() {
     // Add see all possible types in one shot
@@ -28,10 +26,10 @@ export class ToastService {
         timeout: 5000,
         theme: 'material',
         onAdd: (toast: ToastData) => {
-          console.log('Toast ' + toast.id + ' has been added!');
+          //console.log('Toast ' + toast.id + ' has been added!');
         },
         onRemove: function (toast: ToastData) {
-          console.log('Toast ' + toast.id + ' has been removed!');
+          //console.log('Toast ' + toast.id + ' has been removed!');
         }
       };
     
@@ -50,10 +48,10 @@ export class ToastService {
         timeout: 5000,
         theme: 'material',
         onAdd: (toast: ToastData) => {
-          console.log('Toast ' + toast.id + ' has been added!');
+          //console.log('Toast ' + toast.id + ' has been added!');
         },
         onRemove: function(toast: ToastData) {
-          console.log('Toast ' + toast.id + ' has been removed!');
+          //console.log('Toast ' + toast.id + ' has been removed!');
         }
       };
     
@@ -72,10 +70,10 @@ export class ToastService {
         timeout: 5000,
         theme: 'material',
         onAdd: (toast: ToastData) => {
-          console.log('Toast ' + toast.id + ' has been added!');
+          //console.log('Toast ' + toast.id + ' has been added!');
         },
         onRemove: function(toast: ToastData) {
-          console.log('Toast ' + toast.id + ' has been removed!');
+          //console.log('Toast ' + toast.id + ' has been removed!');
         }
       };
     }else{
@@ -86,10 +84,10 @@ export class ToastService {
         timeout: 5000,
         theme: 'material',
         onAdd: (toast: ToastData) => {
-          console.log('Toast ' + toast.id + ' has been added!');
+          //console.log('Toast ' + toast.id + ' has been added!');
         },
         onRemove: function(toast: ToastData) {
-          console.log('Toast ' + toast.id + ' has been removed!');
+          //console.log('Toast ' + toast.id + ' has been removed!');
         }
       };
     }
@@ -107,10 +105,10 @@ export class ToastService {
         timeout: 5000,
         theme: 'material',
         onAdd: (toast:ToastData) => {
-            console.log('Toast ' + toast.id + ' has been added!');
+          //console.log('Toast ' + toast.id + ' has been added!');
         },
         onRemove: function(toast:ToastData) {
-            console.log('Toast ' + toast.id + ' has been removed!');
+          //console.log('Toast ' + toast.id + ' has been removed!');
         }
     };
      this.toastyService.success(toastOptions);
@@ -125,10 +123,10 @@ export class ToastService {
         timeout: 5000,
         theme: 'material',
         onAdd: (toast:ToastData) => {
-            console.log('Toast ' + toast.id + ' has been added!');
+          //console.log('Toast ' + toast.id + ' has been added!');
         },
         onRemove: function(toast:ToastData) {
-            console.log('Toast ' + toast.id + ' has been removed!');
+          //console.log('Toast ' + toast.id + ' has been removed!');
         }
     };
      this.toastyService.success(toastOptions);
@@ -137,28 +135,33 @@ export class ToastService {
      }
   }
 
-  remove(route:string, type: string){
+  remove(route:string, type: string, female:boolean = false){
     var toastOptions:ToastOptions = {
-        title: "Removido com sucesso ",
+        title: "Removido com sucesso",
         msg: type + " foi removido com sucesso do sistema!",
         showClose: true,
         timeout: 5000,
         theme: 'material',
         onAdd: (toast:ToastData) => {
-            console.log('Toast ' + toast.id + ' has been added!');
+          //console.log('Toast ' + toast.id + ' has been added!');
         },
         onRemove: function(toast:ToastData) {
-            console.log('Toast ' + toast.id + ' has been removed!');
+          //console.log('Toast ' + toast.id + ' has been removed!');
         }
     };
-     this.toastyService.success(toastOptions);
-     if(route != ''){
-        this.router.navigate([route]);
-     }
 
+    if(female){
+      toastOptions.title = "Removida com sucesso";
+      toastOptions.msg = type + " foi removida com sucesso!";
+    }
+
+    this.toastyService.success(toastOptions);
+    if(route != ''){
+      this.router.navigate([route]);
+    }
   }
 
-  successModal(type: string){
+  successModal(type: string, female: boolean = false){
     var toastOptions:ToastOptions = {
         title: "Cadastrado com sucesso ",
         msg: type + " cadastrado com sucesso no sistema!",
@@ -166,13 +169,19 @@ export class ToastService {
         timeout: 5000,
         theme: 'material',
         onAdd: (toast:ToastData) => {
-            console.log('Toast ' + toast.id + ' has been added!');
+          //console.log('Toast ' + toast.id + ' has been added!');
         },
         onRemove: function(toast:ToastData) {
-            console.log('Toast ' + toast.id + ' has been removed!');
+          //console.log('Toast ' + toast.id + ' has been removed!');
         }
     };
-     this.toastyService.success(toastOptions);
+
+    if (female) {
+      toastOptions.title = "Cadastrada com sucesso";
+      toastOptions.msg = type + " foi cadastrada com sucesso!";
+    }
+
+    this.toastyService.success(toastOptions);
 
   }
 
@@ -185,10 +194,10 @@ export class ToastService {
       timeout: 5000,
       theme: 'material',
       onAdd: (toast: ToastData) => {
-        console.log('Toast ' + toast.id + ' has been added!');
+        //console.log('Toast ' + toast.id + ' has been added!');
       },
       onRemove: function (toast: ToastData) {
-        console.log('Toast ' + toast.id + ' has been removed!');
+        //console.log('Toast ' + toast.id + ' has been removed!');
       }
     };
     this.toastyService.success(toastOptions);
@@ -202,10 +211,10 @@ export class ToastService {
         timeout: 5000,
         theme: 'material',
         onAdd: (toast:ToastData) => {
-            console.log('Toast ' + toast.id + ' has been added!');
+          //console.log('Toast ' + toast.id + ' has been added!');
         },
         onRemove: function(toast:ToastData) {
-            console.log('Toast ' + toast.id + ' has been removed!');
+          //console.log('Toast ' + toast.id + ' has been removed!');
         }
     };
      this.toastyService.success(toastOptions);

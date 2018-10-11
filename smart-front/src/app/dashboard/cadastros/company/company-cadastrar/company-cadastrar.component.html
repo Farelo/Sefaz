@@ -7,7 +7,10 @@
     <div class="row">
       <div class="form-group col-sm-6">
         <p class="descricao">TIPO DA EMPRESA</p>
-        <ng-select formControlName="type" [items]="typesOnSelect" [searchable]="false" [markFirst]
+        <ng-select formControlName="type" 
+          [(ngModel)]="companyType"
+          [items]="typesOnSelect" 
+          [searchable]="false" 
           placeholder="Selecione um Tipo">
           <ng-template ng-label-tmp let-item="item">
             {{ item.label }}
@@ -20,7 +23,7 @@
     </div>
 
     <div class="row">
-      <div class="form-group col-sm-12 col-md-6">
+      <div class="form-group col-sm-12 col-md-8">
         <p class="descricao">NOME DA EMPRESA</p>
         <input type="text" class="form-control" [(ngModel)]="name" placeholder="Digite o nome da empresa"
           formControlName="name" [ngClass]="{'required': (newCompany.get('name').hasError('required') && newCompany.get('name').touched)
@@ -30,31 +33,36 @@
           Obrigatório</p>
       </div>
     
-      <div class="form-group col-sm-12 col-md-6">
+      <div class="form-group col-sm-12 col-md-4">
         <p class="descricao">TELEFONE</p>
-        <input type="text" class="form-control" [(ngModel)]="phone" placeholder="Digite o telefone" formControlName="phone">
+        <!-- <input type="text" class="form-control" [(ngModel)]="phone" placeholder="Digite o telefone" formControlName="phone"> -->
+        <input [textMask]="{mask: maskTel}" class="form-control" [(ngModel)]="phone" type="text" formControlName="phone" placeholder="Número de telefone"/>
       </div>
     </div>
 
     <div class="row" formGroupName="address">
-      <div class="form-group col-sm-6 col-md-4">
+      <div class="form-group col-sm-12 col-md-8">
         <p class="descricao">RUA</p>
         <input type="text" class="form-control" [(ngModel)]="street" placeholder="Digite o nome da rua" formControlName="street">
       </div>
     
-      <div class="form-group col-sm-6 col-md-4">
+      <div class="form-group col-sm-12 col-md-4">
+        <p class="descricao">CEP</p>
+        <input [textMask]="{mask: maskCep}" type="text" class="form-control" [(ngModel)]="cep" placeholder="Digite o CEP" formControlName="cep">
+      </div>
+
+    </div>
+
+    <div class="row" formGroupName="address">
+      <div class="form-group col-sm-6 col-md-6">
         <p class="descricao">CIDADE</p>
         <input type="text" class="form-control" [(ngModel)]="city" placeholder="Digite o cidade" formControlName="city">
       </div>
-
-      <div class="form-group col-sm-6 col-md-2">
-        <p class="descricao">CEP</p>
-        <input type="text" class="form-control" [(ngModel)]="cep" placeholder="Digite o cep" formControlName="cep">
-      </div>
-
+    
       <div class="form-group col-sm-6 col-md-2">
         <p class="descricao">UF</p>
-        <input type="text" class="form-control" [(ngModel)]="uf" formControlName="uf">
+        <!-- <input [textMask]="{mask: maskUF}" type="text" class="form-control" [(ngModel)]="uf" formControlName="uf"> -->
+        <input type="text" class="form-control" [(ngModel)]="uf" formControlName="uf" placeholder="UF">
       </div>
     </div>
 

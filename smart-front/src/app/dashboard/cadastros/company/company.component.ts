@@ -22,8 +22,7 @@ export class CompanyComponent implements OnInit {
     private modalService: NgbModal,
     protected companiesService: CompaniesService,
     protected toastService: ToastService,
-    private router: Router
-    ) { }
+    private router: Router) { }
 
   ngOnInit() {
     this.loadCompanies();
@@ -48,7 +47,11 @@ export class CompanyComponent implements OnInit {
   removeCompany(company: any) {
     this.companiesService
       .deleteCompany(company._id)
-      .subscribe(res => { this.toastService.successModal('Empresa deletada!'); this.router.navigate(['/rc/cadastros/company']); })
+      .subscribe(res => { 
+        this.toastService.remove('','Empresa', true); 
+        this.loadCompanies();
+      });
+    //this.router.navigate(['/rc/cadastros/company']); })
   }
 
   /**

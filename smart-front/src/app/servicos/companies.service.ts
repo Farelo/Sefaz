@@ -13,6 +13,11 @@ export class CompaniesService {
       return Observable.throw(error);
   }
 
+  getCompany(companyID): Observable<any> {
+    return this.http.get(`${environment.url}/companies/${companyID}`)
+      .catch(this.handleError);
+  }
+
   getAllCompanies(): Observable<any> {
     return this.http.get(`${environment.url}/companies`)
       .catch(this.handleError);
@@ -23,6 +28,11 @@ export class CompaniesService {
       .catch(this.handleError);
   }
 
+  editCompany(companyId: any, newCompany: any): Observable<any> {
+    return this.http.patch(`${environment.url}/companies/${companyId}`, newCompany)
+      .catch(this.handleError);
+  }
+  
   deleteCompany(companyId: any): Observable<any> {
     return this.http.delete(`${environment.url}/companies/${companyId}`)
       .catch(this.handleError);

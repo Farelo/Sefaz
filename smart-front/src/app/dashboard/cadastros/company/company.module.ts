@@ -15,6 +15,7 @@ import { CompanyCadastrarComponent } from './company-cadastrar/company-cadastrar
 import { CompanyEditarComponent } from './company-editar/company-editar.component';
 import { CompanyComponent } from './company.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
     FormsModule,
+    TextMaskModule,
     NgSelectModule,
     ReactiveFormsModule,
     NguiMapModule.forRoot({
