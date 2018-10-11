@@ -14,22 +14,12 @@ const companySchema = new mongoose.Schema({
         minlength: 6,
         maxlength: 50
     },
-    cnpj: {
-        type: String
-    },
+    cnpj: String,
     address: {
-        city: {
-            type: String
-        },
-        street: {
-            type: String
-        },
-        cep: {
-            type: String
-        },
-        uf: {
-            type: String
-        }
+        city: String,
+        street: String,
+        cep: String,
+        uf: String
     },
     type: {
         type: String,
@@ -38,7 +28,6 @@ const companySchema = new mongoose.Schema({
         lowercase: true,
         default: 'client',
         trim: true
-
     },
     users: [{
         type: mongoose.Schema.ObjectId,

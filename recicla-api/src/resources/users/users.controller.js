@@ -43,12 +43,7 @@ exports.create = async (req, res) => {
     const company = await Company.findById(req.body.company)
     if (!company) return res.status(HttpStatus.BAD_REQUEST).send('Invalid company')
 
-    user = new User({
-        full_name: req.body.full_name,
-        email: req.body.email,
-        password: req.body.password,
-        company: company
-    })
+    user = new User(req.body)
 
     company.users.push(user._id)
 

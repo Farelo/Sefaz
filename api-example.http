@@ -1,5 +1,0 @@
-GET "http://localhost:8984/api/home/packings/stats"
-
-### 
-
-GET "http://localhost:8984/api/home/packings/INCORRECT_LOCAL"

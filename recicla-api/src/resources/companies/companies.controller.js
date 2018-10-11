@@ -10,17 +10,20 @@ exports.all = async (req, res) => {
 }
 
 exports.show = async (req, res) => {
-    const company = await Company.findById(req.params.id).populate('users', ['_id', 'email', 'role'])
+    const company = await Company
+        .findById(req.params.id)
+        .populate('users', ['_id', 'email', 'role'])
+
     if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
 
     res.json(company)
 }
 
 exports.create = async (req, res) => {
-    company = new Company(_.pick(req.body, ['name']))
+    company = new Company((req.body))
     await company.save()
 
-    res.send(_.pick(company, ['_id', 'name']))
+    res.send(company)
 }
 
 exports.update = async(req, res) => {
