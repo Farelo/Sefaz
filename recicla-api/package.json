@@ -6,7 +6,9 @@
   "scripts": {
     "start": "export NODE_CONFIG_DIR=src/config && export DEBUG=controller:* && export DEBUG=startup:* && nodemon src/server.js",
     "test": "export NODE_CONFIG_DIR=src/config && export NODE_ENV=test && jest --watchAll --verbose --runInBand --no-cache",
-    "prod": "export NODE_CONFIG_DIR=src/config && export DEBUG=controller:* && export DEBUG=startup:* && pm2 start src/server.js && pm2 logs --raw server"
+    "prod": "export NODE_CONFIG_DIR=src/config && export DEBUG=controller:* && export DEBUG=startup:* && pm2 start src/server.js && pm2 logs --raw server",
+    "start-win": "set NODE_CONFIG_DIR=src/config&&set DEBUG=controller:*&&nodemon src/server.js",
+    "test-win": "set NODE_CONFIG_DIR=src/config&&set NODE_ENV=test&&jest --watchAll --verbose --runInBand --no-cache"
   },
   "author": "Sergio Junior",
   "license": "ISC",
