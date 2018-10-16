@@ -20,7 +20,7 @@ exports.show = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    company = new Company((req.body))
+    const company = new Company((req.body))
     await company.save()
 
     res.send(company)
