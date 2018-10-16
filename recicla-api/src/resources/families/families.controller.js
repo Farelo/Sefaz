@@ -4,44 +4,47 @@ const HttpStatus = require('http-status-codes')
 const { Family } = require('./families.model')
 
 exports.all = async (req, res) => {
-    const families = await Family.find()
+    const families = await Family.find().populate('company', ['_id', 'name', 'type'])
 
     res.json(families)
 }
 
-// exports.show = async (req, res) => {
-//     const company = await Company
-//         .findById(req.params.id)
-//         .populate('users', ['_id', 'email', 'role'])
+exports.show = async (req, res) => {
+    const family = await Family
+        .findById(req.params.id)
+        .populate('company', ['_id', 'name', 'type'])
 
-//     if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+    if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
 
-//     res.json(company)
-// }
+    res.json(family)
+}
 
 exports.create = async (req, res) => {
-    const family = new Family((req.body))
+    // let family = Family.findOne({ code: req.body.code })
+    // if (family) return res.status(HttpStatus.BAD_REQUEST).send('Family code already exists.') 
+
+    family = new Family(req.body)
     await family.save()
 
     res.send(family)
 }
 
-// exports.update = async (req, res) => {
-//     let company = await Company.findById(req.params.id)
-//     if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+exports.update = async (req, res) => {
+    let family = await Family.findById(req.params.id)
+    if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
 
-//     const options = { runValidators: true, new: true }
+    const options = { runValidators: true, new: true }
 
-//     company = await Company.findByIdAndUpdate(req.params.id, req.body, options)
+    family = await Family.findByIdAndUpdate(req.params.id, req.body, options)
 
-//     res.json(company)
-// }
+    res.json(family)
+}
 
-// exports.delete = async (req, res) => {
-//     const company = await Company.findById(req.params.id).populate('users')
-//     if (!company) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid company' })
+exports.delete = async (req, res) => {
+    const family = await Family.findById(req.params.id)
+    if (!family) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid family' })
 
-//     await company.remove()
+    await family.remove()
 
-//     res.send({ message: 'Delete successfully' })
-// }
+    res.send({ message: 'Delete successfully' })
+}

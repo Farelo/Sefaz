@@ -10,9 +10,7 @@ const companySchema = new mongoose.Schema({
         maxlength: 50
     },
     phone: {
-        type: String,
-        minlength: 6,
-        maxlength: 50
+        type: String
     },
     cnpj: String,
     address: {
@@ -46,7 +44,7 @@ companySchema.statics.findByName = function (name, projection = '') {
 const validate_companies = (company) => {
     const schema = {
         name: Joi.string().min(5).max(50).required(),
-        phone: Joi.string().min(6).max(50),
+        phone: Joi.string(),
         cnpj: Joi.string(),
         address: {
             city: Joi.string(),
@@ -60,17 +58,28 @@ const validate_companies = (company) => {
     return Joi.validate(company, schema)
 }
 
+const postRemoveMiddleware = function (doc, next) {
+    var company = doc
+    company.model('User').update(
+        { company: company._id },
+        { $set: { active: false } },
+        { multi: true },
+        next()
+    )
+}
+
 const removeMiddleware = function (next) {
-    var company = this;
+    var company = this
     company.model('User').update(
         { company: company._id },
         { $unset: { company: 1 } },
         { multi: true },
-        next
+        next()
     )
 }
 
 companySchema.pre('remove', removeMiddleware)
+companySchema.post('remove', postRemoveMiddleware)
 
 const Company = mongoose.model('Company', companySchema)
 

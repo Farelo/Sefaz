@@ -5,11 +5,21 @@ const familySchema = new mongoose.Schema({
     code: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        minlength: 5,
+        maxlength: 255
     },
     packings: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Packing'
+    }],
+    routes: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Route'
+    }],
+    control_points: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'ControlPoint'
     }],
     company: {
         type: mongoose.Schema.ObjectId,
@@ -17,18 +27,14 @@ const familySchema = new mongoose.Schema({
     }
 })
 
-familySchema.statics.findByCode = function(code, projection = '') {
-    return this.findOne({ code }, projection)
-}
-
 const validate_families = (family) => {
     const schema = {
-        code: Joi.string().unique().required(),
+        code: Joi.string().min(5).max(255).required(),
         packings: Joi.objectId(),
         company: Joi.objectId()
     }
 
-    return Joi.validate(company, schema)
+    return Joi.validate(family, schema)
 }
 
 const Family = mongoose.model('Family', familySchema)

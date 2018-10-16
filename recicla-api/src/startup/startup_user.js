@@ -9,10 +9,10 @@ const startupUser = async () => {
         if (!companies.length) {
             const newCompany = new Company({ name: config.get('company.name'), type: 'owner' })
             const newUser = new User({ full_name: 'Admin', email: 'admin@admin.smart', password: 'admin123', role: 'admin', company: newCompany })
+            await newUser.save()
             newCompany.users.push(newUser._id)
             
             await newCompany.save()
-            await newUser.save()
             debug('Startup user with success.')
         } else {
             debug('Company and User already created.')

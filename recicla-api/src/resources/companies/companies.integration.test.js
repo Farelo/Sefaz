@@ -7,6 +7,7 @@ describe('api/companies', () => {
     let server
     let company_id
     let newCompany
+    let newUser
     let token
     beforeEach(async () => {
         server = require('../../server')
@@ -14,7 +15,7 @@ describe('api/companies', () => {
         company_id = mongoose.Types.ObjectId()
         newCompany = new Company({ _id: company_id, name: 'CEBRACE TESTE' })
         // await newCompany.save()
-
+        
         const user = {
             full_name: 'Teste Man',
             email: "serginho@gmail.com",
@@ -25,8 +26,9 @@ describe('api/companies', () => {
                 name: newCompany.name
             }
         }
-
-        const newUser = new User(user)
+        
+        newUser = new User(user)
+        // await newUser.save()
         token = newUser.generateUserToken()
     })
     afterEach(async () => {
@@ -107,7 +109,7 @@ describe('api/companies', () => {
         })
     })
 
-    describe('GET /companies/:id', () => {
+    describe('GET /api/companies/:id', () => {
         it('should return a company if valid id is passed', async () => {
             const company = new Company({ name: 'Company 1' })
             await company.save()

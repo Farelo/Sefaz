@@ -45,13 +45,13 @@ exports.create = async (req, res) => {
 
     user = new User(req.body)
 
-    company.users.push(user._id)
+    // company.users.push(user._id)
 
     await user.save()
-    await company.save()
+    // await company.save()
 
     // const token = user.generateUserToken()
-    res.json(_.pick(user, ['_id', 'email']))
+    res.json(_.pick(user, ['_id', 'full_name', 'email', 'role', 'company']))
 }
 
 exports.update = async (req, res) => {
@@ -61,7 +61,7 @@ exports.update = async (req, res) => {
     const options = { new: true }
     user = await User.findByIdAndUpdate(req.params.id, req.body, options)
 
-    res.json(_.pick(user, ['_id', 'full_name', 'email', 'role']))
+    res.json(_.pick(user, ['_id', 'full_name', 'email', 'role', 'company']))
 }
 
 exports.delete = async (req, res) => {
