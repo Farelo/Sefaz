@@ -34,6 +34,15 @@ const controlPointSchema = new mongoose.Schema({
     company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+
+    },
+    update_at: {
+        type: Date,
+        default: Date.now
     }
 })
 

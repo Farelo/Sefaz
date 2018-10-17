@@ -24,6 +24,15 @@ const familySchema = new mongoose.Schema({
     company: {
         type: mongoose.Schema.ObjectId,
         ref: 'Company'
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+
+    },
+    update_at: {
+        type: Date,
+        default: Date.now
     }
 })
 
@@ -36,6 +45,18 @@ const validate_families = (family) => {
 
     return Joi.validate(family, schema)
 }
+
+// const removeMiddleware = function (doc, next) {
+//     const family = doc
+//     family.model('Packing').update(
+//         { family: family._id },
+//         { $unset: { family: 1 } },
+//         { multi: true },
+//         next()
+//     )
+// }
+
+// familySchema.post('remove', removeMiddleware)
 
 const Family = mongoose.model('Family', familySchema)
 

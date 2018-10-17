@@ -40,6 +40,15 @@ const userSchema = new mongoose.Schema({
     company: { 
         type: mongoose.Schema.ObjectId, 
         ref: 'Company'
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+
+    },
+    update_at: {
+        type: Date,
+        default: Date.now
     }
 })
 
@@ -100,6 +109,10 @@ const saveMiddleware = function (next) {
     }
 }
 
+const postSaveMiddleware = function (doc, next) {
+    addUserToCompany(doc, next)
+}
+
 const updateMiddleware = function (next) {
     if (!this.getUpdate().password) {
         next()
@@ -116,10 +129,6 @@ const removeMiddleware = function (next) {
         { multi: true },
         next()
     )
-}
-
-const postSaveMiddleware = function(doc, next) {
-    addUserToCompany(doc, next)
 }
 
 userSchema.pre('save', saveMiddleware)
