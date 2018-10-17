@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// TODO: Adicionar os atributos: { gc16, last_device_data,  } 
 const packingSchema = new mongoose.Schema({
     tag: {
         code: {
