@@ -29,10 +29,8 @@ export class ModalUserComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private profileService: ProfileService,
-    private authenticationService: AuthenticationService,
-    private modalService: NgbModal,
-  ) { }
+    private profileService: ProfileService, 
+    private modalService: NgbModal) { }
 
   ngOnInit() {
 
@@ -42,7 +40,6 @@ export class ModalUserComponent implements OnInit {
   getUsers(){
     
     this.profileService.getUsers().subscribe(result => {
-      console.log('result: ' + JSON.stringify(result));
       this.userData = result;
     });
   }
@@ -53,10 +50,10 @@ export class ModalUserComponent implements OnInit {
   }
 
   editUser(user: any){
-    console.log('user...: ' + JSON.stringify(user));
 
     const modalRef = this.modalService.open(EditUserComponent, { backdrop: "static" });
     modalRef.componentInstance.mUser = user;
+    modalRef.componentInstance.mType = 'USER';
     this.activeModal.close();
   }
 
@@ -71,10 +68,10 @@ export class ModalUserComponent implements OnInit {
 
   removeProfile(profile):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.mUser = profile;
+    modalRef.componentInstance.mObject = profile;
+    modalRef.componentInstance.mType = "USER";
+    
     modalRef.result.then((result) => {
-
-      console.log('result...........: ' + result);
       this.getUsers();
     });
   }

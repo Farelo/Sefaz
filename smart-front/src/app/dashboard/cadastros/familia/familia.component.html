@@ -1,0 +1,51 @@
+<div class="input-group mb-3 d-flex justify-content-between">
+  <input type="text" 
+    class="form-control mr-4" 
+    placeholder="Buscar" 
+    aria-describedby="basic-addon1" 
+    [(ngModel)]="search"
+    (keyup)="searchEvent($event)">
+    
+  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+</div>
+
+<div class="table-responsive">
+  <table class="table" (mouseleave)="hoveredIndex=null">
+    <thead>
+      <tr class="cabecalho">
+        <th>Código</th>
+        <th class="opcoes"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let packing of data.data | paginate: {
+                                                      id:'packing',
+                                                      itemsPerPage: data.meta.limit,
+                                                      currentPage: data.meta.page,
+                                                      totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
+        <td>{{packing.code}}</td>
+        <td class="teste">
+          <div *ngIf="index==hoveredIndex">
+            <button class="editar" [routerLink]="['editar/', packing._id]">
+              EDITAR
+            </button>
+            <button class="excluir" (click)="removePacking(packing)">
+              EXCLUIR
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="classVazio" *ngIf="data.data?.length < 1">
+  Ainda não existem famílias de embalagens cadastradas.
+</div>
+
+<br />
+
+<div class="has-text-centered">
+  <pagination-controls id='packing' class="my-pagination" (pageChange)="pageChanged($event)" directionLinks="false" autoHide="true">
+  </pagination-controls>
+</div>

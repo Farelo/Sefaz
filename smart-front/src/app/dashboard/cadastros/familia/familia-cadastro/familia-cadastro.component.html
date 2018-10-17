@@ -1,0 +1,36 @@
+<div class="">
+  <h2>Registrar Família de Embalagem</h2>
+  <hr>
+
+  <form novalidate (ngSubmit)="onSubmit(mFamily)" [formGroup]="mFamily">
+    <div class="campo">
+      <p class="descricao">CÓDIGO DA FAMÍLIA</p>
+      <p class="explicacao">Ex: "AAA1"</p>
+
+      <div class="input-group">
+        <input type="text" 
+          class="form-control required" 
+          placeholder="Digite o código" 
+          aria-describedby="basic-addon2"
+          formControlName="code" 
+          [(ngModel)]="code" 
+          [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
+          || (mFamily.get('code').hasError('required') && submitted)}">
+      </div>
+
+      <p class="requiredText" 
+        *ngIf="(mFamily.get('code').hasError('required') && mFamily.get('code').touched)
+        || (mFamily.get('code').hasError('required') && submitted)">
+        Campo Obrigatório
+      </p>
+    </div>
+
+    <br />
+
+    <div class="botoes">
+      <button routerLink="/rc/cadastros/tags" class="botaoVoltar">VOLTAR</button>
+      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+    </div>
+
+  </form>
+</div>
