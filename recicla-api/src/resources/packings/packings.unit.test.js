@@ -15,14 +15,4 @@ describe('Packing unit test', () => {
             expect(result).toBe(true)
         })
     })
-
-    describe('findByTag', () => {
-        it('should find a packing by code tag', () => {
-
-            const obj_id = mongoose.Types.ObjectId()
-            const result = mongoose.Types.ObjectId.isValid(obj_id)
-            expect(result).toBe(true)
-        })
-    })
-
 })
