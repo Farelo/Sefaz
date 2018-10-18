@@ -29,8 +29,8 @@ export class ModalDeleteComponent implements OnInit {
 
       case "USER":
         this.usersService.deleteUser(this.mObject._id).subscribe(result => {
-          this.activeModal.close();
           this.toastService.remove('', 'Usuário');
+          this.activeModal.close();
         });
         break;
 
@@ -38,9 +38,11 @@ export class ModalDeleteComponent implements OnInit {
         this.companiesService
           .deleteCompany(this.mObject._id).subscribe(res => {
             this.toastService.remove('', 'Empresa', true); 
+            this.activeModal.close();
           });
         break;
     }
+    
   }
 
 }

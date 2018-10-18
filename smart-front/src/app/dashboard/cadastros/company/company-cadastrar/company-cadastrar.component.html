@@ -19,7 +19,7 @@
             <div>{{ item.label }}</div>
           </ng-template>
         </ng-select>
-        
+
         <p class="requiredText" *ngIf="(newCompany.get('type').hasError('required') && newCompany.get('type').touched) 
           || (newCompany.get('type').hasError('required') && submitted)">Campo Obrigatório</p>
       </div>
@@ -56,7 +56,14 @@
       <div class="form-group col-sm-12 col-md-6">
         <p class="descricao">CNPJ</p>
         <!-- <input type="text" class="form-control" [(ngModel)]="phone" placeholder="Digite o telefone" formControlName="phone"> -->
-        <input class="form-control" [(ngModel)]="cnpj" type="text" formControlName="cnpj" placeholder="CNPJ"/>
+        <input class="form-control" [(ngModel)]="cnpj" type="text" formControlName="cnpj" placeholder="CNPJ"
+          [ngClass]="{'required': (newCompany.get('cnpj').hasError('required') && newCompany.get('cnpj').touched)
+          || (newCompany.get('cnpj').hasError('required') && submitted)}"/>
+
+        <p class="requiredText" 
+          *ngIf="(newCompany.get('cnpj').hasError('required') && newCompany.get('cnpj').touched)
+                  || (newCompany.get('cnpj').hasError('required') && submitted)">
+          Campo Obrigatório</p>
       </div>
     </div>
 

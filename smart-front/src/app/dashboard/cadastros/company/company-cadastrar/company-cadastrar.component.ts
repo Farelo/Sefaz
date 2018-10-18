@@ -42,7 +42,7 @@ export class CompanyCadastrarComponent implements OnInit {
     this.newCompany = this.fb.group({
       name: ['', [Validators.required]],
       phone: ['', [Validators.required]],
-      cnpj: '',
+      cnpj: ['', [Validators.required]],
       address: this.fb.group({
         city: ['', [Validators.required]],
         street: ['', [Validators.required]],
