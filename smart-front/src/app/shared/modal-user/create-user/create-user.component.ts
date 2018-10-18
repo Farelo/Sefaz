@@ -43,14 +43,13 @@ export class CreateUserComponent implements OnInit {
   fillSelectType(){
     this.rolesOnSelect = [
       { label: "Administrador", name: "admin" },
-      { label: "Usuário", name: "user" },
-      { label: "Cliente", name: "client" }]; 
+      { label: "Usuário", name: "user" }]; 
   }
 
   formProfile() {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
-      full_name: ['', [Validators.required]],
+      full_name: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
@@ -70,6 +69,8 @@ export class CreateUserComponent implements OnInit {
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
+    this.submitted = true;
+    
     if (valid) { 
       
       delete value.confirm_password;

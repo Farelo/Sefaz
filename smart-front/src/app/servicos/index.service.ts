@@ -1,3 +1,4 @@
+
 export { TagsService } from './tags.service';
 export { ToastService } from './toast.service';
 export { SuppliersService } from './suppliers.service';
@@ -21,4 +22,6 @@ export { AuthInterceptor } from '../interceptor/auth.interceptor';
 export { HomeService } from './home.service';
 export { CompaniesService } from './companies.service';
 export { UsersService } from './users.service';
+export { FamiliesService } from './families.service';
 export { MapsService } from './maps.service';
+

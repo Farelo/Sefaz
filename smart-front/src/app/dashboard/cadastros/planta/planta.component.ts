@@ -16,7 +16,7 @@ export class PlantaComponent implements OnInit {
   public data: any[] = [];
   public search  = "";
 
-  public p: number = 1; //página atual
+  public actualPage: number = 1; //página atual
 
   constructor(
     private PlantsService : PlantsService,
@@ -84,7 +84,7 @@ export class PlantaComponent implements OnInit {
     // update the rows
     this.data = temp;
     // Whenever the filter changes, always go back to the first page
-    this.p = 0;
+    this.actualPage = 0;
   }
 
 

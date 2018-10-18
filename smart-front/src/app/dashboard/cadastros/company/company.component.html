@@ -16,7 +16,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let company of data">
+      <tr *ngFor="let company of listOfCompanies | paginate: {
+                                          itemsPerPage: 10,
+                                          currentPage: actualPage,
+                                          totalItems: listOfCompanies.length}">
         <td>{{ company.name }}</td>
         <td>{{ company.phone ? company.phone : '-' }}</td>
         <!-- <td>{{ company.cnpj ? company.cnpj : '-'  }}</td> -->
@@ -34,13 +37,13 @@
   </table>
 </div>
 
-<div class="classVazio" *ngIf="data.length < 1">
+<div class="classVazio" *ngIf="listOfCompanies.length < 1">
   Ainda não existem plantas cadastradas.
 </div>
 
 <br />
 
 <div class="has-text-centered">
-  <pagination-controls class="my-pagination" (pageChange)="p = $event" directionLinks="false" autoHide="true">
+  <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
   </pagination-controls>
 </div>

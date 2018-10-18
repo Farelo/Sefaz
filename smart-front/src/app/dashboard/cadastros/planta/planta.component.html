@@ -21,9 +21,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let plant of data | paginate: { 
+      <tr *ngFor="let plant of listOfCompanies | paginate: { 
                                                   itemsPerPage: 10,
-                                                  currentPage: p,
+                                                  currentPage: actualPage,
                                                   totalItems: data.length}; index as index" (mouseover)='hoveredIndex = index'>
         <td>{{plant.plant_name}}</td>
 
@@ -46,6 +46,6 @@
 </div>
 <br />
 <div class="has-text-centered">
-  <pagination-controls class="my-pagination" (pageChange)="p = $event" directionLinks="false" autoHide="true">
+  <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
   </pagination-controls>
 </div>
