@@ -20,6 +20,9 @@ exports.show = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
+    // let family = Family.findByCode(req.body.tag.code)
+    // if (family) return 
+
     family = new Family(req.body)
     await family.save()
 

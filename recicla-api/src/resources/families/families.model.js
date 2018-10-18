@@ -5,9 +5,7 @@ const familySchema = new mongoose.Schema({
     code: {
         type: String,
         required: true,
-        unique: true,
-        minlength: 5,
-        maxlength: 255
+        unique: true
     },
     packings: [{
         type: mongoose.Schema.ObjectId,
@@ -38,7 +36,7 @@ const familySchema = new mongoose.Schema({
 
 const validate_families = (family) => {
     const schema = {
-        code: Joi.string().min(5).max(255).required(),
+        code: Joi.string().required(),
         packings: Joi.objectId(),
         company: Joi.objectId()
     }
@@ -46,17 +44,21 @@ const validate_families = (family) => {
     return Joi.validate(family, schema)
 }
 
-// const removeMiddleware = function (doc, next) {
-//     const family = doc
-//     family.model('Packing').update(
-//         { family: family._id },
-//         { $unset: { family: 1 } },
-//         { multi: true },
-//         next()
-//     )
-// }
+const removeMiddleware = function (doc, next) {
+    const family = doc
+    family.model('Packing').update(
+        { family: family._id },
+        { $unset: { family: 1 } },
+        { multi: true },
+        next()
+    )
+}
 
-// familySchema.post('remove', removeMiddleware)
+familySchema.statics.findByCode = function (code, projection = '') {
+    return this.findOne({ 'tag.code': code }, projection)
+}
+
+familySchema.post('remove', removeMiddleware)
 
 const Family = mongoose.model('Family', familySchema)
 
