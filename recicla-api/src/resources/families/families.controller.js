@@ -20,9 +20,6 @@ exports.show = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    // let family = Family.findOne({ code: req.body.code })
-    // if (family) return res.status(HttpStatus.BAD_REQUEST).send('Family code already exists.') 
-
     family = new Family(req.body)
     await family.save()
 

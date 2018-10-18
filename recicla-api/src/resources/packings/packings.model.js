@@ -1,5 +1,6 @@
 const debug = require('debug')('model:packings')
 const mongoose = require('mongoose')
+const Joi = require('joi')
 const { Family } = require('../families/families.model')
 
 // TODO: Adicionar os atributos: { gc16, last_device_data,  } 
@@ -24,9 +25,18 @@ const packingSchema = new mongoose.Schema({
     capacity: Number,
     temperature: Number,
     observations: String,
-    active: Boolean,
-    absent: Boolean,
-    low_battery: Boolean,
+    active: {
+        type: Boolean,
+        default: false
+    },
+    absent: {
+        type: Boolean,
+        default: false
+    },
+    low_battery: {
+        type: Boolean,
+        default: false
+    },
     family: {
         type: mongoose.Schema.ObjectId,
         ref: 'Family'
@@ -41,6 +51,25 @@ const packingSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
+const validate_packings = (packing) => {
+    const schema = {
+        tag: {
+            code: Joi.string().required()
+        },
+        serial: Joi.string().required(),
+        type: Joi.string(),
+        weigth: Joi.number(),
+        width: Joi.number(),
+        heigth: Joi.number(),
+        length: Joi.number(),
+        capacity: Joi.number(),
+        observations: Joi.string(),
+        family: Joi.objectId()
+    }
+
+    return Joi.validate(packing, schema)
+}
 
 // const addPackingToFamily = async (doc, next) => {
 //     try {
@@ -80,3 +109,4 @@ const Packing = mongoose.model('Packing', packingSchema)
 
 exports.Packing = Packing
 exports.packingSchema = packingSchema
+exports.validate_packings = validate_packings

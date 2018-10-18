@@ -8,10 +8,10 @@ const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_packings } = require('./packings.model')
 
 router.get('/', [auth, authz], packings_controller.all)
-// router.get('/:id', [auth, validate_object_id], packings_controller.show)
-// router.post('/', [auth, authz, validate_joi(validate_packings)], packings_controller.create)
-// router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_packings)], packings_controller.update)
-// router.delete('/:id', [auth, authz, validate_object_id], packings_controller.delete)
+router.get('/:id', [auth, validate_object_id], packings_controller.show)
+router.post('/', [auth, authz, validate_joi(validate_packings)], packings_controller.create)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_packings)], packings_controller.update)
+router.delete('/:id', [auth, authz, validate_object_id], packings_controller.delete)
 
 module.exports = router
 
@@ -168,9 +168,53 @@ module.exports = router
  *     required:
  *       - tag
  *       - serial
+ *       - type
+ *       - weigth
+ *       - width
+ *       - heigth
+ *       - length
+ *       - capacity
+ *       - observations
+ *       - family
  *     properties:
  *       tag:
- *         type: string
+ *         $ref: '#/definitions/TagObject'
  *       serial:
  *         type: string
+ *       type:
+ *         type: string
+ *       weigth:
+ *         type: number
+ *       width:
+ *         type: number
+ *       heigth:
+ *         type: number
+ *       length:
+ *         type: number
+ *       capacity:
+ *         type: number
+ *       observations:
+ *         type: string
+ *       family:
+ *         type: string
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   TagObject:
+ *     type: object
+ *     required:
+ *       - code
+ *       - version
+ *       - manufactorer
+ *     properties:
+ *       code:
+ *         type: string
+ *       version:
+ *         type: string
+ *       manufactorer:
+ *         type: string
+ *       
  */

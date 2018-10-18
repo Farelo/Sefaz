@@ -188,7 +188,7 @@ describe('api/families', () => {
             expect(res.status).toBe(404)
         })
 
-        it('should return company edited if is valid request', async () => {
+        it('should return family edited if is valid request', async () => {
             const res = await exec()
 
             expect(res.status).toBe(200)
