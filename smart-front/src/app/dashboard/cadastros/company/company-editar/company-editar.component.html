@@ -20,6 +20,10 @@
             <div>{{ item.label }}</div>
           </ng-template>
         </ng-select>
+
+        <p class="requiredText" *ngIf="(newCompany.get('type').hasError('required') && newCompany.get('type').touched) 
+                  || (newCompany.get('type').hasError('required') && submitted)">Campo
+          Obrigatório</p>
       </div>
     </div>
 
@@ -30,17 +34,24 @@
         <input type="text" 
           formControlName="name"
           class="form-control" 
+          placeholder="Digite o nome da empresa"
           [ngClass]="{'required': (newCompany.get('name').hasError('required') && newCompany.get('name').touched)
-                               || (newCompany.get('name').hasError('required')) && submitted}"
-          placeholder="Digite o nome da empresa">
-        <p class="requiredText" *ngIf="(newCompany.get('name').hasError('required') && newCompany.get('name').touched)
+                               || (newCompany.get('name').hasError('required')) && submitted}">
+
+          <p class="requiredText" *ngIf="(newCompany.get('name').hasError('required') && newCompany.get('name').touched)
                   || (newCompany.get('name').hasError('required') && submitted)">Campo Obrigatório</p>
       </div>
 
       <div class="col-sm-12 col-md-4 form-group">
         <p class="descricao">TELEFONE</p>
         <input [textMask]="{mask: maskTel}" class="form-control" type="text" formControlName="phone"
-          placeholder="Número de telefone" />
+          placeholder="Número de telefone" 
+          [ngClass]="{'required': (newCompany.get('phone').hasError('required') && newCompany.get('phone').touched)
+          || (newCompany.get('phone').hasError('required') && submitted)}"/>
+
+          <p class="requiredText" *ngIf="(newCompany.get('phone').hasError('required') && newCompany.get('phone').touched)
+                      || (newCompany.get('phone').hasError('required') && submitted)">
+            Campo Obrigatório</p>
       </div>
 
     </div>
@@ -60,10 +71,15 @@
           class="form-control" 
           [(ngModel)]="mStreet" 
           placeholder="Digite o nome da rua" 
-          formControlName="street">
-        <p class="requiredText" *ngIf="(newCompany.get('address.street').hasError('required') && newCompany.get('address.street').touched)
-                          || (newCompany.get('address.street').hasError('required') && submitted)">Campo
-          Obrigatório</p>
+          formControlName="street"
+          [ngClass]="{'required': (newCompany.get('address.street').hasError('required') &&
+          newCompany.get('address.street').touched)
+          || (newCompany.get('address.street').hasError('required') && submitted)}">
+
+        <p class="requiredText" 
+        *ngIf="(newCompany.get('address.street').hasError('required') && newCompany.get('address.street').touched)
+          || (newCompany.get('address.street').hasError('required') && submitted)">
+          Campo Obrigatório</p>
       </div>
 
       <div class="col-sm-12 col-md-4 form-group">
@@ -74,7 +90,15 @@
           class="form-control" 
           [(ngModel)]="mCep" 
           placeholder="Digite o CEP"
-          formControlName="cep">
+          formControlName="cep"
+          [ngClass]="{'required': (newCompany.get('address.cep').hasError('required') &&
+          newCompany.get('address.cep').touched)
+          || (newCompany.get('address.cep').hasError('required') && submitted)}">
+
+          <p class="requiredText" 
+          *ngIf="(newCompany.get('address.cep').hasError('required') && newCompany.get('address.cep').touched)
+            || (newCompany.get('address.cep').hasError('required') && submitted)">
+            Campo Obrigatório</p>
       </div>
 
     </div>
@@ -87,7 +111,15 @@
           class="form-control" 
           [(ngModel)]="mCity" 
           placeholder="Digite o cidade" 
-          formControlName="city">
+          formControlName="city"
+          [ngClass]="{'required': (newCompany.get('address.city').hasError('required') &&
+          newCompany.get('address.city').touched)
+          || (newCompany.get('address.city').hasError('required') && submitted)}">
+
+          <p class="requiredText" 
+            *ngIf="(newCompany.get('address.city').hasError('required') && newCompany.get('address.city').touched)
+              || (newCompany.get('address.city').hasError('required') && submitted)">
+              Campo Obrigatório</p>
       </div>
 
       <div class="form-group col-sm-6 col-md-2">
@@ -98,7 +130,13 @@
           class="form-control" 
           [(ngModel)]="mUf" 
           formControlName="uf" 
-          placeholder="UF">
+          placeholder="UF"
+          [ngClass]="{'required': (newCompany.get('address.uf').hasError('required') &&
+          newCompany.get('address.uf').touched)
+          || (newCompany.get('address.uf').hasError('required') && submitted)}">
+          
+          <p class="requiredText" *ngIf="(newCompany.get('address.uf').hasError('required') && newCompany.get('address.uf').touched) 
+          || (newCompany.get('address.uf').hasError('required') && submitted)">Campo Obrigatório</p>
       </div>
     </div>
 

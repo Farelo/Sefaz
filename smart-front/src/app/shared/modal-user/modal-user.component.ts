@@ -76,6 +76,10 @@ export class ModalUserComponent implements OnInit {
     });
   }
 
+  getTypeLabel(type: string): string{
+    return type=='admin' ? 'Administrador' : 'Usuário';
+  }
+
   // pageChanged(page: any): void{
   //   this.userData.meta.page = page;
   //   this.getUsers();

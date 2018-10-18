@@ -11,7 +11,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  
+   
   <div class="modalBody">
 
     <div class="col-12 no-padding text-right pointer" (click)="createUser()">
@@ -31,7 +31,7 @@
       <tbody *ngFor="let user of userData">
         <tr>
           <td>{{ user.full_name }}</td>
-          <td>{{ user.role }}</td>
+          <td>{{ getTypeLabel(user.role) }}</td>
           <td>{{ user.company.name || '-' }}</td>
           <td style="text-align: right">
             <a (click)="editUser(user)">Editar</a>

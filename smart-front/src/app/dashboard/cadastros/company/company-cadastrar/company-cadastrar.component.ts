@@ -14,7 +14,8 @@ export class CompanyCadastrarComponent implements OnInit {
   public newCompany: FormGroup;
   public typesOnSelect: any;
   public companyType: any;
-
+  public submitted: boolean = false;
+  
   //Mask
   public maskTel = ['(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
   public maskCep = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
@@ -40,19 +41,22 @@ export class CompanyCadastrarComponent implements OnInit {
   formProfile() {
     this.newCompany = this.fb.group({
       name: ['', [Validators.required]],
-      phone: '',
+      phone: ['', [Validators.required]],
       cnpj: '',
       address: this.fb.group({
-        city: '',
-        street: '',
-        cep: '',
-        uf: ''
+        city: ['', [Validators.required]],
+        street: ['', [Validators.required]],
+        cep: ['', [Validators.required]],
+        uf: ['', [Validators.required]]
       }),
-      type: ''
+      type: ['', [Validators.required]]
     });
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+
+    this.submitted = true;
+
     if (valid) {
       value.type = value.type.name;
       console.log('submit...:' + JSON.stringify(value));
