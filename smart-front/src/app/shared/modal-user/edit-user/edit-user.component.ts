@@ -58,7 +58,7 @@ export class EditUserComponent implements OnInit {
   formProfile() {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
-      full_name: ['', [Validators.required]],
+      full_name: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
@@ -91,6 +91,8 @@ export class EditUserComponent implements OnInit {
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+
+    this.submitted = true;
 
     if (valid) {
       delete value.confirm_password;

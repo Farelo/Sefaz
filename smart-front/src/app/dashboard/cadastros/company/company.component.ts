@@ -64,8 +64,5 @@ export class CompanyComponent implements OnInit {
   searchEvent(): void {
     this.loadCompanies();
   }
-
   
-
-
 }

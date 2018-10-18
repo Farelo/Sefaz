@@ -27,7 +27,8 @@ import {
     AuthInterceptor,
 
     CompaniesService,
-    UsersService
+    UsersService,
+    FamiliesService
 } from './index.service';
 
 @NgModule({
@@ -60,7 +61,8 @@ import {
         AuthInterceptor,
 
         CompaniesService,
-        UsersService
+        UsersService,
+        FamiliesService
     ]
 })
 export class ServicesModule { }

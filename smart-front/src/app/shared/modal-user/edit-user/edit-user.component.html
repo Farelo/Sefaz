@@ -31,6 +31,9 @@
               <div>{{ item.label }}</div>
             </ng-template>
           </ng-select>
+          <p class="requiredText" *ngIf="(newUser.get('role').hasError('required') && newUser.get('role').touched)
+                                  || (newUser.get('role').hasError('required') && submitted)">Campo
+            Obrigatório</p>
         </div>
       </div>
 
@@ -66,6 +69,8 @@
           <p class="requiredText" *ngIf="(newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
               || (newUser.get('full_name').hasError('required') && submitted)">Campo
             Obrigatório</p>
+          <p class="requiredText" *ngIf="(newUser.get('full_name').hasError('minlength') && newUser.get('full_name').touched)
+                                                        || (newUser.get('full_name').hasError('minlength') && submitted)">Mínimo de 5 caracters</p>
         </div>
 
         <div class="form-group col-sm-12 col-md-6">
