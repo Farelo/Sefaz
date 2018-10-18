@@ -14,6 +14,44 @@ export class PackingService {
       return Observable.throw(error);
   }
 
+  getPacking(packingId): Observable<any> {
+    return this.http.get(`${environment.url}/packings/${packingId}`)
+      .catch(this.handleError);
+  }
+
+  getAllPackings(): Observable<any> {
+    return this.http.get(`${environment.url}/packings`)
+      .catch(this.handleError);
+  }
+
+  createPacking(newPacking: any): Observable<any> {
+    return this.http.post(`${environment.url}/packings`, newPacking)
+      .catch(this.handleError);
+  }
+
+  editPacking(packingId: any, newPacking: any): Observable<any> {
+    return this.http.patch(`${environment.url}/packings/${packingId}`, newPacking)
+      .catch(this.handleError);
+  }
+
+  deletePacking(packingId: any): Observable<any> {
+    return this.http.delete(`${environment.url}/packings/${packingId}`)
+      .catch(this.handleError);
+  }
+
+
+
+
+
+
+
+
+  /**
+   * 
+   * @param limit Rotas antigas
+   * @param page 
+   * @param attr 
+   */
   getPackingsPagination(limit: number, page: number, attr: any): Observable<any> {
     return this.http.get(`${environment.url}packing/list/pagination/${limit}/${page}?attr=${attr}`)
       .catch(this.handleError);
@@ -101,10 +139,10 @@ export class PackingService {
       .catch(this.handleError);
   }
 
-  updatePacking(id: string, packing: any): Observable<any>{
-    return this.http.put(`${environment.url}packing/update/${id}`,packing)
-      .catch(this.handleError);
-  }
+  // updatePacking(id: string, packing: any): Observable<any>{
+  //   return this.http.put(`${environment.url}packing/update/${id}`,packing)
+  //     .catch(this.handleError);
+  // }
 
   updatePackingByGC16(code: string,supplier: string,project: string, packing: any): Observable<any>{
     return this.http.put(`${environment.url}packing/update/gc16/${code}/${supplier}/${project}`,packing)
@@ -121,15 +159,15 @@ export class PackingService {
       .catch(this.handleError);
   }
 
-  deletePacking(id: string): Observable<any>{
-    return this.http.delete(`${environment.url}packing/delete/${id}`)
-      .catch(this.handleError);
-  }
+  // deletePacking(id: string): Observable<any>{
+  //   return this.http.delete(`${environment.url}packing/delete/${id}`)
+  //     .catch(this.handleError);
+  // }
 
-  createPacking(tag: Packing []): Observable<any>{
-    return this.http.post(`${environment.url}packing/create`, tag)
-      .catch(this.handleError);
-  }
+  // createPacking(tag: Packing []): Observable<any>{
+  //   return this.http.post(`${environment.url}packing/create`, tag)
+  //     .catch(this.handleError);
+  // }
 
   createPackingArray(array: any): Observable<any>{
     return this.http.post(`${environment.url}packing/create/array`, array)
