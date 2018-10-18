@@ -11,7 +11,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  
+   
   <div class="modalBody">
 
     <div class="col-12 no-padding text-right pointer" (click)="createUser()">
@@ -28,21 +28,27 @@
           <th></th>
         </tr>
       </thead>
-      <tbody *ngFor="let user of userData">
+      <tbody *ngFor="let user of userData | paginate: {
+                                              itemsPerPage: 10,
+                                              currentPage: actualPage,
+                                              totalItems: userData.length}">
         <tr>
           <td>{{ user.full_name }}</td>
-          <td>{{ user.role }}</td>
+          <td>{{ getTypeLabel(user.role) }}</td>
           <td>{{ user.company.name || '-' }}</td>
           <td style="text-align: right">
             <a (click)="editUser(user)">Editar</a>
             <a (click)="removeProfile(user)">Excluir</a>
-            <!-- <button class="editar botaoPlanta" (click)="editUser(user)">Editar</button> -->
-            <!-- <button class="excluir" (click)="removeProfile(user)">Excluir</button> -->
           </td>
         </tr>
       </tbody>
     </table>
 
+    <div class="has-text-centered">
+      <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
+      </pagination-controls>
+    </div>
+    
   </div>
 </div>
 

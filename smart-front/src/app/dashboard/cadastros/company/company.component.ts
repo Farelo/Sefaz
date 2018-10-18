@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Pagination } from '../../../shared/models/pagination';
-import { RoutesService } from '../../../servicos/index.service';
 import { CompaniesService } from '../../../servicos/companies.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../../servicos/index.service';
-import { Router } from "@angular/router";
-
+import { ModalDeleteComponent } from 'app/shared/modal-delete/modal-delete.component';
 
 @Component({
   selector: 'app-company',
@@ -14,15 +11,14 @@ import { Router } from "@angular/router";
 })
 export class CompanyComponent implements OnInit {
   
-  public data: any = [];
+  public listOfCompanies: any = [];
   public search = "";
+  public actualPage = -1;
   
-  constructor(
-    private RoutesService: RoutesService,
+  constructor( 
     private modalService: NgbModal,
     protected companiesService: CompaniesService,
-    protected toastService: ToastService,
-    private router: Router) { }
+    protected toastService: ToastService ) { }
 
   ngOnInit() {
     this.loadCompanies();
@@ -35,7 +31,7 @@ export class CompanyComponent implements OnInit {
     this.companiesService
       .getAllCompanies()
       .subscribe(
-        result => this.data = result,
+      result => this.listOfCompanies = result,
         error => console.error(error)
       )
   }
@@ -45,21 +41,14 @@ export class CompanyComponent implements OnInit {
    * @param route Rota a ser removida
    */
   removeCompany(company: any) {
-    this.companiesService
-      .deleteCompany(company._id)
-      .subscribe(res => { 
-        this.toastService.remove('','Empresa', true); 
-        this.loadCompanies();
-      });
-    //this.router.navigate(['/rc/cadastros/company']); })
-  }
+    
+    const modalRef = this.modalService.open(ModalDeleteComponent);
+    modalRef.componentInstance.mObject = company;
+    modalRef.componentInstance.mType = "COMPANY";
 
-  /**
-   * Método para paginação
-   */
-  pageChanged(page: any): void {
-    this.data.meta.page = page;
-    this.loadCompanies();
+    modalRef.result.then((result) => {
+      this.loadCompanies();
+    });
   }
 
   /**
@@ -68,8 +57,5 @@ export class CompanyComponent implements OnInit {
   searchEvent(): void {
     this.loadCompanies();
   }
-
   
-
-
 }

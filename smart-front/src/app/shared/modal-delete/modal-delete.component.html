@@ -1,20 +1,62 @@
+
 <div class="modalFilho">
-  <div class="detalhes">
-    <h2> Deletar Usuário </h2>
+
+  <!-- ========================== -->
+  <!-- Template for deleting COMPANY -->
+  <div class="detalhes" *ngIf="mType == 'COMPANY'">
+    <h2> Deletar Empresa </h2>
     <hr>
-    <p>Tipo: {{ mUser.role }}</p>
-    <p>Nome: {{ mUser.full_name }}</p>
-    <p>E-mail: {{ mUser.email }}</p>
+    <p>Tipo: {{ mObject.type }}</p>
+    <p>Nome: {{ mObject.name }}</p>
+    <p>Endereço: {{ mObject.address.street }}, {{ mObject.address.city }} - {{ mObject.address.uf }} </p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Perfil porederá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?</p>
+      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão
+        perdidas, você tem certeza?</p>
+    </div>
+  </div>
+  
+
+  <!-- ========================== -->
+  <!-- Template for deleting USER -->
+  <div class="detalhes" *ngIf="mType == 'USER'">
+    <h2> Deletar Usuário </h2>
+    <hr>
+    <p>Tipo: {{ mObject.role }}</p>
+    <p>Nome: {{ mObject.full_name }}</p>
+    <p>E-mail: {{ mObject.email }}</p>
+
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 
-<div class="botoes">
-  <button class="botaoVoltar" (click)="activeModal.close('cancelar')">CANCELAR</button>
-  <button class="botaoDeletar" (click)="delete()">DELETAR</button>
-</div>
+
+  <!-- ========================== -->
+  <!-- Template for deleting FAMILY -->
+  <div class="detalhes" *ngIf="mType == 'FAMILY'">
+    <h2> Deletar Família </h2>
+    <hr>
+    <p>Código: {{ mObject.code }}</p>
+    <p>Empresa: {{ mObject.company?.name || '-'}}</p>
+  
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão
+        perdidas, você tem certeza?</p>
+    </div>
+  </div>
+
+
+  <!-- ========================== -->
+  <!-- Template default -->
+  <div class="botoes">
+    <button class="botaoVoltar" (click)="activeModal.close('cancelar')">CANCELAR</button>
+    <button class="botaoDeletar" (click)="delete()">DELETAR</button>
+  </div>
 </div>

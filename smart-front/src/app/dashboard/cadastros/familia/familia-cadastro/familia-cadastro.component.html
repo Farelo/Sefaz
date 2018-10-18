@@ -1,0 +1,73 @@
+<div class="">
+  <h2>Registrar Família de Embalagem</h2>
+  <hr>
+
+  <form novalidate (ngSubmit)="onSubmit(mFamily)" [formGroup]="mFamily">
+
+    <!-- Input para o código da família -->
+    <div class="campo col-sm-12 col-md-6">
+      <p class="descricao">CÓDIGO DA FAMÍLIA</p>
+      <p class="explicacao">Ex: "AAA1"</p>
+
+      <div class="input-group">
+        <input type="text" 
+          class="form-control required" 
+          placeholder="Digite o código"  
+          formControlName="code"
+          [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
+          || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)}">
+      </div>
+
+      <p class="requiredText" 
+        *ngIf="(mFamily.get('code').hasError('required') && mFamily.get('code').touched)
+        || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)">
+        Campo Obrigatório
+      </p>
+    </div>
+
+
+    <!-- Input para selecionar a empresa vinculada -->
+    <div class="campo col-sm-12">
+      <p class="descricao">EMPRESA VINCULADA</p>
+      <ng-select bindLabel="name" placeholder="Associe uma empresa" [items]="allCompanies"
+        formControlName="selectedCompanies">
+        <ng-template ng-option-tmp let-item="item">
+          <div> {{item.name}} </div>
+        </ng-template>
+      </ng-select>
+      <p class="requiredText" *ngIf="(mFamily.get('selectedCompanies').hasError('required') && mFamily.get('selectedCompanies').touched)
+              || (mFamily.get('selectedCompanies').hasError('required') && mFamily.invalid && submited)">
+        Campo Obrigatório
+      </p>
+    </div>
+
+
+    <!-- Input para selecionar o pontos de control -->
+    <div class="campo col-sm-12">
+      <p class="descricao">PONTOS DE CONTROLE</p>
+      <!-- [(ngModel)]="selectedCompanies"> -->
+      <!-- formControlName="selectedCompanies" -->
+      <!-- [ngModelOptions]="{standalone: true}" -->
+      <ng-select 
+        #select 
+        bindLabel="name" 
+        placeholder="Associe pontos de controle"
+        [items]="allControlPoints"
+        [multiple]="true" 
+        formControlName="selectedControlPoints">
+
+          <ng-template ng-option-tmp let-item="item">
+            <div>Nome: {{item.name}} </div>
+          </ng-template>
+      </ng-select>
+    </div>
+
+    <br />
+
+    <div class="botoes">
+      <button routerLink="/rc/cadastros/familia" class="botaoVoltar">VOLTAR</button>
+      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+    </div>
+
+  </form>
+</div>
