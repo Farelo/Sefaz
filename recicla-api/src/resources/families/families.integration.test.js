@@ -150,6 +150,14 @@ describe('api/families', () => {
             expect(res.status).toBe(400)
         })
 
+        it('should return 400 if family code already exists', async () => {
+            await Family.create(family)
+            
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+        })
+
         it('should return 200 if family is valid request', async () => {
             const res = await exec()
 

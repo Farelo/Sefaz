@@ -79,8 +79,8 @@ const addUserToCompany = async (user, next) => {
     try {
         const company = await Company.findById(user.company)
         company.users.push(user._id)
+        
         await company.save()
-
         next()
     } catch (error) {
         next()

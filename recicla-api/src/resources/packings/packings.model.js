@@ -55,7 +55,9 @@ const packingSchema = new mongoose.Schema({
 const validate_packings = (packing) => {
     const schema = {
         tag: {
-            code: Joi.string().required()
+            code: Joi.string().required(),
+            version: Joi.string(),
+            manufactorer: Joi.string()
         },
         serial: Joi.string().required(),
         type: Joi.string(),
@@ -65,6 +67,7 @@ const validate_packings = (packing) => {
         length: Joi.number(),
         capacity: Joi.number(),
         observations: Joi.string(),
+        active: Joi.boolean(),
         family: Joi.objectId()
     }
 
@@ -77,6 +80,7 @@ const addPackingToFamily = async (doc, next) => {
         family.packings.push(doc._id)
 
         await family.save()
+        next()
     } catch (error) {
         debug(error)
         next()
@@ -97,8 +101,8 @@ const removeMiddleware = function (doc, next) {
     )
 }
 
-packingSchema.statics.findByTag = function (code, projection = '') {
-    return this.findOne({ 'tag.code': code }, projection)
+packingSchema.statics.findByTag = function (tag, projection = '') {
+    return this.findOne({ 'tag.code': tag.code }, projection)
 }
 
 packingSchema.post('save', postUpdateMiddleware)

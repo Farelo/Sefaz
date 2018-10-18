@@ -13,6 +13,7 @@ exports.show = async (req, res) => {
     const family = await Family
         .findById(req.params.id)
         .populate('company', ['_id', 'name', 'type'])
+        .populate('packings', ['_id', 'tag', 'serial', 'active', 'low_battery','absent'])
 
     if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
 
@@ -20,8 +21,8 @@ exports.show = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    // let family = Family.findByCode(req.body.tag.code)
-    // if (family) return 
+    let family = await Family.findByCode(req.body.code)
+    if (family) return res.status(HttpStatus.BAD_REQUEST).send('Family already exists with this code.')
 
     family = new Family(req.body)
     await family.save()

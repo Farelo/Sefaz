@@ -183,6 +183,14 @@ describe('api/packings', () => {
             expect(res.status).toBe(400)
         })
 
+        it('should return 400 if packing code tag already exists', async () => {
+            await Packing.create(packing)
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+        })
+
         it('should return 200 if packing is valid request', async () => {
             const res = await exec()
 

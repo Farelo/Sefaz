@@ -20,6 +20,9 @@ exports.show = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
+    let packing = await Packing.findByTag(req.body.tag)
+    if (packing) return res.status(HttpStatus.BAD_REQUEST).send('Packing already exists with this code.')
+
     packing = new Packing(req.body)
     await packing.save()
 

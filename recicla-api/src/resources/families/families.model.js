@@ -55,7 +55,7 @@ const removeMiddleware = function (doc, next) {
 }
 
 familySchema.statics.findByCode = function (code, projection = '') {
-    return this.findOne({ 'tag.code': code }, projection)
+    return this.findOne({ code }, projection)
 }
 
 familySchema.post('remove', removeMiddleware)
