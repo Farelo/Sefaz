@@ -26,6 +26,7 @@ export class ModalUserComponent implements OnInit {
   
   @Input() view;
   public userData: any[] = [];
+  public actualPage = -1;
 
   constructor(
     public activeModal: NgbActiveModal,

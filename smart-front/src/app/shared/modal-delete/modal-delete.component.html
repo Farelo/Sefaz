@@ -37,6 +37,23 @@
 
 
   <!-- ========================== -->
+  <!-- Template for deleting FAMILY -->
+  <div class="detalhes" *ngIf="mType == 'FAMILY'">
+    <h2> Deletar Família </h2>
+    <hr>
+    <p>Código: {{ mObject.code }}</p>
+    <p>Empresa: {{ mObject.company?.name || '-'}}</p>
+  
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão
+        perdidas, você tem certeza?</p>
+    </div>
+  </div>
+
+
+  <!-- ========================== -->
   <!-- Template default -->
   <div class="botoes">
     <button class="botaoVoltar" (click)="activeModal.close('cancelar')">CANCELAR</button>

@@ -11,8 +11,9 @@ import { ModalDeleteComponent } from 'app/shared/modal-delete/modal-delete.compo
 })
 export class CompanyComponent implements OnInit {
   
-  public data: any = [];
+  public listOfCompanies: any = [];
   public search = "";
+  public actualPage = -1;
   
   constructor( 
     private modalService: NgbModal,
@@ -30,7 +31,7 @@ export class CompanyComponent implements OnInit {
     this.companiesService
       .getAllCompanies()
       .subscribe(
-        result => this.data = result,
+      result => this.listOfCompanies = result,
         error => console.error(error)
       )
   }
@@ -48,14 +49,6 @@ export class CompanyComponent implements OnInit {
     modalRef.result.then((result) => {
       this.loadCompanies();
     });
-  }
-
-  /**
-   * Método para paginação
-   */
-  pageChanged(page: any): void {
-    this.data.meta.page = page;
-    this.loadCompanies();
   }
 
   /**

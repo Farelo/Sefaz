@@ -64,19 +64,18 @@ export class FamiliaCadastroComponent implements OnInit {
       
       let newFamily = {
         code: this.mFamily.controls.code.value,
-        company: this.mFamily.controls.selectedCompanies.value,
-        control_points: this.mFamily.controls.selectedControlPoints.value.map(elem => elem._id)
+        company: this.mFamily.controls.selectedCompanies.value._id,
+        //control_points: this.mFamily.controls.selectedControlPoints.value.map(elem => elem._id)
       }
       
-      console.log(newFamily);
-      //this.finishRegister(newFamily);
+      this.finishRegister(newFamily);
     }
   }
 
 
   finishRegister(value){
     this.familyService.createFamily(value).subscribe( result => {
-      this.toastService.success('/rc/cadastros/family', 'Família');
+      this.toastService.success('/rc/cadastros/familia', 'Família');
     }, err => this.toastService.error(err) );
   }
 

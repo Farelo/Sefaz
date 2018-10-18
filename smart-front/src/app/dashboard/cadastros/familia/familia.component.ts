@@ -11,9 +11,10 @@ import { FamiliesService } from 'app/servicos/families.service';
 })
 export class FamiliaComponent implements OnInit {
   
-  public listOfCompanies: any = [];
+  public listOfFamilies: any = [];
   public logged_user: any;
-  
+  public actualPage: number = -1; //página atual
+
   constructor(
     private familyService: FamiliesService,
     private modalService: NgbModal,
@@ -29,17 +30,17 @@ export class FamiliaComponent implements OnInit {
 
   
   searchEvent(): void{
-    this.filterListOfCompanies();
+    this.loadListOfFamilies();
   }
 
 
   /**
    * Load the list of companies
    */
-  loadListOfCompanies(): void{
+  loadListOfFamilies(): void{
 
     this.familyService.getAllFamilies().subscribe(result => {
-      this.listOfCompanies = result;
+      this.listOfFamilies = result;
     }, err => console.error(err));
   }
 
@@ -53,30 +54,18 @@ export class FamiliaComponent implements OnInit {
    */
   removePacking(packing):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.view = packing;
-    modalRef.componentInstance.type = "packing";
+    modalRef.componentInstance.mObject = packing;
+    modalRef.componentInstance.mType = "FAMILY";
 
     modalRef.result.then((result) => {
-      if (result === "remove") this.loadListOfCompanies();
+      this.loadListOfFamilies();
     });
-
   }
 
 
   ngOnInit() {
     
-    this.loadListOfCompanies();
+    this.loadListOfFamilies();
   }
-
-
-  /**
-   * 
-   * @param Mudou a paginação
-   */
-  // pageChanged(page: any): void {
-  //   this.data.meta.page = page;
-
-  //   this.equipamentChanged();
-  // }
 
 }

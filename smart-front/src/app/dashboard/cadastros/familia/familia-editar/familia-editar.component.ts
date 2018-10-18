@@ -3,7 +3,7 @@ import { Packing } from '../../../../shared/models/packing';
 import { Supplier } from '../../../../shared/models/supplier';
 import { Router, ActivatedRoute} from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { ToastService, ProjectService, SuppliersService, TagsService, PackingService } from '../../../../servicos/index.service';
+import { ToastService, ProjectService, SuppliersService, TagsService, PackingService, CompaniesService, FamiliesService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -12,129 +12,86 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
   styleUrls: ['../../cadastros.component.css']
 })
 export class FamiliaEditarComponent implements OnInit {
-  public inscricao: Subscription;
-  public tags =  [];
-  public projects = [];
-  public suppliers = [];
-  public packing : FormGroup;
 
+  public mFamily: FormGroup;
+  public inscricao: Subscription;
+  public allCompanies: any[] = [];
+  public allControlPoints: any[] = [
+    { id: '5a15b13c2340978ec3d2c0ea', name: 'Controle Point ABC' },
+    { id: '5a15b13c728cd3f43cc0fe8a', name: 'XTZ Control Point' }];
+
+  public validForm: boolean = true;
+  public submited = false;
+  public mId: string;
 
   constructor(
-    private TagsService: TagsService,
-    private PackingService: PackingService,
-    private router: Router,
-    private SuppliersService: SuppliersService,
-    private ProjectService: ProjectService,
-    private route: ActivatedRoute,
+    private familiesService: FamiliesService, 
+    private companyService: CompaniesService,
     private toastService: ToastService,
-    private fb: FormBuilder
-
-  ) { }
-
-  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
-
-    value.hashPacking = this.packing.controls.supplier.value._id + this.packing.controls.code.value;
-    value.code_tag = this.packing.controls.tag.value.code;
-
-    if(this.packing.valid){
-
-      this.PackingService.updatePacking(value._id,value).subscribe( result => {
-        this.toastService.edit('/rc/cadastros/embalagem', 'Embalagem');
-      }, err => this.toastService.error(err) );
-    }
-
-  }
-
-  loadTags():void {
-    this.TagsService.retrieveAllNoBinded().subscribe( result => {
-      this.tags = result.data;
-      this.tags.push(this.packing.controls.tag.value)
-    }, err => {console.log(err)});
-  }
-
-
-  loadSuppliers():void{
-    this.SuppliersService.retrieveAll().subscribe(result => {
-      this.suppliers = result.data;
-    }, err => {console.log(err)});
-  }
-
-  loadProject():void{
-    this.ProjectService.retrieveAll().subscribe(result =>{
-      this.projects = result.data;
-      }, err => {console.log(err)});
-  }
+    private fb: FormBuilder,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
+   
+    this.configureFormGroup();
+    this.retrieveUser();
+    this.fillCompanySelect();
+  }
+  
+  /**
+  * Fill the select of companies
+  */
+  fillCompanySelect() {
 
-    this.packing = this.fb.group({
-      code: ['', [Validators.required]],
-      type: ['', [Validators.required]],
-      weigth: [Number, [Validators.required]],
-      width: [Number, [Validators.required]],
-      heigth: [Number, [Validators.required]],
-      length: [Number, [Validators.required]],
-      capacity:[Number, [Validators.required]],
-      battery: [Number],
-      problem: [false, [Validators.required]],
-      missing: [false, [Validators.required]],
-      traveling: [false, [Validators.required]],
-      lastCommunication: [Number],
-      permanence: this.fb.group({
-        time_exceeded: [Boolean],
-        date: [Number],
-        amount_days:[Number]
-      }),
-      trip: this.fb.group({
-        time_exceeded: [Boolean],
-        date: [Number],
-        time_countdown: [Number],
-      }),
-      packing_missing: this.fb.group({
-        date: [Number],
-        time_countdown: [Number]
-      }),
-      position: this.fb.group({
-        latitude: [Number],
-        longitude: [Number],
-        accuracy: [Number],
-        date: [Number]
-      }),
-      temperature: [Number],
-      serial: ['', [Validators.required]],
-      gc16: [String],
-      routes: [String],
-      actual_gc16: [String],
-      last_plant:[String],
-      actual_plant:[String],
-      tag: ['', [Validators.required]],
-      code_tag: [String, [Validators.required]],
-      department: [String],
-      supplier: ['', [Validators.required]],
-      project: ['', [Validators.required]],
-      hashPacking: [String, [Validators.required]],
-      _id:['', [Validators.required]],
-      __v:['']
-    });
-
-    this.inscricao = this.route.params.subscribe(
-      (params: any)=>{
-        let id = params['id'];
-        this.PackingService.retrievePacking(id).subscribe(result => {
-
-          (this.packing)
-                  .patchValue(result.data);
-
-          this.loadTags();
-          this.loadSuppliers();
-          this.loadProject();
-        });
-      }
-    )
+    this.companyService.getAllCompanies().subscribe(result => {
+      this.allCompanies = result;
+    }, err => console.error(err));
   }
 
-  ngOnDestroy () {
-    this.inscricao.unsubscribe();
+  configureFormGroup() {
+    this.mFamily = this.fb.group({
+      code: ['', [Validators.required]],
+      company: ['', [Validators.required]],
+      control_points: new FormControl([])
+    });
+  }
+
+  retrieveUser(){
+    this.inscricao = this.route.params.subscribe((params: any) => {
+      this.mId = params['id'];
+      this.familiesService.getFamily(this.mId).subscribe(result => {
+        
+        // let actualValues = {
+        //   code: result.code,
+        //   company: result.company,
+        //   control_points: result.control_points
+        // };
+        //console.log('this.actualValues...' + JSON.stringify(actualValues));
+
+        (<FormGroup>this.mFamily).patchValue(result, { onlySelf: true });
+      });
+    });
+  }
+
+  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+    this.submited = true;
+
+    if (this.mFamily.valid) {
+
+      let newFamily = {
+        code: this.mFamily.controls.code.value,
+        company: this.mFamily.controls.company.value._id,
+        //control_points: this.mFamily.controls.control_points.value.map(elem => elem._id)
+      }
+
+      this.finishUpdate(newFamily);
+    }
+  }
+
+  finishUpdate(newFamily: any){
+    this.familiesService.editFamily(this.mId, newFamily).subscribe(result => {
+      this.toastService.success('/rc/cadastros/familia', 'Família');
+    }, err => this.toastService.error(err));
   }
 
 }
