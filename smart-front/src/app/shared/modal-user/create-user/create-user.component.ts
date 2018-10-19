@@ -50,8 +50,8 @@ export class CreateUserComponent implements OnInit {
   formProfile() {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
-      full_name: ['', [Validators.required, Validators.minLength(5)]],
-      email: ['', [Validators.required, Validators.email]],
+      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2,}).)*$/)]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/^((?!\s{2,}).)*$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
       company: ['', [Validators.required]]
@@ -63,7 +63,7 @@ export class CreateUserComponent implements OnInit {
   getCompaniesOnSelect(){
     
     this.companiesService.getAllCompanies().subscribe(result => { 
-      console.log("result: " + JSON.stringify(result));
+      //console.log("result: " + JSON.stringify(result));
       this.companiesOnSelect = result;
     });
   }
