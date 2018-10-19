@@ -38,6 +38,7 @@ export class CompanyEditarComponent implements OnInit {
   //Mask
   public maskTel = ['(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
   public maskCep = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
+  public maskCNPJ = [/[0-9]/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
   //public maskUF = [/[A-Z]/, /[A-Z]/];
 
   public inscricao: Subscription;
@@ -97,14 +98,14 @@ export class CompanyEditarComponent implements OnInit {
   formProfile() {
     this.newCompany = this.fb.group({
       type: ['', [Validators.required]],
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.pattern(/^((?!\s{2,}).)*$/)]],
       phone: ['', [Validators.required]],
-      cnpj: '',
+      cnpj: ['', [Validators.required]],
       address: this.fb.group({
-        street: ['', [Validators.required]],
-        city: ['', [Validators.required]],
+        street: ['', [Validators.required, Validators.pattern(/^((?!\s{2,}).)*$/)]],
+        city: ['', [Validators.required, Validators.pattern(/^((?!\s{2,}).)*$/)]],
         cep: ['', [Validators.required]],
-        uf: ['', [Validators.required]]
+        uf: ['', [Validators.required, Validators.pattern(/^((?!\s{2,}).)*$/)]]
       })
     });
   }

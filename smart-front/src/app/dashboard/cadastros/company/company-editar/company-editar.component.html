@@ -35,11 +35,17 @@
           formControlName="name"
           class="form-control" 
           placeholder="Digite o nome da empresa"
+          maxlength="80"
           [ngClass]="{'required': (newCompany.get('name').hasError('required') && newCompany.get('name').touched)
                                || (newCompany.get('name').hasError('required')) && submitted}">
 
           <p class="requiredText" *ngIf="(newCompany.get('name').hasError('required') && newCompany.get('name').touched)
                   || (newCompany.get('name').hasError('required') && submitted)">Campo Obrigatório</p>
+
+          <p class="requiredText" 
+            *ngIf="(newCompany.get('name').hasError('pattern') && newCompany.get('name').touched && newCompany.get('name').value.length > 1) 
+            || (newCompany.get('name').hasError('pattern') && submitted)">
+            Excesso de espaços em branco</p>
       </div>
 
       <div class="col-sm-12 col-md-4 form-group">
@@ -53,13 +59,19 @@
                       || (newCompany.get('phone').hasError('required') && submitted)">
             Campo Obrigatório</p>
       </div>
-
     </div>
 
     <div class="row">
       <div class="col-sm-12 col-md-6 form-group">
         <p class="descricao">CNPJ</p>
-        <input class="form-control" type="text" formControlName="cnpj" placeholder="cnpj" />
+        <input [textMask]="{mask: maskCNPJ}" class="form-control" [(ngModel)]="cnpj" type="text" formControlName="cnpj" placeholder="__.___.___/____-__" maxlength="20"
+          [ngClass]="{'required': (newCompany.get('cnpj').hasError('required') && newCompany.get('cnpj').touched)
+                  || (newCompany.get('cnpj').hasError('required') && submitted)}" />
+        
+        <p class="requiredText" 
+          *ngIf="(newCompany.get('cnpj').hasError('required') && newCompany.get('cnpj').touched)
+            || (newCompany.get('cnpj').hasError('required') && submitted)">
+          Campo Obrigatório</p>
       </div>
     </div>
 
@@ -72,6 +84,7 @@
           [(ngModel)]="mStreet" 
           placeholder="Digite o nome da rua" 
           formControlName="street"
+          maxlength="120"
           [ngClass]="{'required': (newCompany.get('address.street').hasError('required') &&
           newCompany.get('address.street').touched)
           || (newCompany.get('address.street').hasError('required') && submitted)}">
@@ -80,6 +93,11 @@
         *ngIf="(newCompany.get('address.street').hasError('required') && newCompany.get('address.street').touched)
           || (newCompany.get('address.street').hasError('required') && submitted)">
           Campo Obrigatório</p>
+
+        <p class="requiredText" 
+          *ngIf="(newCompany.get('address.street').hasError('pattern') && newCompany.get('address.street').touched && newCompany.get('address.street').value.length > 1) 
+          || (newCompany.get('address.street').hasError('pattern') && submitted)">
+          Excesso de espaços em branco</p>
       </div>
 
       <div class="col-sm-12 col-md-4 form-group">
@@ -112,6 +130,7 @@
           [(ngModel)]="mCity" 
           placeholder="Digite o cidade" 
           formControlName="city"
+          maxlength="60"
           [ngClass]="{'required': (newCompany.get('address.city').hasError('required') &&
           newCompany.get('address.city').touched)
           || (newCompany.get('address.city').hasError('required') && submitted)}">
@@ -120,6 +139,11 @@
             *ngIf="(newCompany.get('address.city').hasError('required') && newCompany.get('address.city').touched)
               || (newCompany.get('address.city').hasError('required') && submitted)">
               Campo Obrigatório</p>
+
+          <p class="requiredText" 
+            *ngIf="(newCompany.get('address.city').hasError('pattern') && newCompany.get('address.city').touched && newCompany.get('address.city').value.length > 1) 
+              || (newCompany.get('address.city').hasError('pattern') && submitted)">
+            Excesso de espaços em branco</p>
       </div>
 
       <div class="form-group col-sm-6 col-md-2">
@@ -131,12 +155,19 @@
           [(ngModel)]="mUf" 
           formControlName="uf" 
           placeholder="UF"
+          maxlength="2"
           [ngClass]="{'required': (newCompany.get('address.uf').hasError('required') &&
           newCompany.get('address.uf').touched)
           || (newCompany.get('address.uf').hasError('required') && submitted)}">
           
-          <p class="requiredText" *ngIf="(newCompany.get('address.uf').hasError('required') && newCompany.get('address.uf').touched) 
-          || (newCompany.get('address.uf').hasError('required') && submitted)">Campo Obrigatório</p>
+          <p class="requiredText" 
+            *ngIf="(newCompany.get('address.uf').hasError('required') && newCompany.get('address.uf').touched) 
+            || (newCompany.get('address.uf').hasError('required') && submitted)">Campo Obrigatório</p>
+
+          <p class="requiredText" 
+            *ngIf="(newCompany.get('address.uf').hasError('pattern') && newCompany.get('address.uf').touched && newCompany.get('address.uf').value.length > 1) 
+            || (newCompany.get('address.uf').hasError('pattern') && submitted)">
+            Excesso de espaços em branco</p>
       </div>
     </div>
 
