@@ -16,9 +16,9 @@ export class FamiliaEditarComponent implements OnInit {
   public mFamily: FormGroup;
   public inscricao: Subscription;
   public allCompanies: any[] = [];
-  public allControlPoints: any[] = [
-    { id: '5a15b13c2340978ec3d2c0ea', name: 'Controle Point ABC' },
-    { id: '5a15b13c728cd3f43cc0fe8a', name: 'XTZ Control Point' }];
+  public allControlPoints: any[] = []; 
+  // [{ id: '5a15b13c2340978ec3d2c0ea', name: 'Controle Point ABC' },
+  //  { id: '5a15b13c728cd3f43cc0fe8a', name: 'XTZ Control Point' }];
 
   public validForm: boolean = true;
   public submited = false;

@@ -34,7 +34,16 @@ const companySchema = new mongoose.Schema({
     control_points: [{
         type: mongoose.Schema.ObjectId,
         ref: 'ControlPoint'
-    }]
+    }],
+    created_at: {
+        type: Date,
+        default: Date.now
+
+    },
+    update_at: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 companySchema.statics.findByName = function (name, projection = '') {
@@ -58,18 +67,18 @@ const validate_companies = (company) => {
     return Joi.validate(company, schema)
 }
 
-const postRemoveMiddleware = function (doc, next) {
-    var company = doc
-    company.model('User').update(
-        { company: company._id },
-        { $set: { active: false } },
-        { multi: true },
-        next()
-    )
-}
+// const postRemoveMiddleware = function (doc, next) {
+//     var company = doc
+//     company.model('User').update(
+//         { company: company._id },
+//         { $set: { active: false } },
+//         { multi: true },
+//         next()
+//     )
+// }
 
 const removeMiddleware = function (next) {
-    var company = this
+    const company = this
     company.model('User').update(
         { company: company._id },
         { $unset: { company: 1 } },
@@ -79,7 +88,7 @@ const removeMiddleware = function (next) {
 }
 
 companySchema.pre('remove', removeMiddleware)
-companySchema.post('remove', postRemoveMiddleware)
+// companySchema.post('remove', postRemoveMiddleware)
 
 const Company = mongoose.model('Company', companySchema)
 

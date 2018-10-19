@@ -4,6 +4,7 @@ const cors = require('cors')
 const users = require('../resources/users/users.routing')
 const companies = require('../resources/companies/companies.routing')
 const families = require('../resources/families/families.routing')
+const packings = require('../resources/packings/packings.routing')
 const error = require('../middlewares/error.middleware')
 
 module.exports = (app) => {
@@ -26,6 +27,7 @@ module.exports = (app) => {
     app.use('/api/users', users)
     app.use('/api/companies', companies)
     app.use('/api/families', families)
+    app.use('/api/packings', packings)
 
     // Middlewares functions
     app.use(error)

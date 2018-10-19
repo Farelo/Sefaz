@@ -12,9 +12,9 @@ import { FamiliesService } from 'app/servicos/families.service';
 export class FamiliaCadastroComponent implements OnInit {
   public mFamily: FormGroup; 
   public allCompanies: any[] = [];
-  public allControlPoints: any[] = [
-    { id: '5a15b13c2340978ec3d2c0ea', name: 'Controle Point ABC' },
-    { id: '5a15b13c728cd3f43cc0fe8a', name: 'XTZ Control Point' }];
+  public allControlPoints: any[] = [];
+  // [{ id: '5a15b13c2340978ec3d2c0ea', name: 'Controle Point ABC' },
+  //  { id: '5a15b13c728cd3f43cc0fe8a', name: 'XTZ Control Point' }];
 
   public validForm: boolean = true;
   public submited = false;
@@ -33,7 +33,7 @@ export class FamiliaCadastroComponent implements OnInit {
 
   configureFormGroup(){
     this.mFamily = this.fb.group({
-      code: ['', [Validators.required]],
+      code: ['', [Validators.required, Validators.maxLength(30)]],
       selectedCompanies: [undefined, [Validators.required]],
       selectedControlPoints: new FormControl([])
     });

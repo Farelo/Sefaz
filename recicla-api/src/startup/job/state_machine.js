@@ -122,7 +122,9 @@ async function getLastEntry(packing) {
 
 async function getLastAccurateEntry(packing) {
     const res = await loadDeviceLog()
+    console.log("++" + res.length)
     for (i = res.length; i--; i >= 0) {
+        console.log(">" + i)
         if ((packing.tag.code == res[i].deviceId) && (res[i].accuracy <= userConfig.defaultAcceptableMinimalAccuracy)) {
             return res[i]
         }
@@ -134,9 +136,16 @@ async function main() {
     //const res = await loadDeviceLog()
     const pack = await loadPackings()
     pack.forEach(element => {
-        console.log(element)
         runSM(userConfig, element)
-        console.log(element)
+    });
+    pack.forEach(element => {
+        runSM(userConfig, element)
+    });
+    pack.forEach(element => {
+        runSM(userConfig, element)
+    });
+    pack.forEach(element => {
+        console.log(element.tag.code + " - " + element.current_state)
     });
 }
 
@@ -233,7 +242,7 @@ const states = {
     },
     SEM_SINAL: {
         id: "semSinal",
-        alerts: alerts.SEM_SINAL
+        alert: alerts.SEM_SINAL
     },
     PERDIDA: {
         id: "perdida",
@@ -248,8 +257,6 @@ const states = {
         alert: alerts.LOCAL_INCORRETO
     }
 }
-
-let currentState;
 
 function matchControlPoint(lat, long) {
     return {
@@ -311,12 +318,13 @@ function checkBattery(packing) {
     return (packing.battery < userConfig.batteryThreshold) ? true : false;
 }
 
-function setStateAlert(packing, alert) {
-    console.log("Add Alert" + alert + " to " + packing.tag.code)
+function insertAlert(packing, alert) {
+    console.log("-------------------------Add Alert" + alert + " to " + packing.tag.code)
 }
 
 function setState(packing, state) {
     packing.current_state = state.id
+    console.log("=================" + state.alert)
     if (state.alert != undefined){
         insertAlert(packing,state.alert)
     }
@@ -336,19 +344,19 @@ function setAttributeAlert(packing, alert) {
         case alerts.NAUSENTE:
             packing.absent = false;
         break;
-
     }
-
 }
 
 function runSM(user, packing) {
     let nextState;
+    let currentState = packing.current_state == '' ? undefined : packing.current_state;
+    console.log(currentState)
     let lastEntry = getLastEntry(packing);
     let lastAccurateEntry = getLastAccurateEntry(packing);
     let lastSignalDelay = (new Date().getTime() - lastEntry.timestamp);
     switch (currentState) {
         // ******************************ANALISE*******************************
-        case states.ANALISE:
+        case states.ANALISE.id:
             if (lastSignalDelay < DAY1) {
                 let localId = matchControlPoint(lastAccurateEntry.lat, lastAccurateEntry.long); //ATUALIZAR
                 if (localId != undefined) {
@@ -371,7 +379,7 @@ function runSM(user, packing) {
             }
             break;
             // ********************DESABILITADA_COM_SINAL*********************
-        case states.DESABILITADA_COM_SINAL:
+        case states.DESABILITADA_COM_SINAL.id:
             if (packing.active) {
                 nextState = states.ANALISE; //NEXT STATE
             } else {
@@ -384,7 +392,7 @@ function runSM(user, packing) {
             }
             break;
             // ***********************DESABILITADA_SEM_SINA***************************
-        case states.DESABILITADA_SEM_SINAL:
+        case states.DESABILITADA_SEM_SINAL.id:
             if (packing.active) {
                 nextState = states.SEM_SINAL; //NEXT STATE
             } else {
@@ -400,7 +408,7 @@ function runSM(user, packing) {
             }
             break;
             // ****************************VIAGEM_PRAZO*******************************
-        case states.VIAGEM_PRAZO:
+        case states.VIAGEM_PRAZO.id:
             if (packing.active) {
                 nextState = states.SEM_SINAL; //NEXT STATE
             } else {
@@ -408,13 +416,13 @@ function runSM(user, packing) {
             }
             break;
             // ************************VIAGEM_ATRASADA******************************
-        case states.VIAGEM_ATRASADA:
+        case states.VIAGEM_ATRASADA.id:
             break;
             // **************************VIAGEM_AUSENTE******************************
-        case states.VIAGEM_AUSENTE:
+        case states.VIAGEM_AUSENTE.id:
             break;
             // ******************************SEM_SINAL**********************************
-        case states.SEM_SINAL:
+        case states.SEM_SINAL.id:
             if (packing.active) {
                 if (lastSignalDelay < DAY1) {
                     nextState = states.ANALISE;
@@ -430,7 +438,7 @@ function runSM(user, packing) {
             }
             break;
             // ******************************PERDIDA**********************************
-        case states.PERDIDA:
+        case states.PERDIDA.id:
             if (lastSignalDelay < DAY2) {
                 if (packing.active) {
                     //COMPLEMENTAR
@@ -444,7 +452,7 @@ function runSM(user, packing) {
             }
             break;
             // ***************************LOCAL_CORRETO******************************
-        case states.LOCAL_CORRETO:
+        case states.LOCAL_CORRETO.id:
             if (packing.active) {
                 if (lastSignalDelay < DAY1) {
                     let localId = matchControlPoint(lastAccurateEntry.lat, lastAccurateEntry.long); //ATUALIZAR
@@ -469,7 +477,7 @@ function runSM(user, packing) {
             }
             break;
             // ***************************LOCAL_INCORRETO******************************
-        case states.LOCAL_INCORRETO:
+        case states.LOCAL_INCORRETO.id:
             if (packing.active) {
                 if (lastSignalDelay < DAY1) {
                     let localId = matchControlPoint(lastAccurateEntry.lat, lastAccurateEntry.long); //ATUALIZAR
@@ -497,7 +505,6 @@ function runSM(user, packing) {
             if (packing.active) {
                 //COMPLEMENTAR
                 nextState = states.ANALISE; //NEXT STATE
-                console.log("AQUI!!!")
             } else {
                 //COMPLEMENTAR
                 nextState = states.DESABILITADA_COM_SINAL; //NEXT STATE

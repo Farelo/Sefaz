@@ -4,6 +4,7 @@ import { ModalUserComponent } from '../modal-user.component';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { ToastService, CompaniesService, UsersService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
+import { PasswordValidation } from 'app/shared/validators/passwordValidator';
 
 @Component({
   selector: 'app-edit-user',
@@ -42,7 +43,7 @@ export class EditUserComponent implements OnInit {
     private fb: FormBuilder) { }
 
   ngOnInit() {
-    console.log('mUser onInit: ' + JSON.stringify(this.mUser));
+    //console.log('mUser onInit: ' + JSON.stringify(this.mUser));
     this.formProfile();
     this.fillSelectType();
     this.getCompaniesOnSelect();
@@ -58,8 +59,8 @@ export class EditUserComponent implements OnInit {
   formProfile() {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
-      full_name: ['', [Validators.required, Validators.minLength(5)]],
-      email: ['', [Validators.required, Validators.email]],
+      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2,}).)*$/)]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/^((?!\s{2,}).)*$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
       company: ['', [Validators.required]]
@@ -78,13 +79,13 @@ export class EditUserComponent implements OnInit {
       this.userType = this.rolesOnSelect[0];
     if (this.mUser.role == this.rolesOnSelect[1].name)
       this.userType = this.rolesOnSelect[1];
-    console.log("userType.: " + JSON.stringify(this.userType));
+    //console.log("userType.: " + JSON.stringify(this.userType));
   }
 
   getCompaniesOnSelect() {
 
     this.companiesService.getAllCompanies().subscribe(result => {
-      console.log("result.: " + JSON.stringify(result));
+      //console.log("result.: " + JSON.stringify(result));
       this.companiesOnSelect = result;
 
     });
@@ -116,20 +117,4 @@ export class EditUserComponent implements OnInit {
     this.activeModal.close();
   }
 
-}
-
-/**
- * Form Validator for "confirm password"
- */
-export class PasswordValidation {
-
-  static MatchPassword(AC: AbstractControl) {
-    let password = AC.get('password').value; // to get value in input tag
-    let confirmPassword = AC.get('confirm_password').value; // to get value in input tag
-    if (password != confirmPassword) {
-      AC.get('confirm_password').setErrors({ MatchPassword: true })
-    } else {
-      return null
-    }
-  }
 }
