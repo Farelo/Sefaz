@@ -175,6 +175,7 @@ module.exports = router
  *       - length
  *       - capacity
  *       - observations
+ *       - active
  *       - family
  *     properties:
  *       tag:
@@ -195,6 +196,8 @@ module.exports = router
  *         type: number
  *       observations:
  *         type: string
+ *       active:
+ *         type: boolean
  *       family:
  *         type: string
  */

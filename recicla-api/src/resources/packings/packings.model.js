@@ -82,7 +82,6 @@ const addPackingToFamily = async (doc, next) => {
         await family.save()
         next()
     } catch (error) {
-        debug(error)
         next()
     }
 }
