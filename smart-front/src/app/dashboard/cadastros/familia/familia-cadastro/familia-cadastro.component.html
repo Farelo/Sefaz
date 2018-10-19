@@ -14,6 +14,7 @@
           class="form-control required" 
           placeholder="Digite o código"  
           formControlName="code"
+          maxlength="30"
           [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
           || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)}">
       </div>

@@ -35,16 +35,19 @@
           formControlName="name"
           class="form-control" 
           placeholder="Digite o nome da empresa"
-          maxlength="80"
+          maxlength="50"
           [ngClass]="{'required': (newCompany.get('name').hasError('required') && newCompany.get('name').touched)
-                               || (newCompany.get('name').hasError('required')) && submitted}">
-
+            || (newCompany.get('name').hasError('required') && submitted)
+            || (newCompany.get('name').hasError('pattern'))
+            || (newCompany.get('name').hasError('pattern') && submitted)}">
+          
           <p class="requiredText" *ngIf="(newCompany.get('name').hasError('required') && newCompany.get('name').touched)
-                  || (newCompany.get('name').hasError('required') && submitted)">Campo Obrigatório</p>
-
+                      || (newCompany.get('name').hasError('required') && submitted)
+                      || (newCompany.get('name').value.length == 1 && newCompany.get('name').value == ' ')">
+            Campo Obrigatório</p>
+          
           <p class="requiredText" 
-            *ngIf="(newCompany.get('name').hasError('pattern') && newCompany.get('name').touched && newCompany.get('name').value.length > 1) 
-            || (newCompany.get('name').hasError('pattern') && submitted)">
+            *ngIf="(newCompany.get('name').hasError('pattern')) || (newCompany.get('name').hasError('pattern') && submitted)">
             Excesso de espaços em branco</p>
       </div>
 
@@ -87,16 +90,16 @@
           maxlength="120"
           [ngClass]="{'required': (newCompany.get('address.street').hasError('required') &&
           newCompany.get('address.street').touched)
-          || (newCompany.get('address.street').hasError('required') && submitted)}">
+          || (newCompany.get('address.street').hasError('required') && submitted)
+          || (newCompany.get('address.street').hasError('pattern'))
+          || (newCompany.get('address.street').hasError('pattern') && submitted)}">
 
         <p class="requiredText" 
         *ngIf="(newCompany.get('address.street').hasError('required') && newCompany.get('address.street').touched)
           || (newCompany.get('address.street').hasError('required') && submitted)">
           Campo Obrigatório</p>
 
-        <p class="requiredText" 
-          *ngIf="(newCompany.get('address.street').hasError('pattern') && newCompany.get('address.street').touched && newCompany.get('address.street').value.length > 1) 
-          || (newCompany.get('address.street').hasError('pattern') && submitted)">
+        <p class="requiredText" *ngIf="(newCompany.get('address.street').hasError('pattern')) || (newCompany.get('address.street').hasError('pattern') && submitted)">
           Excesso de espaços em branco</p>
       </div>
 
@@ -133,16 +136,16 @@
           maxlength="60"
           [ngClass]="{'required': (newCompany.get('address.city').hasError('required') &&
           newCompany.get('address.city').touched)
-          || (newCompany.get('address.city').hasError('required') && submitted)}">
+          || (newCompany.get('address.city').hasError('required') && submitted)
+          || (newCompany.get('address.city').hasError('pattern'))
+          || (newCompany.get('address.city').hasError('pattern') && submitted)}">
 
           <p class="requiredText" 
             *ngIf="(newCompany.get('address.city').hasError('required') && newCompany.get('address.city').touched)
               || (newCompany.get('address.city').hasError('required') && submitted)">
               Campo Obrigatório</p>
 
-          <p class="requiredText" 
-            *ngIf="(newCompany.get('address.city').hasError('pattern') && newCompany.get('address.city').touched && newCompany.get('address.city').value.length > 1) 
-              || (newCompany.get('address.city').hasError('pattern') && submitted)">
+          <p class="requiredText" *ngIf="(newCompany.get('address.city').hasError('pattern')) || (newCompany.get('address.city').hasError('pattern') && submitted)">
             Excesso de espaços em branco</p>
       </div>
 
@@ -168,6 +171,10 @@
             *ngIf="(newCompany.get('address.uf').hasError('pattern') && newCompany.get('address.uf').touched && newCompany.get('address.uf').value.length > 1) 
             || (newCompany.get('address.uf').hasError('pattern') && submitted)">
             Excesso de espaços em branco</p>
+
+          <p class="requiredText" *ngIf="(newCompany.get('address.uf').hasError('minlength') && newCompany.get('address.uf').touched)
+                    || (newCompany.get('address.uf').hasError('minlength') && submitted)">
+            Mínimo de 2 caracters</p>
       </div>
     </div>
 

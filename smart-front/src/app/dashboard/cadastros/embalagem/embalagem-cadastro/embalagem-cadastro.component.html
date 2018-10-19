@@ -9,7 +9,7 @@
 
       <!-- Codigo -->
       <div class="col-sm-12 col-md-4" formGroupName="tag">
-        <p class="descricao">CÓDIGO</p>
+        <p class="descricao">TAG</p>
         <p class="explicacao">Ex. "994475545"</p>
         <div class="input-group">
           <input type="text" 
@@ -108,12 +108,19 @@
                 aria-describedby="basic-addon2"
                 formControlName="manufactorer" 
                 [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
-                      || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)}">
+                  || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
+                  || (mPacking.get('tag.manufactorer').value.length == 1 && mPacking.get('tag.manufactorer').value == ' ')}">
             </div>
             <p class="requiredText" 
               *ngIf="(mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
-                || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)">
+                || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
+                || (mPacking.get('tag.manufactorer').value.length == 1 && mPacking.get('tag.manufactorer').value == ' ')">
               Campo Obrigatório</p>
+
+            <p class="requiredText" 
+              *ngIf="(mPacking.get('tag.manufactorer').hasError('pattern') && mPacking.get('tag.manufactorer').touched && mPacking.get('tag.manufactorer').value.length > 1) 
+                || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)">
+              Excesso de espaços em branco</p>
           </div>
 
 

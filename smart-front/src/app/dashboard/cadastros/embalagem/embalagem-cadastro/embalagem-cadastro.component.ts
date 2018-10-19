@@ -69,10 +69,10 @@ export class EmbalagemCadastroComponent implements OnInit {
       tag: this.fb.group({
         code: ['', [Validators.required]],
         version: ['', [Validators.required]],
-        manufactorer: ['', [Validators.required]]
+        manufactorer: ['', [Validators.required, Validators.pattern(/^((?!\s{2,}).)*$/)]]
       }),
       serial: ['', [Validators.required]],
-      type: ['', [Validators.required]],
+      type: ['', [Validators.required, Validators.pattern(/^((?!\s{2,}).)*$/)]],
       weigth: ['', [Validators.required]],
       width: ['', [Validators.required]],
       heigth: ['', [Validators.required]],

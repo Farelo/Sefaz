@@ -43,7 +43,7 @@ export class EditUserComponent implements OnInit {
     private fb: FormBuilder) { }
 
   ngOnInit() {
-    console.log('mUser onInit: ' + JSON.stringify(this.mUser));
+    //console.log('mUser onInit: ' + JSON.stringify(this.mUser));
     this.formProfile();
     this.fillSelectType();
     this.getCompaniesOnSelect();
@@ -79,13 +79,13 @@ export class EditUserComponent implements OnInit {
       this.userType = this.rolesOnSelect[0];
     if (this.mUser.role == this.rolesOnSelect[1].name)
       this.userType = this.rolesOnSelect[1];
-    console.log("userType.: " + JSON.stringify(this.userType));
+    //console.log("userType.: " + JSON.stringify(this.userType));
   }
 
   getCompaniesOnSelect() {
 
     this.companiesService.getAllCompanies().subscribe(result => {
-      console.log("result.: " + JSON.stringify(result));
+      //console.log("result.: " + JSON.stringify(result));
       this.companiesOnSelect = result;
 
     });

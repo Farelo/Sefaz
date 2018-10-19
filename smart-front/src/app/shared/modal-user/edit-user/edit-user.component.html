@@ -69,16 +69,13 @@
             formControlName="full_name" 
             [(ngModel)]="full_name" 
             [ngClass]="{'required': ((newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
-            || (newUser.get('full_name').hasError('required') && submitted)) ||
+            || (newUser.get('full_name').hasError('required') && submitted))
             
-            ((newUser.get('full_name').hasError('minlength') && newUser.get('full_name').touched)
-            || (newUser.get('full_name').hasError('minlength') && submitted)) ||
+            || ((newUser.get('full_name').hasError('minlength') && newUser.get('full_name').touched)
+            || (newUser.get('full_name').hasError('minlength') && submitted))
             
-            ((newUser.get('full_name').hasError('minlength') && newUser.get('full_name').touched)
-            || (newUser.get('full_name').hasError('minlength') && submitted)) ||
-            
-            (newUser.get('full_name').hasError('pattern') && newUser.get('full_name').touched &&
-            newUser.get('full_name').value.length > 1) || (newUser.get('full_name').hasError('pattern') && submitted)}">
+            || (newUser.get('full_name').hasError('pattern'))
+            || (newUser.get('full_name').hasError('pattern') && submitted)}">
 
           <p class="requiredText" *ngIf="(newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
               || (newUser.get('full_name').hasError('required') && submitted)">Campo
@@ -87,9 +84,7 @@
           <p class="requiredText" *ngIf="(newUser.get('full_name').hasError('minlength') && newUser.get('full_name').touched)
                                                         || (newUser.get('full_name').hasError('minlength') && submitted)">Mínimo de 5 caracters</p>
 
-          <p class="requiredText" 
-            *ngIf="(newUser.get('full_name').hasError('pattern') && newUser.get('full_name').touched && newUser.get('full_name').value.length > 1) 
-            || (newUser.get('full_name').hasError('pattern') && submitted)">
+          <p class="requiredText" *ngIf="(newUser.get('full_name').hasError('pattern')) || (newUser.get('full_name').hasError('pattern') && submitted)">
             Excesso de espaços em branco</p>
         </div>
 
@@ -101,21 +96,18 @@
             maxlength="40"
             [(ngModel)]="email" 
             [ngClass]="{'required': (newUser.get('email').hasError('required') && newUser.get('email').touched)
-              || (newUser.get('email').hasError('required') && submitted), 'requiredEmail': (newUser.get('email').hasError('email') && newUser.get('email').touched) && !newUser.get('email').hasError('required')}
-              || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))">
+            || (newUser.get('email').hasError('required') && submitted)
+            
+            || (newUser.get('email').hasError('email') && !newUser.get('email').hasError('required') )
+            || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))}">
 
           <p class="requiredText" *ngIf="(newUser.get('email').hasError('required') && newUser.get('email').touched)
               || (newUser.get('email').hasError('required') && submitted)">Campo
             Obrigatório</p>
 
-          <p class="requiredText" *ngIf="(newUser.get('email').hasError('email') && newUser.get('email').touched) && !newUser.get('email').hasError('required')
-              || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))">Formato
-            do email esta incorreto!</p>
-
-          <p class="requiredText" 
-            *ngIf="(newUser.get('email').hasError('pattern') && newUser.get('email').touched && newUser.get('email').value.length > 1) 
-              || (newUser.get('email').hasError('pattern') && submitted)">
-            Excesso de espaços em branco</p>
+          <p class="requiredText" *ngIf="(newUser.get('email').hasError('email')) && !newUser.get('email').hasError('required')
+                        || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))">
+            Formato do email esta incorreto!</p>
         </div>
       </div>
 
