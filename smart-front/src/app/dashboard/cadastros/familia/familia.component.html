@@ -1,0 +1,50 @@
+<div class="input-group mb-3 d-flex justify-content-between">
+  <input type="text" 
+    class="form-control mr-4" 
+    placeholder="Buscar" 
+    aria-describedby="basic-addon1" 
+    [(ngModel)]="search"
+    (keyup)="searchEvent($event)">
+    
+  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+</div>
+
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr class="cabecalho">
+        <th>Código</th>
+        <th class="opcoes"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let family of listOfFamilies | paginate: {
+                                                    itemsPerPage: 10,
+                                                    currentPage: actualPage,
+                                                    totalItems: listOfFamilies.length}">
+        <td>{{family.code}}</td>
+        <td class="teste">
+          <div>
+            <button class="editar" [routerLink]="['editar/', family._id]">
+              EDITAR
+            </button>
+            <button class="excluir" (click)="removePacking(family)">
+              EXCLUIR
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="classVazio" *ngIf="listOfFamilies.length < 1">
+  Ainda não existem famílias de embalagens cadastradas.
+</div>
+
+<br />
+
+<div class="has-text-centered">
+  <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
+  </pagination-controls>
+</div>

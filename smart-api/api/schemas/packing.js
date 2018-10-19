@@ -24,9 +24,18 @@ const packingSchema = new mongoose.Schema({
   length: Number,
   capacity: Number,
   battery: Number,
-  problem: Boolean,
-  missing: Boolean,
-  traveling: Boolean,
+  problem: {
+    type: Boolean,
+    default: false
+  },
+  missing: {
+    type: Boolean,
+    default: false
+  },
+  traveling: {
+    type: Boolean,
+    default: false
+  },
   incorrect_local: Boolean,
   incontida: {
     date: Number,

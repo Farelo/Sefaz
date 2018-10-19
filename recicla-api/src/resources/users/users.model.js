@@ -1,9 +1,11 @@
+const debug = require('debug')('model:users')
 const mongoose = require('mongoose')
 const Joi = require('joi')
 Joi.objectId = require('joi-objectid')(Joi)
 const bcrypt = require('bcrypt')
 const config = require('config')
 const jwt = require('jsonwebtoken')
+const { Company } = require('../companies/companies.model')
 
 const userSchema = new mongoose.Schema({
     full_name: {
@@ -23,6 +25,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 6,
         maxlength: 1024
+    },
+    active: {
+        type: Boolean,
+        default: true
     },
     role: {
         type: String,
@@ -54,6 +60,18 @@ const password_encrypt = async (obj, next) => {
         const salt = await bcrypt.genSalt(config.get('security.saltRounds'))
         const hashed_password = await bcrypt.hash(obj.password, salt)
         obj.password = hashed_password
+        next()
+    } catch (error) {
+        next()
+    }
+}
+
+const addUserToCompany = async (user, next) => {
+    try {
+        const company = await Company.findById(user.company)
+        company.users.push(user._id)
+        await company.save()
+
         next()
     } catch (error) {
         next()
@@ -96,13 +114,20 @@ const removeMiddleware = function (next) {
         { users: user._id },
         { $pull: { users: user._id } },
         { multi: true },
-        next
+        next()
     )
 }
 
+const postSaveMiddleware = function(doc, next) {
+    addUserToCompany(doc, next)
+}
+
 userSchema.pre('save', saveMiddleware)
+userSchema.post('save', postSaveMiddleware)
 userSchema.pre('update', updateMiddleware)
+userSchema.post('update', postSaveMiddleware)
 userSchema.pre('findOneAndUpdate', updateMiddleware)
+userSchema.post('findOneAndUpdate', postSaveMiddleware)
 userSchema.pre('remove', removeMiddleware)
 
 const User = mongoose.model('User', userSchema)

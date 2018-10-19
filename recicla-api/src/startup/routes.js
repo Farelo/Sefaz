@@ -3,6 +3,7 @@ const body_parser = require('body-parser')
 const cors = require('cors')
 const users = require('../resources/users/users.routing')
 const companies = require('../resources/companies/companies.routing')
+const families = require('../resources/families/families.routing')
 const error = require('../middlewares/error.middleware')
 
 module.exports = (app) => {
@@ -24,6 +25,7 @@ module.exports = (app) => {
     app.get('/', (req, res) => res.redirect('/api-docs'))
     app.use('/api/users', users)
     app.use('/api/companies', companies)
+    app.use('/api/families', families)
 
     // Middlewares functions
     app.use(error)

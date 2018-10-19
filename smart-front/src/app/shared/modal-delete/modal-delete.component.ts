@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService, UsersService } from '../../servicos/index.service';
+import { ToastService, UsersService, CompaniesService, FamiliesService } from '../../servicos/index.service';
 
 @Component({
   selector: 'app-modal-delete',
@@ -9,25 +9,48 @@ import { ToastService, UsersService } from '../../servicos/index.service';
 })
 export class ModalDeleteComponent implements OnInit {
 
-  @Input() mUser;
+  @Input() mObject;
+  @Input() mType: any;
 
   constructor(
     public activeModal: NgbActiveModal,
     private toastService: ToastService,
     private usersService: UsersService,
+    protected companiesService: CompaniesService,
+    private familyService: FamiliesService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
-
+    console.log('mObject: ' + JSON.stringify(this.mObject));
+    console.log('mType: ' + JSON.stringify(this.mType));
   }
 
   delete() {
 
-    this.usersService.deleteUser(this.mUser._id).subscribe(result => {
-      //console.log("result: " + JSON.stringify(result));
-      this.activeModal.close();
-      this.toastService.remove('', 'Usuário');
-    });
+    switch (this.mType){
+
+      case "USER":
+        this.usersService.deleteUser(this.mObject._id).subscribe(result => {
+          this.toastService.remove('', 'Usuário');
+          this.activeModal.close();
+        });
+        break;
+
+      case "COMPANY":
+        this.companiesService.deleteCompany(this.mObject._id).subscribe(res => {
+            this.toastService.remove('', 'Empresa', true); 
+            this.activeModal.close();
+          });
+        break;
+      
+      case "FAMILY":
+        this.familyService.deleteFamily(this.mObject._id).subscribe(res => {
+            this.toastService.remove('', 'Família', true);
+            this.activeModal.close();
+          });
+        break;
+    }
+    
   }
 
 }

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-// const config = require('config')
-// const { Company } = require('./companies.model')
+const { Family } = require('./families.model')
 
-describe('Company unit test', () => {
+describe('Family unit test', () => {
+
     describe('validate_object_id', () => {
         it('should validate a object_id if is an invalid _id', () => {
             const obj_id = 'invalid_id'

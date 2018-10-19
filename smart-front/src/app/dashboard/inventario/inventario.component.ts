@@ -414,6 +414,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   detailedGeneralInventoryChangePage(event: any): void {
     console.log('detailedGeneralInventoryChangePage');
   }
+  // 
 
   private csvOptions = {
     showLabels: true,

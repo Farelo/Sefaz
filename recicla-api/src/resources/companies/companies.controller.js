@@ -4,7 +4,7 @@ const HttpStatus = require('http-status-codes')
 const { Company } = require('./companies.model')
 
 exports.all = async (req, res) => {
-    const companies = await Company.find().populate('users', ['_id', 'email', 'role'])
+    const companies = await Company.find().populate('users', ['_id', 'email', 'role', 'active'])
 
     res.json(companies)
 }
@@ -12,7 +12,7 @@ exports.all = async (req, res) => {
 exports.show = async (req, res) => {
     const company = await Company
         .findById(req.params.id)
-        .populate('users', ['_id', 'email', 'role'])
+        .populate('users', ['_id', 'email', 'role', 'active'])
 
     if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
 
@@ -20,7 +20,7 @@ exports.show = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    company = new Company((req.body))
+    const company = new Company((req.body))
     await company.save()
 
     res.send(company)
@@ -38,7 +38,7 @@ exports.update = async(req, res) => {
 }
 
 exports.delete = async (req, res) => {
-    const company = await Company.findById(req.params.id).populate('users')
+    const company = await Company.findById(req.params.id)
     if (!company) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid company' })
 
     await company.remove()

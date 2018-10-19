@@ -96,16 +96,16 @@ export class CompanyEditarComponent implements OnInit {
 
   formProfile() {
     this.newCompany = this.fb.group({
+      type: ['', [Validators.required]],
       name: ['', [Validators.required]],
-      phone: '',
+      phone: ['', [Validators.required]],
       cnpj: '',
       address: this.fb.group({
-        street: '',
-        city: '',
-        cep: '',
-        uf: ''
-      }),
-      type: ''
+        street: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+        cep: ['', [Validators.required]],
+        uf: ['', [Validators.required]]
+      })
     });
   }
 

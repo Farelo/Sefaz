@@ -5,11 +5,26 @@ const bcrypt = require('bcrypt')
 const { User } = require('./users.model')
 
 describe('User unit test', () => {
+
     describe('validate_object_id', () => {
-        it('should validate a object_id', () => {
+        it('should validate a object_id if is an invalid _id', () => {
+            const obj_id = 'invalid_id'
+            const result = mongoose.Types.ObjectId.isValid(obj_id)
+            expect(result).toBe(false)
+        })
+        it('should validate a object_id if is a valid _id', () => {
             const obj_id = mongoose.Types.ObjectId()
             const result = mongoose.Types.ObjectId.isValid(obj_id)
             expect(result).toBe(true)
+        })
+    })
+
+    describe('password_encrypt', () => {
+        it('should return a hash of the password', async () => {
+            const password = '123456'
+            const salt = await bcrypt.genSalt(config.get('security.saltRounds'))
+            const hashed_password = await bcrypt.hash(password, salt)
+            expect(hashed_password).toEqual(expect.stringMatching(/^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/))
         })
     })
 
@@ -49,4 +64,6 @@ describe('User unit test', () => {
             expect(result).toBe(true)
         })
     })
+
+    
 })
