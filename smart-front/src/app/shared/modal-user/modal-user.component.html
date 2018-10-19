@@ -33,7 +33,7 @@
                                               currentPage: actualPage,
                                               totalItems: userData.length}">
         <tr>
-          <td>{{ user.full_name }}</td>
+          <td [attr.title]="user.full_name">{{ user.full_name | truncate : 20 }}</td>
           <td>{{ getTypeLabel(user.role) }}</td>
           <td>{{ user.company.name || '-' }}</td>
           <td style="text-align: right">

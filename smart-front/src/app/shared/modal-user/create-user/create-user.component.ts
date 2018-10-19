@@ -6,6 +6,7 @@ import { ModalStaffRegisterComponent } from '../modal-register-staff/modal-regis
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { ToastService, LogisticService, GeocodingService, CEPService, PlantsService, ProfileService, SuppliersService, CompaniesService, UsersService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
+import { PasswordValidation } from 'app/shared/validators/passwordValidator';
 
 @Component({
   selector: 'app-create-user',
@@ -49,7 +50,7 @@ export class CreateUserComponent implements OnInit {
   formProfile() {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
-      full_name: ['', [Validators.required, Validators.minLength(5)]],
+      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
@@ -62,7 +63,7 @@ export class CreateUserComponent implements OnInit {
   getCompaniesOnSelect(){
     
     this.companiesService.getAllCompanies().subscribe(result => { 
-      console.log("result: " + JSON.stringify(result));
+      //console.log("result: " + JSON.stringify(result));
       this.companiesOnSelect = result;
     });
   }
@@ -91,20 +92,4 @@ export class CreateUserComponent implements OnInit {
     this.activeModal.close();
   }
 
-}
-
-/**
- * Form Validator for "confirm password"
- */
-export class PasswordValidation {
-
-  static MatchPassword(AC: AbstractControl) {
-    let password = AC.get('password').value; // to get value in input tag
-    let confirmPassword = AC.get('confirm_password').value; // to get value in input tag
-    if (password != confirmPassword) {
-      AC.get('confirm_password').setErrors({ MatchPassword: true })
-    } else {
-      return null
-    }
-  }
 }

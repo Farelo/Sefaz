@@ -2,195 +2,268 @@
   <h2>Registrar Embalagem</h2>
   <hr>
 
-  <form novalidate (ngSubmit)="onSubmit(packing)" [formGroup]="packing" #formDir="ngForm">
+  <form novalidate (ngSubmit)="onSubmit(mPacking)" [formGroup]="mPacking" #formDir="ngForm">
+
+    <!-- Linha 1 TAG -->
     <div class="row">
-      <div class="col-md-6">
-        <div class="row">
-          <div class="col-md-8">
-            <div class="campo">
-              <p class="descricao">CÓDIGO</p>
-              <p class="explicacao">Ex. "994475545"</p>
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Digite o código" aria-describedby="basic-addon2" [(ngModel)]="code"
-                  formControlName="code" [ngClass]="{'required': (packing.get('code').hasError('required') && packing.get('code').touched)
-                || (packing.get('code').hasError('required') && formDir.submitted)}">
-              </div>
-              <p class="requiredText" *ngIf="(packing.get('code').hasError('required') && packing.get('code').touched)
-              || (packing.get('code').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-            </div>
-          </div>
 
-          <div class="col-md-4">
-            <div class="campo">
-              <p class="descricao">SERIAL</p>
-              <p class="explicacao">Ex. "001"</p>
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Serial" aria-describedby="basic-addon2" [(ngModel)]="serial" formControlName="serial"
-                  [ngClass]="{'required': (packing.get('serial').hasError('required') && packing.get('serial').touched)
-                || (packing.get('serial').hasError('required') && formDir.submitted)}">
-              </div>
-              <p class="requiredText" *ngIf="(packing.get('serial').hasError('required') && packing.get('serial').touched)
-              || (packing.get('serial').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-            </div>
-          </div>
+      <!-- Codigo -->
+      <div class="col-sm-12 col-md-4" formGroupName="tag">
+        <p class="descricao">TAG</p>
+        <p class="explicacao">Ex. "994475545"</p>
+        <div class="input-group">
+          <input type="text" 
+            class="form-control" 
+            placeholder="Código da tag" 
+            aria-describedby="basic-addon2"
+            formControlName="code" 
+            [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
+              || (mPacking.get('tag.code').hasError('required') && formDir.submitted)}">
         </div>
 
-
-        <div class="campo">
-          <p class="descricao">ASSOCIE A TAG</p>
-          <p class="explicacao">Associe uma tag a sua embalagem.</p>
-
-          <ng-select [ngModel]="tag" [items]="tags" bindLabel="code" [ngClass]="{'required': (packing.get('tag').hasError('required') && packing.get('tag').touched) || (packing.get('tag').hasError('required')
-          && formDir.submitted)}" placeholder="Associe uma Tag" formControlName="tag">
-            <ng-template ng-label-tmp let-item="item">
-              {{item.code}}
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item">
-              <div><b>Código:</b>
-                <small>
-                  {{item.code}}
-                </small>
-              </div>
-
-            </ng-template>
-          </ng-select>
-
-
-          <p class="requiredText" *ngIf="(packing.get('tag').hasError('required') && packing.get('tag').touched)
-        || (packing.get('tag').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-        </div>
-
-        <div class="campo">
-          <p class="descricao">TIPO DA EMBALAGEM</p>
-          <p class="explicacao">Ex. "Rack Metálico"</p>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Digite o tipo de embalagem" aria-describedby="basic-addon2" [(ngModel)]="type"
-              formControlName="type" [ngClass]="{'required': (packing.get('type').hasError('required') && packing.get('type').touched)
-            || (packing.get('type').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(packing.get('type').hasError('required') && packing.get('type').touched)
-          || (packing.get('type').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-        </div>
-
-        <div class="campo">
-          <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
-          <p class="explicacao">Ex. "57 PEÇAS"</p>
-          <div class="placeholder" data-placeholder="PEÇAS">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" [(ngModel)]="capacity" formControlName="capacity"
-              [ngClass]="{'required': (packing.get('capacity').hasError('required') && packing.get('capacity').touched)
-            || (packing.get('capacity').hasError('required') && formDir.submitted)}" />
-          </div>
-          <p class="requiredText" *ngIf="(packing.get('capacity').hasError('required') && packing.get('capacity').touched)
-          || (packing.get('capacity').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-        </div>
-
-        <div class="campo">
-          <p class="descricao">ASSOCIE UM FORNECEDOR</p>
-          <p class="explicacao">Escolha um fornecedor para sua embalagem.</p>
-
-          <ng-select  [ngModel]="supplier" [items]="suppliers" bindLabel="duns" 
-           placeholder="Associe um Fornecedor" formControlName="supplier"
-           [ngClass]="{'required': (packing.get('supplier').hasError('required') && packing.get('supplier').touched) || (packing.get('supplier').hasError('required')
-          && formDir.submitted)}">
-            <ng-template ng-label-tmp let-item="item">
-              {{item.name}}
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item">
-              <div><b>Nome:</b> {{item.name}}
-              </div>
-              <small>
-                <b>DUNS:</b> {{item.duns}}
-              </small>
-          
-            </ng-template>
-          </ng-select>
-
-          <p class="requiredText" *ngIf="(packing.get('supplier').hasError('required') && packing.get('supplier').touched)
-        || (packing.get('supplier').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-
-        </div>
-
+        <p class="requiredText" 
+          *ngIf="(mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
+            || (mPacking.get('tag.code').hasError('required') && formDir.submitted)">
+            Campo Obrigatório</p>
       </div>
 
+
+      <!-- Version -->
+      <div class="col-sm-12 col-md-4" formGroupName="tag">
+        <p class="descricao">VERSÃO</p>
+        <p class="explicacao">Ex. "v1"</p>
+        <div class="input-group">
+          <input type="text" 
+            class="form-control" 
+            placeholder="Versão" 
+            aria-describedby="basic-addon2" 
+            formControlName="version" 
+            [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
+                        || (mPacking.get('tag.version').hasError('required') && formDir.submitted)}">
+        </div>
+        <p class="requiredText" 
+          *ngIf="(mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
+                      || (mPacking.get('tag.version').hasError('required') && formDir.submitted)">
+          Campo Obrigatório</p>
+      </div>
+
+
+      <!-- Serial -->
+      <div class="col-sm-12 col-md-4">
+        <div class="campo">
+          <p class="descricao">SERIAL</p>
+          <p class="explicacao">Ex. "001"</p>
+          <div class="input-group">
+            <input type="text" 
+              class="form-control" 
+              placeholder="Serial" 
+              aria-describedby="basic-addon2"
+              formControlName="serial" 
+              [ngClass]="{'required': (mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
+                || (mPacking.get('serial').hasError('required') && formDir.submitted)}">
+          </div>
+          <p class="requiredText" 
+            *ngIf="(mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
+                      || (mPacking.get('serial').hasError('required') && formDir.submitted)">
+            Campo Obrigatório</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Linha 2 Embalagem -->
+    <div class="row">
+
+      <!-- Coluna 1 -->
+      <div class="col-md-6">
+        <div class="row">
+
+          <!-- Família -->
+          <div class="col-sm-12 campo">
+            <p class="descricao">FAMÍLIA</p>
+            <p class="explicacao">Ex. "AAB-01"</p>
+            <ng-select bindLabel="code" 
+              placeholder="Associe uma família" 
+              [items]="listOfFamilies" 
+              formControlName="family">
+
+              <ng-template ng-option-tmp let-item="item">
+                <div> {{item.code}} </div>
+              </ng-template>
+            </ng-select>
+            <p class="requiredText" 
+              *ngIf="(mPacking.get('family').hasError('required') && mPacking.get('family').touched)
+                || (mPacking.get('family').hasError('required') && formDir.submitted)">
+                Campo Obrigatório</p>
+          </div>
+
+
+          <!-- Fabricante -->
+          <div class="col-sm-12 campo" formGroupName="tag">
+            <p class="descricao">FABRICANTE</p>
+            <p class="explicacao">Ex. "Acme eletrônicos"</p>
+            <div class="input-group">
+              <input type="text" class="form-control" 
+                placeholder="Nome do Fabricante" 
+                aria-describedby="basic-addon2"
+                formControlName="manufactorer" 
+                [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
+                  || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
+                  || (mPacking.get('tag.manufactorer').value.length == 1 && mPacking.get('tag.manufactorer').value == ' ')}">
+            </div>
+            <p class="requiredText" 
+              *ngIf="(mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
+                || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
+                || (mPacking.get('tag.manufactorer').value.length == 1 && mPacking.get('tag.manufactorer').value == ' ')">
+              Campo Obrigatório</p>
+
+            <p class="requiredText" 
+              *ngIf="(mPacking.get('tag.manufactorer').hasError('pattern') && mPacking.get('tag.manufactorer').touched && mPacking.get('tag.manufactorer').value.length > 1) 
+                || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)">
+              Excesso de espaços em branco</p>
+          </div>
+
+
+          <!-- Tipo da embalagem -->
+          <div class="col-sm-12 campo">
+            <p class="descricao">TIPO DA EMBALAGEM</p>
+            <p class="explicacao">Ex. "Rack Metálico"</p>
+            <input type="text" class="form-control" placeholder="Digite o tipo de embalagem" aria-describedby="basic-addon2"
+              formControlName="type" [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
+              || (mPacking.get('type').hasError('required') && formDir.submitted)}">
+            <p class="requiredText" *ngIf="(mPacking.get('type').hasError('required') && mPacking.get('type').touched)
+              || (mPacking.get('type').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
+          </div>
+
+
+          <!-- Capacidade da embalagem -->
+          <div class="col-sm-12 campo">
+            <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
+            <p class="explicacao">Ex. "57 PEÇAS"</p>
+            <div class="placeholder" data-placeholder="PEÇAS">
+              <input type="number" 
+                min="0" 
+                class="form-control form-control-sm scroll-number" 
+                value="0"
+                formControlName="capacity" 
+                [ngClass]="{'required': (mPacking.get('capacity').hasError('required') && mPacking.get('capacity').touched)
+                  || (mPacking.get('capacity').hasError('required') && formDir.submitted)}" />
+            </div>
+            <p class="requiredText" 
+              *ngIf="(mPacking.get('capacity').hasError('required') && mPacking.get('capacity').touched)
+              || (mPacking.get('capacity').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Coluna 2 -->
       <div class="col-md-6">
 
         <div class="campo">
           <p class="descricao">TARA (KG)</p>
           <p class="explicacao">Ex. "86,7 kg"</p>
           <div class="placeholder" data-placeholder="KG">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="0.2" [(ngModel)]="weigth" formControlName="weigth"
-              [ngClass]="{'required': (packing.get('weigth').hasError('required') && packing.get('weigth').touched)
-            || (packing.get('weigth').hasError('required') && formDir.submitted)}" />
+            <input type="number" 
+              min="0" 
+              class="form-control form-control-sm scroll-number" 
+              value="0" 
+              step="0.2"
+              formControlName="weigth" 
+              [ngClass]="{'required': (mPacking.get('weigth').hasError('required') && mPacking.get('weigth').touched)
+              || (mPacking.get('weigth').hasError('required') && formDir.submitted)}" />
           </div>
-          <p class="requiredText" *ngIf="(packing.get('weigth').hasError('required') && packing.get('weigth').touched)
-          || (packing.get('weigth').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          <p class="requiredText" *ngIf="(mPacking.get('weigth').hasError('required') && mPacking.get('weigth').touched)
+          || (mPacking.get('weigth').hasError('required') && formDir.submitted)">Campo
+            Obrigatório</p>
         </div>
 
         <div class="campo">
           <p class="descricao">COMPRIMENTO (M)</p>
           <p class="explicacao">Ex. "7,1 m"</p>
           <div class="placeholder" data-placeholder="METROS">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="0.2" [(ngModel)]="length" formControlName="length"
-              [ngClass]="{'required': (packing.get('length').hasError('required') && packing.get('length').touched)
-            || (packing.get('length').hasError('required') && formDir.submitted)}" />
+            <input type="number" 
+              min="0" 
+              class="form-control form-control-sm scroll-number" 
+              value="0" 
+              step="0.2"
+              formControlName="length" 
+              [ngClass]="{'required': (mPacking.get('length').hasError('required') && mPacking.get('length').touched)
+                || (mPacking.get('length').hasError('required') && formDir.submitted)}" />
           </div>
-          <p class="requiredText" *ngIf="(packing.get('length').hasError('required') && packing.get('length').touched)
-          || (packing.get('length').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          <p class="requiredText" *ngIf="(mPacking.get('length').hasError('required') && mPacking.get('length').touched)
+            || (mPacking.get('length').hasError('required') && formDir.submitted)">
+            Campo Obrigatório</p>
         </div>
 
         <div class="campo">
           <p class="descricao">LARGURA (M)</p>
           <p class="explicacao">Ex. "9,5 m"</p>
           <div class="placeholder" data-placeholder="METROS">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="0.2" [(ngModel)]="width" formControlName="width"
-              [ngClass]="{'required': (packing.get('width').hasError('required') && packing.get('width').touched)
-            || (packing.get('width').hasError('required') && formDir.submitted)}" />
+            <input type="number" 
+              min="0" 
+              class="form-control form-control-sm scroll-number" 
+              value="0" 
+              step="0.2"
+              formControlName="width" [ngClass]="{'required': (mPacking.get('width').hasError('required') && mPacking.get('width').touched)
+                || (mPacking.get('width').hasError('required') && formDir.submitted)}" />
           </div>
-          <p class="requiredText" *ngIf="(packing.get('width').hasError('required') && packing.get('width').touched)
-          || (packing.get('width').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          <p class="requiredText" 
+            *ngIf="(mPacking.get('width').hasError('required') && mPacking.get('width').touched)
+              || (mPacking.get('width').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
         </div>
 
         <div class="campo">
           <p class="descricao">ALTURA (M)</p>
           <p class="explicacao">Ex. "57,2 m"</p>
           <div class="placeholder" min="0" data-placeholder="METROS">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="0.2" [(ngModel)]="heigth" formControlName="heigth"
-              [ngClass]="{'required': (packing.get('heigth').hasError('required') && packing.get('heigth').touched)
-            || (packing.get('heigth').hasError('required') && formDir.submitted)}" />
+            <input type="number" 
+              min="0" 
+              class="form-control form-control-sm scroll-number" 
+              value="0" 
+              step="0.2"
+              formControlName="heigth" 
+              [ngClass]="{'required': (mPacking.get('heigth').hasError('required') && mPacking.get('heigth').touched)
+              || (mPacking.get('heigth').hasError('required') && formDir.submitted)}" />
           </div>
-          <p class="requiredText" *ngIf="(packing.get('heigth').hasError('required') && packing.get('heigth').touched)
-          || (packing.get('heigth').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-        </div>
-
-        <div class="campo">
-          <p class="descricao">ASSOCIE UMA PLATAFORMA/PROJETO</p>
-          <p class="explicacao">Associe uma plataforma a sua embalagem.</p>
-          
-          <ng-select [ngModel]="project" [items]="projects" bindLabel="name" placeholder="Associe um Projeto" formControlName="project" [ngClass]="{'required': (packing.get('project').hasError('required') && packing.get('project').touched) || (packing.get('project').hasError('required')
-          && formDir.submitted)}">
-            <ng-template ng-label-tmp let-item="item">
-              {{item.name}}
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item">
-              <div>
-                 {{item.name}}
-              </div>
-            </ng-template>
-          </ng-select>
-          
-          <p class="requiredText" *ngIf="(packing.get('project').hasError('required') && packing.get('project').touched)
-        || (packing.get('project').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+          <p class="requiredText" 
+            *ngIf="(mPacking.get('heigth').hasError('required') && mPacking.get('heigth').touched)
+              || (mPacking.get('heigth').hasError('required') && formDir.submitted)">
+          Campo Obrigatório</p>
         </div>
       </div>
     </div>
-    
+
+    <!-- Linha 2 Embalagem -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="campo">
+          <p class="descricao">OBSERVAÇÕES (M)</p>
+          <p class="explicacao">Ex. "Embalagem nova"</p>
+          <textarea class="form-control" 
+            id="exampleFormControlTextarea1" 
+            rows="3"
+            formControlName="observations">
+          </textarea>
+
+          <p class="requiredText" 
+          *ngIf="(mPacking.get('observations').hasError('required') && mPacking.get('observations').touched)
+                          || (mPacking.get('observations').hasError('required') && formDir.submitted)">
+            Campo Obrigatório</p>
+        </div>
+      </div>
+    </div>
+
     <br />
 
     <div class="botoes">
       <button routerLink="/rc/cadastros/embalagem" class="botaoVoltar">VOLTAR</button>
       <button type="submit" class="botaoRegistrar">REGISTRAR</button>
     </div>
-    
+
     <br />
 
   </form>

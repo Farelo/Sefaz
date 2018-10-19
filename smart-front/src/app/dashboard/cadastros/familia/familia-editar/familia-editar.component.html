@@ -10,7 +10,11 @@
       <p class="explicacao">Ex: "AAA1"</p>
 
       <div class="input-group">
-        <input type="text" class="form-control required" placeholder="Digite o código" formControlName="code" [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
+        <input type="text" class="form-control required" 
+          placeholder="Digite o código" 
+          formControlName="code" 
+          maxlength="30"
+          [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
           || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)}">
       </div>
 

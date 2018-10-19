@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/fo
 import { CompaniesService } from '../../../../servicos/companies.service';
 import { ToastService } from '../../../../servicos/index.service';
 import { Router } from "@angular/router";
+import { WhiteSpacesValidation } from 'app/shared/validators/whiteSpaceValidator';
 
 @Component({
   selector: 'app-company-cadastrar',
@@ -17,8 +18,9 @@ export class CompanyCadastrarComponent implements OnInit {
   public submitted: boolean = false;
   
   //Mask
-  public maskTel = ['(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
-  public maskCep = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
+  public maskTel  = ['(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
+  public maskCep  = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
+  public maskCNPJ = [/[0-9]/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
   //public maskUF = [/[A-Z]/, /[A-Z]/];
   
   constructor(
@@ -40,14 +42,14 @@ export class CompanyCadastrarComponent implements OnInit {
 
   formProfile() {
     this.newCompany = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
       phone: ['', [Validators.required]],
-      cnpj: ['', [Validators.required]],
+      cnpj: ['', []],
       address: this.fb.group({
-        city: ['', [Validators.required]],
-        street: ['', [Validators.required]],
+        city: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        street: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
         cep: ['', [Validators.required]],
-        uf: ['', [Validators.required]]
+        uf: ['', [Validators.required, Validators.minLength(2)]]
       }),
       type: ['', [Validators.required]]
     });
@@ -67,4 +69,10 @@ export class CompanyCadastrarComponent implements OnInit {
     }
   }
 
+  trim(path){
+    console.log('path:' + path);
+    console.log('aqui:' + this.newCompany.controls[path].value);
+
+    this.newCompany.controls[path].setValue(this.newCompany.get(path).value.replace(/\s+/g, ' ').replace(/^\s+|\s+$/, ''));
+  }
 }

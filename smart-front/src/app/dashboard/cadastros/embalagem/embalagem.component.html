@@ -1,26 +1,18 @@
 <div class="input-group d-flex justify-content-between mb-3 no-gutters">
-  <ng-select [(ngModel)]="generalEquipamentSearch" (change)="equipamentChanged()" bindValue="packing" [items]="packings" bindLabel="packing"
-    placeholder="Buscar" class="mb-0 col-md-6" style="margin-bottom: 10px;">
+  <ng-select 
+    [items]="listOfFamilies" 
+    [(ngModel)]="selectedFamily" 
+    (change)="filterChanged()"  
+    placeholder="Filtrar por família" 
+    class="mb-0 col-md-6" 
+    style="margin-bottom: 10px;">
 
     <ng-template ng-label-tmp let-item="item">
-      {{item.packing}}
+      {{ item.code }}
     </ng-template>
 
     <ng-template ng-option-tmp let-item="item">
-      <div>
-        <b>Embalagem:</b> {{item.packing}}
-      </div>
-
-      <div>
-        <small>
-          <b>Fornecedor:</b> {{item.supplier.name}} </small>
-      </div>
-
-      <div>
-        <small>
-          <b> Projeto:</b> {{item.project.name}} </small>
-      </div>
-
+      <div> Família: {{ item.code }} </div>
     </ng-template>
   </ng-select>
 
@@ -28,30 +20,25 @@
 </div>
 
 <div class="table-responsive">
-  <table class="table" (mouseleave)="hoveredIndex=null">
+  <table class="table">
     <thead>
       <tr class="cabecalho">
-        <th>Código</th>
+        <th>Família</th>
         <th>Serial</th>
-        <th>Fornecedor</th>
-        <th>Projeto</th>
         <th>Tag</th>
         <th class="opcoes"></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let packing of data.data | paginate: {
-                                                      id:'packing',
-                                                      itemsPerPage: data.meta.limit,
-                                                      currentPage: data.meta.page,
-                                                      totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
-        <td>{{packing.code}}</td>
+      <tr *ngFor="let packing of listOfPackings | paginate: {
+                                                    itemsPerPage: 10,
+                                                    currentPage: actualPage,
+                                                    totalItems: listOfPackings.length}">
+        <td>{{packing.family}}</td>
         <td>{{packing.serial}}</td>
-        <td>{{packing.supplier?.name}}</td>
-        <td>{{packing.project?.name}}</td>
-        <td>{{packing.code_tag}}</td>
+        <td>{{packing.tag.code}}</td>
         <td class="teste">
-          <div *ngIf="index==hoveredIndex">
+          <div>
             <button class="editar" [routerLink]="['editar/', packing._id]">
               EDITAR
             </button>
@@ -65,13 +52,13 @@
   </table>
 </div>
 
-<div class="classVazio" *ngIf="data.data?.length < 1">
+<div class="classVazio" *ngIf="listOfPackings.length < 1">
   Ainda não existem embalagens cadastradas.
 </div>
 
 <br />
 
 <div class="has-text-centered">
-  <pagination-controls id='packing' class="my-pagination" (pageChange)="pageChanged($event)" directionLinks="false" autoHide="true">
+  <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
   </pagination-controls>
 </div>
