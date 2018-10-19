@@ -1,25 +1,183 @@
-fs = require('fs')
+// const Promise = require('bluebird')
+// const fs = Promise.promisifyAll(require('fs'))
+const readFilePromise = require('fs-readfile-promise');
 
-fs.readFile('input.txt', 'utf8', function (err, data) {
-    if (err) {
-        return console.log(err);
+//let res
+
+async function loadPackings() {
+    try {
+        let cPackings = [];
+        const filePath = 'src/startup/job/packings.txt'
+
+        const data = await readFilePromise(filePath, 'utf8')
+        // console.log(data)
+
+        const dataArray = data.split("\r\n")
+        // console.log(dataArray[0])
+
+        cPackings = dataArray.map(log => {
+            let attrib = log.split(",");
+            let obj = {}
+
+            obj = {
+                _id: attrib[0],
+                family: {
+                    _id: attrib[1],
+                    code: attrib[2],
+                    company: attrib[3],
+                    control_points: attrib[4].split(";").map(elem => {
+                        return elem;
+                    }),
+                    packings: attrib[5].split(";").map(elem => {
+                        return elem;
+                    }),
+                    routes: attrib[6].split(";").map(elem => {
+                        return elem;
+                    }),
+                },
+                tag: {
+                    code: attrib[7],
+                    version: attrib[8],
+                    manufactorer: attrib[9],
+                },
+                type: attrib[10],
+                weigth: attrib[11],
+                width: attrib[12],
+                length: attrib[13],
+                capacity: attrib[14],
+                serial: attrib[15],
+                gc16: attrib[16],
+                low_battery: attrib[17],
+                absent: attrib[18],
+                current_battery: attrib[19],
+                current_temperature: attrib[20],
+                current_position: attrib[21],
+                current_event: attrib[22],
+                current_state: attrib[23],
+                active: attrib[24],
+                observations: attrib[25]
+            }
+            return obj
+        })
+        return cPackings
+    } catch (error) {
+        console.log(error)
+        return undefined
     }
-    console.log(data.split(";"));
-});
+}
 
-console.log((new Date()).now());
+async function loadDeviceLog() {
+    try {
+        let dLogs = [];
+        const filePath = 'src/startup/job/input.txt'
+
+        const data = await readFilePromise(filePath, 'utf8')
+        // console.log(data)
+        
+        const dataArray = data.split("\r\n")
+        // console.log(dataArray[0])
+
+        dLogs = dataArray.map(log => {
+            let attrib = log.split(",");
+            let obj = {}
+
+            obj = {
+                _id: attrib[0],
+                deviceId: attrib[1],
+                messageDate: attrib[2],
+                lastCommunication: attrib[3],
+                latitude: attrib[4],
+                longitude: attrib[5],
+                accuracy: attrib[6],
+                battery: {
+                    percentage: attrib[7],
+                    voltage: attrib[8]
+                },
+                temperature: attrib[9],
+                seqNumber: attrib[10]
+            }
+            return obj
+        })
+        return dLogs
+    } catch (error) {
+        return undefined
+    }
+}
+
+const userConfig = {
+    defaultAcceptableMinimalAccuracy: 1000,
+    id: 1,
+    batteryThreshold: 20
+}
+
+async function getLastEntry(packing) {
+    const res = await loadDeviceLog()
+    for (i = res.length; i--; i >= 0) {
+        if (packing.tag.code == res[i].deviceId) {
+            return res[i]
+        }
+    }
+    return undefined
+}
+
+async function getLastAccurateEntry(packing) {
+    const res = await loadDeviceLog()
+    for (i = res.length; i--; i >= 0) {
+        if ((packing.tag.code == res[i].deviceId) && (res[i].accuracy <= userConfig.defaultAcceptableMinimalAccuracy)) {
+            return res[i]
+        }
+    }
+    return undefined
+}
+
+async function main() {
+    //const res = await loadDeviceLog()
+    const pack = await loadPackings()
+    pack.forEach(element => {
+        console.log(element)
+        runSM(userConfig, element)
+        console.log(element)
+    });
+}
+
+main()
 
 const DAY1 = 1000 * 60 * 60 * 24;
 const DAY2 = DAY1 * 2;
 
-let entry = {
-    id: "1",
-    tag: "5689548",
-    lat: "41.02",
-    long: "62.54",
-    accurancy: "32000",
-    battery: "85",
-    time: "1539004221"
+routes1 = [{
+    _id: "1",
+    first_point: "1",
+    first_point: "2",
+    packing_family: "LD",
+    travaling_time: {
+        max: "10",
+        min: "20"
+    }
+}, {
+    _id: "2",
+    first_point: "1",
+    first_point: "3",
+    packing_family: "LR",
+    travaling_time: {
+        max: "10",
+        min: "20"
+    }
+}, {
+    _id: "3",
+    first_point: "3",
+    first_point: "4",
+    packing_family: "LD",
+    travaling_time: {
+        max: "10",
+        min: "20"
+    }
+}]
+
+let currentfamily = {
+    code: "LD",
+    company: "3",
+    routes: routes1
 }
 
 let packing = {
@@ -27,18 +185,6 @@ let packing = {
     currentState: "analise",
     family: currentfamily,
     active: true
-}
-
-let currentfamily = {
-    code: "LD",
-    company: "3",
-    routes: undefined
-}
-
-let userConfig = {
-    defaultAcceptableMinimalAccuracy: "1000",
-    id: "1",
-    batteryThreshold: "20" 
 }
 
 const events = {
@@ -62,12 +208,12 @@ const alerts = {
 
 const states = {
     DESABILITADA_COM_SINAL: {
-        id: "desabilitadaComSinal", 
+        id: "desabilitadaComSinal",
         alert: undefined
     },
     DESABILITADA_SEM_SINAL: {
         id: "desabilitadaSemSinal",
-        alert: SEM_SINAL
+        alert: alerts.SEM_SINAL
     },
     ANALISE: {
         id: "analise",
@@ -104,39 +250,22 @@ const states = {
 }
 
 let currentState;
+
 function matchControlPoint(lat, long) {
-    return { _id: 1123 }
+    return {
+        _id: 1123
+    }
     console.log("IMPLEMENTAR matchControlPoint")
 } //DAVID
 
 function controlPointOwner(id) {
-    return {_id: 12}
+    return {
+        _id: 12
+    }
     console.log("IMPLEMENTAR controlPointOwner")
 } //DAVID
 
-function getLastAccurateEntry(packingID) {
-    return {
-        _id: "5689543",
-        lat: "32.2", 
-        long: "32.89", 
-        accurancy: "13",
-        battery: "69",
-        timestamp: "1539092642"
-    }
-}
-
-function getLastEntry(packingID) {
-    return {
-        _id: "5689541",
-        lat: "54.2",
-        long: "27.05",
-        accurancy: "32000",
-        battery: "84",
-        timestamp: "1539092720"
-    }
-}
-
-function getLastEventFromOwner(packing,eventType){
+function getLastEventFromOwner(packing, eventType) {
     //se eventType for undefined, o tipo é indiferente
     return {
         _id: 12,
@@ -146,7 +275,7 @@ function getLastEventFromOwner(packing,eventType){
     }
 }
 
-function getLastOutDisablingEventFromOwner(packing) {
+function getLastOutDisablingEventFromOwner(packingID) {
     return {
         _id: 12,
         packing: "5689541",
@@ -155,16 +284,23 @@ function getLastOutDisablingEventFromOwner(packing) {
     }
 }
 
-function getAllowedControlPoints(packing){
-    return {controlPoints: [1,2,5,7,8,9,12,14,43,65,23,54]}
+function getAllowedControlPoints(packingID) {
+    return {
+        controlPoints: [1, 2, 5, 7, 8, 9, 12, 14, 43, 65, 23, 54]
+    }
 }
 
-function hasRoute(){}
-function hasGC16(){}
+function getRoutes(packingID) {
+    //getPacking.
+    return packing.family.routes;
+}
+
+function hasGC16(packing) {}
 
 function checkAbsence(packing) {
     let lastEvent = getLastEventFromOwner(packing, undefined);
-    if ((lastEvent == event.DISABLING || lastEvent == events.OUTBOUND) && ((new Date().getTime() - lastEvent.timestamp) > userConfig.absentTime)) {
+    if ((lastEvent == events.DISABLING || lastEvent == events.OUTBOUND) &&
+        ((new Date().getTime() - lastEvent.timestamp) > userConfig.absentTime)) {
         return true;
     } else {
         return false;
@@ -175,17 +311,44 @@ function checkBattery(packing) {
     return (packing.battery < userConfig.batteryThreshold) ? true : false;
 }
 
-function setStateAlert(packing, alert) {}
-function setAttributeAlert(packing, alert) { }
+function setStateAlert(packing, alert) {
+    console.log("Add Alert" + alert + " to " + packing.tag.code)
+}
+
+function setState(packing, state) {
+    packing.current_state = state.id
+    if (state.alert != undefined){
+        insertAlert(packing,state.alert)
+    }
+}
+
+function setAttributeAlert(packing, alert) {
+    switch (alert){
+        case alerts.BATERIA:
+            packing.low_battery = true;
+        break;
+        case alerts.NBATERIA:
+            packing.low_battery = false;
+        break;
+        case alerts.AUSENTE:
+            packing.absent = true;
+        break;
+        case alerts.NAUSENTE:
+            packing.absent = false;
+        break;
+
+    }
+
+}
 
 function runSM(user, packing) {
     let nextState;
-    let lastEntry = getLastEntry(packing.id);
-    let lastAccurateEntry = getLastAccurateEntry(packing.id);
+    let lastEntry = getLastEntry(packing);
+    let lastAccurateEntry = getLastAccurateEntry(packing);
     let lastSignalDelay = (new Date().getTime() - lastEntry.timestamp);
     switch (currentState) {
         // ******************************ANALISE*******************************
-        case states.ANALISE: 
+        case states.ANALISE:
             if (lastSignalDelay < DAY1) {
                 let localId = matchControlPoint(lastAccurateEntry.lat, lastAccurateEntry.long); //ATUALIZAR
                 if (localId != undefined) {
@@ -207,8 +370,8 @@ function runSM(user, packing) {
                 nextState = states.SEM_SINAL; //NEXT STATE
             }
             break;
-        // ********************DESABILITADA_COM_SINAL*********************
-        case states.DESABILITADA_COM_SINAL: 
+            // ********************DESABILITADA_COM_SINAL*********************
+        case states.DESABILITADA_COM_SINAL:
             if (packing.active) {
                 nextState = states.ANALISE; //NEXT STATE
             } else {
@@ -220,8 +383,8 @@ function runSM(user, packing) {
                 }
             }
             break;
-        // ***********************DESABILITADA_SEM_SINA***************************
-        case states.DESABILITADA_SEM_SINAL: 
+            // ***********************DESABILITADA_SEM_SINA***************************
+        case states.DESABILITADA_SEM_SINAL:
             if (packing.active) {
                 nextState = states.SEM_SINAL; //NEXT STATE
             } else {
@@ -236,23 +399,22 @@ function runSM(user, packing) {
                 }
             }
             break;
-        // ****************************VIAGEM_PRAZO*******************************
-        case states.VIAGEM_PRAZO: 
+            // ****************************VIAGEM_PRAZO*******************************
+        case states.VIAGEM_PRAZO:
             if (packing.active) {
-
                 nextState = states.SEM_SINAL; //NEXT STATE
             } else {
                 nextState = states.DESABILITADA_COM_SINAL; //NEXT STATE
             }
             break;
-        // ************************VIAGEM_ATRASADA******************************
-        case states.VIAGEM_ATRASADA: 
+            // ************************VIAGEM_ATRASADA******************************
+        case states.VIAGEM_ATRASADA:
             break;
-        // **************************VIAGEM_AUSENTE******************************
-        case states.VIAGEM_AUSENTE: 
+            // **************************VIAGEM_AUSENTE******************************
+        case states.VIAGEM_AUSENTE:
             break;
-        // ******************************SEM_SINAL**********************************
-        case states.SEM_SINAL: 
+            // ******************************SEM_SINAL**********************************
+        case states.SEM_SINAL:
             if (packing.active) {
                 if (lastSignalDelay < DAY1) {
                     nextState = states.ANALISE;
@@ -263,12 +425,12 @@ function runSM(user, packing) {
                     //COMPLEMENTAR
                     nextState = states.PERDIDA; //NEXT STATE
                 }
-            } else {    
+            } else {
                 nextState = states.DESABILITADA_SEM_SINAL; //NEXT STATE
             }
             break;
-        // ******************************PERDIDA**********************************
-        case states.PERDIDA: 
+            // ******************************PERDIDA**********************************
+        case states.PERDIDA:
             if (lastSignalDelay < DAY2) {
                 if (packing.active) {
                     //COMPLEMENTAR
@@ -281,8 +443,8 @@ function runSM(user, packing) {
                 nextState = states.PERDIDA; //NEXT STATE
             }
             break;
-        // ***************************LOCAL_CORRETO******************************
-        case states.LOCAL_CORRETO: 
+            // ***************************LOCAL_CORRETO******************************
+        case states.LOCAL_CORRETO:
             if (packing.active) {
                 if (lastSignalDelay < DAY1) {
                     let localId = matchControlPoint(lastAccurateEntry.lat, lastAccurateEntry.long); //ATUALIZAR
@@ -296,18 +458,18 @@ function runSM(user, packing) {
                             //COMPLEMENTAR
                             nextState = states.LOCAL_INCORRETO; //NEXT STATE
                         }
-                    }else{
+                    } else {
                         nextState = states.VIAGEM_PRAZO;
                     }
-                }else{
+                } else {
                     nextState = states.SEM_SINAL; //NEXT STATE
                 }
             } else {
                 nextState = states.DESABILITADA_COM_SINAL; //NEXT STATE
             }
             break;
-        // ***************************LOCAL_INCORRETO******************************
-        case states.LOCAL_INCORRETO: 
+            // ***************************LOCAL_INCORRETO******************************
+        case states.LOCAL_INCORRETO:
             if (packing.active) {
                 if (lastSignalDelay < DAY1) {
                     let localId = matchControlPoint(lastAccurateEntry.lat, lastAccurateEntry.long); //ATUALIZAR
@@ -323,25 +485,26 @@ function runSM(user, packing) {
                     } else {
                         nextState = states.VIAGEM_PRAZO;
                     }
-                }else{
+                } else {
                     nextState = states.SEM_SINAL; //NEXT STATE
                 }
             } else {
                 nextState = states.DESABILITADA_COM_SINAL; //NEXT STATE
             }
             break;
-        // ******************************DEFAULT**********************************
-        default: 
+            // ******************************DEFAULT**********************************
+        default:
             if (packing.active) {
                 //COMPLEMENTAR
                 nextState = states.ANALISE; //NEXT STATE
+                console.log("AQUI!!!")
             } else {
                 //COMPLEMENTAR
                 nextState = states.DESABILITADA_COM_SINAL; //NEXT STATE
             }
             break;
     }
-    checkAbsence(packing) ? setAttributeAlert(alerts.AUSENTE) : setAttributeAlert(alerts.NAUSENTE);
-    checkBattery(packing) ? setAttributeAlert(alerts.BATERIA) : setAttributeAlert(alerts.NBATERIA);
-    setStateAlert(nextState.alert);
-} 
+    checkAbsence(packing) ? setAttributeAlert(packing, alerts.AUSENTE) : setAttributeAlert(packing,alerts.NAUSENTE);
+    checkBattery(packing) ? setAttributeAlert(packing, alerts.BATERIA) : setAttributeAlert(packing,alerts.NBATERIA);
+    setState(packing,nextState);
+}

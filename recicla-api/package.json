@@ -13,6 +13,7 @@
   "dependencies": {
     "app-root-path": "^2.1.0",
     "bcrypt": "3.0.0",
+    "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "config": "^2.0.0",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "debug": "^3.1.0",
+    "fs-readfile-promise": "^3.0.1",
     "jest": "^23.4.1",
     "supertest": "^3.1.0"
   },
