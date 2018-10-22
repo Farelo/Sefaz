@@ -26,7 +26,7 @@ exports.create = async (req, res) => {
     packing = new Packing(req.body)
     await packing.save()
 
-    res.send(packing)
+    res.status(HttpStatus.CREATED).send(packing)
 }
 
 exports.update = async (req, res) => {

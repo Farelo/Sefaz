@@ -27,7 +27,7 @@ exports.create = async (req, res) => {
     family = new Family(req.body)
     await family.save()
 
-    res.send(family)
+    res.status(HttpStatus.CREATED).send(family)
 }
 
 exports.update = async (req, res) => {

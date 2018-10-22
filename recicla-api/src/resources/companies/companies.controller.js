@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
     const company = new Company((req.body))
     await company.save()
 
-    res.send(company)
+    res.status(HttpStatus.CREATED).send(company)
 }
 
 exports.update = async(req, res) => {

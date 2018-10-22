@@ -54,9 +54,9 @@ describe('api/users', () => {
             expect(res.status).toBe(400)
         })
 
-        it('should return 200 if token is valid', async () => {
+        it('should return 201 if token is valid', async () => {
             const res = await exec()
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(201)
         })
     })
 
@@ -86,9 +86,9 @@ describe('api/users', () => {
             expect(res.status).toBe(403)
         })
 
-        it('should return 200 if user is admin', async () => {
+        it('should return 201 if user is admin', async () => {
             const res = await exec()
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(201)
         })
     })
 
@@ -229,16 +229,16 @@ describe('api/users', () => {
             expect(res.status).toBe(400)
         })
 
-        it('should return 200 if user is valid request', async () => {
+        it('should return 201 if user is valid request', async () => {
             const res = await exec()
 
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(201)
         })
 
         it('should return user if is valid request', async () => {
             const res = await exec()
 
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(201)
             expect(Object.keys(res.body)).toEqual(
                 expect.arrayContaining(['_id', 'email'])
             )
