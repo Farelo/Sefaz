@@ -15,7 +15,6 @@ router.delete('/:id', [auth, authz, validate_object_id], packings_controller.del
 
 module.exports = router
 
-
 // GET '/'
 /**
  * @swagger
@@ -27,6 +26,12 @@ module.exports = router
  *       - Bearer: []
  *     tags:
  *       - Packing
+ *     parameters:
+ *       - name: tag_code
+ *         description: Return packing filtered by tag code
+ *         in: query
+ *         required: false
+ *         type: string
  *     responses:
  *       200:
  *         description: list of all packings

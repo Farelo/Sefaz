@@ -4,7 +4,13 @@ const HttpStatus = require('http-status-codes')
 const { Packing } = require('./packings.model')
 
 exports.all = async (req, res) => {
-    const packings = await Packing.find().populate('packing', ['_id', 'code'])
+    let packings
+    const tag = req.query.tag_code ? { code: req.query.tag_code } : null
+    if (tag) {
+        packings = await Packing.findByTag(tag)
+    } else {
+        packings = await Packing.find().populate('packing', ['_id', 'code'])
+    }
 
     res.json(packings)
 }
