@@ -14,12 +14,18 @@
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Código da tag" aria-describedby="basic-addon2"
             formControlName="code" [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
-              || (mPacking.get('tag.code').hasError('required') && formDir.submitted)}">
+              || (mPacking.get('tag.code').hasError('required') && formDir.submitted)
+              || (mPacking.get('tag.code').hasError('pattern'))
+              || (mPacking.get('tag.code').hasError('pattern') && submitted)}">
         </div>
 
         <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
             || (mPacking.get('tag.code').hasError('required') && formDir.submitted)">
           Campo Obrigatório</p>
+
+        <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('pattern')) 
+                                || (mPacking.get('tag.code').hasError('pattern') && submitted)">
+          Excesso de espaços em branco</p>
       </div>
 
 
@@ -30,11 +36,18 @@
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Versão" aria-describedby="basic-addon2" formControlName="version"
             [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
-                        || (mPacking.get('tag.version').hasError('required') && formDir.submitted)}">
+              || (mPacking.get('tag.version').hasError('required') && formDir.submitted)
+              || (mPacking.get('tag.version').hasError('pattern'))
+              || (mPacking.get('tag.version').hasError('pattern') && submitted)}">
         </div>
+        
         <p class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
                       || (mPacking.get('tag.version').hasError('required') && formDir.submitted)">
           Campo Obrigatório</p>
+
+        <p class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('pattern')) 
+                  || (mPacking.get('tag.version').hasError('pattern') && submitted)">
+          Excesso de espaços em branco</p>
       </div>
 
 
@@ -45,12 +58,20 @@
           <p class="explicacao">Ex. "001"</p>
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Serial" aria-describedby="basic-addon2"
-              formControlName="serial" [ngClass]="{'required': (mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
-                || (mPacking.get('serial').hasError('required') && formDir.submitted)}">
+              formControlName="serial" 
+              [ngClass]="{'required': (mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
+                || (mPacking.get('serial').hasError('required') && formDir.submitted)
+                || (mPacking.get('serial').hasError('pattern'))
+                || (mPacking.get('serial').hasError('pattern') && submitted)}">
           </div>
+          
           <p class="requiredText" *ngIf="(mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
                       || (mPacking.get('serial').hasError('required') && formDir.submitted)">
             Campo Obrigatório</p>
+          
+          <p class="requiredText" *ngIf="(mPacking.get('serial').hasError('pattern')) 
+                        || (mPacking.get('serial').hasError('pattern') && submitted)">
+            Excesso de espaços em branco</p>
         </div>
       </div>
     </div>
@@ -85,12 +106,20 @@
             <p class="explicacao">Ex. "Acme eletrônicos"</p>
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Nome do Fabricante" aria-describedby="basic-addon2"
-                formControlName="manufactorer" [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
-                      || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)}">
+                formControlName="manufactorer" 
+                [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
+                  || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
+                  || (mPacking.get('tag.manufactorer').hasError('pattern'))
+                  || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)}">
             </div>
+
             <p class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                 || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
+
+            <p class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('pattern')) 
+                            || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)">
+              Excesso de espaços em branco</p>
           </div>
 
 
@@ -99,11 +128,19 @@
             <p class="descricao">TIPO DA EMBALAGEM</p>
             <p class="explicacao">Ex. "Rack Metálico"</p>
             <input type="text" class="form-control" placeholder="Digite o tipo de embalagem" aria-describedby="basic-addon2"
-              formControlName="type" [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
-              || (mPacking.get('type').hasError('required') && formDir.submitted)}">
+              formControlName="type" 
+              [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
+              || (mPacking.get('type').hasError('required') && formDir.submitted)
+              || (mPacking.get('type').hasError('pattern'))
+              || (mPacking.get('type').hasError('pattern') && submitted)}">
+              
             <p class="requiredText" *ngIf="(mPacking.get('type').hasError('required') && mPacking.get('type').touched)
               || (mPacking.get('type').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
+
+            <p class="requiredText" *ngIf="(mPacking.get('type').hasError('pattern')) 
+                                        || (mPacking.get('type').hasError('pattern') && submitted)">
+              Excesso de espaços em branco</p>
           </div>
 
 

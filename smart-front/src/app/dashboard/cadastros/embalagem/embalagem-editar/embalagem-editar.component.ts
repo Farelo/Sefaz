@@ -76,18 +76,18 @@ export class EmbalagemEditarComponent implements OnInit {
   configureForm() {
     this.mPacking = this.fb.group({
       tag: this.fb.group({
-        code: ['', [Validators.required]],
-        version: ['', [Validators.required]],
-        manufactorer: ['', [Validators.required]]
+        code: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        version: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        manufactorer: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]]
       }),
-      serial: ['', [Validators.required]],
-      type: ['', [Validators.required]],
+      serial: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      type: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
       weigth: ['', [Validators.required]],
       width: ['', [Validators.required]],
       heigth: ['', [Validators.required]],
       length: ['', [Validators.required]],
       capacity: ['', [Validators.required]],
-      family: ['', [Validators.required]],
+      family: [null, [Validators.required]],
       observations: ['', [Validators.maxLength(140)]],
       active: false
     });
