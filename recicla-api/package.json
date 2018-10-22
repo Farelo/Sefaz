@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "app-root-path": "^2.1.0",
-    "bcrypt": "3.0.0",
+    "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "config": "^2.0.0",
@@ -30,6 +30,7 @@
     "mongodb": "^3.1.8",
     "mongoose": "^5.3.4",
     "morgan": "^1.9.0",
+    "nodemon": "^1.18.4",
     "swagger-jsdoc": "^3.0.3",
     "swagger-stats": "^0.95.6",
     "swagger-ui-express": "^4.0.1",
@@ -41,7 +42,7 @@
     "supertest": "^3.1.0"
   },
   "engines": {
-    "node": ">= 9.11.2",
-    "npm": ">= 5.6.0"
+    "node": ">= 10.12.0",
+    "npm": ">= 6.4.1"
   }
 }

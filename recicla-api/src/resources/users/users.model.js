@@ -39,7 +39,8 @@ const userSchema = new mongoose.Schema({
     },
     company: { 
         type: mongoose.Schema.ObjectId, 
-        ref: 'Company'
+        ref: 'Company',
+        required: true
     },
     created_at: {
         type: Date,
@@ -75,17 +76,61 @@ const password_encrypt = async (obj, next) => {
     }
 }
 
-const addUserToCompany = async (user, next) => {
-    try {
-        const company = await Company.findById(user.company)
-        company.users.push(user._id)
-        
-        await company.save()
+
+
+// MIDDLEWARES
+const encrypt_password_middleware = function (next) {
+    const user = this
+    if (!user.isModified('password')) {
         next()
-    } catch (error) {
-        next()
+    } else {
+        password_encrypt(user, next)
     }
 }
+
+const update_encrypt_password_middleware = function (next) {
+    const user = this
+    if (!user.getUpdate().password) {
+        next()
+    } else {
+        password_encrypt(user.getUpdate(), next)
+    }
+}
+
+const update_updated_at_middleware = function (next) {
+    this.update_at = Date.now
+    next()
+}
+
+// const test = async (user, next) => {
+//     try {
+//         const company = await Company.find({ users: user._id })
+//         if (company) console.log(user)
+//         // const u = company.users.filter(u => {
+//         //     return u !== user._id
+//         // })
+
+//         console.log(company)
+//         next()
+//     } catch (error) {
+//         console.log(error)
+//         next(error)
+//     }
+// }
+
+
+// const update_remove_company_middleware = function (next) {
+// }
+
+// const remove_company_middleware = function (next) {
+//     const user = this
+//     user.model('Company').update(
+//         { users: user._id },
+//         { $pull: { users: user._id } },
+//         { multi: true },
+//         next()
+//     )
+// }
 
 userSchema.statics.findByEmail = function (email, projection = '') {
     return this.findOne({ email }, projection)
@@ -100,44 +145,20 @@ userSchema.methods.passwordMatches = function (password) {
     return bcrypt.compare(password, this.password)
 }
 
-const saveMiddleware = function (next) {
-    const user = this
-    if (!user.isModified('password')) {
-        next()
-    } else {
-        password_encrypt(user, next)
-    }
-}
+userSchema.pre('save', encrypt_password_middleware)
+// userSchema.pre('save', add_user_to_company_middleware)
 
-const postSaveMiddleware = function (doc, next) {
-    addUserToCompany(doc, next)
-}
+userSchema.pre('update', update_encrypt_password_middleware)
+// userSchema.pre('update', remove_company_middleware)
+userSchema.pre('update', update_updated_at_middleware)
+// userSchema.post('update', update_user_to_company_middleware)
 
-const updateMiddleware = function (next) {
-    if (!this.getUpdate().password) {
-        next()
-    } else {
-        password_encrypt(this.getUpdate(), next)
-    }
-}
+userSchema.pre('findOneAndUpdate', update_encrypt_password_middleware)
+// userSchema.pre('findOneAndUpdate', remove_company_middleware)
+userSchema.pre('findOneAndUpdate', update_updated_at_middleware)
+// userSchema.post('findOneAndUpdate', update_user_to_company_middleware)
 
-const removeMiddleware = function (next) {
-    const user = this;
-    user.model('Company').update(
-        { users: user._id },
-        { $pull: { users: user._id } },
-        { multi: true },
-        next()
-    )
-}
-
-userSchema.pre('save', saveMiddleware)
-userSchema.post('save', postSaveMiddleware)
-userSchema.pre('update', updateMiddleware)
-userSchema.post('update', postSaveMiddleware)
-userSchema.pre('findOneAndUpdate', updateMiddleware)
-userSchema.post('findOneAndUpdate', postSaveMiddleware)
-userSchema.pre('remove', removeMiddleware)
+// userSchema.pre('remove', remove_company_middleware)
 
 const User = mongoose.model('User', userSchema)
 

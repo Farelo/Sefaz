@@ -4,7 +4,13 @@ const HttpStatus = require('http-status-codes')
 const { Family } = require('./families.model')
 
 exports.all = async (req, res) => {
-    const families = await Family.find().populate('company', ['_id', 'name', 'type'])
+    let families
+    const code = req.query.code ? req.query.code : null
+    if (code) {
+        families = await Family.findByCode(code)
+    } else {
+        families = await Family.find().populate('company', ['_id', 'name', 'type'])
+    }
 
     res.json(families)
 }
@@ -27,7 +33,7 @@ exports.create = async (req, res) => {
     family = new Family(req.body)
     await family.save()
 
-    res.send(family)
+    res.status(HttpStatus.CREATED).send(family)
 }
 
 exports.update = async (req, res) => {

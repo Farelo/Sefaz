@@ -51,7 +51,7 @@ exports.create = async (req, res) => {
     // await company.save()
 
     // const token = user.generateUserToken()
-    res.json(_.pick(user, ['_id', 'full_name', 'email', 'role', 'company']))
+    res.status(HttpStatus.CREATED).json(_.pick(user, ['_id', 'full_name', 'email', 'role', 'company']))
 }
 
 exports.update = async (req, res) => {

@@ -27,14 +27,6 @@ const companySchema = new mongoose.Schema({
         default: 'client',
         trim: true
     },
-    users: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
-    }],
-    control_points: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'ControlPoint'
-    }],
     created_at: {
         type: Date,
         default: Date.now
@@ -77,8 +69,8 @@ const validate_companies = (company) => {
 //     )
 // }
 
-const removeMiddleware = function (next) {
-    const company = this
+const removeMiddleware = function (doc, next) {
+    const company = doc
     company.model('User').update(
         { company: company._id },
         { $unset: { company: 1 } },
@@ -87,7 +79,7 @@ const removeMiddleware = function (next) {
     )
 }
 
-companySchema.pre('remove', removeMiddleware)
+companySchema.post('remove', removeMiddleware)
 // companySchema.post('remove', postRemoveMiddleware)
 
 const Company = mongoose.model('Company', companySchema)

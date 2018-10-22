@@ -54,9 +54,9 @@ describe('api/users', () => {
             expect(res.status).toBe(400)
         })
 
-        it('should return 200 if token is valid', async () => {
+        it('should return 201 if token is valid', async () => {
             const res = await exec()
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(201)
         })
     })
 
@@ -65,7 +65,7 @@ describe('api/users', () => {
             return request(server)
                 .post('/api/users')
                 .set('Authorization', token)
-                .send({ full_name: 'Teste Man', email: "giorgiosaints@gmail.com", password: "12345678", role: 'user', company: company_id })
+                .send({ full_name: 'Teste Man', email: "giorgiosaints@gmail.com", password: "12345678", role: 'user', company: newCompany._id })
         }
         it('should return 403 if user is not admin', async () => {
             user = {
@@ -86,9 +86,9 @@ describe('api/users', () => {
             expect(res.status).toBe(403)
         })
 
-        it('should return 200 if user is admin', async () => {
+        it('should return 201 if user is admin', async () => {
             const res = await exec()
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(201)
         })
     })
 
@@ -97,10 +97,10 @@ describe('api/users', () => {
         const exec = () => {
             return request(server)
                 .post('/api/users/sign_in')
-                .send({ full_name: 'Teste Man', email: user.email, password: user.password })
+                .send({ full_name: 'Teste Man', email: user.email, password: user.password, company: newCompany._id })
         }
         beforeEach(async () => {
-            user = { full_name: 'Teste Man', email: 'serginho@gmail.com', password: 'qwerty123' }
+            user = { full_name: 'Teste Man', email: 'serginho@gmail.com', password: 'qwerty123', company: newCompany._id }
             const newUser = new User(user)
 
             await newUser.save()
@@ -148,9 +148,9 @@ describe('api/users', () => {
     describe('GET api/users', () => {
         it('should return all users', async () => {
             await User.collection.insertMany([
-                { full_name: 'Teste Man', email: "email1@gmail.com", password: '12345678'},
-                { full_name: 'Teste Man', email: "email2@gmail.com", password: '12345678'},
-                { full_name: 'Teste Man', email: "email3@gmail.com", password: '12345678'}
+                { full_name: 'Teste Man', email: "email1@gmail.com", password: '12345678', company: company_id},
+                { full_name: 'Teste Man', email: "email2@gmail.com", password: '12345678', company: company_id},
+                { full_name: 'Teste Man', email: "email3@gmail.com", password: '12345678', company: company_id}
             ])
 
             const res = await request(server).get('/api/users').set('Authorization', token)
@@ -165,7 +165,7 @@ describe('api/users', () => {
 
     describe('GET: api/users/:id', () => {
         it('should return a user if valid id is passed', async () => {
-            const newUser = new User({ full_name: 'Teste Man', email: 'serginho@gmail.com', password: 'qwerty123' })
+            const newUser = new User({ full_name: 'Teste Man', email: 'serginho@gmail.com', password: 'qwerty123', company: company_id })
             await newUser.save()
 
             const res = await request(server)
@@ -229,16 +229,16 @@ describe('api/users', () => {
             expect(res.status).toBe(400)
         })
 
-        it('should return 200 if user is valid request', async () => {
+        it('should return 201 if user is valid request', async () => {
             const res = await exec()
 
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(201)
         })
 
         it('should return user if is valid request', async () => {
             const res = await exec()
 
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(201)
             expect(Object.keys(res.body)).toEqual(
                 expect.arrayContaining(['_id', 'email'])
             )
@@ -262,7 +262,7 @@ describe('api/users', () => {
             const res = await request(server)
                 .patch(`/api/users/${user.body._id}`)
                 .set('Authorization', token)
-                .send({ full_name: 'Teste Edited', email: 'emailedited@email.com', password: '12345678' })
+                .send({ full_name: 'Teste Edited', email: 'emailedited@email.com', password: '12345678', company: newCompany._id })
 
             expect(res.status).toBe(200)
             expect(res.body).toHaveProperty('full_name', 'Teste Edited')
@@ -279,7 +279,7 @@ describe('api/users', () => {
         })
         
         it('should delete when given a valid _id', async () => {
-            const newUser = new User({ full_name: 'Teste Man', email: 'emailedited@email.com', password: '12345678' })
+            const newUser = new User({ full_name: 'Teste Man', email: 'emailedited@email.com', password: '12345678', company: newCompany._id })
             await newUser.save()
 
             const res = await request(server)
