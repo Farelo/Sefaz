@@ -1,3 +1,5 @@
+@import '~font-awesome/css/font-awesome.css';
+
 .cadastroMenu {
   width: 100%;
   margin-bottom: 5px;
@@ -501,4 +503,51 @@ tbody > tr:nth-child(even) {
 
 .default-order {
   color: rgba(255, 255, 255, 0.5);
+}
+
+/*--------*/
+/*Checkboxes*/
+.checkbox {
+  margin: 6px 0px 0px 6px;
+}
+
+.checkbox label:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.checkbox .cr {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #a9a9a9;
+  border-radius: .25em;
+  width: 1.3em;
+  height: 1.3em;
+  float: left;
+  margin-right: .5em;
+}
+
+.checkbox .cr .cr-icon {
+  position: absolute;
+  font-size: .8em;
+  line-height: 0;
+  top: 50%;
+  left: 15%;
+}
+
+.checkbox label input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox label input[type="checkbox"]+.cr>.cr-icon {
+  opacity: 0;
+}
+
+.checkbox label input[type="checkbox"]:checked+.cr>.cr-icon {
+  opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled+.cr {
+  opacity: .5;
 }

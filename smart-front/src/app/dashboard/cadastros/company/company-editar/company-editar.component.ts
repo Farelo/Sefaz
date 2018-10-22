@@ -25,6 +25,7 @@ export class CompanyEditarComponent implements OnInit {
     type: '' });
   public typesOnSelect: any;
   public companyType: any;
+  public activePacking: boolean = false;
 
   //form
   public mId: string;

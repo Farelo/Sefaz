@@ -20,8 +20,11 @@
 
       <p class="requiredText" *ngIf="(mFamily.get('code').hasError('required') && mFamily.get('code').touched)
         || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)">
-        Campo Obrigatório
-      </p>
+        Campo Obrigatório</p>
+
+      <p class="requiredText" *ngIf="(mFamily.get('code').hasError('pattern')) 
+                || (mFamily.get('code').hasError('pattern') && submitted)">
+        Excesso de espaços em branco</p>
     </div>
 
 

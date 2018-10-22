@@ -15,6 +15,7 @@ export class EmbalagemEditarComponent implements OnInit {
   public listOfFamilies: any[] = [];
   public inscricao: Subscription;
   public mId: string;
+  public activePacking: boolean = false;
   
   constructor(
     private familyService: FamiliesService,

@@ -12,6 +12,7 @@ export class EmbalagemCadastroComponent implements OnInit {
 
   public mPacking : FormGroup;
   public listOfFamilies: any[] = []; 
+  public activePacking: boolean = false;
 
   constructor(
     private familyService: FamiliesService,
