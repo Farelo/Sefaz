@@ -7,10 +7,6 @@ const familySchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    packings: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'Packing'
-    }],
     routes: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Route'
