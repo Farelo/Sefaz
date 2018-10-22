@@ -12,8 +12,12 @@
         <p class="descricao">TAG</p>
         <p class="explicacao">Ex. "994475545"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Código da tag" aria-describedby="basic-addon2"
-            formControlName="code" [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
+          <input type="text" class="form-control" 
+            placeholder="Código da tag" 
+            aria-describedby="basic-addon2"
+            formControlName="code" 
+            maxlength="40"
+            [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
               || (mPacking.get('tag.code').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.code').hasError('pattern'))
               || (mPacking.get('tag.code').hasError('pattern') && submitted)}">
@@ -34,7 +38,11 @@
         <p class="descricao">VERSÃO</p>
         <p class="explicacao">Ex. "v1"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Versão" aria-describedby="basic-addon2" formControlName="version"
+          <input type="text" class="form-control" 
+            placeholder="Versão" 
+            aria-describedby="basic-addon2" 
+            formControlName="version"
+            maxlength="40"
             [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
               || (mPacking.get('tag.version').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.version').hasError('pattern'))
@@ -57,8 +65,11 @@
           <p class="descricao">SERIAL</p>
           <p class="explicacao">Ex. "001"</p>
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Serial" aria-describedby="basic-addon2"
+            <input type="text" class="form-control" 
+              placeholder="Serial" 
+              aria-describedby="basic-addon2"
               formControlName="serial" 
+              maxlength="40"
               [ngClass]="{'required': (mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
                 || (mPacking.get('serial').hasError('required') && formDir.submitted)
                 || (mPacking.get('serial').hasError('pattern'))
@@ -105,8 +116,11 @@
             <p class="descricao">FABRICANTE</p>
             <p class="explicacao">Ex. "Acme eletrônicos"</p>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Nome do Fabricante" aria-describedby="basic-addon2"
+              <input type="text" class="form-control" 
+                placeholder="Nome do Fabricante" 
+                aria-describedby="basic-addon2"
                 formControlName="manufactorer" 
+                maxlength="60"
                 [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                   || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
                   || (mPacking.get('tag.manufactorer').hasError('pattern'))
@@ -127,8 +141,11 @@
           <div class="col-sm-12 campo">
             <p class="descricao">TIPO DA EMBALAGEM</p>
             <p class="explicacao">Ex. "Rack Metálico"</p>
-            <input type="text" class="form-control" placeholder="Digite o tipo de embalagem" aria-describedby="basic-addon2"
+            <input type="text" class="form-control" 
+              placeholder="Digite o tipo de embalagem" 
+              aria-describedby="basic-addon2"
               formControlName="type" 
+              maxlength="60"
               [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
               || (mPacking.get('type').hasError('required') && formDir.submitted)
               || (mPacking.get('type').hasError('pattern'))

@@ -3,6 +3,7 @@ import { ToastService, PackingService, CompaniesService } from '../../../../serv
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { Family } from 'app/shared/models/family';
 import { FamiliesService } from 'app/servicos/families.service';
+import { UniqueFamilyValidation } from 'app/shared/validators/uniqueFamilyValidator';
 
 @Component({
   selector: 'app-familia-cadastro',
@@ -33,7 +34,7 @@ export class FamiliaCadastroComponent implements OnInit {
 
   configureFormGroup(){
     this.mFamily = this.fb.group({
-      code: ['', [Validators.required, Validators.maxLength(30), Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      code: ['', [Validators.required, Validators.maxLength(30), Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/), UniqueFamilyValidation.uniqueFamily]],
       selectedCompanies: [undefined, [Validators.required]],
       selectedControlPoints: new FormControl([])
     });
