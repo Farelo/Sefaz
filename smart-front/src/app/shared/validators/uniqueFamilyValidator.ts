@@ -9,7 +9,7 @@ import { FamiliesService } from "app/servicos/index.service";
 export class UniqueFamilyValidation {
 
   // static uniqueFamily(control: AbstractControl): ValidationErrors | null {
-    
+     
     // constructor(private familyService: FamiliesService){
 
     // }
