@@ -74,40 +74,40 @@ const validate_packings = (packing) => {
     return Joi.validate(packing, schema)
 }
 
-const addPackingToFamily = async (doc, next) => {
-    try {
-        const family = await Family.findById(doc.family)
-        family.packings.push(doc._id)
+// const addPackingToFamily = async (doc, next) => {
+//     try {
+//         const family = await Family.findById(doc.family)
+//         family.packings.push(doc._id)
 
-        await family.save()
-        next()
-    } catch (error) {
-        next()
-    }
-}
+//         await family.save()
+//         next()
+//     } catch (error) {
+//         next()
+//     }
+// }
     
-const postUpdateMiddleware = function (doc, next) {
-    addPackingToFamily(doc, next)
-}
+// const postUpdateMiddleware = function (doc, next) {
+//     addPackingToFamily(doc, next)
+// }
 
-const removeMiddleware = function (doc, next) {
-    const packing = doc;
-    packing.model('Family').update(
-        { packings: packing._id },
-        { $pull: { packings: packing._id } },
-        { multi: true },
-        next()
-    )
-}
+// const removeMiddleware = function (doc, next) {
+//     const packing = doc;
+//     packing.model('Family').update(
+//         { packings: packing._id },
+//         { $pull: { packings: packing._id } },
+//         { multi: true },
+//         next()
+//     )
+// }
 
 packingSchema.statics.findByTag = function (tag, projection = '') {
     return this.findOne({ 'tag.code': tag.code }, projection)
 }
 
-packingSchema.post('save', postUpdateMiddleware)
-packingSchema.post('update', postUpdateMiddleware)
-packingSchema.post('findOneAndUpdate', postUpdateMiddleware)
-packingSchema.post('remove', removeMiddleware)
+// packingSchema.post('save', postUpdateMiddleware)
+// packingSchema.post('update', postUpdateMiddleware)
+// packingSchema.post('findOneAndUpdate', postUpdateMiddleware)
+// packingSchema.post('remove', removeMiddleware)
 
 const Packing = mongoose.model('Packing', packingSchema)
 
