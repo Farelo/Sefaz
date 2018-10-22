@@ -8,8 +8,7 @@
         "port": 3000
     },
     "db": {
-        "url": "mongodb://localhost:27017/recicla",
-        "mongodb_container": "mongodb://db:27017/recicla"
+        "url": "mongodb://<user>:<password>@<host>:27017/recicla"
     },
     "security": {
         "jwtPrivateKey": "secr3t",
