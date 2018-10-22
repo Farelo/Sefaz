@@ -505,11 +505,8 @@ tbody > tr:nth-child(even) {
   color: rgba(255, 255, 255, 0.5);
 }
 
-/*--------*/
-/*Checkboxes*/
-.checkbox {
-  margin: 6px 0px 0px 6px;
-}
+/* -----------*/
+/* Checkboxes */
 
 .checkbox label:after {
   content: '';

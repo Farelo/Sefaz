@@ -25,6 +25,10 @@
           *ngIf="(mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
             || (mPacking.get('tag.code').hasError('required') && formDir.submitted)">
             Campo Obrigatório</p>
+
+        <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('pattern')) 
+                        || (mPacking.get('tag.code').hasError('pattern') && submitted)">
+          Excesso de espaços em branco</p>
       </div>
 
 
@@ -41,10 +45,15 @@
             [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
                         || (mPacking.get('tag.version').hasError('required') && formDir.submitted)}">
         </div>
+
         <p class="requiredText" 
           *ngIf="(mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
                       || (mPacking.get('tag.version').hasError('required') && formDir.submitted)">
           Campo Obrigatório</p>
+        
+        <p class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('pattern')) 
+                                || (mPacking.get('tag.version').hasError('pattern') && submitted)">
+          Excesso de espaços em branco</p>
       </div>
 
 
@@ -62,10 +71,16 @@
               [ngClass]="{'required': (mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
                 || (mPacking.get('serial').hasError('required') && formDir.submitted)}">
           </div>
+
           <p class="requiredText" 
             *ngIf="(mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
                       || (mPacking.get('serial').hasError('required') && formDir.submitted)">
             Campo Obrigatório</p>
+
+          <p class="requiredText" 
+            *ngIf="(mPacking.get('serial').hasError('pattern')) 
+                                          || (mPacking.get('serial').hasError('pattern') && submitted)">
+            Excesso de espaços em branco</p>
         </div>
       </div>
     </div>
@@ -113,12 +128,11 @@
             </div>
             <p class="requiredText" 
               *ngIf="(mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
-                || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
-                || (mPacking.get('tag.manufactorer').value.length == 1 && mPacking.get('tag.manufactorer').value == ' ')">
+                || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
 
             <p class="requiredText" 
-              *ngIf="(mPacking.get('tag.manufactorer').hasError('pattern') && mPacking.get('tag.manufactorer').touched && mPacking.get('tag.manufactorer').value.length > 1) 
+              *ngIf="(mPacking.get('tag.manufactorer').hasError('pattern')) 
                 || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)">
               Excesso de espaços em branco</p>
           </div>
@@ -241,18 +255,15 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="campo">
-          <p class="descricao">OBSERVAÇÕES (M)</p>
+          <p class="descricao">OBSERVAÇÕES</p>
           <p class="explicacao">Ex. "Embalagem nova"</p>
           <textarea class="form-control" 
             id="exampleFormControlTextarea1" 
             rows="3"
+            maxlength="140"
             formControlName="observations">
           </textarea>
-
-          <p class="requiredText" 
-          *ngIf="(mPacking.get('observations').hasError('required') && mPacking.get('observations').touched)
-                          || (mPacking.get('observations').hasError('required') && formDir.submitted)">
-            Campo Obrigatório</p>
+          <p class="explicacao"> {{ mPacking.get('observations').value.length }}/140 </p>
         </div>
       </div>
     </div>
@@ -260,7 +271,7 @@
     <div class="form-group form-check">
       <div class="checkbox">
         <label>
-          <input type="checkbox" value="">
+          <input type="checkbox" value="active" formControlName="active">
           <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
           Embalagem ativa
         </label>

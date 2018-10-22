@@ -185,14 +185,10 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="campo">
-          <p class="descricao">OBSERVAÇÕES (M)</p>
+          <p class="descricao">OBSERVAÇÕES</p>
           <p class="explicacao">Ex. "Embalagem nova"</p>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" formControlName="observations">
-          </textarea>
-
-          <p class="requiredText" *ngIf="(mPacking.get('observations').hasError('required') && mPacking.get('observations').touched)
-                          || (mPacking.get('observations').hasError('required') && formDir.submitted)">
-            Campo Obrigatório</p>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" formControlName="observations"></textarea>
+          <p class="explicacao"> {{ mPacking.get('observations').value.length }}/140 </p>
         </div>
       </div>
     </div>
@@ -200,7 +196,7 @@
     <div class="form-group form-check">
       <div class="checkbox">
         <label>
-          <input type="checkbox" value="">
+          <input type="checkbox" value="active" formControlName="active">
           <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
           Embalagem ativa
         </label>

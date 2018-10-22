@@ -64,7 +64,11 @@ export class EmbalagemEditarComponent implements OnInit {
   finishUpdate(value) {
     this.packingService.editPacking(this.mId, value)
       .subscribe(result => {
-        this.toastService.success('/rc/cadastros/embalagem', 'Embalagem');
+        let message = {
+          title: "Embalagem Atualizada",
+          body: "A embalagem foi atualizada com sucesso"
+        }
+        this.toastService.show('/rc/cadastros/embalagem', message);
       });
   }
 
@@ -84,7 +88,8 @@ export class EmbalagemEditarComponent implements OnInit {
       length: ['', [Validators.required]],
       capacity: ['', [Validators.required]],
       family: ['', [Validators.required]],
-      observations: ''
+      observations: ['', [Validators.maxLength(140)]],
+      active: false
     });
   }
   
