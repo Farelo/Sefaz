@@ -12,7 +12,7 @@ const controlPointSchema = new mongoose.Schema({
     },
     duns: {
         type: String,
-        minlength: 5,
+        minlength: 2,
         maxlength: 50,
     },
     lat: {
@@ -22,7 +22,8 @@ const controlPointSchema = new mongoose.Schema({
         type: Number
     },
     full_address: {
-        type: String
+        type: String,
+        maxlength: 200
     },
     type: {
         type: String,
@@ -48,10 +49,11 @@ const controlPointSchema = new mongoose.Schema({
 })
 const validate_control_points = (control_point) => {
     const schema = Joi.object().keys({
-        name: Joi.string().required(),
-        duns: Joi.string(),
+        name: Joi.string().min(5).max(50).required(),
+        duns: Joi.string().min(2).max(50),
         lat: Joi.number(),
         lng: Joi.number(),
+        full_address: Joi.string().max(200),
         type: Joi.string(),
         company: Joi.objectId()
     })
@@ -60,7 +62,7 @@ const validate_control_points = (control_point) => {
 }
 
 
-packingSchema.statics.findByName = function (name, projection = '') {
+controlPointSchema.statics.findByName = function (name, projection = '') {
     return this.findOne({ name }, projection)
 }
 

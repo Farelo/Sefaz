@@ -5,6 +5,7 @@ const users = require('../resources/users/users.routing')
 const companies = require('../resources/companies/companies.routing')
 const families = require('../resources/families/families.routing')
 const packings = require('../resources/packings/packings.routing')
+const control_points = require('../resources/control_points/control_points.routing')
 const error = require('../middlewares/error.middleware')
 
 module.exports = (app) => {
@@ -28,6 +29,7 @@ module.exports = (app) => {
     app.use('/api/companies', companies)
     app.use('/api/families', families)
     app.use('/api/packings', packings)
+    app.use('/api/control_points', control_points)
 
     // Middlewares functions
     app.use(error)

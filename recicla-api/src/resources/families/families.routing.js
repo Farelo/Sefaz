@@ -48,7 +48,7 @@ module.exports = router
  * /families/{id}:
  *   get:
  *     summary: Create a family
- *     description: Crete a family
+ *     description: Create a family
  *     security:
  *       - Bearer: []
  *     tags:
@@ -80,7 +80,7 @@ module.exports = router
  * /families:
  *   post:
  *     summary: Create a family
- *     description: Crete a family
+ *     description: Create a family
  *     security:
  *       - Bearer: []
  *     tags:

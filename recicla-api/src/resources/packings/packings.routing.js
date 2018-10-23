@@ -48,7 +48,7 @@ module.exports = router
  * /packings/{id}:
  *   get:
  *     summary: Create a packing
- *     description: Crete a packing
+ *     description: Create a packing
  *     security:
  *       - Bearer: []
  *     tags:
@@ -80,7 +80,7 @@ module.exports = router
  * /packings:
  *   post:
  *     summary: Create a packing
- *     description: Crete a packing
+ *     description: Create a packing
  *     security:
  *       - Bearer: []
  *     tags:
