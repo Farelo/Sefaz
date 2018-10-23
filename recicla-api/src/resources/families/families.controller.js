@@ -6,8 +6,10 @@ const { Family } = require('./families.model')
 exports.all = async (req, res) => {
     let families
     const code = req.query.code ? req.query.code : null
+    
     if (code) {
         families = await Family.findByCode(code)
+        // if (!families) families = []
     } else {
         families = await Family.find().populate('company', ['_id', 'name', 'type'])
     }
