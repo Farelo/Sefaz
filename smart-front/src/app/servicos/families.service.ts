@@ -18,7 +18,7 @@ export class FamiliesService {
       .catch(this.handleError);
   }
 
-  getAllFamilies(params:any={}): Observable<any> {
+  getAllFamilies(params: any = {}): Observable<any> {
 
     let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
     if(queryString) queryString = '?' + queryString;

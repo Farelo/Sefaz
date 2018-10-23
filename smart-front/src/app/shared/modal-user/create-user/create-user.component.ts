@@ -51,7 +51,7 @@ export class CreateUserComponent implements OnInit {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
       full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email, Validators.minLength(5)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
       company: ['', [Validators.required]]

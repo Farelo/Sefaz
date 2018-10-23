@@ -19,8 +19,12 @@ export class PackingService {
       .catch(this.handleError);
   }
 
-  getAllPackings(): Observable<any> {
-    return this.http.get(`${environment.url}/packings`)
+  getAllPackings(params: any = {}): Observable<any> {
+
+    let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    if (queryString) queryString = '?' + queryString;
+
+    return this.http.get(`${environment.url}/packings${queryString}`)
       .catch(this.handleError);
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'; 
 import { Router } from '@angular/router';
 import { ToastService, PackingService, FamiliesService } from '../../../../servicos/index.service';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-embalagem-cadastro',
@@ -72,7 +72,10 @@ export class EmbalagemCadastroComponent implements OnInit {
   configureForm(){
     this.mPacking = this.fb.group({
       tag: this.fb.group({
-        code: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        code: ['', 
+          [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)], 
+          this.validateNotTaken.bind(this)
+        ],
         version: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
         manufactorer: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]]
       }),
@@ -87,6 +90,32 @@ export class EmbalagemCadastroComponent implements OnInit {
       observations: ['', [Validators.maxLength(140)]],
       active: false
     });
+  }
+
+  public validateNotTakenLoading: boolean;
+  validateNotTaken(control: AbstractControl) {
+    this.validateNotTakenLoading = true;
+    return control
+      .valueChanges
+      .delay(800)
+      .debounceTime(800)
+      .distinctUntilChanged()
+      .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
+      //.switchMap(value => this.packingService.getAllPackings())
+      .map(res => {
+        //console.log('res: ' + JSON.stringify(res));
+
+        this.validateNotTakenLoading = false;
+        let auxArray = [];
+
+        if (Array.isArray(res)) {
+          console.log('.');
+          return control.setErrors(null);
+        } else {
+          console.log('..');
+          return control.setErrors({ uniqueValidation: 'code already exist' })
+        }
+      })
   }
 
 }
