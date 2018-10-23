@@ -12,6 +12,7 @@ export class EmbalagemCadastroComponent implements OnInit {
 
   public mPacking : FormGroup;
   public listOfFamilies: any[] = []; 
+  public activePacking: boolean = false;
 
   constructor(
     private familyService: FamiliesService,
@@ -56,8 +57,12 @@ export class EmbalagemCadastroComponent implements OnInit {
     this.packingService
       .createPacking(value)
       .subscribe(result => { 
-        this.router.navigate(['/rc/cadastros/embalagem']); 
-        this.toastService.successModal('Embalagem criada') 
+        
+        let message = {
+          title: "Embalagem Cadastrada",
+          body: "A embalagem foi cadastrada com sucesso"
+        }
+        this.toastService.show('/rc/cadastros/embalagem', message); 
       });
   }
 
@@ -67,19 +72,20 @@ export class EmbalagemCadastroComponent implements OnInit {
   configureForm(){
     this.mPacking = this.fb.group({
       tag: this.fb.group({
-        code: ['', [Validators.required]],
-        version: ['', [Validators.required]],
-        manufactorer: ['', [Validators.required, Validators.pattern(/^((?!\s{2,}).)*$/)]]
+        code: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        version: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        manufactorer: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]]
       }),
-      serial: ['', [Validators.required]],
-      type: ['', [Validators.required, Validators.pattern(/^((?!\s{2,}).)*$/)]],
+      serial: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      type: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
       weigth: ['', [Validators.required]],
       width: ['', [Validators.required]],
       heigth: ['', [Validators.required]],
       length: ['', [Validators.required]],
       capacity: ['', [Validators.required]],
-      family: ['', [Validators.required]],
-      observations: ''
+      family: [null, [Validators.required]],
+      observations: ['', [Validators.maxLength(140)]],
+      active: false
     });
   }
 

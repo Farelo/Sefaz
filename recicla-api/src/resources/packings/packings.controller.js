@@ -1,18 +1,16 @@
 const debug = require('debug')('controller:packings')
-const _ = require('lodash')
 const HttpStatus = require('http-status-codes')
-const { Packing } = require('./packings.model')
+const packings_service = require('./packings.service')
 
 exports.all = async (req, res) => {
-    const packings = await Packing.find().populate('packing', ['_id', 'code'])
+    const tag = req.query.tag_code ? { code: req.query.tag_code } : null
+    const packings = await packings_service.get_packings(tag)
 
     res.json(packings)
 }
 
 exports.show = async (req, res) => {
-    const packing = await Packing
-        .findById(req.params.id)
-        .populate('family', ['_id', 'code', 'company'])
+    const packing = await packings_service.get_packing(req.params.id)
 
     if (!packing) return res.status(HttpStatus.NOT_FOUND).send('Invalid packing')
 
@@ -20,28 +18,25 @@ exports.show = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    let packing = await Packing.findByTag(req.body.tag)
+    let packing = await packings_service.find_by_tag(req.body.tag)
     if (packing) return res.status(HttpStatus.BAD_REQUEST).send('Packing already exists with this code.')
 
-    packing = new Packing(req.body)
-    await packing.save()
+    packing = await packings_service.create_packing(req.body)
 
-    res.send(packing)
+    res.status(HttpStatus.CREATED).send(packing)
 }
 
 exports.update = async (req, res) => {
-    let packing = await Packing.findById(req.params.id)
+    let packing = await packings_service.find_by_id(req.params.id)
     if (!packing) return res.status(HttpStatus.NOT_FOUND).send('Invalid packing')
 
-    const options = { runValidators: true, new: true }
-
-    packing = await Packing.findByIdAndUpdate(req.params.id, req.body, options)
+    packing = await packings_service.update_packing(req.params.id, req.body)
 
     res.json(packing)
 }
 
 exports.delete = async (req, res) => {
-    const packing = await Packing.findById(req.params.id)
+    const packing = await packings_service.find_by_id(req.params.id)
     if (!packing) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid packing' })
 
     await packing.remove()

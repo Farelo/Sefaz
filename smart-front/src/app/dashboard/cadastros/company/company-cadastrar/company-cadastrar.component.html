@@ -145,7 +145,7 @@
           Campo Obrigatório</p>
         
         <p class="requiredText" 
-          *ngIf="(newCompany.get('address.uf').hasError('pattern') && newCompany.get('address.uf').touched && newCompany.get('address.uf').value.length > 1) 
+          *ngIf="(newCompany.get('address.uf').hasError('pattern')) 
           || (newCompany.get('address.uf').hasError('pattern') && submitted)">
           Excesso de espaços em branco</p>
 

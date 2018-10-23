@@ -24,6 +24,16 @@
         || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)">
         Campo Obrigatório
       </p>
+
+      <p class="requiredText" 
+        *ngIf="(mFamily.get('code').hasError('uniqueFamily')) 
+          || (mFamily.get('code').hasError('uniqueFamily') && submitted)">
+        O código deve ser único</p>
+
+      <p class="requiredText" 
+        *ngIf="(mFamily.get('code').hasError('pattern')) 
+          || (mFamily.get('code').hasError('pattern') && submitted)">
+        Excesso de espaços em branco</p>
     </div>
 
 

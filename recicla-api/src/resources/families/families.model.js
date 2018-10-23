@@ -7,10 +7,6 @@ const familySchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    packings: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'Packing'
-    }],
     routes: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Route'
@@ -35,13 +31,13 @@ const familySchema = new mongoose.Schema({
 })
 
 const validate_families = (family) => {
-    const schema = {
+    const schema = Joi.object().keys({
         code: Joi.string().required(),
         packings: Joi.objectId(),
         company: Joi.objectId()
-    }
+    })
 
-    return Joi.validate(family, schema)
+    return Joi.validate(family, schema, { abortEarly: false })
 }
 
 const removeMiddleware = function (doc, next) {

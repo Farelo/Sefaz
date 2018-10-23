@@ -15,6 +15,7 @@ export class EmbalagemEditarComponent implements OnInit {
   public listOfFamilies: any[] = [];
   public inscricao: Subscription;
   public mId: string;
+  public activePacking: boolean = false;
   
   constructor(
     private familyService: FamiliesService,
@@ -63,7 +64,11 @@ export class EmbalagemEditarComponent implements OnInit {
   finishUpdate(value) {
     this.packingService.editPacking(this.mId, value)
       .subscribe(result => {
-        this.toastService.success('/rc/cadastros/embalagem', 'Embalagem');
+        let message = {
+          title: "Embalagem Atualizada",
+          body: "A embalagem foi atualizada com sucesso"
+        }
+        this.toastService.show('/rc/cadastros/embalagem', message);
       });
   }
 
@@ -71,19 +76,20 @@ export class EmbalagemEditarComponent implements OnInit {
   configureForm() {
     this.mPacking = this.fb.group({
       tag: this.fb.group({
-        code: ['', [Validators.required]],
-        version: ['', [Validators.required]],
-        manufactorer: ['', [Validators.required]]
+        code: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        version: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        manufactorer: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]]
       }),
-      serial: ['', [Validators.required]],
-      type: ['', [Validators.required]],
+      serial: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      type: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
       weigth: ['', [Validators.required]],
       width: ['', [Validators.required]],
       heigth: ['', [Validators.required]],
       length: ['', [Validators.required]],
       capacity: ['', [Validators.required]],
-      family: ['', [Validators.required]],
-      observations: ''
+      family: [null, [Validators.required]],
+      observations: ['', [Validators.maxLength(140)]],
+      active: false
     });
   }
   

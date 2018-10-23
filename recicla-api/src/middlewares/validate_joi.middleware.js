@@ -1,7 +1,11 @@
+const debug = require('debug')('middleware:validate_joi')
 module.exports = (validator) => {
     return (req, res, next) => {
         const { error } = validator(req.body)
-        if (error) return res.status(400).send(error.details[0].message)
+        if (error) {
+            const messages = error.details.map(details => details.message)
+            return res.status(400).send(messages)
+        }
         next()
     }
 }

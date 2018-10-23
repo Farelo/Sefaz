@@ -3,7 +3,6 @@ import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/fo
 import { CompaniesService } from '../../../../servicos/companies.service';
 import { ToastService } from '../../../../servicos/index.service';
 import { Router } from "@angular/router";
-import { WhiteSpacesValidation } from 'app/shared/validators/whiteSpaceValidator';
 
 @Component({
   selector: 'app-company-cadastrar',
@@ -16,7 +15,7 @@ export class CompanyCadastrarComponent implements OnInit {
   public typesOnSelect: any;
   public companyType: any;
   public submitted: boolean = false;
-  
+
   //Mask
   public maskTel  = ['(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
   public maskCep  = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
@@ -49,7 +48,7 @@ export class CompanyCadastrarComponent implements OnInit {
         city: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
         street: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
         cep: ['', [Validators.required]],
-        uf: ['', [Validators.required, Validators.minLength(2)]]
+        uf: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]]
       }),
       type: ['', [Validators.required]]
     });

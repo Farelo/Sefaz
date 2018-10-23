@@ -50,7 +50,7 @@ export class FamiliaEditarComponent implements OnInit {
 
   configureFormGroup() {
     this.mFamily = this.fb.group({
-      code: ['', [Validators.required]],
+      code: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
       company: ['', [Validators.required]],
       control_points: new FormControl([])
     });
