@@ -25,7 +25,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     parameters:
  *       - name: code
  *         description: Return family filtered by tag code
@@ -52,7 +52,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     produces:
  *       - application/json
  *     parameters:
@@ -84,7 +84,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     produces:
  *       - application/json
  *     parameters:
@@ -116,7 +116,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     parameters:
  *       - name: id
  *         description: Family id
@@ -146,7 +146,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     summary: Delete a family
  *     description: Deleta a family
  *     parameters:

@@ -25,7 +25,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     parameters:
  *       - name: tag_code
  *         description: Return packing filtered by tag code
@@ -52,7 +52,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     produces:
  *       - application/json
  *     parameters:
@@ -84,7 +84,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     produces:
  *       - application/json
  *     parameters:
@@ -116,7 +116,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     parameters:
  *       - name: id
  *         description: Packing id
@@ -146,7 +146,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     summary: Delete a packing
  *     description: Deleta a packing
  *     parameters:

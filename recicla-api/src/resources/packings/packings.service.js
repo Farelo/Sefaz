@@ -14,7 +14,6 @@ exports.get_packings = async (tag) => {
 
         return packings
     } catch (error) {
-        // throw new AppError(...handlerThrow(e))
         throw new Error(error)
     }
 }

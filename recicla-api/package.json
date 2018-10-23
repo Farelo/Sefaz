@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "export NODE_CONFIG_DIR=src/config && export DEBUG=controller:* && export DEBUG=startup:* && nodemon src/server.js",
+    "develop": "export NODE_CONFIG_DIR=src/config && export DEBUG=* && nodemon src/server.js",
     "test": "export NODE_CONFIG_DIR=src/config && export NODE_ENV=test && jest --watchAll --verbose --runInBand --no-cache",
     "prod": "export NODE_CONFIG_DIR=src/config && export DEBUG=controller:* && export DEBUG=startup:* && pm2 start src/server.js && pm2 logs --raw server",
     "start-win": "set NODE_CONFIG_DIR=src/config&&set DEBUG=controller:*&&nodemon src/server.js",

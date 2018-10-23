@@ -25,7 +25,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoint
+ *       - ControlPoints
  *     parameters:
  *       - name: name
  *         description: Return control point filtered by name
@@ -52,7 +52,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoint
+ *       - ControlPoints
  *     produces:
  *       - application/json
  *     parameters:
@@ -84,7 +84,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoint
+ *       - ControlPoints
  *     produces:
  *       - application/json
  *     parameters:
@@ -116,7 +116,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoint
+ *       - ControlPoints
  *     parameters:
  *       - name: id
  *         description: ControlPoint id
@@ -146,7 +146,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoint
+ *       - ControlPoints
  *     summary: Delete a control point
  *     description: Deleta a control point
  *     parameters:
