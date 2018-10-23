@@ -1,6 +1,6 @@
+const debug = require('debug')('model:companies')
 const mongoose = require('mongoose')
 const Joi = require('joi')
-const { User } = require('../users/users.model')
 
 const companySchema = new mongoose.Schema({
     name: {
@@ -43,7 +43,7 @@ companySchema.statics.findByName = function (name, projection = '') {
 }
 
 const validate_companies = (company) => {
-    const schema = {
+    const schema = Joi.object().keys({
         name: Joi.string().min(5).max(50).required(),
         phone: Joi.string(),
         cnpj: Joi.string(),
@@ -52,22 +52,11 @@ const validate_companies = (company) => {
             street: Joi.string(),
             cep: Joi.string(),
             uf: Joi.string()
-        } ,
+        },
         type: Joi.string()
-    }
-
-    return Joi.validate(company, schema)
+    })
+    return Joi.validate(company, schema, { abortEarly: false })
 }
-
-// const postRemoveMiddleware = function (doc, next) {
-//     var company = doc
-//     company.model('User').update(
-//         { company: company._id },
-//         { $set: { active: false } },
-//         { multi: true },
-//         next()
-//     )
-// }
 
 const removeMiddleware = function (doc, next) {
     const company = doc
@@ -80,7 +69,6 @@ const removeMiddleware = function (doc, next) {
 }
 
 companySchema.post('remove', removeMiddleware)
-// companySchema.post('remove', postRemoveMiddleware)
 
 const Company = mongoose.model('Company', companySchema)
 
