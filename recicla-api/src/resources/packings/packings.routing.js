@@ -171,16 +171,7 @@ module.exports = router
  *   PackingObject:
  *     type: object
  *     required:
- *       - tag
  *       - serial
- *       - type
- *       - weigth
- *       - width
- *       - heigth
- *       - length
- *       - capacity
- *       - observations
- *       - active
  *       - family
  *     properties:
  *       tag:
@@ -215,8 +206,6 @@ module.exports = router
  *     type: object
  *     required:
  *       - code
- *       - version
- *       - manufactorer
  *     properties:
  *       code:
  *         type: string

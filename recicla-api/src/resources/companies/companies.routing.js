@@ -166,10 +166,6 @@ module.exports = router
  *     type: object
  *     required:
  *       - name
- *       - phone
- *       - cnpj
- *       - address
- *       - type
  *     properties:
  *       name:
  *         type: string
@@ -190,11 +186,6 @@ module.exports = router
  * definitions:
  *   AddressObject:
  *     type: object
- *     required:
- *       - city
- *       - street
- *       - cep
- *       - uf
  *     properties:
  *       city:
  *         type: string
