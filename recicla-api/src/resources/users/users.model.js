@@ -5,7 +5,6 @@ Joi.objectId = require('joi-objectid')(Joi)
 const bcrypt = require('bcrypt')
 const config = require('config')
 const jwt = require('jsonwebtoken')
-const { Company } = require('../companies/companies.model')
 
 const userSchema = new mongoose.Schema({
     full_name: {

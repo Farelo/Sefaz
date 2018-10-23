@@ -77,6 +77,14 @@ packingSchema.statics.findByTag = function (tag, projection = '') {
     return this.findOne({ 'tag.code': tag.code }, projection)
 }
 
+const update_updated_at_middleware = function (next) {
+    this.update_at = Date.now
+    next()
+}
+
+packingSchema.pre('update', update_updated_at_middleware)
+packingSchema.pre('findOneAndUpdate', update_updated_at_middleware)
+
 const Packing = mongoose.model('Packing', packingSchema)
 
 exports.Packing = Packing
