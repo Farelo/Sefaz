@@ -1,56 +1,41 @@
 const debug = require('debug')('controller:families')
-const _ = require('lodash')
 const HttpStatus = require('http-status-codes')
-const { Family } = require('./families.model')
+const families_service = require('./families.service')
 
 exports.all = async (req, res) => {
-    let families
     const code = req.query.code ? req.query.code : null
-    
-    if (code) {
-        families = await Family.findByCode(code)
-        // if (!families) families = []
-    } else {
-        families = await Family.find().populate('company', ['_id', 'name', 'type'])
-    }
+    const families = await families_service.get_families(code)
 
     res.json(families)
 }
 
 exports.show = async (req, res) => {
-    const family = await Family
-        .findById(req.params.id)
-        .populate('company', ['_id', 'name', 'type'])
-        .populate('packings', ['_id', 'tag', 'serial', 'active', 'low_battery','absent'])
-
+    const family = await families_service.get_family(req.params.id)
     if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
 
     res.json(family)
 }
 
 exports.create = async (req, res) => {
-    let family = await Family.findByCode(req.body.code)
+    let family = await families_service.find_by_code(req.body.code)
     if (family) return res.status(HttpStatus.BAD_REQUEST).send('Family already exists with this code.')
 
-    family = new Family(req.body)
-    await family.save()
+    family = await families_service.create_family(req.body)
 
     res.status(HttpStatus.CREATED).send(family)
 }
 
 exports.update = async (req, res) => {
-    let family = await Family.findById(req.params.id)
+    let family = await families_service.find_by_id(req.params.id)
     if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
 
-    const options = { runValidators: true, new: true }
-
-    family = await Family.findByIdAndUpdate(req.params.id, req.body, options)
+    family = await families_service.update_family(req.params.id, req.body)
 
     res.json(family)
 }
 
 exports.delete = async (req, res) => {
-    const family = await Family.findById(req.params.id)
+    const family = await families_service.find_by_id(req.params.id)
     if (!family) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid family' })
 
     await family.remove()
