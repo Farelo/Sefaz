@@ -4,15 +4,10 @@ const { Packing } = require('./packings.model')
 
 exports.get_packings = async (tag) => {
     try {
-        let packings
-        if (tag) {
-            packings = await Packing.findByTag(tag)
-            if (!packings) packings = []
-        } else {
-            packings = await Packing.find().populate('packing', ['_id', 'code'])
-        }
+        if (!tag) return await Packing.find().populate('packing', ['_id', 'code'])
 
-        return packings
+        const data = await Packing.findByTag(tag)
+        return data ? [data] : []
     } catch (error) {
         throw new Error(error)
     }

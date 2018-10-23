@@ -40,6 +40,15 @@ const validate_families = (family) => {
     return Joi.validate(family, schema, { abortEarly: false })
 }
 
+familySchema.statics.findByCode = function (code, projection = '') {
+    return this.findOne({ code }, projection)
+}
+
+const update_updated_at_middleware = function (next) {
+    this.update_at = Date.now
+    next()
+}
+
 const removeMiddleware = function (doc, next) {
     const family = doc
     family.model('Packing').update(
@@ -50,10 +59,8 @@ const removeMiddleware = function (doc, next) {
     )
 }
 
-familySchema.statics.findByCode = function (code, projection = '') {
-    return this.findOne({ code }, projection)
-}
-
+familySchema.pre('update', update_updated_at_middleware)
+familySchema.pre('findOneAndUpdate', update_updated_at_middleware)
 familySchema.post('remove', removeMiddleware)
 
 const Family = mongoose.model('Family', familySchema)

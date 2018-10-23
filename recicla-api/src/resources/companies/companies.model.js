@@ -58,6 +58,11 @@ const validate_companies = (company) => {
     return Joi.validate(company, schema, { abortEarly: false })
 }
 
+const update_updated_at_middleware = function (next) {
+    this.update_at = Date.now
+    next()
+}
+
 const removeMiddleware = function (doc, next) {
     const company = doc
     company.model('User').update(
@@ -67,6 +72,9 @@ const removeMiddleware = function (doc, next) {
         next()
     )
 }
+
+companySchema.pre('update', update_updated_at_middleware)
+companySchema.pre('findOneAndUpdate', update_updated_at_middleware)
 
 companySchema.post('remove', removeMiddleware)
 

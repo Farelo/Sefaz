@@ -2,13 +2,13 @@ const debug = require('debug')('service:control_points')
 const _ = require('lodash')
 const { ControlPoint } = require('./control_points.model')
 
-exports.get_control_points = async () => {
+exports.get_control_points = async (name) => {
     try {
-        const control_points = await ControlPoint.find().populate('company')
-
-        return control_points
+        if (!name) return await ControlPoint.find().populate('company')
+        
+        const data = await ControlPoint.findByName(name)
+        return data ? [data] : []
     } catch (error) {
-        // throw new AppError(...handlerThrow(e))
         throw new Error(error)
     }
 }

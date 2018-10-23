@@ -1,40 +1,40 @@
 const express = require('express')
 const router = express.Router()
-const control_points_controller = require('./control_points.controller')
+const routes_controller = require('./routes.controller')
 const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
-const { validate_control_points } = require('./control_points.model')
+const { validate_routes } = require('./routes.model')
 
-router.get('/', [auth, authz], control_points_controller.all)
-router.get('/:id', [auth, validate_object_id], control_points_controller.show)
-router.post('/', [auth, authz, validate_joi(validate_control_points)], control_points_controller.create)
-router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_control_points)], control_points_controller.update)
-router.delete('/:id', [auth, authz, validate_object_id], control_points_controller.delete)
+router.get('/', [auth, authz], routes_controller.all)
+router.get('/:id', [auth, validate_object_id], routes_controller.show)
+router.post('/', [auth, authz, validate_joi(validate_routes)], routes_controller.create)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_routes)], routes_controller.update)
+router.delete('/:id', [auth, authz, validate_object_id], routes_controller.delete)
 
 module.exports = router
 
 // GET '/'
 /**
  * @swagger
- * /control_points:
+ * /routes:
  *   get:
- *     summary: Retrieve all control points
- *     description: Retrieve all control points on database
+ *     summary: Retrieve all routes
+ *     description: Retrieve all routes on database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoints
+ *       - Routes
  *     parameters:
  *       - name: name
- *         description: Return control point filtered by name
+ *         description: Return route filtered by name
  *         in: query
  *         required: false
  *         type: string
  *     responses:
  *       200:
- *         description: list of all control_points
+ *         description: list of all routes
  *       400:
  *         description: Bad Request
  *       404:
@@ -45,14 +45,14 @@ module.exports = router
 /**
  * @swagger
  *
- * /control_points/{id}:
+ * /routes/{id}:
  *   get:
- *     summary: Create a control point
- *     description: Create a control point
+ *     summary: Create a route
+ *     description: Create a route
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoints
+ *       - Routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -77,14 +77,14 @@ module.exports = router
 /**
  * @swagger
  *
- * /control_points:
+ * /routes:
  *   post:
- *     summary: Create a control point
- *     description: Create a control point
+ *     summary: Create a route
+ *     description: Create a route
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoints
+ *       - Routes
  *     produces:
  *       - application/json
  *     parameters:
@@ -93,7 +93,7 @@ module.exports = router
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/ControlPointObject'
+ *           $ref: '#/definitions/RouteObject'
  *     responses:
  *       200:
  *         description: ControlPoint is valid request
@@ -109,14 +109,14 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /control_points/{id}:
+ * /routes/{id}:
  *   patch:
- *     summary: Update a control point
- *     description: Update a control point by id
+ *     summary: Update a route
+ *     description: Update a route by id
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoints
+ *       - Routes
  *     parameters:
  *       - name: id
  *         description: ControlPoint id
@@ -128,7 +128,7 @@ module.exports = router
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/ControlPointObject'
+ *           $ref: '#/definitions/RouteObject'
  *     responses:
  *       200:
  *         description: OK
@@ -141,14 +141,14 @@ module.exports = router
 // DELETE '/'
 /**
  * @swagger
- * /control_points/{id}:
+ * /routes/{id}:
  *   delete:
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoints
- *     summary: Delete a control point
- *     description: Deleta a control point
+ *       - Routes
+ *     summary: Delete a route
+ *     description: Deleta a route
  *     parameters:
  *       - name: id
  *         description: ControlPoint id
@@ -168,23 +168,36 @@ module.exports = router
  * @swagger
  *
  * definitions:
- *   ControlPointObject:
+ *   RouteObject:
  *     type: object
  *     required:
- *       - name
+ *       - family
+ *       - first_point
+ *       - second_point
  *     properties:
- *       name:
+ *       family:
  *         type: string
- *       duns:
+ *       first_point:
  *         type: string
- *       lat:
+ *       second_point:
+ *         type: string
+ *       distance:
  *         type: number
- *       lng:
+ *       duration:
  *         type: number
- *       full_address:
+ *       traveling_time:
+ *         $ref: '#/definitions/TravelingTimeObject'
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   TravelingTimeObject:
+ *     type: object
+ *     properties:
+ *       max:
  *         type: string
- *       type:
- *         type: string
- *       company:
+ *       min:
  *         type: string
  */

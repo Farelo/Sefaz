@@ -3,7 +3,8 @@ const HttpStatus = require('http-status-codes')
 const control_points_service = require('./control_points.service')
 
 exports.all = async (req, res) => {
-    const control_points = await control_points_service.get_control_points()
+    const name = req.query.name ? req.query.name : null
+    const control_points = await control_points_service.get_control_points(name)
 
     res.json(control_points)
 }
