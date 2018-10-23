@@ -1,7 +1,5 @@
 const debug = require('debug')('controller:companies')
-const _ = require('lodash')
 const HttpStatus = require('http-status-codes')
-const { Company } = require('./companies.model')
 const companies_service = require('./companies.service')
 
 exports.all = async (req, res) => {
