@@ -3,69 +3,54 @@ const _ = require('lodash')
 const HttpStatus = require('http-status-codes')
 const { User } = require('./users.model')
 const { Company } = require('../companies/companies.model')
+const users_service = require('./users.service')
 
 exports.sign_in = async (req, res) => {
-    let user = await User.findByEmail(req.body.email)
+    let user = await users_service.find_by_email(req.body.email)
     if (!user) return res.status(HttpStatus.BAD_REQUEST).send('Invalid email or password')
 
     const valid_password = await user.passwordMatches(req.body.password)
     if (!valid_password) return res.status(HttpStatus.BAD_REQUEST).send('Invalid password')
 
     const token = user.generateUserToken()
-    // const { user, token } = await users_service.login(req, res)
     res.send({ _id: user._id, full_name: user.full_name, email: user.email, role: user.role, company: user.company, accessToken: token })
 }
 
 exports.all = async (req, res) => {
-    const users = await User
-        .find()
-        .select('-password')
-        .populate('company')
-
+    const users = await users_service.get_users()
     res.json(users)
 }
 
 exports.show = async (req, res) => {
-    const user = await User
-        .findById(req.params.id)
-        .select('-password')
-        .populate('company')
-
+    const user = await users_service.get_user(req.params.id)
     if (!user) return res.status(HttpStatus.NOT_FOUND).send('Invalid user')
 
     res.json(user)
 }
 
 exports.create = async (req, res) => {
-    let user = await User.findByEmail(req.body.email)
+    let user = await users_service.find_by_email(req.body.email)
     if (user) return res.status(HttpStatus.BAD_REQUEST).send('User already registered.')   
 
-    const company = await Company.findById(req.body.company)
+    const company = await users_service.find_company_by_id(req.body.company)
     if (!company) return res.status(HttpStatus.BAD_REQUEST).send('Invalid company')
 
-    user = new User(req.body)
+    user = await users_service.create_user(req.body)
 
-    // company.users.push(user._id)
-
-    await user.save()
-    // await company.save()
-
-    // const token = user.generateUserToken()
     res.status(HttpStatus.CREATED).json(_.pick(user, ['_id', 'full_name', 'email', 'role', 'company']))
 }
 
 exports.update = async (req, res) => {
-    let user = await User.findById(req.params.id)
+    let user = await users_service.find_by_id(req.params.id)
     if (!user) return res.status(HttpStatus.NOT_FOUND).send('Invalid user')
 
-    const options = { new: true }
-    user = await User.findByIdAndUpdate(req.params.id, req.body, options)
+    user = await users_service.update_user(req.params.id, req.body)
 
     res.json(_.pick(user, ['_id', 'full_name', 'email', 'role', 'company']))
 }
 
 exports.delete = async (req, res) => {
-    const user = await User.findById(req.params.id)
+    const user = await users_service.find_by_id(req.params.id)
     if (!user) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid user' })
 
     await user.remove()
