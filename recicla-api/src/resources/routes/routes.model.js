@@ -19,14 +19,22 @@ const routeSchema = new mongoose.Schema({
         required: true
     },
     distance: {
-        type: Number
+        type: Number,
+        default: 0
     },
-    duration: {
-        type: Number
+    duration_time: {
+        type: Number,
+        default: 0
     },
     traveling_time: {
-        max: Number,
-        min: Number
+        max: {
+            type: Number,
+            default: 0
+        },
+        min: {
+            type: Number,
+            default: 0
+        },
     },
     created_at: {
         type: Date,
