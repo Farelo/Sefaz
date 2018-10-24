@@ -54,7 +54,7 @@ const validate_control_points = (control_point) => {
         lat: Joi.number(),
         lng: Joi.number(),
         full_address: Joi.string().max(200),
-        type: Joi.string(),
+        type: Joi.string().valid(['factory', 'supplier', 'logistic_op', 'others']),
         company: Joi.objectId()
     })
 

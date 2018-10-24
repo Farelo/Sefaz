@@ -53,7 +53,7 @@ const validate_companies = (company) => {
             cep: Joi.string(),
             uf: Joi.string()
         },
-        type: Joi.string()
+        type: Joi.string().valid(['owner','client'])
     })
     return Joi.validate(company, schema, { abortEarly: false })
 }
