@@ -8,7 +8,7 @@ const packings = require('../resources/packings/packings.routing')
 const control_points = require('../resources/control_points/control_points.routing')
 const routes = require('../resources/routes/routes.routing')
 const reports = require('../resources/reports/reports.routing')
-const error = require('../middlewares/error.middleware')
+const error = require('../middlewares/error_handler.middleware')
 
 module.exports = (app) => {
     const corsOptions = {
