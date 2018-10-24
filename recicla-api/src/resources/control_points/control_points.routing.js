@@ -1,34 +1,40 @@
 const express = require('express')
 const router = express.Router()
-const companies_controller = require('./companies.controller')
+const control_points_controller = require('./control_points.controller')
 const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
-const { validate_companies } = require('./companies.model')
+const { validate_control_points } = require('./control_points.model')
 
-router.get('/', [auth, authz],companies_controller.all)
-router.get('/:id', [auth, validate_object_id], companies_controller.show)
-router.post('/', [auth, authz, validate_joi(validate_companies)], companies_controller.create)
-router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_companies)], companies_controller.update)
-router.delete('/:id', [auth, authz, validate_object_id], companies_controller.delete)
+router.get('/', [auth, authz], control_points_controller.all)
+router.get('/:id', [auth, validate_object_id], control_points_controller.show)
+router.post('/', [auth, authz, validate_joi(validate_control_points)], control_points_controller.create)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_control_points)], control_points_controller.update)
+router.delete('/:id', [auth, authz, validate_object_id], control_points_controller.delete)
 
 module.exports = router
 
 // GET '/'
 /**
  * @swagger
- * /companies:
+ * /control_points:
  *   get:
- *     summary: Retrieve all companies
- *     description: Retrieve all companies on database
+ *     summary: Retrieve all control points
+ *     description: Retrieve all control points on database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
+ *       - ControlPoints
+ *     parameters:
+ *       - name: name
+ *         description: Return control point filtered by name
+ *         in: query
+ *         required: false
+ *         type: string
  *     responses:
  *       200:
- *         description: list of all companies
+ *         description: list of all control_points
  *       400:
  *         description: Bad Request
  *       404:
@@ -39,25 +45,25 @@ module.exports = router
 /**
  * @swagger
  *
- * /companies/{id}:
+ * /control_points/{id}:
  *   get:
- *     summary: Create a company
- *     description: Create a company
+ *     summary: Create a control point
+ *     description: Create a control point
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
+ *       - ControlPoints
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Company id
+ *         description: ControlPoint id
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: Company is valid request
+ *         description: ControlPoint is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -71,26 +77,26 @@ module.exports = router
 /**
  * @swagger
  *
- * /companies:
+ * /control_points:
  *   post:
- *     summary: Create a company
- *     description: Create a company
+ *     summary: Create a control point
+ *     description: Create a control point
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
+ *       - ControlPoints
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: company
- *         description: Company object
+ *       - name: control_point
+ *         description: ControlPoint object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/CompanyObject'
+ *           $ref: '#/definitions/ControlPointObject'
  *     responses:
  *       200:
- *         description: Company is valid request
+ *         description: ControlPoint is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -103,26 +109,26 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /companies/{id}:
+ * /control_points/{id}:
  *   patch:
- *     summary: Update a company
- *     description: Update a company by id
+ *     summary: Update a control point
+ *     description: Update a control point by id
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
+ *       - ControlPoints
  *     parameters:
  *       - name: id
- *         description: Company id
+ *         description: ControlPoint id
  *         in: path
  *         required: true
  *         type: string
- *       - name: company
- *         description: Company object
+ *       - name: control_point
+ *         description: ControlPoint object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/CompanyObject'
+ *           $ref: '#/definitions/ControlPointObject'
  *     responses:
  *       200:
  *         description: OK
@@ -135,17 +141,17 @@ module.exports = router
 // DELETE '/'
 /**
  * @swagger
- * /companies/{id}:
+ * /control_points/{id}:
  *   delete:
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
- *     summary: Delete a company
- *     description: Deleta a company
+ *       - ControlPoints
+ *     summary: Delete a control point
+ *     description: Deleta a control point
  *     parameters:
  *       - name: id
- *         description: Company id
+ *         description: ControlPoint id
  *         in: path
  *         required: true
  *         type: string
@@ -162,38 +168,23 @@ module.exports = router
  * @swagger
  *
  * definitions:
- *   CompanyObject:
+ *   ControlPointObject:
  *     type: object
  *     required:
  *       - name
  *     properties:
  *       name:
  *         type: string
- *       phone:
+ *       duns:
  *         type: string
- *       cnpj:
+ *       lat:
+ *         type: number
+ *       lng:
+ *         type: number
+ *       full_address:
  *         type: string
- *       address:
- *         $ref: '#/definitions/AddressObject'
  *       type:
  *         type: string
- *       
- */
-
- /**
- * @swagger
- *
- * definitions:
- *   AddressObject:
- *     type: object
- *     properties:
- *       city:
+ *       company:
  *         type: string
- *       street:
- *         type: string
- *       cep:
- *         type: string
- *       uf:
- *         type: string
- *       
  */

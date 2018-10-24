@@ -12,14 +12,12 @@ exports.find_by_email = async (email) => {
     }
 }
 
-exports.get_users = async () => {
+exports.get_users = async (email) => {
     try {
-        const users = await User
-            .find()
-            .select('-password')
-            .populate('company')
+        if (!email) return await User.find().select('-password').populate('company')
 
-        return users
+        const data = await User.findByEmail(email)
+        return data ? [data] : []
     } catch (error) {
         throw new Error(error)
     }

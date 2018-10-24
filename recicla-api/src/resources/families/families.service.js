@@ -4,15 +4,10 @@ const { Family } = require('./families.model')
 
 exports.get_families = async (code) => {
     try {
-        let families
-        if (code) {
-            families = await Family.findByCode(code)
-            if (!families) families = []
-        } else {
-            families = await Family.find().populate('company', ['_id', 'name', 'type'])
-        }
+        if (!code) return await Family.find().populate('company', ['_id', 'name', 'type'])
 
-        return families
+        const data = await Family.findByCode(code)
+        return data ? [data] : []
     } catch (error) {
         throw new Error(error)
     }

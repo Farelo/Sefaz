@@ -60,6 +60,12 @@ module.exports = router
  *       - Users
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: email
+ *         description: User email
+ *         in: query
+ *         required: false
+ *         type: string
  *     responses:
  *       200:
  *         description: User is valid request
