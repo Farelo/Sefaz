@@ -32,7 +32,7 @@
                 || (mFamily.get('code').hasError('pattern') && submitted)">
         Excesso de espaços em branco</p>
       
-      <p class="explicacao" *ngIf="emailLoading">
+      <p class="explicacao" *ngIf="validateNotTakenLoading">
         Verificando disponibilidade ...</p>
     </div>
 

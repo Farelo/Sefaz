@@ -23,6 +23,7 @@ export class FamiliaEditarComponent implements OnInit {
   public validForm: boolean = true;
   public submited = false;
   public mId: string;
+  public mActualFamily: any;
 
   constructor(
     private familiesService: FamiliesService,
@@ -71,7 +72,7 @@ export class FamiliaEditarComponent implements OnInit {
         //   control_points: result.control_points
         // };
         //console.log('this.actualValues...' + JSON.stringify(actualValues));
-
+        this.mActualFamily = result;
         (<FormGroup>this.mFamily).patchValue(result, { onlySelf: true });
       });
     });
@@ -98,27 +99,27 @@ export class FamiliaEditarComponent implements OnInit {
     }, err => this.toastService.error(err));
   }
 
-  public emailLoading: boolean;
+  public validateNotTakenLoading: boolean;
   validateNotTaken(control: AbstractControl) {
-    this.emailLoading = true;
+    this.validateNotTakenLoading = true;
+
+    if (this.mActualFamily.code == control.value) {
+      this.validateNotTakenLoading = false;
+      return new Promise((resolve, reject) => resolve(null));
+    }
+
     return control
       .valueChanges
       .delay(800)
       .debounceTime(800)
       .distinctUntilChanged()
       .switchMap(value => this.familiesService.getAllFamilies({ code: control.value }))
-      //.switchMap(value => this.packingService.getAllPackings())
       .map(res => {
-        console.log('res: ' + JSON.stringify(res));
-
-        this.emailLoading = false;
-        let auxArray = [];
-
-        if (Array.isArray(res)) {
-          console.log('.');
+        
+        this.validateNotTakenLoading = false;
+        if (res == []) {
           return control.setErrors(null);
         } else {
-          console.log('..');
           return control.setErrors({ uniqueValidation: 'code already exist' })
         }
       })

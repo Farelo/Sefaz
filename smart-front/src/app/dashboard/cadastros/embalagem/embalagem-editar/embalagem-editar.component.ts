@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastService, PackingService, FamiliesService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
@@ -10,13 +10,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['../../cadastros.component.css']
 })
 export class EmbalagemEditarComponent implements OnInit {
-  
+
   public mPacking: FormGroup;
   public listOfFamilies: any[] = [];
   public inscricao: Subscription;
   public mId: string;
+  public mActualPacking: any;
   public activePacking: boolean = false;
-  
+
   constructor(
     private familyService: FamiliesService,
     private packingService: PackingService,
@@ -53,6 +54,7 @@ export class EmbalagemEditarComponent implements OnInit {
       this.packingService.getPacking(this.mId).subscribe(result => {
 
         //console.log('result ...' + JSON.stringify(result));
+        this.mActualPacking = result;
         (<FormGroup>this.mPacking).patchValue(result, { onlySelf: true });
       });
     });
@@ -73,8 +75,8 @@ export class EmbalagemEditarComponent implements OnInit {
   configureForm() {
     this.mPacking = this.fb.group({
       tag: this.fb.group({
-        code: ['', 
-          [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)], 
+        code: ['',
+          [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)],
           this.validateNotTaken.bind(this)
         ],
         version: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
@@ -92,30 +94,34 @@ export class EmbalagemEditarComponent implements OnInit {
       active: false
     });
   }
-  
-  public validateNotTakenLoading: boolean;
+
+  public validateNotTakenLoading: boolean = false;
   validateNotTaken(control: AbstractControl) {
     this.validateNotTakenLoading = true;
+    console.log('this.mActualPacking.tag.code: ' + this.mActualPacking.tag.code);
+    console.log('control.value: ' + control.value);
+
+    if (this.mActualPacking.tag.code == control.value) {
+      this.validateNotTakenLoading = false;
+      return new Promise((resolve, reject) => resolve(null));
+    }
+
     return control
       .valueChanges
       .delay(800)
       .debounceTime(800)
       .distinctUntilChanged()
       .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
-      //.switchMap(value => this.packingService.getAllPackings())
       .map(res => {
-        //console.log('res: ' + JSON.stringify(res));
-
+        
         this.validateNotTakenLoading = false;
-        let auxArray = [];
-
-        if (Array.isArray(res)) {
-          console.log('.');
+        if (res == []) {
+          //console.log('...');
           return control.setErrors(null);
         } else {
-          console.log('..');
           return control.setErrors({ uniqueValidation: 'code already exist' })
         }
-      })
+      });
   }
 }
+

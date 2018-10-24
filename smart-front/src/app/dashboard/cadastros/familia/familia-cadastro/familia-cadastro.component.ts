@@ -100,9 +100,8 @@ export class FamiliaCadastroComponent implements OnInit {
       //.switchMap(value => this.packingService.getAllPackings())
       .map(res => {
         this.emailLoading = false;
-        let auxArray = [];
-
-        if (Array.isArray(res)) {
+        
+        if (res.length == 0) {
           return control.setErrors(null);
         } else {
           return control.setErrors({ uniqueValidation: 'code already exist' })

@@ -51,7 +51,10 @@ export class CreateUserComponent implements OnInit {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
       full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-      email: ['', [Validators.required, Validators.email, Validators.minLength(5)]],
+      email: ['', 
+        [Validators.required, Validators.email, Validators.minLength(5)], 
+        this.validateNotTaken.bind(this)
+      ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
       company: ['', [Validators.required]]
@@ -92,4 +95,23 @@ export class CreateUserComponent implements OnInit {
     this.activeModal.close();
   }
 
+  public validateNotTakenLoading: boolean = false;
+  validateNotTaken(control: AbstractControl) {
+    this.validateNotTakenLoading = true;
+    return control
+      .valueChanges
+      .delay(800)
+      .debounceTime(800)
+      .distinctUntilChanged()
+      .switchMap(value => this.usersService.getAllUsers({ email: control.value }))
+      .map(res => {
+        
+        this.validateNotTakenLoading = false;
+        if (res) {
+          return control.setErrors(null);
+        } else {
+          return control.setErrors({ uniqueValidation: 'code already exist' })
+        }
+      })
+  }
 }

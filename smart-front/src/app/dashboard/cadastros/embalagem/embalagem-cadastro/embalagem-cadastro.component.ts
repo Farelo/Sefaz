@@ -101,18 +101,14 @@ export class EmbalagemCadastroComponent implements OnInit {
       .debounceTime(800)
       .distinctUntilChanged()
       .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
-      //.switchMap(value => this.packingService.getAllPackings())
       .map(res => {
-        //console.log('res: ' + JSON.stringify(res));
-
         this.validateNotTakenLoading = false;
-        let auxArray = [];
 
-        if (Array.isArray(res)) {
-          console.log('.');
+        if (res.length == 0) {
+          // console.log('.');
           return control.setErrors(null);
         } else {
-          console.log('..');
+          // console.log('..');
           return control.setErrors({ uniqueValidation: 'code already exist' })
         }
       })
