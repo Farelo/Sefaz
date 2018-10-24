@@ -17,7 +17,7 @@ exports.get_control_point = async (id) => {
     try {
         const control_point = await ControlPoint
             .findById(id)
-            .populate('family', ['_id', 'code', 'company'])
+            .populate('company')
 
         return control_point
     } catch (error) {
