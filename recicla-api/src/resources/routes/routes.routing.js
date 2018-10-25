@@ -1,34 +1,40 @@
 const express = require('express')
 const router = express.Router()
-const companies_controller = require('./companies.controller')
+const routes_controller = require('./routes.controller')
 const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
-const { validate_companies } = require('./companies.model')
+const { validate_routes } = require('./routes.model')
 
-router.get('/', [auth, authz],companies_controller.all)
-router.get('/:id', [auth, validate_object_id], companies_controller.show)
-router.post('/', [auth, authz, validate_joi(validate_companies)], companies_controller.create)
-router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_companies)], companies_controller.update)
-router.delete('/:id', [auth, authz, validate_object_id], companies_controller.delete)
+router.get('/', [auth, authz], routes_controller.all)
+router.get('/:id', [auth, validate_object_id], routes_controller.show)
+router.post('/', [auth, authz, validate_joi(validate_routes)], routes_controller.create)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_routes)], routes_controller.update)
+router.delete('/:id', [auth, authz, validate_object_id], routes_controller.delete)
 
 module.exports = router
 
 // GET '/'
 /**
  * @swagger
- * /companies:
+ * /routes:
  *   get:
- *     summary: Retrieve all companies
- *     description: Retrieve all companies on database
+ *     summary: Retrieve all routes
+ *     description: Retrieve all routes on database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
+ *       - Routes
+ *     parameters:
+ *       - name: name
+ *         description: Return route filtered by name
+ *         in: query
+ *         required: false
+ *         type: string
  *     responses:
  *       200:
- *         description: list of all companies
+ *         description: list of all routes
  *       400:
  *         description: Bad Request
  *       404:
@@ -39,25 +45,25 @@ module.exports = router
 /**
  * @swagger
  *
- * /companies/{id}:
+ * /routes/{id}:
  *   get:
- *     summary: Create a company
- *     description: Create a company
+ *     summary: Create a route
+ *     description: Create a route
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
+ *       - Routes
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Company id
+ *         description: ControlPoint id
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: Company is valid request
+ *         description: ControlPoint is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -71,26 +77,26 @@ module.exports = router
 /**
  * @swagger
  *
- * /companies:
+ * /routes:
  *   post:
- *     summary: Create a company
- *     description: Create a company
+ *     summary: Create a route
+ *     description: Create a route
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
+ *       - Routes
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: company
- *         description: Company object
+ *       - name: control_point
+ *         description: ControlPoint object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/CompanyObject'
+ *           $ref: '#/definitions/RouteObject'
  *     responses:
  *       200:
- *         description: Company is valid request
+ *         description: ControlPoint is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -103,26 +109,26 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /companies/{id}:
+ * /routes/{id}:
  *   patch:
- *     summary: Update a company
- *     description: Update a company by id
+ *     summary: Update a route
+ *     description: Update a route by id
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
+ *       - Routes
  *     parameters:
  *       - name: id
- *         description: Company id
+ *         description: ControlPoint id
  *         in: path
  *         required: true
  *         type: string
- *       - name: company
- *         description: Company object
+ *       - name: control_point
+ *         description: ControlPoint object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/CompanyObject'
+ *           $ref: '#/definitions/RouteObject'
  *     responses:
  *       200:
  *         description: OK
@@ -135,17 +141,17 @@ module.exports = router
 // DELETE '/'
 /**
  * @swagger
- * /companies/{id}:
+ * /routes/{id}:
  *   delete:
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
- *     summary: Delete a company
- *     description: Deleta a company
+ *       - Routes
+ *     summary: Delete a route
+ *     description: Deleta a route
  *     parameters:
  *       - name: id
- *         description: Company id
+ *         description: ControlPoint id
  *         in: path
  *         required: true
  *         type: string
@@ -162,38 +168,36 @@ module.exports = router
  * @swagger
  *
  * definitions:
- *   CompanyObject:
+ *   RouteObject:
  *     type: object
  *     required:
- *       - name
+ *       - family
+ *       - first_point
+ *       - second_point
  *     properties:
- *       name:
+ *       family:
  *         type: string
- *       phone:
+ *       first_point:
  *         type: string
- *       cnpj:
+ *       second_point:
  *         type: string
- *       address:
- *         $ref: '#/definitions/AddressObject'
- *       type:
- *         type: string
- *       
+ *       distance:
+ *         type: number
+ *       duration:
+ *         type: number
+ *       traveling_time:
+ *         $ref: '#/definitions/TravelingTimeObject'
  */
 
  /**
  * @swagger
  *
  * definitions:
- *   AddressObject:
+ *   TravelingTimeObject:
  *     type: object
  *     properties:
- *       city:
+ *       max:
  *         type: string
- *       street:
+ *       min:
  *         type: string
- *       cep:
- *         type: string
- *       uf:
- *         type: string
- *       
  */

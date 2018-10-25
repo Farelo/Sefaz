@@ -8,7 +8,7 @@ const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_families } = require('./families.model')
 
 router.get('/', [auth, authz], families_controller.all)
-router.get('/:id', [auth, validate_object_id], families_controller.show)
+router.get('/:id', [auth, authz, validate_object_id], families_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_families)], families_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_families)], families_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], families_controller.delete)
@@ -25,7 +25,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     parameters:
  *       - name: code
  *         description: Return family filtered by tag code
@@ -48,11 +48,11 @@ module.exports = router
  * /families/{id}:
  *   get:
  *     summary: Create a family
- *     description: Crete a family
+ *     description: Create a family
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     produces:
  *       - application/json
  *     parameters:
@@ -80,11 +80,11 @@ module.exports = router
  * /families:
  *   post:
  *     summary: Create a family
- *     description: Crete a family
+ *     description: Create a family
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     produces:
  *       - application/json
  *     parameters:
@@ -116,7 +116,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     parameters:
  *       - name: id
  *         description: Family id
@@ -146,7 +146,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Family
+ *       - Families
  *     summary: Delete a family
  *     description: Deleta a family
  *     parameters:

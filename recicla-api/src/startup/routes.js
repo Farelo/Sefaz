@@ -5,7 +5,10 @@ const users = require('../resources/users/users.routing')
 const companies = require('../resources/companies/companies.routing')
 const families = require('../resources/families/families.routing')
 const packings = require('../resources/packings/packings.routing')
-const error = require('../middlewares/error.middleware')
+const control_points = require('../resources/control_points/control_points.routing')
+const routes = require('../resources/routes/routes.routing')
+const reports = require('../resources/reports/reports.routing')
+const error = require('../middlewares/error_handler.middleware')
 
 module.exports = (app) => {
     const corsOptions = {
@@ -28,6 +31,9 @@ module.exports = (app) => {
     app.use('/api/companies', companies)
     app.use('/api/families', families)
     app.use('/api/packings', packings)
+    app.use('/api/control_points', control_points)
+    app.use('/api/routes', routes)
+    app.use('/api/reports', reports)
 
     // Middlewares functions
     app.use(error)

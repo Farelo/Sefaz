@@ -8,7 +8,7 @@ const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_packings } = require('./packings.model')
 
 router.get('/', [auth, authz], packings_controller.all)
-router.get('/:id', [auth, validate_object_id], packings_controller.show)
+router.get('/:id', [auth, authz, validate_object_id], packings_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_packings)], packings_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_packings)], packings_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], packings_controller.delete)
@@ -25,7 +25,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     parameters:
  *       - name: tag_code
  *         description: Return packing filtered by tag code
@@ -48,11 +48,11 @@ module.exports = router
  * /packings/{id}:
  *   get:
  *     summary: Create a packing
- *     description: Crete a packing
+ *     description: Create a packing
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     produces:
  *       - application/json
  *     parameters:
@@ -80,11 +80,11 @@ module.exports = router
  * /packings:
  *   post:
  *     summary: Create a packing
- *     description: Crete a packing
+ *     description: Create a packing
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     produces:
  *       - application/json
  *     parameters:
@@ -116,7 +116,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     parameters:
  *       - name: id
  *         description: Packing id
@@ -146,7 +146,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packing
+ *       - Packings
  *     summary: Delete a packing
  *     description: Deleta a packing
  *     parameters:
@@ -171,16 +171,7 @@ module.exports = router
  *   PackingObject:
  *     type: object
  *     required:
- *       - tag
  *       - serial
- *       - type
- *       - weigth
- *       - width
- *       - heigth
- *       - length
- *       - capacity
- *       - observations
- *       - active
  *       - family
  *     properties:
  *       tag:
@@ -215,8 +206,6 @@ module.exports = router
  *     type: object
  *     required:
  *       - code
- *       - version
- *       - manufactorer
  *     properties:
  *       code:
  *         type: string

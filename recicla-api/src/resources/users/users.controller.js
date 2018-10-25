@@ -17,7 +17,8 @@ exports.sign_in = async (req, res) => {
 }
 
 exports.all = async (req, res) => {
-    const users = await users_service.get_users()
+    const email = req.query.email ? req.query.email : null
+    const users = await users_service.get_users(email)
     res.json(users)
 }
 
