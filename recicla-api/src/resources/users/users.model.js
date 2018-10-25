@@ -55,7 +55,9 @@ const userSchema = new mongoose.Schema({
 const validate_user = (user) => {
     const schema = Joi.object().keys({
         full_name: Joi.string().min(5).max(255),
-        email: Joi.string().min(5).max(255).required().email(),
+        email: Joi.string().min(5).max(255).required()
+            .regex(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+            .error(() => "Invalid email format."),
         password: Joi.string().min(6).max(1024).required(),
         role: Joi.string().valid(['admin', 'user']),
         company: Joi.objectId()
