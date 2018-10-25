@@ -4,6 +4,8 @@ const Joi = require('joi')
 const familySchema = new mongoose.Schema({
     code: {
         type: String,
+        minlength: 3,
+        maxlength: 25,
         required: true,
         unique: true
     },
@@ -17,7 +19,8 @@ const familySchema = new mongoose.Schema({
     }],
     company: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Company'
+        ref: 'Company',
+        required: true
     },
     created_at: {
         type: Date,
@@ -32,9 +35,8 @@ const familySchema = new mongoose.Schema({
 
 const validate_families = (family) => {
     const schema = Joi.object().keys({
-        code: Joi.string().required(),
-        packings: Joi.objectId(),
-        company: Joi.objectId()
+        code: Joi.string().min(3).max(25).required(),
+        company: Joi.objectId().required()
     })
 
     return Joi.validate(family, schema, { abortEarly: false })

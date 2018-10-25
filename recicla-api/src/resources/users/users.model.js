@@ -57,7 +57,7 @@ const validate_user = (user) => {
         full_name: Joi.string().min(5).max(255),
         email: Joi.string().min(5).max(255).required().email(),
         password: Joi.string().min(6).max(1024).required(),
-        role: Joi.string(),
+        role: Joi.string().valid(['admin', 'user']),
         company: Joi.objectId()
     })
 

@@ -10,14 +10,36 @@ const companySchema = new mongoose.Schema({
         maxlength: 50
     },
     phone: {
-        type: String
+        type: String,
+        minlength: 10,
+        maxlength: 14
     },
-    cnpj: String,
+    cnpj: {
+        type: String,
+        minlength: 14,
+        maxlength: 20
+    },
     address: {
-        city: String,
-        street: String,
-        cep: String,
-        uf: String
+        city: {
+            type: String,
+            minlength: 4,
+            maxlength: 50
+        },
+        street: {
+            type: String,
+            minlength: 4,
+            maxlength: 50
+        },
+        cep: {
+            type: String,
+            minlength: 8,
+            maxlength: 9
+        },
+        uf: {
+            type: String,
+            minlength: 2,
+            maxlength: 2
+        }
     },
     type: {
         type: String,
@@ -45,15 +67,15 @@ companySchema.statics.findByName = function (name, projection = '') {
 const validate_companies = (company) => {
     const schema = Joi.object().keys({
         name: Joi.string().min(5).max(50).required(),
-        phone: Joi.string(),
-        cnpj: Joi.string(),
+        phone: Joi.string().min(10).max(14),
+        cnpj: Joi.string().min(14).max(20),
         address: {
-            city: Joi.string(),
-            street: Joi.string(),
-            cep: Joi.string(),
-            uf: Joi.string()
+            city: Joi.string().min(4).max(50),
+            street: Joi.string().min(4).max(50),
+            cep: Joi.string().min(8).max(9),
+            uf: Joi.string().min(2).max(2)
         },
-        type: Joi.string()
+        type: Joi.string().valid(['owner','client'])
     })
     return Joi.validate(company, schema, { abortEarly: false })
 }

@@ -11,7 +11,7 @@ router.post('/sign_in', validate_joi(validate_user), users_controller.sign_in)
 router.get('/', [auth, authz], users_controller.all)
 router.get('/:id', [auth, validate_object_id], users_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_user)], users_controller.create)
-router.patch('/:id', [auth, validate_object_id, validate_joi(validate_user)], users_controller.update)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_user)], users_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], users_controller.delete)
 
 module.exports = router
