@@ -12,33 +12,30 @@ import { DirectionsRenderer } from '@ngui/map';
   styleUrls: ['../cadastros.component.css']
 })
 export class RotasComponent implements OnInit {
-  public data: Pagination = new Pagination({meta: {page : 1}});
+
+  public allRoutes: Pagination = new Pagination({meta: {page : 1}});
   public search = "";
+
   constructor(
-    private RoutesService : RoutesService,
-    private modalService: NgbModal
-  ) { }
+    private routesService : RoutesService,
+    private modalService: NgbModal) { }
 
   searchEvent(): void{
       this.loadRoutes();
   }
 
-  pageChanged(page: any): void{
-    this.data.meta.page = page;
-    this.loadRoutes();
-  }
-
   loadRoutes(){
 
-    this.RoutesService
-      .getRoutesPagination(10,this.data.meta.page,this.search)
+    this.routesService
+      .getAllRoutes()
       .subscribe(data => {
-        this.data = data;
+        
+        this.allRoutes = data;
       }, err => {console.log(err)});
   }
 
   removeRoutes(route):void{
-    //MOSTRAR
+    
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.view = route;
     modalRef.componentInstance.type = "route";

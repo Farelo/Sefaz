@@ -23,8 +23,8 @@ export class ModalDeleteComponent implements OnInit {
     private modalService: NgbModal) { }
 
   ngOnInit() {
-    console.log('mObject: ' + JSON.stringify(this.mObject));
-    console.log('mType: ' + JSON.stringify(this.mType));
+    //console.log('mObject: ' + JSON.stringify(this.mObject));
+    //console.log('mType: ' + JSON.stringify(this.mType));
   }
 
   delete() {
