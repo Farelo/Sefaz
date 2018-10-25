@@ -73,14 +73,14 @@ export class EmbalagemCadastroComponent implements OnInit {
     this.mPacking = this.fb.group({
       tag: this.fb.group({
         code: ['', 
-          [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)], 
+          [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[\a-z0-9_-]+)*$/)], 
           this.validateNotTaken.bind(this)
         ],
-        version: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-        manufactorer: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]]
+        version: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
+        manufactorer: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]]
       }),
-      serial: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-      type: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      serial: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
+      type: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
       weigth: ['', [Validators.required]],
       width: ['', [Validators.required]],
       heigth: ['', [Validators.required]],
@@ -105,10 +105,10 @@ export class EmbalagemCadastroComponent implements OnInit {
         this.validateNotTakenLoading = false;
 
         if (res.length == 0) {
-          // console.log('.');
+          console.log('empty')
           return control.setErrors(null);
         } else {
-          // console.log('..');
+          console.log('not empty')
           return control.setErrors({ uniqueValidation: 'code already exist' })
         }
       })

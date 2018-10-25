@@ -50,7 +50,7 @@ export class CreateUserComponent implements OnInit {
   formProfile() {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
-      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
       email: ['', 
         [Validators.required, Validators.email, Validators.minLength(5)], 
         this.validateNotTaken.bind(this)
@@ -107,7 +107,7 @@ export class CreateUserComponent implements OnInit {
       .map(res => {
         
         this.validateNotTakenLoading = false;
-        if (res) {
+        if (res.length == 0) {
           return control.setErrors(null);
         } else {
           return control.setErrors({ uniqueValidation: 'code already exist' })

@@ -59,7 +59,7 @@ export class EditUserComponent implements OnInit {
   formProfile() {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
-      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2,}).)*$/)]],
+      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
       email: ['',
         [Validators.required, Validators.email, Validators.minLength(5)],
         this.validateNotTaken.bind(this)
@@ -125,6 +125,7 @@ export class EditUserComponent implements OnInit {
     this.validateNotTakenLoading = true;
     
     if (this.mUser.email == control.value) {
+      //console.log('equal');
       this.validateNotTakenLoading = false;
       return new Promise((resolve, reject) => resolve(null));
     }
@@ -138,9 +139,11 @@ export class EditUserComponent implements OnInit {
       .map(res => {
 
         this.validateNotTakenLoading = false;
-        if (!res) {
+        if (res.length==0) {
+          //console.log('[]');
           return control.setErrors(null);
         } else {
+          //console.log('[...]'); 
           return control.setErrors({ uniqueValidation: 'code already exist' })
         }
       })

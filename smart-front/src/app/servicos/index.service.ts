@@ -24,4 +24,4 @@ export { CompaniesService } from './companies.service';
 export { UsersService } from './users.service';
 export { FamiliesService } from './families.service';
 export { MapsService } from './maps.service';
-
+export { ControlPointsService } from './controlPoints.service';

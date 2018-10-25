@@ -99,14 +99,14 @@ export class CompanyEditarComponent implements OnInit {
   formProfile() {
     this.newCompany = this.fb.group({
       type: ['', [Validators.required]],
-      name: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      name: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
       phone: ['', [Validators.required]],
       cnpj: ['', [Validators.required]],
       address: this.fb.group({
-        street: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-        city: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        street: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
+        city: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
         cep: ['', [Validators.required]],
-        uf: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]]
+        uf: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]]
       })
     });
   }

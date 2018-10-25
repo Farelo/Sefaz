@@ -39,7 +39,7 @@ export class FamiliaCadastroComponent implements OnInit {
       code: ['',
         [Validators.required,
         Validators.maxLength(30),
-        Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)],
+        Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)],
         this.validateNotTaken.bind(this)
       ],
       selectedCompanies: [undefined, [Validators.required]],

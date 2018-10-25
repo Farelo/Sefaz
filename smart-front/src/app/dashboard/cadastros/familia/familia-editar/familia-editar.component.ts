@@ -53,7 +53,7 @@ export class FamiliaEditarComponent implements OnInit {
     this.mFamily = this.fb.group({
       code: ['',
         [Validators.required,
-        Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)],
+        Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)],
         this.validateNotTaken.bind(this)
       ],
       company: ['', [Validators.required]],
@@ -117,7 +117,7 @@ export class FamiliaEditarComponent implements OnInit {
       .map(res => {
         
         this.validateNotTakenLoading = false;
-        if (res == []) {
+        if (res.length == 0) {
           return control.setErrors(null);
         } else {
           return control.setErrors({ uniqueValidation: 'code already exist' })
