@@ -8,10 +8,20 @@ smart-front/node_modules
 admin-api/node_modules
 admin-front/node_modules
 smart-front/dist
+
 recicla-api/node_modules
 recicla-api/coverage
+recicla-api/src/config/production.json
+recicla-api/src/tools/env-temp.tools.js
 recicla-api/src/logs/
 recicla-api/package-lock.json
+
+recicla-job/node_modules
+recicla-api/src/config/production.json
+recicla-api/src/tools/env-temp.tools.js
+recicla-job/src/logs/
+recicla-job/package-lock.json
+
 # compiled output
 /dist
 /tmp
