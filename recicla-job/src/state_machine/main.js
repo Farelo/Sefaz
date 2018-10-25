@@ -7,7 +7,7 @@ const readFilePromise = require('fs-readfile-promise');
 async function loadPackings() {
     try {
         let cPackings = [];
-        const filePath = 'src/startup/job/packings.txt'
+        const filePath = 'src/state_machine/packings.txt'
 
         const data = await readFilePromise(filePath, 'utf8')
         // console.log(data)
@@ -69,7 +69,7 @@ async function loadPackings() {
 async function loadDeviceLog() {
     try {
         let dLogs = [];
-        const filePath = 'src/startup/job/input.txt'
+        const filePath = 'src/state_machine/input.txt'
 
         const data = await readFilePromise(filePath, 'utf8')
         // console.log(data)
@@ -132,7 +132,7 @@ async function getLastAccurateEntry(packing) {
     return undefined
 }
 
-async function main() {
+const main = async () => {
     //const res = await loadDeviceLog()
     const pack = await loadPackings()
     pack.forEach(element => {
@@ -150,6 +150,7 @@ async function main() {
 }
 
 main()
+exports.main = main 
 
 const DAY1 = 1000 * 60 * 60 * 24;
 const DAY2 = DAY1 * 2;
@@ -515,3 +516,5 @@ function runSM(user, packing) {
     checkBattery(packing) ? setAttributeAlert(packing, alerts.BATERIA) : setAttributeAlert(packing, alerts.NBATERIA);
     setState(packing, nextState);
 }
+
+module.exports = main
