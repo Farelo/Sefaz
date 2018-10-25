@@ -8,7 +8,7 @@ const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_packings } = require('./packings.model')
 
 router.get('/', [auth, authz], packings_controller.all)
-router.get('/:id', [auth, validate_object_id], packings_controller.show)
+router.get('/:id', [auth, authz, validate_object_id], packings_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_packings)], packings_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_packings)], packings_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], packings_controller.delete)
