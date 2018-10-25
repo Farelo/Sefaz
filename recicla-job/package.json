@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "postinstall": "cross-env NODE_ENV=production node src/tools/generate_env.tools.js",
-    "start": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name recicla-job"
+    "start": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name recicla-job -i 0"
   },
   "author": "ISI-TICs",
   "license": "ISC",
@@ -27,6 +27,7 @@
     "debug": "^3.1.0",
     "fs-readfile-promise": "^3.0.1",
     "jest": "^23.4.1",
+    "loadtest": "^3.0.4",
     "shelljs": "^0.8.2",
     "supertest": "^3.1.0"
   },

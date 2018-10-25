@@ -17,8 +17,8 @@ recicla-api/src/logs/
 recicla-api/package-lock.json
 
 recicla-job/node_modules
-recicla-api/src/config/production.json
-recicla-api/src/tools/env-temp.tools.js
+recicla-job/src/config/production.json
+recicla-job/src/tools/env-tmp.tools.js
 recicla-job/src/logs/
 recicla-job/package-lock.json
 
