@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ToastService, GeocodingService, CompaniesService, ControlPointsService } from 'app/servicos/index.service';
 import { Router } from '@angular/router'; 
 
@@ -17,13 +17,14 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   public address: any = {};
   public center: any;
   public submitted: boolean;
-  public zoom = 14;
+  public zoom = 16;
   public default = {
     lat: 0,
     lng: 0
   }
   public pos: any;
   public geocoder = new google.maps.Geocoder;
+  public pointWasSelected: boolean = false;
 
   constructor(
     private companyService: CompaniesService,
@@ -35,7 +36,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     private geocodingService: GeocodingService) {
 
     this.mControlPoint = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)],
       duns: ['', [Validators.required]],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
@@ -82,13 +83,11 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     // console.log(value);
     // console.log(valid);
-    // console.log(this.mControlPoint);
+    console.log(this.mControlPoint);
 
     this.submitted = true;
 
-    if (valid) {
-  
-      console.log(value);
+    if (valid && this.pointWasSelected) {  
       
       value.type = this.mControlPoint.controls.type.value.name;
       value.company = this.mControlPoint.controls.company.value._id; 
@@ -119,25 +118,33 @@ export class PontoDeControleCadastrarComponent implements OnInit {
       let addressType = place.address_components[i].types[0];
       this.address[addressType] = place.address_components[i].long_name;
     }
-    this.zoom = 18;
+    
+    this.mControlPoint.controls.lat.setValue(0);
+    this.mControlPoint.controls.lng.setValue(0);
+
+    this.pointWasSelected = false;
+
+    this.zoom = 16;
     this.ref.detectChanges();
   }
 
-  onMapReady(map) {
+  // onMapReady(map) {
 
-    let origin = new google.maps.LatLng(map.center ? map.center.lat() : this.default.lat, map.center ? map.center.lng() : this.default.lng);
+  //   let origin = new google.maps.LatLng(map.center ? map.center.lat() : this.default.lat, map.center ? map.center.lng() : this.default.lng);
 
-    if (map.center) {
-      this.geocodingService.geocode(origin).subscribe(results => {
-        this.mControlPoint.controls.full_address.setValue(results[1].formatted_address), err => console.log(err)
-      });
-    }
+  //   if (map.center) {
+  //     this.geocodingService.geocode(origin).subscribe(results => {
+  //       this.mControlPoint.controls.full_address.setValue(results[1].formatted_address), err => console.log(err)
+  //     });
+  //   }
 
-    this.mControlPoint.controls.lat.setValue(map.center ? map.center.lat() : this.default.lat);
-    this.mControlPoint.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
-  }
+  //   this.mControlPoint.controls.lat.setValue(map.center ? map.center.lat() : this.default.lat);
+  //   this.mControlPoint.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
+  // }
 
   onClick(event, str) {
+
+    this.pointWasSelected = true;
 
     if (event instanceof MouseEvent) {
       return;
@@ -145,8 +152,6 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     this.pos = event.latLng;
     this.geocodingService.geocode(event.latLng).subscribe(results => {
-      // console.log(results);
-      // console.log(results[1].formatted_address);
       this.mControlPoint.controls.full_address.setValue(results[1].formatted_address);
     });
     this.mControlPoint.controls.lat.setValue(event.latLng.lat());
@@ -154,4 +159,27 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     event.target.panTo(event.latLng);
   }
 
+
+  public validateNotTakenLoading: boolean;
+  validateNotTaken(control: AbstractControl) {
+    this.validateNotTakenLoading = true;
+    return control
+      .valueChanges
+      .delay(800)
+      .debounceTime(800)
+      .distinctUntilChanged()
+      .switchMap(value => this.controlPointsService.getAllControlPoint({ name: control.value }))
+      .map(res => {
+        this.validateNotTakenLoading = false;
+
+        if (res.length == 0) {
+          console.log('empty')
+          return control.setErrors(null);
+        } else {
+          console.log('not empty')
+          return control.setErrors({ uniqueValidation: 'code already exist' })
+        }
+      })
+  }
+  
 }

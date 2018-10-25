@@ -36,12 +36,7 @@ export class FamiliaCadastroComponent implements OnInit {
 
   configureFormGroup() {
     this.mFamily = this.fb.group({
-      code: ['',
-        [Validators.required,
-        Validators.maxLength(30),
-        Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)],
-        this.validateNotTaken.bind(this)
-      ],
+      code: ['', [Validators.required, Validators.maxLength(30), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this) ],
       selectedCompanies: [undefined, [Validators.required]],
       selectedControlPoints: new FormControl([])
     });

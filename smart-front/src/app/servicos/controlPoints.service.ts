@@ -18,8 +18,12 @@ export class ControlPointsService {
       .catch(this.handleError);
   }
 
-  getAllControlPoint(): Observable<any> {
-    return this.http.get(`${environment.url}/control_points`)
+  getAllControlPoint(params: any = {}): Observable<any> {
+
+    let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    if (queryString) queryString = '?' + queryString;
+
+    return this.http.get(`${environment.url}/control_points${queryString}`)
       .catch(this.handleError);
   }
 

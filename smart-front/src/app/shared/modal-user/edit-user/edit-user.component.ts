@@ -49,7 +49,7 @@ export class EditUserComponent implements OnInit {
     this.getCompaniesOnSelect();
     this.fillActualUser();
   }
-  
+
   fillSelectType() {
     this.rolesOnSelect = [
       { label: "Administrador", name: "admin" },
@@ -59,9 +59,11 @@ export class EditUserComponent implements OnInit {
   formProfile() {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
-      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
+      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       email: ['',
-        [Validators.required, Validators.email, Validators.minLength(5)],
+        [ Validators.required,
+          Validators.email,
+          Validators.minLength(5) ],
         this.validateNotTaken.bind(this)
       ],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -72,7 +74,7 @@ export class EditUserComponent implements OnInit {
       });
   }
 
-  fillActualUser(){
+  fillActualUser() {
     this.full_name = this.mUser.full_name;
     this.email = this.mUser.email;
     this.password = this.mUser.password;
@@ -102,7 +104,7 @@ export class EditUserComponent implements OnInit {
       delete value.confirm_password;
       value.role = value.role.name;
       value.company = value.company._id;
-      
+
       let userId = this.mUser._id
       //console.log('userId: ' + userId);
 
@@ -123,13 +125,13 @@ export class EditUserComponent implements OnInit {
   public validateNotTakenLoading: boolean;
   validateNotTaken(control: AbstractControl) {
     this.validateNotTakenLoading = true;
-    
+
     if (this.mUser.email == control.value) {
       //console.log('equal');
       this.validateNotTakenLoading = false;
       return new Promise((resolve, reject) => resolve(null));
     }
-    
+
     return control
       .valueChanges
       .delay(800)
@@ -139,7 +141,7 @@ export class EditUserComponent implements OnInit {
       .map(res => {
 
         this.validateNotTakenLoading = false;
-        if (res.length==0) {
+        if (res.length == 0) {
           //console.log('[]');
           return control.setErrors(null);
         } else {

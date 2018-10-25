@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ToastService, GeocodingService, CompaniesService, ControlPointsService } from 'app/servicos/index.service';
 import { Router, ActivatedRoute } from '@angular/router'; 
 import { Subscription } from 'rxjs';
@@ -19,7 +19,7 @@ export class PontoDeControleEditarComponent implements OnInit {
   public address: any = {};
   public center: any;
   public submitted: boolean;
-  public zoom = 14;
+  public zoom = 16;
   public default = {
     lat: 0,
     lng: 0
@@ -29,6 +29,8 @@ export class PontoDeControleEditarComponent implements OnInit {
 
   public inscricao: Subscription;
   public mId: string;
+  public pointWasSelected: boolean = false;
+  public controlPointType: any;
   
   constructor(
     private companyService: CompaniesService,
@@ -40,7 +42,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     private geocodingService: GeocodingService) {
 
     this.mControlPoint = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)], 
       duns: ['', [Validators.required]],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
@@ -55,8 +57,9 @@ export class PontoDeControleEditarComponent implements OnInit {
 
     this.fillCompanySelect();
     this.fillTypesSelect();
-    this.retrieveUser();
+    this.retrieveControlPoint();
   }
+
 
   /**
    * Fill the select of companies
@@ -67,6 +70,7 @@ export class PontoDeControleEditarComponent implements OnInit {
       this.allCompanies = result;
     }, err => console.error(err));
   }
+
 
   /**
    * Fill the select of types
@@ -79,29 +83,41 @@ export class PontoDeControleEditarComponent implements OnInit {
         { label: "Operador Logístico", name: "op_log" });
   }
 
+
   /**
    * 
    */
-  retrieveUser() {
+  retrieveControlPoint() {
     this.inscricao = this.route.params.subscribe((params: any) => {
       this.mId = params['id'];
       this.controlPointsService.getControlPoint(this.mId).subscribe(result => {
 
-        // let actual = {
-        //   type: result.type,
-        //   name: result.name,
-        //   duns: result.duns,
-        //   lat: result.lat,
-        //   lng: result.lng,
-        //   full_address: result.full_address,
-        // };
-
         this.mActualControlPoint = result;
         (<FormGroup>this.mControlPoint).patchValue(result, { onlySelf: true });
-        //(<FormGroup>this.mControlPoint).patchValue(actual, { onlySelf: true });
+
+        this.pointWasSelected = true;
+
+        console.log('recuperado');
+        console.log(this.mControlPoint);
+        
+        this.controlPointType = this.allTypes.filter(elem => {
+          return elem.name == result.type;
+        })[0];
+        
+        //console.log(this.controlPointType);
+
+        //center map
+        this.center = new google.maps.LatLng(this.mControlPoint.controls.lat.value, this.mControlPoint.controls.lng.value);
+        this.pos = new google.maps.LatLng(this.mControlPoint.controls.lat.value, this.mControlPoint.controls.lng.value);
       });
     });
   }
+
+
+  ngOnDestroy() {
+    this.inscricao.unsubscribe();
+  }
+
 
   /**
    * Click on submit button
@@ -113,12 +129,11 @@ export class PontoDeControleEditarComponent implements OnInit {
     // console.log(value);
     // console.log(valid);
     // console.log(this.mControlPoint);
+    // console.log(this.pointWasSelected);
 
     this.submitted = true;
 
-    if (valid) {
-
-      console.log(value);
+    if (valid && this.pointWasSelected) {  
 
       value.type = this.mControlPoint.controls.type.value.name;
       value.company = this.mControlPoint.controls.company.value._id;
@@ -128,20 +143,23 @@ export class PontoDeControleEditarComponent implements OnInit {
     }
   }
 
+
   finishRegister(value) {
-    this.controlPointsService.createControlPoint(value).subscribe(result => {
+    this.controlPointsService.editControlPoint(this.mId, value).subscribe(result => {
 
       let message = {
-        title: "Ponto de controle cadastrado",
-        body: "O ponto de controle foi cadastrado com sucesso"
+        title: "Ponto de controle atualizado",
+        body: "O ponto de controle foi atualizado com sucesso"
       };
       this.toastService.show('/rc/cadastros/ponto', message);
     }, err => this.toastService.error(err));
   }
 
+
   initialized(autocomplete: any) {
     this.autocomplete = autocomplete;
   }
+
 
   placeChanged(place) {
     this.center = place.geometry.location;
@@ -149,25 +167,18 @@ export class PontoDeControleEditarComponent implements OnInit {
       let addressType = place.address_components[i].types[0];
       this.address[addressType] = place.address_components[i].long_name;
     }
+
+    this.mControlPoint.controls.lat.setValue(0);
+    this.mControlPoint.controls.lng.setValue(0);
+
     this.zoom = 18;
     this.ref.detectChanges();
   }
 
-  onMapReady(map) {
-
-    let origin = new google.maps.LatLng(map.center ? map.center.lat() : this.default.lat, map.center ? map.center.lng() : this.default.lng);
-
-    if (map.center) {
-      this.geocodingService.geocode(origin).subscribe(results => {
-        this.mControlPoint.controls.full_address.setValue(results[1].formatted_address), err => console.log(err)
-      });
-    }
-
-    this.mControlPoint.controls.lat.setValue(map.center ? map.center.lat() : this.default.lat);
-    this.mControlPoint.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
-  }
 
   onClick(event, str) {
+
+    this.pointWasSelected = true;
 
     if (event instanceof MouseEvent) {
       return;
@@ -184,4 +195,35 @@ export class PontoDeControleEditarComponent implements OnInit {
     event.target.panTo(event.latLng);
   }
 
+
+  public validateNotTakenLoading: boolean = false;
+  validateNotTaken(control: AbstractControl) {
+    this.validateNotTakenLoading = true;
+    // console.log('this.mActualPacking.tag.code: ' + this.mActualPacking.tag.code);
+    // console.log('control.value: ' + control.value);
+
+    if (this.mActualControlPoint.name == control.value) {
+      // console.log('equal');
+      this.validateNotTakenLoading = false;
+      return new Promise((resolve, reject) => resolve(null));
+    }
+
+    return control
+      .valueChanges
+      .delay(800)
+      .debounceTime(800)
+      .distinctUntilChanged()
+      .switchMap(value => this.controlPointsService.getAllControlPoint({ name: control.value }))
+      .map(res => {
+
+        this.validateNotTakenLoading = false;
+        if (res.length == 0) {
+          // console.log('empty');
+          return control.setErrors(null);
+        } else {
+          // console.log('not empty');
+          return control.setErrors({ uniqueValidation: 'code already exist' })
+        }
+      });
+  }
 }

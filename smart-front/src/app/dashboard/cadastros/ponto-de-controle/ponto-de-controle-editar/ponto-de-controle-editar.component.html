@@ -1,5 +1,5 @@
 <div class="">
-  <h2>Registrar Ponto de Controle</h2>
+  <h2>Atualizar Ponto de Controle</h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mControlPoint)" [formGroup]="mControlPoint" #formDir="ngForm">
@@ -10,13 +10,33 @@
         <p class="descricao">NOME</p>
         <p class="explicacao">Ex. "Planta B1"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite o nome da planta" aria-describedby="basic-addon2"
-            formControlName="name" [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
-                    || (mControlPoint.get('name').hasError('required') && formDir.submitted)}">
+          <input type="text" 
+            class="form-control" 
+            maxlength="80"
+            placeholder="Digite o nome da planta" 
+            aria-describedby="basic-addon2"
+            formControlName="name" 
+            [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
+              || (mControlPoint.get('name').hasError('required') && formDir.submitted)
+              || (mControlPoint.get('name').hasError('pattern'))
+              || (mControlPoint.get('name').hasError('pattern') && submitted)}">
         </div>
-        <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
+
+        <p class="requiredText" 
+          *ngIf="(mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
               || (mControlPoint.get('name').hasError('required') && formDir.submitted)">Campo
           Obrigatório</p>
+
+        <p class="explicacao" *ngIf="validateNotTakenLoading">
+          Verificando disponibilidade ...</p>
+
+        <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('uniqueValidation')) 
+                  || (mControlPoint.get('name').hasError('uniqueValidation') && submitted)">
+          Este Ponto de Controle já existe. O nome deve ser único.</p>
+
+        <p class="requiredText" 
+          *ngIf="(mControlPoint.get('name').hasError('pattern')) || (mControlPoint.get('name').hasError('pattern') && submitted)">
+          Excesso de espaços em branco</p>
       </div>
 
       <!-- Input para o duns do ponto de controle -->
@@ -24,7 +44,11 @@
         <p class="descricao">DUNS</p>
         <p class="explicacao">Ex. "123456789"</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite o nome da planta" aria-describedby="basic-addon2"
+          <input type="text" 
+            class="form-control" 
+            placeholder="Digite o nome da planta" 
+            maxlength="30"
+            aria-describedby="basic-addon2"
             formControlName="duns" [ngClass]="{'required': (mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
               || (mControlPoint.get('duns').hasError('required') && submitted)}">
         </div>
@@ -36,7 +60,7 @@
       <!-- Input para o tipo do ponto de controle -->
       <div class="campo col-sm-12 col-md-6">
         <p class="descricao">TIPO</p>
-        <ng-select bindLabel="label" placeholder="Selecione o tipo" [items]="allTypes" formControlName="type">
+        <ng-select bindLabel="label" placeholder="Selecione o tipo" [items]="allTypes" [(ngModel)] = "controlPointType" formControlName="type">
           <ng-template ng-option-tmp let-item="item">
             <div> {{item.label}} </div>
           </ng-template>
@@ -72,9 +96,18 @@
           Campo Obrigatório
         </p>
 
-        <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="onMapReady($event)" (click)="onClick($event)" style="margin-top: 10px;">
+        <ngui-map 
+          [zoom]="zoom" 
+          [center]="center" 
+          (click)="onClick($event)" 
+          style="margin-top: 10px;">
           <marker [position]="pos"></marker>
         </ngui-map>
+
+        <p class="requiredText" *ngIf="(mControlPoint.get('full_address').value !== '' && mControlPoint.get('full_address').touched 
+                      && !pointWasSelected)">
+          Clique no mapa para configurar a localização</p>
+
       </div>
 
       <div class="campo col-sm-12 informacoes">
@@ -120,7 +153,7 @@
 
     <div class="botoes">
       <button routerLink="/rc/cadastros/ponto" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
     </div>
 
   </form>

@@ -73,14 +73,12 @@ export class EmbalagemCadastroComponent implements OnInit {
     this.mPacking = this.fb.group({
       tag: this.fb.group({
         code: ['', 
-          [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[\a-z0-9_-]+)*$/)], 
-          this.validateNotTaken.bind(this)
-        ],
-        version: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
-        manufactorer: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]]
+          [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this) ],
+        version: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+        manufactorer: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]]
       }),
-      serial: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
-      type: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+((\s)?[a-z0-9_-]+)*$/)]],
+      serial: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+      type: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
       weigth: ['', [Validators.required]],
       width: ['', [Validators.required]],
       heigth: ['', [Validators.required]],
