@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService, UsersService, CompaniesService, FamiliesService, PackingService } from '../../servicos/index.service';
+import { ToastService, UsersService, CompaniesService, FamiliesService, PackingService, ControlPointsService } from '../../servicos/index.service';
 
 @Component({
   selector: 'app-modal-delete',
@@ -19,6 +19,7 @@ export class ModalDeleteComponent implements OnInit {
     protected companiesService: CompaniesService,
     private familyService: FamiliesService,
     private packingService: PackingService,
+    private controlPointsService: ControlPointsService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -54,6 +55,13 @@ export class ModalDeleteComponent implements OnInit {
       case "PACKING":
         this.packingService.deletePacking(this.mObject._id).subscribe(res => {
           this.toastService.remove('', 'Embalagem', true);
+          this.activeModal.close();
+        });
+        break;
+      
+      case "CONTROL_POINT":
+        this.controlPointsService.deleteControlPoint(this.mObject._id).subscribe(res => {
+          this.toastService.remove('', 'Ponto de Controle');
           this.activeModal.close();
         });
         break;

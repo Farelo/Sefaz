@@ -13,8 +13,8 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão
-        perdidas, você tem certeza?</p>
+      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. 
+        As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
   
@@ -31,7 +31,8 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?</p>
+      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. 
+        As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 
@@ -47,8 +48,8 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão
-        perdidas, você tem certeza?</p>
+      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. 
+        As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 
@@ -65,10 +66,29 @@
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção dessa Embalagem poderá desassociar Rotas e registros do BPline. As informações serão
-        perdidas, você tem certeza?</p>
+      <p>A remoção dessa Embalagem poderá desassociar Rotas e registros do BPline. 
+        As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
+
+
+  <!-- ========================== -->
+  <!-- Template for deleting CONTROL POINT -->
+  <div class="detalhes" *ngIf="mType == 'CONTROL_POINT'">
+    <h2> Deletar Ponto de Controle </h2>
+    <hr>
+    <p>Nome: {{ mObject.name }}</p>
+    <p>DUNS: {{ mObject.duns }}</p>
+    <p>Empresa Vinculada: {{ mObject.company.name }}</p>
+  
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção desse Ponto de Controle poderá desassociar Rotas e registros do BPline. 
+        As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
+
 
   <!-- ========================== -->
   <!-- Template default -->

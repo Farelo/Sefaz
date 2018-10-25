@@ -24,11 +24,11 @@ export class PontoDeControleComponent implements OnInit {
 
   ngOnInit() {
     this.loadTableHeaders();
-    this.loadPlants();
+    this.loadControlPoints();
   }
 
 
-  loadPlants() {
+  loadControlPoints() {
     this.controlPointsService
       .getAllControlPoint()
       .subscribe(result => {
@@ -37,14 +37,16 @@ export class PontoDeControleComponent implements OnInit {
       }, err => { console.log(err) });
   }
 
-  // removeControlPoint(plant): void {
-  //   const modalRef = this.modalService.open(ModalDeleteComponent);
-  //   modalRef.componentInstance.view = plant;
-  //   modalRef.componentInstance.type = "plant";
-  //   modalRef.result.then((result) => {
-  //     if (result === "remove") this.loadPlants();
-  //   });
-  // }
+  removeControlPoint(controlPoint): void {
+
+    const modalRef = this.modalService.open(ModalDeleteComponent);
+    modalRef.componentInstance.mObject = controlPoint;
+    modalRef.componentInstance.mType = "CONTROL_POINT";
+
+    modalRef.result.then((result) => {
+      this.loadControlPoints();
+    });
+  }
 
   searchEvent(event): void {
     const val = event.target.value.toLowerCase();
