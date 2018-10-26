@@ -1,5 +1,6 @@
 const debug = require('debug')('model:device_data')
 const mongoose = require('mongoose')
+const { Packing } = require('./packings.model')
 
 const deviceDataSchema = new mongoose.Schema({
     device_id: {
@@ -52,11 +53,32 @@ const deviceDataSchema = new mongoose.Schema({
     }
 })
 
+const update_packing = async (device_data, next) => {
+    try {
+        const tag = { code: device_data.device_id }
+        const packing = await Packing.findByTag(tag)
+        if (!packing) next()
+        await Packing.findByIdAndUpdate(packing._id, { $set: { size: 'large' }}, { new: true })
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
+
+deviceDataSchema.statics.findByDeviceId = function (device_id, projection = '') {
+    return this.findOne({ device_id }, projection)
+}
+
+const saveDeviceDataToPacking = function (doc, next) {
+    update_packing(doc, next)
+}
+
 const update_updated_at_middleware = function (next) {
     this.update_at = Date.now
     next()
 }
 
+deviceDataSchema.post('save', saveDeviceDataToPacking)
 deviceDataSchema.pre('update', update_updated_at_middleware)
 deviceDataSchema.pre('findOneAndUpdate', update_updated_at_middleware)
 

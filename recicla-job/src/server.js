@@ -5,7 +5,7 @@ const app = express()
 
 require('./startup/logger')(app)
 require('./startup/db')()
-require('./state_machine//main')()
+// require('./scripts/main')()
 
 // TESTE DE CARGA: loadtest -c 100 -t 15 http://localhost:4000
 // app.get('/', (req, res, next) => {

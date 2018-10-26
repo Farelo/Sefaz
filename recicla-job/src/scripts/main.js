@@ -1,57 +1,50 @@
-const readFilePromise = require('fs-readfile-promise');
-const ora = require('ora');
+const readFilePromise = require('fs-readfile-promise')
+const ora = require('ora')
 const { Company} = require('../models/companies.model')
 const { Family } = require('../models/families.model')
 const { Packing } = require('../models/packings.model')
 const { DeviceData } = require('../models/device_data.model')
-const spinner = ora('Loading unicorns')
+
+const spinner = ora('Loading job...')
 
 async function loadPackings() {
     try {
-        spinner.start();
-        const filePath = 'src/state_machine/packings.txt'
+        spinner.start('Creating packings')
+        const filePath = 'src/scripts/packings.txt'
         const data = await readFilePromise(filePath, 'utf8')
         const dataArray = data.split("\r\n")
 
-        const company = Company.create({name: 'CEBRACE', type: 'owner'})
-        const family = Family.create({code: 'CODEA', company: company._id})
+        const company = await Company.create({name: 'CEBRACEC', type: 'owner'})
+        const family = await Family.create({code: 'CODEA', company: company._id})
 
         dataArray.forEach(async log => {
             try {
-                 let attrib = log.split(",");
-                 let obj = {}
+                let attrib = log.split(",")
+                let obj = {}
 
-                 obj = {
-                     family: family._id,
-                     tag: {
-                         code: attrib[7],
-                         version: attrib[8],
-                         manufactorer: attrib[9],
-                     },
-                     type: attrib[10],
-                     weigth: attrib[11],
-                     width: attrib[12],
-                     length: attrib[13],
-                     capacity: attrib[14],
-                     serial: attrib[15],
-                     gc16: attrib[16],
-                     low_battery: attrib[17],
-                     absent: attrib[18],
-                     current_battery: attrib[19],
-                     current_temperature: attrib[20],
-                     current_position: attrib[21],
-                     current_event: attrib[22],
-                     current_state: attrib[23],
-                     active: attrib[24],
-                     observations: attrib[25]
-                 }
+                obj = {
+                    family: family._id,
+                    tag: {
+                        code: attrib[0],
+                        version: attrib[1],
+                        manufactorer: attrib[2],
+                    },
+                    serial: attrib[3],
+                    type: attrib[4],
+                    weigth: attrib[5],
+                    width: attrib[6],
+                    heigth: attrib[7],
+                    length: attrib[8],
+                    capacity: attrib[9],
+                    active: true
+                }
 
-                 await Packing.create(obj)
-                 spinner.stop(['Packing created with success!']);
+                await Packing.create(obj)
             } catch (err) {
                 throw new Error(err)
             }
         })
+        spinner.stop('Packings created')
     } catch (error) {
         console.log(error)
         return undefined
@@ -62,9 +55,9 @@ module.exports = loadPackings
 
 // async function loadDeviceLog() {
 //     try {
-//         spinner.start();
+//         spinner.start()
 //         let dLogs = [];
-//         const filePath = 'src/state_machine/input.txt'
+//         const filePath = 'src/scripts/device_data.txt'
 
 //         const data = await readFilePromise(filePath, 'utf8')
 //         const dataArray = data.split("\r\n")
