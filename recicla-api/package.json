@@ -4,14 +4,12 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "export NODE_CONFIG_DIR=src/config && export DEBUG=controller:* && export DEBUG=startup:* && nodemon src/server.js",
-    "develop": "export NODE_CONFIG_DIR=src/config && export DEBUG=* && nodemon src/server.js",
-    "test": "export NODE_CONFIG_DIR=src/config && export NODE_ENV=test && jest --watchAll --verbose --runInBand --no-cache",
-    "prod": "export NODE_CONFIG_DIR=src/config && export DEBUG=controller:* && export DEBUG=startup:* && pm2 start src/server.js && pm2 logs --raw server",
-    "start-win": "set NODE_CONFIG_DIR=src/config&&set DEBUG=controller:*&&nodemon src/server.js",
-    "test-win": "set NODE_CONFIG_DIR=src/config&&set NODE_ENV=test&&jest --watchAll --verbose --runInBand --no-cache"
+    "postinstall": "node src/tools/generate_env.tools.js",
+    "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* nodemon src/server.js",
+    "test": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=test jest --watchAll --verbose --runInBand --no-cache",
+    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* pm2 start src/server.js pm2 logs --raw server"
   },
-  "author": "Sergio Junior",
+  "author": "ISI-TICs",
   "license": "ISC",
   "dependencies": {
     "app-root-path": "^2.1.0",
@@ -38,8 +36,12 @@
     "winston": "^3.0.0"
   },
   "devDependencies": {
+    "cross-env": "^5.2.0",
+    "chalk": "^2.4.1",
     "debug": "^3.1.0",
+    "fs-readfile-promise": "^3.0.1",
     "jest": "^23.4.1",
+    "shelljs": "^0.8.2",
     "supertest": "^3.1.0"
   },
   "engines": {
