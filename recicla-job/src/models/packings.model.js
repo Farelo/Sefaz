@@ -83,6 +83,10 @@ const packingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Family'
     },
+    last_device_data: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'DeviceData'
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -110,4 +114,3 @@ const Packing = mongoose.model('Packing', packingSchema)
 
 exports.Packing = Packing
 exports.packingSchema = packingSchema
-exports.validate_packings = validate_packings

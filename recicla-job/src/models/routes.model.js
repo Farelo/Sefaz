@@ -58,4 +58,3 @@ const Route = mongoose.model('Route', routeSchema)
 
 exports.Route = Route
 exports.routeSchema = routeSchema
-exports.validate_routes = validate_routes
