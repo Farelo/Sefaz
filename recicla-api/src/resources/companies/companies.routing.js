@@ -8,7 +8,7 @@ const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_companies } = require('./companies.model')
 
 router.get('/', [auth, authz],companies_controller.all)
-router.get('/:id', [auth, validate_object_id], companies_controller.show)
+router.get('/:id', [auth, authz, validate_object_id], companies_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_companies)], companies_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_companies)], companies_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], companies_controller.delete)

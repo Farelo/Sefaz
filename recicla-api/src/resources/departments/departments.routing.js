@@ -1,40 +1,40 @@
 const express = require('express')
 const router = express.Router()
-const routes_controller = require('./routes.controller')
+const departments_controller = require('./departments.controller')
 const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
-const { validate_routes } = require('./routes.model')
+const { validate_departments } = require('./departments.model')
 
-router.get('/', [auth, authz], routes_controller.all)
-router.get('/:id', [auth, authz, validate_object_id], routes_controller.show)
-router.post('/', [auth, authz, validate_joi(validate_routes)], routes_controller.create)
-router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_routes)], routes_controller.update)
-router.delete('/:id', [auth, authz, validate_object_id], routes_controller.delete)
+router.get('/', [auth, authz], departments_controller.all)
+router.get('/:id', [auth, authz, validate_object_id], departments_controller.show)
+router.post('/', [auth, authz, validate_joi(validate_departments)], departments_controller.create)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_departments)], departments_controller.update)
+router.delete('/:id', [auth, authz, validate_object_id], departments_controller.delete)
 
 module.exports = router
 
 // GET '/'
 /**
  * @swagger
- * /routes:
+ * /departments:
  *   get:
- *     summary: Retrieve all routes
- *     description: Retrieve all routes on database
+ *     summary: Retrieve all departments
+ *     description: Retrieve all departments on database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Routes
+ *       - Departments
  *     parameters:
  *       - name: name
- *         description: Return route filtered by name
+ *         description: Return department filtered by name
  *         in: query
  *         required: false
  *         type: string
  *     responses:
  *       200:
- *         description: list of all routes
+ *         description: list of all departments
  *       400:
  *         description: Bad Request
  *       404:
@@ -45,25 +45,25 @@ module.exports = router
 /**
  * @swagger
  *
- * /routes/{id}:
+ * /departments/{id}:
  *   get:
- *     summary: Create a route
- *     description: Create a route
+ *     summary: Create a department
+ *     description: Create a department
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Routes
+ *       - Departments
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: ControlPoint id
+ *         description: Department id
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: ControlPoint is valid request
+ *         description: Department is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -77,26 +77,26 @@ module.exports = router
 /**
  * @swagger
  *
- * /routes:
+ * /departments:
  *   post:
- *     summary: Create a route
- *     description: Create a route
+ *     summary: Create a department
+ *     description: Create a department
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Routes
+ *       - Departments
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: control_point
- *         description: ControlPoint object
+ *         description: Department object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/RouteObject'
+ *           $ref: '#/definitions/DepartmentObject'
  *     responses:
  *       200:
- *         description: ControlPoint is valid request
+ *         description: Department is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -109,26 +109,26 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /routes/{id}:
+ * /departments/{id}:
  *   patch:
- *     summary: Update a route
- *     description: Update a route by id
+ *     summary: Update a department
+ *     description: Update a department by id
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Routes
+ *       - Departments
  *     parameters:
  *       - name: id
- *         description: ControlPoint id
+ *         description: Department id
  *         in: path
  *         required: true
  *         type: string
  *       - name: control_point
- *         description: ControlPoint object
+ *         description: Department object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/RouteObject'
+ *           $ref: '#/definitions/DepartmentObject'
  *     responses:
  *       200:
  *         description: OK
@@ -141,17 +141,17 @@ module.exports = router
 // DELETE '/'
 /**
  * @swagger
- * /routes/{id}:
+ * /departments/{id}:
  *   delete:
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Routes
- *     summary: Delete a route
- *     description: Deleta a route
+ *       - Departments
+ *     summary: Delete a department
+ *     description: Deleta a department
  *     parameters:
  *       - name: id
- *         description: ControlPoint id
+ *         description: Department id
  *         in: path
  *         required: true
  *         type: string
@@ -168,36 +168,18 @@ module.exports = router
  * @swagger
  *
  * definitions:
- *   RouteObject:
+ *   DepartmentObject:
  *     type: object
  *     required:
- *       - family
- *       - first_point
- *       - second_point
+ *       - name
+ *       - control_point
  *     properties:
- *       family:
+ *       name:
  *         type: string
- *       first_point:
- *         type: string
- *       second_point:
- *         type: string
- *       distance:
+ *       lat:
  *         type: number
- *       duration:
+ *       lng:
  *         type: number
- *       traveling_time:
- *         $ref: '#/definitions/TravelingTimeObject'
- */
-
- /**
- * @swagger
- *
- * definitions:
- *   TravelingTimeObject:
- *     type: object
- *     properties:
- *       max:
- *         type: string
- *       min:
+ *       control_point:
  *         type: string
  */

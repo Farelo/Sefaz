@@ -7,6 +7,7 @@ const families = require('../resources/families/families.routing')
 const packings = require('../resources/packings/packings.routing')
 const control_points = require('../resources/control_points/control_points.routing')
 const routes = require('../resources/routes/routes.routing')
+const departments = require('../resources/departments/departments.routing')
 const reports = require('../resources/reports/reports.routing')
 const error = require('../middlewares/error_handler.middleware')
 
@@ -33,6 +34,7 @@ module.exports = (app) => {
     app.use('/api/packings', packings)
     app.use('/api/control_points', control_points)
     app.use('/api/routes', routes)
+    app.use('/api/departments', departments)
     app.use('/api/reports', reports)
 
     // Middlewares functions

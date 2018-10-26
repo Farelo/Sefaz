@@ -29,7 +29,7 @@ describe('api/routes', () => {
         })
         token = new_user.generateUserToken()
 
-        family = await Family.create({ code: "Family A" })
+        family = await Family.create({ code: "Family A", company: new_company._id })
         first_point = await ControlPoint.create({ name: 'teste 1', company: new_company._id })
         second_point = await ControlPoint.create({ name: 'teste 2', company: new_company._id })
 
@@ -45,7 +45,7 @@ describe('api/routes', () => {
 
     describe('GET: /api/routes', () => {
         it('should return all routes', async () => {
-            const familyB = await Family.create({ code: "Family B" })
+            const familyB = await Family.create({ code: "Family B", company: new_company._id })
             const first_pointB = await ControlPoint.create({ name: 'teste 3', company: new_company._id })
             const second_pointB = await ControlPoint.create({ name: 'teste 4', company: new_company._id })
 
@@ -72,7 +72,7 @@ describe('api/routes', () => {
                 .set('Authorization', token)
 
             expect(res.status).toBe(200)
-            expect(res.body).toHaveProperty('family', route.family.toString())
+            expect(res.body).toHaveProperty('family._id', route.family.toString())
         })
 
         it('should return 404 if invalid id is passed', async () => {
@@ -160,7 +160,7 @@ describe('api/routes', () => {
         })
 
         it('should return control point edited if is valid request', async () => {
-            another_family = await Family.create({ code: "Family Another" })
+            another_family = await Family.create({ code: "Family Another", company: new_company._id })
 
             const res = await exec()
 

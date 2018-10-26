@@ -1,6 +1,7 @@
 const debug = require('debug')('controller:packings')
 const HttpStatus = require('http-status-codes')
 const packings_service = require('./packings.service')
+const families_service = require('../families/families.service')
 
 exports.all = async (req, res) => {
     const tag = req.query.tag_code ? { code: req.query.tag_code } : null
@@ -20,6 +21,9 @@ exports.show = async (req, res) => {
 exports.create = async (req, res) => {
     let packing = await packings_service.find_by_tag(req.body.tag)
     if (packing) return res.status(HttpStatus.BAD_REQUEST).send('Packing already exists with this code.')
+
+    const family = await families_service.find_by_id(req.body.family)
+    if (!family) return res.status(HttpStatus.BAD_REQUEST).send({ message: 'Family do not exists.' })
 
     packing = await packings_service.create_packing(req.body)
 
