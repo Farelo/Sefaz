@@ -58,7 +58,7 @@ const update_packing = async (device_data, next) => {
         const tag = { code: device_data.device_id }
         const packing = await Packing.findByTag(tag)
         if (!packing) next()
-        await Packing.findByIdAndUpdate(packing._id, { $set: { size: 'large' }}, { new: true })
+        await Packing.findByIdAndUpdate(packing._id, { last_device_data: device_data._id }, { new: true })
         next()
     } catch (error) {
         next(error)

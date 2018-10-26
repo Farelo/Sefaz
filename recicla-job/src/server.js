@@ -1,11 +1,14 @@
 const express = require('express')
 const logger = require('./config/winston.config')
 const config = require('config')
+const initialize = require('./scripts/initialize.script')
 const app = express()
 
 require('./startup/logger')(app)
 require('./startup/db')()
-// require('./scripts/main')()
+initialize()
+// require('./scripts/main.script')()
+
 
 // TESTE DE CARGA: loadtest -c 100 -t 15 http://localhost:4000
 // app.get('/', (req, res, next) => {

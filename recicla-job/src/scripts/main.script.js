@@ -1,101 +1,8 @@
-const readFilePromise = require('fs-readfile-promise')
 const ora = require('ora')
 const { Company} = require('../models/companies.model')
 const { Family } = require('../models/families.model')
 const { Packing } = require('../models/packings.model')
 const { DeviceData } = require('../models/device_data.model')
-
-const spinner = ora('Loading job...')
-
-async function loadPackings() {
-    try {
-        spinner.start('Creating packings')
-        const filePath = 'src/scripts/packings.txt'
-        const data = await readFilePromise(filePath, 'utf8')
-        const dataArray = data.split("\r\n")
-
-        const company = await Company.create({name: 'CEBRACEC', type: 'owner'})
-        const family = await Family.create({code: 'CODEA', company: company._id})
-
-        dataArray.forEach(async log => {
-            try {
-                let attrib = log.split(",")
-                let obj = {}
-
-                obj = {
-                    family: family._id,
-                    tag: {
-                        code: attrib[0],
-                        version: attrib[1],
-                        manufactorer: attrib[2],
-                    },
-                    serial: attrib[3],
-                    type: attrib[4],
-                    weigth: attrib[5],
-                    width: attrib[6],
-                    heigth: attrib[7],
-                    length: attrib[8],
-                    capacity: attrib[9],
-                    active: true
-                }
-
-                await Packing.create(obj)
-            } catch (err) {
-                throw new Error(err)
-            }
-        })
-        spinner.stop('Packings created')
-    } catch (error) {
-        console.log(error)
-        return undefined
-    }
-}
-
-module.exports = loadPackings
-
-// async function loadDeviceLog() {
-//     try {
-//         spinner.start()
-//         let dLogs = [];
-//         const filePath = 'src/scripts/device_data.txt'
-
-//         const data = await readFilePromise(filePath, 'utf8')
-//         const dataArray = data.split("\r\n")
-
-//         dLogs = dataArray.forEach(async log => {
-//             try {
-//                 let attrib = log.split(",");
-//                 let obj = {}
-//                 obj = {
-//                     device_id: attrib[1],
-//                     message_date: attrib[2],
-//                     last_communication: attrib[3],
-//                     latitude: attrib[4],
-//                     longitude: attrib[5],
-//                     accuracy: attrib[6],
-//                     battery: {
-//                         percentage: attrib[7],
-//                         voltage: attrib[8]
-//                     },
-//                     temperature: attrib[9],
-//                     seq_number: attrib[10]
-//                 }
-
-//                 await DeviceData.create(obj)
-//             } catch (error) {
-//                 throw new Error(error)
-//             }
-//         })
-
-//         // await DeviceData.insertMany(dLogs)
-//         spinner.succeed(['Tudo certo!'])
-//     } catch (error) {
-//         console.log(error)
-//         throw new Error(error)
-//     }
-// }
-
-// module.exports = loadDeviceLog
 
 // const userConfig = {
 //     defaultAcceptableMinimalAccuracy: 1000,
@@ -113,18 +20,18 @@ module.exports = loadPackings
 //     return undefined
 // }
 
-async function getLastAccurateEntry(packing) {
-    const res = await loadDeviceLog()
-    console.log("++" + res.length)
-    for (i = res.length; i--; i >= 0) {
-        console.log(">" + i)
-        if ((packing.tag.code == res[i].deviceId) && (res[i].accuracy <= userConfig.defaultAcceptableMinimalAccuracy)) {
-            return res[i]
-        }
-    }
-    return undefined
+// async function getLastAccurateEntry(packing) {
+//     const res = await loadDeviceLog()
+//     console.log("++" + res.length)
+//     for (i = res.length; i--; i >= 0) {
+//         console.log(">" + i)
+//         if ((packing.tag.code == res[i].deviceId) && (res[i].accuracy <= userConfig.defaultAcceptableMinimalAccuracy)) {
+//             return res[i]
+//         }
+//     }
+//     return undefined
 
-}
+// }
 
 // const main = async () => {
 //     //const res = await loadDeviceLog()

@@ -26,7 +26,6 @@
     "chalk": "^2.4.1",
     "cross-env": "^5.2.0",
     "debug": "^3.1.0",
-    "fs-readfile-promise": "^3.0.1",
     "jest": "^23.4.1",
     "loadtest": "^3.0.4",
     "ora": "^3.0.0",
