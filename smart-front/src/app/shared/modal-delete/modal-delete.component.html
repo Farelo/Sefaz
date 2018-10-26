@@ -91,6 +91,25 @@
 
 
   <!-- ========================== -->
+  <!-- Template for deleting ROUTE -->
+  <div class="detalhes" *ngIf="mType == 'ROUTE'">
+    <h2> Deletar Rota </h2>
+    <hr>
+    <p>Família: {{ mObject.family }}</p>
+    <p>Ponto 1: {{ mObject.first_point.name }}</p>
+    <p>Ponto 2: {{ mObject.second_point.name }}</p>
+    <p>Distância: {{ mObject.distance }}</p>
+  
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção dessa Rota poderá desassociar Embalagens, Plantas e registros do BPline.
+        As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
+
+
+  <!-- ========================== -->
   <!-- Template default -->
   <div class="botoes">
     <button class="botaoVoltar" (click)="activeModal.close('cancelar')">CANCELAR</button>

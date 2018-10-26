@@ -44,4 +44,14 @@ export class RoutesService {
       .catch(this.handleError);
   }
 
+
+  /**
+   * Rotas antigas
+   */
+
+  createRouteArray(newRoute: any): Observable<any> {
+    return this.http.post(`${environment.url}/routes`, newRoute)
+      .catch(this.handleError);
+  }
+  
 }

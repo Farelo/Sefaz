@@ -53,7 +53,7 @@ export class PontoDeControleComponent implements OnInit {
 
     // filter our data
     const temp = this.auxListOfControlPoints.filter(function (item) {
-      return item.plant_name.toLowerCase().indexOf(val) !== -1 || !val;
+      return item.name.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
     // update the rows

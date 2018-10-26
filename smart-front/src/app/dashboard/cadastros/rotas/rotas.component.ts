@@ -5,6 +5,7 @@ import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DirectionsRenderer } from '@ngui/map';
+import { MeterFormatter } from 'app/shared/pipes/meter_formatter';
 
 @Component({
   selector: 'app-rotas',
@@ -13,7 +14,7 @@ import { DirectionsRenderer } from '@ngui/map';
 })
 export class RotasComponent implements OnInit {
 
-  public allRoutes: Pagination = new Pagination({meta: {page : 1}});
+  public allRoutes: any[] = [];
   public search = "";
 
   constructor(
@@ -37,12 +38,17 @@ export class RotasComponent implements OnInit {
   removeRoutes(route):void{
     
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.view = route;
-    modalRef.componentInstance.type = "route";
+    modalRef.componentInstance.mObject = route;
+    modalRef.componentInstance.mType = "ROUTE";
+
 
     modalRef.result.then((result) => {
-      if(result === "remove") this.loadRoutes();
+      this.loadRoutes();
     });
+  }
+
+  getFormatedDistance(value: number){
+    return (new MeterFormatter()).to(value/1000);
   }
 
   ngOnInit() {

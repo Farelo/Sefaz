@@ -1,5 +1,9 @@
 <div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" class="form-control mr-4" placeholder="Buscar rota" aria-describedby="basic-addon1" [(ngModel)]="search"
+  <input type="text" 
+    class="form-control mr-4" 
+    placeholder="Buscar rota" 
+    aria-describedby="basic-addon1" 
+    [(ngModel)]="search"
     (keyup.enter)="searchEvent()">
   <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
 </div>
@@ -20,13 +24,13 @@
       <tr *ngFor="let route of allRoutes | paginate: {
                                              itemsPerPage: 10,
                                              currentPage: actualPage,
-                                             totalItems: listOfFamilies.length}; index as index"
+                                             totalItems: allRoutes.length}; index as index"
         (mouseover)='hoveredIndex = index'>
         <td>{{ route.family }}</td>
-        <td>{{ route.first_point }}</td>
-        <td>{{ route.second_point }}</td>
-        <td>{{ route.distance }}</td>
-        <td>{{ route.duration }}</td>
+        <td>{{ route.first_point.name }}</td>
+        <td>{{ route.second_point.name }}</td>
+        <td>{{ getFormatedDistance(route.distance) }}</td>
+        <td>{{ route.duration }}</td> 
         <td class="teste">
           <div *ngIf="index==hoveredIndex">
             <button class="editar botaoPlanta" [routerLink]="['editar/', route._id]">

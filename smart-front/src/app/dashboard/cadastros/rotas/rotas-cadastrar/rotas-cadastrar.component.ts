@@ -1,7 +1,7 @@
 import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';  
 import { Router } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
-import { ToastService, RoutesService } from '../../../../servicos/index.service';
+import { ToastService, RoutesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
@@ -36,28 +36,47 @@ export class RotasCadastrarComponent implements OnInit {
   public choiced = false;
   public choice_equipament = false;
 
+  //selects
+  public allFamilies: any[] = [];
+  public allControlPoints: any[] = [];
+
   constructor(
-    private RoutesService: RoutesService,
+    private routesService: RoutesService,
+    private familyService: FamiliesService,
+    private controlPointsService: ControlPointsService,
     private router: Router,
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
     private fb: FormBuilder) {
 
-    }
+  }
 
 
   ngOnInit() {
 
-    // Resolve directions
+    this.resolveDirections();
+    this.resolveFormGroup();
+    this.loadFamilies();
+    this.loadControlPoints();
+  }
+
+  /**
+   * initialize the directions
+   */
+  resolveDirections(){
     this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
       this.directionsRenderer = directionsRenderer;
     });
+  }
 
-    //Resolve Form group
+  /**
+   * instantiate the form group
+   */
+  resolveFormGroup(){
     this.mRoute = this.fb.group({
-      family: ['', [Validators.required]],
-      first_point: ['', [Validators.required]],
-      second_point: ['', [Validators.required]],
+      family: [undefined, [Validators.required]],
+      first_point: [undefined, [Validators.required]],
+      second_point: [undefined, [Validators.required]],
       distance: ['', [Validators.required]],
       duration: ['', [Validators.required]],
       traveling_time: this.fb.group({
@@ -67,16 +86,38 @@ export class RotasCadastrarComponent implements OnInit {
     });
   }
 
+  /**
+   * Loads all families in the select
+   */
   loadFamilies(){
-
+    this.familyService.getAllFamilies().subscribe(result => {
+      this.allFamilies = result;
+    }, err => console.error(err));
   }
 
-  loadPoint1() {
-
+  /**
+   * Loads all control points in the selects
+   */
+  loadControlPoints() {
+    this.controlPointsService
+      .getAllControlPoint()
+      .subscribe(result => {
+        this.allControlPoints = result;
+      }, err => { console.log(err) });
   }
 
-  loadPoint2() {
+  /**
+   * Select changes
+   * @param param0 
+   */
+  firstPointChange(event: any){
+    console.log(event);
+    this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
+  }
 
+  secondPointChange(event: any) {
+    console.log(event);
+    this.direction.destination = new google.maps.LatLng(event.lat, event.lng);
   }
 
   /**
@@ -98,30 +139,38 @@ export class RotasCadastrarComponent implements OnInit {
     partial_delay = partial_max + this.time_delay.minute * 1000 * 60 * 60;
     partial_delay = partial_max + this.time_delay.second * 1000 * 60;
 
-    //console.log('partial_delay: ' + partial_delay);
+    console.log('submit mRoute');
+    console.log(this.mRoute);
+    
+    //Ajustando objeto
+    value.family = value.family._id;
+    value.first_point = value.first_point._id;
+    value.second_point = value.second_point._id;
 
-    this.mRoute['controls'].hashPacking.setValue(this.mRoute['controls'].supplier.value._id + this.mRoute['controls'].packing_code.value.id);
-    value.hashPacking = this.mRoute['controls'].supplier.value._id + this.mRoute['controls'].packing_code.value.id;
-    value.time.max = partial_max;
-    value.time.min = partial_min;
-    value.time.to_be_late = partial_delay;
+    value.traveling_time.max = partial_max;
+    value.traveling_time.min = partial_min;
+    //value.time.to_be_late = partial_delay;
+
+    console.log('value');
+    console.log(value);
+
+    console.log(this.mRoute);
 
     if (this.mRoute.valid) {
-      value.project = value.packing_code.project._id;
-      value.packing_code = value.packing_code.id;
-
-      //console.log('value: ' + JSON.stringify(value));
-
-      this.RoutesService.createRoute(value)
-        .subscribe(result => {
-          this.toastService.success('/rc/cadastros/rotas', 'Rota');
-        }, err => this.toastService.error(err));
+      
+      this.proceedToRegister(value);
 
     } else {
       console.log('mRoute not valid');
     }
   }
 
+  proceedToRegister(value: any){
+    this.routesService.createRoute(value)
+      .subscribe(result => {
+        this.toastService.success('/rc/cadastros/rotas', 'Rota');
+      }, err => this.toastService.error(err));
+  }
 
   /**
    * ==================================================================
@@ -129,19 +178,23 @@ export class RotasCadastrarComponent implements OnInit {
    */
 
   directionsChanged() {
+    
+    console.log('directionsChanged');
+    console.log(this.mRoute);
+
+    // value.distance = this.directionsResult.routes[0].legs[0].distance.value;
+    // value.duration = this.directionsResult.routes[0].legs[0].duration.value;
+
     this.directionsResult = this.directionsRenderer.getDirections();
-    if (this.directionsResult) {
-      this.directions = true;
-      this.mRoute['controls'].location['controls'].distance.patchValue(this.directionsResult.routes[0].legs[0].distance);
-      this.mRoute['controls'].location['controls'].duration.patchValue(this.directionsResult.routes[0].legs[0].duration);
-      this.mRoute['controls'].location['controls'].start_address.setValue(this.directionsResult.routes[0].legs[0].start_address);
-      this.mRoute['controls'].location['controls'].end_address.setValue(this.directionsResult.routes[0].legs[0].end_address);
 
-    } else {
+    this.mRoute.controls.distance.setValue(this.directionsResult.routes[0].legs[0].distance.value);
+    this.mRoute.controls.duration.setValue(this.directionsResult.routes[0].legs[0].duration.value);
 
+    if (this.directionsResult)
+      this.directions = true;  
+    else
       this.directions = false;
-    }
-
+    
     this.ref.detectChanges();
   }
 
@@ -154,6 +207,10 @@ export class RotasCadastrarComponent implements OnInit {
   }
 
   onChangeFactory(event: any) {
+    
+    console.log('directionsChanged');
+    console.log(this.mRoute);
+
     if (event) {
       this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
       this.showDirection();
@@ -161,3 +218,4 @@ export class RotasCadastrarComponent implements OnInit {
   }
 
 }
+

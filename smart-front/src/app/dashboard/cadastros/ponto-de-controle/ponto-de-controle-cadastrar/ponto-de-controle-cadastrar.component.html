@@ -62,7 +62,11 @@
       <!-- Input para o tipo do ponto de controle -->
       <div class="campo col-sm-12 col-md-6">
         <p class="descricao">TIPO</p>
-        <ng-select bindLabel="label" placeholder="Selecione o tipo" [items]="allTypes" formControlName="type">
+        <ng-select bindLabel="label" 
+          placeholder="Selecione o tipo" 
+          [items]="allTypes" 
+          [addTag]="true"
+          formControlName="type">
           <ng-template ng-option-tmp let-item="item">
             <div> {{item.label}} </div>
           </ng-template>
