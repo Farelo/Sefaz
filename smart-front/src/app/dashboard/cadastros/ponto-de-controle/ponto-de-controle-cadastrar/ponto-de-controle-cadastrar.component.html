@@ -1,0 +1,184 @@
+<div class="">
+  <h2>Registrar Ponto de Controle</h2>
+  <hr>
+
+  <form novalidate (ngSubmit)="onSubmit(mControlPoint)" [formGroup]="mControlPoint" #formDir="ngForm">
+    <div class="row">
+
+      <!-- Input para o nome do ponto de controle -->
+      <div class="campo col-md-12"> 
+        <p class="descricao">NOME</p>
+        <p class="explicacao">Ex. "Planta B1"</p>
+        <div class="input-group">
+          <input type="text" 
+            class="form-control" 
+            maxlength="80"
+            placeholder="Digite o nome da planta" 
+            aria-describedby="basic-addon2"
+            formControlName="name" 
+            [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
+              || (mControlPoint.get('name').hasError('required') && formDir.submitted)
+              || (mControlPoint.get('name').hasError('pattern')) 
+              || (mControlPoint.get('name').hasError('pattern') && submitted)
+              || (mControlPoint.get('name').hasError('uniqueValidation'))
+              || (mControlPoint.get('name').hasError('uniqueValidation') && submitted)}">
+        </div>
+
+        <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
+          || (mControlPoint.get('name').hasError('required') && formDir.submitted)">
+          Campo Obrigatório</p>
+
+        <p class="explicacao" *ngIf="validateNotTakenLoading">
+          Verificando disponibilidade ...</p>
+          
+        <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('uniqueValidation')) 
+          || (mControlPoint.get('name').hasError('uniqueValidation') && submitted)">
+          Este Ponto de Controle já existe. O nome deve ser único.</p>
+          
+        <p class="requiredText" 
+          *ngIf="(mControlPoint.get('name').hasError('pattern')) || (mControlPoint.get('name').hasError('pattern') && submitted)">
+          Excesso de espaços em branco</p>
+      </div>
+
+      <!-- Input para o duns do ponto de controle -->
+      <div class="campo col-md-12 col-md-6">
+        <p class="descricao">DUNS</p>
+        <p class="explicacao">Ex. "123456789"</p>
+        <div class="input-group">
+          <input type="text" 
+            class="form-control" 
+            maxlength="30"
+            placeholder="Digite o nome da planta" 
+            aria-describedby="basic-addon2"
+            formControlName="duns" 
+            [ngClass]="{'required': (mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
+              || (mControlPoint.get('duns').hasError('required') && submitted)}">
+        </div>
+        <p class="requiredText" *ngIf="(mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
+                    || (mControlPoint.get('duns').hasError('required') && submitted)">Campo
+          Obrigatório</p>
+      </div>
+
+      <!-- Input para o tipo do ponto de controle -->
+      <div class="campo col-sm-12 col-md-6">
+        <p class="descricao">TIPO</p>
+        <ng-select bindLabel="label" 
+          placeholder="Selecione o tipo" 
+          [items]="allTypes" 
+          [addTag]="true"
+          formControlName="type">
+          <ng-template ng-option-tmp let-item="item">
+            <div> {{item.label}} </div>
+          </ng-template>
+        </ng-select>
+        <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('required') && mControlPoint.get('type').touched)
+                    || (mControlPoint.get('type').hasError('required') && submitted)">
+          Campo Obrigatório</p>
+      </div>
+
+      <!-- Input para selecionar a empresa vinculada -->
+      <div class="campo col-sm-12 col-md-6">
+        <p class="descricao">EMPRESA VINCULADA</p>
+        <ng-select bindLabel="name" placeholder="Associe uma empresa" [items]="allCompanies" formControlName="company">
+          <ng-template ng-option-tmp let-item="item">
+            <div> {{item.name}} </div>
+          </ng-template>
+        </ng-select>
+        <p class="requiredText" *ngIf="(mControlPoint.get('company').hasError('required') && mControlPoint.get('company').touched)
+            || (mControlPoint.get('company').hasError('required') && mControlPoint.invalid && submitted)">
+          Campo Obrigatório</p>
+      </div>
+
+
+      <!-- Input para digitar o endereço -->
+      <div class="campo col-sm-12">
+        <p class="descricao">LOCAL</p>
+        <input places-auto-complete 
+          class="form-control"
+          (place_changed)="placeChanged($event)" 
+          [types]="['geocode']" 
+          formControlName="full_address"
+          placeholder="Digite o local da planta" 
+          [ngClass]="{'required': (mControlPoint.get('full_address').hasError('required') && mControlPoint.get('full_address').touched)
+            || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)}"/>
+
+          <p class="requiredText" *ngIf="(mControlPoint.get('full_address').hasError('required') && mControlPoint.get('full_address').touched)
+            || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)">
+            Campo Obrigatório
+          </p>
+
+          <ngui-map 
+            [zoom]="zoom" 
+            [center]="center"  
+            (click)="onClick($event)" 
+            style="margin-top: 10px;" >
+            <marker [position]="pos"></marker>
+          </ngui-map>
+
+          <p class="requiredText" 
+            *ngIf="(mControlPoint.get('full_address').value !== '' && mControlPoint.get('full_address').touched 
+              && !pointWasSelected)">
+            Clique no mapa para configurar a localização</p>
+      </div>
+
+      <div class="campo col-sm-12 informacoes">
+        <div class="bigger2">
+          <div class="fromSun"></div>
+        </div>
+        <span class="forn">{{ this.mControlPoint.controls.full_address.value || 'Nenhuma informação sobre a localidade' }}</span>
+      </div>
+
+
+      <!-- Input para a latitude -->
+      <div class="campo col-md-6">
+        <p class="descricao">LATITUDE</p>
+        <div class="input-group">
+          <input type="text" 
+            readonly
+            class="form-control" 
+            placeholder="Digite a latitude" 
+            aria-describedby="basic-addon2"
+            formControlName="lat" 
+            [(ngModel)]="lat" 
+            [ngClass]="{'required': (mControlPoint.get('lat').hasError('required') && mControlPoint.get('lat').touched)
+              || (mControlPoint.get('lat').hasError('required') && submitted)}">
+        </div>
+
+        <p class="requiredText" *ngIf="(mControlPoint.get('lat').hasError('required') && mControlPoint.get('lat').touched)
+          || (mControlPoint.get('lat').hasError('required') && submitted)">
+          Campo Obrigatório</p>
+      </div>
+
+
+      <!-- Input para a longitude -->
+      <div class="campo col-md-6">
+        <p class="descricao">LONGITUDE</p>
+        <div class="input-group">
+          <input type="text" 
+            readonly
+            class="form-control" 
+            placeholder="Digite a longitude" 
+            aria-describedby="basic-addon2"
+            formControlName="lng" 
+            [(ngModel)]="lng" 
+            [ngClass]="{'required': (mControlPoint.get('lng').hasError('required') && mControlPoint.get('lng').touched)
+            || (mControlPoint.get('lng').hasError('required') && submitted)}">
+        </div>
+
+        <p class="requiredText" *ngIf="(mControlPoint.get('lng').hasError('required') && mControlPoint.get('lng').touched)
+          || (mControlPoint.get('lng').hasError('required') && submitted)">
+          Campo Obrigatório</p>
+      </div>
+    </div>
+
+    <br />
+
+    <div class="botoes">
+      <button routerLink="/rc/cadastros/ponto" class="botaoVoltar">VOLTAR</button>
+      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+    </div>
+
+    <br />
+
+  </form>
+</div>

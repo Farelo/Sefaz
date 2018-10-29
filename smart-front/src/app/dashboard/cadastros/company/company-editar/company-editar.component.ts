@@ -99,14 +99,14 @@ export class CompanyEditarComponent implements OnInit {
   formProfile() {
     this.newCompany = this.fb.group({
       type: ['', [Validators.required]],
-      name: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      name: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
       phone: ['', [Validators.required]],
       cnpj: ['', [Validators.required]],
       address: this.fb.group({
-        street: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-        city: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+        street: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+        city: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
         cep: ['', [Validators.required]],
-        uf: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]]
+        uf: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]]
       })
     });
   }

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Packing } from '../../../../shared/models/packing';
 import { Supplier } from '../../../../shared/models/supplier';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { ToastService, ProjectService, SuppliersService, TagsService, PackingService, CompaniesService, FamiliesService } from '../../../../servicos/index.service';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-familia-editar',
-  templateUrl: './familia-editar.component.html', 
+  templateUrl: './familia-editar.component.html',
   styleUrls: ['../../cadastros.component.css']
 })
 export class FamiliaEditarComponent implements OnInit {
@@ -16,28 +16,29 @@ export class FamiliaEditarComponent implements OnInit {
   public mFamily: FormGroup;
   public inscricao: Subscription;
   public allCompanies: any[] = [];
-  public allControlPoints: any[] = []; 
+  public allControlPoints: any[] = [];
   // [{ id: '5a15b13c2340978ec3d2c0ea', name: 'Controle Point ABC' },
   //  { id: '5a15b13c728cd3f43cc0fe8a', name: 'XTZ Control Point' }];
 
   public validForm: boolean = true;
   public submited = false;
   public mId: string;
+  public mActualFamily: any;
 
   constructor(
-    private familiesService: FamiliesService, 
+    private familiesService: FamiliesService,
     private companyService: CompaniesService,
     private toastService: ToastService,
     private fb: FormBuilder,
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-   
+
     this.configureFormGroup();
     this.retrieveUser();
     this.fillCompanySelect();
   }
-  
+
   /**
   * Fill the select of companies
   */
@@ -50,24 +51,27 @@ export class FamiliaEditarComponent implements OnInit {
 
   configureFormGroup() {
     this.mFamily = this.fb.group({
-      code: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      code: ['',
+        [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/) ],
+        this.validateNotTaken.bind(this)
+      ],
       company: ['', [Validators.required]],
       control_points: new FormControl([])
     });
   }
 
-  retrieveUser(){
+  retrieveUser() {
     this.inscricao = this.route.params.subscribe((params: any) => {
       this.mId = params['id'];
       this.familiesService.getFamily(this.mId).subscribe(result => {
-        
+
         // let actualValues = {
         //   code: result.code,
         //   company: result.company,
         //   control_points: result.control_points
         // };
         //console.log('this.actualValues...' + JSON.stringify(actualValues));
-
+        this.mActualFamily = result;
         (<FormGroup>this.mFamily).patchValue(result, { onlySelf: true });
       });
     });
@@ -88,10 +92,35 @@ export class FamiliaEditarComponent implements OnInit {
     }
   }
 
-  finishUpdate(newFamily: any){
+  finishUpdate(newFamily: any) {
     this.familiesService.editFamily(this.mId, newFamily).subscribe(result => {
       this.toastService.success('/rc/cadastros/familia', 'Família');
     }, err => this.toastService.error(err));
   }
 
+  public validateNotTakenLoading: boolean;
+  validateNotTaken(control: AbstractControl) {
+    this.validateNotTakenLoading = true;
+
+    if (this.mActualFamily.code == control.value) {
+      this.validateNotTakenLoading = false;
+      return new Promise((resolve, reject) => resolve(null));
+    }
+
+    return control
+      .valueChanges
+      .delay(800)
+      .debounceTime(800)
+      .distinctUntilChanged()
+      .switchMap(value => this.familiesService.getAllFamilies({ code: control.value }))
+      .map(res => {
+        
+        this.validateNotTakenLoading = false;
+        if (res.length == 0) {
+          return control.setErrors(null);
+        } else {
+          return control.setErrors({ uniqueValidation: 'code already exist' })
+        }
+      })
+  }
 }

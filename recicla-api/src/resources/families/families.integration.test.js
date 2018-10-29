@@ -179,7 +179,7 @@ describe('api/families', () => {
             return request(server)
                 .patch(`/api/families/${resp.body._id}`)
                 .set('Authorization', token)
-                .send({ code: 'Edited' })
+                .send({ code: 'Edited', company: newCompany._id })
         }
         beforeEach(async () => {
             resp = await request(server)

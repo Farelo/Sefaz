@@ -7,7 +7,7 @@ const packingSchema = new mongoose.Schema({
     tag: {
         code: {
             type: String,
-            minlength: 5,
+            minlength: 4,
             maxlength: 25,
             required: true
         },
@@ -65,7 +65,6 @@ const packingSchema = new mongoose.Schema({
     },
     observations: {
         type: String,
-        minlength: 5,
         maxlength: 250,
     },
     active: {
@@ -82,7 +81,8 @@ const packingSchema = new mongoose.Schema({
     },
     family: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Family'
+        ref: 'Family',
+        required: true
     },
     created_at: {
         type: Date,
@@ -98,7 +98,7 @@ const packingSchema = new mongoose.Schema({
 const validate_packings = (packing) => {
     const schema = Joi.object().keys({
         tag: {
-            code: Joi.string().min(5).max(25).required(),
+            code: Joi.string().min(4).max(25).required(),
             version: Joi.string().min(2).max(30),
             manufactorer: Joi.string().min(2).max(30)
         },
@@ -109,9 +109,9 @@ const validate_packings = (packing) => {
         heigth: Joi.number().max(10000),
         length: Joi.number().max(10000),
         capacity: Joi.number().max(10000),
-        observations: Joi.string().min(5).max(250),
+        observations: Joi.string().max(250),
         active: Joi.boolean(),
-        family: Joi.objectId()
+        family: Joi.objectId().required()
     })
 
     return Joi.validate(packing, schema, { abortEarly: false })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'; 
 import { Router } from '@angular/router';
 import { ToastService, PackingService, FamiliesService } from '../../../../servicos/index.service';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-embalagem-cadastro',
@@ -72,12 +72,13 @@ export class EmbalagemCadastroComponent implements OnInit {
   configureForm(){
     this.mPacking = this.fb.group({
       tag: this.fb.group({
-        code: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-        version: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-        manufactorer: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]]
+        code: ['', 
+          [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this) ],
+        version: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+        manufactorer: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]]
       }),
-      serial: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-      type: ['', [Validators.required, Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
+      serial: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+      type: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
       weigth: ['', [Validators.required]],
       width: ['', [Validators.required]],
       heigth: ['', [Validators.required]],
@@ -87,6 +88,28 @@ export class EmbalagemCadastroComponent implements OnInit {
       observations: ['', [Validators.maxLength(140)]],
       active: false
     });
+  }
+
+  public validateNotTakenLoading: boolean;
+  validateNotTaken(control: AbstractControl) {
+    this.validateNotTakenLoading = true;
+    return control
+      .valueChanges
+      .delay(800)
+      .debounceTime(800)
+      .distinctUntilChanged()
+      .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
+      .map(res => {
+        this.validateNotTakenLoading = false;
+
+        if (res.length == 0) {
+          console.log('empty')
+          return control.setErrors(null);
+        } else {
+          console.log('not empty')
+          return control.setErrors({ uniqueValidation: 'code already exist' })
+        }
+      })
   }
 
 }

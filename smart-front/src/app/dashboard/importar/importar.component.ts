@@ -39,8 +39,7 @@ export class ImportarComponent implements OnInit {
     private plantsService: PlantsService,
     private projectService: ProjectService,
     private departmentService: DepartmentService,
-    private fb: FormBuilder
-  ){  }
+    private fb: FormBuilder){  }
 
   public ngOnInit(){
     this.import = this.fb.group({
@@ -49,6 +48,7 @@ export class ImportarComponent implements OnInit {
     this.import['controls'].type.setValue("");
     this.editTable();
   }
+  
   editTable(){
     var iwa = $('.classeDoCacete');
     var hottable = iwa.children(':nth-child(1)');

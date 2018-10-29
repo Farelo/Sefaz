@@ -1,8 +1,7 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Route } from '../shared/models/route';
+import { Observable } from 'rxjs/Observable'; 
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -14,39 +13,45 @@ export class RoutesService {
       return Observable.throw(error);
   }
 
-  getRoutesPagination(limit: number, page: number, attr: any): Observable<any> {
-    return this.http.get(`${environment.url}route/list/pagination/${limit}/${page}?attr=${attr}`)
+  getRoute(routeId): Observable<any> {
+    return this.http.get(`${environment.url}/routes/${routeId}`)
       .catch(this.handleError);
   }
 
-  retrieveAll(): Observable<any> {
-    return this.http.get(`${environment.url}route/list/all`)
+  getAllRoutes(params: any = {}): Observable<any> {
+
+    let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    if (queryString) queryString = '?' + queryString;
+
+    console.log(queryString);
+
+    return this.http.get(`${environment.url}/routes${queryString}`)
       .catch(this.handleError);
   }
 
-  retrieveRoute(id: string): Observable<any>{
-    return this.http.get(`${environment.url}route/retrieve/${id}`)
+  createRoute(newRoute: any): Observable<any> {
+    return this.http.post(`${environment.url}/routes`, newRoute)
       .catch(this.handleError);
   }
 
-  updateRoute(id: string, route: Route): Observable<any>{
-    return this.http.put(`${environment.url}route/update/${id}`,route)
+  editRoute(routeId: any, newRoute: any): Observable<any> {
+    return this.http.patch(`${environment.url}/routes/${routeId}`, newRoute)
       .catch(this.handleError);
   }
 
-  deleteRoute(id: string): Observable<any>{
-    return this.http.delete(`${environment.url}route/delete/${id}`)
+  deleteRoute(routeId: any): Observable<any> {
+    return this.http.delete(`${environment.url}/routes/${routeId}`)
       .catch(this.handleError);
   }
 
-  createRoute(route: Route): Observable<any>{
-    return this.http.post(`${environment.url}route/create`, route)
+
+  /**
+   * Rotas antigas
+   */
+
+  createRouteArray(newRoute: any): Observable<any> {
+    return this.http.post(`${environment.url}/routes`, newRoute)
       .catch(this.handleError);
   }
-
-  createRouteArray(array: any): Observable<any>{
-    return this.http.post(`${environment.url}route/create/array`, array)
-      .catch(this.handleError);
-  }
-
+  
 }

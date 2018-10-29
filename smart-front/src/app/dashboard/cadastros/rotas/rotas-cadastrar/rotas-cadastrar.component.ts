@@ -1,23 +1,21 @@
-import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
-import { Packing } from '../../../../shared/models/packing';
-import { Supplier } from '../../../../shared/models/supplier';
-import { Route } from '../../../../shared/models/route';
+import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';  
 import { Router } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
-import { ToastService, RoutesService, PlantsService, SuppliersService, PackingService } from '../../../../servicos/index.service';
+import { ToastService, RoutesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
-declare var $:any;
+declare var $: any;
 @Component({
   selector: 'app-rotas-cadastrar',
   templateUrl: './rotas-cadastrar.component.html',
   styleUrls: ['../../cadastros.component.css']
 })
 export class RotasCadastrarComponent implements OnInit {
+  
   @ViewChild(DirectionsRenderer) directionsRendererDirective: DirectionsRenderer;
-  public time_min: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
-  public time_max: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
+  public time_min: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  public time_max: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
   public time_delay: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
 
   public directionsRenderer: google.maps.DirectionsRenderer;
@@ -28,84 +26,175 @@ export class RotasCadastrarComponent implements OnInit {
     travelMode: 'DRIVING'
   };
 
+  public mRoute: FormGroup;
   public autocomplete: any;
   public address: any = {};
   public center: any;
   public pos: any;
   public existPacking = true;
   public directions = false;
-  public plant_factory: any = "";
-  public route: FormGroup;
-  public suppliers =  [];
-  public plants = [];
-  public packings = [];
   public choiced = false;
   public choice_equipament = false;
 
+  //selects
+  public allFamilies: any[] = [];
+  public allControlPoints: any[] = [];
+
   constructor(
-    private PlantsService: PlantsService,
-    private PackingService: PackingService,
-    private suppliersService: SuppliersService,
-    private RoutesService: RoutesService,
+    private routesService: RoutesService,
+    private familyService: FamiliesService,
+    private controlPointsService: ControlPointsService,
     private router: Router,
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
-    private fb: FormBuilder
-  ) {
+    private fb: FormBuilder) {
 
   }
 
 
-  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
-    //fazer a tranformação para segundo, somar e dar o resultado.
-    let partial_min = this.time_min.hour * 1000 * 60 * 60 * 24 ;
-    partial_min = partial_min + this.time_min.minute * 1000 * 60 * 60  ;
-    partial_min = partial_min + this.time_min.second * 1000 * 60 ;
+  ngOnInit() {
 
-    let partial_max = this.time_max.hour * 1000 * 60 * 60 * 24 ;
-    partial_max = partial_max + this.time_max.minute * 1000 * 60 * 60  ;
-    partial_max = partial_max + this.time_max.second * 1000 * 60 ;
+    this.resolveDirections();
+    this.resolveFormGroup();
+    this.loadFamilies();
+    this.loadControlPoints();
+  }
+
+  /**
+   * initialize the directions
+   */
+  resolveDirections(){
+    this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
+      this.directionsRenderer = directionsRenderer;
+    });
+  }
+
+  /**
+   * instantiate the form group
+   */
+  resolveFormGroup(){
+    this.mRoute = this.fb.group({
+      family: [undefined, [Validators.required]],
+      first_point: [undefined, [Validators.required]],
+      second_point: [undefined, [Validators.required]],
+      distance: ['', [Validators.required]],
+      duration: ['', [Validators.required]],
+      traveling_time: this.fb.group({
+        max: ['', [Validators.required]],
+        min: ['', [Validators.required]],
+      })
+    });
+  }
+
+  /**
+   * Loads all families in the select
+   */
+  loadFamilies(){
+    this.familyService.getAllFamilies().subscribe(result => {
+      this.allFamilies = result;
+    }, err => console.error(err));
+  }
+
+  /**
+   * Loads all control points in the selects
+   */
+  loadControlPoints() {
+    this.controlPointsService
+      .getAllControlPoint()
+      .subscribe(result => {
+        this.allControlPoints = result;
+      }, err => { console.log(err) });
+  }
+
+  /**
+   * Select changes
+   * @param param0 
+   */
+  firstPointChange(event: any){
+    console.log(event);
+    this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
+  }
+
+  secondPointChange(event: any) {
+    console.log(event);
+    this.direction.destination = new google.maps.LatLng(event.lat, event.lng);
+  }
+
+  /**
+   * Submit button
+   * @param  
+   */
+  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+
+    //fazer a tranformação para segundo, somar e dar o resultado.
+    let partial_min = this.time_min.hour * 1000 * 60 * 60 * 24;
+    partial_min = partial_min + this.time_min.minute * 1000 * 60 * 60;
+    partial_min = partial_min + this.time_min.second * 1000 * 60;
+
+    let partial_max = this.time_max.hour * 1000 * 60 * 60 * 24;
+    partial_max = partial_max + this.time_max.minute * 1000 * 60 * 60;
+    partial_max = partial_max + this.time_max.second * 1000 * 60;
 
     let partial_delay = this.time_delay.hour * 1000 * 60 * 60 * 24;
     partial_delay = partial_max + this.time_delay.minute * 1000 * 60 * 60;
     partial_delay = partial_max + this.time_delay.second * 1000 * 60;
 
-    //console.log('partial_delay: ' + partial_delay);
+    console.log('submit mRoute');
+    console.log(this.mRoute);
     
-    this.route['controls'].hashPacking.setValue(this.route['controls'].supplier.value._id + this.route['controls'].packing_code.value.id);
-    value.hashPacking = this.route['controls'].supplier.value._id + this.route['controls'].packing_code.value.id;
-    value.time.max = partial_max;
-    value.time.min = partial_min;
-    value.time.to_be_late = partial_delay;
+    //Ajustando objeto
+    value.family = value.family._id;
+    value.first_point = value.first_point._id;
+    value.second_point = value.second_point._id;
 
-    if(this.route.valid){
-      value.project = value.packing_code.project._id;
-      value.packing_code = value.packing_code.id;
+    value.traveling_time.max = partial_max;
+    value.traveling_time.min = partial_min;
+    //value.time.to_be_late = partial_delay;
 
-      //console.log('value: ' + JSON.stringify(value));
+    console.log('value');
+    console.log(value);
 
-      this.RoutesService.createRoute(value)
-        .subscribe(result => {
-          this.toastService.success('/rc/cadastros/rotas', 'Rota');
-        }, err => this.toastService.error(err));
+    console.log(this.mRoute);
 
-    }else{
-      console.log('route not valid');
+    if (this.mRoute.valid) {
+      
+      this.proceedToRegister(value);
+
+    } else {
+      console.log('mRoute not valid');
     }
   }
 
+  proceedToRegister(value: any){
+    this.routesService.createRoute(value)
+      .subscribe(result => {
+        this.toastService.success('/rc/cadastros/rotas', 'Rota');
+      }, err => this.toastService.error(err));
+  }
+
+  /**
+   * ==================================================================
+   * Direction methods
+   */
+
   directionsChanged() {
-    this.directionsResult = this.directionsRenderer.getDirections();
-    if (this.directionsResult) {
-      this.directions = true;
-      this.route['controls'].location['controls'].distance.patchValue(this.directionsResult.routes[0].legs[0].distance);
-      this.route['controls'].location['controls'].duration.patchValue(this.directionsResult.routes[0].legs[0].duration);
-      this.route['controls'].location['controls'].start_address.setValue(this.directionsResult.routes[0].legs[0].start_address);
-      this.route['controls'].location['controls'].end_address.setValue(this.directionsResult.routes[0].legs[0].end_address);
-    } else {
     
+    console.log('directionsChanged');
+    console.log(this.mRoute);
+
+    // value.distance = this.directionsResult.routes[0].legs[0].distance.value;
+    // value.duration = this.directionsResult.routes[0].legs[0].duration.value;
+
+    this.directionsResult = this.directionsRenderer.getDirections();
+
+    this.mRoute.controls.distance.setValue(this.directionsResult.routes[0].legs[0].distance.value);
+    this.mRoute.controls.duration.setValue(this.directionsResult.routes[0].legs[0].duration.value);
+
+    if (this.directionsResult)
+      this.directions = true;  
+    else
       this.directions = false;
-    }
+    
     this.ref.detectChanges();
   }
 
@@ -118,99 +207,15 @@ export class RotasCadastrarComponent implements OnInit {
   }
 
   onChangeFactory(event: any) {
+    
+    console.log('directionsChanged');
+    console.log(this.mRoute);
+
     if (event) {
       this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
       this.showDirection();
     }
   }
 
-  onChangePacking(event: any) {
-    if (typeof event != 'string') {
-      this.choice_equipament = true;
-      this.route['controls'].plant_supplier.setValue(event.plant);
-
-      this.direction.destination = new google.maps.LatLng(event.plant.lat, event.plant.lng);
-      this.loadPlants(event);
-      this.showDirection();
-    } else {
-      this.choice_equipament = false;
-    }
-  }
-
-  loadPackings(event): void {
-    this.route['controls'].packing_code.setValue(undefined);
-    this.route['controls'].plant_factory.setValue(undefined);
-    this.route['controls'].plant_supplier.setValue(undefined);
-
-    this.directions = false;
-
-    if (typeof event != 'string') {
-      this.choice_equipament = false;
-
-      this.PackingService.retrieveAllNoBinded(event._id).subscribe(result => {
-
-        if (result.data.length === 0) {
-          this.choiced = false;
-          this.existPacking = false;
-          this.packings = [];
-        }
-        else {
-          this.choiced = true;
-          this.existPacking = true;
-          this.packings = result.data;
-        }
-      });
-    } else {
-      this.choiced = false;
-    }
-
-  }
-
-  onClear(){
-    this.choiced = false;
-  }
-
-  loadPlants(event): void {
-    this.PlantsService.retrieveAllNoBinded(event.id,this.route['controls'].supplier.value._id,event.project._id).subscribe(result => this.plants = result);
-  }
-
-  loadSuppliers(): void {
-    this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result;}, err => { console.log(err) });
-  }
-
-  ngOnInit() {
-    this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
-      this.directionsRenderer = directionsRenderer;
-    });
-
-    this.route = this.fb.group({
-      supplier: [undefined, [Validators.required]],
-      project: [''],
-      plant_factory: ['', [Validators.required]],
-      plant_supplier: ['', [Validators.required]],
-      packing_code: ['', [Validators.required]],
-      hashPacking: ['', [Validators.required]],
-      time: this.fb.group({
-        max: ['', [Validators.required]],
-        min: ['', [Validators.required]],
-        delay: ['', [Validators.required]]
-      }),
-      location: this.fb.group({
-        distance: this.fb.group({
-          text: ['', [Validators.required]],
-          value: ['', [Validators.required]]
-        }),
-        duration: this.fb.group({
-          text: ['', [Validators.required]],
-          value: ['', [Validators.required]]
-        }),
-        start_address: ['', [Validators.required]],
-        end_address: ['', [Validators.required]]
-      })
-    });
-
-   
-    this.loadSuppliers();
-  }
-
 }
+

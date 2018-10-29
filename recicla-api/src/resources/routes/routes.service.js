@@ -8,6 +8,7 @@ exports.get_routes = async () => {
             .populate('route', ['_id', 'code'])
             .populate('first_point', ['_id', 'name', 'type'])
             .populate('second_point', ['_id', 'name', 'type'])
+            .populate('family', ['_id', 'code'])
 
         return routes
     } catch (error) {
@@ -21,6 +22,7 @@ exports.get_route = async (id) => {
             .populate('route', ['_id', 'code'])
             .populate('first_point', ['_id', 'name', 'type'])
             .populate('second_point', ['_id', 'name', 'type'])
+            .populate('family', ['_id', 'code'])
 
         return route
     } catch (error) {

@@ -8,7 +8,7 @@ const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_control_points } = require('./control_points.model')
 
 router.get('/', [auth, authz], control_points_controller.all)
-router.get('/:id', [auth, validate_object_id], control_points_controller.show)
+router.get('/:id', [auth, authz, validate_object_id], control_points_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_control_points)], control_points_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_control_points)], control_points_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], control_points_controller.delete)

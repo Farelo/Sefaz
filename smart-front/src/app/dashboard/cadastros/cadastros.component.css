@@ -380,6 +380,7 @@ h3 {
 
 .forn {
   padding-left: 20px;
+  margin-top: 6px;
 }
 
 .divisoria {
@@ -503,6 +504,10 @@ tbody > tr:nth-child(even) {
 
 .default-order {
   color: rgba(255, 255, 255, 0.5);
+}
+
+.configured-time {
+  margin-bottom: 5px;
 }
 
 /* -----------*/

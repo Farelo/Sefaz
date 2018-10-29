@@ -2,37 +2,46 @@ const request = require('supertest')
 const mongoose = require('mongoose')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
+const { Family } = require('../families/families.model')
 const { Packing } = require('./packings.model')
 
 describe('api/packings', () => {
     let server
     let token
-    let newCompany
-    let user
+    let new_company
+    let new_user
+    let new_family
+    let packing_body
     beforeEach(async () => {
         server = require('../../server')
 
-        newCompany = new Company({ name: 'CEBRACE TESTE' })
-        await newCompany.save()
-        user = {
+        new_company = new Company({ name: 'CEBRACE TESTE' })
+        await new_company.save()
+        const user = {
             full_name: 'Teste Man',
             email: "serginho@gmail.com",
             password: "qwerty123",
             role: 'admin',
             company: {
-                _id: newCompany._id,
-                name: newCompany.name
+                _id: new_company._id,
+                name: new_company.name
             }
         }
 
-        const newUser = new User(user)
-        await newUser.save()
-        token = newUser.generateUserToken()
+        new_user = new User(user)
+        await new_user.save()
+        token = new_user.generateUserToken()
+
+        new_family = new Family({ code: 'CODE1', company: new_company._id })
+        await new_family.save()
+
+        packing_body = { tag: {code: 'CODE'}, serial: 'SERIAL', family: new_family._id }
     })
     afterEach(async () => {
         await server.close()
         await User.deleteMany({})
         await Company.deleteMany({})
+        await Family.deleteMany({})
         await Packing.deleteMany({})
     })
 
@@ -41,12 +50,7 @@ describe('api/packings', () => {
             return request(server)
                 .post('/api/packings')
                 .set('Authorization', token)
-                .send({ 
-                    tag: {
-                        code: 'CODE'
-                    }, 
-                    serial: 'SERIAL' 
-                })
+                .send(packing_body)
         }
         it('should return 401 if no token is provided', async () => {
             token = ''
@@ -71,12 +75,7 @@ describe('api/packings', () => {
             return request(server)
                 .post('/api/packings')
                 .set('Authorization', token)
-                .send({ 
-                    tag: {
-                        code: 'CODE'
-                    }, 
-                    serial: 'SERIAL' 
-                })
+                .send(packing_body)
         }
         it('should return 403 if user is not admin', async () => {
             user = {
@@ -85,13 +84,13 @@ describe('api/packings', () => {
                 password: "qwerty123",
                 role: 'user',
                 company: {
-                    _id: newCompany._id,
-                    name: newCompany.name
+                    _id: new_company._id,
+                    name: new_company.name
                 }
             }
 
-            const newUser = new User(user)
-            token = newUser.generateUserToken()
+            const new_user = new User(user)
+            token = new_user.generateUserToken()
 
             const res = await exec()
             expect(res.status).toBe(403)
@@ -125,7 +124,7 @@ describe('api/packings', () => {
 
     describe('GET /api/packings/:id', () => {
         it('should return a packing if valid id is passed', async () => {
-            const packing = new Packing({ tag: { code: 'teste 1' }, serial: 'teste 1' })
+            const packing = new Packing(packing_body)
             await packing.save()
 
             const res = await request(server)
@@ -155,7 +154,8 @@ describe('api/packings', () => {
                     tag: {
                         code: packing.tag.code
                     }, 
-                    serial: packing.serial 
+                    serial: packing.serial,
+                    family: new_family._id
                 })
         }
         beforeEach(() => {
@@ -163,7 +163,8 @@ describe('api/packings', () => {
                 tag: { 
                     code: 'teste 1' 
                 }, 
-                serial: 'teste 1' 
+                serial: 'teste 1',
+                family: new_family._id
             }
         })
 
@@ -177,6 +178,14 @@ describe('api/packings', () => {
 
         it('should return 400 if serial is not provied', async () => {
             packing.serial = ''
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+        })
+
+        it('should return 400 if serial is not provied', async () => {
+            packing.family = ''
 
             const res = await exec()
 
@@ -216,19 +225,15 @@ describe('api/packings', () => {
                     tag: {
                         code: 'CODE edited'
                     }, 
-                    serial: 'SERIAL edited' 
+                    serial: 'SERIAL edited',
+                    family: new_family._id
                 })
         }
         beforeEach(async () => {
             resp = await request(server)
                 .post('/api/packings')
                 .set('Authorization', token)
-                .send({ 
-                    tag: {
-                        code: 'CODE'
-                    }, 
-                    serial: 'SERIAL'
-                })
+                .send(packing_body)
         })
 
         it('should return 404 if invalid id is passed', async () => {
@@ -266,7 +271,8 @@ describe('api/packings', () => {
                     tag: {
                         code: 'CODE edited'
                     },
-                    serial: 'SERIAL edited'
+                    serial: 'SERIAL edited',
+                    family: new_family._id
                 })
 
             const res = await exec()

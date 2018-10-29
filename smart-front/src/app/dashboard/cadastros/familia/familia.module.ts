@@ -28,7 +28,6 @@ import { FamiliaRoutingModule } from './familia.routing.module';
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule
-
   ],
   declarations: [
     FamiliaCadastroComponent,

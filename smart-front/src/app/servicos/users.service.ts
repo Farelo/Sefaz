@@ -14,8 +14,11 @@ export class UsersService {
       return Observable.throw(error);
   }
 
-  getAllUsers(): Observable<any> {
-    return this.http.get(`${environment.url}/users`)
+  getAllUsers(params: any = {}): Observable<any> {
+    let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    if (queryString) queryString = '?' + queryString;
+
+    return this.http.get(`${environment.url}/users${queryString}`)
       .catch(this.handleError);
   }
 

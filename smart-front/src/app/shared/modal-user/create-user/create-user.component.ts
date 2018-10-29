@@ -31,27 +31,35 @@ export class CreateUserComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private companiesService: CompaniesService,
-    private usersService: UsersService, 
+    private usersService: UsersService,
     private toastService: ToastService,
     private fb: FormBuilder) { }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.formProfile();
     this.fillSelectType();
     this.getCompaniesOnSelect();
   }
 
-  fillSelectType(){
+  fillSelectType() {
     this.rolesOnSelect = [
       { label: "Administrador", name: "admin" },
-      { label: "Usuário", name: "user" }]; 
+      { label: "Usuário", name: "user" }];
   }
 
   formProfile() {
     this.newUser = this.fb.group({
       role: ['', [Validators.required]],
-      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^[\w\d]+((\s)?[\w\d]+)*$/)]],
-      email: ['', [Validators.required, Validators.email]],
+      full_name: ['',
+        [Validators.required,
+         Validators.minLength(5),
+          Validators.pattern(/^((?!\s{2}).)*$/)]],
+      email: ['',
+        [Validators.required,
+         Validators.email,
+         Validators.minLength(5)],
+        this.validateNotTaken.bind(this)
+      ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
       company: ['', [Validators.required]]
@@ -60,9 +68,9 @@ export class CreateUserComponent implements OnInit {
       });
   }
 
-  getCompaniesOnSelect(){
-    
-    this.companiesService.getAllCompanies().subscribe(result => { 
+  getCompaniesOnSelect() {
+
+    this.companiesService.getAllCompanies().subscribe(result => {
       //console.log("result: " + JSON.stringify(result));
       this.companiesOnSelect = result;
     });
@@ -71,13 +79,13 @@ export class CreateUserComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
     this.submitted = true;
-    
-    if (valid) { 
-      
+
+    if (valid) {
+
       delete value.confirm_password;
       value.role = value.role.name;
       value.company = value.company._id;
-            
+
       this.usersService.createUser(value).subscribe(result => {
         //console.log("result: " + JSON.stringify(result));
         this.closeModal();
@@ -92,4 +100,23 @@ export class CreateUserComponent implements OnInit {
     this.activeModal.close();
   }
 
+  public validateNotTakenLoading: boolean = false;
+  validateNotTaken(control: AbstractControl) {
+    this.validateNotTakenLoading = true;
+    return control
+      .valueChanges
+      .delay(800)
+      .debounceTime(800)
+      .distinctUntilChanged()
+      .switchMap(value => this.usersService.getAllUsers({ email: control.value }))
+      .map(res => {
+
+        this.validateNotTakenLoading = false;
+        if (res.length == 0) {
+          return control.setErrors(null);
+        } else {
+          return control.setErrors({ uniqueValidation: 'code already exist' })
+        }
+      })
+  }
 }

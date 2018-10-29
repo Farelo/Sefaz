@@ -21,7 +21,9 @@
             [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
               || (mPacking.get('tag.code').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.code').hasError('pattern'))
-              || (mPacking.get('tag.code').hasError('pattern') && submitted) }">
+              || (mPacking.get('tag.code').hasError('pattern') && submitted)
+              || (mPacking.get('tag.code').hasError('uniqueValidation'))
+              || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted) }">
         </div>
 
         <p class="requiredText" 
@@ -29,6 +31,14 @@
             || (mPacking.get('tag.code').hasError('required') && formDir.submitted)">
             Campo Obrigatório</p>
 
+        <p class="requiredText" 
+          *ngIf="(mPacking.get('tag.code').hasError('uniqueValidation')) 
+            || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted)">
+          Esta Embalagem já existe. O código deve ser único.</p>
+
+        <p class="explicacao" *ngIf="validateNotTakenLoading">
+          Verificando disponibilidade ...</p>
+          
         <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('pattern')) 
                         || (mPacking.get('tag.code').hasError('pattern') && submitted)">
           Excesso de espaços em branco</p>

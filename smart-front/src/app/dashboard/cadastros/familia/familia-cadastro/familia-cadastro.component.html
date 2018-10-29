@@ -16,7 +16,9 @@
           formControlName="code"
           maxlength="30"
           [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
-          || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)}">
+          || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)
+          || (mFamily.get('code').hasError('uniqueValidation'))
+          || (mFamily.get('code').hasError('uniqueValidation') && submitted)}">
       </div>
 
       <p class="requiredText" 
@@ -26,14 +28,17 @@
       </p>
 
       <p class="requiredText" 
-        *ngIf="(mFamily.get('code').hasError('uniqueFamily')) 
-          || (mFamily.get('code').hasError('uniqueFamily') && submitted)">
-        O código deve ser único</p>
+        *ngIf="(mFamily.get('code').hasError('uniqueValidation')) 
+          || (mFamily.get('code').hasError('uniqueValidation') && submitted)">
+        Esta família já existe. O código deve ser único.</p>
 
       <p class="requiredText" 
         *ngIf="(mFamily.get('code').hasError('pattern')) 
           || (mFamily.get('code').hasError('pattern') && submitted)">
         Excesso de espaços em branco</p>
+      
+      <p class="explicacao" *ngIf="validateNotTakenLoading">
+        Verificando disponibilidade ...</p>
     </div>
 
 

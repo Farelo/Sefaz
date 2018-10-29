@@ -1,0 +1,38 @@
+{
+    "company": {
+        "name": "Cebrace",
+        "enabled": true
+    },
+    "server": {
+        "url": "localhost",
+        "port": 4000
+    },
+    "db": {
+        "url": "mongodb://localhost:27017/recicla",
+        "mongodb_container": "mongodb://<user>:<password>@<host>:27017/recicla"
+    },
+    "database_options": {
+        "reconnectTries": 100000,
+        "reconnectInterval": 500,
+        "poolSize": 10,
+        "bufferMaxEntries": 0,
+        "socketTimeoutMS": 0,
+        "keepAlive": true
+    },
+    "security": {
+        "jwtPrivateKey": "secr3t",
+        "saltRounds": 10,
+        "enableHTTPS": true,
+        "key": "/security/keys/key.pem",
+        "certificate": "/security/keys/cert.pem"
+    },
+    "swagger": {
+        "enabled": true,
+        "route": "/api-docs"
+    },
+    "log": {
+        "enabled": true,
+        "name": "",
+        "level": ""
+    }
+}

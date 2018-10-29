@@ -1,0 +1,39 @@
+{
+  "name": "recicla-job",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "postinstall": "cross-env NODE_ENV=production node src/tools/generate_env.tools.js",
+    "dev": "cross-env NODE_CONFIG_DIR=src/config node src/server.js",
+    "start": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name recicla-job -i 0"
+  },
+  "author": "ISI-TICs",
+  "license": "ISC",
+  "dependencies": {
+    "app-root-path": "^2.1.0",
+    "config": "^2.0.1",
+    "express": "^4.16.4",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2",
+    "mongodb": "^3.1.8",
+    "mongoose": "^5.3.4",
+    "morgan": "^1.9.0",
+    "pm2": "^3.2.2",
+    "winston": "^3.0.0"
+  },
+  "devDependencies": {
+    "chalk": "^2.4.1",
+    "cross-env": "^5.2.0",
+    "debug": "^3.1.0",
+    "jest": "^23.4.1",
+    "loadtest": "^3.0.4",
+    "ora": "^3.0.0",
+    "shelljs": "^0.8.2",
+    "supertest": "^3.1.0"
+  },
+  "engines": {
+    "node": ">= 10.12.0",
+    "npm": ">= 6.4.1"
+  }
+}
