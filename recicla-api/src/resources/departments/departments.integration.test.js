@@ -1,6 +1,7 @@
 const request = require('supertest')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
+const { Type } = require('../types/types.model')
 const { ControlPoint } = require('../control_points/control_points.model')
 const { Department } = require('./departments.model')
 
@@ -25,7 +26,9 @@ describe('api/departments', () => {
                 name: new_company.name
             }
         })
-        new_control_point = await ControlPoint.create({ name: 'teste', company: new_company._id })
+        const new_type = await Type.create({ name: 'Factory' })
+
+        new_control_point = await ControlPoint.create({ name: 'teste', type: new_type._id, company: new_company._id })
 
         token = new_user.generateUserToken()
         department_body = {name: 'department name', control_point: new_control_point._id}
@@ -34,6 +37,7 @@ describe('api/departments', () => {
         await server.close()
         await User.deleteMany({})
         await Company.deleteMany({})
+        await Type.deleteMany({})
         await ControlPoint.deleteMany({})
         await Department.deleteMany({})
     })

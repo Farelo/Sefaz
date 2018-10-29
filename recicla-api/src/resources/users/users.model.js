@@ -97,7 +97,8 @@ const update_encrypt_password_middleware = function (next) {
 }
 
 const update_updated_at_middleware = function (next) {
-    this.update_at = Date.now
+    let update = this.getUpdate()
+    update.update_at = new Date()
     next()
 }
 
