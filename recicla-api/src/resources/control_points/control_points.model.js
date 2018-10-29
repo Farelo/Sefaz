@@ -33,12 +33,8 @@ const controlPointSchema = new mongoose.Schema({
         maxlength: 100
     },
     type: {
-        type: String,
-        required: true,
-        enum: ['factory', 'supplier', 'logistic_op', 'others'],
-        lowercase: true,
-        default: 'others',
-        trim: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Type'
     },
     company: {
         type: mongoose.Schema.Types.ObjectId,
@@ -61,7 +57,7 @@ const validate_control_points = (control_point) => {
         lat: Joi.number().min(-90).max(90),
         lng: Joi.number().min(-180).max(180),
         full_address: Joi.string().min(5).max(100),
-        type: Joi.string().valid(['factory', 'supplier', 'logistic_op', 'others']),
+        type: Joi.objectId(),
         company: Joi.objectId()
     })
 
