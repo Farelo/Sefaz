@@ -183,7 +183,7 @@ module.exports = router
  *         type: string
  *       distance:
  *         type: number
- *       duration:
+ *       duration_time:
  *         type: number
  *       traveling_time:
  *         $ref: '#/definitions/TravelingTimeObject'
