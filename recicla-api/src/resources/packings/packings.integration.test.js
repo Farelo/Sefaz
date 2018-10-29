@@ -155,7 +155,7 @@ describe('api/packings', () => {
                         code: packing.tag.code
                     }, 
                     serial: packing.serial,
-                    family: new_family._id
+                    family: packing.family
                 })
         }
         beforeEach(() => {
@@ -184,7 +184,7 @@ describe('api/packings', () => {
             expect(res.status).toBe(400)
         })
 
-        it('should return 400 if serial is not provied', async () => {
+        it('should return 400 if family is not provied', async () => {
             packing.family = ''
 
             const res = await exec()
