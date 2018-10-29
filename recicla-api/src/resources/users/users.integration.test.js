@@ -36,6 +36,318 @@ describe('api/users', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
+        const company = new Company({ 
+            name: "Company 1",
+            cnpj: "91289532000146",
+            phone: "11111111111",
+            address: {
+                city: "Recife",
+                street: "Rua teste",
+                cep: "54280222",
+                uf: "PE"
+            }})
+        company.save()
+        
+        const user = new User ({
+            full_name: 'Teste Man 2',
+            email: "teste@teste.com",
+            password: "qwerty123",
+            role: 'admin',
+            company: {
+                _id: company._id,
+                name: company.name
+            }
+        })
+        user.save()
+
+        describe('Validate token by GET method without id', () => {
+            const exec = () => {
+                return request(server)
+                    .get('/api/users')
+                    .set('Authorization', token)
+            }
+
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. No token provided.')
+            })
+
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+                expect(res.body.message).toBe('Invalid token.')
+            })
+
+            /*it('should return 401 if token is expired', async () => {
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by GET method with id', () => {
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const exec = () => {
+                    return request(server)
+                        .get(`/api/users/${user._id}`)
+                        .set('Authorization', token)
+                }
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. No token provided.')
+            })
+
+            it('should return 400 if token is invalid', async () => {
+               
+                token = 'a'
+                const exec = () => {
+                    return request(server)
+                        .get(`/api/users/${user._id}`)
+                        .set('Authorization', token)
+                }
+                const res = await exec()
+                expect(res.status).toBe(400)
+                expect(res.body.message).toBe('Invalid token.')
+            })
+
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                const exec = () => {
+                    return request(server)
+                        .get(`/api/companies/${company._id}`)
+                        .set('Authorization', token)
+                }
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by POST method', () => {
+            const exec = () => {
+                return request(server)
+                    .post('/api/users')
+                    .set('Authorization', token)
+                    .send({full_name: 'Teste Man 3',
+                        email: "teste1@teste.com",
+                        password: "qwerty123",
+                        role: 'admin',
+                        company: {
+                            _id: newCompany._id,
+                            name: newCompany.name
+                        }
+                    })
+            }
+
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                const exec = () => {
+                return request(server)
+                    .post('/api/companies')
+                    .set('Authorization', token)
+                    .send({ name: 'TESTE', type: 'client' })
+                }
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by PATCH method', () => {
+            const exec = () => {
+                return request(server)
+                    .patch(`/api/users/${user._id}`)
+                    .set('Authorization', token)
+                    .send({ full_name: 'teste' })
+            }
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                const exec = () => {
+                return request(server)
+                    .patch(`/api/companies/${company._id}`)
+                    .set('Authorization', token)
+                    .send({ name: 'TESTE', type: 'client' })
+                }
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by DELETE method', () => {
+            const exec = () => {
+                return request(server)
+                    .delete(`/api/users/${user._id}`)
+                    .set('Authorization', token)
+            }
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                const exec = () => {
+                return request(server)
+                    .delete(`/api/companies/${company._id}`)
+                    .set('Authorization', token)
+                }
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+    })
+
+    describe('AUTHZ MIDDLEWARE', () => {
+        const company = new Company({ 
+            name: "Company 1",
+            cnpj: "91289532000146",
+            phone: "11111111111",
+            address: {
+                city: "Recife",
+                street: "Rua teste",
+                cep: "54280222",
+                uf: "PE"
+            }})
+        company.save()
+        const userUser = {
+                    full_name: 'Teste Man 3',
+                    email: "testet@gmail.com",
+                    password: "qwerty123",
+                    role: 'user',
+                    company: {
+                        _id: company._id,
+                        name: company.name
+                    }
+                }
+        const newUser = new User(userUser)
+        const tokenUser = newUser.generateUserToken()
+        newUser.save()
+        describe('Validate authorization by POST', () => {
+            it('should return 403 if user is not admin by POST', async () => {
+                const exec = () => {
+                    return request(server)
+                        .post('/api/users')
+                        .set('Authorization', tokenUser)
+                        .send({ full_name: 'test' })
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })        
+        })
+
+        describe('Validate authorization by GET', () => {
+            it('should return 403 if user is not admin by GET', async () => {
+                const exec = () => {
+                    return request(server)
+                        .get('/api/users')
+                        .set('Authorization', tokenUser)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })
+
+            it('should return 403 if user is not admin by GET with id', async () => {
+                const userUser = {
+                    full_name: 'Teste Man 3',
+                    email: "testet@gmail.com",
+                    password: "qwerty123",
+                    role: 'user',
+                    company: {
+                        _id: company._id,
+                        name: company.name
+                    }
+                }
+                const userTest = new User(userUser)
+                userTest.save()
+                console.log(userTest)
+                const tokenUserTest = userTest.generateUserToken()
+                const exec = () => {
+                    return request(server)
+                        .get(`/api/users/${userTest._id}`)
+                        .set('Authorization', tokenUserTest)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })        
+        })
+
+        describe('Validate authorization by PATCH', () => {
+            it('should return 403 if user is not admin by PATCH', async () => {
+                const exec = () => {
+                    return request(server)
+                        .patch(`/api/users/${newUser._id}`)
+                        .set('Authorization', tokenUser)
+                        .send({full_name: "teste"})
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })
+        })
+
+        describe('Validate authorization by DELETE', () => {
+            it('should return 403 if user is not admin by DELETE', async () => {
+                const exec = () => {
+                    return request(server)
+                        .delete(`/api/users/${newUser._id}`)
+                        .set('Authorization', tokenUser)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })
+        })
+    })
+
+    /*describe('AUTH MIDDLEWARE', () => {
         const exec = () => {
             return request(server)
                 .post('/api/users')
@@ -289,6 +601,6 @@ describe('api/users', () => {
             expect(res.status).toBe(200)
             expect(res.body.message).toBe('Delete successfully')
         })
-    })
+    })*/
 
 })

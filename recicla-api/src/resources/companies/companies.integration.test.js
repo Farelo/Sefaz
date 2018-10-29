@@ -309,7 +309,7 @@ describe('api/companies', () => {
             it('should return 403 if user is not admin by DELETE', async () => {
                 const exec = () => {
                     return request(server)
-                        .patch(`/api/companies/${company._id}`)
+                        .delete(`/api/companies/${company._id}`)
                         .set('Authorization', tokenUser)
                 }
                 const res = await exec()
