@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService, UsersService, CompaniesService, FamiliesService, PackingService, ControlPointsService, RoutesService } from '../../servicos/index.service';
+import { MeterFormatter } from '../pipes/meter_formatter';
 
 @Component({
   selector: 'app-modal-delete',
@@ -77,4 +78,11 @@ export class ModalDeleteComponent implements OnInit {
     
   }
 
+
+  /**
+   * Misc
+   */
+  getFormatedDistance(value: number) { 
+    return (new MeterFormatter()).to(value / 1000);
+  }
 }

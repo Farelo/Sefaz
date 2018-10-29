@@ -56,7 +56,7 @@ const validate_routes = (route) => {
         second_point: Joi.objectId().required(),
         family: Joi.objectId().required(),
         distance: Joi.number(),
-        duration: Joi.number(),
+        duration_time: Joi.number(),
         traveling_time: {
             max: Joi.number(),
             min: Joi.number()

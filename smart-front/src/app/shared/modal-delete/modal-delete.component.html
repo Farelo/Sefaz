@@ -95,10 +95,10 @@
   <div class="detalhes" *ngIf="mType == 'ROUTE'">
     <h2> Deletar Rota </h2>
     <hr>
-    <p>Família: {{ mObject.family }}</p>
+    <p>Família: {{ mObject.family.code }}</p>
     <p>Ponto 1: {{ mObject.first_point.name }}</p>
     <p>Ponto 2: {{ mObject.second_point.name }}</p>
-    <p>Distância: {{ mObject.distance }}</p>
+    <p>Distância: {{ getFormatedDistance(mObject.distance) }}</p>
   
     <hr>
     <div class="alerta">

@@ -26,11 +26,11 @@
                                              currentPage: actualPage,
                                              totalItems: allRoutes.length}; index as index"
         (mouseover)='hoveredIndex = index'>
-        <td>{{ route.family }}</td>
+        <td>{{ route.family.code }}</td>
         <td>{{ route.first_point.name }}</td>
         <td>{{ route.second_point.name }}</td>
         <td>{{ getFormatedDistance(route.distance) }}</td>
-        <td>{{ route.duration }}</td> 
+        <td>{{ route.duration_time }}</td> 
         <td class="teste">
           <div *ngIf="index==hoveredIndex">
             <button class="editar botaoPlanta" [routerLink]="['editar/', route._id]">
