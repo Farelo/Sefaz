@@ -34,6 +34,10 @@ const routeSchema = new mongoose.Schema({
             type: Number,
             default: 0
         },
+        overtime: {
+            type: Number,
+            default: 0
+        }
     },
     created_at: {
         type: Date,
