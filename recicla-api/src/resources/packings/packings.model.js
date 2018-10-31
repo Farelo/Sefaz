@@ -96,6 +96,10 @@ const packingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Department'
     },
+    last_event_record: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'EventRecord'
+    },
     project: {
         type: mongoose.Schema.ObjectId,
         ref: 'Project'
