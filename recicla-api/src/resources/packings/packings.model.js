@@ -84,6 +84,14 @@ const packingSchema = new mongoose.Schema({
         ref: 'Family',
         required: true
     },
+    last_department: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Department'
+    },
+    project: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Project'
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -111,7 +119,8 @@ const validate_packings = (packing) => {
         capacity: Joi.number().max(10000),
         observations: Joi.string().max(250),
         active: Joi.boolean(),
-        family: Joi.objectId().required()
+        family: Joi.objectId().required(),
+        project: Joi.objectId()
     })
 
     return Joi.validate(packing, schema, { abortEarly: false })
@@ -122,7 +131,8 @@ packingSchema.statics.findByTag = function (tag, projection = '') {
 }
 
 const update_updated_at_middleware = function (next) {
-    this.update_at = Date.now
+    let update = this.getUpdate()
+    update.update_at = new Date()
     next()
 }
 

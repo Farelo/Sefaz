@@ -6,7 +6,7 @@ const packingSchema = new mongoose.Schema({
     tag: {
         code: {
             type: String,
-            minlength: 5,
+            minlength: 4,
             maxlength: 25,
             required: true
         },
@@ -64,7 +64,6 @@ const packingSchema = new mongoose.Schema({
     },
     observations: {
         type: String,
-        minlength: 5,
         maxlength: 250,
     },
     active: {
@@ -81,11 +80,16 @@ const packingSchema = new mongoose.Schema({
     },
     family: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Family'
+        ref: 'Family',
+        required: true
     },
-    last_device_data: {
+    last_department: {
         type: mongoose.Schema.ObjectId,
-        ref: 'DeviceData'
+        ref: 'Department'
+    },
+    project: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Project'
     },
     created_at: {
         type: Date,
@@ -103,7 +107,8 @@ packingSchema.statics.findByTag = function (tag, projection = '') {
 }
 
 const update_updated_at_middleware = function (next) {
-    this.update_at = Date.now
+    let update = this.getUpdate()
+    update.update_at = new Date()
     next()
 }
 

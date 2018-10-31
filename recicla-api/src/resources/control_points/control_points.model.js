@@ -33,16 +33,14 @@ const controlPointSchema = new mongoose.Schema({
         maxlength: 100
     },
     type: {
-        type: String,
-        required: true,
-        enum: ['factory', 'supplier', 'logistic_op', 'others'],
-        lowercase: true,
-        default: 'others',
-        trim: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Type',
+        required: true
     },
     company: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Company'
+        ref: 'Company',
+        required: true
     },
     created_at: {
         type: Date,
@@ -61,8 +59,8 @@ const validate_control_points = (control_point) => {
         lat: Joi.number().min(-90).max(90),
         lng: Joi.number().min(-180).max(180),
         full_address: Joi.string().min(5).max(100),
-        type: Joi.string().valid(['factory', 'supplier', 'logistic_op', 'others']),
-        company: Joi.objectId()
+        type: Joi.objectId().required(),
+        company: Joi.objectId().required()
     })
 
     return Joi.validate(control_point, schema, { abortEarly: false })
@@ -74,7 +72,8 @@ controlPointSchema.statics.findByName = function (name, projection = '') {
 }
 
 const update_updated_at_middleware = function (next) {
-    this.update_at = Date.now
+    let update = this.getUpdate()
+    update.update_at = new Date()
     next()
 }
 

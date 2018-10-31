@@ -1,21 +1,22 @@
 const request = require('supertest')
+const mongoose = require('mongoose')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
+const { Type } = require('../types/types.model')
 const { ControlPoint } = require('./control_points.model')
 
 describe('api/control_points', () => {
     let server
     let token
     let new_company
-    let user
     let new_user
+    let new_type
+    let control_point_body
     beforeEach(async () => {
         server = require('../../server')
 
-        new_company = new Company({ name: 'CEBRACE TESTE' })
-        await new_company.save()
-
-        user = {
+        new_company = await Company.create({ name: 'CEBRACE TESTE' })
+        new_user = await User.create({
             full_name: 'Teste Man',
             email: "serginho@gmail.com",
             password: "qwerty123",
@@ -24,16 +25,17 @@ describe('api/control_points', () => {
                 _id: new_company._id,
                 name: new_company.name
             }
-        }
+        })
+        new_type = await Type.create({name: 'Factory'})
 
-        const new_user = new User(user)
-        await new_user.save()
         token = new_user.generateUserToken()
+        control_point_body = { name: 'teste 1', type: new_type._id, company: new_company._id }
     })
     afterEach(async () => {
         await server.close()
-        await User.deleteMany({})
         await Company.deleteMany({})
+        await User.deleteMany({})
+        await Type.deleteMany({})
         await ControlPoint.deleteMany({})
     })
 
@@ -42,7 +44,7 @@ describe('api/control_points', () => {
             return request(server)
                 .post('/api/control_points')
                 .set('Authorization', token)
-                .send({ name: 'teste 1', company: new_company._id })
+                .send(control_point_body)
         }
         it('should return 401 if no token is provided', async () => {
             token = ''
@@ -67,22 +69,21 @@ describe('api/control_points', () => {
             return request(server)
                 .post('/api/control_points')
                 .set('Authorization', token)
-                .send({ name: 'teste 1', company: new_company._id })
+                .send(control_point_body)
         }
         it('should return 403 if user is not admin', async () => {
-            user = {
+            const another_user = await User.create({
                 full_name: 'Teste Man',
-                email: "serginho@gmail.com",
+                email: "serginho1@gmail.com",
                 password: "qwerty123",
                 role: 'user',
                 company: {
                     _id: new_company._id,
                     name: new_company.name
                 }
-            }
+            })
 
-            const new_user = new User(user)
-            token = new_user.generateUserToken()
+            token = another_user.generateUserToken()
 
             const res = await exec()
             expect(res.status).toBe(403)
@@ -97,9 +98,9 @@ describe('api/control_points', () => {
     describe('GET: /api/control_points', () => {
         it('should return all control points', async () => {
             await ControlPoint.collection.insertMany([
-                { name: 'teste 1', company: new_company._id },
-                { name: 'teste 2', company: new_company._id },
-                { name: 'teste 3', company: new_company._id }
+                { name: 'teste 1', type: new_type._id, company: new_company._id },
+                { name: 'teste 2', type: new_type._id, company: new_company._id },
+                { name: 'teste 3', type: new_type._id, company: new_company._id }
             ])
 
             const res = await request(server)
@@ -116,8 +117,7 @@ describe('api/control_points', () => {
 
     describe('GET /api/control_points/:id', () => {
         it('should return a control point if valid id is passed', async () => {
-            const control_point = new ControlPoint({ name: 'teste 1', company: new_company._id })
-            await control_point.save()
+            const control_point = await ControlPoint.create(control_point_body)
 
             const res = await request(server)
                 .get(`/api/control_points/${control_point._id}`)
@@ -137,19 +137,31 @@ describe('api/control_points', () => {
     })
 
     describe('POST: /api/control_points', () => {
-        let control_point
         const exec = () => {
             return request(server)
                 .post('/api/control_points')
                 .set('Authorization', token)
-                .send({ name: control_point.name, company: new_company._id })
+                .send({ name: control_point_body.name, type: control_point_body.type, company: control_point_body.company })
         }
-        beforeEach(() => {
-            control_point = { name: 'teste 1', company: new_company._id }
-        })
 
         it('should return 400 if name is not provied', async () => {
-            control_point.name = ''
+            control_point_body.name = ''
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+        })
+
+        it('should return 400 if type is not provied', async () => {
+            control_point_body.type = ''
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+        })
+
+        it('should return 400 if company is not provied', async () => {
+            control_point_body.company = ''
 
             const res = await exec()
 
@@ -157,11 +169,29 @@ describe('api/control_points', () => {
         })
 
         it('should return 400 if control_point name already exists', async () => {
-            await ControlPoint.create(control_point)
+            await ControlPoint.create(control_point_body)
 
             const res = await exec()
 
             expect(res.status).toBe(400)
+        })
+
+        it('should return 404 if invalid company id is passed', async () => {
+            control_point_body.company = mongoose.Types.ObjectId()
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+            expect(res.body.message).toBe('Invalid company.')
+        })
+
+        it('should return 404 if invalid type id is passed', async () => {
+            control_point_body.type = mongoose.Types.ObjectId()
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+            expect(res.body.message).toBe('Invalid type.')
         })
 
         it('should return 201 if control_point is valid request', async () => {
@@ -185,13 +215,13 @@ describe('api/control_points', () => {
             return request(server)
                 .patch(`/api/control_points/${resp.body._id}`)
                 .set('Authorization', token)
-                .send({ name: 'teste edited', company: new_company._id })
+                .send({ name: 'teste edited', type: control_point_body.type, company: control_point_body.company })
         }
         beforeEach(async () => {
             resp = await request(server)
                 .post('/api/control_points')
                 .set('Authorization', token)
-                .send({ name: 'teste 1', company: new_company._id })
+                .send(control_point_body)
         })
 
         it('should return 404 if invalid id is passed', async () => {
@@ -200,6 +230,24 @@ describe('api/control_points', () => {
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
+        })
+
+        it('should return 404 if invalid company id is passed', async () => {
+            control_point_body.company = mongoose.Types.ObjectId()
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+            expect(res.body.message).toBe('Invalid company.')
+        })
+
+        it('should return 404 if invalid type id is passed', async () => {
+            control_point_body.type = mongoose.Types.ObjectId()
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+            expect(res.body.message).toBe('Invalid type.')
         })
 
         it('should return control point edited if is valid request', async () => {
@@ -225,7 +273,7 @@ describe('api/control_points', () => {
             resp = await request(server)
                 .post('/api/control_points')
                 .set('Authorization', token)
-                .send({ name: 'teste 1', company: new_company._id })
+                .send(control_point_body)
 
             const res = await exec()
 

@@ -5,14 +5,14 @@ const { User } = require('../resources/users/users.model')
 module.exports = (req, res, next) => {
     // Authorization: Bearer TOKEN
     const token = extractToken(req)
-    if (!token) return res.status(401).send('Access denied. No token provided.')
+    if (!token) return res.status(401).send({message:"Access denied. No token provided."})
 
     try {
         const decoded_payload = jwt.verify(token, config.get('security.jwtPrivateKey'))
         req.authenticated = decoded_payload
         next()
     } catch (error) {
-        res.status(400).send('Invalid token.')
+        res.status(400).send({message:"Invalid token."})
     }
 }
 

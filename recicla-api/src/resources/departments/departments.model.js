@@ -37,7 +37,7 @@ const departmentSchema = new mongoose.Schema({
         default: Date.now
     }
 })
-const validate_departments = (control_point) => {
+const validate_departments = (department) => {
     const schema = Joi.object().keys({
         name: Joi.string().min(5).max(50).required(),
         lat: Joi.number().min(-90).max(90),
@@ -45,7 +45,7 @@ const validate_departments = (control_point) => {
         control_point: Joi.objectId().required()
     })
 
-    return Joi.validate(control_point, schema, { abortEarly: false })
+    return Joi.validate(department, schema, { abortEarly: false })
 }
 
 departmentSchema.statics.findByName = function (name, projection = '') {
@@ -53,7 +53,8 @@ departmentSchema.statics.findByName = function (name, projection = '') {
 }
 
 const update_updated_at_middleware = function (next) {
-    this.update_at = Date.now
+    let update = this.getUpdate()
+    update.update_at = new Date()
     next()
 }
 

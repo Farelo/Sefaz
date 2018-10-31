@@ -2,22 +2,20 @@ const request = require('supertest')
 const mongoose = require('mongoose')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
-const { Family } = require('../families/families.model')
-const { Packing } = require('./packings.model')
+const { Type } = require('./types.model')
 
-describe('api/packings', () => {
+describe('api/types', () => {
     let server
     let token
     let new_company
     let new_user
-    let new_family
-    let packing_body
+    let type_body
     beforeEach(async () => {
         server = require('../../server')
 
-        new_company = new Company({ name: 'CEBRACE TESTE' })
-        await new_company.save()
-        const user = {
+        new_company = await Company.create({ name: 'CEBRACE TESTE' })
+
+        new_user = await User.create({
             full_name: 'Teste Man',
             email: "serginho@gmail.com",
             password: "qwerty123",
@@ -26,31 +24,24 @@ describe('api/packings', () => {
                 _id: new_company._id,
                 name: new_company.name
             }
-        }
+        })
 
-        new_user = new User(user)
-        await new_user.save()
         token = new_user.generateUserToken()
-
-        new_family = new Family({ code: 'CODE1', company: new_company._id })
-        await new_family.save()
-
-        packing_body = { tag: {code: 'CODE'}, serial: 'SERIAL', family: new_family._id }
+        type_body = { name: 'TESTE' }
     })
     afterEach(async () => {
         await server.close()
         await User.deleteMany({})
         await Company.deleteMany({})
-        await Family.deleteMany({})
-        await Packing.deleteMany({})
+        await Type.deleteMany({})
     })
 
     describe('AUTH MIDDLEWARE', () => {
         const exec = () => {
             return request(server)
-                .post('/api/packings')
+                .post('/api/types')
                 .set('Authorization', token)
-                .send(packing_body)
+                .send(type_body)
         }
         it('should return 401 if no token is provided', async () => {
             token = ''
@@ -73,23 +64,22 @@ describe('api/packings', () => {
     describe('AUTHZ MIDDLEWARE', () => {
         const exec = () => {
             return request(server)
-                .post('/api/packings')
+                .post('/api/types')
                 .set('Authorization', token)
-                .send(packing_body)
+                .send(type_body)
         }
         it('should return 403 if user is not admin', async () => {
-            user = {
+            const new_user = await User.create({
                 full_name: 'Teste Man',
-                email: "serginho@gmail.com",
+                email: "serginho1@gmail.com",
                 password: "qwerty123",
                 role: 'user',
                 company: {
                     _id: new_company._id,
                     name: new_company.name
                 }
-            }
+            })
 
-            const new_user = new User(user)
             token = new_user.generateUserToken()
 
             const res = await exec()
@@ -102,178 +92,133 @@ describe('api/packings', () => {
         })
     })
 
-    describe('GET: /api/packings', () => {
-        it('should return all packings', async () => {
-            await Packing.collection.insertMany([
-                { tag: {code: 'teste 1'}, serial: 'teste 1'},
-                { tag: {code: 'teste 2'}, serial: 'teste 2'},
-                { tag: {code: 'teste 3'}, serial: 'teste 3'}
+    describe('GET: /api/types', () => {
+        it('should return all types', async () => {
+            await Type.collection.insertMany([
+                { name: 'teste 1' },
+                { name: 'teste 2' },
+                { name: 'teste 3' }
             ])
 
             const res = await request(server)
-                .get('/api/packings')
+                .get('/api/types')
                 .set('Authorization', token)
 
             expect(res.status).toBe(200)
             expect(res.body.length).toBe(3)
-            expect(res.body.some(p => p.serial === 'teste 1')).toBeTruthy()
-            expect(res.body.some(p => p.serial === 'teste 2')).toBeTruthy()
-            expect(res.body.some(p => p.serial === 'teste 3')).toBeTruthy()
+            expect(res.body.some(t => t.name === 'teste 1')).toBeTruthy()
+            expect(res.body.some(t => t.name === 'teste 2')).toBeTruthy()
+            expect(res.body.some(t => t.name === 'teste 3')).toBeTruthy()
         })
     })
 
-    describe('GET /api/packings/:id', () => {
-        it('should return a packing if valid id is passed', async () => {
-            const packing = new Packing(packing_body)
-            await packing.save()
+    describe('GET /api/types/:id', () => {
+        it('should return a type if valid id is passed', async () => {
+            const type = await Type.create(type_body)
 
             const res = await request(server)
-                .get(`/api/packings/${packing._id}`)
+                .get(`/api/types/${type._id}`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(200)
-            expect(res.body).toHaveProperty('serial', packing.serial)
+            expect(res.body).toHaveProperty('name', type.name)
         })
 
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
-                .get(`/api/packings/1a`)
+                .get(`/api/types/1a`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
         })
     })
 
-    describe('POST: /api/packings', () => {
-        let packing
+    describe('POST: /api/types', () => {
         const exec = () => {
             return request(server)
-                .post('/api/packings')
+                .post('/api/types')
                 .set('Authorization', token)
-                .send({ 
-                    tag: {
-                        code: packing.tag.code
-                    }, 
-                    serial: packing.serial,
-                    family: packing.family
-                })
+                .send({ name: type_body.name, control_point: type_body.control_point })
         }
-        beforeEach(() => {
-            packing = { 
-                tag: { 
-                    code: 'teste 1' 
-                }, 
-                serial: 'teste 1',
-                family: new_family._id
-            }
-        })
 
-        it('should return 400 if tag code is not provied', async () => {
-            packing.tag.code = ''
+        it('should return 400 if name is not provied', async () => {
+            type_body.name = ''
 
             const res = await exec()
 
             expect(res.status).toBe(400)
         })
 
-        it('should return 400 if serial is not provied', async () => {
-            packing.serial = ''
+        it('should return 400 if type name already exists', async () => {
+            await Type.create(type_body)
 
             const res = await exec()
 
             expect(res.status).toBe(400)
         })
 
-        it('should return 400 if family is not provied', async () => {
-            packing.family = ''
-
-            const res = await exec()
-
-            expect(res.status).toBe(400)
-        })
-
-        it('should return 400 if packing code tag already exists', async () => {
-            await Packing.create(packing)
-
-            const res = await exec()
-
-            expect(res.status).toBe(400)
-        })
-
-        it('should return 201 if packing is valid request', async () => {
+        it('should return 201 if type is valid request', async () => {
             const res = await exec()
 
             expect(res.status).toBe(201)
         })
 
-        it('should return packing if is valid request', async () => {
+        it('should return type if is valid request', async () => {
             const res = await exec()
 
             expect(Object.keys(res.body)).toEqual(
-                expect.arrayContaining(['_id', 'serial'])
+                expect.arrayContaining(['_id', 'name'])
             )
         })
     })
 
-    describe('PATCH: /api/packings/:id', () => {
+    describe('PATCH: /api/types/:id', () => {
         let resp
         const exec = () => {
             return request(server)
-                .patch(`/api/packings/${resp.body._id}`)
+                .patch(`/api/types/${resp.body._id}`)
                 .set('Authorization', token)
-                .send({ 
-                    tag: {
-                        code: 'CODE edited'
-                    }, 
-                    serial: 'SERIAL edited',
-                    family: new_family._id
-                })
+                .send({ name: 'teste edited' })
         }
         beforeEach(async () => {
             resp = await request(server)
-                .post('/api/packings')
+                .post('/api/types')
                 .set('Authorization', token)
-                .send(packing_body)
+                .send(type_body)
         })
 
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
-                .get(`/api/packings/1`)
+                .get(`/api/types/1`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
         })
 
-        it('should return packing edited if is valid request', async () => {
+        it('should return type edited if is valid request', async () => {
             const res = await exec()
 
             expect(res.status).toBe(200)
-            expect(res.body.tag.code).toBe('CODE edited')
+            expect(res.body.name).toBe('teste edited')
             expect(Object.keys(res.body)).toEqual(
-                expect.arrayContaining(['_id', 'serial'])
+                expect.arrayContaining(['_id', 'name'])
             )
         })
     })
 
-    describe('DELETE: /api/packings/:id', () => {
+    describe('DELETE: /api/types/:id', () => {
         let resp
         const exec = () => {
             return request(server)
-                .delete(`/api/packings/${resp.body._id}`)
+                .delete(`/api/types/${resp.body._id}`)
                 .set('Authorization', token)
         }
 
         it('should return 200 if deleted with success', async () => {
             resp = await request(server)
-                .post('/api/packings')
+                .post('/api/types')
                 .set('Authorization', token)
-                .send({
-                    tag: {
-                        code: 'CODE edited'
-                    },
-                    serial: 'SERIAL edited',
-                    family: new_family._id
-                })
+                .send(type_body)
 
             const res = await exec()
 

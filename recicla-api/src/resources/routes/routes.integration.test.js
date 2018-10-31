@@ -3,6 +3,7 @@ const { Company } = require('../companies/companies.model')
 const { User } = require('../users/users.model')
 const { Family } = require('../families/families.model')
 const { Route } = require('./routes.model')
+const { Type } = require('../types/types.model')
 const { ControlPoint } = require('../control_points/control_points.model')
 
 describe('api/routes', () => {
@@ -11,6 +12,7 @@ describe('api/routes', () => {
     let new_company
     let new_user
     let family
+    let new_type
     let first_point
     let second_point
     beforeEach(async () => {
@@ -27,11 +29,13 @@ describe('api/routes', () => {
                 name: new_company.name
             }
         })
-        token = new_user.generateUserToken()
-
+        
+        new_type = await Type.create({ name: 'Factory' })
+        
         family = await Family.create({ code: "Family A", company: new_company._id })
-        first_point = await ControlPoint.create({ name: 'teste 1', company: new_company._id })
-        second_point = await ControlPoint.create({ name: 'teste 2', company: new_company._id })
+        first_point = await ControlPoint.create({ name: 'teste 1', type: new_type._id, company: new_company._id })
+        second_point = await ControlPoint.create({ name: 'teste 2', type: new_type._id, company: new_company._id })
+        token = new_user.generateUserToken()
 
     })
     afterEach(async () => {
@@ -40,14 +44,15 @@ describe('api/routes', () => {
         await User.deleteMany({})
         await Family.deleteMany({})
         await Route.deleteMany({})
+        await Type.deleteMany({})
         await ControlPoint.deleteMany({})
     })
 
     describe('GET: /api/routes', () => {
         it('should return all routes', async () => {
             const familyB = await Family.create({ code: "Family B", company: new_company._id })
-            const first_pointB = await ControlPoint.create({ name: 'teste 3', company: new_company._id })
-            const second_pointB = await ControlPoint.create({ name: 'teste 4', company: new_company._id })
+            const first_pointB = await ControlPoint.create({ name: 'teste 3', type: new_type._id, company: new_company._id })
+            const second_pointB = await ControlPoint.create({ name: 'teste 4', type: new_type._id, company: new_company._id })
 
             await Route.collection.insertMany([
                 { family: family._id, first_point: first_point._id, second_point: second_point._id }, 

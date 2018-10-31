@@ -1,22 +1,22 @@
 const request = require('supertest')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
+const { Type } = require('../types/types.model')
 const { ControlPoint } = require('../control_points/control_points.model')
 const { Department } = require('./departments.model')
 
-describe('api/control_points', () => {
+describe('api/departments', () => {
     let server
     let token
     let new_company
     let new_user
     let new_control_point
+    let department_body
     beforeEach(async () => {
         server = require('../../server')
 
-        new_company = new Company({ name: 'CEBRACE TESTE' })
-        await new_company.save()
-
-        user = {
+        new_company = await Company.create({ name: 'CEBRACE TESTE' })
+        new_user = await User.create({
             full_name: 'Teste Man',
             email: "serginho@gmail.com",
             password: "qwerty123",
@@ -25,20 +25,19 @@ describe('api/control_points', () => {
                 _id: new_company._id,
                 name: new_company.name
             }
-        }
+        })
+        const new_type = await Type.create({ name: 'Factory' })
 
-        new_user = new User(user)
-        await new_user.save()
-        
-        new_control_point = new ControlPoint({ name: 'teste', company: new_company._id })
-        await new_control_point.save()
+        new_control_point = await ControlPoint.create({ name: 'teste', type: new_type._id, company: new_company._id })
 
         token = new_user.generateUserToken()
+        department_body = {name: 'department name', control_point: new_control_point._id}
     })
     afterEach(async () => {
         await server.close()
         await User.deleteMany({})
         await Company.deleteMany({})
+        await Type.deleteMany({})
         await ControlPoint.deleteMany({})
         await Department.deleteMany({})
     })
@@ -48,7 +47,7 @@ describe('api/control_points', () => {
             return request(server)
                 .post('/api/departments')
                 .set('Authorization', token)
-                .send({ name: 'teste', control_point: new_control_point._id })
+                .send(department_body)
         }
         it('should return 401 if no token is provided', async () => {
             token = ''
@@ -73,22 +72,21 @@ describe('api/control_points', () => {
             return request(server)
                 .post('/api/departments')
                 .set('Authorization', token)
-                .send({ name: 'teste 1', control_point: new_control_point._id })
+                .send(department_body)
         }
         it('should return 403 if user is not admin', async () => {
-            user = {
+            const another_user = await User.create({
                 full_name: 'Teste Man',
-                email: "serginho@gmail.com",
+                email: "serginho1@gmail.com",
                 password: "qwerty123",
                 role: 'user',
                 company: {
                     _id: new_company._id,
                     name: new_company.name
                 }
-            }
+            })
 
-            const new_user = new User(user)
-            token = new_user.generateUserToken()
+            token = another_user.generateUserToken()
 
             const res = await exec()
             expect(res.status).toBe(403)
@@ -101,7 +99,7 @@ describe('api/control_points', () => {
     })
 
     describe('GET: /api/departments', () => {
-        it('should return all control points', async () => {
+        it('should return all departments', async () => {
             await Department.collection.insertMany([
                 { name: 'teste 1', lat: 15, lng: 25, control_point: new_control_point._id },
                 { name: 'teste 2', lat: 15, lng: 25, control_point: new_control_point._id },
@@ -143,19 +141,15 @@ describe('api/control_points', () => {
     })
 
     describe('POST: /api/departments', () => {
-        let department
         const exec = () => {
             return request(server)
                 .post('/api/departments')
                 .set('Authorization', token)
-                .send({ name: department.name, control_point: department.control_point })
+                .send({ name: department_body.name, control_point: department_body.control_point })
         }
-        beforeEach(() => {
-            department = { name: 'teste 1', control_point: new_control_point._id }
-        })
 
         it('should return 400 if name is not provied', async () => {
-            department.name = ''
+            department_body.name = ''
 
             const res = await exec()
 
@@ -163,7 +157,7 @@ describe('api/control_points', () => {
         })
 
         it('should return 400 if control_point is not provied', async () => {
-            department.control_point = ''
+            department_body.control_point = ''
 
             const res = await exec()
 
@@ -171,7 +165,7 @@ describe('api/control_points', () => {
         })
 
         it('should return 400 if department name already exists', async () => {
-            await Department.create(department)
+            await Department.create(department_body)
 
             const res = await exec()
 
@@ -205,7 +199,7 @@ describe('api/control_points', () => {
             resp = await request(server)
                 .post('/api/departments')
                 .set('Authorization', token)
-                .send({ name: 'teste 1', control_point: new_control_point._id})
+                .send(department_body)
         })
 
         it('should return 404 if invalid id is passed', async () => {
@@ -216,7 +210,7 @@ describe('api/control_points', () => {
             expect(res.status).toBe(404)
         })
 
-        it('should return control point edited if is valid request', async () => {
+        it('should return department edited if is valid request', async () => {
             const res = await exec()
 
             expect(res.status).toBe(200)
@@ -239,7 +233,7 @@ describe('api/control_points', () => {
             resp = await request(server)
                 .post('/api/departments')
                 .set('Authorization', token)
-                .send({ name: 'teste 1', control_point: new_control_point._id })
+                .send(department_body)
 
             const res = await exec()
 

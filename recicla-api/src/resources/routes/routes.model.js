@@ -50,6 +50,7 @@ const routeSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
 const validate_routes = (route) => {
     const schema = Joi.object().keys({
         first_point: Joi.objectId().required(),
@@ -67,7 +68,8 @@ const validate_routes = (route) => {
 }
 
 const update_updated_at_middleware = function (next) {
-    this.update_at = Date.now
+    let update = this.getUpdate()
+    update.update_at = new Date()
     next()
 }
 
