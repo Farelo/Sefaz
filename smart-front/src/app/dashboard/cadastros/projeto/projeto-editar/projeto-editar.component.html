@@ -7,8 +7,14 @@
       <p class="descricao">NOME</p>
       <p class="explicacao">Ex. "Projeto do Produto A1"</p>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Digite o nome do projeto" aria-describedby="basic-addon2"
-          [(ngModel)]="name" formControlName="name" [ngClass]="{'required': 
+          <input type="text" 
+          class="form-control" 
+          placeholder="Digite o nome do projeto" 
+          aria-describedby="basic-addon2"
+          maxlength="50"
+          [(ngModel)]="name" 
+          formControlName="name" 
+          [ngClass]="{'required': 
             (mProject.get('name').hasError('required') && mProject.get('name').touched)
             || (mProject.get('name').hasError('required') && formDir.submitted)
             || (mProject.get('name').hasError('uniqueValidation'))
