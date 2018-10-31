@@ -1,21 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlataformaCadastrarComponent } from './plataforma-cadastrar.component';
+import { ProjetoCadastrarComponent } from './projeto-cadastrar.component';
 
 describe('PlataformaCadastrarComponent', () => {
-  let component: PlataformaCadastrarComponent;
-  let fixture: ComponentFixture<PlataformaCadastrarComponent>;
+  let component: ProjetoCadastrarComponent;
+  let fixture: ComponentFixture<ProjetoCadastrarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlataformaCadastrarComponent ]
+      declarations: [ ProjetoCadastrarComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlataformaCadastrarComponent);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(ProjetoCadastrarComponent);
+    component = fixture.componentInstance; 
     fixture.detectChanges();
   });
 

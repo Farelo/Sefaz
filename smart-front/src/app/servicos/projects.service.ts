@@ -1,8 +1,7 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Project } from '../shared/models/project';
+import { Observable } from 'rxjs/Observable'; 
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -14,39 +13,44 @@ export class ProjectService {
       return Observable.throw(error);
   }
 
-  getProjectPagination(limit: number, page: number, attr: any): Observable<any> {
-    return this.http.get(`${environment.url}project/list/pagination/${limit}/${page}?attr=${attr}`)
+  getProject(projectId): Observable<any> {
+    return this.http.get(`${environment.url}/projects/${projectId}`)
       .catch(this.handleError);
   }
 
-  retrieveAll(): Observable<any> {
-    return this.http.get(`${environment.url}project/list/all`)
+  getAllProjects(params: any = {}): Observable<any> {
+
+    let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    if (queryString) queryString = '?' + queryString;
+
+    console.log(queryString);
+
+    return this.http.get(`${environment.url}/projects${queryString}`)
       .catch(this.handleError);
   }
 
-  retrieveProject(id: string): Observable<any>{
-    return this.http.get(`${environment.url}project/retrieve/${id}`)
+  createProject(newProject: any): Observable<any> {
+    return this.http.post(`${environment.url}/projects`, newProject)
       .catch(this.handleError);
   }
 
-  updateProject(id: string, project: Project): Observable<any>{
-    return this.http.put(`${environment.url}project/update/${id}`,project)
+  editProject(projectId: any, newProject: any): Observable<any> {
+    return this.http.patch(`${environment.url}/projects/${projectId}`, newProject)
       .catch(this.handleError);
   }
 
-  deleteProject(id: string): Observable<any>{
-    return this.http.delete(`${environment.url}project/delete/${id}`)
+  deleteProject(projectId: any): Observable<any> {
+    return this.http.delete(`${environment.url}/projects/${projectId}`)
       .catch(this.handleError);
   }
 
-  createProject(project: Project): Observable<any>{
-    return this.http.post(`${environment.url}project/create`, project)
+
+  /**
+   * Métodos legados
+   */
+
+  createProjectArray(data: any){
+    return this.http.get(`${environment.url}/projects`)
       .catch(this.handleError);
   }
-
-  createProjectArray(array: any): Observable<any>{
-    return this.http.post(`${environment.url}project/create/array`, array)
-      .catch(this.handleError);
-  }
-
 }
