@@ -83,6 +83,14 @@ const packingSchema = new mongoose.Schema({
         ref: 'Family',
         required: true
     },
+    last_device_data: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'DeviceData'
+    },
+    last_alert_history: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'AlertHistory'
+    },
     last_department: {
         type: mongoose.Schema.ObjectId,
         ref: 'Department'

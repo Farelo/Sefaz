@@ -14,9 +14,13 @@ const settingSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    job_schedule_time: {
+    accuracy_limit: {
         type: Number,
         default: 0
+    },
+    job_schedule_time_in_sec: {
+        type: Number,
+        default: 50
     },
     range_radius: {
         type: Number,
@@ -25,6 +29,10 @@ const settingSchema = new mongoose.Schema({
     clean_historic_moviments_time: {
         type: Number,
         default: 0
+    },
+    no_signal_limit_in_days: {
+        type: Number,
+        default: 1
     },
     created_at: {
         type: Date,
@@ -46,7 +54,7 @@ const update_updated_at_middleware = function (next) {
 settingSchema.pre('update', update_updated_at_middleware)
 settingSchema.pre('findOneAndUpdate', update_updated_at_middleware)
 
-const Route = mongoose.model('Route', settingSchema)
+const Setting = mongoose.model('Setting', settingSchema)
 
-exports.Route = Route
+exports.Setting = Setting
 exports.settingSchema = settingSchema
