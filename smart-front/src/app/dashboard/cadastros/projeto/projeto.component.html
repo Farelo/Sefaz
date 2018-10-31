@@ -4,8 +4,8 @@
     placeholder="Buscar" 
     aria-describedby="basic-addon1" 
     [(ngModel)]="search" 
-    (keyup.enter)="searchEvent()">
-
+    (keyup)="searchEvent($event)">
+    
   <button 
     routerLink="cadastrar" 
     class="btn btn-outline-secondary" 

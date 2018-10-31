@@ -40,7 +40,7 @@ export class ProjetoEditarComponent implements OnInit {
     if (valid) {
 
       this.projectService
-        .createProject(value)
+        .editProject(this.mId, value)
         .subscribe(result => {
           this.toastService.success('/rc/cadastros/projeto', 'Projeto')
         }, err => this.toastService.error(err));

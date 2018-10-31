@@ -110,6 +110,23 @@
 
 
   <!-- ========================== -->
+  <!-- Template for deleting PROJECT -->
+  <div class="detalhes" *ngIf="mType == 'PROJECT'">
+    <h2> Deletar Rota </h2>
+    <hr>
+    <p>Nome: {{ mObject.name }}</p>
+  
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção dessa Rota poderá desassociar Embalagens, Plantas e registros do BPline.
+        As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
+
+
+
+  <!-- ========================== -->
   <!-- Template default -->
   <div class="botoes">
     <button class="botaoVoltar" (click)="activeModal.close('cancelar')">CANCELAR</button>
