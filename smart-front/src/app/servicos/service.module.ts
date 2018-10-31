@@ -29,7 +29,8 @@ import {
     CompaniesService,
     UsersService,
     FamiliesService,
-    ControlPointsService
+    ControlPointsService,
+    ControlPointTypesService
 } from './index.service';
 
 @NgModule({
@@ -64,7 +65,8 @@ import {
         CompaniesService,
         UsersService,
         FamiliesService,
-        ControlPointsService
+        ControlPointsService,
+        ControlPointTypesService
     ]
 })
 export class ServicesModule { }

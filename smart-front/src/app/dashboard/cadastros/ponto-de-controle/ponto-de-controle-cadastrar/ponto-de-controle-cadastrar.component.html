@@ -15,7 +15,7 @@
             maxlength="80"
             placeholder="Digite o nome da planta" 
             aria-describedby="basic-addon2"
-            formControlName="name" 
+            formControlName="name"
             [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
               || (mControlPoint.get('name').hasError('required') && formDir.submitted)
               || (mControlPoint.get('name').hasError('pattern')) 
@@ -27,7 +27,11 @@
         <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
           || (mControlPoint.get('name').hasError('required') && formDir.submitted)">
           Campo Obrigatório</p>
-
+        
+        <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('minlength') && mControlPoint.get('name').touched)
+          || (mControlPoint.get('name').hasError('minlength') && formDir.submitted)">
+          Mínimo de 5 caracteres</p>
+        
         <p class="explicacao" *ngIf="validateNotTakenLoading">
           Verificando disponibilidade ...</p>
           
@@ -62,13 +66,14 @@
       <!-- Input para o tipo do ponto de controle -->
       <div class="campo col-sm-12 col-md-6">
         <p class="descricao">TIPO</p>
-        <ng-select bindLabel="label" 
+        <ng-select bindLabel="name" 
           placeholder="Selecione o tipo" 
           [items]="allTypes" 
           [addTag]="true"
+          (add)="onAddItem($event)"
           formControlName="type">
           <ng-template ng-option-tmp let-item="item">
-            <div> {{item.label}} </div>
+            <div> {{item.name}} </div>
           </ng-template>
         </ng-select>
         <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('required') && mControlPoint.get('type').touched)
