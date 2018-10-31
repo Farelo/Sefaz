@@ -1,10 +1,11 @@
 <div class="input-group mb-3 d-flex justify-content-between">
   <input type="text" 
     class="form-control mr-4" 
-    placeholder="Buscar rota" 
+    placeholder="Buscar rota por família ou ponto de controle" 
     aria-describedby="basic-addon1" 
     [(ngModel)]="search"
-    (keyup.enter)="searchEvent()">
+    (keyup)="searchEvent($event)">
+
   <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
 </div>
 
@@ -16,21 +17,21 @@
         <th>Ponto 1</th>
         <th>Ponto 2</th>
         <th>Distância</th>
-        <th>Duração</th>
+        <!-- <th>Duração</th> -->
         <th class="opcoes"></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let route of allRoutes | paginate: {
-                                             itemsPerPage: 10,
-                                             currentPage: actualPage,
-                                             totalItems: allRoutes.length}; index as index"
+                                            itemsPerPage: 10,
+                                            currentPage: actualPage,
+                                            totalItems: allRoutes.length}; index as index"
         (mouseover)='hoveredIndex = index'>
         <td>{{ route.family.code }}</td>
         <td>{{ route.first_point.name }}</td>
         <td>{{ route.second_point.name }}</td>
         <td>{{ getFormatedDistance(route.distance) }}</td>
-        <td>{{ route.duration_time }}</td> 
+        <!-- <td>{{ route.duration_time }}</td>  -->
         <td class="teste">
           <div *ngIf="index==hoveredIndex">
             <button class="editar botaoPlanta" [routerLink]="['editar/', route._id]">
@@ -53,5 +54,10 @@
 <br />
 
 <div class="has-text-centered">
-  <pagination-controls id='routes' directionLinks="false" (pageChange)="pageChanged($event)" autoHide="true"></pagination-controls>
+  <pagination-controls 
+    class="my-pagination" 
+    (pageChange)="actualPage = $event" 
+    directionLinks="false" 
+    autoHide="true">
+  </pagination-controls>
 </div>
