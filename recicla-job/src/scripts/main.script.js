@@ -1,52 +1,87 @@
 const ora = require('ora')
 const moment = require('moment')
-// const cron = require('node-cron')
+const cron = require('node-cron')
 
 const { Setting } = require('../models/settings.model')
 const { Company} = require('../models/companies.model')
 const { Family } = require('../models/families.model')
 const { Packing } = require('../models/packings.model')
+const { ControlPoint } = require('../models/control_points.model')
 const { AlertHistory } = require('../models/alert_history.model')
 const { DeviceData } = require('../models/device_data.model')
 const spinner = ora('State Machine working...')
 
-const DAY1 = 1000 * 60 * 60 * 24
-const DAY2 = DAY1 * 2
+const evaluatesCurrentControlPoint = require('./evaluates/evaluates_current_control_point')
 
 module.exports = async () => {
-    spinner.start()
-    setTimeout(async () => {
-        // const device_data_array = await DeviceData.find({})
-        const packings = await Packing.find({})
-            .populate('last_device_data')
-            .populate('last_alert_history')
+    const setting = await getSettings()
 
-        const setting = await Setting.find({})
+    cron.schedule(`*/${setting.job_schedule_time_in_sec} * * * * *`, async () => {
+        spinner.start()
+        setTimeout(async () => {
+            // const device_data_array = await DeviceData.find({})
+            const packings = await Packing.find({})
+                .populate('last_device_data')
+                .populate('last_alert_history')
 
-        packings.forEach(element => {
-            runSM(setting[0], element)
-        })
-        spinner.succeed('Finished!')
-    }, 6000)
+            packings.forEach(packing => {
+                runSM(setting, packing)
+            })
+
+            spinner.succeed('Finished!')
+        }, 4000)
+    })
+
 }
 
 const runSM = async (setting, packing) => {
     try {
         // TODO: No atributo packing.last_device_data ele já irá trazer o last_device_data filtrado pela accurancy?
         const lastDeviceData = packing.last_device_data ? packing.last_device_data : undefined
-        if (!lastDeviceData) return packing
+        if (!lastDeviceData) return null
+
+        const controlPoints = await ControlPoint.find({})
 
         switch (packing.last_alert_history) {
             case undefined:
                 if (getDiffDateTodayInDays(lastDeviceData.last_communication) > setting.no_signal_limit_in_days) {
                     spinner.info(`PACKING NO SINAL`)
                     //ADICIONAR ALERTA
-                    const alert_history = new AlertHistory({ packing: packing._id, type: ALERT_TYPE.SEM_SINAL })
-                    await alert_history.save()
-                }
-                // } else {
+                    const alertHistory = new AlertHistory({ packing: packing._id, type: ALERT_TYPE.SEM_SINAL })
+                    await alertHistory.save()
+                } else {
+                    /* A verificação de um possivel local que a embalagem possa esta presenta
+                    * pode ser aplicada tambem para embalagens que não apresentam rotas
+                    * Está em alguma planta atualmente? */
+                    const currentControlPoint = await evaluatesCurrentControlPoint(lastDeviceData, controlPoints, setting)
+                    
 
-                // }
+                    // if (packing.routes.length > 0) {
+                    //     /* Tem rota?
+                    //     * Recupera a planta atual onde o pacote está atualmente */
+                    //     withRoute.evaluate(packing, currentPlant);
+                    // } else {
+                    //     // Quando não existe rota no sistema
+                    //     withoutRoute.evaluate(packing, currentPlant);
+                    // }
+
+                    // let localId = matchControlPoint(lastAccurateEntry.lat, lastAccurateEntry.long) //ATUALIZAR
+                    // if (localId != undefined) {
+                    //     let owner = controlPointOwner(localId) //ATUALIZAR
+                    //     if ((owner == user.id) || (owner == packing.family.company.id)) {
+                    //         //COMPLEMENTAR
+                    //         nextState = states.LOCAL_CORRETO //NEXT STATE
+                    //     } else {
+                    //         //COMPLEMENTAR
+                    //         nextState = states.LOCAL_INCORRETO //NEXT STATE
+                    //     }
+                    // } else {
+                    //     //CHECAR SE PRECISA CONTINUAR NO PRAZO DA VIAGEM
+                    //     //COMPLEMENTAR
+                    //     nextState = states.VIAGEM_PRAZO //NEXT STATE
+                    // }
+
+                }
                 break
             // case packing.current_stats.type === 'no_signal'
         }
@@ -218,6 +253,11 @@ const runSM = async (setting, packing) => {
     // checkAbsence(packing) ? setAttributeAlert(packing, alerts.AUSENTE) : setAttributeAlert(packing, alerts.NAUSENTE)
     // checkBattery(packing) ? setAttributeAlert(packing, alerts.BATERIA) : setAttributeAlert(packing, alerts.NBATERIA)
     // setState(packing, nextState)
+}
+
+const getSettings = async () => {
+    const settings = await Setting.find({})
+    return settings[0]
 }
 
 const getDiffDateTodayInDays = (date) => {
