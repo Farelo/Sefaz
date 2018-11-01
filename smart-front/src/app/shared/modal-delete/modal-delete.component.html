@@ -55,7 +55,7 @@
 
 
   <!-- ========================== -->
-  <!-- Template for deleting FAMILY -->
+  <!-- Template for deleting PACKING -->
   <div class="detalhes" *ngIf="mType == 'PACKING'">
     <h2> Deletar Embalagem </h2>
     <hr>
@@ -112,19 +112,34 @@
   <!-- ========================== -->
   <!-- Template for deleting PROJECT -->
   <div class="detalhes" *ngIf="mType == 'PROJECT'">
-    <h2> Deletar Rota </h2>
+    <h2> Deletar Projeto </h2>
     <hr>
     <p>Nome: {{ mObject.name }}</p>
   
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção dessa Rota poderá desassociar Embalagens, Plantas e registros do BPline.
+      <p>A remoção desse Projeto desassociará Embalagens, Plantas e registros do BPline.
         As informações serão perdidas, você tem certeza?</p>
     </div>
   </div>
 
 
+  <!-- ========================== -->
+  <!-- Template for deleting DEPARTMENT -->
+  <div class="detalhes" *ngIf="mType == 'DEPARTMENT'">
+    <h2> Deletar Departamento </h2>
+    <hr>
+    <p>Nome: {{ mObject.name }}</p>
+    <p>Ponto de Controle: {{ mObject.control_point.name }}</p>
+  
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção desse Departamento desassociará Embalagens, Plantas e registros do BPline.
+        As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
 
   <!-- ========================== -->
   <!-- Template default -->

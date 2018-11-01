@@ -25,22 +25,19 @@
       <tr *ngFor="let route of allRoutes | paginate: {
                                             itemsPerPage: 10,
                                             currentPage: actualPage,
-                                            totalItems: allRoutes.length}; index as index"
-        (mouseover)='hoveredIndex = index'>
-        <td>{{ route.family.code }}</td>
-        <td>{{ route.first_point.name }}</td>
-        <td>{{ route.second_point.name }}</td>
+                                            totalItems: allRoutes.length};">
+        <td>{{ route.family.code | truncate : 20 }}</td>
+        <td>{{ route.first_point ? route.first_point.name : '' | truncate : 20 }}</td>
+        <td>{{ route.second_point ? route.second_point.name : '' | truncate : 20 }}</td>
         <td>{{ getFormatedDistance(route.distance) }}</td>
         <!-- <td>{{ route.duration_time }}</td>  -->
         <td class="teste">
-          <div *ngIf="index==hoveredIndex">
-            <button class="editar botaoPlanta" [routerLink]="['editar/', route._id]">
-              EDITAR
-            </button>
-            <button class="excluir" (click)="removeRoutes(route)">
-              EXCLUIR
-            </button>
-          </div>
+          <button class="editar botaoPlanta" [routerLink]="['editar/', route._id]">
+            EDITAR
+          </button>
+          <button class="excluir" (click)="removeRoutes(route)">
+            EXCLUIR
+          </button>
         </td>
       </tr>
     </tbody>

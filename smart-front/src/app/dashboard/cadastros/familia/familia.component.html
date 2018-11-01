@@ -22,7 +22,7 @@
                                                     itemsPerPage: 10,
                                                     currentPage: actualPage,
                                                     totalItems: listOfFamilies.length}">
-        <td>{{family.code}}</td>
+        <td>{{ family.code | truncate : 20 }}</td>
         <td class="teste">
           <div>
             <button class="editar" [routerLink]="['editar/', family._id]">

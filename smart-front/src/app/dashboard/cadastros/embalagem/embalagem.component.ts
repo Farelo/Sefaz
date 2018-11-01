@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit ,ViewChild} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PackingService, AuthenticationService, FamiliesService } from '../../../servicos/index.service';
 import { Packing } from '../../../shared/models/packing';
 import { Pagination } from '../../../shared/models/pagination';

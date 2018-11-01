@@ -14,6 +14,7 @@ import {TagsCadastrarComponent} from './tags-cadastrar/tags-cadastrar.component'
 import {TagsEditarComponent} from './tags-editar/tags-editar.component';
 import {TagsComponent} from './tags.component';
 import {TagsRoutingModule} from './tags.routing.module';
+import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
@@ -24,9 +25,9 @@ import {TagsRoutingModule} from './tags.routing.module';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
+    ApplicationPipes,
     FormsModule,
     ReactiveFormsModule
-
   ],
   declarations: [
     TagsCadastrarComponent,

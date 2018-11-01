@@ -15,6 +15,7 @@ import { PontoDeControleEditarComponent } from './ponto-de-controle-editar/ponto
 import { PlantaRoutingModule } from './ponto.routing.module';
 import { NguiMapModule } from '@ngui/map';
 import { constants } from '../../../../environments/constants'
+import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { constants } from '../../../../environments/constants'
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
+    ApplicationPipes,
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,

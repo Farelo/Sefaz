@@ -1,5 +1,11 @@
 <div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" class="form-control mr-4" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()">
+  <input 
+    type="text" 
+    class="form-control mr-4" 
+    placeholder="Buscar" 
+    aria-describedby="basic-addon1" 
+    [(ngModel)]="search" 
+    (keyup)="searchEvent($event)">
   <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
 </div>
 
@@ -13,34 +19,37 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let department of data.data | paginate: {
-                                                      id:'department',
-                                                      itemsPerPage: data.meta.limit,
-                                                      currentPage: data.meta.page,
-                                                      totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
-        <td>{{department.name}}</td>
-        <td>{{department.plant.plant_name}}</td>
+      <tr *ngFor="let department of allDepartments | paginate: {
+                                                      itemsPerPage: 10,
+                                                      currentPage: actualPage,
+                                                      totalItems: allDepartments.length};">
+        <td>{{ department.name | truncate : 20 }}</td>
+        <td>{{ department.control_point.name | truncate : 20 }}</td>
         <td class="teste">
-          <div *ngIf="index==hoveredIndex">
-            <button class="editar" [routerLink]="['editar/', department._id]">
-              EDITAR
-            </button>
-            <button class="excluir" (click)="removeDepartment(department)">
-              EXCLUIR
-            </button>
-          </div>
+          <button class="editar" [routerLink]="['editar/', department._id]">
+            EDITAR
+          </button>
+          <button class="excluir" (click)="removeDepartment(department)">
+            EXCLUIR
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
-<div class="classVazio" *ngIf="data.data?.length < 1">
+
+<div class="classVazio" *ngIf="allDepartments.length < 1">
   Ainda não existem departamentos cadastradas.
 </div>
+
 <br />
+
 <div class="has-text-centered">
-    <pagination-controls id='department' (pageChange)="pageChanged($event)"
-                           directionLinks="false"
-                         autoHide="true"></pagination-controls>
+  <pagination-controls 
+    class="my-pagination" 
+    (pageChange)="actualPage = $event" 
+    directionLinks="false" 
+    autoHide="true">
+  </pagination-controls>
 </div>
 

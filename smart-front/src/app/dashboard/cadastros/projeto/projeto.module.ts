@@ -14,6 +14,7 @@ import { ProjetoRoutingModule } from './projeto.routing.module';
 import { ProjetoCadastrarComponent } from './projeto-cadastrar/projeto-cadastrar.component';
 import { ProjetoEditarComponent } from './projeto-editar/projeto-editar.component';
 import { ProjetoComponent } from './projeto.component';
+import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
@@ -24,9 +25,9 @@ import { ProjetoComponent } from './projeto.component';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
+    ApplicationPipes,
     FormsModule,
     ReactiveFormsModule
-
   ],
   declarations: [
     ProjetoCadastrarComponent,

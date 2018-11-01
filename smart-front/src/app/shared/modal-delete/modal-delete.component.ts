@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService, UsersService, CompaniesService, FamiliesService, PackingService, ControlPointsService, RoutesService, ProjectService } from '../../servicos/index.service';
+import { ToastService, UsersService, CompaniesService, FamiliesService, PackingService, ControlPointsService, RoutesService, ProjectService, DepartmentService } from '../../servicos/index.service';
 import { MeterFormatter } from '../pipes/meter_formatter';
 
 @Component({
@@ -23,6 +23,7 @@ export class ModalDeleteComponent implements OnInit {
     private controlPointsService: ControlPointsService,
     private routesService: RoutesService,
     private projectService: ProjectService,
+    private departmentService: DepartmentService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -82,8 +83,14 @@ export class ModalDeleteComponent implements OnInit {
           this.activeModal.close();
         });
         break;
+      
+      case "DEPARTMENT":
+        this.departmentService.deleteDepartment(this.mObject._id).subscribe(res => {
+          this.toastService.remove('', 'Departamento');
+          this.activeModal.close();
+        });
+        break;
     }
-    
   }
 
 
