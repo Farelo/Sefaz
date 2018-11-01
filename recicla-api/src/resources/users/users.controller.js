@@ -7,10 +7,10 @@ const users_service = require('./users.service')
 
 exports.sign_in = async (req, res) => {
     let user = await users_service.find_by_email(req.body.email)
-    if (!user) return res.status(HttpStatus.BAD_REQUEST).send('Invalid email or password')
+    if (!user) return res.status(HttpStatus.BAD_REQUEST).send({message:'Invalid email'})
 
     const valid_password = await user.passwordMatches(req.body.password)
-    if (!valid_password) return res.status(HttpStatus.BAD_REQUEST).send('Invalid password')
+    if (!valid_password) return res.status(HttpStatus.BAD_REQUEST).send({message:'Invalid password'})
 
     const token = user.generateUserToken()
     res.send({ _id: user._id, full_name: user.full_name, email: user.email, role: user.role, company: user.company, accessToken: token })
@@ -24,17 +24,17 @@ exports.all = async (req, res) => {
 
 exports.show = async (req, res) => {
     const user = await users_service.get_user(req.params.id)
-    if (!user) return res.status(HttpStatus.NOT_FOUND).send('Invalid user')
+    if (!user) return res.status(HttpStatus.NOT_FOUND).send({message:'Invalid user'})
 
     res.json(user)
 }
 
 exports.create = async (req, res) => {
     let user = await users_service.find_by_email(req.body.email)
-    if (user) return res.status(HttpStatus.BAD_REQUEST).send('User already registered.')   
+    if (user) return res.status(HttpStatus.BAD_REQUEST).send({message:'User already registered.'})   
 
     const company = await users_service.find_company_by_id(req.body.company)
-    if (!company) return res.status(HttpStatus.BAD_REQUEST).send('Invalid company')
+    if (!company) return res.status(HttpStatus.BAD_REQUEST).send({message:'Invalid company'})
 
     user = await users_service.create_user(req.body)
 
@@ -43,7 +43,7 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
     let user = await users_service.find_by_id(req.params.id)
-    if (!user) return res.status(HttpStatus.NOT_FOUND).send('Invalid user')
+    if (!user) return res.status(HttpStatus.NOT_FOUND).send({message:'Invalid user'})
 
     user = await users_service.update_user(req.params.id, req.body)
 
