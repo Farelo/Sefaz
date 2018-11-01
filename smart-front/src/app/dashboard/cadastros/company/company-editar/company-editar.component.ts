@@ -98,16 +98,16 @@ export class CompanyEditarComponent implements OnInit {
 
   formProfile() {
     this.newCompany = this.fb.group({
-      type: ['', [Validators.required]],
-      name: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       phone: ['', [Validators.required]],
-      cnpj: ['', [Validators.required]],
+      cnpj: ['', []],
       address: this.fb.group({
-        street: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
-        city: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+        city: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
+        street: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
         cep: ['', [Validators.required]],
-        uf: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]]
-      })
+        uf: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]]
+      }),
+      type: ['', [Validators.required]]
     });
   }
 
