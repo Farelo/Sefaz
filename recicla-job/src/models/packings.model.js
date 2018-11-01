@@ -103,6 +103,26 @@ const packingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Project'
     },
+    current_state: {
+        type: String,
+        required: true,
+        enum: [
+            'desabilitada_com_sinal',
+            'desabilitada_sem_sinal',
+            'analise',
+            'viagem_em_prazo',
+            'viagem_atrasada',
+            'perdida',
+            'sem_sinal',
+            'ausente',
+            'local_correto',
+            'local_incorreto',
+            'permanencia_excedida'
+        ],
+        lowercase: true,
+        default: 'analise',
+        trim: true
+    },
     created_at: {
         type: Date,
         default: Date.now

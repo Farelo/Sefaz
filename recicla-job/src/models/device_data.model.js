@@ -55,6 +55,7 @@ const deviceDataSchema = new mongoose.Schema({
 
 const update_packing = async (device_data, next) => {
     try {
+        // TODO: Checar a acuracia do settigns
         const tag = { code: device_data.device_id }
         const packing = await Packing.findByTag(tag)
         if (!packing) next()
