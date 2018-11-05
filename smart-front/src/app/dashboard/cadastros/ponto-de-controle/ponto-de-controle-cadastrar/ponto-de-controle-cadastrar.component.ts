@@ -43,7 +43,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
       full_address: ['', [Validators.required]],
-      type: [undefined, [Validators.required]],
+      type: [undefined, [Validators.required, Validators.minLength(5)]],
       company: [undefined, [Validators.required]]
     });
   }
@@ -77,22 +77,18 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   onAddItem(event: any){
 
-    console.log('event');
-    console.log(event);
+    if (this.mControlPoint.controls.type.value.name.length < 5)
+      this.mControlPoint.controls.type.setErrors({ minlength: true });
 
-    this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
-      
-      console.log('result');
-      console.log(result);
+    console.log(this.mControlPoint.controls.type);
 
-      this.controlPointsTypeService.getAllType().toPromise().then(() => {
+    console.log(this.allTypes);
 
-        this.mControlPoint.controls.type.setValue(result);
-
-        console.log('...');
-        console.log(this.mControlPoint);
-      });
-    }, err => console.error(err));
+    // this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
+    //   this.controlPointsTypeService.getAllType().toPromise().then(() => {
+    //     this.mControlPoint.controls.type.setValue(result);
+    //   });
+    // }, err => console.error(err));
   }
 
   /**
@@ -180,7 +176,6 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.mControlPoint.controls.lng.setValue(event.latLng.lng());
     event.target.panTo(event.latLng);
   }
-
 
   public validateNotTakenLoading: boolean;
   validateNotTaken(control: AbstractControl) {

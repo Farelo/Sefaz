@@ -73,12 +73,17 @@
           (add)="onAddItem($event)"
           formControlName="type">
           <ng-template ng-option-tmp let-item="item">
-            <div> {{item.name}} </div>
+            {{item.name}}
           </ng-template>
         </ng-select>
+        
         <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('required') && mControlPoint.get('type').touched)
-                    || (mControlPoint.get('type').hasError('required') && submitted)">
+          || (mControlPoint.get('type').hasError('required') && submitted)">
           Campo Obrigatório</p>
+
+        <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('minlength') && mControlPoint.get('type').touched)
+                  || (mControlPoint.get('type').hasError('minlength') && submitted)">
+          Mínimo de 5 caracteres</p>
       </div>
 
       <!-- Input para selecionar a empresa vinculada -->
