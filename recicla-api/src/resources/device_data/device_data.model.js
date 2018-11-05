@@ -1,17 +1,23 @@
-const mongoose = require('mongoose');
+const debug = require('debug')('model:device_data')
+const mongoose = require('mongoose')
+const { Packing } = require('./packings.model')
 
 const deviceDataSchema = new mongoose.Schema({
-
-    deviceId: {
+    device_id: {
         type: String,
         required: true
     },
-    messageDate: {
-        type: Number,
-        required: true
+    message_date: {
+        type: Date
     },
-    lastCommunication: {
-        type: Number
+    message_date_timestamp: {
+        type: Date
+    },
+    last_communication: {
+        type: Date
+    },
+    last_communication_timestamp: {
+        type: Date
     },
     latitude: {
         type: Number
@@ -22,20 +28,62 @@ const deviceDataSchema = new mongoose.Schema({
     accuracy: {
         type: Number
     },
-    battery: {
-        percentage: Number,
-        voltage: Number
-    },
     temperature: {
         type: Number
     },
-    seqNumber: {
-        type: Number,
-        required: true
+    seq_number: {
+        type: Number
+    },
+    battery: {
+        percentage: {
+            type: Number
+        },
+        voltage: {
+            type: Number
+        },
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+
+    },
+    update_at: {
+        type: Date,
+        default: Date.now
     }
-});
+})
 
-const DeviceData = mongoose.model('DeviceData', deviceDataSchema);
+const update_packing = async (device_data, next) => {
+    try {
+        const tag = { code: device_data.device_id }
+        const packing = await Packing.findByTag(tag)
+        if (!packing) next()
+        await Packing.findByIdAndUpdate(packing._id, { last_device_data: device_data._id }, { new: true })
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
 
-exports.DeviceData = DeviceData;
-exports.DeviceDataSchema = deviceDataSchema;
+deviceDataSchema.statics.findByDeviceId = function (device_id, projection = '') {
+    return this.findOne({ device_id }, projection)
+}
+
+const saveDeviceDataToPacking = function (doc, next) {
+    update_packing(doc, next)
+}
+
+const update_updated_at_middleware = function (next) {
+    let update = this.getUpdate()
+    update.update_at = new Date()
+    next()
+}
+
+deviceDataSchema.post('save', saveDeviceDataToPacking)
+deviceDataSchema.pre('update', update_updated_at_middleware)
+deviceDataSchema.pre('findOneAndUpdate', update_updated_at_middleware)
+
+const DeviceData = mongoose.model('DeviceData', deviceDataSchema)
+
+exports.DeviceData = DeviceData
+exports.deviceDataSchema = deviceDataSchema

@@ -3,17 +3,37 @@ const { Company } = require('../models/companies.model')
 const { Family } = require('../models/families.model')
 const { Packing } = require('../models/packings.model')
 const { DeviceData } = require('../models/device_data.model')
+const { Setting } = require('../models/settings.model')
 const spinner = ora('Initializing...')
 
 module.exports = async () => {
     spinner.start()
-    const has_packings = await Packing.find()
-    if (!has_packings.length>0) await create_many_packings()
+    setTimeout(async () => {
+        const has_settings = await Setting.find()
+        if (!has_settings.length > 0) await create_settings()
+        spinner.info('Settings ok.')
 
-    const has_device_data = await DeviceData.find()
-    if (!has_device_data.length>0) await create_many_device_data()
+        const has_packings = await Packing.find()
+        if (!has_packings.length > 0) await create_many_packings()
+        spinner.info('Packings ok.')
 
-    spinner.succeed('Success!')
+        const has_device_data = await DeviceData.find()
+        if (!has_device_data.length > 0) await create_many_device_data()
+        spinner.info('Device data ok.')
+
+        spinner.succeed('Success!')
+    }, 3000)
+}
+
+const create_settings = async () => {
+    await Setting.create({
+        enable_gc16: false,
+        battery_level_limit: 18,
+        job_schedule_time: 0.833333,
+        range_radius: 32000,
+        clean_historic_moviments_time: 1440,
+        no_signal_limit_in_days: 2
+    })
 }
 
 const create_many_packings = async () => {
