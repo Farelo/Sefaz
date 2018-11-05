@@ -41,12 +41,12 @@ export class CompanyCadastrarComponent implements OnInit {
 
   formProfile() {
     this.newCompany = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       phone: ['', [Validators.required]],
       cnpj: ['', []],
       address: this.fb.group({
-        city: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
-        street: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+        city: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
+        street: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
         cep: ['', [Validators.required]],
         uf: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]]
       }),

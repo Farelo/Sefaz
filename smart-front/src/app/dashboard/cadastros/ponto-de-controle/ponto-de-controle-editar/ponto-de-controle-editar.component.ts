@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { ToastService, GeocodingService, CompaniesService, ControlPointsService } from 'app/servicos/index.service';
+import { ToastService, GeocodingService, CompaniesService, ControlPointsService, ControlPointTypesService } from 'app/servicos/index.service';
 import { Router, ActivatedRoute } from '@angular/router'; 
 import { Subscription } from 'rxjs';
 
@@ -35,6 +35,7 @@ export class PontoDeControleEditarComponent implements OnInit {
   constructor(
     private companyService: CompaniesService,
     private controlPointsService: ControlPointsService,
+    private controlPointsTypeService: ControlPointTypesService,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
@@ -71,16 +72,14 @@ export class PontoDeControleEditarComponent implements OnInit {
     }, err => console.error(err));
   }
 
-
   /**
-   * Fill the select of types
-   */
+    * Fill the select of types
+    */
   fillTypesSelect() {
 
-    this.allTypes
-      .push({ label: "Fábrica", name: "factory" },
-        { label: "Fornecedor", name: "supplier" },
-        { label: "Operador Logístico", name: "op_log" });
+    this.controlPointsTypeService.getAllType().subscribe(result => {
+      this.allTypes = result;
+    }, err => console.error(err));
   }
 
 
@@ -100,9 +99,9 @@ export class PontoDeControleEditarComponent implements OnInit {
         console.log('recuperado');
         console.log(this.mControlPoint);
         
-        this.controlPointType = this.allTypes.filter(elem => {
-          return elem.name == result.type;
-        })[0];
+        // this.controlPointType = this.allTypes.filter(elem => {
+        //   return elem.name == result.type;
+        // })[0];
         
         //console.log(this.controlPointType);
 
@@ -135,7 +134,7 @@ export class PontoDeControleEditarComponent implements OnInit {
 
     if (valid && this.pointWasSelected) {  
 
-      value.type = this.mControlPoint.controls.type.value.name;
+      value.type = this.mControlPoint.controls.type.value._id;
       value.company = this.mControlPoint.controls.company.value._id;
 
       console.log(value);

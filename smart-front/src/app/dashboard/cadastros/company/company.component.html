@@ -1,5 +1,9 @@
 <div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" class="form-control mr-4" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search"
+  <input type="text" 
+    class="form-control mr-4" 
+    placeholder="Buscar empresa por nome" 
+    aria-describedby="basic-addon1" 
+    [(ngModel)]="search"
     (keyup)="searchEvent($event)">
   <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
 </div>
@@ -20,7 +24,7 @@
                                           itemsPerPage: 10,
                                           currentPage: actualPage,
                                           totalItems: listOfCompanies.length}">
-        <td>{{ company.name }}</td>
+        <td>{{ company.name | truncate : 20 }}</td>
         <td>{{ company.phone ? company.phone : '-' }}</td>
         <!-- <td>{{ company.cnpj ? company.cnpj : '-'  }}</td> -->
         <td>{{ company.type }}</td>

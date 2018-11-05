@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'; 
 import { Router } from '@angular/router';
-import { ToastService, PackingService, FamiliesService } from '../../../../servicos/index.service';
+import { ToastService, PackingService, FamiliesService, ProjectService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 
 @Component({
@@ -12,11 +12,13 @@ export class EmbalagemCadastroComponent implements OnInit {
 
   public mPacking : FormGroup;
   public listOfFamilies: any[] = []; 
+  public listOfProjects: any[] = []; 
   public activePacking: boolean = false;
 
   constructor(
     private familyService: FamiliesService,
     private packingService: PackingService,
+    private projectService: ProjectService,
     private toastService: ToastService,
     private router: Router,
     private fb: FormBuilder) { }
@@ -25,6 +27,7 @@ export class EmbalagemCadastroComponent implements OnInit {
     
     this.configureForm();
     this.loadFamilies();
+    this.loadProjects();
   }
 
   /**
@@ -37,12 +40,23 @@ export class EmbalagemCadastroComponent implements OnInit {
   }
   
   /**
+   * Load the projects in the select
+   */
+  loadProjects(){
+    this.projectService.getAllProjects().subscribe(result => {
+      this.listOfProjects = result;
+    }, err => console.error(err));
+  }
+
+  /**
    * The form was submited
    * @param the form filled
    */
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
     
     value.family = value.family._id;
+    value.project = value.project._id;
+    if (value.observations == '') delete value.observations;
 
     if (valid) {
       this.finishRegister(value);
@@ -85,11 +99,16 @@ export class EmbalagemCadastroComponent implements OnInit {
       length: ['', [Validators.required]],
       capacity: ['', [Validators.required]],
       family: [null, [Validators.required]],
+      project: [null, [Validators.required]],
       observations: ['', [Validators.maxLength(140)]],
       active: false
     });
   }
 
+
+  /**
+   * Validação assíncrona
+   */
   public validateNotTakenLoading: boolean;
   validateNotTaken(control: AbstractControl) {
     this.validateNotTakenLoading = true;

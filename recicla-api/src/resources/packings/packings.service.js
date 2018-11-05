@@ -4,10 +4,17 @@ const { Packing } = require('./packings.model')
 
 exports.get_packings = async (tag) => {
     try {
-        if (!tag) return await Packing.find().populate('packing', ['_id', 'code'])
+        if (!tag) return await Packing.find()
+                    .populate('packing', ['_id', 'code'])
+                    .populate('family', ['_id', 'code', 'company'])
+                    .populate('project', ['_id', 'name'])
 
         const data = await Packing.findByTag(tag)
+                            .populate('family', ['_id', 'code', 'company'])
+                            .populate('project', ['_id', 'name'])
+
         return data ? [data] : []
+
     } catch (error) {
         throw new Error(error)
     }
@@ -18,6 +25,7 @@ exports.get_packing = async (id) => {
         const packing = await Packing
             .findById(id)
             .populate('family', ['_id', 'code', 'company'])
+            .populate('project', ['_id', 'name'])
         
         return packing
     } catch (error) {
@@ -28,6 +36,9 @@ exports.get_packing = async (id) => {
 exports.find_by_tag = async (tag) => {
     try {
         const packing = await Packing.findByTag(tag)
+                .populate('family', ['_id', 'code', 'company'])
+                .populate('project', ['_id', 'name'])
+
         return packing
     } catch (error) {
         throw new Error(error)
@@ -48,6 +59,9 @@ exports.create_packing = async (packing) => {
 exports.find_by_id = async (id) => {
     try {
         const packing = await Packing.findById(id)
+            .populate('family', ['_id', 'code', 'company'])
+            .populate('project', ['_id', 'name'])
+
         return packing
     } catch (error) {
         throw new Error(error)

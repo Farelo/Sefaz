@@ -4,9 +4,9 @@ const { ControlPoint } = require('./control_points.model')
 
 exports.get_control_points = async (name) => {
     try {
-        if (!name) return await ControlPoint.find().populate('company')
+        if (!name) return await ControlPoint.find().populate('company').populate('type', ['_id', 'name'])
         
-        const data = await ControlPoint.findByName(name)
+        const data = await ControlPoint.findByName(name).populate('type', ['_id', 'name'])
         return data ? [data] : []
     } catch (error) {
         throw new Error(error)
@@ -18,6 +18,7 @@ exports.get_control_point = async (id) => {
         const control_point = await ControlPoint
             .findById(id)
             .populate('company')
+            .populate('type', ['_id', 'name'])
 
         return control_point
     } catch (error) {
