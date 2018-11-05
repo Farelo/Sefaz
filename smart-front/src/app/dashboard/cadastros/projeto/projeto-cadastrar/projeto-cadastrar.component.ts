@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { Project } from '../../../../shared/models/project';
 import { ToastService, ProjectService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
@@ -9,7 +9,7 @@ import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from
   styleUrls: ['../../cadastros.component.css']
 })
 export class ProjetoCadastrarComponent implements OnInit {
-  
+
   public mProject: FormGroup;
 
   constructor(
@@ -19,20 +19,20 @@ export class ProjetoCadastrarComponent implements OnInit {
 
   ngOnInit() {
     this.mProject = this.fb.group({
-      name: ['', [Validators.required], this.validateNotTaken.bind(this) ]
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)]
     });
   }
 
   onSubmit({ value, valid }: { value: Project, valid: boolean }): void {
 
-      if(valid){
+    if (valid) {
 
-        this.projectService
-          .createProject(value)
-          .subscribe( result => {
-            this.toastService.success('/rc/cadastros/projeto', 'Projeto')
-          }, err =>  this.toastService.error(err));
-      }
+      this.projectService
+        .createProject(value)
+        .subscribe(result => {
+          this.toastService.success('/rc/cadastros/projeto', 'Projeto')
+        }, err => this.toastService.error(err));
+    }
   }
 
 
@@ -48,14 +48,15 @@ export class ProjetoCadastrarComponent implements OnInit {
       .map(res => {
         this.validateNotTakenLoading = false;
 
-        if (res.length == 0) {
-          console.log('empty')
-          return control.setErrors(null);
-        } else {
+        if (res.length == 1) {
           console.log('not empty')
           return control.setErrors({ uniqueValidation: 'code already exist' })
+
+        } else{
+          console.log('empty')
+          return control.setErrors(null);
         }
       })
   }
-  
+
 }

@@ -1,5 +1,5 @@
 <div class="">
-  <h2>Atualizar Plataforma</h2>
+  <h2>Atualizar Projeto</h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mProject)" [formGroup]="mProject" #formDir="ngForm">
@@ -7,18 +7,16 @@
       <p class="descricao">NOME</p>
       <p class="explicacao">Ex. "Projeto do Produto A1"</p>
       <div class="input-group">
-          <input type="text" 
-          class="form-control" 
-          placeholder="Digite o nome do projeto" 
-          aria-describedby="basic-addon2"
-          maxlength="50"
-          [(ngModel)]="name" 
-          formControlName="name" 
-          [ngClass]="{'required': 
+        <input type="text" class="form-control" placeholder="Digite o nome do projeto" aria-describedby="basic-addon2"
+          maxlength="50" [(ngModel)]="name" formControlName="name" [ngClass]="{'required': 
             (mProject.get('name').hasError('required') && mProject.get('name').touched)
             || (mProject.get('name').hasError('required') && formDir.submitted)
             || (mProject.get('name').hasError('uniqueValidation'))
-            || (mProject.get('name').hasError('uniqueValidation') && submitted) }">
+            || (mProject.get('name').hasError('uniqueValidation') && submitted) 
+            || (mProject.get('name').hasError('minlength'))
+            || (mProject.get('name').hasError('minlength') && submitted)
+            || (mProject.get('name').hasError('pattern'))
+            || (mProject.get('name').hasError('pattern') && submitted)}">
       </div>
 
       <p class="requiredText" *ngIf="(mProject.get('name').hasError('required') && mProject.get('name').touched)
@@ -28,9 +26,17 @@
       <p class="explicacao" *ngIf="validateNotTakenLoading">
         Verificando disponibilidade ...</p>
 
+      <p class="requiredText" *ngIf="(mProject.get('name').hasError('minlength')) 
+        || (mProject.get('name').hasError('minlength') && submitted)">
+        Mínimo de 5 caracteres.</p>
+
       <p class="requiredText" *ngIf="(mProject.get('name').hasError('uniqueValidation')) 
         || (mProject.get('name').hasError('uniqueValidation') && submitted)">
         Este Ponto de Controle já existe. O nome deve ser único.</p>
+
+      <p class="requiredText" *ngIf="(mProject.get('name').hasError('pattern')) 
+        || (mProject.get('name').hasError('pattern') && submitted)">
+        Excesso de espaços em branco.</p>
     </div>
 
     <br />

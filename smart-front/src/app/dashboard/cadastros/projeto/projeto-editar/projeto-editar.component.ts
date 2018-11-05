@@ -31,7 +31,7 @@ export class ProjetoEditarComponent implements OnInit {
 
   createFormGroup(){
     this.mProject = this.fb.group({
-      name: ['', [Validators.required], this.validateNotTaken.bind(this)]
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)]
     });
   }
 
@@ -85,12 +85,13 @@ export class ProjetoEditarComponent implements OnInit {
       .map(res => {
         this.validateNotTakenLoading = false;
 
-        if (res.length == 0) {
-          console.log('empty')
-          return control.setErrors(null);
-        } else {
+        if (res.length == 1) {
           console.log('not empty')
           return control.setErrors({ uniqueValidation: 'code already exist' })
+
+        } else {
+          console.log('empty')
+          return control.setErrors(null);
         }
       })
   }
