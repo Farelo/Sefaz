@@ -1,24 +1,41 @@
 <div class="">
-  <h2>Registrar Setor</h2>
+  <h2>Registrar Departamento</h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mDepartment)" [formGroup]="mDepartment" #formDir="ngForm">
     
     <div class="row">
-
       <div class="col-sm-12">
         <div class="campo">
           <p class="descricao">NOME</p>
           <p class="explicacao">Ex. "Setor B7"</p>
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Digite o nome do departamento" aria-describedby="basic-addon2"
-              [(ngModel)]="name" formControlName="name" [ngClass]="{'required': (mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
-                  || (mDepartment.get('name').hasError('required') && formDir.submitted)}">
+            <input type="text"
+              class="form-control"
+              maxlength="50"
+              placeholder="Digite o nome do departamento"
+              aria-describedby="basic-addon2"
+              [(ngModel)]="name" formControlName="name"
+              [ngClass]="{'required': (mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
+                || (mDepartment.get('name').hasError('required') && formDir.submitted)
+                || (mDepartment.get('name').hasError('minlength'))
+                || (mDepartment.get('name').hasError('minlength') && formDir.submitted)
+                || (mDepartment.get('name').hasError('pattern'))
+                || (mDepartment.get('name').hasError('pattern') && formDir.submitted)}">
           </div>
       
-          <p class="requiredText" *ngIf="(mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
-                || (mDepartment.get('name').hasError('required') && formDir.submitted)">Campo
-            Obrigatório</p>
+          <p class="requiredText" 
+            *ngIf="(mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
+              || (mDepartment.get('name').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
+
+          <p class="requiredText" *ngIf="(mDepartment.get('name').hasError('minlength'))
+            || (mDepartment.get('name').hasError('minlength') && formDir.submitted)">
+            Mínimo de 5 caracteres</p>
+          
+          <p class="requiredText" *ngIf="(mDepartment.get('name').hasError('pattern'))
+            || (mDepartment.get('name').hasError('pattern') && formDir.submitted)">
+            Excesso de espaços em branco</p>
         </div>
       </div>
 
@@ -36,13 +53,13 @@
             [ngClass]="{'required': 
               (mDepartment.get('control_point').hasError('required') && mDepartment.get('control_point').touched) 
               || (mDepartment.get('control_point').hasError('required') && formDir.submitted)}">
+
             <ng-template ng-label-tmp let-item="item">
               {{item.name}}
             </ng-template>
+
             <ng-template ng-option-tmp let-item="item">
-              <div>
-                {{item.name}}
-              </div>
+              {{ item.name }}
             </ng-template>
           </ng-select>
       
@@ -77,7 +94,7 @@
       <div class="col-md-6 campo">
         <p class="descricao">LATITUDE</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2"
+          <input type="text" class="form-control" readonly placeholder="Digite a latitude" aria-describedby="basic-addon2"
             [(ngModel)]="lat" formControlName="lat" [ngClass]="{'required': (mDepartment.get('lat').hasError('required') && mDepartment.get('lat').touched)
           || (mDepartment.get('lat').hasError('required') && formDir.submitted)}">
         </div>
@@ -90,7 +107,7 @@
       <div class="col-md-6 campo">
         <p class="descricao">LONGITUDE</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2"
+          <input type="text" class="form-control" readonly placeholder="Digite a longitude" aria-describedby="basic-addon2"
             [(ngModel)]="lng" formControlName="lng" [ngClass]="{'required': (mDepartment.get('lng').hasError('required') && mDepartment.get('lng').touched)
           || (mDepartment.get('lng').hasError('required') && formDir.submitted)}">
         </div>
@@ -99,9 +116,7 @@
         || (mDepartment.get('lng').hasError('required') && formDir.submitted)">Campo
           Obrigatório</p>
       </div>
-
       <br />
-
     </div>
 
     <br />

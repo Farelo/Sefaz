@@ -93,7 +93,7 @@ export class SetorCadastrarComponent implements OnInit {
   configureFormGroup(){
 
     this.mDepartment = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
       control_point: [undefined, [Validators.required]]
