@@ -2,11 +2,13 @@ const express = require('express')
 const logger = require('./config/winston.config')
 const config = require('config')
 const initialize = require('./scripts/initialize.script')
+const main = require('./scripts/main.script')
 const app = express()
 
 require('./startup/logger')(app)
 require('./startup/db')()
 initialize()
+main()
 // require('./scripts/main.script')()
 
 
