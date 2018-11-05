@@ -1,8 +1,7 @@
 import { Injectable }     from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Department } from '../shared/models/department';
+import { Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable'; 
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -43,4 +42,10 @@ export class DepartmentService {
       .catch(this.handleError);
   }
   
+  /**
+   * LEgado
+   */
+  createDepartmentArray(param: any){
+
+  }
 }
