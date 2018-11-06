@@ -7,6 +7,7 @@ const { DeviceData } = require('../models/device_data.model')
 const { ControlPoint } = require('../models/control_points.model')
 const { Type } = require('../models/types.model')
 const { GC16 } = require('../models/gc16.model')
+const { Route } = require('../models/routes.model')
 const spinner = ora('Initializing...')
 
 module.exports = async () => {
@@ -164,3 +165,20 @@ const create_gc16 = async () => {
         }
     })
 }
+
+// const create_routes = async () => {
+//     const family = await Family.findOne({})
+
+//     await Route.create({
+//         family: family._id,
+//         traveling_time: {
+//             max: 3,
+//             min: 1,
+//             overtime: 4
+//         }
+//     })
+// }
+
+// Family
+// ControlPoint
+// ControlPoint

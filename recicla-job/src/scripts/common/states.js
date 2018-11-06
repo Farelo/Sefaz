@@ -29,7 +29,7 @@ module.exports = {
   },
   AUSENTE: {
     key: 'ausente',
-    alert: 'absent'
+    alert: undefined
   },
   LOCAL_CORRETO: {
     key: 'local_correto',

@@ -7,25 +7,28 @@ const STATES = require('../common/states')
 const { AlertHistory } = require('../../models/alert_history.model')
 const { Family } = require('../../models/families.model')
 const { GC16 } = require('../../models/gc16.model')
+const { Packing } = require('../../models/packings.model')
 
 module.exports = async (packing, setting) => {
     let timeIntervalInDays
+    // if (packing.family.routes.length > 0) {}
 
-    // if (packing.family.routes.length > 0) {
+    if (packing.family.control_points.length > 0) {
         if (packing.last_event_record.type === 'inbound') {
             timeIntervalInDays = getDiffDateTodayInDays(packing.last_event_record.created_at)
             const gc16 = await GC16.findById(packing.family.gc16)
-            if (!gc16) return false
+            if (!gc16) return null
 
             if (timeIntervalInDays > gc16.stock.days) {
-                console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO CARAI")
+                console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
+                await Packing.findOneAndUpdate({ _id: packing._id }, { permanence_time_exceeded: true }, { new: true })
+            } else {
+                console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
+                await Packing.findOneAndUpdate({ _id: packing._id }, { permanence_time_exceeded: false }, { new: true })
             }
 
-            return true
         }
-    // }
-
-    return false
+    }
 }
 
 const getDiffDateTodayInDays = (date) => {

@@ -78,6 +78,10 @@ const packingSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    permanence_time_exceeded: {
+        type: Boolean,
+        default: false
+    },
     family: {
         type: mongoose.Schema.ObjectId,
         ref: 'Family',
@@ -114,10 +118,8 @@ const packingSchema = new mongoose.Schema({
             'viagem_atrasada',
             'perdida',
             'sem_sinal',
-            'ausente',
             'local_correto',
-            'local_incorreto',
-            'permanencia_excedida'
+            'local_incorreto'
         ],
         lowercase: true,
         default: 'analise',
