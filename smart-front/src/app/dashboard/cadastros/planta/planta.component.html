@@ -25,7 +25,7 @@
                                                   itemsPerPage: 10,
                                                   currentPage: actualPage,
                                                   totalItems: data.length}; index as index" (mouseover)='hoveredIndex = index'>
-        <td>{{plant.plant_name}}</td>
+        <td>{{ plant.plant_name | truncate : 20 }}</td>
 
         <td class="teste">
           <div *ngIf="index==hoveredIndex">

@@ -78,7 +78,7 @@ export class RotasCadastrarComponent implements OnInit {
       first_point: [undefined, [Validators.required]],
       second_point: [undefined, [Validators.required]],
       distance: ['', [Validators.required]],
-      duration: ['', [Validators.required]],
+      duration_time: ['', [Validators.required]],
       traveling_time: this.fb.group({
         max: ['', [Validators.required]],
         min: ['', [Validators.required]],
@@ -183,12 +183,12 @@ export class RotasCadastrarComponent implements OnInit {
     console.log(this.mRoute);
 
     // value.distance = this.directionsResult.routes[0].legs[0].distance.value;
-    // value.duration = this.directionsResult.routes[0].legs[0].duration.value;
+    // value.duration_time = this.directionsResult.routes[0].legs[0].duration.value;
 
     this.directionsResult = this.directionsRenderer.getDirections();
 
     this.mRoute.controls.distance.setValue(this.directionsResult.routes[0].legs[0].distance.value);
-    this.mRoute.controls.duration.setValue(this.directionsResult.routes[0].legs[0].duration.value);
+    this.mRoute.controls.duration_time.setValue(this.directionsResult.routes[0].legs[0].duration.value);
 
     if (this.directionsResult)
       this.directions = true;  

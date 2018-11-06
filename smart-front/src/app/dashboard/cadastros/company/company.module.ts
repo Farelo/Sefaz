@@ -16,6 +16,7 @@ import { CompanyEditarComponent } from './company-editar/company-editar.componen
 import { CompanyComponent } from './company.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TextMaskModule } from 'angular2-text-mask';
+import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { TextMaskModule } from 'angular2-text-mask';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
+    ApplicationPipes,
     FormsModule,
     TextMaskModule,
     NgSelectModule,

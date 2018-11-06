@@ -112,6 +112,23 @@
       <div class="col-md-6">
         <div class="row">
 
+
+          <!-- Família -->
+          <div class="col-sm-12 campo">
+            <p class="descricao">PROJETO</p>
+            <p class="explicacao">Projeto da Embalagem</p>
+            <ng-select bindLabel="name" placeholder="Associe um projeto" [items]="listOfProjects" formControlName="project">
+          
+              <ng-template ng-option-tmp let-item="item">
+                <div> {{item.name}} </div>
+              </ng-template>
+            </ng-select>
+            <p class="requiredText" *ngIf="(mPacking.get('project').hasError('required') && mPacking.get('project').touched)
+                        || (mPacking.get('project').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
+          </div>
+
+
           <!-- Família -->
           <div class="col-sm-12 campo">
             <p class="descricao">FAMÍLIA</p>
@@ -201,6 +218,19 @@
               || (mPacking.get('capacity').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
           </div>
+
+
+          <div class="col-sm-12 campo">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="active" formControlName="active">
+                <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
+                Embalagem ativa
+              </label>
+            </div>
+          </div>
+
+
         </div>
       </div>
 
@@ -280,33 +310,17 @@
               || (mPacking.get('heigth').hasError('required') && formDir.submitted)">
           Campo Obrigatório</p>
         </div>
-      </div>
-    </div>
 
-    <!-- Linha 2 Embalagem -->
-    <div class="row">
-      <div class="col-sm-12">
         <div class="campo">
-          <p class="descricao">OBSERVAÇÕES</p>
-          <p class="explicacao">Ex. "Embalagem nova"</p>
-          <textarea class="form-control" 
-            id="exampleFormControlTextarea1" 
-            rows="3"
-            maxlength="140"
-            formControlName="observations">
-          </textarea>
-          <p class="explicacao"> {{ mPacking.get('observations').value.length }}/140 </p>
+          <div class="campo">
+            <p class="descricao">OBSERVAÇÕES</p>
+            <p class="explicacao">Ex. "Embalagem nova"</p>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" maxlength="140" formControlName="observations">
+                  </textarea>
+            <p class="explicacao"> {{ mPacking.get('observations').value.length }}/140 </p>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="form-group form-check">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" value="active" formControlName="active">
-          <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
-          Embalagem ativa
-        </label>
       </div>
     </div>
 

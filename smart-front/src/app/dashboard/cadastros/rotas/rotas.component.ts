@@ -15,14 +15,18 @@ import { MeterFormatter } from 'app/shared/pipes/meter_formatter';
 export class RotasComponent implements OnInit {
 
   public allRoutes: any[] = [];
+  public auxAllRoutes: any[] = [];
+  public actualPage = -1;
   public search = "";
 
   constructor(
     private routesService : RoutesService,
     private modalService: NgbModal) { }
 
-  searchEvent(): void{
-      this.loadRoutes();
+
+  ngOnInit() {
+
+    this.loadRoutes();
   }
 
   loadRoutes(){
@@ -32,6 +36,7 @@ export class RotasComponent implements OnInit {
       .subscribe(data => {
         
         this.allRoutes = data;
+        this.auxAllRoutes = data;
       }, err => {console.log(err)});
   }
 
@@ -51,9 +56,21 @@ export class RotasComponent implements OnInit {
     return (new MeterFormatter()).to(value/1000);
   }
 
-  ngOnInit() {
 
-    this.loadRoutes();
+  searchEvent(event): void {
+    const val = event.target.value.toLowerCase();
+
+    // filter our data
+    const temp = this.auxAllRoutes.filter(function (item) {
+      return ((item.family.code.toLowerCase().indexOf(val) !== -1 || !val)
+        || (item.first_point.name.toLowerCase().indexOf(val) !== -1 || !val)
+        || (item.second_point.name.toLowerCase().indexOf(val) !== -1 || !val));
+    });
+
+    // update the rows
+    this.allRoutes = temp;
+    // Whenever the filter changes, always go back to the first page
+    this.actualPage = 0;
   }
 
 }

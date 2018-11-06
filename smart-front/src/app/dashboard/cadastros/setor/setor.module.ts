@@ -18,6 +18,7 @@ import {SetorRoutingModule} from './setor.routing.module';
 import { NguiMapModule } from '@ngui/map';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { constants } from './../../../../environments/constants';
+import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { constants } from './../../../../environments/constants';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
+    ApplicationPipes,
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,

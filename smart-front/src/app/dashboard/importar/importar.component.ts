@@ -210,7 +210,7 @@ export class ImportarComponent implements OnInit {
         this.plantsService.createPlantArray(this.data.datas).subscribe(result => {this.send = false;this.toastService.successArray('', 'Plantas')}, err => this.toastService.errorArray(err));
         break;
       case 'Setores':
-        this.departmentService.createDepartmentArray(this.data.datas).subscribe(result => {this.send = false;this.toastService.successArray('', 'Departmamentos')}, err => this.toastService.errorArray(err));
+        //this.departmentService.createDepartmentArray(this.data.datas).subscribe(result => {this.send = false;this.toastService.successArray('', 'Departmamentos')}, err => this.toastService.errorArray(err));
         break;
       case 'Embalagens':
         this.packingService.createPackingArray(this.data.datas).subscribe(result => {this.send = false;this.toastService.successArray('', 'Embalagens')}, err => this.toastService.errorArray(err));

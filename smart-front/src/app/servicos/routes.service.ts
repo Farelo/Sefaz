@@ -23,8 +23,6 @@ export class RoutesService {
     let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
     if (queryString) queryString = '?' + queryString;
 
-    console.log(queryString);
-
     return this.http.get(`${environment.url}/routes${queryString}`)
       .catch(this.handleError);
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastService, PackingService, CompaniesService } from '../../../../servicos/index.service';
+import { ToastService, PackingService, CompaniesService, ControlPointsService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { Family } from 'app/shared/models/family';
 import { FamiliesService } from 'app/servicos/families.service';
@@ -10,11 +10,10 @@ import { FamiliesService } from 'app/servicos/families.service';
   styleUrls: ['../../cadastros.component.css']
 })
 export class FamiliaCadastroComponent implements OnInit {
+  
   public mFamily: FormGroup;
   public allCompanies: any[] = [];
-  public allControlPoints: any[] = [];
-  // [{ id: '5a15b13c2340978ec3d2c0ea', name: 'Controle Point ABC' },
-  //  { id: '5a15b13c728cd3f43cc0fe8a', name: 'XTZ Control Point' }];
+  public allControlPoints: any[] = []; 
 
   public validForm: boolean = true;
   public submited = false;
@@ -22,6 +21,7 @@ export class FamiliaCadastroComponent implements OnInit {
   constructor(
     private companyService: CompaniesService,
     private familyService: FamiliesService,
+    private controlPointsService: ControlPointsService,
     private packingService: PackingService,
     private toastService: ToastService,
     private fb: FormBuilder) {
@@ -37,7 +37,7 @@ export class FamiliaCadastroComponent implements OnInit {
   configureFormGroup() {
     this.mFamily = this.fb.group({
       code: ['', [Validators.required, Validators.maxLength(30), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this) ],
-      selectedCompanies: [undefined, [Validators.required]],
+      company: [undefined, [Validators.required]],
       selectedControlPoints: new FormControl([])
     });
   }
@@ -56,7 +56,9 @@ export class FamiliaCadastroComponent implements OnInit {
    * Fill the select of control points
    */
   fillControlPointsSelect() {
-
+    this.controlPointsService.getAllControlPoint().subscribe(result => { 
+      this.allControlPoints = result; 
+      }, err => { console.log(err) });
   }
 
   onSubmit(): void {
@@ -67,9 +69,11 @@ export class FamiliaCadastroComponent implements OnInit {
 
       let newFamily = {
         code: this.mFamily.controls.code.value,
-        company: this.mFamily.controls.selectedCompanies.value._id,
-        //control_points: this.mFamily.controls.selectedControlPoints.value.map(elem => elem._id)
+        company: this.mFamily.controls.company.value._id,
+        control_points: this.mFamily.controls.selectedControlPoints.value.map(elem => elem._id)
       }
+
+      console.log(newFamily);
 
       this.finishRegister(newFamily);
     }

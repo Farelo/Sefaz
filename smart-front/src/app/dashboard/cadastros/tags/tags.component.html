@@ -16,7 +16,7 @@
                                                       itemsPerPage: data.meta.limit,
                                                       currentPage: data.meta.page,
                                                       totalItems: data.meta.total_docs}; index as index" (mouseover)='hoveredIndex = index'>
-        <td>{{tag.code}}</td>
+        <td>{{ tag.code | truncate : 20 }}</td>
 
         <td class="teste">
           <div *ngIf="index==hoveredIndex">

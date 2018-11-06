@@ -1,5 +1,5 @@
 <div class="">
-  <h2>Registrar Rota</h2>
+  <h2>Atualizar Rota</h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mRoute)" [formGroup]="mRoute" #formDir="ngForm">
@@ -20,19 +20,19 @@
         <!-- Select de familia -->
         <div class="campo">
           <p class="descricao">ASSOCIE UMA FAMÍLIA</p>
-          <ng-select (clear)="onClear()" (change)="loadPackings($event)" bindLabel="duns" placeholder="Associe um Fornecedor"
-            formControlName="family" [items]="suppliers?.data" [ngClass]="{'required': (mRoute.get('family').hasError('required') && mRoute.get('family').touched) 
-            || (mRoute.get('family').hasError('required') && formDir.submitted)}">
+          <ng-select bindLabel="code" placeholder="Associe uma Família" formControlName="family" (clear)="onClear()"
+            [items]="allFamilies" [ngClass]="{'required': (mRoute.get('family').hasError('required') && mRoute.get('family').touched) 
+              || (mRoute.get('family').hasError('required') && formDir.submitted)}">
 
             <ng-template ng-label-tmp let-item="item">
-              {{item.name}}
+              {{item.code}}
             </ng-template>
             <ng-template ng-option-tmp let-item="item">
               <div>
-                <b>Nome:</b> {{item.name}}
+                {{ item.code }}
               </div>
               <small>
-                <b>DUNS:</b> {{item.duns}}
+                {{ item.company.name }}
               </small>
             </ng-template>
           </ng-select>
@@ -46,25 +46,25 @@
         <!-- Select do ponto 1 -->
         <div class="campo">
           <p class="descricao">ASSOCIE O PRIMEIRO PONTO DE CONTROLE</p>
-          <ng-select (clear)="onClear()" (change)="loadPackings($event)" bindLabel="duns" placeholder="Associe um Fornecedor"
-            formControlName="first_point" [items]="suppliers?.data" [ngClass]="{'required': (mRoute.get('first_point').hasError('required') && mRoute.get('first_point').touched) 
-            || (mRoute.get('first_point').hasError('required') && formDir.submitted)}">
+          <ng-select bindLabel="name" placeholder="Associe um Ponto de Controle" formControlName="first_point" (clear)="onClear()"
+            (change)="firstPointChange($event); showDirection()" [items]="allControlPoints" [ngClass]="{'required': (mRoute.get('first_point').hasError('required') && mRoute.get('first_point').touched) 
+              || (mRoute.get('first_point').hasError('required') && formDir.submitted)}">
 
             <ng-template ng-label-tmp let-item="item">
-              {{item.name}}
+              {{ item.name }}
             </ng-template>
             <ng-template ng-option-tmp let-item="item">
               <div>
-                <b>Nome:</b> {{item.name}}
+                Nome: {{ item.name }}
               </div>
               <small>
-                <b>DUNS:</b> {{item.duns}}
+                DUNS: {{ item.duns }}
               </small>
             </ng-template>
           </ng-select>
 
           <p class="requiredText" *ngIf="(mRoute.get('first_point').hasError('required') && mRoute.get('first_point').touched)
-                    || (mRoute.get('first_point').hasError('required') && formDir.submitted)">Campo
+            || (mRoute.get('first_point').hasError('required') && formDir.submitted)">Campo
             Obrigatório</p>
         </div>
 
@@ -72,25 +72,25 @@
         <!-- Select do Ponto 2 -->
         <div class="campo">
           <p class="descricao">ASSOCIE O SEGUNDO PONTO DE CONTROLE</p>
-          <ng-select (clear)="onClear()" (change)="loadPackings($event)" bindLabel="duns" placeholder="Associe um Fornecedor"
-            formControlName="second_point" [items]="suppliers?.data" [ngClass]="{'required': (mRoute.get('second_point').hasError('required') && mRoute.get('second_point').touched) 
-            || (mRoute.get('second_point').hasError('required') && formDir.submitted)}">
+          <ng-select bindLabel="name" placeholder="Associe um Ponto de Controle" formControlName="second_point" (clear)="onClear()"
+            (change)="secondPointChange($event); showDirection()" [items]="allControlPoints" [ngClass]="{'required': (mRoute.get('second_point').hasError('required') && mRoute.get('second_point').touched) 
+              || (mRoute.get('second_point').hasError('required') && formDir.submitted)}">
 
             <ng-template ng-label-tmp let-item="item">
               {{item.name}}
             </ng-template>
             <ng-template ng-option-tmp let-item="item">
               <div>
-                <b>Nome:</b> {{item.name}}
+                {{item.name}}
               </div>
               <small>
-                <b>DUNS:</b> {{item.duns}}
+                DUNS: {{item.duns}}
               </small>
             </ng-template>
           </ng-select>
 
           <p class="requiredText" *ngIf="(mRoute.get('second_point').hasError('required') && mRoute.get('second_point').touched)
-                    || (mRoute.get('second_point').hasError('required') && formDir.submitted)">Campo
+            || (mRoute.get('second_point').hasError('required') && formDir.submitted)">Campo
             Obrigatório</p>
         </div>
       </div>
@@ -114,9 +114,9 @@
             </div>
 
             <div class="col-md-6">
-              <p>Dias: {{ time_max.hour }}</p>
-              <p>Horas: {{ time_max.minute }}</p>
-              <p>Minutos: {{ time_max.second }}</p>
+              <p class="configured-time">Dias: {{ time_max.hour }}</p>
+              <p class="configured-time">Horas: {{ time_max.minute }}</p>
+              <p class="configured-time">Minutos: {{ time_max.second }}</p>
             </div>
           </div>
         </div>
@@ -135,71 +135,45 @@
             </div>
 
             <div class="col-md-6 no-gutters">
-              <p>Dias: {{ time_min.hour }}</p>
-              <p>Horas: {{ time_min.minute }}</p>
-              <p>Minutos: {{ time_min.second }}</p>
+              <p class="configured-time">Dias: {{ time_min.hour }}</p>
+              <p class="configured-time">Horas: {{ time_min.minute }}</p>
+              <p class="configured-time">Minutos: {{ time_min.second }}</p>
             </div>
           </div>
         </div>
-
-        <!-- Tolerância de atraso -->
-        <!-- <div class="campo" formGroupName="time">
-          <p class="descricao">DEFINA A TOLERÂNCIA MÁXIMA DE ATRASO</p>
-          <p class="explicacao"></p>
-          <div class="row">
-            <div class="col-md-6">
-              <ngb-timepicker [(ngModel)]="time_delay" [seconds]="true" formControlName="delay" size="small"></ngb-timepicker>
-
-              <p class="requiredText" *ngIf="(mRoute.get('time.delay').hasError('required') && mRoute.get('time.delay').touched)
-                || (mRoute.get('time.delay').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-            </div>
-
-            <div class="col-md-6">
-              <p>Dias: {{time_delay.hour}}</p>
-              <p>Horas: {{time_delay.minute }}</p>
-              <p>Minutos: {{time_delay.second }}</p>
-            </div>
-          </div>
-        </div> -->
       </div>
-
     </div>
+
+    <!-- Quadro de informações da rota -->
     <hr class="divisoria" *ngIf="directions">
     <div class="row" *ngIf="directions" style="margin-top: 0px;">
       <div class="col-sm-6 informacoes">
         <div class="bigger2">
           <div class="fromSun"></div>
         </div>
-        <span class="forn">{{mRoute['controls'].location['controls'].start_address.value}}</span>
+        <span class="forn">{{ mRoute.get('first_point').value.full_address }}</span>
       </div>
 
       <div class="col-sm-6 informacoes">
         <div class="bigger2">
           <div class="fromSun1"></div>
         </div>
-        <span class="forn">{{mRoute['controls'].location['controls'].end_address.value}}</span>
+        <span class="forn">{{ mRoute.get('second_point').value.full_address }}</span>
       </div>
     </div>
+
     <div class="row" *ngIf="directions" style="margin-top: 0px;">
       <div class="col-sm-6 informacoes">
         <div class="bigger2">
           <div class="fromSun2"></div>
         </div>
-        <span class="forn">{{mRoute['controls'].location['controls'].distance['controls'].text.value}}</span>
+        <span class="forn">{{ directionsResult.routes[0].legs[0].distance.text }}, {{
+          this.directionsResult.routes[0].legs[0].duration.text }}</span>
       </div>
-
-      <!-- <div class="col-sm-6 informacoes">
-            <div class="bigger2">
-              <div class="fromSun"></div>
-            </div>
-            <span class="forn">{{mRoute['controls'].location['controls'].duration['controls'].text.value}}</span>
-          </div> -->
     </div>
 
+    <!-- Mapa -->
     <div class="row">
-      <!-- <div class="col-md-12" *ngIf="directions">
-      <p>{{this.mRoute.location | json}}</p>
-    </div> -->
       <div class="col-md-12">
         <br>
         <ngui-map zoom="13" [center]="center">
@@ -209,13 +183,14 @@
         </ngui-map>
       </div>
     </div>
-    <!-- MAP TO DIRECRTIONS -->
 
+    <!-- Botões de voltar e cadastrar -->
     <br />
     <div class="botoes">
       <button routerLink="/rc/cadastros/rotas" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
     </div>
-    <Br />
+    <br />
+
   </form>
 </div>

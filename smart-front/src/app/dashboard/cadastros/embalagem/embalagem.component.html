@@ -1,5 +1,5 @@
 <div class="input-group d-flex justify-content-between mb-3 no-gutters">
-  <ng-select 
+  <!-- <ng-select 
     [items]="listOfFamilies" 
     [(ngModel)]="selectedFamily" 
     (change)="filterChanged()"  
@@ -14,7 +14,15 @@
     <ng-template ng-option-tmp let-item="item">
       <div> Família: {{ item.code }} </div>
     </ng-template>
-  </ng-select>
+  </ng-select> -->
+
+  <input 
+    type="text" 
+    class="form-control mr-4" 
+    placeholder="Buscar projeto" 
+    aria-describedby="basic-addon1" 
+    [(ngModel)]="search"
+    (keyup)="searchEvent($event)">
 
   <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
 </div>
@@ -34,9 +42,9 @@
                                                     itemsPerPage: 10,
                                                     currentPage: actualPage,
                                                     totalItems: listOfPackings.length}">
-        <td>{{packing.family}}</td>
-        <td>{{packing.serial}}</td>
-        <td>{{packing.tag.code}}</td>
+        <td>{{ packing.family.code | truncate : 20 }}</td>
+        <td>{{ packing.serial }}</td>
+        <td>{{ packing.tag.code }}</td>
         <td class="teste">
           <div>
             <button class="editar" [routerLink]="['editar/', packing._id]">

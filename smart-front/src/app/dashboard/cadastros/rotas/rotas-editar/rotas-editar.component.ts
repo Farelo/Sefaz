@@ -1,9 +1,11 @@
 import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
-import { ToastService, RoutesService } from '../../../../servicos/index.service';
+import { ToastService, RoutesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
+import { calculateViewDimensions } from '@swimlane/ngx-charts';
 
 declare var $: any;
 @Component({
@@ -26,6 +28,10 @@ export class RotasEditarComponent implements OnInit {
     travelMode: 'DRIVING'
   };
 
+  public inscricao: Subscription;
+  public mId: string;
+  public mActualRoute: any;
+
   public mRoute: FormGroup;
   public autocomplete: any;
   public address: any = {};
@@ -36,9 +42,19 @@ export class RotasEditarComponent implements OnInit {
   public choiced = false;
   public choice_equipament = false;
 
+  //selects
+  public allFamilies: any[] = [];
+  public allControlPoints: any[] = [];
+
+  //control points
+  public firstControlPoint: any;
+  public secondControlPoint: any;
+
   constructor(
     private routesService: RoutesService,
-    private router: Router,
+    private familyService: FamiliesService,
+    private controlPointsService: ControlPointsService,
+    private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
     private fb: FormBuilder) {
@@ -48,18 +64,32 @@ export class RotasEditarComponent implements OnInit {
 
   ngOnInit() {
 
-    // Resolve directions
+    this.resolveDirections();
+    this.resolveFormGroup();
+    this.loadFamilies();
+    this.loadControlPoints();
+    this.retrieveRoute();
+  }
+
+  /**
+   * initialize the directions
+   */
+  resolveDirections() {
     this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
       this.directionsRenderer = directionsRenderer;
     });
+  }
 
-    //Resolve Form group
+  /**
+   * instantiate the form group
+   */
+  resolveFormGroup() {
     this.mRoute = this.fb.group({
-      family: ['', [Validators.required]],
-      first_point: ['', [Validators.required]],
-      second_point: ['', [Validators.required]],
+      family: [undefined, [Validators.required]],
+      first_point: [undefined, [Validators.required]],
+      second_point: [undefined, [Validators.required]],
       distance: ['', [Validators.required]],
-      duration: ['', [Validators.required]],
+      duration_time: ['', [Validators.required]],
       traveling_time: this.fb.group({
         max: ['', [Validators.required]],
         min: ['', [Validators.required]],
@@ -67,16 +97,140 @@ export class RotasEditarComponent implements OnInit {
     });
   }
 
+  /**
+   * Loads all families in the select
+   */
   loadFamilies() {
-
+    this.familyService.getAllFamilies().subscribe(result => {
+      this.allFamilies = result;
+    }, err => console.error(err));
   }
 
-  loadPoint1() {
-
+  /**
+   * Loads all control points in the selects
+   */
+  loadControlPoints() {
+    this.controlPointsService
+      .getAllControlPoint()
+      .subscribe(result => {
+        this.allControlPoints = result;
+      }, err => { console.log(err) });
   }
 
-  loadPoint2() {
+  /**
+   * Retrieve the actual route
+   */
+  retrieveRoute() {
+    this.inscricao = this.route.params.subscribe((params: any) => {
+      this.mId = params['id'];
+      this.routesService.getRoute(this.mId).subscribe(result => {
 
+        this.retrieveFirstControlPoint(result.first_point._id);
+        this.retrieveSecondControlPoint(result.second_point._id);
+
+        this.mActualRoute = result;
+        (<FormGroup>this.mRoute).patchValue(result, { onlySelf: true });
+
+        console.log('recuperado');
+        console.log(result);
+        console.log(this.mRoute);
+  
+        this.calculateTime(result);
+        //console.log(this.controlPointType);
+
+        //center map
+        // this.center = new google.maps.LatLng(this.mRoute.controls.lat.value, this.mRoute.controls.lng.value);
+        // this.pos = new google.maps.LatLng(this.mRoute.controls.lat.value, this.mRoute.controls.lng.value);
+      });
+    });
+  }
+
+  calculateTime(result: any){
+    
+    console.log(result);
+
+    let time = 0;
+
+    time = parseInt((result.traveling_time.min).toString());
+    this.time_min = {
+      hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
+      minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
+      second: (parseInt((time / (1000 * 60)).toString()) % 60)
+    };
+
+
+    time = parseInt((result.traveling_time.max).toString()); 
+    this.time_max = {
+      hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
+      minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
+      second: (parseInt((time / (1000 * 60)).toString()) % 60)
+    };
+
+
+    // time = result.traveling_time.to_be_late || '0';
+    // time = parseInt(time.toString());
+    // this.time_delay = {
+    //   hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
+    //   minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
+    //   second: (parseInt((time / (1000 * 60)).toString()) % 60)
+    // };
+  }
+
+  /**
+   * Retrieve the first control point
+   * @param controlId 
+   */
+  retrieveFirstControlPoint(controlId){
+
+    this.controlPointsService.getControlPoint(controlId)
+      .subscribe(result => {
+
+        // console.log('retrieveFirstControlPoint');
+        // console.log(result);
+        // console.log(this.mRoute);
+
+        this.firstControlPoint = result;
+        this.mRoute.controls.first_point.setValue(this.firstControlPoint);
+        this.firstPointChange(result);
+        this.showDirection();
+
+      }, err => this.toastService.error(err));
+  }
+
+  /**
+   * Retrieve the second control point
+   * @param controlId 
+   */
+  retrieveSecondControlPoint(controlId) {
+    
+    this.controlPointsService.getControlPoint(controlId)
+      .subscribe(result => {
+
+        // console.log('retrieveSecondControlPoint');
+        // console.log(result);
+        // console.log(this.mRoute);
+
+        this.secondControlPoint = result;
+        this.mRoute.controls.second_point.setValue(this.secondControlPoint);
+        this.secondPointChange(result);
+        this.showDirection();
+
+      }, err => this.toastService.error(err));
+  }
+
+
+  /**
+   * Select changes
+   * @param param0 
+   */
+  firstPointChange(event: any) {
+    console.log(event);
+    this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
+  }
+
+  secondPointChange(event: any) {
+    console.log(event);
+    this.direction.destination = new google.maps.LatLng(event.lat, event.lng);
   }
 
   /**
@@ -98,30 +252,38 @@ export class RotasEditarComponent implements OnInit {
     partial_delay = partial_max + this.time_delay.minute * 1000 * 60 * 60;
     partial_delay = partial_max + this.time_delay.second * 1000 * 60;
 
-    //console.log('partial_delay: ' + partial_delay);
+    console.log('submit mRoute');
+    console.log(this.mRoute);
 
-    this.mRoute['controls'].hashPacking.setValue(this.mRoute['controls'].supplier.value._id + this.mRoute['controls'].packing_code.value.id);
-    value.hashPacking = this.mRoute['controls'].supplier.value._id + this.mRoute['controls'].packing_code.value.id;
-    value.time.max = partial_max;
-    value.time.min = partial_min;
-    value.time.to_be_late = partial_delay;
+    //Ajustando objeto
+    value.family = value.family._id;
+    value.first_point = value.first_point._id;
+    value.second_point = value.second_point._id;
+
+    value.traveling_time.max = partial_max;
+    value.traveling_time.min = partial_min;
+    //value.time.to_be_late = partial_delay;
+
+    console.log('value');
+    console.log(value);
+
+    console.log(this.mRoute);
 
     if (this.mRoute.valid) {
-      value.project = value.packing_code.project._id;
-      value.packing_code = value.packing_code.id;
 
-      //console.log('value: ' + JSON.stringify(value));
-
-      this.routesService.createRoute(value)
-        .subscribe(result => {
-          this.toastService.success('/rc/cadastros/rotas', 'Rota');
-        }, err => this.toastService.error(err));
+      this.proceedToRegister(value);
 
     } else {
       console.log('mRoute not valid');
     }
   }
 
+  proceedToRegister(value: any) {
+    this.routesService.editRoute(this.mId, value)
+      .subscribe(result => {
+        this.toastService.edit('/rc/cadastros/rotas', 'Rota');
+      }, err => this.toastService.error(err));
+  }
 
   /**
    * ==================================================================
@@ -129,18 +291,22 @@ export class RotasEditarComponent implements OnInit {
    */
 
   directionsChanged() {
+
+    console.log('directionsChanged');
+    console.log(this.mRoute);
+
+    // value.distance = this.directionsResult.routes[0].legs[0].distance.value;
+    // value.duration_time = this.directionsResult.routes[0].legs[0].duration.value;
+
     this.directionsResult = this.directionsRenderer.getDirections();
-    if (this.directionsResult) {
+
+    this.mRoute.controls.distance.setValue(this.directionsResult.routes[0].legs[0].distance.value);
+    this.mRoute.controls.duration_time.setValue(this.directionsResult.routes[0].legs[0].duration.value);
+
+    if (this.directionsResult)
       this.directions = true;
-      this.mRoute['controls'].location['controls'].distance.patchValue(this.directionsResult.routes[0].legs[0].distance);
-      this.mRoute['controls'].location['controls'].duration.patchValue(this.directionsResult.routes[0].legs[0].duration);
-      this.mRoute['controls'].location['controls'].start_address.setValue(this.directionsResult.routes[0].legs[0].start_address);
-      this.mRoute['controls'].location['controls'].end_address.setValue(this.directionsResult.routes[0].legs[0].end_address);
-
-    } else {
-
+    else
       this.directions = false;
-    }
 
     this.ref.detectChanges();
   }
@@ -154,6 +320,10 @@ export class RotasEditarComponent implements OnInit {
   }
 
   onChangeFactory(event: any) {
+
+    console.log('directionsChanged');
+    console.log(this.mRoute);
+
     if (event) {
       this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
       this.showDirection();
