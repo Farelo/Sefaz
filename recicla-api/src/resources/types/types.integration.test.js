@@ -333,20 +333,19 @@ describe('api/types', () => {
     })
 
     describe('PATCH: /api/types/:id', () => {
-        let resp
+        let type
+        beforeEach(async () => {
+            type = new Type({ name: 'teste 1' })
+            type.save()
+        })
+        
         const exec = () => {
             return request(server)
-                .patch(`/api/types/${resp.body._id}`)
-                .set('Authorization', token)
-                .send({ name: 'teste edited' })
-        }
-        beforeEach(async () => {
-            resp = await request(server)
-                .post('/api/types')
+                .patch(`/api/types/${type._id}`)
                 .set('Authorization', token)
                 .send(type_body)
-        })
-
+        }
+        
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
                 .get(`/api/types/1`)
@@ -355,35 +354,162 @@ describe('api/types', () => {
             expect(res.status).toBe(404)
         })
 
-        it('should return type edited if is valid request', async () => {
+        it('should return 400 if name is not provied', async () => {
+            type_body.name = ''
+
             const res = await exec()
 
-            expect(res.status).toBe(200)
-            expect(res.body.name).toBe('teste edited')
-            expect(Object.keys(res.body)).toEqual(
-                expect.arrayContaining(['_id', 'name'])
-            )
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" is not allowed to be empty",
+                "\"name\" length must be at least 5 characters long"
+            ])
         })
+
+        it('should return 200 if type is valid request', async () => {
+            const res = await exec()
+            const body_res = _.omit(res.body, ["_id", "__v", "created_at", "update_at"])
+
+            expect(res.status).toBe(200)
+            expect(body_res).toEqual(JSON.parse(JSON.stringify({name: type_body.name})))
+        })
+
+        it('should return 400 if is body is empty', async () => {
+            type_body = {}
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" is required"
+            ])
+        })
+
+        it('should return 400 if is unknow key is provied', async () => {
+            type_body.test = 'test'
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"test\" is not allowed"
+            ])
+        })
+
+        it('should return 404 if invalid url is provied', async () => {
+            const exec = () => {
+                return request(server)
+                    .post('/api/typess')
+                    .set('Authorization', token)
+                    .send(type_body)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 400 if name has large amount of characters', async () => {
+            type_body.name = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" length must be less than or equal to 50 characters long"
+            ])
+        })
+
+        it('should return 400 if name has small amount of characters', async () => {
+            type_body.name = 'test'
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" length must be at least 5 characters long"
+            ])
+        })
+
+        it('should return 400 if the attribute types diferent than expected', async () => {
+            type_body.name = 11
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" must be a string"
+              ])
+        })
+        
     })
 
     describe('DELETE: /api/types/:id', () => {
         let resp
-        const exec = () => {
-            return request(server)
-                .delete(`/api/types/${resp.body._id}`)
-                .set('Authorization', token)
-        }
-
-        it('should return 200 if deleted with success', async () => {
+        let exec
+        
+        beforeEach(async () => {
             resp = await request(server)
                 .post('/api/types')
                 .set('Authorization', token)
                 .send(type_body)
 
+            exec = () => {
+                return request(server)
+                    .delete(`/api/types/${resp.body._id}`)
+                    .set('Authorization', token)
+            }    
+        })
+
+        it('should return 200 if deleted with success', async () => {
             const res = await exec()
 
             expect(res.status).toBe(200)
             expect(res.body.message).toBe('Delete successfully')
+        })
+
+        it('should return 404 if url invalid is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .delete(`/api/typess/${resp.body._id}`)
+                    .set('Authorization', token)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 404 if invalid id is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .delete(`/api/types/aa`)
+                    .set('Authorization', token)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 404 if id is not provied', async () => {
+            exec = () => {
+                return request(server)
+                    .delete(`/api/types/`)
+                    .set('Authorization', token)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 400 if deleted type nonexistent', async () => {
+            await exec()
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body.message).toBe('Invalid type')
         })
     })
 
