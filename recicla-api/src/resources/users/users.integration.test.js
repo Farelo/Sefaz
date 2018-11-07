@@ -281,7 +281,6 @@ describe('api/users', () => {
                 }
                 const userTest = new User(userUser)
                 userTest.save()
-                const tokenUserTest = userTest.generateUserToken()
                 const exec = () => {
                     return request(server)
                         .get(`/api/users/${newUser._id}`)

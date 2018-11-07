@@ -49,8 +49,7 @@ import { AlertaEmbalagemPerdidaComponent } from './shared/modal-alerta/alerta-em
 import { SidebarModule } from 'ng-sidebar';
 import { CreateUserComponent } from './shared/modal-user/create-user/create-user.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { EditUserComponent } from './shared/modal-user/edit-user/edit-user.component';
-import { TruncatePipe } from './shared/pipes/truncate';
+import { EditUserComponent } from './shared/modal-user/edit-user/edit-user.component'; 
 
 @NgModule({
   declarations: [
@@ -79,7 +78,7 @@ import { TruncatePipe } from './shared/pipes/truncate';
 
     CreateUserComponent,
     EditUserComponent,
-    TruncatePipe
+    
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { ToastService, GeocodingService, CompaniesService, ControlPointsService } from 'app/servicos/index.service';
+import { ToastService, GeocodingService, CompaniesService, ControlPointsService, ControlPointTypesService } from 'app/servicos/index.service';
 import { Router } from '@angular/router'; 
+import 'rxjs/add/operator/first'
 
 @Component({
   selector: 'app-ponto-de-controle-cadastrar',
@@ -29,6 +30,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   constructor(
     private companyService: CompaniesService,
     private controlPointsService: ControlPointsService,
+    private controlPointsTypeService: ControlPointTypesService,
     private router: Router,
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
@@ -36,12 +38,12 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     private geocodingService: GeocodingService) {
 
     this.mControlPoint = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)],
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)],
       duns: ['', [Validators.required]],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
       full_address: ['', [Validators.required]],
-      type: [undefined, [Validators.required]],
+      type: [undefined, [Validators.required, Validators.minLength(5)]],
       company: [undefined, [Validators.required]]
     });
   }
@@ -50,7 +52,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   ngOnInit() {
 
     this.fillCompanySelect();
-    this.fillTypesSelect();
+    this.fillTypesSelect(); 
   }
 
   /**
@@ -68,10 +70,25 @@ export class PontoDeControleCadastrarComponent implements OnInit {
    */
   fillTypesSelect() {
 
-    this.allTypes
-      .push({ label: "Fábrica", name: "factory"},
-            { label: "Fornecedor", name: "supplier" },
-            { label: "Operador Logístico", name: "op_log" });
+    this.controlPointsTypeService.getAllType().subscribe(result => {
+      this.allTypes = result;
+    }, err => console.error(err));
+  }
+
+  onAddItem(event: any){
+
+    if (this.mControlPoint.controls.type.value.name.length < 5)
+      this.mControlPoint.controls.type.setErrors({ minlength: true });
+
+    console.log(this.mControlPoint.controls.type);
+
+    console.log(this.allTypes);
+
+    // this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
+    //   this.controlPointsTypeService.getAllType().toPromise().then(() => {
+    //     this.mControlPoint.controls.type.setValue(result);
+    //   });
+    // }, err => console.error(err));
   }
 
   /**
@@ -83,13 +100,14 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     // console.log(value);
     // console.log(valid);
+    console.log('submit');
     console.log(this.mControlPoint);
 
     this.submitted = true;
 
     if (valid && this.pointWasSelected) {  
       
-      value.type = this.mControlPoint.controls.type.value.name;
+      value.type = this.mControlPoint.controls.type.value._id;
       value.company = this.mControlPoint.controls.company.value._id; 
 
       console.log(value);
@@ -158,7 +176,6 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.mControlPoint.controls.lng.setValue(event.latLng.lng());
     event.target.panTo(event.latLng);
   }
-
 
   public validateNotTakenLoading: boolean;
   validateNotTaken(control: AbstractControl) {

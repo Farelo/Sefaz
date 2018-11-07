@@ -36,7 +36,8 @@ const familySchema = new mongoose.Schema({
 const validate_families = (family) => {
     const schema = Joi.object().keys({
         code: Joi.string().min(3).max(25).required(),
-        company: Joi.objectId().required()
+        company: Joi.objectId().required(),
+        control_points: Joi.array().items(Joi.objectId())
     })
 
     return Joi.validate(family, schema, { abortEarly: false })

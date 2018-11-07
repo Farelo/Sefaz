@@ -1,89 +1,126 @@
 <div class="">
-  <h2>Registrar Setor</h2>
+  <h2>Registrar Departamento</h2>
   <hr>
 
-  <form novalidate (ngSubmit)="onSubmit(department)" [formGroup]="department"  #formDir="ngForm">
+  <form novalidate (ngSubmit)="onSubmit(mDepartment)" [formGroup]="mDepartment" #formDir="ngForm">
+    
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-12">
+        <div class="campo">
+          <p class="descricao">NOME</p>
+          <p class="explicacao">Ex. "Setor B7"</p>
+          <div class="input-group">
+            <input type="text"
+              class="form-control"
+              maxlength="50"
+              placeholder="Digite o nome do departamento"
+              aria-describedby="basic-addon2"
+              [(ngModel)]="name" formControlName="name"
+              [ngClass]="{'required': (mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
+                || (mDepartment.get('name').hasError('required') && formDir.submitted)
+                || (mDepartment.get('name').hasError('minlength'))
+                || (mDepartment.get('name').hasError('minlength') && formDir.submitted)
+                || (mDepartment.get('name').hasError('pattern'))
+                || (mDepartment.get('name').hasError('pattern') && formDir.submitted)}">
+          </div>
+      
+          <p class="requiredText" 
+            *ngIf="(mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
+              || (mDepartment.get('name').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
 
+          <p class="requiredText" *ngIf="(mDepartment.get('name').hasError('minlength'))
+            || (mDepartment.get('name').hasError('minlength') && formDir.submitted)">
+            Mínimo de 5 caracteres</p>
+          
+          <p class="requiredText" *ngIf="(mDepartment.get('name').hasError('pattern'))
+            || (mDepartment.get('name').hasError('pattern') && formDir.submitted)">
+            Excesso de espaços em branco</p>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="campo">
+          <p class="descricao">ASSOCIE O PONTO DE CONTROLE</p>
+          <p class="explicacao">Escolha um Ponto de Controle</p>
+      
+          <ng-select 
+            (change)="onChange($event)"
+            [items]="allControlPoints" 
+            bindLabel="name" 
+            placeholder="Associe um Ponto de Controle"
+            formControlName="control_point" 
+            [ngClass]="{'required': 
+              (mDepartment.get('control_point').hasError('required') && mDepartment.get('control_point').touched) 
+              || (mDepartment.get('control_point').hasError('required') && formDir.submitted)}">
+
+            <ng-template ng-label-tmp let-item="item">
+              {{item.name}}
+            </ng-template>
+
+            <ng-template ng-option-tmp let-item="item">
+              {{ item.name }}
+            </ng-template>
+          </ng-select>
+      
+          <p class="requiredText" *ngIf="(mDepartment.get('control_point').hasError('required') && mDepartment.get('control_point').touched)
+            || (mDepartment.get('control_point').hasError('required') && formDir.submitted)">
+            Campo Obrigatório</p>
+        </div>
+      </div>
+
+      <div class="col-md-12">
         <div class="campo">
           <p class="descricao">LOCAL</p>
           <p>
-            <ngui-map [zoom]="zoom" [center]="center" (mapReady$)="onMapReady($event)" (click)="onClick($event)">
+            <ngui-map 
+              [zoom]="zoom" 
+              [center]="center" 
+              (mapReady$)="onMapReady($event)" 
+              (click)="onClick($event)">
               <marker [position]="pos"></marker>
             </ngui-map>
           </p>
         </div>
       </div>
 
-      <div class="col-md-12 informacoes" >
-
-          <div class="bigger2">
-            <div class="fromSun"></div>
-          </div>
-          <span class="forn" >{{department.value.plant?.location || 'Nenhuma informação sobre a localidade'}}</span>
-
+      <div class="col-md-12 informacoes">
+        <div class="bigger2">
+          <div class="fromSun"></div>
+        </div>
+        <span class="forn">{{mDepartment.value.plant?.location || 'Nenhuma informação sobre a localidade'}}</span>
       </div>
-      <div class="col-md-6">
+
+      <div class="col-md-6 campo">
         <p class="descricao">LATITUDE</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2" [(ngModel)]="lat" formControlName="lat"
-          [ngClass]="{'required': (department.get('lat').hasError('required') && department.get('lat').touched)
-          || (department.get('lat').hasError('required') && formDir.submitted)}">
+          <input type="text" class="form-control" readonly placeholder="Digite a latitude" aria-describedby="basic-addon2"
+            [(ngModel)]="lat" formControlName="lat" [ngClass]="{'required': (mDepartment.get('lat').hasError('required') && mDepartment.get('lat').touched)
+          || (mDepartment.get('lat').hasError('required') && formDir.submitted)}">
         </div>
-        <p class="requiredText" *ngIf="(department.get('lat').hasError('required') && department.get('lat').touched)
-        || (department.get('lat').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
+        <p class="requiredText" *ngIf="(mDepartment.get('lat').hasError('required') && mDepartment.get('lat').touched)
+        || (mDepartment.get('lat').hasError('required') && formDir.submitted)">Campo
+          Obrigatório</p>
       </div>
-      <div class="col-md-6">
+
+      <div class="col-md-6 campo">
         <p class="descricao">LONGITUDE</p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2" [(ngModel)]="lng" formControlName="lng"
-          [ngClass]="{'required': (department.get('lng').hasError('required') && department.get('lng').touched)
-          || (department.get('lng').hasError('required') && formDir.submitted)}">
+          <input type="text" class="form-control" readonly placeholder="Digite a longitude" aria-describedby="basic-addon2"
+            [(ngModel)]="lng" formControlName="lng" [ngClass]="{'required': (mDepartment.get('lng').hasError('required') && mDepartment.get('lng').touched)
+          || (mDepartment.get('lng').hasError('required') && formDir.submitted)}">
         </div>
-        <p class="requiredText" *ngIf="(department.get('lng').hasError('required') && department.get('lng').touched)
-        || (department.get('lng').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+
+        <p class="requiredText" *ngIf="(mDepartment.get('lng').hasError('required') && mDepartment.get('lng').touched)
+        || (mDepartment.get('lng').hasError('required') && formDir.submitted)">Campo
+          Obrigatório</p>
       </div>
       <br />
-
-      <div class="col-md-6">
-        <div class="campo">
-          <p class="descricao">NOME</p>
-          <p class="explicacao">Ex. "Setor B7"</p>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Digite o nome do departamento" aria-describedby="basic-addon2" [(ngModel)]="name" formControlName="name"
-            [ngClass]="{'required': (department.get('name').hasError('required') && department.get('name').touched)
-            || (department.get('name').hasError('required') && formDir.submitted)}">
-          </div>
-          <p class="requiredText" *ngIf="(department.get('name').hasError('required') && department.get('name').touched)
-          || (department.get('name').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-        </div>
-
-      </div>
-      <div class="col-md-6">
-      <div class="campo">
-        <p class="descricao">ASSOCIE A PLANTA</p>
-        <p class="explicacao">Escolha uma das plantas</p>
-
-        <ng-select [ngModel]="plant" (change)="onChange($event)" [items]="plants?.data" bindLabel="plant_name" placeholder="Associe uma Planta" formControlName="plant" [ngClass]="{'required': (department.get('plant').hasError('required') && department.get('plant').touched) || (department.get('plant').hasError('required')
-        && formDir.submitted)}">
-          <ng-template ng-label-tmp let-item="item">
-            {{item.plant_name}}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            <div>
-              {{item.plant_name}}
-            </div>
-          </ng-template>
-        </ng-select>
-
-        
-        <p class="requiredText" *ngIf="(department.get('plant').hasError('required') && department.get('plant').touched)
-        || (department.get('plant').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
-      </div>
     </div>
-    </div>
+
     <br />
+
     <div class="botoes">
       <button routerLink="/rc/cadastros/setor" class="botaoVoltar">VOLTAR</button>
       <button type="submit" class="botaoRegistrar">REGISTRAR</button>

@@ -10,31 +10,32 @@ import { ModalModule ,TooltipModule} from 'ngx-bootstrap'
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule} from '@angular/forms';
-import {PlataformaCadastrarComponent} from './plataforma-cadastrar/plataforma-cadastrar.component';
-import {PlataformaEditarComponent} from './plataforma-editar/plataforma-editar.component';
-import {PlataformaComponent} from './plataforma.component';
-import {PlataformaRoutingModule} from './plataforma.routing.module';
+import { ProjetoRoutingModule } from './projeto.routing.module';
+import { ProjetoCadastrarComponent } from './projeto-cadastrar/projeto-cadastrar.component';
+import { ProjetoEditarComponent } from './projeto-editar/projeto-editar.component';
+import { ProjetoComponent } from './projeto.component';
+import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    PlataformaRoutingModule,
+    ProjetoRoutingModule,
     NgxPaginationModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
+    ApplicationPipes,
     FormsModule,
     ReactiveFormsModule
-
   ],
   declarations: [
-    PlataformaCadastrarComponent,
-    PlataformaEditarComponent,
-    PlataformaComponent
+    ProjetoCadastrarComponent,
+    ProjetoEditarComponent,
+    ProjetoComponent
   ],
   providers: [
     NgbActiveModal
   ],
 })
-export class PlataformaModule { }
+export class ProjetoModule { }

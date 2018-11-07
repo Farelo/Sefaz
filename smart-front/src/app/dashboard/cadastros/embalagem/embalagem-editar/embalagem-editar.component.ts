@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastService, PackingService, FamiliesService } from '../../../../servicos/index.service';
+import { ToastService, PackingService, FamiliesService, ProjectService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -13,6 +13,7 @@ export class EmbalagemEditarComponent implements OnInit {
 
   public mPacking: FormGroup;
   public listOfFamilies: any[] = [];
+  public listOfProjects: any[] = []; 
   public inscricao: Subscription;
   public mId: string;
   public mActualPacking: any;
@@ -21,6 +22,7 @@ export class EmbalagemEditarComponent implements OnInit {
   constructor(
     private familyService: FamiliesService,
     private packingService: PackingService,
+    private projectService: ProjectService,
     private toastService: ToastService,
     private router: Router,
     private route: ActivatedRoute,
@@ -30,21 +32,23 @@ export class EmbalagemEditarComponent implements OnInit {
 
     this.configureForm();
     this.loadFamilies();
+    this.loadProjects();
     this.retrieveUser();
   }
 
-  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
-
-    value.family = value.family._id;
-
-    if (valid) {
-      this.finishUpdate(value);
-    }
-  }
 
   loadFamilies() {
     this.familyService.getAllFamilies().subscribe(result => {
       this.listOfFamilies = result;
+    }, err => console.error(err));
+  }
+
+  /**
+   * Load the projects in the select
+   */
+  loadProjects() {
+    this.projectService.getAllProjects().subscribe(result => {
+      this.listOfProjects = result;
     }, err => console.error(err));
   }
 
@@ -58,6 +62,17 @@ export class EmbalagemEditarComponent implements OnInit {
         (<FormGroup>this.mPacking).patchValue(result, { onlySelf: true });
       });
     });
+  }
+
+  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+
+    value.family = value.family._id;
+    value.project = value.project._id;
+    if (value.observations == '') delete value.observations;
+
+    if (valid) {
+      this.finishUpdate(value);
+    }
   }
 
   finishUpdate(value) {
@@ -88,6 +103,7 @@ export class EmbalagemEditarComponent implements OnInit {
       length: ['', [Validators.required]],
       capacity: ['', [Validators.required]],
       family: [null, [Validators.required]],
+      project: [null, [Validators.required]],
       observations: ['', [Validators.maxLength(140)]],
       active: false
     });

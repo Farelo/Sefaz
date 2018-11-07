@@ -1,8 +1,7 @@
 import { Injectable }     from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Department } from '../shared/models/department';
+import { Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable'; 
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -14,44 +13,39 @@ export class DepartmentService {
       return Observable.throw(error);
   }
 
-  getDepartmentsPagination(limit: number, page: number, attr:any): Observable<any> {
-    return this.http.get(`${environment.url}department/list/pagination/${limit}/${page}?attr=${attr}`)
+  getDepartment(departmentId): Observable<any> {
+    return this.http.get(`${environment.url}/departments/${departmentId}`)
       .catch(this.handleError);
   }
 
-  retrieveAll(): Observable<any> {
-    return this.http.get(`${environment.url}department/list/all`)
+  getAllDepartment(params: any = {}): Observable<any> {
+
+    let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    if (queryString) queryString = '?' + queryString;
+
+    return this.http.get(`${environment.url}/departments${queryString}`)
       .catch(this.handleError);
   }
 
-  retrieveByPlants(limit: number, page: number, id: string): Observable<any> {
-    return this.http.get(`${environment.url}department/list/pagination/${limit}/${page}/plant/${id}`)
+  createDepartment(newDepartment: any): Observable<any> {
+    return this.http.post(`${environment.url}/departments`, newDepartment)
       .catch(this.handleError);
   }
 
-  retrieveDepartment(id: string): Observable<any>{
-    return this.http.get(`${environment.url}department/retrieve/${id}`)
+  editDepartment(departmentId: any, newDepartment: any): Observable<any> {
+    return this.http.patch(`${environment.url}/departments/${departmentId}`, newDepartment)
       .catch(this.handleError);
   }
 
-  updateDepartment(id: string, department: Department): Observable<any>{
-    return this.http.put(`${environment.url}department/update/${id}`,department)
+  deleteDepartment(departmentId: any): Observable<any> {
+    return this.http.delete(`${environment.url}/departments/${departmentId}`)
       .catch(this.handleError);
   }
+  
+  /**
+   * LEgado
+   */
+  createDepartmentArray(param: any){
 
-  deleteDepartment(id: string): Observable<any>{
-    return this.http.delete(`${environment.url}department/delete/${id}`)
-      .catch(this.handleError);
   }
-
-  createDepartment(department: any): Observable<any>{
-    return this.http.post(`${environment.url}department/create`, department)
-      .catch(this.handleError);
-  }
-
-  createDepartmentArray(array: any): Observable<any>{
-    return this.http.post(`${environment.url}department/create/array`, array)
-      .catch(this.handleError);
-  }
-
 }

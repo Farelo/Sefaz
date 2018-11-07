@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from "@angular/common";
 import { CadastrosComponent } from './cadastros.component';
 import { CadastrosRoutingModule } from './cadastros.routing.module';
 import { ToastyModule } from 'ng2-toasty'
@@ -10,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
+    CommonModule,
     CadastrosRoutingModule,
     ToastyModule.forRoot(),
     AlertModule.forRoot(),
@@ -19,7 +21,7 @@ import { FormsModule } from '@angular/forms';
     ApplicationPipes
   ],
   declarations: [
-    CadastrosComponent,
+    CadastrosComponent
   ]
 })
 export class CadastrosModule { }
