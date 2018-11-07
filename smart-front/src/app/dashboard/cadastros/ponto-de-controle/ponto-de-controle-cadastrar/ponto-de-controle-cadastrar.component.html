@@ -69,7 +69,7 @@
         <ng-select bindLabel="name" 
           placeholder="Selecione o tipo" 
           [items]="allTypes" 
-          [addTag]="true"
+          [addTag]="true" 
           (add)="onAddItem($event)"
           formControlName="type">
           <ng-template ng-option-tmp let-item="item">
@@ -82,8 +82,12 @@
           Campo Obrigatório</p>
 
         <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('minlength') && mControlPoint.get('type').touched)
-                  || (mControlPoint.get('type').hasError('minlength') && submitted)">
+          || (mControlPoint.get('type').hasError('minlength') && submitted)">
           Mínimo de 5 caracteres</p>
+
+        <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('maxlength') && mControlPoint.get('type').touched)
+          || (mControlPoint.get('type').hasError('maxlength') && submitted)">
+          Máximo de 50 caracteres</p>
       </div>
 
       <!-- Input para selecionar a empresa vinculada -->

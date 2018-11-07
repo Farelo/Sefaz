@@ -60,14 +60,24 @@
       <!-- Input para o tipo do ponto de controle -->
       <div class="campo col-sm-12 col-md-6">
         <p class="descricao">TIPO</p>
-        <ng-select bindLabel="name" placeholder="Selecione o tipo" [items]="allTypes" [(ngModel)] = "controlPointType" formControlName="type">
+        <ng-select bindLabel="name" placeholder="Selecione o tipo" [items]="allTypes" [addTag]="true" (add)="onAddItem($event)"
+          formControlName="type">
           <ng-template ng-option-tmp let-item="item">
-            <div> {{item.name}} </div>
+            {{item.name}}
           </ng-template>
         </ng-select>
+      
         <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('required') && mControlPoint.get('type').touched)
-                    || (mControlPoint.get('type').hasError('required') && submitted)">
+                || (mControlPoint.get('type').hasError('required') && submitted)">
           Campo Obrigatório</p>
+      
+        <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('minlength') && mControlPoint.get('type').touched)
+                || (mControlPoint.get('type').hasError('minlength') && submitted)">
+          Mínimo de 5 caracteres</p>
+      
+        <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('maxlength') && mControlPoint.get('type').touched)
+                || (mControlPoint.get('type').hasError('maxlength') && submitted)">
+          Máximo de 50 caracteres</p>
       </div>
 
       <!-- Input para selecionar a empresa vinculada -->

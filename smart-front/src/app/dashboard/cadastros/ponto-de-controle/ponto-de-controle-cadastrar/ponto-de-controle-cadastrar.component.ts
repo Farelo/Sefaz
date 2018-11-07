@@ -13,7 +13,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   public mControlPoint: FormGroup;
   public allCompanies: any[] = [];
-  public allTypes: any[] = [];
+  public allTypes: any[] = []; 
   public autocomplete: any;
   public address: any = {};
   public center: any;
@@ -43,7 +43,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
       full_address: ['', [Validators.required]],
-      type: [undefined, [Validators.required, Validators.minLength(5)]],
+      type: [null, [Validators.required, Validators.minLength(5)]],
       company: [undefined, [Validators.required]]
     });
   }
@@ -76,19 +76,24 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   }
 
   onAddItem(event: any){
-
-    if (this.mControlPoint.controls.type.value.name.length < 5)
+ 
+    if (event.name.length < 5){
+      this.fillTypesSelect();
       this.mControlPoint.controls.type.setErrors({ minlength: true });
+      return false;
+    }
 
-    console.log(this.mControlPoint.controls.type);
+    if (event.name.length > 50) {
+      this.fillTypesSelect();
+      this.mControlPoint.controls.type.setErrors({ maxlength: true });
+      return false;
+    }
 
-    console.log(this.allTypes);
-
-    // this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
-    //   this.controlPointsTypeService.getAllType().toPromise().then(() => {
-    //     this.mControlPoint.controls.type.setValue(result);
-    //   });
-    // }, err => console.error(err));
+    this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
+      this.controlPointsTypeService.getAllType().toPromise().then(() => {
+        this.mControlPoint.controls.type.setValue(result);
+      });
+    }, err => console.error(err));
   }
 
   /**
