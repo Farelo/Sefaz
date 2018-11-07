@@ -20,7 +20,7 @@ module.exports = {
     alert: 'late'
   },
   PERDIDA: {
-    key: 'perdida',
+    key: 'viagem_ausente',
     alert: 'missing'
   },
   SEM_SINAL: {
@@ -44,12 +44,3 @@ module.exports = {
     alert: 'permanence_exceeded'
   }
 }
-
-// SEM_SINAL: 'no_signal',
-// PERDIDA: 'missing',
-// VIAGEM_ATRASADA: 'late',
-// VIAGEM_AUSENTE: 'travelling',
-// LOCAL_INCORRETO: 'incorrect_local',
-// PERMANENCIA_EXCEDIDA: 'permanence_exceeded',
-// BATERIA: 'battery',
-// AUSENTE: 'absent',

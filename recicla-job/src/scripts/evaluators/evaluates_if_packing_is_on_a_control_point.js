@@ -14,9 +14,10 @@ module.exports = async (packing, controlPoints, setting) => {
         }
     })
 
+    await checkIn(packing, setting, distance, currentControlPoint)
+    
     if (distance > setting.range_radius) return null
 
-    await checkIn(packing, setting, distance, currentControlPoint)
 
     return currentControlPoint
 }

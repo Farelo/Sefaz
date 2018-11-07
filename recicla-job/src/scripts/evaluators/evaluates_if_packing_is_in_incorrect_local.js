@@ -4,12 +4,19 @@ const STATES = require('../common/states')
 // MODELS
 const { AlertHistory } = require('../../models/alert_history.model')
 const { Packing } = require('../../models/packings.model')
+const { Family } = require('../../models/families.model')
 
 module.exports = async (packing, currentControlPoint) => {
     try {
         /* Checa se a embalagem tem rota */
         if (packing.family.routes.length > 0) {
             console.log('TEM ROTA')
+
+            // const family = await Family.findById(packing.family)
+            //     .populate('routes')
+                
+            
+
         } else {
             /* Checa se a familia tem pontos de controle relacionada a ela */
             if (packing.family.control_points.length > 0) {

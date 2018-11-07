@@ -3,6 +3,9 @@ const moment = require('moment')
 // COMMON
 const STATES = require('./common/states')
 
+// MODELS
+const { Packing } = require('../models/packings.model')
+
 // EVALUATORS
 const evaluatesIfPackingIsNoSignal = require('./evaluators/evaluates_if_packing_is_no_signal');
 const evaluatesIfPackingIsOnAControlPoint = require('./evaluators/evaluates_if_packing_is_on_a_control_point')
@@ -35,8 +38,6 @@ module.exports = async (setting, packing, controlPoints) => {
                 return null
             } else {
                 /* Embalagem sem sinal */
-                await evaluatesIfPackingIsNoSignal(packing, setting)
-
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.DESABILITADA_SEM_SINAL.key }, { new: true })
                 return null
             }
@@ -46,17 +47,18 @@ module.exports = async (setting, packing, controlPoints) => {
             case STATES.ANALISE.key:
                 /* ******************************ANALISE******************************* */
                 console.log('ANÁLISE')
+
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.last_communication) < setting.no_signal_limit_in_days) {
 
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
 
+                    /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
+                    await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
-                        /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
-                        await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
-
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
@@ -66,7 +68,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
-                        console.log("EM VIAGEM!!!")
+                        console.log("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
                     }
@@ -100,11 +102,11 @@ module.exports = async (setting, packing, controlPoints) => {
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
 
+                    /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
+                    await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
-                        /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
-                        await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
-
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
@@ -114,7 +116,8 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
-                        console.log("EM VIAGEM!!!")
+                        console.log("EM VIAGEM")
+                        await evaluatesIfPackingIsTraveling(packing, setting)
 
                     }
                 } else {
@@ -132,10 +135,11 @@ module.exports = async (setting, packing, controlPoints) => {
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
 
+                    /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
+                    await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
-                        /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
-                        await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
 
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
@@ -146,7 +150,8 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
-                        console.log("EM VIAGEM!!!")
+                        console.log("EM VIAGEM")
+                        await evaluatesIfPackingIsTraveling(packing, setting)
 
                     }
                 } else {
@@ -157,6 +162,110 @@ module.exports = async (setting, packing, controlPoints) => {
             case STATES.VIAGEM_PRAZO.key:
                 /* ******************************VIAGEM_PRAZO***************************** */
                 console.log('VIAGEM_PRAZO')
+
+                // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
+                if (getDiffDateTodayInDays(packing.last_device_data.last_communication) < setting.no_signal_limit_in_days) {
+
+                    /* Retorna o ponto de controle que a embalagem se encontra atualmente */
+                    currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
+
+                    /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
+                    await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+
+                    /* Caso ela esteja localizada em um ponto de controle */
+                    if (currentControlPoint) {
+                        /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
+                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
+
+                        /* Checa o tempo de permanência da embalagem no ponto de controle */
+                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, setting)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, setting)
+
+                    } else {
+                        /* Embalagem está em viagem */
+                        console.log("EM VIAGEM")
+                        await evaluatesIfPackingIsTraveling(packing, setting)
+
+                    }
+                } else {
+                    /* Embalagem sem sinal */
+                    await evaluatesIfPackingIsNoSignal(packing, setting)
+                }
+                break
+            case STATES.VIAGEM_ATRASADA.key:
+                /* ******************************VIAGEM_PRAZO***************************** */
+                console.log('VIAGEM_ATRASADA')
+
+                // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
+                if (getDiffDateTodayInDays(packing.last_device_data.last_communication) < setting.no_signal_limit_in_days) {
+
+                    /* Retorna o ponto de controle que a embalagem se encontra atualmente */
+                    currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
+
+                    /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
+                    await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+
+                    /* Caso ela esteja localizada em um ponto de controle */
+                    if (currentControlPoint) {
+                        /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
+                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
+
+                        /* Checa o tempo de permanência da embalagem no ponto de controle */
+                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, setting)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, setting)
+
+                    } else {
+                        /* Embalagem está em viagem */
+                        console.log("EM VIAGEM")
+                        await evaluatesIfPackingIsTraveling(packing, setting)
+
+                    }
+                } else {
+                    /* Embalagem sem sinal */
+                    await evaluatesIfPackingIsNoSignal(packing, setting)
+                }
+                break
+            case STATES.PERDIDA.key:
+                /* ******************************VIAGEM_PRAZO***************************** */
+                console.log('PERDIDA')
+
+                // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
+                if (getDiffDateTodayInDays(packing.last_device_data.last_communication) < setting.no_signal_limit_in_days) {
+
+                    /* Retorna o ponto de controle que a embalagem se encontra atualmente */
+                    currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
+
+                    /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
+                    await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+
+                    /* Caso ela esteja localizada em um ponto de controle */
+                    if (currentControlPoint) {
+                        /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
+                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
+
+                        /* Checa o tempo de permanência da embalagem no ponto de controle */
+                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, setting)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, setting)
+
+                    } else {
+                        /* Embalagem está em viagem */
+                        console.log("EM VIAGEM")
+                        await evaluatesIfPackingIsTraveling(packing, setting)
+
+                    }
+                } else {
+                    /* Embalagem sem sinal */
+                    await evaluatesIfPackingIsNoSignal(packing, setting)
+                }
+                break
+            case STATES.SEM_SINAL.key:
+                /* ******************************VIAGEM_PRAZO***************************** */
+                console.log('SEM_SINAL')
+
+                // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
+                if (getDiffDateTodayInDays(packing.last_device_data.last_communication) < setting.no_signal_limit_in_days) {
+                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
+                }
                 break
         }
     } catch (error) {

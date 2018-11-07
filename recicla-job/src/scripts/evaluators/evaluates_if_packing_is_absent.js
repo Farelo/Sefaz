@@ -6,13 +6,10 @@ const { Packing } = require('../../models/packings.model')
 
 module.exports = async (packing, controlPoints, currentControlPoint) => {
     try {
-        /* Checa se a embalagem tem rota */
-        if (packing.family.routes.length > 0) {
-            console.log('TEM ROTA')
-        } else {
+        if (currentControlPoint) {
             /* Recupera os pontos de controle que são owner */
             const controlPointOwner = controlPoints.filter(isOwner)
-            
+
             /* Checa se a embalagem está em algum ponto de controle OWNER */
             const packingIsOk = controlPointOwner.filter(cp => isAbsent(cp, currentControlPoint))
 
@@ -21,15 +18,15 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 console.log('NÃO ESTÁ NUMA PLANTA DONA')
                 console.log('Embalagem atualizada absent:true ...')
                 await Packing.findOneAndUpdate({ _id: packing._id }, { absent: true }, { new: true })
-                return true
             } else {
                 console.log('ESTÁ NUMA PLANTA DONA')
                 console.log('Embalagem atualizada absent:false ...')
                 await Packing.findOneAndUpdate({ _id: packing._id }, { absent: false }, { new: true })
             }
+        } else {
+            await Packing.findOneAndUpdate({ _id: packing._id }, { absent: true }, { new: true })
         }
 
-        return false
     } catch (error) {
         console.error(error)
         throw new Error(error)
