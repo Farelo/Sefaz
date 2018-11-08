@@ -9,12 +9,12 @@ const runSM = require('./runSM.script')
 const spinner = ora('State Machine working...')
 
 module.exports = async () => {
-    // cron.schedule(`*/${setting.job_schedule_time_in_sec} * * * * *`, async () => {
-    cron.schedule(`*/5 * * * * *`, async () => {
+    const setting = await getSettings()
+    cron.schedule(`*/${setting.job_schedule_time_in_sec} * * * * *`, async () => {
+    // cron.schedule(`*/5 * * * * *`, async () => {
         spinner.start()
         setTimeout(async () => {
             // const device_data_array = await DeviceData.find({})
-            const setting = await getSettings()
             const controlPoints = await ControlPoint.find({})
                 .populate('company')
                 .populate('type')
