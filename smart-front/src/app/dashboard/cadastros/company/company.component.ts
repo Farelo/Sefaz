@@ -62,7 +62,8 @@ export class CompanyComponent implements OnInit {
 
     // filter our data
     const temp = this.auxListOfCompanies.filter(function (item) {
-      return item.name.toLowerCase().indexOf(val) !== -1 || !val;
+      return ((item.name.toLowerCase().indexOf(val) !== -1 || !val)
+              || (item.phone.toLowerCase().indexOf(val) !== -1 || !val));
     });
 
     // update the rows
