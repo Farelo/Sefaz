@@ -32,16 +32,14 @@ const controlPointSchema = new mongoose.Schema({
         maxlength: 100
     },
     type: {
-        type: String,
-        required: true,
-        enum: ['factory', 'supplier', 'logistic_op', 'others'],
-        lowercase: true,
-        default: 'others',
-        trim: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Type',
+        required: true
     },
     company: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Company'
+        ref: 'Company',
+        required: true
     },
     created_at: {
         type: Date,

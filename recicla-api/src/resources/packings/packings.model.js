@@ -2,7 +2,6 @@ const debug = require('debug')('model:packings')
 const mongoose = require('mongoose')
 const Joi = require('joi')
 
-// TODO: Adicionar os atributos: { gc16, last_device_data,  } 
 const packingSchema = new mongoose.Schema({
     tag: {
         code: {
@@ -13,7 +12,7 @@ const packingSchema = new mongoose.Schema({
         },
         version: {
             type: String,
-            minlength: 1,
+            minlength: 2,
             maxlength: 30,
         },
         manufactorer: {
@@ -79,6 +78,10 @@ const packingSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    permanence_time_exceeded: {
+        type: Boolean,
+        default: false
+    },
     family: {
         type: mongoose.Schema.ObjectId,
         ref: 'Family',
@@ -96,9 +99,31 @@ const packingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Department'
     },
+    last_event_record: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'EventRecord'
+    },
     project: {
         type: mongoose.Schema.ObjectId,
         ref: 'Project'
+    },
+    current_state: {
+        type: String,
+        required: true,
+        enum: [
+            'desabilitada_com_sinal',
+            'desabilitada_sem_sinal',
+            'analise',
+            'viagem_em_prazo',
+            'viagem_atrasada',
+            'perdida',
+            'sem_sinal',
+            'local_correto',
+            'local_incorreto'
+        ],
+        lowercase: true,
+        default: 'analise',
+        trim: true
     },
     created_at: {
         type: Date,

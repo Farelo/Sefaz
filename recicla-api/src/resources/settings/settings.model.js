@@ -3,10 +3,6 @@ const mongoose = require('mongoose')
 const Joi = require('joi')
 
 const settingSchema = new mongoose.Schema({
-    gc16: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Gc16',
-    },
     enable_gc16: {
         type: Boolean,
         default: false
