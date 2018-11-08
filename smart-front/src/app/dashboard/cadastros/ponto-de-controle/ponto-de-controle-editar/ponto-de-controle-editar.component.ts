@@ -43,7 +43,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     private geocodingService: GeocodingService) {
 
     this.mControlPoint = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)], 
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)],
       duns: ['', [Validators.required]],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
