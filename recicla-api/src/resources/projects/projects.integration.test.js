@@ -347,7 +347,7 @@ describe('api/projects', () => {
         
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
-                .get(`/api/project/1`)
+                .patch(`/api/project/1`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
@@ -398,7 +398,7 @@ describe('api/projects', () => {
         it('should return 404 if invalid url is provied', async () => {
             const exec = () => {
                 return request(server)
-                    .post('/api/projectss')
+                    .patch('/api/projectss')
                     .set('Authorization', token)
                     .send(project_body)
             }

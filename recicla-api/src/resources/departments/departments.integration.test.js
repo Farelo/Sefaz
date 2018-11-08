@@ -410,7 +410,7 @@ describe('api/departments', () => {
 
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
-                .get(`/api/departments/1`)
+                .patch(`/api/departments/1`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
@@ -466,7 +466,7 @@ describe('api/departments', () => {
         it('should return 404 if invalid url is provied', async () => {
             const exec = () => {
                 return request(server)
-                    .post(`/api/departmentsss/${department._id}`)
+                    .patch(`/api/departmentsss/${department._id}`)
                     .set('Authorization', token)
                     .send(department_body)
             }

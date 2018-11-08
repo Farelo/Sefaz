@@ -437,7 +437,7 @@ describe('api/routes', () => {
 
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
-                .get(`/api/routes/1`)
+                .patch(`/api/routes/1`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
@@ -501,7 +501,7 @@ describe('api/routes', () => {
         it('should return 404 if invalid url is provied', async () => {
             const exec = () => {
                 return request(server)
-                    .post(`/api/routess/${route._id}`)
+                    .patch(`/api/routess/${route._id}`)
                     .set('Authorization', token)
                     .send(route_body)
             }

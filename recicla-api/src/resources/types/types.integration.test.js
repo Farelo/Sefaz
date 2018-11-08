@@ -348,7 +348,7 @@ describe('api/types', () => {
         
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
-                .get(`/api/types/1`)
+                .patch(`/api/types/1`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
@@ -399,7 +399,7 @@ describe('api/types', () => {
         it('should return 404 if invalid url is provied', async () => {
             const exec = () => {
                 return request(server)
-                    .post('/api/typess')
+                    .patch('/api/typess')
                     .set('Authorization', token)
                     .send(type_body)
             }
