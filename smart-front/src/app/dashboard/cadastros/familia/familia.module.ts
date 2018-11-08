@@ -15,6 +15,7 @@ import { FamiliaCadastroComponent } from './familia-cadastro/familia-cadastro.co
 import { FamiliaEditarComponent } from './familia-editar/familia-editar.component';
 import { FamiliaComponent } from './familia.component';
 import { FamiliaRoutingModule } from './familia.routing.module';
+import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { FamiliaRoutingModule } from './familia.routing.module';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     ToastyModule.forRoot(),
+    ApplicationPipes,
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule

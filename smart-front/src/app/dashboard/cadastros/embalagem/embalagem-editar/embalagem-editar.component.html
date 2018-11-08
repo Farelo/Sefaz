@@ -1,5 +1,5 @@
 <div class="">
-  <h2>Editar Embalagem</h2>
+  <h2>Atualizar Embalagem</h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mPacking)" [formGroup]="mPacking" #formDir="ngForm">
@@ -12,17 +12,13 @@
         <p class="descricao">TAG</p>
         <p class="explicacao">Ex. "994475545"</p>
         <div class="input-group">
-          <input type="text" class="form-control" 
-            placeholder="Código da tag" 
-            aria-describedby="basic-addon2"
-            formControlName="code" 
-            maxlength="40"
-            [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
+          <input type="text" class="form-control" placeholder="Código da tag" aria-describedby="basic-addon2"
+            formControlName="code" maxlength="40" [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
               || (mPacking.get('tag.code').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.code').hasError('pattern'))
               || (mPacking.get('tag.code').hasError('pattern') && submitted)
               || (mPacking.get('tag.code').hasError('uniqueValidation'))
-              || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted)}">
+              || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted) }">
         </div>
 
         <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
@@ -30,14 +26,14 @@
           Campo Obrigatório</p>
 
         <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('uniqueValidation')) 
-          || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted)">
+            || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted)">
           Esta Embalagem já existe. O código deve ser único.</p>
-        
+
         <p class="explicacao" *ngIf="validateNotTakenLoading">
           Verificando disponibilidade ...</p>
 
         <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('pattern')) 
-                                || (mPacking.get('tag.code').hasError('pattern') && submitted)">
+                        || (mPacking.get('tag.code').hasError('pattern') && submitted)">
           Excesso de espaços em branco</p>
       </div>
 
@@ -47,23 +43,19 @@
         <p class="descricao">VERSÃO</p>
         <p class="explicacao">Ex. "v1"</p>
         <div class="input-group">
-          <input type="text" class="form-control" 
-            placeholder="Versão" 
-            aria-describedby="basic-addon2" 
-            formControlName="version"
-            maxlength="40"
-            [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
+          <input type="text" class="form-control" placeholder="Versão" aria-describedby="basic-addon2" formControlName="version"
+            maxlength="40" [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
               || (mPacking.get('tag.version').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.version').hasError('pattern'))
-              || (mPacking.get('tag.version').hasError('pattern') && submitted)}">
+              || (mPacking.get('tag.version').hasError('pattern') && submitted) }">
         </div>
-        
+
         <p class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
                       || (mPacking.get('tag.version').hasError('required') && formDir.submitted)">
           Campo Obrigatório</p>
 
         <p class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('pattern')) 
-                  || (mPacking.get('tag.version').hasError('pattern') && submitted)">
+          || (mPacking.get('tag.version').hasError('pattern') && submitted)">
           Excesso de espaços em branco</p>
       </div>
 
@@ -74,23 +66,19 @@
           <p class="descricao">SERIAL</p>
           <p class="explicacao">Ex. "001"</p>
           <div class="input-group">
-            <input type="text" class="form-control" 
-              placeholder="Serial" 
-              aria-describedby="basic-addon2"
-              formControlName="serial" 
-              maxlength="40"
-              [ngClass]="{'required': (mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
+            <input type="text" class="form-control" placeholder="Serial" aria-describedby="basic-addon2"
+              formControlName="serial" maxlength="40" [ngClass]="{'required': (mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
                 || (mPacking.get('serial').hasError('required') && formDir.submitted)
                 || (mPacking.get('serial').hasError('pattern'))
-                || (mPacking.get('serial').hasError('pattern') && submitted)}">
+                || (mPacking.get('serial').hasError('pattern') && submitted) }">
           </div>
-          
+
           <p class="requiredText" *ngIf="(mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
                       || (mPacking.get('serial').hasError('required') && formDir.submitted)">
             Campo Obrigatório</p>
-          
+
           <p class="requiredText" *ngIf="(mPacking.get('serial').hasError('pattern')) 
-                        || (mPacking.get('serial').hasError('pattern') && submitted)">
+              || (mPacking.get('serial').hasError('pattern') && submitted)">
             Excesso de espaços em branco</p>
         </div>
       </div>
@@ -103,6 +91,23 @@
       <!-- Coluna 1 -->
       <div class="col-md-6">
         <div class="row">
+
+
+          <!-- Família -->
+          <div class="col-sm-12 campo">
+            <p class="descricao">PROJETO</p>
+            <p class="explicacao">Projeto da Embalagem</p>
+            <ng-select bindLabel="name" placeholder="Associe um projeto" [items]="listOfProjects" formControlName="project">
+
+              <ng-template ng-option-tmp let-item="item">
+                <div> {{item.name}} </div>
+              </ng-template>
+            </ng-select>
+            <p class="requiredText" *ngIf="(mPacking.get('project').hasError('required') && mPacking.get('project').touched)
+                        || (mPacking.get('project').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
+          </div>
+
 
           <!-- Família -->
           <div class="col-sm-12 campo">
@@ -125,23 +130,18 @@
             <p class="descricao">FABRICANTE</p>
             <p class="explicacao">Ex. "Acme eletrônicos"</p>
             <div class="input-group">
-              <input type="text" class="form-control" 
-                placeholder="Nome do Fabricante" 
-                aria-describedby="basic-addon2"
-                formControlName="manufactorer" 
-                maxlength="60"
-                [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
+              <input type="text" class="form-control" placeholder="Nome do Fabricante" aria-describedby="basic-addon2"
+                formControlName="manufactorer" maxlength="60" [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                   || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
                   || (mPacking.get('tag.manufactorer').hasError('pattern'))
-                  || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)}">
+                  || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted) }">
             </div>
-
             <p class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                 || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
 
             <p class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('pattern')) 
-                            || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)">
+                || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)">
               Excesso de espaços em branco</p>
           </div>
 
@@ -150,22 +150,18 @@
           <div class="col-sm-12 campo">
             <p class="descricao">TIPO DA EMBALAGEM</p>
             <p class="explicacao">Ex. "Rack Metálico"</p>
-            <input type="text" class="form-control" 
-              placeholder="Digite o tipo de embalagem" 
-              aria-describedby="basic-addon2"
-              formControlName="type" 
-              maxlength="60"
-              [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
-              || (mPacking.get('type').hasError('required') && formDir.submitted)
-              || (mPacking.get('type').hasError('pattern'))
-              || (mPacking.get('type').hasError('pattern') && submitted)}">
-              
+            <input type="text" class="form-control" placeholder="Digite o tipo de embalagem" aria-describedby="basic-addon2"
+              formControlName="type" maxlength="60" [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
+                || (mPacking.get('type').hasError('required') && formDir.submitted)
+                || (mPacking.get('type').hasError('pattern'))
+                || (mPacking.get('type').hasError('pattern') && submitted) }">
+
             <p class="requiredText" *ngIf="(mPacking.get('type').hasError('required') && mPacking.get('type').touched)
               || (mPacking.get('type').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
 
             <p class="requiredText" *ngIf="(mPacking.get('type').hasError('pattern')) 
-                                        || (mPacking.get('type').hasError('pattern') && submitted)">
+                            || (mPacking.get('type').hasError('pattern') && submitted)">
               Excesso de espaços em branco</p>
           </div>
 
@@ -183,6 +179,19 @@
               || (mPacking.get('capacity').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
           </div>
+
+
+          <div class="col-sm-12 campo">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="active" formControlName="active">
+                <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
+                Embalagem ativa
+              </label>
+            </div>
+          </div>
+
+
         </div>
       </div>
 
@@ -241,28 +250,18 @@
               || (mPacking.get('heigth').hasError('required') && formDir.submitted)">
             Campo Obrigatório</p>
         </div>
-      </div>
-    </div>
 
-    <!-- Linha 2 Embalagem -->
-    <div class="row">
-      <div class="col-sm-12">
         <div class="campo">
-          <p class="descricao">OBSERVAÇÕES</p>
-          <p class="explicacao">Ex. "Embalagem nova"</p>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" formControlName="observations"></textarea>
-          <p class="explicacao"> {{ mPacking.get('observations').value.length }}/140 </p>
+          <div class="campo">
+            <p class="descricao">OBSERVAÇÕES</p>
+            <p class="explicacao">Ex. "Embalagem nova"</p>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" maxlength="140" formControlName="observations">
+                  </textarea>
+            <p class="explicacao"> {{ mPacking.get('observations').value.length }}/140 </p>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="form-group form-check">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" value="active" formControlName="active">
-          <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
-          Embalagem ativa
-        </label>
+
       </div>
     </div>
 

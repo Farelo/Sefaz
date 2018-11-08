@@ -25,19 +25,16 @@
       <tr *ngFor="let point of listOfControlPoints | paginate: { 
                                                       itemsPerPage: 10,
                                                       currentPage: actualPage,
-                                                      totalItems: listOfControlPoints.length}; index as index"
-        (mouseover)='hoveredIndex = index'>
-        <td>{{ point.name }}</td>
+                                                      totalItems: listOfControlPoints.length};">
+        <td>{{ point.name | truncate : 20 }}</td>
 
         <td class="teste">
-          <div *ngIf="index==hoveredIndex">
-            <button class="editar" [routerLink]="['editar/', point._id]">
-              EDITAR
-            </button>
-            <button class="excluir" (click)="removeControlPoint(point)">
-              EXCLUIR
-            </button>
-          </div>
+          <button class="editar" [routerLink]="['editar/', point._id]">
+            EDITAR
+          </button>
+          <button class="excluir" (click)="removeControlPoint(point)">
+            EXCLUIR
+          </button>
         </td>
       </tr>
     </tbody>

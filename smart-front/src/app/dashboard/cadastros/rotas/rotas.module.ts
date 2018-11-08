@@ -19,6 +19,7 @@ import { NguiMapModule } from '@ngui/map';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { constants } from './../../../../environments/constants';
+import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { constants } from './../../../../environments/constants';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     TimepickerModule.forRoot(),
+    ApplicationPipes,
     FormsModule,
     ReactiveFormsModule,
     NguiMapModule.forRoot({

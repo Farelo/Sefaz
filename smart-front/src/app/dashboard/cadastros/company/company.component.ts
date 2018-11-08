@@ -12,6 +12,8 @@ import { ModalDeleteComponent } from 'app/shared/modal-delete/modal-delete.compo
 export class CompanyComponent implements OnInit {
   
   public listOfCompanies: any = [];
+  public auxListOfCompanies: any = [];
+
   public search = "";
   public actualPage = -1;
   
@@ -30,10 +32,11 @@ export class CompanyComponent implements OnInit {
   loadCompanies() {
     this.companiesService
       .getAllCompanies()
-      .subscribe(
-      result => this.listOfCompanies = result,
-        error => console.error(error)
-      )
+      .subscribe(result => {
+
+        this.listOfCompanies = result;
+        this.auxListOfCompanies = result;
+      },error => console.error(error))
   }
 
   /**
@@ -54,8 +57,19 @@ export class CompanyComponent implements OnInit {
   /**
    * Método para busca de ponto de controle
    */
-  searchEvent(): void {
-    this.loadCompanies();
+  searchEvent(event): void {
+    const val = event.target.value.toLowerCase();
+
+    // filter our data
+    const temp = this.auxListOfCompanies.filter(function (item) {
+      return item.name.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+
+    // update the rows
+    this.listOfCompanies = temp;
+
+    // Whenever the filter changes, always go back to the first page
+    this.actualPage = 0;
   }
   
 }

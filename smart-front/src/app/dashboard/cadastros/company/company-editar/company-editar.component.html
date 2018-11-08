@@ -46,6 +46,10 @@
                       || (newCompany.get('name').value.length == 1 && newCompany.get('name').value == ' ')">
             Campo Obrigatório</p>
           
+          <p class="requiredText" *ngIf="(newCompany.get('name').hasError('minlength') && newCompany.get('name').touched)
+            || (newCompany.get('name').hasError('minlength') && submitted)">
+            Mínimo de 5 caracteres</p>
+
           <p class="requiredText" 
             *ngIf="(newCompany.get('name').hasError('pattern')) || (newCompany.get('name').hasError('pattern') && submitted)">
             Excesso de espaços em branco</p>
@@ -99,6 +103,10 @@
           || (newCompany.get('address.street').hasError('required') && submitted)">
           Campo Obrigatório</p>
 
+        <p class="requiredText" *ngIf="(newCompany.get('address.street').hasError('minlength') && newCompany.get('address.street').touched)
+                          || (newCompany.get('address.street').hasError('minlength') && submitted)">
+          Mínimo de 5 caracteres</p>
+
         <p class="requiredText" *ngIf="(newCompany.get('address.street').hasError('pattern')) || (newCompany.get('address.street').hasError('pattern') && submitted)">
           Excesso de espaços em branco</p>
       </div>
@@ -144,6 +152,10 @@
             *ngIf="(newCompany.get('address.city').hasError('required') && newCompany.get('address.city').touched)
               || (newCompany.get('address.city').hasError('required') && submitted)">
               Campo Obrigatório</p>
+
+          <p class="requiredText" *ngIf="(newCompany.get('address.city').hasError('minlength') && newCompany.get('address.city').touched)
+              || (newCompany.get('address.city').hasError('minlength') && submitted)">
+            Mínimo de 5 caracteres</p>
 
           <p class="requiredText" *ngIf="(newCompany.get('address.city').hasError('pattern')) || (newCompany.get('address.city').hasError('pattern') && submitted)">
             Excesso de espaços em branco</p>

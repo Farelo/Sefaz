@@ -3,7 +3,7 @@ import { Packing } from '../../../../shared/models/packing';
 import { Supplier } from '../../../../shared/models/supplier';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { ToastService, ProjectService, SuppliersService, TagsService, PackingService, CompaniesService, FamiliesService } from '../../../../servicos/index.service';
+import { ToastService, ProjectService, SuppliersService, TagsService, PackingService, CompaniesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 
 @Component({
@@ -28,6 +28,7 @@ export class FamiliaEditarComponent implements OnInit {
   constructor(
     private familiesService: FamiliesService,
     private companyService: CompaniesService,
+    private controlPointsService: ControlPointsService,
     private toastService: ToastService,
     private fb: FormBuilder,
     private route: ActivatedRoute) { }
@@ -35,8 +36,9 @@ export class FamiliaEditarComponent implements OnInit {
   ngOnInit() {
 
     this.configureFormGroup();
-    this.retrieveUser();
     this.fillCompanySelect();
+    this.fillControlPointsSelect();
+    this.retrieveUser();
   }
 
   /**
@@ -48,6 +50,16 @@ export class FamiliaEditarComponent implements OnInit {
       this.allCompanies = result;
     }, err => console.error(err));
   }
+
+  /**
+  * Fill the select of control points
+  */
+  fillControlPointsSelect() {
+    this.controlPointsService.getAllControlPoint().subscribe(result => {
+      this.allControlPoints = result;
+    }, err => { console.log(err) });
+  }
+
 
   configureFormGroup() {
     this.mFamily = this.fb.group({
@@ -82,11 +94,15 @@ export class FamiliaEditarComponent implements OnInit {
 
     if (this.mFamily.valid) {
 
+      console.log(this.mFamily);
+
       let newFamily = {
         code: this.mFamily.controls.code.value,
         company: this.mFamily.controls.company.value._id,
-        //control_points: this.mFamily.controls.control_points.value.map(elem => elem._id)
+        control_points: this.mFamily.controls.control_points.value.map(elem => elem._id)
       }
+
+      console.log(newFamily);
 
       this.finishUpdate(newFamily);
     }

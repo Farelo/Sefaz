@@ -1,5 +1,5 @@
 <div class="">
-  <h2>Registrar Família de Embalagem</h2>
+  <h2>Atualizar Família de Embalagem</h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mFamily)" [formGroup]="mFamily">
@@ -25,11 +25,11 @@
         Campo Obrigatório</p>
 
       <p class="requiredText" *ngIf="(mFamily.get('code').hasError('uniqueValidation')) 
-                || (mFamily.get('code').hasError('uniqueValidation') && submitted)">
+        || (mFamily.get('code').hasError('uniqueValidation') && submitted)">
         Esta família já existe. O código deve ser único.</p>
 
       <p class="requiredText" *ngIf="(mFamily.get('code').hasError('pattern')) 
-                || (mFamily.get('code').hasError('pattern') && submitted)">
+        || (mFamily.get('code').hasError('pattern') && submitted)">
         Excesso de espaços em branco</p>
       
       <p class="explicacao" *ngIf="validateNotTakenLoading">
@@ -46,7 +46,7 @@
         </ng-template>
       </ng-select>
       <p class="requiredText" *ngIf="(mFamily.get('company').hasError('required') && mFamily.get('company').touched)
-              || (mFamily.get('company').hasError('required') && mFamily.invalid && submited)">
+        || (mFamily.get('company').hasError('required') && mFamily.invalid && submited)">
         Campo Obrigatório
       </p>
     </div>
@@ -54,15 +54,11 @@
 
     <!-- Input para selecionar o pontos de control -->
     <div class="campo col-sm-12">
-      <p class="descricao">PONTOS DE CONTROLE</p>
-      <!-- [(ngModel)]="selectedCompanies"> -->
-      <!-- formControlName="selectedCompanies" -->
-      <!-- [ngModelOptions]="{standalone: true}" -->
+      <p class="descricao">PONTOS DE CONTROLE</p> 
       <ng-select #select bindLabel="name" placeholder="Associe pontos de controle" [items]="allControlPoints"
         [multiple]="true" formControlName="control_points">
-
         <ng-template ng-option-tmp let-item="item">
-          <div>Nome: {{item.name}} </div>
+          <div> {{ item.name }} </div>
         </ng-template>
       </ng-select>
     </div>
