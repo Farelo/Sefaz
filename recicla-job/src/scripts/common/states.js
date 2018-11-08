@@ -1,4 +1,8 @@
 module.exports = {
+  BATERIA_BAIXA: {
+    key: undefined,
+    alert: battery_low
+  },
   DESABILITADA_COM_SINAL: {
     key: 'desabilitada_com_sinal',
     alert: undefined

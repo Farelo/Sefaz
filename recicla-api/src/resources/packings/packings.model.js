@@ -2,7 +2,6 @@ const debug = require('debug')('model:packings')
 const mongoose = require('mongoose')
 const Joi = require('joi')
 
-// TODO: Adicionar os atributos: { gc16, last_device_data,  } 
 const packingSchema = new mongoose.Schema({
     tag: {
         code: {
@@ -13,7 +12,7 @@ const packingSchema = new mongoose.Schema({
         },
         version: {
             type: String,
-            minlength: 1,
+            minlength: 2,
             maxlength: 30,
         },
         manufactorer: {

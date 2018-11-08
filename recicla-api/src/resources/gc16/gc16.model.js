@@ -33,14 +33,7 @@ const gc16Schema = new mongoose.Schema({
         value: Number,
         qty_container: Number,
     },
-    supplier_stock: {
-        days: Number,
-        value: Number,
-        max: Number,
-        qty_container: Number,
-        qty_container_max: Number,
-    },
-    factory_stock: {
+    stock: {
         days: Number,
         value: Number,
         max: Number,

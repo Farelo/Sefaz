@@ -17,8 +17,8 @@ const alertHistorySchema = new mongoose.Schema({
             'travelling',
             'incorrect_local',
             'permanence_exceeded',
-            'battery',
-            'absent'],
+            'battery_low'
+        ],
         lowercase: true,
         default: 'nosignal',
         trim: true
