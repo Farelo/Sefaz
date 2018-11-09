@@ -26,6 +26,17 @@ exports.get_gc16 = async (id) => {
     }
 }
 
+exports.find_by_family = async (family_id) => {
+    try {
+        const gc16 = await GC16.findOne({ family: family_id })
+        if (gc16) return true
+
+        return false
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 exports.create_gc16 = async (gc16) => {
     try {
         const new_gc16 = new GC16(gc16)

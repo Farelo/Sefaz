@@ -21,7 +21,10 @@ exports.create = async (req, res) => {
     const family = await families_service.find_by_id(req.body.family)
     if (!family) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid family.' })
 
-    const gc16 = await gc16_service.create_gc16(req.body)
+    let gc16 = await gc16_service.find_by_family(req.body.family)
+    if (gc16) return res.status(HttpStatus.BAD_REQUEST).send({ message: 'GC16 already exists with this family.' })
+
+    gc16 = await gc16_service.create_gc16(req.body)
 
     res.status(HttpStatus.CREATED).send(gc16)
 }
@@ -29,6 +32,9 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
     let gc16 = await gc16_service.find_by_id(req.params.id)
     if (!gc16) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid gc16' })
+
+    const family = await families_service.find_by_id(req.body.family)
+    if (!family) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid family.' })
 
     gc16 = await gc16_service.update_gc16(req.params.id, req.body)
 
