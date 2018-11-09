@@ -36,7 +36,7 @@ export class FamiliaCadastroComponent implements OnInit {
 
   configureFormGroup() {
     this.mFamily = this.fb.group({
-      code: ['', [Validators.required, Validators.maxLength(30), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this) ],
+      code: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern(/^((?!\s{2}).)*$/)]],
       company: [undefined, [Validators.required]],
       selectedControlPoints: new FormControl([])
     });
@@ -73,7 +73,7 @@ export class FamiliaCadastroComponent implements OnInit {
         control_points: this.mFamily.controls.selectedControlPoints.value.map(elem => elem._id)
       }
 
-      console.log(newFamily);
+      //console.log(newFamily);
 
       this.finishRegister(newFamily);
     }
@@ -86,26 +86,46 @@ export class FamiliaCadastroComponent implements OnInit {
     }, err => this.toastService.error(err));
   }
 
+  validateCode(event: any){
 
-  public emailLoading: boolean;
-  validateNotTaken(control: AbstractControl) {
-    this.emailLoading = true;
-    return control
-      .valueChanges
-      .delay(800)
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .switchMap(value => this.familyService.getAllFamilies({ code: control.value }))
-      //.switchMap(value => this.packingService.getAllPackings())
-      .map(res => {
-        this.emailLoading = false;
-        
-        if (res.length == 0) {
-          return control.setErrors(null);
-        } else {
-          return control.setErrors({ uniqueValidation: 'code already exist' })
-        }
-      })
+    //console.log(this.mPacking.get('tag.code').value);
+    // console.log(this.mFamily);
+    // console.log(this.mFamily.controls.code.valid);
+
+    if (this.mFamily.get('code').value && this.mFamily.controls.code.valid) {
+
+      this.validateNotTakenLoading = true;
+      this.familyService.getAllFamilies({ code: this.mFamily.get('code').value }).subscribe(result => {
+
+        if (result.length == 0)
+          this.mFamily.get('code').setErrors(null);
+        else
+          this.mFamily.get('code').setErrors({ uniqueValidation: true });
+
+        this.validateNotTakenLoading = false;
+      });
+    }
   }
+
+  public validateNotTakenLoading: boolean;
+  // validateNotTaken(control: AbstractControl) {
+  //   this.emailLoading = true;
+  //   return control
+  //     .valueChanges
+  //     .delay(800)
+  //     .debounceTime(800)
+  //     .distinctUntilChanged()
+  //     .switchMap(value => this.familyService.getAllFamilies({ code: control.value }))
+  //     //.switchMap(value => this.packingService.getAllPackings())
+  //     .map(res => {
+  //       this.emailLoading = false;
+        
+  //       if (res.length == 0) {
+  //         return control.setErrors(null);
+  //       } else {
+  //         return control.setErrors({ uniqueValidation: 'code already exist' })
+  //       }
+  //     })
+  // }
 
 }

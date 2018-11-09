@@ -114,7 +114,7 @@ export class EmbalagemEditarComponent implements OnInit {
     //console.log(this.mPacking.get('tag.code').value);
 
     if (this.mPacking.get('tag.code').value && (this.mActualPacking.tag.code !== this.mPacking.get('tag.code').value)){
-      console.log('.');
+      //console.log('.');
 
         this.validateNotTakenLoading = true;
         this.packingService.getAllPackings({ tag_code: this.mPacking.get('tag.code').value }).subscribe(result => {
