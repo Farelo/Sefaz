@@ -89,8 +89,10 @@ export class FamiliaCadastroComponent implements OnInit {
   validateCode(event: any){
 
     //console.log(this.mPacking.get('tag.code').value);
+    // console.log(this.mFamily);
+    // console.log(this.mFamily.controls.code.valid);
 
-    if (this.mFamily.get('code').value) {
+    if (this.mFamily.get('code').value && this.mFamily.controls.code.valid) {
 
       this.validateNotTakenLoading = true;
       this.familyService.getAllFamilies({ code: this.mFamily.get('code').value }).subscribe(result => {

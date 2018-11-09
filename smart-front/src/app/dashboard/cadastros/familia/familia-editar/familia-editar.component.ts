@@ -64,8 +64,7 @@ export class FamiliaEditarComponent implements OnInit {
   configureFormGroup() {
     this.mFamily = this.fb.group({
       code: ['',
-        [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/) ],
-        this.validateNotTaken.bind(this)
+        [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern(/^((?!\s{2}).)*$/) ]
       ],
       company: ['', [Validators.required]],
       control_points: new FormControl([])
@@ -114,29 +113,54 @@ export class FamiliaEditarComponent implements OnInit {
     }, err => this.toastService.error(err));
   }
 
-  public validateNotTakenLoading: boolean;
-  validateNotTaken(control: AbstractControl) {
-    this.validateNotTakenLoading = true;
+  validateCode(event: any) {
 
-    if (this.mActualFamily.code == control.value) {
+    //console.log(this.mPacking.get('tag.code').value);
+
+    if (this.mActualFamily.code == this.mFamily.get('code').value) {
       this.validateNotTakenLoading = false;
-      return new Promise((resolve, reject) => resolve(null));
+      this.mFamily.get('code').setErrors(null);
+      return;
     }
 
-    return control
-      .valueChanges
-      .delay(800)
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .switchMap(value => this.familiesService.getAllFamilies({ code: control.value }))
-      .map(res => {
-        
+    if (this.mFamily.get('code').value && this.mFamily.controls.code.valid) {
+
+      this.validateNotTakenLoading = true;
+      this.familiesService.getAllFamilies({ code: this.mFamily.get('code').value }).subscribe(result => {
+
+        if (result.length == 0)
+          this.mFamily.get('code').setErrors(null);
+        else
+          this.mFamily.get('code').setErrors({ uniqueValidation: true });
+
         this.validateNotTakenLoading = false;
-        if (res.length == 0) {
-          return control.setErrors(null);
-        } else {
-          return control.setErrors({ uniqueValidation: 'code already exist' })
-        }
-      })
+      });
+    }
   }
+
+  public validateNotTakenLoading: boolean;
+  // validateNotTaken(control: AbstractControl) {
+  //   this.validateNotTakenLoading = true;
+
+  //   if (this.mActualFamily.code == control.value) {
+  //     this.validateNotTakenLoading = false;
+  //     return new Promise((resolve, reject) => resolve(null));
+  //   }
+
+  //   return control
+  //     .valueChanges
+  //     .delay(800)
+  //     .debounceTime(800)
+  //     .distinctUntilChanged()
+  //     .switchMap(value => this.familiesService.getAllFamilies({ code: control.value }))
+  //     .map(res => {
+        
+  //       this.validateNotTakenLoading = false;
+  //       if (res.length == 0) {
+  //         return control.setErrors(null);
+  //       } else {
+  //         return control.setErrors({ uniqueValidation: 'code already exist' })
+  //       }
+  //     })
+  // }
 }
