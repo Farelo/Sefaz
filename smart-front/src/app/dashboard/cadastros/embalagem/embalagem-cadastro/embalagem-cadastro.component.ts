@@ -54,6 +54,8 @@ export class EmbalagemCadastroComponent implements OnInit {
    */
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
     
+    console.log(value);
+
     value.family = value.family._id;
     value.project = value.project._id;
     if (value.observations == '') delete value.observations;
@@ -87,11 +89,11 @@ export class EmbalagemCadastroComponent implements OnInit {
     this.mPacking = this.fb.group({
       tag: this.fb.group({
         code: ['', 
-          [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this) ],
+          [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
         version: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
         manufactorer: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]]
       }),
-      serial: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+      serial: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]],
       type: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
       weigth: ['', [Validators.required]],
       width: ['', [Validators.required]],
@@ -106,29 +108,48 @@ export class EmbalagemCadastroComponent implements OnInit {
   }
 
 
+  validateTag(event: any){
+
+    //console.log(this.mPacking.get('tag.code').value);
+
+    if (this.mPacking.get('tag.code').value){
+
+      this.validateNotTakenLoading = true;
+      this.packingService.getAllPackings({ tag_code: this.mPacking.get('tag.code').value }).subscribe(result => {
+
+        if (result.length == 0)
+          this.mPacking.get('tag.code').setErrors(null);
+        else
+          this.mPacking.get('tag.code').setErrors({ uniqueValidation: true });
+        
+        this.validateNotTakenLoading = false;
+      });
+    }
+  }
+
   /**
    * Validação assíncrona
    */
   public validateNotTakenLoading: boolean;
-  validateNotTaken(control: AbstractControl) {
-    this.validateNotTakenLoading = true;
-    return control
-      .valueChanges
-      .delay(800)
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
-      .map(res => {
-        this.validateNotTakenLoading = false;
+  // validateNotTaken(control: AbstractControl) {
+  //   this.validateNotTakenLoading = true;
+  //   return control
+  //     .valueChanges
+  //     .delay(800)
+  //     .debounceTime(800)
+  //     .distinctUntilChanged()
+  //     .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
+  //     .map(res => {
+  //       this.validateNotTakenLoading = false;
 
-        if (res.length == 0) {
-          console.log('empty')
-          return control.setErrors(null);
-        } else {
-          console.log('not empty')
-          return control.setErrors({ uniqueValidation: 'code already exist' })
-        }
-      })
-  }
+  //       if (res.length == 0) {
+  //         console.log('empty')
+  //         return control.setErrors(null);
+  //       } else {
+  //         console.log('not empty')
+  //         return control.setErrors({ uniqueValidation: 'code already exist' })
+  //       }
+  //     })
+  // }
 
 }

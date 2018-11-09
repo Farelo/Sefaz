@@ -91,11 +91,11 @@ export class EmbalagemEditarComponent implements OnInit {
     this.mPacking = this.fb.group({
       tag: this.fb.group({
         code: ['',
-          [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)],
+          [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
         version: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
         manufactorer: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]]
       }),
-      serial: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+      serial: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]],
       type: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
       weigth: ['', [Validators.required]],
       width: ['', [Validators.required]],
@@ -109,35 +109,55 @@ export class EmbalagemEditarComponent implements OnInit {
     });
   }
 
-  public validateNotTakenLoading: boolean = false;
-  validateNotTaken(control: AbstractControl) {
-    this.validateNotTakenLoading = true;
-    // console.log('this.mActualPacking.tag.code: ' + this.mActualPacking.tag.code);
-    // console.log('control.value: ' + control.value);
+  validateTag(event: any){
 
-    if (this.mActualPacking.tag.code == control.value) {
-      // console.log('equal');
-      this.validateNotTakenLoading = false;
-      return new Promise((resolve, reject) => resolve(null));
+    //console.log(this.mPacking.get('tag.code').value);
+
+    if (this.mPacking.get('tag.code').value && (this.mActualPacking.tag.code !== this.mPacking.get('tag.code').value)){
+      console.log('.');
+
+        this.validateNotTakenLoading = true;
+        this.packingService.getAllPackings({ tag_code: this.mPacking.get('tag.code').value }).subscribe(result => {
+
+          if (result.length == 0)
+            this.mPacking.get('tag.code').setErrors(null);
+          else
+            this.mPacking.get('tag.code').setErrors({ uniqueValidation: true });
+          
+          this.validateNotTakenLoading = false;
+        });
     }
-
-    return control
-      .valueChanges
-      .delay(800)
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
-      .map(res => {
-        
-        this.validateNotTakenLoading = false;
-        if (res.length == 0) {
-          // console.log('empty');
-          return control.setErrors(null);
-        } else {
-          // console.log('not empty');
-          return control.setErrors({ uniqueValidation: 'code already exist' })
-        }
-      });
   }
+
+  public validateNotTakenLoading: boolean = false;
+  // validateNotTaken(control: AbstractControl) {
+  //   this.validateNotTakenLoading = true;
+  //   // console.log('this.mActualPacking.tag.code: ' + this.mActualPacking.tag.code);
+  //   // console.log('control.value: ' + control.value);
+
+  //   if (this.mActualPacking.tag.code == control.value) {
+  //     // console.log('equal');
+  //     this.validateNotTakenLoading = false;
+  //     return new Promise((resolve, reject) => resolve(null));
+  //   }
+
+  //   return control
+  //     .valueChanges
+  //     .delay(800)
+  //     .debounceTime(800)
+  //     .distinctUntilChanged()
+  //     .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
+  //     .map(res => {
+        
+  //       this.validateNotTakenLoading = false;
+  //       if (res.length == 0) {
+  //         // console.log('empty');
+  //         return control.setErrors(null);
+  //       } else {
+  //         // console.log('not empty');
+  //         return control.setErrors({ uniqueValidation: 'code already exist' })
+  //       }
+  //     });
+  // }
 }
 
