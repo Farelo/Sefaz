@@ -14,8 +14,11 @@
           placeholder="Digite o código" 
           formControlName="code" 
           maxlength="30"
+          (focusout)="validateCode($event)"
           [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
           || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)
+          || (mFamily.get('code').hasError('minlength'))
+          || (mFamily.get('code').hasError('minlength') && submitted)
           || (mFamily.get('code').hasError('uniqueValidation'))
           || (mFamily.get('code').hasError('uniqueValidation') && submitted)}">
       </div>
@@ -32,6 +35,10 @@
         || (mFamily.get('code').hasError('pattern') && submitted)">
         Excesso de espaços em branco</p>
       
+      <p class="requiredText" *ngIf="(mFamily.get('code').hasError('minlength')) 
+        || (mFamily.get('code').hasError('minlength') && submitted)">
+        Mínimo de 3 caracteres</p>
+
       <p class="explicacao" *ngIf="validateNotTakenLoading">
         Verificando disponibilidade ...</p>
     </div>

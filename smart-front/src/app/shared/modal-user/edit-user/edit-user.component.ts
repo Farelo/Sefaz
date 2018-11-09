@@ -64,7 +64,7 @@ export class EditUserComponent implements OnInit {
         [ Validators.required,
           Validators.email,
           Validators.minLength(5) ],
-        this.validateNotTaken.bind(this)
+        // this.validateNotTaken.bind(this) 
       ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
@@ -122,33 +122,49 @@ export class EditUserComponent implements OnInit {
     this.activeModal.close();
   }
 
-  public validateNotTakenLoading: boolean;
-  validateNotTaken(control: AbstractControl) {
-    this.validateNotTakenLoading = true;
+  validateEmail(event: any) {
 
-    if (this.mUser.email == control.value) {
-      //console.log('equal');
-      this.validateNotTakenLoading = false;
-      return new Promise((resolve, reject) => resolve(null));
-    }
+    if (this.newUser.controls.email.value && this.newUser.controls.email.value !== this.mUser.email) {
 
-    return control
-      .valueChanges
-      .delay(800)
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .switchMap(value => this.usersService.getAllUsers({ email: control.value }))
-      .map(res => {
+      this.validateNotTakenLoading = true;
+      this.usersService.getAllUsers({ email: this.newUser.controls.email.value }).subscribe(result => {
+
+        if (result.length == 0)
+          this.newUser.controls.email.setErrors(null);
+        else
+          this.newUser.controls.email.setErrors({ uniqueValidation: true });
 
         this.validateNotTakenLoading = false;
-        if (res.length == 0) {
-          //console.log('[]');
-          return control.setErrors(null);
-        } else {
-          //console.log('[...]'); 
-          return control.setErrors({ uniqueValidation: 'code already exist' })
-        }
-      })
+      });
+    }
   }
+
+  public validateNotTakenLoading: boolean;
+  // validateNotTaken(control: AbstractControl) {
+  //   this.validateNotTakenLoading = true;
+    
+  //   if (this.mUser.email == control.value) { 
+  //     this.validateNotTakenLoading = false;
+  //     return new Promise((resolve, reject) => resolve(null));
+  //   }
+    
+  //   return control
+  //     .valueChanges
+  //     .delay(800)
+  //     .debounceTime(800)
+  //     .distinctUntilChanged()
+  //     .switchMap(value => this.usersService.getAllUsers({ email: control.value }))
+  //     .map(res => {
+
+  //       this.validateNotTakenLoading = false;
+  //       if (res.length == 0) {
+  //         //console.log('[]');
+  //         return control.setErrors(null);
+  //       } else {
+  //         //console.log('[...]'); 
+  //         return control.setErrors({ uniqueValidation: 'code already exist' })
+  //       }
+  //     })
+  // }
 
 }
