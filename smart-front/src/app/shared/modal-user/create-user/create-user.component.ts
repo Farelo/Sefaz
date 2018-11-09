@@ -55,10 +55,10 @@ export class CreateUserComponent implements OnInit {
          Validators.minLength(5),
           Validators.pattern(/^((?!\s{2}).)*$/)]],
       email: ['',
-        [Validators.required,
+        [Validators.required, 
          Validators.email,
          Validators.minLength(5)],
-        this.validateNotTaken.bind(this)
+        // this.validateNotTaken.bind(this)
       ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
@@ -100,23 +100,55 @@ export class CreateUserComponent implements OnInit {
     this.activeModal.close();
   }
 
-  public validateNotTakenLoading: boolean = false;
-  validateNotTaken(control: AbstractControl) {
-    this.validateNotTakenLoading = true;
-    return control
-      .valueChanges
-      .delay(800)
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .switchMap(value => this.usersService.getAllUsers({ email: control.value }))
-      .map(res => {
+  validateEmail(event: any){
 
+    if (this.newUser.controls.email.value){
+
+      this.validateNotTakenLoading = true;
+      this.usersService.getAllUsers({ email: this.newUser.controls.email.value }).subscribe(result => {
+
+        if (result.length == 0)
+          //this.newUser.controls.email.setErrors({ uniqueValidation: false });
+          this.newUser.controls.email.setErrors(null);
+        else
+          this.newUser.controls.email.setErrors({ uniqueValidation: true });
+        
         this.validateNotTakenLoading = false;
-        if (res.length == 0) {
-          return control.setErrors(null);
-        } else {
-          return control.setErrors({ uniqueValidation: 'code already exist' })
-        }
-      })
+      });
+    }
   }
+
+  public validateNotTakenLoading: boolean = false;
+  // validateNotTaken(control: AbstractControl) {
+
+  //   console.log(control.value);
+
+  //   if (!control.valueChanges) {
+  //     return new Promise((resolve, reject) => resolve(null));
+
+  //   } else {
+  //     this.validateNotTakenLoading = true;
+  //     return control.valueChanges
+  //       .debounceTime(700)
+  //       .distinctUntilChanged()
+  //       .switchMap(value => this.usersService.getAllUsers({ email: control.value }))
+  //       .map(res => {
+
+  //         this.validateNotTakenLoading = false;
+  //         if (res.length == 0) {
+  //           //return control.setErrors(null);
+  //           console.log('.');
+  //           console.log(this.newUser);
+  //           return { uniqueValidation: false }
+
+  //         } else {
+  //           //return control.setErrors({ uniqueValidation: 'code already exist' })
+  //           console.log('..');
+  //           console.log(this.newUser);
+  //           return { uniqueValidation: true }
+  //         }
+  //       })
+  //       .first();
+  //   }
+  // }
 }

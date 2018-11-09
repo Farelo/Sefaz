@@ -46,6 +46,12 @@ export class DepartmentService {
    * LEgado
    */
   createDepartmentArray(param: any){
+    return this.http.get(`${environment.url}/departments/${param}`)
+      .catch(this.handleError);
+  }
 
+  retrieveByPlants(limit: number, page: number, id: string): Observable<any> {
+    return this.http.get(`${environment.url}/departments/${id}`)
+      .catch(this.handleError);
   }
 }

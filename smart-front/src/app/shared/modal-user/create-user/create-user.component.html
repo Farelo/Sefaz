@@ -98,6 +98,7 @@
             placeholder="Digite o email"
             formControlName="email" 
             maxlength="40"
+            (focusout)="validateEmail($event)"
             [(ngModel)]="email" 
             [ngClass]="{'required': (newUser.get('email').hasError('required') && newUser.get('email').touched)
               || (newUser.get('email').hasError('required') && submitted)
@@ -117,13 +118,13 @@
 
           <p class="requiredText" *ngIf="(newUser.get('email').hasError('uniqueValidation')) 
                       || (newUser.get('email').hasError('uniqueValidation') && submitted)">
-            Este Usuário já existe. O email deve ser único.</p>
+            Este Usuário já existe. O email deve ser único</p>
 
-          <p class="explicacao" *ngIf="validateNotTakenLoading">
+          <p class="explicacao" *ngIf="validateNotTakenLoading ">
             Verificando disponibilidade ...</p>
 
-          <p class="requiredText" *ngIf="(newUser.get('email').hasError('email')) && !newUser.get('email').hasError('required')
-              || (newUser.get('email').hasError('email') && submitted && !newUser.get('email').hasError('required'))">Formato do email esta incorreto!</p>
+          <p class="requiredText" *ngIf="(newUser.get('email').hasError('email') && newUser.get('email').touched)
+              || (newUser.get('email').hasError('email') && submitted )">Formato do email esta incorreto!</p>
 
         </div>
       </div>
@@ -144,7 +145,7 @@
 
           <p class="requiredText" 
             *ngIf="(newUser.get('password').hasError('minlength') && newUser.get('password').touched)
-            || (newUser.get('password').hasError('minlength') && submitted)">Mínimo de 6 caracters</p>
+            || (newUser.get('password').hasError('minlength') && submitted)">Mínimo de 6 caracteres</p>
                           
         </div>
 

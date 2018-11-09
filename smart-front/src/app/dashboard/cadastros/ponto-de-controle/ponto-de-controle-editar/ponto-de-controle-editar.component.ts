@@ -43,7 +43,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     private geocodingService: GeocodingService) {
 
     this.mControlPoint = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)], 
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)],
       duns: ['', [Validators.required]],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
@@ -117,6 +117,26 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.inscricao.unsubscribe();
   }
 
+  onAddItem(event: any) {
+
+    if (event.name.length < 5) {
+      this.fillTypesSelect();
+      this.mControlPoint.controls.type.setErrors({ minlength: true });
+      return false;
+    }
+
+    if (event.name.length > 50) {
+      this.fillTypesSelect();
+      this.mControlPoint.controls.type.setErrors({ maxlength: true });
+      return false;
+    }
+
+    this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
+      this.controlPointsTypeService.getAllType().toPromise().then(() => {
+        this.mControlPoint.controls.type.setValue(result);
+      });
+    }, err => console.error(err));
+  }
 
   /**
    * Click on submit button
