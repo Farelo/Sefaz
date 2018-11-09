@@ -15,7 +15,7 @@ module.exports = async (packing) => {
         const alertHistory = new AlertHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert })
         await alertHistory.save()
 
-        await Packing.findOneAndUpdate({ _id: packing._id }, { current_state: STATES.SEM_SINAL.key })
+        await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.SEM_SINAL.key })
     } catch (error) {
         console.error(error)
         throw new Error(error)

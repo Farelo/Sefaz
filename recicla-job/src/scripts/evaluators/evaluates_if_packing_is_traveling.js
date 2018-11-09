@@ -23,7 +23,7 @@ module.exports = async (packing, setting) => {
         if (packing.last_event_record.type === 'outbound') {
             if (getDiffDateTodayInDays(packing.last_event_record.created_at) <= routeMax.traveling_time.max) {
                 console.log('VIAGEM_PRAZO')
-                await Packing.findOneAndUpdate({ _id: packing._id }, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true })
+                await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true })
             } else {
                 if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
                     console.log('PERDIDA')
@@ -31,14 +31,14 @@ module.exports = async (packing, setting) => {
                     if (packing.last_alert_history && packing.last_alert_history.type === STATES.PERDIDA.alert) return null
 
                     await AlertHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert })
-                    await Packing.findOneAndUpdate({ _id: packing._id }, { current_state: STATES.PERDIDA.key }, { new: true })
+                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.PERDIDA.key }, { new: true })
                 } else {
                     console.log('VIAGEM_ATRASADA')
     
                     if (packing.last_alert_history && packing.last_alert_history.type === STATES.VIAGEM_ATRASADA.alert) return null
     
                     await AlertHistory.create({ packing: packing._id, type: STATES.VIAGEM_ATRASADA.alert })
-                    await Packing.findOneAndUpdate({ _id: packing._id }, { current_state: STATES.VIAGEM_ATRASADA.key }, { new: true })
+                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_ATRASADA.key }, { new: true })
                 }
             }
         }

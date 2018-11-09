@@ -49,11 +49,11 @@ export class ProjetoCadastrarComponent implements OnInit {
         this.validateNotTakenLoading = false;
 
         if (res.length == 1) {
-          console.log('not empty')
+          //console.log('not empty')
           return control.setErrors({ uniqueValidation: 'code already exist' })
 
         } else{
-          console.log('empty')
+          //console.log('empty')
           return control.setErrors(null);
         }
       })
