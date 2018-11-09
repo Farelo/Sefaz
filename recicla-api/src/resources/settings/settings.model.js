@@ -3,10 +3,6 @@ const mongoose = require('mongoose')
 const Joi = require('joi')
 
 const settingSchema = new mongoose.Schema({
-    gc16: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Gc16',
-    },
     enable_gc16: {
         type: Boolean,
         default: false
@@ -48,7 +44,6 @@ const settingSchema = new mongoose.Schema({
 
 const validate_settings = (setting) => {
     const schema = Joi.object().keys({
-        gc16: Joi.objectId(),
         enable_gc16: Joi.boolean(),
         battery_level_limit: Joi.number(),
         accuracy_limit: Joi.number(),

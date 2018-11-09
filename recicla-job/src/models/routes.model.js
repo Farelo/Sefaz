@@ -1,5 +1,6 @@
 const debug = require('debug')('model:routes')
 const mongoose = require('mongoose')
+const { Family } = require('./families.model')
 
 const routeSchema = new mongoose.Schema({
     family: {
@@ -50,12 +51,28 @@ const routeSchema = new mongoose.Schema({
     }
 })
 
+const update_family = async (route, next) => {
+    try {
+        const family = await Family.findById(route.family)
+        if (!family) next()
+        family.routes.push(route._id)
+        await family.save()
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
+const saveRouteToFamily = function (doc, next) {
+    update_family(doc, next)
+}
+
 const update_updated_at_middleware = function (next) {
     let update = this.getUpdate()
     update.update_at = new Date()
     next()
 }
 
+routeSchema.post('save', saveRouteToFamily)
 routeSchema.pre('update', update_updated_at_middleware)
 routeSchema.pre('findOneAndUpdate', update_updated_at_middleware)
 

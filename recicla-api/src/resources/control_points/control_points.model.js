@@ -52,6 +52,7 @@ const controlPointSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
 const validate_control_points = (control_point) => {
     const schema = Joi.object().keys({
         name: Joi.string().min(5).max(50).required(),

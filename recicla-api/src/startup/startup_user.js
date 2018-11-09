@@ -1,6 +1,7 @@
 const debug = require('debug')('startup:user')
 const { User } = require('../resources/users/users.model')
 const { Company } = require('../resources/companies/companies.model')
+const { Setting } = require('../resources/settings/settings.model')
 const config = require('config')
 
 const dm_temp_test = require('../services/loka/dm.temp.testes')
@@ -16,6 +17,17 @@ const startupUser = async () => {
             
             const newUser = new User({ full_name: 'Admin', email: 'admin@admin.smart', password: 'admin123', role: 'admin', company: newCompany })
             await newUser.save()
+
+            const setting = new Setting({
+                enable_gc16: true,
+                battery_level_limit: 18,
+                job_schedule_time_in_sec: 50,
+                range_radius: 3000,
+                clean_historic_moviments_time: 1440,
+                no_signal_limit_in_days: 2
+            })
+
+            await setting.save()
             // newCompany.users.push(newUser._id)
             
             debug('Startup user with success.')
