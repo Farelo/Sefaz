@@ -14,10 +14,11 @@
           class="form-control required" 
           placeholder="Digite o código"  
           formControlName="code"
-          maxlength="30"
+          maxlength="25"
+          (focusout)="validateCode($event)"
           [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
           || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)
-          || (mFamily.get('code').hasError('uniqueValidation'))
+          || (mFamily.get('code').hasError('uniqueValidation') && mFamily.get('code').touched)
           || (mFamily.get('code').hasError('uniqueValidation') && submitted)}">
       </div>
 

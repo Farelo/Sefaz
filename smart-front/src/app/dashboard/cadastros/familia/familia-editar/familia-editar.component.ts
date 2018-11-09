@@ -94,7 +94,7 @@ export class FamiliaEditarComponent implements OnInit {
 
     if (this.mFamily.valid) {
 
-      console.log(this.mFamily);
+      //console.log(this.mFamily);
 
       let newFamily = {
         code: this.mFamily.controls.code.value,
@@ -102,7 +102,7 @@ export class FamiliaEditarComponent implements OnInit {
         control_points: this.mFamily.controls.control_points.value.map(elem => elem._id)
       }
 
-      console.log(newFamily);
+      //console.log(newFamily);
 
       this.finishUpdate(newFamily);
     }
