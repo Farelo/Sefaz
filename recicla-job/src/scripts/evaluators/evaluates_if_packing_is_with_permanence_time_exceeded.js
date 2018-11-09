@@ -9,41 +9,36 @@ const { Family } = require('../../models/families.model')
 const { GC16 } = require('../../models/gc16.model')
 const { Packing } = require('../../models/packings.model')
 
-module.exports = async (packing, currentControlPoint) => {
+module.exports = async (packing) => {
+    try {
+        if (packing.last_event_record.type === 'inbound') {
+            timeIntervalInDays = getDiffDateTodayInDays(packing.last_event_record.created_at)
+            const gc16 = await GC16.findById(packing.family.gc16)
+            if (!gc16) return null
 
-    if (packing.last_event_record.type === 'inbound') {
+            const family = await Family.findById(packing.family).populate('company')
 
-        timeIntervalInDays = getDiffDateTodayInDays(packing.last_event_record.created_at)
-        const gc16 = await GC16.findById(packing.family.gc16)
-        if (!gc16) return null
-
-        const family = Family.findById(packing.family).populate('company')
-        
-        if (family.company.type === 'owner') {
-            if (timeIntervalInDays > gc16.owner_stock.days) {
-                console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
-                await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
+            if (family.company.type === 'owner') {
+                if (timeIntervalInDays > gc16.owner_stock.days) {
+                    console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
+                    await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
+                } else {
+                    console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
+                    await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+                }
             } else {
-                console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
-                await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
-            }
-        } else {
-            if (timeIntervalInDays > gc16.client_stock.days) {
-                console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
-                await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
-            } else {
-                console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
-                await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+                if (timeIntervalInDays > gc16.client_stock.days) {
+                    console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
+                    await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
+                } else {
+                    console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
+                    await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+                }
             }
         }
-
-    }
-
-    let timeIntervalInDays
-    // if (packing.family.routes.length > 0) {}
-
-    if (packing.family.control_points.length > 0) {
-        
+    } catch (error) {
+        console.error(error)
+        throw new Error(error)
     }
 }
 
