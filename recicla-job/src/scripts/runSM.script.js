@@ -64,7 +64,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
                         // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, setting)
-                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, setting)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else {
                         /* Embalagem está em viagem */

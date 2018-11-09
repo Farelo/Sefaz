@@ -51,10 +51,10 @@ const create_settings = async () => {
 
 const create_many_packings = async () => {
     try {
-        const company = await Company.create({ name: 'CEBRACEC', type: 'owner' })
+        const company = await Company.create({ name: 'Fornecedor A', type: 'client' })
         const family = await Family.create({ code: 'CODEA', company: company._id })
         
-        const anotherCompany = await Company.create({ name: 'Fornecedor A', type: 'client' })
+        const anotherCompany = await Company.create({ name: 'Fornecedor B', type: 'client' })
         const anotherFamily = await Family.create({ code: 'CODEB', company: anotherCompany._id })
 
         for (let i=0; i<3; i++) {
@@ -157,8 +157,15 @@ const create_gc16 = async () => {
     const family = await Family.findOne({})
     await GC16.create({
         family: family._id,
-        stock: {
-            days: 2,
+        owner_stock: {
+            days: 3,
+            value: 3,
+            max: 2,
+            qty_container: 2,
+            qty_container_max: 2
+        },
+        client_stock: {
+            days: 5,
             value: 2,
             max: 2,
             qty_container: 2,
