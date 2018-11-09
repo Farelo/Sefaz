@@ -31,8 +31,10 @@ exports.create_gc16 = async (gc16) => {
         const new_gc16 = new GC16(gc16)
         await new_gc16.save()
 
+
         return new_gc16
     } catch (error) {
+        debug(error)
         throw new Error(error)
     }
 }

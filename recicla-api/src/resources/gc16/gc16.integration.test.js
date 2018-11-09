@@ -12,6 +12,7 @@ describe('api/gc16', () => {
     let new_user
     let new_family
     let gc16_body
+    
     beforeEach(async () => {
         server = require('../../server')
 
@@ -136,7 +137,7 @@ describe('api/gc16', () => {
             const res = await exec()
 
             expect(Object.keys(res.body)).toEqual(
-                expect.arrayContaining(['_id', 'serial'])
+                expect.arrayContaining(['_id', 'family'])
             )
         })
     })

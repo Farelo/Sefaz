@@ -26,12 +26,6 @@ module.exports = router
  *       - Bearer: []
  *     tags:
  *       - GC16
- *     parameters:
- *       - name: tag_code
- *         description: Return gc16 filtered by tag code
- *         in: query
- *         required: false
- *         type: string
  *     responses:
  *       200:
  *         description: list of all gc16
@@ -57,13 +51,13 @@ module.exports = router
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Packing id
+ *         description: GC16 id
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: Packing is valid request
+ *         description: GC16 is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -89,14 +83,14 @@ module.exports = router
  *       - application/json
  *     parameters:
  *       - name: gc16
- *         description: Packing object
+ *         description: GC16 object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/PackingObject'
+ *           $ref: '#/definitions/GC16Object'
  *     responses:
  *       200:
- *         description: Packing is valid request
+ *         description: GC16 is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -119,16 +113,16 @@ module.exports = router
  *       - GC16
  *     parameters:
  *       - name: id
- *         description: Packing id
+ *         description: GC16 id
  *         in: path
  *         required: true
  *         type: string
  *       - name: gc16
- *         description: Packing object
+ *         description: GC16 object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/PackingObject'
+ *           $ref: '#/definitions/GC16Object'
  *     responses:
  *       200:
  *         description: OK
@@ -151,7 +145,7 @@ module.exports = router
  *     description: Deleta a gc16
  *     parameters:
  *       - name: id
- *         description: Packing id
+ *         description: GC16 id
  *         in: path
  *         required: true
  *         type: string
@@ -168,50 +162,138 @@ module.exports = router
  * @swagger
  *
  * definitions:
- *   PackingObject:
+ *   GC16Object:
  *     type: object
  *     required:
- *       - serial
  *       - family
  *     properties:
- *       tag:
- *         $ref: '#/definitions/TagObject'
- *       serial:
- *         type: string
- *       type:
- *         type: string
- *       weigth:
- *         type: number
- *       width:
- *         type: number
- *       heigth:
- *         type: number
- *       length:
+ *       annual_volume:
  *         type: number
  *       capacity:
  *         type: number
- *       observations:
- *         type: string
- *       active:
- *         type: boolean
+ *       productive_days:
+ *         type: number
+ *       container_days:
+ *         type: number
  *       family:
  *         type: string
+ *       security_factor:
+ *         $ref: '#/definitions/SecurityFactorObject'
+ *       frequency:
+ *         $ref: '#/definitions/FrequencyObject'
+ *       transportation_going:
+ *         $ref: '#/definitions/TransportationGoingObject'
+ *       transportation_back:
+ *         $ref: '#/definitions/TransportationBackObject'
+ *       owner_stock:
+ *         $ref: '#/definitions/OwnerStockObject'
+ *       client_stock:
+ *         $ref: '#/definitions/ClientStockObject'
  */
 
  /**
  * @swagger
  *
  * definitions:
- *   TagObject:
+ *   SecurityFactorObject:
  *     type: object
- *     required:
- *       - code
  *     properties:
- *       code:
- *         type: string
- *       version:
- *         type: string
- *       manufactorer:
- *         type: string
+ *       percentage:
+ *         type: number
+ *       qty_total_build:
+ *         type: number
+ *       qty_container:
+ *         type: number
+ *       
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   FrequencyObject:
+ *     type: object
+ *     properties:
+ *       days:
+ *         type: number
+ *       fr:
+ *         type: number
+ *       qty_total_days:
+ *         type: number
+ *       qty_container:
+ *         type: number
+ *       
+ */
+
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   TransportationGoingObject:
+ *     type: object
+ *     properties:
+ *       days:
+ *         type: number
+ *       value:
+ *         type: number
+ *       qty_container:
+ *         type: number
+ *       
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   TransportationBackObject:
+ *     type: object
+ *     properties:
+ *       days:
+ *         type: number
+ *       value:
+ *         type: number
+ *       qty_container:
+ *         type: number
+ *       
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   OwnerStockObject:
+ *     type: object
+ *     properties:
+ *       days:
+ *         type: number
+ *       value:
+ *         type: number
+ *       max:
+ *         type: number
+ *       qty_container:
+ *         type: number
+ *       qty_container_max:
+ *         type: number
+ *       
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   ClientStockObject:
+ *     type: object
+ *     properties:
+ *       days:
+ *         type: number
+ *       value:
+ *         type: number
+ *       max:
+ *         type: number
+ *       qty_container:
+ *         type: number
+ *       qty_container_max:
+ *         type: number
  *       
  */

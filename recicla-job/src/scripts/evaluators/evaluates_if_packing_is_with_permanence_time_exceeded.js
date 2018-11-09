@@ -21,10 +21,10 @@ module.exports = async (packing, setting) => {
 
             if (timeIntervalInDays > gc16.stock.days) {
                 console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
-                await Packing.findOneAndUpdate({ _id: packing._id }, { permanence_time_exceeded: true }, { new: true })
+                await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
             } else {
                 console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
-                await Packing.findOneAndUpdate({ _id: packing._id }, { permanence_time_exceeded: false }, { new: true })
+                await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
             }
 
         }

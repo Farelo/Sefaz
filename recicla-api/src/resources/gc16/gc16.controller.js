@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
     const family = await families_service.find_by_id(req.body.family)
     if (!family) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid family.' })
 
-    gc16 = await gc16_service.create_gc16(req.body)
+    const gc16 = await gc16_service.create_gc16(req.body)
 
     res.status(HttpStatus.CREATED).send(gc16)
 }

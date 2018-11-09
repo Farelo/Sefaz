@@ -5,10 +5,22 @@ const Joi = require('joi')
 const { Family } = require('../families/families.model')
 
 const gc16Schema = new mongoose.Schema({
-    annual_volume: Number,
-    capacity: Number,
-    productive_days: Number,
-    container_days: Number,
+    annual_volume: {
+        type: Number,
+        default: 0
+    },
+    capacity: {
+        type: Number,
+        default: 0
+    },
+    productive_days: {
+        type: Number,
+        default: 0
+    },
+    container_days: {
+        type: Number,
+        default: 0
+    },
     family: {
         type: mongoose.Schema.ObjectId,
         ref: 'Family',
@@ -16,32 +28,108 @@ const gc16Schema = new mongoose.Schema({
         unique: true
     },
     security_factor: {
-        percentage: Number,
-        qty_total_build: Number,
-        qty_container: Number
+        percentage: {
+            type: Number,
+            default: 0
+        },
+        qty_total_build: {
+            type: Number,
+            default: 0
+        },
+        qty_container: {
+            type: Number,
+            default: 0
+        }
     },
     frequency: {
-        days: Number,
-        fr: Number,
-        qty_total_days: Number,
-        qty_container: Number
+        days: {
+            type: Number,
+            default: 0
+        },
+        fr: {
+            type: Number,
+            default: 0
+        },
+        qty_total_days: {
+            type: Number,
+            default: 0
+        },
+        qty_container: {
+            type: Number,
+            default: 0
+        }
     },
     transportation_going: {
-        days: Number,
-        value: Number,
-        qty_container: Number
+        days: {
+            type: Number,
+            default: 0
+        },
+        value: {
+            type: Number,
+            default: 0
+        },
+        qty_container: {
+            type: Number,
+            default: 0
+        }
     },
     transportation_back: {
-        days: Number,
-        value: Number,
-        qty_container: Number
+        days: {
+            type: Number,
+            default: 0
+        },
+        value: {
+            type: Number,
+            default: 0
+        },
+        qty_container: {
+            type: Number,
+            default: 0
+        }
     },
-    stock: {
-        days: Number,
-        value: Number,
-        max: Number,
-        qty_container: Number,
-        qty_container_max: Number
+    owner_stock: {
+        days: {
+            type: Number,
+            default: 0
+        },
+        value: {
+            type: Number,
+            default: 0
+        },
+        max: {
+            type: Number,
+            default: 0
+        },
+        qty_container: {
+            type: Number,
+            default: 0
+        },
+        qty_container_max: {
+            type: Number,
+            default: 0
+        }
+    },
+    client_stock: {
+        days: {
+            type: Number,
+            default: 0
+        },
+        value: {
+            type: Number,
+            default: 0
+        },
+        max: {
+            type: Number,
+            default: 0
+        },
+        qty_container: {
+            type: Number,
+            default: 0
+        },
+        qty_container_max: {
+            type: Number,
+            default: 0
+        }
     },
     created_at: {
         type: Date,
@@ -83,7 +171,14 @@ const validate_gc16 = (gc16) => {
             value: Joi.number().max(10000),
             qty_container: Joi.number().max(10000)
         },
-        stock: {
+        owner_stock: {
+            days: Joi.number().max(10000),
+            value: Joi.number().max(10000),
+            max: Joi.number().max(10000),
+            qty_container: Joi.number().max(10000),
+            qty_container_max: Joi.number().max(10000)
+        },
+        client_stock: {
             days: Joi.number().max(10000),
             value: Joi.number().max(10000),
             max: Joi.number().max(10000),
@@ -97,14 +192,26 @@ const validate_gc16 = (gc16) => {
 
 const update_family = async (gc16, next) => {
     try {
-        await Family.findOneAndUpdate({ _id: gc16.family }, { gc16: gc16._id }, { new: true })
+        const family = await Family.findById(gc16.family)
+        if (!family) return null
+
+        await Family.findByIdAndUpdate(gc16.family, { gc16: gc16._id }, { new: true })
+        next()
     } catch (error) {
         next(error)
     }
 }
 
-gc16Schema.statics.findByName = function (name, projection = '') {
-    return this.findOne({ name }, projection)
+const unset_gc16_in_family = async (gc16, next) => {
+    try {
+        const family = await Family.findById(gc16.family)
+        if (!family) return null
+
+        await Family.findByIdAndUpdate(gc16.family, { $unset: { gc16: gc16._id } })
+        next()
+    } catch (error) {
+        next(error)
+    }
 }
 
 const save_middleware = function (doc, next) {
@@ -117,9 +224,15 @@ const update_updated_at_middleware = function (next) {
     next()
 }
 
+const remove_middelware = function (next) {
+    unset_gc16_in_family(this, next)
+}
+
 gc16Schema.post('save', save_middleware)
 gc16Schema.pre('update', update_updated_at_middleware)
 gc16Schema.pre('findOneAndUpdate', update_updated_at_middleware)
+gc16Schema.post('findOneAndUpdate', save_middleware)
+gc16Schema.pre('remove', remove_middelware)
 
 const GC16 = mongoose.model('GC16', gc16Schema)
 

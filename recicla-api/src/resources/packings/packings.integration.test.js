@@ -32,7 +32,7 @@ describe('api/packings', () => {
         await new_user.save()
         token = new_user.generateUserToken()
 
-        new_family = new Family({ code: 'CODE1', company: new_company._id })
+        new_family = new Family({ code: 'CODE', company: new_company._id })
         await new_family.save()
 
         packing_body = { tag: {code: 'CODE'}, serial: 'SERIAL', family: new_family._id }
@@ -80,7 +80,7 @@ describe('api/packings', () => {
         it('should return 403 if user is not admin', async () => {
             user = {
                 full_name: 'Teste Man',
-                email: "serginho@gmail.com",
+                email: "serginho1@gmail.com",
                 password: "qwerty123",
                 role: 'user',
                 company: {

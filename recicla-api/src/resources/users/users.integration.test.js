@@ -508,6 +508,13 @@ describe('api/users', () => {
                 test: 'test'
             }
 
+            exec = () => {
+                return request(server)
+                    .post('/api/users')
+                    .set('Authorization', token)
+                    .send(user)
+            }
+
             const res = await exec()
             expect(res.status).toBe(400)
             expect(res.type).toBe('application/json')
@@ -516,21 +523,21 @@ describe('api/users', () => {
             ])
         })
 
-        it('should return 400 if name is not present in the object', async () => {
-            user = {
-                email: "test@test.com",
-                password: "123456",
-                role: "admin",
-                company: newCompany._id
-            }
+        // it('should return 400 if name is not present in the object', async () => {
+        //     user = {
+        //         email: "test@test.com",
+        //         password: "123456",
+        //         role: "admin",
+        //         company: newCompany._id
+        //     }
             
-            const res = await exec()
-            expect(res.status).toBe(400)
-            expect(res.type).toBe('application/json')
-            expect(res.body).toEqual([
-                "\"name\" is required"
-            ])  
-        })
+        //     const res = await exec()
+        //     expect(res.status).toBe(400)
+        //     expect(res.type).toBe('application/json')
+        //     expect(res.body).toEqual([
+        //         "\"full_name\" is required"
+        //     ])  
+        // })
 
         it('should return 400 if the attribute types diferent than expected', async () => {
             user = {

@@ -53,7 +53,7 @@ const gc16Schema = new mongoose.Schema({
 
 const update_family = async (gc16, next) => {
     try {
-        await Family.findOneAndUpdate({ _id: gc16.family }, { gc16: gc16._id }, { new: true })
+        await Family.findByIdAndUpdate(gc16.family, { gc16: gc16._id }, { new: true })
     } catch (error) {
         next(error)
     }
