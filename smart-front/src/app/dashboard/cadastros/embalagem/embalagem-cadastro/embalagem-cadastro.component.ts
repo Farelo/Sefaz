@@ -112,7 +112,7 @@ export class EmbalagemCadastroComponent implements OnInit {
 
     //console.log(this.mPacking.get('tag.code').value);
 
-    if (this.mPacking.get('tag.code').value){
+    if (!this.mPacking.get('tag.code').errors) {
 
       this.validateNotTakenLoading = true;
       this.packingService.getAllPackings({ tag_code: this.mPacking.get('tag.code').value }).subscribe(result => {
