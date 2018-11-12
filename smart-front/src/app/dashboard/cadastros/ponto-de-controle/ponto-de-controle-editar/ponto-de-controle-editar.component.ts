@@ -43,7 +43,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     private geocodingService: GeocodingService) {
 
     this.mControlPoint = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)],
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       duns: ['', [Validators.required]],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
@@ -214,35 +214,51 @@ export class PontoDeControleEditarComponent implements OnInit {
     event.target.panTo(event.latLng);
   }
 
+  validateName(event: any){
+    
+    if (!this.mControlPoint.get('name').errors && (this.mActualControlPoint.name !== this.mControlPoint.get('name').value)) {
 
-  public validateNotTakenLoading: boolean = false;
-  validateNotTaken(control: AbstractControl) {
-    this.validateNotTakenLoading = true;
-    // console.log('this.mActualPacking.tag.code: ' + this.mActualPacking.tag.code);
-    // console.log('control.value: ' + control.value);
+      this.validateNotTakenLoading = true;
+      this.controlPointsService.getAllControlPoint({ name: this.mControlPoint.get('name').value }).subscribe(result => {
 
-    if (this.mActualControlPoint.name == control.value) {
-      // console.log('equal');
-      this.validateNotTakenLoading = false;
-      return new Promise((resolve, reject) => resolve(null));
-    }
-
-    return control
-      .valueChanges
-      .delay(800)
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .switchMap(value => this.controlPointsService.getAllControlPoint({ name: control.value }))
-      .map(res => {
+        if (result.length == 0)
+          this.mControlPoint.get('name').setErrors(null);
+        else
+          this.mControlPoint.get('name').setErrors({ uniqueValidation: true });
 
         this.validateNotTakenLoading = false;
-        if (res.length == 0) {
-          // console.log('empty');
-          return control.setErrors(null);
-        } else {
-          // console.log('not empty');
-          return control.setErrors({ uniqueValidation: 'code already exist' })
-        }
       });
+    }
   }
+
+  public validateNotTakenLoading: boolean = false;
+  // validateNotTaken(control: AbstractControl) {
+  //   this.validateNotTakenLoading = true;
+  //   // console.log('this.mActualPacking.tag.code: ' + this.mActualPacking.tag.code);
+  //   // console.log('control.value: ' + control.value);
+
+  //   if (this.mActualControlPoint.name == control.value) {
+  //     // console.log('equal');
+  //     this.validateNotTakenLoading = false;
+  //     return new Promise((resolve, reject) => resolve(null));
+  //   }
+
+  //   return control
+  //     .valueChanges
+  //     .delay(800)
+  //     .debounceTime(800)
+  //     .distinctUntilChanged()
+  //     .switchMap(value => this.controlPointsService.getAllControlPoint({ name: control.value }))
+  //     .map(res => {
+
+  //       this.validateNotTakenLoading = false;
+  //       if (res.length == 0) {
+  //         // console.log('empty');
+  //         return control.setErrors(null);
+  //       } else {
+  //         // console.log('not empty');
+  //         return control.setErrors({ uniqueValidation: 'code already exist' })
+  //       }
+  //     });
+  // }
 }

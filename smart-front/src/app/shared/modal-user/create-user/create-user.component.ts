@@ -102,7 +102,7 @@ export class CreateUserComponent implements OnInit {
 
   validateEmail(event: any){
 
-    if (this.newUser.controls.email.value){
+    if (!this.newUser.get('email').errors) {
 
       this.validateNotTakenLoading = true;
       this.usersService.getAllUsers({ email: this.newUser.controls.email.value }).subscribe(result => {
