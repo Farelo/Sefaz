@@ -1,6 +1,7 @@
 const debug = require('debug')('model:routes')
 const mongoose = require('mongoose')
 const Joi = require('joi')
+const { Family } = require('../families/families.model')
 
 const routeSchema = new mongoose.Schema({
     family: {

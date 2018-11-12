@@ -41,6 +41,7 @@ const validate_families = (family) => {
     const schema = Joi.object().keys({
         code: Joi.string().min(3).max(25).required(),
         company: Joi.objectId().required(),
+        routes: Joi.array().items(Joi.objectId()),
         control_points: Joi.array().items(Joi.objectId())
     })
 

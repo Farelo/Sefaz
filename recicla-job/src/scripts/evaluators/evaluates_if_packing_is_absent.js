@@ -17,14 +17,14 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             if (!packingIsOk.length > 0) {
                 console.log('NÃO ESTÁ NUMA PLANTA DONA')
                 console.log('Embalagem atualizada absent:true ...')
-                await Packing.findOneAndUpdate({ _id: packing._id }, { absent: true }, { new: true })
+                await Packing.findByIdAndUpdate(packing._id, { absent: true }, { new: true })
             } else {
                 console.log('ESTÁ NUMA PLANTA DONA')
                 console.log('Embalagem atualizada absent:false ...')
-                await Packing.findOneAndUpdate({ _id: packing._id }, { absent: false }, { new: true })
+                await Packing.findByIdAndUpdate(packing._id, { absent: false }, { new: true })
             }
         } else {
-            await Packing.findOneAndUpdate({ _id: packing._id }, { absent: true }, { new: true })
+            await Packing.findByIdAndUpdate(packing._id, { absent: true }, { new: true })
         }
 
     } catch (error) {

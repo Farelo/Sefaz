@@ -6,8 +6,8 @@ const config = require('config')
 
 const startupUser = async () => {
     try {
-        const companies = await Company.find()
-        if (!companies.length) {
+        const users = await User.find()
+        if (!users.length) {
             const newCompany = new Company({ name: config.get('company.name'), type: 'owner' })
             await newCompany.save()
             
