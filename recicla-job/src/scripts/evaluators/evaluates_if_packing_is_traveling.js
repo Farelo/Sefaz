@@ -54,5 +54,5 @@ const getDiffDateTodayInDays = (date) => {
     date = moment(date)
 
     const duration = moment.duration(today.diff(date))
-    return duration.asDays()
+    return duration.asHours()
 }
