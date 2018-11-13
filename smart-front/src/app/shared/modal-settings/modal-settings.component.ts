@@ -18,6 +18,8 @@ export class ModalSettings implements OnInit {
   //Form group
   public settings: FormGroup;
 
+  private actualSettings: any;
+
   //Bateria
   public batteryConfig: any = {
     connect: [true, false],
@@ -37,7 +39,7 @@ export class ModalSettings implements OnInit {
       max: 32
     },
     tooltips: new MeterFormatter(),
-    step: 0.0001
+    step: 0.1
   };
 
   //Raio da Planta
@@ -48,7 +50,7 @@ export class ModalSettings implements OnInit {
       max: 4
     },
     tooltips: new MeterFormatter(),
-    step: 0.0001
+    step: 0.01
   };
 
   //
@@ -60,7 +62,6 @@ export class ModalSettings implements OnInit {
     tooltips: new WeekFormatter(),
     step: 604800000
   };
-
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -77,7 +78,6 @@ export class ModalSettings implements OnInit {
 
     this.formProfile();
   }
-
 
   formProfile() {
 
@@ -104,30 +104,31 @@ export class ModalSettings implements OnInit {
       no_signal_limit_in_days: [0, [Validators.required]]
     });
 
-    this.settingsService.retrieve().subscribe(response => {
-      let result = response.data[0];
-      (this.settings)
-        .patchValue(result, { onlySelf: true });
+    this.settingsService.getSetting().subscribe(result => {
+
+      this.actualSettings = result;
+      (this.settings).patchValue(result, { onlySelf: true });
     })
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
+    console.log(value);
+    console.log(this.actualSettings);
+
     if (valid) {
 
-      this.settingsService.update(value).subscribe(result => {
+      this.settingsService.editSetting(value, this.actualSettings._id).subscribe(result => {
+
         this.toastService.edit('', 'Configurações');
         this.closeModal();
         this.authenticationService.updateCurrentUser();
       }, err => this.toastService.error(err));
-
     }
-
   }
 
   closeModal() {
     this.activeModal.close();
   }
-
 
 }

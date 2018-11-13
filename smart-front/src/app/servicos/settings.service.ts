@@ -14,15 +14,13 @@ export class SettingsService {
         return Observable.throw(error);
     }
 
-    retrieve(): Observable<any> {
-        return this.http.get(`${environment.url}settings/retrieve`)
+    getSetting(): Observable<any> {
+        return this.http.get(`${environment.url}/settings`)
             .catch(this.handleError);
     }
     
-    update(setting: any): Observable<any> {
-        return this.http.put(`${environment.url}settings/update`, setting)
+    editSetting(setting: any, id: string): Observable<any> {
+        return this.http.patch(`${environment.url}/settings/${id}`, setting)
             .catch(this.handleError);
     }
-
-
 }

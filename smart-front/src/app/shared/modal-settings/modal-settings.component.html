@@ -17,11 +17,14 @@
         </div>
 
         <div class="col-sm-12 col-md-4 campo">
-          <p class="descricao">CICLO DO JOB (MIN)</p>
-          <p class="explicacao">Ex. "2 minutos"</p>
+          <p class="descricao">CICLO DO JOB (SEG)</p>
+          <p class="explicacao">Ex. "120 segundos"</p>
           <div class="placeholder" data-placeholder="MINUTOS">
             <input type="number" class="form-control form-control-sm scroll-number" min="1" value="0" step="1"
               formControlName="job_schedule_time_in_sec" />
+            <p class="requiredText" *ngIf="(settings.get('job_schedule_time_in_sec').hasError('required') && settings.get('job_schedule_time_in_sec').touched)
+                          || (settings.get('job_schedule_time_in_sec').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
           </div>
         </div>
       </div>
@@ -33,15 +36,18 @@
 
         <div class="col-sm-12 col-md-8 campo">
           <p class="descricao-slider">LIMITE DE ACURÁCIA RELEVANTE</p>
-          <nouislider [config]="accuracyConfig" style="margin-top: 2em;" [formControl]="settings.controls.range_radius"></nouislider>
+          <nouislider [config]="accuracyConfig" style="margin-top: 2em;" [formControl]="settings.controls.accuracy_limit"></nouislider>
         </div>
 
         <div class="col-sm-12 col-md-4 campo">
           <p class="descricao">VIDA ÚTIL DO HISTÓRICO (DIAS)</p>
-          <p class="explicacao">Ex. "2 minutos"</p>
+          <p class="explicacao">Ex. "60 dias"</p>
           <div class="placeholder" data-placeholder="MINUTOS">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="1"
-              formControlName="job_schedule_time_in_sec" />
+            <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1"
+              formControlName="clean_historic_moviments_time" />
+            <p class="requiredText" *ngIf="(settings.get('clean_historic_moviments_time').hasError('required') && settings.get('clean_historic_moviments_time').touched)
+              || (settings.get('clean_historic_moviments_time').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
           </div>
         </div>
       </div>
@@ -57,10 +63,13 @@
 
         <div class="col-sm-12 col-md-4 campo">
           <p class="descricao">ALERTA SEM SINAL (DIAS)</p>
-          <p class="explicacao">Ex. "2 minutos"</p>
+          <p class="explicacao">Ex. "2 dias"</p>
           <div class="placeholder" data-placeholder="MINUTOS">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="1"
-              formControlName="job_schedule_time_in_sec" />
+            <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1"
+              formControlName="no_signal_limit_in_days" />
+            <p class="requiredText" *ngIf="(settings.get('no_signal_limit_in_days').hasError('required') && settings.get('no_signal_limit_in_days').touched)
+              || (settings.get('no_signal_limit_in_days').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
           </div>
         </div>
       </div>
