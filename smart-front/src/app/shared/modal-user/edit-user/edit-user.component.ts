@@ -124,7 +124,7 @@ export class EditUserComponent implements OnInit {
 
   validateEmail(event: any) {
 
-    if (this.newUser.controls.email.value && this.newUser.controls.email.value !== this.mUser.email) {
+    if (!this.newUser.get('email').errors && this.newUser.controls.email.value !== this.mUser.email) {
 
       this.validateNotTakenLoading = true;
       this.usersService.getAllUsers({ email: this.newUser.controls.email.value }).subscribe(result => {

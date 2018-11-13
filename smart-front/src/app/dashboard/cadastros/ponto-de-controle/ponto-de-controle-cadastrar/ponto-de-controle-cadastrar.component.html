@@ -16,6 +16,7 @@
             placeholder="Digite o nome da planta" 
             aria-describedby="basic-addon2"
             formControlName="name"
+            (focusout)="validateName($event)"
             [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
               || (mControlPoint.get('name').hasError('required') && formDir.submitted)
               || (mControlPoint.get('name').hasError('pattern')) 

@@ -38,7 +38,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     private geocodingService: GeocodingService) {
 
     this.mControlPoint = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)],
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       duns: ['', [Validators.required]],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
@@ -182,26 +182,42 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     event.target.panTo(event.latLng);
   }
 
-  public validateNotTakenLoading: boolean;
-  validateNotTaken(control: AbstractControl) {
-    this.validateNotTakenLoading = true;
-    return control
-      .valueChanges
-      .delay(800)
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .switchMap(value => this.controlPointsService.getAllControlPoint({ name: control.value }))
-      .map(res => {
-        this.validateNotTakenLoading = false;
+  validateName(event: any){
+    if (!this.mControlPoint.get('name').errors) {
 
-        if (res.length == 0) {
-          console.log('empty')
-          return control.setErrors(null);
-        } else {
-          console.log('not empty')
-          return control.setErrors({ uniqueValidation: 'code already exist' })
-        }
-      })
+      this.validateNotTakenLoading = true;
+      this.controlPointsService.getAllControlPoint({ name: this.mControlPoint.get('name').value }).subscribe(result => {
+
+        if (result.length == 0)
+          this.mControlPoint.get('name').setErrors(null);
+        else
+          this.mControlPoint.get('name').setErrors({ uniqueValidation: true });
+
+        this.validateNotTakenLoading = false;
+      });
+    }
   }
+
+  public validateNotTakenLoading: boolean;
+  // validateNotTaken(control: AbstractControl) {
+  //   this.validateNotTakenLoading = true;
+  //   return control
+  //     .valueChanges
+  //     .delay(800)
+  //     .debounceTime(800)
+  //     .distinctUntilChanged()
+  //     .switchMap(value => this.controlPointsService.getAllControlPoint({ name: control.value }))
+  //     .map(res => {
+  //       this.validateNotTakenLoading = false;
+
+  //       if (res.length == 0) {
+  //         console.log('empty')
+  //         return control.setErrors(null);
+  //       } else {
+  //         console.log('not empty')
+  //         return control.setErrors({ uniqueValidation: 'code already exist' })
+  //       }
+  //     })
+  // }
   
 }

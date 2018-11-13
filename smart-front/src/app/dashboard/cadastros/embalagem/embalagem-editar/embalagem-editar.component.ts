@@ -13,7 +13,7 @@ export class EmbalagemEditarComponent implements OnInit {
 
   public mPacking: FormGroup;
   public listOfFamilies: any[] = [];
-  public listOfProjects: any[] = []; 
+  public listOfProjects: any[] = [];
   public inscricao: Subscription;
   public mId: string;
   public mActualPacking: any;
@@ -109,23 +109,22 @@ export class EmbalagemEditarComponent implements OnInit {
     });
   }
 
-  validateTag(event: any){
+  validateTag(event: any) {
 
     //console.log(this.mPacking.get('tag.code').value);
-
-    if (this.mPacking.get('tag.code').value && (this.mActualPacking.tag.code !== this.mPacking.get('tag.code').value)){
+    if (!this.mPacking.get('tag.code').errors && (this.mActualPacking.tag.code !== this.mPacking.get('tag.code').value)) {
       //console.log('.');
 
-        this.validateNotTakenLoading = true;
-        this.packingService.getAllPackings({ tag_code: this.mPacking.get('tag.code').value }).subscribe(result => {
+      this.validateNotTakenLoading = true;
+      this.packingService.getAllPackings({ tag_code: this.mPacking.get('tag.code').value }).subscribe(result => {
 
-          if (result.length == 0)
-            this.mPacking.get('tag.code').setErrors(null);
-          else
-            this.mPacking.get('tag.code').setErrors({ uniqueValidation: true });
-          
-          this.validateNotTakenLoading = false;
-        });
+        if (result.length == 0)
+          this.mPacking.get('tag.code').setErrors(null);
+        else
+          this.mPacking.get('tag.code').setErrors({ uniqueValidation: true });
+
+        this.validateNotTakenLoading = false;
+      });
     }
   }
 
@@ -148,7 +147,7 @@ export class EmbalagemEditarComponent implements OnInit {
   //     .distinctUntilChanged()
   //     .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
   //     .map(res => {
-        
+
   //       this.validateNotTakenLoading = false;
   //       if (res.length == 0) {
   //         // console.log('empty');
