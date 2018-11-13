@@ -116,8 +116,9 @@ const packingSchema = new mongoose.Schema({
             'analise',
             'viagem_em_prazo',
             'viagem_atrasada',
-            'perdida',
+            'viagem_perdida',
             'sem_sinal',
+            'perdida',
             'local_correto',
             'local_incorreto'
         ],

@@ -26,12 +26,12 @@ module.exports = async (packing, setting) => {
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true })
             } else {
                 if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
-                    console.log('PERDIDA')
+                    console.log('VIAGEM_VIAGEM_PERDIDA')
 
-                    if (packing.last_alert_history && packing.last_alert_history.type === STATES.PERDIDA.alert) return null
+                    if (packing.last_alert_history && packing.last_alert_history.type === STATES.VIAGEM_PERDIDA.alert) return null
 
-                    await AlertHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert })
-                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.PERDIDA.key }, { new: true })
+                    await AlertHistory.create({ packing: packing._id, type: STATES.VIAGEM_PERDIDA.alert })
+                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PERDIDA.key }, { new: true })
                 } else {
                     console.log('VIAGEM_ATRASADA')
     
