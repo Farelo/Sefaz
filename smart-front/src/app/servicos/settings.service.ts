@@ -14,7 +14,7 @@ export class SettingsService {
         return Observable.throw(error);
     }
 
-    getSetting(): Observable<any> {
+    getSettings(): Observable<any> {
         return this.http.get(`${environment.url}/settings`)
             .catch(this.handleError);
     }

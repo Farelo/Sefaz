@@ -99,12 +99,12 @@ export class ModalSettings implements OnInit {
       battery_level_limit: [0, [Validators.required]],
       accuracy_limit: [0, [Validators.required]],
       job_schedule_time_in_sec: [0, [Validators.required]],
-      range_radius: [0, [Validators.required]],
+      range_radius: [0, [Validators.required]], 
       clean_historic_moviments_time: [0, [Validators.required]],
       no_signal_limit_in_days: [0, [Validators.required]]
     });
 
-    this.settingsService.getSetting().subscribe(result => {
+    this.settingsService.getSettings().subscribe(result => {
 
       this.actualSettings = result;
       (this.settings).patchValue(result, { onlySelf: true });
@@ -122,7 +122,7 @@ export class ModalSettings implements OnInit {
 
         this.toastService.edit('', 'Configurações');
         this.closeModal();
-        this.authenticationService.updateCurrentUser();
+        this.authenticationService.updateCurrentSettings();
       }, err => this.toastService.error(err));
     }
   }
@@ -130,5 +130,5 @@ export class ModalSettings implements OnInit {
   closeModal() {
     this.activeModal.close();
   }
-
+  
 }
