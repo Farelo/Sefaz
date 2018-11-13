@@ -5,7 +5,7 @@ import { ModalCurrentEditarComponent } from '../../shared/modal-current-edit/mod
 import { ModalSettings } from '../../shared/modal-settings/modal-settings.component';
 import { AuthenticationService } from '../../servicos/index.service';
 import { Router } from '@angular/router';
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'navbar',
@@ -13,16 +13,16 @@ declare var $:any;
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-public menuAparecer: boolean = false;
-public currentUser  : any;
+  public menuAparecer: boolean = false;
+  public currentUser: any;
 
   constructor(
-    private ngZone:NgZone,
+    private ngZone: NgZone,
     private modalService: NgbModal,
     private authenticationService: AuthenticationService,
     private router: Router) {
 
-    }
+  }
 
   ngOnInit() {
     this.funcaoTop();
@@ -30,46 +30,46 @@ public currentUser  : any;
     this.currentUser = this.authenticationService.currentUser();
   }
 
-  funcaoTop(){
-    $('.scroll').click(function() {
-        // $('label').click();
-        return false;
+  funcaoTop() {
+    $('.scroll').click(function () {
+      // $('label').click();
+      return false;
     });
   }
 
   posicionarPopOver() {
-    $('.arrow').css({ 
+    $('.arrow').css({
       top: -12
     });
   }
 
-  mudar(){
+  mudar() {
     this.menuAparecer = !this.menuAparecer;
   }
 
-  openModal(){
+  openModal() {
     //this.mudar();
-    const modalRef = this.modalService.open(ModalUserComponent,{backdrop: "static", size: "lg"});
+    const modalRef = this.modalService.open(ModalUserComponent, { backdrop: "static", size: "lg" });
     modalRef.componentInstance.view = 'GERENCIAR';
   }
 
-  openModalEditar(){
+  openModalEditar() {
     //this.mudar();
-    const modalRef = this.modalService.open(ModalCurrentEditarComponent,{backdrop: "static", size: "lg"});
+    const modalRef = this.modalService.open(ModalCurrentEditarComponent, { backdrop: "static", size: "lg" });
   }
 
-  openSettings(){
+  openSettings() {
     //this.mudar();
-    const modalRef = this.modalService.open(ModalSettings, { size: "sm"});
+    const modalRef = this.modalService.open(ModalSettings, { size: "lg" });
   }
 
-  logout(){
+  logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
 
   onResize(event) {
-    if(event.target.innerWidth > 890){
+    if (event.target.innerWidth > 890) {
       this.menuAparecer = false;
     }
   }

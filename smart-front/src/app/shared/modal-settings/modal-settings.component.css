@@ -1,83 +1,33 @@
-.modalFilho {
-  max-width: 800px;
-  width: 100%;
-}
-
-.pac-container {
-  z-index: 100000;
-}
-
-.mais {
-  width: 80px;
-  background-color: #6382c9;
-  padding: 5px;
-  color: white;
-  border: none;
-  border-radius: 0em;
-  height: 34px;
-  background-image: url("../../../assets/images/mais.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 15px;
-  float: right;
-}
-
-.titulo {
-  float: left;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-}
-
-
-tbody {
-  border: none !important;
-}
-
-tr {
-  border-top-style: solid;
-  border-top-width: 0.1px;
-  border-top-color: rgba(99,130,201,0.2);
-}
-
-hr {
-  margin: 20px 0px 20px 0px;
-  border-color: #6382c9;
-  border-width: thin;
-}
-
-.tipos {
-  display: inline-flex;
-}
-
-select {
-  width: 100%;
-  border-radius: 0em;
-  height: 34px;
-}
+* { font-family: 'Roboto', sans-serif; }
 
 .descricao {
+  display: inline;
+  font-weight: 600;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
   margin: 10px 0px 5px 0px
 }
 
-.modal-title {
-  font-size: 18px;
-  text-align: left;
-  display: inline-block;
+.explicacao {
+  color: #777;
+  font-size: 10px;
+  margin-bottom: 0px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.campo {
+  margin-bottom: 20px;
+}
+
+.modalFilho {
+  max-width: 800px;
+  width: 100%;
 }
 
 .close {
   font-size: 25px;
   text-align: right;
 }
-
-.modal-header {
-  display: block;
-}
-
-.btn {
-  font-size: 16px;
-}
-* { font-family: 'Roboto', sans-serif; }
 
 .table {
   font-size: 14px;
@@ -95,15 +45,6 @@ select {
 }
 
 td { background-color: white; }
-
-td,
-th,
-tr,
-.excluir,
-.editar,
-p {
-  font-family: 'Roboto', sans-serif;
-}
 
 .header {
   display: inline-grid;
@@ -180,7 +121,7 @@ td {
 
 .botoes {
   text-align: center;
-  padding: 30px 0px 15px 0px;
+  padding: 20px 0px 10px 0px;
 }
 
 .form-control {
