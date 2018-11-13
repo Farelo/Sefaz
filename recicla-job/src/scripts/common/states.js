@@ -23,13 +23,17 @@ module.exports = {
     key: 'viagem_atrasada',
     alert: 'late'
   },
-  PERDIDA: {
-    key: 'viagem_ausente',
+  VIAGEM_PERDIDA: {
+    key: 'viagem_perdida',
     alert: 'missing'
   },
   SEM_SINAL: {
     key: 'sem_sinal',
     alert: 'no_signal'
+  },
+  PERDIDA: {
+    key: 'perdida',
+    alert: 'lost'
   },
   AUSENTE: {
     key: 'ausente',

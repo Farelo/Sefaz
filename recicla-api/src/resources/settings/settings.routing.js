@@ -88,4 +88,6 @@ module.exports = router
  *         type: number
  *       no_signal_limit_in_days:
  *         type: number
+ *       missing_sinal_limit_in_days:
+ *         type: number
  */

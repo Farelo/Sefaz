@@ -31,6 +31,10 @@ const settingSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
+    missing_sinal_limit_in_days: {
+        type: Number,
+        default: 1
+    },
     created_at: {
         type: Date,
         default: Date.now
