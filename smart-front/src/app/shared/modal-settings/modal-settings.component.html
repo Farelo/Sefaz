@@ -20,11 +20,15 @@
           <p class="descricao">CICLO DO JOB (SEG)</p>
           <p class="explicacao">Ex. "120 segundos"</p>
           <div class="placeholder" data-placeholder="MINUTOS">
-            <input type="number" class="form-control form-control-sm scroll-number" min="1" value="0" step="1"
+            <input type="number" class="form-control form-control-sm scroll-number" min="1" value="0" step="1" (focusout)="validadeJob($event)"
               formControlName="job_schedule_time_in_sec" />
             <p class="requiredText" *ngIf="(settings.get('job_schedule_time_in_sec').hasError('required') && settings.get('job_schedule_time_in_sec').touched)
-                          || (settings.get('job_schedule_time_in_sec').hasError('required') && formDir.submitted)">
+              || (settings.get('job_schedule_time_in_sec').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
+
+            <p class="requiredText" *ngIf="(settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && settings.get('job_schedule_time_in_sec').touched)
+              || (settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && formDir.submitted)">
+              Valor menor que o mínimo: 60</p>
           </div>
         </div>
       </div>
@@ -43,11 +47,15 @@
           <p class="descricao">VIDA ÚTIL DO HISTÓRICO (DIAS)</p>
           <p class="explicacao">Ex. "60 dias"</p>
           <div class="placeholder" data-placeholder="MINUTOS">
-            <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1"
+            <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1" (focusout)="validadeHistoric($event)"
               formControlName="clean_historic_moviments_time" />
             <p class="requiredText" *ngIf="(settings.get('clean_historic_moviments_time').hasError('required') && settings.get('clean_historic_moviments_time').touched)
               || (settings.get('clean_historic_moviments_time').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
+            
+            <p class="requiredText" *ngIf="(settings.get('clean_historic_moviments_time').hasError('lessThanMinimum') && settings.get('clean_historic_moviments_time').touched)
+              || (settings.get('clean_historic_moviments_time').hasError('lessThanMinimum') && formDir.submitted)">
+              Valor menor que o mínimo: 1</p>
           </div>
         </div>
       </div>
@@ -65,11 +73,15 @@
           <p class="descricao">ALERTA SEM SINAL (DIAS)</p>
           <p class="explicacao">Ex. "2 dias"</p>
           <div class="placeholder" data-placeholder="MINUTOS">
-            <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1"
+            <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1" (focusout)="validadeNoSignal($event)"
               formControlName="no_signal_limit_in_days" />
             <p class="requiredText" *ngIf="(settings.get('no_signal_limit_in_days').hasError('required') && settings.get('no_signal_limit_in_days').touched)
               || (settings.get('no_signal_limit_in_days').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
+
+            <p class="requiredText" *ngIf="(settings.get('no_signal_limit_in_days').hasError('lessThanMinimum') && settings.get('no_signal_limit_in_days').touched)
+              || (settings.get('no_signal_limit_in_days').hasError('lessThanMinimum') && formDir.submitted)">
+              Valor menor que o mínimo: 1</p>
           </div>
         </div>
       </div>

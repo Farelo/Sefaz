@@ -111,10 +111,28 @@ export class ModalSettings implements OnInit {
     })
   }
 
-  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+  validadeJob(event: any){
+    if(event.target.value < 60) 
+      this.settings.get('job_schedule_time_in_sec').setErrors({ lessThanMinimum: true});
+    else
+      this.settings.get('job_schedule_time_in_sec').setErrors(null);
+  }
 
-    console.log(value);
-    console.log(this.actualSettings);
+  validadeHistoric(event: any){
+    if(event.target.value < 1) 
+      this.settings.get('clean_historic_moviments_time').setErrors({ lessThanMinimum: true});
+    else
+      this.settings.get('clean_historic_moviments_time').setErrors(null);
+  }
+
+  validadeNoSignal(event: any){
+    if(event.target.value < 1) 
+      this.settings.get('no_signal_limit_in_days').setErrors({ lessThanMinimum: true});
+    else
+      this.settings.get('no_signal_limit_in_days').setErrors(null);
+  }
+
+  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
     if (valid) {
 
@@ -130,5 +148,5 @@ export class ModalSettings implements OnInit {
   closeModal() {
     this.activeModal.close();
   }
-  
+
 }
