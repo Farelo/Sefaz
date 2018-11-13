@@ -19,7 +19,7 @@ export class ProjetoCadastrarComponent implements OnInit {
 
   ngOnInit() {
     this.mProject = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)], this.validateNotTaken.bind(this)]
+      name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]]
     });
   }
 
@@ -34,29 +34,47 @@ export class ProjetoCadastrarComponent implements OnInit {
         }, err => this.toastService.error(err));
     }
   }
-
-
+  
   public validateNotTakenLoading: boolean;
-  validateNotTaken(control: AbstractControl) {
-    this.validateNotTakenLoading = true;
-    return control
-      .valueChanges
-      .delay(800)
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .switchMap(value => this.projectService.getAllProjects({ name: control.value }))
-      .map(res => {
+  validateName(event: any) {
+
+    //console.log(this.mPacking.get('tag.code').value);
+
+    if (!this.mProject.get('name').errors) {
+
+      this.validateNotTakenLoading = true;
+      this.projectService.getAllProjects({ name: this.mProject.get('name').value }).subscribe(result => {
+
+        if (result.length == 0)
+          this.mProject.get('name').setErrors(null);
+        else
+          this.mProject.get('name').setErrors({ uniqueValidation: true });
+
         this.validateNotTakenLoading = false;
-
-        if (res.length == 1) {
-          //console.log('not empty')
-          return control.setErrors({ uniqueValidation: 'code already exist' })
-
-        } else{
-          //console.log('empty')
-          return control.setErrors(null);
-        }
-      })
+      });
+    }
   }
+
+  // validateNotTaken(control: AbstractControl) {
+  //   this.validateNotTakenLoading = true;
+  //   return control
+  //     .valueChanges
+  //     .delay(800)
+  //     .debounceTime(800)
+  //     .distinctUntilChanged()
+  //     .switchMap(value => this.projectService.getAllProjects({ name: control.value }))
+  //     .map(res => {
+  //       this.validateNotTakenLoading = false;
+
+  //       if (res.length == 1) {
+  //         //console.log('not empty')
+  //         return control.setErrors({ uniqueValidation: 'code already exist' })
+
+  //       } else{
+  //         //console.log('empty')
+  //         return control.setErrors(null);
+  //       }
+  //     })
+  // }
 
 }
