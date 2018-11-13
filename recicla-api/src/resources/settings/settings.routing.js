@@ -80,12 +80,14 @@ module.exports = router
  *         type: number
  *       accuracy_limit:
  *         type: number
- *       job_schedule_time:
+ *       job_schedule_time_in_sec:
  *         type: number
  *       range_radius:
  *         type: number
  *       clean_historic_moviments_time:
  *         type: number
  *       no_signal_limit_in_days:
+ *         type: number
+ *       missing_sinal_limit_in_days:
  *         type: number
  */

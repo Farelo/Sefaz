@@ -44,7 +44,8 @@ const create_settings = async () => {
         job_schedule_time_in_sec: 50,
         range_radius: 3000,
         clean_historic_moviments_time: 1440,
-        no_signal_limit_in_days: 2
+        no_signal_limit_in_days: 1,
+        missing_sinal_limit_in_days: 2
     })
     await setting.save()
 }

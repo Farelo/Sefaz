@@ -31,6 +31,10 @@ const settingSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
+    missing_sinal_limit_in_days: {
+        type: Number,
+        default: 1
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -47,7 +51,7 @@ const validate_settings = (setting) => {
         enable_gc16: Joi.boolean(),
         battery_level_limit: Joi.number(),
         accuracy_limit: Joi.number(),
-        job_schedule_time: Joi.number(),
+        job_schedule_time_in_sec: Joi.number(),
         range_radius: Joi.number(),
         clean_historic_moviments_time: Joi.number(),
         no_signal_limit_in_days: Joi.number()

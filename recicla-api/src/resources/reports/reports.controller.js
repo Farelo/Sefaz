@@ -7,3 +7,9 @@ exports.general = async (req, res) => {
 
     res.json(data)
 }
+
+exports.general = async (req, res) => {
+    const data = await reports_service.general_inventory()
+
+    res.json(data)
+}
