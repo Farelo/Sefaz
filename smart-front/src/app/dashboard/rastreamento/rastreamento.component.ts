@@ -129,7 +129,7 @@ export class RastreamentoComponent implements OnInit {
    * Recupera o radius das plantas, configurado pelo usuário.
    */
   getPlantRadius() {
-    this.settingsService.retrieve().subscribe(response => {
+    this.settingsService.getSettings().subscribe(response => {
       let result = response.data[0];
       this.settings = result;
       this.settings.range_radius = this.settings.range_radius * 1000; 
