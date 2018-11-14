@@ -1,6 +1,6 @@
 const debug = require('debug')('model:device_data')
 const mongoose = require('mongoose')
-const { Packing } = require('./packings.model')
+const { Packing } = require('../packings/packings.model')
 
 const deviceDataSchema = new mongoose.Schema({
     device_id: {
@@ -8,16 +8,18 @@ const deviceDataSchema = new mongoose.Schema({
         required: true
     },
     message_date: {
-        type: Date
+        type: Date,
+        required: true
     },
     message_date_timestamp: {
-        type: Date
+        type: Number,
+        required: true
     },
     last_communication: {
         type: Date
     },
     last_communication_timestamp: {
-        type: Date
+        type: Number
     },
     latitude: {
         type: Number
@@ -53,12 +55,20 @@ const deviceDataSchema = new mongoose.Schema({
     }
 })
 
+
+deviceDataSchema.index({ device_id: 1, message_date: -1 }, { unique: true })
+
 const update_packing = async (device_data, next) => {
     try {
         const tag = { code: device_data.device_id }
         const packing = await Packing.findByTag(tag)
+        
         if (!packing) next()
-        await Packing.findByIdAndUpdate(packing._id, { last_device_data: device_data._id }, { new: true })
+
+        const current_message_date_on_packing = await DeviceData.findById(packing.last_device_data, {_id: 0, message_date: 1})
+
+        await Packing.findByIdAndUpdate(packing._id, { last_device_data: device_data.message_date > current_message_date_on_packing ? device_data._id : packing.last_device_data }, { new: true })
+        
         next()
     } catch (error) {
         next(error)
@@ -87,3 +97,4 @@ const DeviceData = mongoose.model('DeviceData', deviceDataSchema)
 
 exports.DeviceData = DeviceData
 exports.deviceDataSchema = deviceDataSchema
+// exports.validate_device_data = validate_device_data

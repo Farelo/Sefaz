@@ -5,7 +5,7 @@ const { Setting } = require('../resources/settings/settings.model')
 const config = require('config')
 
 const dm_temp_test = require('../services/loka/dm.temp.testes')
-const job = require('../Jobs/loka/dm.job')
+const job = require('../jobs/loka/dm.job')
 const initialize_data = require('./temp-initialize.script')
 
 const startupUser = async () => {
@@ -45,6 +45,8 @@ const startupUser = async () => {
             // dm_temp_test.test_getDeviceDataFromMidd()
             
             await job()
+
+            debug('job encerrado')
         }
     } catch (error) {
         debug('Something failed when startup a user.')
