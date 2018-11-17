@@ -63,7 +63,12 @@ body {
 
 } */
 
-
+/* Slider */
+.noUi-tooltip {
+  display: block !important;
+  font-size: 12px !important;
+  padding: 2px 5px !important;
+}
 
 .noUi-target {
   background: #6382c9 !important;
@@ -71,15 +76,35 @@ body {
   border: 1px solid #868e96 !important;
 }
 
-/* .noUi-handle {
-  border: 1px solid #777777;
-  border-radius: 13px;
-  background: #868e96;
-  cursor: default;
-  
-  box-shadow: inset 0 0 1px #999, inset 0 1px 7px #868e96, 0 3px 6px -3px #777;
-} */
+.noUi-target {
+  background: #DDD !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
 
+.noUi-horizontal {
+  height: 8px !important;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 24px !important;
+  height: 20px !important;
+}
+
+.noUi-handle:before {
+  left: 8px !important;
+  height: 7px !important;
+}
+
+.noUi-handle:after {
+  left: 14px !important;
+  height: 7px !important;
+}
+
+.noUi-connect {
+  background: #6382c9 !important;
+}
 
 .carregando {
   background-image: url("./assets/images/dots.gif");

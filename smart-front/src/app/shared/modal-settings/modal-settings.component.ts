@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { SettingsService, AuthenticationService, ToastService, CEPService, ProfileService } from '../../servicos/index.service';
-import { MeterFormatter} from '../pipes/meter_formatter'
-import { WeekFormatter} from '../pipes/week_formatter'
-import { ChargeFormatter} from '../pipes/charge_formatter'
+import { MeterFormatter } from '../pipes/meter_formatter'
+import { WeekFormatter } from '../pipes/week_formatter'
+import { ChargeFormatter } from '../pipes/charge_formatter'
 
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'app-modal-user',
@@ -15,19 +15,45 @@ declare var $:any;
 })
 export class ModalSettings implements OnInit {
 
+  //Form group
+  public settings: FormGroup;
 
-  public settings :  FormGroup;
+  private actualSettings: any;
 
+  //Bateria
+  public batteryConfig: any = {
+    connect: [true, false],
+    range: {
+      min: 0,
+      max: 100
+    },
+    tooltips: new ChargeFormatter(),
+    step: 1
+  };
 
-  public someMeterConfig: any = {
+  //Acurácia 
+  public accuracyConfig: any = {
+    connect: [true, false],
+    range: {
+      min: 0,
+      max: 32
+    },
+    tooltips: new MeterFormatter(),
+    step: 0.1
+  };
+
+  //Raio da Planta
+  public radiusConfig: any = {
+    connect: [true, false],
     range: {
       min: 0,
       max: 4
     },
     tooltips: new MeterFormatter(),
-    step: 0.0001
+    step: 0.01
   };
 
+  //
   public someWeekConfig: any = {
     range: {
       min: 604800000,
@@ -35,15 +61,6 @@ export class ModalSettings implements OnInit {
     },
     tooltips: new WeekFormatter(),
     step: 604800000
-  };
-  
-  public someChargeConfig: any = {
-    range: {
-      min: 0,
-      max: 100
-    },
-    tooltips: new ChargeFormatter(),
-    step: 1
   };
 
   constructor(
@@ -58,63 +75,78 @@ export class ModalSettings implements OnInit {
   ) { }
 
   ngOnInit() {
+
     this.formProfile();
-    this.tamanho();
   }
 
-  tamanho(){
-    var mapa = $('.teste');
-    var filho = $('.modalFilho');
-    var pai1 = filho.parent();
-    var pai2 = pai1.parent();
-    var pai3 = pai2.parent();
-    pai3.css({'max-width': '600px'});
-  }
+  formProfile() {
 
-
-  formProfile(){
-
+    // this.settings = this.fb.group({
+    //   battery_level: ['', [Validators.required]],
+    //   range_radius: ['', [Validators.required]],
+    //   clean: ['', [Validators.required]],
+    //   register_gc16: this.fb.group({
+    //     enable: [Boolean],
+    //     id: [String],
+    //     days: [Number]
+    //   }),
+    //   _id: ['', [Validators.required]],
+    //   __v: ['', [Validators.required]]
+    // });
 
     this.settings = this.fb.group({
-      battery_level: ['',[Validators.required]],
-      range_radius: ['',[Validators.required]],
-      clean: ['',[Validators.required]],
-      register_gc16: this.fb.group({
-        enable: [Boolean],
-        id: [String],
-        days: [Number]
-      }),
-        _id: ['',[Validators.required]],
-        __v: ['',[Validators.required]]
+      enable_gc16: [false, [Validators.required]],
+      battery_level_limit: [0, [Validators.required]],
+      accuracy_limit: [0, [Validators.required]],
+      job_schedule_time_in_sec: [0, [Validators.required]],
+      range_radius: [0, [Validators.required]], 
+      clean_historic_moviments_time: [0, [Validators.required]],
+      no_signal_limit_in_days: [0, [Validators.required]]
+    });
 
-      });
+    this.settingsService.getSettings().subscribe(result => {
 
-    this.settingsService.retrieve().subscribe(response => {
-        let result = response.data[0];
-        (this.settings)
-                  .patchValue(result, { onlySelf: true });
-
-      })
-
+      this.actualSettings = result;
+      (this.settings).patchValue(result, { onlySelf: true });
+    })
   }
 
-  onSubmit({ value, valid }: { value: any, valid: boolean }):void {
-
-      if(valid ){
-
-        this.settingsService.update(value).subscribe(result => {
-            this.toastService.edit('','Configurações');
-            this.closeModal();
-            this.authenticationService.updateCurrentUser();
-             }, err => this.toastService.error(err));
-
-      }
-
+  validadeJob(event: any){
+    if(event.target.value < 60) 
+      this.settings.get('job_schedule_time_in_sec').setErrors({ lessThanMinimum: true});
+    else
+      this.settings.get('job_schedule_time_in_sec').setErrors(null);
   }
 
-  closeModal(){
-      this.activeModal.close();
+  validadeHistoric(event: any){
+    if(event.target.value < 1) 
+      this.settings.get('clean_historic_moviments_time').setErrors({ lessThanMinimum: true});
+    else
+      this.settings.get('clean_historic_moviments_time').setErrors(null);
   }
 
+  validadeNoSignal(event: any){
+    if(event.target.value < 1) 
+      this.settings.get('no_signal_limit_in_days').setErrors({ lessThanMinimum: true});
+    else
+      this.settings.get('no_signal_limit_in_days').setErrors(null);
+  }
+
+  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+
+    if (valid) {
+
+      this.settingsService.editSetting(value, this.actualSettings._id).subscribe(result => {
+
+        this.toastService.edit('', 'Configurações');
+        this.closeModal();
+        this.authenticationService.updateCurrentSettings();
+      }, err => this.toastService.error(err));
+    }
+  }
+
+  closeModal() {
+    this.activeModal.close();
+  }
 
 }

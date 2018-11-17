@@ -4,24 +4,26 @@ import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import { environment } from '../../environments/environment';
+import { SettingsService } from './settings.service';
 
 @Injectable()
 export class AuthenticationService {
 
     //REMOVE
     //url: string = "http://localhost:3000/api"
-    
-    constructor(private http: HttpClient) { }
 
-    login(password: string, username: string): Observable<any> { 
-      //return this.http.get(`${environment.url}profile/auth/${password}/${username}`)
+    constructor(private http: HttpClient,
+        private settingsService: SettingsService) { }
+
+    login(password: string, username: string): Observable<any> {
+        //return this.http.get(`${environment.url}profile/auth/${password}/${username}`)
         return this.http.post(`${environment.url}/users/sign_in`, { 'email': username, 'password': password })
-        .map(response =>  this.auth(response))
-        .catch(this.handleError);
+            .map(response => this.auth(response))
+            .catch(this.handleError);
     }
-    
+
     private handleError(error: Response) {
-        
+
         return Observable.throw(error);
     }
 
@@ -30,28 +32,37 @@ export class AuthenticationService {
         let user = response;
 
         if (user) {
-          user.token = response.token;
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(user)); 
-        }
+            user.token = response.token;
 
+            // store user details and jwt token in local storage to keep user logged in between page refreshes
+            localStorage.setItem('currentUser', JSON.stringify(user));
+
+            //save user seetings
+            this.settingsService.getSettings().subscribe(result => {
+                localStorage.setItem('currentSettings', JSON.stringify(result));
+            })
+        }
         return user;
     }
 
-    currentUser(){
-      return JSON.parse(localStorage.getItem('currentUser'));
+    currentUser() {
+        return JSON.parse(localStorage.getItem('currentUser'));
     }
 
-    updateCurrentUser(){
+    currentSettings() {
+        return JSON.parse(localStorage.getItem('currentSettings'));
+    }
+    
+    updateCurrentUser() {
         var user = JSON.parse(localStorage.getItem('currentUser'))
-        
-        this.http.get(`${environment.url}profile/recover/${user.password}/${user.email}`)
-        .subscribe( (result:any) => {
-            var aux = result.data;
+        this.login(user.password, user.email);
+    }
 
-            localStorage.setItem('currentUser', JSON.stringify(aux));
+    updateCurrentSettings() {
+        //save user seetings
+        this.settingsService.getSettings().subscribe(result => {
+            localStorage.setItem('currentSettings', JSON.stringify(result));
         })
-       
     }
 
     logout() {

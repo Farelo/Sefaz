@@ -6,34 +6,104 @@
 
     <h2>Editar Configurações do Sistema</h2>
     <hr />
-    
+
     <form novalidate (ngSubmit)="onSubmit(settings)" [formGroup]="settings" #formDir="ngForm">
 
+      <!-- Linha 1 -->
       <div class="row">
-        <div class="col-sm-6" >
-          <p class="descricao">DEFINIR NIVEL DA BATERIA PARA GERTA ALERTA</p>
-          <nouislider [config]="someChargeConfig" style="margin-top: 4em;" [formControl]="settings.controls.battery_level"></nouislider>
+        <div class="col-sm-12 col-md-8 campo">
+          <p class="descricao-slider">NÍVEL DA BATERIA PARA GERAR ALERTA</p>
+          <nouislider [config]="batteryConfig" style="margin-top: 2em;" [formControl]="settings.controls.battery_level_limit"></nouislider>
         </div>
 
-        <div class="col-sm-6 temp" formGroupName="register_gc16">
+        <div class="col-sm-12 col-md-4 campo">
+          <p class="descricao">CICLO DO JOB (SEG)</p>
+          <p class="explicacao">Ex. "120 segundos"</p>
+          <div class="placeholder" data-placeholder="MINUTOS">
+            <input type="number" class="form-control form-control-sm scroll-number" min="1" value="0" step="1" (focusout)="validadeJob($event)"
+              formControlName="job_schedule_time_in_sec" />
+            <p class="requiredText" *ngIf="(settings.get('job_schedule_time_in_sec').hasError('required') && settings.get('job_schedule_time_in_sec').touched)
+              || (settings.get('job_schedule_time_in_sec').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
+
+            <p class="requiredText" *ngIf="(settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && settings.get('job_schedule_time_in_sec').touched)
+              || (settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && formDir.submitted)">
+              Valor menor que o mínimo: 60</p>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Linha 2 -->
+      <div class="row">
+
+        <div class="col-sm-12 col-md-8 campo">
+          <p class="descricao-slider">LIMITE DE ACURÁCIA RELEVANTE</p>
+          <nouislider [config]="accuracyConfig" style="margin-top: 2em;" [formControl]="settings.controls.accuracy_limit"></nouislider>
+        </div>
+
+        <div class="col-sm-12 col-md-4 campo">
+          <p class="descricao">VIDA ÚTIL DO HISTÓRICO (DIAS)</p>
+          <p class="explicacao">Ex. "60 dias"</p>
+          <div class="placeholder" data-placeholder="MINUTOS">
+            <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1" (focusout)="validadeHistoric($event)"
+              formControlName="clean_historic_moviments_time" />
+            <p class="requiredText" *ngIf="(settings.get('clean_historic_moviments_time').hasError('required') && settings.get('clean_historic_moviments_time').touched)
+              || (settings.get('clean_historic_moviments_time').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
+            
+            <p class="requiredText" *ngIf="(settings.get('clean_historic_moviments_time').hasError('lessThanMinimum') && settings.get('clean_historic_moviments_time').touched)
+              || (settings.get('clean_historic_moviments_time').hasError('lessThanMinimum') && formDir.submitted)">
+              Valor menor que o mínimo: 1</p>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Linha 3 -->
+      <div class="row">
+        <div class="col-sm-12 col-md-8 campo">
+          <p class="descricao-slider">RAIO DA PLANTA </p>
+          <nouislider [config]="radiusConfig" style="margin-top: 2em;" [formControl]="settings.controls.range_radius"></nouislider>
+        </div>
+
+        <div class="col-sm-12 col-md-4 campo">
+          <p class="descricao">ALERTA SEM SINAL (DIAS)</p>
+          <p class="explicacao">Ex. "2 dias"</p>
+          <div class="placeholder" data-placeholder="MINUTOS">
+            <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1" (focusout)="validadeNoSignal($event)"
+              formControlName="no_signal_limit_in_days" />
+            <p class="requiredText" *ngIf="(settings.get('no_signal_limit_in_days').hasError('required') && settings.get('no_signal_limit_in_days').touched)
+              || (settings.get('no_signal_limit_in_days').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
+
+            <p class="requiredText" *ngIf="(settings.get('no_signal_limit_in_days').hasError('lessThanMinimum') && settings.get('no_signal_limit_in_days').touched)
+              || (settings.get('no_signal_limit_in_days').hasError('lessThanMinimum') && formDir.submitted)">
+              Valor menor que o mínimo: 1</p>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Linha 4 -->
+      <div class="row">
+        <div class="col-sm-12">
           <p class="descricao">ATIVAR BPLINE</p>
-          <div style="padding: 42px;">
-            <bSwitch [switch-off-text]="'Desativado'" [switch-on-text]="'Ativado'" [switch-on-color]="'info'" [switch-off-color]="'danger'"
-              [switch-size]="'normal'" [switch-animate]="true" [switch-base-class]="'bootstrap-switch'" formControlName="enable">
-            </bSwitch>
-          </div>
+          <bSwitch [switch-off-text]="'Não'" [switch-on-text]="'Sim'" [switch-on-color]="'success'"
+            [switch-off-color]="'danger'" [switch-size]="'mini'" [switch-animate]="true" [switch-base-class]="'bootstrap-switch'"
+            formControlName="enable_gc16">
+          </bSwitch>
         </div>
+      </div>
 
-        <div class="col-sm-12">
-          <p class="descricao">DEFINIR O RAIO DE ALCANCE DA PLANTA EM RELAÇÃO A SUA GEOLOCALIZAÇÃO</p>
-          <nouislider [config]="someMeterConfig" style="margin-top: 4em;" [formControl]="settings.controls.range_radius"></nouislider>
-        </div>     
-
-        <div class="col-sm-12">
-          <div class="botoes">
-            <button class="botaoVoltar" (click)="closeModal()">FECHAR</button>
-            <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
-          </div>
+      <!-- Botões de ação -->
+      <div class="col-sm-12">
+        <div class="botoes">
+          <button class="botaoVoltar" (click)="closeModal()">FECHAR</button>
+          <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
         </div>
       </div>
 
