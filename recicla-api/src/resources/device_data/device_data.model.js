@@ -59,16 +59,19 @@ const deviceDataSchema = new mongoose.Schema({
 deviceDataSchema.index({ device_id: 1, message_date: -1 }, { unique: true })
 
 const update_packing = async (device_data, next) => {
+    
     try {
         const tag = { code: device_data.device_id }
         const packing = await Packing.findByTag(tag)
-        
+    
         if (!packing) next()
 
-        const current_message_date_on_packing = await DeviceData.findById(packing.last_device_data, {_id: 0, message_date: 1})
+        let current_message_date_on_packing = await DeviceData.findById(packing.last_device_data, {_id: 0, message_date: 1})
+
+        current_message_date_on_packing = current_message_date_on_packing ? current_message_date_on_packing.message_date : null
 
         await Packing.findByIdAndUpdate(packing._id, { last_device_data: device_data.message_date > current_message_date_on_packing ? device_data._id : packing.last_device_data }, { new: true })
-        
+
         next()
     } catch (error) {
         next(error)

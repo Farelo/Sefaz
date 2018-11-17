@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const { Company } = require('../companies/companies.model')
 const { User } = require('../users/users.model')
 const { DeviceData } = require('./device_data.model')
+const { Packing } = require('../packings/packings.model')
+const { Family } = require('../families/families.model')
 
 describe('api/device_data', () => {
 
@@ -11,6 +13,7 @@ describe('api/device_data', () => {
     let new_user
     let token
     let device_data_body
+    let new_packing
 
 
     beforeEach(async () => {
@@ -18,7 +21,7 @@ describe('api/device_data', () => {
         server = require('../../server')
 
         new_company = await Company.create({ name: 'CEBRACE TESTE' })
-        
+
         new_user = await User.create({
             full_name: 'Teste Man',
             email: "serginho@gmail.com",
@@ -30,11 +33,15 @@ describe('api/device_data', () => {
             }
         })
         
+        new_family = await Family.create({ code: 'Family1', company: new_company._id })
+
+        new_packing = await Packing.create( { tag: {code: '1234567'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+
         device_data_body = { 
             device_id: '1234567', 
-            message_date: new Date('2018-12-31T00:00:00'),
+            message_date: new Date('2018-11-01T00:00:00'),
             message_date_timestamp: 123456789,
-            last_communication: new Date('2018-12-31T00:00:00'),
+            last_communication: new Date('2018-11-01T00:00:00'),
             last_communication_timestamp: 987654321,
             latitude: 1234.4321,
             longitude: 5678.8765,
@@ -56,6 +63,8 @@ describe('api/device_data', () => {
         await Company.deleteMany({})
         await User.deleteMany({})
         await DeviceData.deleteMany({})
+        await Packing.deleteMany({})
+        await Family.deleteMany({})
     })
 
     describe('AUTH MIDDLEWARE', () => {
@@ -179,26 +188,94 @@ describe('api/device_data', () => {
         })
 
         it('should return all device_data from device 5045499 filtered by startDate without endDate', async () => {
-
             const deviceId = '5045499'
+            const startDate = '2018-11-01 00:00:00'
         
             const res = await request(server)
-                .get(`/api/device_data/${deviceId}?startDate=2018-11-01%2000%3A00%3A00`)
+                // .get(`/api/device_data/${deviceId}?startDate=2018-11-01%2000%3A00%3A00`)
+                .get(`/api/device_data/${deviceId}?startDate=${startDate}`)
                 .set('Authorization', token)
   
-                expect(res.status).toBe(200)
+            expect(res.status).toBe(200)
             expect(res.body.length).toBe(3)
         })
 
         it('should return all device_data from device 5045499 filtered by endDate without startDate', async () => {
-            
+            const deviceId = '5045499'
+            const endDate = '2018-11-16 00:00:00'
+
+            const res = await request(server)
+                .get(`/api/device_data/${deviceId}?endDate ${endDate}`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(200)
+            expect(res.body.length).toBe(3)
         })
 
-        // it('should return two device_data from device 5045499 filtered by startDate and endDate')
+        it('should return 2 device_data from device 5045499 filtered by startDate without endDate', async () => {
+            const deviceId = '5045499'
+            const startDate = '2018-11-06 00:00:00'
+        
+            const res = await request(server)
+                // .get(`/api/device_data/${deviceId}?startDate=2018-11-01%2000%3A00%3A00`)
+                .get(`/api/device_data/${deviceId}?startDate=${startDate}`)
+                .set('Authorization', token)
+  
+            expect(res.status).toBe(200)
+            expect(res.body.length).toBe(2)
+        })
 
-        // it('should return empty device_data from device 5045499 filtered by out of range Dates')
+        it('should return 1 device_data from device 5045499 filtered by endDate without startDate', async () => {
+            const deviceId = '5045499'
+            const endDate = '2018-11-06 00:00:00'
 
-        // it('should return one device_data from device 5045499 filtered by dateStart and endDate')
+            const res = await request(server)
+                .get(`/api/device_data/${deviceId}?endDate=${endDate}`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(200)
+            expect(res.body.length).toBe(1)
+        })
+
+        it('should return two device_data from device 5045499 filtered by startDate and endDate', async () => {
+            const deviceId = '5045499'
+            const startDate = '2018-11-06 06:06:06'
+            const endDate = '2018-11-07 07:07:07'
+
+            const res = await request(server)
+                .get(`/api/device_data/${deviceId}?startDate=${startDate}&endDate=${endDate}`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(200)
+            expect(res.body.length).toBe(2)
+
+        })
+
+        it('should return empty device_data from device 5045499 filtered by out of range Dates', async () => {
+            const deviceId = '5045499'
+            const startDate = '2018-11-10 00:00:00'
+            const endDate = '2018-11-16 00:00:00'
+
+            const res = await request(server)
+                .get(`/api/device_data/${deviceId}?startDate=${startDate}&endDate=${endDate}`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(200)
+            expect(res.body.length).toBe(0)
+        })
+
+        it('should return one device_data from device 5045499 filtered by dateStart and endDate', async () => {
+            const deviceId = '5045499'
+            const startDate = '2018-11-06T06:06:06'
+            const endDate = '2018-11-06T06:06:06'
+
+            const res = await request(server)
+                .get(`/api/device_data/${deviceId}?startDate=${startDate}&endDate=${endDate}`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(200)
+            expect(res.body.length).toBe(1)
+        })
 
         it('should return one device_data from device 5045499 filtered by max = 1', async () => {
 
@@ -226,6 +303,95 @@ describe('api/device_data', () => {
 
         afterEach(async () => {
             await DeviceData.deleteMany({})
+        })
+    })
+
+    describe('MONGOOSE POST SAVE DEVICE_DATA', () => {
+
+        // criar um novo device_data com um last_date mais antigo: nao deve alterar o last date do packing
+        it('should return the same device_data._id from packing.last_device_data as the recently created', async () => {
+
+            const new_device_data = new DeviceData(device_data_body)
+            await new_device_data.save()
+        
+            const tag = {code: device_data_body.device_id}
+
+            const packing = await Packing.findByTag(tag)
+
+            const last_device_data = packing.last_device_data
+
+            // console.log('new_device_data._id: ', new_device_data._id)
+            // console.log('last_device_data ID: ', last_device_data)
+            
+            expect(new_device_data._id).toEqual(last_device_data)
+
+        })
+
+        it('should return the same device_data._id from the packing.last_device_data as the second device_data created', async () => {
+
+            const deviceId = '1234567'
+
+            const first_device_data = new DeviceData({ 
+                device_id: deviceId, 
+                message_date: new Date('2018-11-01T00:00:00'),
+                message_date_timestamp: 123456789
+            })
+            await first_device_data.save()
+
+            const second_device_data = new DeviceData({ 
+                device_id: deviceId, 
+                message_date: new Date('2018-11-15T00:00:00'),
+                message_date_timestamp: 123456789
+            })
+            await second_device_data.save()
+
+            const tag = {code: deviceId}
+
+            const packing = await Packing.findByTag(tag)
+
+            const last_device_data = packing.last_device_data
+
+            //first_device_data._id should be differente to packing.last_device_data
+            expect(first_device_data._id).not.toEqual(last_device_data)
+            
+            //second_device_data._id should be equal to packing.last_device_data 
+            expect(second_device_data._id).toEqual(last_device_data)
+        })
+
+        it('should return the same device_data._id from the packing.last_device_data as the first device_data created', async () => { 
+            const deviceId = '1234567'
+
+            const first_device_data = new DeviceData({ 
+                device_id: deviceId, 
+                message_date: new Date('2018-11-10T00:00:00'),
+                message_date_timestamp: 123456789
+            })
+            await first_device_data.save()
+
+            const second_device_data = new DeviceData({ 
+                device_id: deviceId, 
+                message_date: new Date('2018-01-01T00:00:00'),
+                message_date_timestamp: 123456789
+            })
+            await second_device_data.save()
+
+            const tag = {code: deviceId}
+
+            const packing = await Packing.findByTag(tag)
+
+            const last_device_data = packing.last_device_data
+
+            //first_device_data._id should be euqal to packing.last_device_data
+            expect(first_device_data._id).toEqual(last_device_data)
+            
+            //second_device_data._id should be different to packing.last_device_data 
+            expect(second_device_data._id).not.toEqual(last_device_data)
+        })
+
+        afterEach(async () => {
+
+            await DeviceData.deleteMany({})
+
         })
     })
 })
