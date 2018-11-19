@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
 const { Project } = require('./projects.model')
+const _ = require('lodash')
 
 describe('api/projects', () => {
     let server
@@ -55,40 +56,99 @@ describe('api/projects', () => {
             expect(res.status).toBe(400)
         })
 
-        it('should return 201 if token is valid', async () => {
-            const res = await exec()
-            expect(res.status).toBe(201)
-        })
+        /*it('should return 401 if token is expired', async () => {
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+        })*/
     })
-
+,
     describe('AUTHZ MIDDLEWARE', () => {
-        const exec = () => {
-            return request(server)
-                .post('/api/projects')
-                .set('Authorization', token)
-                .send(project_body)
-        }
-        it('should return 403 if user is not admin', async () => {
-            const new_user = await User.create({
-                full_name: 'Teste Man',
-                email: "serginho1@gmail.com",
-                password: "qwerty123",
-                role: 'user',
-                company: {
-                    _id: new_company._id,
-                    name: new_company.name
+        const new_company = new Company({ 
+            name: "Company 1",
+            cnpj: "91289532000146",
+            phone: "11111111111",
+            address: {
+                city: "Recife",
+                street: "Rua teste",
+                cep: "54280222",
+                uf: "PE"
+            }})
+        new_company.save()
+        const userUser = {
+                    full_name: 'Teste Man 3',
+                    email: "testet@gmail.com",
+                    password: "qwerty123",
+                    role: 'user',
+                    company: {
+                        _id: new_company._id,
+                        name: new_company.name
+                    }
                 }
+        const newUser = new User(userUser)
+        const tokenUser = newUser.generateUserToken()
+        newUser.save()
+        describe('Validate authorization by POST', () => {
+            it('should return 403 if user is not admin by POST', async () => {
+                const exec = () => {
+                    return request(server)
+                        .post('/api/projects')
+                        .set('Authorization', tokenUser)
+                        .send(project_body)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })        
+        })
+
+        describe('Validate authorization by GET', () => {
+            it('should return 403 if user is not admin by GET', async () => {
+                const exec = () => {
+                    return request(server)
+                        .get('/api/projects')
+                        .set('Authorization', tokenUser)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
             })
 
-            token = new_user.generateUserToken()
-
-            const res = await exec()
-            expect(res.status).toBe(403)
+            it('should return 403 if user is not admin by GET with id', async () => {
+                const exec = () => {
+                    return request(server)
+                        .get(`/api/projects/${newUser._id}`)
+                        .set('Authorization', tokenUser)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })        
         })
 
-        it('should return 201 if user is admin', async () => {
-            const res = await exec()
-            expect(res.status).toBe(201)
+        describe('Validate authorization by PATCH', () => {
+            it('should return 403 if user is not admin by PATCH', async () => {
+                const exec = () => {
+                    return request(server)
+                        .patch(`/api/projects/${newUser._id}`)
+                        .set('Authorization', tokenUser)
+                        .send({full_name: "teste"})
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })
+        })
+
+        describe('Validate authorization by DELETE', () => {
+            it('should return 403 if user is not admin by DELETE', async () => {
+                const exec = () => {
+                    return request(server)
+                        .delete(`/api/projects/${newUser._id}`)
+                        .set('Authorization', tokenUser)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })
         })
     })
 
@@ -99,6 +159,9 @@ describe('api/projects', () => {
                 { name: 'teste 2' },
                 { name: 'teste 3' }
             ])
+            let saveProjects = await Project.find({})
+            .select(["-created_at", "-update_at", "-__v"])
+            saveProjects = JSON.parse(JSON.stringify(saveProjects))
 
             const res = await request(server)
                 .get('/api/projects')
@@ -106,27 +169,51 @@ describe('api/projects', () => {
 
             expect(res.status).toBe(200)
             expect(res.body.length).toBe(3)
-            expect(res.body.some(p => p.name === 'teste 1')).toBeTruthy()
-            expect(res.body.some(p => p.name === 'teste 2')).toBeTruthy()
-            expect(res.body.some(p => p.name === 'teste 3')).toBeTruthy()
+            const body = res.body.map((e) => _.omit(e, ["__v", "created_at", "update_at"]))
+            expect(body).toEqual(saveProjects)
+        })
+
+        it('should return 404 if invalid url is passed', async () => { 
+            const res = await request(server)
+                .get(`/api/projectsss`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(404)
         })
     })
 
     describe('GET /api/projects/:id', () => {
-        it('should return a project if valid id is passed', async () => {
-            const project = await Project.create(project_body)
-
+        let project
+        beforeEach(async () => {
+            project = new Project({ name: 'teste 1' })
+            project.save()
+        })
+        it('should return a type if valid id is passed', async () => {
             const res = await request(server)
                 .get(`/api/projects/${project._id}`)
                 .set('Authorization', token)
 
+            const body_res = _.omit(res.body, ["__v", "created_at", "update_at"])
+            let body_toEqual = {
+                _id: project._id,
+                name: 'teste 1'
+            }
+            body_toEqual = JSON.parse(JSON.stringify(body_toEqual))
             expect(res.status).toBe(200)
-            expect(res.body).toHaveProperty('name', project.name)
+            expect(body_res).toEqual(body_toEqual)
         })
 
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
                 .get(`/api/projects/1a`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 404 if invalid url with valid id is passed', async () => { 
+            const res = await request(server)
+                .get(`/api/projectsss/${project._id}`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
@@ -138,7 +225,7 @@ describe('api/projects', () => {
             return request(server)
                 .post('/api/projects')
                 .set('Authorization', token)
-                .send({ name: project_body.name, control_point: project_body.control_point })
+                .send(project_body)
         }
 
         it('should return 400 if name is not provied', async () => {
@@ -147,6 +234,10 @@ describe('api/projects', () => {
             const res = await exec()
 
             expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" is not allowed to be empty",
+                "\"name\" length must be at least 5 characters long"
+              ])
         })
 
         it('should return 400 if project name already exists', async () => {
@@ -155,75 +246,269 @@ describe('api/projects', () => {
             const res = await exec()
 
             expect(res.status).toBe(400)
+            expect(res.body.message).toBe("Project already exists with this name.")
         })
 
-        it('should return 201 if project is valid request', async () => {
+        it('should return 201 if type is valid request', async () => {
             const res = await exec()
+            const body_res = _.omit(res.body, ["_id", "__v", "created_at", "update_at"])
 
             expect(res.status).toBe(201)
+            expect(body_res).toEqual(JSON.parse(JSON.stringify({name: project_body.name})))
         })
 
-        it('should return project if is valid request', async () => {
+        it('should return 400 if is body is empty', async () => {
+            const exec = () => {
+                return request(server)
+                    .post('/api/projects')
+                    .set('Authorization', token)
+                    .send({})
+            }
+
             const res = await exec()
 
-            expect(Object.keys(res.body)).toEqual(
-                expect.arrayContaining(['_id', 'name'])
-            )
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" is required"
+            ])
+        })
+
+        it('should return 400 if is unknow key is provied', async () => {
+            project_body.test = 'test'
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"test\" is not allowed"
+            ])
+        })
+
+        it('should return 404 if invalid url is provied', async () => {
+            const exec = () => {
+                return request(server)
+                    .post('/api/projectsss')
+                    .set('Authorization', token)
+                    .send(project_body)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 400 if name has large amount of characters', async () => {
+            project_body.name = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" length must be less than or equal to 50 characters long"
+            ])
+        })
+
+        it('should return 400 if name has small amount of characters', async () => {
+            project_body.name = 'test'
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" length must be at least 5 characters long"
+            ])
+        })
+
+        it('should return 400 if the attribute types diferent than expected', async () => {
+            project_body.name = 11
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" must be a string"
+              ])
         })
     })
 
     describe('PATCH: /api/projects/:id', () => {
-        let resp
+        let project
+        beforeEach(async () => {
+            project = new Project({ name: 'teste 1' })
+            project.save()
+        })
+        
         const exec = () => {
             return request(server)
-                .patch(`/api/projects/${resp.body._id}`)
-                .set('Authorization', token)
-                .send({ name: 'teste edited'})
-        }
-        beforeEach(async () => {
-            resp = await request(server)
-                .post('/api/projects')
+                .patch(`/api/projects/${project._id}`)
                 .set('Authorization', token)
                 .send(project_body)
-        })
-
+        }
+        
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
-                .get(`/api/projects/1`)
+                .patch(`/api/project/1`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
         })
 
-        it('should return project edited if is valid request', async () => {
+        it('should return 400 if name is not provied', async () => {
+            project_body.name = ''
+
             const res = await exec()
 
-            expect(res.status).toBe(200)
-            expect(res.body.name).toBe('teste edited')
-            expect(Object.keys(res.body)).toEqual(
-                expect.arrayContaining(['_id', 'name'])
-            )
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" is not allowed to be empty",
+                "\"name\" length must be at least 5 characters long"
+            ])
         })
+
+        it('should return 200 if project is valid request', async () => {
+            const res = await exec()
+            const body_res = _.omit(res.body, ["_id", "__v", "created_at", "update_at"])
+
+            expect(res.status).toBe(200)
+            expect(body_res).toEqual(JSON.parse(JSON.stringify({name: project_body.name})))
+        })
+
+        it('should return 400 if is body is empty', async () => {
+            project_body = {}
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" is required"
+            ])
+        })
+
+        it('should return 400 if is unknow key is provied', async () => {
+            project_body.test = 'test'
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"test\" is not allowed"
+            ])
+        })
+
+        it('should return 404 if invalid url is provied', async () => {
+            const exec = () => {
+                return request(server)
+                    .patch('/api/projectss')
+                    .set('Authorization', token)
+                    .send(project_body)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 400 if name has large amount of characters', async () => {
+            project_body.name = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" length must be less than or equal to 50 characters long"
+            ])
+        })
+
+        it('should return 400 if name has small amount of characters', async () => {
+            project_body.name = 'test'
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" length must be at least 5 characters long"
+            ])
+        })
+
+        it('should return 400 if the attribute types diferent than expected', async () => {
+            project_body.name = 11
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body).toEqual([
+                "\"name\" must be a string"
+              ])
+        })
+        
     })
 
-    describe('DELETE: /api/projects/:id', () => {
+    describe('DELETE: /api/project/:id', () => {
         let resp
-        const exec = () => {
-            return request(server)
-                .delete(`/api/projects/${resp.body._id}`)
-                .set('Authorization', token)
-        }
-
-        it('should return 200 if deleted with success', async () => {
+        let exec
+        
+        beforeEach(async () => {
             resp = await request(server)
                 .post('/api/projects')
                 .set('Authorization', token)
                 .send(project_body)
 
+            exec = () => {
+                return request(server)
+                    .delete(`/api/projects/${resp.body._id}`)
+                    .set('Authorization', token)
+            }    
+        })
+
+        it('should return 200 if deleted with success', async () => {
             const res = await exec()
 
             expect(res.status).toBe(200)
             expect(res.body.message).toBe('Delete successfully')
+        })
+
+        it('should return 404 if url invalid is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .delete(`/api/project/${resp.body._id}`)
+                    .set('Authorization', token)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 404 if invalid id is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .delete(`/api/project/aa`)
+                    .set('Authorization', token)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 404 if id is not provied', async () => {
+            exec = () => {
+                return request(server)
+                    .delete(`/api/project/`)
+                    .set('Authorization', token)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 400 if deleted project nonexistent', async () => {
+            await exec()
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body.message).toBe('Invalid project')
         })
     })
 })
