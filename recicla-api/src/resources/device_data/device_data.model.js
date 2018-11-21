@@ -1,6 +1,6 @@
 const debug = require('debug')('model:device_data')
 const mongoose = require('mongoose')
-const { Packing } = require('./packings.model')
+const { Packing } = require('../packings/packings.model')
 
 const deviceDataSchema = new mongoose.Schema({
     device_id: {

@@ -6,7 +6,8 @@
   "scripts": {
     "postinstall": "cross-env NODE_ENV=production node src/tools/generate_env.tools.js",
     "dev": "cross-env NODE_CONFIG_DIR=src/config node src/server.js",
-    "start": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name recicla-job -i 0"
+    "start": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name recicla-job",
+    "start-cluster": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name recicla-job -i 0"
   },
   "author": "ISI-TICs",
   "license": "ISC",
