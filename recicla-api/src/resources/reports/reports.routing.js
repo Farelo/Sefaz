@@ -5,6 +5,8 @@ const auth = require('../../security/auth.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 
 router.get('/', auth, reports_controller.general)
+// router.get('/absent', reports_controller.absent)
+router.get('/snapshot', reports_controller.snapshot)
 
 module.exports = router
 
@@ -28,11 +30,10 @@ module.exports = router
  *         description: Not Found
  */
 
-// GET '/:id'
+// GET '/snapshot'
 /**
  * @swagger
- *
- * /reports/{id}:
+ * /reports/snapshot:
  *   get:
  *     summary: Retrieve reports on database
  *     description: Retrieve general report about all packings
@@ -40,22 +41,11 @@ module.exports = router
  *       - Bearer: []
  *     tags:
  *       - Reports
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: id
- *         description: Reports id
- *         in: path
- *         required: true
- *         type: string
  *     responses:
  *       200:
- *         description: Reports is valid request
+ *         description: list of all reports
  *       400:
  *         description: Bad Request
- *       401:
- *         description: Unauthorized
  *       404:
  *         description: Not Found
- *
  */

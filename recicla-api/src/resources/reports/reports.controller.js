@@ -13,3 +13,13 @@ exports.general = async (req, res) => {
 
     res.json(data)
 }
+
+// exports.absent = async (req, res) => {
+//     const data = await reports_service.absent()
+//     res.json(data)
+// }
+
+exports.snapshot = async (req, res) => {
+    const data = await reports_service.snapshot()
+    res.json(data)
+}
