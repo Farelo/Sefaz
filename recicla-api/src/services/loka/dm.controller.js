@@ -9,24 +9,7 @@ module.exports = {
 /*
     Confirma se o device passado existe no sistema
 */
-// function confirmDevice (deviceId){
-//     return new Promise(function(resolve, reject){
-//         dm_service.loginLokaDmApi()
-//             .then(cookie => dm_service.deviceById(cookie, deviceId))
-//             .then(deviceData => {
-//                     if (_.isEmpty(deviceData)){
-//                         // console.log(`Device ${deviceId} does not exist in the system.`);
-//                         reject(`Device ${deviceId} does not exist in the system.`);
-//                     }
-//                     else {
-//                         // console.log(`Device ${deviceId} exists in the system.`);
-//                         resolve(`Device ${deviceId} exists in the system.`);
-//                     }
-//                 }
-//             ).catch(error => console.log(error));
-//     });
-// }
-
+//TODO: pensar em mudar os retornos de string para booleanos
 async function confirmDevice (deviceId){
     try {
         let cookie = await dm_service.loginLokaDmApi()
@@ -38,14 +21,13 @@ async function confirmDevice (deviceId){
            throw new Error(`Device ${deviceId} does not exist in the system.`);
         
         else
-        
-            return(`Device ${deviceId} exists in the system.`);
+            // return(`Device ${deviceId} exists in the system.`);
+            return Promise.resolve(`Device ${deviceId} exists in the system.`)
     
     } catch (error) {
-    
-        // console.log(error)
 
-        throw new Error(error)
+        // throw new Error('Erro ocorrido ao tentar confirmar o device com a Loka. ' + error)
+        return Promise.reject(error)
     }
 }
 
@@ -53,27 +35,6 @@ async function confirmDevice (deviceId){
     Busca nas chamadas da API do middleware (Loka, por enquanto) os dados do device e retorna um novo objeto
     com os dados consolidados e padronizados.
 */
-// function getDeviceDataFromMiddleware(deviceId, startDate, endDate, max) {
-//     return new Promise(function (resolve/*, reject*/){
-        
-//         dm_service.loginLokaDmApi()
-            
-//             .then(cookie => {
-//                 //promise.all para realizar as duas promessas (positions, messagesFromSigfox) ao mesmo tempo usanod o memso cookie 
-//                 Promise.all([dm_service.positions(cookie, deviceId, null, true, startDate, endDate, max),
-//                              dm_service.messagesFromSigfox(cookie, deviceId, startDate, endDate, max)
-//                             ])
-//                     .then(data => {
-                        
-//                         //data eh um array contendo o resultado das duas promessas: data[0] -> primeira promessa e data[1] -> segunda promessa
-//                         resolve(joinPartialMessages(data[0], data[1]));
-//                     })
-//                     .catch(err => console.log('Erro ocorrido ao tentar obter os dados das posições ou do sigfox. ', err));
-//             })
-//             .catch(err => console.log('Erro ao tentar logar na api. ', err));
-//     });
-// }
-
 async function getDeviceDataFromMiddleware(deviceId, startDate, endDate, max) {
 
     try {
@@ -85,12 +46,12 @@ async function getDeviceDataFromMiddleware(deviceId, startDate, endDate, max) {
 
         let consolidatedMessages = await joinPartialMessages(data[0], data[1])
         
-        return consolidatedMessages
+        // return consolidatedMessages
+        return Promise.resolve(consolidatedMessages)
     } catch (error) {
-    
-        console.log('Erro ocorrido ao tentar obter os dados das posições ou do sigfox. ')
 
-        throw new Error(error)
+        // throw new Error('Erro ocorrido ao tentar obter os dados das posições ou do sigfox. ' + error)
+        return Promise.reject('Erro ocorrido ao tentar obter os dados das posições ou do sigfox. ' + error)
     }
 }
 

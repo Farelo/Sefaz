@@ -6,6 +6,7 @@ const sslRootCAs = require('ssl-root-cas')
 
 module.exports = {
     loginLokaDmApi: loginLokaDmApi,
+    logoutLokaDmApi: logoutLokaDmApi,
     messagesFromSigfox: messagesFromSigfox,
     positions: positions,
     deviceById: deviceById,
@@ -26,6 +27,7 @@ module.exports = {
     Este cookie é capturado na requisição de login em dm-cookie.js
 */
 
+//TODO: Deixar todas mensagens em português
 function loginLokaDmApi () {
     return new Promise(function(resolve, reject) {
         let options = {
@@ -42,7 +44,8 @@ function loginLokaDmApi () {
 
         let callback = function (error, response, body) {
             if (error) {
-                reject(error);
+                reject('Error on login request sent to loka: ' + error)
+                console.log('Error on login request sent to loka: ', error)
             }
             try {
                 let cookie = response.headers['set-cookie'][0].split(';')[0] 
@@ -59,6 +62,41 @@ function loginLokaDmApi () {
     });
 }
 
+//TODO: terminando ainda o logout - preciso falar com a loka
+// function logoutLokaDmApi(cookie) {
+//     return new Promise(function (resolve, reject) {
+
+//         let path = `/auth/logout`
+        
+//         let options = {
+//             url: path,
+//             method: 'GET',
+//             headers: {
+//                 'content-type': 'application/json',
+//                 'Cookie': `${cookie}`
+//             }
+//         }
+
+//         //body: onde esta o JSON com os dados
+//         let callback = function (error, response, body) {
+
+//             if (error){
+//                 reject('Error on messagesFromSigfox request sent to loka: ' + error)    
+//                 console.log('Error on messagesFromSigfox request sent to loka: ', error)
+//             }
+
+//             try {
+//                 resolve(JSON.parse(body).data);
+//             }
+            
+//             catch (err) {
+//                 reject("Erro ao tentar realizar o parse do JSON de mensagens da sigfox do device " + deviceId + ".\nRetorno da requisicao - header: " + response + "Retorno da requisicao - body: " + body + "\n" + err);
+//             }
+//         }
+//         request(options, callback);
+
+//     })
+// }
 
 //obtem conjunto de mensagens da sigfox de um device 
 function messagesFromSigfox (cookie, deviceId, startDate, endDate, max) { 
@@ -79,11 +117,12 @@ function messagesFromSigfox (cookie, deviceId, startDate, endDate, max) {
         //body: onde esta o JSON com os dados
         let callback = function (error, response, body) {
 
-            if (error)
-                console.log(error)
+            if (error){
+                reject('Error on messagesFromSigfox request sent to loka: ' + error)    
+                console.log('Error on messagesFromSigfox request sent to loka: ', error)
+            }
 
             try {
-                //retorna o array data de mensagens do deviceId
                 resolve(JSON.parse(body).data);
             }
             
@@ -114,8 +153,10 @@ function positions (cookie, deviceId, status, lowAccuracy, startDate, endDate, m
 
         let callback = function (error, responde, body) {
 
-            if (error)
-                console.log(error);
+            if (error) {
+                reject('Error on positions request sent to loka: ' + error)
+                console.log('Error on positions request sent to loka: ', error)
+            }
 
             try{
                 resolve(JSON.parse(body).data);
@@ -146,8 +187,10 @@ function deviceById (cookie, deviceId) {
 
         let callback = function(error, response, body) {
 
-            if (error)
-                console.log(error);
+            if (error){
+                reject('Error on deviceById request sent to loka: ', error)
+                console.log('Error on deviceById request sent to loka: ', error)
+            }
 
             try {
                 resolve(JSON.parse(body));
@@ -178,8 +221,10 @@ function devicesList (cookie, client, profile, status) {
 
         let callback = function (error, response, body) {
             
-            if (error)
-                console.log(error);
+            if (error){
+                reject('Error on devicesList request sent to loka: ', error)
+                console.log('Error on devicesList request sent to loka: ', error)
+            }
 
             try {
                 resolve(JSON.parse(body).data);

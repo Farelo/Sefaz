@@ -306,7 +306,16 @@ describe('api/device_data', () => {
         })
     })
 
-    describe('MONGOOSE POST SAVE DEVICE_DATA', () => {
+    //TODO: TEST POST device_data
+    // describe('POST: /API/DEVICE_DATA', () => {
+
+    //     afterEach( async () => {
+
+            
+    //     })
+    // })
+
+    describe('MONGOOSE POST_SAVE DEVICE_DATA', () => {
 
         // criar um novo device_data com um last_date mais antigo: nao deve alterar o last date do packing
         it('should return the same device_data._id from packing.last_device_data as the recently created', async () => {
