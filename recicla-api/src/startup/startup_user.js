@@ -5,7 +5,7 @@ const { Setting } = require('../resources/settings/settings.model')
 const config = require('config')
 
 const dm_temp_test = require('../services/loka/dm.temp.testes')
-const job = require('../jobs/loka/dm.job')
+const dm_main = require('../jobs/loka/main.script')
 const initialize_data = require('./temp-initialize.script')
 
 const startupUser = async () => {
@@ -44,9 +44,12 @@ const startupUser = async () => {
             // dm_temp_test.test_confirmDevice()
             // dm_temp_test.test_getDeviceDataFromMidd()
             
-            await job()
+            // await job()
+            // await dm_main.exec().then(res => debug('job encerrado')).catch(error => debug('job com erro: ', error))
+            dm_main()
 
-            debug('job encerrado')
+            debug('\n\ndepois do job . . . . . . . . . . . \n\n')
+
         }
     } catch (error) {
         debug('Something failed when startup a user.')
