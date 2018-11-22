@@ -39,7 +39,7 @@ const exec = () => {
         try {
             let timeStart = new Date()
 
-            await dm_job.job()
+            await dm_job()
 
             count++
 
