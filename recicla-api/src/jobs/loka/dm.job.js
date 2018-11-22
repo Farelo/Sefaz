@@ -2,7 +2,7 @@ const debug = require('debug')('job:loka')
 const dm_controller = require('../../services/loka/dm.controller')
 const { Packing } = require('../../resources/packings/packings.model')
 const { DeviceData } = require('../../resources/device_data/device_data.model')
-const packings = require('./devices')
+// const packings = require('./devices')
 
 //TODO: criar a rotina de job, aqui ou em outro ponto (feito)
 //TODO: converter a data de busca obtida do banco para timezone local (feito)
@@ -17,7 +17,7 @@ const packings = require('./devices')
 //TODO: encontrar meio de obter de forma melhor uma data startDate quando nao houver device_data previamente
 //TODO: criar logs melhores para os erros 
 
-exports.job = async() => {
+module.exports = async () => {
     //endDateSearch = currente environment timezone datetime
     const endDateSearch = (new Date()).toLocaleString()
     

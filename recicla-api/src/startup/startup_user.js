@@ -28,7 +28,6 @@ const startupUser = async () => {
             })
 
             await setting.save()
-            // newCompany.users.push(newUser._id)
             
             debug('Startup user with success.')
         } else {

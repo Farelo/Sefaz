@@ -6,7 +6,7 @@ const sslRootCAs = require('ssl-root-cas')
 
 module.exports = {
     loginLokaDmApi: loginLokaDmApi,
-    logoutLokaDmApi: logoutLokaDmApi,
+    // logoutLokaDmApi: logoutLokaDmApi,
     messagesFromSigfox: messagesFromSigfox,
     positions: positions,
     deviceById: deviceById,
