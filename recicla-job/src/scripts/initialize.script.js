@@ -17,9 +17,9 @@ module.exports = async () => {
         // await create_gc16()
         // await create_routes()
 
-        // const has_settings = await Setting.find()
-        // if (!has_settings.length > 0) await create_settings()
-        // spinner.info('Settings ok.')
+        const has_settings = await Setting.find()
+        if (!has_settings.length > 0) await create_settings()
+        spinner.info('Settings ok.')
 
         // const has_packings = await Packing.find()
         // if (!has_packings.length > 0) await create_many_packings()
