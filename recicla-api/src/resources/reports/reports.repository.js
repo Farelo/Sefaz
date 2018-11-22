@@ -182,12 +182,12 @@ const getAbsentTimeCountDown = async (packing) => {
 
         diff_date_array = await Promise.all(
             event_records.map(async event_record => {
-                let obj = {}
+                let created_at = {}
 
                 const current_control_point = await ControlPoint.findOne({ _id: event_record.control_point }).populate('company')
-                obj = current_control_point.company.type === 'owner' ? event_record : null
+                created_at = current_control_point.company.type === 'owner' ? event_record.created_at : null
 
-                return getDiffDateTodayInDays(obj.created_at)
+                return getDiffDateTodayInDays(created_at)
             })
         )
 
