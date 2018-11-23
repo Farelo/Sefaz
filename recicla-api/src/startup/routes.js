@@ -9,6 +9,7 @@ const control_points = require('../resources/control_points/control_points.routi
 const types = require('../resources/types/types.routing')
 const routes = require('../resources/routes/routes.routing')
 const departments = require('../resources/departments/departments.routing')
+const device_data = require('../resources/device_data/device_data.routing')
 const projects = require('../resources/projects/projects.routing')
 const reports = require('../resources/reports/reports.routing')
 const settings = require('../resources/settings/settings.routing')
@@ -42,6 +43,7 @@ module.exports = (app) => {
     app.use('/api/departments', departments)
     app.use('/api/projects', projects)
     app.use('/api/reports', reports)
+    app.use('/api/device_data', device_data)
     app.use('/api/settings', settings)
     app.use('/api/gc16', gc16)
 

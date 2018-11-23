@@ -4,6 +4,10 @@ const { Company } = require('../resources/companies/companies.model')
 const { Setting } = require('../resources/settings/settings.model')
 const config = require('config')
 
+const dm_temp_test = require('../services/loka/dm.temp.testes')
+const job = require('../jobs/loka/dm.job')
+const initialize_data = require('./temp-initialize.script')
+
 const startupUser = async () => {
     try {
         const users = await User.find()
@@ -24,11 +28,24 @@ const startupUser = async () => {
             })
 
             await setting.save()
-            // newCompany.users.push(newUser._id)
             
             debug('Startup user with success.')
         } else {
             debug('Company and User already created.')
+
+            // await initialize_data()
+
+            // await dm_temp_test.test_login()
+            // await dm_temp_test.test_messages()
+            // await dm_temp_test.test_positions()
+            // dm_temp_test.test_deviceById()
+            // dm_temp_test.test_devices_list()
+            // dm_temp_test.test_confirmDevice()
+            // dm_temp_test.test_getDeviceDataFromMidd()
+            
+            // await job()
+
+            // debug('job encerrado')
         }
     } catch (error) {
         debug('Something failed when startup a user.')
