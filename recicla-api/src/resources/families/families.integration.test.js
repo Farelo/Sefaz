@@ -59,32 +59,162 @@ describe('api/families', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        const exec = () => {
-            return request(server)
-                .post('/api/families')
-                .set('Authorization', token)
-                .send({ code: 'CODE1', company: newCompany._id })
-        }
-        it('should return 401 if no token is provided', async () => {
-            token = ''
-            const res = await exec()
-            expect(res.status).toBe(401)
-        })
+        jest.setTimeout(30000)
+        
+        describe('Validate token by GET method without id', () => {
+            const exec = () => {
+                return request(server)
+                    .get('/api/families')
+                    .set('Authorization', token)
+            }
 
-        it('should return 400 if token is invalid', async () => {
-            token = 'a'
-            const res = await exec()
-            expect(res.status).toBe(400)
-        })
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. No token provided.')
+            })
 
-        /*it('should return 401 if token is expired', async () => {
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+                expect(res.body.message).toBe('Invalid token.')
+            })
+
+            /*it('should return 401 if token is expired', async () => {
                 token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
                 'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
                 'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
                 const res = await exec()
                 expect(res.status).toBe(401)
                 expect(res.body.message).toBe('Access denied. Token expired.')
-        })*/
+            })*/
+        })
+
+        describe('Validate token by GET method with id', () => {
+            const exec = () => {
+                return request(server)
+                    .get(`/api/families/${new_family._id}`)
+                    .set('Authorization', token)
+            }
+
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. No token provided.')
+            })
+
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+                expect(res.body.message).toBe('Invalid token.')
+            })
+
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+            
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by POST method', () => {
+            const exec = () => {
+                return request(server)
+                    .post('/api/families')
+                    .set('Authorization', token)
+                    .send(family_body)
+            }
+
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by PATCH method', () => {
+            const exec = () => {
+                return request(server)
+                    .patch(`/api/families/${new_family._id}`)
+                    .set('Authorization', token)
+                    .send({ name: 'TESTE' })
+            }
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by DELETE method', () => {
+            const exec = () => {
+                return request(server)
+                    .delete(`/api/families/${new_family._id}`)
+                    .set('Authorization', token)
+            }
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
     })
 
     describe('AUTHZ MIDDLEWARE', () => {

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
 const { Type } = require('./types.model')
-const _ = require('lodash')
+const _ = require('lodash') 
 
 describe('api/types', () => {
     let server
@@ -11,6 +11,7 @@ describe('api/types', () => {
     let new_company
     let new_user
     let type_body
+    let new_type
     beforeEach(async () => {
         server = require('../../server')
 
@@ -29,6 +30,9 @@ describe('api/types', () => {
 
         token = new_user.generateUserToken()
         type_body = { name: 'TESTE' }
+
+        new_type = new Type(type_body)
+        new_type.save() 
     })
     afterEach(async () => {
         await server.close()
@@ -38,25 +42,30 @@ describe('api/types', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        const exec = () => {
-            return request(server)
-                .post('/api/types')
-                .set('Authorization', token)
-                .send(type_body)
-        }
-        it('should return 401 if no token is provided', async () => {
-            token = ''
-            const res = await exec()
-            expect(res.status).toBe(401)
-        })
+        jest.setTimeout(30000)
+        
+        describe('Validate token by GET method without id', () => {
+            const exec = () => {
+                return request(server)
+                    .get('/api/types')
+                    .set('Authorization', token)
+            }
 
-        it('should return 400 if token is invalid', async () => {
-            token = 'a'
-            const res = await exec()
-            expect(res.status).toBe(400)
-        })
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. No token provided.')
+            })
 
-        /*it('should return 401 if token is expired', async () => {
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+                expect(res.body.message).toBe('Invalid token.')
+            })
+
+            /*it('should return 401 if token is expired', async () => {
                 token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
                 'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
                 'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
@@ -64,6 +73,131 @@ describe('api/types', () => {
                 expect(res.status).toBe(401)
                 expect(res.body.message).toBe('Access denied. Token expired.')
             })*/
+        })
+
+        describe('Validate token by GET method with id', () => {
+            const exec = () => {
+                return request(server)
+                    .get(`/api/types/${new_type._id}`)
+                    .set('Authorization', token)
+            }
+
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. No token provided.')
+            })
+
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+                expect(res.body.message).toBe('Invalid token.')
+            })
+
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+            
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by POST method', () => {
+            const exec = () => {
+                return request(server)
+                    .post('/api/types')
+                    .set('Authorization', token)
+                    .send(type_body)
+            }
+
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by PATCH method', () => {
+            const exec = () => {
+                return request(server)
+                    .patch(`/api/types/${new_type._id}`)
+                    .set('Authorization', token)
+                    .send({ name: 'TESTE', type: 'client' })
+            }
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by DELETE method', () => {
+            const exec = () => {
+                return request(server)
+                    .delete(`/api/types/${new_type._id}`)
+                    .set('Authorization', token)
+            }
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
     })
 
     describe('AUTHZ MIDDLEWARE', () => {
@@ -169,7 +303,7 @@ describe('api/types', () => {
                 .set('Authorization', token)
 
             expect(res.status).toBe(200)
-            expect(res.body.length).toBe(3)
+            expect(res.body.length).toBe(4)
             const body = res.body.map((e) => _.omit(e, ["__v", "created_at", "update_at"]))
             expect(body).toEqual(saveTypes)
         })
@@ -242,8 +376,6 @@ describe('api/types', () => {
         })
 
         it('should return 400 if type name already exists', async () => {
-            await Type.create(type_body)
-
             const res = await exec()
 
             expect(res.status).toBe(400)
@@ -251,6 +383,7 @@ describe('api/types', () => {
         })
 
         it('should return 201 if type is valid request', async () => {
+            type_body.name = 'create test'
             const res = await exec()
             const body_res = _.omit(res.body, ["_id", "__v", "created_at", "update_at"])
 
@@ -333,15 +466,10 @@ describe('api/types', () => {
     })
 
     describe('PATCH: /api/types/:id', () => {
-        let type
-        beforeEach(async () => {
-            type = new Type({ name: 'teste 1' })
-            type.save()
-        })
         
         const exec = () => {
             return request(server)
-                .patch(`/api/types/${type._id}`)
+                .patch(`/api/types/${new_type._id}`)
                 .set('Authorization', token)
                 .send(type_body)
         }
@@ -445,21 +573,12 @@ describe('api/types', () => {
     })
 
     describe('DELETE: /api/types/:id', () => {
-        let resp
-        let exec
         
-        beforeEach(async () => {
-            resp = await request(server)
-                .post('/api/types')
+        exec = () => {
+            return request(server)
+                .delete(`/api/types/${new_type._id}`)
                 .set('Authorization', token)
-                .send(type_body)
-
-            exec = () => {
-                return request(server)
-                    .delete(`/api/types/${resp.body._id}`)
-                    .set('Authorization', token)
-            }    
-        })
+        } 
 
         it('should return 200 if deleted with success', async () => {
             const res = await exec()
@@ -468,10 +587,18 @@ describe('api/types', () => {
             expect(res.body.message).toBe('Delete successfully')
         })
 
+        it('should return 400 if deleted type nonexistent', async () => {
+            await exec()
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body.message).toBe('Invalid type')
+        })
+
         it('should return 404 if url invalid is provied', async () => {
             exec = () => {
                 return request(server)
-                    .delete(`/api/typess/${resp.body._id}`)
+                    .delete(`/api/typess/${new_type._id}`)
                     .set('Authorization', token)
             }
 
@@ -502,14 +629,6 @@ describe('api/types', () => {
             const res = await exec()
 
             expect(res.status).toBe(404)
-        })
-
-        it('should return 400 if deleted type nonexistent', async () => {
-            await exec()
-            const res = await exec()
-
-            expect(res.status).toBe(400)
-            expect(res.body.message).toBe('Invalid type')
         })
     })
 

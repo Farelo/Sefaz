@@ -14,6 +14,7 @@ describe('api/departments', () => {
     let new_control_point
     let department_body
     let new_type
+    let new_department
     beforeEach(async () => {
         server = require('../../server')
 
@@ -43,11 +44,14 @@ describe('api/departments', () => {
 
         token = new_user.generateUserToken()
         department_body = { 
-            name: 'teste 1', 
+            name: 'teste 100', 
             lat: 15, 
             lng: 25, 
             control_point: new_control_point._id 
         }
+
+        new_department = new Department(department_body)
+        new_department.save()
     })
     afterEach(async () => {
         await server.close()
@@ -59,32 +63,162 @@ describe('api/departments', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        const exec = () => {
-            return request(server)
-                .post('/api/departments')
-                .set('Authorization', token)
-                .send(department_body)
-        }
-        it('should return 401 if no token is provided', async () => {
-            token = ''
-            const res = await exec()
-            expect(res.status).toBe(401)
-        })
+        jest.setTimeout(30000)
+        
+        describe('Validate token by GET method without id', () => {
+            const exec = () => {
+                return request(server)
+                    .get('/api/departments')
+                    .set('Authorization', token)
+            }
 
-        it('should return 400 if token is invalid', async () => {
-            token = 'a'
-            const res = await exec()
-            expect(res.status).toBe(400)
-        })
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. No token provided.')
+            })
 
-        /*it('should return 401 if token is expired', async () => {
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+                expect(res.body.message).toBe('Invalid token.')
+            })
+
+            /*it('should return 401 if token is expired', async () => {
                 token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
                 'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
                 'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
                 const res = await exec()
                 expect(res.status).toBe(401)
                 expect(res.body.message).toBe('Access denied. Token expired.')
-        })*/
+            })*/
+        })
+
+        describe('Validate token by GET method with id', () => {
+            const exec = () => {
+                return request(server)
+                    .get(`/api/departments/${new_department._id}`)
+                    .set('Authorization', token)
+            }
+
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. No token provided.')
+            })
+
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+                expect(res.body.message).toBe('Invalid token.')
+            })
+
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+            
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by POST method', () => {
+            const exec = () => {
+                return request(server)
+                    .post('/api/departments')
+                    .set('Authorization', token)
+                    .send(department_body)
+            }
+
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by PATCH method', () => {
+            const exec = () => {
+                return request(server)
+                    .patch(`/api/departments/${new_department._id}`)
+                    .set('Authorization', token)
+                    .send({ name: 'TESTE' })
+            }
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
+
+        describe('Validate token by DELETE method', () => {
+            const exec = () => {
+                return request(server)
+                    .delete(`/api/departments/${new_department._id}`)
+                    .set('Authorization', token)
+            }
+            it('should return 401 if no token is provided', async () => {
+                token = ''
+                const res = await exec()
+                expect(res.status).toBe(401)
+            })
+    
+            it('should return 400 if token is invalid', async () => {
+                token = 'a'
+                const res = await exec()
+                expect(res.status).toBe(400)
+            })
+            /*it('should return 401 if token is expired', async () => {
+                
+                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
+                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
+                
+                const res = await exec()
+                expect(res.status).toBe(401)
+                expect(res.body.message).toBe('Access denied. Token expired.')
+            })*/
+        })
     })
 
     describe('AUTHZ MIDDLEWARE', () => {
@@ -192,7 +326,7 @@ describe('api/departments', () => {
                 .set('Authorization', token)
 
                 expect(res.status).toBe(200)
-                expect(res.body.length).toBe(3)
+                expect(res.body.length).toBe(4)
                 const body = res.body.map((e) => _.omit(e, ["__v", "created_at", "update_at", "control_point.created_at", 
                 "control_point.update_at","control_point.__v"]))
                 expect(body).toEqual(saveDepartments)
@@ -218,7 +352,7 @@ describe('api/departments', () => {
             })
             department.save()
         })
-        it('should return a type if valid id is passed', async () => {
+        it('should return a department if valid id is passed', async () => {
             const res = await request(server)
                 .get(`/api/departments/${department._id}`)
                 .set('Authorization', token)
@@ -288,14 +422,15 @@ describe('api/departments', () => {
         })
 
         it('should return 400 if department name already exists', async () => {
-            await Department.create(department_body)
-
+    
             const res = await exec()
             expect(res.status).toBe(400)
             expect(res.text).toBe("Department already exists with this name.")
         })
 
         it('should return 201 if type is valid request', async () => {
+            department_body.name = 'department create test'
+            
             const res = await exec()
             const body_res = _.omit(res.body, ["_id", "__v", "created_at", "update_at", "control_point.created_at", 
                                         "control_point.update_at","control_point.__v"])
@@ -393,17 +528,10 @@ describe('api/departments', () => {
     })
 
     describe('PATCH: /api/departments/:id', () => {
-        let resp
-        let department
         
-        beforeEach(async () => {
-            department = new Department(department_body)
-            department.save()
-        })
-
         const exec = () => {
             return request(server)
-                .patch(`/api/departments/${department._id}`)
+                .patch(`/api/departments/${new_department._id}`)
                 .set('Authorization', token)
                 .send(department_body)
         }
@@ -466,7 +594,7 @@ describe('api/departments', () => {
         it('should return 404 if invalid url is provied', async () => {
             const exec = () => {
                 return request(server)
-                    .patch(`/api/departmentsss/${department._id}`)
+                    .patch(`/api/departmentsss/${new_department._id}`)
                     .set('Authorization', token)
                     .send(department_body)
             }
@@ -525,22 +653,12 @@ describe('api/departments', () => {
     })
 
     describe('DELETE: /api/departments/:id', () => {
-        let resp
-        let exec
-        
-        beforeEach(async () => {
-            resp = await request(server)
-                .post('/api/departments')
+        let exec = () => {
+            return request(server)
+                .delete(`/api/departments/${new_department._id}`)
                 .set('Authorization', token)
-                .send(department_body)
-
-            exec = () => {
-                return request(server)
-                    .delete(`/api/departments/${resp.body._id}`)
-                    .set('Authorization', token)
-            }    
-        })
-
+        }
+    
         it('should return 200 if deleted with success', async () => {
             const res = await exec()
 
@@ -548,10 +666,18 @@ describe('api/departments', () => {
             expect(res.body.message).toBe('Delete successfully')
         })
 
+        it('should return 400 if deleted type nonexistent', async () => {
+            await exec()
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body.message).toBe('Invalid department')
+        })
+
         it('should return 404 if url invalid is provied', async () => {
             exec = () => {
                 return request(server)
-                    .delete(`/api/departmentsss/${resp.body._id}`)
+                    .delete(`/api/departmentsss/${new_department._id}`)
                     .set('Authorization', token)
             }
 
@@ -582,14 +708,6 @@ describe('api/departments', () => {
             const res = await exec()
 
             expect(res.status).toBe(404)
-        })
-
-        it('should return 400 if deleted type nonexistent', async () => {
-            await exec()
-            const res = await exec()
-
-            expect(res.status).toBe(400)
-            expect(res.body.message).toBe('Invalid department')
         })
     })
 })
