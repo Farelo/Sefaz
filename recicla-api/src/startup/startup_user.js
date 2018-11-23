@@ -43,9 +43,9 @@ const startupUser = async () => {
             // dm_temp_test.test_confirmDevice()
             // dm_temp_test.test_getDeviceDataFromMidd()
             
-            await job()
+            // await job()
 
-            debug('job encerrado')
+            // debug('job encerrado')
         }
     } catch (error) {
         debug('Something failed when startup a user.')

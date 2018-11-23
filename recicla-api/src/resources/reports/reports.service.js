@@ -20,18 +20,18 @@ exports.general_inventory = async () => {
     }
 }
 
-// exports.absent = async () => {
-//     try {
-//         const data = await reports_repository.absent_report()
-//         return data
-//     } catch (error) {
-//         throw new Error(error)
-//     }
-// }
-
 exports.snapshot = async () => {
     try {
         const data = await reports_repository.snapshot_report()
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.absent = async (query) => {
+    try {
+        const data = await reports_repository.absent_report(query)
         return data
     } catch (error) {
         throw new Error(error)

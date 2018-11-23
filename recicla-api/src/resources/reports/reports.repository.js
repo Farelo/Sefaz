@@ -112,12 +112,10 @@ exports.general_inventory_report = async () => {
 
 exports.snapshot_report = async () => {
     try {
-        const file = __dirname + '/downloads/absent.csv'
-        const packings = await Packing.find({ absent: true })
+        const packings = await Packing.find({})
             .populate('family')
             .populate('last_device_data')
             .populate('last_event_record')
-            // .populate('last_alert_history')
 
         const data = await Promise.all(
             packings.map(async (packing, index) => {
@@ -143,6 +141,55 @@ exports.snapshot_report = async () => {
                 obj.battery = packing.last_device_data ? packing.last_device_data.battery.percentage : "-"
 
                 return obj
+            })
+        )
+
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.absent_report = async (query = { family: null, serial: null }) => {
+    try {
+        const packings = await Packing.find({ absent: true, active: true })
+            .populate('family')
+            .populate('last_device_data')
+            .populate('last_event_record')
+
+        const data = await Promise.all(
+            packings.map(async packing => {
+                let object_temp = {}
+
+                object_temp._id = packing._id
+                object_temp.tag = packing.tag
+                object_temp.weigth = packing.weigth
+                object_temp.width = packing.width
+                object_temp.heigth = packing.heigth
+                object_temp.length = packing.length
+                object_temp.capacity = packing.capacity
+                object_temp.temperature = packing.temperature
+                object_temp.active = packing.active
+                object_temp.absent = packing.absent
+                object_temp.low_battery = packing.low_battery
+                object_temp.permanence_time_exceeded = packing.permanence_time_exceeded
+                object_temp.current_state = packing.current_state
+                object_temp.family = packing.family
+                object_temp.serial = packing.serial
+                object_temp.created_at = packing.created_at
+                object_temp.update_at = packing.update_at
+                packing.last_device_data ? object_temp.last_device_data = packing.last_device_data : null
+                packing.last_event_record ? object_temp.last_event_record = packing.last_event_record : null
+                packing.last_alert_history ? object_temp.last_alert_history = packing.last_alert_history : null
+                
+                if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
+                    object_temp.absent_time = getDiffDateTodayInDays(packing.last_event_record.created_at)
+                } else {
+                    object_temp.absent_time = await getAbsentTimeCountDown(packing)
+                }
+                
+
+                return object_temp
             })
         )
 

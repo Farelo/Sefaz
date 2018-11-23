@@ -12,7 +12,7 @@ require('./startup/routes')(app)
 require('./startup/db')()
 if (config.get('company.enabled')) require('./startup/startup_user')()
 
-dm_main_script()
+// dm_main_script()
 
 const server = app.listen(config.get('server.port'), () => {
     logger.info(`Server is running on port: ${config.get('server.port')}`)
