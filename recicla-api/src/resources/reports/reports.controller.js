@@ -20,7 +20,12 @@ exports.snapshot = async (req, res) => {
 }
 
 exports.absent = async (req, res) => {
-    const query = {}
+    const query = { 
+        family: req.query.family ? req.query.family : null,
+        serial: req.query.serial ? req.query.serial : null,
+        absent_time_in_hours: req.query.absent_time_in_hours ? req.query.absent_time_in_hours : null,
+    }
+
     const data = await reports_service.absent(query)
     res.json(data)
 }
