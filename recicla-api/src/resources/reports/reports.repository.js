@@ -28,10 +28,27 @@ exports.general_report = async () => {
                 },
             },
             {
+                $lookup: {
+                    from: 'projects',
+                    localField: 'project',
+                    foreignField: '_id',
+                    as: 'project_object',
+                },
+            },
+            {
+                $unwind: {
+                    path: '$project_object',
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
+            {
                 $group: {
                     _id: '$family_object._id',
                     company: {
                         $first: '$family_object.company'
+                    },
+                    project: {
+                        $first: '$project_object'
                     },
                     packings_quantity: { $sum: 1 },
                 },
@@ -44,16 +61,17 @@ exports.general_report = async () => {
 
                 const family = await Family.findById(aggr._id)
                     .populate('company')
+                    .populate('project')
 
                 res = {
                     family,
-                    packings_quantity: aggr.packings_quantity
+                    packings_quantity: aggr.packings_quantity,
+                    project: aggr.project
                 }
                 return res
             })
         )
 
-        debug(data)
         return data
     } catch (error) {
         throw new Error(error)
@@ -150,12 +168,37 @@ exports.snapshot_report = async () => {
     }
 }
 
-exports.absent_report = async (query = { family: null, serial: null }) => {
+exports.absent_report = async (query = { family: null, serial: null, absent_time_in_hours: null }) => {
     try {
-        const packings = await Packing.find({ absent: true, active: true })
-            .populate('family')
-            .populate('last_device_data')
-            .populate('last_event_record')
+        let packings = []
+        let current_family = query.family ? await Family.findOne({ _id: query.family}) : null
+
+        switch(true) {
+            case query.family != null && query.serial != null:
+                packings = await Packing.find({ absent: true, active: true, family: current_family._id, serial: query.serial })
+                    .populate('family')
+                    .populate('last_device_data')
+                    .populate('last_event_record')
+                break
+            case query.family != null:
+                packings = await Packing.find({ absent: true, active: true, family: current_family._id })
+                    .populate('family')
+                    .populate('last_device_data')
+                    .populate('last_event_record')
+                break
+            case query.serial != null:
+                packings = await Packing.find({ absent: true, active: true, serial: query.serial })
+                    .populate('family')
+                    .populate('last_device_data')
+                    .populate('last_event_record')
+                break
+            default:
+                packings = await Packing.find({ absent: true, active: true })
+                    .populate('family')
+                    .populate('last_device_data')
+                    .populate('last_event_record')
+                break
+        }
 
         const data = await Promise.all(
             packings.map(async packing => {
@@ -181,23 +224,30 @@ exports.absent_report = async (query = { family: null, serial: null }) => {
                 packing.last_device_data ? object_temp.last_device_data = packing.last_device_data : null
                 packing.last_event_record ? object_temp.last_event_record = packing.last_event_record : null
                 packing.last_alert_history ? object_temp.last_alert_history = packing.last_alert_history : null
-                
+
                 if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
-                    object_temp.absent_time = getDiffDateTodayInDays(packing.last_event_record.created_at)
+                    object_temp.absent_time_in_hours = getDiffDateTodayInDays(packing.last_event_record.created_at)
                 } else {
-                    object_temp.absent_time = await getAbsentTimeCountDown(packing)
+                    object_temp.absent_time_in_hours = await getAbsentTimeCountDown(packing)
                 }
                 
 
                 return object_temp
             })
         )
+        
+        if (query.absent_time_in_hours != null) {
+            const packings_filtered = data.filter(packing => packing.absent_time_in_hours < query.absent_time_in_hours)
+            return packings_filtered
+        }
 
         return data
     } catch (error) {
         throw new Error(error)
     }
 }
+
+
 
 const getLatLngOfPacking = async (packing) => {
     // const current_device_data = await DeviceData.findById(packing.last_device_data._id)
