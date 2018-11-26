@@ -38,11 +38,11 @@ export class Gc16AdicionarComponent implements OnInit {
       value.packing = this.gc16['controls'].packing.value.packing;
       value.project = this.gc16['controls'].project.value._id;
 
-      this.GC16Service.createGC16(value)
-                      .subscribe(result => this.packingService.updatePackingByGC16(value.packing,value.supplier._id,value.project,{gc16: result.data._id})
-                      .subscribe(result => {
-                        this.toastService.success('/rc/bpline', 'BPline');
-                      }, err => this.toastService.error(err)));
+      // this.GC16Service.createGC16(value)
+      //                 .subscribe(result => this.packingService.updatePackingByGC16(value.packing,value.supplier._id,value.project,{gc16: result.data._id})
+      //                 .subscribe(result => {
+      //                   this.toastService.success('/rc/bpline', 'BPline');
+      //                 }, err => this.toastService.error(err)));
     }
 
 
@@ -106,15 +106,15 @@ export class Gc16AdicionarComponent implements OnInit {
     
     this.gc16['controls'].packing.setValue(undefined)
     if(event){
-      this.packingService.getBySupplier(event._id).subscribe( result => {
-          this.packings = result.data;
+      // this.packingService.getBySupplier(event._id).subscribe( result => {
+      //     this.packings = result.data;
 
-          if (this.packings.length == 0){
-            this.gc16.controls.packing.disable()
-          }else{
-            this.gc16.controls.packing.enable()
-          }
-      }, err => {console.log(err)});
+      //     if (this.packings.length == 0){
+      //       this.gc16.controls.packing.disable()
+      //     }else{
+      //       this.gc16.controls.packing.enable()
+      //     }
+      // }, err => {console.log(err)});
     }
   }
 
@@ -127,7 +127,7 @@ export class Gc16AdicionarComponent implements OnInit {
   }
 
   loadSuppliers():void{
-    this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result.data}, err => {console.log(err)});
+    // this.suppliersService.retrieveAll().subscribe(result => {this.suppliers = result.data}, err => {console.log(err)});
   }
 
 

@@ -13,7 +13,9 @@ import { ToastService, GC16Service } from '../../../servicos/index.service';
 })
 
 export class Gc16EditarComponent implements OnInit {
+
   public gc16:  FormGroup;
+  public mActualGC16: any;
   public inscricao: Subscription;
 
   constructor(
@@ -21,18 +23,87 @@ export class Gc16EditarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private toastService: ToastService
-  ) {
+    private toastService: ToastService) {
+
   }
 
+  ngOnInit() {
+    
+    this.configureFormGroup();
+    this.retrieveGC16();
+  }
 
-  onSubmit({ value, valid }: { value: GC16, valid: boolean }): void {
+  ngOnDestroy() {
+    this.inscricao.unsubscribe();
+  }
+
+  configureFormGroup(){
+    
+    this.gc16 = this.fb.group({ 
+      annual_volume: ['', [Validators.required]],
+      capacity: ['', [Validators.required]],
+      productive_days: ['', [Validators.required]],
+      container_days: ['', [Validators.required]],
+      family: ['', [Validators.required]],
+      security_factor: this.fb.group({
+        percentage: ['', [Validators.required]],
+        qty_total_build: ['', [Validators.required]],
+        qty_container: ['', [Validators.required]]
+      }),
+      owner_stock: this.fb.group({
+        days: ['', [Validators.required]],
+        value: ['', [Validators.required]],
+        max: ['', [Validators.required]],
+        qty_container: ['', [Validators.required]],
+        qty_container_max: ['', [Validators.required]]
+      }),
+      client_stock: this.fb.group({
+        days: ['', [Validators.required]],
+        value: ['', [Validators.required]],
+        max: ['', [Validators.required]],
+        qty_container: ['', [Validators.required]],
+        qty_container_max: ['', [Validators.required]]
+      }),
+      transportation_going: this.fb.group({
+        days: ['', [Validators.required]],
+        value: ['', [Validators.required]],
+        qty_container: ['', [Validators.required]]
+      }),
+      transportation_back: this.fb.group({
+        days: ['', [Validators.required]],
+        value: ['', [Validators.required]],
+        qty_container: ['', [Validators.required]]
+      }),
+      frequency: this.fb.group({
+        days: ['', [Validators.required]],
+        fr: ['', [Validators.required]],
+        qty_total_days: ['', [Validators.required]],
+        qty_container: ['', [Validators.required]]
+      })
+    });
+  }
+
+  retrieveGC16(){
+    this.inscricao = this.route.params.subscribe(params => {
+      let id = params['id'];
+      this.GC16Service.getGC16(id).subscribe(result => {
+        this.mActualGC16 = result;
+        (<FormGroup>this.gc16).patchValue(result, { onlySelf: true });
+      });
+    });
+  }
+
+  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+
+    console.log(valid)
 
     if(valid){
-      this.GC16Service.updateGC16(value._id,value)
-                      .subscribe(result => {
-                        this.toastService.edit('/rc/bpline', 'BPline');
-                      }, err => this.toastService.error(err));
+
+      value.family = this.mActualGC16.family._id;
+
+      this.GC16Service.editGC16(this.mActualGC16._id, value).subscribe(result => {
+        this.toastService.edit('/rc/bpline', 'BPline');
+      }, err => this.toastService.error(err));
     }
   }
 
@@ -90,68 +161,5 @@ export class Gc16EditarComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    this.gc16 = this.fb.group({
-      annualVolume: ['', [Validators.required]],
-      capacity: ['', [Validators.required]],
-      productiveDays: ['', [Validators.required]],
-      containerDays: ['', [Validators.required]],
-      project: ['', [Validators.required]],
-      _id: ['', [Validators.required]],
-      __v: [''],
-      packing: ['', [Validators.required]],
-      supplier: ['', [Validators.required]],
-      factoryStock:  this.fb.group({
-       fsDays:  ['', [Validators.required]],
-       fs:  ['', [Validators.required]],
-       fsMax:  ['', [Validators.required]],
-       QuantContainerfs:  ['', [Validators.required]],
-       QuantContainerfsMax:  ['', [Validators.required]]
-     }),
-      supplierStock: this.fb.group({
-       ssDays:  ['', [Validators.required]],
-       ss:  ['', [Validators.required]],
-       ssMax:  ['', [Validators.required]],
-       QuantContainerSs:  ['', [Validators.required]],
-       QuantContainerSsMax:  ['', [Validators.required]]
-     }),
-      transportationGoing: this.fb.group({
-       tgDays:  ['', [Validators.required]],
-       tg:  ['', [Validators.required]],
-       QuantContainerTg:  ['', [Validators.required]]
-     }),
-      transportantionBack: this.fb.group({
-       tbDays:  ['', [Validators.required]],
-       tb:  ['', [Validators.required]],
-       QuantContainerTb:  ['', [Validators.required]]
-     }),
-      frequency: this.fb.group({
-       fDays:  ['', [Validators.required]],
-       fr:  ['', [Validators.required]],
-       QuantTotalDays:  ['', [Validators.required]],
-       QuantContainer:  ['', [Validators.required]]
-     }),
-      secutiryFactor: this.fb.group({
-       percentage:  ['', [Validators.required]],
-       QuantTotalBuilt:  ['', [Validators.required]],
-       QuantContainer:  ['', [Validators.required]]
-     })
-
-    });
-
-    this.inscricao = this.route.params.subscribe(
-      (params: any)=>{
-        let id = params ['id'];
-        this.GC16Service.retrieveGC16(id).subscribe(result => {
-          (<FormGroup>this.gc16)
-                  .setValue(result.data, { onlySelf: true });
-        });
-      }
-    )
-  }
-
-  ngOnDestroy () {
-    this.inscricao.unsubscribe();
-  }
-
+  
 }

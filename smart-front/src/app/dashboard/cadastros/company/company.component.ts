@@ -30,9 +30,7 @@ export class CompanyComponent implements OnInit {
    * Método para carregar a lista
    */
   loadCompanies() {
-    this.companiesService
-      .getAllCompanies()
-      .subscribe(result => {
+    this.companiesService.getAllCompanies().subscribe(result => {
 
         this.listOfCompanies = result;
         this.auxListOfCompanies = result;
