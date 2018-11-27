@@ -38,3 +38,21 @@ exports.absent = async (query) => {
     }
 }
 
+exports.permanence_time = async (query) => {
+    try {
+        const data = await reports_repository.permanence_time_report(query)
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.battery = async (family_id) => {
+    try {
+        const data = await reports_repository.battery_report(family_id)
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+

@@ -169,6 +169,8 @@ module.exports = router
  *     properties:
  *       name:
  *         type: string
+ *       duns:
+ *         type: string
  *       phone:
  *         type: string
  *       cnpj:

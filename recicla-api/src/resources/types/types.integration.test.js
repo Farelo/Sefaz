@@ -42,7 +42,7 @@ describe('api/types', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        jest.setTimeout(30000)
+        // jest.setTimeout(30000)
         
         describe('Validate token by GET method without id', () => {
             const exec = () => {
