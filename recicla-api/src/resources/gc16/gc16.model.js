@@ -144,7 +144,7 @@ const gc16Schema = new mongoose.Schema({
 
 const validate_gc16 = (gc16) => {
     const schema = Joi.object().keys({
-        annual_volume: Joi.number().max(10000),
+        annual_volume: Joi.number().max(1000000),
         capacity: Joi.number().max(10000),
         productive_days: Joi.number().max(10000),
         container_days: Joi.number().max(10000),

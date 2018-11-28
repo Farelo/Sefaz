@@ -26,11 +26,11 @@
                                                 itemsPerPage: 10,
                                                 currentPage: actualPage,
                                                 totalItems: mListOfGC16.length}">
-              <td>{{gc.annual_volume}}</td>
-              <td>{{gc.capacity}}</td>
-              <td>{{gc.productive_days}}</td>
+              <td>{{ gc.annual_volume }}</td>
+              <td>{{ gc.capacity }}</td>
+              <td>{{ gc.productive_days }}</td>
               <!-- <td>{{gc.supplier.name}}</td> -->
-              <td>{{gc.family.code}}</td>
+              <td>{{ gc.family.code }}</td>
               <td class="teste">                
                 <button class="editar" [routerLink]="['editar/', gc._id]">
                   EDITAR

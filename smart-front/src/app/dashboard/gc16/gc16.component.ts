@@ -39,14 +39,14 @@ export class Gc16Component implements OnInit {
     },err => {  console.log(err)});
   }
 
-  //refazer isso daqui, depende de muitas coisas para ser realizada a alteração
-  removeGC16(object: any):void{
+  removeGC16(gc16: any):void{
+
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.view = object;
-    modalRef.componentInstance.type = "gc16";
+    modalRef.componentInstance.mObject = gc16;
+    modalRef.componentInstance.mType = "BPLINE";
 
     modalRef.result.then((result) => {
-      if(result === "remove") this.loadGC16();
+      this.loadGC16();
     });
   }
 

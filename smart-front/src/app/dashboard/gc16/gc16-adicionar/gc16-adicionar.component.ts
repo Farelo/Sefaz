@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { GC16 } from '../../../shared/models/gc16';
-import { ToastService, FamiliesService } from '../../../servicos/index.service';
+import { ToastService, FamiliesService, GC16Service } from '../../../servicos/index.service';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import * as $ from 'jquery'
@@ -21,6 +21,7 @@ export class Gc16AdicionarComponent implements OnInit {
   public submitted: boolean = false;
 
   constructor(
+    private gc16Service: GC16Service,
     private familyService: FamiliesService,
     private fb: FormBuilder,
     private toastService: ToastService) {
@@ -36,26 +37,21 @@ export class Gc16AdicionarComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
     this.submitted = true;
-
-    console.log('gc16');
-    console.log(this.gc16);
-
-    console.log('value');
-    console.log(value);
-
+    
     if (valid) {
-      value.packing = this.gc16['controls'].packing.value.packing;
-      value.project = this.gc16['controls'].project.value._id;
+      
+      //reduzindo família ao seu id
+      value.family = this.gc16['controls'].family.value._id;
 
-      // this.GC16Service.createGC16(value)
-      //                 .subscribe(result => this.packingService.updatePackingByGC16(value.packing,value.supplier._id,value.project,{gc16: result.data._id})
-      //                 .subscribe(result => {
-      //                   this.toastService.success('/rc/bpline', 'BPline');
-      //                 }, err => this.toastService.error(err)));
+      this.gc16Service.createGC16(value).subscribe(result => {
+        this.toastService.success('/rc/bpline', 'BPline');
+      });
     }
   }
 
   onBlurMethod() {
+
+    //console.log(this.gc16);
 
     //general
     let annual_volume = this.gc16.controls.annual_volume.value
@@ -67,7 +63,7 @@ export class Gc16AdicionarComponent implements OnInit {
     let percentage = this.gc16['controls'].security_factor['controls'].percentage.value
 
     //frequency
-    let f_days = this.gc16.controls.frequency['controls'].f_days.value
+    let f_days = this.gc16.controls.frequency['controls'].days.value
 
     //transportation_going
     let tg_days = this.gc16.controls.transportation_going['controls'].days.value
@@ -125,6 +121,48 @@ export class Gc16AdicionarComponent implements OnInit {
           .qty_container
           .setValue(Math.floor(((this.gc16['controls'].frequency['controls'].fr.value / 100) * this.gc16['controls'].security_factor['controls'].qty_total_build.value)));
 
+        //owner_stock
+        this.gc16['controls']
+          .owner_stock['controls']
+          .value
+          .setValue(Math.floor(((this.gc16['controls'].owner_stock['controls'].days.value / quantTotalDays) * 100)));
+
+        this.gc16['controls']
+          .owner_stock['controls']
+          .qty_container
+          .setValue(Math.floor(((this.gc16['controls'].owner_stock['controls'].value.value / 100) * this.gc16['controls'].security_factor['controls'].qty_total_build.value)));
+
+        this.gc16['controls']
+          .owner_stock['controls']
+          .qty_container_max
+          .setValue((this.gc16['controls'].owner_stock['controls'].qty_container.value + this.gc16['controls'].frequency['controls'].qty_container.value));
+
+        this.gc16['controls']
+          .owner_stock['controls']
+          .max
+          .setValue((this.gc16['controls'].owner_stock['controls'].value.value + this.gc16['controls'].frequency['controls'].fr.value));
+
+        //client_stock
+        this.gc16['controls']
+          .client_stock['controls']
+          .value
+          .setValue(Math.floor(((this.gc16['controls'].client_stock['controls'].days.value / quantTotalDays) * 100)));
+
+        this.gc16['controls']
+          .client_stock['controls']
+          .qty_container
+          .setValue(Math.floor(((this.gc16['controls'].client_stock['controls'].value.value / 100) * this.gc16['controls'].security_factor['controls'].qty_total_build.value)));
+
+        this.gc16['controls']
+          .client_stock['controls']
+          .qty_container_max
+          .setValue((this.gc16['controls'].client_stock['controls'].qty_container.value + this.gc16['controls'].frequency['controls'].qty_container.value));
+
+        this.gc16['controls']
+          .client_stock['controls']
+          .max
+          .setValue((this.gc16['controls'].client_stock['controls'].value.value + this.gc16['controls'].frequency['controls'].fr.value));
+
         //transportation_going
         this.gc16['controls']
           .transportation_going['controls']
@@ -146,48 +184,6 @@ export class Gc16AdicionarComponent implements OnInit {
           .transportation_back['controls']
           .qty_container
           .setValue(Math.floor(((this.gc16['controls'].transportation_back['controls'].value.value / 100) * this.gc16['controls'].security_factor['controls'].qty_total_build.value)));
-
-        //owner_stock
-        this.gc16['controls']
-          .owner_stock['controls']
-          .fs
-          .setValue(Math.floor(((this.gc16['controls'].owner_stock['controls'].days.value / quantTotalDays) * 100)));
-
-        this.gc16['controls']
-          .owner_stock['controls']
-          .QuantContainerfs
-          .setValue(Math.floor(((this.gc16['controls'].owner_stock['controls'].fs.value / 100) * this.gc16['controls'].security_factor['controls'].QuantTotalBuilt.value)));
-
-        this.gc16['controls']
-          .owner_stock['controls']
-          .QuantContainerfsMax
-          .setValue((this.gc16['controls'].owner_stock['controls'].QuantContainerfs.value + this.gc16['controls'].frequency['controls'].QuantContainer.value));
-
-        this.gc16['controls']
-          .owner_stock['controls']
-          .fsMax
-          .setValue((this.gc16['controls'].owner_stock['controls'].fs.value + this.gc16['controls'].frequency['controls'].fr.value));
-
-        //client_stock
-        this.gc16['controls']
-          .client_stock['controls']
-          .ss
-          .setValue(Math.floor(((this.gc16['controls'].client_stock['controls'].days.value / quantTotalDays) * 100)));
-
-        this.gc16['controls']
-          .client_stock['controls']
-          .QuantContainerSs
-          .setValue(Math.floor(((this.gc16['controls'].client_stock['controls'].ss.value / 100) * this.gc16['controls'].security_factor['controls'].QuantTotalBuilt.value)));
-
-        this.gc16['controls']
-          .client_stock['controls']
-          .QuantContainerSsMax
-          .setValue((this.gc16['controls'].client_stock['controls'].QuantContainerSs.value + this.gc16['controls'].frequency['controls'].QuantContainer.value));
-
-        this.gc16['controls']
-          .client_stock['controls']
-          .ssMax
-          .setValue((this.gc16['controls'].client_stock['controls'].ss.value + this.gc16['controls'].frequency['controls'].fr.value));
       }
     }
 
