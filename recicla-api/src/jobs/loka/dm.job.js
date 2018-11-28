@@ -70,9 +70,9 @@ module.exports = async () => {
         })
 
         //esse for existe dessa maneira somente para garantir que cada promessa do array de promessas de devices seja finalizado (resolvido ou rejeitado) 
-        for await(const device_data_promise of devices_data_promises) {
+        // for await(const device_data_promise of devices_data_promises) {
 
-        }
+        // }
 
     } catch (error) {
 

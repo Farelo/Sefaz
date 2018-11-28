@@ -36,7 +36,6 @@ describe('api/departments', () => {
             lat: 2,
             lng: 2,
             name: "teste",
-            duns: "teste",
             full_address: "teste teste",
             type: new_type._id,
             company: new_company._id
@@ -63,7 +62,7 @@ describe('api/departments', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        jest.setTimeout(30000)
+        // jest.setTimeout(30000)
         
         describe('Validate token by GET method without id', () => {
             const exec = () => {
@@ -318,7 +317,7 @@ describe('api/departments', () => {
 
             let saveDepartments = await Department.find({})
             .select(["-created_at", "-update_at", "-__v"]).populate("control_point", ['id', 'name', 
-                    'lat', 'lng', 'duns', 'full_address', 'type', 'company'])
+                    'lat', 'lng', 'full_address', 'type', 'company'])
             saveDepartments = JSON.parse(JSON.stringify(saveDepartments))
 
             const res = await request(server)
@@ -369,7 +368,6 @@ describe('api/departments', () => {
                     lng: 2,
                     _id: new_control_point._id,
                     name: "teste",
-                    duns: "teste",
                     full_address: "teste teste",
                     type: new_type._id,
                     company: new_company._id

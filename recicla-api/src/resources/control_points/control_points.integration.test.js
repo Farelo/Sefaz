@@ -45,7 +45,6 @@ describe('api/control_points', () => {
         token = new_user.generateUserToken()
         control_point_body = {
             name: "point test",
-            duns: "teste",
             lat: 50,
             lng: 50,
             full_address: "teste",
@@ -65,7 +64,7 @@ describe('api/control_points', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        jest.setTimeout(30000)
+        // jest.setTimeout(30000)
         
         describe('Validate token by GET method without id', () => {
             const exec = () => {
@@ -315,7 +314,6 @@ describe('api/control_points', () => {
             await ControlPoint.collection.insertMany([
                 {
                     name: "point 1",
-                    duns: "teste",
                     lat: 50,
                     lng: 50,
                     full_address: "teste",
@@ -324,7 +322,6 @@ describe('api/control_points', () => {
                 },
                 {
                     name: "point 2",
-                    duns: "teste",
                     lat: 50,
                     lng: 50,
                     full_address: "teste",
@@ -372,7 +369,6 @@ describe('api/control_points', () => {
             let body_toEqual = {
                 _id: control_point._id,
                 name: control_point_body.name,
-                duns: control_point_body.duns,
                 lat: control_point_body.lat,
                 lng: control_point_body.lng,
                 full_address: control_point_body.full_address,
@@ -503,7 +499,6 @@ describe('api/control_points', () => {
 
         it('should return 400 if attributes values above the limits', async () => {
             control_point_body.name = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
-            control_point_body.duns = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
             control_point_body.lat = 91
             control_point_body.lng = 181
             control_point_body.full_address = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
@@ -513,7 +508,6 @@ describe('api/control_points', () => {
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
                 "\"name\" length must be less than or equal to 50 characters long",
-                "\"duns\" length must be less than or equal to 50 characters long",
                 "\"lat\" must be less than or equal to 90",
                 "\"lng\" must be less than or equal to 180",
                 "\"full_address\" length must be less than or equal to 100 characters long"
@@ -522,7 +516,6 @@ describe('api/control_points', () => {
 
         it('should return 400 if attributes values below the limits', async () => {
             control_point_body.name = 'test'
-            control_point_body.duns = 'te'
             control_point_body.lat = -91
             control_point_body.lng = -181
             control_point_body.full_address = 'test'
@@ -540,7 +533,6 @@ describe('api/control_points', () => {
 
         it('should return 400 if the attribute types diferent than expected', async () => {
             control_point_body.name = 11
-            control_point_body.duns = 11
             control_point_body.lat = 'as'
             control_point_body.lng = 'as'
             control_point_body.full_address = 11
@@ -550,7 +542,6 @@ describe('api/control_points', () => {
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
                 "\"name\" must be a string",
-                "\"duns\" must be a string",
                 "\"lat\" must be a number",
                 "\"lng\" must be a number",
                 "\"full_address\" must be a string"
@@ -642,7 +633,6 @@ describe('api/control_points', () => {
 
         it('should return 400 if attributes values above the limits', async () => {
             control_point_body.name = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
-            control_point_body.duns = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
             control_point_body.lat = 91
             control_point_body.lng = 181
             control_point_body.full_address = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
@@ -652,7 +642,6 @@ describe('api/control_points', () => {
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
                 "\"name\" length must be less than or equal to 50 characters long",
-                "\"duns\" length must be less than or equal to 50 characters long",
                 "\"lat\" must be less than or equal to 90",
                 "\"lng\" must be less than or equal to 180",
                 "\"full_address\" length must be less than or equal to 100 characters long"
@@ -661,7 +650,6 @@ describe('api/control_points', () => {
 
         it('should return 400 if attributes values below the limits', async () => {
             control_point_body.name = 'test'
-            control_point_body.duns = 'te'
             control_point_body.lat = -91
             control_point_body.lng = -181
             control_point_body.full_address = 'test'
@@ -679,7 +667,6 @@ describe('api/control_points', () => {
 
         it('should return 400 if the attribute types diferent than expected', async () => {
             control_point_body.name = 11
-            control_point_body.duns = 11
             control_point_body.lat = 'as'
             control_point_body.lng = 'as'
             control_point_body.full_address = 11
@@ -689,7 +676,6 @@ describe('api/control_points', () => {
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
                 "\"name\" must be a string",
-                "\"duns\" must be a string",
                 "\"lat\" must be a number",
                 "\"lng\" must be a number",
                 "\"full_address\" must be a string"

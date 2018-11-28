@@ -8,7 +8,7 @@ exports.general = async (req, res) => {
     res.json(data)
 }
 
-exports.general = async (req, res) => {
+exports.general_inventory = async (req, res) => {
     const data = await reports_service.general_inventory()
 
     res.json(data)
@@ -27,5 +27,22 @@ exports.absent = async (req, res) => {
     }
 
     const data = await reports_service.absent(query)
+    res.json(data)
+}
+
+exports.permanence_time = async (req, res) => {
+    const query = {
+        family: req.query.family ? req.query.family : null,
+        serial: req.query.serial ? req.query.serial : null
+    }
+
+    const data = await reports_service.permanence_time(query)
+    res.json(data)
+}
+
+exports.battery = async (req, res) => {
+    const family_id = req.query.family ? req.query.family : null
+
+    const data = await reports_service.battery(family_id)
     res.json(data)
 }
