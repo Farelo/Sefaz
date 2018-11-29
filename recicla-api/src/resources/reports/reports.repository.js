@@ -9,6 +9,7 @@ const { AlertHistory } = require('../alert_history/alert_history.model')
 const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
 const { GC16 } = require('../gc16/gc16.model')
+const { Setting } = require('../settings/settings.model')
 const { User } = require('../users/users.model')
 
 exports.general_report = async () => {
@@ -129,6 +130,7 @@ exports.snapshot_report = async () => {
             .populate('family')
             .populate('last_device_data')
             .populate('last_event_record')
+        const settings = await Setting.find({})
 
         const data = await Promise.all(
             packings.map(async (packing, index) => {
@@ -136,22 +138,25 @@ exports.snapshot_report = async () => {
 
                 obj.id = packing._id
                 obj.message_date = packing.last_device_data ? packing.last_device_data.message_date : '-'
+                obj.message_date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : '-'
                 obj.family = packing.family.code
                 obj.serial = packing.serial
                 obj.tag = packing.tag.code
                 obj.current_state = packing.current_state
-                obj.collection_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
+                obj.collect_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
                 obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
-                obj.lat_lng = await getLatLngOfPacking(packing)
+                obj.lat_lng_device = await getLatLngOfPacking(packing)
                 obj.lat_lng_cp = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getLatLngOfControlPoint(packing) : '-'
-                obj.control_point_local = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getTypeOfControlPoint(packing) : '-'
-                obj.control_point_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getNameOfControlPoint(packing) : '-'
+                obj.cp_type = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getTypeOfControlPoint(packing) : '-'
+                obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getNameOfControlPoint(packing) : '-'
                 obj.geo = 'C'
-                obj.area = '-'
+                obj.area = `{(${await getLatLngOfPacking(packing)}),${settings[0].range_radius}}`
                 obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : '-'
                 obj.signal = packing.current_state === 'sem_sinal' ? 'FALSE' : packing.current_state === 'desabilitada_sem_sinal' ? 'FALSE' : packing.current_state === 'perdida' ? 'FALSE' : 'TRUE'
-                obj.absent_time_countdown = await getAbsentTimeCountDown(packing)
+                obj.absent_time = await getAbsentTimeCountDown(packing)
                 obj.battery = packing.last_device_data ? packing.last_device_data.battery.percentage : "-"
+                obj.battery_alert = packing.last_device_data && packing.last_device_data.battery.percentage > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
+                obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : "-"
 
                 return obj
             })
