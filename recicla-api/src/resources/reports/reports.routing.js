@@ -4,6 +4,7 @@ const reports_controller = require('./reports.controller')
 const auth = require('../../security/auth.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 
+router.get('/home', reports_controller.home_report)
 router.get('/general', reports_controller.general_report)
 router.get('/general_inventory', reports_controller.general_inventory_report)
 router.get('/absent', reports_controller.absent_report)
@@ -15,6 +16,32 @@ router.get('/clients', reports_controller.clients_report)
 router.get('/snapshot', reports_controller.snapshot_report)
 
 module.exports = router
+
+// GET '/home'
+/**
+ * @swagger
+ * /reports/home:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     parameters:
+ *       - name: current_state
+ *         description: analise, local_incorreto, local_correto, perdida, sem_sinal
+ *         in: query
+ *         required: false
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
 
 // GET '/general'
 /**

@@ -2,6 +2,13 @@ const debug = require('debug')('controller:reports')
 const HttpStatus = require('http-status-codes')
 const reports_service = require('./reports.service')
 
+exports.home_report = async (req, res) => {
+    const current_state = req.query.current_state ? req.query.current_state: null
+    const data = await reports_service.home_report(current_state)
+
+    res.json(data)
+}
+
 exports.general_report = async (req, res) => {
     const data = await reports_service.general_report()
 
