@@ -90,12 +90,28 @@
 
       <!-- Linha 4 -->
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 col-md-8 campo">
           <p class="descricao">ATIVAR BPLINE</p>
           <bSwitch [switch-off-text]="'Não'" [switch-on-text]="'Sim'" [switch-on-color]="'success'"
             [switch-off-color]="'danger'" [switch-size]="'mini'" [switch-animate]="true" [switch-base-class]="'bootstrap-switch'"
             formControlName="enable_gc16">
           </bSwitch>
+        </div>
+
+        <div class="col-sm-12 col-md-4 campo">
+          <p class="descricao">ALERTA AUSENTE (DIAS)</p>
+          <p class="explicacao">Ex. "2 dias"</p>
+          <div class="placeholder" data-placeholder="MINUTOS">
+            <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1" (focusout)="validadeMissing($event)"
+              formControlName="missing_sinal_limit_in_days" />
+            <p class="requiredText" *ngIf="(settings.get('missing_sinal_limit_in_days').hasError('required') && settings.get('missing_sinal_limit_in_days').touched)
+                      || (settings.get('missing_sinal_limit_in_days').hasError('required') && formDir.submitted)">
+              Campo Obrigatório</p>
+        
+            <p class="requiredText" *ngIf="(settings.get('missing_sinal_limit_in_days').hasError('lessThanMinimum') && settings.get('missing_sinal_limit_in_days').touched)
+                      || (settings.get('missing_sinal_limit_in_days').hasError('lessThanMinimum') && formDir.submitted)">
+              Valor menor que o mínimo: 1</p>
+          </div>
         </div>
       </div>
 

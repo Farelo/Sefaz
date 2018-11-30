@@ -101,7 +101,8 @@ export class ModalSettings implements OnInit {
       job_schedule_time_in_sec: [0, [Validators.required]],
       range_radius: [0, [Validators.required]], 
       clean_historic_moviments_time: [0, [Validators.required]],
-      no_signal_limit_in_days: [0, [Validators.required]]
+      no_signal_limit_in_days: [0, [Validators.required]],
+      missing_sinal_limit_in_days: [0, [Validators.required]],
     });
 
     this.settingsService.getSettings().subscribe(result => {
@@ -130,6 +131,13 @@ export class ModalSettings implements OnInit {
       this.settings.get('no_signal_limit_in_days').setErrors({ lessThanMinimum: true});
     else
       this.settings.get('no_signal_limit_in_days').setErrors(null);
+  }
+
+  validadeMissing(event: any){
+    if(event.target.value < 1) 
+      this.settings.get('missing_sinal_limit_in_days').setErrors({ lessThanMinimum: true});
+    else
+      this.settings.get('missing_sinal_limit_in_days').setErrors(null);
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
