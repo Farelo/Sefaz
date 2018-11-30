@@ -3,6 +3,7 @@ import { TimePipe } from './time';
 import { RoundPipe } from './round';
 import { CompanyType } from './plantType'; 
 import { TruncatePipe } from './truncate';
+import { PackingStatus } from './packingStatus';
 
 @NgModule({
   imports: [
@@ -12,13 +13,15 @@ import { TruncatePipe } from './truncate';
     TimePipe,
     RoundPipe,
     CompanyType, 
-    TruncatePipe
+    TruncatePipe,
+    PackingStatus
   ],
   exports: [
     TimePipe,
     RoundPipe,
     CompanyType, 
-    TruncatePipe
+    TruncatePipe,
+    PackingStatus
   ]
 })
 export class ApplicationPipes {}

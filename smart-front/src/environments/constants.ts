@@ -1,11 +1,19 @@
 export const constants = {
   ADMIN: 'admin',
 
-
-
-
-
-
+  DISABLED_SIGNAL: 'Desabilitada com sinal',
+  DISABLED_NO_SIGNAL:'Desabilitada sem sinal',
+  ANALISYS: 'Análise',
+  TRAVELING: 'Viajando',
+  LATE: 'Embalagem Atrasada',
+  TRAVEL_LOST: 'Viagem Perdida',
+  NO_SIGNAL:'Sem Sinal',
+  LOST: 'Perdida',
+  CORRECT_LOCAL: 'Local Correto',
+  INCORRECT_LOCAL: 'Embalagem em Local Incorreto',
+  MISSING: 'Embalagem Ausente',
+  NORMAL: 'Embalagem Controlada',
+  PERMANENCE_EXCEEDED: 'Tempo de Permanência excedido',
 
   //Constantes antigas
   LOGISTIC: 'Logistic',
@@ -21,14 +29,6 @@ export const constants = {
   GOOGLE_API_KEY: 'AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ',
 
   INCONTIDA: 'Sem Rota e Fora da Planta', // Sem rota e sem planta
-  INCORRECT_LOCAL: 'Embalagem em Local Incorreto',
-  LATE: 'Embalagem Atrasada',
-  MISSING: 'Embalagem Ausente',
-  NORMAL: 'Embalagem Controlada',
-  NO_SIGNAL: 'Embalagem sem sinal',
-  PERMANENCE_EXCEEDED: 'Tempo de Permanência excedido',
-  TRAVELING: 'Viajando',
-  
 
   STATUS_TIME: {
     MISSING: 'MISSING',
