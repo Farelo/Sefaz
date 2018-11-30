@@ -175,8 +175,6 @@ module.exports = router
  *     properties:
  *       name:
  *         type: string
- *       duns:
- *         type: string
  *       lat:
  *         type: number
  *       lng:

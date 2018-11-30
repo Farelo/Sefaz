@@ -40,7 +40,6 @@ describe('api/routes', () => {
             lat: 2,
             lng: 2,
             name: "teste 1",
-            duns: "teste",
             full_address: "teste teste",
             type: new_type._id,
             company: new_company._id
@@ -49,7 +48,6 @@ describe('api/routes', () => {
             lat: 2,
             lng: 2,
             name: "teste 2",
-            duns: "teste",
             full_address: "teste teste",
             type: new_type._id,
             company: new_company._id
@@ -62,8 +60,8 @@ describe('api/routes', () => {
             distance: 100,
             duration_time: 1000,
             traveling_time: {
-              max: 100,
-              min: 50
+                max: 100,
+                min: 50
             }
         }
 
@@ -81,7 +79,7 @@ describe('api/routes', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        jest.setTimeout(30000)
+        // jest.setTimeout(30000)
         
         describe('Validate token by GET method without id', () => {
             const exec = () => {

@@ -141,6 +141,24 @@
     </div>
   </div>
 
+
+  <!-- ========================== -->
+  <!-- Template for deleting GC16 -->
+  <div class="detalhes" *ngIf="mType == 'BPLINE'">
+    <h2> Deletar BPLine </h2>
+    <hr>
+    <p>Família: {{ mObject.family.code }}</p>
+    <p>Volume anual: {{ mObject.annual_volume }}</p>
+  
+    <hr>
+    <div class="alerta">
+      <span class="alert" aria-hidden="true"></span>
+      <p>A remoção desse BPline desassociará Embalagens, Plantas e registros do BPline.
+        As informações serão perdidas, você tem certeza?</p>
+    </div>
+  </div>
+
+  
   <!-- ========================== -->
   <!-- Template default -->
   <div class="botoes">

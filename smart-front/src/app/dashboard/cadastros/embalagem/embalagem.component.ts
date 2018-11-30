@@ -95,28 +95,4 @@ export class EmbalagemComponent implements OnInit {
     this.actualPage = 0;
   }
 
-
-  /**
-   * Uma família foi selecionada
-   */
-  filterChanged(){
-    
-    if (this.selectedFamily){
-
-      // filter our data
-      const temp = this._listOfPackings.filter(item => {
-        return item.family !== this.selectedFamily._id;
-      });
-  
-      // update the rows
-      this.listOfPackings = temp;
-  
-      // Whenever the filter changes, always go back to the first page
-      this.actualPage = 0;
-
-    } else{
-      this._listOfPackings = this._listOfPackings;
-    }
-  }
-
 }

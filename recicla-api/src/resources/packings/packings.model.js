@@ -27,11 +27,6 @@ const packingSchema = new mongoose.Schema({
         maxlength: 30,
         required: true
     },
-    type: {
-        type: String,
-        minlength: 1,
-        maxlength: 30,
-    },
     weigth: {
         type: Number,
         max: 10000,

@@ -1,134 +1,142 @@
 <div class="conteudoTop">
   <div class="base">
-    <h1>BPline</h1>
+    <h2>BPline</h2>
+    <hr>
+
     <br />
+
     <form novalidate (ngSubmit)="onSubmit(gc16)" [formGroup]="gc16">
-      <div class="row diferente2">
-        <div class="col-sm-4">
-          <div class="campo">
-            <p class="descricao">ASSOCIE UM FORNECEDOR</p>
-            <br>
-            <input type="text" class="form-control" placeholder="" [value]="gc16.controls?.supplier.value?.name" disabled>
-          </div>
-        </div>
+
+      <!-- =================== -->
+      <!-- Linha 1 -->
+      <div class="row">
+
+        <!-- Item 1 -->
         <div class="col-sm-4">
           <div class="campo">
             <p class="descricao">EQUIPAMENTO</p>
-            <input type="text" class="form-control" placeholder="" [value]="gc16.controls.packing.value" disabled>
+            <input type="text" class="form-control" placeholder="" [value]="gc16.controls.family.value.code" disabled>
           </div>
         </div>
-        <div class="col-sm-4">
-          <div class="campo">
-            <p class="descricao">PROJETO/PLATAFORMA</p>
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="" [value]="gc16.controls.project?.value?.name" disabled>
-            </div>
-          </div>
-        </div>
+
       </div>
 
-      <div class="row diferente2">
+      <!-- =================== -->
+      <!-- Linha 2 -->
+      <div class="row">
+
+        <!-- Item 1 -->
         <div class="col-sm-4">
           <div class="campo">
             <p class="descricao">VOLUME ANUAL</p>
             <p class="explicacao">Ex. "10000"</p>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" [(ngModel)]="annualVolume" (blur)="onBlurMethod()" formControlName="annualVolume">
+              <input type="number" class="form-control" placeholder="" (blur)="onBlurMethod()"
+                formControlName="annual_volume">
             </div>
           </div>
         </div>
 
+        <!-- Item 2 -->
         <div class="col-sm-4">
           <div class="campo">
             <p class="descricao">DIAS PRODUTIVOS</p>
             <p class="explicacao">Ex. "240 Dias"</p>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" [(ngModel)]="productiveDays" (blur)="onBlurMethod()" formControlName="productiveDays">
+              <input type="number" class="form-control" placeholder="" (blur)="onBlurMethod()"
+                formControlName="productive_days">
             </div>
           </div>
         </div>
 
+        <!-- Item 3 -->
         <div class="col-sm-2">
           <div class="campo">
             <p class="descricao">CAPACIDADE</p>
             <p class="explicacao">Ex. "26"</p>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" [(ngModel)]="capacity" (blur)="onBlurMethod()" formControlName="capacity">
+              <input type="number" class="form-control" placeholder="" (blur)="onBlurMethod()"
+                formControlName="capacity">
             </div>
           </div>
         </div>
+
+        <!-- Item 4 -->
         <div class="col-sm-2">
           <div class="campo">
             <p class="descricao">CONTAINERS/DIA</p>
-            <span class="testeSaco"></span>
+            <span class="descricaoVazia"></span>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="containerDays" formControlName="containerDays">
+              <input type="number" class="form-control" placeholder="" disabled 
+                formControlName="container_days">
             </div>
           </div>
         </div>
       </div>
 
-      <div formGroupName="factoryStock" class="row diferente2">
+      <!-- =================== -->
+      <!-- Linha 3 -->
+      <div formGroupName="owner_stock" class="row">
+
+        <!-- Item 1 -->
         <div class="col-md-4">
           <div class="campo">
             <p class="descricao">ESTOQUE PLANTA MONTADORA</p>
             <p class="explicacao">Ex. "5 Dias"</p>
             <div class="placeholder" data-placeholder="DIAS">
-              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fsDays" formControlName="fsDays"
-                (blur)="onBlurMethod()">
+              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                formControlName="days" (blur)="onBlurMethod()">
             </div>
           </div>
         </div>
-        <div class="col-md-4 dois">
 
-          <div class="row diferente">
-            <div class="col-xs-4 colEsq">
-              <div class="campo campoE">
+        <!-- Item 2 -->
+        <div class="col-md-4">
+          <div class="row no-gutters">
+            <div class="col-sm-12 no-gutters">
+              <div class="campo">
                 <p class="descricao dp">EM</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="placeholder" data-placeholder="%">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="fs" formControlName="fs">
+                  <input type="number" class="form-control" placeholder="" formControlName="value">
                 </div>
               </div>
             </div>
 
-            <div class="col-xs-8 colDir">
-
-
-              <div class="campo campoG">
+            <div class="col-sm-12">
+              <div class="campo">
                 <p class="descricao dp">QNT. CONTAINER</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="input-group test2">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerfs" formControlName="QuantContainerfs">
+                  <input type="number" class="form-control" placeholder="" disabled 
+                    formControlName="qty_container">
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
 
+        <!-- Item 3 -->
+        <div class="col-md-4">
+          <div class="row no-gutters">
 
-        <div class="col-md-4 dois">
-          <div class="row diferente">
-            <div class="col-xs-4 colEsq">
-              <div class="campo campoE">
+            <div class="col-sm-12">
+              <div class="campo">
                 <p class="descricao dp">EM MÁX.</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="placeholder" data-placeholder="%">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="fsMax" formControlName="fsMax">
+                  <input type="number" class="form-control" placeholder="" disabled formControlName="max">
                 </div>
               </div>
             </div>
 
-            <div class="col-xs-8 colDir">
-
-
-              <div class="campo campoG">
+            <div class="col-sm-12">
+              <div class="campo">
                 <p class="descricao dp">QNT. CONTAINER</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="input-group test2">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerfsMax" formControlName="QuantContainerfsMax">
+                  <input type="number" class="form-control" placeholder="" disabled 
+                    formControlName="qty_container_max">
                 </div>
               </div>
             </div>
@@ -138,60 +146,64 @@
       </div>
 
 
-      <div formGroupName="supplierStock" class="row diferente2">
+      <!-- =================== -->
+      <!-- Linha 4 -->
+      <div formGroupName="client_stock" class="row">
         <div class="col-md-4">
           <div class="campo">
             <p class="descricao">ESTOQUE FORNECEDOR</p>
             <p class="explicacao">Ex. "5 Dias"</p>
             <div class="placeholder" data-placeholder="DIAS">
-              <input type="number" min="0" class="form-control" aria-describedby="basic-addon2" [(ngModel)]="ssDays" formControlName="ssDays"
-                (blur)="onBlurMethod()">
+              <input type="number" min="0" class="form-control" aria-describedby="basic-addon2"
+                formControlName="days" (blur)="onBlurMethod()">
             </div>
           </div>
         </div>
-        <div class="col-md-4 dois">
 
-          <div class="row diferente">
-            <div class="col-xs-4 colEsq">
-              <div class="campo campoE">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="campo">
                 <p class="descricao dp">EF</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="placeholder" data-placeholder="%">
-                  <input type="number" class="form-control" disabled [(ngModel)]="ss" formControlName="ss">
+                  <input type="number" class="form-control" disabled formControlName="value">
                 </div>
               </div>
             </div>
 
-            <div class="col-xs-8 colDir">
-              <div class="campo campoG">
+            <div class="col-md-12">
+              <div class="campo">
                 <p class="descricao dp">QNT. CONTAINER</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="input-group test2">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerSs" formControlName="QuantContainerSs">
+                  <input type="number" class="form-control" placeholder="" disabled 
+                    formControlName="qty_container">
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="col-md-4 dois">
-          <div class="row diferente">
-            <div class="col-xs-4 colEsq">
-              <div class="campo campoE">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="campo">
                 <p class="descricao dp">EF MÁX.</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="placeholder" data-placeholder="%">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="ssMax" formControlName="ssMax">
+                  <input type="number" class="form-control" placeholder="" disabled formControlName="max">
                 </div>
               </div>
             </div>
 
-            <div class="col-xs-8 colDir">
-              <div class="campo campoG">
+            <div class="col-md-12">
+              <div class="campo">
                 <p class="descricao dp">QNT. CONTAINER</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="input-group test2">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerSsMax" formControlName="QuantContainerSsMax">
+                  <input type="number" class="form-control" placeholder="" disabled
+                    formControlName="qty_container_max">
                 </div>
               </div>
             </div>
@@ -201,120 +213,131 @@
       </div>
 
 
-      <div formGroupName="transportationGoing" class="row diferente2">
+      <!-- =================== -->
+      <!-- Linha 5 -->
+      <div formGroupName="transportation_going" class="row">
+
         <div class="col-sm-4">
           <div class="campo">
             <p class="descricao">TRANSP. IDA</p>
             <p class="explicacao">Ex. "2 Dias"</p>
             <div class="placeholder" data-placeholder="DIAS">
-              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tgDays" formControlName="tgDays"
-                (blur)="onBlurMethod()">
+              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                formControlName="days" (blur)="onBlurMethod()">
             </div>
           </div>
         </div>
-        <div class="col-sm-8">
-          <div class="row diferente">
-            <div class="col-xs-4 colEsq">
-              <div class="campo">
-                <p class="descricao">TI</p>
-                <span class="testeSaco"></span>
-                <div class="placeholder" data-placeholder="%">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="tg" formControlName="tg">
-                </div>
-              </div>
-            </div>
 
-            <div class="col-xs-8 colDir">
-              <div class="campo">
-                <p class="descricao">QNT. CONTAINER</p>
-                <span class="testeSaco"></span>
-                <div class="input-group">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerTg" formControlName="QuantContainerTg">
-                </div>
-              </div>
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">TI</p>
+            <span class="descricaoVazia"></span>
+            <div class="placeholder" data-placeholder="%">
+              <input type="number" class="form-control" placeholder="" disabled formControlName="value">
             </div>
+          </div>
+        </div>
 
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">QNT. CONTAINER</p>
+            <span class="descricaoVazia"></span>
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="" disabled 
+                formControlName="qty_container">
+            </div>
           </div>
         </div>
       </div>
 
 
-      <div formGroupName="transportantionBack" class="row diferente2">
+      <!-- =================== -->
+      <!-- Linha 6 -->
+      <div formGroupName="transportation_back" class="row">
+
+        <!-- Item 1 -->
         <div class="col-sm-4">
           <div class="campo">
             <p class="descricao">TRANSP. VOLTA</p>
             <p class="explicacao">Ex. "2 Dias"</p>
             <div class="placeholder" data-placeholder="DIAS">
-              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="tbDays" formControlName="tbDays"
-                (blur)="onBlurMethod()">
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-8">
-          <div class="row diferente">
-            <div class="col-xs-4  colEsq">
-              <div class="campo">
-                <p class="descricao">TV</p>
-                <span class="testeSaco"></span>
-                <div class="placeholder" data-placeholder="%">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="tb" formControlName="tb">
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-8  colDir">
-              <div class="campo">
-                <p class="descricao">QNT. CONTAINER</p>
-                <span class="testeSaco"></span>
-                <div class="input-group">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainerTb" formControlName="QuantContainerTb">
-                </div>
-              </div>
+              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                formControlName="days" (blur)="onBlurMethod()">
             </div>
           </div>
         </div>
 
+        <!-- Item 2 -->
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">TV</p>
+            <span class="descricaoVazia"></span>
+            <div class="placeholder" data-placeholder="%">
+              <input type="number" class="form-control" placeholder="" disabled formControlName="value">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="campo">
+            <p class="descricao">QNT. CONTAINER</p>
+            <span class="descricaoVazia"></span>
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="" disabled
+                formControlName="qty_container">
+            </div>
+          </div>
+        </div>
       </div>
-      <!--row-->
+      
 
+      <!-- =================== -->
+      <!-- Linha 7 -->
+      <div formGroupName="frequency" class="row">
 
-      <div formGroupName="frequency" class="row diferente2">
+        <!-- Item 1 -->
         <div class="col-md-4">
           <div class="campo">
             <p class="descricao">FREQUÊNCIA</p>
             <p class="explicacao">Ex. "3 Dias"</p>
-            <div class="placeholder" data-placeholder="DIAS">
+            <div class="placeholder" data-placeholder="DIAS"> 
 
-              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2" [(ngModel)]="fDays" formControlName="fDays"
-                (blur)="onBlurMethod()">
+              <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                formControlName="days" (blur)="onBlurMethod()">
             </div>
           </div>
         </div>
+
+        <!-- Item 2 -->
         <div class="col-md-8">
-          <div class="row diferente">
-            <div class="col-sm-4 campoEsq">
+          <div class="row">
+            <div class="col-sm-4">
               <div class="campo">
                 <p class="descricao">FR</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="placeholder" data-placeholder="%">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="fr" formControlName="fr">
+                  <input type="number" class="form-control" placeholder="" disabled formControlName="fr">
                 </div>
               </div>
             </div>
-            <div class="col-sm-4 campoMeio">
+
+            <div class="col-sm-4">
               <div class="campo">
                 <p class="descricao">QNT. CONTAINER</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="input-group">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainer" formControlName="QuantContainer">
+                  <input type="number" class="form-control" placeholder="" disabled 
+                    formControlName="qty_container">
                 </div>
               </div>
             </div>
-            <div class="col-sm-4 campoDir">
+            <div class="col-sm-4">
               <div class="campo">
                 <p class="descricao">TOTAL DE DIAS</p>
-                <span class="testeSaco"></span>
+                <span class="descricaoVazia"></span>
                 <div class="placeholder" data-placeholder="%">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantTotalDays" formControlName="QuantTotalDays">
+                  <input type="number" class="form-control" placeholder="" disabled 
+                    formControlName="qty_total_days">
                 </div>
               </div>
             </div>
@@ -323,45 +346,55 @@
         </div>
       </div>
 
-      <div formGroupName="secutiryFactor" class="row diferente2">
+
+      <!-- =================== -->
+      <!-- Linha 8 -->
+      <div formGroupName="security_factor" class="row">
+
+        <!-- Item 1 -->
         <div class="col-md-4">
           <div class="campo">
             <p class="descricao">FATOR DE SEGURANÇA</p>
             <p class="explicacao">Ex. "10"</p>
             <div class="placeholder" data-placeholder="%">
-              <input type="number" class="form-control" placeholder="" [(ngModel)]="percentage" formControlName="percentage" (blur)="onBlurMethod()">
+              <input type="number" class="form-control" placeholder="" formControlName="percentage"
+                (blur)="onBlurMethod()">
             </div>
           </div>
         </div>
-        <div class="col-md-8">
-          <div class="row diferente">
-            <div class="col-sm-6 campoEsq">
-              <div class="campo">
-                <p class="descricao">QUANT. CONTAINER</p>
-                <span class="testeSaco"></span>
-                <div class="input-group">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantContainer" formControlName="QuantContainer">
-                </div>
-              </div>
+        
+        <!-- Item 2 -->
+        <div class="col-md-4">
+          <div class="campo">
+            <p class="descricao">QUANT. CONTAINER</p>
+            <span class="descricaoVazia"></span>
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="" disabled 
+                formControlName="qty_container">
             </div>
-            <div class="col-sm-6 campoDir">
-              <div class="campo">
-                <p class="descricao">QUANT. TOTAL CONSTRUÍDA</p>
-                <span class="testeSaco desaparecer"></span>
-                <div class="input-group">
-                  <input type="number" class="form-control" placeholder="" disabled [(ngModel)]="QuantTotalBuilt" formControlName="QuantTotalBuilt">
-                </div>
-              </div>
-            </div>
+          </div>
+        </div>
 
+        <!-- Item 3 -->
+        <div class="col-md-4">
+          <div class="campo">
+            <p class="descricao">QUANT. TOTAL CONSTRUÍDA</p>
+            <span class="descricaoVazia desaparecer"></span>
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="" disabled 
+                formControlName="qty_total_build">
+            </div>
           </div>
         </div>
       </div>
+
       <br>
+
       <div class="botoes">
         <button routerLink="/rc/bpline" class="botaoVoltar">VOLTAR</button>
-        <button type="submit" class="botaoSalvar">ATUALIZAR</button>
+        <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
       </div>
+
       <br>
     </form>
 

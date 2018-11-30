@@ -14,34 +14,28 @@ export class GC16Service {
       return Observable.throw(error);
   }
 
-  getGC16sPagination(limit: number, page: number, attr: any): Observable<any> {
-  return this.http.get(`${environment.url}gc16/list/all/pagination/${limit}/${page}?attr=${attr}`)
+  getGC16(gcId): Observable<any> {
+    return this.http.get(`${environment.url}/gc16/${gcId}`)
       .catch(this.handleError);
   }
 
-  retrieveAll(): Observable<any> {
-    return this.http.get(`${environment.url}gc16/list/all`)
+  getAllGC16(): Observable<any> {
+    return this.http.get(`${environment.url}/gc16`)
       .catch(this.handleError);
   }
 
-  retrieveGC16(id: string): Observable<any>{
-    return this.http.get(`${environment.url}gc16/retrieve/${id}`)
+  createGC16(newGc: any): Observable<any> {
+    return this.http.post(`${environment.url}/gc16`, newGc)
       .catch(this.handleError);
   }
 
-  updateGC16(id: string, gc16: GC16): Observable<any>{
-    return this.http.put(`${environment.url}gc16/update/${id}`,gc16)
+  editGC16(gcId: any, newGc: any): Observable<any> {
+    return this.http.patch(`${environment.url}/gc16/${gcId}`, newGc)
       .catch(this.handleError);
   }
-
-  deleteGC16(id: string): Observable<any>{
-    return this.http.delete(`${environment.url}gc16/delete/${id}`)
-      .catch(this.handleError);
-  }
-
-  createGC16(gc16: GC16): Observable<any>{
-
-    return this.http.post(`${environment.url}gc16/create`, gc16)
+  
+  deleteGC16(gcId: any): Observable<any> {
+    return this.http.delete(`${environment.url}/gc16/${gcId}`)
       .catch(this.handleError);
   }
 

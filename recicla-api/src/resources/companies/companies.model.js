@@ -9,6 +9,11 @@ const companySchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 50
     },
+    duns: {
+        type: String,
+        minlength: 2,
+        maxlength: 50,
+    },
     phone: {
         type: String,
         minlength: 10,
@@ -67,6 +72,7 @@ companySchema.statics.findByName = function (name, projection = '') {
 const validate_companies = (company) => {
     const schema = Joi.object().keys({
         name: Joi.string().min(5).max(50).required(),
+        duns: Joi.string().min(2).max(50),
         phone: Joi.string().min(10).max(14),
         cnpj: Joi.string().min(14).max(20),
         address: {
