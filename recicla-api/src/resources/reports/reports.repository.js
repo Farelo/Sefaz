@@ -3,14 +3,66 @@ const _ = require('lodash')
 const moment = require('moment')
 const { Company } = require('../companies/companies.model')
 const { ControlPoint } = require('../control_points/control_points.model')
-const { DeviceData } = require('../device_data/device_data.model')
 const { EventRecord } = require('../event_record/event_record.model')
-const { AlertHistory } = require('../alert_history/alert_history.model')
 const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
 const { GC16 } = require('../gc16/gc16.model')
-const { User } = require('../users/users.model')
+const { Setting } = require('../settings/settings.model')
+// const { DeviceData } = require('../device_data/device_data.model')
+// const { AlertHistory } = require('../alert_history/alert_history.model')
+// const { User } = require('../users/users.model')
 
+exports.home_report = async (current_state = null) => {
+    try {
+        
+        const packings = current_state ? 
+            await Packing.find({ active: true, current_state: current_state })
+                .populate('family')
+                .populate('last_device_data')
+                .populate('last_event_record')
+            : 
+            await Packing.find({ active: true })
+                .populate('family')
+                .populate('last_device_data')
+                .populate('last_event_record')
+        
+        if (current_state) {
+            return Promise.all(
+                packings.map(async packing => {
+                    let obj_temp = {}
+
+                    const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
+
+                    obj_temp.family_code = packing.family.code
+                    obj_temp.serial = packing.serial
+                    obj_temp.tag = packing.tag.code
+                    obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
+                    obj_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
+                    obj_temp.battery_percentage = packing.last_device_data ? packing.last_device_data.battery.percentage : 'Sem registro'
+                    obj_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : 'Sem registro'
+                    obj_temp.date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : 'Sem registro'
+
+                    return obj_temp
+                })
+            )
+        } else {
+            let data = _.countBy(packings, 'current_state')
+
+            const packings_low_battery = await Packing.find({ active: true, low_battery: true }).select(['_id', 'current_state']).count()
+            const packings_permanence_time_exceeded = await Packing.find({ active: true, permanence_time_exceeded: true }).select(['_id', 'current_state']).count()
+            
+            data.low_battery = packings_low_battery
+            data.permanence_time_exceeded = packings_permanence_time_exceeded
+
+            return data
+        }
+
+
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 exports.general_report = async () => {
     try {
         const aggregate = await Packing.aggregate([
@@ -129,29 +181,32 @@ exports.snapshot_report = async () => {
             .populate('family')
             .populate('last_device_data')
             .populate('last_event_record')
+        const settings = await Setting.find({})
 
         const data = await Promise.all(
-            packings.map(async (packing, index) => {
+            packings.map(async packing => {
                 let obj = {}
 
                 obj.id = packing._id
-                obj.message_date = packing.last_device_data ? packing.last_device_data.message_date : '-'
+                obj.message_date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : '-'
                 obj.family = packing.family.code
                 obj.serial = packing.serial
                 obj.tag = packing.tag.code
                 obj.current_state = packing.current_state
-                obj.collection_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
+                obj.collect_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
                 obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
-                obj.lat_lng = await getLatLngOfPacking(packing)
+                obj.lat_lng_device = await getLatLngOfPacking(packing)
                 obj.lat_lng_cp = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getLatLngOfControlPoint(packing) : '-'
-                obj.control_point_local = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getTypeOfControlPoint(packing) : '-'
-                obj.control_point_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getNameOfControlPoint(packing) : '-'
+                obj.cp_type = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getTypeOfControlPoint(packing) : '-'
+                obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getNameOfControlPoint(packing) : '-'
                 obj.geo = 'C'
-                obj.area = '-'
+                obj.area = `{(${await getLatLngOfPacking(packing)}),${settings[0].range_radius}}`
                 obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : '-'
                 obj.signal = packing.current_state === 'sem_sinal' ? 'FALSE' : packing.current_state === 'desabilitada_sem_sinal' ? 'FALSE' : packing.current_state === 'perdida' ? 'FALSE' : 'TRUE'
-                obj.absent_time_countdown = await getAbsentTimeCountDown(packing)
+                obj.absent_time = await getAbsentTimeCountDown(packing)
                 obj.battery = packing.last_device_data ? packing.last_device_data.battery.percentage : "-"
+                obj.battery_alert = packing.last_device_data && packing.last_device_data.battery.percentage > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
+                obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : "-"
 
                 return obj
             })
@@ -373,7 +428,6 @@ exports.battery_report = async (family_id = null) => {
                     object_temp.serial = packing.serial
                     object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
                     object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
-                    object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
                     object_temp.battery_percentage = packing.last_device_data.battery.percentage
                     object_temp.battery_level = packing.last_device_data.battery.percentage < 20 ? 'Baixa' : packing.last_device_data.battery.percentage < 80 ? 'Média' : 'Alta' 
 
@@ -382,6 +436,156 @@ exports.battery_report = async (family_id = null) => {
         )
 
         return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.quantity_report = async (family_id = null) => {
+    try {
+        let data = []
+        const families = family_id ? await Family.find({ _id: family_id }).populate('company').populate('gc16').populate('routes').populate('control_points') : await Family.find({}).populate('company').populate('gc16').populate('routes').populate('control_points')
+        
+        for (let family of families) {
+            let stock = null
+
+            if (family.gc16) stock = family.company.type === 'owner' ? family.gc16.owner_stock : family.gc16.client_stock
+            const packings = await Packing.find({ family: family._id, active: true }).populate('last_event_record')
+            const qtd_total = await Packing.find({ family: family._id, active: true }).count()
+            // const qtd_analysis = await Packing.find({ family: family._id, current_state: 'analise' }).count()
+            const packings_outbound = packings.filter(packing => packing.last_event_record && packing.last_event_record.type === 'outbound')
+            const packings_inbound = await Promise.all(
+                packings
+                    .filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
+                    .map(async packing => {
+                        let obj_temp = {}
+                        const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
+
+                        obj_temp.control_point_name = cp.name
+                        obj_temp.control_point_type = cp.type.name
+
+                        return obj_temp
+                    })
+            )
+            
+            const output = Object.entries(_.countBy(packings_inbound, 'control_point_name')).map(([key, value]) => {
+                const packing_temp = packings_inbound.filter(p => p.control_point_name === key)
+                return {
+                    family_code: family.code,
+                    company: family.company.name,
+                    stock_min: stock ? stock.qty_container : '-',
+                    stock_max: stock ? stock.qty_container_max : '-',
+                    packings_traveling: packings_outbound.length,
+                    total: value,
+                    control_point_name: key,
+                    control_point_type: packing_temp[0].control_point_type,
+                    qtd_total: qtd_total
+                }   
+            })
+
+            data.push(output)
+        }
+
+        return _.flatMap(data)
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.general_info_report = async(family_id = null) => {
+    try {
+        let current_family = family_id ? await Family.findOne({ _id: family_id }) : null
+        let packings = family_id != null ? 
+            await Packing.find({ active: true, family: current_family._id })
+                .populate('family')
+                .populate('last_device_data')
+                .populate('last_event_record') 
+            :
+            await Packing.find({ active: true })
+                .populate('family')
+                .populate('last_device_data')
+                .populate('last_event_record')
+
+        const data = await Promise.all(
+            packings
+                .map(async packing => {
+                    let object_temp = {}
+
+                    const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
+                    const company = await Company.findById(packing.family.company)
+
+                    object_temp._id = packing._id
+                    object_temp.tag = packing.tag.code
+                    object_temp.family_code = packing.family.code
+                    object_temp.serial = packing.serial
+                    object_temp.company = company.name
+                    object_temp.current_state = packing.current_state
+                    object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
+                    object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
+                    object_temp.battery_percentage = packing.last_device_data ? packing.last_device_data.battery.percentage : 'Sem registro'
+                    object_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : 'Sem registro'
+                    object_temp.date = packing.last_device_data ? packing.last_device_data.created_at : 'Sem registro'
+
+                    return object_temp
+                })
+        )
+
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.clients_report = async(company_id = null) => {
+    try {
+        let data = []
+        const families = company_id ? 
+            await Family.find({ company: company_id })
+                .populate('company')
+                .populate('gc16')
+                .populate('routes')
+                .populate('control_points')
+            :
+            await Family.find({})
+                .populate('company')
+                .populate('gc16')
+                .populate('routes')
+                .populate('control_points')
+
+        for (let family of families) {
+
+            const packings = await Packing.find({ family: family._id, active: true }).populate('last_event_record')
+            const packings_outbound = packings.filter(packing => packing.last_event_record && packing.last_event_record.type === 'outbound')
+            const packings_inbound = await Promise.all(
+                packings
+                    .filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
+                    .map(async packing => {
+                        let obj_temp = {}
+                        const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
+
+                        obj_temp.control_point_name = cp.name
+                        obj_temp.control_point_type = cp.type.name
+
+                        return obj_temp
+                    })
+            )
+
+            const output = Object.entries(_.countBy(packings_inbound, 'control_point_name')).map(([key, value]) => {
+                const packing_temp = packings_inbound.filter(p => p.control_point_name === key)
+                return {
+                    family_code: family.code,
+                    company: family.company.name,
+                    packings_traveling: packings_outbound.length,
+                    control_point_name: key,
+                    control_point_type: packing_temp[0].control_point_type,
+                    qtd: value
+                }
+            })
+
+            data.push(output)
+        }
+
+        return _.flatMap(data)
     } catch (error) {
         throw new Error(error)
     }
