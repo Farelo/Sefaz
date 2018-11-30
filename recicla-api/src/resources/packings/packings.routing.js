@@ -32,6 +32,11 @@ module.exports = router
  *         in: query
  *         required: false
  *         type: string
+ *       - name: family
+ *         description: Return packing filtered by family
+ *         in: query
+ *         required: false
+ *         type: string
  *     responses:
  *       200:
  *         description: list of all packings

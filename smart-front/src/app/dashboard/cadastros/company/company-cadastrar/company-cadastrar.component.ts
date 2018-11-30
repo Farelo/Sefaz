@@ -64,7 +64,9 @@ export class CompanyCadastrarComponent implements OnInit {
 
       this.companiesService
         .createCompany(value)
-        .subscribe(result => { this.router.navigate(['/rc/cadastros/company']); this.toastService.successModal('Empresa criada!') });
+        .subscribe(result => { 
+          this.router.navigate(['/rc/cadastros/company']); this.toastService.successModal('Empresa criada!') 
+        });
     }
   }
 

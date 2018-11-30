@@ -22,7 +22,7 @@
     <li>
       <a routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
     </li>
-    <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentUser()?.gc16 === true">
+    <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
       <a routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
     </li>
     <li class="usuario" [ngbPopover]='popContent' placement="bottom-right" triggers="manual" #p="ngbPopover" (click)="p.toggle()" (shown)="posicionarPopOver()"> 
@@ -67,7 +67,7 @@
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
         </li>
 
-        <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentUser()?.gc16 === true">
+        <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
           <!-- <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">BPline</a> -->
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
         </li>
@@ -176,8 +176,9 @@
       </li>
     
       <li style="padding: 5px 0px;">
-        <hr> </li>
-    
+        <hr> 
+      </li>
+      
       <li>
         <a (click)="logout()"> Sair </a>
       </li>

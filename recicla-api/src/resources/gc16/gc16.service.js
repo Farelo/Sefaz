@@ -4,8 +4,7 @@ const { GC16 } = require('./gc16.model')
 
 exports.get_gc16_list = async () => {
     try {
-        const gc16_list = await GC16.find({})
-            .populate('family')
+        const gc16_list = await GC16.find({}).populate('family')
 
         return gc16_list
 
