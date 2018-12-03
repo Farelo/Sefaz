@@ -2,33 +2,6 @@ const debug = require('debug')('service:packings')
 const _ = require('lodash')
 const reports_repository = require('./reports.repository')
 
-exports.home_report = async (current_state) => {
-    try {
-        const data = await reports_repository.home_report(current_state)
-        return data
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-
-exports.home_low_battery_report = async () => {
-    try {
-        const data = await reports_repository.home_low_battery_report()
-        return data
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-
-exports.home_permanence_time_exceeded_report = async () => {
-    try {
-        const data = await reports_repository.home_permanence_time_exceeded_report()
-        return data
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-
 exports.general_report = async () => {
     try {
         const data = await reports_repository.general_report()
