@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, Input, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Pagination } from '../../../shared/models/pagination'; 
-import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService, ReportsService } from '../../../servicos/index.service';
+import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService, ReportsService, CompaniesService, FamiliesService } from '../../../servicos/index.service';
 import { ChatService } from '../../../servicos/teste';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
@@ -13,21 +13,22 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 export class InventarioGeralComponent implements OnInit {
 
-  @Input() supplier: string;
-  @Input() equipment: string;
+  public listOfCompanies: any[] = []; 
+  public mCompany: any = null;
 
-  public logged_user: any;
-  public detailedGeneralInventory: Pagination = new Pagination({ meta: { page: 1 } });
-  public detailedGeneralpackings: any[];
-  public suppliers: any;
-  private selectedSupplier: any;
-  private selectedEquipament: any;
+  public listOfPackings: any[] = [];
+  public mPacking: any = null;
+
+  public detailedGeneralInventory: any[] = [];
+  public auxDetailedGeneralInventory: any[] = [];
+  public actualPage: number = -1;
   
   constructor(
-    private reportsService: ReportsService,
+    private reportService: ReportsService,
     private inventoryService: InventoryService,
-    private suppliersService: SuppliersService,
+    protected companiesService: CompaniesService,
     private packingService: PackingService,
+    private familyService: FamiliesService,
     private auth: AuthenticationService,
     private chatService: ChatService) {
 
@@ -37,136 +38,122 @@ export class InventarioGeralComponent implements OnInit {
 
   ngOnInit() {
 
-    this.loadSuppliers();
+    this.loadCompanies(); 
     this.loadDetailedInventory();
   }
-
-  ngOnChanges(changes: SimpleChanges) {
-    
-    if (changes['supplier']) {
-      //console.log('ngOnChanges supplier: ' + JSON.stringify(this.supplier));
-      this.supplierDetailedInventory(this.supplier);
-    }
-    
-    if (changes['equipment']) {
-      //console.log('ngOnChanges equipment: ' + JSON.stringify(this.supplier));
-      this.equipamentDetailedInventory(this.equipment);
-    }
-  }
-
-  public getChild(parent: any = { plant_name: '' }) {
-    //console.log('parent.plant_name: ' + parent.plant_name);
-    return parent.plant_name;
-  }
   
-  onClearSupplier(){
-    //console.log('clear supplier');
-    this.selectedEquipament = null;
-  }
-
   /**
-   * Equipment select was cleared
+   * Load the list of companies
    */
-  onClear() {
-    //console.log('clear equipment');
-    this.supplierDetailedInventory(this.selectedSupplier);
+  loadCompanies(): void {
+
+    this.familyService.getAllFamilies().subscribe(result => { 
+
+      let auxListOfCompanies = [];
+
+      result.map(elem => {
+        if (auxListOfCompanies.length < 1) {
+          auxListOfCompanies.push(elem.company);
+
+        } else {
+          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1) 
+            auxListOfCompanies.push(elem.company);
+        }
+      }); 
+
+      console.log(JSON.stringify(auxListOfCompanies));
+
+      // o view só muda quando há atribuição, 
+      // se fizer push direto no array ele não muda no select do view
+      this.listOfCompanies = auxListOfCompanies;
+
+    }, err => console.error(err));
   }
 
-  /**
-  * Initial configuration of all collapses
-  * @param  Initial state: true(collapsed) or false(expanded)
-  */
-  setInitialCollapse(state: boolean) {
-    this.detailedGeneralInventory.data.map(o => {
-      o.isCollapsed = state;
-      return o;
-    })
-  }
-
-  thereResult(all_plants: any){
-    let acum = 0;
-    
-    //console.log('all_plants: ' + JSON.stringify(all_plants));
-
-    for (let i = 0; i < all_plants.length; i++){
-
-      if (all_plants[i].current_plant.plant !== undefined){
-        //console.log('current_plant: ' + JSON.stringify(all_plants[i].current_plant));
-        acum++;
-        break;
-      }
-    }
-
-    //console.log('acum: ' + acum);
-    return acum;
-  }
-
-  loadSuppliers(): void {
-    this.suppliersService.retrieveAll().subscribe(result => this.suppliers = result.data, err => { console.log(err) });
-  }
-  
   /**
    * Loads the initial list of detailed inventory
    */
   loadDetailedInventory(): void {
-    this.inventoryService.getDetailedGeneralInventory(10, this.detailedGeneralInventory.meta.page).subscribe(result => {
+    this.reportService.getGeneralEquipmentInventory().subscribe(result => {
+
       this.detailedGeneralInventory = result;
+      this.auxDetailedGeneralInventory = result;
       this.setInitialCollapse(true);
       //console.log('this.detailedGeneralInventory: ' + JSON.stringify(this.detailedGeneralInventory));
     }, err => { console.log(err) });
   }
 
   /**
-   * Loads the list of plants in the details of a table row
-   * @param event The object that represents the entire clicked row 
+   * A company was selected
+   * @param event 
    */
-  loadPlantsInDetailedInventory(event: any): void {
-    //console.log(JSON.stringify(event));
+  companyFilter(event: any){
+    console.log(event);
+    this.mPacking = null;
+
+    if (!event){
+      this.detailedGeneralInventory = this.auxDetailedGeneralInventory;
+      return;
+    }
+
+    this.detailedGeneralInventory = this.auxDetailedGeneralInventory.filter(elem => {
+      return elem.company == event.name;
+    });
+
+    this.loadPackings(event);
   }
 
   /**
-   * A supplier was selected
+   * Once a company was selected, loads the packings
+   * @param event
    */
-  supplierDetailedInventory(event: any): void {
+  loadPackings(event: any){
+    console.log(event);
 
-    if (event) {
-      this.selectedSupplier = event;
-      this.packingService.getPackingsDistinctsBySupplier(event._id).subscribe(result => {
-        this.detailedGeneralpackings = result.data;
-
-        this.inventoryService.getDetailedGeneralInventoryBySupplier(10, this.detailedGeneralInventory.meta.page, event._id).subscribe(res => {
-          this.detailedGeneralInventory = res;
-          this.setInitialCollapse(true);
-        }, err => { console.log(err) });
-      }, err => { console.log(err) });
-
-      //console.log('selectedSupplier: ' + JSON.stringify(this.selectedSupplier));
-    } else {
-      this.loadDetailedInventory()
-      this.selectedSupplier = null
-    }
+    let aux =  this.detailedGeneralInventory.filter(elem => {
+      return (elem.company == event.name);
+    });
+ 
+    this.listOfPackings = aux;
+    console.log(this.listOfPackings);
   }
 
   /**
-   * An equipment was selected
+   * A packing was selected
+   * @param event 
    */
-  equipamentDetailedInventory(event: any) {
-    if (event) {
-      this.selectedEquipament = event;
-      //console.log(event)
-      this.inventoryService.getDetailedGeneralInventoryBySupplierAndEquipment(10, this.detailedGeneralInventory.meta.page, this.selectedSupplier._id, event.packing).subscribe(res => {
-        //console.log(res)
-        this.detailedGeneralInventory = res;
-        this.setInitialCollapse(true);
-      }, err => { console.log(err) });
+  packingFilter(event: any) {
+    console.log(event);
+
+    if (!event) {
+      this.detailedGeneralInventory = this.auxDetailedGeneralInventory;
+      return;
     }
+
+    this.detailedGeneralInventory = this.auxDetailedGeneralInventory.filter(elem => {
+      return elem.family_name == event.family_name;
+    });
   }
 
 
-  detailedGeneralInventoryChangePage(event: any): void {
-    console.log('detailedGeneralInventoryChangePage');
-  }
 
+
+
+
+
+
+
+  /**
+  * Initial configuration of all collapses
+  * @param  Initial state: true(collapsed) or false(expanded)
+  */
+  setInitialCollapse(state: boolean) {
+    this.detailedGeneralInventory.map(o => {
+      o.isCollapsed = state;
+      return o;
+    })
+  }
+  
   private csvOptions = {
     showLabels: true,
     fieldSeparator: ';'
@@ -176,8 +163,8 @@ export class InventarioGeralComponent implements OnInit {
     console.log('Download on excel');
 
     let params = {};
-    if (this.selectedSupplier) params['supplier_id'] = this.selectedSupplier._id;
-    if (this.selectedEquipament) params['package_code'] = this.selectedEquipament._id.code;
+    // if (this.selectedSupplier) params['supplier_id'] = this.selectedSupplier._id;
+    // if (this.selectedEquipament) params['package_code'] = this.selectedEquipament._id.code;
 
     this.inventoryService.getDataToCsv(params).subscribe(result => {
 

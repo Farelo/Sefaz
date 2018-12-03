@@ -120,13 +120,18 @@ hr {
   border-bottom: 1px solid #6382c9;
 }
 
-.inner-table{
+.div-inner-table{
   margin-top: 10px;
   width: fit-content;
   min-width: 40%;
   float:left;
   margin-left: 15px;
   border: 1px solid #ddd;
+}
+
+.inner-table > thead > tr > th, 
+.inner-table > tbody > tr > td {
+  padding: .45rem;
 }
 
 .icon-inner-level{
