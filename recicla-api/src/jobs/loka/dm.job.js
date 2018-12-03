@@ -4,85 +4,94 @@ const { Packing } = require('../../resources/packings/packings.model')
 const { DeviceData } = require('../../resources/device_data/device_data.model')
 // const packings = require('./devices')
 
-//TODO: criar a rotina de job, aqui ou em outro ponto (feito)
-//TODO: converter a data de busca obtida do banco para timezone local (feito)
-//TODO: ver se usar no endDate apenas o new Date() é suficiente (feito)
-//TODO: revisar os requires desnecessarios (feito)
-//TODO: testar para muitos devices com startDate de 2 dias (feito)
 //TODO: testar para muitos devices com startDate de meses (funciona até certo momento aí depois o job trava) encontrar o porquê
-// |-> verificar se pode ser o Keep-alive timeout=5 e max=100
-// |-> verificar se pode ser porque abro muitos logins e nao faço nenhum logout
-// |-> se reapoveitar o cookie até ele expirar pode melhorar isso: cada login gera 1 cookie e cada device abre 2 cookies por execução do job: 1 para o confirm e 1 para o getData
-//TODO: amanhã cedo implementar o request de logout no dm.service e executar esse logout aqui, após o save(), para cada device
-//TODO: encontrar meio de obter de forma melhor uma data startDate quando nao houver device_data previamente
+// |-> verificar se pode ser o Keep-alive timeout=5 e max=100 (ja forcei o 'close' ao termino de cada request)
+// |-> verificar se pode ser porque abro muitos logins e nao faço nenhum logout (ja implementei o login/logout por request e/ou por execução de job e não melhorou)
+// |-> se reapoveitar o cookie até ele expirar pode melhorar isso: cada login gera 1 cookie e cada device abre 2 cookies por execução do job: 1 para o confirm e 1 para o getData (nao melhorou, problema no servidor mesmo)
 //TODO: criar logs melhores para os erros 
 
 module.exports = async () => {
-    //endDateSearch = currente environment timezone datetime
-    const endDateSearch = (new Date()).toLocaleString()
+    //end_search_date = currente environment timezone datetime
+    const end_search_date = (new Date()).toLocaleString()
     
+    const results = {}
+
     try {
+        const cookie = await dm_controller.loginDM()
+
         //devices = [ { tag: { code: code_value } } ]
-        let devices = await Packing.find({}, {_id: 0, tag: 1})
+        let devices = await Packing.find({}, {_id: 0, tag: 1})//.limit(10)
 
         //TODO: retirar esse trecho pra entrega final e seu respectivo require
         // let devices = await packings
-        // debug(devices)
+        debug(devices)
         // let devices = [{ tag: { code: 999}},
         //     { tag: { code: 987}},
         //     { tag: { code: 985}},
         //     { tag: { code: 5040349}}
         // ]
 
-        let i = 0
-        let j = 0
-        let total = devices.length
+        let concluded_devices = 0
+        let error_devices = 0
+        let total_devices = devices.length
 
-        let devices_data_promises = devices.map(async packing => {
+        let device_data_promises = devices.map(async packing => {
+
             try {
                 const last_message_date = await DeviceData.find({device_id: packing.tag.code}, {_id: 0, message_date: 1}).sort({message_date: 'desc'}).limit(1)
 
-                let startDateSearch = last_message_date[0] ? add_seconds(last_message_date[0].message_date, 1) : new Date('2018-11-19 00:00:00')
+                const week_in_milliseconds = 604800000
 
-                startDateSearch = startDateSearch.toLocaleString()
+                let start_search_date = last_message_date[0] ? add_seconds(last_message_date[0].message_date, 1) :  new Date(Date.parse(new Date()) - week_in_milliseconds)
 
-                await dm_controller.confirmDevice(packing.tag.code)
-               
-                // debug('Device ', packing.tag.code, ' confirmado na loka e data de busca a partir de ', startDateSearch)
+                start_search_date = start_search_date.toLocaleString()
 
-                const data = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, startDateSearch, endDateSearch, null)
+                await dm_controller.confirmDevice(packing.tag.code, cookie)
+
+                const data = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, start_search_date, end_search_date, null, cookie)
 
                 if (data) {
 
-                    await save_data_device(data)
+                    await save_device_data(data)
 
-                    i++
-                    debug('Devices que deram certo: ', i, ' de ', total)
+                    concluded_devices++
+
+                    //nao precisa realizar o return data, a nao ser que queira debugar o loop for-await-for abaixo
+                    // return data
                 }
 
             } catch (error) {
 
-                debug('Erro no device: ' + packing.tag.code + ' | ' + error)
+                debug('Erro ocorrido no device: ' + packing.tag.code + ' | ' + error)
 
-                j++
-                debug('Devices que deram errado: ', j, ' de ', total)
+                error_devices++
             }
         })
 
         //esse for existe dessa maneira somente para garantir que cada promessa do array de promessas de devices seja finalizado (resolvido ou rejeitado) 
-        for await(const device_data_promise of devices_data_promises) {
-
+        for await (const device_data_promise of device_data_promises) {
+            
         }
+
+        await dm_controller.logoutDM(cookie)
+        
+        results.result1 = `Devices que deram certo:  ${concluded_devices} de ${total_devices}`
+
+        results.result2 = `Devices que deram errado:  ${error_devices} de  ${total_devices}`
+
+        results.result3 = `Job LOKA encerrado em ${new Date().toISOString()} com sucesso!`
+
+        return Promise.resolve(results)
 
     } catch (error) {
 
-        return Promise.reject('Erro ao executar o job de busca na loka', error)
+        return Promise.reject(`Job LOKA encerrado em ${new Date().toISOString()} com erro | `, error)
     }
 }
 
 const add_seconds = (date_time, seconds_to_add) => { return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add)) }
 
-const save_data_device = async (data) => {
+const save_device_data = async (data) => {
     for (device_data of data) {
 
             try {
@@ -101,16 +110,16 @@ const save_data_device = async (data) => {
                         percentage: device_data.battery.percentage,
                         voltage: device_data.battery.voltage
                     }
-                }) 
-    
+                })
+
                 //salva no banco | observação: não salva mensagens iguais porque o model possui indice unico e composto por device_id e message_date,
                 //e o erro de duplicidade nao interrompe o job
                 await new_device_data.save( )
     
-                // debug('Saved device_data from device ', device_data.deviceId, ' and message_date ', device_data.messageDate)
+                // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
     
             } catch (error) {
-                debug('Error to save device_data from ', device_data.deviceId, ' and message_date ', device_data.messageDate, ' | System Error ', error.errmsg ? error.errmsg : error.errors)
+                debug('Erro ao salvar o device_data do device  ', device_data.deviceId, ' para a data-hora ', device_data.messageDate, ' | System Error ', error.errmsg ? error.errmsg : error.errors)
             }
     }
 }
