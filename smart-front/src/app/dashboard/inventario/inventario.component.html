@@ -7,7 +7,8 @@
 
         <h4 id="titulo-busca">BUSCA POR </h4>
 
-        <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal" (ngModelChange)="choiced($event)">
+        <!-- <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal" (ngModelChange)="choiced($event)"> -->
+        <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal">
           <option *ngFor="let obj of escolhas" [ngValue]="obj.name">{{obj.name}}</option>
         </select>
 
@@ -41,8 +42,9 @@
         <div class="col-sm-4">
 
           <p>TIPO</p>
-          <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" (ngModelChange)="changeSelect($event)"
-            class="selectEq">
+          <!-- <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" (ngModelChange)="changeSelect($event)"
+            class="selectEq"> -->
+          <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" class="selectEq">
             <option value="">Escolha</option>
             <option>Inventário Geral</option>
             <option>Tempo de permanência</option>

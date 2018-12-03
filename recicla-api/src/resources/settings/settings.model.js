@@ -49,12 +49,13 @@ const settingSchema = new mongoose.Schema({
 const validate_settings = (setting) => {
     const schema = Joi.object().keys({
         enable_gc16: Joi.boolean(),
-        battery_level_limit: Joi.number(),
-        accuracy_limit: Joi.number(),
-        job_schedule_time_in_sec: Joi.number(),
-        range_radius: Joi.number(),
-        clean_historic_moviments_time: Joi.number(),
-        no_signal_limit_in_days: Joi.number()
+        battery_level_limit: Joi.number().min(0),
+        accuracy_limit: Joi.number().min(0),
+        job_schedule_time_in_sec: Joi.number().min(0),
+        range_radius: Joi.number().min(0),
+        clean_historic_moviments_time: Joi.number().min(0),
+        no_signal_limit_in_days: Joi.number().min(0),
+        missing_sinal_limit_in_days: Joi.number().min(0)
     })
 
     return Joi.validate(setting, schema, { abortEarly: false })

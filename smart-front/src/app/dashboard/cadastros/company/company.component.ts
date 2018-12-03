@@ -30,9 +30,7 @@ export class CompanyComponent implements OnInit {
    * Método para carregar a lista
    */
   loadCompanies() {
-    this.companiesService
-      .getAllCompanies()
-      .subscribe(result => {
+    this.companiesService.getAllCompanies().subscribe(result => {
 
         this.listOfCompanies = result;
         this.auxListOfCompanies = result;
@@ -63,7 +61,7 @@ export class CompanyComponent implements OnInit {
     // filter our data
     const temp = this.auxListOfCompanies.filter(function (item) {
       return ((item.name.toLowerCase().indexOf(val) !== -1 || !val)
-              || (item.phone.toLowerCase().indexOf(val) !== -1 || !val));
+        || (item.phone ? item.phone.toLowerCase().indexOf(val) !== -1 : !val));
     });
 
     // update the rows
