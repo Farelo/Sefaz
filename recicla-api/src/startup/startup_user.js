@@ -3,10 +3,7 @@ const { User } = require('../resources/users/users.model')
 const { Company } = require('../resources/companies/companies.model')
 const { Setting } = require('../resources/settings/settings.model')
 const config = require('config')
-
-const dm_temp_test = require('../services/loka/dm.temp.testes')
 const dm_main = require('../jobs/loka/main.script')
-const initialize_data = require('./temp-initialize.script')
 
 const startupUser = async () => {
     try {
@@ -32,22 +29,6 @@ const startupUser = async () => {
             debug('Startup user with success.')
         } else {
             debug('Company and User already created.')
-
-            // await initialize_data()
-
-            // await dm_temp_test.test_login()
-            // await dm_temp_test.test_messages()
-            // await dm_temp_test.test_positions()
-            // dm_temp_test.test_deviceById()
-            // dm_temp_test.test_devices_list()
-            // dm_temp_test.test_confirmDevice()
-            // dm_temp_test.test_getDeviceDataFromMidd()
-            
-            // await job()
-            // await dm_main.exec().then(res => debug('job encerrado')).catch(error => debug('job com erro: ', error))
-            dm_main()
-
-            debug('\n\ndepois do job . . . . . . . . . . . \n\n')
 
         }
     } catch (error) {
