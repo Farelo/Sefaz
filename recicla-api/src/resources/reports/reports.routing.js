@@ -5,6 +5,8 @@ const auth = require('../../security/auth.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 
 router.get('/home', reports_controller.home_report)
+router.get('/home/low_battery', reports_controller.home_low_battery_report)
+router.get('/home/permanence_time_exceeded', reports_controller.home_permanence_time_exceeded_report)
 router.get('/general', reports_controller.general_report)
 router.get('/general_inventory', reports_controller.general_inventory_report)
 router.get('/absent', reports_controller.absent_report)
@@ -34,6 +36,46 @@ module.exports = router
  *         in: query
  *         required: false
  *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// GET '/home/low_battery'
+/**
+ * @swagger
+ * /reports/home/low_battery:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// GET '/home/permanence_time_exceeded'
+/**
+ * @swagger
+ * /reports/home/permanence_time_exceeded:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
  *     responses:
  *       200:
  *         description: list of all reports

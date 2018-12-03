@@ -11,6 +11,24 @@ exports.home_report = async (current_state) => {
     }
 }
 
+exports.home_low_battery_report = async () => {
+    try {
+        const data = await reports_repository.home_low_battery_report()
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.home_permanence_time_exceeded_report = async () => {
+    try {
+        const data = await reports_repository.home_permanence_time_exceeded_report()
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 exports.general_report = async () => {
     try {
         const data = await reports_repository.general_report()

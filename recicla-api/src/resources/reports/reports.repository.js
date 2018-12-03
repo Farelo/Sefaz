@@ -63,6 +63,72 @@ exports.home_report = async (current_state = null) => {
         throw new Error(error)
     }
 }
+
+exports.home_low_battery_report = async () => {
+    try {
+        const packings = await Packing.find({ active: true, low_battery: true })
+                .populate('family')
+                .populate('last_device_data')
+                .populate('last_event_record')
+
+        return Promise.all(
+            packings.map(async packing => {
+                let obj_temp = {}
+
+                const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
+
+                obj_temp.id = packing._id
+                obj_temp.family_code = packing.family.code
+                obj_temp.serial = packing.serial
+                obj_temp.tag = packing.tag.code
+                obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
+                obj_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
+                obj_temp.battery_percentage = packing.last_device_data ? packing.last_device_data.battery.percentage : 'Sem registro'
+                obj_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : 'Sem registro'
+                obj_temp.date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : 'Sem registro'
+
+                return obj_temp
+            })
+        )
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.home_permanence_time_exceeded_report = async () => {
+    try {
+
+        const packings = await Packing.find({ active: true, permanence_time_exceeded: true })
+            .populate('family')
+            .populate('last_device_data')
+            .populate('last_event_record')
+
+        return Promise.all(
+            packings.map(async packing => {
+                let obj_temp = {}
+
+                const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
+
+                obj_temp.id = packing._id
+                obj_temp.family_code = packing.family.code
+                obj_temp.serial = packing.serial
+                obj_temp.tag = packing.tag.code
+                obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
+                obj_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
+                obj_temp.battery_percentage = packing.last_device_data ? packing.last_device_data.battery.percentage : 'Sem registro'
+                obj_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : 'Sem registro'
+                obj_temp.date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : 'Sem registro'
+
+                return obj_temp
+            })
+        )
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 exports.general_report = async () => {
     try {
         const aggregate = await Packing.aggregate([
