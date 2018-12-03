@@ -1,20 +1,59 @@
+const debug = require('debug')('dm.controller')
 const dm_service = require('./dm.service');
 const { isEmpty } = require('lodash');
 
 module.exports = {
     confirmDevice: confirmDevice,
-    getDeviceDataFromMiddleware: getDeviceDataFromMiddleware
+    getDeviceDataFromMiddleware: getDeviceDataFromMiddleware,
+    loginDM: loginDM,
+    logoutDM: logoutDM
+}
+
+async function loginDM() {
+
+    try {
+    
+        let cookie = dm_service.loginLokaDmApi()
+
+        return Promise.resolve(cookie)
+
+    } catch (error) {
+        
+        return Promise.reject(error)
+    }
+}
+
+async function logoutDM(cookie) {
+
+    try {
+        
+        dm_service.logoutLokaDmApi(cookie)
+
+        return Promise.resolve('Logout with success!')
+
+    } catch (error) {
+        
+        return Promise.reject('Logout error')
+    }
 }
 
 /*
     Confirma se o device passado existe no sistema
 */
-//TODO: pensar em mudar os retornos de string para booleanos
-async function confirmDevice (deviceId){
+async function confirmDevice (deviceId, cookie){
     try {
-        let cookie = await dm_service.loginLokaDmApi()
-    
+        
+        if (!cookie) //se recebeu cookie de fora não precisa refazer login
+            cookie = await dm_service.loginLokaDmApi()
+
+        // debug(deviceId, ' Iniciou busca em loka em ', new Date())
+
         let device = await dm_service.deviceById(cookie, deviceId)
+
+        // debug(deviceId, ' finalizou busca em loka em ', new Date())
+
+        if (!cookie) //se recebeu cookie de fora, pressupoe que o logout sera feito fora tb
+            dm_service.logoutLokaDmApi(cookie)
 
         if (isEmpty(device))
      
@@ -35,14 +74,22 @@ async function confirmDevice (deviceId){
     Busca nas chamadas da API do middleware (Loka, por enquanto) os dados do device e retorna um novo objeto
     com os dados consolidados e padronizados.
 */
-async function getDeviceDataFromMiddleware(deviceId, startDate, endDate, max) {
+async function getDeviceDataFromMiddleware(deviceId, startDate, endDate, max, cookie) {
 
     try {
-        let cookie = await dm_service.loginLokaDmApi()
+        if (!cookie)
+            cookie = await dm_service.loginLokaDmApi()
 
+        // debug(deviceId, ' Iniciou busca Sigfox/loka em ', new Date())
+        
         let data = await Promise.all([dm_service.positions(cookie, deviceId, null, true, startDate, endDate, max),
                                       dm_service.messagesFromSigfox(cookie, deviceId, startDate, endDate, max)
                                      ])
+        
+        // debug(deviceId, ' finalizou busca Sigfox/loka em ', new Date())
+
+        if (!cookie)
+            dm_service.logoutLokaDmApi(cookie)
 
         let consolidatedMessages = await joinPartialMessages(data[0], data[1])
         
