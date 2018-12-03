@@ -23,4 +23,14 @@ export class ReportsService {
     }
   }
 
+  getGeneralEquipmentInventory(family: any = '') {
+
+    if (!family) {
+      return this.http.get(`${environment.url}/reports/general_inventory`).catch(this.handleError);
+
+    } else {
+      return this.http.get(`${environment.url}/reports/general_inventory?family=${family}`).catch(this.handleError);
+    }
+  }
+
 }
