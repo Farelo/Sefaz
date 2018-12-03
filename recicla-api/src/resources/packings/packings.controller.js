@@ -6,7 +6,8 @@ const projects_service = require('../projects/projects.service')
 
 exports.all = async (req, res) => {
     const tag = req.query.tag_code ? { code: req.query.tag_code } : null
-    const packings = await packings_service.get_packings(tag)
+    const family = req.query.family ? req.query.family : null
+    const packings = await packings_service.get_packings(tag, family)
 
     res.json(packings)
 }

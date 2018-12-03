@@ -171,11 +171,11 @@ export class LayerModalComponent implements OnInit {
   }
 
   getPlantRadius(){
-    this.settingsService.retrieve().subscribe(response => {
-      let result = response.data[0];
-      this.settings = result;
-      this.settings.range_radius = this.settings.range_radius * 1000;
-    })
+    // this.settingsService.retrieve().subscribe(response => {
+    //   let result = response.data[0];
+    //   this.settings = result;
+    //   this.settings.range_radius = this.settings.range_radius * 1000;
+    // })
   }
 
   onFirstDateChange(newDate: Date) { 

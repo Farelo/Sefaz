@@ -39,6 +39,8 @@ describe('api/users', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
+
+        // jest.setTimeout(30000)
         
         describe('Validate token by GET method without id', () => {
             const exec = () => {
@@ -85,7 +87,6 @@ describe('api/users', () => {
             })
 
             it('should return 400 if token is invalid', async () => {
-               
                 token = 'a'
                 const exec = () => {
                     return request(server)

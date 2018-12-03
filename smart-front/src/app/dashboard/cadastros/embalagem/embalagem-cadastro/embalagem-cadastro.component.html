@@ -109,10 +109,6 @@
                     || (mPacking.get('serial').hasError('minlength') && submitted)">
             Mínimo de 2 caracteres</p>
             
-          <p class="requiredText" *ngIf="(mPacking.get('serial').hasError('minlength')) 
-            || (mPacking.get('serial').hasError('minlength') && submitted)">
-            Mínimo de 2 caracteres</p>
-            
           <p class="requiredText" 
             *ngIf="(mPacking.get('serial').hasError('pattern')) 
               || (mPacking.get('serial').hasError('pattern') && submitted)">

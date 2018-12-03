@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, Input, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Pagination } from '../../../shared/models/pagination'; 
-import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../../servicos/index.service';
+import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService, ReportsService } from '../../../servicos/index.service';
 import { ChatService } from '../../../servicos/teste';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
@@ -24,26 +24,19 @@ export class InventarioGeralComponent implements OnInit {
   private selectedEquipament: any;
   
   constructor(
-    private inventoryLogisticService: InventoryLogisticService,
+    private reportsService: ReportsService,
     private inventoryService: InventoryService,
     private suppliersService: SuppliersService,
     private packingService: PackingService,
-    private modalService: NgbModal,
-    private modalActive: NgbActiveModal,
-    private ref: ChangeDetectorRef,
     private auth: AuthenticationService,
-    private chatService: ChatService,
-  ) {
+    private chatService: ChatService) {
 
     let user = this.auth.currentUser();
     let current_user = this.auth.currentUser();
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
   ngOnInit() {
+
     this.loadSuppliers();
     this.loadDetailedInventory();
   }

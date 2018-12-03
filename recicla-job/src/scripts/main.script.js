@@ -24,6 +24,9 @@ module.exports = async () => {
                 .populate('last_alert_history')
                 .populate('last_event_record')
 
+            // for (let packing of packings) {
+            //     runSM(setting, packing, controlPoints)
+            // }
             packings.forEach(packing => {
                 runSM(setting, packing, controlPoints)
             })

@@ -11,7 +11,7 @@ const { Packing } = require('../../models/packings.model')
 
 module.exports = async (packing) => {
     try {
-        if (packing.last_event_record.type === 'inbound') {
+        if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
             timeIntervalInDays = getDiffDateTodayInDays(packing.last_event_record.created_at)
             const gc16 = await GC16.findById(packing.family.gc16)
             if (!gc16) return null

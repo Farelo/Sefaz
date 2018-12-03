@@ -26,3 +26,5 @@ export { FamiliesService } from './families.service';
 export { MapsService } from './maps.service';
 export { ControlPointsService } from './controlPoints.service';
 export { ControlPointTypesService } from './types.service';
+export { ReportsService } from './reports.service';
+

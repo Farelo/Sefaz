@@ -2,13 +2,18 @@ const debug = require('debug')('service:packings')
 const _ = require('lodash')
 const { Packing } = require('./packings.model')
 
-exports.get_packings = async (tag) => {
+exports.get_packings = async (tag, family) => {
     try {
-        if (!tag) return await Packing.find()
-                    .populate('packing', ['_id', 'code'])
-                    .populate('family', ['_id', 'code', 'company'])
-                    .populate('project', ['_id', 'name'])
-
+        if (!tag) {
+            if (family) return await Packing.find({ family: family })
+                .populate('family', ['_id', 'code', 'company'])
+                .populate('project', ['_id', 'name'])
+                
+            return await Packing.find()
+                .populate('family', ['_id', 'code', 'company'])
+                .populate('project', ['_id', 'name'])
+        }
+        
         const data = await Packing.findByTag(tag)
                             .populate('family', ['_id', 'code', 'company'])
                             .populate('project', ['_id', 'name'])

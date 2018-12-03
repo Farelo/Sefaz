@@ -41,6 +41,8 @@ describe('api/companies', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
+        // jest.setTimeout(30000)
+
         const company = new Company({ 
             name: "Company 1",
             cnpj: "91289532000146",
@@ -85,26 +87,21 @@ describe('api/companies', () => {
         })
 
         describe('Validate token by GET method with id', () => {
+            const exec = () => {
+                return request(server)
+                    .get(`/api/companies/${company._id}`)
+                    .set('Authorization', token)
+            }
+
             it('should return 401 if no token is provided', async () => {
                 token = ''
-                const exec = () => {
-                    return request(server)
-                        .get(`/api/companies/${company._id}`)
-                        .set('Authorization', token)
-                }
                 const res = await exec()
                 expect(res.status).toBe(401)
                 expect(res.body.message).toBe('Access denied. No token provided.')
             })
 
             it('should return 400 if token is invalid', async () => {
-               
                 token = 'a'
-                const exec = () => {
-                    return request(server)
-                        .get(`/api/companies/${company._id}`)
-                        .set('Authorization', token)
-                }
                 const res = await exec()
                 expect(res.status).toBe(400)
                 expect(res.body.message).toBe('Invalid token.')

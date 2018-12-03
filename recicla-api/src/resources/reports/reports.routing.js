@@ -2,16 +2,23 @@ const express = require('express')
 const router = express.Router()
 const reports_controller = require('./reports.controller')
 const auth = require('../../security/auth.middleware')
-const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 
-router.get('/', auth, reports_controller.general)
+router.get('/general', auth, reports_controller.general_report)
+router.get('/general_inventory', auth, reports_controller.general_inventory_report)
+router.get('/absent', auth, reports_controller.absent_report)
+router.get('/permanence_time', auth, reports_controller.permanence_time_report)
+router.get('/battery', auth, reports_controller.battery_report)
+router.get('/quantity', auth, reports_controller.quantity_report)
+router.get('/general_info', auth, reports_controller.general_info_report)
+router.get('/clients', auth, reports_controller.clients_report)
+router.get('/snapshot', auth, reports_controller.snapshot_report)
 
 module.exports = router
 
-// GET '/'
+// GET '/general'
 /**
  * @swagger
- * /reports:
+ * /reports/general:
  *   get:
  *     summary: Retrieve reports on database
  *     description: Retrieve general report about all packings
@@ -28,11 +35,30 @@ module.exports = router
  *         description: Not Found
  */
 
-// GET '/:id'
+// GET '/general_inventory'
 /**
  * @swagger
- *
- * /reports/{id}:
+ * /reports/general_inventory:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general inventory report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// GET '/absent'
+/**
+ * @swagger
+ * /reports/absent:
  *   get:
  *     summary: Retrieve reports on database
  *     description: Retrieve general report about all packings
@@ -40,22 +66,182 @@ module.exports = router
  *       - Bearer: []
  *     tags:
  *       - Reports
- *     produces:
- *       - application/json
  *     parameters:
- *       - name: id
- *         description: Reports id
- *         in: path
- *         required: true
+ *       - name: family
+ *         description: Return control point filtered by family
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: serial
+ *         description: Return control point filtered by serial
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: absent_time_in_hours
+ *         description: Return control point filtered by absent time
+ *         in: query
+ *         required: false
  *         type: string
  *     responses:
  *       200:
- *         description: Reports is valid request
+ *         description: list of all reports
  *       400:
  *         description: Bad Request
- *       401:
- *         description: Unauthorized
  *       404:
  *         description: Not Found
- *
+ */
+
+// GET '/permanence_time'
+/**
+ * @swagger
+ * /reports/permanence_time:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     parameters:
+ *       - name: family
+ *         description: Return control point filtered by family
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: serial
+ *         description: Return control point filtered by serial
+ *         in: query
+ *         required: false
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// GET '/battery'
+/**
+ * @swagger
+ * /reports/battery:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     parameters:
+ *       - name: family
+ *         description: Return control point filtered by family
+ *         in: query
+ *         required: false
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// GET '/quantity'
+/**
+ * @swagger
+ * /reports/quantity:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     parameters:
+ *       - name: family
+ *         description: Return control point filtered by family
+ *         in: query
+ *         required: false
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// GET '/general_info'
+/**
+ * @swagger
+ * /reports/general_info:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     parameters:
+ *       - name: family
+ *         description: Return control point filtered by family
+ *         in: query
+ *         required: false
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// GET '/clients'
+/**
+ * @swagger
+ * /reports/clients:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     parameters:
+ *       - name: company
+ *         description: Return info filtered by company
+ *         in: query
+ *         required: false
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// GET '/snapshot'
+/**
+ * @swagger
+ * /reports/snapshot:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
  */
