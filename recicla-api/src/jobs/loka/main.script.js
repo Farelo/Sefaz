@@ -7,8 +7,10 @@ let next = true
 let count = 1
 
 module.exports = () => {
-    cron.schedule(`* */3 * * * *`, async () => {
+    cron.schedule(`* * * * * *`, async () => {
         
+        debug('iniciou o cron')
+
         if (next) {
 
             next = false
@@ -21,6 +23,10 @@ module.exports = () => {
             await exec().then(job_result => debug(job_result)).catch(error => debug(error))
 
             debug(`Job ${count} encerrado com inicio em  ${timeStart} e finalizado em  ${new Date()}`)
+
+            await promise_wait(4)
+
+            debug('tempo de espera após o job deve ser de 2 minutos. Confirme: ', new Date())
 
             count++
 
@@ -49,4 +55,16 @@ const exec = () => {
             
         }
     })
+}
+
+const promise_wait = async minutes => {
+
+    return new Promise((resolve) => {
+
+        setTimeout(() => {
+            resolve(`Aguardou ${minutes} minutos`)            
+        }, minutes * 1000 * 60);
+
+    })
+
 }
