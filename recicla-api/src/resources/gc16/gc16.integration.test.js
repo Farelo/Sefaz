@@ -40,7 +40,45 @@ describe('api/gc16', () => {
 
         gc16_body = {
             annual_volume: 10,
-            family: new_family._id
+            capacity: 10,
+            productive_days: 10,
+            container_days: 10,
+            family: new_family._id,
+            security_factor: {
+              percentage: 10,
+              qty_total_build: 10,
+              qty_container: 10
+            },
+            frequency: {
+              days: 10,
+              fr: 10,
+              qty_total_days: 10,
+              qty_container: 10
+            },
+            transportation_going: {
+              days: 10,
+              value: 10,
+              qty_container: 10
+            },
+            transportation_back: {
+              days: 10,
+              value: 10,
+              qty_container: 10
+            },
+            owner_stock: {
+              days: 10,
+              value: 10,
+              max: 10,
+              qty_container: 10,
+              qty_container_max: 10
+            },
+            client_stock: {
+              days: 10,
+              value: 10,
+              max: 10,
+              qty_container: 10,
+              qty_container_max: 10
+            }
         }
 
         new_gc16 = new GC16(gc16_body)
@@ -55,7 +93,7 @@ describe('api/gc16', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        // jest.setTimeout(30000)
+         jest.setTimeout(30000)
         
         describe('Validate token by GET method without id', () => {
             const exec = () => {
@@ -214,34 +252,88 @@ describe('api/gc16', () => {
     })
 
     describe('AUTHZ MIDDLEWARE', () => {
-        const exec = () => {
-            return request(server)
-                .post('/api/gc16')
-                .set('Authorization', token)
-                .send(gc16_body)
-        }
-        it('should return 403 if user is not admin', async () => {
-            user = {
-                full_name: 'Teste Man',
-                email: "serginho1@gmail.com",
-                password: "qwerty123",
-                role: 'user',
-                company: {
-                    _id: new_company._id,
-                    name: new_company.name
+        const new_company = new Company({ 
+            name: "Company 1",
+            cnpj: "91289532000146",
+            phone: "11111111111",
+            address: {
+                city: "Recife",
+                street: "Rua teste",
+                cep: "54280222",
+                uf: "PE"
+            }})
+        new_company.save()
+        const userUser = {
+                    full_name: 'Teste Man 3',
+                    email: "testet@gmail.com",
+                    password: "qwerty123",
+                    role: 'user',
+                    company: {
+                        _id: new_company._id,
+                        name: new_company.name
+                    }
                 }
-            }
-
-            const new_user = new User(user)
-            token = new_user.generateUserToken()
-
-            const res = await exec()
-            expect(res.status).toBe(403)
+        const newUser = new User(userUser)
+        const tokenUser = newUser.generateUserToken()
+        newUser.save()
+        describe('Validate authorization by POST', () => {
+            it('should return 403 if user is not admin by POST', async () => {
+                const exec = () => {
+                    return request(server)
+                        .post('/api/gc16')
+                        .set('Authorization', tokenUser)
+                        .send(gc16_body)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })        
         })
 
-        it('should return 201 if user is admin', async () => {
-            const res = await exec()
-            expect(res.status).toBe(201)
+        describe('Validate authorization by GET', () => {
+            it('should return 403 if user is not admin by GET', async () => {
+                const exec = () => {
+                    return request(server)
+                        .get('/api/gc16')
+                        .set('Authorization', tokenUser)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })
+
+            it('should return 403 if user is not admin by GET with id', async () => {
+                const exec = () => {
+                    return request(server)
+                        .get(`/api/gc16/${new_gc16._id}`)
+                        .set('Authorization', tokenUser)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })        
+        })
+
+        describe('Validate authorization by PATCH', () => {
+            it('should return 403 if user is not admin by PATCH', async () => {
+                const exec = () => {
+                    return request(server)
+                        .patch(`/api/gc16/${new_gc16._id}`)
+                        .set('Authorization', tokenUser)
+                        .send({full_name: "teste"})
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })
+        })
+
+        describe('Validate authorization by DELETE', () => {
+            it('should return 403 if user is not admin by DELETE', async () => {
+                const exec = () => {
+                    return request(server)
+                        .delete(`/api/gc16/${new_gc16._id}`)
+                        .set('Authorization', tokenUser)
+                }
+                const res = await exec()
+                expect(res.status).toBe(403)
+            })
         })
     })
 
@@ -264,15 +356,21 @@ describe('api/gc16', () => {
             expect(res.body.some(gc => gc.annual_volume === 10)).toBeTruthy()
             expect(res.body.some(gc => gc.annual_volume === 11)).toBeTruthy()
         })
+
+        it('should return 404 if invalid url is passed', async () => { 
+            const res = await request(server)
+                .get(`/api/gc16ss`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(404)
+        })
     })
 
     describe('GET /api/gc16/:id', () => {
         it('should return 200 a gc16 if valid id is passed', async () => {
-            const gc16 = new GC16(gc16_body)
-            await gc16.save()
-
+            
             const res = await request(server)
-                .get(`/api/gc16/${gc16._id}`)
+                .get(`/api/gc16/${new_gc16._id}`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(200)
@@ -282,6 +380,14 @@ describe('api/gc16', () => {
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
                 .get(`/api/gc16/1a`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 404 if invalid url with valid id is passed', async () => { 
+            const res = await request(server)
+                .get(`/api/gc16ss/${new_gc16._id}`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
