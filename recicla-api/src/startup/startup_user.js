@@ -15,7 +15,7 @@ const startupUser = async () => {
             const newCompany = await Company.findOne({ type: 'owner' })
             // await newCompany.save()
             
-            const newUser = new User({ full_name: 'Admin', email: 'admin@admin.smart', password: 'admin123', role: 'admin', company: newCompany._id })
+            const newUser = new User({ full_name: 'Admin', email: 'admin@admin.smart', password: 'admin', role: 'admin', company: newCompany._id })
             await newUser.save()
 
             // const setting = new Setting({
