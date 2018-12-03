@@ -1,3 +1,4 @@
+const debug = require('debug')('dm.service')
 const dm = require('./dm.utils')
 const request = require('request').defaults({baseUrl: 'https://dm.loka.systems'})
 const qs = require('qs')
@@ -6,7 +7,7 @@ const sslRootCAs = require('ssl-root-cas')
 
 module.exports = {
     loginLokaDmApi: loginLokaDmApi,
-    // logoutLokaDmApi: logoutLokaDmApi,
+    logoutLokaDmApi: logoutLokaDmApi,
     messagesFromSigfox: messagesFromSigfox,
     positions: positions,
     deviceById: deviceById,
@@ -30,6 +31,7 @@ module.exports = {
 //TODO: Deixar todas mensagens em português
 function loginLokaDmApi () {
     return new Promise(function(resolve, reject) {
+
         let options = {
             url: `/auth/login`,
             method: 'POST',
@@ -62,41 +64,39 @@ function loginLokaDmApi () {
     });
 }
 
-//TODO: terminando ainda o logout - preciso falar com a loka
-// function logoutLokaDmApi(cookie) {
-//     return new Promise(function (resolve, reject) {
+function logoutLokaDmApi(cookie) {
+    return new Promise(function (resolve, reject) {
 
-//         let path = `/auth/logout`
+        let path = `/auth/logout`
         
-//         let options = {
-//             url: path,
-//             method: 'GET',
-//             headers: {
-//                 'content-type': 'application/json',
-//                 'Cookie': `${cookie}`
-//             }
-//         }
+        let options = {
+            url: path,
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Cookie': `${cookie}`
+            }
+        }
 
-//         //body: onde esta o JSON com os dados
-//         let callback = function (error, response, body) {
+        let callback = function (error, response, body) {
 
-//             if (error){
-//                 reject('Error on messagesFromSigfox request sent to loka: ' + error)    
-//                 console.log('Error on messagesFromSigfox request sent to loka: ', error)
-//             }
+            if (error){
+                reject('Error on logoutLokaDMApi request sent to loka: ' + error)    
+                console.log('Error on logoutLokaDMApi request sent to loka: ', error)
+            }
 
-//             try {
-//                 resolve(JSON.parse(body).data);
-//             }
+            try {
+                resolve([response.statusCode, response.headers.connection]);
+            }
             
-//             catch (err) {
-//                 reject("Erro ao tentar realizar o parse do JSON de mensagens da sigfox do device " + deviceId + ".\nRetorno da requisicao - header: " + response + "Retorno da requisicao - body: " + body + "\n" + err);
-//             }
-//         }
-//         request(options, callback);
+            catch (err) {
+                reject("Erro ao tentar deslogar");
+            }
+        }
+        request(options, callback);
 
-//     })
-// }
+    })
+}
 
 //obtem conjunto de mensagens da sigfox de um device 
 function messagesFromSigfox (cookie, deviceId, startDate, endDate, max) { 
@@ -110,7 +110,7 @@ function messagesFromSigfox (cookie, deviceId, startDate, endDate, max) {
             headers: {
                 'content-type': 'application/json',
                 'Cookie': `${cookie}`,
-                'Connection': 'keep-alive'
+                'Connection': 'close'
             }
         }
 
@@ -147,7 +147,7 @@ function positions (cookie, deviceId, status, lowAccuracy, startDate, endDate, m
             headers: {
                 'content-type': 'application/json',
                 'Cookie': `${cookie}`,
-                'Connection': 'keep-alive'
+                'Connection': 'close'
             }
         }
 
@@ -181,7 +181,7 @@ function deviceById (cookie, deviceId) {
             headers: {
                 'content-type': 'application/json',
                 'Cookie': `${cookie}`,
-                'Connection': 'keep-alive'
+                'Connection': 'close'
             }
         }
 
@@ -215,7 +215,7 @@ function devicesList (cookie, client, profile, status) {
             headers: {
                 'content-type': 'application/json',
                 'Cookie': `${cookie}`,
-                'Connection': 'keep-alive'
+                'Connection': 'close'
             }
         }
 
