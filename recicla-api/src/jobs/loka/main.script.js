@@ -8,8 +8,7 @@ let count = 1
 
 module.exports = () => {
     cron.schedule(`* */3 * * * *`, async () => {
-        // debug('job cron fora')
-
+        
         if (next) {
 
             next = false
@@ -35,8 +34,6 @@ module.exports = () => {
     })
 }
 
-//TODO: analisar quando a promise eh rejeitada
-//ver o que acontece no cron (ver se tem relação com o travamento repentino do job)
 const exec = () => {
 
     return new Promise(async (resolve, reject) => {
