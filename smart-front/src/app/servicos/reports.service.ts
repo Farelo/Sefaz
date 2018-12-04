@@ -23,14 +23,13 @@ export class ReportsService {
     }
   }
 
-  getGeneralEquipmentInventory(family: any = '') {
+  getGeneralEquipmentInventory() {
 
-    if (!family) {
-      return this.http.get(`${environment.url}/reports/general_inventory`).catch(this.handleError);
-
-    } else {
-      return this.http.get(`${environment.url}/reports/general_inventory?family=${family}`).catch(this.handleError);
-    }
+    return this.http.get(`${environment.url}/reports/general_inventory`).catch(this.handleError);
   }
 
+  getPermanenceInventory(){
+
+    return this.http.get(`${environment.url}/reports/permanence_time`).catch(this.handleError);
+  }
 }

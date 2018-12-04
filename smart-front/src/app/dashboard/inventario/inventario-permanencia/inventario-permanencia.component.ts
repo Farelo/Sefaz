@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination'; 
-import { InventoryService, PackingService, AuthenticationService } from '../../../servicos/index.service';
+import { InventoryService, PackingService, AuthenticationService, ReportsService, FamiliesService } from '../../../servicos/index.service';
 
 @Component({
   selector: 'app-inventario-permanencia',
@@ -9,108 +9,103 @@ import { InventoryService, PackingService, AuthenticationService } from '../../.
 })
 export class InventarioPermanenciaComponent implements OnInit {
 
-  @Input() selectedEquipament: any;
-  @Input() selectedSerial: any;
+  public listOfPermanence: any[] = []; 
+  public auxListOfPermanence: any[] = []; 
 
-  public logged_user: any; 
-  public serial = false;
-  public permanence: Pagination = new Pagination({ meta: { page: 1 } }); 
-  public serials: any[];
-  public packings: any[];
+  public listOfFamilies: any[] = [];  
+  public selectedFamily: any = null;
+  
+  public listOfSerials: any[] = [];  
+  public selectedSerial: any = null;
+
+  public actualPage: number = -1;
 
   constructor(
-    private inventoryService: InventoryService,
-    private packingService: PackingService,
-    private auth: AuthenticationService
-  ) {
+    private reportService: ReportsService,
+    private familyService: FamiliesService,
+    private auth: AuthenticationService) {
 
-    let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
   ngOnInit() {
     this.loadPackings();
+    this.permanenceInventory();
   }
-
-  onClear() {
-    console.log('clear equipment');
-    this.serial = false;
-    this.serials = [];
-    this.permanence = new Pagination({ meta: { page: 1 } })
-    this.permanence.data = []
-    this.selectedSerial = null;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-
-    if (changes['selectedEquipament']) {
-      console.log('ngOnChanges selectedEquipament: ' + JSON.stringify(this.selectedEquipament));
-      if ((this.selectedEquipament !== null) && (this.selectedEquipament !== undefined))
-        this.permanenceInventory();
-      else
-        this.permanence = new Pagination({ meta: { page: 1 } }); 
-        this.permanence.data = [];
-    }
-
-    if (changes['selectedSerial']) {
-      console.log('ngOnChanges selectedSerial: ' + JSON.stringify(this.selectedSerial));
-      if ((this.selectedSerial !== null) && (this.selectedSerial !== undefined))
-        this.permanenceInventorySerial();
-      else
-        if ((this.selectedEquipament !== null) && (this.selectedEquipament !== undefined))
-          this.permanenceInventory();
-    }
-  }
-
-  loadPackings() {
-    if (this.logged_user instanceof Array) {
-      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
-
-    } else if (this.logged_user) {
-      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
-    } else {
-      this.packingService.getPackingsDistincts().subscribe(result => { this.packings = result.data }, err => { console.log(err) });
-    }
+  
+  /**
+   * Default list
+   */
+  permanenceInventory() {
+    this.reportService.getPermanenceInventory().subscribe(result => {
+      this.listOfPermanence = result; 
+      this.auxListOfPermanence = result; 
+    }, err => { console.log(err) });
   }
 
   /**
-   * Filtro Equipamento selecionado
+   * Loading the families
    */
-  permanenceInventory() {
-    this.selectedSerial = null;
-    this.serial = false;
-    this.serials = [];
+  loadPackings() {
+    this.familyService.getAllFamilies().subscribe(result => {
 
-    if (this.selectedEquipament) {
-
-      this.packingService
-        .getPackingsEquals(this.selectedEquipament.supplier._id, this.selectedEquipament.project._id, this.selectedEquipament.packing)
-        .subscribe(result => {
-          this.serials = result.data;
-          this.inventoryService
-            .getInventoryPermanence(10, this.permanence.meta.page, this.selectedEquipament.packing)
-            .subscribe(result => this.permanence = result, err => { console.log(err) });
-        }, err => { console.log(err) })
-    }
+      this.listOfFamilies = result; 
+    }, err => console.error(err));
   }
 
-  permanenceInventorySerial() {
-    this.serial = true;
+  /**
+   * A family was selected
+   */
+  familyFilter(event: any){
+    console.log(event);
 
-    this.inventoryService.
-      getInventoryPackingHistoric(10, 
-        this.permanence.meta.page, 
-        this.selectedSerial, 
-        this.selectedEquipament.packing, 
-        this.logged_user).subscribe(result => {
+    if(!event) {
+      this.listOfPermanence = this.auxListOfPermanence;
+      this.selectedFamily = null;
 
-        this.permanence = result;
-        //console.log('result: ' + result);
-    }, err => { console.log(err) });
+      this.selectedSerial = null;
+      this.listOfSerials = [];
+      return;
+    }
+
+    this.listOfPermanence = this.auxListOfPermanence.filter(elem => {
+      return elem.family_code == event.code;
+    });
+
+    this.loadSerials(event);
+  }
+
+  /**
+   * Loads the serials
+   */
+  loadSerials(event: any){
+
+    this.selectedSerial = null;
+    
+    let aux = this.listOfPermanence.filter(elem =>{
+      return elem.family_code == event.code;
+    });
+
+    // console.log(aux);
+    this.listOfSerials = aux;
+  }
+
+  /**
+   * A serial was selected
+   */
+  serialFilter(event: any) {
+    
+    if (!event) {
+      this.selectedSerial = null;
+      this.familyFilter(this.selectedFamily);
+      return;
+    }
+
+    let aux = this.auxListOfPermanence.filter(elem => {
+      return ((elem.family_code == event.family_code) && (elem.serial == event.serial));
+    });
+
+    //console.log(aux);
+    this.listOfPermanence = aux;
   }
 
 }
