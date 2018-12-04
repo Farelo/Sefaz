@@ -7,93 +7,88 @@
 
   <div class="row" style="margin-bottom: 20px;">
     <div class="col-sm-4">
-      <p>EQUIPAMENTO</p>
-      <ng-select [(ngModel)]="selectedEquipament" (clear)="onClear()" (change)="permanenceInventory()" [items]="packings"
-        bindLabel="packing" placeholder="Selecione um Equipamento">
+      <p>FAMÍLIA</p>
+      <ng-select 
+        [items]="listOfFamilies"
+        [(ngModel)]="selectedFamily" 
+        (change)="familyFilter($event)" 
+        bindLabel="code"  
+        placeholder="Selecione uma Família">
+        
         <ng-template ng-label-tmp let-item="item">
-          {{item.packing}}
+          {{item.code}}
         </ng-template>
+
         <ng-template ng-option-tmp let-item="item">
-          <div>
-    
-            <b>Embalagem:</b> {{item.packing}}
-          </div>
-          <div>
-            <small>
-              <b>Fornecedor:</b> {{item.supplier.name}}
-            </small>
-    
-          </div>
-          <div>
-            <small>
-              <b> Projeto:</b> {{item.project.name}}
-            </small>
-          </div>
-    
-    
+          <div> {{item.code}} </div>
         </ng-template>
+
       </ng-select>
     </div>
     
     <!--TEMPO DE PERMANÊNCIA: filtro Serial -->
     <div class="col-sm-4 clear-padding">
       <p>SERIAL</p>
-      <ng-select [(ngModel)]="selectedSerial" (clear)="permanenceInventory()" (change)="permanenceInventorySerial()" [items]="serials"
-        bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial">
+      <ng-select 
+        [items]="listOfSerials"
+        [(ngModel)]="selectedSerial" 
+        (change)="serialFilter($event)" 
+        [disabled]="!selectedFamily"
+        bindLabel="serial"
+        bindValue="serial"
+        placeholder="Selecione um Serial">
+        
         <ng-template ng-label-tmp let-item="item">
           {{item.serial}}
         </ng-template>
+
         <ng-template ng-option-tmp let-item="item">
-          <div>
-            <small>
-              <b>Serial:</b> {{item.serial}}</small>
-          </div>
+          <div> {{item.serial}} </div>
         </ng-template>
+
       </ng-select>
     </div>
   </div>
 
   <!-- Taela SEM serial selecionado -->
-  <div *ngIf="!selectedSerial">
+  <div>
     <div class="table-responsive">
       <table class="table">
         <thead>
           <tr class="cabecalho">
             <th>Equipamento</th>
             <th>Serial</th>
-            <th>Projeto</th>
+            <th>Tag</th>
 
             <th>Planta Atual</th>
             <th>Local</th>
             <th>Tempo na Planta</th>
 
-            <th>DUNS</th>
-            <th>Fornecedor</th>
+            <!-- <th>DUNS</th>
+            <th>Fornecedor</th> -->
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let packing of permanence.data | paginate: {
-                                                              id:'permanence',
-                                                              itemsPerPage: 10,
-                                                              currentPage: permanence.meta.page,
-                                                              totalItems: permanence.meta.total_docs}">
-            <td>{{ packing.code || '-' }}</td>
-            <td>{{ packing.serial || '-' }}</td>
-            <td>{{ packing.project?.name || '-' }}</td>
+          <tr *ngFor="let item of listOfPermanence | paginate: {
+                                                      id:'permanence',
+                                                      itemsPerPage: 10,
+                                                      currentPage: actualPage,
+                                                      totalItems: listOfPermanence.length}">
+            <td>{{ item.family_code || '-' }}</td>
+            <td>{{ item.serial || '-' }}</td>
+            <td>{{ item.tag?.code || '-' }}</td>
 
-            <td>{{ packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
-              : "Embalagem em Viagem") }}</td>
-            <td>{{ packing.actual_plant | type }}</td>
-            <td>{{ packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro' }}</td>
+            <td>{{ item.current_control_point_name }}</td>
+            <td>{{ item.current_control_point_type }}</td>
+            <td>{{ item.permanence_time_exceeded | float_time }}</td>
 
-            <td>{{ packing.supplier?.duns || '-' }}</td>
-            <td>{{ packing.supplier?.name || '-' }}</td>
-
+            <!-- <td>{{ item.supplier?.duns || '-' }}</td>
+            <td>{{ item.supplier?.name || '-' }}</td> -->
           </tr>
         </tbody>
       </table>
 
-      <div class="classVazio" *ngIf="permanence.data?.length < 1">
+      <div class="classVazio" *ngIf="listOfPermanence.length < 1">
         Selecione um equipamento.
       </div>
     </div>
@@ -101,14 +96,13 @@
     <br>
     
     <div class="has-text-centered">
-      <pagination-controls class="my-pagination" id="permanence" (pageChange)="permanence.meta.page = $event;permanenceInventory()"
-        directionLinks="false" autoHide="true">
+      <pagination-controls class="my-pagination" id="permanence" (pageChange)="actualPage = $event;" directionLinks="false" autoHide="true">
       </pagination-controls>
     </div>
   </div>
 
   <!-- Taela COM serial selecionado -->
-  <div *ngIf="selectedSerial">
+  <!-- <div *ngIf="selectedSerial">
     <div class="table-responsive">
       <table class="table">
         <thead>
@@ -158,7 +152,7 @@
         directionLinks="false" autoHide="true">
       </pagination-controls>
     </div>
-  </div>
+  </div> -->
 
 </div>
 

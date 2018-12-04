@@ -97,7 +97,7 @@ exports.general_inventory_report = async () => {
                 const qtd_in_incorrect_cp = await Packing.find({ family: family._id, absent: true, current_state: 'local_incorreto', active: true }).count()
                 const qtd_with_permanence_time_exceeded = await Packing.find({ family: family._id, permanence_time_exceeded: true, active: true }).count()
                 const qtd_missing = await Packing.find({ family: family._id, current_state: 'perdida', active: true }).count()
-                const location = await general_inventory_report_detailed(family._id)
+                const locations = await general_inventory_report_detailed(family._id)
 
                 family_obj.company = family.company.name
                 family_obj.family_name = family.code
@@ -111,8 +111,7 @@ exports.general_inventory_report = async () => {
                 family_obj.qtd_in_incorrect_cp = qtd_in_incorrect_cp
                 family_obj.qtd_with_permanence_time_exceeded = qtd_with_permanence_time_exceeded
                 family_obj.qtd_missing = qtd_missing
-                family_obj.locations = _.countBy(location, 'control_point_name')
-                // family_obj.locations = await general_inventory_report_detailed(family._id)
+                family_obj.locations = Object.entries(_.countBy(locations, 'control_point_name')).map(([key, value]) => ({cp: key, qtd: value}))
 
                 return family_obj
             })

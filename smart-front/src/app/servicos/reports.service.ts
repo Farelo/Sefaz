@@ -23,4 +23,13 @@ export class ReportsService {
     }
   }
 
+  getGeneralEquipmentInventory() {
+
+    return this.http.get(`${environment.url}/reports/general_inventory`).catch(this.handleError);
+  }
+
+  getPermanenceInventory(){
+
+    return this.http.get(`${environment.url}/reports/permanence_time`).catch(this.handleError);
+  }
 }
