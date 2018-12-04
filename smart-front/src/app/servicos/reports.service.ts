@@ -13,6 +13,10 @@ export class ReportsService {
       return Observable.throw(error);
   }
 
+  /**
+   * Equipamento/geral
+   * @param family 
+   */
   getGeneralInventory(family: any = '') {
 
     if (!family){ 
@@ -23,13 +27,27 @@ export class ReportsService {
     }
   }
 
+  /**
+   * Equipamento/Inventário geral
+   */
   getGeneralEquipmentInventory() {
 
     return this.http.get(`${environment.url}/reports/general_inventory`).catch(this.handleError);
   }
 
+  /**
+   * Equipamento/Inventário geral
+   */
   getPermanenceInventory(){
 
     return this.http.get(`${environment.url}/reports/permanence_time`).catch(this.handleError);
+  }
+
+  /**
+   * Equipamento/Tempo de permanência
+   */
+  getAbsentInventory(){
+
+    return this.http.get(`${environment.url}/reports/absent`).catch(this.handleError);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
-import { InventoryService, PackingService, AuthenticationService, InventoryLogisticService } from '../../../servicos/index.service';
+import { InventoryService, PackingService, AuthenticationService, InventoryLogisticService, FamiliesService, ReportsService } from '../../../servicos/index.service';
 import { AbscenseModalComponent } from '../../../shared/modal-packing-absence/abscense.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -11,231 +11,136 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class InventarioAusenciaComponent implements OnInit {
 
-  public logged_user: any;
-  public absence: Pagination = new Pagination({ meta: { page: 1 } });
-  public permanence: Pagination = new Pagination({ meta: { page: 1 } });
-  public general: Pagination = new Pagination({ meta: { page: 1 } });
-  public absenceSearchEquipamento: any;
-  public abserials: any[];
-  public absenceSearchSerial: any;
-  public absenceTime: number = 10;
-  public escolhaLocal = "Factory";
-  public abserial = false;
-  public serials: any[];
-  public serial = false;
-  public packings: any[];
-  public detailedGeneralpackings: any[];
-  public abpackings: any[];
-  public ab_packings: any[];
-  public locals: any[];
-  public permanenceSearchSerial = null;
+  public listOfFamilies: any[];
+  public selectedFamily: any = null;
+
+  public listOfSerials: any[] = [];
+  public selectedSerial: any = null;
+
+  public listOfAbsent: any[] = [];
+  public auxListOfAbsent: any[] = [];
+  
+  public timeInterval: number = null;
+
+  public actualPage: number = -1;
 
   constructor( 
-    private inventoryService: InventoryService,
-    private inventoryLogisticService: InventoryLogisticService,
-    private packingService: PackingService,
+    private familyService: FamiliesService,
+    private reportService: ReportsService,
     private modalService: NgbModal,
-    private auth: AuthenticationService
-  ) {
+    private auth: AuthenticationService) {
 
-    let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
   ngOnInit() {
-    
-    //this.generalInventory(); 
-    //this.loadPackings();
-     this.loadAbPackings();
-     this.loadLocals();
 
-    // this.escolhaLocal = "Supplier";
-    // this.absenceInventory();
+    this.loadFamilies();
+    this.loadAbsenceInventory();
   }
 
-  onClear() {
-    console.log('clear equipment');
-    this.serial = false;
-    this.serials = [];
-    this.permanence = new Pagination({ meta: { page: 1 } })
-    this.permanence.data = []
-    this.permanenceSearchSerial = null;
-  }
+  loadFamilies(){
+    this.familyService.getAllFamilies().subscribe(result => {
 
-  generalInventory() {
-    if (this.logged_user instanceof Array) {
-      this.inventoryLogisticService.getInventoryGeneral(10, this.general.meta.page, this.logged_user).subscribe(result => this.general = result, err => { console.log(err) });
-    } else {
-      this.inventoryService.getInventoryGeneral(10, this.general.meta.page, this.logged_user).subscribe(result => this.general = result, err => { console.log(err) });
-    }
+      this.listOfFamilies = result;
+    }, err => console.error(err));
   }
 
   /**
- * Carrega o select EQUIPAMENTO
- */
-  loadAbPackings() {
-    if (this.logged_user instanceof Array) {
-      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => {
-        this.ab_packings = result.data;
-        //console.log('loadAbPackings logistic - this.ab_packings: ' + JSON.stringify(this.ab_packings));
-      }, err => { console.log(err) });
-
-    } else if (this.logged_user) {
-      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => {
-        this.ab_packings = result.data;
-        //console.log('loadAbPackings supplier  - this.ab_packings: ' + JSON.stringify(this.ab_packings));
-      }, err => { console.log(err) });
-
-    } else {
-      this.packingService.getPackingsDistincts().subscribe(result => {
-        this.ab_packings = result.data;
-        this.absenceTime = 10;
-        //console.log('loadAbPackings distincit - this.ab_packings: ' + JSON.stringify(this.ab_packings));
-      }, err => { console.log(err) });
-    }
-  }
-
-  /**
-   * Click no select EQUIPAMENTO ou clear no SERIAL
+   * Loads the serials
    */
-  absenceInventory() {
+  loadSerials(event: any) {
 
-    this.absence = new Pagination({ meta: { page: 1 } });
+    this.selectedSerial = null;
 
-    if (this.absenceSearchEquipamento) {
-      //console.log('.absenceSearchEquipamento: ' + JSON.stringify(this.absenceSearchEquipamento));
-
-      this.packingService
-        .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
-        .subscribe(result => {
-          this.abserials = result.data;
-          //console.log('.abserials: ' + JSON.stringify(this.abserials));
-
-          this.inventoryService
-            .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
-            .subscribe(result => {
-
-              if (result.data) {
-
-                this.absence = result;
-                //console.log('.absence: ' + JSON.stringify(this.absence));
-              }
-            }, err => { console.log(err) });
-        }, err => { console.log(err) })
-
-    } else {
-      console.log('..absenceSearchEquipamento: null');
-
-      this.inventoryService
-        .getAbsencePermanence(10, this.absence.meta.page, "todos", this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
-        .subscribe(result => {
-
-          if (result.data) {
-
-            this.absence = result;
-            //console.log('..absence: ' + JSON.stringify(this.absence));
-          }
-        }, err => { console.log(err) });
-      this.absenceSearchSerial = "";
-      this.abserial = false;
-      this.abserials = [];
-      this.absence.data = []
-    }
+    // console.log(aux);
+    this.listOfSerials = this.listOfAbsent;
   }
 
-  serialCleared(){
-    //console.log('serialCleared: ' + JSON.stringify(this.absenceSearchEquipamento));
-
-    this.inventoryService
-      .getAbsencePermanence(10, this.absence.meta.page, "todos", this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
-      .subscribe(result => {
-
-        if (result.data) {
-
-          this.absence = result
-        }
-      }, err => { console.log(err) });
-    this.absenceSearchSerial = "";
-    this.abserial = false;
-    this.abserials = [];
-    this.absence.data = []
-  }
-
-  absenceInventoryChangePage() {
-
-    //console.log('absenceSearchEquipamento: ' + JSON.stringify(this.absenceSearchEquipamento));
-
-    if (this.absenceSearchEquipamento) {
-
-      this.packingService
-        .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
-        .subscribe(result => {
-          this.abserials = result.data;
-          this.inventoryService
-            .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
-            .subscribe(result => {
-
-              if (result.data) {
-
-                this.absence = result
-              }
-            }, err => { console.log(err) });
-        }, err => { console.log(err) })
-
-    } else {
-      this.inventoryService
-        .getAbsencePermanence(10, this.absence.meta.page, "todos", this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
-        .subscribe(result => {
-
-          if (result.data) {
-
-            this.absence = result
-          }
-        }, err => { console.log(err) });
-      this.absenceSearchSerial = "";
-      this.abserial = false;
-      this.abserials = [];
-    }
+  loadLocals(){
 
   }
 
-  absenceInventorySerial() {
-    this.serial = true;
-
-    this.inventoryService.getInventoryAbsencePacking(10, this.permanence.meta.page, this.absenceSearchSerial, this.absenceSearchEquipamento.packing, this.logged_user).subscribe(result => {
-      this.permanence = result;
+  loadAbsenceInventory() {
+    this.reportService.getAbsentInventory().subscribe(result => {
+      this.listOfAbsent = result;
+      this.auxListOfAbsent = result;
     }, err => { console.log(err) });
-
-  }
-
-  loadPackings() {
-    if (this.logged_user instanceof Array) {
-      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
-
-    } else if (this.logged_user) {
-      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.packings = result.data, err => { console.log(err) });
-    } else {
-      this.packingService.getPackingsDistincts().subscribe(result => { this.packings = result.data }, err => { console.log(err) });
-    }
   }
 
   /**
-   * Carrega os locais do select LOCAL DA AUSÊNCIA
+   * Filtros
    */
-  loadLocals() {
-    //this.locals = [ { "local" : "Todos"} , {"local": "Fornecedor"}, { "local": "Clientes"} ];
-    this.locals = [{ "local": "Plantas das Embarcadoras" }];
+  familyFilter(event: any){
+    console.log(event);
+    
+    if(!event) {
+      this.listOfSerials = [];
+      this.selectedSerial = null;
+      return;
+    }
+
+    let aux = this.auxListOfAbsent.filter(elem => {
+      return elem.family.code == event.code;
+    });
+
+    this.listOfAbsent = aux;
+
+    this.loadSerials(event);
+    //this.intervalFilter();
   }
 
-  changeLocal(){
-    
-    if (this.escolhaLocal == null) this.escolhaLocal = "Supplier";
-    this.absenceInventory();
+  serialFilter(event: any) {
+
+    if (!event) {
+      this.selectedSerial = null;
+      this.familyFilter(this.selectedFamily);
+      return;
+    }
+
+    let aux = this.auxListOfAbsent.filter(elem => {
+      return ((elem.family.code == event.family.code) && (elem.serial == event.serial));
+    });
+
+    //console.log(aux);
+    this.listOfAbsent = aux;
+
+    this.intervalFilter();
   }
+
+  intervalFilter(){
+
+    console.log(this.timeInterval);
+    
+    if (this.timeInterval){
+      let aux = this.listOfAbsent.filter(elem => {
+        return (elem.absent_time_in_hours == this.timeInterval);
+      });
+
+      this.listOfAbsent = aux;
+    }
+  }
+
+  applyGeneralFilter(){
+
+    console.log('apply filter');
+    console.log(this.selectedFamily);
+    console.log(this.selectedSerial);
+    console.log(this.timeInterval);
+
+    let aux = this.auxListOfAbsent.filter(elem => {
+      
+      let bFamily = (this.selectedFamily == null ? true : (elem.family.code == this.selectedFamily.code));
+      let bSerial = (this.selectedSerial == null ? true : (elem.serial == this.selectedSerial.serial));
+      let binterval = (this.timeInterval == null ? true : (elem.absent_time_in_hours <= this.timeInterval));
+
+      console.log(`${bFamily}, ${bSerial}, ${binterval}` )
+
+      return (bFamily && bSerial && binterval);
+    });
+
+    this.listOfAbsent = aux;
+  }
+
 
   openAbsence(packing) {
     const modalRef = this.modalService.open(AbscenseModalComponent, { backdrop: "static", size: "lg" });
