@@ -21,6 +21,7 @@ export class InventarioGeralComponent implements OnInit {
 
   public detailedGeneralInventory: any[] = [];
   public auxDetailedGeneralInventory: any[] = [];
+  
   public actualPage: number = -1;
   
   constructor(
