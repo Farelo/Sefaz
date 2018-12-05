@@ -15,6 +15,7 @@ const reports = require('../resources/reports/reports.routing')
 const settings = require('../resources/settings/settings.routing')
 const gc16 = require('../resources/gc16/gc16.routing')
 const home = require('../resources/home/home.routing')
+const alerts = require('../resources/alerts/alerts.routing')
 const error = require('../middlewares/error_handler.middleware')
 
 module.exports = (app) => {
@@ -48,6 +49,7 @@ module.exports = (app) => {
     app.use('/api/settings', settings)
     app.use('/api/gc16', gc16)
     app.use('/api/home', home)
+    app.use('/api/alerts', alerts)
 
     // Middlewares functions
     app.use(error)

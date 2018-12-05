@@ -144,46 +144,46 @@ const gc16Schema = new mongoose.Schema({
 
 const validate_gc16 = (gc16) => {
     const schema = Joi.object().keys({
-        annual_volume: Joi.number().max(1000000),
-        capacity: Joi.number().max(10000),
-        productive_days: Joi.number().max(10000),
-        container_days: Joi.number().max(10000),
-        capacity: Joi.number().max(10000),
+        annual_volume: Joi.number().min(0).max(1000000),
+        capacity: Joi.number().min(0).max(10000),
+        productive_days: Joi.number().min(0).max(10000),
+        container_days: Joi.number().min(0).max(10000),
+        capacity: Joi.number().min(0).max(10000),
         family: Joi.objectId().required(),
         security_factor: {
-            percentage: Joi.number().max(10000),
-            qty_total_build: Joi.number().max(10000),
-            qty_container: Joi.number().max(10000)
+            percentage: Joi.number().min(0).max(10000),
+            qty_total_build: Joi.number().min(0).max(10000),
+            qty_container: Joi.number().min(0).max(10000)
         },
         frequency: {
-            days: Joi.number().max(10000),
-            fr: Joi.number().max(10000),
-            qty_total_days: Joi.number().max(10000),
-            qty_container: Joi.number().max(10000)
+            days: Joi.number().min(0).max(10000),
+            fr: Joi.number().min(0).max(10000),
+            qty_total_days: Joi.number().min(0).max(10000),
+            qty_container: Joi.number().min(0).max(10000)
         },
         transportation_going: {
-            days: Joi.number().max(10000),
-            value: Joi.number().max(10000),
-            qty_container: Joi.number().max(10000)
+            days: Joi.number().min(0).max(10000),
+            value: Joi.number().min(0).max(10000),
+            qty_container: Joi.number().min(0).max(10000)
         },
         transportation_back: {
-            days: Joi.number().max(10000),
+            days: Joi.number().min(0).max(10000),
             value: Joi.number().max(10000),
-            qty_container: Joi.number().max(10000)
+            qty_container: Joi.number().min(0).max(10000)
         },
         owner_stock: {
-            days: Joi.number().max(10000),
-            value: Joi.number().max(10000),
-            max: Joi.number().max(10000),
-            qty_container: Joi.number().max(10000),
-            qty_container_max: Joi.number().max(10000)
+            days: Joi.number().min(0).max(10000),
+            value: Joi.number().min(0).max(10000),
+            max: Joi.number().min(0).max(10000),
+            qty_container: Joi.number().min(0).max(10000),
+            qty_container_max: Joi.number().min(0).max(10000)
         },
         client_stock: {
-            days: Joi.number().max(10000),
-            value: Joi.number().max(10000),
-            max: Joi.number().max(10000),
-            qty_container: Joi.number().max(10000),
-            qty_container_max: Joi.number().max(10000)
+            days: Joi.number().min(0).max(10000),
+            value: Joi.number().min(0).max(10000),
+            max: Joi.number().min(0).max(10000),
+            qty_container: Joi.number().min(0).max(10000),
+            qty_container_max: Joi.number().min(0).max(10000)
         }
     })
 

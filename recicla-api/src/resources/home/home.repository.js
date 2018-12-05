@@ -1,5 +1,6 @@
 const debug = require('debug')('repository:home')
 const _ = require('lodash')
+const moment = require('moment')
 const { Company } = require('../companies/companies.model')
 const { ControlPoint } = require('../control_points/control_points.model')
 const { EventRecord } = require('../event_record/event_record.model')
@@ -42,13 +43,24 @@ exports.home_report = async (current_state = null) => {
                 })
             )
         } else {
-            let data = _.countBy(packings, 'current_state')
+            let data = {}
+            const qtd_in_traveling = await Packing.find({ current_state: 'viagem_em_prazo', active: true }).count()
+            const qtd_in_traveling_late = await Packing.find({ current_state: 'viagem_atrasada', active: true }).count()
+            const qtd_in_traveling_missing = await Packing.find({ current_state: 'viagem_perdida', active: true }).count()
+            const qtd_in_correct_cp = await Packing.find({ current_state: 'local_correto', active: true }).count()
+            const qtd_in_incorrect_cp = await Packing.find({ current_state: 'local_incorreto', active: true }).count()
 
             const packings_low_battery = await Packing.find({ active: true, low_battery: true }).select(['_id', 'current_state']).count()
             const packings_permanence_time_exceeded = await Packing.find({ active: true, permanence_time_exceeded: true }).select(['_id', 'current_state']).count()
 
-            data.low_battery = packings_low_battery
-            data.permanence_time_exceeded = packings_permanence_time_exceeded
+            data.qtd_total = packings.length
+            data.qtd_in_cp = qtd_in_correct_cp + qtd_in_incorrect_cp
+            data.qtd_in_traveling = qtd_in_traveling + qtd_in_traveling_late + qtd_in_traveling_missing
+            data.qtd_in_incorrect_cp = qtd_in_incorrect_cp
+            data.qtd_permanence_time_exceeded = packings_permanence_time_exceeded
+            data.qtd_traveling_late = qtd_in_traveling_late
+            data.qtd_traveling_missing = qtd_in_traveling_missing
+            data.qtd_with_low_battery = packings_low_battery
 
             return data
         }
