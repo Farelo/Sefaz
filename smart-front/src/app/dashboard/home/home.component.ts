@@ -17,15 +17,14 @@
     public bateriaBaixaCollapsed = false;
 
     public resume: any = {
-      quantityTotal: 0,
-      quantityTraveling: 0,
-      quantityIncorrectLocal: 0,
-      quantityMissing: 0,
-      quantityLate: 0,
-      quantityTimeExceeded: 0,
-      quantityInFactory: 0,
-      quantityInSupplier: 0,
-      quantityNoSignal: 0
+      qtd_total: 0,
+      qtd_in_cp: 0,
+      qtd_in_traveling: 0,
+      qtd_in_incorrect_cp: 0,
+      qtd_permanence_time_exceeded: 0,
+      qtd_traveling_late: 0,
+      qtd_traveling_missing: 0,
+      qtd_with_low_battery: 0
     };
 
     constructor(private homeService: HomeService) { }

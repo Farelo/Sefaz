@@ -25,14 +25,14 @@ export class ResumoHomeComponent implements OnInit {
   }
 
   calculateProgress() {
-    if (this.resume.quantityTotal > 0) {
+    if (this.resume.qtd_total > 0) {
       //Categoria em pontos de controle
       /*
       progressControle = permanência + fábrica + fornecedor
       local incorreto?
       */
-      this.progressControle.push((parseFloat(this.resume.quantityInFactory + this.resume.quantityInSupplier + this.resume.quantityInOpLogistic) / parseFloat(this.resume.quantityTotal)) * 100);
-      this.progressControle.push(100 - this.progressControle[0]);
+      this.progressControle.push((parseFloat(this.resume.qtd_in_cp) / parseFloat(this.resume.qtd_total)) * 100);
+      this.progressControle.push(100 - this.resume.qtd_in_cp);
 
       //console.log('this.progressControle: ' + this.progressControle);
 
@@ -40,9 +40,9 @@ export class ResumoHomeComponent implements OnInit {
       /*
       progressViagem = atrasado + ausente + viajando
       */
-      this.progressViagem.push(this.progressControle[0]);
-      this.progressViagem.push((parseFloat(this.resume.quantityLate + this.resume.quantityMissing + this.resume.quantityTraveling) / parseFloat(this.resume.quantityTotal)) * 100);
-      this.progressViagem.push(100 - this.progressViagem[0] - this.progressViagem[1]);
+      this.progressViagem.push(parseFloat(this.resume.qtd_in_cp));
+      this.progressViagem.push((parseFloat(this.resume.qtd_in_traveling) / parseFloat(this.resume.quantityTotal)) * 100);
+      this.progressViagem.push(100 - this.resume.qtd_in_traveling);
 
       //console.log('this.progressViagem: ' + this.progressViagem);
       //Categoria sem sinal
