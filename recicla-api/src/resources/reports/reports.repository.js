@@ -8,9 +8,6 @@ const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
 const { GC16 } = require('../gc16/gc16.model')
 const { Setting } = require('../settings/settings.model')
-// const { DeviceData } = require('../device_data/device_data.model')
-// const { AlertHistory } = require('../alert_history/alert_history.model')
-// const { User } = require('../users/users.model')
 
 exports.general_report = async () => {
     try {
