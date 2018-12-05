@@ -12,54 +12,59 @@
         placement="bottom" 
         (click)="open(alert?.packing?._id,alert.status)"
         [ngClass]="{
-          'status1' : alert.status == 1,
-          'status2' : alert.status == 2,
-          'status3' : alert.status == 3,
-          'status4' : alert.status == 4,
-          'status5' : alert.status == 5,
-          'status6' : alert.status == 6 }"
-        *ngFor="let alert of data?.data | paginate: {   id:'list',
-                                                    itemsPerPage: 10,
-                                                    currentPage: data.meta.page,
-                                                    totalItems: data.meta.total_docs}">
+          'status0' : getAlertCode(alert.current_state) == 0,
+          'status1' : getAlertCode(alert.current_state) == 1,
+          'status2' : getAlertCode(alert.current_state) == 2,
+          'status3' : getAlertCode(alert.current_state) == 3,
+          'status4' : getAlertCode(alert.current_state) == 4,
+          'status5' : getAlertCode(alert.current_state) == 5,
+          'status6' : getAlertCode(alert.current_state) == 6 }"
+        *ngFor="let alert of listOfAlerts | paginate: {   
+                                              id:'list',
+                                              itemsPerPage: 10,
+                                              currentPage: listOfAlertsActualPage,
+                                              totalItems: listOfAlerts.length}">
         <div class="esquerda">
-          <span class="codigo" tooltip="Código da Embalagem">{{alert.packing?.code}}</span>
+          <span class="codigo" tooltip="Código da Embalagem">{{alert.family.code}}</span>
           <br />
-          <span class="descricao" tooltip="Data do Alerta">{{alert.date | date}}</span>
+          <span class="descricao" tooltip="Data do Alerta">{{alert.created_at | date}}</span>
         </div>
 
         <div class="direita">
           <span class="fornecedor" 
             tooltip="Ultima planta em que foi visto" 
-            *ngIf="alert.status == 1 || alert.status == 4" 
+            *ngIf="getAlertCode(alert.current_state) == 1 || getAlertCode(alert.current_state) == 4" 
             [ngClass]="{
-              'fornecedor1' : alert.status == 1,
-              'fornecedor2' : alert.status == 2,
-              'fornecedor3' : alert.status == 3,
-              'fornecedor4' : alert.status == 4,
-              'fornecedor5' : alert.status == 5,
-              'fornecedor6' : alert.status == 6 }"> {{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}
+              'fornecedor0' : getAlertCode(alert.current_state) == 0,
+              'fornecedor1' : getAlertCode(alert.current_state) == 1,
+              'fornecedor2' : getAlertCode(alert.current_state) == 2,
+              'fornecedor3' : getAlertCode(alert.current_state) == 3,
+              'fornecedor4' : getAlertCode(alert.current_state) == 4,
+              'fornecedor5' : getAlertCode(alert.current_state) == 5,
+              'fornecedor6' : getAlertCode(alert.current_state) == 6 }"> {{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}
           </span>
           <span class="fornecedor" 
             tooltip="Planta Atual" 
-            *ngIf="alert.status != 1 && alert.status != 4" 
+            *ngIf="getAlertCode(alert.current_state) != 1 && getAlertCode(alert.current_state) != 4" 
             [ngClass]="{
-              'fornecedor1' : alert.status == 1,
-              'fornecedor2' : alert.status == 2,
-              'fornecedor3' : alert.status == 3,
-              'fornecedor4' : alert.status == 4,
-              'fornecedor5' : alert.status == 5,
-              'fornecedor6' : alert.status == 6 }">{{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}</span>
+              'fornecedor0' : getAlertCode(alert.current_state) == 0,
+              'fornecedor1' : getAlertCode(alert.current_state) == 1,
+              'fornecedor2' : getAlertCode(alert.current_state) == 2,
+              'fornecedor3' : getAlertCode(alert.current_state) == 3,
+              'fornecedor4' : getAlertCode(alert.current_state) == 4,
+              'fornecedor5' : getAlertCode(alert.current_state) == 5,
+              'fornecedor6' : getAlertCode(alert.current_state) == 6 }">{{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}</span>
           <br />
           <span class="quantidade" 
             tooltip="Código Serial da Embalagem" 
             [ngClass]="{
-              'quantidade1' : alert.status == 1,
-              'quantidade2' : alert.status == 2,
-              'quantidade3' : alert.status == 3,
-              'quantidade4' : alert.status == 4,
-              'quantidade5' : alert.status == 5,
-              'quantidade6' : alert.status == 6 }">{{alert.serial}}</span>
+              'quantidade0' : getAlertCode(alert.current_state) == 0,
+              'quantidade1' : getAlertCode(alert.current_state) == 1,
+              'quantidade2' : getAlertCode(alert.current_state) == 2,
+              'quantidade3' : getAlertCode(alert.current_state) == 3,
+              'quantidade4' : getAlertCode(alert.current_state) == 4,
+              'quantidade5' : getAlertCode(alert.current_state) == 5,
+              'quantidade6' : getAlertCode(alert.current_state) == 6 }">{{alert.serial}}</span>
         </div>
       </div>
 

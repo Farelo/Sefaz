@@ -40,24 +40,26 @@
     </div>
 
     <div class="painel">
+      <!-- [routerLink]="[alert.family_id, alert.current_state]" -->
       <div class="row quadradoPequeno" 
-        [tooltip]="getAlertText(alert.status)" 
         placement="bottom"
-        [routerLink]="['list/',alert.packing.code, alert.project._id, alert.supplier._id, alert.status ]"
+        [tooltip]="getAlertText(alert.current_state)" 
+        [routerLink]="[alert.family_id, alert.current_state]"
         [ngClass]="{
-          'status1' : alert.status == 1,
-          'status2' : alert.status == 2,
-          'status3' : alert.status == 3,
-          'status4' : alert.status == 4,
-          'status5' : alert.status == 5,
-          'status6' : alert.status == 6 }" 
-        *ngFor="let alert of data?.data | paginate: { id:'alerts',
+          'status0' : getAlertCode(alert.current_state) == 0,
+          'status1' : getAlertCode(alert.current_state) == 1,
+          'status2' : getAlertCode(alert.current_state) == 2,
+          'status3' : getAlertCode(alert.current_state) == 3,
+          'status4' : getAlertCode(alert.current_state) == 4,
+          'status5' : getAlertCode(alert.current_state) == 5,
+          'status6' : getAlertCode(alert.current_state) == 6 }" 
+        *ngFor="let alert of listOfAlerts | paginate: { id:'alerts',
                                                       itemsPerPage: 16,
-                                                      currentPage: data.meta.page,
-                                                      totalItems: data.meta.total_docs}">
+                                                      currentPage: listOfAlertsActualPage,
+                                                      totalItems: listOfAlerts.length}">
 
         <div class="col-sm-6 esquerda">
-          <span class="codigo" tooltip="Código da Embalagem">{{alert.packing?.code}}</span>
+          <span class="codigo" tooltip="Código da Embalagem">{{alert.family_code}}</span>
           <br />
           <span class="descricao" tooltip="Descrição">{{alert.packing?.type}}</span>
         </div>
@@ -65,42 +67,44 @@
         <div class="col-sm-6 direita">
           <div class="bigger" tooltip="Fornecedor">
             <div [ngClass]="{
-              'f1' : alert.status == 1,
-              'f2' : alert.status == 2,
-              'f3' : alert.status == 3,
-              'f4' : alert.status == 4,
-              'f5' : alert.status == 5,
-              'f6' : alert.status == 6 }">
+              'f0' : getAlertCode(alert.current_state) == 0,
+              'f1' : getAlertCode(alert.current_state) == 1,
+              'f2' : getAlertCode(alert.current_state) == 2,
+              'f3' : getAlertCode(alert.current_state) == 3,
+              'f4' : getAlertCode(alert.current_state) == 4,
+              'f5' : getAlertCode(alert.current_state) == 5,
+              'f6' : getAlertCode(alert.current_state) == 6 }">
             </div>
           </div>
-          <span tooltip="Fornecedor da Embalagem" class="forn">{{alert.supplier?.name}}</span>
+          <span tooltip="Fornecedor da Embalagem" class="forn">{{alert.company.name}}</span>
           <br />
           <span class="quantidade" 
             tooltip="Quantidade de embalagens" 
             [ngClass]="{
-              'quantidade1' : alert.status == 1,
-              'quantidade2' : alert.status == 2,
-              'quantidade3' : alert.status == 3,
-              'quantidade4' : alert.status == 4,
-              'quantidade5' : alert.status == 5,
-              'quantidade6' : alert.status == 6 }">{{alert.quantity }}</span>
+              'quantidade0' : getAlertCode(alert.current_state) == 0,
+              'quantidade1' : getAlertCode(alert.current_state) == 1,
+              'quantidade2' : getAlertCode(alert.current_state) == 2,
+              'quantidade3' : getAlertCode(alert.current_state) == 3,
+              'quantidade4' : getAlertCode(alert.current_state) == 4,
+              'quantidade5' : getAlertCode(alert.current_state) == 5,
+              'quantidade6' : getAlertCode(alert.current_state) == 6 }">{{alert.qtd }}</span>
         </div>
       </div>
 
       <!-- pagination -->
-      <div style="width: 100%;" *ngIf="data?.data?.length > 0 ">
+      <div style="width: 100%;" *ngIf="listOfAlerts.length > 0 ">
         <br />
         <div class="has-text-centered">
-          <pagination-controls id='alerts' class="my-pagination" (pageChange)="pageChanged($event)" directionLinks="false" autoHide="true">
+          <pagination-controls id='alerts' class="my-pagination" (pageChange)="listOfAlertsActualPage = $event" directionLinks="false" autoHide="true">
           </pagination-controls>
         </div>
       </div>
 
       <!-- no alerts to show -->
-      <div class="externa" *ngIf="data?.data?.length < 1 ">
+      <div class="externa" *ngIf="listOfAlerts.length < 1 ">
         <div class="row interna">
           <div class="col-sm-9 divTexto center">
-            <p class="texto">VOCÊ NÃO TEM NENHUM ALERTA</p>
+            <p class="texto">No momento não existem alertas</p>
           </div>
         </div>
       </div>
