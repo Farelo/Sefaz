@@ -91,7 +91,7 @@ export class EmbalagemCadastroComponent implements OnInit {
         code: ['', 
           [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
         version: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
-        manufactorer: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]]
+        manufactorer: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]]
       }),
       serial: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]],
       type: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
