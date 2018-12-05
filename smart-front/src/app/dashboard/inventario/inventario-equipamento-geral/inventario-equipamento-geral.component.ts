@@ -20,7 +20,7 @@ import { constants } from '../../../../environments/constants';
 export class InventarioEquipamentoGeralComponent implements OnInit {
 
   public logged_user: any;
-  public listOfFamilies: any[];
+  public listOfFamilies: any[] = [];
   public familySearch = '';
   public generalEquipament: any[] = [];
   public auxGeneralEquipament: any[] = [];

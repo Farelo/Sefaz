@@ -11,48 +11,44 @@ import { InventoryService } from '../../../servicos/index.service';
 export class CategoriaBateriaBaixaComponent implements OnInit {
 
   @Input() resume: any;
-  public listBattery: Pagination = new Pagination({ meta: { page: 1 } });
+
+  public listBattery: any[] = [];
   public progressBateria: any = [];
 
-  constructor(private homeService: HomeService, private inventoryService: InventoryService) { }
+  constructor(private homeService: HomeService) { 
+
+  }
 
   ngOnInit() {
     
+    this.getListLowBattery();
   }
 
   ngOnChanges() {
+
     //console.log(this.resume);
-    this.getListLowBattery();
+    this.calculateProgress();
   }
 
   getListLowBattery() {
-    this.inventoryService
-      .getLowBattery(10, this.listBattery.meta.page).subscribe(result => {
-        this.listBattery = result;
-
-        //console.log('this.listBattery: ' + JSON.stringify(this.listBattery));
-        this.calculateProgress();
-
-      },err => {console.log(err);});
+    
+    this.homeService.getBatery().subscribe(result => {
+      this.listBattery = result;
+    }, err => { console.log(err) });
   }
 
   calculateProgress() {
-    if (this.resume.quantityTotal > 0) {
+
+    if (this.resume.qtd_total > 0) { 
+
       //Categoria em pontos de controle
-      this.progressBateria.push((parseFloat(this.resume.quantityLowBattery) / parseFloat(this.resume.quantityTotal)) * 100);
-      this.progressBateria.push(100 - this.progressBateria[0]);
+      this.progressBateria[0] = ((parseFloat(this.resume.qtd_with_low_battery) / parseFloat(this.resume.qtd_total)) * 100);
+      this.progressBateria[1] = (100 - this.progressBateria[0]);
 
-      //console.log('this.progressBateria: ' + this.progressBateria);
-      //console.log('this.progressEmViagem: ' + this.progressBateria);
+    }else{
+      this.progressBateria = [0, 100];
     }
-  }
 
-  /*
-   * Pagination
-   */
-  batteryChange() {
-    console.log('batteryChange');
-    this.getListLowBattery();
+    console.log(this.progressBateria);
   }
-
 }

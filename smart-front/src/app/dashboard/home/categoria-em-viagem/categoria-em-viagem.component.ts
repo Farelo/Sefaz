@@ -12,64 +12,53 @@ export class CategoriaEmViagemComponent implements OnInit {
   @Input() resume: any;
 
   public progressEmViagem: any = [];
-  public listLate: Pagination = new Pagination({ meta: { page: 1 } });
-  public listMissing: Pagination = new Pagination({ meta: { page: 1 } });
+
+  public listLate: any[] = [];
+  public listMissing: any[] = [];
   
+  public listLateActualPage: number = -1;
+  public listMissingActualPage: number = -1;
+
   constructor(private homeService: HomeService) { }
 
   ngOnInit() {
+
     this.getListLate();
     this.getListMissing();
   }
 
   ngOnChanges() {
-    //console.log(this.resume);
+    
     this.calculateProgress();
   }
 
   calculateProgress() {
-    if (this.resume.quantityLate + this.resume.quantityMissing > 0) {
+    
+    let base = parseFloat(this.resume.qtd_traveling_late + this.resume.qtd_traveling_missing);
+
+    if (base > 0) {
+
       //Categoria em pontos de controle
-      this.progressEmViagem.push((parseFloat(this.resume.quantityLate) / parseFloat(this.resume.quantityTotal)) * 100);
-      this.progressEmViagem.push((parseFloat(this.resume.quantityMissing) / parseFloat(this.resume.quantityTotal) * 100));
-      this.progressEmViagem.push(100 - this.progressEmViagem[0] - this.progressEmViagem[1]);
+      this.progressEmViagem[0] = ((parseFloat(this.resume.qtd_traveling_late) / base) * 100);
+      this.progressEmViagem[1] = ((parseFloat(this.resume.qtd_traveling_missing) / base) * 100);
+      this.progressEmViagem[2] = (100 - this.progressEmViagem[0] - this.progressEmViagem[1]);
 
-      // this.progressEmViagem.push((parseFloat(this.resume.quantityLate) / parseFloat(this.resume.quantityLate + this.resume.quantityMissing) * 100));
-      // this.progressEmViagem.push((parseFloat(this.resume.quantityMissing) / parseFloat(this.resume.quantityLate + this.resume.quantityMissing) * 100));
-      // this.progressEmViagem.push(100 - this.progressEmViagem[0] - this.progressEmViagem[1]);
-
-      //console.log('this.progressEmViagem: ' + this.progressEmViagem);
+    } else {
+      this.progressEmViagem = [0, 0, 100];
     }
+
+    console.log(this.progressEmViagem);
   }
 
   getListLate() {
-    this.homeService.getStatusList(10, this.listLate.meta.page, 'LATE').subscribe(result => {
-      //console.log('LATE: ' + JSON.stringify(result));
+    this.homeService.getHomeStatus('viagem_atrasada').subscribe(result => {
       this.listLate = result;
-
     }, err => { console.log(err) });
   }
 
   getListMissing() {
-    this.homeService.getStatusList(10, this.listMissing.meta.page, 'MISSING').subscribe(result => {
-      //console.log('MISSING: ' + JSON.stringify(result));
+    this.homeService.getHomeStatus('viagem_perdida').subscribe(result => {
       this.listMissing = result;
-
     }, err => { console.log(err) });
   }
-
-  /*
-   * Pagination
-   */
-
-  lateChange(){
-    console.log('lateChange');
-    this.getListLate();
-  }
-
-  missingChange(){
-    console.log('lateChange');
-    this.getListMissing();
-  }
-
 }

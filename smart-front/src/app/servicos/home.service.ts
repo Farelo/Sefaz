@@ -13,13 +13,33 @@ export class HomeService {
         return Observable.throw(error);
     }
 
+    /**
+     * General resume
+     */
     getResumeHome(): Observable<any> {
-        return this.http.get(`${environment.url}home/packings/stats`)
-            .catch(this.handleError);
+
+        return this.http.get(`${environment.url}/home`).catch(this.handleError);
     }
 
-    getStatusList(limit: number, page: number, statusType: string): Observable<any> {
-        return this.http.get(`${environment.url}home/packings/${limit}/${page}/${statusType}`)
-            .catch(this.handleError);
+    /**
+     * Specif type of alert
+     * @param status 
+     */
+    getHomeStatus(status: string): Observable<any> {
+
+        return this.http.get(`${environment.url}/home?current_state=${status}`).catch(this.handleError);
+    }
+
+    /**
+     * Get the list of permanence time exceeded
+     */
+    getPermanenceTimeExceeded(): Observable<any> {
+
+        return this.http.get(`${environment.url}/home/permanence_time_exceeded`).catch(this.handleError);
+    }
+
+    getBatery(): Observable<any> {
+
+        return this.http.get(`${environment.url}/home/low_battery`).catch(this.handleError);
     }
 }

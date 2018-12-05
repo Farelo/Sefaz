@@ -9,82 +9,67 @@
 
     <div class="col-sm-4">
       <p>EQUIPAMENTO</p>
-      <ng-select [(ngModel)]="absenceSearchEquipamento" 
-        (clear)="onClear()" 
-        (change)="absenceInventory()" 
-        [items]="ab_packings"
-        bindLabel="packing" 
-        placeholder="Selecione um Equipamento">
+      <ng-select 
+        [(ngModel)]="selectedFamily"
+        (change)="applyGeneralFilter()"
+        [items]="listOfFamilies"
+        bindLabel="code"
+        placeholder="Selecione uma Família">
 
         <ng-template ng-label-tmp let-item="item">
-          {{item.packing}}
+          {{ item.code }}
         </ng-template>
 
         <ng-template ng-option-tmp let-item="item">
-          <div>
-            <b>Embalagem:</b> {{item.packing }}
-          </div>
-
-          <div *ngIf="(item.packing != 'Todos')">
-            <small> <b>Fornecedor:</b> {{item.supplier.name}} </small>
-          </div>
-
-          <div *ngIf="(item.packing != 'Todos')">
-            <small> <b> Projeto:</b> {{item.project.name}} </small>
-          </div>
+          <div> {{ item.code }} </div>
         </ng-template>
       </ng-select>
     </div>
     
     <div class="col-sm-4">
       <p>SERIAL</p>
-      <ng-select [(ngModel)]="absenceSearchSerial" 
-        (clear)="serialCleared()" 
-        (change)="absenceInventory()" 
-        [items]="abserials"
-        bindLabel="serial" 
-        bindValue="serial" 
+      <ng-select 
+        [items]="listOfAbsent"
+        [(ngModel)]="selectedSerial"
+        [disabled]="!selectedFamily"
+        (change)="applyGeneralFilter()"
+        bindLabel="serial"
         placeholder="Selecione um Serial">
-
+      
         <ng-template ng-label-tmp let-item="item">
           {{item.serial}}
         </ng-template>
-
+      
         <ng-template ng-option-tmp let-item="item">
-          <div>
-            <small><b>Serial:</b> {{item.serial}}</small>
-          </div>
+          <div> {{item.serial}} </div>
         </ng-template>
-
+      
       </ng-select>
     </div>
     
     <div class="col-sm-4">
-      <p>TEMPO DE AUSÊNCIA</p>
-      <input [(ngModel)]="absenceTime" 
+      <p class="descricao">TEMPO DE AUSÊNCIA</p>
+      <p class="explicacao">Tempo máximo em horas</p>
+      <input 
+        [(ngModel)]="timeInterval" 
+        (keyup)="applyGeneralFilter()"
+        (change)="applyGeneralFilter()"
+        placeholder="Tempo de ausência" 
+        bindLabel="abtime" 
         aria-describedby="basic-addon1" 
         class="form-control meuInput"
-        placeholder="Tempo" 
-        bindLabel="abtime" 
-        type="text" 
-        (change)="absenceInventory()">
+        type="number">
     </div>
     
-    <div class="col-sm-4">
+    <!-- <div class="col-sm-4">
       <p>LOCAL DA AUSÊNCIA</p>
-      <!-- <select [(ngModel)]="escolhaLocal" (clear)="onClear()" data-style="btn-primary" (change)="absenceInventory()" (ngModelChange)="changeSelect($event)"
-        class="selectEq" style="width: 100%; margin-left: 0px;">
-        <option value="Supplier">Plantas das Embarcadoras</option>
-
-      </select> -->
-
-      <ng-select [(ngModel)]="escolhaLocal" 
-        (change)="changeLocal()" 
-        [items]="locals" 
-        bindLabel="local" 
-        bindValue="local" 
+      <ng-select 
+        [(ngModel)]="selectedType" 
+        [items]="allTypes" 
+        (change)="applyGeneralFilter()" 
+        bindLabel="name"
         placeholder="Selecione um Local"></ng-select>
-    </div> 
+    </div>  -->
     
   </div>
 
@@ -95,34 +80,33 @@
           <th>Equipamento</th>
           <th>Serial</th>
 
-          <th>Ultima Planta Conhecida</th>
+          <th>Última Planta Conhecida</th>
           <th>Tempo de Ausência</th>
           <th style="text-align: center;">Posição</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let packing of absence.data | paginate: {
-                                                        id:'absence',
-                                                        itemsPerPage: 10,
-                                                        currentPage: absence.meta.page,
-                                                        totalItems: absence.meta.total_docs}">
-          <td>{{packing?.code || '-'}}</td>
-          <td>{{packing?.serial || '-'}}</td>
+        <tr *ngFor="let packing of listOfAbsent | paginate: {
+                                                    id:'absence',
+                                                    itemsPerPage: 10,
+                                                    currentPage: actualPage,
+                                                    totalItems: listOfAbsent.length }">
+          <td>{{packing.family.code || '-'}}</td>
+          <td>{{packing.serial || '-'}}</td>
           
-          <td>{{packing?.lastplant?.plant_name || 'Sem Registro'}}</td>
-          <td>{{packing?.base_time | time }}</td>
+          <td>{{packing.last_event_record.control_point.name || 'Sem Registro'}}</td>
+          <td>{{packing.absent_time_in_hours | float_time }}</td>
           <!--td>{{packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro'}}</td-->
           <td style="text-align: center;">
             <div class="bigger" (click)="openAbsence(packing)">
-              <div class="det">
-              </div>
+              <div class="det"></div>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <div class="classVazio" *ngIf="absence.data?.length < 1">
+    <div class="classVazio" *ngIf="listOfAbsent.length < 1">
       Sem resultado para os parâmetros informados.
     </div>
   </div>
@@ -130,8 +114,7 @@
   <br>
   
   <div class="has-text-centered">
-    <pagination-controls class="my-pagination" id="absence" (pageChange)="absence.meta.page = $event;absenceInventoryChangePage()"
-      directionLinks="false" autoHide="true">
+    <pagination-controls class="my-pagination" id="absence" (pageChange)="actualPage = $event;" directionLinks="false" autoHide="true">
     </pagination-controls>
   </div>
 
