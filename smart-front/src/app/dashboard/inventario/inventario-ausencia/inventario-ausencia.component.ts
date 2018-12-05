@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
-import { InventoryService, PackingService, AuthenticationService, InventoryLogisticService, FamiliesService, ReportsService } from '../../../servicos/index.service';
+import { InventoryService, PackingService, AuthenticationService, InventoryLogisticService, FamiliesService, ReportsService, ControlPointTypesService } from '../../../servicos/index.service';
 import { AbscenseModalComponent } from '../../../shared/modal-packing-absence/abscense.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -20,6 +20,9 @@ export class InventarioAusenciaComponent implements OnInit {
   public listOfAbsent: any[] = [];
   public auxListOfAbsent: any[] = [];
   
+  // public allTypes: any[] = [];
+  // public selectedType: any = null;
+  
   public timeInterval: number = null;
 
   public actualPage: number = -1;
@@ -27,6 +30,7 @@ export class InventarioAusenciaComponent implements OnInit {
   constructor( 
     private familyService: FamiliesService,
     private reportService: ReportsService,
+    private controlPointsTypeService: ControlPointTypesService,
     private modalService: NgbModal,
     private auth: AuthenticationService) {
 
@@ -35,6 +39,7 @@ export class InventarioAusenciaComponent implements OnInit {
   ngOnInit() {
 
     this.loadFamilies();
+    this.loadLocals();
     this.loadAbsenceInventory();
   }
 
@@ -56,7 +61,10 @@ export class InventarioAusenciaComponent implements OnInit {
     this.listOfSerials = this.listOfAbsent;
   }
 
-  loadLocals(){
+  /**
+   * Fill the select of locals
+   */
+  loadLocals() {
 
   }
 
@@ -126,16 +134,24 @@ export class InventarioAusenciaComponent implements OnInit {
     console.log(this.selectedFamily);
     console.log(this.selectedSerial);
     console.log(this.timeInterval);
+    // console.log(this.selectedType);
+    
+    if (!this.selectedFamily) {
+      this.listOfSerials = [];
+      this.selectedSerial = null;
+      return;
+    }
 
     let aux = this.auxListOfAbsent.filter(elem => {
       
       let bFamily = (this.selectedFamily == null ? true : (elem.family.code == this.selectedFamily.code));
       let bSerial = (this.selectedSerial == null ? true : (elem.serial == this.selectedSerial.serial));
-      let binterval = (this.timeInterval == null ? true : (elem.absent_time_in_hours <= this.timeInterval));
+      let bInterval = (this.timeInterval == null ? true : (elem.absent_time_in_hours <= this.timeInterval));
+      // let bLocal = (this.selectedType == null ? true : (elem.last_event_record.control_point.type == this.selectedType._id));
 
-      console.log(`${bFamily}, ${bSerial}, ${binterval}` )
+      console.log(`${bFamily}, ${bSerial}, ${bInterval}` )
 
-      return (bFamily && bSerial && binterval);
+      return (bFamily && bSerial && bInterval);
     });
 
     this.listOfAbsent = aux;

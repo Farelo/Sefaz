@@ -33,7 +33,7 @@
         [(ngModel)]="selectedSerial"
         [disabled]="!selectedFamily"
         (change)="applyGeneralFilter()"
-        bindLabel="serial"  
+        bindLabel="serial"
         placeholder="Selecione um Serial">
       
         <ng-template ng-label-tmp let-item="item">
@@ -61,16 +61,15 @@
         type="number">
     </div>
     
-    <div class="col-sm-4">
+    <!-- <div class="col-sm-4">
       <p>LOCAL DA AUSÊNCIA</p>
       <ng-select 
-        [(ngModel)]="escolhaLocal" 
-        (change)="changeLocal()" 
-        [items]="locals" 
-        bindLabel="local" 
-        bindValue="local" 
+        [(ngModel)]="selectedType" 
+        [items]="allTypes" 
+        (change)="applyGeneralFilter()" 
+        bindLabel="name"
         placeholder="Selecione um Local"></ng-select>
-    </div> 
+    </div>  -->
     
   </div>
 
@@ -95,7 +94,7 @@
           <td>{{packing.family.code || '-'}}</td>
           <td>{{packing.serial || '-'}}</td>
           
-          <td>{{packing.last_event_record.control_point || 'Sem Registro'}}</td>
+          <td>{{packing.last_event_record.control_point.name || 'Sem Registro'}}</td>
           <td>{{packing.absent_time_in_hours | float_time }}</td>
           <!--td>{{packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro'}}</td-->
           <td style="text-align: center;">
