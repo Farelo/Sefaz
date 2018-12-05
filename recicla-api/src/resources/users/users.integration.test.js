@@ -6,29 +6,25 @@ const _ = require('lodash')
 
 describe('api/users', () => {
     let server
-    let company_id
     let newCompany
     let token
     let newUser
+    let user_body
     beforeEach(async () => {
         server = require('../../server')
 
-        company_id = mongoose.Types.ObjectId()
-        newCompany = new Company({ _id: company_id, name: 'CEBRACE TESTE'})
+        newCompany = new Company({ name: 'CEBRACE TESTE', type: 'owner' })
         await newCompany.save()
 
-        const user = {
+        user_body = {
             full_name: 'Teste Man',
             email: "serginho@gmail.com",
             password: "qwerty123",
             role: 'admin',
-            company: {
-                _id: newCompany._id,
-                name: newCompany.name
-            }
+            company: newCompany._id
         }
 
-        newUser = new User(user)
+        newUser = new User(user_body)
         await newUser.save()
         token = newUser.generateUserToken()
     })
@@ -40,7 +36,7 @@ describe('api/users', () => {
 
     describe('AUTH MIDDLEWARE', () => {
 
-        // jest.setTimeout(30000)
+        jest.setTimeout(30000)
         
         describe('Validate token by GET method without id', () => {
             const exec = () => {
@@ -437,14 +433,13 @@ describe('api/users', () => {
             expect(res.body.message).toEqual('User already registered.')
         })
 
-        it('should return 201 if user is created successfully ' + 
-            'when missing attributes not required', async () => {
+        it('should return 201 if fields not required is not provied', async () => {
+            delete user.full_name
             delete user.role
 
             const res = await exec()
             const body = JSON.stringify(_.omit(res.body, ["_id"]))
             user = {
-                full_name: "Test Test",
                 email: "test@test.com",
                 role: "user",
                 company: newCompany._id
@@ -524,22 +519,6 @@ describe('api/users', () => {
             ])
         })
 
-        // it('should return 400 if name is not present in the object', async () => {
-        //     user = {
-        //         email: "test@test.com",
-        //         password: "123456",
-        //         role: "admin",
-        //         company: newCompany._id
-        //     }
-            
-        //     const res = await exec()
-        //     expect(res.status).toBe(400)
-        //     expect(res.type).toBe('application/json')
-        //     expect(res.body).toEqual([
-        //         "\"full_name\" is required"
-        //     ])  
-        // })
-
         it('should return 400 if the attribute types diferent than expected', async () => {
             user = {
                 full_name: 111,
@@ -563,8 +542,8 @@ describe('api/users', () => {
 
         it('should return 400 if small amount of characters is provied', async () => {
             user = {
-                full_name: "t",
-                email: "te",
+                full_name: "test",
+                email: "test",
                 password: "123",
                 role: "admin",
                 company: "5bc8ed3ca87a97474c98cad7"
@@ -576,8 +555,8 @@ describe('api/users', () => {
             expect(res.body).toEqual([
                 "\"full_name\" length must be at least 5 characters long",
                 "\"email\" length must be at least 5 characters long",
-                "\"email\" with value \"te\" fails to match the required pattern: /^(([^<>()[\\]\\\\.,;:\\s@\\\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\\\"]+)*)|(\\\".+\\\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/",
-                "\"password\" length must be at least 6 characters long"
+                "\"email\" with value \"test\" fails to match the required pattern: /^(([^<>()[\\]\\\\.,;:\\s@\\\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\\\"]+)*)|(\\\".+\\\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/",
+                "\"password\" length must be at least 4 characters long"
             ])
         })
 
@@ -601,7 +580,7 @@ describe('api/users', () => {
                 "\"email\" length must be at least 5 characters long",
                 "\"email\" with value \"\" fails to match the required pattern: /^(([^<>()[\\]\\\\.,;:\\s@\\\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\\\"]+)*)|(\\\".+\\\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/",
                 "\"password\" is not allowed to be empty",
-                "\"password\" length must be at least 6 characters long",
+                "\"password\" length must be at least 4 characters long",
                 "\"role\" is not allowed to be empty",
                 "\"role\" must be one of [admin, user]",
                 "\"company\" is not allowed to be empty",
@@ -622,6 +601,30 @@ describe('api/users', () => {
                 "\"email\" length must be less than or equal to 255 characters long",
                 "\"role\" must be one of [admin, user]"
             ])
+        })
+
+        it('should return 400 if invalid company id is provied', async () => {
+            user.company = '5bf6e775909f16352f1f3b6daa'
+
+            const res = await exec()
+            expect(res.status).toBe(400)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual([
+                "\"company\" with value \"5bf6e775909f16352f1f3b6daa\" fails to match the required pattern: /^[0-9a-fA-F]{24}$/"
+            ])            
+        })
+
+        it('should return 404 if invalid url is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .post('/api/usersss')
+                    .set('Authorization', token)
+                    .send(user)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
         })
     })
 
@@ -648,7 +651,7 @@ describe('api/users', () => {
                 password: user.password
             }
         })
-        const exec = () => {
+        let exec = () => {
             return request(server)
                 .post('/api/users/sign_in')
                 .send(login)
@@ -683,9 +686,7 @@ describe('api/users', () => {
         })
 
         it('should return 400 if email is not provied', async () => {
-            login = {
-                password: user.password
-            }
+            delete login.email
 
             const res = await exec()
 
@@ -696,9 +697,7 @@ describe('api/users', () => {
         })
 
         it('should return 400 if password is not provided', async () => {
-            login = {
-                email: user.email
-            }
+            delete login.password
 
             const res = await exec()
 
@@ -716,7 +715,7 @@ describe('api/users', () => {
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
                 "\"password\" is not allowed to be empty",
-                "\"password\" length must be at least 6 characters long"
+                "\"password\" length must be at least 4 characters long"
             ])
         })
 
@@ -724,7 +723,6 @@ describe('api/users', () => {
             login.password = 'asdfasdfasd'
 
             const res = await exec()
-            console.log(res.body)
             expect(res.status).toBe(400)
             expect(res.type).toBe('application/json')
             expect(res.body.message).toEqual('Invalid password')
@@ -734,12 +732,9 @@ describe('api/users', () => {
             login.password = 'asdf'
 
             const res = await exec()
-            console.log(res.body)
             expect(res.status).toBe(400)
             expect(res.type).toBe('application/json')
-            expect(res.body).toEqual([
-                "\"password\" length must be at least 6 characters long"
-            ])
+            expect(res.body.message).toBe('Invalid password')
         })
 
         it('should return 400 if unknow attribute is provied', async () => {
@@ -751,114 +746,292 @@ describe('api/users', () => {
                 "\"test\" is not allowed"
             ])
         })
+
+        it('should return 404 if invalid url is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .post('/api/users/sign_inss')
+                    .set('Authorization', token)
+                    .send(login)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
     })
 
-    /*
-    describe('POST: api/users', () => {
-        let user
-        const exec = () => {
-            return request(server)
-                .post('/api/users')
-                .set('Authorization', token)
-                .send({ full_name: user.full_name, email: user.email, password: user.password, company: company_id })
-        }
+    describe('PATCH: /api/users/:id', () => {
+        let exec
+
         beforeEach(async () => {
-            user = {
-                full_name: 'Teste Man',
-                email: "serginho@gmail.com",
-                password: "qwerty123", 
-                company: { 
-                    _id: newCompany._id,
-                    name: newCompany.name
-                } 
+            user_body = JSON.parse(JSON.stringify(newUser))
+            delete user_body.__v
+            delete user_body.active
+            delete user_body.created_at
+            delete user_body.update_at
+            delete user_body._id
+
+            exec = () => {
+                return request(server)
+                .patch(`/api/users/${newUser._id}`)
+                .set('Authorization', token)
+                .send(user_body)
             }
         })
-        
-        it('should return 400 if email is not provied', async () => {
-            user.email = ''
+
+        it('should return 200 if user is created successfully', async () => { 
+            user_body.full_name = 'Teste Edited'    
+            user_body.email = 'emailedited@email.com'
+            
+            
+            const res = await exec()
+            user_body._id = newUser._id
+            delete user_body.password
+            user_body = JSON.parse(JSON.stringify(user_body))
+            
+            expect(res.status).toBe(200)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual(user_body)
+        })
+
+        it('should return 200 if fields not required is not provied', async () => {
+            delete user_body.full_name
+            delete user_body.role
 
             const res = await exec()
+            user_body._id = newUser._id
+            user_body.full_name = newUser.full_name
+            user_body.role = newUser.role
+            delete user_body.password
+            user_body = JSON.parse(JSON.stringify(user_body))
+            
+            expect(res.status).toBe(200)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual(user_body)
+        })
 
+        it('should return 400 if body is empty', async () => {
+            exec = () => {
+                return request(server)
+                    .patch(`/api/users/${newUser._id}`)
+                    .set('Authorization', token)
+                    .send({})
+            }
+
+            const res = await exec()
             expect(res.status).toBe(400)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual([
+                "\"email\" is required",
+                "\"password\" is required"
+            ])
         })
 
-        it('should return 400 if password is not provied', async () => {
-            user.password = ''
+        it('should return 404 if invalid url is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .patch(`/api/usersss/${newUser._id}`)
+                    .set('Authorization', token)
+                    .send(user_body)
+            }
 
             const res = await exec()
-
-            expect(res.status).toBe(400)
-        })
-
-        it('should return 400 if user already registered', async () => {
-            const newUser = new User(user)
-            await newUser.save()
-
-            const res = await exec()
-
-            expect(res.status).toBe(400)
-        })
-
-        it('should return 201 if user is valid request', async () => {
-            const res = await exec()
-
-            expect(res.status).toBe(201)
-        })
-
-        it('should return user if is valid request', async () => {
-            const res = await exec()
-
-            expect(res.status).toBe(201)
-            expect(Object.keys(res.body)).toEqual(
-                expect.arrayContaining(['_id', 'email'])
-            )
-        })
-    })    
-
-    describe('PATCH: /api/users/:id', () => {
-        it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server)
-                .get(`/api/users/1`)
-                .set('Authorization', token)
             expect(res.status).toBe(404)
         })
 
-        it('should return user edited if is valid request', async () => {
-            const user = await request(server)
-                .post('/api/users')
-                .set('Authorization', token)
-                .send({ full_name: 'Teste Man', email: 'emaill@email.com', password: '12345678', role: 'user', company: newCompany._id })
-                    
-            const res = await request(server)
-                .patch(`/api/users/${user.body._id}`)
-                .set('Authorization', token)
-                .send({ full_name: 'Teste Edited', email: 'emailedited@email.com', password: '12345678', company: newCompany._id })
+        it('should return 404 if invalid id is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .patch(`/api/users/aa`)
+                    .set('Authorization', token)
+                    .send(user_body)
+            }
 
-            expect(res.status).toBe(200)
-            expect(res.body).toHaveProperty('full_name', 'Teste Edited')
-            expect(res.body).toHaveProperty('email', 'emailedited@email.com')
+            const res = await exec()
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 400 if body is not provied', async () => {
+            exec = () => {
+                return request(server)
+                    .patch(`/api/users/${newUser._id}`)
+                    .set('Authorization', token)
+                    .send({})
+            }
+            const res = await exec()
+            expect(res.status).toBe(400)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual([
+                "\"email\" is required",
+                "\"password\" is required"
+            ])
+        })
+
+        it('should return 400 if unknow properties is present', async () => {
+            user_body.test = 'test'
+
+            const res = await exec()
+            expect(res.status).toBe(400)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual([
+                "\"test\" is not allowed"
+            ])
+        })
+
+        it('should return 400 if the attribute types diferent than expected', async () => {
+            user_body = {
+                full_name: 111,
+                email: 111,
+                password: 111,
+                role: 111,
+                company: 111
+            }
+
+            const res = await exec()
+            expect(res.status).toBe(400)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual([
+                "\"full_name\" must be a string",
+                "\"email\" must be a string",
+                "\"password\" must be a string",
+                "\"role\" must be a string",
+                "\"company\" must be a string"
+            ])
+        })
+
+        it('should return 400 if small amount of characters is provied', async () => {
+            user_body = {
+                full_name: "test",
+                email: "test",
+                password: "123",
+                role: "admin",
+                company: "5bc8ed3ca87a97474c98cad7"
+            }
+    
+            const res = await exec()
+            expect(res.status).toBe(400)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual([
+                "\"full_name\" length must be at least 5 characters long",
+                "\"email\" length must be at least 5 characters long",
+                "\"email\" with value \"test\" fails to match the required pattern: /^(([^<>()[\\]\\\\.,;:\\s@\\\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\\\"]+)*)|(\\\".+\\\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/",
+                "\"password\" length must be at least 4 characters long"
+            ])
+        })
+
+        it('should return 400 if attributes are empty', async () => {
+            user_body = {
+                full_name: "",
+                email: "",
+                password: "",
+                role: "",
+                company: ""
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual([
+                "\"full_name\" is not allowed to be empty",
+                "\"full_name\" length must be at least 5 characters long",
+                "\"email\" is not allowed to be empty",
+                "\"email\" length must be at least 5 characters long",
+                "\"email\" with value \"\" fails to match the required pattern: /^(([^<>()[\\]\\\\.,;:\\s@\\\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\\\"]+)*)|(\\\".+\\\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/",
+                "\"password\" is not allowed to be empty",
+                "\"password\" length must be at least 4 characters long",
+                "\"role\" is not allowed to be empty",
+                "\"role\" must be one of [admin, user]",
+                "\"company\" is not allowed to be empty",
+                "\"company\" with value \"\" fails to match the required pattern: /^[0-9a-fA-F]{24}$/"
+            ])
+        })
+
+        it('should return 400 if large number of characters is provied', async () => {
+            user_body.full_name = 'test useruhuuhuhuhuhuhuuuuuuhuhuuhuhuhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh'
+            user_body.email = 'test@test.comkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk'
+            user_body.role = 'adminasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd'
+
+            const res = await exec()
+            expect(res.status).toBe(400)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual([
+                "\"full_name\" length must be less than or equal to 255 characters long",
+                "\"email\" length must be less than or equal to 255 characters long",
+                "\"role\" must be one of [admin, user]"
+            ])
+        })
+
+        it('should return 400 if invalid company id is provied', async () => {
+            user_body.company = '5bf6e775909f16352f1f3b6daa'
+
+            const res = await exec()
+            expect(res.status).toBe(400)
+            expect(res.type).toBe('application/json')
+            expect(res.body).toEqual([
+                "\"company\" with value \"5bf6e775909f16352f1f3b6daa\" fails to match the required pattern: /^[0-9a-fA-F]{24}$/"
+            ])            
         })
     })
 
     describe('DELETE: /api/users/:id', () => {
-        it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server)
-                .get(`/api/users/1`)
-                .set('Authorization', token)
-            expect(res.status).toBe(404)
-        })
-        
-        it('should delete when given a valid _id', async () => {
-            const newUser = new User({ full_name: 'Teste Man', email: 'emailedited@email.com', password: '12345678', company: newCompany._id })
-            await newUser.save()
 
-            const res = await request(server)
-                .delete(`/api/users/${newUser._id}`)
-                .set('Authorization', token)
+        exec = () => {
+            return request(server)
+            .delete(`/api/users/${newUser._id}`)
+            .set('Authorization', token)
+        } 
+  
+        it('should return 200 if deleted with success', async () => {
+            const res = await exec()
 
             expect(res.status).toBe(200)
             expect(res.body.message).toBe('Delete successfully')
         })
-    })*/
 
+        it('should return 400 if deleted type nonexistent', async () => {
+            await exec()
+            const res = await exec()
+
+            expect(res.status).toBe(400)
+            expect(res.body.message).toBe('Invalid user')
+        })
+
+        it('should return 404 if url invalid is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .delete(`/api/usersss/${newUser._id}`)
+                    .set('Authorization', token)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 404 if invalid id is provied', async () => {
+            exec = () => {
+                return request(server)
+                    .delete(`/api/users/aa`)
+                    .set('Authorization', token)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+
+        it('should return 404 if id is not provied', async () => {
+            exec = () => {
+                return request(server)
+                    .delete(`/api/users/`)
+                    .set('Authorization', token)
+            }
+
+            const res = await exec()
+
+            expect(res.status).toBe(404)
+        })
+    })
 })

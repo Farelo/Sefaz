@@ -41,7 +41,7 @@ describe('api/companies', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        // jest.setTimeout(30000)
+        jest.setTimeout(30000)
 
         const company = new Company({ 
             name: "Company 1",
