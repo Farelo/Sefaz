@@ -2,7 +2,7 @@
 
   <div style="display: flex;">
     <h5>Em Viagem</h5>
-    <div class="quantidade-total-categoria">{{ resume.quantityTraveling + resume.quantityLate + resume.quantityMissing }}</div>
+    <div class="quantidade-total-categoria">{{ resume.qtd_in_traveling + resume.qtd_traveling_late + resume.qtd_traveling_missing }}</div>
   </div>
 
   <div class="progress categoria-progress">
@@ -17,7 +17,7 @@
       <div class="tick-categoria">
 
         <div class="quantidade-categoria status-atrasada">
-          {{ resume.quantityLate }}
+          {{ resume.qtd_traveling_late }}
         </div>
 
         <span class="nome-categoria">Embalagens Atrasadas</span>
@@ -36,11 +36,11 @@
     <!-- Conteúdo Embalagens Atrasadas -->
     <div [attr.id]="conteudoAtrasada" [ngbCollapse]="!atrasadaCollapsed">
       <div class="">
-        <div *ngIf="listLate.meta.total_docs < 1">
+        <div *ngIf="listLate.length < 1">
           Não há embalagens nesta situação.
         </div>
 
-        <div *ngIf="listLate.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+        <div *ngIf="listLate.length > 0" class="table-responsive meuInventario inner-table">
           <table class="table">
             <thead>
               <tr class="cabecalho">
@@ -53,23 +53,24 @@
             </thead>
 
             <tbody class="">
-              <tr *ngFor="let itemLate of listLate.data | paginate: { 
+              <tr *ngFor="let itemLate of listLate | paginate: { 
                                                               id:'listLate', 
                                                               itemsPerPage: 10, 
-                                                              currentPage: listLate.meta.page, 
-                                                              totalItems: listLate.meta.total_docs}">
-                <td>{{ itemLate.code }}</td>
+                                                              currentPage: listLateActualPage, 
+                                                              totalItems: listLate.length}">
+                <td>{{ itemLate.family_code }}</td>
                 <td>{{ itemLate.serial }}</td>
-                <td>{{ itemLate.code_tag }}</td>
-                <td>{{ itemLate?.last_plant?.plant?.plant_name || 'Sem Registro' }}</td>
-                <td>{{ itemLate?.trip?.time_countdown | time }}</td>
+                <td>{{ itemLate.tag }}</td>
+                <td>{{ itemLate.current_control_point_name }}</td>
+                <!-- <td>{{ ((itemLate.battery_percentage | round) + '%') }}</td> -->
+                <td>{{ itemLate.date }}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <div class="has-text-centered">
-          <pagination-controls class="my-pagination" id='listLate' (pageChange)="listLate.meta.page = $event; lateChange()"
+          <pagination-controls class="my-pagination" id='listLate' (pageChange)="listLateActualPage = $event;"
             directionLinks="false" autoHide="true">
           </pagination-controls>
         </div>
@@ -84,7 +85,7 @@
       <div class="tick-categoria">
 
         <div class="quantidade-categoria status-ausente">
-          {{ resume.quantityMissing }}
+          {{ resume.qtd_traveling_missing }}
         </div>
 
         <span class="nome-categoria">Embalagens Ausentes</span>
@@ -103,10 +104,10 @@
     <!-- Conteúdo Embalagens Ausentes -->
     <div [attr.id]="conteudoAusente" [ngbCollapse]="!ausenteCollapsed">
       <div class="">
-        <div *ngIf="listMissing.meta.total_docs < 1">
+        <div *ngIf="listMissing.length < 1">
           Não há embalagens nesta situação.
         </div>
-        <div *ngIf="listMissing.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+        <div *ngIf="listMissing.length > 0" class="table-responsive meuInventario inner-table">
           <table class="table">
             <thead>
               <tr class="cabecalho">
@@ -119,22 +120,23 @@
             </thead>
 
             <tbody class="">
-              <tr *ngFor="let item of listMissing.data | paginate: { 
+              <tr *ngFor="let item of listMissing | paginate: { 
                                                             id:'listMissing', 
                                                             itemsPerPage: 10, 
-                                                            currentPage: listMissing.meta.page, 
-                                                            totalItems: listLate.meta.total_docs}">
-                <td>{{ item.code }}</td>
+                                                            currentPage: listMissingActualPage, 
+                                                            totalItems: listMissing.length}">
+                <td>{{ item.family_code }}</td>
                 <td>{{ item.serial }}</td>
-                <td>{{ item.code_tag }}</td>
-                <td>{{ item?.last_plant?.plant?.plant_name || 'Sem Registro' }}</td>
-                <td>{{ itemLate?.packing_missing?.time_countdown | time }}</td>
+                <td>{{ item.tag }}</td>
+                <td>{{ item.current_control_point_name }}</td>
+                <!-- <td>{{ ((item.battery_percentage | round) + '%') }}</td> -->
+                <td>{{ item.date }}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="has-text-centered">
-          <pagination-controls class="my-pagination" id='listMissing' (pageChange)="listMissing.meta.page = $event; missingChange()" directionLinks="false"
+          <pagination-controls class="my-pagination" id='listMissing' (pageChange)="listMissingActualPage = $event;" directionLinks="false"
             autoHide="true">
           </pagination-controls>
         </div>

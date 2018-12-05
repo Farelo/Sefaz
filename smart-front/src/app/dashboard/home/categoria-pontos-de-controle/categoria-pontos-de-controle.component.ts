@@ -11,65 +11,68 @@ export class CategoriaPontosDeControleComponent implements OnInit {
 
   @Input() resume: any;
 
-  public progressControle: any = []; 
-  public listIncorrectLocal: Pagination = new Pagination({ meta: { page: 1 } });
-  public listPermanenceTime: Pagination = new Pagination({ meta: { page: 1 } });
+  public progressControle: number[] = []; 
+  
+  public listIncorrectLocal: any[] = [];
+  public listPermanenceTime: any[] = [];
   
   public tempoDePermanenciaCollapsed: boolean = false;
   public localIncorretoCollapsed: boolean = false;
+  
+  public listIncorrectActualPage: number = -1;
+  public listPermanenceActualPage: number = -1;
 
   constructor(private homeService: HomeService) { }
 
   ngOnInit() {
+
     this.getListIncorrectLocal();
     this.getListPermanenceTime();
   }
 
   ngOnChanges() {
-    //console.log('[ngOnChanges] resume: ' + JSON.stringify(this.resume));
+
+    // console.log('[ngOnChanges] resume: ');
+    // console.log(JSON.stringify(this.resume));
     this.calculateProgress();
   }
 
   calculateProgress() {
-    if (this.resume.quantityIncorrectLocal + this.resume.quantityTimeExceeded > 0) {
+    
+    let base = parseFloat(this.resume.qtd_in_incorrect_cp + this.resume.qtd_permanence_time_exceeded);
+
+    if (base > 0) {
+
       //Categoria em pontos de controle
-      this.progressControle.push((parseFloat(this.resume.quantityIncorrectLocal) / parseFloat(this.resume.quantityTotal)) * 100);
-      this.progressControle.push((parseFloat(this.resume.quantityTimeExceeded) / parseFloat(this.resume.quantityTotal)) * 100);
-      this.progressControle.push(100 - this.progressControle[0] - this.progressControle[1]);
+      this.progressControle[0] = ((parseFloat(this.resume.qtd_in_incorrect_cp) / base) * 100);
+      this.progressControle[1] = ((parseFloat(this.resume.qtd_permanence_time_exceeded) / base) * 100);
+      this.progressControle[2] = (100 - this.progressControle[0] - this.progressControle[1]);
 
-      // this.progressControle.push((parseFloat(this.resume.quantityIncorrectLocal)/ parseFloat(this.resume.quantityIncorrectLocal + this.resume.quantityTimeExceeded)) * 100);
-      // this.progressControle.push((parseFloat(this.resume.quantityTimeExceeded) / parseFloat(this.resume.quantityIncorrectLocal + this.resume.quantityTimeExceeded)) * 100);
-      // this.progressControle.push(100 - this.progressControle[0] - this.progressControle[1]);
-
-      //console.log(this.progressControle);
+    } else {
+      this.progressControle = [0, 0, 100];
     }
+
+    console.log(this.progressControle);
   }
 
+  /**
+   * Get the list of incorrect local
+   */
   getListIncorrectLocal(){
-    this.homeService.getStatusList(10, this.listIncorrectLocal.meta.page, 'INCORRECT_LOCAL').subscribe(result => {
-      this.listIncorrectLocal = result;
-      //console.log('listIncorrectLocal: ' + JSON.stringify(this.listIncorrectLocal));
+
+    this.homeService.getHomeStatus('local_incorreto').subscribe(result => {
+      this.listIncorrectLocal = result; 
     }, err => { console.log(err) });
   }
 
+  /**
+   * Get the list ofpermanence time exceeded
+   */
   getListPermanenceTime() {
-    this.homeService.getStatusList(10, this.listPermanenceTime.meta.page, 'PERMANENCE_EXCEEDED').subscribe(result => {
+    this.homeService.getHomeStatus('PERMANENCE_EXCEEDED').subscribe(result => {
       this.listPermanenceTime = result;
       //console.log('PERMANENCE_EXCEEDED: ' + JSON.stringify(this.listPermanenceTime));
     }, err => { console.log(err) });
-  }
-
-  /*
-  * Pagination
-  */
-  incorrectLocalChange(){
-    console.log('incorrectLocal');
-    this.getListIncorrectLocal();
-  }
-
-  permanenceTimeChange(){
-    console.log('permanenceTime');
-    this.getListPermanenceTime();
   }
 
 }

@@ -59,7 +59,7 @@ describe('api/families', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-        // jest.setTimeout(30000)
+        jest.setTimeout(30000)
         
         describe('Validate token by GET method without id', () => {
             const exec = () => {
@@ -385,7 +385,7 @@ describe('api/families', () => {
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
                 "\"code\" is not allowed to be empty",
-                "\"code\" length must be at least 3 characters long",
+                "\"code\" length must be at least 2 characters long",
                 "\"company\" is not allowed to be empty",
                 "\"company\" with value \"\" fails to match the required pattern: /^[0-9a-fA-F]{24}$/"
             ])
@@ -462,13 +462,13 @@ describe('api/families', () => {
         })
 
         it('should return 400 if name has small amount of characters', async () => {
-            family_body.code = '01'
+            family_body.code = '0'
 
             const res = await exec()
 
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
-                "\"code\" length must be at least 3 characters long"
+                "\"code\" length must be at least 2 characters long"
             ])
         })
 
@@ -510,7 +510,7 @@ describe('api/families', () => {
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
                 "\"code\" is not allowed to be empty",
-                "\"code\" length must be at least 3 characters long",
+                "\"code\" length must be at least 2 characters long",
                 "\"company\" is not allowed to be empty",
                 "\"company\" with value \"\" fails to match the required pattern: /^[0-9a-fA-F]{24}$/"
             ])
@@ -593,13 +593,13 @@ describe('api/families', () => {
         })
 
         it('should return 400 if name has small amount of characters', async () => {
-            family_body.code = 'te'
+            family_body.code = 't'
 
             const res = await exec()
 
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
-                "\"code\" length must be at least 3 characters long"
+                "\"code\" length must be at least 2 characters long"
             ])
         })
 
