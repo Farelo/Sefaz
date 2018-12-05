@@ -125,7 +125,12 @@
       <div class="row">
         <div class="form-group col-sm-12 col-md-6">
           <p class="descricao">PASSWORD</p>
-          <input type="password" class="form-control" [(ngModel)]="password" formControlName="password" placeholder="Digite a senha"
+          <input type="password" 
+            (keydown.space)="$event.preventDefault()"
+            formControlName="password" 
+            placeholder="Digite a senha"
+            class="form-control" 
+            [(ngModel)]="password" 
             [ngClass]="{'required': (newUser.get('password').hasError('required') && newUser.get('password').touched)
                           || (newUser.get('password').hasError('required') && submitted)}">
 
@@ -141,8 +146,13 @@
 
         <div class="form-group col-sm-12 col-md-6">
           <p class="descricao">CONFIRMAR PASSWORD</p>
-          <input type="password" class="form-control" [(ngModel)]="confirm_password" formControlName="confirm_password"
-            placeholder="Digite a senha" [ngClass]="{'required': (newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
+          <input type="password" 
+            (keydown.space)="$event.preventDefault()"
+            [(ngModel)]="confirm_password" 
+            formControlName="confirm_password"
+            placeholder="Digite a senha" 
+            class="form-control" 
+            [ngClass]="{'required': (newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
             || (newUser.get('confirm_password').hasError('required') && submitted)}">
 
           <p class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)

@@ -174,6 +174,8 @@
                 maxlength="30"
                 [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                   || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
+                  || (mPacking.get('tag.manufactorer').hasError('minlength'))
+                  || (mPacking.get('tag.manufactorer').hasError('minlength') && formDir.submitted)
                   || (mPacking.get('tag.manufactorer').hasError('pattern'))
                   || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted) }">
             </div>
@@ -181,6 +183,11 @@
               *ngIf="(mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                 || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
+
+            <p class="requiredText" 
+              *ngIf="(mPacking.get('tag.manufactorer').hasError('minlength'))
+                || (mPacking.get('tag.manufactorer').hasError('minlength') && formDir.submitted)">
+              Mínimo de 2 caracteres</p>
 
             <p class="requiredText" 
               *ngIf="(mPacking.get('tag.manufactorer').hasError('pattern')) 
