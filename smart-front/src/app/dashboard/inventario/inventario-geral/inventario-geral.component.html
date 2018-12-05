@@ -137,7 +137,7 @@
           <!-- Alerta: embalagem ausente -->
           <td>
             <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', item.family_name, item.family_name, item.family_name, 1]">
-              <span class="badge badge-pill badge-ausente">{{item.qtd_missing || '0'}}</span>
+              <span class="badge badge-pill badge-ausente">{{item.qtd_in_traveling_missing || '0'}}</span>
             </a>
           </td>
         </tr>
