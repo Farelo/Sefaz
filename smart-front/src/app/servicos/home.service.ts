@@ -29,4 +29,17 @@ export class HomeService {
 
         return this.http.get(`${environment.url}/home?current_state=${status}`).catch(this.handleError);
     }
+
+    /**
+     * Get the list of permanence time exceeded
+     */
+    getPermanenceTimeExceeded(): Observable<any> {
+
+        return this.http.get(`${environment.url}/home/permanence_time_exceeded`).catch(this.handleError);
+    }
+
+    getBatery(): Observable<any> {
+
+        return this.http.get(`${environment.url}/home/low_battery`).catch(this.handleError);
+    }
 }
