@@ -39,43 +39,43 @@ export class Gc16EditarComponent implements OnInit {
 
   configureFormGroup(){
     
-    this.gc16 = this.fb.group({ 
-      annual_volume: ['', [Validators.required]],
-      capacity: ['', [Validators.required]],
-      productive_days: ['', [Validators.required]],
+    this.gc16 = this.fb.group({
+      annual_volume: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
+      productive_days: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
+      capacity: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
       container_days: ['', [Validators.required]],
-      family: ['', [Validators.required]],
+      family: [undefined, [Validators.required]],
       security_factor: this.fb.group({
-        percentage: ['', [Validators.required]],
+        percentage: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
         qty_total_build: ['', [Validators.required]],
         qty_container: ['', [Validators.required]]
       }),
       owner_stock: this.fb.group({
-        days: ['', [Validators.required]],
+        days: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
         value: ['', [Validators.required]],
         max: ['', [Validators.required]],
         qty_container: ['', [Validators.required]],
         qty_container_max: ['', [Validators.required]]
       }),
       client_stock: this.fb.group({
-        days: ['', [Validators.required]],
+        days: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
         value: ['', [Validators.required]],
         max: ['', [Validators.required]],
         qty_container: ['', [Validators.required]],
         qty_container_max: ['', [Validators.required]]
       }),
       transportation_going: this.fb.group({
-        days: ['', [Validators.required]],
+        days: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
         value: ['', [Validators.required]],
         qty_container: ['', [Validators.required]]
       }),
       transportation_back: this.fb.group({
-        days: ['', [Validators.required]],
+        days: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
         value: ['', [Validators.required]],
         qty_container: ['', [Validators.required]]
       }),
       frequency: this.fb.group({
-        days: ['', [Validators.required]],
+        days: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
         fr: ['', [Validators.required]],
         qty_total_days: ['', [Validators.required]],
         qty_container: ['', [Validators.required]]

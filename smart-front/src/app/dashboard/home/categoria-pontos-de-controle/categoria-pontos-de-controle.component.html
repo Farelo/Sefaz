@@ -1,7 +1,7 @@
 <section class="grupo-categoria">
   <div style="display: flex;">
     <h5>Nos Pontos de Controle</h5>
-    <div class="quantidade-total-categoria">{{ resume.quantityInFactory + resume.quantityInSupplier + resume.quantityInOpLogistic}}</div>
+    <div class="quantidade-total-categoria">{{ resume.qtd_in_cp + resume.qtd_in_incorrect_cp + resume.qtd_permanence_time_exceeded }}</div>
   </div>
 
   <div class="progress categoria-progress">
@@ -16,12 +16,16 @@
       <div class="tick-categoria">
 
         <div class="quantidade-categoria status-incorreta">
-          {{ resume.quantityIncorrectLocal }}
+          {{ resume.qtd_in_incorrect_cp }}
         </div>
 
         <span class="nome-categoria">Local Incorreto</span>
 
-        <button class="hamburger hamburger--squeeze" type="button" (click)="localIncorretoCollapsed = !localIncorretoCollapsed" [attr.aria-controls]="conteudoLocalIncorreto"
+        <button 
+          class="hamburger hamburger--squeeze" 
+          type="button" 
+          (click)="localIncorretoCollapsed = !localIncorretoCollapsed" 
+          [attr.aria-controls]="conteudoLocalIncorreto"
           [ngClass]="{ 'is-active':localIncorretoCollapsed == true}">
 
           <span class="hamburger-box">
@@ -35,11 +39,11 @@
     <!-- Conteúdo Local Incorreto -->
     <div [attr.id]="conteudoLocalIncorreto" [ngbCollapse]="!localIncorretoCollapsed">
       <div class="">
-        <div *ngIf="listIncorrectLocal.meta.total_docs < 1">
+        <div *ngIf="listIncorrectLocal.length < 1">
           Não há embalagens nesta situação.
         </div>
 
-        <div *ngIf="listIncorrectLocal.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+        <div *ngIf="listIncorrectLocal.length > 0" class="table-responsive meuInventario inner-table">
           <table class="table">
             <thead>
               <tr class="cabecalho">
@@ -53,25 +57,24 @@
             </thead>
 
             <tbody class="">
-              <tr *ngFor="let itemIncorrect of listIncorrectLocal.data | paginate: { 
-                                                                          id:'listIncorrectLocal', 
-                                                                          itemsPerPage: 10, 
-                                                                          currentPage: listIncorrectLocal.meta.page, 
-                                                                          totalItems: listIncorrectLocal.meta.total_docs}">
-                <td>{{ itemIncorrect.code }}</td>
+              <tr *ngFor="let itemIncorrect of listIncorrectLocal | paginate: { 
+                                                                      id:'listIncorrectLocal', 
+                                                                      itemsPerPage: 10, 
+                                                                      currentPage: listIncorrectActualPage, 
+                                                                      totalItems: listIncorrectLocal.length }">
+                <td>{{ itemIncorrect.family_code }}</td>
                 <td>{{ itemIncorrect.serial }}</td>
-                <td>{{ itemIncorrect.code_tag }}</td>
-                <td>{{ itemIncorrect.actual_plant.plant.plant_name }}</td>
-                <td>{{ ((itemIncorrect.battery | round) + '%') }}</td>
-                <td>{{ itemIncorrect.lastCommunication | date: 'dd/MM/yyyy - hh:mm a' }}</td>
+                <td>{{ itemIncorrect.tag }}</td>
+                <td>{{ itemIncorrect.current_control_point_name }}</td>
+                <td>{{ ((itemIncorrect.battery_percentage | round) + '%') }}</td>
+                <td>{{ itemIncorrect.date }}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <div class="has-text-centered">
-          <pagination-controls class="my-pagination" id='listIncorrectLocal' (pageChange)="listIncorrectLocal.meta.page = $event; incorrectLocalChange()"
-            directionLinks="false" autoHide="true">
+          <pagination-controls class="my-pagination" id='listIncorrectLocal' (pageChange)="listIncorrectActualPage = $event;" directionLinks="false" autoHide="true">
           </pagination-controls>
         </div>
       </div>
@@ -85,7 +88,7 @@
       <div class="tick-categoria">
 
         <div class="quantidade-categoria status-permanencia">
-          {{ resume.quantityTimeExceeded }}
+          {{ resume.qtd_permanence_time_exceeded }}
         </div>
 
         <span class="nome-categoria">Tempo de Permanência</span>
@@ -106,10 +109,10 @@
     <div [attr.id]="conteudoTempoDePermanencia" [ngbCollapse]="!tempoDePermanenciaCollapsed">
     <!-- <div [@animatePermanenciaCollapse]="tempoDePermanenciaCollapsed"> -->
       <div class="">
-        <div *ngIf="listPermanenceTime.meta.total_docs < 1">
+        <div *ngIf="listPermanenceTime.length < 1">
           Não há embalagens nesta situação.
         </div>
-        <div *ngIf="listPermanenceTime.meta.total_docs > 0" class="table-responsive meuInventario inner-table">
+        <div *ngIf="listPermanenceTime.length > 0" class="table-responsive meuInventario inner-table">
           <table class="table">
             <thead>
               <tr class="cabecalho">
@@ -123,24 +126,23 @@
             </thead>
 
             <tbody class="">
-              <tr *ngFor="let item of listPermanenceTime.data | paginate: { 
-                                                                  id:'listPermanenceTime', 
-                                                                  itemsPerPage: 10, 
-                                                                  currentPage: listPermanenceTime.meta.page, 
-                                                                  totalItems: listPermanenceTime.meta.total_docs}">
-                <td>{{ item.code }}</td>
+              <tr *ngFor="let item of listPermanenceTime | paginate: { 
+                                                            id:'listPermanenceTime', 
+                                                            itemsPerPage: 10, 
+                                                            currentPage: listPermanenceActualPage, 
+                                                            totalItems: listPermanenceTime.length }">
+                <td>{{ item.family_code }}</td>
                 <td>{{ item.serial }}</td>
-                <td>{{ item.code_tag }}</td>
-                <td>{{ item.actual_plant.plant.plant_name }}</td>
-                <td>{{ ((item.battery | round) + '%') }}</td>
-                <td>{{ item.lastCommunication*1000 | date: 'dd/MM/yyyy - hh:mm a' }}</td>
+                <td>{{ item.tag }}</td>
+                <td>{{ item.current_control_point_name }}</td>
+                <td>{{ ((item.battery_percentage | round) + '%') }}</td>
+                <td>{{ item.date }}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="has-text-centered">
-          <pagination-controls class="my-pagination" id='listPermanenceTime' (pageChange)="listPermanenceTime.meta.page = $event; permanenceTimeChange()"
-            directionLinks="false" autoHide="true">
+          <pagination-controls class="my-pagination" id='listPermanenceTime' (pageChange)="listPermanenceactualPage = $event;" directionLinks="false" autoHide="true">
           </pagination-controls>
         </div>
       </div>
