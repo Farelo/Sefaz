@@ -5,7 +5,9 @@ const moment = require('moment')
 // const { EventRecord } = require('../event_record/event_record.model')
 const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
+const { ControlPoint } = require('../control_points/control_points.model')
 const { AlertHistory } = require('../alert_history/alert_history.model')
+const { EventRecord } = require('../event_record/event_record.model')
 
 exports.get_alerts = async () => {
     try {
@@ -73,8 +75,23 @@ exports.get_alerts_by_family = async (family_id, current_state) => {
                 await Packing.find({ active: true, family: family_id, permanence_time_exceeded: true }).populate('family', 'code').populate('last_device_data').populate('last_event_record').populate('last_alert_history') :
                 await Packing.find({ active: true, family: family_id, current_state: current_state }).populate('family', 'code').populate('last_device_data').populate('last_event_record').populate('last_alert_history')
 
-        return packings
+        const data = await Promise.all(packings.map(map_last_event_record))
+
+        return data
     } catch (error) {
         throw new Error(error)
     }
+}
+
+const map_last_event_record = async packing => {
+    if (!packing.last_event_record) return packing
+
+    let temp_obj = {}
+
+    const control_point = await ControlPoint.findById(packing.last_event_record.control_point)
+
+    temp_obj = packing
+    temp_obj.last_event_record.control_point = control_point
+
+    return temp_obj
 }
