@@ -47,7 +47,7 @@ export class CategoriaEmViagemComponent implements OnInit {
       this.progressEmViagem = [0, 0, 100];
     }
 
-    console.log(this.progressEmViagem);
+    //console.log(this.progressEmViagem);
   }
 
   getListLate() {

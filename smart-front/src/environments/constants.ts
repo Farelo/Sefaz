@@ -15,6 +15,37 @@ export const constants = {
   NORMAL: 'Embalagem Controlada',
   PERMANENCE_EXCEEDED: 'Tempo de Permanência excedido',
 
+  //Alerts from api
+  ALERTS: {
+    ABSENT: 'viagem_perdida',
+    INCORRECT_LOCAL	: 'local_incorreto',
+    LOW_BATTERY: 'bateria_baixa',
+    LATE: 'viagem_atrasada',
+    PERMANENCE_TIME: 'tempo_de_permanencia_excedido',
+    NO_SIGNAL: 'sem_sinal',
+    MISSING: 'perdida',
+    UNABLE_WITH_SIGNAL: 'desabilitada_com_sinal',
+    UNABLE_NO_SIGNAL: 'desabilitada_sem_sinal',
+    ANALISYS: 'analise',
+    TRAVELING: 'viagem_em_prazo',
+    CORRECT_LOCAL: 'local_correto'
+  },
+
+  ALERTS_CODE: {
+    ABSENT: 1,
+    INCORRECT_LOCAL: 2,
+    LOW_BATTERY: 3,
+    LATE: 4,
+    PERMANENCE_TIME: 5,
+    NO_SIGNAL: 6,
+    MISSING: 7,
+    UNABLE_WITH_SIGNAL: 8,
+    UNABLE_NO_SIGNAL: 9,
+    ANALISYS: 10,
+    TRAVELING: 11,
+    CORRECT_LOCAL: 12
+  },
+
   //Constantes antigas
   LOGISTIC: 'Logistic',
   SUPPLIER: 'Supplier',

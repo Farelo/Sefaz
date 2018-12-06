@@ -49,6 +49,6 @@ export class CategoriaBateriaBaixaComponent implements OnInit {
       this.progressBateria = [0, 100];
     }
 
-    console.log(this.progressBateria);
+    //console.log(this.progressBateria);
   }
 }
