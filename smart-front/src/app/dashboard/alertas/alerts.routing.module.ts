@@ -5,7 +5,8 @@ import { TimelineComponent } from './timeline/timeline.component';
 
 const alertsRoutes = [
   {path: '', component: TimelineComponent},
-  {path: 'list/:code/:project/:supplier/:status', component: ListaComponent}
+  { path: ':family_id/:current_state', component: ListaComponent}
+  // { path: 'list/:code/:project/:supplier/:status', component: ListaComponent }
 ];
 
 @NgModule({

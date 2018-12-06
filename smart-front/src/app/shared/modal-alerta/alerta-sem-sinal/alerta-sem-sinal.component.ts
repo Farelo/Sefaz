@@ -1,32 +1,33 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoryService, InventoryLogisticService } from '../../../servicos/index.service';
+import { InventoryService, InventoryLogisticService, PlantsService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
 
 @Component({
-  selector: 'app-alerta-embalagem-perdida',
-  templateUrl: './alerta-embalagem-perdida.component.html',
-  styleUrls: ['./alerta-embalagem-perdida.component.css']
+  selector: 'app-alerta-sem-sinal',
+  templateUrl: './alerta-sem-sinal.component.html',
+  styleUrls: ['./alerta-sem-sinal.component.css']
 })
-export class AlertaEmbalagemPerdidaComponent implements OnInit {
+export class AlertaSemSinalComponent implements OnInit {
 
   @Input() alerta;
-
   constructor(public activeAlerta: NgbActiveModal,
     private inventoryService: InventoryService, 
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,){ }
 
   ngOnInit() {
+
     console.log(this.alerta);
   }
 
-  visualizeOnMap() {
-
+  visualizeOnMap() { 
+    
     this.inventoryService
       .getInventoryGeneralPackings(10, 1, this.alerta.data.packing.code_tag, '')
       .subscribe(
         result => {
           let actualPackage = result.data;
+          //console.log('actualPackage: ' + JSON.stringify(actualPackage[0]));
 
           this.activeAlerta.dismiss('open map');
           const modalRef = this.modalService.open(LayerModalComponent, {

@@ -52,7 +52,7 @@ export class CategoriaPontosDeControleComponent implements OnInit {
       this.progressControle = [0, 0, 100];
     }
 
-    console.log(this.progressControle);
+    //console.log(this.progressControle);
   }
 
   /**

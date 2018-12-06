@@ -5,6 +5,7 @@ const moment = require('moment')
 // const { EventRecord } = require('../event_record/event_record.model')
 const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
+const { AlertHistory } = require('../alert_history/alert_history.model')
 
 exports.get_alerts = async () => {
     try {
@@ -65,12 +66,77 @@ exports.get_alerts = async () => {
 
 exports.get_alerts_by_family = async (family_id, current_state) => {
     try {
-        const packings = 
-            current_state === 'bateria_baixa' ? 
-            await Packing.find({ active: true, family: family_id, low_battery: true }).populate('family', 'code').populate('last_device_data').populate('last_event_record') :
-            current_state === 'tempo_de_permanencia_excedido' ? 
-            await Packing.find({ active: true, family: family_id, permanence_time_exceeded: true }).populate('family', 'code').populate('last_device_data').populate('last_event_record') :
-            await Packing.find({ active: true, family: family_id, current_state: current_state }).populate('family', 'code').populate('last_device_data').populate('last_event_record')
+        let packings = []
+
+        switch(true) {
+            case current_state === 'bateria_baixa':
+                const data_bb = await Packing.find({ active: true, family: family_id, low_battery: true })
+                    .populate('family', 'code')
+                    .populate('last_device_data')
+                    .populate('last_event_record')
+                packings = await Promise.all(
+                    data_bb.map(async packing => {
+                        if (packing.last_history_alert) {
+                            let temp_obj = {}
+                            temp_obj = packing
+
+                            const alert_h = await AlertHistory.findById(packing.last_history_alert)
+                            temp_obj.last_history_alert = alert_h
+
+                            return temp_obj
+                        } else {
+                            return packing
+                        }
+                    })
+                )
+                break
+            case current_state === 'tempo_de_permanencia_excedido':
+                const data_tp = await Packing.find({ active: true, family: family_id, permanence_time_exceeded: true })
+                    .populate('family', 'code')
+                    .populate('last_device_data')
+                    .populate('last_event_record')
+                packings = await Promise.all(
+                    data_tp.map(async packing => {
+                        let temp_obj = {}
+
+                        if (!packing.last_history_alert) return packing
+                        
+                        const alert_h = await AlertHistory.findById(packing.last_history_alert)
+                        temp_obj = packing
+                        temp_obj.last_history_alert = alert_h
+
+                        return temp_obj
+                    })
+                )
+                break
+            default:
+                const data = await Packing.find({ active: true, family: family_id, current_state: current_state })
+                    .populate('family', 'code')
+                    .populate('last_device_data')
+                    .populate('last_event_record')
+                packings = await Promise.all(
+                    data.map(async packing => {
+                        if (packing.last_history_alert) {
+                            let temp_obj = {}
+                            temp_obj = packing
+
+                            const alert_h = await AlertHistory.findById(packing.last_history_alert)
+                            temp_obj.last_history_alert = alert_h
+
+                            return temp_obj
+                        } else {
+                            return packing
+                        }
+                    })
+                )
+                break
+        }
+        // const packings = 
+        //     current_state === 'bateria_baixa' ? 
+        //         await Packing.find({ active: true, family: family_id, low_battery: true }).populate('family', 'code').populate('last_device_data').populate('last_event_record') :
+        //     current_state === 'tempo_de_permanencia_excedido' ? 
+        //             await Packing.find({ active: true, family: family_id, permanence_time_exceeded: true }).populate('family', 'code').populate('last_device_data').populate('last_event_record') :
+        //             await Packing.find({ active: true, family: family_id, current_state: current_state }).populate('family', 'code').populate('last_device_data').populate('last_event_record')
 
         return packings
     } catch (error) {
