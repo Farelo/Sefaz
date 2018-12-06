@@ -9,13 +9,6 @@
   padding: 0px;
 }
 
-.info {
-  padding: 10px 4% 10px 10px;
-  margin-bottom: 5px;
-  background: white;
-  box-shadow: 0px 0px 7px #000;
-}
-
 .header {
   margin-bottom: 25px;
   padding-bottom: 19px;
@@ -39,7 +32,8 @@
 .lg3,
 .lg4,
 .lg5,
-.lg6 {
+.lg6,
+.lg7 {
   color: white;
   padding: 5px;
   margin-bottom: 5px;
@@ -74,7 +68,11 @@
 }
 
 .lg6 {
-  background-color: #9f8cc1;
+  background-color: #9ecf99;
+}
+
+.lg7 {
+  background-color: #3a9ca6;
 }
 
 .forn {
@@ -166,18 +164,6 @@
   outline: none !important;
 }
 
-.infoData {
-  font-size: 9px;
-  color: grey;
-  margin: 0px;
-}
-
-.perdido2,
-.parado2,
-.incorreto2 {
-  font-weight: bold;
-}
-
 span {
   font-weight: normal;
 }
@@ -186,30 +172,6 @@ label {
   font-weight: normal;
   color: black;
   font-size: 12px;
-}
-
-/* .conteudoHome .popover.bs-popover-bottom .arrow {
-  top: -12px !important;
-} */
-
-/* .conteudoHome .bs-popover-top[_nghost-c7] .arrow[_ngcontent-c7],
-.bs-popover-bottom[_nghost-c7] .arrow[_ngcontent-c7] {
-  margin-left: -11px !important;
-} */
-
-.botaoOk {
-  padding: 3px 15px;
-  background-color: #777;
-  color: white;
-  border: none;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
-  font-size: 14px;
-}
-
-.botaoOk:hover {
-  color: white;
-  background-color: #555;
 }
 
 .modalFilho p {
@@ -368,17 +330,12 @@ label {
   font-size: 11.5px;
 }
 
-.fornecedor,
 .quantidade {
   background-repeat: no-repeat;
   padding-left: 15px;
   vertical-align: middle;
   font-size: 12px;
   color: #666;
-}
-
-.fornecedor {
-  background-size: 10px;
 }
 
 .fornecedor0 {
@@ -511,10 +468,6 @@ label {
   }
 }
 
-.aumentar {
-  height: 90px;
-}
-
 .externa,
 .interna {
   background-color: white;
@@ -575,10 +528,6 @@ label {
 
 .titulo {
   font-weight: 900;
-}
-
-.divImagem {
-  text-align: -webkit-center;
 }
 
 .container {
@@ -646,7 +595,6 @@ label {
     margin-right: 450px;
   }
 }
-
 
 .conteudoHome .popover.bs-popover-bottom .arrow {
   top: 0px !important;

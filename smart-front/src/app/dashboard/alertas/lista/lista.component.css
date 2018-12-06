@@ -88,7 +88,8 @@
 .lg3,
 .lg4,
 .lg5,
-.lg6 {
+.lg6,
+.lg7 {
   font-size: 12px;
   display: inline-block;
   text-align: center;
@@ -100,7 +101,8 @@
 .lg3,
 .lg4,
 .lg5,
-.lg6 {
+.lg6,
+.lg7 {
   color: white;
   padding: 5px;
   margin-bottom: 5px;
@@ -136,7 +138,7 @@
   background-color: #9ecf99;
 }
 
-.lg6 {
+.lg7 {
   background-color: #3a9ca6;
 }
 
@@ -406,7 +408,7 @@ label {
 }
 
 .fornecedor7 {
-  background-image: url("../../../../assets/images/local7.png");
+  background-image: url("../../../../assets/images/local7.png"); 
 }
 
 .quantidade {

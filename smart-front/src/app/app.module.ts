@@ -50,6 +50,7 @@ import { SidebarModule } from 'ng-sidebar';
 import { CreateUserComponent } from './shared/modal-user/create-user/create-user.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EditUserComponent } from './shared/modal-user/edit-user/edit-user.component'; 
+import { AlertaSemSinalComponent } from './shared/modal-alerta/alerta-sem-sinal/alerta-sem-sinal.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { EditUserComponent } from './shared/modal-user/edit-user/edit-user.compo
     AlertaLocalIncorretoComponent,
     AlertaPermanenciaComponent,
     AlertaEmbalagemPerdidaComponent,
+    AlertaSemSinalComponent,
     ModalRastComponent,
     ModalUserComponent,
     ModalSupplierEditarComponent,
@@ -135,6 +137,7 @@ import { EditUserComponent } from './shared/modal-user/edit-user/edit-user.compo
     AlertaLocalIncorretoComponent,
     AlertaPermanenciaComponent,
     AlertaEmbalagemPerdidaComponent,
+    AlertaSemSinalComponent,
     ModalRastComponent, 
     AbscenseModalComponent, 
     ModalSettings, 

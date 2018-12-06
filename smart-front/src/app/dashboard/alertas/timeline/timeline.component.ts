@@ -6,6 +6,8 @@ import { ModalModule } from 'ngx-bootstrap/modal'
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Pagination } from '../../../shared/models/pagination';
 import { AuthenticationService, AlertsService } from '../../../servicos/index.service';
+import { constants } from 'environments/constants';
+
 declare var $:any;
 
 @Component({
@@ -47,31 +49,31 @@ export class TimelineComponent implements OnInit {
 
     switch (status) {
       
-      case 'analise':
-        result = 0;
-        break;
-
-      case 'analise':
+      case constants.ALERTS.ABSENT:
         result = 1;
         break;
 
-      case 'analise':
+      case constants.ALERTS.INCORRECT_LOCAL:
         result = 2;
         break;
 
-      case 'analise':
+      case constants.ALERTS.LOW_BATTERY:
         result = 3;
         break;
 
-      case 'analise':
+      case constants.ALERTS.LATE:
         result = 4;
         break;
 
-      case 'analise':
+      case constants.ALERTS.PERMANENCE_TIME:
         result = 5;
         break;
 
-      case 'analise':
+      case constants.ALERTS.NO_SIGNAL:
+        result = 6;
+        break;
+
+      case constants.ALERTS.MISSING:
         result = 7;
         break;
 
@@ -87,31 +89,31 @@ export class TimelineComponent implements OnInit {
 
     switch(code){
 
-      case 'analise':
-        result = 'Em análise';
+      case constants.ALERTS.ABSENT:
+        result = 'Embalagem ausente';
         break;
 
-      case 'analise':
-        result = 'Embalagem Ausente';
-        break;
-
-      case 'analise':
+      case constants.ALERTS.INCORRECT_LOCAL:
         result = 'Embalagem em local incorreto';
         break;
 
-      case 'analise':
+      case constants.ALERTS.LOW_BATTERY:
         result = 'Embalagem com bateria baixa';
         break;
 
-      case 'analise':
+      case constants.ALERTS.LATE:
         result = 'Embalagem em viagem';
         break;
 
-      case 'analise':
+      case constants.ALERTS.PERMANENCE_TIME:
         result = 'Embalagem com tempo de permanência elevado';
         break;
 
-      case 'analise':
+      case constants.ALERTS.NO_SIGNAL:
+        result = 'Embalagem sem sinal';
+        break;
+
+      case constants.ALERTS.MISSING:
         result = 'Embalagem perdida';
         break;
       
