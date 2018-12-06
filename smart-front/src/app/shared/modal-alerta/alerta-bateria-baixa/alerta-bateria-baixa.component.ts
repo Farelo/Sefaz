@@ -12,19 +12,17 @@ import { constants } from '../../../../environments/constants';
 })
 export class AlertaBateriaBaixaComponent implements OnInit {
 
-  @Input()
-  alerta;
+  @Input() alerta;
   public historic: Pagination = new Pagination({ meta: { page: 1 } });
 
   constructor(
     public activeAlerta: NgbActiveModal,
-    private inventoryService: InventoryService,
-    private inventoryLogisticService: InventoryLogisticService,
+    private inventoryService: InventoryService, 
     private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
-    //console.log(JSON.stringify(this.alerta));
+    console.log('bateria baixa');
   }
 
   visualizeOnMap() { 

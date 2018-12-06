@@ -29,7 +29,7 @@ export class ListaComponent implements OnInit {
   public familyId;
   public currentState;
 
-  public alertCode = 0;
+  public alertCode: any = 0;
 
   alerts: Alert[];
   alert: Alert;
@@ -51,6 +51,9 @@ export class ListaComponent implements OnInit {
       console.log(this.alertCode);
 
       this.getAlerts();
+
+      this.currentState = constants.ALERTS.ABSENT;
+      this.alertCode = constants.ALERTS_CODE.ABSENT;
     });
   }
 
@@ -75,51 +78,59 @@ export class ListaComponent implements OnInit {
     // this.alertsService.retrieveAlertByPacking(embalagem, status)
     //   .subscribe(result => {
 
-        console.log(embalagem);
-        console.log(status);
+    console.log(embalagem);
+    console.log(this.alertCode);
 
-        // Análise
-        if (status == constants.ALERTS.ANALISYS) {
-          const modalRef = this.modalService.open(AlertaAusenteComponent, { backdrop: "static", size: "lg" });
-          modalRef.componentInstance.alerta = embalagem;
+    // Análise
+    if (this.alertCode == constants.ALERTS_CODE.ANALISYS) {
+      console.log('open 0');
+      const modalRef = this.modalService.open(AlertaAusenteComponent, { backdrop: "static", size: "lg" });
+      modalRef.componentInstance.alerta = embalagem;
 
-        // Embalagem Ausente
-        } else if (status == constants.ALERTS.ABSENT) {
-          const modalRef = this.modalService.open(AlertaAusenteComponent, { backdrop: "static", size: "lg" });
-          modalRef.componentInstance.alerta = embalagem;
+      // Embalagem Ausente
+    } else if (this.alertCode == constants.ALERTS_CODE.ABSENT) {
+      console.log('open 1');
+      const modalRef = this.modalService.open(AlertaAusenteComponent, { backdrop: "static", size: "lg" });
+      modalRef.componentInstance.alerta = embalagem;
 
-        // Local Incorreto
-        } else if (status == constants.ALERTS.INCORRECT_LOCAL) {
-          const modalRef = this.modalService.open(AlertaLocalIncorretoComponent, { backdrop: "static" });
-          modalRef.componentInstance.alerta = embalagem;
+      // Local Incorreto
+    } else if (this.alertCode == constants.ALERTS_CODE.INCORRECT_LOCAL) {
+      console.log('open 2');
+      const modalRef = this.modalService.open(AlertaLocalIncorretoComponent, { backdrop: "static" });
+      modalRef.componentInstance.alerta = embalagem;
 
-        // Bateria Baixa
-        } else if (status == constants.ALERTS.LOW_BATTERY) {
-          const modalRef = this.modalService.open(AlertaBateriaBaixaComponent, { backdrop: "static" });
-          modalRef.componentInstance.alerta = embalagem;
+      // Bateria Baixa
+    } else if (this.alertCode == constants.ALERTS_CODE.LOW_BATTERY) {
+      console.log('open 3');
+      const modalRef = this.modalService.open(AlertaBateriaBaixaComponent, { backdrop: "static" });
+      modalRef.componentInstance.alerta = embalagem;
 
-        // Embalagem Atrasada
-        } else if (status == constants.ALERTS.LATE) {
-          const modalRef = this.modalService.open(AlertaEmbalagemAtrasadaComponent, { backdrop: "static" });
-          modalRef.componentInstance.alerta = embalagem;
+      // Embalagem Atrasada
+    } else if (this.alertCode == constants.ALERTS_CODE.LATE) {
+      console.log('open 4');
+      const modalRef = this.modalService.open(AlertaEmbalagemAtrasadaComponent, { backdrop: "static" });
+      modalRef.componentInstance.alerta = embalagem;
 
-        //Tempo de permanência
-        } else if (status == constants.ALERTS.PERMANENCE_TIME) {
-          const modalRef = this.modalService.open(AlertaPermanenciaComponent, { backdrop: "static" });
-          modalRef.componentInstance.alerta = embalagem;
+      //Tempo de permanência
+    } else if (this.alertCode == constants.ALERTS_CODE.PERMANENCE_TIME) {
+      console.log('open 5');
+      const modalRef = this.modalService.open(AlertaPermanenciaComponent, { backdrop: "static" });
+      modalRef.componentInstance.alerta = embalagem;
 
-        //Perdida
-        } else if (status == constants.ALERTS.MISSING) {
-          const modalRef = this.modalService.open(AlertaEmbalagemPerdidaComponent, { backdrop: "static" });
-          modalRef.componentInstance.alerta = embalagem;
-        
-        //Sem sinal
-        } else if (status == constants.ALERTS.NO_SIGNAL) {
-          const modalRef = this.modalService.open(AlertaSemSinalComponent, { backdrop: "static" });
-          modalRef.componentInstance.alerta = embalagem;
-        }
+      //Perdida
+    } else if (this.alertCode == constants.ALERTS_CODE.MISSING) {
+      console.log('open 6');
+      const modalRef = this.modalService.open(AlertaEmbalagemPerdidaComponent, { backdrop: "static" });
+      modalRef.componentInstance.alerta = embalagem;
 
-      // }, err => console.log(err));
+      //Sem sinal
+    } else if (this.alertCode == constants.ALERTS_CODE.NO_SIGNAL) {
+      console.log('open 7');
+      const modalRef = this.modalService.open(AlertaSemSinalComponent, { backdrop: "static" });
+      modalRef.componentInstance.alerta = embalagem;
+    }
+
+    // }, err => console.log(err));
   }
 
   getAlertCode(status: string) {
@@ -194,7 +205,7 @@ export class ListaComponent implements OnInit {
       case 6:
         result = 'Embalagem sem sinal';
         break;
-      
+
       case 7:
         result = 'Embalagem perdida';
         break;
