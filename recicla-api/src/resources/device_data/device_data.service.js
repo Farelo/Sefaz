@@ -1,6 +1,7 @@
 const debug = require('debug')('service:device_data')
-// const _ = require('lodash')
+const _ = require('lodash')
 const { DeviceData } = require('./device_data.model')
+const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
 
 exports.find_packing_by_device_id = async (device_id) => {
@@ -44,6 +45,39 @@ exports.get_device_data = async (device_id, query = { start_date: null, end_date
         }
 
         return device_data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.geolocation = async (query = { company_id: null, packing_id: null, packing_serial: null }) => {
+    try {
+        let packings = []
+
+        switch (true) {
+            case query.company_id != null:
+                const families = await Family.find({ company: query.company_id })
+                const data = await Promise.all(
+                    families.map(async family => {
+                        return await Packing.find({ family: family._id }).populate('last_device_data')
+                    })
+                )
+                packings = _.flatMap(data)
+                break
+            case query.packing_id != null:
+                packings = await Packing
+                    .findById(query.packing_id).populate('last_device_data')
+                break
+            case query.packing_serial != null:
+                packings = await Packing
+                    .findOne({ serial: query.packing_serial }).populate('last_device_data')
+                break
+            default:
+                packings = await Packing.find({}).populate('last_device_data')
+                break
+        }
+
+        return packings
     } catch (error) {
         throw new Error(error)
     }
