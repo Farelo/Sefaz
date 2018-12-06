@@ -12,20 +12,22 @@ import { constants } from '../../../../environments/constants';
 })
 export class AlertaAusenteComponent implements OnInit {
 
-  @Input()
-  alerta;
+  @Input() alerta;
+  
   public historic: Pagination = new Pagination({ meta: { page: 1 } });
+  public mConstants: any;
 
   constructor(
     public activeAlerta: NgbActiveModal,
     private inventoryService: InventoryService,
-    private inventoryLogisticService: InventoryLogisticService,
-    private modalService: NgbModal,
-  ) { }
+    private modalService: NgbModal) { 
+      
+    this.mConstants = constants;
+  }
 
   ngOnInit() {
     //console.log(JSON.stringify(this.alerta));
-    this.getHistoric();
+    //this.getHistoric();
   }
 
   getHistoric() {

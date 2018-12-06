@@ -30,6 +30,7 @@ export class ListaComponent implements OnInit {
   public currentState;
 
   public alertCode: any = 0;
+  public mConstants: any;
 
   alerts: Alert[];
   alert: Alert;
@@ -38,7 +39,10 @@ export class ListaComponent implements OnInit {
   constructor(private alertsService: AlertsService,
     private router: Router,
     private route: ActivatedRoute,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal) { 
+
+    this.mConstants = constants;
+  }
 
   ngOnInit() {
 
@@ -47,13 +51,13 @@ export class ListaComponent implements OnInit {
       this.currentState = params['current_state'];
       this.alertCode = this.getAlertCode(this.currentState);
 
-      console.log(params['current_state']);
-      console.log(this.alertCode);
-
       this.getAlerts();
 
       this.currentState = constants.ALERTS.ABSENT;
       this.alertCode = constants.ALERTS_CODE.ABSENT;
+      
+      console.log(this.currentState);
+      console.log(this.alertCode);
     });
   }
 
