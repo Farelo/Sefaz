@@ -25,13 +25,13 @@ exports.get_device_data = async (device_id, query = { start_date: null, end_date
                     .sort({ message_date: -1 })
                     .limit(50)
                 break
-            case query.start_date!= null:
+            case query.start_date != null:
                 device_data = await DeviceData
                     .find({ device_id, message_date: { $gte: new Date(query.start_date) }, accuracy: { $lte: query.accuracy } })
                     .sort({ message_date: -1 })
                     .limit(50)
                 break
-            case query.end_date!= null:
+            case query.end_date != null:
                 device_data = await DeviceData
                     .find({ device_id, message_date: { $lte: new Date(query.end_date) }, accuracy: { $lte: query.accuracy } })
                     .sort({ message_date: -1 })

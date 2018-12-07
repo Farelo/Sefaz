@@ -3,7 +3,7 @@ const { User } = require('../resources/users/users.model')
 const { Company } = require('../resources/companies/companies.model')
 const { Setting } = require('../resources/settings/settings.model')
 const config = require('config')
-const dm_main = require('../jobs/loka/main.script')
+// const dm_main = require('../jobs/loka/main.script')
 
 const startupUser = async () => {
     try {

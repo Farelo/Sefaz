@@ -15,7 +15,7 @@ module.exports = router
 // GET '/'
 /**
  * @swagger
- * /device_data/geo/{device_id}:
+ * /device_data/data/{device_id}:
  *   get:
  *     summary: Retrieve reports on database
  *     description: Retrieve general report about all packings
@@ -56,7 +56,7 @@ module.exports = router
 // GET '/'
 /**
  * @swagger
- * /device_data/geo:
+ * /device_data/data:
  *   get:
  *     summary: Retrieve reports on database
  *     description: Retrieve general report about all packings
