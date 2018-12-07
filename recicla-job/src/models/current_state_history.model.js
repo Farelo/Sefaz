@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { Packing } = require('../packings/packings.model')
+const { Packing } = require('./packings.model')
 
 const currentStateHistorySchema = new mongoose.Schema({
     packing: {
@@ -20,6 +20,7 @@ const currentStateHistorySchema = new mongoose.Schema({
             'desabilitada_com_sinal',
             'desabilitada_sem_sinal',
             'analise',
+            'ausente',
             'viagem_em_prazo',
             'local_correto'
         ],
