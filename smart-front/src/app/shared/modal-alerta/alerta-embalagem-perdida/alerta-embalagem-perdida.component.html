@@ -25,7 +25,7 @@
       <div class="col-12">
         <p class="titulo-modal">ÚLTIMO SINAL:</p>
         <br>
-        <p> {{alerta.data.date | date: 'dd/MM/yy'}} | {{alerta.data.date | date:'HH:MM:ss'}} </p>
+        <p> {{ alerta.last_device_data.message_date | date: 'dd/MM/yy' }} | {{ alerta.last_device_data.message_date | date:'HH:MM:ss' }} </p>
       </div>
     </div>
 
@@ -35,15 +35,13 @@
       <div class="col-12 col-md-6">
         <p class="titulo-modal">ÚLTIMA LOCALIZAÇÃO:</p>
         <br>
-        <p> {{alerta.data.actual_plant ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}} </p>
-        <p> Departamento: {{alerta.data.department ? alerta.data.department.name : 'Sem Registro'}} </p>
+        <p> {{ alerta?.last_event_record?.control_point.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p> 
       </div>
 
       <div class="col-12 col-md-6">
         <p class="titulo-modal">ÚLTIMO NÍVEL DE BATERIA:</p>
         <br>
-        <p style="font-weight: bold;"> {{alerta.data?.packing?.battery >=0 ? (alerta.data?.packing?.battery | round) :
-          'Sem Registro'}}% </p>
+        <p style="font-weight: bold;"> {{ alerta?.last_device_data?.battery.percentage >=0 ? (alerta.last_device_data.battery.percentage | round) : mConstants.NO_REGISTER }}% </p>
       </div>
     </div>
 
