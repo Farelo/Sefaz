@@ -20,21 +20,13 @@ export class GeralComponent implements OnInit {
     private inventoryLogisticService: InventoryLogisticService,
     private inventoryService: InventoryService,
     private modalService: NgbModal,
-    private auth: AuthenticationService,
-    
-  ) {
+    private auth: AuthenticationService) {
 
-    let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
   ngOnInit() {
     // this.loadTableHeaders();
-    this.generalInventory();
+    //this.generalInventory();
   }
 
   // public headers: any = [];

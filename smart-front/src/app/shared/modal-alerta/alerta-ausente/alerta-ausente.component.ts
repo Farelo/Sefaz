@@ -28,27 +28,26 @@ export class AlertaAusenteComponent implements OnInit {
     //console.log(JSON.stringify(this.alerta));
     //this.getHistoric();
   }
-
+ 
   getHistoric() {
-    this.inventoryService
-      .getInventoryPackingHistoric(
-        10,
-        this.historic.meta.page,
-        this.alerta.data.packing.serial,
-        this.alerta.data.packing.code,
-    )
-      .subscribe(
-        result => {
-          this.historic = result;
-          this.historic.data = this.historic.data.map(elem => {
-            elem.status = constants[elem.status];
-            return elem;
-          });
-        },
-        err => {
-          console.log(err);
-        },
-    );
+    // this.inventoryService
+    //   .getInventoryPackingHistoric(
+    //     10,
+    //     this.historic.meta.page,
+    //     this.alerta.data.packing.serial,
+    //     this.alerta.data.packing.code,
+    // ).subscribe(
+    //     result => {
+    //       this.historic = result;
+    //       this.historic.data = this.historic.data.map(elem => {
+    //         elem.status = constants[elem.status];
+    //         return elem;
+    //       });
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     },
+    // );
   }
 
   visualizeOnMap() { 

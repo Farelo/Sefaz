@@ -3,15 +3,15 @@
     <h2> Detalhes da Embalagem </h2>
     
     <p>
-      <span class="badge badge-secondary">Código: {{packing.code}}</span>
+      <span class="badge badge-secondary">Código: {{packing.family_code}}</span>
       <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{packing.serial}}</span>
-      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.code_tag}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.tag}}</span>
     </p>
 
     <div id="collapseExample" [ngbCollapse]="detailsIsCollapsed">
-      <p>Projeto: {{packing.project.name}}</p>
-      <p>Fornecedor: {{packing.supplier.name}}</p>
-      <p>Planta Atual: {{packing.actual_plant?.plant?.plant_name ? packing.actual_plant?.plant?.plant_name : "Sem informação"}}</p>
+      <!-- <p>Projeto: {{ packing.project.name }}</p> -->
+      <!-- <p>Fornecedor: {{ packing.actual_plant?.plant?.plant_name ? packing.actual_plant?.plant?.plant_name : "Sem informação" }}</p> -->
+      <p>Planta Atual: {{ packing.current_control_point_name }}</p>
     </div>
 
     <span id="showDetails" (click)="detailsIsCollapsed = !detailsIsCollapsed" [attr.aria-expanded]="!detailsIsCollapsed" aria-controls="collapseExample"
@@ -101,7 +101,7 @@
 
       <!-- ///////////// -->
       <!-- Plant -->
-      <marker *ngFor="let posPlants of plants" 
+      <marker *ngFor="let posPlants of controlPoints" 
       [position]="[posPlants.lat, posPlants.lng]" 
       (click)="clickedPlant($event, posPlants)" 
       [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
@@ -118,7 +118,7 @@
         </info-window>
       </marker>
       
-      <circle *ngFor="let posPlantsRadius of plants" 
+      <circle *ngFor="let posPlantsRadius of controlPoints" 
           [center]="posPlantsRadius.latLng"
           [fillColor]="'#0044a8'"
           [fillOpacity]="0.2"
@@ -186,7 +186,7 @@
       <!-- rack markers -->
       <ng-container *ngFor="let pos of rangedMarkers; let i = index">
         <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)" 
-          [position]="pos.position" 
+          [position]="pos.latLng" 
           (click)="clicked($event,pos)"
           [icon]="getPinWithAlert(i)" >
           <info-window id="iw">
@@ -219,7 +219,7 @@
       <!-- ///////////// -->
       <!-- rack last marker -->
       <ng-container *ngIf="lastPosition">
-        <marker *ngIf="showLastPosition" [position]="lastPosition.position"
+        <marker *ngIf="showLastPosition" [position]="lastPosition.latLng"
           (click)="clicked($event,lastPosition)"
            [icon]="getPin()">
           <info-window id="iw">
