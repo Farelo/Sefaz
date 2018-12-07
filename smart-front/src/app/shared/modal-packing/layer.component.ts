@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PackingService, PlantsService, LogisticService, SuppliersService, SettingsService, AlertsService} from '../../servicos/index.service';
+import { PackingService, PlantsService, LogisticService, SuppliersService, SettingsService, AlertsService, AuthenticationService, DevicesService, ControlPointsService } from '../../servicos/index.service';
 import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { MeterFormatter } from '../pipes/meter_formatter';
 import { NouiFormatter } from 'ng2-nouislider';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
-defineLocale('pt-br', ptBrLocale); 
+defineLocale('pt-br', ptBrLocale);
 
 @Component({
   selector: 'app-alerta',
@@ -26,30 +26,10 @@ export class LayerModalComponent implements OnInit {
   public initialDate: Date;  //Initial date
   public finalDate: Date;    //Initial date
 
-  /*
-   * Accuracy
-   */
-  public accuracyRange: any = 1000;
-  incrementRange(){
-    this.accuracyRange = parseInt(this.accuracyRange) + 10;
-    this.rangechanged();
-  }
-
-  decrementRange() {
-    this.accuracyRange = parseInt(this.accuracyRange) - 10;
-    this.rangechanged();
-  }
-
-  rangechanged(){
-    console.log('rangechanged');
-
-    this.updatePaths();
-    // this.getLastPostition();
-  }
-
   @Input() packing;
+
   public path = [];
-  public center: any;
+  public center: any = new google.maps.LatLng(0, 0);
   public markers = [];
   public marker = {
     display: true,
@@ -62,7 +42,7 @@ export class LayerModalComponent implements OnInit {
   };
   public lastPosition: any;
 
-  public plants = [];
+  public controlPoints: any[] = [];
   public plant = {
     display: true,
     lat: null,
@@ -85,7 +65,7 @@ export class LayerModalComponent implements OnInit {
     lng: null,
   };
 
-  public settings: any;
+  public settings: any = {};
 
   public showLastPosition: boolean = false;
 
@@ -93,71 +73,68 @@ export class LayerModalComponent implements OnInit {
 
   public isLoading = true;
 
-  getResultQuantity(): string {
-    let result = '';
-
-    console.log('this.path.length: ' + this.path.length);
-    
-    if (this.path.length == 0)
-      result = "Sem resultados";
-    
-    if (this.path.length == 1)
-      result = "1 resultado encontrado";
-
-    if (this.path.length > 1)
-      result = `${this.path.length} resultados encontrados`;
-    
-    return result;
-  }
-
-  toggleShowControlledPlants(){
-    this.showControlledPlants = !this.showControlledPlants;
-  }
-
   constructor(
     public activeLayer: NgbActiveModal,
-    private plantsService: PlantsService,
-    private logisticService: LogisticService,
-    private supplierService: SuppliersService,
+    private controlPointsService: ControlPointsService,
     private packingService: PackingService,
+    private deviceService: DevicesService,
+    private authenticationService: AuthenticationService,
     private settingsService: SettingsService,
     private alertService: AlertsService,
     private localeService: BsLocaleService) {
 
-      defineLocale('pt-br', ptBrLocale);
-      this.localeService.use('pt-br');
+    defineLocale('pt-br', ptBrLocale);
+    this.localeService.use('pt-br');
 
-      //Initialize 7 days before now
-      let sub = new Date().getTime() - (7 * 24 * 60 * 60 * 1000);
-      this.initialDate = new Date(sub);
-      this.finalDate = new Date();
+    //Initialize 7 days before now
+    let sub = new Date().getTime() - (7 * 24 * 60 * 60 * 1000);
+    this.initialDate = new Date(sub);
+    this.finalDate = new Date();
 
-      this.datePickerConfig.showWeekNumbers = false;
-      this.datePickerConfig.displayMonths = 1;
-      this.datePickerConfig.containerClass = 'theme-dark-blue';
+    this.datePickerConfig.showWeekNumbers = false;
+    this.datePickerConfig.displayMonths = 1;
+    this.datePickerConfig.containerClass = 'theme-dark-blue';
   }
 
   ngOnInit() {
-    
+
     //console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
 
+    //Get the plant radius in the settings
     this.getPlantRadius();
-    this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), this.finalDate.getTime(), 32000);
+
+    //get all point according the given filter
+    let initialD = this.formatDate(this.initialDate);
+    let finalD = this.formatDate(this.finalDate);
+
+    // console.log(this.initialDate);
+    // console.log(this.finalDate);
+    // console.log(initialD);
+    // console.log(finalD);
+
+    this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
+    
     this.getPlants();
-    this.getSuppliers();
-    this.getLogisticOperators();
-    this.getAlert();
+    // this.getSuppliers();
+    // this.getLogisticOperators();
+    //this.getAlert();
   }
-  
+
+  getPlantRadius() {
+
+    let currentSetting = this.authenticationService.currentSettings();
+    this.settings.range_radius = currentSetting.range_radius * 1000;
+  }
+
   /**
    * If the user came from Alert screen, then the packing.alertCode contains the alert status code.
    * If not, trye to retrieve an existing alert status code.
    */
-  getAlert(){
-    
+  getAlert() {
+
     if (this.packing.alertCode == undefined) {
       this.alertService.retrievePackingAlert(this.packing._id).subscribe(response => {
-        
+
         if (response.data.length > 0) {
           let result = response.data[0];
           this.packing.alertCode = result.status;
@@ -166,60 +143,66 @@ export class LayerModalComponent implements OnInit {
           this.packing.alertCode = 0;
         }
       })
-      
+
     }
   }
 
-  getPlantRadius(){
-    // this.settingsService.retrieve().subscribe(response => {
-    //   let result = response.data[0];
-    //   this.settings = result;
-    //   this.settings.range_radius = this.settings.range_radius * 1000;
-    // })
-  }
+  onFirstDateChange(newDate: Date) {
 
-  onFirstDateChange(newDate: Date) { 
-
-    if (newDate !== null && this.finalDate !== null ){
-      this.isLoading = true;
-      newDate.setHours(0, 0, 0, 0);
-      this.getFilteredPositions(this.packing.code_tag, newDate.getTime(), this.finalDate.getTime(), 32000);
-    }
-  }
-
-  onFinalDateChange(newDate: Date) { 
     
-    if (this.initialDate !== null && newDate !== null ){
+    if (newDate !== null && this.finalDate !== null) {
+      
       this.isLoading = true;
-      this.getFilteredPositions(this.packing.code_tag, this.initialDate.getTime(), newDate.getTime(), 32000);
+      let initialD = this.formatDate(newDate.getTime());
+      let finalD = this.formatDate(this.finalDate);
+      this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
     }
   }
-  
+
+  onFinalDateChange(newDate: Date) {
+
+    if (this.initialDate !== null && newDate !== null) {
+
+      this.isLoading = true;
+      let initialD = this.formatDate(this.initialDate);
+      let finalD = this.formatDate(newDate.getTime());
+      this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
+    }
+  }
 
   /**
    * Get the package positions with the filter applied
+   * @param codeTag Device tag code
+   * @param startDate Date on format yyyy--mm-dd
+   * @param finalDate Date on format yyyy--mm-dd
+   * @param accuracy Integer value in meters (m)
    */
-  getFilteredPositions(codeTag: string, startDate: any, finalDate: any, accuracy: any){
+  getFilteredPositions(codeTag: string, startDate: any = null, finalDate: any = null, accuracy: any = null) {
 
-    let normalizeStartDate = new Date(startDate);
-    normalizeStartDate.setHours(0, 0, 0, 0);
+    this.deviceService.getFilteredPositions(codeTag, startDate, finalDate, accuracy).subscribe((result: any[]) => {
 
-    let normalizeEndDate = new Date(finalDate);
-    normalizeEndDate.setHours(23, 59, 59, 0);
+      if (result.length > 1) {
+        //centraliza o mapa
+        this.center = new google.maps.LatLng(result[result.length - 1].latitude, result[result.length - 1].longitude);
 
-    //console.log('[getFilteredPositions] codeTag, startDate, finalDate: ' + codeTag + ", " + normalizeStartDate.getTime() + ", " + normalizeEndDate.getTime());
+        //guarda todas as posições
+        this.markers = result;
 
-    this.packingService.getFilteredPositions(codeTag, normalizeStartDate.getTime(), normalizeEndDate.getTime()).subscribe(result => {
-      
-      this.center = result.data.positions[0];
-      this.markers = result.data.markers;
+        //add um atributo latLng
+        this.markers.map((elem, index) => {
+          elem.latLng = new google.maps.LatLng(elem.latitude, elem.longitude);
+          return elem;
+        });
 
-      this.markers.map((elem, index) => { 
-        elem.latLng = new google.maps.LatLng(elem.position[0], elem.position[1]);
-        return elem;
-      });
+        //atualiza o path
+        this.updatePaths();
 
-      this.updatePaths();
+      } else {
+
+        this.isLoading = false;
+      }
+
+      this.getResultQuantity();
 
       // console.log('[getFilteredPositions] result: ' + JSON.stringify(result));
       // console.log('[getFilteredPositions] path: ' + JSON.stringify(this.path));
@@ -229,49 +212,45 @@ export class LayerModalComponent implements OnInit {
   }
 
   /*
+  * Accuracy
+  */
+  public accuracyRange: any = 1000;
+  incrementRange() {
+    this.accuracyRange = parseInt(this.accuracyRange) + 10;
+    this.rangechanged();
+  }
+
+  decrementRange() {
+    this.accuracyRange = parseInt(this.accuracyRange) - 10;
+    this.rangechanged();
+  }
+
+  rangechanged() {
+    console.log('rangechanged');
+
+    this.updatePaths();
+    // this.getLastPostition();
+  }
+
+
+  /*
    * Plants
    */
   getPlants() {
-    this.plantsService.retrieveAll().subscribe(result => {
-      this.plants = result.data;
+    this.controlPointsService.getAllControlPoint().subscribe(result => {
+      this.controlPoints = result;
 
-      this.plants.map(e => { 
+      this.controlPoints.map(e => {
         e.latLng = new google.maps.LatLng(e.lat, e.lng);
         return e;
       });
     });
   }
 
-  /*
-   * Logistic operator
-   */
-  getLogisticOperators() {
-    this.logisticService.listLogistic().subscribe(result => {
-      this.logistics = result.data;
-
-      this.logistics.map(e => { 
-        e.latLng = new google.maps.LatLng(e.plant.lat, e.plant.lng);
-        return e;
-      })
-      //console.log('logistics: ' + JSON.stringify(this.logistics));
-    })
-  }
-
-  getSuppliers(){
-    this.supplierService.retrieveAll().subscribe(result => {
-      this.suppliers = result.data;
-
-      this.suppliers.map(e => { 
-        e.latLng = new google.maps.LatLng(e.plant.lat, e.plant.lng);
-        return e;
-      })
-      //console.log('suppliers: ' + JSON.stringify(this.suppliers));
-    })
-  }
 
   clicked(_a, opt) {
-    var marker = _a.target; 
-    
+    var marker = _a.target;
+
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
     this.marker.start = opt.start;
@@ -286,13 +265,13 @@ export class LayerModalComponent implements OnInit {
     var p = _a.target;
     this.plant.lat = p.lat;
     this.plant.lng = p.lng;
-    this.plant.name = opt.plant_name;
-    this.plant.location = opt.location;
+    this.plant.name = opt.name;
+    // this.plant.location = opt.location;
 
     this.clickedPlantDetail(p);
   }
 
-  clickedSupplier(_a, opt){
+  clickedSupplier(_a, opt) {
     var s = _a.target;
     //console.log('opt: ' + JSON.stringify(opt));
 
@@ -303,10 +282,10 @@ export class LayerModalComponent implements OnInit {
     this.clickedSupplierDetail(s);
   }
 
-  clickedLogistic(_a, opt) { 
+  clickedLogistic(_a, opt) {
     var l = _a.target;
     //console.log('opt: ' + JSON.stringify(opt));
-    
+
     this.logistic.name = opt.plant.plant_name;
     this.clickedLogisticDetail(l);
   }
@@ -331,17 +310,17 @@ export class LayerModalComponent implements OnInit {
 
   clickedSupplierDetail(supply) {
     supply.nguiMapComponent.openInfoWindow('sw', supply);
-    
+
   }
 
   clickedLogisticDetail(supply) {
     supply.nguiMapComponent.openInfoWindow('lw', supply);
-    
+
   }
 
   startWindow(marker) {
     marker.nguiMapComponent.openInfoWindow('iw', marker);
-    
+
   }
 
   getPosition(event: any) {
@@ -353,11 +332,32 @@ export class LayerModalComponent implements OnInit {
    * ///////////////////////////////////////
    * Util
    */
-  parseToLatLng(s1, s2){
+  getResultQuantity(): string {
+    let result = '';
+
+    //console.log('this.path.length: ' + this.path.length);
+
+    if (this.path.length == 0)
+      result = "Sem resultados";
+
+    if (this.path.length == 1)
+      result = "1 resultado encontrado";
+
+    if (this.path.length > 1)
+      result = `${this.path.length} resultados encontrados`;
+
+    return result;
+  }
+
+  toggleShowControlledPlants() {
+    this.showControlledPlants = !this.showControlledPlants;
+  }
+
+  parseToLatLng(s1, s2) {
     return new google.maps.LatLng(s1, s2);
   }
-  
-  isInsideRange(r:any){
+
+  isInsideRange(r: any) {
     return r <= this.accuracyRange;
   }
 
@@ -365,17 +365,17 @@ export class LayerModalComponent implements OnInit {
    * This method updates the array 'path' with markers that satisfies the given accuracy.
    */
   rangedMarkers = [];
-  updatePaths(){
+  updatePaths() {
     this.path = [];
-    
+
     // 
     this.rangedMarkers = this.markers.filter(elem => {
       return elem.accuracy <= this.accuracyRange;
     });
-    
-    this.rangedMarkers.forEach(m =>{
-      if(m.accuracy <= this.accuracyRange){
-        this.path.push({ "lat": m.position[0], "lng": m.position[1]});
+
+    this.rangedMarkers.forEach(elem => {
+      if (elem.accuracy <= this.accuracyRange) {
+        this.path.push({ "lat": elem.latitude, "lng": elem.longitude });
       }
     });
 
@@ -387,18 +387,18 @@ export class LayerModalComponent implements OnInit {
     // console.log('this.markers: ' + JSON.stringify(this.markers));
     // console.log('-');
   }
-  
+
   /**
    * This method updates the array 'path' with markers that satisfies the given accuracy.
    */
   getLastPostition() {
     //console.log('getLastPostition');
 
-    if (this.rangedMarkers.length>0){
+    if (this.rangedMarkers.length > 0) {
       this.lastPosition = this.rangedMarkers[this.rangedMarkers.length - 1];
       this.center = this.lastPosition.latLng;
 
-    }else{
+    } else {
       this.lastPosition = null;
     }
 
@@ -407,7 +407,20 @@ export class LayerModalComponent implements OnInit {
     //console.log('center: ' + JSON.stringify(this.center));
   }
 
-  getPin(){
+  formatDate(date: any) {
+
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + (d.getDate()),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  getPin() {
     let pin = null;
     let alertCode = this.packing.alertCode;
 
@@ -439,7 +452,7 @@ export class LayerModalComponent implements OnInit {
       default:
         pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
-    }   
+    }
     return pin;
   }
 
@@ -447,7 +460,7 @@ export class LayerModalComponent implements OnInit {
     let pin = null;
     let alertCode = this.packing.alertCode;
 
-    switch (alertCode){
+    switch (alertCode) {
       case 1:
         pin = { url: '../../../assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
@@ -487,8 +500,16 @@ export class LayerModalComponent implements OnInit {
           if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_permanencia_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
-      
-      case 5:
+
+      case 6:
+        pin = { url: '../../../assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        if (this.rangedMarkers.length > 1) {
+          if (i == 0) pin = { url: '../../../assets/images/pin_sem_sinal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_sem_sinal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        }
+        break;
+
+      case 6:
         pin = { url: '../../../assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_perdido_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -504,11 +525,11 @@ export class LayerModalComponent implements OnInit {
         }
         break;
     }
-    
+
     return pin;
   }
 
-  getRadiusWithAlert(){
+  getRadiusWithAlert() {
     let pin = "#027f01";
     let alertCode = this.packing.alertCode;
 
