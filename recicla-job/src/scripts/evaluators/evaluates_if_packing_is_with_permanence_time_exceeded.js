@@ -4,7 +4,7 @@ const moment = require('moment')
 const STATES = require('../common/states')
 
 // MODELS
-const { AlertHistory } = require('../../models/alert_history.model')
+const { CurrentStateHistory } = require('../../models/current_state_history.model')
 const { Family } = require('../../models/families.model')
 const { GC16 } = require('../../models/gc16.model')
 const { Packing } = require('../../models/packings.model')
@@ -23,7 +23,7 @@ module.exports = async (packing) => {
                     console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERMANENCIA_EXCEDIDA.alert) return true
-                    await AlertHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                 } else {
                     console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
@@ -34,7 +34,7 @@ module.exports = async (packing) => {
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
                     
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERMANENCIA_EXCEDIDA.alert) return true
-                    await AlertHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                 } else {
                     console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })

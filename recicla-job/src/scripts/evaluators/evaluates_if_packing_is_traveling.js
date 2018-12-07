@@ -27,8 +27,8 @@ module.exports = async (packing, setting) => {
 
                 if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_PRAZO.alert) return true
 
-                const alertHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.VIAGEM_PRAZO.alert })
-                await alertHistory.save()
+                const currentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.VIAGEM_PRAZO.alert })
+                await currentStateHistory.save()
             } else {
                 if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
                     console.log('VIAGEM_VIAGEM_PERDIDA')

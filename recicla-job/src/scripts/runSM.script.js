@@ -5,6 +5,7 @@ const STATES = require('./common/states')
 
 // MODELS
 const { Packing } = require('../models/packings.model')
+const { CurrentStateHistory } = require('../models/current_state_history.model')
 
 // EVALUATORS
 const evaluatesIfPackingIsNoSignal = require('./evaluators/evaluates_if_packing_is_no_signal');
@@ -37,7 +38,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.DESABILITADA_COM_SINAL.key }, { new: true })
 
                 if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.DESABILITADA_COM_SINAL.alert) return null
-                await AlertHistory.create({ packing: packing._id, type: STATES.DESABILITADA_COM_SINAL.alert })
+                await CurrentStateHistory.create({ packing: packing._id, type: STATES.DESABILITADA_COM_SINAL.alert })
 
                 return null
             } else {
@@ -46,12 +47,12 @@ module.exports = async (setting, packing, controlPoints) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.DESABILITADA_SEM_SINAL.key }, { new: true })
                     
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.DESABILITADA_SEM_SINAL.alert) return null
-                    await AlertHistory.create({ packing: packing._id, type: STATES.DESABILITADA_SEM_SINAL.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.DESABILITADA_SEM_SINAL.alert })
                 } else {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.PERDIDA.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERDIDA.alert) return null
-                    await AlertHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert })
                 }
                 return null
             }
@@ -99,7 +100,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                    await AlertHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
                 }
                 break
             case STATES.DESABILITADA_SEM_SINAL.key:
@@ -111,7 +112,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                        await AlertHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
                     }
                 }
                 break
@@ -291,13 +292,13 @@ module.exports = async (setting, packing, controlPoints) => {
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                        await AlertHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
                     }
                 } else {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.PERDIDA.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERDIDA.alert) return null
-                    await AlertHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert })
                 }
 
                 break
@@ -309,7 +310,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                    await AlertHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
                 }
                 break
         }

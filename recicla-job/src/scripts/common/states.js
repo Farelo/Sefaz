@@ -45,10 +45,10 @@ module.exports = {
   },
   LOCAL_INCORRETO: {
     key: 'local_incorreto',
-    alert: 'incorrect_local'
+    alert: 'local_incorreto'
   },
   PERMANENCIA_EXCEDIDA: {
     key: undefined,
-    alert: 'permanence_exceeded'
+    alert: 'tempo_de_permanencia_excedido'
   }
 }

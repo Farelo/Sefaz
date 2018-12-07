@@ -12,8 +12,8 @@ module.exports = async (packing) => {
         console.log(`EMBALAGEM ESTÁ SEM SINAL`)
         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.SEM_SINAL.alert) return true
         
-        const alertHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert })
-        await alertHistory.save()
+        const currentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert })
+        await currentStateHistory.save()
 
         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.SEM_SINAL.key })
     } catch (error) {
