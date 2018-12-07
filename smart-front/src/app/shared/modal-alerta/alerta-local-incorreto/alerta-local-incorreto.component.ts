@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { constants } from '../../../../environments/constants';
 import { Pagination } from '../../models/pagination';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoryService, InventoryLogisticService } from '../../../servicos/index.service';
+import { InventoryService, InventoryLogisticService, RoutesService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
 
 @Component({
@@ -12,45 +12,32 @@ import { LayerModalComponent } from '../../modal-packing/layer.component';
 })
 export class AlertaLocalIncorretoComponent implements OnInit {
 
-  @Input()
-  alerta;
-  public historic: Pagination = new Pagination({ meta: { page: 1 } });
+  @Input() alerta;
+  
+  public listOfRoutes: any[] = [];
+  public mConstants: any;
 
   constructor(
     public activeAlerta: NgbActiveModal,
     private inventoryService: InventoryService,
-    private inventoryLogisticService: InventoryLogisticService,
-    private modalService: NgbModal,
-  ) { }
+    private routesService: RoutesService,
+    private modalService: NgbModal) { 
+    
+    this.mConstants = constants;
+  }
 
   ngOnInit() {
-    console.log(JSON.stringify(this.alerta));
-    this.getHistoric();
+
+    this.routesService.getRoute(this.alerta.family._id).subscribe(result => {
+      //this.listOfRoutes = result;
+    }, err => console.log(err));
   }
 
   getHistoric() {
-    this.inventoryService
-      .getInventoryPackingHistoric(
-        10,
-        this.historic.meta.page,
-        this.alerta.data.packing.serial,
-        this.alerta.data.packing.code,
-    )
-      .subscribe(
-        result => {
-          this.historic = result;
-          this.historic.data = this.historic.data.map(elem => {
-            elem.status = constants[elem.status];
-            return elem;
-          });
-        },
-        err => {
-          console.log(err);
-        },
-    );
+    
   }
 
-  visualizeOnMap() { 
+  visualizeOnMap() {
 
     this.inventoryService
       .getInventoryGeneralPackings(10, 1, this.alerta.data.packing.code_tag, '')
@@ -71,7 +58,7 @@ export class AlertaLocalIncorretoComponent implements OnInit {
         err => {
           console.log(err);
         },
-    );
+      );
   }
 
   generalInventoryEquipament() { }

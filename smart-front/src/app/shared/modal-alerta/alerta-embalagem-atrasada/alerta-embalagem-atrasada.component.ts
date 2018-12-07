@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService, InventoryLogisticService, PlantsService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
+import { constants } from 'environments/constants';
 
 @Component({
   selector: 'app-alerta-embalagem-atrasada',
@@ -11,35 +12,34 @@ import { LayerModalComponent } from '../../modal-packing/layer.component';
 export class AlertaEmbalagemAtrasadaComponent implements OnInit {
 
   @Input() alerta;
-  private lastPlant: any = {
-    plant_name: "Sem registro",
-    location: "Sem Registro"
-  };
-
+  public mConstants: any;
+  
   constructor(
     public activeAlerta: NgbActiveModal,
     private inventoryService: InventoryService,
     private inventoryLogisticService: InventoryLogisticService,
     private plantsService: PlantsService,
-    private modalService: NgbModal,
-  ) { }
+    private modalService: NgbModal) { 
+
+    this.mConstants = constants;
+  }
 
   ngOnInit() {
-    //console.log(JSON.stringify(this.alerta));
-    this.getLastPlant();
+    
+    //this.getLastPlant();
   }
 
   getLastPlant() {
-    if (this.alerta.data.packing.last_plant.plant !== undefined) {
-      this.plantsService.retrievePlant(this.alerta.data.packing.last_plant.plant).subscribe(result => {
-        //console.log('result: ' + JSON.stringify(result));
+    // if (this.alerta.data.packing.last_plant.plant !== undefined) {
+    //   this.plantsService.retrievePlant(this.alerta.data.packing.last_plant.plant).subscribe(result => {
+    //     //console.log('result: ' + JSON.stringify(result));
 
-        if (result.data.length != {}) {
-          this.lastPlant = result.data;
-          //console.log('this.lastPlant: ' + JSON.stringify(this.lastPlant));
-        }
-      });
-    }
+    //     if (result.data.length != {}) {
+    //       this.lastPlant = result.data;
+    //       //console.log('this.lastPlant: ' + JSON.stringify(this.lastPlant));
+    //     }
+    //   });
+    // }
   }
 
   visualizeOnMap() {

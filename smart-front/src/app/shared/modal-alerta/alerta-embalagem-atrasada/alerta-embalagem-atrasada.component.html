@@ -5,9 +5,9 @@
 
     <div class="col-12 no-padding">
       <p class="alerta-badges">
-        <span class="badge badge-secondary">Código: {{alerta.data.packing?.code}}</span>
-        <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{alerta.data.packing?.serial}}</span>
-        <span class="badge badge-secondary" style="margin-left:5px;">Tag: {{alerta.data.packing?.code_tag}}</span>
+        <span class="badge badge-secondary">Código: {{ alerta.family.code }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{ alerta.serial }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">Tag: {{ alerta.tag.code }}</span>
       </p>
 
       <img id="ver-no-mapa" (click)="visualizeOnMap()" tooltip="Visualizar no mapa" placement="left" src="../../../assets/images/distancia.png"
@@ -23,9 +23,9 @@
 
     <div class="row">
       <div class="col-12">
-        <p class="titulo-modal">EMITIDO EM:</p>
+        <p class="titulo-modal">ÚLTIMO SINAL:</p>
         <br>
-        <p> {{alerta.data.date | date: 'dd/MM/yy'}} | {{alerta.data.date | date:'HH:MM:ss'}} </p>
+        <p> {{ alerta.last_device_data.message_date | date: 'dd/MM/yy' }} | {{ alerta.last_device_data.message_date | date:'HH:MM:ss' }} </p>
       </div>
     </div>
 
@@ -33,16 +33,16 @@
 
     <div class="row">
       <div class="col-12 col-md-6">
-        <p class="titulo-modal">ÚLTIMA LOCALIZAÇÃO:</p>
+        <p class="titulo-modal">ÚLTIMO LOCAL:</p>
         <br>
-        <p> {{ lastPlant.plant_name }} </p>
-        <p> {{ lastPlant.location }} </p>
+        <p> {{ alerta?.last_event_record?.control_point?.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }}
+        </p>
       </div>
 
       <div class="col-12 col-md-6">
-        <p class="titulo-modal">TEMPO EM VIAGEM:</p>
+        <p class="titulo-modal">ALERTA EM:</p>
         <br>
-        <p> {{alerta.data.packing?.trip.time_countdown | time }} </p>
+        <p> {{ alerta.last_device_data.message_date | date: 'dd/MM/yy' }} | {{ alerta.last_device_data.message_date | date:'HH:MM:ss' }} </p>
       </div>
     </div>
 
@@ -66,13 +66,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let route of alerta.data.routes">
+              <!-- <tr *ngFor="let route of alerta.data.routes">
         
                 <td>{{route.plant_factory.plant_name}}</td>
                 <td>{{route.plant_supplier.plant_name}}</td>
                 <td>{{route.time.max | time}}</td>
                 <td>{{alerta.data.packing?.trip.time_countdown | time }}</td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService, InventoryLogisticService, PlantsService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
+import { constants } from '../../../../environments/constants';
 
 @Component({
   selector: 'app-alerta-permanencia',
@@ -11,11 +12,14 @@ import { LayerModalComponent } from '../../modal-packing/layer.component';
 export class AlertaPermanenciaComponent implements OnInit {
 
   @Input() alerta;
+  public mConstants: any;
+
   constructor(public activeAlerta: NgbActiveModal,
     private inventoryService: InventoryService,
-    private inventoryLogisticService: InventoryLogisticService,
-    private plantsService: PlantsService,
-    private modalService: NgbModal,){ }
+    private modalService: NgbModal){ 
+
+    this.mConstants = constants;
+  }
 
   ngOnInit() {
 

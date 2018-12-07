@@ -5,9 +5,9 @@
 
     <div class="col-12 no-padding">
       <p class="alerta-badges">
-        <span class="badge badge-secondary">Código: {{alerta.data.packing?.code}}</span>
-        <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{alerta.data.packing?.serial}}</span>
-        <span class="badge badge-secondary" style="margin-left:5px;">Tag: {{alerta.data.packing?.code_tag}}</span>
+        <span class="badge badge-secondary">Código: {{ alerta.family.code }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{ alerta.serial }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">Tag: {{ alerta.tag.code }}</span>
       </p>
 
       <img id="ver-no-mapa" (click)="visualizeOnMap()" tooltip="Visualizar no mapa" placement="left" src="../../../assets/images/distancia.png"
@@ -23,9 +23,10 @@
 
     <div class="row">
       <div class="col-12">
-        <p class="titulo-modal">EMITIDO EM:</p>
+        <p class="titulo-modal">ÚLTIMO SINAL:</p>
         <br>
-        <p> {{alerta.data.date | date: 'dd/MM/yy'}} | {{alerta.data.date | date:'HH:MM:ss'}} </p>
+        <p> {{ alerta.last_device_data.message_date | date: 'dd/MM/yy' }} | 
+          {{ alerta.last_device_data.message_date | date:'HH:MM:ss' }} </p>
       </div>
     </div>
 
@@ -35,30 +36,24 @@
       <div class="col-12 col-md-6">
         <p class="titulo-modal">LOCALIZAÇÃO ATUAL:</p>
         <br>
-        <p> {{alerta.data.actual_plant ? alerta.data.actual_plant.plant.plant_name : 'Sem Registro'}} </p>
-        <p> Departamento: {{alerta.data.department ? alerta.data.department?.name : 'Sem Registro'}} </p>
-      </div>
-
-      <div class="col-12 col-md-6">
-        <p class="titulo-modal">DATA DE ENTRADA:</p>
-        <br>
-        <p> {{alerta.data?.packing.permanence.date >= 0 ? (alerta.data?.packing.permanence?.date | date) : 'Sem Registro'}} </p>
+        <p> {{ alerta.last_event_record.control_point.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p>
       </div>
     </div>
-
+    
     <br>
     
     <div class="row">
       <div class="col-12 col-md-6">
         <p class="titulo-modal">PERMANÊNCIA PROGRAMADA:</p>
         <br>
-        <p> {{alerta.data?.packing.actual_gc16.days >= 0 ? (alerta.data?.packing.actual_gc16.days | time ): 'Sem Registro' }} </p>
+        <p> {{alerta.data?.packing.actual_gc16.days >= 0 ? (alerta.data?.packing.actual_gc16.days | time ): mConstants.NO_REGISTER }} </p>
       </div>
     
       <div class="col-12 col-md-6">
-        <p class="titulo-modal">PERMANÊNCIA ATUAL:</p>
+        <p class="titulo-modal">DATA DE ENTRADA:</p>
         <br>
-        <p style="color: #354052; font-weight: bold;"> {{alerta.data?.packing.permanence.amount_days >= 0 ? (alerta.data?.packing.permanence.amount_days | time ): 'Sem Registro' }} </p>
+        <p> {{ alerta?.last_event_record?.control_point?.created_at | date: 'dd/MM/yy' }} |
+          {{ alerta?.last_event_record?.control_point?.created_at | date:'HH:MM:ss' }} </p>
       </div>
     </div>
 

@@ -46,6 +46,10 @@ export const constants = {
     CORRECT_LOCAL: 12
   },
 
+  NO_REGISTER: "Sem Registro",
+  INBOUND: "Entrada",
+  OUTBOUND: "Saída",
+
   //Constantes antigas
   LOGISTIC: 'Logistic',
   SUPPLIER: 'Supplier',
