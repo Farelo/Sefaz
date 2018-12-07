@@ -18,6 +18,11 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 console.log('NÃO ESTÁ NUMA PLANTA DONA')
                 console.log('Embalagem atualizada absent:true ...')
                 await Packing.findByIdAndUpdate(packing._id, { absent: true }, { new: true })
+
+                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.AUSENTE.alert) return true
+
+                const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.AUSENTE.alert })
+                newCurrentStateHistory.save()
             } else {
                 console.log('ESTÁ NUMA PLANTA DONA')
                 console.log('Embalagem atualizada absent:false ...')
@@ -25,6 +30,10 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             }
         } else {
             await Packing.findByIdAndUpdate(packing._id, { absent: true }, { new: true })
+            if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.AUSENTE.alert) return true
+
+            const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.AUSENTE.alert })
+            newCurrentStateHistory.save()
         }
 
     } catch (error) {

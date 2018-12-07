@@ -86,9 +86,9 @@ const packingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'DeviceData'
     },
-    last_alert_history: {
+    last_current_state_history: {
         type: mongoose.Schema.ObjectId,
-        ref: 'AlertHistory'
+        ref: 'CurrentStateHistory'
     },
     last_department: {
         type: mongoose.Schema.ObjectId,

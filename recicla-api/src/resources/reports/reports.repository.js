@@ -218,7 +218,7 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                 object_temp.update_at = packing.update_at
                 packing.last_device_data ? object_temp.last_device_data = packing.last_device_data : null
                 packing.last_event_record ? object_temp.last_event_record = await EventRecord.findById(packing.last_event_record).populate('control_point') : null
-                packing.last_alert_history ? object_temp.last_alert_history = packing.last_alert_history : null
+                packing.last_current_state_history ? object_temp.last_current_state_history = packing.last_current_state_history : null
 
                 if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
                     object_temp.absent_time_in_hours = getDiffDateTodayInDays(packing.last_event_record.created_at)

@@ -22,6 +22,8 @@ module.exports = async (packing) => {
                 if (timeIntervalInDays > gc16.owner_stock.days) {
                     console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERMANENCIA_EXCEDIDA.alert) return true
+                    await AlertHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                 } else {
                     console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
@@ -30,6 +32,9 @@ module.exports = async (packing) => {
                 if (timeIntervalInDays > gc16.client_stock.days) {
                     console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
+                    
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERMANENCIA_EXCEDIDA.alert) return true
+                    await AlertHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                 } else {
                     console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })

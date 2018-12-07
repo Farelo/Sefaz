@@ -1,54 +1,54 @@
 module.exports = {
   BATERIA_BAIXA: {
     key: undefined,
-    alert: 'battery_low'
+    alert: 'bateria_baixa'
   },
   DESABILITADA_COM_SINAL: {
     key: 'desabilitada_com_sinal',
-    alert: undefined
+    alert: 'desabilitada_com_sinal'
   },
   DESABILITADA_SEM_SINAL: {
     key: 'desabilitada_sem_sinal',
-    alert: 'no_signal'
+    alert: 'desabilitada_sem_sinal'
   },
   ANALISE: {
     key: 'analise',
-    alert: undefined
+    alert: 'analise'
   },
   VIAGEM_PRAZO: {
     key: 'viagem_em_prazo',
-    alerta: undefined
+    alerta: 'viagem_em_prazo'
   },
   VIAGEM_ATRASADA: {
     key: 'viagem_atrasada',
-    alert: 'late'
+    alert: 'viagem_atrasada'
   },
   VIAGEM_PERDIDA: {
     key: 'viagem_perdida',
-    alert: 'missing'
+    alert: 'viagem_perdida'
   },
   SEM_SINAL: {
     key: 'sem_sinal',
-    alert: 'no_signal'
+    alert: 'sem_sinal'
   },
   PERDIDA: {
     key: 'perdida',
-    alert: 'lost'
+    alert: 'perdida'
   },
   AUSENTE: {
     key: 'ausente',
-    alert: undefined
+    alert: 'ausente'
   },
   LOCAL_CORRETO: {
     key: 'local_correto',
-    alert: undefined
+    alert: 'local_correto'
   },
   LOCAL_INCORRETO: {
     key: 'local_incorreto',
     alert: 'incorrect_local'
   },
   PERMANENCIA_EXCEDIDA: {
-    key: 'permanencia_excedida',
+    key: undefined,
     alert: 'permanence_exceeded'
   }
 }
