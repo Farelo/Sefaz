@@ -47,17 +47,18 @@ export class ListaComponent implements OnInit {
   ngOnInit() {
 
     this.inscricao = this.route.params.subscribe((params: any) => {
+
       this.familyId = params['family_id'];
       this.currentState = params['current_state'];
       this.alertCode = this.getAlertCode(this.currentState);
 
       this.getAlerts();
 
-      this.currentState = constants.ALERTS.ABSENT;
-      this.alertCode = constants.ALERTS_CODE.ABSENT;
+      // this.currentState = constants.ALERTS.MISSING;
+      // this.alertCode = constants.ALERTS_CODE.MISSING;
       
-      console.log(this.currentState);
-      console.log(this.alertCode);
+      // console.log(this.currentState);
+      // console.log(this.alertCode);
     });
   }
 

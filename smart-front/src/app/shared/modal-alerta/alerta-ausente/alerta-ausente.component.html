@@ -35,19 +35,20 @@
       <div class="col-12 col-md-6">
         <p class="titulo-modal">ÚLTIMA PLANTA:</p>
         <br>
-        <p> {{ alerta.last_event_record.control_point ? alerta.last_event_record.control_point : mConstants.NO_REGISTER }} </p>
-        <p *ngIf="alerta.last_event_record.type == 'inbound'"> {{ mConstants.INBOUND }} </p>
-        <p *ngIf="alerta.last_event_record.type == 'outbound'"> {{ mConstants.OUTBOUND }} </p>
+        <p> {{ alerta.last_event_record?.control_point?.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p>
+        <p *ngIf="alerta.last_event_record.type == 'inbound'"> Tipo: {{ mConstants.INBOUND }} </p>
+        <p *ngIf="alerta.last_event_record.type == 'outbound'"> Tipo: {{ mConstants.OUTBOUND }} </p>
       </div>
 
       <div class="col-12 col-md-6">
-        <p class="titulo-modal">TEMPO DE AUSÊNCIA:</p>
-        <p> {{ alerta?.last_event_record?.created_at >= 0 ? (alerta?.last_event_record?.created_at | time) : mConstants.NO_REGISTER }} </p>
+        <p class="titulo-modal">TEMPO DE AUSÊNCIA EM:</p>
+        <p> {{ alerta?.last_event_record?.created_at | date: 'dd/MM/yy' }} | {{ alerta?.last_event_record?.created_at | date: 'HH:MM:ss' }}</p>
       </div>
     </div>
 
     <br>
 
+    <!-- 
     <div class="row">
       <div class="col-12 col-md-6">
         <p class="titulo-modal">HISTÓRICO:</p>
@@ -89,7 +90,7 @@
 
         </div>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </div>

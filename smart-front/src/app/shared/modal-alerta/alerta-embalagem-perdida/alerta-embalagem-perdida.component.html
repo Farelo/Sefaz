@@ -35,13 +35,13 @@
       <div class="col-12 col-md-6">
         <p class="titulo-modal">ÚLTIMA LOCALIZAÇÃO:</p>
         <br>
-        <p> {{ alerta?.last_event_record?.control_point ? alerta.last_event_record.control_point : 'Sem Registro' }} </p> 
+        <p> {{ alerta?.last_event_record?.control_point.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p> 
       </div>
 
       <div class="col-12 col-md-6">
         <p class="titulo-modal">ÚLTIMO NÍVEL DE BATERIA:</p>
         <br>
-        <p style="font-weight: bold;"> {{ alerta?.last_device_data?.battery.percentage >=0 ? (alerta.last_device_data.battery.percentage | round) : 'Sem Registro' }}% </p>
+        <p style="font-weight: bold;"> {{ alerta?.last_device_data?.battery.percentage >=0 ? (alerta.last_device_data.battery.percentage | round) : mConstants.NO_REGISTER }}% </p>
       </div>
     </div>
 

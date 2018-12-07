@@ -7,10 +7,7 @@
 
 
     <div class="painel">
-      <div class="quadradoPequeno" 
-        [tooltip]="getAlertText(alert.current_state)" 
-        placement="bottom" 
-        (click)="open(alert, alert.current_state)"
+      <div class="quadradoPequeno" placement="bottom" [tooltip]="getAlertText(alert.current_state)" (click)="open(alert, alert.current_state)"
         [ngClass]="{
           'status0': alertCode == 0,
           'status1': alertCode == 1,
@@ -26,15 +23,13 @@
                                               currentPage: listOfAlertsActualPage,
                                               totalItems: listOfAlerts.length}">
         <div class="esquerda">
-          <span class="codigo" tooltip="Código da Embalagem">{{alert.family.code}}</span>
+          <span class="codigo" tooltip="Código da Embalagem">{{ alert.family.code }}</span>
           <br />
-          <span class="descricao" tooltip="Data do Alerta">{{alert.created_at | date}}</span>
+          <span class="descricao" tooltip="Data do Alerta">{{ alert.created_at | date }}</span>
         </div>
 
         <div class="direita">
-          <span class="fornecedor" 
-            tooltip="Ultima planta em que foi visto" 
-            *ngIf="alertCode == 1 || alertCode == 4" 
+          <span class="fornecedor" tooltip="Ultima planta em que foi visto" *ngIf="alertCode == 1 || alertCode == 4"
             [ngClass]="{
               'fornecedor0': alertCode == 0,
               'fornecedor1': alertCode == 1,
@@ -43,12 +38,11 @@
               'fornecedor4': alertCode == 4,
               'fornecedor5': alertCode == 5,
               'fornecedor6': alertCode == 6,
-              'fornecedor7': alertCode == 7 }"> {{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}
+              'fornecedor7': alertCode == 7 }">
+            {{ alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.' }}
           </span>
-          <span class="fornecedor" 
-            tooltip="Planta Atual" 
-            *ngIf="alertCode != 1 && alertCode != 4" 
-            [ngClass]="{
+
+          <span class="fornecedor" tooltip="Planta Atual" *ngIf="alertCode != 1 && alertCode != 4" [ngClass]="{
               'fornecedor0': alertCode == 0,
               'fornecedor1': alertCode == 1,
               'fornecedor2': alertCode == 2,
@@ -56,11 +50,10 @@
               'fornecedor4': alertCode == 4,
               'fornecedor5': alertCode == 5,
               'fornecedor6': alertCode == 6,
-              'fornecedor7': alertCode == 7 }">{{alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.'}}</span>
-          <br />
-          <span class="quantidade" 
-            tooltip="Código Serial da Embalagem" 
-            [ngClass]="{
+              'fornecedor7': alertCode == 7 }">
+            {{ alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.' }}</span> <br />
+
+          <span class="quantidade" tooltip="Código Serial da Embalagem" [ngClass]="{
               'quantidade0': alertCode == 0,
               'quantidade1': alertCode == 1,
               'quantidade2': alertCode == 2,
@@ -68,17 +61,15 @@
               'quantidade4': alertCode == 4,
               'quantidade5': alertCode == 5,
               'quantidade6': alertCode == 6,
-              'quantidade7': alertCode == 7 }">{{alert.serial}}</span>
+              'quantidade7': alertCode == 7 }">{{alert.serial}}
+          </span>
         </div>
       </div>
 
-      <div style="width: 100%;" *ngIf="listOfAlerts.length > 1 ">
-        <br />
-        <div class="has-text-centered">
-          <pagination-controls id='list' class="my-pagination" (pageChange)="listOfAlertsActualPage = $event" directionLinks="false" autoHide="true">
-          </pagination-controls>
-        </div>
+      <div class="has-text-centered" style="width: 100%; margin-top: 20px;">
+        <pagination-controls id='list' class="my-pagination" (pageChange)="listOfAlertsActualPage = $event"
+          directionLinks="false" autoHide="true">
+        </pagination-controls>
       </div>
-
     </div>
   </div>

@@ -14,7 +14,6 @@ export class AlertaAusenteComponent implements OnInit {
 
   @Input() alerta;
   
-  public historic: Pagination = new Pagination({ meta: { page: 1 } });
   public mConstants: any;
 
   constructor(
