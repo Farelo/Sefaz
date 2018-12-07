@@ -68,13 +68,16 @@ export class ListaComponent implements OnInit {
 
   getAlerts() {
     this.alertsService.getAlertsByFamily(this.familyId, this.currentState).subscribe((alerts: any[]) => {
-      this.listOfAlerts = alerts.filter(elem => {
-        return ((elem.current_state != constants.ALERTS.UNABLE_WITH_SIGNAL) &&
-          (elem.current_state != constants.ALERTS.UNABLE_NO_SIGNAL) &&
-          (elem.current_state != constants.ALERTS.ANALISYS) &&
-          (elem.current_state != constants.ALERTS.TRAVELING) &&
-          (elem.current_state != constants.ALERTS.CORRECT_LOCAL));
-      });
+      this.listOfAlerts = alerts;
+      
+      // this.listOfAlerts = alerts.filter(elem => {
+      //   return ((elem.current_state != constants.ALERTS.UNABLE_WITH_SIGNAL) &&
+      //     (elem.current_state != constants.ALERTS.UNABLE_NO_SIGNAL) &&
+      //     (elem.current_state != constants.ALERTS.ANALISYS) &&
+      //     (elem.current_state != constants.ALERTS.TRAVELING) &&
+      //     (elem.current_state != constants.ALERTS.CORRECT_LOCAL));
+      // });
+      console.log(this.listOfAlerts);
     }, err => console.log(err));
   }
 
