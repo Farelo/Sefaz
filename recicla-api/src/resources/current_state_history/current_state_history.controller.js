@@ -1,4 +1,5 @@
 const current_state_history_service = require('./current_state_history.service')
+const packings_service = require('../packings/packings.service')
 
 exports.all = async (req, res) => {
     const packing = await packings_service.get_packing(req.params.packing_id)

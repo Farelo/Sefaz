@@ -21,7 +21,7 @@ exports.all = async (req, res) => {
 exports.geolocation = async(req, res) => {
     const query = {
         company_id: req.query.company_id ? req.query.company_id : null,
-        packing_id: req.query.packing_id ? req.query.packing_id : null,
+        family_id: req.query.family_id ? req.query.family_id : null,
         packing_serial: req.query.packing_serial ? req.query.packing_serial : null
     }
     const device_data = await device_data_service.geolocation(query)

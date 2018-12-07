@@ -6,7 +6,6 @@ const moment = require('moment')
 const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
 const { ControlPoint } = require('../control_points/control_points.model')
-const { AlertHistory } = require('../alert_history/alert_history.model')
 const { EventRecord } = require('../event_record/event_record.model')
 
 exports.get_alerts = async () => {
@@ -17,9 +16,9 @@ exports.get_alerts = async () => {
             families.map(async family => {
                 let data_temp = []
 
-                const packings = await Packing.find({ active: true, family: family._id }).populate('last_history_alert')
-                const packings_with_battery_low = await Packing.find({ active: true, family: family._id, low_battery: true }).populate('last_history_alert')
-                const packings_with_permanence_time_exceeded = await Packing.find({ active: true, family: family._id, permanence_time_exceeded: true }).populate('last_history_alert')
+                const packings = await Packing.find({ active: true, family: family._id }).populate('last_current_state_history')
+                const packings_with_battery_low = await Packing.find({ active: true, family: family._id, low_battery: true }).populate('last_current_state_history')
+                const packings_with_permanence_time_exceeded = await Packing.find({ active: true, family: family._id, permanence_time_exceeded: true }).populate('last_current_state_history')
 
                 data_temp = Object.entries(_.countBy(packings, 'current_state')).map(([key, value]) => {
                     return {

@@ -70,7 +70,7 @@ module.exports = router
  *         in: query
  *         required: false
  *         type: string
- *       - name: packing_id
+ *       - name: family_id
  *         description: Filter localization
  *         in: query
  *         required: false
