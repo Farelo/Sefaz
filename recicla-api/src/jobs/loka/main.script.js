@@ -9,8 +9,6 @@ let count = 1
 module.exports = () => {
     cron.schedule(`* * * * * *`, async () => {
         
-        debug('iniciou o cron')
-
         if (next) {
 
             next = false
@@ -26,16 +24,9 @@ module.exports = () => {
 
             await promise_wait(4)
 
-            debug('tempo de espera após o job deve ser de 2 minutos. Confirme: ', new Date())
-
             count++
 
             next = true
-
-            //assincrono
-            // exec().then(res => {next = res; debug('job encerrado')}).catch(error => debug('job com erro: ', error))
-            
-            // next = next == true ? next : false
         }
     })
 }
@@ -57,6 +48,7 @@ const exec = () => {
     })
 }
 
+//TODO: substituir esse promise_wait por um settimeout dentro do cron e chamar toda a execução no callback do settimeout
 const promise_wait = async minutes => {
 
     return new Promise((resolve) => {

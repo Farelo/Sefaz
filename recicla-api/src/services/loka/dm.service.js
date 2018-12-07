@@ -2,8 +2,8 @@ const debug = require('debug')('dm.service')
 const dm = require('./dm.utils')
 const request = require('request').defaults({baseUrl: 'https://dm.loka.systems'})
 const qs = require('qs')
-const _ = require('lodash')
-const sslRootCAs = require('ssl-root-cas')
+// const _ = require('lodash')
+// const sslRootCAs = require('ssl-root-cas')
 
 module.exports = {
     loginLokaDmApi: loginLokaDmApi,
