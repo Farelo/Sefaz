@@ -11,7 +11,7 @@ module.exports = router
 // GET '/'
 /**
  * @swagger
- * /current_state_history:
+ * /current_state_history/{packing_id}:
  *   get:
  *     summary: Retrieve all families
  *     description: Retrieve all families on database

@@ -50,7 +50,7 @@ exports.get_device_data = async (device_id, query = { start_date: null, end_date
     }
 }
 
-exports.geolocation = async (query = { company_id: null, packing_id: null, packing_serial: null }) => {
+exports.geolocation = async (query = { company_id: null, family_id: null, packing_serial: null }) => {
     try {
         let packings = []
 
@@ -64,9 +64,9 @@ exports.geolocation = async (query = { company_id: null, packing_id: null, packi
                 )
                 packings = _.flatMap(data)
                 break
-            case query.packing_id != null:
+            case query.family_id != null:
                 packings = await Packing
-                    .findById(query.packing_id).populate('last_device_data')
+                    .find({ family: query.family_id }).populate('last_device_data')
                 break
             case query.packing_serial != null:
                 packings = await Packing
