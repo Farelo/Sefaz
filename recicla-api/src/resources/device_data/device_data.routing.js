@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const device_data_controller = require('./device_data.controller')
-// const auth = require('../../security/auth.middleware')
-// const authz = require('../../security/authz.middleware')
+const auth = require('../../security/auth.middleware')
+const authz = require('../../security/authz.middleware')
 
-router.get('/geo', device_data_controller.geolocation)
-router.get('/geo/:device_id', device_data_controller.all)
+router.get('/data', [auth, authz], device_data_controller.geolocation)
+router.get('/data/:device_id', [auth, authz], device_data_controller.all)
 
 module.exports = router
 
