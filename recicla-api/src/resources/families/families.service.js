@@ -1,6 +1,7 @@
 const debug = require('debug')('service:familys')
 const _ = require('lodash')
 const { Family } = require('./families.model')
+const { Route } = require('../routes/routes.model')
 
 exports.get_families = async (code) => {
     try {
@@ -15,11 +16,17 @@ exports.get_families = async (code) => {
 
 exports.get_family = async (id) => {
     try {
-        const family = await Family
+        let family = await Family
             .findById(id)
             .populate('company', ['_id', 'name', 'type'])
-            .populate('familys', ['_id', 'tag', 'serial', 'active', 'low_battery', 'absent'])
             .populate('control_points', ['_id', 'name', 'type'])
+
+        family.routes = await Promise.all(
+            family.routes.map(async route => {
+                const temp_route = await Route.findById(route).populate('first_point').populate('second_point')
+                return temp_route
+            })
+        )
 
         return family
     } catch (error) {

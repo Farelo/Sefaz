@@ -4,7 +4,7 @@ const STATES = require('../common/states')
 
 const { Family } = require('../../models/families.model')
 const { Packing } = require('../../models/packings.model')
-const { AlertHistory } = require('../../models/alert_history.model')
+const { CurrentStateHistory } = require('../../models/current_state_history.model')
 
 module.exports = async (packing, setting) => {
     let routeMax
@@ -24,20 +24,25 @@ module.exports = async (packing, setting) => {
             if (getDiffDateTodayInDays(packing.last_event_record.created_at) <= routeMax.traveling_time.max) {
                 console.log('VIAGEM_PRAZO')
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true })
+
+                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_PRAZO.alert) return true
+
+                const alertHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.VIAGEM_PRAZO.alert })
+                await alertHistory.save()
             } else {
                 if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
                     console.log('VIAGEM_VIAGEM_PERDIDA')
 
-                    if (packing.last_alert_history && packing.last_alert_history.type === STATES.VIAGEM_PERDIDA.alert) return null
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_PERDIDA.alert) return null
 
-                    await AlertHistory.create({ packing: packing._id, type: STATES.VIAGEM_PERDIDA.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_PERDIDA.alert })
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PERDIDA.key }, { new: true })
                 } else {
                     console.log('VIAGEM_ATRASADA')
     
-                    if (packing.last_alert_history && packing.last_alert_history.type === STATES.VIAGEM_ATRASADA.alert) return null
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_ATRASADA.alert) return null
     
-                    await AlertHistory.create({ packing: packing._id, type: STATES.VIAGEM_ATRASADA.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_ATRASADA.alert })
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_ATRASADA.key }, { new: true })
                 }
             }

@@ -4,15 +4,15 @@
 const STATES = require('../common/states')
 
 // MODELS
-const { AlertHistory } = require('../../models/alert_history.model')
+const { CurrentStateHistory } = require('../../models/current_state_history.model')
 const { Packing } = require('../../models/packings.model')
 
 module.exports = async (packing) => {
     try {
         console.log(`EMBALAGEM ESTÁ SEM SINAL`)
-        if (packing.last_alert_history && packing.last_alert_history.type === STATES.SEM_SINAL.alert) return true
+        if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.SEM_SINAL.alert) return true
         
-        const alertHistory = new AlertHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert })
+        const alertHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert })
         await alertHistory.save()
 
         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.SEM_SINAL.key })
