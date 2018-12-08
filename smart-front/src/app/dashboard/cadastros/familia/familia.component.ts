@@ -20,13 +20,7 @@ export class FamiliaComponent implements OnInit {
     private familyService: FamiliesService,
     private modalService: NgbModal,
     private auth: AuthenticationService) {
-      
-    let user = this.auth.currentUser();
-    
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
+  
   }
 
 

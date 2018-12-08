@@ -1,3 +1,5 @@
+import { constants } from "environments/constants";
+
 declare var $: any;
 declare var google: any;
 declare var MarkerClusterer: any;
@@ -32,14 +34,14 @@ export class Spiralize {
     public duplicated: any = [];
     public iconsOfduplicated: any[] = [];
 
-    constructor(list: any[], map: any, clustered: boolean=false) {
+    constructor(list: any[], map: any, clustered: boolean = false) {
         this.listOfObjects = list;
         this.mMap = map;
         this.clustered = clustered;
         this.resolveClustering();
     }
 
-    clearState(){
+    clearState() {
         this.markers.map(elem => {
             elem.setMap(null);
         });
@@ -56,13 +58,13 @@ export class Spiralize {
         this.duplicated = [];
         this.listOfObjects = [];
         this.markers = [];
-        
+
         this.listOfObjects = list;
         this.mMap = map;
         this.clustered = clustered;
         this.resolveClustering();
 
-        if (showIcons){
+        if (showIcons) {
             this.markers.map(elem => {
                 elem.setMap(this.mMap);
             });
@@ -70,7 +72,7 @@ export class Spiralize {
             this.iconsOfduplicated.map(elem => {
                 elem.setMap(this.mMap);
             });
-        }        
+        }
     }
 
     resolveClustering() {
@@ -83,7 +85,7 @@ export class Spiralize {
     }
 
 
-    
+
     normalizeDuplicatedPackages() {
         let auxDuplicated = [];
 
@@ -106,7 +108,7 @@ export class Spiralize {
                     (this.listOfObjects[i].longitude == this.listOfObjects[j].longitude)) {
                     // console.log(`[i] ${this.listOfObjects[i]},  [j] ${this.listOfObjects[j]}`)
                     // console.log('this.duplicated.length: ' + auxDuplicated.length);
-                    
+
                     removeI = true;
 
                     if (auxDuplicated.length == 0) {
@@ -127,7 +129,7 @@ export class Spiralize {
                 j++;
             }
 
-            if (removeI){
+            if (removeI) {
                 this.listOfObjects.splice(i, 1);
                 l = this.listOfObjects.length;
                 i--;
@@ -151,26 +153,27 @@ export class Spiralize {
         //console.log('listener this.listOfObjects: ' + this.listOfObjects);
         this.markers = this.listOfObjects.map((location, i) => {
             let m = new google.maps.Marker({
-                packing_code: location.packing_code,
+                family_code: location.family.code,
                 serial: location.serial,
-                battery: location.battery,
-                accuracy: location.accuracy,
+                battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
                 position: location.position,
-                icon: this.getPinWithAlert(location.status)
+                icon: this.getPinWithAlert(location.current_state)
             })
 
             google.maps.event.addListener(m, 'click', (evt) => {
                 // console.log('click location:' + JSON.stringify(location));
 
-                this.infoWin.setContent(
-                    `<div id="m-iw" style="">
+                let bateryLevel =
+                    this.infoWin.setContent(
+                        `<div id="m-iw" style="">
                         <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
                         INFORMAÇÕES</div>
                         <div style="padding: 0px 6px;">
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${m.packing_code}</p>
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${m.serial}</p>
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${m.battery.toFixed(2)}%</p>
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${m.accuracy || '-'}m</p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${ m.family_code}</p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${ m.serial}</p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${ m.battery}</p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${ m.accuracy}</p>
                         </div>
                     </div>`);
 
@@ -420,20 +423,32 @@ export class Spiralize {
         let pin = null;
 
         switch (status) {
-            case 'MISSING':
+            case constants.ALERTS.ANALISYS:
+                pin = { url: '../../../assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                break;
+
+            case constants.ALERTS.ABSENT:
                 pin = { url: '../../../assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
                 break;
 
-            case 'INCORRECT_LOCAL':
+            case constants.ALERTS.INCORRECT_LOCAL:
                 pin = { url: '../../../assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
                 break;
 
-            case 'LATE':
+            case constants.ALERTS.LATE:
                 pin = { url: '../../../assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
                 break;
 
-            case 'PERMANENCE_EXCEEDED':
+            case constants.ALERTS.PERMANENCE_TIME:
                 pin = { url: '../../../assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                break;
+
+            case constants.ALERTS.NO_SIGNAL:
+                pin = { url: '../../../assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                break;
+
+            case constants.ALERTS.MISSING:
+                pin = { url: '../../../assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
                 break;
 
             default:
@@ -454,7 +469,7 @@ export class Spiralize {
 
         if (status) {
             // console.log('.');
-                
+
             //Mostrar embalagens
             this.markers.map(elem => {
                 elem.setMap(this.mMap);
@@ -480,7 +495,7 @@ export class Spiralize {
 
         } else {
             // console.log('..');
-            
+
             //Esconder embalagens
             this.markers.map(elem => {
                 elem.setMap(null);

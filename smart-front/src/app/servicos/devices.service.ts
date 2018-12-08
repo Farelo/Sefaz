@@ -35,7 +35,23 @@ export class DevicesService {
     let queryString = Object.keys(param).map(key => key + '=' + param[key]).join('&');
     if (queryString) queryString = '?' + queryString;
 
-    return this.http.get(`${environment.url}/device_data/geo/${device_tag}${queryString}`).catch(this.handleError);
+    return this.http.get(`${environment.url}/device_data/data/${device_tag}${queryString}`).catch(this.handleError);
+  }
+
+  getDeviceData(company_id: string, family_id: string = null, packing_serial: string = null): Observable<any> {
+
+    let param: any = {};
+
+    if (company_id) param.company_id = company_id;
+    if (family_id) param.family_id = family_id;
+    if (packing_serial) param.packing_serial = packing_serial;
+
+    let queryString = Object.keys(param).map(key => key + '=' + param[key]).join('&');
+    if (queryString) queryString = '?' + queryString;
+    
+    console.log(queryString);
+
+    return this.http.get(`${environment.url}/device_data/data${queryString}`).catch(this.handleError);
   }
 
 }
