@@ -59,21 +59,21 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
                 const families = await Family.find({ company: query.company_id })
                 const data = await Promise.all(
                     families.map(async family => {
-                        return await Packing.find({ family: family._id }).populate('last_device_data')
+                        return await Packing.find({ family: family._id }).populate('last_device_data').populate('family')
                     })
                 )
                 packings = _.flatMap(data)
                 break
             case query.family_id != null:
                 packings = await Packing
-                    .find({ family: query.family_id }).populate('last_device_data')
+                    .find({ family: query.family_id }).populate('last_device_data').populate('family')
                 break
             case query.packing_serial != null:
                 packings = await Packing
-                    .findOne({ serial: query.packing_serial }).populate('last_device_data')
+                    .findOne({ serial: query.packing_serial }).populate('last_device_data').populate('family')
                 break
             default:
-                packings = await Packing.find({}).populate('last_device_data')
+                packings = await Packing.find({}).populate('last_device_data').populate('family')
                 break
         }
 

@@ -6,6 +6,7 @@ import { MeterFormatter } from '../pipes/meter_formatter';
 import { NouiFormatter } from 'ng2-nouislider';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
+import { constants } from 'environments/constants';
 defineLocale('pt-br', ptBrLocale);
 
 @Component({
@@ -27,6 +28,7 @@ export class LayerModalComponent implements OnInit {
   public finalDate: Date;    //Initial date
 
   @Input() packing;
+  public mPacking: any;
 
   public path = [];
   public center: any = new google.maps.LatLng(0, 0);
@@ -69,7 +71,7 @@ export class LayerModalComponent implements OnInit {
 
   public showLastPosition: boolean = false;
 
-  public showControlledPlants: boolean = true;
+  public showControlledPlants: boolean = false;
 
   public isLoading = true;
 
@@ -98,7 +100,9 @@ export class LayerModalComponent implements OnInit {
 
   ngOnInit() {
 
-    //console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
+    console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
+
+    this.getPacking();
 
     //Get the plant radius in the settings
     this.getPlantRadius();
@@ -113,11 +117,18 @@ export class LayerModalComponent implements OnInit {
     // console.log(finalD);
 
     this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
-    
+
     this.getPlants();
     // this.getSuppliers();
     // this.getLogisticOperators();
     //this.getAlert();
+  }
+
+  getPacking() {
+    this.packingService.getPacking(this.packing._id).subscribe(response => {
+      this.mPacking = response;
+      console.log(this.mPacking);
+    });
   }
 
   getPlantRadius() {
@@ -127,31 +138,58 @@ export class LayerModalComponent implements OnInit {
   }
 
   /**
-   * If the user came from Alert screen, then the packing.alertCode contains the alert status code.
+   * If the user came from Alert screen, then the packing.current_state contains the alert status code.
    * If not, trye to retrieve an existing alert status code.
    */
-  getAlert() {
+  getAlertCode() {
 
-    if (this.packing.alertCode == undefined) {
-      this.alertService.retrievePackingAlert(this.packing._id).subscribe(response => {
+    let result: number = 0;
 
-        if (response.data.length > 0) {
-          let result = response.data[0];
-          this.packing.alertCode = result.status;
+    switch (this.packing.current_state) {
+      case constants.ALERTS.ANALISYS:
+        result = 0;
+        break;
 
-        } else {
-          this.packing.alertCode = 0;
-        }
-      })
+      case constants.ALERTS.ABSENT:
+        result = 1;
+        break;
 
+      case constants.ALERTS.INCORRECT_LOCAL:
+        result = 2;
+        break;
+
+      case constants.ALERTS.LOW_BATTERY:
+        result = 3;
+        break;
+
+      case constants.ALERTS.LATE:
+        result = 4;
+        break;
+
+      case constants.ALERTS.PERMANENCE_TIME:
+        result = 5;
+        break;
+
+      case constants.ALERTS.NO_SIGNAL:
+        result = 6;
+        break;
+
+      case constants.ALERTS.MISSING:
+        result = 7;
+        break;
+
+      default:
+        result = 0;
     }
+
+    return result;
   }
 
   onFirstDateChange(newDate: Date) {
 
-    
+
     if (newDate !== null && this.finalDate !== null) {
-      
+
       this.isLoading = true;
       let initialD = this.formatDate(newDate.getTime());
       let finalD = this.formatDate(this.finalDate);
@@ -254,7 +292,7 @@ export class LayerModalComponent implements OnInit {
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
     this.marker.start = opt.start;
-    this.marker.battery = opt.battery;
+    this.marker.battery = this.packing.battery_percentage;
     this.marker.end = opt.end;
     this.marker.accuracy = opt.accuracy;
 
@@ -422,30 +460,38 @@ export class LayerModalComponent implements OnInit {
 
   getPin() {
     let pin = null;
-    let alertCode = this.packing.alertCode;
+    let current_state = this.packing.current_state;
 
-    switch (alertCode) {
-      case 1:
+    switch (current_state) {
+      case constants.ALERTS.ANALISYS:
+        pin = { url: '../../../assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+
+      case constants.ALERTS.ABSENT:
         pin = { url: '../../../assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
-      case 2:
+      case constants.ALERTS.INCORRECT_LOCAL:
         pin = { url: '../../../assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
-      case 3:
+      case constants.ALERTS.LOW_BATTERY:
         pin = { url: '../../../assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
-      case 4:
+      case constants.ALERTS.LATE:
         pin = { url: '../../../assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
-      case 5:
+      case constants.ALERTS.PERMANENCE_TIME:
         pin = { url: '../../../assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
-      case 6:
+      case constants.ALERTS.NO_SIGNAL:
+        pin = { url: '../../../assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        break;
+
+      case constants.ALERTS.MISSING:
         pin = { url: '../../../assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
@@ -456,11 +502,19 @@ export class LayerModalComponent implements OnInit {
     return pin;
   }
 
-  getPinWithAlert(i: number) {
-    let pin = null;
-    let alertCode = this.packing.alertCode;
+  getPinWithAlert(i: number) { 
+    let pin = null; 
+    let current_state = this.packing.current_state;
 
-    switch (alertCode) {
+    switch (current_state) {
+      case 0:
+        pin = { url: '../../../assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        if (this.rangedMarkers.length > 1) {
+          if (i == 0) pin = { url: '../../../assets/images/pin_analise_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_analise_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        }
+        break;
+
       case 1:
         pin = { url: '../../../assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
@@ -509,7 +563,7 @@ export class LayerModalComponent implements OnInit {
         }
         break;
 
-      case 6:
+      case 7:
         pin = { url: '../../../assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_perdido_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -531,9 +585,9 @@ export class LayerModalComponent implements OnInit {
 
   getRadiusWithAlert() {
     let pin = "#027f01";
-    let alertCode = this.packing.alertCode;
+    let current_state = this.packing.current_state;
 
-    switch (alertCode) {
+    switch (current_state) {
       case 1:
         pin = "#ef5562";
         break;
