@@ -1,54 +1,35 @@
-<!-- <ng-template #popTemplate>
-  <div class="sort-template">
-    <h4>Ordem</h4>
-    <ul class="sort-ul">
-      <li class="sort-ul-item">Crescente</li>
-      <li class="sort-ul-item">Decrescente</li>
-    </ul>
-
-  </div>
-</ng-template> -->
-
 <div class="base-bg">
   <div class="table-responsive">
     <table class="table">
       <thead>
         <tr class="cabecalho">
-          <!-- <i class="fas fa-caret-down"></i> -->
-          <!-- <th *ngFor="let item of headers"> 
-            <span class="noselect" (click)="headerClick(item)">
-              {{ item.name }}
-              <span class="sort-icons noselect">
-                <i class="fa fa-sort" *ngIf="item.status == sort[0]"></i>
-                <i class="fa fa-caret-up" *ngIf="item.status == sort[1]"></i>
-                <i class="fa fa-caret-down" *ngIf="item.status == sort[2]"></i>
-              </span>
-            </span>
-          </th> -->
+
           <th>Equipamento</th>
+          <!-- <th>Descrição</th> -->
+
+          <th>Empresa</th>
           <th>Projeto</th>
-          <th>Descrição</th>
-          <th>Fornecedor</th>
+
           <th style="text-align: center;">Quantidade</th>
           <th style="width: 80px">Detalhes</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let packing of general.data | paginate: {
+        <tr *ngFor="let item of listOfGeneral | paginate: {
                                                         id: 'geral',
                                                         itemsPerPage: 10,
-                                                        currentPage: general.meta.page,
-                                                        totalItems: general.meta.total_docs}">
-          <td>{{packing.code || '-'}}</td>
-          <td>{{packing.project?.name || '-'}}</td>
-          <td>{{packing.description || '-'}}</td>
-          <td>{{packing.supplier?.name || '-'}}</td>
-          <td style="text-align: center;">{{packing.quantity >= 0 ? packing.quantity : '-'}}</td>
+                                                        currentPage: listOfGeneralActualPage,
+                                                        totalItems: listOfGeneral.length }">
+          <td>{{item.family.code || '-'}}</td>
+          <!-- <td>{{item.description || '-'}}</td> -->
 
-          <td style="text-align: center;">
+          <td>{{item.family.company.name || '-'}}</td> 
+          <td>{{item.project_name || 'Sem projeto'}}</td>
+
+          <td style="text-align: center;">{{item.packings_quantity >= 0 ? item.packings_quantity : '-'}}</td>
+          <td style="text-align: center;"> 
             <div class="bigger">
-              <div class="det" (click)="open(packing)">
-              </div>
+              <div class="det" (click)="open(item)"></div>
             </div>
           </td>
 
@@ -56,7 +37,7 @@
       </tbody>
     </table>
 
-    <div class="classVazio" *ngIf="general.data?.length < 1">
+    <div class="classVazio" *ngIf="listOfGeneral.length < 1">
       Ainda não existem embalagens cadastradas no sistema.
     </div>
   </div>
@@ -64,7 +45,7 @@
   <br>
   
   <div class="has-text-centered">
-    <pagination-controls class="my-pagination" id='geral' (pageChange)="general.meta.page = $event;generalInventory()" directionLinks="false"
+    <pagination-controls class="my-pagination" id='geral' (pageChange)="listOfGeneralActualPage = $event" directionLinks="false"
       autoHide="true">
     </pagination-controls>
   </div>
