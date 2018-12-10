@@ -67,4 +67,19 @@ export class ReportsService {
     return this.http.get(`${environment.url}/reports/battery`).catch(this.handleError);
   }
   
+  /**
+   * Quantidade
+   */
+  getQuantityInventory() {
+
+    return this.http.get(`${environment.url}/reports/quantity`).catch(this.handleError);
+  }
+
+  /**
+   * Geral
+   */
+  getGeneral() {
+
+    return this.http.get(`${environment.url}/reports/general`).catch(this.handleError);
+  }
 }

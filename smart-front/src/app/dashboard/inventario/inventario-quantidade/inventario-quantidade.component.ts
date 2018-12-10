@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../../servicos/auth.service';
-import {
-  InventoryService,
-  InventoryLogisticService,
-  PackingService,
-} from '../../../servicos/index.service';
+import { ReportsService, FamiliesService } from '../../../servicos/index.service';
 import { Pagination } from '../../../shared/models/pagination';
-import { constants } from '../../../../environments/constants';
 
 @Component({
   selector: 'app-inventario-quantidade',
@@ -14,121 +9,65 @@ import { constants } from '../../../../environments/constants';
   styleUrls: ['./inventario-quantidade.component.css'],
 })
 export class InventarioQuantidadeComponent implements OnInit {
-  public logged_user: any;
-  public quantity: Pagination = new Pagination({ meta: { page: 1 } });
-  public packings: any[];
-  public quantitySearch = '';
+  
+  //dados da tabela
+  public listOfQuantity: any[] = [];
+  public auxListOfQuantity: any[] = [];
 
-  constructor(
-    private inventoryLogisticService: InventoryLogisticService,
-    private inventoryService: InventoryService,
-    private packingService: PackingService,
-    private auth: AuthenticationService,
-  ) {
-    let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();
-    this.logged_user = user.supplier
-      ? user.supplier._id
-      : user.official_supplier
-        ? user.official_supplier
-        : user.logistic
-          ? user.logistic.suppliers
-          : user.official_logistic
-            ? user.official_logistic.suppliers
-            : undefined; //works fine
+  //paginação
+  public listOfQuantityActualPage: number = -1;
+
+  //dados do select
+  public listOfFamily: any[] = [];
+  public selectedFamily: any = null;
+
+  public qtdTotal: number = 0;
+
+  constructor(private reportService: ReportsService,
+    private familyService: FamiliesService,
+    private auth: AuthenticationService) {
+
   }
 
   ngOnInit() {
-    this.loadPackings();
-    this.quantityInventory();
+
+    this.loadFamilies();
+    this.loadQuantityInventory();
   }
 
-  loadPackings() {
-    if (this.logged_user instanceof Array) {
-      this.packingService
-        .getPackingsDistinctsByLogistic(this.logged_user)
-        .subscribe(
-          result => {
-            this.packings = result.data;
-          },
-          err => {
-            console.log(err);
-          },
-        );
-    } else if (this.logged_user) {
-      this.packingService
-        .getPackingsDistinctsBySupplier(this.logged_user)
-        .subscribe(
-          result => {
-            this.packings = result.data;
-          },
-          err => {
-            console.log(err);
-          },
-        );
-    } else {
-      this.packingService.getPackingsDistincts().subscribe(
-        result => {
-          this.packings = result.data;
-        },
-        err => {
-          console.log(err);
-        },
-      );
-    }
+  loadFamilies() {
+    this.familyService.getAllFamilies().subscribe(result => {
+      this.listOfFamily = result;
+    }, err => console.error(err));
   }
 
-  quantityInventory() {
-    this.quantitySearch = this.quantitySearch ? this.quantitySearch : '';
+  loadQuantityInventory() {
+    this.reportService.getQuantityInventory().subscribe(result => {
+      
+      //atualizar dados
+      this.listOfQuantity = result;
+      this.auxListOfQuantity = result;
 
-    if (this.logged_user instanceof Array) {
-      this.inventoryLogisticService
-        .getInventoryQuantity(
-          10,
-          this.quantity.meta.page,
-          this.quantitySearch,
-          this.logged_user,
-        )
-        .subscribe(
-          result => {
-            this.quantity = result;
+      //atualizar quantidades
+      this.updateResumeQuantity();
+    });
+  }
 
-            this.quantity.data = this.quantity.data.map(elem => {
-              elem.status = constants[elem.status];
-              return elem;
-            });
+  familySelected(event: any) {
 
-            //console.log('this.quantity.data: ' + JSON.stringify(this.quantity.data));
+    if (event) {
+      this.listOfQuantity = this.auxListOfQuantity.filter(elem => {
+        return elem.family_code == event.code
+      });
 
-          },
-          err => {
-            console.log(err);
-          },
-        );
     } else {
-      this.inventoryService
-        .getInventoryQuantity(
-          10,
-          this.quantity.meta.page,
-          this.quantitySearch,
-          this.logged_user,
-        )
-        .subscribe(
-          result => {
-            this.quantity = result;
- 
-            this.quantity.data = this.quantity.data.map(elem => {
-              elem.status = constants[elem.status];
-              return elem;
-            });
-
-            //console.log('this.quantity.data: ' + JSON.stringify(this.quantity.data));
-
-          },
-          err => {
-            console.log(err);
-          },
-        );
+      this.listOfQuantity = this.auxListOfQuantity;
     }
+    
+    this.updateResumeQuantity();
+  }
+
+  updateResumeQuantity(){
+    this.qtdTotal = this.listOfQuantity.map(elem => elem.total).reduce(function (accumulator, currentValue) { return accumulator + currentValue }, 0);
   }
 }
