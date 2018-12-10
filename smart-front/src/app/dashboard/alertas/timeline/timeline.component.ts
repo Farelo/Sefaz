@@ -37,12 +37,14 @@ export class TimelineComponent implements OnInit {
    
     this.alertsService.getAllAlerts().subscribe(alerts => {
       this.listOfAlerts = alerts.filter(elem => {
-        return ((elem.current_state != constants.ALERTS.UNABLE_WITH_SIGNAL) &&
-          (elem.current_state != constants.ALERTS.UNABLE_NO_SIGNAL) &&
-          (elem.current_state != constants.ALERTS.ANALISYS) &&
-          (elem.current_state != constants.ALERTS.TRAVELING) &&
-          (elem.current_state != constants.ALERTS.CORRECT_LOCAL));
+        return ((elem.current_state !== constants.ALERTS.UNABLE_WITH_SIGNAL) &&
+          (elem.current_state !== constants.ALERTS.UNABLE_NO_SIGNAL) &&
+          (elem.current_state !== constants.ALERTS.ANALISYS) &&
+          (elem.current_state !== constants.ALERTS.TRAVELING) &&
+          (elem.current_state !== constants.ALERTS.CORRECT_LOCAL));
       });
+      console.log(this.listOfAlerts);
+      
     }, err => { console.log(err); }); 
   }
 

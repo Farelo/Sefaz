@@ -3,7 +3,7 @@ import { ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService } from '../../servicos/index.service';
+import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService, FamiliesService, DevicesService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
 import './markercluster';
@@ -21,13 +21,14 @@ declare var MarkerClusterer: any;
 })
 
 export class RastreamentoComponent implements OnInit {
+
   public data: Pagination = new Pagination({ meta: { page: 1 } });
   public logged_user: any;
   autocomplete: any;
   address: any = {};
   center: any = { lat: 0, lng: 0 };
   pos: any;
-  plantSearch = null;
+  
   departments: Department[];
   options = [];
   circles = [];
@@ -62,12 +63,13 @@ export class RastreamentoComponent implements OnInit {
   plants = [];
 
   //selects
-  public serials: any[];
+  public listOfSerials: any[];
   public codes: any[];
 
   //Bind dos selects
-  public selectedCode;
-  public selectedSerial;
+  public selectedCompany: any = null;
+  public selectedFamily: any = null;
+  public selectedSerial: any = null;
 
   //array de pinos
   public plotedPackings: any[] = [];
@@ -82,33 +84,32 @@ export class RastreamentoComponent implements OnInit {
   public showPackings: boolean = false;
 
   //misc
-  public settings: any;
+  public settings: any = {};
   public permanence: Pagination = new Pagination({ meta: { page: 1 } });
 
+  //...
+  public listOfFamilies: any = [];
+  public auxListOfFamilies: any = [];
+
+
+  
   constructor(
     private ref: ChangeDetectorRef,
     private departmentService: DepartmentService,
-    private plantsService: PlantsService,
-    private settingsService: SettingsService,
+    private familyService: FamiliesService,
+    private authenticationService: AuthenticationService,
+    private deviceService: DevicesService,
     private packingService: PackingService,
-    private inventoryService: InventoryService,
     private mapsService: MapsService,
     private modalService: NgbModal,
-    private auth: AuthenticationService
+    private auth: AuthenticationService) {
 
-  ) {
-    let user = this.auth.currentUser();
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
   ngOnInit() {
 
-    this.getPlantRadius();
-    this.loadPackingsOnSelect();
-    this.loadDepartmentsByPlant();
+    this.getPlantRadius(); 
+    this.loadCompanies();
   }
 
   public mMap: any;
@@ -129,63 +130,21 @@ export class RastreamentoComponent implements OnInit {
    * Recupera o radius das plantas, configurado pelo usuário.
    */
   getPlantRadius() {
-    this.settingsService.getSettings().subscribe(response => {
-      let result = response.data[0];
-      this.settings = result;
-      this.settings.range_radius = this.settings.range_radius * 1000; 
-    })
+
+    let currentSetting = this.authenticationService.currentSettings();
+    this.settings['range_radius'] = currentSetting.range_radius * 1000;
   }
 
   /**
-   * Carrega os fornecedores, fábricas e op logísticos no select Fornecedor
+   * Carrega as empresas no select de empresa
    */
-  loadDepartmentsByPlant() {
-    if (this.logged_user instanceof Array) {
-      let user = this.auth.currentUser();
-      this.plantsService.retrieveGeneralLogistic(this.logged_user, user._id)
-        .subscribe(result => {
+  loadCompanies() {
 
-          this.plants = result.data;
-          if (result.data.length > 0) {
-            for (let data of result.data) {
-              if (data.supplier) {
-                this.listOfSuppliers.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "supplier" });
+    this.familyService.getAllFamilies().subscribe(result => {
 
-              } else if (data.logistic_operator) {
-                this.listOfLogistic.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "logistic" });
-
-              } else {
-                this.listOfFactories.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "normal" });
-              }
-            }
-
-            this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
-
-          }
-        }, err => { console.log(err) });
-    } else {
-      this.plantsService.retrieveGeneral(this.logged_user)
-        .subscribe(result => {
-
-          this.plants = result.data;
-          if (result.data.length > 0) {
-            for (let data of result.data) {
-              if (data.supplier) {
-                this.listOfSuppliers.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "supplier" });
-
-              } else if (data.logistic_operator) {
-                this.listOfLogistic.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "logistic" });
-
-              } else {
-                this.listOfFactories.push({ id: data._id, name: data.plant_name, position: (new google.maps.LatLng(data.lat, data.lng)), profile: "normal" });
-              }
-            }
-
-            this.options.forEach(opt => this.circles.push({ position: { lat: opt.position[0], lng: opt.position[1] }, radius: this.auth.currentUser().radius }))
-            this.center = { lat: result.data[0].lat, lng: result.data[0].lng };
-          }
-        }, err => { console.log(err) });
-    }
+      this.listOfFamilies = result;
+      this.auxListOfFamilies = result;
+    }, err => console.error(err));
   }
 
   /**
@@ -196,31 +155,75 @@ export class RastreamentoComponent implements OnInit {
   public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
   public mSpiralize: Spiralize;
 
+
+  /**
+   * An equipment was selected. This method fill the Serial Select.
+   */
+  loadSerialsOfSelectedEquipment() {
+
+    // console.log('loadSerialsOfSelectedEquipment');
+    // console.log(this.selectedFamily);
+
+    if (this.selectedFamily) {
+      //this.loadPackings();
+      this.selectedSerial = null;
+      this.listOfSerials = [];
+
+      let query = { family: this.selectedFamily._id };
+
+      this.packingService.getAllPackings(query).subscribe(result => {
+        this.listOfSerials = result.filter(elem => {
+          return elem.family.code == this.selectedFamily.code;
+        });
+      }, err => { console.log(err) })
+    }
+  }
+
+  /**
+   * The filter has changed
+   */
   loadPackings() {
 
-    let params = {};
-    if (this.selectedCode) params['family'] = this.selectedCode.packing;
-    if (this.selectedSerial) params['serial'] = this.selectedSerial;
+    let cp_id = this.selectedCompany !== null ? this.selectedCompany.company._id : null;
+    let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
+    let serial_id = this.selectedSerial !== null ? this.selectedSerial : null;
 
-    this.mapsService.getPackings(params).subscribe(result => {
+    // console.log('this.selectedCompany');
+    // console.log(this.selectedCompany);
 
-      this.plotedPackings = result.data;
+    // console.log('this.selectedCompany');
+    // console.log(this.selectedFamily);
+    
+    // console.log('this.selectedSerial');
+    // console.log(this.selectedSerial);
+    
+    this.deviceService.getDeviceData(cp_id, family_id, serial_id).subscribe((result: any[]) => {
+
+      this.plotedPackings = result.filter(elem => {
+        if (elem.last_device_data)
+          return true;
+        else
+          return false;
+      });
 
       this.plotedPackings.map(elem => {
-        elem.position = (new google.maps.LatLng(elem.latitude, elem.longitude));
+        elem.position = (new google.maps.LatLng(elem.last_device_data.latitude, elem.last_device_data.longitude));
+        elem.latitude = elem.last_device_data.latitude;
+        elem.longitude = elem.last_device_data.longitude;
         return elem;
       });
 
+      console.log(JSON.stringify(this.plotedPackings[0]));
+
       //this.resolveClustering();
-      if (this.mSpiralize){ 
+      if (this.mSpiralize) {
         this.mSpiralize.clearState();
         this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, true);
 
-      } else{
+      } else {
         this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
       }
-
-    }, err => { console.log(err) });
+    });
   }
 
   /**
@@ -253,37 +256,9 @@ export class RastreamentoComponent implements OnInit {
     this.mSpiralize.toggleShowPackings(this.showPackings);
   }
 
-  /**
-   * Carrega todos os equipamentos no select
-   */
-  loadPackingsOnSelect() {
-    if (this.logged_user instanceof Array) {
-      this.packingService.getPackingsDistinctsByLogistic(this.logged_user).subscribe(result => this.codes = result.data, err => { console.log(err) });
 
-    } else if (this.logged_user) {
-      this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.codes = result.data, err => { console.log(err) });
+  filterChanged(){
 
-    } else {
-      this.packingService.getPackingsDistincts().subscribe(result => { this.codes = result.data }, err => { console.log(err) });
-    }
-  }
-
-  /**
-   * An equipment was selected. This method fill the Serial Select.
-   */
-  loadSerialsOfSelectedEquipment() {
-
-    if (this.selectedCode) {
-
-      this.loadPackings();
-      this.selectedSerial = null;
-      this.serials = [];
-      this.packingService
-        .getPackingsEquals(this.selectedCode.supplier._id, this.selectedCode.project._id, this.selectedCode.packing)
-        .subscribe(result => {
-          this.serials = result.data;
-        }, err => { console.log(err) })
-    }
   }
 
   /**

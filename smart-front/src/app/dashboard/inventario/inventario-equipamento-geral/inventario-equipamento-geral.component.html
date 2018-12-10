@@ -83,7 +83,7 @@
           <td class="text-center">{{ (packing.battery_percentage != undefined && packing.battery_percentage >= 0) ? ((packing.battery_percentage | round) + '%') : 'Sem Registro' }} </td>
           <td class="text-center">{{ packing.accuracy || '-' }} m</td>
 
-          <td class="text-center">{{ getFormatedData(packing.date) }}</td>
+          <td class="text-center">{{ (packing.date !== "Sem registro") ? ((packing.date | date: 'dd/MM/yy') + " " + (packing.date | date: 'HH:MM:ss')) : packing.date }}</td>
           <td style="text-align: center;">
             <div class="bigger" (click)="openLayer(packing)">
               <div class="det"> </div>

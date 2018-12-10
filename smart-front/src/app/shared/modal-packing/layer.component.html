@@ -11,7 +11,7 @@
     <div id="collapseExample" [ngbCollapse]="detailsIsCollapsed">
       <!-- <p>Projeto: {{ packing.project.name }}</p> -->
       <!-- <p>Fornecedor: {{ packing.actual_plant?.plant?.plant_name ? packing.actual_plant?.plant?.plant_name : "Sem informação" }}</p> -->
-      <p>Planta Atual: {{ packing.current_control_point_name }}</p>
+      <p>Ponto de controle atual: {{ packing.current_control_point_name }}</p>
     </div>
 
     <span id="showDetails" (click)="detailsIsCollapsed = !detailsIsCollapsed" [attr.aria-expanded]="!detailsIsCollapsed" aria-controls="collapseExample"
@@ -87,7 +87,7 @@
           <span class="cr">
             <i class="cr-icon fa fa-check"> </i>
           </span> 
-          Mostrar plantas controladas
+          Mostrar pontos de controle
         </label>
       </div>
     </div>
@@ -185,21 +185,16 @@
       <!-- ///////////// -->
       <!-- rack markers -->
       <ng-container *ngFor="let pos of rangedMarkers; let i = index">
-        <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)" 
+        <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)"  
           [position]="pos.latLng" 
           (click)="clicked($event,pos)"
           [icon]="getPinWithAlert(i)" >
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display" class="info-window-content">
-              <p>
-                <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
-              <p>
-                <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
-              <p>
-                <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
-              <p>
-                <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
+              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+              <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
+              <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
             </div>
           </info-window>
         </marker>
@@ -225,14 +220,9 @@
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display" class="info-window-content">
-              <p>
-                <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
-              <p>
-                <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
-              <p>
-                <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
-              <p>
-                <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
+              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+              <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
+              <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
             </div>
           </info-window>
         </marker>

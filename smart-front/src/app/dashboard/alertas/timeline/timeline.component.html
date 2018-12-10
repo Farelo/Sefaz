@@ -6,8 +6,8 @@
       <button type="button" class="interrogacao1" (click)="openHelp(content)">
       </button>
 
-      <button type="button" class="interrogacao2" [ngbPopover]='popContent' placement="bottom" *ngIf="telaGrande == true" triggers='hover'
-        (click)="openHelp(content)">
+      <button type="button" class="interrogacao2" [ngbPopover]='popContent' placement="bottom" *ngIf="telaGrande == true"
+        triggers='hover' (click)="openHelp(content)">
       </button>
 
       <ng-template #popContent>
@@ -45,10 +45,7 @@
 
     <div class="painel">
       <!-- [routerLink]="[alert.family_id, alert.current_state]" -->
-      <div class="row quadradoPequeno" 
-        placement="bottom"
-        [tooltip]="getAlertText(alert.current_state)" 
-        [routerLink]="[alert.family_id, alert.current_state]"
+      <div class="row quadradoPequeno" placement="bottom" [tooltip]="getAlertText(alert.current_state)" [routerLink]="[alert.family_id, alert.current_state]"
         [ngClass]="{
           'status0': getAlertCode(alert.current_state) == 0,
           'status1': getAlertCode(alert.current_state) == 1,
@@ -57,7 +54,7 @@
           'status4': getAlertCode(alert.current_state) == 4,
           'status5': getAlertCode(alert.current_state) == 5,
           'status6': getAlertCode(alert.current_state) == 6,
-          'status7': getAlertCode(alert.current_state) == 7 }" 
+          'status7': getAlertCode(alert.current_state) == 7 }"
         *ngFor="let alert of listOfAlerts | paginate: { id:'alerts',
                                                       itemsPerPage: 16,
                                                       currentPage: listOfAlertsActualPage,
@@ -84,9 +81,7 @@
           </div>
           <span tooltip="Fornecedor da Embalagem" class="forn">{{alert.company.name}}</span>
           <br />
-          <span class="quantidade" 
-            tooltip="Quantidade de embalagens" 
-            [ngClass]="{
+          <span class="quantidade" tooltip="Quantidade de embalagens" [ngClass]="{
               'quantidade0': getAlertCode(alert.current_state) == 0,
               'quantidade1': getAlertCode(alert.current_state) == 1,
               'quantidade2': getAlertCode(alert.current_state) == 2,
@@ -94,22 +89,18 @@
               'quantidade4': getAlertCode(alert.current_state) == 4,
               'quantidade5': getAlertCode(alert.current_state) == 5,
               'quantidade6': getAlertCode(alert.current_state) == 6,
-              'quantidade7': getAlertCode(alert.current_state) == 7 }">{{alert.qtd }}</span>
+              'quantidade7': getAlertCode(alert.current_state) == 7 }">{{alert.qtd
+            }}</span>
         </div>
       </div>
 
       <!-- pagination -->
-      <div style="width: 100%;" *ngIf="listOfAlerts.length > 0 ">
-        <br />
-        <div class="has-text-centered">
-          <pagination-controls 
-            class="my-pagination" 
-            id='alerts' 
-            (pageChange)="listOfAlertsActualPage = $event" 
-            directionLinks="false" 
-            autoHide="true">
-          </pagination-controls>
-        </div>
+
+      <br />
+      <div class="has-text-centered" style="width: 100%;">
+        <pagination-controls class="my-pagination" id='alerts' (pageChange)="listOfAlertsActualPage = $event"
+          directionLinks="false" autoHide="true">
+        </pagination-controls>
       </div>
 
       <!-- no alerts to show -->
@@ -120,7 +111,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
 </div>

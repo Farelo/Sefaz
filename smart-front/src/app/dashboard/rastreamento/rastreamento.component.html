@@ -1,5 +1,5 @@
 <div class="row no-gutters m-container">
-  
+
   <ng-sidebar-container>
     <!-- Menu lateral -->
     <ng-sidebar [(opened)]="_opened" [closeOnClickOutside]="false" [autoFocus]="false">
@@ -14,61 +14,59 @@
 
           <h6>Filtros:</h6>
           <div class="form-group">
-            <label>Fornecedor</label>
-            <ng-select [ngModel]="plantSearch" (change)="onChange($event)" [items]="plants" bindLabel="plant_name"
+            <label>Empresas vinculadas:</label>
+            <ng-select 
+              [(ngModel)]="selectedCompany" 
+              [items]="listOfFamilies" 
+              (change)="loadPackings()" 
+              bindLabel="company.name"
               placeholder="Escolha uma Planta">
               <ng-template ng-label-tmp let-item="item">
-                {{item.plant_name}}
+                {{item.company.name}}
               </ng-template>
               <ng-template ng-option-tmp let-item="item">
-                <div>
-                  {{item.plant_name}}
-                </div>
+                <div> {{item.company.name}} </div>
               </ng-template>
             </ng-select>
           </div>
 
           <div class="form-group">
-            <label for="selectCode">Embalagem</label>
-            <ng-select id="selectCode" [(ngModel)]="selectedCode" (clear)="onEquipmentSelectClear()" (change)="loadSerialsOfSelectedEquipment()"
-              [items]="codes" bindLabel="packing" placeholder="Selecione um Equipamento">
+            <label for="selectCode">Família</label>
+            <ng-select 
+              id="selectCode" 
+              [(ngModel)]="selectedFamily" 
+              [items]="listOfFamilies" 
+              (clear)="onEquipmentSelectClear()"
+              (change)="loadPackings(); loadSerialsOfSelectedEquipment()" 
+              bindLabel="code" 
+              placeholder="Selecione um Equipamento">
               <ng-template ng-label-tmp let-item="item">
-                {{item.packing}}
+                {{item.code}}
               </ng-template>
               <ng-template ng-option-tmp let-item="item">
                 <div>
-
-                  <b>Embalagem:</b> {{item.packing}}
+                  {{item.code}}
                 </div>
-                <div>
-                  <small>
-                    <b>Fornecedor:</b> {{item.supplier.name}}
-                  </small>
-
-                </div>
-                <div>
-                  <small>
-                    <b> Projeto:</b> {{item.project.name}}
-                  </small>
-                </div>
-
-
               </ng-template>
             </ng-select>
           </div>
 
           <div class="form-group">
             <label>Serial</label>
-            <ng-select [(ngModel)]="selectedSerial" (clear)="loadPackings()" (change)="loadPackings()" [items]="serials"
-              bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial" [disabled]="!selectedCode">
+            <ng-select 
+              [(ngModel)]="selectedSerial" 
+              (clear)="loadPackings()" 
+              (change)="loadPackings()" 
+              [items]="listOfSerials"
+              bindLabel="serial" 
+              bindValue="serial" 
+              placeholder="Selecione um Serial" 
+              [disabled]="!selectedFamily">
               <ng-template ng-label-tmp let-item="item">
                 {{item.serial}}
               </ng-template>
               <ng-template ng-option-tmp let-item="item">
-                <div>
-                  <small>
-                    <b>Serial:</b> {{item.serial}}</small>
-                </div>
+                <div>{{ item.serial }}</div>
               </ng-template>
             </ng-select>
           </div>
@@ -91,7 +89,7 @@
             </div>
           </div>
 
-          <div class="form-group form-check">
+          <!-- <div class="form-group form-check">
             <div class="checkbox">
               <label>
                 <input type="checkbox" value="" [ngModel]="showControlledSuppliers" (ngModelChange)="toggleShowSupplier()">
@@ -113,7 +111,7 @@
                 Mostrar Operadores Logísticos
               </label>
             </div>
-          </div>
+          </div> -->
 
           <div class="form-group form-check">
             <div class="checkbox">
@@ -133,13 +131,13 @@
     <!-- Mapa Geolocalização -->
     <div ng-sidebar-content>
       <div class="m-mapa">
-        
+
         <!-- Botão da legenda dos ícones do mapa -->
         <button type="button" class="legend-button" [ngbPopover]="popContent" placement="bottom" triggers='hover'>
           <img width="20" height="20" src="data:image/svg+xml;base64,
             PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDM3LjYgNDM3LjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQzNy42IDQzNy42OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGNsYXNzPSIiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIDEsIDAsIDApIj48Zz4KCTxnPgoJCTxnPgoJCQk8cGF0aCBkPSJNMTk0LDE0Mi44YzAuOCwxLjYsMS42LDMuMiwyLjQsNC40YzAuOCwxLjIsMiwyLjQsMi44LDMuNmMxLjIsMS4yLDIuNCwyLjQsNCwzLjZjMS4yLDAuOCwyLjgsMiw0LjgsMi40ICAgICBjMS42LDAuOCwzLjIsMS4yLDUuMiwxLjZjMiwwLjQsMy42LDAuNCw1LjIsMC40YzEuNiwwLDMuNiwwLDUuMi0wLjRjMS42LTAuNCwzLjItMC44LDQuNC0xLjZoMC40YzEuNi0wLjgsMy4yLTEuNiw0LjgtMi44ICAgICBjMS4yLTAuOCwyLjQtMiwzLjYtMy4ybDAuNC0wLjRjMS4yLTEuMiwyLTIuNCwyLjgtMy42czEuNi0yLjQsMi00YzAtMC40LDAtMC40LDAuNC0wLjhjMC44LTEuNiwxLjItMy42LDEuNi01LjIgICAgIGMwLjQtMS42LDAuNC0zLjYsMC40LTUuMnMwLTMuNi0wLjQtNS4yYy0wLjQtMS42LTAuOC0zLjItMS42LTUuMmMtMS4yLTIuOC0yLjgtNS4yLTQuOC03LjJjLTAuNC0wLjQtMC40LTAuNC0wLjgtMC44ICAgICBjLTEuMi0xLjItMi40LTItNC0zLjJjLTEuNi0wLjgtMi44LTEuNi00LjQtMi40Yy0xLjYtMC44LTMuMi0xLjItNC44LTEuNmMtMi0wLjQtMy42LTAuNC01LjItMC40Yy0xLjYsMC0zLjYsMC01LjIsMC40ICAgICBjLTEuNiwwLjQtMy4yLDAuOC00LjgsMS42SDIwOGMtMS42LDAuOC0zLjIsMS42LTQuNCwyLjRjLTEuNiwxLjItMi44LDItNCwzLjJjLTEuMiwxLjItMi40LDIuNC0zLjIsMy42ICAgICBjLTAuOCwxLjItMS42LDIuOC0yLjQsNC40Yy0wLjgsMS42LTEuMiwzLjItMS42LDQuOGMtMC40LDItMC40LDMuNi0wLjQsNS4yYzAsMS42LDAsMy42LDAuNCw1LjIgICAgIEMxOTIuOCwxMzkuNiwxOTMuNiwxNDEuMiwxOTQsMTQyLjh6IiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBjbGFzcz0iYWN0aXZlLXBhdGgiIHN0eWxlPSJmaWxsOiM1NjU2NTYiIGRhdGEtb2xkX2NvbG9yPSIjNTc1NjU2Ij48L3BhdGg+CgkJCTxwYXRoIGQ9Ik0yNDkuNiwyODkuMmgtOS4ydi05OGMwLTUuNi00LjQtMTAuNC0xMC40LTEwLjRoLTQyYy01LjYsMC0xMC40LDQuNC0xMC40LDEwLjR2MjEuNmMwLDUuNiw0LjQsMTAuNCwxMC40LDEwLjRoOC40djY2LjQgICAgIEgxODhjLTUuNiwwLTEwLjQsNC40LTEwLjQsMTAuNHYyMS42YzAsNS42LDQuNCwxMC40LDEwLjQsMTAuNGg2MS42YzUuNiwwLDEwLjQtNC40LDEwLjQtMTAuNFYzMDAgICAgIEMyNjAsMjk0LDI1NS4yLDI4OS4yLDI0OS42LDI4OS4yeiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojNTY1NjU2IiBkYXRhLW9sZF9jb2xvcj0iIzU3NTY1NiI+PC9wYXRoPgoJCQk8cGF0aCBkPSJNMjE4LjgsMEM5OCwwLDAsOTgsMCwyMTguOHM5OCwyMTguOCwyMTguOCwyMTguOHMyMTguOC05OCwyMTguOC0yMTguOFMzMzkuNiwwLDIxOC44LDB6IE0yMTguOCw0MDguOCAgICAgYy0xMDQuOCwwLTE5MC04NS4yLTE5MC0xOTBzODUuMi0xOTAsMTkwLTE5MHMxOTAsODUuMiwxOTAsMTkwUzMyMy42LDQwOC44LDIxOC44LDQwOC44eiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojNTY1NjU2IiBkYXRhLW9sZF9jb2xvcj0iIzU3NTY1NiI+PC9wYXRoPgoJCTwvZz4KCTwvZz4KPC9nPjwvZz4gPC9zdmc+" />
         </button>
-        
+
         <!-- Botão de filtros no mapa -->
         <button type="button" class="filter-button" (click)="_toggleSidebar()">
           Filtros
@@ -202,9 +200,9 @@
               [visible]="showControlledSuppliers" [title]="posSuppliers.name" (click)="clicked($event, posSuppliers)">
             </marker>
 
-            <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.position" [fillColor]="'#4d4d4d'"
-              [fillOpacity]="0.2" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledSuppliers"
-              radius="{{ settings.range_radius }}"></circle>
+            <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.position"
+              [fillColor]="'#4d4d4d'" [fillOpacity]="0.2" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4"
+              [strokeWeight]="1" [visible]="showControlledSuppliers" radius="{{ settings.range_radius }}"></circle>
 
 
             <!-- ///////////// -->
@@ -330,6 +328,6 @@
         </div>
       </div>
     </div>
-    
+
   </ng-sidebar-container>
 </div>

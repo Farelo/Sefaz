@@ -17,6 +17,9 @@ exports.get_packings = async (tag, family) => {
         const data = await Packing.findByTag(tag)
                             .populate('family', ['_id', 'code', 'company'])
                             .populate('project', ['_id', 'name'])
+                            .populate('last_device_data')
+                            .populate('last_event_record')
+                            .populate('last_alert_history')
 
         return data ? [data] : []
 
@@ -31,6 +34,10 @@ exports.get_packing = async (id) => {
             .findById(id)
             .populate('family', ['_id', 'code', 'company'])
             .populate('project', ['_id', 'name'])
+            .populate('last_device_data')
+            .populate('last_event_record')
+            .populate('last_alert_history')
+            
         
         return packing
     } catch (error) {
