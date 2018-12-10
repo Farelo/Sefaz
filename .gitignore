@@ -4,6 +4,8 @@ recicla-api/node_modules
 recicla-api/coverage
 recicla-api/src/logs/app.log
 recicla-api/package-lock.json
+loka-api-job/node_modules
+loka-api-job/package-lock.json
 smart-front/node_modules
 admin-api/node_modules
 admin-front/node_modules

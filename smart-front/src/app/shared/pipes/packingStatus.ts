@@ -7,7 +7,7 @@ export class PackingStatus {
 
   transform(status: string) {
 
-    console.log(status);
+    //console.log(status);
 
     switch (status) {
 
