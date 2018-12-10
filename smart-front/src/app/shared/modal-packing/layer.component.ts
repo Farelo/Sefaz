@@ -37,7 +37,7 @@ export class LayerModalComponent implements OnInit {
     display: true,
     lat: null,
     lng: null,
-    start: null,
+    messageDate: null,
     end: null,
     battery: null,
     accuracy: null
@@ -100,7 +100,7 @@ export class LayerModalComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
+    //console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
 
     this.getPacking();
 
@@ -127,7 +127,7 @@ export class LayerModalComponent implements OnInit {
   getPacking() {
     this.packingService.getPacking(this.packing._id).subscribe(response => {
       this.mPacking = response;
-      console.log(this.mPacking);
+      //console.log(this.mPacking);
     });
   }
 
@@ -291,7 +291,7 @@ export class LayerModalComponent implements OnInit {
 
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
-    this.marker.start = opt.start;
+    this.marker.messageDate = opt.last_communication_timestamp;
     this.marker.battery = this.packing.battery_percentage;
     this.marker.end = opt.end;
     this.marker.accuracy = opt.accuracy;
@@ -507,7 +507,7 @@ export class LayerModalComponent implements OnInit {
     let current_state = this.packing.current_state;
 
     switch (current_state) {
-      case 0:
+      case constants.ALERTS.ANALISYS:
         pin = { url: '../../../assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_analise_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -515,7 +515,7 @@ export class LayerModalComponent implements OnInit {
         }
         break;
 
-      case 1:
+      case constants.ALERTS.ABSENT:
         pin = { url: '../../../assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_ausente_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -523,7 +523,7 @@ export class LayerModalComponent implements OnInit {
         }
         break;
 
-      case 2:
+      case constants.ALERTS.INCORRECT_LOCAL:
         pin = { url: '../../../assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_incorreto_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -531,7 +531,7 @@ export class LayerModalComponent implements OnInit {
         }
         break;
 
-      case 3:
+      case constants.ALERTS.LOW_BATTERY:
         pin = { url: '../../../assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_bateria_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -539,7 +539,7 @@ export class LayerModalComponent implements OnInit {
         }
         break;
 
-      case 4:
+      case constants.ALERTS.LATE:
         pin = { url: '../../../assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_atrasado_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -547,7 +547,7 @@ export class LayerModalComponent implements OnInit {
         }
         break;
 
-      case 5:
+      case constants.ALERTS.PERMANENCE_TIME:
         pin = { url: '../../../assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_permanencia_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -555,7 +555,7 @@ export class LayerModalComponent implements OnInit {
         }
         break;
 
-      case 6:
+      case constants.ALERTS.NO_SIGNAL:
         pin = { url: '../../../assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_sem_sinal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -563,7 +563,7 @@ export class LayerModalComponent implements OnInit {
         }
         break;
 
-      case 7:
+      case constants.ALERTS.MISSING:
         pin = { url: '../../../assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
           if (i == 0) pin = { url: '../../../assets/images/pin_perdido_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
@@ -588,24 +588,37 @@ export class LayerModalComponent implements OnInit {
     let current_state = this.packing.current_state;
 
     switch (current_state) {
-      case 1:
+
+      case constants.ALERTS.ANALISYS:
+        pin = "#b3b3b3";
+        break;
+
+      case constants.ALERTS.ABSENT:
         pin = "#ef5562";
         break;
 
-      case 2:
+      case constants.ALERTS.INCORRECT_LOCAL:
         pin = "#f77737";
         break;
 
-      case 3:
+      case constants.ALERTS.LOW_BATTERY:
         pin = "#f8bd37";
         break;
 
-      case 4:
+      case constants.ALERTS.LATE:
         pin = "#4dc9ff";
         break;
 
-      case 5:
+      case constants.ALERTS.PERMANENCE_TIME:
         pin = "#4c7bff";
+        break;
+
+      case constants.ALERTS.NO_SIGNAL:
+        pin = "#9ecf99";
+        break;
+
+      case constants.ALERTS.MISSING:
+        pin = "#3a9ca6";
         break;
     }
 
