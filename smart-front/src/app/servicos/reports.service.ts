@@ -50,4 +50,21 @@ export class ReportsService {
 
     return this.http.get(`${environment.url}/reports/absent`).catch(this.handleError);
   }
+
+  /**
+   * Fornecedor
+   */
+  getClientsInventory() {
+
+    return this.http.get(`${environment.url}/reports/clients`).catch(this.handleError);
+  }
+
+  /**
+   * Bateria
+   */
+  getBatteryInventory() {
+
+    return this.http.get(`${environment.url}/reports/battery`).catch(this.handleError);
+  }
+  
 }

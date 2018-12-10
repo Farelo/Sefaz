@@ -1,6 +1,8 @@
 const debug = require('debug')('controller:device_data')
 const HttpStatus = require('http-status-codes')
 const device_data_service = require('./device_data.service')
+const families_service = require('../families/families.service')
+const companies_service = require('../companies/companies.service')
 
 exports.all = async (req, res) => {
     const { device_id } = req.params
@@ -24,6 +26,17 @@ exports.geolocation = async(req, res) => {
         family_id: req.query.family_id ? req.query.family_id : null,
         packing_serial: req.query.packing_serial ? req.query.packing_serial : null
     }
+
+    if (req.query.family_id) {
+        const family = await families_service.get_family(req.query.family_id)
+        if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
+    }
+
+    if (req.query.company_id) {
+        const company = await companies_service.get_company(req.query.company_id)
+        if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+    }
+
     const device_data = await device_data_service.geolocation(query)
 
     res.json(device_data)

@@ -28,9 +28,12 @@ recicla-job/src/logs/
 recicla-job/package-lock.json
 
 loka-api-job/node_modules
+<<<<<<< HEAD
 loka-api-job/src/config/production.json
 loka-api-job/src/tools/env-tmp.tools.js
 loka-api-job/src/logs/
+=======
+>>>>>>> d9d3890057cb7a325b8c65571ab086cf164eb1a0
 loka-api-job/package-lock.json
 
 # compiled output
