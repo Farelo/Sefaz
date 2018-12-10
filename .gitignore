@@ -24,6 +24,9 @@ recicla-job/src/tools/env-tmp.tools.js
 recicla-job/src/logs/
 recicla-job/package-lock.json
 
+loka-api-job/node_modules
+loka-api-job/package-lock.json
+
 # compiled output
 /dist
 /tmp
