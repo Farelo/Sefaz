@@ -20,6 +20,7 @@ exports.get_family = async (id) => {
             .findById(id)
             .populate('company', ['_id', 'name', 'type'])
             .populate('control_points', ['_id', 'name', 'type'])
+            .populate('gc16')
 
         family.routes = await Promise.all(
             family.routes.map(async route => {
