@@ -508,6 +508,7 @@ exports.clients_report = async(company_id = null) => {
                         let obj_temp = {}
                         const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
 
+                        obj_temp.control_point_id = cp._id
                         obj_temp.control_point_name = cp.name
                         obj_temp.control_point_type = cp.type.name
 
@@ -519,6 +520,7 @@ exports.clients_report = async(company_id = null) => {
                 const packing_temp = packings_inbound.filter(p => p.control_point_name === key)
                 return {
                     family_code: family.code,
+                    company_id: family.company._id,
                     company: family.company.name,
                     packings_traveling: packings_outbound.length,
                     control_point_name: key,

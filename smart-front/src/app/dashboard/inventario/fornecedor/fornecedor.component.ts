@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
 import { AuthenticationService } from '../../../servicos/auth.service';
-import { SuppliersService, InventoryService } from '../../../servicos/index.service';
+import { SuppliersService, InventoryService, ReportsService, CompaniesService } from '../../../servicos/index.service';
 
 @Component({
   selector: 'app-fornecedor',
@@ -10,49 +10,59 @@ import { SuppliersService, InventoryService } from '../../../servicos/index.serv
 })
 export class FornecedorComponent implements OnInit {
 
-  public logged_user: any;
-  public name_supplier: any = '';
-  public suppliers: any;
-  public supplier: Pagination = new Pagination({ meta: { page: 1 } });
-    
-  constructor( 
-    private inventoryService: InventoryService,
-    private suppliersService: SuppliersService,
-    private auth: AuthenticationService
-  ) {
+  public listOfCompanies: any[] = [];
+  public selectedCompany: any = null;
 
-    let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
+  public listOfQuantityInSuppliers: any[] = [];
+  public auxListOfQuantityInSuppliers: any[] = [];
+  public listOfQuantityInSuppliersActualPage: number = -1;
+
+  constructor(private reportsService: ReportsService,
+    protected companiesService: CompaniesService,
+    private auth: AuthenticationService) {
 
   }
 
   ngOnInit() {
-    this.loadSuppliers();
+
+    this.loadCompanies();
+    this.loadReport();
   }
 
-  loadSuppliers(): void {
-    this.suppliersService.retrieveAll().subscribe(result => {
-      this.suppliers = result.data;
-      //console.log('suppliers: ' + JSON.stringify(this.suppliers));
+  /**
+   * Método para carregar o select
+   */
+  loadCompanies() {
+    this.companiesService.getAllCompanies().subscribe(result => {
+      this.listOfCompanies = result;
+    }, error => console.error(error))
+  }
+
+  /**
+   * Método para carregar a lista
+   */
+  loadReport(){
+
+    this.reportsService.getClientsInventory().subscribe(result => {
+      this.listOfQuantityInSuppliers = result;
+      this.auxListOfQuantityInSuppliers = result; 
     }, err => { console.log(err) });
   }
 
-  supplierInventory(event: any): void {
-    if (event) {
-      
-      this.inventoryService.getInventorySupplier(10, this.supplier.meta.page, event._id).subscribe(result => {
-        this.supplier = result;
-        this.name_supplier = result.data[0];
-      }, err => { console.log(err) });
+  /**
+   * Um item do select foi selecionado
+   */
+  companySelected(event: any): void {
+    
+    console.log(event);
 
-    } else {
-      
-      this.supplier.data = [];
-      this.name_supplier = "";
+    if(event){
+      this.listOfQuantityInSuppliers = this.auxListOfQuantityInSuppliers.filter(elem => {
+        return elem.company_id == event._id;
+      });
+
+    }else{
+      this.listOfQuantityInSuppliers = this.auxListOfQuantityInSuppliers;
     }
   }
 

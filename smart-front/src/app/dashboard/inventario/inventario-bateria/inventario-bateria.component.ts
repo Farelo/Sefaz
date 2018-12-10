@@ -5,6 +5,8 @@ import {
   InventoryService,
   AuthenticationService,
   PackingService,
+  ReportsService,
+  FamiliesService,
 } from '../../../servicos/index.service';
 
 @Component({
@@ -13,96 +15,54 @@ import {
   styleUrls: ['./inventario-bateria.component.css'],
 })
 export class InventarioBateriaComponent implements OnInit {
-  public logged_user: any;
-  public packings: any[];
-  public battery: Pagination = new Pagination({ meta: { page: 1 } });
-  public batterySearch = '';
+  
+  //dados da tabela
+  public listOfBattery: any[] = [];
+  public auxListOfBattery: any[] = [];
 
-  constructor(
-    private inventoryLogisticService: InventoryLogisticService,
-    private inventoryService: InventoryService,
-    private packingService: PackingService,
-    private auth: AuthenticationService,
-  ) {
-    let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();
-    this.logged_user = user.supplier
-      ? user.supplier._id
-      : user.official_supplier
-        ? user.official_supplier
-        : user.logistic
-          ? user.logistic.suppliers
-          : user.official_logistic
-            ? user.official_logistic.suppliers
-            : undefined; //works fine
+  //paginação
+  public listOfBatteryActualPage: number = -1;
+
+  //dados do select
+  public listOfFamily: any[] = [];
+  public selectedFamily = null;
+
+  constructor(private reportService: ReportsService,
+    private familyService: FamiliesService,
+    private auth: AuthenticationService) {
+    
   }
 
   ngOnInit() {
-    this.loadPackings();
 
+    this.loadPackings();
     this.batteryInventory();
   }
 
   batteryInventory() {
-    if (this.logged_user instanceof Array) {
-      this.inventoryLogisticService
-        .getInventoryBattery(
-          10,
-          this.battery.meta.page,
-          this.batterySearch,
-          this.logged_user,
-        )
-        .subscribe(
-          result => (this.battery = result),
-          err => {
-            console.log(err);
-          },
-        );
-    } else {
-      this.inventoryService
-        .getInventoryBattery(
-          10,
-          this.battery.meta.page,
-          this.batterySearch,
-          this.logged_user,
-        )
-        .subscribe(
-          result => (this.battery = result),
-          err => {
-            console.log(err);
-          },
-        );
-    }
+    
+    this.reportService.getBatteryInventory().subscribe(result => {
+      this.listOfBattery = result;
+      this.auxListOfBattery = result;
+    });
   }
 
   loadPackings() {
-    if (this.logged_user instanceof Array) {
-      this.packingService
-        .getPackingsDistinctsByLogistic(this.logged_user)
-        .subscribe(
-          result => (this.packings = result.data),
-          err => {
-            console.log(err);
-          },
-        );
-    } else if (this.logged_user) {
-      this.packingService
-        .getPackingsDistinctsBySupplier(this.logged_user)
-        .subscribe(
-          result => (this.packings = result.data),
-          err => {
-            console.log(err);
-          },
-        );
-    } else {
-      this.packingService.getPackingsDistincts().subscribe(
-        result => {
-          this.packings = result.data;
-        },
-        err => {
-          console.log(err);
-        },
-      );
+    this.familyService.getAllFamilies().subscribe(result => {
+      this.listOfFamily = result; 
+    }, err => console.error(err));
+  }
+
+  familySelected(event: any){
+    
+    if(event){
+      this.listOfBattery = this.auxListOfBattery.filter(elem => {
+        return elem.family_code == event.code
+      });
+
+    } else{
+      this.listOfBattery = this.auxListOfBattery;
     }
   }
+    
 }
