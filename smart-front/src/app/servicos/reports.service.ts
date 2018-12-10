@@ -78,7 +78,7 @@ export class ReportsService {
   /**
    * Geral
    */
-  getGeneral() {
+  getGeneral() { 
 
     return this.http.get(`${environment.url}/reports/general`).catch(this.handleError);
   }

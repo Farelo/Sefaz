@@ -37,7 +37,7 @@ export class GeralComponent implements OnInit {
       this.listOfGeneral = result;
       this.auxListOfGeneral = result;
 
-    },err => console.log(err));
+    },err => console.log(err)); 
   }
 
   open(packing) {
