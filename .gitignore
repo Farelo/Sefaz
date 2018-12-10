@@ -1,3 +1,5 @@
+data/db/
+
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 smart-api/node_modules
 recicla-api/node_modules
@@ -16,11 +18,18 @@ recicla-api/src/tools/env-tmp.tools.js
 recicla-api/src/logs/
 recicla-api/package-lock.json
 
+
 recicla-job/node_modules
 recicla-job/src/config/production.json
 recicla-job/src/tools/env-tmp.tools.js
 recicla-job/src/logs/
 recicla-job/package-lock.json
+
+loka-api-job/node_modules
+loka-api-job/src/config/production.json
+loka-api-job/src/tools/env-tmp.tools.js
+loka-api-job/src/logs/
+loka-api-job/package-lock.json
 
 # compiled output
 /dist
@@ -64,3 +73,4 @@ testem.log
 Thumbs.db
 
 smart-api/logs
+
