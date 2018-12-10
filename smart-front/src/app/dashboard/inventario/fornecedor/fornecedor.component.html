@@ -1,6 +1,6 @@
 <div class="base-bg">
   <h3>Fornecedor</h3>
-  
+
   <!-- Linha divisória -->
   <hr style="margin-top: 10px;">
 
@@ -10,32 +10,19 @@
       <div class="row escolhaFornecedor">
         <div class="col-sm-6">
           <p>FORNECEDOR</p>
-      
-          <ng-select [ngModel]="supplierSearch" 
-            (change)="supplierInventory($event)" 
-            [items]="suppliers" 
-            bindLabel="name" 
+
+          <ng-select [(ngModel)]="selectedCompany" (change)="companySelected($event)" [items]="listOfCompanies" bindLabel="name"
             placeholder="Selecione um Fornecedor">
-            
+
             <ng-template ng-label-tmp let-item="item">
               {{item.name}}
             </ng-template>
             <ng-template ng-option-tmp let-item="item">
               <div>
-                <b>Nome:</b> {{item.name}}
+                {{item.name}}
               </div>
-              <small>
-                <b>DUNS:</b> {{item.duns}}
-              </small>
-      
             </ng-template>
           </ng-select>
-      
-        </div>
-        <div class="col-sm-6" *ngIf="name_supplier">
-          <p>FORNECEDOR:</p>
-          <input type="text" class="form-control meuInput" [ngModel]="name_supplier?.supplier?.name" disabled>
-      
         </div>
       </div>
     </div>
@@ -48,41 +35,45 @@
       <thead>
         <tr class="cabecalho">
           <th>Equipamento</th>
-          <th>Descrição</th>
-          <th>Projeto</th>
-          <th>Quantidade</th>
+          <!-- <th>Descrição</th> -->
+          <!-- <th>Projeto</th> -->
+          <th>Empresa Vinculada</th>
           <th>Planta Atual</th>
           <th>Local</th>
+          <th style="text-align: center">Quantidade</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let packing of supplier.data | paginate: {
+        <tr *ngFor="let packing of listOfQuantityInSuppliers | paginate: {
                                                         id:'supplier',
                                                         itemsPerPage: 10,
-                                                        currentPage: supplier.meta.page,
-                                                        totalItems: supplier.meta.total_docs}">
-          <td>{{packing.code || '-'}}</td>
-          <td>{{packing.description || '-'}}</td>
-          <td>{{packing.project?.name || '-'}}</td>
-          <td>{{packing.quantity || '-'}}</td>
-          <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : (packing.missing ? "Embalagem Ausente"
-            : "Embalagem em Viagem")}}</td>
-          <td>{{packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local === 'Supplier' ? 'Fornecedor':
-            (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Sem Registro'))}}</td>
-
+                                                        currentPage: listOfQuantityInSuppliersActualPage, 
+                                                        totalItems: listOfQuantityInSuppliers.length }">
+          <td>{{ packing.family_code || '-' }}</td>
+          <!-- <td>{{packing.description || '-'}}</td> -->
+          <!-- <td>{{packing.project?.name || '-'}}</td> -->
+          <td>{{ packing.company }}</td>
+          <td>{{ packing.control_point_name }}</td>
+          <td>{{ packing.control_point_type }}</td>
+          <td>{{ packing.qtd || '-' }}</td>
+              
         </tr>
       </tbody>
     </table>
 
-    <div class="classVazio" *ngIf="supplier.data?.length < 1">
+    <div class="classVazio" *ngIf="selectedCompany && listOfQuantityInSuppliers.length < 1">
+      Não há resultado para este filtro.
+    </div>
+
+    <div class="classVazio" *ngIf="!selectedCompany && listOfQuantityInSuppliers.length < 1">
       Selecione um Fornecedor.
     </div>
 
   </div>
 
   <div class="has-text-centered">
-    <pagination-controls class="my-pagination" id='supplier' (pageChange)="supplier.meta.page = $event; supplierInventory()" directionLinks="false"
-      autoHide="true">
+    <pagination-controls class="my-pagination" id='supplier' (pageChange)="listOfQuantityInSuppliersActualPage = $event"
+      directionLinks="false" autoHide="true">
     </pagination-controls>
   </div>
 
