@@ -3,7 +3,6 @@ const HttpStatus = require('http-status-codes')
 const device_data_service = require('./device_data.service')
 const families_service = require('../families/families.service')
 const companies_service = require('../companies/companies.service')
-const control_points_service = require('../control_points/control_points.service')
 
 exports.all = async (req, res) => {
     const { device_id } = req.params
@@ -42,15 +41,3 @@ exports.geolocation = async(req, res) => {
 
     res.json(device_data)
 }
-
-exports.packings_on_cp = async(req, res) => {
-    const { control_point_id } = req.params
-
-    const control_point = await control_points_service.get_control_point(control_point_id)
-    if (!control_point) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
-
-    const data = await device_data_service.packings_on_cp(control_point_id)
-
-    res.json(data)
-}
-

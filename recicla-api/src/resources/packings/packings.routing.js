@@ -12,6 +12,7 @@ router.get('/:id', [auth, authz, validate_object_id], packings_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_packings)], packings_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_packings)], packings_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], packings_controller.delete)
+router.get('/on_control_point/:control_point_id', [auth, authz], packings_controller.show_packings_on_control_point)
 
 module.exports = router
 
@@ -163,6 +164,31 @@ module.exports = router
  *     responses:
  *       200:
  *         description: OK
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+ /**
+ * @swagger
+ * /packings/on_control_point/{control_point_id}:
+ *   get:
+ *     summary: Retrieve packings on a current control point
+ *     description: Retrieve packings on a current control point
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Packings
+ *     parameters:
+ *       - name: control_point_id
+ *         description: Return packings on a current control point
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
  *       400:
  *         description: Bad Request
  *       404:
