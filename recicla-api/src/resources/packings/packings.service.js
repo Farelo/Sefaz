@@ -90,3 +90,15 @@ exports.update_packing = async (id, packing_edited) => {
         throw new Error(error)
     }
 }
+
+exports.get_packings_on_control_point = async (control_point) => {
+    const packings = await Packing.find({}).populate('last_event_record')
+
+    const data = packings.filter(packing => packingOnControlPoint(packing, control_point))
+
+    return data
+}
+
+const packingOnControlPoint = (packing, control_point) => {
+    return packing.last_event_record && packing.last_event_record.type === 'inbound' ? packing.last_event_record.control_point.toString() === control_point._id.toString() : false
+}

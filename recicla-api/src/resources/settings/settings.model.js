@@ -75,7 +75,12 @@ const validate_settings = (setting) => {
         range_radius: Joi.number().min(0),
         clean_historic_moviments_time: Joi.number().min(0),
         no_signal_limit_in_days: Joi.number().min(0),
-        missing_sinal_limit_in_days: Joi.number().min(0)
+        missing_sinal_limit_in_days: Joi.number().min(0),
+        enable_viagem_perdida: Joi.boolean(),
+        enable_local_incorreto: Joi.boolean(),
+        enable_viagem_atrasada: Joi.boolean(),
+        enable_sem_sinal: Joi.boolean(),
+        enable_perdida: Joi.boolean()
     })
 
     return Joi.validate(setting, schema, { abortEarly: false })

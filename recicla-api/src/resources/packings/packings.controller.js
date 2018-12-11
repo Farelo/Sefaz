@@ -3,6 +3,7 @@ const HttpStatus = require('http-status-codes')
 const packings_service = require('./packings.service')
 const families_service = require('../families/families.service')
 const projects_service = require('../projects/projects.service')
+const control_points_service = require('../control_points/control_points.service')
 
 exports.all = async (req, res) => {
     const tag = req.query.tag_code ? { code: req.query.tag_code } : null
@@ -53,4 +54,15 @@ exports.delete = async (req, res) => {
     await packing.remove()
 
     res.send({ message: 'Delete successfully' })
+}
+
+exports.show_packings_on_control_point = async (req, res) => {
+    const { control_point_id } = req.params
+
+    const control_point = await control_points_service.get_control_point(control_point_id)
+    if (!control_point) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+
+    const data = await packings_service.get_packings_on_control_point(control_point)
+
+    res.json(data)
 }
