@@ -1,16 +1,5 @@
-data/
-
 # See http://help.github.com/ignore-files/ for more about ignoring files.
-smart-api/node_modules
-recicla-api/node_modules
-recicla-api/coverage
-recicla-api/src/logs/app.log
-recicla-api/package-lock.json
-loka-api-job/node_modules
-loka-api-job/package-lock.json
 smart-front/node_modules
-admin-api/node_modules
-admin-front/node_modules
 smart-front/dist
 
 recicla-api/node_modules
@@ -18,8 +7,8 @@ recicla-api/coverage
 recicla-api/src/config/production.json
 recicla-api/src/tools/env-tmp.tools.js
 recicla-api/src/logs/
+recicla-api/src/logs/app.log
 recicla-api/package-lock.json
-
 
 recicla-job/node_modules
 recicla-job/src/config/production.json
@@ -73,6 +62,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-smart-api/logs
-
