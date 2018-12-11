@@ -1,6 +1,0 @@
-definitions:
-  Logistic_operator:
-    type: object
-    properties:
-      name:
-        type: string

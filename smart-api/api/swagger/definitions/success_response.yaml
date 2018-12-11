@@ -1,9 +1,0 @@
-definitions:
-  SuccessResponse:
-    type: object
-    properties:
-      jsonapi:
-        type: object
-        description: a API version
-    required:
-      - jsonapi
