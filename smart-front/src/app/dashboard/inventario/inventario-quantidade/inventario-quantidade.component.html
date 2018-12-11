@@ -8,25 +8,19 @@
 
     <div class="col-sm-4">
       <p>EQUIPAMENTO</p>
-      <ng-select [(ngModel)]="quantitySearch" (change)="quantityInventory()" bindValue="packing" [items]="packings" bindLabel="packing"
-        placeholder="Selecione um Equipamento">
+      <ng-select 
+        [(ngModel)]="selectedFamily" 
+        [items]="listOfFamily" 
+        (change)="familySelected($event)" 
+        bindLabel="code"
+        placeholder="Selecione uma família">
+      
         <ng-template ng-label-tmp let-item="item">
-          {{item.packing}}
+          {{item.code}}
         </ng-template>
+      
         <ng-template ng-option-tmp let-item="item">
-          <div>
-            <b>Embalagem:</b> {{item.packing}}
-          </div>
-
-          <div>
-            <small>
-              <b>Fornecedor:</b> {{item.supplier.name}} </small>
-          </div>
-
-          <div>
-            <small>
-              <b> Projeto:</b> {{item.project.name}} </small>
-          </div>
+          <div> {{item.code}} </div>
         </ng-template>
       </ng-select>
     </div>
@@ -39,68 +33,73 @@
     <table class="table">
       <thead>
         <tr class="cabecalho">
-          <th>DUNS</th>
-          <th>Projeto</th>
-          <th>Fornecedor</th>
+          <th>Família</th>
+          <th>Empresa</th>
+          <th>Ponto de controle</th>
 
-          <th>Planta</th>
+          <th>Tipo</th>
           <th>Local</th>
           
-          <th>Min</th>
+          <th style="text-align:center;">Min</th>
           <th style="text-align:center;">Quantidade</th>
-          <th>Max</th>
+          <th style="text-align:center;">Max</th>
 
           <!-- <th>Diferença</th> -->
-          <th>Status</th>
+          <!-- <th>Status</th> -->
         </tr>
       </thead>
+
       <tbody>
-        <tr *ngFor="let packing of quantity.data | paginate: {
+        <tr *ngFor="let packing of listOfQuantity | paginate: {
                                                         id:'quantity',
                                                         itemsPerPage: 10,
-                                                        currentPage: quantity.meta.page,
-                                                        totalItems: quantity.meta.total_docs}">
-          <td>{{packing.supplier?.duns || '-'}}</td>
-          <td>{{packing.project?.name || '-'}}</td>
-          <td>{{packing.supplier?.name || '-'}}</td>
+                                                        currentPage: listOfQuantityActualPage,
+                                                        totalItems: listOfQuantity.length }">
+          <td>{{packing.family_code || '-'}}</td>
+          <td>{{packing.company || '-'}}</td>
+          <td>{{packing.control_point_name || '-'}}</td>
 
-          <td>{{packing.actual_plant?.plant ? packing.actual_plant?.plant?.plant_name : "Sem Planta"}}</td>
+          <td>{{packing.control_point_type}}</td>
           <td>{{packing.actual_plant | type}}</td>
 
-          <td style="text-align:center;">{{packing.actual_gc16 ? (packing.actual_gc16.min == 0 ? 0 : packing.actual_gc16.min) : '-'}}</td>
-          <td style="text-align:center;">{{packing.quantity || '-'}}</td>
-          <td style="text-align:center;">{{packing.actual_gc16 ? (packing.actual_gc16.max == 0 ? 0 : packing.actual_gc16.max) : '-'}}</td>
+          <td style="text-align:center;">{{packing.stock_min}}</td>
+          <td style="text-align:center;">{{packing.total || '-'}}</td>
+          <td style="text-align:center;">{{packing.stock_max}}</td>
 
           <!-- <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min)
             : (packing.actual_gc16?.max
             < packing.quantity ? packing.quantity-packing.actual_gc16?.max : 'NP')) : '-' }}</td> -->
-          <td>{{packing.status}}</td>
+          <!-- <td>{{packing.status}}</td> -->
         </tr>
       </tbody>
     </table>
 
-    <div class="classVazio" *ngIf="quantity.data?.length < 1">
-      Selecione um equipamento
+    <div class="classVazio" *ngIf="!selectedFamily && listOfQuantity.length < 1">
+      Selecione um equipamento.
     </div>
 
+    <div class="classVazio" *ngIf="selectedFamily && listOfQuantity.length < 1">
+      Nenhum resultado para este filtro.
+    </div>
   </div>
 
   <br>
 
   <div class="resumo">
     <h5 class="definicao">TOTAL: </h5>
-    <h5 class="numero">{{quantity.meta?.total_packings || 0}}</h5>
+    <h5 class="numero">{{ qtdTotal || 0 }}</h5>
+    <!-- <h5 class="numero">{{ quantity.meta?.total_packings || 0}}</h5> -->
   </div>
 
-  <div class="resumo">
+  <!-- <div class="resumo">
     <h5 class="definicao">DIFERENÇA: </h5>
-    <h5 class="numero">{{quantity.meta?.missing || 0}}</h5>
-  </div>
+  </div> -->
+  <!-- <h5 class="numero">{{quantity.meta?.missing || 0}}</h5> -->
 
   <br>
 
   <div class="has-text-centered">
-    <pagination-controls id='quantity' class="my-pagination" (pageChange)="quantity.meta.page = $event;quantityInventory()" directionLinks="false"
+    <pagination-controls id='quantity' class="my-pagination" (pageChange)="listOfQuantityActualPage = $event" directionLinks="false"
       autoHide="true">
     </pagination-controls>
   </div>
