@@ -35,6 +35,26 @@ const settingSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
+    enable_viagem_perdida: {
+        type: Boolean,
+        default: true
+    },
+    enable_local_incorreto: {
+        type: Boolean,
+        default: true
+    },
+    enable_viagem_atrasada: {
+        type: Boolean,
+        default: true
+    },
+    enable_sem_sinal: {
+        type: Boolean,
+        default: true
+    },
+    enable_perdida: {
+        type: Boolean,
+        default: true
+    },
     created_at: {
         type: Date,
         default: Date.now
