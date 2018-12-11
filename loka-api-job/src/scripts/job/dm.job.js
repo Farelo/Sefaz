@@ -4,10 +4,6 @@ const { Packing } = require('../../models/packings.model')
 const { DeviceData } = require('../../models/device_data.model')
 // const packings = require('./devices')
 
-//TODO: testar para muitos devices com startDate de meses (funciona até certo momento aí depois o job trava) encontrar o porquê
-// |-> verificar se pode ser o Keep-alive timeout=5 e max=100 (ja forcei o 'close' ao termino de cada request)
-// |-> verificar se pode ser porque abro muitos logins e nao faço nenhum logout (ja implementei o login/logout por request e/ou por execução de job e não melhorou)
-// |-> se reapoveitar o cookie até ele expirar pode melhorar isso: cada login gera 1 cookie e cada device abre 2 cookies por execução do job: 1 para o confirm e 1 para o getData (nao melhorou, problema no servidor mesmo)
 //TODO: criar logs melhores para os erros 
 
 module.exports = async () => {
