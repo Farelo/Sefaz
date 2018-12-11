@@ -9,16 +9,16 @@ services:
       dockerfile: Dockerfile
     ports: 
       - 9060:9060
-    network_mode:
+    networks: 
       - teste_job_loka
 
   mongo_teste:
     container_name: mongo-teste-job-loka
     image: mongo
     ports:
-      -27017:27017
-    network_mode:
+      - 27017:27017
+    networks: 
       - teste_job_loka
 
 networks: 
-  - teste_job_loka
+  teste_job_loka:
