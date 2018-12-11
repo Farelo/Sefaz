@@ -90,4 +90,14 @@ module.exports = router
  *         type: number
  *       missing_sinal_limit_in_days:
  *         type: number
+ *       enable_viagem_perdida:
+ *         type: boolean
+ *       enable_local_incorreto:
+ *         type: boolean
+ *       enable_viagem_atrasada:
+ *         type: boolean
+ *       enable_sem_sinal:
+ *         type: boolean
+ *       enable_perdida:
+ *         type: boolean
  */

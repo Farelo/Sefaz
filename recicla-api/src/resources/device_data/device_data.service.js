@@ -3,8 +3,6 @@ const _ = require('lodash')
 const { DeviceData } = require('./device_data.model')
 const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
-const { Setting } = require('../settings/settings.model')
-const { ControlPoint } = require('../control_points/control_points.model')
 
 exports.find_packing_by_device_id = async (device_id) => {
     try {
@@ -118,15 +116,3 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
     }
 }
 
-exports.packings_on_cp = async (control_point_id) => {
-    const control_point = await ControlPoint.findById(control_point_id)
-    const packings = await Packing.find({}).populate('last_event_record')
-
-    const data = packings.filter(packing => packingOnControlPoint(packing, control_point))
-
-    return data    
-}
-
-const packingOnControlPoint = (packing, control_point) => {
-    return packing.last_event_record && packing.last_event_record.type === 'inbound' ? packing.last_event_record.control_point.toString() === control_point._id.toString() : false
-}

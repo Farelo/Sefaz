@@ -6,7 +6,6 @@ const authz = require('../../security/authz.middleware')
 
 router.get('/data', [auth, authz], device_data_controller.geolocation)
 router.get('/data/:device_id', [auth, authz], device_data_controller.all)
-router.get('/packings_on_cp/:control_point_id', [auth, authz], device_data_controller.packings_on_cp)
 
 module.exports = router
 
@@ -80,31 +79,6 @@ module.exports = router
  *         description: Filter localization
  *         in: query
  *         required: false
- *         type: string
- *     responses:
- *       200:
- *         description: list of all reports
- *       400:
- *         description: Bad Request
- *       404:
- *         description: Not Found
- */
-
-/**
- * @swagger
- * /device_data/packings_on_cp/{control_point_id}:
- *   get:
- *     summary: Retrieve packings in a current control point
- *     description: Retrieve packings in a current control point
- *     security:
- *       - Bearer: []
- *     tags:
- *       - DeviceData
- *     parameters:
- *       - name: control_point_id
- *         description: Return packings in a current control point
- *         in: path
- *         required: true
  *         type: string
  *     responses:
  *       200:
