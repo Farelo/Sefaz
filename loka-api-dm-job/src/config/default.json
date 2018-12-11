@@ -8,7 +8,7 @@
         "port": 9000
     },
     "db": {
-        "url": "mongodb://mongo_teste:27017/recicla",
+        "url": "mongodb://localhost:27017/recicla",
         "mongodb_container": "mongodb://<user>:<password>@<host>:27017/recicla"
     },
     "database_options": {
