@@ -201,8 +201,9 @@ describe('api/device_data', () => {
 
         })
 
+        //TODO: trocar esse test pela busca por familia
         describe('Testing call to the route by packing_id', () => {
-
+            //serginho retirou no services.js a busca pelo packing e colocou a busca pela familia, por isso parou de funcionar este teste 
             it('should return one packing filled with its last_device_data', async () =>{
 
                 const packing = await Packing.findOne({"tag.code": "9000001"})
