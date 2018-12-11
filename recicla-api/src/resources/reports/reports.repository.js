@@ -86,6 +86,8 @@ exports.general_inventory_report = async () => {
 
                 const qtd_total = await Packing.find({ family: family._id, active: true }).count()
                 const qtd_in_owner = await Packing.find({ family: family._id, absent: false, active: true }).count()
+                let qtd_in_clients = await Packing.find({ family: family._id, absent: true, active: true }).populate('last_event_record')
+                let qtd_in_cp = await Packing.find({ family: family._id, active: true }).populate('last_event_record')
                 const qtd_in_analysis = await Packing.find({ family: family._id, current_state: 'analise', active: true }).count()
                 const qtd_in_traveling = await Packing.find({ family: family._id, current_state: 'viagem_em_prazo', active: true }).count()
                 const qtd_in_traveling_late = await Packing.find({ family: family._id, current_state: 'viagem_atrasada', active: true }).count()
@@ -96,12 +98,16 @@ exports.general_inventory_report = async () => {
                 const qtd_missing = await Packing.find({ family: family._id, current_state: 'perdida', active: true }).count()
                 const locations = await general_inventory_report_detailed(family._id)
 
+                qtd_in_clients = qtd_in_clients.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
+                qtd_in_cp = qtd_in_cp.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
+
                 family_obj.company = family.company.name
                 family_obj.family_name = family.code
                 family_obj.qtd_total = qtd_total 
-                family_obj.qtd_in_owner = qtd_in_owner + qtd_in_analysis
+                family_obj.qtd_in_owner = qtd_in_owner
+                family_obj.qtd_in_clients = qtd_in_clients.length
                 family_obj.qtd_in_analysis = qtd_in_analysis 
-                family_obj.qtd_in_cp = qtd_in_correct_cp + qtd_in_incorrect_cp
+                family_obj.qtd_in_cp = qtd_in_cp
                 family_obj.qtd_in_traveling = qtd_in_traveling + qtd_in_traveling_late + qtd_in_traveling_missing
                 family_obj.qtd_in_traveling_late = qtd_in_traveling_late
                 family_obj.qtd_in_traveling_missing = qtd_in_traveling_missing

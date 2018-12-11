@@ -100,13 +100,13 @@
           <td>{{ item.qtd_total }}</td>
 
           <td>{{ item.qtd_in_owner }}</td>
-          <td>{{ item.qtd_in_cp }}</td>
+          <td>{{ item.qtd_in_clients }}</td>
           <td>{{ item.qtd_in_traveling }}</td>
 
           <td> ? </td>
-          <td>{{ item.qtd_in_owner + item.qtd_in_cp + item.qtd_in_traveling }}</td>
+          <td>{{ item.qtd_in_owner + item.qtd_in_clients + item.qtd_in_traveling }}</td>
           <td>{{ item.qtd_total -
-            (item.qtd_in_owner + item.qtd_in_cp + item.qtd_in_traveling) }}</td>
+            (item.qtd_in_owner + item.qtd_in_clients + item.qtd_in_traveling) }}</td>
           <!-- - (item.all_alerts[0]?.late || 0) }}</td> -->
 
 
