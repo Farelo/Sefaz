@@ -35,9 +35,6 @@ describe('api/users', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
-
-        jest.setTimeout(30000)
-        
         describe('Validate token by GET method without id', () => {
             const exec = () => {
                 return request(server)
@@ -59,14 +56,6 @@ describe('api/users', () => {
                 expect(res.body.message).toBe('Invalid token.')
             })
 
-            /*it('should return 401 if token is expired', async () => {
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
         })
 
         describe('Validate token by GET method with id', () => {
