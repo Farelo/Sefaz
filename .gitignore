@@ -1,5 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 relog-frontend-web/node_modules
+relog-frontend-web/package-lock.json
 relog-frontend-web/dist
 
 relog-backend-api/node_modules
