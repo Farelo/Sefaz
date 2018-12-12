@@ -66,3 +66,11 @@ exports.show_packings_on_control_point = async (req, res) => {
 
     res.json(data)
 }
+
+exports.check_device = async (req, res) => {
+    const { device_id } = req.params
+
+    const data = await packings_service.check_device(device_id)
+
+    res.json(data)
+}

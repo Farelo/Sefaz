@@ -13,6 +13,7 @@ router.post('/', [auth, authz, validate_joi(validate_packings)], packings_contro
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_packings)], packings_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], packings_controller.delete)
 router.get('/on_control_point/:control_point_id', [auth, authz], packings_controller.show_packings_on_control_point)
+router.get('/check_device/:device_id', [auth, authz], packings_controller.check_device)
 
 module.exports = router
 
@@ -183,6 +184,31 @@ module.exports = router
  *     parameters:
  *       - name: control_point_id
  *         description: Return packings on a current control point
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+ /**
+ * @swagger
+ * /packings/check_device/{device_id}:
+ *   get:
+ *     summary: Check if packings exists in loka's database
+ *     description: Check if packings exists in loka's database
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Packings
+ *     parameters:
+ *       - name: device_id
+ *         description: Check if packings exists in loka's database
  *         in: path
  *         required: true
  *         type: string
