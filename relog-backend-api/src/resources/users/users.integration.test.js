@@ -35,6 +35,7 @@ describe('api/users', () => {
     })
 
     describe('AUTH MIDDLEWARE', () => {
+
         describe('Validate token by GET method without id', () => {
             const exec = () => {
                 return request(server)
@@ -55,7 +56,6 @@ describe('api/users', () => {
                 expect(res.status).toBe(400)
                 expect(res.body.message).toBe('Invalid token.')
             })
-
         })
 
         describe('Validate token by GET method with id', () => {
@@ -83,20 +83,6 @@ describe('api/users', () => {
                 expect(res.body.message).toBe('Invalid token.')
             })
 
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                const exec = () => {
-                    return request(server)
-                        .get(`/api/users/${newUser._id}`)
-                        .set('Authorization', token)
-                }
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
         })
 
         describe('Validate token by POST method', () => {
@@ -119,21 +105,6 @@ describe('api/users', () => {
                 expect(res.status).toBe(400)
             })
 
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                const exec = () => {
-                return request(server)
-                    .post('/api/users')
-                    .set('Authorization', token)
-                    .send(newUser)
-                }
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
         })
 
         describe('Validate token by PATCH method', () => {
@@ -154,21 +125,6 @@ describe('api/users', () => {
                 const res = await exec()
                 expect(res.status).toBe(400)
             })
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                const exec = () => {
-                return request(server)
-                    .patch(`/api/users/${newUser._id}`)
-                    .set('Authorization', token)
-                    .send({ name: 'TESTE', type: 'client' })
-                }
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
         })
 
         describe('Validate token by DELETE method', () => {
@@ -188,20 +144,6 @@ describe('api/users', () => {
                 const res = await exec()
                 expect(res.status).toBe(400)
             })
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                const exec = () => {
-                return request(server)
-                    .delete(`/api/users/${newUser._id}`)
-                    .set('Authorization', token)
-                }
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
         })
     })
 
