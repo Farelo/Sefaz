@@ -25,9 +25,9 @@ exports.get_gc16 = async (id) => {
     }
 }
 
-exports.find_by_family = async (family_id) => {
+exports.find_by_control_point = async (control_point_id) => {
     try {
-        const gc16 = await GC16.findOne({ family: family_id })
+        const gc16 = await GC16.findOne({ control_point: control_point_id })
         if (gc16) return true
 
         return false

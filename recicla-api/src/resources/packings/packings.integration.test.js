@@ -40,9 +40,9 @@ describe('api/packings', () => {
 
         packing_body = {
             tag: {
-              code: "0001",
-              version: "01",
-              manufactorer: "teste"
+                code: "0001",
+                version: "01",
+                manufactorer: "teste"
             },
             serial: "teste",
             weigth: 10,
@@ -66,303 +66,43 @@ describe('api/packings', () => {
         await Packing.deleteMany({})
     })
 
-    describe('AUTH MIDDLEWARE', () => {
-        jest.setTimeout(30000)
-        
-        describe('Validate token by GET method without id', () => {
-            const exec = () => {
-                return request(server)
-                    .get('/api/packings')
-                    .set('Authorization', token)
-            }
-
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. No token provided.')
-            })
-
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-                expect(res.body.message).toBe('Invalid token.')
-            })
-
-            /*it('should return 401 if token is expired', async () => {
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-
-        describe('Validate token by GET method with id', () => {
-            const exec = () => {
-                return request(server)
-                    .get(`/api/packings/${new_packing._id}`)
-                    .set('Authorization', token)
-            }
-
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. No token provided.')
-            })
-
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-                expect(res.body.message).toBe('Invalid token.')
-            })
-
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-            
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-
-        describe('Validate token by POST method', () => {
-            const exec = () => {
-                return request(server)
-                    .post('/api/packings')
-                    .set('Authorization', token)
-                    .send(packing_body)
-            }
-
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-            })
-    
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-            })
-
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-
-        describe('Validate token by PATCH method', () => {
-            const exec = () => {
-                return request(server)
-                    .patch(`/api/packings/${new_packing._id}`)
-                    .set('Authorization', token)
-                    .send({ name: 'TESTE', type: 'client' })
-            }
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-            })
-    
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-            })
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-
-        describe('Validate token by DELETE method', () => {
-            const exec = () => {
-                return request(server)
-                    .delete(`/api/packings/${new_packing._id}`)
-                    .set('Authorization', token)
-            }
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-            })
-    
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-            })
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-    })
-
-    describe('AUTHZ MIDDLEWARE', () => {
-        
-        const new_company = new Company({ 
-            name: "Company 1",
-            cnpj: "91289532000146",
-            phone: "11111111111",
-            address: {
-                city: "Recife",
-                street: "Rua teste",
-                cep: "54280222",
-                uf: "PE"
-            }})
-        new_company.save()
-        const userUser = {
-                    full_name: 'Teste Man 3',
-                    email: "testet@gmail.com",
-                    password: "qwerty123",
-                    role: 'user',
-                    company: {
-                        _id: new_company._id,
-                        name: new_company.name
-                    }
-                }
-        const newUser = new User(userUser)
-        const tokenUser = newUser.generateUserToken()
-
-        describe('Validate authorization by POST', () => {
-            it('should return 403 if user is not admin by POST', async () => {
-                const exec = () => {
-                    return request(server)
-                        .post('/api/packings')
-                        .set('Authorization', tokenUser)
-                        .send(packing_body)
-                }
-
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })        
-        })
-
-        describe('Validate authorization by GET', () => {
-            it('should return 403 if user is not admin by GET', async () => {
-                const exec = () => {
-                    return request(server)
-                        .get('/api/packings')
-                        .set('Authorization', tokenUser)
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            }) 
-
-            it('should return 403 if user is not admin by GET with id', async () => {
-                const exec = () => {
-                    return request(server)
-                        .get(`/api/packings/${new_packing._id}`)
-                        .set('Authorization', tokenUser)
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })        
-        })
-
-        describe('Validate authorization by PATCH', () => {
-            it('should return 403 if user is not admin by PATCH', async () => {
-                const exec = () => {
-                    return request(server)
-                        .patch(`/api/packings/${new_packing._id}`)
-                        .set('Authorization', tokenUser)
-                        .send(packing_body)
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })
-        })
-
-        describe('Validate authorization by DELETE', () => {
-            it('should return 403 if user is not admin by DELETE', async () => {
-                const exec = () => {
-                    return request(server)
-                        .delete(`/api/packings/${new_packing._id}`)
-                        .set('Authorization', tokenUser)
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })
-        })
-    })
-
     describe('GET: /api/packings', () => {
 
-        let packing1
-        let packing2
-
-        beforeAll(async () => {
-            packing1 = {
-                tag: {
-                  code: "teste 1",
-                  version: "01",
-                  manufactorer: "teste"
-                },
-                serial: "teste",
-                weigth: 10,
-                width: 10,
-                heigth: 10,
-                length: 10,
-                capacity: 10,
-                observations: "teste",
-                active: true,
-                family: new_family._id
-            }
-            packing2 = {
-                tag: {
-                  code: "teste 2",
-                  version: "01",
-                  manufactorer: "teste"
-                },
-                serial: "teste",
-                weigth: 10,
-                width: 10,
-                heigth: 10,
-                length: 10,
-                capacity: 10,
-                observations: "teste",
-                active: true,
-                family: new_family._id
-            }
-        })
-
         it('should return all packings', async () => {
-            
-            await Packing.collection.insertMany([
-                packing1, packing2
+            await Packing.insertMany([
+                {
+                    tag: {
+                        code: "teste 1",
+                        version: "01",
+                        manufactorer: "teste"
+                    },
+                    serial: "teste",
+                    weigth: 10,
+                    width: 10,
+                    heigth: 10,
+                    length: 10,
+                    capacity: 10,
+                    observations: "teste",
+                    active: true,
+                    family: new_family._id
+                },
+                {
+                    tag: {
+                        code: "teste 2",
+                        version: "01",
+                        manufactorer: "teste"
+                    },
+                    serial: "teste",
+                    weigth: 10,
+                    width: 10,
+                    heigth: 10,
+                    length: 10,
+                    capacity: 10,
+                    observations: "teste",
+                    active: true,
+                    family: new_family._id
+                }
             ])
-
-            let savePackings = await Packing.find({})
-            .select(["-created_at", "-update_at", "-__v"])
-            .populate("family", ["_id", "code", "company"])
-            savePackings = JSON.parse(JSON.stringify(savePackings))
 
             const res = await request(server)
                 .get('/api/packings')
@@ -370,8 +110,6 @@ describe('api/packings', () => {
 
             expect(res.status).toBe(200)
             expect(res.body.length).toBe(3)
-            const body = res.body.map((e) => _.omit(e, ["__v", "created_at", "update_at"]))
-            expect(body).toEqual(savePackings)
         })
 
         it('should return 404 if invalid url is passed', async () => { 
