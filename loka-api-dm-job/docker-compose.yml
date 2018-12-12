@@ -1,9 +1,12 @@
-version: '3'
+'version: '3'
 
 services:
   loka-api-job:
     container_name: loka-api-job
     # image:
+    restart: always
+    depends_on:
+      - mongo_teste
     build:
       context: .
       dockerfile: Dockerfile
@@ -14,6 +17,7 @@ services:
 
   mongo_teste:
     container_name: mongo-teste-job-loka
+    restart: always
     image: mongo
     ports:
       - 27017:27017
@@ -21,4 +25,4 @@ services:
       - teste_job_loka
 
 networks: 
-  teste_job_loka:
+  teste_job_loka:'
