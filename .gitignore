@@ -1,20 +1,20 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
-smart-front/node_modules
-smart-front/dist
+relog-frontend-web/node_modules
+relog-frontend-web/dist
 
-recicla-api/node_modules
-recicla-api/coverage
-recicla-api/src/config/production.json
-recicla-api/src/tools/env-tmp.tools.js
-recicla-api/src/logs/
-recicla-api/src/logs/app.log
-recicla-api/package-lock.json
+relog-backend-api/node_modules
+relog-backend-api/coverage
+relog-backend-api/src/config/production.json
+relog-backend-api/src/tools/env-tmp.tools.js
+relog-backend-api/src/logs/
+relog-backend-api/src/logs/app.log
+relog-backend-api/package-lock.json
 
-recicla-job/node_modules
-recicla-job/src/config/production.json
-recicla-job/src/tools/env-tmp.tools.js
-recicla-job/src/logs/
-recicla-job/package-lock.json
+relog-state-machine-job/node_modules
+relog-state-machine-job/src/config/production.json
+relog-state-machine-job/src/tools/env-tmp.tools.js
+relog-state-machine-job/src/logs/
+relog-state-machine-job/package-lock.json
 
 loka-api-dm-job/node_modules
 loka-api-dm-job/src/config/production.json
