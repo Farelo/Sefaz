@@ -9,7 +9,8 @@ exports.all = async (req, res) => {
     const query = {
         start_date: req.query.start_date ? req.query.start_date : null,
         end_date: req.query.end_date ? req.query.end_date : null,
-        accuracy: req.query.accuracy ? req.query.accuracy : 32000
+        accuracy: req.query.accuracy ? req.query.accuracy : 32000,
+        max: req.query.max ? req.query.max : null,
     }
     
     const packing = await device_data_service.find_packing_by_device_id(device_id)
