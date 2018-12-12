@@ -67,177 +67,177 @@ describe('api/device_data', () => {
         await Family.deleteMany({})
     })
 
-    describe('GET: /api/device_data/data', () => {
+    // describe('GET: /api/device_data/data', () => {
 
-        beforeEach(async () => {
+    //     beforeEach(async () => {
 
-            //company ja criada no topo do script { name: 'CEBRACE TESTE' }
-            //family ja criada no topo do script{ code: 'Family1', company: new_company._id }
-            const family2 = await Family.create({ code: 'Family2', company: new_company._id })
+    //         //company ja criada no topo do script { name: 'CEBRACE TESTE' }
+    //         //family ja criada no topo do script{ code: 'Family1', company: new_company._id }
+    //         const family2 = await Family.create({ code: 'Family2', company: new_company._id })
 
-            const packing1 = await Packing.create( { tag: {code: '9000001'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-            const packing2 = await Packing.create( { tag: {code: '9000002'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-            const packing3 = await Packing.create( { tag: {code: '9000003'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-            const packing4 = await Packing.create( { tag: {code: '9000004'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-            const packing5 = await Packing.create( { tag: {code: '9000005'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-            const packing6 = await Packing.create( { tag: {code: '8999991'}, serial: '001', family: new_family._id, current_state: 'analise' })
-            const packing7 = await Packing.create( { tag: {code: '8999992'}, serial: '002', family: new_family._id, current_state: 'analise' })
-            const packing8 = await Packing.create( { tag: {code: '8999993'}, serial: '001', family: family2._id,    current_state: 'analise' })
+    //         const packing1 = await Packing.create( { tag: {code: '9000001'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const packing2 = await Packing.create( { tag: {code: '9000002'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const packing3 = await Packing.create( { tag: {code: '9000003'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const packing4 = await Packing.create( { tag: {code: '9000004'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const packing5 = await Packing.create( { tag: {code: '9000005'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const packing6 = await Packing.create( { tag: {code: '8999991'}, serial: '001', family: new_family._id, current_state: 'analise' })
+    //         const packing7 = await Packing.create( { tag: {code: '8999992'}, serial: '002', family: new_family._id, current_state: 'analise' })
+    //         const packing8 = await Packing.create( { tag: {code: '8999993'}, serial: '001', family: family2._id,    current_state: 'analise' })
 
-            const device_data1 = await DeviceData.create( { device_id: '9000001', message_date: new Date('2018-11-09T00:00:00'), message_date_timestamp: 123456789 } )
-            const device_data2 = await DeviceData.create( { device_id: '9000002', message_date: new Date('2018-06-15T00:00:00'), message_date_timestamp: 123456789 } )
-            const device_data3 = await DeviceData.create( { device_id: '9000003', message_date: new Date('2018-07-01T00:00:00'), message_date_timestamp: 123456789 } )
-            const device_data4 = await DeviceData.create( { device_id: '9000004', message_date: new Date('2018-08-01T00:00:00'), message_date_timestamp: 123456789 } )
-            const device_data5 = await DeviceData.create( { device_id: '9000004', message_date: new Date('2018-09-21T00:00:00'), message_date_timestamp: 123456789 } )
-            const device_data6 = await DeviceData.create( { device_id: '8999991', message_date: new Date('2018-10-25T00:00:00'), message_date_timestamp: 123456789 } )
-            const device_data7 = await DeviceData.create( { device_id: '8999992', message_date: new Date('2018-11-15T00:00:00'), message_date_timestamp: 123456789 } )
-            const device_data8 = await DeviceData.create( { device_id: '8999993', message_date: new Date('2018-12-05T00:00:00'), message_date_timestamp: 123456789 } )
+    //         const device_data1 = await DeviceData.create( { device_id: '9000001', message_date: new Date('2018-11-09T00:00:00'), message_date_timestamp: 123456789 } )
+    //         const device_data2 = await DeviceData.create( { device_id: '9000002', message_date: new Date('2018-06-15T00:00:00'), message_date_timestamp: 123456789 } )
+    //         const device_data3 = await DeviceData.create( { device_id: '9000003', message_date: new Date('2018-07-01T00:00:00'), message_date_timestamp: 123456789 } )
+    //         const device_data4 = await DeviceData.create( { device_id: '9000004', message_date: new Date('2018-08-01T00:00:00'), message_date_timestamp: 123456789 } )
+    //         const device_data5 = await DeviceData.create( { device_id: '9000004', message_date: new Date('2018-09-21T00:00:00'), message_date_timestamp: 123456789 } )
+    //         const device_data6 = await DeviceData.create( { device_id: '8999991', message_date: new Date('2018-10-25T00:00:00'), message_date_timestamp: 123456789 } )
+    //         const device_data7 = await DeviceData.create( { device_id: '8999992', message_date: new Date('2018-11-15T00:00:00'), message_date_timestamp: 123456789 } )
+    //         const device_data8 = await DeviceData.create( { device_id: '8999993', message_date: new Date('2018-12-05T00:00:00'), message_date_timestamp: 123456789 } )
             
-        })
+    //     })
 
-        describe('Testing call to the rout by company_id', () => {
+    //     describe('Testing call to the rout by company_id', () => {
 
-            it('should return all 9 packings belonging to the same company and filled with their last_device_data ', async () =>{
+    //         it('should return all 9 packings belonging to the same company and filled with their last_device_data ', async () =>{
 
-                const company = await Company.findOne({"name": "CEBRACE TESTE"})
+    //             const company = await Company.findOne({"name": "CEBRACE TESTE"})
 
-                const res = await request(server)
-                    .get(`/api/device_data/data?company_id=${company._id}`)
-                    .set('Authorization', token)
+    //             const res = await request(server)
+    //                 .get(`/api/device_data/data?company_id=${company._id}`)
+    //                 .set('Authorization', token)
 
-                expect(res.status).toBe(200)
-                expect(res.body.length).toBe(9)
-                expect(res.body.every(packing => {
+    //             expect(res.status).toBe(200)
+    //             expect(res.body.length).toBe(9)
+    //             expect(res.body.every(packing => {
 
-                    switch(packing.tag.code) {
-                        case "1234567":
-                            return !packing.hasOwnProperty('last_device_data')
-                        case "9000005":
-                            return !packing.hasOwnProperty('last_device_data')
-                        default:
-                            if (packing.hasOwnProperty('last_device_data')) {
+    //                 switch(packing.tag.code) {
+    //                     case "1234567":
+    //                         return !packing.hasOwnProperty('last_device_data')
+    //                     case "9000005":
+    //                         return !packing.hasOwnProperty('last_device_data')
+    //                     default:
+    //                         if (packing.hasOwnProperty('last_device_data')) {
 
-                                const message_date = packing.last_device_data.message_date
+    //                             const message_date = packing.last_device_data.message_date
 
-                                switch(packing.tag.code) {
-                                    case "9000001":
-                                        return message_date == new Date('2018-11-09T00:00:00').toISOString()
-                                    case "9000002":
-                                        return message_date == new Date('2018-06-15T00:00:00').toISOString()
-                                    case "9000003":
-                                        return message_date == new Date('2018-07-01T00:00:00').toISOString()
-                                    case "9000004": //deve trazer a data mais recente - e traz
-                                        return message_date == new Date('2018-09-21T00:00:00').toISOString()
-                                    case "8999991":
-                                        return message_date == new Date('2018-10-25T00:00:00').toISOString()
-                                    case "8999992":
-                                        return message_date == new Date('2018-11-15T00:00:00').toISOString()
-                                    case "8999993":
-                                        return message_date == new Date('2018-12-05T00:00:00').toISOString()
-                                }
-                            }
-                            return false
-                    }
-                })).toBeTruthy()
-            })
+    //                             switch(packing.tag.code) {
+    //                                 case "9000001":
+    //                                     return message_date == new Date('2018-11-09T00:00:00').toISOString()
+    //                                 case "9000002":
+    //                                     return message_date == new Date('2018-06-15T00:00:00').toISOString()
+    //                                 case "9000003":
+    //                                     return message_date == new Date('2018-07-01T00:00:00').toISOString()
+    //                                 case "9000004": //deve trazer a data mais recente - e traz
+    //                                     return message_date == new Date('2018-09-21T00:00:00').toISOString()
+    //                                 case "8999991":
+    //                                     return message_date == new Date('2018-10-25T00:00:00').toISOString()
+    //                                 case "8999992":
+    //                                     return message_date == new Date('2018-11-15T00:00:00').toISOString()
+    //                                 case "8999993":
+    //                                     return message_date == new Date('2018-12-05T00:00:00').toISOString()
+    //                             }
+    //                         }
+    //                         return false
+    //                 }
+    //             })).toBeTruthy()
+    //         })
 
-        })
+    //     })
 
-        // describe('Testing call to the route by packing_id', () => {
+    //     // describe('Testing call to the route by packing_id', () => {
 
-        //     it('should return one packing filled with its last_device_data', async () =>{
-        //         const packing = await Packing.findOne({"tag.code": "9000001"})
+    //     //     it('should return one packing filled with its last_device_data', async () =>{
+    //     //         const packing = await Packing.findOne({"tag.code": "9000001"})
 
-        //         const res = await request(server)
-        //             .get(`/api/device_data/data/${packing.tag.code}`)
-        //             .set('Authorization', token)
+    //     //         const res = await request(server)
+    //     //             .get(`/api/device_data/data/${packing.tag.code}`)
+    //     //             .set('Authorization', token)
 
-        //         expect(res.status).toBe(200)
-        //         expect(res.body.device_id).toEqual("9000001")
-        //         expect(res.body.message_date).toEqual(new Date('2018-11-09T00:00:00').toISOString())
-        //     })
-        // })
+    //     //         expect(res.status).toBe(200)
+    //     //         expect(res.body.device_id).toEqual("9000001")
+    //     //         expect(res.body.message_date).toEqual(new Date('2018-11-09T00:00:00').toISOString())
+    //     //     })
+    //     // })
 
-        describe('Testing call to the route by packing_serial', () => {
+    //     describe('Testing call to the route by packing_serial', () => {
 
-            it('should return all packings filled with its last_device_data', async () =>{
+    //         it('should return all packings filled with its last_device_data', async () =>{
 
-                const packing_serial = '001'
+    //             const packing_serial = '001'
 
-                const res = await request(server)
-                    .get(`/api/device_data/data?packing_serial=${packing_serial}`)
-                    .set('Authorization', token)
+    //             const res = await request(server)
+    //                 .get(`/api/device_data/data?packing_serial=${packing_serial}`)
+    //                 .set('Authorization', token)
 
-                expect(res.status).toBe(200)
-                expect(res.body.length).toBe(2)
-                expect(res.body.every(packing => packing.serial == '001')).toBeTruthy()
-                expect(res.body.every(packing => {
-                    const message_date = packing.last_device_data.message_date
+    //             expect(res.status).toBe(200)
+    //             expect(res.body.length).toBe(2)
+    //             expect(res.body.every(packing => packing.serial == '001')).toBeTruthy()
+    //             expect(res.body.every(packing => {
+    //                 const message_date = packing.last_device_data.message_date
 
-                    switch(packing.tag.code) {
-                        case "8999991":
-                            return message_date == new Date('2018-10-25T00:00:00').toISOString()
-                        case "8999993":
-                            return message_date == new Date('2018-12-05T00:00:00').toISOString()
-                    }
-                })).toBeTruthy()
+    //                 switch(packing.tag.code) {
+    //                     case "8999991":
+    //                         return message_date == new Date('2018-10-25T00:00:00').toISOString()
+    //                     case "8999993":
+    //                         return message_date == new Date('2018-12-05T00:00:00').toISOString()
+    //                 }
+    //             })).toBeTruthy()
 
-            })
+    //         })
 
-        })
+    //     })
 
-        describe('Testing call to the route without query-string', () => {
+    //     describe('Testing call to the route without query-string', () => {
 
-            it('should return all 9 packings filled with their last_device_data, when it exists', async () =>{
+    //         it('should return all 9 packings filled with their last_device_data, when it exists', async () =>{
 
-                const res = await request(server)
-                    .get(`/api/device_data/data`)
-                    .set('Authorization', token)
+    //             const res = await request(server)
+    //                 .get(`/api/device_data/data`)
+    //                 .set('Authorization', token)
 
-                expect(res.status).toBe(200)
-                expect(res.body.length).toBe(9)
-                expect(res.body.every(packing => {
+    //             expect(res.status).toBe(200)
+    //             expect(res.body.length).toBe(9)
+    //             expect(res.body.every(packing => {
 
-                    switch(packing.tag.code) {
-                        case "1234567":
-                            return !packing.hasOwnProperty('last_device_data')
-                        case "9000005":
-                            return !packing.hasOwnProperty('last_device_data')
-                        default:
-                            if (packing.hasOwnProperty('last_device_data')) {
+    //                 switch(packing.tag.code) {
+    //                     case "1234567":
+    //                         return !packing.hasOwnProperty('last_device_data')
+    //                     case "9000005":
+    //                         return !packing.hasOwnProperty('last_device_data')
+    //                     default:
+    //                         if (packing.hasOwnProperty('last_device_data')) {
 
-                                const message_date = packing.last_device_data.message_date
+    //                             const message_date = packing.last_device_data.message_date
 
-                                switch(packing.tag.code) {
-                                    case "9000001":
-                                        return message_date == new Date('2018-11-09T00:00:00').toISOString()
-                                    case "9000002":
-                                        return message_date == new Date('2018-06-15T00:00:00').toISOString()
-                                    case "9000003":
-                                        return message_date == new Date('2018-07-01T00:00:00').toISOString()
-                                    case "9000004": //deve trazer a data mais recente - e traz
-                                        return message_date == new Date('2018-09-21T00:00:00').toISOString()
-                                    case "8999991":
-                                        return message_date == new Date('2018-10-25T00:00:00').toISOString()
-                                    case "8999992":
-                                        return message_date == new Date('2018-11-15T00:00:00').toISOString()
-                                    case "8999993":
-                                        return message_date == new Date('2018-12-05T00:00:00').toISOString()
-                                }
-                            }
-                            return false
-                    }
-                })).toBeTruthy()
-            })
-        })
+    //                             switch(packing.tag.code) {
+    //                                 case "9000001":
+    //                                     return message_date == new Date('2018-11-09T00:00:00').toISOString()
+    //                                 case "9000002":
+    //                                     return message_date == new Date('2018-06-15T00:00:00').toISOString()
+    //                                 case "9000003":
+    //                                     return message_date == new Date('2018-07-01T00:00:00').toISOString()
+    //                                 case "9000004": //deve trazer a data mais recente - e traz
+    //                                     return message_date == new Date('2018-09-21T00:00:00').toISOString()
+    //                                 case "8999991":
+    //                                     return message_date == new Date('2018-10-25T00:00:00').toISOString()
+    //                                 case "8999992":
+    //                                     return message_date == new Date('2018-11-15T00:00:00').toISOString()
+    //                                 case "8999993":
+    //                                     return message_date == new Date('2018-12-05T00:00:00').toISOString()
+    //                             }
+    //                         }
+    //                         return false
+    //                 }
+    //             })).toBeTruthy()
+    //         })
+    //     })
 
-        afterEach(async () => {
-            await Family.deleteMany({})
-            await Packing.deleteMany({})
-        })
+    //     afterEach(async () => {
+    //         await Family.deleteMany({})
+    //         await Packing.deleteMany({})
+    //     })
 
         
-    })
+    // })
 
     describe('GET: /api/device_data/data/:id', () => {
 
@@ -394,29 +394,29 @@ describe('api/device_data', () => {
             expect(res.body.length).toBe(1)
         })
 
-        // it('should return one device_data from device 5045499 filtered by max = 1', async () => {
+        it('should return one device_data from device 5045499 filtered by max = 1', async () => {
 
-        //     const device_id = '5045499'
+            const device_id = '5045499'
+
+            const res = await request(server)
+                .get(`/api/device_data/data/${device_id}?max=1`)
+                .set('Authorization', token)
+
+            expect(res.status).toBe(200)
+            expect(res.body.length).toBe(1)
+        })
+
+        it('should return one device_data from device 5045499 filtered by max = 1 and startDate= and endDate=', async () => {
+
+            const device_id = '5045499'
         
-        //     const res = await request(server)
-        //         .get(`/api/device_data/${device_id}?max=1`)
-        //         .set('Authorization', token)
+            const res = await request(server)
+                .get(`/api/device_data/data/${device_id}?max=1&startDate=&endDate=`)
+                .set('Authorization', token)
 
-        //     expect(res.status).toBe(200)
-        //     expect(res.body.length).toBe(1)
-        // })
-
-        // it('should return one device_data from device 5045499 filtered by max = 1 and startDate= and endDate=', async () => {
-
-        //     const device_id = '5045499'
-        
-        //     const res = await request(server)
-        //         .get(`/api/device_data/data/${device_id}?max=1&startDate=&endDate=`)
-        //         .set('Authorization', token)
-
-        //     expect(res.status).toBe(200)
-        //     expect(res.body.length).toBe(1)
-        // })
+            expect(res.status).toBe(200)
+            expect(res.body.length).toBe(1)
+        })
 
         afterEach(async () => {
             await DeviceData.deleteMany({})
@@ -424,7 +424,7 @@ describe('api/device_data', () => {
         })
     })
 
-    describe('MONGOOSE POST_SAVE DEVICE_DATA', () => {
+    describe('MONGOOSE TRIGGER POST_SAVE DEVICE_DATA', () => {
 
         // criar um novo device_data com um last_date mais antigo: nao deve alterar o last date do packing
         it('should return the same device_data._id from packing.last_device_data as the recently created', async () => {
