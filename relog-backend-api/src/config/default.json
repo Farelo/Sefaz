@@ -34,5 +34,10 @@
         "bufferMaxEntries": 0,
         "socketTimeoutMS": 0,
         "keepAlive": true
+    },
+    "loka-api": {
+        "baseUrl": "https://dm.loka.systems",
+        "username": "sys.dm@reciclapac.com",
+        "password": "Rsysadmin2242"
     }
 }

@@ -1,6 +1,9 @@
 const debug = require('debug')('service:packings')
 const _ = require('lodash')
+const config = require('config')
 const { Packing } = require('./packings.model')
+const rp = require('request-promise')
+// const request = require('request').defaults({ baseUrl: 'https://dm.loka.systems' })
 
 exports.get_packings = async (tag, family) => {
     try {
@@ -92,13 +95,75 @@ exports.update_packing = async (id, packing_edited) => {
 }
 
 exports.get_packings_on_control_point = async (control_point) => {
-    const packings = await Packing.find({}).populate('last_event_record')
+    try {
+        const packings = await Packing.find({}).populate('last_event_record')
 
-    const data = packings.filter(packing => packingOnControlPoint(packing, control_point))
+        const data = packings.filter(packing => packingOnControlPoint(packing, control_point))
 
-    return data
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.check_device = async (device_id) => {
+    try {
+        const cookie = await loginLokaDmApi()
+        const response = await deviceById(cookie, device_id)
+
+        return response
+    } catch (error) {
+        debug(error)
+        throw new Error(error)
+    }
 }
 
 const packingOnControlPoint = (packing, control_point) => {
     return packing.last_event_record && packing.last_event_record.type === 'inbound' ? packing.last_event_record.control_point.toString() === control_point._id.toString() : false
+}
+
+const loginLokaDmApi = async () => {
+    const options = {
+        method: 'POST',
+        uri: `${config.get('loka-api.baseUrl')}/auth/login`,
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: {
+            username: config.get('loka-api.username'),
+            password: config.get('loka-api.password')
+        },
+        resolveWithFullResponse: true,
+        json: true
+    }
+
+    try {
+        const response = await rp(options)
+        const cookie = response.headers['set-cookie'][0].split(';')[0]
+
+        return cookie
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+
+const deviceById = async (cookie, device_id) => {
+    try {
+        const options = {
+            method: 'GET',
+            uri: `${config.get('loka-api.baseUrl')}/terminal/get/${device_id}`,
+            headers: {
+                'content-type': 'application/json',
+                'Cookie': `${cookie}`,
+                'Connection': 'close'
+            },
+            json: true
+        }
+
+        const body = await rp(options)
+        return  body
+    } catch (error) {
+        throw new Error(error)
+    }
 }
