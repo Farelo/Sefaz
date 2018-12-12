@@ -23,10 +23,10 @@ describe('api/control_points', () => {
             phone: "1111111111",
             cnpj: "12345678912345",
             address: {
-              city: "Recife",
-              street: "Rua teste",
-              cep: "54222699",
-              uf: "PE"
+                city: "Recife",
+                street: "Rua teste",
+                cep: "54222699",
+                uf: "PE"
             },
             type: "owner"
         })

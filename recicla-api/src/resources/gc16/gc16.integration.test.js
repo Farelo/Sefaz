@@ -2,7 +2,8 @@ const request = require('supertest')
 const mongoose = require('mongoose')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
-const { Family } = require('../families/families.model')
+const { ControlPoint } = require('../control_points/control_points.model')
+const { Type } = require('../types/types.model')
 const { GC16 } = require('./gc16.model')
 const _ = require('lodash')
 
@@ -11,434 +12,128 @@ describe('api/gc16', () => {
     let token
     let new_company
     let new_user
-    let new_family
+    let new_type
+    let new_control_point
     let gc16_body
     let new_gc16
     
     beforeEach(async () => {
         server = require('../../server')
 
-        new_company = new Company({ name: 'CEBRACE TESTE' })
-        await new_company.save()
-        const user = {
-            full_name: 'Teste Man',
-            email: "serginho@gmail.com",
-            password: "qwerty123",
-            role: 'admin',
-            company: {
-                _id: new_company._id,
-                name: new_company.name
-            }
-        }
-
-        new_user = new User(user)
-        await new_user.save()
-
+        new_company = await Company.create({ name: 'CEBRACE TESTE' })
+        new_user = await User.create({ full_name: 'Teste Man', email: "serginho@gmail.com", password: "qwerty123", role: 'admin', company: new_company._id })
         token = new_user.generateUserToken()
 
-        new_family = new Family({ code: 'CODE1', company: new_company._id })
-        await new_family.save()
+        new_type = await Type.create({name: 'Factory'})
+        new_control_point = await ControlPoint.create({ name: "point test", lat: 50, lng: 50, full_address: "teste", type: new_type.id, company: new_company._id })
 
         gc16_body = {
             annual_volume: 10,
             capacity: 10,
             productive_days: 10,
             container_days: 10,
-            family: new_family._id,
+            control_point: new_control_point._id,
             security_factor: {
-              percentage: 10,
-              qty_total_build: 10,
-              qty_container: 10
+                percentage: 10,
+                qty_total_build: 10,
+                qty_container: 10
             },
             frequency: {
-              days: 10,
-              fr: 10,
-              qty_total_days: 10,
-              qty_container: 10
+                days: 10,
+                fr: 10,
+                qty_total_days: 10,
+                qty_container: 10
             },
             transportation_going: {
-              days: 10,
-              value: 10,
-              qty_container: 10
+                days: 10,
+                value: 10,
+                qty_container: 10
             },
             transportation_back: {
-              days: 10,
-              value: 10,
-              qty_container: 10
+                days: 10,
+                value: 10,
+                qty_container: 10
             },
             owner_stock: {
-              days: 10,
-              value: 10,
-              max: 10,
-              qty_container: 10,
-              qty_container_max: 10
+                days: 10,
+                value: 10,
+                max: 10,
+                qty_container: 10,
+                qty_container_max: 10
             },
             client_stock: {
-              days: 10,
-              value: 10,
-              max: 10,
-              qty_container: 10,
-              qty_container_max: 10
+                days: 10,
+                value: 10,
+                max: 10,
+                qty_container: 10,
+                qty_container_max: 10
             }
         }
-
-        new_gc16 = new GC16(gc16_body)
-        new_gc16.save()
+        new_gc16 = await GC16.create(gc16_body)
     })
     afterEach(async () => {
         await server.close()
         await User.deleteMany({})
         await Company.deleteMany({})
-        await Family.deleteMany({})
+        await Type.deleteMany({})
+        await ControlPoint.deleteMany({})
         await GC16.deleteMany({})
-    })
-
-    describe('AUTH MIDDLEWARE', () => {
-        jest.setTimeout(30000)
-        
-        describe('Validate token by GET method without id', () => {
-            const exec = () => {
-                return request(server)
-                    .get('/api/gc16')
-                    .set('Authorization', token)
-            }
-
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. No token provided.')
-            })
-
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-                expect(res.body.message).toBe('Invalid token.')
-            })
-
-            /*it('should return 401 if token is expired', async () => {
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-
-        describe('Validate token by GET method with id', () => {
-            const exec = () => {
-                return request(server)
-                    .get(`/api/gc16/${new_gc16._id}`)
-                    .set('Authorization', token)
-            }
-
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. No token provided.')
-            })
-
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-                expect(res.body.message).toBe('Invalid token.')
-            })
-
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-            
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-
-        describe('Validate token by POST method', () => {
-            const exec = () => {
-                return request(server)
-                    .post('/api/gc16')
-                    .set('Authorization', token)
-                    .send(gc16_body)
-            }
-
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-            })
-    
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-            })
-
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-
-        describe('Validate token by PATCH method', () => {
-            const exec = () => {
-                return request(server)
-                    .patch(`/api/gc16/${new_gc16._id}`)
-                    .set('Authorization', token)
-                    .send({ annual_volume: 100})
-            }
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-            })
-    
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-            })
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-
-        describe('Validate token by DELETE method', () => {
-            const exec = () => {
-                return request(server)
-                    .delete(`/api/gc16/${new_gc16._id}`)
-                    .set('Authorization', token)
-            }
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-            })
-    
-            it('should return 400 if token is invalid', async () => {
-                token = 'a'
-                const res = await exec()
-                expect(res.status).toBe(400)
-            })
-            /*it('should return 401 if token is expired', async () => {
-                
-                token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-                'eyJfaWQiOiI1YmM4OTViZTJhYzUyMzI5MDAyMjA4ODQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1Mzk4ODg2MTJ9.' +
-                'RjCQrcM99f9bi_zST1RlxHQ3TNBHFiOyMTcf1Mi7u8I'
-                
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. Token expired.')
-            })*/
-        })
-    })
-
-    describe('AUTHZ MIDDLEWARE', () => {
-        const new_company = new Company({ 
-            name: "Company 1",
-            cnpj: "91289532000146",
-            phone: "11111111111",
-            address: {
-                city: "Recife",
-                street: "Rua teste",
-                cep: "54280222",
-                uf: "PE"
-            }})
-        new_company.save()
-        const userUser = {
-                    full_name: 'Teste Man 3',
-                    email: "testet@gmail.com",
-                    password: "qwerty123",
-                    role: 'user',
-                    company: {
-                        _id: new_company._id,
-                        name: new_company.name
-                    }
-                }
-        const newUser = new User(userUser)
-        const tokenUser = newUser.generateUserToken()
-        newUser.save()
-        describe('Validate authorization by POST', () => {
-            it('should return 403 if user is not admin by POST', async () => {
-                const exec = () => {
-                    return request(server)
-                        .post('/api/gc16')
-                        .set('Authorization', tokenUser)
-                        .send(gc16_body)
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })        
-        })
-
-        describe('Validate authorization by GET', () => {
-            it('should return 403 if user is not admin by GET', async () => {
-                const exec = () => {
-                    return request(server)
-                        .get('/api/gc16')
-                        .set('Authorization', tokenUser)
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })
-
-            it('should return 403 if user is not admin by GET with id', async () => {
-                const exec = () => {
-                    return request(server)
-                        .get(`/api/gc16/${new_gc16._id}`)
-                        .set('Authorization', tokenUser)
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })        
-        })
-
-        describe('Validate authorization by PATCH', () => {
-            it('should return 403 if user is not admin by PATCH', async () => {
-                const exec = () => {
-                    return request(server)
-                        .patch(`/api/gc16/${new_gc16._id}`)
-                        .set('Authorization', tokenUser)
-                        .send({full_name: "teste"})
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })
-        })
-
-        describe('Validate authorization by DELETE', () => {
-            it('should return 403 if user is not admin by DELETE', async () => {
-                const exec = () => {
-                    return request(server)
-                        .delete(`/api/gc16/${new_gc16._id}`)
-                        .set('Authorization', tokenUser)
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })
-        })
     })
 
     describe('GET: /api/gc16', () => {
         it('should return all gc16', async () => {
-            const another_family = new Family({ code: 'CODE2', company: new_company._id })
-            await another_family.save()
-
-            const one_more_family = new Family({ code: 'CODE3', company: new_company._id })
-            await one_more_family.save()
+            const another_control_point = new ControlPoint({ name: "point test 1", lat: 55, lng: 55, full_address: "teste1", type: new_type.id, company: new_company._id })
+            await another_control_point.save()
 
             const gc16_body_1 = {
                 annual_volume: 10,
                 capacity: 10,
                 productive_days: 10,
                 container_days: 10,
-                family: another_family._id,
+                control_point: another_control_point._id,
                 security_factor: {
-                  percentage: 10,
-                  qty_total_build: 10,
-                  qty_container: 10
+                    percentage: 10,
+                    qty_total_build: 10,
+                    qty_container: 10
                 },
                 frequency: {
-                  days: 10,
-                  fr: 10,
-                  qty_total_days: 10,
-                  qty_container: 10
+                    days: 10,
+                    fr: 10,
+                    qty_total_days: 10,
+                    qty_container: 10
                 },
                 transportation_going: {
-                  days: 10,
-                  value: 10,
-                  qty_container: 10
+                    days: 10,
+                    value: 10,
+                    qty_container: 10
                 },
                 transportation_back: {
-                  days: 10,
-                  value: 10,
-                  qty_container: 10
+                    days: 10,
+                    value: 10,
+                    qty_container: 10
                 },
                 owner_stock: {
-                  days: 10,
-                  value: 10,
-                  max: 10,
-                  qty_container: 10,
-                  qty_container_max: 10
+                    days: 10,
+                    value: 10,
+                    max: 10,
+                    qty_container: 10,
+                    qty_container_max: 10
                 },
                 client_stock: {
-                  days: 10,
-                  value: 10,
-                  max: 10,
-                  qty_container: 10,
-                  qty_container_max: 10
+                    days: 10,
+                    value: 10,
+                    max: 10,
+                    qty_container: 10,
+                    qty_container_max: 10
                 }
             }
-            const gc16_1 = new GC16(gc16_body_1)
-            await gc16_1.save()
-
-            const gc16_body_2 = {
-                annual_volume: 10,
-                capacity: 10,
-                productive_days: 10,
-                container_days: 10,
-                family: one_more_family._id,
-                security_factor: {
-                  percentage: 10,
-                  qty_total_build: 10,
-                  qty_container: 10
-                },
-                frequency: {
-                  days: 10,
-                  fr: 10,
-                  qty_total_days: 10,
-                  qty_container: 10
-                },
-                transportation_going: {
-                  days: 10,
-                  value: 10,
-                  qty_container: 10
-                },
-                transportation_back: {
-                  days: 10,
-                  value: 10,
-                  qty_container: 10
-                },
-                owner_stock: {
-                  days: 10,
-                  value: 10,
-                  max: 10,
-                  qty_container: 10,
-                  qty_container_max: 10
-                },
-                client_stock: {
-                  days: 10,
-                  value: 10,
-                  max: 10,
-                  qty_container: 10,
-                  qty_container_max: 10
-                }
-            }
-            const gc16_2 = new GC16(gc16_body_2)
-            await gc16_2.save()
+            
+            const gc16_1 = await GC16.create(gc16_body_1)
 
             let saveGC16 = await GC16.find({})
                 .select(["-created_at", "-update_at", "-__v"])
-                .populate('family', ['routes', 'control_points', '_id', 'code', 'company', 'gc16'])
+                .populate('control_point', ['_id', 'gc16'])
+
             saveGC16 = JSON.parse(JSON.stringify(saveGC16))
             
             const res = await request(server)
@@ -446,9 +141,9 @@ describe('api/gc16', () => {
                 .set('Authorization', token)
 
                 expect(res.status).toBe(200)
-                expect(res.body.length).toBe(3)
+                expect(res.body.length).toBe(2)
                 const body = res.body.map((e) => _.omit(e, ["__v", "created_at", "update_at", 
-                    "family.__v", "family.created_at", "family.update_at"]))
+                    "control_point.__v", "control_point.created_at", "control_point.update_at"]))
                 expect(body).toEqual(saveGC16)
         })
 
@@ -463,54 +158,49 @@ describe('api/gc16', () => {
 
     describe('GET /api/gc16/:id', () => {
         it('should return 200 a gc16 if valid id is passed', async () => {
+
             let body_toEqual = {
                 security_factor: {
-                  percentage: 10,
-                  qty_total_build: 10,
-                  qty_container: 10
+                    percentage: 10,
+                    qty_total_build: 10,
+                    qty_container: 10
                 },
                 frequency: {
-                  days: 10,
-                  fr: 10,
-                  qty_total_days: 10,
-                  qty_container: 10
+                    days: 10,
+                    fr: 10,
+                    qty_total_days: 10,
+                    qty_container: 10
                 },
                 transportation_going: {
-                  days: 10,
-                  value: 10,
-                  qty_container: 10
+                    days: 10,
+                    value: 10,
+                    qty_container: 10
                 },
                 transportation_back: {
-                  days: 10,
-                  value: 10,
-                  qty_container: 10
+                    days: 10,
+                    value: 10,
+                    qty_container: 10
                 },
                 owner_stock: {
-                  days: 10,
-                  value: 10,
-                  max: 10,
-                  qty_container: 10,
-                  qty_container_max: 10
+                    days: 10,
+                    value: 10,
+                    max: 10,
+                    qty_container: 10,
+                    qty_container_max: 10
                 },
                 client_stock: {
-                  days: 10,
-                  value: 10,
-                  max: 10,
-                  qty_container: 10,
-                  qty_container_max: 10
+                    days: 10,
+                    value: 10,
+                    max: 10,
+                    qty_container: 10,
+                    qty_container_max: 10
                 },
                 annual_volume: 10,
                 capacity: 10,
                 productive_days: 10,
                 container_days: 10,
                 _id: new_gc16._id,
-                family: {
-                  routes: [],
-                  control_points: [],
-                  _id: new_family._id,
-                  code: 'CODE1',
-                  company: new_company._id
-                }
+                control_point: new_control_point._id
             }
 
             const res = await request(server)
@@ -518,7 +208,7 @@ describe('api/gc16', () => {
                 .set('Authorization', token)
 
             const body = _.omit(res.body, ["__v", "created_at", "update_at", 
-            "family.__v", "family.created_at", "family.update_at"])    
+            "control_point.__v", "control_point.created_at", "control_point.update_at"])    
 
             expect(res.status).toBe(200)
             expect(body).toEqual(JSON.parse(JSON.stringify(body_toEqual)))
@@ -551,52 +241,49 @@ describe('api/gc16', () => {
         }
 
         it('should return 201 if gc16 is valid request', async () => {
-            family = new Family({ code: 'TEST', company: new_company._id })
-            await family.save()
-            gc16_body.family = family._id
-
             let body_toEqual = {
                 security_factor: {
-                  percentage: 10,
-                  qty_total_build: 10,
-                  qty_container: 10
+                    percentage: 10,
+                    qty_total_build: 10,
+                    qty_container: 10
                 },
                 frequency: {
-                  days: 10,
-                  fr: 10,
-                  qty_total_days: 10,
-                  qty_container: 10
+                    days: 10,
+                    fr: 10,
+                    qty_total_days: 10,
+                    qty_container: 10
                 },
                 transportation_going: {
-                  days: 10,
-                  value: 10,
-                  qty_container: 10
+                    days: 10,
+                    value: 10,
+                    qty_container: 10
                 },
                 transportation_back: {
-                  days: 10,
-                  value: 10,
-                  qty_container: 10
+                    days: 10,
+                    value: 10,
+                    qty_container: 10
                 },
                 owner_stock: {
-                  days: 10,
-                  value: 10,
-                  max: 10,
-                  qty_container: 10,
-                  qty_container_max: 10
+                    days: 10,
+                    value: 10,
+                    max: 10,
+                    qty_container: 10,
+                    qty_container_max: 10
                 },
                 client_stock: {
-                  days: 10,
-                  value: 10,
-                  max: 10,
-                  qty_container: 10,
-                  qty_container_max: 10
+                    days: 10,
+                    value: 10,
+                    max: 10,
+                    qty_container: 10,
+                    qty_container_max: 10
                 },
                 annual_volume: 10,
                 capacity: 10,
                 productive_days: 10,
                 container_days: 10,
-                family: family._id
+                control_point: new_control_point._id
             }
+
             body_toEqual = JSON.parse(JSON.stringify(body_toEqual))
 
             const res = await exec()
@@ -606,19 +293,19 @@ describe('api/gc16', () => {
             expect(body_res).toEqual(body_toEqual)
         })
         
-        it('should return 400 if family is not provied', async () => {
-            gc16_body.family = ''
+        it('should return 400 if control_point is not provied', async () => {
+            gc16_body.control_point = ''
 
             const res = await exec()
 
             expect(res.status).toBe(400)
         })
 
-        it('should return 400 if gc16 family already exists', async () => {
+        it('should return 400 if gc16 with control_point already exists', async () => {
             const res = await exec()
 
             expect(res.status).toBe(400)
-            expect(res.body.message).toBe('GC16 already exists with this family.')
+            expect(res.body.message).toBe('GC16 already exists with this control_point.')
         })
 
         it('should return 400 if is body is empty', async () => {
@@ -633,7 +320,7 @@ describe('api/gc16', () => {
 
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
-                "\"family\" is required"
+                "\"control_point\" is required"
             ])
         })
 
@@ -787,7 +474,7 @@ describe('api/gc16', () => {
         })
 
         it('should return 400 if the attribute types diferent than expected', async () => {
-            gc16_body.family = 11
+            gc16_body.control_point = 11
             gc16_body.annual_volume = "asd"
             gc16_body.capacity = "asd"
             gc16_body.productive_days = "asd"
@@ -824,7 +511,7 @@ describe('api/gc16', () => {
                 "\"capacity\" must be a number",
                 "\"productive_days\" must be a number",
                 "\"container_days\" must be a number",
-                "\"family\" must be a string",
+                "\"control_point\" must be a string",
                 "\"percentage\" must be a number",
                 "\"qty_total_build\" must be a number",
                 "\"qty_container\" must be a number",
@@ -892,45 +579,45 @@ describe('api/gc16', () => {
 
             let body_toEqual = {
                 security_factor: {
-                  percentage: 20,
-                  qty_total_build: 20,
-                  qty_container: 20
+                    percentage: 20,
+                    qty_total_build: 20,
+                    qty_container: 20
                 },
                 frequency: {
-                  days: 20,
-                  fr: 20,
-                  qty_total_days: 20,
-                  qty_container: 20
+                    days: 20,
+                    fr: 20,
+                    qty_total_days: 20,
+                    qty_container: 20
                 },
                 transportation_going: {
-                  days: 20,
-                  value: 20,
-                  qty_container: 20
+                    days: 20,
+                    value: 20,
+                    qty_container: 20
                 },
                 transportation_back: {
-                  days: 20,
-                  value: 20,
-                  qty_container: 20
+                    days: 20,
+                    value: 20,
+                    qty_container: 20
                 },
                 owner_stock: {
-                  days: 20,
-                  value: 20,
-                  max: 20,
-                  qty_container: 20,
-                  qty_container_max: 20
+                    days: 20,
+                    value: 20,
+                    max: 20,
+                    qty_container: 20,
+                    qty_container_max: 20
                 },
                 client_stock: {
-                  days: 20,
-                  value: 20,
-                  max: 20,
-                  qty_container: 20,
-                  qty_container_max: 20
+                    days: 20,
+                    value: 20,
+                    max: 20,
+                    qty_container: 20,
+                    qty_container_max: 20
                 },
                 annual_volume: 20,
                 capacity: 20,
                 productive_days: 20,
                 container_days: 20,
-                family: new_family._id
+                control_point: new_control_point._id
             }
             body_toEqual = JSON.parse(JSON.stringify(body_toEqual))
 
@@ -941,8 +628,8 @@ describe('api/gc16', () => {
             expect(body_res).toEqual(body_toEqual)
         })
         
-        it('should return 400 if family is not provied', async () => {
-            gc16_body.family = ''
+        it('should return 400 if control_point is not provied', async () => {
+            gc16_body.control_point = ''
 
             const res = await exec()
 
@@ -961,7 +648,7 @@ describe('api/gc16', () => {
 
             expect(res.status).toBe(400)
             expect(res.body).toEqual([
-                "\"family\" is required"
+                "\"control_point\" is required"
             ])
         })
 
@@ -1128,7 +815,7 @@ describe('api/gc16', () => {
         })
 
         it('should return 400 if the attribute types diferent than expected', async () => {
-            gc16_body.family = 11
+            gc16_body.control_point = 11
             gc16_body.annual_volume = "asd"
             gc16_body.capacity = "asd"
             gc16_body.productive_days = "asd"
@@ -1165,7 +852,7 @@ describe('api/gc16', () => {
                 "\"capacity\" must be a number",
                 "\"productive_days\" must be a number",
                 "\"container_days\" must be a number",
-                "\"family\" must be a string",
+                "\"control_point\" must be a string",
                 "\"percentage\" must be a number",
                 "\"qty_total_build\" must be a number",
                 "\"qty_container\" must be a number",

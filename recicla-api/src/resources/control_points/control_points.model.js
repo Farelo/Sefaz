@@ -37,6 +37,10 @@ const controlPointSchema = new mongoose.Schema({
         ref: 'Company',
         required: true
     },
+    gc16: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'GC16'
+    },
     created_at: {
         type: Date,
         default: Date.now

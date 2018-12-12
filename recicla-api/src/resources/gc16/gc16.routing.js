@@ -165,7 +165,7 @@ module.exports = router
  *   GC16Object:
  *     type: object
  *     required:
- *       - family
+ *       - control_point
  *     properties:
  *       annual_volume:
  *         type: number
@@ -175,7 +175,7 @@ module.exports = router
  *         type: number
  *       container_days:
  *         type: number
- *       family:
+ *       control_point:
  *         type: string
  *       security_factor:
  *         $ref: '#/definitions/SecurityFactorObject'
