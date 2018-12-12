@@ -15,34 +15,30 @@ exports.find_packing_by_device_id = async (device_id) => {
     }
 }
 
-exports.get_device_data = async (device_id, query = { start_date: null, end_date: null, accuracy: null }) => {
+exports.get_device_data = async (device_id, {start_date = null, end_date = null, accuracy = null, max = null}) => {
+    let device_data = []
+    let conditions = {}
+    let projection = {}
+    let options = {}
+
+    conditions.device_id = device_id
+    options.sort = {message_date: -1}
+
     try {
-        let device_data = []
-        switch (true) {
-            case query.start_date != null && query.end_date != null:
-                device_data = await DeviceData
-                    .find({ device_id: device_id, message_date: { $gte: new Date(query.start_date), $lte: new Date(query.end_date) }, accuracy: { $lte: query.accuracy } })
-                    .sort({ message_date: -1 })
-                    .limit(50)
-                break
-            case query.start_date != null:
-                device_data = await DeviceData
-                    .find({ device_id, message_date: { $gte: new Date(query.start_date) }, accuracy: { $lte: query.accuracy } })
-                    .sort({ message_date: -1 })
-                    .limit(50)
-                break
-            case query.end_date != null:
-                device_data = await DeviceData
-                    .find({ device_id, message_date: { $lte: new Date(query.end_date) }, accuracy: { $lte: query.accuracy } })
-                    .sort({ message_date: -1 })
-                    .limit(50)
-                break
-            default:
-                device_data = await DeviceData
-                    .find({ device_id, accuracy: { $lte: query.accuracy }})
-                    .sort({ message_date: -1 })
-                break
-        }
+        if (start_date && end_date)
+            conditions.message_date = { $gte: new Date(start_date), $lte: new Date(end_date)}
+        else if (start_date)
+            conditions.message_date = { $gte: new Date(start_date)}
+        else if (end_date)
+            conditions.message_date = { $lte: new Date(end_date)}
+
+        if(accuracy)
+            conditions.accuracy = { $lte: accuracy }
+        
+        if (max)
+            options.limit = parseInt(max)
+
+        device_data = await DeviceData.find(conditions, projection, options)
 
         return device_data
     } catch (error) {
