@@ -67,64 +67,6 @@ describe('api/device_data', () => {
         await Family.deleteMany({})
     })
 
-    describe('AUTH MIDDLEWARE', () => {
-
-        jest.setTimeout(30000)
-
-        describe('Validate token by GET method without id', () => {
-
-            const exec = () => {
-                return request(server)
-                    .get(`/api/device_data/data/${device_data_body.device_id}`)
-                    .set('Authorization', token)
-            }
-    
-            it('should return 401 if no token is provided', async () => {
-                token = ''
-                const res = await exec()
-                expect(res.status).toBe(401)
-                expect(res.body.message).toBe('Access denied. No token provided.')
-            })
-    
-            it('should return 400 if token is invalid', async () => {
-                token = 'h'
-                const res = await exec()
-                expect(res.status).toBe(400)
-                expect(res.body.message).toBe('Invalid token.')
-            })
-
-        })
-    })
-
-    describe('AUTHZ MIDDLEWARE', () => {
-        
-        describe('Validate authorization by GET', () => {
-            it('should return 403 if user is not admin by GET with id', async () => {
-
-                const another_user = await User.create({
-                    full_name: 'Teste Man',
-                    email: "miguel2@reciclapac.com",
-                    password: "miguel123",
-                    role: 'user',
-                    company: {
-                        _id: new_company._id,
-                        name: new_company.name
-                    }
-                })
-        
-                let another_token = another_user.generateUserToken()
-
-                const exec = () => {
-                    return request(server)
-                        .get(`/api/device_data/data/${device_data_body.device_id}`)
-                        .set('Authorization', another_token)
-                }
-                const res = await exec()
-                expect(res.status).toBe(403)
-            })        
-        })
-    })
-
     describe('GET: /api/device_data/data', () => {
 
         beforeEach(async () => {

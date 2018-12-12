@@ -2,7 +2,7 @@ const debug = require('debug')('model:types')
 const mongoose = require('mongoose')
 const Joi = require('joi')
 
-const { Family } = require('../families/families.model')
+const { ControlPoint } = require('../control_points/control_points.model')
 
 const gc16Schema = new mongoose.Schema({
     annual_volume: {
@@ -21,9 +21,9 @@ const gc16Schema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    family: {
+    control_point: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Family',
+        ref: 'ControlPoint',
         required: true,
         unique: true
     },
@@ -149,7 +149,7 @@ const validate_gc16 = (gc16) => {
         productive_days: Joi.number().min(0).max(10000),
         container_days: Joi.number().min(0).max(10000),
         capacity: Joi.number().min(0).max(10000),
-        family: Joi.objectId().required(),
+        control_point: Joi.objectId().required(),
         security_factor: {
             percentage: Joi.number().min(0).max(10000),
             qty_total_build: Joi.number().min(0).max(10000),
@@ -190,24 +190,24 @@ const validate_gc16 = (gc16) => {
     return Joi.validate(gc16, schema, { abortEarly: false })
 }
 
-const update_family = async (gc16, next) => {
+const update_control_point = async (gc16, next) => {
     try {
-        const family = await Family.findById(gc16.family)
-        if (!family) return null
+        const control_point = await ControlPoint.findById(gc16.control_point)
+        if (!control_point) return null
 
-        await Family.findByIdAndUpdate(gc16.family, { gc16: gc16._id }, { new: true })
+        await ControlPoint.findByIdAndUpdate(gc16.control_point, { gc16: gc16._id }, { new: true })
         next()
     } catch (error) {
         next(error)
     }
 }
 
-const unset_gc16_in_family = async (gc16, next) => {
+const unset_gc16_in_control_point = async (gc16, next) => {
     try {
-        const family = await Family.findById(gc16.family)
-        if (!family) return null
+        const control_point = await ControlPoint.findById(gc16.control_point)
+        if (!control_point) return null
 
-        await Family.findByIdAndUpdate(gc16.family, { $unset: { gc16: gc16._id } })
+        await ControlPoint.findByIdAndUpdate(gc16.control_point, { $unset: { gc16: gc16._id } })
         next()
     } catch (error) {
         next(error)
@@ -215,7 +215,7 @@ const unset_gc16_in_family = async (gc16, next) => {
 }
 
 const save_middleware = function (doc, next) {
-    update_family(doc, next)
+    update_control_point(doc, next)
 }
 
 const update_updated_at_middleware = function (next) {
@@ -225,7 +225,7 @@ const update_updated_at_middleware = function (next) {
 }
 
 const remove_middelware = function (next) {
-    unset_gc16_in_family(this, next)
+    unset_gc16_in_control_point(this, next)
 }
 
 gc16Schema.post('save', save_middleware)
