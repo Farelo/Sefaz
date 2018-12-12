@@ -57,8 +57,10 @@
     "ngx-pagination": "^3.0.1",
     "ngx-progressbar": "^2.0.3",
     "ngx-validators": "^3.0.0",
+    "node-sass": "^4.11.0",
     "nouislider": "^11.0.3",
     "rxjs": "^5.5.2",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
