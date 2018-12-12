@@ -1,9 +1,10 @@
 {
-  "name": "middleaware-job",
+  "name": "loka-api-dm-job",
   "version": "1.0.0",
   "description": "Serviço de busca de mensagens dos devices na camada de middleware, por exemplo da LOKA",
   "main": "src/server.js",
   "scripts": {
+    "postinstall": "node src/tools/generate_env.tools.js",
     "prod": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name loka-api-job",
     "prod-cluster": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name loka-api-job -i 0",
     "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* nodemon src/server.js",
