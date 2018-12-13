@@ -82,6 +82,7 @@ export class RotasCadastrarComponent implements OnInit {
       traveling_time: this.fb.group({
         max: ['', [Validators.required]],
         min: ['', [Validators.required]],
+        overtime: ['', [Validators.required]]
       })
     });
   }
@@ -136,8 +137,8 @@ export class RotasCadastrarComponent implements OnInit {
     partial_max = partial_max + this.time_max.second * 1000 * 60;
 
     let partial_delay = this.time_delay.hour * 1000 * 60 * 60 * 24;
-    partial_delay = partial_max + this.time_delay.minute * 1000 * 60 * 60;
-    partial_delay = partial_max + this.time_delay.second * 1000 * 60;
+    partial_delay = partial_delay + this.time_delay.minute * 1000 * 60 * 60;
+    partial_delay = partial_delay + this.time_delay.second * 1000 * 60;
 
     console.log('submit mRoute');
     console.log(this.mRoute);
@@ -149,7 +150,7 @@ export class RotasCadastrarComponent implements OnInit {
 
     value.traveling_time.max = partial_max;
     value.traveling_time.min = partial_min;
-    //value.time.to_be_late = partial_delay;
+    value.traveling_time.overtime = partial_delay;
 
     console.log('value');
     console.log(value);
