@@ -57,7 +57,7 @@
                 <td>{{ item.serial }}</td>
                 <td>{{ item.tag }}</td>
                 <td>{{ item.current_control_point_name }}</td>
-                <td>{{ ((item.battery_percentage | round) + '%') }}</td>
+                <td>{{ item.battery_percentage ? ((item.battery_percentage | round) + '%') : "Sem registro" }}</td>
                 <td>{{ item.date }}</td>
               </tr>
             </tbody>

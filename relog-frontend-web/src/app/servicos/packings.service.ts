@@ -43,7 +43,10 @@ export class PackingService {
       .catch(this.handleError);
   }
 
-
+  packingsOnControlPoint(controlPointId: any): Observable<any> {
+    return this.http.get(`${environment.url}/packings/on_control_point/${controlPointId}`)
+      .catch(this.handleError);
+  }
 
 
 

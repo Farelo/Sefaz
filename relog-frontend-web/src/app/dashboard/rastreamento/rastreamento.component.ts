@@ -3,7 +3,7 @@ import { ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService, FamiliesService, DevicesService } from '../../servicos/index.service';
+import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService, FamiliesService, DevicesService, ControlPointsService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
 import './markercluster';
@@ -34,14 +34,14 @@ export class RastreamentoComponent implements OnInit {
   circles = [];
   zoom = 14;
   marker = {
+    id: null,
     target: null,
     opt: null,
     display: true,
     lat: null,
     lng: null,
     plant: null,
-    departments: new Pagination({ meta: { page: 1 } }),
-    packings: new Pagination({ meta: { page: 1 } }),
+    packingsByPlant: [],
     department: null,
     packing: null,
     nothing: null,
@@ -73,9 +73,7 @@ export class RastreamentoComponent implements OnInit {
 
   //array de pinos
   public plotedPackings: any[] = [];
-  public listOfFactories: any = [];
-  public listOfSuppliers: any = [];
-  public listOfLogistic: any = [];
+  public listOfControlPoints: any = [];
 
   //show markers
   public showControlledPlants: boolean = false;
@@ -95,6 +93,7 @@ export class RastreamentoComponent implements OnInit {
   
   constructor(
     private ref: ChangeDetectorRef,
+    private controlPointsService: ControlPointsService,
     private departmentService: DepartmentService,
     private familyService: FamiliesService,
     private authenticationService: AuthenticationService,
@@ -110,6 +109,7 @@ export class RastreamentoComponent implements OnInit {
 
     this.getPlantRadius(); 
     this.loadCompanies();
+    this.loadControlPoints();
   }
 
   public mMap: any;
@@ -145,6 +145,20 @@ export class RastreamentoComponent implements OnInit {
       this.listOfFamilies = result;
       this.auxListOfFamilies = result;
     }, err => console.error(err));
+  }
+
+  loadControlPoints(){
+
+    this.controlPointsService.getAllControlPoint().subscribe(result => {
+      this.listOfControlPoints = result.map(elem => {
+        elem.position = (new google.maps.LatLng(elem.lat, elem.lng));
+        return elem;
+      });
+
+      console.log(JSON.stringify(this.listOfControlPoints));
+
+    }, err => console.error(err));
+    
   }
 
   /**
@@ -271,99 +285,81 @@ export class RastreamentoComponent implements OnInit {
     this.loadPackings();
   }
 
+  public packingsByPlant: any[] = [];
+  public packingsByPlantActualPage: number = -1;
+
   clicked(_a, opt) {
+
     var marker = _a.target;
-    this.marker.target = _a
-    this.marker.opt = opt
+    //this.marker.target = _a
+    //this.marker.opt = opt
+    this.marker.id = opt._id
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
-    this.marker.departments = new Pagination({ meta: { page: 1 } })
-    this.marker.packings = new Pagination({ meta: { page: 1 } })
 
-    this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
-      this.marker.plant = opt.name;
-      this.marker.profile = opt.profile;
+    this.packingService.packingsOnControlPoint(opt._id).subscribe(result => {
 
-      if (result.data.length > 0) {
-        this.marker.department = true;
-        this.marker.packing = false;
-        this.marker.nothing = false;
-        this.marker.departments = result;
-        this.startWindow(marker);
+      console.log('');
+      console.log(result);
 
-      } else {
-        this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
-
-          if (result.data.length > 0) {
-            this.marker.department = false;
-            this.marker.packing = true;
-            this.marker.nothing = false;
-            this.marker.packings = result;
-            this.startWindow(marker);
-            
-          } else {
-            this.marker.department = null
-            this.marker.packing = null
-            this.marker.nothing = true;
-            this.startWindow(marker);
-          }
-        });
-      }
+      this.packingsByPlant = result;
+      
+      this.startWindow(marker);
     });
   }
 
-  retrievePackings(_a, opt) {
-    var marker = _a.target;
-    this.marker.target = _a
-    this.marker.opt = opt
-    this.marker.lat = marker.getPosition().lat();
-    this.marker.lng = marker.getPosition().lng();
-    this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
+  // retrievePackings(_a, opt) {
+  //   var marker = _a.target;
+  //   this.marker.target = _a
+  //   this.marker.opt = opt
+  //   this.marker.lat = marker.getPosition().lat();
+  //   this.marker.lng = marker.getPosition().lng();
+  //   this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
 
-      if (result.data.length > 0) {
-        this.marker.department = false;
-        this.marker.packing = true;
-        this.marker.nothing = false;
-        this.marker.packings = result;
-        this.startWindow(marker);
-      } else {
-        this.marker.department = null
-        this.marker.packing = null
-        this.marker.nothing = true;
-        this.startWindow(marker);
-      }
-    })
-  }
+  //     if (result.data.length > 0) {
+  //       this.marker.department = false;
+  //       this.marker.packing = true;
+  //       this.marker.nothing = false;
+  //       this.marker.packings = result;
+  //       this.startWindow(marker);
+  //     } else {
+  //       this.marker.department = null
+  //       this.marker.packing = null
+  //       this.marker.nothing = true;
+  //       this.startWindow(marker);
+  //     }
+  //   })
+  // }
 
-  retrieveDepartments(_a, opt) {
-    var marker = _a.target;
-    this.marker.target = _a
-    this.marker.opt = opt
-    this.marker.lat = marker.getPosition().lat();
-    this.marker.lng = marker.getPosition().lng();
+  // retrieveDepartments(_a, opt) {
+  //   var marker = _a.target;
+  //   this.marker.target = _a
+  //   this.marker.opt = opt
+  //   this.marker.lat = marker.getPosition().lat();
+  //   this.marker.lng = marker.getPosition().lng();
 
-    this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
-      this.marker.plant = opt.name;
-      this.marker.profile = opt.profile;
-      if (result.data.length > 0) {
-        this.marker.department = true;
-        this.marker.packing = false;
-        this.marker.nothing = false;
-        this.marker.departments = result;
-        this.startPackWindow(marker);
-      }
-    })
-  }
+  //   this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
+  //     this.marker.plant = opt.name;
+  //     this.marker.profile = opt.profile;
+  //     if (result.data.length > 0) {
+  //       this.marker.department = true;
+  //       this.marker.packing = false;
+  //       this.marker.nothing = false;
+  //       this.marker.departments = result;
+  //       this.startPackWindow(marker);
+  //     }
+  //   })
+  // }
 
-  pageChangedDepart(page: any): void {
-    this.marker.departments.meta.page = page;
-    this.retrieveDepartments(this.marker.target, this.marker.opt);
-  }
+  // pageChangedDepart(page: any): void {
+  //   this.marker.departments.meta.page = page;
+  //   this.retrieveDepartments(this.marker.target, this.marker.opt);
+  // }
 
-  pageChangedPacking(page: any): void {
-    this.marker.packings.meta.page = page;
-    this.retrievePackings(this.marker.target, this.marker.opt);
-  }
+  // pageChangedPacking(page: any): void {
+  //   this.marker.packings.meta.page = page;
+  //   this.retrievePackings(this.marker.target, this.marker.opt);
+  // }
 
   open(id) {
     const modalRef = this.modalService.open(ModalRastComponent);
@@ -418,7 +414,7 @@ export class RastreamentoComponent implements OnInit {
    * Misc ...
    * Relative to side-menu
    */
-  private _opened: boolean = false;
+  private _opened: boolean = true;
 
   private _toggleSidebar() {
     this._opened = !this._opened;

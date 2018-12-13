@@ -96,7 +96,7 @@ exports.update_packing = async (id, packing_edited) => {
 
 exports.get_packings_on_control_point = async (control_point) => {
     try {
-        const packings = await Packing.find({}).populate('last_event_record')
+        const packings = await Packing.find({}).populate('last_event_record').populate('family', ['_id', 'code'])
 
         const data = packings.filter(packing => packingOnControlPoint(packing, control_point))
 
