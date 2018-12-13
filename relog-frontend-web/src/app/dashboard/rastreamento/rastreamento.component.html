@@ -15,12 +15,8 @@
           <h6>Filtros:</h6>
           <div class="form-group">
             <label>Empresas vinculadas:</label>
-            <ng-select 
-              [(ngModel)]="selectedCompany" 
-              [items]="listOfFamilies" 
-              (change)="loadPackings()" 
-              bindLabel="company.name"
-              placeholder="Escolha uma Planta">
+            <ng-select [(ngModel)]="selectedCompany" [items]="listOfFamilies" (change)="loadPackings()" bindLabel="company.name"
+              placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.company.name}}
               </ng-template>
@@ -32,14 +28,8 @@
 
           <div class="form-group">
             <label for="selectCode">Família</label>
-            <ng-select 
-              id="selectCode" 
-              [(ngModel)]="selectedFamily" 
-              [items]="listOfFamilies" 
-              (clear)="onEquipmentSelectClear()"
-              (change)="loadPackings(); loadSerialsOfSelectedEquipment()" 
-              bindLabel="code" 
-              placeholder="Selecione um Equipamento">
+            <ng-select id="selectCode" [(ngModel)]="selectedFamily" [items]="listOfFamilies" (clear)="onEquipmentSelectClear()"
+              (change)="loadPackings(); loadSerialsOfSelectedEquipment()" bindLabel="code" placeholder="Selecione um Equipamento">
               <ng-template ng-label-tmp let-item="item">
                 {{item.code}}
               </ng-template>
@@ -53,15 +43,8 @@
 
           <div class="form-group">
             <label>Serial</label>
-            <ng-select 
-              [(ngModel)]="selectedSerial" 
-              (clear)="loadPackings()" 
-              (change)="loadPackings()" 
-              [items]="listOfSerials"
-              bindLabel="serial" 
-              bindValue="serial" 
-              placeholder="Selecione um Serial" 
-              [disabled]="!selectedFamily">
+            <ng-select [(ngModel)]="selectedSerial" (clear)="loadPackings()" (change)="loadPackings()" [items]="listOfSerials"
+              bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial" [disabled]="!selectedFamily">
               <ng-template ng-label-tmp let-item="item">
                 {{item.serial}}
               </ng-template>
@@ -84,7 +67,7 @@
                 <span class="cr">
                   <i class="cr-icon fa fa-check"> </i>
                 </span>
-                Mostrar Fábricas
+                Mostrar pontos de controle
               </label>
             </div>
           </div>
@@ -173,36 +156,36 @@
 
 
             <!-- ///////////// -->
-            <!-- Plant -->
-            <marker *ngFor="let posPlants of listOfFactories" [position]="posPlants.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
-              [visible]="showControlledPlants" [title]="posPlants.name" (click)="clicked($event, posPlants)">
+            <!-- Control Point -->
+            <marker *ngFor="let posCP of listOfControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+              [visible]="showControlledPlants" [title]="posCP.name" (click)="clicked($event, posCP)">
             </marker>
 
-            <circle *ngFor="let posPlantsRadius of listOfFactories" [center]="posPlantsRadius.position" [fillColor]="'#0044a8'"
+            <circle *ngFor="let posCPRadius of listOfControlPoints" [center]="posCPRadius.position" [fillColor]="'#0044a8'"
               [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"
               radius="{{ settings.range_radius }}"></circle>
 
 
             <!-- ///////////// -->
             <!-- Logistic operator -->
-            <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }"
+            <!-- <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }"
               [visible]="showControlledLogistics" [title]="posLogistic.name" (click)="clicked($event, posLogistic)">
             </marker>
 
             <circle *ngFor="let posLogisticRadius of listOfLogistic" [center]="posLogisticRadius.position" [fillColor]="'#4d4d4d'"
               [fillOpacity]="0.15" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledLogistics"
-              radius="{{ settings.range_radius }}"></circle>
+              radius="{{ settings.range_radius }}"></circle> -->
 
 
             <!-- ///////////// -->
             <!-- Supplier -->
-            <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position" [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }"
+            <!-- <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position" [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }"
               [visible]="showControlledSuppliers" [title]="posSuppliers.name" (click)="clicked($event, posSuppliers)">
             </marker>
 
             <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.position"
               [fillColor]="'#4d4d4d'" [fillOpacity]="0.2" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4"
-              [strokeWeight]="1" [visible]="showControlledSuppliers" radius="{{ settings.range_radius }}"></circle>
+              [strokeWeight]="1" [visible]="showControlledSuppliers" radius="{{ settings.range_radius }}"></circle> -->
 
 
             <!-- ///////////// -->
@@ -262,65 +245,41 @@
 
             <info-window id="iw" width="200" maxWidth="200">
               <div *ngIf="marker.display">
+                <div class="iw-title"> {{marker.plant}} </div>
+
                 <div>
-                  <div class="iw-title"> PLANTA {{marker.profile === "supplier" ? 'FORNECEDOR' : (marker.profile ===
-                    "normal" ? 'FÁBRICA' : 'OP. LOGÍSTICO')}}
-                    {{marker.plant}} </div>
+                  <div class="table-responsive tabela">
+                    <table class="table">
+                      <thead>
+                        <tr class="cabecalho">
+                          <th>Família</th>
+                          <th>Serial</th>
+                          <th>Tag</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let packing of packingsByPlant | paginate: { 
+                                                                      id:'packingMap', 
+                                                                      itemsPerPage: 10, 
+                                                                      currentPage: packingsByPlantActualPage, 
+                                                                      totalItems: packingsByPlant.length }">
+                          <td>{{packing.family.code}}</td>
+                          <td>{{packing.serial}}</td>
+                          <td>{{packing.tag.code}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
 
-                  <div>
-                    <div class="table-responsive tabela">
-                      <table class="table" [hidden]="marker.nothing">
-                        <thead>
-                          <tr class="cabecalho" [hidden]="!marker.department">
-                            <th>Setor/Área Interna</th>
-                            <th class="teste">Opções</th>
-                          </tr>
-                          <tr class="cabecalho" [hidden]="!marker.packing">
-                            <th>Embalagens na planta</th>
-                            <th>Serial</th>
-
-                          </tr>
-                        </thead>
-                        <tbody>
-
-                          <tr [hidden]="!marker.department" *ngFor="let dept of marker.departments?.data | paginate: { id:'departmentmap', 
-                                                                              itemsPerPage: marker.departments.meta.limit, 
-                                                                              currentPage: marker.departments.meta.page, 
-                                                                              totalItems:marker.departments.meta.total_docs}">
-                            <td>{{dept.name}}</td>
-                            <td class="teste2">
-                              <button class="button-view" (click)="open(dept._id)" type="button" name="button">Visualizar</button>
-                            </td>
-                          </tr>
-                          <tr [hidden]="!marker.packing" *ngFor="let packing of marker.packings?.data | paginate: { id:'packingmap', 
-                                                                                              itemsPerPage: marker.packings.meta.limit, 
-                                                                                              currentPage:marker.packings.meta.page, 
-                                                                                              totalItems:marker.packings.meta.total_docs}">
-                            <td>{{packing.code}}</td>
-                            <td>{{packing.serial}}</td>
-
-                          </tr>
-
-                        </tbody>
-                      </table>
-
-                      <div class="has-text-centered" [hidden]="!marker.department">
-                        <pagination-controls id="departmentmap" (pageChange)="pageChangedDepart($event)" autoHide="true"
-                          directionLinks="false"></pagination-controls>
-                      </div>
-
-                      <div class="has-text-centered" [hidden]="!marker.packing">
-                        <pagination-controls id="packingmap" (pageChange)="pageChangedPacking($event)" autoHide="true"
-                          directionLinks="false"></pagination-controls>
-                      </div>
-
-                      <div class="classVazio" [hidden]="!marker.nothing">
-                        Não existem embalagens nessa planta.
-                      </div>
-
+                    <div class="has-text-centered">
+                      <pagination-controls id="packingMap" (pageChange)="packingsByPlantActualPage = $event" autoHide="true"
+                        directionLinks="false"></pagination-controls>
                     </div>
-                  </div>
 
+                    <div class="classVazio" *ngIf="packingsByPlant.length < 1">
+                      Não existem embalagens nessa planta.
+                    </div>
+
+                  </div>
                 </div>
               </div>
             </info-window>

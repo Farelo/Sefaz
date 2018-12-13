@@ -140,9 +140,9 @@ export class Spiralize {
             i++;
         }
 
-        // console.log('2. listOfObjects: ' + JSON.stringify(this.listOfObjects));
-        // console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
-        //console.log('4. auxDuplicated: ' + JSON.stringify(auxDuplicated));
+        console.log('2. listOfObjects: ' + JSON.stringify(this.listOfObjects));
+        console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
+        console.log('4. auxDuplicated: ' + JSON.stringify(auxDuplicated));
     }
 
     /**
@@ -215,7 +215,14 @@ export class Spiralize {
              * Plota UM pino das embalagens duplicadas
              */
             let m = new google.maps.Marker({
-                packing_code: array[0].packing_code,
+                // family_code: location.family.code,
+                // serial: location.serial,
+                // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                // accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
+                // position: location.position,
+                // icon: this.getPinWithAlert(location.current_state)
+
+                packing_code: array[0].family.code,
                 serial: array[0].serial,
                 position: { lat: array[0].latitude, lng: array[0].longitude },
                 icon: { url: '../../../assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) },
@@ -329,11 +336,11 @@ export class Spiralize {
                         //console.log(`${array.length} array[sc-1].packing_code: ${array[sc - 1].packing_code}`);
 
                         let e = new google.maps.Marker({
-                            packing_code: array[sc - 1].packing_code,
+                            packing_code: array[sc - 1].family.code,
                             serial: array[sc - 1].serial,
                             position: spiralCoordinates[sc],
-                            battery: array[sc - 1].battery,
-                            accuracy: array[sc - 1].accuracy,
+                            battery: (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.battery.percentage ? (array[sc - 1].last_device_data.battery.percentage + '%') : 'Sem registro') : 'Sem registro', 
+                            accuracy: (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.accuracy + 'm') : 'Sem registro',
                             icon: this.getPinWithAlert(array[sc - 1].status, true),
                             zIndex: 999,
                             map: this.mMap
@@ -346,11 +353,22 @@ export class Spiralize {
                         * Trata o clique do pino duplicado
                         */
                         e.addListener('click', () => {
-                            // console.log('Clique no pino interno');
-                            // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lat));
-                            // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
 
+                            // console.log('Clique no pino interno');
+                            console.log(JSON.stringify(e.packing_code));
+                            console.log(JSON.stringify(e.serial));
+                            console.log(JSON.stringify(e.battery));
+                            console.log(JSON.stringify(e.accuracy));
+                            // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
+                            
                             this.packMarker = {
+                                // family_code: location.family.code,
+                                // serial: location.serial,
+                                // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                                // accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
+                                // position: location.position,
+                                // icon: this.getPinWithAlert(location.current_state)
+
                                 display: true,
                                 position: spiralCoordinates[sc],
                                 lat: spiralCoordinates[sc].lat,
@@ -358,8 +376,8 @@ export class Spiralize {
                                 start: null,
                                 packing_code: e.packing_code,
                                 serial: e.serial,
-                                battery: `${e.battery.toFixed(2)}%`,
-                                accuracy: `${e.accuracy || '-'}m`
+                                battery: `${e.battery}`,
+                                accuracy: `${e.accuracy}`
                             };
 
                             this.infoWin
@@ -369,8 +387,8 @@ export class Spiralize {
                                                 <div style="padding: 0px 6px;">
                                                     <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${e.packing_code}</p>
                                                     <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${e.serial}</p>
-                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${e.battery.toFixed(2)}%</p>
-                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${e.accuracy || '-'}m</p>
+                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${e.battery}</p>
+                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${e.accuracy}</p>
                                                 </div>
                                             </div>`);
 
