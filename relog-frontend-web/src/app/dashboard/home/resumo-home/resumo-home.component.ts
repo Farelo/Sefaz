@@ -40,10 +40,10 @@ export class ResumoHomeComponent implements OnInit {
   }
 
   getTooltipControle(){
-    return `${this.resume.quantityInFactory + this.resume.quantityInSupplier + this.resume.quantityInOpLogistic} embalagens de ${this.resume.quantityTotal}`;
+    return `${this.resume.qtd_in_cp} embalagens de ${this.resume.qtd_total}`;
   }
 
   getTooltipViagem() {
-    return `${this.resume.quantityLate + this.resume.quantityMissing + this.resume.quantityTraveling} embalagens de ${this.resume.quantityTotal}`;
+    return `${this.resume.qtd_in_traveling} embalagens de ${this.resume.qtd_total}`;
   }
 }
