@@ -196,6 +196,9 @@
             <p class="requiredText" *ngIf="(mPacking.get('capacity').hasError('required') && mPacking.get('capacity').touched)
               || (mPacking.get('capacity').hasError('required') && formDir.submitted)">
               Campo Obrigatório</p>
+            <p class="requiredText" *ngIf="(mPacking.get('capacity').hasError('pattern'))
+                          || (mPacking.get('capacity').hasError('pattern') && formDir.submitted)">
+              Valor inválido</p>
           </div>
 
 
@@ -228,6 +231,9 @@
           <p class="requiredText" *ngIf="(mPacking.get('weigth').hasError('required') && mPacking.get('weigth').touched)
           || (mPacking.get('weigth').hasError('required') && formDir.submitted)">Campo
             Obrigatório</p>
+          <p class="requiredText" *ngIf="(mPacking.get('weigth').hasError('pattern'))
+            || (mPacking.get('weigth').hasError('pattern') && formDir.submitted)">
+            Valor inválido</p>
         </div>
 
         <div class="campo">
@@ -241,6 +247,9 @@
           <p class="requiredText" *ngIf="(mPacking.get('length').hasError('required') && mPacking.get('length').touched)
             || (mPacking.get('length').hasError('required') && formDir.submitted)">
             Campo Obrigatório</p>
+          <p class="requiredText" *ngIf="(mPacking.get('length').hasError('pattern'))
+                      || (mPacking.get('length').hasError('pattern') && formDir.submitted)">
+            Valor inválido</p>
         </div>
 
         <div class="campo">
@@ -254,6 +263,9 @@
           <p class="requiredText" *ngIf="(mPacking.get('width').hasError('required') && mPacking.get('width').touched)
               || (mPacking.get('width').hasError('required') && formDir.submitted)">
             Campo Obrigatório</p>
+          <p class="requiredText" *ngIf="(mPacking.get('width').hasError('pattern'))
+                        || (mPacking.get('width').hasError('pattern') && formDir.submitted)">
+            Valor inválido</p>
         </div>
 
         <div class="campo">
@@ -267,6 +279,9 @@
           <p class="requiredText" *ngIf="(mPacking.get('heigth').hasError('required') && mPacking.get('heigth').touched)
               || (mPacking.get('heigth').hasError('required') && formDir.submitted)">
             Campo Obrigatório</p>
+          <p class="requiredText" *ngIf="(mPacking.get('heigth').hasError('pattern'))
+                        || (mPacking.get('heigth').hasError('pattern') && formDir.submitted)">
+            Valor inválido</p>
         </div>
 
         <div class="campo">

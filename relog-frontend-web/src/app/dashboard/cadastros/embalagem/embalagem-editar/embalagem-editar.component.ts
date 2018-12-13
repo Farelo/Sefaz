@@ -68,7 +68,8 @@ export class EmbalagemEditarComponent implements OnInit {
 
     value.family = value.family._id;
     value.project = value.project._id;
-    if (value.observations == '') delete value.observations;
+    //if (value.observations == '') delete value.observations;
+    //if (value.observations == '') delete value.observations;
 
     if (valid) {
       this.finishUpdate(value);
@@ -97,11 +98,11 @@ export class EmbalagemEditarComponent implements OnInit {
       }),
       serial: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]],
       type: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
-      weigth: ['', [Validators.required]],
-      width: ['', [Validators.required]],
-      heigth: ['', [Validators.required]],
-      length: ['', [Validators.required]],
-      capacity: ['', [Validators.required]],
+      weigth: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
+      width: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
+      heigth: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
+      length: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
+      capacity: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
       family: [null, [Validators.required]],
       project: [null, [Validators.required]],
       observations: ['', [Validators.maxLength(140)]],
