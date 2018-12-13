@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HomeService } from '../../../servicos/home.service';
 import { Pagination } from '../../../shared/models/pagination'; 
+import { AuthenticationService } from 'app/servicos/auth.service';
 
 @Component({
   selector: 'app-categoria-pontos-de-controle',
@@ -21,11 +22,14 @@ export class CategoriaPontosDeControleComponent implements OnInit {
   
   public listIncorrectActualPage: number = -1;
   public listPermanenceActualPage: number = -1;
+  public settings: any;
 
-  constructor(private homeService: HomeService) { }
-
+  constructor(private homeService: HomeService,
+    private authenticationService: AuthenticationService) { }
+    
   ngOnInit() {
 
+    this.getSettings();
     this.getListIncorrectLocal();
     this.getListPermanenceTime();
   }
@@ -37,6 +41,14 @@ export class CategoriaPontosDeControleComponent implements OnInit {
     this.calculateProgress();
   }
 
+  /**
+   * Recupera a configuração dos alertas
+   */
+  getSettings() {
+
+    this.settings = this.authenticationService.currentSettings();
+  }
+
   calculateProgress() {
     
     let base = parseFloat(this.resume.qtd_in_incorrect_cp + this.resume.qtd_permanence_time_exceeded);
@@ -44,7 +56,7 @@ export class CategoriaPontosDeControleComponent implements OnInit {
     if (base > 0) {
 
       //Categoria em pontos de controle
-      this.progressControle[0] = ((parseFloat(this.resume.qtd_in_incorrect_cp) / base) * 100);
+      this.progressControle[0] = this.settings.enable_local_incorreto? ((parseFloat(this.resume.qtd_in_incorrect_cp) / base) * 100) : 0;
       this.progressControle[1] = ((parseFloat(this.resume.qtd_permanence_time_exceeded) / base) * 100);
       this.progressControle[2] = (100 - this.progressControle[0] - this.progressControle[1]);
 

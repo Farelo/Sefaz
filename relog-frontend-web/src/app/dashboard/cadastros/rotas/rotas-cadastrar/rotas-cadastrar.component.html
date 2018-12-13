@@ -165,6 +165,27 @@
             </div>
           </div>
         </div>
+
+        <!-- Tempo minimo de viagem  -->
+        <div class="campo" formGroupName="traveling_time">
+          <p class="descricao">DEFINA A TOLERÂNCIA MÁXIMA DE ATRASO</p>
+          <p class="explicacao"></p>
+          <div class="row">
+            <div class="col-md-6 no-gutters">
+              <ngb-timepicker [(ngModel)]="time_delay" [seconds]="true" formControlName="overtime" size="small"></ngb-timepicker>
+        
+              <p class="requiredText" *ngIf="(mRoute.get('traveling_time.overtime').hasError('required') && mRoute.get('traveling_time.overtime').touched)
+                        || (mRoute.get('traveling_time.overtime').hasError('required') && formDir.submitted)">
+                Campo Obrigatório</p>
+            </div>
+        
+            <div class="col-md-6 no-gutters">
+              <p class="configured-time">Dias: {{ time_delay.hour }}</p>
+              <p class="configured-time">Horas: {{ time_delay.minute }}</p>
+              <p class="configured-time">Minutos: {{ time_delay.second }}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     

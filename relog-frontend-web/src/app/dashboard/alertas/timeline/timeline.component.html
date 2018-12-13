@@ -45,7 +45,11 @@
 
     <div class="painel">
       <!-- [routerLink]="[alert.family_id, alert.current_state]" -->
-      <div class="row quadradoPequeno" placement="bottom" [tooltip]="getAlertText(alert.current_state)" [routerLink]="[alert.family_id, alert.current_state]"
+      <div 
+        class="row quadradoPequeno" 
+        placement="bottom" 
+        [tooltip]="getAlertText(alert.current_state)" 
+        [routerLink]="[alert.family_id, alert.current_state]"
         [ngClass]="{
           'status0': getAlertCode(alert.current_state) == 0,
           'status1': getAlertCode(alert.current_state) == 1,

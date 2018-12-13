@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
 import { HomeService } from '../../../servicos/home.service'; 
+import { AuthenticationService } from 'app/servicos/auth.service';
 
 @Component({
   selector: 'app-categoria-em-viagem',
@@ -19,10 +20,14 @@ export class CategoriaEmViagemComponent implements OnInit {
   public listLateActualPage: number = -1;
   public listMissingActualPage: number = -1;
 
-  constructor(private homeService: HomeService) { }
+  public settings: any;
+
+  constructor(private homeService: HomeService,
+    private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
 
+    this.getSettings();
     this.getListLate();
     this.getListMissing();
   }
@@ -32,6 +37,14 @@ export class CategoriaEmViagemComponent implements OnInit {
     this.calculateProgress();
   }
 
+  /**
+   * Recupera a configuração dos alertas
+   */
+  getSettings() {
+
+    this.settings = this.authenticationService.currentSettings();
+  }
+
   calculateProgress() {
     
     let base = parseFloat(this.resume.qtd_traveling_late + this.resume.qtd_traveling_missing);
@@ -39,8 +52,8 @@ export class CategoriaEmViagemComponent implements OnInit {
     if (base > 0) {
 
       //Categoria em pontos de controle
-      this.progressEmViagem[0] = ((parseFloat(this.resume.qtd_traveling_late) / base) * 100);
-      this.progressEmViagem[1] = ((parseFloat(this.resume.qtd_traveling_missing) / base) * 100);
+      this.progressEmViagem[0] = this.settings.enable_viagem_atrasada ? ((parseFloat(this.resume.qtd_traveling_late) / base) * 100) : 0;
+      this.progressEmViagem[1] = this.settings.enable_viagem_perdida ? ((parseFloat(this.resume.qtd_traveling_missing) / base) * 100) : 0;
       this.progressEmViagem[2] = (100 - this.progressEmViagem[0] - this.progressEmViagem[1]);
 
     } else {
