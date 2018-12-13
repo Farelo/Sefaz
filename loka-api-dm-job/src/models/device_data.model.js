@@ -92,6 +92,39 @@ const update_updated_at_middleware = function (next) {
     next()
 }
 
+const device_data_save = async (devide_data_array) => {
+    for (device_data of devide_data_array) {
+
+            try {
+                const new_device_data = new DeviceData({
+                    device_id: device_data.deviceId.toString(),
+                    message_date: new Date(device_data.messageDate),
+                    message_date_timestamp: device_data.messageDateTimestamp,
+                    last_communication: new Date(device_data.lastCommunication),
+                    last_communication_timestamp: device_data.lastCommunicationTimestamp,
+                    latitude: device_data.latitude,
+                    longitude: device_data.longitude,
+                    accuracy: device_data.accuracy,
+                    temperature: device_data.temperature,
+                    seq_number: device_data.seqNumber,
+                    battery: {
+                        percentage: device_data.battery.percentage,
+                        voltage: device_data.battery.voltage
+                    }
+                })
+
+                //salva no banco | observação: não salva mensagens iguais porque o model possui indice unico e composto por device_id e message_date,
+                //e o erro de duplicidade nao interrompe o job
+                await new_device_data.save( )
+    
+                // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
+    
+            } catch (error) {
+                debug('Erro ao salvar o device_data do device  ', device_data.deviceId, ' para a data-hora ', device_data.messageDate, ' | System Error ', error.errmsg ? error.errmsg : error.errors)
+            }
+    }
+}
+
 deviceDataSchema.post('save', saveDeviceDataToPacking)
 deviceDataSchema.pre('update', update_updated_at_middleware)
 deviceDataSchema.pre('findOneAndUpdate', update_updated_at_middleware)
@@ -100,4 +133,4 @@ const DeviceData = mongoose.model('DeviceData', deviceDataSchema)
 
 exports.DeviceData = DeviceData
 exports.deviceDataSchema = deviceDataSchema
-// exports.validate_device_data = validate_device_data
+exports.device_data_save = device_data_save

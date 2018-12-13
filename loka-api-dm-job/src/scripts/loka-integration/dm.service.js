@@ -1,20 +1,10 @@
 const debug = require('debug')('dm.service')
-const dm = require('./dm.utils')
-const request = require('request').defaults({baseUrl: 'https://dm.loka.systems'})
+const config = require('config')
+const request = require('request').defaults({baseUrl: config.get('loka.baseUrl')/* 'https://dm.loka.systems' */})
 const qs = require('qs')
-// const _ = require('lodash')
-// const sslRootCAs = require('ssl-root-cas')
-
-module.exports = {
-    loginLokaDmApi: loginLokaDmApi,
-    logoutLokaDmApi: logoutLokaDmApi,
-    messagesFromSigfox: messagesFromSigfox,
-    positions: positions,
-    deviceById: deviceById,
-    devicesList: devicesList
-}
 
 // inejta o certificado SSL para poder fazer as requisições https
+// const sslRootCAs = require('ssl-root-cas')
 // sslRootCAs.inject().addFile('/home/miguel/Reciclapac/COMODORSADomainValidationSecureServerCA.pem');
 // sslRootCAs.inject().addFile('/home/miguel/Reciclapac/Bitbucket/Projeto - Embalagens Inteligentes/Software Reciclapac/api-migration-branch/recicla/recicla-api/src/security/keys/COMODORSADomainValidationSecureServerCA.pem');
 
@@ -23,13 +13,13 @@ module.exports = {
 
     Para mais detalhes entrar em https://dm.loka.systems/api
 
-    Toda requisição feita à api do DM da loka precisa de um cookie a ser enviado no header da requisição.
+    Toda requisição feitas à api do DM da loka precisa de um cookie a ser enviado no header da requisição.
 
     Este cookie é capturado na requisição de login em dm-cookie.js
 */
 
 //TODO: Deixar todas mensagens em português
-function loginLokaDmApi () {
+exports.loginLokaDmApi = () => {
     return new Promise(function(resolve, reject) {
 
         let options = {
@@ -39,8 +29,8 @@ function loginLokaDmApi () {
                 'content-type': 'application/json',
             },
             body: JSON.stringify({
-                "username": dm.username,
-                "password": dm.password
+                "username": config.get('loka.username'),//dm.username,
+                "password": config.get('loka.password')//dm.password
             })
         }
 
@@ -52,8 +42,6 @@ function loginLokaDmApi () {
             try {
                 let cookie = response.headers['set-cookie'][0].split(';')[0] 
                 
-                // console.log("login: logou na api e gerou o cookie: " + cookie);
-                
                 resolve(cookie);
             }
             catch (err) {
@@ -64,7 +52,8 @@ function loginLokaDmApi () {
     });
 }
 
-function logoutLokaDmApi(cookie) {
+//desloga a sessao aberta no login: precisa passar o cookie retornado do login
+exports.logoutLokaDmApi = (cookie) => {
     return new Promise(function (resolve, reject) {
 
         let path = `/auth/logout`
@@ -99,7 +88,7 @@ function logoutLokaDmApi(cookie) {
 }
 
 //obtem conjunto de mensagens da sigfox de um device 
-function messagesFromSigfox (cookie, deviceId, startDate, endDate, max) { 
+exports.messagesFromSigfox = (cookie, deviceId, startDate, endDate, max) => { 
     return new Promise (function (resolve, reject) {
 
         let path = `/message/show/${deviceId}/sigfox` + qs.stringify( {startDate: startDate, endDate: endDate, max: max}, { addQueryPrefix: true });
@@ -114,7 +103,6 @@ function messagesFromSigfox (cookie, deviceId, startDate, endDate, max) {
             }
         }
 
-        //body: onde esta o JSON com os dados
         let callback = function (error, response, body) {
 
             if (error){
@@ -136,7 +124,7 @@ function messagesFromSigfox (cookie, deviceId, startDate, endDate, max) {
  }
 
 //obtem conjunto de posicoes (lat, long, acuracia) ja resolvidos pela LOKA para um dispositivo
-function positions (cookie, deviceId, status, lowAccuracy, startDate, endDate, max) {
+exports.positions = (cookie, deviceId, status, lowAccuracy, startDate, endDate, max) => {
     return new Promise (function (resolve, reject) {
 
         let path = `/position/get` + qs.stringify({terminal: deviceId, status: status, lowAccuracy: lowAccuracy, startDate: startDate, endDate: endDate, max: max}, {addQueryPrefix: true} );
@@ -170,7 +158,7 @@ function positions (cookie, deviceId, status, lowAccuracy, startDate, endDate, m
     });
 }
 
-function deviceById (cookie, deviceId) {
+exports.deviceById = (cookie, deviceId) => {
     return new Promise(function(resolve, reject){
 
         let path = `/terminal/get/${deviceId}`;
@@ -204,7 +192,7 @@ function deviceById (cookie, deviceId) {
     });
 }
 
-function devicesList (cookie, client, profile, status) {
+exports.devicesList = (cookie, client, profile, status) => {
     return new Promise(function(resolve, reject){
 
         let path = `/terminal/list` + qs.stringify({client: client, profile: profile, status: status}, {addQueryPrefix: true});
@@ -237,4 +225,3 @@ function devicesList (cookie, client, profile, status) {
         request(options, callback);
     });
 }
-
