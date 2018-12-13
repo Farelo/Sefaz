@@ -18,7 +18,7 @@
         "key": "/security/keys/key.pem",
         "certificate": "/security/keys/cert.pem",
         "refreshTokenSecret": "some-secret-refresh-token-shit",
-        "tokenLife": 60,
+        "tokenLife": 3600,
         "refreshTokenLife": 86400
     },
     "swagger": {

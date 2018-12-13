@@ -61,7 +61,8 @@ const validate_routes = (route) => {
         duration_time: Joi.number(),
         traveling_time: {
             max: Joi.number(),
-            min: Joi.number()
+            min: Joi.number(),
+            overtime: Joi.number()
         }
     })
 

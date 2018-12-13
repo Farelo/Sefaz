@@ -17,14 +17,14 @@ const evaluatesIfPackingIsWithPermanenceTimeExceeded = require('./evaluators/eva
 const evaluatesIfPackingIsTraveling = require('./evaluators/evaluates_if_packing_is_traveling')
 
 module.exports = async (setting, packing, controlPoints) => {
-    try {
-        let next_state
-        let isNoSignal
-        let isAbsent
-        let currentControlPoint
-        let isIncorrectLocal
-        let isPermanenceTimeExceeded
+    let next_state
+    let isNoSignal
+    let isAbsent
+    let currentControlPoint
+    let isIncorrectLocal
+    let isPermanenceTimeExceeded
 
+    try {
         /* Se a embalagem está sem registro da loka eu não faço nada */
         if (!packing.last_device_data) return null
 

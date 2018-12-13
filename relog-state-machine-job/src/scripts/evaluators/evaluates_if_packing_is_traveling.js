@@ -11,42 +11,46 @@ module.exports = async (packing, setting) => {
     let routeOvertime
     let traveling_time_overtime
 
-    if (packing.family.routes.length > 0) {
-        const family = await Family.findById(packing.family).populate('routes')
+    try {
+        if (packing.family.routes.length > 0) {
+            if (!packing.last_event_record) return null
 
-        routeMax = family.routes.reduce(getTravelingTimeMax)
-        routeOvertime = family.routes.reduce(getTravelingTimeOvertime)
-        traveling_time_overtime = routeOvertime.traveling_time.overtime + routeMax.traveling_time.max
+            const family = await Family.findById(packing.family).populate('routes')
 
-        if (!packing.last_event_record) return null
+            routeMax = family.routes.reduce(getTravelingTimeMax)
+            routeOvertime = family.routes.reduce(getTravelingTimeOvertime)
+            traveling_time_overtime = routeOvertime.traveling_time.overtime + routeMax.traveling_time.max
 
-        if (packing.last_event_record.type === 'outbound') {
-            if (getDiffDateTodayInDays(packing.last_event_record.created_at) <= routeMax.traveling_time.max) {
-                console.log('VIAGEM_PRAZO')
-                await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true })
 
-                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_PRAZO.alert) return true
+            if (packing.last_event_record.type === 'outbound') {
+                if (getDiffDateTodayInDays(packing.last_event_record.created_at) <= routeMax.traveling_time.max) {
+                    console.log('VIAGEM_PRAZO')
+                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true })
 
-                const currentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.VIAGEM_PRAZO.alert })
-                await currentStateHistory.save()
-            } else {
-                if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
-                    console.log('VIAGEM_VIAGEM_PERDIDA')
-
-                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_PERDIDA.alert) return null
-
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_PERDIDA.alert })
-                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PERDIDA.key }, { new: true })
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_PRAZO.alert) return null
+                    // await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_PRAZO.alert })
                 } else {
-                    console.log('VIAGEM_ATRASADA')
-    
-                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_ATRASADA.alert) return null
-    
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_ATRASADA.alert })
-                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_ATRASADA.key }, { new: true })
+                    if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
+                        console.log('VIAGEM_VIAGEM_PERDIDA')
+                        await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PERDIDA.key }, { new: true })
+
+                        // if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_PERDIDA.alert) return null
+                        // await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_PERDIDA.alert })
+
+                    } else {
+                        console.log('VIAGEM_ATRASADA')
+                        await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_ATRASADA.key }, { new: true })
+
+                        // if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_ATRASADA.alert) return null
+                        // await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_ATRASADA.alert })
+
+                    }
                 }
             }
         }
+    } catch (error) {
+        console.error(error)
+        throw new Error(error)
     }
 }
 // const getTravelingTimeMin = (count, route) => route.traveling_time.min > count.traveling_time.min ? count.traveling_time.min = route.traveling_time.min : count.traveling_time.min
