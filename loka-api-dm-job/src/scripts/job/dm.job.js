@@ -79,37 +79,3 @@ module.exports = async () => {
 }
 
 const add_seconds = (date_time, seconds_to_add) => { return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add)) }
-
-//TODO: remover esse bloco comentado pq foi migrado para dentro do device_data model
-// const save_device_data = async (device_data_array) => {
-//     for (device_data of device_data_array) {
-
-//             try {
-//                 const new_device_data = new DeviceData({
-//                     device_id: device_data.deviceId.toString(),
-//                     message_date: new Date(device_data.messageDate),
-//                     message_date_timestamp: device_data.messageDateTimestamp,
-//                     last_communication: new Date(device_data.lastCommunication),
-//                     last_communication_timestamp: device_data.lastCommunicationTimestamp,
-//                     latitude: device_data.latitude,
-//                     longitude: device_data.longitude,
-//                     accuracy: device_data.accuracy,
-//                     temperature: device_data.temperature,
-//                     seq_number: device_data.seqNumber,
-//                     battery: {
-//                         percentage: device_data.battery.percentage,
-//                         voltage: device_data.battery.voltage
-//                     }
-//                 })
-
-//                 //salva no banco | observação: não salva mensagens iguais porque o model possui indice unico e composto por device_id e message_date,
-//                 //e o erro de duplicidade nao interrompe o job
-//                 await new_device_data.save( )
-    
-//                 // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
-    
-//             } catch (error) {
-//                 debug('Erro ao salvar o device_data do device  ', device_data.deviceId, ' para a data-hora ', device_data.messageDate, ' | System Error ', error.errmsg ? error.errmsg : error.errors)
-//             }
-//     }
-// }
