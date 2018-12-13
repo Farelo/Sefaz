@@ -14,24 +14,19 @@
         <!-- Item 1 -->
         <div class="col-sm-4">
           <div class="campo">
-            <p class="descricao">FAMÍLIA</p>
+            <p class="descricao">EMPRESA</p>
             <ng-select 
-              [items]="listOfFamilies" 
-              bindLabel="code" 
-              placeholder="Associe uma família" 
+              [items]="listOfCompanies" 
+              bindLabel="name" 
+              placeholder="Associe uma empresa" 
               formControlName="family"
               [ngClass]="{'required': (gc16.get('family').hasError('required') && gc16.get('family').touched) 
                 || (gc16.get('family').hasError('required') && submitted)}">
               <ng-template ng-label-tmp let-item="item">
-                {{item.code}}
+                {{item.name}}
               </ng-template>
               <ng-template ng-option-tmp let-item="item">
-                <div>
-                  Nome: {{ item.code }}
-                </div>
-                <small>
-                  {{ item.company.name }}
-                </small>
+                <div> {{ item.name }} </div>
               </ng-template>
             </ng-select>
 
@@ -39,6 +34,18 @@
               || (gc16.get('family').hasError('required') && submitted)">
               Campo Obrigatório</p>
           </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="col-sm-4" *ngIf="gc16.get('family').value">
+          <p class="descricao">PONTOS DE CONTROLE</p>
+          <ng-select #select bindLabel="name" placeholder="Associe pontos de controle" [items]="allControlPoints" [multiple]="true"
+            formControlName="selectedControlPoints">
+        
+            <ng-template ng-option-tmp let-item="item">
+              <div>{{ item.name }} </div>
+            </ng-template>
+          </ng-select>
         </div>
 
       </div>

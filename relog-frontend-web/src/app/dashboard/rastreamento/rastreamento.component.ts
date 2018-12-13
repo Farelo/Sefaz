@@ -132,7 +132,7 @@ export class RastreamentoComponent implements OnInit {
   getPlantRadius() {
 
     let currentSetting = this.authenticationService.currentSettings();
-    this.settings['range_radius'] = currentSetting.range_radius * 1000;
+    this.settings['range_radius'] = currentSetting.range_radius;
   }
 
   /**
@@ -155,7 +155,7 @@ export class RastreamentoComponent implements OnInit {
         return elem;
       });
 
-      console.log(JSON.stringify(this.listOfControlPoints));
+      //console.log(JSON.stringify(this.listOfControlPoints));
 
     }, err => console.error(err));
     
@@ -303,7 +303,7 @@ export class RastreamentoComponent implements OnInit {
       console.log(result);
 
       this.packingsByPlant = result;
-      
+
       this.startWindow(marker);
     });
   }
@@ -370,9 +370,9 @@ export class RastreamentoComponent implements OnInit {
     marker.nguiMapComponent.openInfoWindow('iw', marker);
   }
 
-  startPackWindow(marker) {
-    marker.nguiMapComponent.openInfoWindow('pw', marker);
-  }
+  // startPackWindow(marker) {
+  //   marker.nguiMapComponent.openInfoWindow('pw', marker);
+  // }
 
   /**
    * Recupera o pino da embalagem de acordo com seu alerta

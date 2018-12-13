@@ -4,7 +4,7 @@ import { RoundPipe } from './round';
 import { CompanyType } from './plantType'; 
 import { TruncatePipe } from './truncate';
 import { PackingStatus } from './packingStatus';
-import { FloatTimePipe } from './floatTime';
+import { FloatTimePipe } from './floatTime'; 
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { FloatTimePipe } from './floatTime';
     CompanyType, 
     TruncatePipe,
     PackingStatus,
-    FloatTimePipe
+    FloatTimePipe,
   ],
   exports: [
     TimePipe,
@@ -24,7 +24,7 @@ import { FloatTimePipe } from './floatTime';
     CompanyType, 
     TruncatePipe,
     PackingStatus,
-    FloatTimePipe
+    FloatTimePipe,
   ]
 })
 export class ApplicationPipes {}
