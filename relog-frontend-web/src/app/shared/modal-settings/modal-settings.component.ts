@@ -104,6 +104,13 @@ export class ModalSettings implements OnInit {
       clean_historic_moviments_time: [0, [Validators.required]],
       no_signal_limit_in_days: [0, [Validators.required]],
       missing_sinal_limit_in_days: [0, [Validators.required]],
+
+      //alerts
+      enable_viagem_perdida: [true, [Validators.required]],
+      enable_local_incorreto: [true, [Validators.required]],
+      enable_viagem_atrasada: [false, [Validators.required]],
+      enable_sem_sinal: [false, [Validators.required]],
+      enable_perdida: [false, [Validators.required]]
     });
 
     this.settingsService.getSettings().subscribe(result => {
@@ -143,10 +150,10 @@ export class ModalSettings implements OnInit {
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
+    //console.log(value);
+
     if (valid) {
-
       this.settingsService.editSetting(value, this.actualSettings._id).subscribe(result => {
-
         this.toastService.edit('', 'Configurações');
         this.closeModal();
         this.authenticationService.updateCurrentSettings();

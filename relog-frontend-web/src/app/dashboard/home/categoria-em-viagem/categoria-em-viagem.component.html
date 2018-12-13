@@ -1,4 +1,4 @@
-<section class="grupo-categoria">
+<section class="grupo-categoria" *ngIf="settings.enable_viagem_atrasada || settings.enable_viagem_perdida">
 
   <div style="display: flex;">
     <h5>Em Viagem</h5>
@@ -12,7 +12,7 @@
   </div>
 
   <!-- Embalagens Atrasadas -->
-  <section>
+  <section *ngIf="settings.enable_viagem_atrasada == true">
     <div class="linha-categoria bg-atrasada">
       <div class="tick-categoria">
 
@@ -80,7 +80,7 @@
 
   <!-- ////////////////////////////////////////////////////////////////////// -->
   <!-- Embalagens Ausentes -->
-  <section>
+  <section *ngIf="settings.enable_viagem_perdida == true">
     <div class="linha-categoria bg-ausente">
       <div class="tick-categoria">
 

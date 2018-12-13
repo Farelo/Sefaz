@@ -23,13 +23,17 @@ export class TimelineComponent implements OnInit {
   public logged_user : any;
   public listOfAlertsActualPage: number = -1;
   public activeModal : any;
+  public settings;
 
   constructor(private alertsService: AlertsService,
+    private authenticationService: AuthenticationService,
     private modalService: NgbModal ) {
 
   }
   
   ngOnInit() {
+
+    this.getSettings();
     this.loadAlerts();
   }
 
@@ -43,9 +47,35 @@ export class TimelineComponent implements OnInit {
           (elem.current_state !== constants.ALERTS.TRAVELING) &&
           (elem.current_state !== constants.ALERTS.CORRECT_LOCAL));
       });
+
+      console.log('this.settings.enable_viagem_perdida: ' + JSON.stringify(this.listOfAlerts));
+      console.log('this.settings: ' + JSON.stringify(this.settings));
+
+      this.listOfAlerts = this.listOfAlerts.filter(elem => {
+        
+        //console.log('');
+        console.log('elem.current_state: ' + elem.current_state);
+
+        return ((constants.ALERTS.ABSENT == elem.current_state) && this.settings.enable_viagem_perdida)       //1
+        || ((constants.ALERTS.INCORRECT_LOCAL == elem.current_state) && this.settings.enable_local_incorreto) //2
+        || (constants.ALERTS.LOW_BATTERY == elem.current_state)                                               //3
+        || ((constants.ALERTS.LATE == elem.current_state) && this.settings.enable_viagem_atrasada)            //4
+        || ((constants.ALERTS.PERMANENCE_TIME == elem.current_state))                                         //5
+        || ((constants.ALERTS.NO_SIGNAL == elem.current_state) && this.settings.enable_sem_sinal)             //6
+        || ((constants.ALERTS.MISSING == elem.current_state) && this.settings.enable_perdida)                 //7
+      });
+      
       console.log(this.listOfAlerts);
       
     }, err => { console.log(err); }); 
+  }
+
+  /**
+   * Recupera a configuração dos alertas
+   */
+  getSettings() {
+
+    this.settings = this.authenticationService.currentSettings();
   }
 
   openHelp(content) {

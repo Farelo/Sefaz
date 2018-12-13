@@ -8,8 +8,6 @@ import { SettingsService } from './settings.service';
 
 @Injectable()
 export class AuthenticationService {
-  //REMOVE
-  //url: string = "http://localhost:3000/api"
 
   constructor(
     private http: HttpClient,

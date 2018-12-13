@@ -17,11 +17,11 @@
           'status5': alertCode == 5,
           'status6': alertCode == 6,
           'status7': alertCode == 7 }"
-        *ngFor="let alert of listOfAlerts | paginate: {   
-                                              id:'list',
-                                              itemsPerPage: 16,
-                                              currentPage: listOfAlertsActualPage,
-                                              totalItems: listOfAlerts.length}">
+        *ngFor="let alert of listOfAlerts | paginate: { id:'list',
+          itemsPerPage: 16,
+          currentPage: listOfAlertsActualPage,
+          totalItems: listOfAlerts.length}">
+
         <div class="esquerda">
           <span class="codigo" tooltip="Código da Embalagem">{{ alert.family.code }}</span>
           <br />
