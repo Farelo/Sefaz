@@ -4,7 +4,7 @@ const { GC16 } = require('./gc16.model')
 
 exports.get_gc16_list = async () => {
     try {
-        const gc16_list = await GC16.find({}).populate('family')
+        const gc16_list = await GC16.find({}).populate('control_point')
 
         return gc16_list
 
@@ -17,7 +17,7 @@ exports.get_gc16 = async (id) => {
     try {
         const gc16 = await GC16
             .findById(id)
-            .populate('family')
+            .populate('control_point')
 
         return gc16
     } catch (error) {
@@ -52,7 +52,7 @@ exports.create_gc16 = async (gc16) => {
 exports.find_by_id = async (id) => {
     try {
         const gc16 = await GC16.findById(id)
-            .populate('family')
+            .populate('control_point')
 
         return gc16
     } catch (error) {

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ToastService, GC16Service } from '../../../servicos/index.service';
+import { ToastService, GC16Service, CompaniesService, ControlPointsService } from '../../../servicos/index.service';
 
 @Component({
   selector: 'app-gc16-editar',
@@ -14,12 +14,22 @@ import { ToastService, GC16Service } from '../../../servicos/index.service';
 
 export class Gc16EditarComponent implements OnInit {
 
+  public listOfCompanies: any[] = [];
+  public auxListOfCompanies: any[] = [];
+
+  public selectedCompany: any = null;
+
+  public listOfControlPoints: any[] = [];
+  public auxListOfControlPoints: any[] = [];
+
   public gc16:  FormGroup;
   public mActualGC16: any;
   public inscricao: Subscription;
 
   constructor(
     private GC16Service: GC16Service,
+    private companiesService: CompaniesService,
+    private controlPointService: ControlPointsService,
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -30,11 +40,39 @@ export class Gc16EditarComponent implements OnInit {
   ngOnInit() {
     
     this.configureFormGroup();
+    this.loadCompanies();
+    this.loadControlPoints();
     this.retrieveGC16();
   }
 
   ngOnDestroy() {
     this.inscricao.unsubscribe();
+  }
+
+  /**
+ * Método para carregar a lista
+ */
+  loadCompanies() {
+    this.companiesService.getAllCompanies().subscribe(result => {
+      this.listOfCompanies = result;
+    }, error => console.error(error));
+  }
+
+  loadControlPoints() {
+    this.controlPointService.getAllControlPoint().subscribe(result => {
+      this.listOfControlPoints = result;
+      this.auxListOfControlPoints = result;
+    }, error => console.error(error));
+  }
+
+  companySelected(event: any) {
+    console.log(event);
+    
+    this.gc16.patchValue({control_point: null});
+
+    this.listOfControlPoints = this.auxListOfControlPoints.filter(elem => {
+      return elem.company._id == event._id;
+    });
   }
 
   configureFormGroup(){
@@ -44,7 +82,8 @@ export class Gc16EditarComponent implements OnInit {
       productive_days: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
       capacity: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
       container_days: ['', [Validators.required]],
-      family: [undefined, [Validators.required]],
+      company: [undefined, [Validators.required]],
+      control_point: [undefined, [Validators.required]],
       security_factor: this.fb.group({
         percentage: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
         qty_total_build: ['', [Validators.required]],
@@ -83,14 +122,22 @@ export class Gc16EditarComponent implements OnInit {
     });
   }
 
-  retrieveGC16(){
+  retrieveGC16(){ 
     this.inscricao = this.route.params.subscribe(params => {
       let id = params['id'];
       this.GC16Service.getGC16(id).subscribe(result => {
         this.mActualGC16 = result;
+        this.resolveControlPoint(result.control_point);
         (<FormGroup>this.gc16).patchValue(result, { onlySelf: true });
       });
     });
+  }
+
+  resolveControlPoint(controlPoint: any){
+    this.companiesService.getCompany(controlPoint.company).subscribe(result => {
+      this.selectedCompany = result;
+      (<FormGroup>this.gc16).patchValue({company: result});
+    }, error => console.error(error));
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
@@ -99,7 +146,8 @@ export class Gc16EditarComponent implements OnInit {
 
     if(valid){
 
-      value.family = this.mActualGC16.family._id;
+      value.control_point = this.gc16['controls'].control_point.value._id;
+      delete value.company;
 
       this.GC16Service.editGC16(this.mActualGC16._id, value).subscribe(result => {
         this.toastService.edit('/rc/bpline', 'BPline');

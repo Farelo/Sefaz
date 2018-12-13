@@ -16,12 +16,13 @@
           <div class="campo">
             <p class="descricao">EMPRESA</p>
             <ng-select 
-              [items]="listOfCompanies" 
+              [items]="listOfCompanies"  
+              (change)="companySelected($event)"
               bindLabel="name" 
               placeholder="Associe uma empresa" 
-              formControlName="family"
-              [ngClass]="{'required': (gc16.get('family').hasError('required') && gc16.get('family').touched) 
-                || (gc16.get('family').hasError('required') && submitted)}">
+              formControlName="company"
+              [ngClass]="{'required': (gc16.get('company').hasError('required') && gc16.get('company').touched) 
+                || (gc16.get('company').hasError('required') && submitted)}">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
               </ng-template>
@@ -30,22 +31,31 @@
               </ng-template>
             </ng-select>
 
-            <p class="requiredText" *ngIf="(gc16.get('family').hasError('required') && gc16.get('family').touched)
-              || (gc16.get('family').hasError('required') && submitted)">
+            <p class="requiredText" *ngIf="(gc16.get('company').hasError('required') && gc16.get('company').touched)
+              || (gc16.get('company').hasError('required') && submitted)">
               Campo Obrigatório</p>
           </div>
         </div>
 
         <!-- Item 2 -->
-        <div class="col-sm-4" *ngIf="gc16.get('family').value">
+        <div class="col-sm-4" *ngIf="gc16.get('company').value">
           <p class="descricao">PONTOS DE CONTROLE</p>
-          <ng-select #select bindLabel="name" placeholder="Associe pontos de controle" [items]="allControlPoints" [multiple]="true"
-            formControlName="selectedControlPoints">
+          <ng-select 
+            bindLabel="name" 
+            placeholder="Associe pontos de controle" 
+            formControlName="control_point"
+            [items]="listOfControlPoints"
+            [ngClass]="{'required': (gc16.get('control_point').hasError('required') && gc16.get('control_point').touched)
+            || (gc16.get('control_point').hasError('required') && submitted)}">
         
             <ng-template ng-option-tmp let-item="item">
               <div>{{ item.name }} </div>
             </ng-template>
           </ng-select>
+
+          <p class="requiredText" *ngIf="(gc16.get('control_point').hasError('required') && gc16.get('control_point').touched)
+            || (gc16.get('control_point').hasError('required') && submitted)">
+            Campo Obrigatório</p>
         </div>
 
       </div>
