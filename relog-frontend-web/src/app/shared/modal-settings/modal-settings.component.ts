@@ -5,6 +5,7 @@ import { SettingsService, AuthenticationService, ToastService, CEPService, Profi
 import { MeterFormatter } from '../pipes/meter_formatter'
 import { WeekFormatter } from '../pipes/week_formatter'
 import { ChargeFormatter } from '../pipes/charge_formatter'
+import { MeterFormatterInM } from '../pipes/meter_formatter_in_m';
 
 declare var $: any;
 
@@ -47,10 +48,10 @@ export class ModalSettings implements OnInit {
     connect: [true, false],
     range: {
       min: 0,
-      max: 4
+      max: 4000
     },
-    tooltips: new MeterFormatter(),
-    step: 0.01
+    tooltips: new MeterFormatterInM(),
+    step: 1
   };
 
   //
