@@ -1,6 +1,6 @@
 module.exports = {
   BATERIA_BAIXA: {
-    key: undefined,
+    key: 'bateria_baixa',
     alert: 'bateria_baixa'
   },
   DESABILITADA_COM_SINAL: {
@@ -48,7 +48,7 @@ module.exports = {
     alert: 'local_incorreto'
   },
   PERMANENCIA_EXCEDIDA: {
-    key: undefined,
+    key: 'tempo_de_permanencia_excedido',
     alert: 'tempo_de_permanencia_excedido'
   }
 }

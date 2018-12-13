@@ -18,21 +18,16 @@ module.exports = async (packing, currentControlPoint) => {
             const packingIsOk = family.routes.filter(route => isIncorrectLocalWithRoutes(route, currentControlPoint))
             if (!packingIsOk.length > 0) {
                 console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
-                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return true
-
-                const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert })
-                newCurrentStateHistory.save()
-
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
-                return true
+
+                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return null
+                await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert })
             } else {
                 console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
 
-                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return true
-
-                const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
-                newCurrentStateHistory.save()
+                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
+                await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
             }
 
         } else {
@@ -44,26 +39,20 @@ module.exports = async (packing, currentControlPoint) => {
                 /* Se não foi encontrado nenhum ponto de controle */
                 if (!packingIsOk.length > 0) {
                     console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
-                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return true
-
-                    const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert })
-                    newCurrentStateHistory.save()
-
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
-                    return true
+                    
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return true
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert })
+
                 } else {
                     console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
 
-                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return true
-
-                    const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
-                    newCurrentStateHistory.save()
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
                 }
             } 
         }
-
-        return false
     } catch (error) {
         console.error(error)
         throw new Error(error)

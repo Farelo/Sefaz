@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Packing } = require('./packings.model')
+const STATES = require('../scripts/common/states')
 
 const currentStateHistorySchema = new mongoose.Schema({
     packing: {
@@ -25,7 +26,6 @@ const currentStateHistorySchema = new mongoose.Schema({
             'local_correto'
         ],
         lowercase: true,
-        trim: true,
         required: true
     },
     created_at: {
@@ -41,7 +41,9 @@ const currentStateHistorySchema = new mongoose.Schema({
 
 const update_packing = async (current_state_history, next) => {
     try {
-        await Packing.findByIdAndUpdate(current_state_history.packing, { last_current_state_history: current_state_history._id }, { new: true })
+        if (current_state_history.type !== STATES.BATERIA_BAIXA.alert && current_state_history.type !== STATES.PERMANENCIA_EXCEDIDA.alert && current_state_history.type !== STATES.AUSENTE.alert ) {
+            await Packing.findByIdAndUpdate(current_state_history.packing, { last_current_state_history: current_state_history._id }, { new: true })
+        }
         next()
     } catch (error) {
         next(error)

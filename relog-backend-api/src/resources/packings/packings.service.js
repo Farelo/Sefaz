@@ -125,13 +125,13 @@ const packingOnControlPoint = (packing, control_point) => {
 const loginLokaDmApi = async () => {
     const options = {
         method: 'POST',
-        uri: `${config.get('loka-api.baseUrl')}/auth/login`,
+        uri: `${config.get('loka_api.baseUrl')}/auth/login`,
         headers: {
             'Content-type': 'application/json'
         },
         body: {
-            username: config.get('loka-api.username'),
-            password: config.get('loka-api.password')
+            username: config.get('loka_api.username'),
+            password: config.get('loka_api.password')
         },
         resolveWithFullResponse: true,
         json: true
@@ -147,12 +147,11 @@ const loginLokaDmApi = async () => {
     }
 }
 
-
 const deviceById = async (cookie, device_id) => {
     try {
         const options = {
             method: 'GET',
-            uri: `${config.get('loka-api.baseUrl')}/terminal/get/${device_id}`,
+            uri: `${config.get('loka_api.baseUrl')}/terminal/get/${device_id}`,
             headers: {
                 'content-type': 'application/json',
                 'Cookie': `${cookie}`,

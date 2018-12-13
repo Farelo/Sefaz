@@ -110,10 +110,10 @@ userSchema.methods.generateUserToken = function () {
     const token = jwt.sign({ _id: this._id, role: this.role }, config.get('security.jwtPrivateKey'), { expiresIn: config.get('security.tokenLife') })
     return `Bearer ${token}`
 }
-userSchema.methods.generateUserRefreshToken = function () {
-    const token = jwt.sign({ _id: this._id, role: this.role }, config.get('security.jwtPrivateKey'), { expiresIn: config.get('security.refreshTokenLife') })
-    return `Bearer ${token}`
-}
+// userSchema.methods.generateUserRefreshToken = function () {
+//     const token = jwt.sign({ _id: this._id, role: this.role }, config.get('security.jwtPrivateKey'), { expiresIn: config.get('security.refreshTokenLife') })
+//     return `Bearer ${token}`
+// }
 
 userSchema.methods.passwordMatches = function (password) {
     return bcrypt.compare(password, this.password)

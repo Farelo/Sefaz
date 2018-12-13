@@ -200,4 +200,6 @@ module.exports = router
  *         type: string
  *       min:
  *         type: string
+ *       overtime:
+ *         type: string
  */

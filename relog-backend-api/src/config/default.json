@@ -18,7 +18,7 @@
         "key": "/security/keys/key.pem",
         "certificate": "/security/keys/cert.pem",
         "refreshTokenSecret": "some-secret-refresh-token-shit",
-        "tokenLife": 900,
+        "tokenLife": 3600,
         "refreshTokenLife": 86400
     },
     "swagger": {
@@ -38,7 +38,7 @@
         "socketTimeoutMS": 0,
         "keepAlive": true
     },
-    "loka-api": {
+    "loka_api": {
         "baseUrl": "https://dm.loka.systems",
         "username": "sys.dm@reciclapac.com",
         "password": "Rsysadmin2242"
