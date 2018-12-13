@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { GC16 } from '../../../shared/models/gc16';
-import { ToastService, FamiliesService, GC16Service } from '../../../servicos/index.service';
+import { ToastService, FamiliesService, GC16Service, CompaniesService } from '../../../servicos/index.service';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import * as $ from 'jquery'
@@ -17,11 +17,16 @@ export class Gc16AdicionarComponent implements OnInit {
   @ViewChild('drawer') drawer: ElementRef;
 
   public listOfFamilies: any;
+  
+  public listOfCompanies: any[] = [];
+  public selectedCompany: any[] = [];
+
   public gc16: FormGroup;
   public submitted: boolean = false;
 
   constructor(
     private gc16Service: GC16Service,
+    private companiesService: CompaniesService,
     private familyService: FamiliesService,
     private fb: FormBuilder,
     private toastService: ToastService) {
@@ -32,6 +37,7 @@ export class Gc16AdicionarComponent implements OnInit {
 
     this.configureFormGroup();
     this.loadfamilies();
+    this.loadCompanies();
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
@@ -196,6 +202,14 @@ export class Gc16AdicionarComponent implements OnInit {
     }, err => console.error(err));
   }
 
+  /**
+   * Método para carregar a lista
+   */
+  loadCompanies() {
+    this.companiesService.getAllCompanies().subscribe(result => {
+      this.listOfCompanies = result; 
+    }, error => console.error(error));
+  }
 
   configureFormGroup() {
 

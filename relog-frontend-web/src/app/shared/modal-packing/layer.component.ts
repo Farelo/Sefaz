@@ -134,7 +134,7 @@ export class LayerModalComponent implements OnInit {
   getPlantRadius() {
 
     let currentSetting = this.authenticationService.currentSettings();
-    this.settings.range_radius = currentSetting.range_radius * 1000;
+    this.settings.range_radius = currentSetting.range_radius;
   }
 
   /**
