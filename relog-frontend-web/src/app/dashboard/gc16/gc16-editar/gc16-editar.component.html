@@ -14,11 +14,40 @@
         <!-- Item 1 -->
         <div class="col-sm-4">
           <div class="campo">
-            <p class="descricao">EQUIPAMENTO</p>
-            <input type="text" class="form-control" placeholder="" [value]="gc16.controls.family.value.code" disabled>
+            <p class="descricao">EMPRESA</p>
+            <ng-select [items]="listOfCompanies" (change)="companySelected($event)" bindLabel="name" placeholder="Associe uma empresa"
+              formControlName="company" [ngClass]="{'required': (gc16.get('company').hasError('required') && gc16.get('company').touched) 
+                      || (gc16.get('company').hasError('required') && submitted)}">
+              <ng-template ng-label-tmp let-item="item">
+                {{item.name}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div> {{ item.name }} </div>
+              </ng-template>
+            </ng-select>
+
+            <p class="requiredText" *ngIf="(gc16.get('company').hasError('required') && gc16.get('company').touched)
+                    || (gc16.get('company').hasError('required') && submitted)">
+              Campo Obrigatório</p>
           </div>
         </div>
 
+        <!-- Item 2 -->
+        <div class="col-sm-4">
+          <p class="descricao">PONTOS DE CONTROLE</p>
+          <ng-select bindLabel="name" placeholder="Associe pontos de controle" formControlName="control_point" [items]="listOfControlPoints"
+            [ngClass]="{'required': (gc16.get('control_point').hasError('required') && gc16.get('control_point').touched)
+                  || (gc16.get('control_point').hasError('required') && submitted)}">
+
+            <ng-template ng-option-tmp let-item="item">
+              <div>{{ item.name }} </div>
+            </ng-template>
+          </ng-select>
+
+          <p class="requiredText" *ngIf="(gc16.get('control_point').hasError('required') && gc16.get('control_point').touched)
+                  || (gc16.get('control_point').hasError('required') && submitted)">
+            Campo Obrigatório</p>
+        </div>
       </div>
 
       <!-- =================== -->
@@ -31,13 +60,12 @@
             <p class="descricao">VOLUME ANUAL</p>
             <p class="explicacao">Ex. "10000"</p>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" (blur)="onBlurMethod()"
-                formControlName="annual_volume">
+              <input type="number" class="form-control" placeholder="" (blur)="onBlurMethod()" formControlName="annual_volume">
             </div>
             <p class="requiredText" *ngIf="(gc16.get('annual_volume').hasError('pattern'))
                             || (gc16.get('annual_volume').hasError('pattern') && submitted)">
               Valor inválido</p>
-            
+
             <p class="requiredText" *ngIf="(gc16.get('annual_volume').hasError('required') && gc16.get('annual_volume').touched)
                           || (gc16.get('annual_volume').hasError('required') && submitted)">
               Campo Obrigatório</p>
@@ -50,8 +78,7 @@
             <p class="descricao">DIAS PRODUTIVOS</p>
             <p class="explicacao">Ex. "240 Dias"</p>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" (blur)="onBlurMethod()"
-                formControlName="productive_days">
+              <input type="number" class="form-control" placeholder="" (blur)="onBlurMethod()" formControlName="productive_days">
             </div>
             <p class="requiredText" *ngIf="(gc16.get('productive_days').hasError('pattern'))
                           || (gc16.get('productive_days').hasError('pattern') && submitted)">
@@ -68,8 +95,7 @@
             <p class="descricao">CAPACIDADE</p>
             <p class="explicacao">Ex. "26"</p>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" (blur)="onBlurMethod()"
-                formControlName="capacity">
+              <input type="number" class="form-control" placeholder="" (blur)="onBlurMethod()" formControlName="capacity">
             </div>
             <p class="requiredText" *ngIf="(gc16.get('capacity').hasError('pattern'))
                           || (gc16.get('capacity').hasError('pattern') && submitted)">
@@ -86,8 +112,7 @@
             <p class="descricao">CONTAINERS/DIA</p>
             <span class="descricaoVazia"></span>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" disabled 
-                formControlName="container_days">
+              <input type="number" class="form-control" placeholder="" disabled formControlName="container_days">
             </div>
           </div>
         </div>
@@ -109,7 +134,7 @@
             <p class="requiredText" *ngIf="(gc16.get('owner_stock.days').hasError('pattern'))
                             || (gc16.get('owner_stock.days').hasError('pattern') && submitted)">
               Valor inválido</p>
-            
+
             <p class="requiredText" *ngIf="(gc16.get('owner_stock.days').hasError('required') && gc16.get('owner_stock.days').touched)
                             || (gc16.get('owner_stock.days').hasError('required') && submitted)">
               Campo Obrigatório</p>
@@ -134,8 +159,7 @@
                 <p class="descricao dp">QNT. CONTAINER</p>
                 <span class="descricaoVazia"></span>
                 <div class="input-group test2">
-                  <input type="number" class="form-control" placeholder="" disabled 
-                    formControlName="qty_container">
+                  <input type="number" class="form-control" placeholder="" disabled formControlName="qty_container">
                 </div>
               </div>
             </div>
@@ -161,8 +185,7 @@
                 <p class="descricao dp">QNT. CONTAINER</p>
                 <span class="descricaoVazia"></span>
                 <div class="input-group test2">
-                  <input type="number" class="form-control" placeholder="" disabled 
-                    formControlName="qty_container_max">
+                  <input type="number" class="form-control" placeholder="" disabled formControlName="qty_container_max">
                 </div>
               </div>
             </div>
@@ -180,8 +203,8 @@
             <p class="descricao">ESTOQUE FORNECEDOR</p>
             <p class="explicacao">Ex. "5 Dias"</p>
             <div class="placeholder" data-placeholder="DIAS">
-              <input type="number" min="0" class="form-control" aria-describedby="basic-addon2"
-                formControlName="days" (blur)="onBlurMethod()">
+              <input type="number" min="0" class="form-control" aria-describedby="basic-addon2" formControlName="days"
+                (blur)="onBlurMethod()">
             </div>
             <p class="requiredText" *ngIf="(gc16.get('client_stock.days').hasError('pattern'))
                           || (gc16.get('client_stock.days').hasError('pattern') && submitted)">
@@ -209,8 +232,7 @@
                 <p class="descricao dp">QNT. CONTAINER</p>
                 <span class="descricaoVazia"></span>
                 <div class="input-group test2">
-                  <input type="number" class="form-control" placeholder="" disabled 
-                    formControlName="qty_container">
+                  <input type="number" class="form-control" placeholder="" disabled formControlName="qty_container">
                 </div>
               </div>
             </div>
@@ -234,8 +256,7 @@
                 <p class="descricao dp">QNT. CONTAINER</p>
                 <span class="descricaoVazia"></span>
                 <div class="input-group test2">
-                  <input type="number" class="form-control" placeholder="" disabled
-                    formControlName="qty_container_max">
+                  <input type="number" class="form-control" placeholder="" disabled formControlName="qty_container_max">
                 </div>
               </div>
             </div>
@@ -281,8 +302,7 @@
             <p class="descricao">QNT. CONTAINER</p>
             <span class="descricaoVazia"></span>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" disabled 
-                formControlName="qty_container">
+              <input type="number" class="form-control" placeholder="" disabled formControlName="qty_container">
             </div>
           </div>
         </div>
@@ -327,13 +347,12 @@
             <p class="descricao">QNT. CONTAINER</p>
             <span class="descricaoVazia"></span>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" disabled
-                formControlName="qty_container">
+              <input type="number" class="form-control" placeholder="" disabled formControlName="qty_container">
             </div>
           </div>
         </div>
       </div>
-      
+
 
       <!-- =================== -->
       <!-- Linha 7 -->
@@ -344,7 +363,7 @@
           <div class="campo">
             <p class="descricao">FREQUÊNCIA</p>
             <p class="explicacao">Ex. "3 Dias"</p>
-            <div class="placeholder" data-placeholder="DIAS"> 
+            <div class="placeholder" data-placeholder="DIAS">
               <input type="number" min="0" class="form-control" placeholder="" aria-describedby="basic-addon2"
                 formControlName="days" (blur)="onBlurMethod()">
             </div>
@@ -375,8 +394,7 @@
                 <p class="descricao">QNT. CONTAINER</p>
                 <span class="descricaoVazia"></span>
                 <div class="input-group">
-                  <input type="number" class="form-control" placeholder="" disabled 
-                    formControlName="qty_container">
+                  <input type="number" class="form-control" placeholder="" disabled formControlName="qty_container">
                 </div>
               </div>
             </div>
@@ -385,8 +403,7 @@
                 <p class="descricao">TOTAL DE DIAS</p>
                 <span class="descricaoVazia"></span>
                 <div class="placeholder" data-placeholder="%">
-                  <input type="number" class="form-control" placeholder="" disabled 
-                    formControlName="qty_total_days">
+                  <input type="number" class="form-control" placeholder="" disabled formControlName="qty_total_days">
                 </div>
               </div>
             </div>
@@ -406,8 +423,7 @@
             <p class="descricao">FATOR DE SEGURANÇA</p>
             <p class="explicacao">Ex. "10"</p>
             <div class="placeholder" data-placeholder="%">
-              <input type="number" class="form-control" placeholder="" formControlName="percentage"
-                (blur)="onBlurMethod()">
+              <input type="number" class="form-control" placeholder="" formControlName="percentage" (blur)="onBlurMethod()">
             </div>
             <p class="requiredText" *ngIf="(gc16.get('security_factor.percentage').hasError('pattern'))
                           || (gc16.get('security_factor.percentage').hasError('pattern') && submitted)">
@@ -417,15 +433,14 @@
               Campo Obrigatório</p>
           </div>
         </div>
-        
+
         <!-- Item 2 -->
         <div class="col-md-4">
           <div class="campo">
             <p class="descricao">QUANT. CONTAINER</p>
             <span class="descricaoVazia"></span>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" disabled 
-                formControlName="qty_container">
+              <input type="number" class="form-control" placeholder="" disabled formControlName="qty_container">
             </div>
           </div>
         </div>
@@ -436,8 +451,7 @@
             <p class="descricao">QUANT. TOTAL CONSTRUÍDA</p>
             <span class="descricaoVazia desaparecer"></span>
             <div class="input-group">
-              <input type="number" class="form-control" placeholder="" disabled 
-                formControlName="qty_total_build">
+              <input type="number" class="form-control" placeholder="" disabled formControlName="qty_total_build">
             </div>
           </div>
         </div>

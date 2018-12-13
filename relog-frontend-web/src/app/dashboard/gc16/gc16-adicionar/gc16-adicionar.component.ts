@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { GC16 } from '../../../shared/models/gc16';
-import { ToastService, FamiliesService, GC16Service, CompaniesService } from '../../../servicos/index.service';
+import { ToastService, FamiliesService, GC16Service, CompaniesService, ControlPointsService } from '../../../servicos/index.service';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import * as $ from 'jquery'
@@ -19,7 +19,10 @@ export class Gc16AdicionarComponent implements OnInit {
   public listOfFamilies: any;
   
   public listOfCompanies: any[] = [];
-  public selectedCompany: any[] = [];
+  public selectedCompany: any = null;
+  
+  public listOfControlPoints: any[] = [];
+  public auxListOfControlPoints: any[] = [];
 
   public gc16: FormGroup;
   public submitted: boolean = false;
@@ -27,6 +30,7 @@ export class Gc16AdicionarComponent implements OnInit {
   constructor(
     private gc16Service: GC16Service,
     private companiesService: CompaniesService,
+    private controlPointService: ControlPointsService,
     private familyService: FamiliesService,
     private fb: FormBuilder,
     private toastService: ToastService) {
@@ -38,6 +42,7 @@ export class Gc16AdicionarComponent implements OnInit {
     this.configureFormGroup();
     this.loadfamilies();
     this.loadCompanies();
+    this.loadControlPoints();
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
@@ -47,7 +52,8 @@ export class Gc16AdicionarComponent implements OnInit {
     if (valid) {
       
       //reduzindo família ao seu id
-      value.family = this.gc16['controls'].family.value._id;
+      value.control_point = this.gc16['controls'].control_point.value._id;
+      delete value.company;
 
       this.gc16Service.createGC16(value).subscribe(result => {
         this.toastService.success('/rc/bpline', 'BPline');
@@ -211,6 +217,21 @@ export class Gc16AdicionarComponent implements OnInit {
     }, error => console.error(error));
   }
 
+  loadControlPoints(){
+    this.controlPointService.getAllControlPoint().subscribe(result => {
+      this.listOfControlPoints = result;
+      this.auxListOfControlPoints = result;
+    }, error => console.error(error));
+  }
+
+  companySelected(event: any){
+    console.log(event);
+
+    this.listOfControlPoints = this.auxListOfControlPoints.filter(elem => {
+      return elem.company._id == event._id;
+    });
+  }
+
   configureFormGroup() {
 
     this.gc16 = this.fb.group({
@@ -218,7 +239,8 @@ export class Gc16AdicionarComponent implements OnInit {
       productive_days: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
       capacity: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
       container_days: ['', [Validators.required]],
-      family: [undefined, [Validators.required]],
+      company: [undefined, [Validators.required]],
+      control_point: [undefined, [Validators.required]],
       security_factor: this.fb.group({
         percentage: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
         qty_total_build: ['', [Validators.required]],

@@ -17,7 +17,7 @@
               <th>Capacidade</th>
               <th>Dias Produtivos</th>
               <!-- <th>Fornecedor</th> -->
-              <th>Equipamento</th>
+              <th>Ponto de Controle</th>
               <th class="opcoes">Opções</th>
             </tr>
           </thead>
@@ -30,7 +30,7 @@
               <td>{{ gc.capacity }}</td>
               <td>{{ gc.productive_days }}</td>
               <!-- <td>{{gc.supplier.name}}</td> -->
-              <td>{{ gc.family.code }}</td>
+              <td>{{ gc.control_point.name }}</td>
               <td class="teste">                
                 <button class="editar" [routerLink]="['editar/', gc._id]">
                   EDITAR
