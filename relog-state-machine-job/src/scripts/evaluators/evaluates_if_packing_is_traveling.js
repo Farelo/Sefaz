@@ -27,22 +27,31 @@ module.exports = async (packing, setting) => {
                     console.log('VIAGEM_PRAZO')
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true })
 
-                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_PRAZO.alert) return null
-                    // await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_PRAZO.alert })
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_em_prazo') {
+                        console.log("-")
+                    } else {
+                        await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_em_prazo' })
+                    }
                 } else {
                     if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
                         console.log('VIAGEM_VIAGEM_PERDIDA')
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PERDIDA.key }, { new: true })
 
-                        // if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_PERDIDA.alert) return null
-                        // await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_PERDIDA.alert })
+                        if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_perdida') {
+                            console.log("-")
+                        } else {
+                            await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_perdida' })
+                        }
 
                     } else {
                         console.log('VIAGEM_ATRASADA')
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_ATRASADA.key }, { new: true })
 
-                        // if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.VIAGEM_ATRASADA.alert) return null
-                        // await CurrentStateHistory.create({ packing: packing._id, type: STATES.VIAGEM_ATRASADA.alert })
+                        if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_atrasada'.alert) {
+                            console.log("-")
+                        } else {
+                            await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_atrasada' })
+                        }
 
                     }
                 }
