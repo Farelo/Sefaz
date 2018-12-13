@@ -16,7 +16,10 @@
         "saltRounds": 10,
         "enableHTTPS": true,
         "key": "/security/keys/key.pem",
-        "certificate": "/security/keys/cert.pem"
+        "certificate": "/security/keys/cert.pem",
+        "refreshTokenSecret": "some-secret-refresh-token-shit",
+        "tokenLife": 900,
+        "refreshTokenLife": 86400
     },
     "swagger": {
         "enabled": true,
