@@ -72,11 +72,11 @@
           <th>Equipamento</th>
           <th>Total de Equipamentos do Fornecedor (TEF)</th>
 
-          <th>Quantidade nas Plantas (A)</th>
-          <th>Quantidade no Fornecedor (B)</th>
+          <th>Nos Pontos de Controle Próprios (A)</th>
+          <th>Nos Pontos de Controle Administrados (B)</th>
           <th>Quantidade no Transito (C)</th>
 
-          <th>Quantidade no Operator Logístico (D)</th>
+          <!-- <th>Quantidade no Operator Logístico (D)</th> -->
           <th>Total do Inventário On Line (TIOL = A+B+C+D)</th>
           <th>Diferença (TEF - TIOL)</th>
 
@@ -103,7 +103,7 @@
           <td>{{ item.qtd_in_clients }}</td>
           <td>{{ item.qtd_in_traveling }}</td>
 
-          <td> ? </td>
+          <!-- <td> ? </td> -->
           <td>{{ item.qtd_in_owner + item.qtd_in_clients + item.qtd_in_traveling }}</td>
           <td>{{ item.qtd_total -
             (item.qtd_in_owner + item.qtd_in_clients + item.qtd_in_traveling) }}</td>
