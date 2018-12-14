@@ -16,9 +16,9 @@
     <li>
       <a routerLinkActive="active" routerLink="/rc/inventario">Inventário</a>
     </li>
-    <li *ngIf="currentUser?.role === 'admin'">
+    <!-- <li *ngIf="currentUser?.role === 'admin'">
       <a routerLinkActive="active" routerLink="/rc/importar">Importar Dados</a>
-    </li>
+    </li> -->
     <li>
       <a routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
     </li>
@@ -59,9 +59,9 @@
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/inventario">Inventário</a>
         </li>
 
-        <li *ngIf="currentUser?.role === 'admin'">
+        <!-- <li *ngIf="currentUser?.role === 'admin'">
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/importar">Importar Dados</a>
-        </li>
+        </li> -->
 
         <li>
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
@@ -85,12 +85,8 @@
             <div style="float: left;">
               <p id="username">{{this.authenticationService.currentUser().user}} </p>
 
-              <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Fábrica.</p>
-              <p class="user-type" *ngIf="currentUser?.role === 'StaffFactory'">Funcionário da Fábrica.</p>
-              <p class="user-type" *ngIf="currentUser?.role === 'Logistic'">Op. Logistico Administrador.</p>
-              <p class="user-type" *ngIf="currentUser?.role === 'StaffLogistic'">Funcionário do Op. Logistico.</p>
-              <p class="user-type" *ngIf="currentUser?.role === 'Supplier'">Fornecedor Administrador.</p>
-              <p class="user-type" *ngIf="currentUser?.role === 'StaffSupplier'">Funcionário do Fornecedor.</p>
+              <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa.</p>
+              <p class="user-type" *ngIf="currentUser?.role === 'client'">Funcionário da Empresa.</p>
             </div>
           </div>
         </li>
@@ -145,12 +141,8 @@
 
             <p id="username">{{this.authenticationService.currentUser().user}} </p>
     
-            <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Fábrica.</p>
-            <p class="user-type" *ngIf="currentUser?.role === 'StaffFactory'">Funcionário da Fábrica.</p>
-            <p class="user-type" *ngIf="currentUser?.role === 'Logistic'">Op. Logistico Administrador.</p>
-            <p class="user-type" *ngIf="currentUser?.role === 'StaffLogistic'">Funcionário do Op. Logistico.</p>
-            <p class="user-type" *ngIf="currentUser?.role === 'Supplier'">Fornecedor Administrador.</p>
-            <p class="user-type" *ngIf="currentUser?.role === 'StaffSupplier'">Funcionário do Fornecedor.</p>
+            <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa.</p>
+            <p class="user-type" *ngIf="currentUser?.role === 'client'">Funcionário da Empresa.</p>
           </div>
         </div>
       </li>
@@ -185,86 +177,3 @@
     </ul>
   </div>
 </ng-template>
-
-<!-- <div class="menu1">
-    <h1 style="float: left">RECICLAPAC</h1>
-    <ul class="lista"style=" list-style-type:none; float: right">
-        <li><a routerLinkActive="active" routerLink="/rc/home" >HOME</a></li>
-        <li *ngIf="currentUser?.role === 'admin'"><a routerLinkActive="active" routerLink="/rc/alertas" >ALERTAS</a></li>
-        <li *ngIf="currentUser?.role === 'admin'"><a routerLinkActive="active"  routerLink="/rc/cadastros">CADASTROS</a></li>
-        <li><a routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
-        <li *ngIf="currentUser?.role === 'admin'"><a routerLinkActive="active"  routerLink="/rc/importar">IMPORTAR DADOS</a></li>
-        <li><a routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
-        <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentUser()?.gc16 === true"><a routerLinkActive="active"  routerLink="/rc/bpline">BPline</a></li>
-
-        <li class="scroll usuario placementBottom"
-        [ngbPopover]= 'popContent'
-        placement="bottom"
-        #a="ngbPopover">
-          <a class="botaoUsuario" routerLinkActive="active"></a>
-        </li>
-
-        <li class="scroll usuario placementLeft"
-        [ngbPopover]= 'popContent'
-        placement="left"
-        #p="ngbPopover">
-          <a class="botaoUsuario" routerLinkActive="active"></a>
-        </li>
-    </ul>
-
-    <button class="menu" (click)="mudar()">
-      <span class="opa"></span>
-      <span class="opa"></span>
-      <span class="opa"></span>
-    </button>
-
-</div>
-
-<div class="menuEscondido"
-  [ngClass]="{
-    'desaparecer': menuAparecer == false,
-    'aparecer': menuAparecer == true}">
-    
-  <div class="row ">
-    <div class="col-sm-6 middle">
-      <img *ngIf="currentUser?.role === 'admin'" src="../../../assets/images/perfil1.png">
-      <p *ngIf="currentUser?.role === 'admin'">Administrador da Fábrica.</p>
-      <img *ngIf="currentUser?.role === 'StaffFactory'" src="../../../assets/images/perfil-funcionario.png">
-      <p *ngIf="currentUser?.role === 'StaffFactory'">Funcionário da Fábrica.</p><hr>
-      <img *ngIf="currentUser?.role === 'Logistic'" src="../../../assets/images/perfil-operador.png">
-      <p *ngIf="currentUser?.role === 'Logistic'">Op. Logistico Administrador.</p>
-      <img *ngIf="currentUser?.role === 'StaffLogistic'" src="../../../assets/images/perfil-funcionario.png">
-      <p *ngIf="currentUser?.role === 'StaffLogistic'">Funcionário do Op. Logistico.</p>
-      <img *ngIf="currentUser?.role === 'Supplier'" src="../../../assets/images/perfil-fornecedor.png">
-      <p *ngIf="currentUser?.role === 'Supplier'">Fornecedor Administrador.</p>
-      <img *ngIf="currentUser?.role === 'StaffSupplier'" src="../../../assets/images/perfil-funcionario.png">
-      <p *ngIf="currentUser?.role === 'StaffSupplier'">Funcionário do Fornecedor.</p>
-      <hr>
-      
-      <p>{{this.authenticationService.currentUser().user}} </p><hr>
-      <button class="gerenciar"  *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'Logistic' || currentUser?.role === 'Supplier'" (click)="p.close();openModal()"><div>GERENCIAR USUÁRIOS</div></button><br class="brgone">
-      <button class="gerenciar"  *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'Logistic' || currentUser?.role === 'Supplier'" (click)="p.close();openSettings()"><div>CONFIGURAÇÕES</div></button><br class="brgone">
-      <button class="medio" (click)="p.close();openModalEditar()"><div>EDITAR</div></button>
-      <button class="medio2" (click)="logout()"><div>SAIR</div></button>
-    </div>
-    
-
-    <div class="col-sm-6">
-      <ul class="listaEscondida"style=" ">
-        <li *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'Logistic' || currentUser?.role === 'Supplier'" class="opcaoEscondida"><a (click)="p.close();openModal()">GERENCIAR USUÁRIOS</a></li>
-        <li class="opcaoEscondida"><a (click)="p.close();openModalEditar()">EDITAR</a></li>
-        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/home">HOME</a></li>
-        <li *ngIf="currentUser?.role === 'admin'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/alertas">ALERTAS</a></li>
-        <li *ngIf="currentUser?.role === 'admin'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/cadastros">CADASTROS</a></li>
-        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/inventario">INVENTÁRIO</a></li>
-        <li *ngIf="currentUser?.role === 'admin'"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/importar">IMPORTAR DADOS</a></li>
-        <li><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">GEOLOCALIZAÇÃO</a></li>
-        <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentUser()?.gc16 === true"><a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">BPline</a></li>
-        <li class="opcaoEscondida"><a (click)="mudar()">SAIR</a></li>
-
-      </ul>
-    </div>
-  </div>
-</div>
-
- -->
