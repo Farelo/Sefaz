@@ -79,7 +79,7 @@
           <td style="cursor: default;">{{ packing.current_state | packingStatus}}</td>
           <td style="cursor: default;">{{packing?.current_control_point_name ? packing.current_control_point_name : "-" }}</td>
 
-          <td>{{ packing.current_control_point_type | type }} </td>
+          <td>{{ packing.current_control_point_type }} </td>
           <td class="text-center">{{ (packing.battery_percentage != undefined && packing.battery_percentage >= 0) ? ((packing.battery_percentage | round) + '%') : 'Sem Registro' }} </td>
           <td class="text-center">{{ packing.accuracy || '-' }} m</td>
 

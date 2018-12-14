@@ -70,7 +70,7 @@
         <tr class="cabecalho">
           <th>Fornecedor</th>
           <th>Equipamento</th>
-          <th>Total de Equipamentos do Fornecedor (TEF)</th>
+          <th>Total de Equipamentos Administrados (TEA)</th>
 
           <th>Nos Pontos de Controle Próprios (A)</th>
           <th>Nos Pontos de Controle Administrados (B)</th>
@@ -78,12 +78,12 @@
 
           <!-- <th>Quantidade no Operator Logístico (D)</th> -->
           <th>Total do Inventário On Line (TIOL = A+B+C+D)</th>
-          <th>Diferença (TEF - TIOL)</th>
+          <th>Diferença (TEA - TIOL)</th>
 
           <th>Atraso de Rota</th>
           <th>Local Incorreto</th>
           <th>Tempo de Permanencia</th>
-          <th>Embalagem Ausente</th>
+          <th *ngIf="settings.enable_viagem_perdida">Embalagem Ausente</th>
         </tr>
       </thead>
 
@@ -135,7 +135,7 @@
           </td>
 
           <!-- Alerta: embalagem ausente -->
-          <td>
+          <td *ngIf="settings.enable_viagem_perdida">
             <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', item.family_name, item.family_name, item.family_name, 1]">
               <span class="badge badge-pill badge-ausente">{{item.qtd_in_traveling_missing || '0'}}</span>
             </a>

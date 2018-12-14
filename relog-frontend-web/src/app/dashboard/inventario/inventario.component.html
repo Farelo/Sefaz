@@ -47,8 +47,8 @@
           <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" class="selectEq">
             <option value="">Escolha</option>
             <option>Inventário Geral</option>
-            <option>Tempo de permanência</option>
-            <option>Tempo de ausência</option>
+            <option>Tempo de Permanência</option>
+            <option>Tempo de Ausência</option>
             <option>Bateria</option>
             <option>Quantidade</option>
             <option>Geral</option>
@@ -72,10 +72,10 @@
     <app-inventario-geral *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Inventário Geral')"></app-inventario-geral>
 
     <!-- Relatório de Tempo de Permanência -->
-    <app-inventario-permanencia *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Tempo de permanência')"></app-inventario-permanencia>
+    <app-inventario-permanencia *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Tempo de Permanência')"></app-inventario-permanencia>
 
     <!-- Relatório de Ausência -->
-    <app-inventario-ausencia *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Tempo de ausência')"></app-inventario-ausencia>
+    <app-inventario-ausencia *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Tempo de Ausência')"></app-inventario-ausencia>
 
     <!-- Relatório de Bateria -->
     <app-inventario-bateria *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Bateria')"></app-inventario-bateria>

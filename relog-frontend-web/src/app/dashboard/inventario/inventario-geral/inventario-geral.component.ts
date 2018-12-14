@@ -24,11 +24,13 @@ export class InventarioGeralComponent implements OnInit {
   
   public actualPage: number = -1;
   
+  public settings: any = {};
+
   constructor(
     private reportService: ReportsService,
     private inventoryService: InventoryService,
     protected companiesService: CompaniesService,
-    private packingService: PackingService,
+    private authenticationService: AuthenticationService,
     private familyService: FamiliesService,
     private auth: AuthenticationService,
     private chatService: ChatService) {
@@ -39,10 +41,19 @@ export class InventarioGeralComponent implements OnInit {
 
   ngOnInit() {
 
+    this.getSettings();
     this.loadCompanies(); 
     this.loadDetailedInventory();
   }
   
+  /**
+   * Recupera a configuração dos alertas
+   */
+  getSettings() {
+
+    this.settings = this.authenticationService.currentSettings();
+  }
+
   /**
    * Load the list of companies
    */
