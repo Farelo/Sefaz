@@ -89,8 +89,8 @@ export class RastreamentoComponent implements OnInit {
   public listOfFamilies: any = [];
   public auxListOfFamilies: any = [];
 
+  public listOfCompanies: any = []; 
 
-  
   constructor(
     private ref: ChangeDetectorRef,
     private controlPointsService: ControlPointsService,
@@ -140,10 +140,30 @@ export class RastreamentoComponent implements OnInit {
    */
   loadCompanies() {
 
+    console.log('.'); 
+
     this.familyService.getAllFamilies().subscribe(result => {
 
       this.listOfFamilies = result;
       this.auxListOfFamilies = result;
+
+      console.log('..'); 
+      console.log(result); 
+      let auxListOfCompanies = [];
+
+      this.listOfCompanies = result.map(elem => {
+        if (auxListOfCompanies.length < 1) {
+          auxListOfCompanies.push(elem.company);
+        } else {
+          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1) 
+            auxListOfCompanies.push(elem.company);
+        }
+      }); 
+
+      console.log(auxListOfCompanies);
+
+      this.listOfCompanies = auxListOfCompanies;
+
     }, err => console.error(err));
   }
 
@@ -193,12 +213,28 @@ export class RastreamentoComponent implements OnInit {
     }
   }
 
+  companyChanged(event: any){
+    console.log(event);
+
+    if(event){
+      this.listOfFamilies = this.auxListOfFamilies.filter(elem => {
+        return elem.company._id == event._id;
+      });
+    } else{
+      this.listOfFamilies = this.auxListOfFamilies;
+    }
+
+    this.loadPackings();
+  }
+
   /**
    * The filter has changed
    */
   loadPackings() {
 
-    let cp_id = this.selectedCompany !== null ? this.selectedCompany.company._id : null;
+    console.log('.');
+    
+    let cp_id = this.selectedCompany !== null ? this.selectedCompany._id : null;
     let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
     let serial_id = this.selectedSerial !== null ? this.selectedSerial : null;
 
