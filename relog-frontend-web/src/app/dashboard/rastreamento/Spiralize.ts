@@ -140,9 +140,9 @@ export class Spiralize {
             i++;
         }
 
-        console.log('2. listOfObjects: ' + JSON.stringify(this.listOfObjects));
-        console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
-        console.log('4. auxDuplicated: ' + JSON.stringify(auxDuplicated));
+        // console.log('2. listOfObjects: ' + JSON.stringify(this.listOfObjects));
+        // console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
+        // console.log('4. auxDuplicated: ' + JSON.stringify(auxDuplicated));
     }
 
     /**

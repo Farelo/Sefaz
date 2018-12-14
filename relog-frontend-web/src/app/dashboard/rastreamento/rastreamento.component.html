@@ -15,13 +15,13 @@
           <h6>Filtros:</h6>
           <div class="form-group">
             <label>Empresas vinculadas:</label>
-            <ng-select [(ngModel)]="selectedCompany" [items]="listOfFamilies" (change)="loadPackings()" bindLabel="company.name"
+            <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)" bindLabel="company.name"
               placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
-                {{item.company.name}}
+                {{item.name}}
               </ng-template>
               <ng-template ng-option-tmp let-item="item">
-                <div> {{item.company.name}} </div>
+                <div> {{item.name}} </div>
               </ng-template>
             </ng-select>
           </div>
@@ -137,6 +137,8 @@
             <li> <span style="background-color: #f8bd37;"></span> Bateria baixa</li>
             <li> <span style="background-color: #4dc9ff;"></span> Embalagem atrasada</li>
             <li> <span style="background-color: #4c7bff;"></span> Tempo de permanência</li>
+            <li> <span style="background-color: #9ecf99;"></span> Sem Sinal</li>
+            <li> <span style="background-color: #3a9ca6;"></span> Perdida</li>
             <li> <span style="background-color: #027f01;"></span> Embalagens sem alerta</li>
             <li> <span style="background-color: #b39ddb;"></span> Embalagens agrupadas</li>
           </ul>
