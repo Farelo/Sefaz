@@ -9,7 +9,7 @@ services:
       - ./src/logs:/app/src/logs
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-initial-load
     ports: 
       - 9060:9060
     # networks: 
