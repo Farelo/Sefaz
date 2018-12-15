@@ -9,10 +9,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
-COPY . .
-
 RUN npm install
+
+COPY . .
 
 EXPOSE 9060
 
-ENTRYPOINT [ "npm", "run", "start" ]
+#ENTRYPOINT [ "npm", "run", "start" ]
+ENTRYPOINT [ "npm", "run", "start-initial-load" ]
