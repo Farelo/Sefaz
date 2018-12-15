@@ -14,7 +14,7 @@ module.exports = async () => {
         const cookie = await dm_controller.loginDM()
 
         //devices = [ { tag: { code: code_value } } ]
-        let devices = await Packing.find({}, {_id: 0, tag: 1})//.limit(10)
+        let devices = await Packing.find({}, {_id: 0, tag: 1})//.limit(2)
 
         //TODO: retirar esse trecho pra entrega final e seu respectivo require
         // let devices = await packings
