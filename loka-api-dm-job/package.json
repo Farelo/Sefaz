@@ -5,11 +5,11 @@
   "main": "src/server.js",
   "scripts": {
     "generate-env": "cross-env NODE_ENV=production node src/tools/generate_env.tools.js",
-    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* pm2 start src/server.js --name loka-api-job",
-    "prod-cluster": "cross-env NODE_ENV=production NODE_CONFIG_DIR=src/config pm2 start src/server.js --name loka-api-job -i 0",
+    "prod-pm2": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* pm2 start src/server.js --name loka-api-job",
+    "prod-pm2-cluster": "cross-env NODE_ENV=production NODE_CONFIG_DIR=src/config pm2 start src/server.js --name loka-api-job -i 0",
     "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* nodemon src/server.js",
     "start-initial-load": "cross-env NODE_CONFIG_DIR=src/config INITIAL_LOAD=true DEBUG=* node src/server.js",
-    "dev": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production node src/server.js",
+    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production node src/server.js",
     "test": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=test jest --watchAll --verbose --runInBand --no-cache"
   },
   "author": "Miguel Lima",

@@ -25,9 +25,9 @@ COPY . .
 
 EXPOSE 8013
 
-RUN npm run generate-env --unsafe-perm=true --allow-root
+# RUN npm run generate-env --unsafe-perm=true --allow-root
 
-ENTRYPOINT [ "npm", "run", "dev" ]
+ENTRYPOINT [ "npm", "run", "prod" ]
 # ENTRYPOINT [ "cat", "/app/src/config/production.json" ]
 # ENTRYPOINT [ "ls", "/app/src/config/" ]
 # ENTRYPOINT [ "printenv" ]

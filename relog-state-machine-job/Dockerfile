@@ -19,4 +19,4 @@ COPY . .
 
 EXPOSE 8012
 
-ENTRYPOINT [ "npm", "run", "dev" ]
+ENTRYPOINT [ "npm", "run", "prod" ]
