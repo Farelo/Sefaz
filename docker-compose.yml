@@ -43,38 +43,38 @@ services:
 
   ################ CEBRACE ################
 
-  # cebrace-frontend-web:
-  #   container_name: cebrace-frontend-web
-  #   build:
-  #     context: relog-frontend-web
-  #     dockerfile: Dockerfile
-  #     args:
-  #       baseurl: http://cebrace-backend-api:8011/api/ # servico:porta/api que estará disponível a api do backend
-  #       port: 8010 # porta a ser passada ao node apra disponibilizar o front-end
-  #   restart: always
-  #   ports: 
-  #     - 8010:8010 # porta host:container que escutará (NGINX precisa dessa informação)
-  #   networks:
-  #     - front-net
-  #     - front-back
-  #   depends_on:
-  #     - nginx-container
-  #     # - mongo 
+  cebrace-frontend-web:
+    container_name: cebrace-frontend-web
+    build:
+      context: relog-frontend-web
+      dockerfile: Dockerfile
+      args:
+        baseurl: http://cebrace-backend-api:8011/api/ # servico:porta/api que estará disponível a api do backend
+        port: 8010 # porta a ser passada ao node apra disponibilizar o front-end
+    restart: always
+    ports: 
+      - 8010:8010 # porta host:container que escutará (NGINX precisa dessa informação)
+    networks:
+      - front-net
+      - front-back
+    depends_on:
+      - nginx-container
+      # - mongo 
 
-  # cebrace-backend-api:
-  #   container_name: cebrace-backend-api
-  #   build:
-  #     context: relog-backend-api
-  #     dockerfile: Dockerfile
-  #   # command: npm run prod
-  #   # environment: 
-  #   ports:
-  #     - 8011:8011
-  #   networks: 
-  #     - front-back
-  #     - mongo-net
-  #   depends_on: 
-  #     - mongo
+  cebrace-backend-api:
+    container_name: cebrace-backend-api
+    build:
+      context: relog-backend-api
+      dockerfile: Dockerfile
+    # command: npm run prod
+    # environment: 
+    ports:
+      - 8011:8011
+    networks: 
+      - front-back
+      - mongo-net
+    depends_on: 
+      - mongo
 
   cebrace-loka-api-job:
     container_name: cebrace-loka-api-job
@@ -89,18 +89,18 @@ services:
     depends_on: 
       - mongo
 
-  # cebrace-state-machine-job:
-  #   container_name: cebrace-state-machine-job
-  #   build:
-  #     context: relog-state-machine-job
-  #     dockerfile: Dockerfile
-  #   command: npm run start
-  #   ports:
-  #     - 8012:8012
-  #   networks: 
-  #     - mongo-net
-  #   depends_on: 
-  #     - mongo
+  cebrace-state-machine-job:
+    container_name: cebrace-state-machine-job
+    build:
+      context: relog-state-machine-job
+      dockerfile: Dockerfile
+    command: npm run start
+    ports:
+      - 8012:8012
+    networks: 
+      - mongo-net
+    depends_on: 
+      - mongo
     
 
 networks:
