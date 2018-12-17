@@ -7,7 +7,8 @@
     "postinstall": "node src/tools/generate_env.tools.js",
     "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=*,-mquery nodemon src/server.js",
     "test": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=test jest --watchAll --verbose --runInBand --no-cache",
-    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* pm2 start src/server.js --name recicla-job -i 0"
+    "prod-pm2": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* pm2 start src/server.js --name recicla-job -i 0",
+    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* nodemon src/server.js"
   },
   "author": "ISI-TICs",
   "license": "ISC",

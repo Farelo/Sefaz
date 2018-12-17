@@ -4,11 +4,12 @@
   "description": "Serviço de busca de mensagens dos devices na camada de middleware, por exemplo da LOKA",
   "main": "src/server.js",
   "scripts": {
-    "postinstall": "node src/tools/generate_env.tools.js",
-    "prod": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name loka-api-job",
-    "prod-cluster": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name loka-api-job -i 0",
+    "generate-env": "cross-env NODE_ENV=production node src/tools/generate_env.tools.js",
+    "prod-pm2": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* pm2 start src/server.js --name loka-api-job",
+    "prod-pm2-cluster": "cross-env NODE_ENV=production NODE_CONFIG_DIR=src/config pm2 start src/server.js --name loka-api-job -i 0",
     "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* nodemon src/server.js",
-    "dev": "cross-env NODE_CONFIG_DIR=src/config node src/server.js",
+    "start-initial-load": "cross-env NODE_CONFIG_DIR=src/config INITIAL_LOAD=true DEBUG=* node src/server.js",
+    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production nodemon src/server.js",
     "test": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=test jest --watchAll --verbose --runInBand --no-cache"
   },
   "author": "Miguel Lima",
@@ -35,7 +36,7 @@
     "cross-env": "^5.2.0",
     "debug": "^4.1.0",
     "jest": "^23.6.0",
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.18.9",
     "shelljs": "^0.8.3",
     "supertest": "^3.3.0"
   }

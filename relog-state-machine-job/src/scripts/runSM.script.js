@@ -78,8 +78,8 @@ module.exports = async (setting, packing, controlPoints) => {
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
-                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
-                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
+                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else {
                         /* Embalagem está em viagem */
@@ -135,8 +135,8 @@ module.exports = async (setting, packing, controlPoints) => {
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
-                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
-                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
+                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else {
                         /* Embalagem está em viagem */
@@ -169,8 +169,8 @@ module.exports = async (setting, packing, controlPoints) => {
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
-                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
-                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
+                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else {
                         /* Embalagem está em viagem */
@@ -202,8 +202,8 @@ module.exports = async (setting, packing, controlPoints) => {
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
-                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
-                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
+                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else {
                         /* Embalagem está em viagem */
@@ -235,8 +235,8 @@ module.exports = async (setting, packing, controlPoints) => {
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
-                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
-                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
+                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else {
                         /* Embalagem está em viagem */
@@ -268,8 +268,8 @@ module.exports = async (setting, packing, controlPoints) => {
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
-                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
-                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing)
+                        // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else {
                         /* Embalagem está em viagem */

@@ -18,11 +18,11 @@ module.exports = () => {
             let timeStart = new Date()
 
             //sincrono -> se tiver algo a rodar necessariamente após o termino da função exec(), que vai ser a chamada ao job
-            await exec().then(job_result => debug(job_result)).catch(error => debug(error))
+            await exec().then(job_result => console.log(job_result)).catch(error => debug(error))
 
             debug(`Job ${count} encerrado com inicio em  ${timeStart} e finalizado em  ${new Date()}`)
 
-            await promise_wait(4)
+            await promise_wait(10)
 
             count++
 

@@ -5,7 +5,7 @@
     },
     "server": {
         "url": "localhost",
-        "port": 3000
+        "port": 8011
     },
     "db": {
         "url": "mongodb://localhost:27017/recicla",
@@ -17,9 +17,7 @@
         "enableHTTPS": true,
         "key": "/security/keys/key.pem",
         "certificate": "/security/keys/cert.pem",
-        "refreshTokenSecret": "some-secret-refresh-token-shit",
-        "tokenLife": 3600,
-        "refreshTokenLife": 86400
+        "tokenLife": 3600
     },
     "swagger": {
         "enabled": true,

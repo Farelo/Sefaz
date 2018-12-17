@@ -4,12 +4,16 @@ USER root
 
 WORKDIR /app
 
-COPY . /app
+COPY package*.json .
 
 RUN apk update && apk add python2 alpine-sdk && \
     npm install pm2 node-gyp node-pre-gyp -g && \
     npm install
 
-EXPOSE 3000
+RUN npm i bcrypt --unsafe-perm=true --allow-root
+
+COPY . .
+
+EXPOSE 8011
 
 ENTRYPOINT [ "npm", "run", "prod" ]

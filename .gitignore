@@ -5,20 +5,20 @@ relog-frontend-web/dist
 
 relog-backend-api/node_modules
 relog-backend-api/coverage
-relog-backend-api/src/config/production.json
+# relog-backend-api/src/config/production.json
 relog-backend-api/src/tools/env-tmp.tools.js
 relog-backend-api/src/logs/
 relog-backend-api/src/logs/app.log
 relog-backend-api/package-lock.json
 
 relog-state-machine-job/node_modules
-relog-state-machine-job/src/config/production.json
+# relog-state-machine-job/src/config/production.json
 relog-state-machine-job/src/tools/env-tmp.tools.js
 relog-state-machine-job/src/logs/
 relog-state-machine-job/package-lock.json
 
 loka-api-dm-job/node_modules
-loka-api-dm-job/src/config/production.json
+# loka-api-dm-job/src/config/production.json
 loka-api-dm-job/src/tools/env-tmp.tools.js
 loka-api-dm-job/src/logs/
 loka-api-dm-job/package-lock.json

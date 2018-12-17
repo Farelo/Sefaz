@@ -5,26 +5,19 @@
     },
     "server": {
         "url": "localhost",
-        "port": 8012
+        "port": 8011
     },
     "db": {
         "url": "mongodb://mongo:27017/cebrace",
         "mongodb_container": "mongodb://<user>:<password>@<host>:27017/cebrace"
-    },
-    "database_options": {
-        "reconnectTries": 100000,
-        "reconnectInterval": 500,
-        "poolSize": 10,
-        "bufferMaxEntries": 0,
-        "socketTimeoutMS": 0,
-        "keepAlive": true
     },
     "security": {
         "jwtPrivateKey": "secr3t",
         "saltRounds": 10,
         "enableHTTPS": true,
         "key": "/security/keys/key.pem",
-        "certificate": "/security/keys/cert.pem"
+        "certificate": "/security/keys/cert.pem",
+        "tokenLife": 3600
     },
     "swagger": {
         "enabled": true,
@@ -34,5 +27,18 @@
         "enabled": true,
         "name": "",
         "level": ""
+    },
+    "database_options": {
+        "reconnectTries": 100000,
+        "reconnectInterval": 500,
+        "poolSize": 10,
+        "bufferMaxEntries": 0,
+        "socketTimeoutMS": 0,
+        "keepAlive": true
+    },
+    "loka_api": {
+        "baseUrl": "https://dm.loka.systems",
+        "username": "sys.dm@reciclapac.com",
+        "password": "Rsysadmin2242"
     }
 }

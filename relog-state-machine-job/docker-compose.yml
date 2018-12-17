@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  loka-api-job:
-    container_name: loka-api-job
+  relog-state-machine-job:
+    container_name: relog-state-machine-job
     restart: always
     # env_file: .env
     volumes:
@@ -11,7 +11,7 @@ services:
       dockerfile: Dockerfile
       context: .
     ports: 
-      - 8013:8013
+      - 8012:8012
     # networks: 
     #   - teste_job_loka
     network_mode: host

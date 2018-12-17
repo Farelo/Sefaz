@@ -3,15 +3,15 @@ version: '3'
 services:
   loka-api-job:
     container_name: loka-api-job
-    restart: always
-    # env_file: .env
+    # image:
+    # restart: always
     volumes:
       - ./src/logs:/app/src/logs
     build:
-      dockerfile: Dockerfile
       context: .
+      dockerfile: Dockerfile-initial-load
     ports: 
-      - 8013:8013
+      - 9060:9060
     # networks: 
     #   - teste_job_loka
     network_mode: host
