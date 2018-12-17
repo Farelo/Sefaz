@@ -4,14 +4,14 @@ services:
   loka-api-job:
     container_name: loka-api-job
     restart: always
-    env_file: .env
+    # env_file: .env
     volumes:
       - ./src/logs:/app/src/logs
     build:
       dockerfile: Dockerfile
       context: .
     ports: 
-      - 9060:9060
+      - 8013:8013
     # networks: 
     #   - teste_job_loka
     network_mode: host
