@@ -5,7 +5,7 @@
     },
     "server": {
         "url": "localhost",
-        "port": 3000
+        "port": 8011
     },
     "db": {
         "url": "mongodb://localhost:27017/recicla",
