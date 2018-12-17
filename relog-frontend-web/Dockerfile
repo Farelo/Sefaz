@@ -12,7 +12,7 @@ ENV PORT $port
 
 ENV HOME=/home
 
-COPY package.json package-lock.json  $HOME/relog-frontend-web/
+COPY package*.json $HOME/relog-frontend-web/
 
 WORKDIR $HOME/relog-frontend-web
 
