@@ -4,7 +4,7 @@ USER root
 
 WORKDIR /app
 
-COPY packe*.json .
+COPY package*.json .
 
 RUN apk update && apk add python2 alpine-sdk && \
     npm install pm2 node-gyp node-pre-gyp -g && \
