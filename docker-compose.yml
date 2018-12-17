@@ -39,26 +39,27 @@ services:
     networks:
       # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
       - mongo-net
+      - front-net
 
   ################ CEBRACE ################
 
-  cebrace-frontend-web:
-    container_name: cebrace-frontend-web
-    build:
-      context: relog-frontend-web
-      dockerfile: Dockerfile
-      args:
-        baseurl: http://cebrace-backend-api:8011/api/ # servico:porta/api que estará disponível a api do backend
-        port: 8010 # porta a ser passada ao node apra disponibilizar o front-end
-    restart: always
-    ports: 
-      - 8010:8010 # porta host:container que escutará (NGINX precisa dessa informação)
-    networks:
-      - front-net
-      - front-back
-    depends_on:
-      - nginx-container
-      # - mongo 
+  # cebrace-frontend-web:
+  #   container_name: cebrace-frontend-web
+  #   build:
+  #     context: relog-frontend-web
+  #     dockerfile: Dockerfile
+  #     args:
+  #       baseurl: http://cebrace-backend-api:8011/api/ # servico:porta/api que estará disponível a api do backend
+  #       port: 8010 # porta a ser passada ao node apra disponibilizar o front-end
+  #   restart: always
+  #   ports: 
+  #     - 8010:8010 # porta host:container que escutará (NGINX precisa dessa informação)
+  #   networks:
+  #     - front-net
+  #     - front-back
+  #   depends_on:
+  #     - nginx-container
+  #     # - mongo 
 
   # cebrace-backend-api:
   #   container_name: cebrace-backend-api
