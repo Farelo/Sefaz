@@ -12,9 +12,10 @@ WORKDIR /app
 COPY package*.json ./
 
 # Esses copies devem estar aqui porque o npm roda um script postinstall para gerar arquivo config de producção que usam esses diretorios ou arquivos abaixo
-COPY ./src/tools/ ./src/tools/
-COPY ./src/config/ ./src/config/
-COPY .env-tmp .env-tmp
+#rodando o generate-env aqui, entao nao precisa desses copies abaixo mais
+# COPY ./src/tools/ ./src/tools/
+# COPY ./src/config/ ./src/config/
+# COPY .env-tmp .env-tmp
 
 # instala as dependências - preciso usar os options a seguir para rodar o generate_env.tools 
 RUN npm install
