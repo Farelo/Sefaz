@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  relog-state-machine-job:
+    container_name: relog-state-machine-job
+    restart: always
+    # env_file: .env
+    volumes:
+      - ./src/logs:/app/src/logs
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports: 
+      - 8012:8012
+    # networks: 
+    #   - teste_job_loka
+    network_mode: host
