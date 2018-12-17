@@ -35,7 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
       }).catch(error => {
 
         if (error instanceof HttpErrorResponse) {
-          if (error.status === 401) { // erro na autenticação
+          if (error.status === 400) { // erro na autenticação
             const auth = this.injector.get(AuthenticationService);
             auth.logout();
             this.router.navigate(['/login']);

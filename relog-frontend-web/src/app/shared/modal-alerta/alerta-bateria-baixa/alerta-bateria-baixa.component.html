@@ -25,8 +25,9 @@
       <div class="col-12">
         <p class="titulo-modal">ÚLTIMO SINAL:</p>
         <br>
-        <p> {{ alerta.last_device_data.message_date | date: 'dd/MM/yy' }} | {{ alerta.last_device_data.message_date |
-          date:'HH:MM:ss' }} </p>
+        <p> {{ alerta.last_device_data ?
+                (alerta.last_device_data.message_date | date: 'dd/MM/yy - HH:MM:ss')
+                : "Sem Registro" }} </p>
       </div>
     </div>
 
@@ -36,15 +37,17 @@
       <div class="col-12 col-md-6">
         <p class="titulo-modal">ÚLTIMO LOCAL:</p>
         <br>
-        <p> {{ alerta?.last_event_record?.control_point?.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p>
-        <p *ngIf="alerta.last_event_record.type == 'inbound'"> Tipo: {{ mConstants.INBOUND }} </p>
-        <p *ngIf="alerta.last_event_record.type == 'outbound'"> Tipo: {{ mConstants.OUTBOUND }} </p>
+        <p> {{ alerta?.last_event_record?.control_point?.name || mConstants.NO_REGISTER }} </p>
+        <p *ngIf="alerta?.last_event_record?.type == 'inbound'"> Tipo: {{ mConstants.INBOUND }} </p>
+        <p *ngIf="alerta?.last_event_record?.type == 'outbound'"> Tipo: {{ mConstants.OUTBOUND }} </p>
       </div>
 
       <div class="col-12 col-md-6">
         <p class="titulo-modal">NÍVEL DA BATERIA:</p><br>
-        <p style="font-weight: bold;"> {{ alerta?.last_device_data?.battery.percentage >=0 ?
-          (alerta.last_device_data.battery.percentage | round) : mConstants.NO_REGISTER }}% </p>
+        <p style="font-weight: bold;"> {{ alerta?.last_device_data?.battery?.percentage ?
+          ((alerta.last_device_data.battery.percentage >=0) && (alerta.last_device_data.battery.percentage !== '-') ? ((alerta.last_device_data.battery.percentage | round) + '%') 
+          : mConstants.NO_REGISTER )
+          : mConstants.NO_REGISTER}} </p>
       </div>
     </div>
 
