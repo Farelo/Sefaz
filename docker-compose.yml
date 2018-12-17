@@ -68,6 +68,7 @@ services:
       dockerfile: Dockerfile
     # command: npm run prod
     # environment: 
+    restart: always
     ports:
       - 8011:8011
     networks: 
@@ -81,6 +82,7 @@ services:
     build:
       context: loka-api-dm-job
       dockerfile: Dockerfile
+    restart: always
     # command: npm run start
     ports:
       - 8013:8013
@@ -94,7 +96,8 @@ services:
     build:
       context: relog-state-machine-job
       dockerfile: Dockerfile
-    command: npm run start
+    restart: always
+    # command: npm run start
     ports:
       - 8012:8012
     networks: 
