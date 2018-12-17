@@ -9,12 +9,12 @@ const { Family } = require('../../models/families.model')
 const { GC16 } = require('../../models/gc16.model')
 const { Packing } = require('../../models/packings.model')
 
-module.exports = async (packing) => {
+module.exports = async (packing, currentControlPoint) => {
     let current_state_history = {}
     try {
         if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
             timeIntervalInDays = getDiffDateTodayInDays(packing.last_event_record.created_at)
-            const gc16 = await GC16.findById(packing.family.gc16)
+            const gc16 = await GC16.findById(currentControlPoint.gc16)
             if (!gc16) return null
 
             const family = await Family.findById(packing.family).populate('company')

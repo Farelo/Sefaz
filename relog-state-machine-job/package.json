@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "post-install": "node src/tools/generate_env.tools.js",
-    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production node src/server.js",
+    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production nodemon src/server.js",
     "start": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name recicla-job",
     "start-cluster": "cross-env NODE_CONFIG_DIR=src/config pm2 start src/server.js --name recicla-job -i 0"
   },
@@ -21,6 +21,7 @@
     "mongoose": "^5.3.4",
     "morgan": "^1.9.0",
     "node-cron": "^2.0.3",
+    "nodemon": "^1.18.9",
     "pm2": "^3.2.2",
     "websocket": "^1.0.28",
     "winston": "^3.0.0"
