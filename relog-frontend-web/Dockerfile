@@ -12,7 +12,7 @@ ENV PORT $port
 
 ENV HOME=/home
 
-COPY package.json package-lock.json  $HOME/relog-frontend-web/
+COPY package*.json $HOME/relog-frontend-web/
 
 WORKDIR $HOME/relog-frontend-web
 
@@ -22,7 +22,9 @@ RUN node write_environment.js
 
 RUN npm install --silent --progress=false
 
-RUN npm cache clean && npm install --silent --progress=false
+# RUN npm cache clean && npm install --silent --progress=false
+
+RUN npm install --silent --progress=false
 
 RUN ./node_modules/.bin/ng build --env=prod && ./node_modules/.bin/ng serve
 
