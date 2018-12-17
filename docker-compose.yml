@@ -22,6 +22,7 @@ services:
     networks:
       # front-net: rede para comunicar nginx e frontend-web
       - front-net
+        # ipv4_address: 10.5.0.6
 
       # front-back: rede para comunicar nginx com a api do backend
       - front-back
@@ -53,6 +54,7 @@ services:
     ports: 
       - 8010:8010 # porta host:container que escutará (NGINX precisa dessa informação)
     networks:
+      - front-net
       - front-back
     depends_on:
       - nginx-container
@@ -102,6 +104,11 @@ services:
 
 networks:
   front-net:
+    # driver: bridge
+    # ipam:
+    #   config:
+    #     - subnet: 10.5.0.1/16
+        
   front-back:
   # back-jobs:
   mongo-net:
