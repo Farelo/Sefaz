@@ -76,18 +76,18 @@ services:
   #   depends_on: 
   #     - mongo
 
-  # cebrace-loka-api-job:
-  #   container_name: cebrace-loka-api-job
-  #   build:
-  #     context: loka-api-dm-job
-  #     dockerfile: Dockerfile
-  #   # command: npm run start
-  #   ports:
-  #     - 8013:8013
-  #   networks: 
-  #     - mongo-net
-  #   depends_on: 
-  #     - mongo
+  cebrace-loka-api-job:
+    container_name: cebrace-loka-api-job
+    build:
+      context: loka-api-dm-job
+      dockerfile: Dockerfile
+    # command: npm run start
+    ports:
+      - 8013:8013
+    networks: 
+      - mongo-net
+    depends_on: 
+      - mongo
 
   # cebrace-state-machine-job:
   #   container_name: cebrace-state-machine-job
