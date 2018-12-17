@@ -5,28 +5,11 @@
     },
     "server": {
         "url": "localhost",
-        "port": 3000
+        "port": 4000
     },
     "db": {
         "url": "mongodb://localhost:27017/recicla",
         "mongodb_container": "mongodb://<user>:<password>@<host>:27017/recicla"
-    },
-    "security": {
-        "jwtPrivateKey": "secr3t",
-        "saltRounds": 10,
-        "enableHTTPS": true,
-        "key": "/security/keys/key.pem",
-        "certificate": "/security/keys/cert.pem",
-        "tokenLife": 3600
-    },
-    "swagger": {
-        "enabled": true,
-        "route": "/api-docs"
-    },
-    "log": {
-        "enabled": true,
-        "name": "",
-        "level": ""
     },
     "database_options": {
         "reconnectTries": 100000,
@@ -36,9 +19,20 @@
         "socketTimeoutMS": 0,
         "keepAlive": true
     },
-    "loka_api": {
-        "baseUrl": "https://dm.loka.systems",
-        "username": "sys.dm@reciclapac.com",
-        "password": "Rsysadmin2242"
+    "security": {
+        "jwtPrivateKey": "secr3t",
+        "saltRounds": 10,
+        "enableHTTPS": true,
+        "key": "/security/keys/key.pem",
+        "certificate": "/security/keys/cert.pem"
+    },
+    "swagger": {
+        "enabled": true,
+        "route": "/api-docs"
+    },
+    "log": {
+        "enabled": true,
+        "name": "",
+        "level": ""
     }
 }
