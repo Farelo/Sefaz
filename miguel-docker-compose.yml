@@ -1,0 +1,118 @@
+version: '3'
+
+services:
+
+  nginx-container:
+    container_name: nginx-production
+    image: nginx:latest
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      #volume para trazer o conf do nginx
+      # - ./nginx/conf/nginx-production.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/conf/:/etc/nginx/conf.d/
+
+      #volume para trazer o fullchain.pem do dominio relog.com
+      - /etc/letsencrypt/live/relogtechnology.com/fullchain.pem:/etc/letsencrypt/live/relogtechnology.com/fullchain.pem
+
+      #volume para trazer o privkey.pem do dominio relog.com
+      - /etc/letsencrypt/live/relogtechnology.com/privkey.pem:/etc/letsencrypt/live/relogtechnology.com/privkey.pem
+    networks:
+      # front-net: rede para comunicar nginx e frontend-web
+      - front-net
+        # ipv4_address: 10.5.0.6
+
+      # front-back: rede para comunicar nginx com a api do backend
+      - front-back
+
+  mongo:
+    container_name: mongo-production
+    image: mongo:4
+    restart: always
+    ports: 
+      - 27017:27017
+    volumes: 
+      # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
+      - /data/db:/data/db
+    networks:
+      # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
+      - mongo-net
+      - front-net
+
+  ################ CEBRACE ################
+
+  cebrace-frontend-web:
+    container_name: cebrace-frontend-web
+    build:
+      context: relog-frontend-web
+      dockerfile: Dockerfile
+      args:
+        baseurl: http://cebrace-backend-api:8011/api/ # servico:porta/api que estará disponível a api do backend
+        port: 8010 # porta a ser passada ao node apra disponibilizar o front-end
+    restart: always
+    ports: 
+      - 8010:8010 # porta host:container que escutará (NGINX precisa dessa informação)
+    networks:
+      - front-net
+      - front-back
+    depends_on:
+      - nginx-container
+      # - mongo 
+
+  cebrace-backend-api:
+    container_name: cebrace-backend-api
+    build:
+      context: relog-backend-api
+      dockerfile: Dockerfile
+    # command: npm run prod
+    # environment: 
+    restart: always
+    ports:
+      - 8011:8011
+    networks: 
+      - front-back
+      - mongo-net
+    depends_on: 
+      - mongo
+
+  cebrace-loka-api-job:
+    container_name: cebrace-loka-api-job
+    build:
+      context: loka-api-dm-job
+      dockerfile: Dockerfile
+    restart: always
+    # command: npm run start
+    ports:
+      - 8013:8013
+    networks: 
+      - mongo-net
+    depends_on: 
+      - mongo
+
+  cebrace-state-machine-job:
+    container_name: cebrace-state-machine-job
+    build:
+      context: relog-state-machine-job
+      dockerfile: Dockerfile
+    restart: always
+    # command: npm run start
+    ports:
+      - 8012:8012
+    networks: 
+      - mongo-net
+    depends_on: 
+      - mongo
+    
+
+networks:
+  front-net:
+    # driver: bridge
+    # ipam:
+    #   config:
+    #     - subnet: 10.5.0.1/16
+        
+  front-back:
+  # back-jobs:
+  mongo-net:
