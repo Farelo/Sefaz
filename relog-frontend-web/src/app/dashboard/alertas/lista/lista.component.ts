@@ -54,8 +54,8 @@ export class ListaComponent implements OnInit {
 
       this.getAlerts();
 
-      // this.currentState = constants.ALERTS.MISSING;
-      // this.alertCode = constants.ALERTS_CODE.MISSING;
+      // this.currentState = constants.ALERTS.PERMANENCE_TIME;
+      // this.alertCode = constants.ALERTS_CODE.PERMANENCE_TIME;
       
       // console.log(this.currentState);
       // console.log(this.alertCode);

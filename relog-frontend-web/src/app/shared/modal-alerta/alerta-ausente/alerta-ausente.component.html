@@ -36,8 +36,8 @@
         <p class="titulo-modal">ÚLTIMA PLANTA:</p>
         <br>
         <p> {{ alerta.last_event_record?.control_point?.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p>
-        <p *ngIf="alerta.last_event_record.type == 'inbound'"> Tipo: {{ mConstants.INBOUND }} </p>
-        <p *ngIf="alerta.last_event_record.type == 'outbound'"> Tipo: {{ mConstants.OUTBOUND }} </p>
+        <p *ngIf="alerta?.last_event_record?.type == 'inbound'"> Tipo: {{ mConstants.INBOUND }} </p>
+        <p *ngIf="alerta?.last_event_record?.type == 'outbound'"> Tipo: {{ mConstants.OUTBOUND }} </p>
       </div>
 
       <div class="col-12 col-md-6">
