@@ -21,11 +21,7 @@ services:
       - /etc/letsencrypt/live/relogtechnology.com/privkey.pem:/etc/letsencrypt/live/relogtechnology.com/privkey.pem
     networks:
       # front-net: rede para comunicar nginx e frontend-web
-      - front-net
-        # ipv4_address: 10.5.0.6
-
-      # front-back: rede para comunicar nginx com a api do backend
-      - front-back
+      - front
 
   mongo:
     container_name: mongo-production
@@ -38,8 +34,7 @@ services:
       - /data/db:/data/db
     networks:
       # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
-      - mongo-net
-      - front-net
+      - db
 
   ################ CEBRACE ################
 
@@ -49,14 +44,13 @@ services:
       context: relog-frontend-web
       dockerfile: Dockerfile
       args:
-        baseurl: http://cebrace-backend-api:8011/api/ # servico:porta/api que estará disponível a api do backend
+        baseurl: https://relogtechnology.com/cebrace/api/ # servico:porta/api que estará disponível a api do backend
         port: 8010 # porta a ser passada ao node apra disponibilizar o front-end
     restart: always
     ports: 
-      - 8010:8010 # porta host:container que escutará (NGINX precisa dessa informação)
+      - 8010 # porta host:container que escutará (NGINX precisa dessa informação)
     networks:
-      - front-net
-      - front-back
+      - front
     depends_on:
       - nginx-container
       # - mongo 
@@ -70,10 +64,10 @@ services:
     # environment: 
     restart: always
     ports:
-      - 8011:8011
+      - 8011
     networks: 
-      - front-back
-      - mongo-net
+      - front
+      - db
     depends_on: 
       - mongo
 
@@ -85,9 +79,9 @@ services:
     restart: always
     # command: npm run start
     ports:
-      - 8013:8013
+      - 8013
     networks: 
-      - mongo-net
+      - db
     depends_on: 
       - mongo
 
@@ -99,20 +93,15 @@ services:
     restart: always
     # command: npm run start
     ports:
-      - 8012:8012
+      - 8012
     networks: 
-      - mongo-net
+      - db
     depends_on: 
       - mongo
     
 
 networks:
-  front-net:
-    # driver: bridge
-    # ipam:
-    #   config:
-    #     - subnet: 10.5.0.1/16
-        
-  front-back:
-  # back-jobs:
-  mongo-net:
+  front:
+    external: true
+  db:
+    external: true

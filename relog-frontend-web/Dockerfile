@@ -1,10 +1,4 @@
-FROM node:10-alpine
-
-RUN apk update && apk upgrade
-
-ARG baseurl
-
-ARG port
+FROM node:10-alpine as builder
 
 ENV BASE_URL $baseurl
 
@@ -12,28 +6,23 @@ ENV PORT $port
 
 ENV HOME=/home
 
-COPY package*.json $HOME/relog-frontend-web/
+WORKDIR $HOME
 
-WORKDIR $HOME/relog-frontend-web
+COPY . .
 
-COPY . $HOME/relog-frontend-web/
+RUN node write_environment.js && \
+    npm install && \
+    ./node_modules/.bin/ng build --env=prod
 
-RUN node write_environment.js
-
-RUN npm cache clean &&  install --silent --progress=false
-# RUN npm install --silent --progress=false
-
-RUN ./node_modules/.bin/ng build --env=prod
-
-FROM nginx:1.13.3-alpine
+FROM nginx:1.13.3-alpine as main
 
 ## Copy our default nginx config
-COPY --from=builder /home/relog-frontend-web/nginx/default.conf /etc/nginx/conf.d/
+COPY --from=builder /home/nginx/default.conf /etc/nginx/conf.d/
 
 ## Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/* &&  ls
 
 ## From 'builder' stage copy over the artifacts in dist folder to default nginx public folder
-COPY --from=builder /home/relog-frontend-web/dist /usr/share/nginx/html
+COPY --from=builder /home/dist /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
