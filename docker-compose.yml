@@ -52,7 +52,7 @@ services:
     networks:
       - front
     depends_on:
-      - nginx-container
+      - nginx-production
       # - mongo 
 
   cebrace-backend-api:
