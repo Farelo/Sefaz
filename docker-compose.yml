@@ -23,7 +23,7 @@ services:
       # front-net: rede para comunicar nginx e frontend-web
       - front
 
-  mongo-production:
+  mongo:
     container_name: mongo-production
     image: mongo:4
     restart: always
@@ -69,7 +69,7 @@ services:
       - front
       - db
     depends_on: 
-      - mongo-production
+      - mongo
 
   cebrace-loka-api-job:
     container_name: cebrace-loka-api-job
@@ -83,7 +83,7 @@ services:
     networks: 
       - db
     depends_on: 
-      - mongo-production
+      - mongo
 
   cebrace-state-machine-job:
     container_name: cebrace-state-machine-job
@@ -97,7 +97,7 @@ services:
     networks: 
       - db
     depends_on: 
-      - mongo-production
+      - mongo
     
 
 networks:
