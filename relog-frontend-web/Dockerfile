@@ -14,7 +14,7 @@ RUN node write_environment.js && \
     npm install && \
     ./node_modules/.bin/ng build --env=prod
 
-# FROM nginx:1.13.3-alpine as main
+FROM nginx:1.13.3-alpine as main
 
 ## Copy our default nginx config
 COPY --from=builder /home/nginx/default.conf /etc/nginx/conf.d/
