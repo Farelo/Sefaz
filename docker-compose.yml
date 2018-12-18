@@ -48,7 +48,7 @@ services:
         port: 8010 # porta a ser passada ao node apra disponibilizar o front-end
     restart: always
     ports: 
-      - 8010 # porta host:container que escutará (NGINX precisa dessa informação)
+      - 8010:8010 # porta host:container que escutará (NGINX precisa dessa informação)
     networks:
       - front
     depends_on:
