@@ -1,6 +1,6 @@
 FROM node:10-alpine as builder
 
-ENV BASE_URL $baseurl
+ENV BASE_URL=https://relogtechnology.com/api
 
 ENV PORT $port
 
@@ -12,12 +12,9 @@ COPY . .
 
 RUN node write_environment.js && \
     npm install && \
-    ./node_modules/.bin/ng build --env=prod
+    ./node_modules/.bin/ng build --env=prod --base-href /cebrace/
 
 FROM nginx:1.13.3-alpine as main
-
-## Copy our default nginx config
-COPY --from=builder /home/nginx/default.conf /etc/nginx/conf.d/
 
 ## Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/* &&  ls

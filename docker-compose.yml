@@ -28,7 +28,7 @@ services:
     image: mongo:4
     restart: always
     ports: 
-      - 27017:27017
+      - 27017
     volumes: 
       # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
       - /data/db:/data/db
@@ -44,11 +44,11 @@ services:
       context: relog-frontend-web
       dockerfile: Dockerfile
       args:
-        baseurl: https://relogtechnology.com/cebrace/api/ # servico:porta/api que estará disponível a api do backend
-        port: 8010 # porta a ser passada ao node apra disponibilizar o front-end
+        baseurl: "https://relogtechnology.com/api" # servico:porta/api que estará disponível a api do backend
+        port: 80 # porta a ser passada ao node apra disponibilizar o front-end
     restart: always
     ports: 
-      - 8010:8010 # porta host:container que escutará (NGINX precisa dessa informação)
+      - 80 # porta host:container que escutará (NGINX precisa dessa informação)
     networks:
       - front
     depends_on:
@@ -64,7 +64,7 @@ services:
     # environment: 
     restart: always
     ports:
-      - 8011
+      - 3000
     networks: 
       - front
       - db

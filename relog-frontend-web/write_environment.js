@@ -4,6 +4,9 @@ let regex_listen      = /listen [0-9]+/g
 let file_environment  = './src/environments/environment.prod.ts'
 let file_nginx        = './nginx/default.conf'
 
+console.log(`"${process.env.BASE_URL}"`)
+console.log(fs.readFileSync(file_environment, 'utf8'))
+
 let new_url = fs.readFileSync(file_environment, 'utf8').replace(regex_link, `"${process.env.BASE_URL}"`)
 let new_conf = fs.readFileSync(file_nginx, 'utf8').replace(regex_listen, `listen ${process.env.PORT}`)
 
