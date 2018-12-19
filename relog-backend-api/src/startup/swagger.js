@@ -1,8 +1,8 @@
-const logger = require('../config/winston.config')
-const swaggerJSDoc = require('swagger-jsdoc')
-const config = require('config')
-const swaggerUi = require('swagger-ui-express') 
-const swStats = require('swagger-stats')
+const logger = require("../config/winston.config");
+const swaggerJSDoc = require("swagger-jsdoc");
+const config = require("config");
+const swaggerUi = require("swagger-ui-express");
+const swStats = require("swagger-stats");
 
 /**
  * Inicializa as rotas das documentações geradas para o sistema
@@ -10,45 +10,51 @@ const swStats = require('swagger-stats')
  * @param {Application} app aplicação do sistema
  */
 const initRoutesOfDocumentation = (swaggerSpec, app) => {
-    app.use(`${config.get('swagger.route')}`, swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-    app.use(swStats.getMiddleware({ swaggerSpec }))
-}
+  app.use(
+    `${config.get("swagger.route")}`,
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec)
+  );
+  app.use(swStats.getMiddleware({ swaggerSpec }));
+};
 
 /**
  * Configura o swagger para gerar a documentação
  * da API
  * @param {Application} app express app
  */
-module.exports = (app) => {
-    logger.info('Inicializando a documentação da API SWAGGER')
+module.exports = app => {
+  logger.info("Inicializando a documentação da API SWAGGER");
 
-    const swaggerDefinition = {
-        info: {
-            title: 'Recicla Documentation API',
-            version: '1.0.0',
-            description: `Recicla 2.0 documentation.\n API http://${config.get('server.url',)}:${config.get('server.port')}/swagger-stats/ui`
-        },
-        host: `${config.get('server.url')}:${config.get('server.port')}`,
-        basePath: '/api',
-        securityDefinitions: {
-            Bearer: {
-                type: 'apiKey',
-                description: 'Bearer authorization of an API',
-                name: 'Authorization',
-                in: 'header',
-            },
-        },
+  const swaggerDefinition = {
+    info: {
+      title: "Recicla Documentation API",
+      version: "1.0.0",
+      description: `Recicla 2.0 documentation.\n API ${config.get(
+        "server.url"
+      )}/swagger-stats/ui`
+    },
+    host: `${config.get("server.url")}`,
+    basePath: "/api",
+    securityDefinitions: {
+      Bearer: {
+        type: "apiKey",
+        description: "Bearer authorization of an API",
+        name: "Authorization",
+        in: "header"
+      }
     }
+  };
 
-    // options for the swagger docs
-    const options = {
-        // import swaggerDefinitions
-        swaggerDefinition,
-        // path to the API docs
-        apis: ['./**/*.routing.js'],
-    }
+  // options for the swagger docs
+  const options = {
+    // import swaggerDefinitions
+    swaggerDefinition,
+    // path to the API docs
+    apis: ["./**/*.routing.js"]
+  };
 
-    // initialize swagger-jsdoc
-    const swaggerSpec = swaggerJSDoc(options)
-    initRoutesOfDocumentation(swaggerSpec, app)
-}
+  // initialize swagger-jsdoc
+  const swaggerSpec = swaggerJSDoc(options);
+  initRoutesOfDocumentation(swaggerSpec, app);
+};
