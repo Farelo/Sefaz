@@ -4,7 +4,7 @@
     "enabled": true
   },
   "server": {
-    "url": "https://relogtechnology.com/api",
+    "url": "relogtechnology.com/api",
     "port": 8011
   },
   "db": {

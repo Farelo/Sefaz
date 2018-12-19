@@ -4,7 +4,7 @@
     "enabled": true
   },
   "server": {
-    "url": "http://localhost:8011",
+    "url": "localhost:8011",
     "port": 8011
   },
   "db": {
