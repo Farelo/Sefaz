@@ -153,6 +153,9 @@ export class ModalSettings implements OnInit {
     //console.log(value);
 
     if (valid) {
+
+      value.accuracy_limit = value.accuracy_limit * 1000;
+      
       this.settingsService.editSetting(value, this.actualSettings._id).subscribe(result => {
         this.toastService.edit('', 'Configurações');
         this.closeModal();
