@@ -93,6 +93,7 @@ const update_updated_at_middleware = function (next) {
 routeSchema.post('save', saveRouteToFamily)
 routeSchema.pre('update', update_updated_at_middleware)
 routeSchema.pre('findOneAndUpdate', update_updated_at_middleware)
+routeSchema.post('remove', update_updated_at_middleware)
 
 const Route = mongoose.model('Route', routeSchema)
 
