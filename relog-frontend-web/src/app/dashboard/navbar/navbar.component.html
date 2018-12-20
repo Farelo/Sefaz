@@ -80,7 +80,8 @@
         <li>
           <div>
             <div style="float: left;">
-              <img width="50" *ngIf="currentUser?.role === 'admin'" src="../../../assets/images/icon_a.png">
+              <img width="50" *ngIf="currentUser?.role === 'admin'" src="./../../../assets/images/icon_a.png">
+              <img width="50" *ngIf="currentUser?.role === 'client'" src="./../../../assets/images/icon_f.png">
             </div>
             <div style="float: left;">
               <p id="username">{{this.authenticationService.currentUser().user}} </p>
@@ -96,15 +97,12 @@
         </li>
 
         <li>
-          <a *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'Logistic' || currentUser?.role === 'Supplier'"
-            (click)="p.close();openModal()">
+          <a *ngIf="currentUser?.role === 'admin'" (click)="p.close(); openModal()">
             Gerenciar usuários </a>
         </li>
 
         <li>
-          <a *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'Logistic' || currentUser?.role === 'Supplier'"
-            (click)="p.close();openSettings()">
-            Configurações </a>
+          <a *ngIf="currentUser?.role === 'admin'" (click)="p.close();openSettings()"> Configurações </a>
         </li>
 
         <li>
@@ -127,14 +125,8 @@
       <li>
         <div>
           <div style="float: left;">
-            
-            <img width="50" *ngIf="currentUser?.role === 'admin'" src="../../../assets/images/icon_a.png">
-            <img *ngIf="currentUser?.role === 'Logistic'" src="../../../assets/images/icon_o.png">
-            <img *ngIf="currentUser?.role === 'Supplier'" src="../../../assets/images/icon_f.png">
-
-            <img *ngIf="currentUser?.role === 'StaffFactory'" src="../../../assets/images/icon_f.png">
-            <img *ngIf="currentUser?.role === 'StaffLogistic'" src="../../../assets/images/icon_f.png">
-            <img *ngIf="currentUser?.role === 'StaffSupplier'" src="../../../assets/images/icon_f.png">
+            <img width="50" *ngIf="currentUser?.role === 'admin'" src="./../../../assets/images/icon_a.png">
+            <img width="50" *ngIf="currentUser?.role === 'client'" src="./../../../assets/images/icon_f.png">
           </div>
 
           <div style="float: left;">
@@ -152,15 +144,11 @@
       </li>
     
       <li>
-        <a *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'Logistic' || currentUser?.role === 'Supplier'"
-           (click)="p.toggle(); openModal()">
-          Gerenciar usuários </a>
+        <a *ngIf="currentUser?.role === 'admin'" (click)="p.toggle(); openModal()"> Gerenciar usuários </a>
       </li>
     
       <li>
-        <a *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'Logistic' || currentUser?.role === 'Supplier'"
-          (click)="p.close(); openSettings()">
-          Configurações </a>
+        <a *ngIf="currentUser?.role === 'admin'" (click)="p.close(); openSettings()">Configurações </a>
       </li>
     
       <li>
