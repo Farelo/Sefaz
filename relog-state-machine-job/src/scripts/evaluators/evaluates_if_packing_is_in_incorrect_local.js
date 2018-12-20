@@ -9,7 +9,8 @@ const { Family } = require('../../models/families.model')
 module.exports = async (packing, currentControlPoint) => {
     try {
         /* Checa se a embalagem tem rota */
-        if (packing.family.routes.length > 0) {
+        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", packing.family)
+        if (packing.family && packing.family.routes.length > 0) {
             console.log('TEM ROTA')
 
             const family = await Family.findById(packing.family)
@@ -32,7 +33,7 @@ module.exports = async (packing, currentControlPoint) => {
 
         } else {
             /* Checa se a familia tem pontos de controle relacionada a ela */
-            if (packing.family.control_points.length > 0) {
+            if (packing.family && packing.family.control_points.length > 0) {
                 console.log('FAMILIA TEM PONTOS DE CONTROLE RELACIONADAS')
                 /* Avalia se os pontos de controle da familia bate com o ponto de controle atual */
                 const packingIsOk = packing.family.control_points.filter(cp => isIncorrectLocal(cp, currentControlPoint))

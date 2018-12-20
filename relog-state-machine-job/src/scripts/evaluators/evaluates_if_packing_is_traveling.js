@@ -12,7 +12,7 @@ module.exports = async (packing, setting) => {
     let traveling_time_overtime
 
     try {
-        if (packing.family.routes.length > 0) {
+        if (packing.family && packing.family.routes.length > 0) {
             if (!packing.last_event_record) return null
 
             const family = await Family.findById(packing.family).populate('routes')
