@@ -119,23 +119,28 @@ export class PontoDeControleEditarComponent implements OnInit {
 
   onAddItem(event: any) {
 
-    if (event.name.length < 5) {
-      this.fillTypesSelect();
-      this.mControlPoint.controls.type.setErrors({ minlength: true });
-      return false;
-    }
+    //console.log(event);
+    
+    if (!event._id) {
 
-    if (event.name.length > 50) {
-      this.fillTypesSelect();
-      this.mControlPoint.controls.type.setErrors({ maxlength: true });
-      return false;
+      if (event.name.length < 5) {
+        this.fillTypesSelect();
+        this.mControlPoint.controls.type.setErrors({ minlength: true });
+        return false;
+      }
+  
+      if (event.name.length > 50) {
+        this.fillTypesSelect();
+        this.mControlPoint.controls.type.setErrors({ maxlength: true });
+        return false;
+      }
+  
+      this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
+        this.controlPointsTypeService.getAllType().toPromise().then(() => {
+          this.mControlPoint.controls.type.setValue(result);
+        });
+      }, err => console.error(err));
     }
-
-    this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
-      this.controlPointsTypeService.getAllType().toPromise().then(() => {
-        this.mControlPoint.controls.type.setValue(result);
-      });
-    }, err => console.error(err));
   }
 
   /**
