@@ -103,10 +103,10 @@ export class CompanyEditarComponent implements OnInit {
       phone: ['', []],
       cnpj: ['', []],
       address: this.fb.group({
-        city: ['', [, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
-        street: ['', [, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
+        city: ['', [ Validators.pattern(/^((?!\s{2}).)*$/)]],
+        street: ['', [Validators.pattern(/^((?!\s{2}).)*$/)]],
         cep: ['', []],
-        uf: ['', [, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]]
+        uf: ['', [Validators.pattern(/^((?!\s{2}).)*$/)]]
       }),
       type: ['', [Validators.required]]
     });
@@ -128,7 +128,11 @@ export class CompanyEditarComponent implements OnInit {
         .subscribe(result => { 
           this.router.navigate(['/rc/cadastros/company']); 
           this.toastService.successModal('Empresa', true);
-        }, err => { console.log(err) });
+
+        }, err => { 
+          console.log(err);
+            this.toastService.showError('', {title: "Erro na atualização", body: "Houve um problema na atualização da Empresa"});
+        });
     }
   }
 

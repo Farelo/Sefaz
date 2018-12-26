@@ -232,11 +232,24 @@ export class ToastService {
       theme: 'material'
     };
     this.toastyService.success(toastOptions);
-    if (route != '') {
+    if (route !== '') {
       this.router.navigate([route]);
     }
   }
 
+  showError(route: string, message: { title: string, body: string }) {
+    var toastOptions: ToastOptions = {
+      title: message.title,
+      msg: message.body,
+      showClose: true,
+      timeout: 5000,
+      theme: 'material'
+    };
+    this.toastyService.error(toastOptions);
+    if (route !== '') {
+      this.router.navigate([route]);
+    }
+  }
 
 
 }
