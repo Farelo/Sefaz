@@ -43,6 +43,7 @@ export class CompanyEditarComponent implements OnInit {
   //public maskUF = [/[A-Z]/, /[A-Z]/];
 
   public inscricao: Subscription;
+  public submitted: boolean = false;
   
   constructor(protected companiesService: CompaniesService,
     protected toastService: ToastService,
@@ -99,29 +100,39 @@ export class CompanyEditarComponent implements OnInit {
   formProfile() {
     this.newCompany = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
-      phone: ['', [Validators.required]],
+      phone: ['', []],
       cnpj: ['', []],
       address: this.fb.group({
-        city: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
-        street: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
-        cep: ['', [Validators.required]],
-        uf: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]]
+        city: ['', [ Validators.pattern(/^((?!\s{2}).)*$/)]],
+        street: ['', [Validators.pattern(/^((?!\s{2}).)*$/)]],
+        cep: ['', []],
+        uf: ['', [Validators.pattern(/^((?!\s{2}).)*$/)]]
       }),
       type: ['', [Validators.required]]
     });
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+    
+    console.log('this.newCompany: ');
+    console.log(this.newCompany);
+    console.log('valid...:' + JSON.stringify(valid));
+    
+    this.submitted = true;
+
     if (valid) {
       value.type = value.type.name;
-      console.log('edit: ' + JSON.stringify(value));
 
       this.companiesService
         .editCompany(this.mId, value)
         .subscribe(result => { 
           this.router.navigate(['/rc/cadastros/company']); 
           this.toastService.successModal('Empresa', true);
-      });
+
+        }, err => { 
+          console.log(err);
+            this.toastService.showError('', {title: "Erro na atualização", body: "Houve um problema na atualização da Empresa"});
+        });
     }
   }
 
