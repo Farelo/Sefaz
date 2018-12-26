@@ -2,6 +2,8 @@ version: '3'
 
 services:
 
+  ################ NGINX ################
+
   nginx-production:
     container_name: nginx-production
     image: nginx:latest
@@ -22,6 +24,8 @@ services:
     networks:
       # front-net: rede para comunicar nginx e frontend-web
       - front
+
+  ################ MONGO (ficar descomentado até necessitar mudar algo neste container) ################
 
   # mongo:
   #   container_name: mongo-production
