@@ -70,6 +70,7 @@ services:
       - db
     depends_on: 
       - mongo
+    tty: true
 
   cebrace-loka-api-job:
     container_name: cebrace-loka-api-job
@@ -84,6 +85,7 @@ services:
       - db
     depends_on: 
       - mongo
+    tty: true
 
   cebrace-state-machine-job:
     container_name: cebrace-state-machine-job
@@ -98,6 +100,7 @@ services:
       - db
     depends_on: 
       - mongo
+    tty: true
     
 
 networks:
