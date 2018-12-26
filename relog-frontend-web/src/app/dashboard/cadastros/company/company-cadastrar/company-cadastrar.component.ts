@@ -42,13 +42,13 @@ export class CompanyCadastrarComponent implements OnInit {
   formProfile() {
     this.newCompany = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
-      phone: ['', [Validators.required]],
+      phone: ['', []],
       cnpj: ['', []],
       address: this.fb.group({
-        city: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
-        street: ['', [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
-        cep: ['', [Validators.required]],
-        uf: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]]
+        city: ['', [Validators.pattern(/^((?!\s{2}).)*$/)]],
+        street: ['', [Validators.pattern(/^((?!\s{2}).)*$/)]],
+        cep: ['', []],
+        uf: ['', [Validators.pattern(/^((?!\s{2}).)*$/)]]
       }),
       type: ['', [Validators.required]]
     });
@@ -57,15 +57,20 @@ export class CompanyCadastrarComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
     this.submitted = true;
+    console.log('submit...:' + JSON.stringify(value));
+    console.log('valid...:' + JSON.stringify(valid));
 
     if (valid) {
       value.type = value.type.name;
-      console.log('submit...:' + JSON.stringify(value));
 
       this.companiesService
         .createCompany(value)
         .subscribe(result => { 
-          this.router.navigate(['/rc/cadastros/company']); this.toastService.successModal('Empresa criada!') 
+          this.router.navigate(['/rc/cadastros/company']); this.toastService.successModal('Empresa criada!') ;
+
+        }, err => {
+          console.log(err);
+          this.toastService.showError('', { title: "Erro na atualização", body: "Houve um problema na atualização da Empresa" });
         });
     }
   }
