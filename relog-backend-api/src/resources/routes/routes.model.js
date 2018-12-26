@@ -80,7 +80,20 @@ const update_family = async (route, next) => {
         next(error)
     }
 }
-const saveRouteToFamily = function (doc, next) {
+
+const remove_route_in_family = async (route, next) => {
+    try {
+        const family = await Family.findById(route.family)
+        if (!family) next()
+        family.routes.pull(route._id)
+        await family.save()
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
+
+const save_route_to_family = function (doc, next) {
     update_family(doc, next)
 }
 
@@ -90,10 +103,15 @@ const update_updated_at_middleware = function (next) {
     next()
 }
 
-routeSchema.post('save', saveRouteToFamily)
+const remove_middleware = function (doc, next) {
+    remove_route_in_family(doc, next)
+}
+
+routeSchema.post('save', save_route_to_family)
 routeSchema.pre('update', update_updated_at_middleware)
 routeSchema.pre('findOneAndUpdate', update_updated_at_middleware)
-routeSchema.post('remove', update_updated_at_middleware)
+routeSchema.post('remove', remove_middleware)
+// routeSchema.post('remove', remove_middleware)
 
 const Route = mongoose.model('Route', routeSchema)
 

@@ -104,7 +104,6 @@ const removeMiddleware = function (doc, next) {
 
 companySchema.pre('update', update_updated_at_middleware)
 companySchema.pre('findOneAndUpdate', update_updated_at_middleware)
-
 companySchema.post('remove', removeMiddleware)
 
 const Company = mongoose.model('Company', companySchema)

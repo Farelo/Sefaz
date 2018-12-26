@@ -140,7 +140,7 @@ exports.snapshot_report = async () => {
 
                 obj.id = packing._id
                 obj.message_date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : '-'
-                obj.family = packing.family.code
+                obj.family = packing.family ? packing.family.code : '-'
                 obj.serial = packing.serial
                 obj.tag = packing.tag.code
                 obj.current_state = packing.current_state
@@ -297,7 +297,7 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
                         object_temp._id = packing._id
                         object_temp.tag = packing.tag
                         object_temp.family_id = packing.family._id
-                        object_temp.family_code = packing.family.code
+                        object_temp.family_code = packing.family ? packing.family.code : '-'
                         object_temp.serial = packing.serial
                         object_temp.current_control_point_name = current_control_point.name
                         object_temp.current_control_point_type = current_control_point.type.name
@@ -321,7 +321,7 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
                         object_temp._id = packing._id
                         object_temp.tag = packing.tag
                         object_temp.family_id = packing.family._id
-                        object_temp.family_code = packing.family.code
+                        object_temp.family_code = packing.family ? packing.family.code : '-'
                         object_temp.serial = packing.serial
                         object_temp.current_control_point_name = current_control_point.name
                         object_temp.current_control_point_type = current_control_point.type.name
@@ -375,7 +375,7 @@ exports.battery_report = async (family_id = null) => {
                     object_temp._id = packing._id
                     object_temp.tag = packing.tag
                     object_temp.family_id = packing.family._id
-                    object_temp.family_code = packing.family.code
+                    object_temp.family_code = packing.family ? packing.family.code : '-'
                     object_temp.serial = packing.serial
                     object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
                     object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
@@ -467,7 +467,7 @@ exports.general_info_report = async(family_id = null) => {
 
                     object_temp._id = packing._id
                     object_temp.tag = packing.tag.code
-                    object_temp.family_code = packing.family.code
+                    object_temp.family_code = packing.family ? packing.family.code : '-'
                     object_temp.serial = packing.serial
                     object_temp.company = company.name
                     object_temp.current_state = packing.current_state

@@ -30,7 +30,7 @@ exports.home_report = async (current_state = null) => {
 
                     const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
 
-                    obj_temp.family_code = packing.family.code
+                    obj_temp.family_code = packing.family ? packing.family.code : '-'
                     obj_temp.serial = packing.serial
                     obj_temp.tag = packing.tag.code
                     obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
@@ -86,7 +86,7 @@ exports.home_low_battery_report = async () => {
                 const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
 
                 obj_temp.id = packing._id
-                obj_temp.family_code = packing.family.code
+                obj_temp.family_code = packing.family ? packing.family.code : '-'
                 obj_temp.serial = packing.serial
                 obj_temp.tag = packing.tag.code
                 obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
@@ -119,7 +119,7 @@ exports.home_permanence_time_exceeded_report = async () => {
                 const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
 
                 obj_temp.id = packing._id
-                obj_temp.family_code = packing.family.code
+                obj_temp.family_code = packing.family ? packing.family.code : '-'
                 obj_temp.serial = packing.serial
                 obj_temp.tag = packing.tag.code
                 obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'

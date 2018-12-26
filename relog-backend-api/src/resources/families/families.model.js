@@ -54,19 +54,8 @@ const update_updated_at_middleware = function (next) {
     next()
 }
 
-const removeMiddleware = function (doc, next) {
-    const family = doc
-    family.model('Packing').update(
-        { family: family._id },
-        { $unset: { family: 1 } },
-        { multi: true },
-        next()
-    )
-}
-
 familySchema.pre('update', update_updated_at_middleware)
 familySchema.pre('findOneAndUpdate', update_updated_at_middleware)
-familySchema.post('remove', removeMiddleware)
 
 const Family = mongoose.model('Family', familySchema)
 
