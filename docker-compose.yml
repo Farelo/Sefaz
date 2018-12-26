@@ -2,39 +2,39 @@ version: '3'
 
 services:
 
-  nginx-production:
-    container_name: nginx-production
-    image: nginx:latest
-    restart: always
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      #volume para trazer o conf do nginx
-      # - ./nginx/conf/nginx-production.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/conf/:/etc/nginx/conf.d/
+  # nginx-production:
+  #   container_name: nginx-production
+  #   image: nginx:latest
+  #   restart: always
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   volumes:
+  #     #volume para trazer o conf do nginx
+  #     # - ./nginx/conf/nginx-production.conf:/etc/nginx/conf.d/default.conf
+  #     - ./nginx/conf/:/etc/nginx/conf.d/
 
-      #volume para trazer o fullchain.pem do dominio relog.com
-      - /etc/letsencrypt/live/relogtechnology.com/fullchain.pem:/etc/letsencrypt/live/relogtechnology.com/fullchain.pem
+  #     #volume para trazer o fullchain.pem do dominio relog.com
+  #     - /etc/letsencrypt/live/relogtechnology.com/fullchain.pem:/etc/letsencrypt/live/relogtechnology.com/fullchain.pem
 
-      #volume para trazer o privkey.pem do dominio relog.com
-      - /etc/letsencrypt/live/relogtechnology.com/privkey.pem:/etc/letsencrypt/live/relogtechnology.com/privkey.pem
-    networks:
-      # front-net: rede para comunicar nginx e frontend-web
-      - front
+  #     #volume para trazer o privkey.pem do dominio relog.com
+  #     - /etc/letsencrypt/live/relogtechnology.com/privkey.pem:/etc/letsencrypt/live/relogtechnology.com/privkey.pem
+  #   networks:
+  #     # front-net: rede para comunicar nginx e frontend-web
+  #     - front
 
-  mongo:
-    container_name: mongo-production
-    image: mongo:4
-    restart: always
-    ports: 
-      - 27017
-    volumes: 
-      # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
-      - /data/db:/data/db
-    networks:
-      # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
-      - db
+  # mongo:
+  #   container_name: mongo-production
+  #   image: mongo:4
+  #   restart: always
+  #   ports: 
+  #     - 27017
+  #   volumes: 
+  #     # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
+  #     - /data/db:/data/db
+  #   networks:
+  #     # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
+  #     - db
 
   ################ CEBRACE ################
 
