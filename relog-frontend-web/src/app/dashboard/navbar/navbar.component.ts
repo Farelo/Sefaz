@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit {
 
   posicionarPopOver() {
     $('.arrow').css({
-      top: -12
+      right: 12
     });
   }
 

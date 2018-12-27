@@ -116,7 +116,12 @@ export class ModalSettings implements OnInit {
     this.settingsService.getSettings().subscribe(result => {
 
       this.actualSettings = result;
-      (this.settings).patchValue(result, { onlySelf: true });
+      this.actualSettings.accuracy_limit = this.actualSettings.accuracy_limit/1000;
+
+      console.log(this.actualSettings);
+
+      (this.settings).patchValue(this.actualSettings, { onlySelf: true });
+      (this.settings).patchValue(this.actualSettings, { onlySelf: true });
     })
   }
 
