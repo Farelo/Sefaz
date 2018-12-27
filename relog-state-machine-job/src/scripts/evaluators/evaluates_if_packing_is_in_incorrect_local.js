@@ -8,44 +8,45 @@ const { Family } = require('../../models/families.model')
 
 module.exports = async (packing, currentControlPoint) => {
     try {
-        /* Checa se a embalagem tem rota */
-        if (packing.family && packing.family.routes.length > 0) {
-            console.log('TEM ROTA')
+        if (packing.last_event_record) {
+            /* Checa se a embalagem tem rota */
+            if (packing.family && packing.family.routes.length > 0) {
+                console.log('TEM ROTA')
 
-            const family = await Family.findById(packing.family)
-                .populate('routes')
-            
-            const packingIsOk = family.routes.filter(route => isIncorrectLocalWithRoutes(route, currentControlPoint))
-            if (!packingIsOk.length > 0) {
-                console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
-                await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
+                const family = await Family.findById(packing.family)
+                    .populate('routes')
 
-                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return null
-                await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert })
+                const packingIsOk = family.routes.filter(route => isIncorrectLocalWithRoutes(route, currentControlPoint))
+                if (!packingIsOk.length > 0) {
+                    console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
+                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
+
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return null
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert })
+                } else {
+                    console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
+                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
+
+                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
+                }
+
             } else {
-                console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
+                /* Checa se a familia tem pontos de controle relacionada a ela */
+                console.log('FAMILIA TEM PONTOS DE CONTROLE RELACIONADAS')
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
 
-                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
+                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return true
                 await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
-            }
 
-        } else {
-            /* Checa se a familia tem pontos de controle relacionada a ela */
-            console.log('FAMILIA TEM PONTOS DE CONTROLE RELACIONADAS')
-            await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
-            
-            if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return true
-            await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
-            
-            // if (packing.family && packing.family.control_points.length > 0) {
+                // if (packing.family && packing.family.control_points.length > 0) {
                 // /* Avalia se os pontos de controle da familia bate com o ponto de controle atual */
                 // const packingIsOk = packing.family.control_points.filter(cp => isIncorrectLocal(cp, currentControlPoint))
                 // /* Se não foi encontrado nenhum ponto de controle */
                 // if (!packingIsOk.length > 0) {
                 //     console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
                 //     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
-                    
+
                 //     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return true
                 //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert })
 
@@ -56,8 +57,16 @@ module.exports = async (packing, currentControlPoint) => {
                 //     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
                 //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
                 // }
-            // } 
+                // } 
+            }
+        } else {
+            /* Checa se a familia tem pontos de controle relacionada a ela */
+            await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
+
+            if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return true
+            await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
         }
+
     } catch (error) {
         console.error(error)
         throw new Error(error)
