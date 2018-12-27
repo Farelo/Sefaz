@@ -94,7 +94,7 @@
           <td>{{packing.family.code || '-'}}</td>
           <td>{{packing.serial || '-'}}</td>
           
-          <td>{{packing.last_event_record.control_point.name || 'Sem Registro'}}</td>
+          <td>{{packing.last_event_record ? packing.last_event_record.control_point.name : 'Sem Registro'}}</td>
           <td>{{packing.absent_time_in_hours | float_time }}</td>
           <!--td>{{packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro'}}</td-->
           <td style="text-align: center;">

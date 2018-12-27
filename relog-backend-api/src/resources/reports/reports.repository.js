@@ -475,7 +475,7 @@ exports.general_info_report = async(family_id = null) => {
                     object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
                     object_temp.battery_percentage = packing.last_device_data ? packing.last_device_data.battery.percentage : 'Sem registro'
                     object_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : 'Sem registro'
-                    object_temp.date = packing.last_device_data ? packing.last_device_data.created_at : 'Sem registro'
+                    object_temp.date = packing.last_device_data ? packing.last_device_data.message_date : 'Sem registro'
 
                     return object_temp
                 })

@@ -60,134 +60,134 @@ export class PackingService {
    * @param attr 
    */
   getPackingsPagination(limit: number, page: number, attr: any): Observable<any> {
-    return this.http.get(`${environment.url}packing/list/pagination/${limit}/${page}?attr=${attr}`)
+    return this.http.get(`${environment.url}/packing/list/pagination/${limit}/${page}?attr=${attr}`)
       .catch(this.handleError);
   }
 
   getInventoryPagination(limit: number, page: number): Observable<any> {
-    return this.http.get(`${environment.url}packing/list/inventory/pagination/${limit}/${page}`)
+    return this.http.get(`${environment.url}/packing/list/inventory/pagination/${limit}/${page}`)
       .catch(this.handleError);
   }
 
   getBySupplier(id: string): Observable<any> {
-    return this.http.get(`${environment.url}packing/list/supplier/${id}`)
+    return this.http.get(`${environment.url}/packing/list/supplier/${id}`)
       .catch(this.handleError);
   }
 
   getPositions(code: string): Observable<any> {
-    return this.http.get(`${environment.url}packing/position/${code}`)
+    return this.http.get(`${environment.url}/packing/position/${code}`)
       .catch(this.handleError);
   }
 
   getPackingsByCode(id): Observable<any> {
-    return this.http.get(`${environment.url}packing/list/code/${id}`)
+    return this.http.get(`${environment.url}/packing/list/code/${id}`)
       .catch(this.handleError);
   }
  
   getPackingsEquals(supplier: string, project: string, code: string): Observable<any> {
-    return this.http.get(`${environment.url}packing/list/equals/${supplier}/${project}/${code}`)
+    return this.http.get(`${environment.url}/packing/list/equals/${supplier}/${project}/${code}`)
       .catch(this.handleError);
   }
 
   getPackingsDistincts(): Observable<any> {
-    return this.http.get(`${environment.url}packing/list/distinct`)
+    return this.http.get(`${environment.url}/packing/list/distinct`)
       .catch(this.handleError);
   }
 
   getPackingsDistinctsByLogistic(array: any): Observable<any> {
-    return this.http.post(`${environment.url}packing/list/distinct/logistic`, array)
+    return this.http.post(`${environment.url}/packing/list/distinct/logistic`, array)
       .catch(this.handleError);
   }
 
   getPackingsDistinctsBySupplier(supplier: string): Observable<any> {
-    return this.http.get(`${environment.url}packing/list/distinct/suplier/${supplier}`)
+    return this.http.get(`${environment.url}/packing/list/distinct/suplier/${supplier}`)
       .catch(this.handleError);
   }
 
   getPackingsByDepartment(id: string,limit: number, page: number): Observable<any> {
-    return this.http.get(`${environment.url}packing/list/department/${id}/${limit}/${page}`)
+    return this.http.get(`${environment.url}/packing/list/department/${id}/${limit}/${page}`)
       .catch(this.handleError);
   }
 
   getPackingsByPackingCode(code: string, limit: number, page: number){
-    return this.http.get(`${environment.url}packing/list/distinct/${code}/${limit}/${page}`)
+    return this.http.get(`${environment.url}/packing/list/distinct/${code}/${limit}/${page}`)
       .catch(this.handleError);
   }
 
   retrieveByPlants(limit: number, page: number, id: string): Observable<any> {
-    return this.http.get(`${environment.url}packing/list/pagination/${limit}/${page}/plant/${id}`)
+    return this.http.get(`${environment.url}/packing/list/pagination/${limit}/${page}/plant/${id}`)
       .catch(this.handleError);
   }
 
   retrieveAllNoBinded(supplier: any): Observable<any> {
 
-    return this.http.get(`${environment.url}packing/list/all/nobinded/${supplier}`)
+    return this.http.get(`${environment.url}/packing/list/all/nobinded/${supplier}`)
       .catch(this.handleError);
   }
 
   retrievePacking(id: string): Observable<any>{
-    return this.http.get(`${environment.url}packing/retrieve/${id}`)
+    return this.http.get(`${environment.url}/packing/retrieve/${id}`)
       .catch(this.handleError);
   }
 
   retrievePackingByCodeAndSerial(code: string,serial: string): Observable<any>{
-    return this.http.get(`${environment.url}packing/retrieve/code/${code}/serial/${serial}`)
+    return this.http.get(`${environment.url}/packing/retrieve/code/${code}/serial/${serial}`)
       .catch(this.handleError);
   }
 
   retrievePackingBySupplierAndCodeAndProject(code: string,supplier: string, project: string): Observable<any>{
-    return this.http.get(`${environment.url}packing/retrieve/code/${code}/supplier/${supplier}/project/${project}`)
+    return this.http.get(`${environment.url}/packing/retrieve/code/${code}/supplier/${supplier}/project/${project}`)
       .catch(this.handleError);
   }
 
 
   retrieveInventory(limit: number, page: number): Observable<any>{
-    return this.http.get(`${environment.url}packing/list/inventory/pagination/${limit}/${page}`)
+    return this.http.get(`${environment.url}/packing/list/inventory/pagination/${limit}/${page}`)
       .catch(this.handleError);
   }
 
   // updatePacking(id: string, packing: any): Observable<any>{
-  //   return this.http.put(`${environment.url}packing/update/${id}`,packing)
+  //   return this.http.put(`${environment.url}/packing/update/${id}`,packing)
   //     .catch(this.handleError);
   // }
 
   updatePackingByGC16(code: string,supplier: string,project: string, packing: any): Observable<any>{
-    return this.http.put(`${environment.url}packing/update/gc16/${code}/${supplier}/${project}`,packing)
+    return this.http.put(`${environment.url}/packing/update/gc16/${code}/${supplier}/${project}`,packing)
       .catch(this.handleError);
   }
 
   updatePackingUnset(id: string): Observable<any>{
-    return this.http.put(`${environment.url}packing/update/unset/${id}`,{})
+    return this.http.put(`${environment.url}/packing/update/unset/${id}`,{})
       .catch(this.handleError);
   }
 
   updateAllPacking(code: string, supplier: string, packing: any): Observable<any>{
-    return this.http.put(`${environment.url}packing/update/all/${code}/${supplier}`,packing)
+    return this.http.put(`${environment.url}/packing/update/all/${code}/${supplier}`,packing)
       .catch(this.handleError);
   }
 
   // deletePacking(id: string): Observable<any>{
-  //   return this.http.delete(`${environment.url}packing/delete/${id}`)
+  //   return this.http.delete(`${environment.url}/packing/delete/${id}`)
   //     .catch(this.handleError);
   // }
 
   // createPacking(tag: Packing []): Observable<any>{
-  //   return this.http.post(`${environment.url}packing/create`, tag)
+  //   return this.http.post(`${environment.url}/packing/create`, tag)
   //     .catch(this.handleError);
   // }
 
   createPackingArray(array: any): Observable<any>{
-    return this.http.post(`${environment.url}packing/create/array`, array)
+    return this.http.post(`${environment.url}/packing/create/array`, array)
       .catch(this.handleError);
   }
 
   loadingPackingPerPlant(limit: number, page: number): Observable<any>{
-    return this.http.get(`${environment.url}packing/list/quantiy/per/plant/${limit}/${page}`)
+    return this.http.get(`${environment.url}/packing/list/quantiy/per/plant/${limit}/${page}`)
       .catch(this.handleError);
   }
 
   loadingPackingPerCondition(): Observable<any>{
-    return this.http.get(`${environment.url}packing/quantity/per/condition`)
+    return this.http.get(`${environment.url}/packing/quantity/per/condition`)
       .catch(this.handleError);
   }
 
@@ -203,7 +203,7 @@ export class PackingService {
    * 
    */
   getFilteredPositions(code: string, initialDate: number, finalDate: number): Observable<any> {
-    return this.http.get(`${environment.url}packing/position/${code}?initial_date=${initialDate}&final_date=${finalDate}`)
+    return this.http.get(`${environment.url}/packing/position/${code}?initial_date=${initialDate}&final_date=${finalDate}`)
       .catch(this.handleError);
   }
 

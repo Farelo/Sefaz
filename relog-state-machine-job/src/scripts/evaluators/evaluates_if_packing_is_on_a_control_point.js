@@ -48,12 +48,6 @@ const checkIn = async (packing, setting, distance, currentControlPoint) => {
             console.log('EMBALAGEM JÁ TEM O EVENT RECORD')
             if (distance < setting.range_radius && packing.last_device_data.accuracy < setting.accuracy_limit) {
                 console.log('EMBALAGEM ESTÀ EM UM PONTO DE CONTROLE')
-                if (packing.serial === '559') {
-                    console.log(packing.serial)
-                    console.log(`distance: ${distance}`)
-                    console.log(`range_radius: ${setting.range_radius}`)
-                    console.log(`diff: ${distance < setting.range_radius}`)
-                }
                 // Estou em um ponto de controle!
                 // Checa se o ponto de controle onde a embalagem está é novo
                 if (packing.last_event_record.control_point.toString() !== currentControlPoint._id.toString()) {
