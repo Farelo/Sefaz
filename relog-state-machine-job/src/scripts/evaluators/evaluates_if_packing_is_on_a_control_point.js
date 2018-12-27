@@ -32,7 +32,7 @@ const checkIn = async (packing, setting, distance, currentControlPoint) => {
     try {
         if (!packing.last_event_record) {
             console.log('EMBALAGEM SEM EVENT RECORD')
-            if (distance < setting.range_radius && packing.last_device_data.accuracy < setting.accuracy_limit) {
+            if (distance < setting.range_radius && packing.last_device_data.accuracy <= setting.accuracy_limit) {
                 console.log('EMBALAGEM ESTÀ EM UM PONTO DE CONTROLE')
                 const eventRecord = new EventRecord({
                     packing: packing._id,
@@ -46,7 +46,7 @@ const checkIn = async (packing, setting, distance, currentControlPoint) => {
             }
         } else {
             console.log('EMBALAGEM JÁ TEM O EVENT RECORD')
-            if (distance < setting.range_radius && packing.last_device_data.accuracy < setting.accuracy_limit) {
+            if (distance < setting.range_radius && packing.last_device_data.accuracy <= setting.accuracy_limit) {
                 console.log('EMBALAGEM ESTÀ EM UM PONTO DE CONTROLE')
                 // Estou em um ponto de controle!
                 // Checa se o ponto de controle onde a embalagem está é novo
