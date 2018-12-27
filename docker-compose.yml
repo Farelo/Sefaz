@@ -2,6 +2,8 @@ version: '3'
 
 services:
 
+  ################ NGINX ################
+
   nginx-production:
     container_name: nginx-production
     image: nginx:latest
@@ -23,18 +25,20 @@ services:
       # front-net: rede para comunicar nginx e frontend-web
       - front
 
-  mongo:
-    container_name: mongo-production
-    image: mongo:4
-    restart: always
-    ports: 
-      - 27017
-    volumes: 
-      # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
-      - /data/db:/data/db
-    networks:
-      # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
-      - db
+  ################ MONGO (ficar descomentado até necessitar mudar algo neste container) ################
+
+  # mongo:
+  #   container_name: mongo-production
+  #   image: mongo:4
+  #   restart: always
+  #   ports: 
+  #     - 27017
+  #   volumes: 
+  #     # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
+  #     - /data/db:/data/db
+  #   networks:
+  #     # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
+  #     - db
 
   ################ CEBRACE ################
 
@@ -68,8 +72,9 @@ services:
     networks: 
       - front
       - db
-    depends_on: 
-      - mongo
+    # depends_on: 
+    #   - mongo
+    tty: true
 
   cebrace-loka-api-job:
     container_name: cebrace-loka-api-job
@@ -82,8 +87,9 @@ services:
       - 8013
     networks: 
       - db
-    depends_on: 
-      - mongo
+    # depends_on: 
+    #   - mongo
+    tty: true
 
   cebrace-state-machine-job:
     container_name: cebrace-state-machine-job
@@ -96,8 +102,9 @@ services:
       - 8012
     networks: 
       - db
-    depends_on: 
-      - mongo
+    # depends_on: 
+    #   - mongo
+    tty: true
     
 
 networks:
