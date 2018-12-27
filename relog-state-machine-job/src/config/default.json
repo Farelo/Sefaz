@@ -8,7 +8,7 @@
         "port": 4000
     },
     "db": {
-        "url": "mongodb://localhost:27017/cebrace",
+        "url": "mongodb://localhost:27017/recicla",
         "mongodb_container": "mongodb://<user>:<password>@<host>:27017/cebrace"
     },
     "database_options": {
