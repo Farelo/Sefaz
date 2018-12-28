@@ -90,7 +90,9 @@ export class PontoDeControleCadastrarComponent implements OnInit {
           this.controlPointPolygon = null;
         }
 
-        console.log(circle);
+        console.log('radius', circle.getRadius());
+        console.log('lat', circle.getCenter().lat());
+        console.log('lng', circle.getCenter().lng());
         this.controlPointCircle = circle;
       });
 
@@ -111,7 +113,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
         var arr = [];
         polygon.getPath().forEach(latLng => arr.push(latLng.toString()) )
-        //console.log(arr);
+        console.log(arr);
 
         this.controlPointPolygon = polygon;
       });
