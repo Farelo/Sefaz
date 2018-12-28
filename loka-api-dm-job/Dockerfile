@@ -27,7 +27,8 @@ EXPOSE 8013
 
 # RUN npm run generate-env --unsafe-perm=true --allow-root
 
+# executar prod quando for pra produção
 ENTRYPOINT [ "npm", "run", "prod" ]
-# ENTRYPOINT [ "cat", "/app/src/config/production.json" ]
-# ENTRYPOINT [ "ls", "/app/src/config/" ]
-# ENTRYPOINT [ "printenv" ]
+
+# executar start quando testar localmente (dev)
+# ENTRYPOINT [ "npm", "run", "start" ]
