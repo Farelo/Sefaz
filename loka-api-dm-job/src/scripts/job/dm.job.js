@@ -2,7 +2,6 @@ const debug = require('debug')('job:loka')
 const dm_controller = require('../loka-integration/dm.controller')
 const { Packing } = require('../../models/packings.model')
 const { DeviceData, device_data_save } = require('../../models/device_data.model')
-// const packings = require('./devices')
 
 module.exports = async () => {
     //end_search_date = currente environment timezone datetime
@@ -13,11 +12,9 @@ module.exports = async () => {
     try {
         const cookie = await dm_controller.loginDM()
 
-        //devices = [ { tag: { code: code_value } } ]
+        // let devices = [ { tag: { code: 4085902 } } ]
         let devices = await Packing.find({}, {_id: 0, tag: 1})//.limit(2)
 
-        //TODO: retirar esse trecho pra entrega final e seu respectivo require
-        // let devices = await packings
         debug(devices)
 
         let concluded_devices = 0

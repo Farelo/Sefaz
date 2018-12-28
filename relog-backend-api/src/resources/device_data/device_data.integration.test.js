@@ -506,6 +506,134 @@ describe('api/device_data', () => {
             expect(second_device_data._id).not.toEqual(last_device_data)
         })
 
+        
+        it('should return the same device_data._id from the packing.last_device_data_battery as the recently device_data created', async () => {
+
+            const new_device_data = new DeviceData(device_data_body)
+            await new_device_data.save()
+        
+            const tag = {code: device_data_body.device_id}
+
+            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
+
+            expect(new_device_data._id).toEqual(packing.last_device_data_battery._id)
+            expect(new_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
+            expect(new_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
+        })
+
+        it('should keep the oldest device_data._id from the packing.last_device_data_battery if the recently device_data does not contain battery data', async () => {
+
+            const new_device_data = new DeviceData(device_data_body)
+            await new_device_data.save()
+            
+            // adicionar um segundo device_data forcará a execução do post save
+            // como este segundo device data nao tem info de bateria, então o last_device_data_battery do packing deve permanecer com o id do device_data anterior
+            const second_device_data = new DeviceData({ 
+                device_id: '1234567', 
+                message_date: new Date('2018-12-31T00:00:00'),
+                message_date_timestamp: 123456789
+            })
+            await second_device_data.save()
+            
+            const tag = {code: device_data_body.device_id}
+            
+            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
+        
+            expect(new_device_data._id).toEqual(packing.last_device_data_battery._id)
+            expect(new_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
+            expect(new_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
+            expect(second_device_data._id).not.toEqual(packing.last_device_data_battery._id)
+
+        } )
+
+        it ('should update the packing.last_device_data_battery to the new device_data._id wich contains battery data', async () => {
+
+            const new_device_data = new DeviceData(device_data_body)
+            await new_device_data.save()
+            
+            // adicionar um segundo device_data forcará a execução do post save
+            // como este segundo device tem info de bateria, então o last_device_data_battery do packing deverá ser atualizado com o id do segundo device_data
+            const second_device_data = new DeviceData({ 
+                device_id: '1234567', 
+                message_date: new Date('2018-12-31T00:00:00'),
+                message_date_timestamp: 123456789,
+                battery: { percentage: 50, voltage: 2.7}
+            })
+            await second_device_data.save()
+
+            const tag = {code: device_data_body.device_id}
+            
+            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
+        
+            expect(new_device_data._id).not.toEqual(packing.last_device_data_battery._id)
+            expect(second_device_data._id).toEqual(packing.last_device_data_battery._id)
+            expect(second_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
+            expect(second_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
+
+        })
+
+        it('should not update the packing.last_device_data_battery to the new device_data._id wich contains battery data but is an oldest device_data', async () => {
+            //testar um caso em que apesar de ter bateria, a data eh mais antiga, por isso fica a bateria antiga
+
+            const new_device_data = new DeviceData(device_data_body)
+            await new_device_data.save()
+            
+            // adicionar um segundo device_data forcará a execução do post save
+            // apesar deste segundo device data ter info de bateria, a data dessa info de bateria é mais antiga que a info de bateria que o packing ja possui
+            const second_device_data = new DeviceData({ 
+                device_id: '1234567', 
+                message_date: new Date('2018-01-01T00:00:00'),
+                message_date_timestamp: 123456789,
+                battery: { percentage: 60, voltage: 2.9}
+            })
+            await second_device_data.save()
+
+            const tag = {code: device_data_body.device_id}
+            
+            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
+        
+            expect(new_device_data._id).toEqual(packing.last_device_data_battery._id)
+            expect(second_device_data._id).not.toEqual(packing.last_device_data_battery._id)
+            expect(new_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
+            expect(new_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
+
+        })
+
+        
+        it('should update the packing.last_device_data and packing_last_device_data_battery with two different device_data._id', async () => {
+            //testar um caso em que o packing nao tem bateria ainda, 2 device data sao inseridos e o mais recente nao tem bateria e o mais antigo tem
+            //nesse caso, o last_davice_data ficará com o mais recente e o last_device_data_battery com o mais antigo, pq tem bateria
+
+            const first_device_data = new DeviceData({ 
+                device_id: '1234567', 
+                message_date: new Date('2018-12-31T00:00:00'),
+                message_date_timestamp: 123456789
+            })
+            await first_device_data.save()
+
+            const second_device_data = new DeviceData({ 
+                device_id: '1234567', 
+                message_date: new Date('2018-01-01T00:00:00'),
+                message_date_timestamp: 123456789,
+                battery: { percentage: 60, voltage: 2.9}
+            })
+            await second_device_data.save()
+
+            const tag = {code: '1234567'}
+            
+            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery').populate('last_device_data')
+        
+            expect(first_device_data._id).toEqual(packing.last_device_data._id)
+            expect(second_device_data._id).not.toEqual(packing.last_device_data._id)
+
+            expect(second_device_data._id).toEqual(packing.last_device_data_battery._id)
+            expect(first_device_data._id).not.toEqual(packing.last_device_data_battery._id)
+            
+            expect(second_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
+            expect(second_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
+
+        })
+
         afterEach(async () => {
 
             await DeviceData.deleteMany({})

@@ -55,6 +55,13 @@ module.exports = async (packing, setting) => {
 
                     }
                 }
+            } else {
+                /* Checa se a familia tem pontos de controle relacionada a ela */
+                console.log('FAMILIA TEM PONTOS DE CONTROLE RELACIONADAS')
+                await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
+
+                if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return true
+                await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
             }
         }
     } catch (error) {

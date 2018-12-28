@@ -11,7 +11,7 @@ const packingSchema = new mongoose.Schema({
         },
         version: {
             type: String,
-            minlength: 2,
+            minlength: 1,
             maxlength: 30,
         },
         manufactorer: {
@@ -28,7 +28,7 @@ const packingSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        minlength: 2,
+        minlength: 0,
         maxlength: 30,
     },
     weigth: {
@@ -63,6 +63,7 @@ const packingSchema = new mongoose.Schema({
     },
     observations: {
         type: String,
+        minlength: 0,
         maxlength: 250,
     },
     active: {
@@ -90,9 +91,13 @@ const packingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'DeviceData'
     },
-    last_alert_history: {
+    last_device_data_battery: {
         type: mongoose.Schema.ObjectId,
-        ref: 'AlertHistory'
+        ref: 'DeviceData'
+    },
+    last_current_state_history: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'CurrentStateHistory'
     },
     last_department: {
         type: mongoose.Schema.ObjectId,
