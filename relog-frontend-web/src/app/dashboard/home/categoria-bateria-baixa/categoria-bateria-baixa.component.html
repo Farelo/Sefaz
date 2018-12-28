@@ -44,6 +44,7 @@
                 <th>Planta Atual</th>
                 <th>Local</th>
                 <th>Bateria</th>
+                <th>Data</th>
               </tr>
             </thead>
 
@@ -57,6 +58,7 @@
                 <td>{{ item.serial }}</td>
                 <td>{{ item.tag }}</td>
                 <td>{{ item.current_control_point_name }}</td>
+                <td>{{ item.current_control_point_type }}</td>
                 <td>{{ item.battery_percentage ? ((item.battery_percentage | round) + '%') : "Sem registro" }}</td>
                 <td>{{ item.date }}</td>
               </tr>
