@@ -138,6 +138,7 @@ exports.snapshot_report = async () => {
         const data = await Promise.all(
             packings.map(async packing => {
                 let obj = {}
+                const battery_level = packing.last_device_data && packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
 
                 obj.id = packing._id
                 obj.message_date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : '-'
@@ -156,8 +157,8 @@ exports.snapshot_report = async () => {
                 obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : '-'
                 obj.signal = packing.current_state === 'sem_sinal' ? 'FALSE' : packing.current_state === 'desabilitada_sem_sinal' ? 'FALSE' : packing.current_state === 'perdida' ? 'FALSE' : 'TRUE'
                 obj.absent_time = await getAbsentTimeCountDown(packing)
-                obj.battery = packing.last_device_data ? packing.last_device_data.battery.percentage : "-"
-                obj.battery_alert = packing.last_device_data && packing.last_device_data.battery.percentage > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
+                obj.battery = battery_level ? battery_level : "-"
+                obj.battery_alert = battery_level > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
                 obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : "-"
 
                 return obj
