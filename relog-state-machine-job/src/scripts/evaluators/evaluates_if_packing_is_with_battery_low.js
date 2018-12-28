@@ -8,8 +8,10 @@ const { CurrentStateHistory } = require('../../models/current_state_history.mode
 module.exports = async (packing, setting) => {
   let current_state_history = {}
   
+  const battery_level = packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
+
   try {
-    if (packing.last_device_data.battery.percentage < setting.battery_level_limit) {
+    if (battery_level < setting.battery_level_limit) {
       await Packing.findByIdAndUpdate(packing._id, { low_battery: true }, { new: true })
 
       current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })

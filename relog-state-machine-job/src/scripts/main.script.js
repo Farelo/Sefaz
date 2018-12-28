@@ -21,6 +21,7 @@ module.exports = async () => {
             const packings = await Packing.find({})
                 .populate('family')
                 .populate('last_device_data')
+                .populate('last_device_data_battery')
                 .populate('last_current_state_history')
                 .populate('last_event_record')
 
