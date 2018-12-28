@@ -131,6 +131,7 @@ exports.snapshot_report = async () => {
         const packings = await Packing.find({})
             .populate('family')
             .populate('last_device_data')
+            .populate('last_device_data_battery')
             .populate('last_event_record')
         const settings = await Setting.find({})
 
@@ -179,24 +180,28 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                 packings = await Packing.find({ absent: true, active: true, family: current_family._id, serial: query.serial })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
             case query.family != null:
                 packings = await Packing.find({ absent: true, active: true, family: current_family._id })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
             case query.serial != null:
                 packings = await Packing.find({ absent: true, active: true, serial: query.serial })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
             default:
                 packings = await Packing.find({ absent: true, active: true })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
         }
@@ -258,24 +263,28 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
                 packings = await Packing.find({ absent: true, active: true, family: current_family._id, serial: query.serial })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
             case query.family != null:
                 packings = await Packing.find({ absent: true, active: true, family: current_family._id })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
             case query.serial != null:
                 packings = await Packing.find({ absent: true, active: true, serial: query.serial })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
             default:
                 packings = await Packing.find({ absent: true, active: true })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
         }
@@ -354,12 +363,14 @@ exports.battery_report = async (family_id = null) => {
                 packings = await Packing.find({ active: true, family: current_family._id })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
             default:
                 packings = await Packing.find({ active: true })
                     .populate('family')
                     .populate('last_device_data')
+                    .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
         }
@@ -450,11 +461,13 @@ exports.general_info_report = async(family_id = null) => {
             await Packing.find({ active: true, family: current_family._id })
                 .populate('family')
                 .populate('last_device_data')
+                .populate('last_device_data_battery')
                 .populate('last_event_record') 
             :
             await Packing.find({ active: true })
                 .populate('family')
                 .populate('last_device_data')
+                .populate('last_device_data_battery')
                 .populate('last_event_record')
 
         const data = await Promise.all(

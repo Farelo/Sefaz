@@ -57,7 +57,7 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
                 families = await Family.find({ _id: query.family_id })
                 data = await Promise.all(
                     families.map(async family => {
-                        return await Packing.find({ family: family._id, serial: query.packing_serial }).populate('last_device_data').populate('family')
+                        return await Packing.find({ family: family._id, serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
                     })
                 )
                 packings = _.flatMap(data)
@@ -66,7 +66,7 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
                 families = await Family.find({ _id: query.family_id })
                 data = await Promise.all(
                     families.map(async family => {
-                        return await Packing.find({ family: family._id }).populate('last_device_data').populate('family')
+                        return await Packing.find({ family: family._id }).populate('last_device_data').populate('last_device_data_battery').populate('family')
                     })
                 )
                 packings = _.flatMap(data)
@@ -75,34 +75,34 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
                 families = await Family.find({ company: query.company_id })
                 data = await Promise.all(
                     families.map(async family => {
-                        return await Packing.find({ family: family._id, serial: query.packing_serial }).populate('last_device_data').populate('family')
+                        return await Packing.find({ family: family._id, serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
                     })
                 )
                 packings = _.flatMap(data)
                 break
             case query.family_id != null && query.packing_serial != null:
                 packings = await Packing
-                    .find({ family: query.family_id, serial: query.packing_serial }).populate('last_device_data').populate('family')
+                    .find({ family: query.family_id, serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
                 break
             case query.company_id != null:
                 families = await Family.find({ company: query.company_id })
                 data = await Promise.all(
                     families.map(async family => {
-                        return await Packing.find({ family: family._id }).populate('last_device_data').populate('family')
+                        return await Packing.find({ family: family._id }).populate('last_device_data').populate('last_device_data_battery').populate('family')
                     })
                 )
                 packings = _.flatMap(data)
                 break
             case query.family_id != null:
                 packings = await Packing
-                    .find({ family: query.family_id }).populate('last_device_data').populate('family')
+                    .find({ family: query.family_id }).populate('last_device_data').populate('last_device_data_battery').populate('family')
                 break
             case query.packing_serial != null:
                 packings = await Packing
-                    .find({ serial: query.packing_serial }).populate('last_device_data').populate('family')
+                    .find({ serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
                 break
             default:
-                packings = await Packing.find({}).populate('last_device_data').populate('family')
+                packings = await Packing.find({}).populate('last_device_data').populate('last_device_data_battery').populate('family')
                 break
         }
 

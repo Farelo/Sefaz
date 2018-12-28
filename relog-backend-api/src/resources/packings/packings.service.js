@@ -21,6 +21,7 @@ exports.get_packings = async (tag, family) => {
                             .populate('family', ['_id', 'code', 'company'])
                             .populate('project', ['_id', 'name'])
                             .populate('last_device_data')
+                            .populate('last_device_data_battery')
                             .populate('last_event_record')
                             .populate('last_alert_history')
 
@@ -38,6 +39,7 @@ exports.get_packing = async (id) => {
             .populate('family', ['_id', 'code', 'company'])
             .populate('project', ['_id', 'name'])
             .populate('last_device_data')
+            .populate('last_device_data_battery')
             .populate('last_event_record')
             .populate('last_alert_history')
             
