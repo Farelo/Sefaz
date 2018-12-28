@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ToastService, GeocodingService, CompaniesService, ControlPointsService, ControlPointTypesService } from 'app/servicos/index.service';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/first'
+import { NguiMap, NguiMapComponent, DrawingManager } from '@ngui/map';
 
 @Component({
   selector: 'app-ponto-de-controle-cadastrar',
@@ -13,7 +14,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   public mControlPoint: FormGroup;
   public allCompanies: any[] = [];
-  public allTypes: any[] = []; 
+  public allTypes: any[] = [];
   public autocomplete: any;
   public address: any = {};
   public center: any;
@@ -26,6 +27,9 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   public pos: any;
   public geocoder = new google.maps.Geocoder;
   public pointWasSelected: boolean = false;
+
+  selectedOverlay: any;
+  @ViewChild(DrawingManager) drawingManager: DrawingManager;
 
   constructor(
     private companyService: CompaniesService,
@@ -51,8 +55,68 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   ngOnInit() {
 
+    this.prepareMap();
     this.fillCompanySelect();
-    this.fillTypesSelect(); 
+    this.fillTypesSelect();
+  }
+
+  /*
+  google.maps.event.addListener(drawingManager, 'circlecomplete', function(circle) {
+    var radius = circle.getRadius();
+  });
+
+  google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+    if (event.type == 'circle') {
+      var radius = event.overlay.getRadius();
+    }
+  });
+   */
+
+  public controlPointCircle: google.maps.Circle = null;
+  public controlPointPolygon: google.maps.Polygon = null;
+
+  prepareMap() {
+    this.drawingManager['initialized$'].subscribe(dm => {
+
+      google.maps.event.addListener(dm, 'circlecomplete', (circle) => {
+        
+        if (this.controlPointCircle !== null) {
+          this.controlPointCircle.setMap(null);
+          this.controlPointCircle = null;
+        }
+
+        if (this.controlPointPolygon !== null) {
+          this.controlPointPolygon.setMap(null);
+          this.controlPointPolygon = null;
+        }
+
+        console.log(circle);
+        this.controlPointCircle = circle;
+      });
+
+      google.maps.event.addListener(dm, 'polygoncomplete', (polygon) => {
+
+        console.log(polygon);
+        console.log(polygon.getPath());
+
+        if (this.controlPointCircle !== null) {
+          this.controlPointCircle.setMap(null);
+          this.controlPointCircle = null;
+        }
+
+        if (this.controlPointPolygon !== null) {
+          this.controlPointPolygon.setMap(null);
+          this.controlPointPolygon = null;
+        }
+
+        var arr = [];
+        polygon.getPath().forEach(latLng => arr.push(latLng.toString()) )
+        //console.log(arr);
+
+        this.controlPointPolygon = polygon;
+      });
+      
+    });
   }
 
   /**
@@ -75,24 +139,24 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     }, err => console.error(err));
   }
 
-  onAddItem(event: any){
- 
+  onAddItem(event: any) {
+
     console.log(event);
 
-    if(!event._id){
+    if (!event._id) {
 
-      if (event.name.length < 5){
+      if (event.name.length < 5) {
         this.fillTypesSelect();
         this.mControlPoint.controls.type.setErrors({ minlength: true });
         return false;
       }
-  
+
       if (event.name.length > 50) {
         this.fillTypesSelect();
         this.mControlPoint.controls.type.setErrors({ maxlength: true });
         return false;
       }
-  
+
       this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
         this.controlPointsTypeService.getAllType().toPromise().then(() => {
           this.mControlPoint.controls.type.setValue(result);
@@ -115,10 +179,10 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     this.submitted = true;
 
-    if (valid && this.pointWasSelected) {  
-      
+    if (valid && this.pointWasSelected) {
+
       value.type = this.mControlPoint.controls.type.value._id;
-      value.company = this.mControlPoint.controls.company.value._id; 
+      value.company = this.mControlPoint.controls.company.value._id;
 
       console.log(value);
       this.finishRegister(value);
@@ -146,7 +210,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
       let addressType = place.address_components[i].types[0];
       this.address[addressType] = place.address_components[i].long_name;
     }
-    
+
     this.mControlPoint.controls.lat.setValue(0);
     this.mControlPoint.controls.lng.setValue(0);
 
@@ -187,7 +251,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     event.target.panTo(event.latLng);
   }
 
-  validateName(event: any){
+  validateName(event: any) {
     if (!this.mControlPoint.get('name').errors) {
 
       this.validateNotTakenLoading = true;
@@ -224,5 +288,6 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   //       }
   //     })
   // }
-  
+
 }
+
