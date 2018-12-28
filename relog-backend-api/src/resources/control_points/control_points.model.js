@@ -10,6 +10,11 @@ const controlPointSchema = new mongoose.Schema({
         maxlength: 50,
         unique: true
     },
+    duns: {
+        type: String,
+        minlength: 1,
+        maxlength: 30,
+    },
     lat: {
         type: Number,
         min: -90,
@@ -55,6 +60,7 @@ const controlPointSchema = new mongoose.Schema({
 const validate_control_points = (control_point) => {
     const schema = Joi.object().keys({
         name: Joi.string().min(5).max(50).required(),
+        duns: Joi.string().min(1).max(30),
         lat: Joi.number().min(-90).max(90),
         lng: Joi.number().min(-180).max(180),
         full_address: Joi.string().min(5).max(100),
