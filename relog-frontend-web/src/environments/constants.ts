@@ -79,6 +79,8 @@ export const constants = {
     FACTORY: 'Fábrica',
     SUPPLIER: 'Fornecedor',
     LOGISTIC: 'Operador Logístico',
+    OWNER: 'Administradora',
+    CLIENT: 'Administrada'
   }
   
 };
