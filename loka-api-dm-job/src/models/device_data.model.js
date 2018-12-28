@@ -61,6 +61,8 @@ deviceDataSchema.index({ device_id: 1, message_date: -1 }, { unique: true })
 const update_packing = async (device_data, next) => {
     
     try {
+        let update_attrs = {}
+        let update = false
         const tag = { code: device_data.device_id }
         const packing = await Packing.findByTag(tag)
     
@@ -70,7 +72,32 @@ const update_packing = async (device_data, next) => {
 
         current_message_date_on_packing = current_message_date_on_packing ? current_message_date_on_packing.message_date : null
 
-        await Packing.findByIdAndUpdate(packing._id, { last_device_data: device_data.message_date > current_message_date_on_packing ? device_data._id : packing.last_device_data }, { new: true })
+        //se o novo device_data é mais recente que o que já esta salvo, então atualiza
+        if(device_data.message_date > current_message_date_on_packing) {
+
+            update_attrs.last_device_data = device_data._id
+
+            update = true
+        }
+
+        //se o novo device_data possui informação de bateria
+        if (device_data.battery.percentage || device_data.battery.voltage) {
+        
+            let packing_date_battery_data = await DeviceData.findById(packing.last_device_data_battery, {_id: 0, message_date: 1})
+
+            packing_date_battery_data = packing_date_battery_data ? packing_date_battery_data.message_date : null
+
+            // se essa informação de bateria é mais recente que a que ja existe no packing ou o packing não tem ainda nenhuma info de bateria
+            if (device_data.message_date > packing_date_battery_data){
+
+                update_attrs.last_device_data_battery =  device_data._id
+            }
+        
+            update = true
+        }
+
+        if (update)
+            await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true })
 
         next()
     } catch (error) {
