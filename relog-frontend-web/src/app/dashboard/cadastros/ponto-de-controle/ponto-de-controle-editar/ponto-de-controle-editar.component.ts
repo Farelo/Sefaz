@@ -44,7 +44,7 @@ export class PontoDeControleEditarComponent implements OnInit {
 
     this.mControlPoint = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
-      duns: ['', [Validators.required]],
+      duns: ['', []],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
       full_address: ['', [Validators.required]],
@@ -96,8 +96,8 @@ export class PontoDeControleEditarComponent implements OnInit {
 
         this.pointWasSelected = true;
 
-        console.log('recuperado');
-        console.log(this.mControlPoint);
+        // console.log('recuperado');
+        // console.log(this.mControlPoint);
         
         // this.controlPointType = this.allTypes.filter(elem => {
         //   return elem.name == result.type;
@@ -162,7 +162,7 @@ export class PontoDeControleEditarComponent implements OnInit {
       value.type = this.mControlPoint.controls.type.value._id;
       value.company = this.mControlPoint.controls.company.value._id;
 
-      console.log(value);
+      // console.log(value);
       this.finishRegister(value);
     }
   }

@@ -39,7 +39,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     this.mControlPoint = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
-      duns: ['', [Validators.required]],
+      duns: ['', []],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
       full_address: ['', [Validators.required]],
@@ -110,8 +110,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     // console.log(value);
     // console.log(valid);
-    console.log('submit');
-    console.log(this.mControlPoint);
+    // console.log('submit');
+    // console.log(this.mControlPoint);
 
     this.submitted = true;
 
