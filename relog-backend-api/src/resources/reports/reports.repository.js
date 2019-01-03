@@ -156,10 +156,17 @@ exports.snapshot_report = async () => {
                 obj.area = `{(${await getLatLngOfPacking(packing)}),${settings[0].range_radius}}`
                 obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : '-'
                 obj.signal = packing.current_state === 'sem_sinal' ? 'FALSE' : packing.current_state === 'desabilitada_sem_sinal' ? 'FALSE' : packing.current_state === 'perdida' ? 'FALSE' : 'TRUE'
-                obj.absent_time = await getAbsentTimeCountDown(packing)
                 obj.battery = battery_level ? battery_level : "-"
                 obj.battery_alert = battery_level > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
                 obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : "-"
+                
+                if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
+                    obj.absent_time = getDiffDateTodayInDays(packing.last_event_record.created_at)
+                } else {
+                    obj.absent_time = await getAbsentTimeCountDown(packing)
+                }
+
+                // obj.absent_time = await getAbsentTimeCountDown(packing)
 
                 return obj
             })
