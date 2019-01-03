@@ -49,13 +49,13 @@
 
       <!-- Input para o duns do ponto de controle -->
       <div class="campo col-md-12 col-md-6">
-        <p class="descricao">DUNS</p>
+        <p class="descricao">CÓDIGO DE IDENTIFICAÇÃO DA EMPRESA/DUNS</p>
         <p class="explicacao">Ex. "123456789"</p>
         <div class="input-group">
           <input type="text" 
             class="form-control" 
             maxlength="30"
-            placeholder="Digite o nome da planta" 
+            placeholder="Digite o código de identificação da empresa" 
             aria-describedby="basic-addon2"
             formControlName="duns" 
             [ngClass]="{'required': (mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
