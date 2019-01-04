@@ -6,7 +6,7 @@ import { ModalDeleteComponent } from 'app/shared/modal-delete/modal-delete.compo
 @Component({
   selector: 'app-tipo-ponto-controle',
   templateUrl: './tipo-ponto-controle.component.html',
-  styleUrls: ['./tipo-ponto-controle.component.css']
+  styleUrls: ['../cadastros.component.css']
 })
 export class TipoPontoControleComponent implements OnInit {
 
@@ -40,10 +40,10 @@ export class TipoPontoControleComponent implements OnInit {
     this.loadProjects();
   }
 
-  removeProject(project): void {
+  removeProject(mtype): void {
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.mObject = project;
-    modalRef.componentInstance.mType = "PROJECT";
+    modalRef.componentInstance.mObject = mtype;
+    modalRef.componentInstance.mType = "CONTROL_POINT_TYPE";
 
     modalRef.result.then((result) => {
       this.loadProjects();

@@ -1,18 +1,18 @@
 import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { ProjetoComponent } from './projeto.component';
-import { TipoCadastrarComponent } from './tipo-cadastrar/tipo-cadastrar.component';
-import { TipoEditarComponent } from './tipo-editar/tipo-editar.component';
+import { NgModule } from '@angular/core'; 
+import { TipoPontoControleComponent } from './tipo-ponto-controle.component';
+import { TipoPontoControleCadastrarComponent } from './tipo-cadastrar/tipo-cadastrar.component';
+import { TipoPontoControleEditarComponent } from './tipo-editar/tipo-editar.component';
 
-const projetoRoutes = [
-  {path: '', component: ProjetoComponent},
-  { path: 'cadastrar', component: TipoCadastrarComponent},
-  { path: 'editar/:id', component: TipoEditarComponent},
+const tipoRoutes = [
+  { path: '', component: TipoPontoControleComponent},
+  { path: 'cadastrar', component: TipoPontoControleCadastrarComponent},
+  { path: 'editar/:id', component: TipoPontoControleEditarComponent},
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(projetoRoutes)],
+  imports: [RouterModule.forChild(tipoRoutes)], 
   exports: [RouterModule]
 })
 
-export class ProjetoRoutingModule {}
+export class TipoPontoControleRoutingModule {}

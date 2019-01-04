@@ -10,17 +10,17 @@ import { ModalModule ,TooltipModule} from 'ngx-bootstrap'
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule} from '@angular/forms';
-import { ProjetoRoutingModule } from './projeto.routing.module';
-import { ProjetoCadastrarComponent } from './projeto-cadastrar/projeto-cadastrar.component';
-import { ProjetoEditarComponent } from './projeto-editar/projeto-editar.component';
-import { ProjetoComponent } from './projeto.component';
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
+import { TipoPontoControleRoutingModule } from './tipo-ponto-controle.routing.module';
+import { TipoPontoControleCadastrarComponent } from './tipo-cadastrar/tipo-cadastrar.component';
+import { TipoPontoControleEditarComponent } from './tipo-editar/tipo-editar.component';
+import { TipoPontoControleComponent } from './tipo-ponto-controle.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    ProjetoRoutingModule,
+    TipoPontoControleRoutingModule,
     NgxPaginationModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
@@ -30,12 +30,12 @@ import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
     ReactiveFormsModule
   ],
   declarations: [
-    ProjetoCadastrarComponent,
-    ProjetoEditarComponent,
-    ProjetoComponent
+    TipoPontoControleCadastrarComponent,
+    TipoPontoControleEditarComponent,
+    TipoPontoControleComponent
   ],
   providers: [
     NgbActiveModal
   ],
 })
-export class ProjetoModule { }
+export class TipoPontoControleModule { }

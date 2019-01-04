@@ -21,11 +21,11 @@
                                                 totalItems: allTypes.length};">
         <td>{{ item.name | truncate : 20 }}</td>
         <td class="teste">
-          <button class="editar" [routerLink]="['editar/', project._id]">
+          <button class="editar" [routerLink]="['editar/', item._id]">
             EDITAR
           </button>
 
-          <button class="excluir" (click)="removeProject(project)">
+          <button class="excluir" (click)="removeProject(item)">
             EXCLUIR
           </button>
         </td>
@@ -35,7 +35,7 @@
 </div>
 
 <div class="classVazio" *ngIf="allTypes.length < 1">
-  Ainda não existem projetos cadastrados.
+  Ainda não existem tipos cadastrados.
 </div>
 
 <br />
