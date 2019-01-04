@@ -79,6 +79,7 @@
         <tr class="cabecalho">
           <th>Equipamento</th>
           <th>Serial</th>
+          <th>Tag</th>
 
           <th>Última Planta Conhecida</th>
           <th>Tempo de Ausência</th>
@@ -93,6 +94,7 @@
                                                     totalItems: listOfAbsent.length }">
           <td>{{packing.family.code || '-'}}</td>
           <td>{{packing.serial || '-'}}</td>
+          <td>{{packing.tag.code || '-'}}</td>
           
           <td>{{packing.last_event_record ? packing.last_event_record.control_point.name : 'Sem histórico'}}</td>
           <td>{{ packing.absent_time_in_hours !== '-' ? (packing.absent_time_in_hours | float_time) : 'Sem histórico' }}</td>
