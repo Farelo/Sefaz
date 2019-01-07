@@ -1,5 +1,4 @@
 const request = require('supertest')
-const mongoose = require('mongoose')
 const { User } = require('./users.model')
 const { Company } = require('../companies/companies.model')
 const _ = require('lodash')
@@ -50,10 +49,10 @@ describe('api/users', () => {
                 expect(res.body.message).toBe('Access denied. No token provided.')
             })
 
-            it('should return 400 if token is invalid', async () => {
+            it('should return 401 if token is invalid', async () => {
                 token = 'a'
                 const res = await exec()
-                expect(res.status).toBe(400)
+                expect(res.status).toBe(401)
                 expect(res.body.message).toBe('Invalid token.')
             })
         })
@@ -71,7 +70,7 @@ describe('api/users', () => {
                 expect(res.body.message).toBe('Access denied. No token provided.')
             })
 
-            it('should return 400 if token is invalid', async () => {
+            it('should return 401 if token is invalid', async () => {
                 token = 'a'
                 const exec = () => {
                     return request(server)
@@ -79,7 +78,7 @@ describe('api/users', () => {
                         .set('Authorization', token)
                 }
                 const res = await exec()
-                expect(res.status).toBe(400)
+                expect(res.status).toBe(401)
                 expect(res.body.message).toBe('Invalid token.')
             })
 
@@ -102,7 +101,7 @@ describe('api/users', () => {
             it('should return 400 if token is invalid', async () => {
                 token = 'a'
                 const res = await exec()
-                expect(res.status).toBe(400)
+                expect(res.status).toBe(401)
             })
 
         })
@@ -120,10 +119,10 @@ describe('api/users', () => {
                 expect(res.status).toBe(401)
             })
     
-            it('should return 400 if token is invalid', async () => {
+            it('should return 401 if token is invalid', async () => {
                 token = 'a'
                 const res = await exec()
-                expect(res.status).toBe(400)
+                expect(res.status).toBe(401)
             })
         })
 
@@ -139,10 +138,10 @@ describe('api/users', () => {
                 expect(res.status).toBe(401)
             })
     
-            it('should return 400 if token is invalid', async () => {
+            it('should return 401 if token is invalid', async () => {
                 token = 'a'
                 const res = await exec()
-                expect(res.status).toBe(400)
+                expect(res.status).toBe(401)
             })
         })
     })
