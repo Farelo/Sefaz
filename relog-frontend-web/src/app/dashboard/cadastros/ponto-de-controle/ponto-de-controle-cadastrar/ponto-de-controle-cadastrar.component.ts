@@ -74,12 +74,15 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   public controlPointCircle: google.maps.Circle = null;
   public controlPointPolygon: google.maps.Polygon = null;
+  public geofenceType = null;
 
   prepareMap() {
     this.drawingManager['initialized$'].subscribe(dm => {
 
       google.maps.event.addListener(dm, 'circlecomplete', (circle) => {
         
+        this.geofenceType = 'C';
+
         if (this.controlPointCircle !== null) {
           this.controlPointCircle.setMap(null);
           this.controlPointCircle = null;
@@ -100,6 +103,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
         console.log(polygon);
         console.log(polygon.getPath());
+
+        this.geofenceType = 'P';
 
         if (this.controlPointCircle !== null) {
           this.controlPointCircle.setMap(null);
