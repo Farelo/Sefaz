@@ -74,55 +74,102 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   public controlPointCircle: google.maps.Circle = null;
   public controlPointPolygon: google.maps.Polygon = null;
-  public geofenceType = null;
+  public mGeofence;
+  //  = {
+  //   coordinates: [],
+  //   type: '',
+  //   radius: 1000
+  // };
+
+  generateCircleGeofence(circle: any) {
+
+    this.controlPointCircle = circle;
+
+    this.mGeofence = { coordinates: [] };
+    this.mGeofence.coordinates.push({ lat: this.controlPointCircle.getCenter().lat(), lng: this.controlPointCircle.getCenter().lng() });
+    this.mGeofence.type = 'C';
+    this.mGeofence.radius = this.controlPointCircle.getRadius();
+
+    console.log(JSON.stringify(this.mGeofence));
+  }
+
+  generatePolygonGeofence(poly: any) {
+
+    this.controlPointPolygon = poly;
+
+    let arr = [];
+    this.mGeofence = { coordinates: [] };
+    this.mGeofence.type = 'P';
+    this.controlPointPolygon.getPath().forEach(latLng => arr.push({ lat: latLng.lat(), lng: latLng.lng() }))
+    this.mGeofence.coordinates = arr;
+
+    console.log(JSON.stringify(this.mGeofence));
+  }
 
   prepareMap() {
     this.drawingManager['initialized$'].subscribe(dm => {
 
-      google.maps.event.addListener(dm, 'circlecomplete', (circle) => {
-        
-        this.geofenceType = 'C';
+      /**
+       * Circle
+       */
+      google.maps.event.addListener(dm, 'circlecomplete', circle => {
 
+        //listener when radius is changed
+        google.maps.event.addListener(circle, 'radius_changed', () => {
+          this.generateCircleGeofence(circle);
+        });
+
+        //listener when cender is dragged
+        google.maps.event.addListener(circle, 'center_changed', () => {
+          this.generateCircleGeofence(circle);
+        });
+
+        //reseting previous circles
         if (this.controlPointCircle !== null) {
           this.controlPointCircle.setMap(null);
           this.controlPointCircle = null;
         }
 
+        //reseting previous polygons
         if (this.controlPointPolygon !== null) {
           this.controlPointPolygon.setMap(null);
           this.controlPointPolygon = null;
         }
 
-        console.log('radius', circle.getRadius());
-        console.log('lat', circle.getCenter().lat());
-        console.log('lng', circle.getCenter().lng());
-        this.controlPointCircle = circle;
+        this.generateCircleGeofence(circle);
       });
 
-      google.maps.event.addListener(dm, 'polygoncomplete', (polygon) => {
 
-        console.log(polygon);
-        console.log(polygon.getPath());
+      /**
+       * Polygon
+       */
+      google.maps.event.addListener(dm, 'polygoncomplete', polygon => {
 
-        this.geofenceType = 'P';
+        //listener when a vertice is dragged
+        google.maps.event.addListener(polygon.getPath(), 'insert_at', () => {
+          this.generatePolygonGeofence(polygon);
+        });
 
+        //listener when a new vertice is created
+        google.maps.event.addListener(polygon.getPath(), 'set_at', () => {
+          this.generatePolygonGeofence(polygon);
+        });
+
+        //reseting previous circlesc
         if (this.controlPointCircle !== null) {
           this.controlPointCircle.setMap(null);
           this.controlPointCircle = null;
         }
 
+        //reseting previous polygons
         if (this.controlPointPolygon !== null) {
           this.controlPointPolygon.setMap(null);
           this.controlPointPolygon = null;
         }
 
-        var arr = [];
-        polygon.getPath().forEach(latLng => arr.push(latLng.toString()) )
-        console.log(arr);
-
-        this.controlPointPolygon = polygon;
+        this.generatePolygonGeofence(polygon);
       });
-      
+
     });
   }
 
