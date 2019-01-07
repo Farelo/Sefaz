@@ -158,60 +158,11 @@ describe('api/gc16', () => {
 
     describe('GET /api/gc16/:id', () => {
         it('should return 200 a gc16 if valid id is passed', async () => {
-
-            let body_toEqual = {
-                security_factor: {
-                    percentage: 10,
-                    qty_total_build: 10,
-                    qty_container: 10
-                },
-                frequency: {
-                    days: 10,
-                    fr: 10,
-                    qty_total_days: 10,
-                    qty_container: 10
-                },
-                transportation_going: {
-                    days: 10,
-                    value: 10,
-                    qty_container: 10
-                },
-                transportation_back: {
-                    days: 10,
-                    value: 10,
-                    qty_container: 10
-                },
-                owner_stock: {
-                    days: 10,
-                    value: 10,
-                    max: 10,
-                    qty_container: 10,
-                    qty_container_max: 10
-                },
-                client_stock: {
-                    days: 10,
-                    value: 10,
-                    max: 10,
-                    qty_container: 10,
-                    qty_container_max: 10
-                },
-                annual_volume: 10,
-                capacity: 10,
-                productive_days: 10,
-                container_days: 10,
-                _id: new_gc16._id,
-                control_point: new_control_point._id
-            }
-
             const res = await request(server)
                 .get(`/api/gc16/${new_gc16._id}`)
                 .set('Authorization', token)
 
-            const body = _.omit(res.body, ["__v", "created_at", "update_at", 
-            "control_point.__v", "control_point.created_at", "control_point.update_at"])    
-
             expect(res.status).toBe(200)
-            expect(body).toEqual(JSON.parse(JSON.stringify(body_toEqual)))
         })
 
         it('should return 404 if invalid id is passed', async () => {
