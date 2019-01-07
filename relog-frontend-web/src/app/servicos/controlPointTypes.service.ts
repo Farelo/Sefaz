@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable'; 
@@ -13,12 +13,12 @@ export class ControlPointTypesService {
       return Observable.throw(error);
   }
 
-  getType(typeId): Observable<any> {
-    return this.http.get(`${environment.url}/types/${typeId}`)
+  getType(projectId): Observable<any> {
+    return this.http.get(`${environment.url}/types/${projectId}`)
       .catch(this.handleError);
   }
 
-  getAllType(params: any = {}): Observable<any> {
+  getAllTypes(params: any = {}): Observable<any> {
 
     let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
     if (queryString) queryString = '?' + queryString;
@@ -27,13 +27,13 @@ export class ControlPointTypesService {
       .catch(this.handleError);
   }
 
-  createType(newType: any): Observable<any> {
-    return this.http.post(`${environment.url}/types`, newType)
+  createType(mType: any): Observable<any> {
+    return this.http.post(`${environment.url}/types`, mType)
       .catch(this.handleError);
   }
 
-  editType(typeId: any, newType: any): Observable<any> {
-    return this.http.patch(`${environment.url}/types/${typeId}`, newType)
+  editType(typeId: any, mType: any): Observable<any> {
+    return this.http.patch(`${environment.url}/types/${typeId}`, mType)
       .catch(this.handleError);
   }
 
@@ -41,5 +41,5 @@ export class ControlPointTypesService {
     return this.http.delete(`${environment.url}/types/${typeId}`)
       .catch(this.handleError);
   }
-  
+
 }

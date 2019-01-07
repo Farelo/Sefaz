@@ -43,7 +43,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     this.mControlPoint = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
-      duns: ['', [Validators.required]],
+      duns: ['', []],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
       full_address: ['', [Validators.required]],
@@ -136,7 +136,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
    */
   fillTypesSelect() {
 
-    this.controlPointsTypeService.getAllType().subscribe(result => {
+    this.controlPointsTypeService.getAllTypes().subscribe(result => {
       this.allTypes = result;
     }, err => console.error(err));
   }
@@ -160,7 +160,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
       }
 
       this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
-        this.controlPointsTypeService.getAllType().toPromise().then(() => {
+        this.controlPointsTypeService.getAllTypes().toPromise().then(() => {
           this.mControlPoint.controls.type.setValue(result);
         });
       }, err => console.error(err));
@@ -176,8 +176,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     // console.log(value);
     // console.log(valid);
-    console.log('submit');
-    console.log(this.mControlPoint);
+    // console.log('submit');
+    // console.log(this.mControlPoint);
 
     this.submitted = true;
 

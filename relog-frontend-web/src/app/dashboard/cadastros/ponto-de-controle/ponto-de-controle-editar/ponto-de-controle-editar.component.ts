@@ -44,7 +44,7 @@ export class PontoDeControleEditarComponent implements OnInit {
 
     this.mControlPoint = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
-      duns: ['', [Validators.required]],
+      duns: ['', []],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
       full_address: ['', [Validators.required]],
@@ -77,7 +77,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     */
   fillTypesSelect() {
 
-    this.controlPointsTypeService.getAllType().subscribe(result => {
+    this.controlPointsTypeService.getAllTypes().subscribe(result => {
       this.allTypes = result;
     }, err => console.error(err));
   }
@@ -96,8 +96,8 @@ export class PontoDeControleEditarComponent implements OnInit {
 
         this.pointWasSelected = true;
 
-        console.log('recuperado');
-        console.log(this.mControlPoint);
+        // console.log('recuperado');
+        // console.log(this.mControlPoint);
         
         // this.controlPointType = this.allTypes.filter(elem => {
         //   return elem.name == result.type;
@@ -136,7 +136,7 @@ export class PontoDeControleEditarComponent implements OnInit {
       }
   
       this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
-        this.controlPointsTypeService.getAllType().toPromise().then(() => {
+        this.controlPointsTypeService.getAllTypes().toPromise().then(() => {
           this.mControlPoint.controls.type.setValue(result);
         });
       }, err => console.error(err));
@@ -162,7 +162,7 @@ export class PontoDeControleEditarComponent implements OnInit {
       value.type = this.mControlPoint.controls.type.value._id;
       value.company = this.mControlPoint.controls.company.value._id;
 
-      console.log(value);
+      // console.log(value);
       this.finishRegister(value);
     }
   }

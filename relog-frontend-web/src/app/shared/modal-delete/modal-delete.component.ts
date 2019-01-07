@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService, UsersService, CompaniesService, FamiliesService, PackingService, ControlPointsService, RoutesService, ProjectService, DepartmentService, GC16Service } from '../../servicos/index.service';
+import { ToastService, UsersService, CompaniesService, FamiliesService, PackingService, ControlPointsService, RoutesService, ProjectService, DepartmentService, GC16Service, ControlPointTypesService } from '../../servicos/index.service';
 import { MeterFormatter } from '../pipes/meter_formatter';
 
 @Component({
@@ -25,11 +25,12 @@ export class ModalDeleteComponent implements OnInit {
     private projectService: ProjectService,
     private departmentService: DepartmentService,
     private gc16Service: GC16Service,
+    private controlPointTypesService: ControlPointTypesService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
-    console.log('mObject: ' + JSON.stringify(this.mObject));
-    console.log('mType: ' + JSON.stringify(this.mType));
+    // console.log('mObject: ' + JSON.stringify(this.mObject));
+    // console.log('mType: ' + JSON.stringify(this.mType));
   }
 
   delete() {
@@ -95,6 +96,13 @@ export class ModalDeleteComponent implements OnInit {
       case "BPLINE":
         this.gc16Service.deleteGC16(this.mObject._id).subscribe(res => {
           this.toastService.remove('', 'BPLINE');
+          this.activeModal.close();
+        });
+        break;
+
+      case "CONTROL_POINT_TYPE":
+        this.controlPointTypesService.deleteType(this.mObject._id).subscribe(res => {
+          this.toastService.remove('', 'Tipo');
           this.activeModal.close();
         });
         break;

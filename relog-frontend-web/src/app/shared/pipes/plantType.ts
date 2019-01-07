@@ -11,10 +11,10 @@ export class CompanyType {
     switch(actual_company){
 
       case 'owner':
-        return constants.PLANT_TYPE.FACTORY; 
+        return constants.PLANT_TYPE.OWNER;  
       
       case 'client':
-        return constants.PLANT_TYPE.FACTORY; 
+        return constants.PLANT_TYPE.CLIENT; 
 
       default:
         return '-';
