@@ -385,7 +385,7 @@ exports.battery_report = async (family_id = null) => {
             packings
                 .filter(packing => packing.last_device_data)
                 .map(async packing => {
-                    let object_temp = {}
+                    let object_temp = {} 
 
                     const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
 
