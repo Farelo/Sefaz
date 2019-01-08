@@ -77,26 +77,7 @@ describe('api/departments', () => {
                 .get(`/api/departments/${department._id}`)
                 .set('Authorization', token)
 
-            const body_res = _.omit(res.body, ["__v", "created_at", "update_at", "control_point.created_at", 
-                                        "control_point.update_at","control_point.__v"])
-            let body_toEqual = {
-                lat: 1,
-                lng: 1,
-                _id: department._id,
-                name: "teste 1",
-                control_point: {
-                    lat: 2,
-                    lng: 2,
-                    _id: new_control_point._id,
-                    name: "teste",
-                    full_address: "teste teste",
-                    type: new_type._id,
-                    company: new_company._id
-                }
-            }
-            body_toEqual = JSON.parse(JSON.stringify(body_toEqual))
             expect(res.status).toBe(200)
-            expect(body_res).toEqual(body_toEqual)
         })
 
         it('should return 404 if invalid id is passed', async () => {

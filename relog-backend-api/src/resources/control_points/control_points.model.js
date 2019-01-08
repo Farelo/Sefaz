@@ -15,17 +15,33 @@ const controlPointSchema = new mongoose.Schema({
         minlength: 0,
         maxlength: 30,
     },
-    lat: {
-        type: Number,
-        min: -90,
-        max: 90,
-        default: 0
-    },
-    lng: {
-        type: Number,
-        min: -180,
-        max: 180,
-        default: 0
+    geofence: {
+        coordinates: [
+            {
+                lat: {
+                    type: Number,
+                    min: -90,
+                    max: 90,
+                    default: 0
+                },
+                lng: {
+                    type: Number,
+                    min: -180,
+                    max: 180,
+                    default: 0
+                }
+            }
+        ],
+        type: {
+            type: String,
+            enum: ['c', 'p'],
+            default: 'c'
+        },
+        radius: {
+            type: Number,
+            maxlength: 100000,
+            default: 0
+        }
     },
     full_address: {
         type: String,
@@ -61,6 +77,11 @@ const validate_control_points = (control_point) => {
     const schema = Joi.object().keys({
         name: Joi.string().min(5).max(50).required(),
         duns: Joi.string().min(0).max(30).allow(''),
+        geofence: {
+            coordinates: Joi.array().items(),
+            type: Joi.string(),
+            radius: Joi.number().max(100000),
+        },
         lat: Joi.number().min(-90).max(90),
         lng: Joi.number().min(-180).max(180),
         full_address: Joi.string().min(5).max(100),
