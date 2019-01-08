@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  database-scripts:
+    container_name: database-scripts
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports: 
+      - 28050
+    network_mode: db

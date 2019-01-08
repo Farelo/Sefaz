@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "update-last-battery-to-packing": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* nodemon src/server.js",
+    "update-last-battery-to-packing": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
