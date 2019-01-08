@@ -225,6 +225,7 @@ export class InventarioGeralComponent implements OnInit {
       lostObject: 'Embalagem Ausente'
     }
 
+    //adiciona o cabeçalho
     plain.unshift(cabecalho);
 
     return plain;

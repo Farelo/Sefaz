@@ -70,7 +70,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
    */
   fillTypesSelect() {
 
-    this.controlPointsTypeService.getAllType().subscribe(result => {
+    this.controlPointsTypeService.getAllTypes().subscribe(result => {
       this.allTypes = result;
     }, err => console.error(err));
   }
@@ -94,7 +94,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
       }
   
       this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
-        this.controlPointsTypeService.getAllType().toPromise().then(() => {
+        this.controlPointsTypeService.getAllTypes().toPromise().then(() => {
           this.mControlPoint.controls.type.setValue(result);
         });
       }, err => console.error(err));

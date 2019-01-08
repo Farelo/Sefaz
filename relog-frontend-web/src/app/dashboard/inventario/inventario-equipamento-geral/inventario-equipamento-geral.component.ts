@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../../servicos/auth.service';
-import {
-  PackingService,
-  InventoryLogisticService,
-  InventoryService,
-  ReportsService,
-  FamiliesService,
-} from '../../../servicos/index.service';
+import { ReportsService, FamiliesService } from '../../../servicos/index.service';
 import { Pagination } from '../../../shared/models/pagination';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LayerModalComponent } from '../../../shared/modal-packing/layer.component';
 import { constants } from '../../../../environments/constants';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 @Component({
   selector: 'app-inventario-equipamento-geral',
@@ -150,5 +145,91 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       }
       return sortOrder * ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
+  }
+
+  /**
+   * ================================================
+   * Downlaod csv file
+   */
+
+  private csvOptions = {
+    showLabels: true,
+    fieldSeparator: ';'
+  };
+
+  /**
+  * Click to download
+  */
+  downloadCsv(){
+
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.generalEquipament.slice());
+
+    //Add a header in the flat json data
+    flatObjectData = this.addHeader(flatObjectData);
+
+    //Instantiate a new csv object and initiate the download
+    new Angular2Csv(flatObjectData, 'Inventario Equipamento Geral', this.csvOptions);
+  }
+
+  flatObject(mArray: any) {
+    
+    //console.log(mArray);
+
+    /**
+     * Example:
+        let plain = mArray.map(obj => {
+          return {
+            supplierName: obj.supplier.name,
+            equipmentCode: obj._id.code,
+            quantityTotal: obj.quantityTotal,
+            quantityInFactory: obj.quantityInFactory,
+            quantityInSupplier: obj.quantityInSupplier,
+            quantityTraveling: obj.quantityTraveling,
+            quantityProblem: obj.quantityProblem,
+            lostObject: obj.quantityProblem == undefined ? 0 : obj.quantityProblem
+          };
+        });
+        return plain;
+     */
+
+     let plainArray = mArray.map(obj => {
+          return {
+            a1: obj.family_code,
+            a2: obj.serial,
+            a3: obj.tag,
+            a4: obj.company,
+            a5: obj.current_state,
+            a6: obj.current_control_point_name,
+            a7: obj.current_control_point_type,
+            a8: (obj.battery_percentage == null) ? 0 : obj.battery_percentage,
+            a9: obj.accuracy,
+            a10: obj.date
+          };
+        });
+      
+    // As my array is already flat, I'm just returning it.
+    return plainArray;
+  }
+
+  addHeader(mArray: any){
+    let cabecalho = {
+      a1: 'Família',
+      a2: 'Serial',
+      a3: 'Tag',
+      a4: 'Fornecedor',
+      a5: 'Status Atual',
+      a6: 'Planta Atual',
+      a7: 'Local',
+      a8: 'Bateria',
+      a9: 'Acurácia',
+      a10: 'Data do sinal'
+    }
+
+    //adiciona o cabeçalho
+    mArray.unshift(cabecalho);
+
+    return mArray;
   }
 }
