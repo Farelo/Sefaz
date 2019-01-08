@@ -2,7 +2,7 @@ const { Packing } = require('../models/packings.model')
 const { DeviceData } = require('../models/device_data.model')
 
 let script = async () => {
-
+    console.log('Iniciando o script para atualização dos packings que estão sem informação de bateria')
     try {
         //obter os packings sem last_device_data_battery
         const packings = await Packing.find({'last_device_data_battery': {$exists: false}})
