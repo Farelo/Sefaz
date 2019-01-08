@@ -286,6 +286,9 @@ module.exports = async (setting, packing, controlPoints) => {
                 /* ******************************SEM_SINAL***************************** */
                 console.log('SEM_SINAL')
 
+                /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
+                await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
                     /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
@@ -305,6 +308,10 @@ module.exports = async (setting, packing, controlPoints) => {
             case STATES.PERDIDA.key:
                 /* ******************************PERDIDA***************************** */
                 console.log('PERDIDA')
+                
+                /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
+                await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })

@@ -154,13 +154,18 @@ exports.snapshot_report = async () => {
                 obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getNameOfControlPoint(packing) : '-'
                 obj.geo = 'C'
                 obj.area = `{(${await getLatLngOfPacking(packing)}),${settings[0].range_radius}}`
-                obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : '-'
+                obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : '-'
                 obj.signal = packing.current_state === 'sem_sinal' ? 'FALSE' : packing.current_state === 'desabilitada_sem_sinal' ? 'FALSE' : packing.current_state === 'perdida' ? 'FALSE' : 'TRUE'
-                obj.absent_time = await getAbsentTimeCountDown(packing)
                 obj.battery = battery_level ? battery_level : "-"
                 obj.battery_alert = battery_level > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
-                obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInDays(packing.last_event_record.created_at) : "-"
+                obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : "-"
+                obj.absent_time = packing.absent && packing.absent_time !== null ? await getDiffDateTodayInHours(packing.absent_time) : '-'
 
+                // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
+                //     obj.absent_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                // } else {
+                //     obj.absent_time = await getAbsentTimeCountDown(packing)
+                // }
                 return obj
             })
         )
@@ -231,14 +236,14 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                 packing.last_device_data ? object_temp.last_device_data = packing.last_device_data : null
                 packing.last_event_record ? object_temp.last_event_record = await EventRecord.findById(packing.last_event_record).populate('control_point') : null
                 packing.last_current_state_history ? object_temp.last_current_state_history = packing.last_current_state_history : null
+                object_temp.absent_time_in_hours = packing.absent_time ? await getDiffDateTodayInHours(packing.absent_time) : '-'
 
-                if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
-                    object_temp.absent_time_in_hours = getDiffDateTodayInDays(packing.last_event_record.created_at)
-                } else {
-                    object_temp.absent_time_in_hours = await getAbsentTimeCountDown(packing)
-                }
+                // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
+                //     object_temp.absent_time_in_hours = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                // } else {
+                //     object_temp.absent_time_in_hours = await getAbsentTimeCountDown(packing)
+                // }
                 
-
                 return object_temp
             })
         )
@@ -312,7 +317,7 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
                         object_temp.current_control_point_name = current_control_point.name
                         object_temp.current_control_point_type = current_control_point.type.name
                         object_temp.date = packing.last_event_record.created_at
-                        object_temp.permanence_time_exceeded = getDiffDateTodayInDays(packing.last_event_record.created_at)
+                        object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at)
                         if (gc16) object_temp.stock_in_days = stock_in_days.days
 
                         return object_temp
@@ -335,7 +340,7 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
                         object_temp.serial = packing.serial
                         object_temp.current_control_point_name = current_control_point.name
                         object_temp.current_control_point_type = current_control_point.type.name
-                        object_temp.permanence_time_exceeded = getDiffDateTodayInDays(packing.last_event_record.created_at)
+                        object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at)
                         object_temp.company = current_company.name
 
                         return object_temp
@@ -614,7 +619,7 @@ const getAbsentTimeCountDown = async (packing) => {
                 const current_control_point = await ControlPoint.findOne({ _id: event_record.control_point }).populate('company')
                 created_at = current_control_point.company.type === 'owner' ? event_record.created_at : null
 
-                return getDiffDateTodayInDays(created_at)
+                return getDiffDateTodayInHours(created_at)
             })
         )
 
@@ -625,7 +630,7 @@ const getAbsentTimeCountDown = async (packing) => {
     return '-'
 }
 
-const getDiffDateTodayInDays = (date) => {
+const getDiffDateTodayInHours = (date) => {
     const today = moment()
     date = moment(date)
 

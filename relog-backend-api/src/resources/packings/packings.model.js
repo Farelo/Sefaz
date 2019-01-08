@@ -75,6 +75,10 @@ const packingSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    absent_time: {
+        type: Date,
+        default: null
+    },
     low_battery: {
         type: Boolean,
         default: false
@@ -134,7 +138,6 @@ const packingSchema = new mongoose.Schema({
     created_at: {
         type: Date,
         default: Date.now
-
     },
     update_at: {
         type: Date,

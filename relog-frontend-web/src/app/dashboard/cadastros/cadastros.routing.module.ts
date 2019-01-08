@@ -16,7 +16,8 @@ const CadastrosRoutes = [
       { path: 'rotas', loadChildren: 'app/dashboard/cadastros/rotas/rotas.module#RotasModule' },
       { path: 'planta', loadChildren: 'app/dashboard/cadastros/planta/planta.module#PlantaModule' },
       { path: 'ponto', loadChildren: 'app/dashboard/cadastros/ponto-de-controle/ponto-de-controle.module#PontoDeControleModule' },
-      { path: 'company', loadChildren: 'app/dashboard/cadastros/company/company.module#CompanyModule' }
+      { path: 'company', loadChildren: 'app/dashboard/cadastros/company/company.module#CompanyModule' },
+      { path: 'tipo-ponto-controle', loadChildren: 'app/dashboard/cadastros/tipo-ponto-controle/tipo-ponto-controle.module#TipoPontoControleModule' }
     ]
   }
 ];

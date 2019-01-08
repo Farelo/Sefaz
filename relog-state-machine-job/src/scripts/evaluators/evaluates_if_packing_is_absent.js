@@ -17,7 +17,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             /* Se não estiver no ponto de controle OWNER atualiza a embalagem com o status ABSENT */
             if (!packingIsOk.length > 0) {
                 console.log('NÃO ESTÁ NUMA PLANTA DONA')
-                await Packing.findByIdAndUpdate(packing._id, { absent: true }, { new: true })
+                if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date() }, { new: true })
 
                 const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 if (current_state_history) {
@@ -27,7 +27,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 }
             } else {
                 console.log('ESTÁ NUMA PLANTA DONA')
-                await Packing.findByIdAndUpdate(packing._id, { absent: false }, { new: true })
+                await Packing.findByIdAndUpdate(packing._id, { absent: false, absent_time: null }, { new: true })
 
                 current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 if (current_state_history) {
@@ -37,7 +37,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 }
             }
         } else {
-            await Packing.findByIdAndUpdate(packing._id, { absent: true }, { new: true })
+            if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date() }, { new: true })
             
             const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
             if (current_state_history) {
