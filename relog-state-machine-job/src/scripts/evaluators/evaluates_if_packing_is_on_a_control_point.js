@@ -5,14 +5,41 @@ module.exports = async (packing, controlPoints, setting) => {
     try {
         let distance = Infinity
         let currentControlPoint = {}
+        let i, j, c = 0
 
         controlPoints.forEach(async (controlPoint) => {
-            const calculate = getDistanceFromLatLonInKm(packing.last_device_data.latitude, packing.last_device_data.longitude, controlPoint.lat, controlPoint.lng)
+            const nvert = controlPoint.coordinates.length
 
-            if (calculate < distance) {
-                distance = calculate
-                currentControlPoint = controlPoint
+            if (controlPoint.geofence.type === 'p') {
+
+                for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+                    controlPoint.geofence.coordinates.forEach(coordinate => {
+                        if (((coordinate.lng[i] > packing.last_device_data.longitude) != (coordinate.lng[j] > packing.last_device_data.longitude)) && (packing.last_device_data.latitude < (coordinate.lat[j] - coordinate.lat[i]) * (packing.last_device_data.longitude - coordinate.lng[i]) / (coordinate.lng[j] - coordinate.lng[i]) + coordinate.lat[i])) {
+                            c = !c
+                        }
+                    })
+                }
+            } else {
+                const calculate = getDistanceFromLatLonInKm(
+                    packing.last_device_data.latitude, 
+                    packing.last_device_data.longitude, 
+                    controlPoint.geofence.coordinates[0].lat, 
+                    controlPoint.geofence.coordinates[0].lng
+                )
+    
+                if (calculate < distance) {
+                    distance = calculate
+                    currentControlPoint = controlPoint
+                }
             }
+
+            // const calculate = getDistanceFromLatLonInKm(packing.last_device_data.latitude, packing.last_device_data.longitude, controlPoint.lat, controlPoint.lng)
+
+            // if (calculate < distance) {
+            //     distance = calculate
+            //     currentControlPoint = controlPoint
+            // }
+
         })
 
         await checkIn(packing, setting, distance, currentControlPoint)
