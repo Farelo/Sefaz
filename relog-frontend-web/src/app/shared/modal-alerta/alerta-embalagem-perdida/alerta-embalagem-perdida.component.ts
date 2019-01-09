@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoryService, InventoryLogisticService } from '../../../servicos/index.service';
+import { InventoryService, InventoryLogisticService, PackingService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
 import { constants } from 'environments/constants';
 
@@ -15,7 +15,7 @@ export class AlertaEmbalagemPerdidaComponent implements OnInit {
   public mConstants: any;
 
   constructor(public activeAlerta: NgbActiveModal,
-    private inventoryService: InventoryService, 
+    private packingsService: PackingService,
     private modalService: NgbModal) {
   
     this.mConstants = constants; 
@@ -27,8 +27,8 @@ export class AlertaEmbalagemPerdidaComponent implements OnInit {
 
   visualizeOnMap() {
 
-    this.inventoryService
-      .getInventoryGeneralPackings(10, 1, this.alerta.data.packing.code_tag, '')
+    this.packingsService
+      .getPacking(this.alerta._id)
       .subscribe(
         result => {
           let actualPackage = result.data;
@@ -39,8 +39,9 @@ export class AlertaEmbalagemPerdidaComponent implements OnInit {
             size: 'lg',
             windowClass: 'modal-xl',
           });
-          actualPackage[0].alertCode = this.alerta.data.status;
-          modalRef.componentInstance.packing = actualPackage[0];
+          actualPackage.alertCode = this.alerta.current_state;
+          actualPackage.tag = actualPackage.tag.code;
+          modalRef.componentInstance.packing = actualPackage;
         },
         err => {
           console.log(err);
