@@ -31,8 +31,7 @@ import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
     ReactiveFormsModule,
     NgSelectModule,
     NguiMapModule.forRoot({
-      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}` +
-        '&libraries=visualization,places,drawing',
+      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}&libraries=drawing,visualization,places`
     })
   ],
   declarations: [
