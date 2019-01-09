@@ -44,8 +44,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.mControlPoint = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       duns: ['', []],
-      lat: ['', [Validators.required]],
-      lng: ['', [Validators.required]],
+      // lat: ['', [Validators.required]],
+      // lng: ['', [Validators.required]],
       full_address: ['', [Validators.required]],
       type: [null, [Validators.required, Validators.minLength(5)]],
       company: [undefined, [Validators.required]]
@@ -74,7 +74,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   public controlPointCircle: google.maps.Circle = null;
   public controlPointPolygon: google.maps.Polygon = null;
-  public mGeofence;
+  public mGeofence: any;
   //  = {
   //   coordinates: [],
   //   type: '',
@@ -87,7 +87,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     this.mGeofence = { coordinates: [] };
     this.mGeofence.coordinates.push({ lat: this.controlPointCircle.getCenter().lat(), lng: this.controlPointCircle.getCenter().lng() });
-    this.mGeofence.type = 'C';
+    this.mGeofence.type = 'c';
     this.mGeofence.radius = this.controlPointCircle.getRadius();
 
     console.log(JSON.stringify(this.mGeofence));
@@ -99,7 +99,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     let arr = [];
     this.mGeofence = { coordinates: [] };
-    this.mGeofence.type = 'P';
+    this.mGeofence.type = 'p';
     this.controlPointPolygon.getPath().forEach(latLng => arr.push({ lat: latLng.lat(), lng: latLng.lng() }))
     this.mGeofence.coordinates = arr;
 
@@ -237,6 +237,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
       value.type = this.mControlPoint.controls.type.value._id;
       value.company = this.mControlPoint.controls.company.value._id;
+      value.geofence = this.mGeofence;
 
       console.log(value);
       this.finishRegister(value);
