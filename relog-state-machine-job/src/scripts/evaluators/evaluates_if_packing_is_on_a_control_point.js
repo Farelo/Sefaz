@@ -5,19 +5,16 @@ module.exports = async (packing, controlPoints, setting) => {
     try {
         let distance = Infinity
         let currentControlPoint = {}
-        let i, j, c = 0
 
         controlPoints.forEach(async (controlPoint) => {
-            const nvert = controlPoint.coordinates.length
-
             if (controlPoint.geofence.type === 'p') {
-
-                for (i = 0, j = nvert - 1; i < nvert; j = i++) {
-                    controlPoint.geofence.coordinates.forEach(coordinate => {
-                        if (((coordinate.lng[i] > packing.last_device_data.longitude) != (coordinate.lng[j] > packing.last_device_data.longitude)) && (packing.last_device_data.latitude < (coordinate.lat[j] - coordinate.lat[i]) * (packing.last_device_data.longitude - coordinate.lng[i]) / (coordinate.lng[j] - coordinate.lng[i]) + coordinate.lat[i])) {
-                            c = !c
-                        }
-                    })
+                if (pnpoly(packing, controlPoint)) {
+                    console.log(`>>>>>>>>>>>>>>>>>>>>>>>>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
+                    distance = 0
+                    currentControlPoint = controlPoint
+                } else {
+                    console.log(">>>>>>>>>>>>>>>>>>>>>>>>> POLIGONO: FORA DO PONTO DE CONTROLE")
+                    currentControlPoint = null
                 }
             } else {
                 const calculate = getDistanceFromLatLonInKm(
@@ -26,28 +23,23 @@ module.exports = async (packing, controlPoints, setting) => {
                     controlPoint.geofence.coordinates[0].lat, 
                     controlPoint.geofence.coordinates[0].lng
                 )
-    
+
                 if (calculate < distance) {
                     distance = calculate
                     currentControlPoint = controlPoint
                 }
             }
-
-            // const calculate = getDistanceFromLatLonInKm(packing.last_device_data.latitude, packing.last_device_data.longitude, controlPoint.lat, controlPoint.lng)
-
-            // if (calculate < distance) {
-            //     distance = calculate
-            //     currentControlPoint = controlPoint
-            // }
-
         })
 
-        await checkIn(packing, setting, distance, currentControlPoint)
-
-        if (distance > setting.range_radius && packing.last_device_data.accuracy > setting.accuracy_limit) return null
-
-
-        return currentControlPoint
+        if (currentControlPoint.geofence.type === 'p') {
+            if (currentControlPoint) await checkIn(packing, setting, 0, currentControlPoint)
+            return currentControlPoint
+        } else {
+            await checkIn(packing, setting, distance, currentControlPoint)
+    
+            if (distance > setting.range_radius && packing.last_device_data.accuracy > setting.accuracy_limit) return null
+            return currentControlPoint
+        }
     } catch (error) {
         console.error(error)
         throw new Error(error)
@@ -124,4 +116,18 @@ const checkIn = async (packing, setting, distance, currentControlPoint) => {
         throw new Error(error)
     }
     
+}
+
+const pnpoly = (packing, controlPoint) => {
+    let i, j, nvert = 0
+    let c = false
+    nvert = controlPoint.geofence.coordinates.length
+
+    for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+        if (((controlPoint.geofence.coordinates[i].lng > packing.last_device_data.longitude) != (controlPoint.geofence.coordinates[j].lng > packing.last_device_data.longitude)) && (packing.last_device_data.latitude < (controlPoint.geofence.coordinates[j].lat - controlPoint.geofence.coordinates[i].lat) * (packing.last_device_data.longitude - controlPoint.geofence.coordinates[i].lng) / (controlPoint.geofence.coordinates[j].lng - controlPoint.geofence.coordinates[i].lng) + controlPoint.geofence.coordinates[i].lat)) {
+            c = !c
+        }
+    }
+
+    return c
 }
