@@ -77,7 +77,7 @@ export class ListaComponent implements OnInit {
       //     (elem.current_state != constants.ALERTS.TRAVELING) &&
       //     (elem.current_state != constants.ALERTS.CORRECT_LOCAL));
       // });
-      console.log(this.listOfAlerts);
+      //console.log(this.listOfAlerts);
     }, err => console.log(err));
   }
 
@@ -86,8 +86,8 @@ export class ListaComponent implements OnInit {
     // this.alertsService.retrieveAlertByPacking(embalagem, status)
     //   .subscribe(result => {
 
-    console.log(embalagem);
-    console.log(this.alertCode);
+    // console.log(embalagem);
+    // console.log(this.alertCode);
 
     // Análise
     if (this.alertCode == constants.ALERTS_CODE.ANALISYS) {
