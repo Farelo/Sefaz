@@ -140,15 +140,13 @@ export class RastreamentoComponent implements OnInit {
    */
   loadCompanies() {
 
-    console.log('.'); 
-
     this.familyService.getAllFamilies().subscribe(result => {
 
       this.listOfFamilies = result;
       this.auxListOfFamilies = result;
 
-      console.log('..'); 
-      console.log(result); 
+      // console.log('..'); 
+      // console.log(result); 
       let auxListOfCompanies = [];
 
       this.listOfCompanies = result.map(elem => {
@@ -160,12 +158,15 @@ export class RastreamentoComponent implements OnInit {
         }
       }); 
 
-      console.log(auxListOfCompanies);
+      // console.log(auxListOfCompanies);
 
       this.listOfCompanies = auxListOfCompanies;
 
     }, err => console.error(err));
   }
+
+  public listOfCircleControlPoints: any = [];
+  public listOfPolygonControlPoints: any = [];
 
   loadControlPoints(){
 
@@ -175,10 +176,21 @@ export class RastreamentoComponent implements OnInit {
         return elem;
       });
 
-      //console.log(JSON.stringify(this.listOfControlPoints));
+      this.listOfCircleControlPoints = result.filter(elem => {
+        return elem.geofence.type == 'c';
+      });
+
+      this.listOfPolygonControlPoints = result.filter(elem => {
+        return elem.geofence.type == 'p';
+      })
+      .map(elem => {
+        
+      });
+
+      console.log(this.listOfCircleControlPoints);
+      console.log(this.listOfPolygonControlPoints);
 
     }, err => console.error(err));
-    
   }
 
   /**
@@ -214,7 +226,7 @@ export class RastreamentoComponent implements OnInit {
   }
 
   companyChanged(event: any){
-    console.log(event);
+    // console.log(event);
 
     if(event){
       this.listOfFamilies = this.auxListOfFamilies.filter(elem => {
@@ -232,7 +244,7 @@ export class RastreamentoComponent implements OnInit {
    */
   loadPackings() {
 
-    console.log('.');
+    // console.log('.');
     
     let cp_id = this.selectedCompany !== null ? this.selectedCompany._id : null;
     let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
@@ -263,7 +275,7 @@ export class RastreamentoComponent implements OnInit {
         return elem;
       });
 
-      console.log(JSON.stringify(this.plotedPackings[0]));
+      // console.log(JSON.stringify(this.plotedPackings[0]));
 
       //this.resolveClustering();
       if (this.mSpiralize) {
@@ -335,8 +347,8 @@ export class RastreamentoComponent implements OnInit {
 
     this.packingService.packingsOnControlPoint(opt._id).subscribe(result => {
 
-      console.log('');
-      console.log(result);
+      // console.log('');
+      // console.log(result);
 
       this.packingsByPlant = result;
 
@@ -344,58 +356,6 @@ export class RastreamentoComponent implements OnInit {
     });
   }
 
-  // retrievePackings(_a, opt) {
-  //   var marker = _a.target;
-  //   this.marker.target = _a
-  //   this.marker.opt = opt
-  //   this.marker.lat = marker.getPosition().lat();
-  //   this.marker.lng = marker.getPosition().lng();
-  //   this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
-
-  //     if (result.data.length > 0) {
-  //       this.marker.department = false;
-  //       this.marker.packing = true;
-  //       this.marker.nothing = false;
-  //       this.marker.packings = result;
-  //       this.startWindow(marker);
-  //     } else {
-  //       this.marker.department = null
-  //       this.marker.packing = null
-  //       this.marker.nothing = true;
-  //       this.startWindow(marker);
-  //     }
-  //   })
-  // }
-
-  // retrieveDepartments(_a, opt) {
-  //   var marker = _a.target;
-  //   this.marker.target = _a
-  //   this.marker.opt = opt
-  //   this.marker.lat = marker.getPosition().lat();
-  //   this.marker.lng = marker.getPosition().lng();
-
-  //   this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
-  //     this.marker.plant = opt.name;
-  //     this.marker.profile = opt.profile;
-  //     if (result.data.length > 0) {
-  //       this.marker.department = true;
-  //       this.marker.packing = false;
-  //       this.marker.nothing = false;
-  //       this.marker.departments = result;
-  //       this.startPackWindow(marker);
-  //     }
-  //   })
-  // }
-
-  // pageChangedDepart(page: any): void {
-  //   this.marker.departments.meta.page = page;
-  //   this.retrieveDepartments(this.marker.target, this.marker.opt);
-  // }
-
-  // pageChangedPacking(page: any): void {
-  //   this.marker.packings.meta.page = page;
-  //   this.retrievePackings(this.marker.target, this.marker.opt);
-  // }
 
   open(id) {
     const modalRef = this.modalService.open(ModalRastComponent);
@@ -406,9 +366,6 @@ export class RastreamentoComponent implements OnInit {
     marker.nguiMapComponent.openInfoWindow('iw', marker);
   }
 
-  // startPackWindow(marker) {
-  //   marker.nguiMapComponent.openInfoWindow('pw', marker);
-  // }
 
   /**
    * Recupera o pino da embalagem de acordo com seu alerta
