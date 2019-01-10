@@ -159,7 +159,7 @@
 
             <!-- ///////////// -->
             <!-- Control Point -->
-            <marker *ngFor="let posCP of listOfControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+            <marker *ngFor="let posCP of listOfControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
               [visible]="showControlledPlants" [title]="posCP.name" (click)="clicked($event, posCP)">
             </marker>
 
@@ -170,7 +170,7 @@
 
             <!-- ///////////// -->
             <!-- Logistic operator -->
-            <!-- <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }"
+            <!-- <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" [icon]="{ url: 'assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }"
               [visible]="showControlledLogistics" [title]="posLogistic.name" (click)="clicked($event, posLogistic)">
             </marker>
 
@@ -181,7 +181,7 @@
 
             <!-- ///////////// -->
             <!-- Supplier -->
-            <!-- <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position" [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }"
+            <!-- <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position" [icon]="{ url: 'assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }"
               [visible]="showControlledSuppliers" [title]="posSuppliers.name" (click)="clicked($event, posSuppliers)">
             </marker>
 
@@ -193,25 +193,25 @@
             <!-- ///////////// -->
             <!-- Embalagens.  -->
             <!-- <ng-container *ngFor="let pack of plotedPackings">
-              <marker *ngIf="pack.status == 'MISSING'" [icon]="{ url: '../../../assets/images/pin_ausente.png', size: [28, 43], scaledSize: [28, 43]}" 
+              <marker *ngIf="pack.status == 'MISSING'" [icon]="{ url: 'assets/images/pin_ausente.png', size: [28, 43], scaledSize: [28, 43]}" 
                 [position]="pack.position"
                 [visible]="showPackings"
                 (click)="clickedPack($event, pack)">
               </marker>
 
-              <marker *ngIf="pack.status == 'INCORRECT_LOCAL'" [icon]="{ url: '../../../assets/images/pin_incorreto.png', size: [28, 43], scaledSize: [28, 43]}"
+              <marker *ngIf="pack.status == 'INCORRECT_LOCAL'" [icon]="{ url: 'assets/images/pin_incorreto.png', size: [28, 43], scaledSize: [28, 43]}"
                 [position]="pack.position"
                 [visible]="showPackings" 
                 (click)="clickedPack($event, pack)">
               </marker>
 
-              <marker *ngIf="pack.status == 'LATE'" [icon]="{ url: '../../../assets/images/pin_atrasado.png', size: [28, 43], scaledSize: [28, 43]}"
+              <marker *ngIf="pack.status == 'LATE'" [icon]="{ url: 'assets/images/pin_atrasado.png', size: [28, 43], scaledSize: [28, 43]}"
                 [position]="pack.position"
                 [visible]="showPackings" 
                 (click)="clickedPack($event, pack)">
               </marker>
 
-              <marker *ngIf="pack.status == 'PERMANENCE_EXCEEDED'" [icon]="{ url: '../../../assets/images/pin_permanencia.png', size: [28, 43], scaledSize: [28, 43]}"
+              <marker *ngIf="pack.status == 'PERMANENCE_EXCEEDED'" [icon]="{ url: 'assets/images/pin_permanencia.png', size: [28, 43], scaledSize: [28, 43]}"
                 [position]="pack.position"
                 [visible]="showPackings"
                 (click)="clickedPack($event, pack)">
@@ -221,7 +221,7 @@
                 (pack.status != 'INCORRECT_LOCAL') && 
                 (pack.status != 'LATE') && 
                 (pack.status != 'PERMANENCE_EXCEEDED')" 
-                [icon]="{ url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43]}"
+                [icon]="{ url: 'assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43]}"
                 [position]="pack.position"
                 [visible]="showPackings"
                 (click)="clickedPack($event, pack)">
