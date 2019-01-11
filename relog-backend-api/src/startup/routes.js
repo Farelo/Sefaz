@@ -1,6 +1,7 @@
 const express = require('express')
 const body_parser = require('body-parser')
 const cors = require('cors')
+const fileUpload = require('express-fileupload')
 const users = require('../resources/users/users.routing')
 const companies = require('../resources/companies/companies.routing')
 const families = require('../resources/families/families.routing')
@@ -17,6 +18,7 @@ const home = require('../resources/home/home.routing')
 const alerts = require('../resources/alerts/alerts.routing')
 const device_data = require('../resources/device_data/device_data.routing')
 const current_state_history = require('../resources/current_state_history/current_state_history.routing')
+const imports = require('../resources/imports/imports.routing')
 const error = require('../middlewares/error_handler.middleware')
 
 module.exports = (app) => {
@@ -33,6 +35,7 @@ module.exports = (app) => {
     app.use(body_parser.json({ type: 'application/vnd.api+json' }))
     app.use(express.json())
     app.use(cors(corsOptions))
+    app.use(fileUpload())
 
     // Routes
     app.get('/', (req, res) => res.redirect('/api-docs'))
@@ -52,6 +55,7 @@ module.exports = (app) => {
     app.use('/api/device_data', device_data)
     app.use('/api/current_state_history', current_state_history)
     app.use('/api/alerts', alerts)
+    app.use('/api/imports', imports)
 
     // Middlewares functions
     app.use(error)
