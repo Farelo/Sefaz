@@ -62,14 +62,14 @@ hr {
 .usuario {
   width: 34px;
   height: 40px;
-  background-image: url("../../../assets/images/usuario1.png");
+  background-image: url("/assets/images/usuario1.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px;
 }
 
 .usuario:hover {
-  background-image: url("../../../assets/images/usuario2.png");
+  background-image: url("/assets/images/usuario2.png");
   border-bottom: none;
 }
 
@@ -254,19 +254,19 @@ hr {
 
 .usuario {
   width: 34px;
-  background-image: url("../../../assets/images/usuario1.png");
+  background-image: url("/assets/images/usuario1.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px;
 }
 
 .usuario:hover {
-  background-image: url("../../../assets/images/usuario2.png");
+  background-image: url("/assets/images/usuario2.png");
   border-bottom: none;
 }
 
 .usu2 {
-  background-image: url("../../../assets/images/usuario2.png");
+  background-image: url("/assets/images/usuario2.png");
   border-bottom: none;
 }
 
