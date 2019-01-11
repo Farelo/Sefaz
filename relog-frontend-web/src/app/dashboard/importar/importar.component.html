@@ -152,7 +152,8 @@
                             <!-- <div class="editar">
                             </div> -->
                             <label for="single">ARQUIVO</label>
-                            <input [attr.disabled]="(uploader.length !== 0) ? '' : null" type="file" class="form-control" id="single" (change)=fileEvent($event) accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                            <input [attr.disabled]="(uploader.length !== 0) ? '' : null" type="file" class="form-control"
+                              id="single" (change)=fileEvent($event) accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
                           </div>
                         </form>
                       </td>
@@ -171,11 +172,7 @@
 
                       <td nowrap>
                         <div *ngIf="(uploader.length !== 0)">
-                          <select type 
-                            [(ngModel)]="type" 
-                            data-style="btn-primary" 
-                            class="selectEq" 
-                            formControlName="type"
+                          <select type [(ngModel)]="type" data-style="btn-primary" class="selectEq" formControlName="type"
                             [ngClass]="{'required': (import.get('type').hasError('required') && import.get('type').touched)
                               || (import.get('type').hasError('required') && formDir.submitted)}">
                             <option value="">Escolha</option>
@@ -187,8 +184,7 @@
                             <!-- <option>Rotas</option> -->
                           </select>
 
-                          <p class="requiredText" 
-                          *ngIf="(import.get('type').hasError('required') && import.get('type').touched) 
+                          <p class="requiredText" *ngIf="(import.get('type').hasError('required') && import.get('type').touched) 
                             || (import.get('type').hasError('required') && formDir.submitted)">
                             Campo Obrigatório</p>
                         </div>
@@ -209,8 +205,6 @@
         </div>
 
         <br />
-        <br />
-
         <!-- Imprimir tipo do import -->
         <!-- <div class="row" *ngIf="importResult?.to_register?.length > 0 && send">
           <div class="col-md-12">
@@ -221,7 +215,7 @@
         <!-- ========================================================== -->
         <!-- Tabela de erro -->
         <div class="row" *ngIf="importResult?.errors?.length > 0 && send">
-          
+
           <div class="col-md-12">
             <p class="descricaoTitulo">Essas Linhas não foram importadas do Excel</p>
             <div class="col-md-12" *ngIf="importResult?.errors?.length !== 0 && send">
@@ -253,12 +247,11 @@
         </div>
 
         <br />
-        <br />
 
         <!-- ========================================================== -->
-        <!-- Tabela de cadastro: Embalagens -->
-        <div class="row" *ngIf="importResult?.updated?.length !== 0 && send">
-          
+        <!-- Tabela de atualização: Embalagens -->
+        <div class="row" *ngIf="import['controls'].type.value == 'Embalagens' && importResult?.updated?.length !== 0 && send">
+
           <div class="col-md-12">
             <p class="descricaoTitulo">Essas linhas foram atualizadas a partir do Excel</p>
             <alert type="success " dismissible="true">
@@ -284,25 +277,25 @@
                     <th>capacity</th>
                     <th>observations</th>
                     <th>type</th>
-                    <th>projec</th>
+                    <th>project</th>
                   </tr>
                 </thead>
                 <tbody class="">
-                  <tr *ngFor="let error of importResult?.updated">
-                    <td>{{ error.line }}</td>
-                    <th>{{ error.description.data.family }}</th>
-                    <th>{{ error.description.data.serial }}</th>
-                    <th>{{ error.description.data.tag }}</th>
-                    <th>{{ error.description.data.version }}</th>
-                    <th>{{ error.description.data.manufactorer }}</th>
-                    <th>{{ error.description.data.weigth }}</th>
-                    <th>{{ error.description.data.width }}</th>
-                    <th>{{ error.description.data.height }}</th>
-                    <th>{{ error.description.data.length }}</th>
-                    <th>{{ error.description.data.capacity }}</th>
-                    <th>{{ error.description.data.observations }}</th>
-                    <th>{{ error.description.data.type }}</th>
-                    <th>{{ error.description.data.projec }}</th>
+                  <tr *ngFor="let updated of importResult?.updated">
+                    <td>{{ updated.line }}</td>
+                    <td>{{ updated.data.family.name }}</td>
+                    <td>{{ updated.data.serial }}</td>
+                    <td>{{ updated.data.tag.code }}</td>
+                    <td>{{ updated.data.tag.version }}</td>
+                    <td>{{ updated.data.tag.manufactorer }}</td>
+                    <td>{{ updated.data.weigth }}</td>
+                    <td>{{ updated.data.width }}</td>
+                    <td>{{ updated.data.height }}</td>
+                    <td>{{ updated.data.length }}</td>
+                    <td>{{ updated.data.capacity }}</td>
+                    <td>{{ updated.data.observations }}</td>
+                    <td>{{ updated.data.type }}</td>
+                    <td>{{ updated.data.project.name }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -311,9 +304,8 @@
         </div>
 
         <!-- ========================================================== -->
-        <!-- Tabela de cadastro: Ponto de Controle-->
-        <div class="row" *ngIf="importResult?.updated?.length !== 0 && send">
-          
+        <!-- Tabela de atualização: Pontos de Controle -->
+        <div class="row" *ngIf="import['controls'].type.value == 'Pontos de Controle' && importResult?.updated?.length !== 0 && send">
           <div class="col-md-12">
             <p class="descricaoTitulo">Essas linhas foram atualizadas a partir do Excel</p>
             <alert type="success " dismissible="true">
@@ -340,14 +332,79 @@
                 <tbody class="">
                   <tr *ngFor="let error of importResult?.updated">
                     <td>{{ error.line }}</td>
-                    <td>{{ error.description.data.geofence_type }}</td>
-                    <td>{{ error.description.data.coordinates }}</td>
-                    <td>{{ error.description.data.radius }}</td>
-                    <td>{{ error.description.data.name }}</td>
-                    <td>{{ error.description.data.full_address }}</td>
-                    <td>{{ error.description.data.type }}</td>
-                    <td>{{ error.description.data.company }}</td>
-                    <td>{{ error.description.data.duns }}</td>
+                    <td>{{ error.data.geofence_type }}</td>
+                    <td>{{ error.data.coordinates }}</td>
+                    <td>{{ error.data.radius }}</td>
+                    <td>{{ error.data.name }}</td>
+                    <td>{{ error.data.full_address }}</td>
+                    <td>{{ error.data.type }}</td>
+                    <td>{{ error.data.company }}</td>
+                    <td>{{ error.data.duns }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <br />
+
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+        <!-- CADASTROS -->
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+
+        <!-- ========================================================== -->
+        <!-- Tabela de cadastros: Embalagens -->
+        <div class="row" *ngIf="import['controls'].type.value == 'Embalagens' && importResult?.to_register?.length !== 0 && send">
+          <div class="col-md-12">
+            <p class="descricaoTitulo">Essas linhas podem ser cadastradas a partir do Excel</p>
+            <alert type="warning  " dismissible="true">
+              <strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem do banco
+              de dados. Deseja prosseguir com o cadastro?
+            </alert>
+          </div>
+
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr class="cabecalho">
+                    <th>linha</th>
+                    <th>family</th>
+                    <th>serial</th>
+                    <th>tag</th>
+                    <th>version</th>
+                    <th>manufactorer</th>
+                    <th>weigth</th>
+                    <th>width</th>
+                    <th>height</th>
+                    <th>length</th>
+                    <th>capacity</th>
+                    <th>observations</th>
+                    <th>type</th>
+                    <th>project</th>
+                  </tr>
+                </thead>
+                <tbody class="">
+                  <tr *ngFor="let updated of importResult?.updated">
+                    <td>{{ updated.line }}</td>
+                    <td>{{ updated.data.family.name }}</td>
+                    <td>{{ updated.data.serial }}</td>
+                    <td>{{ updated.data.tag.code }}</td>
+                    <td>{{ updated.data.tag.version }}</td>
+                    <td>{{ updated.data.tag.manufactorer }}</td>
+                    <td>{{ updated.data.weigth }}</td>
+                    <td>{{ updated.data.width }}</td>
+                    <td>{{ updated.data.height }}</td>
+                    <td>{{ updated.data.length }}</td>
+                    <td>{{ updated.data.capacity }}</td>
+                    <td>{{ updated.data.observations }}</td>
+                    <td>{{ updated.data.type }}</td>
+                    <td>{{ updated.data.project.name }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -356,6 +413,51 @@
         </div>
 
 
+        <!-- ========================================================== -->
+        <!-- Tabela de atualização: Ponto de Controle-->
+        <div class="row" *ngIf="import['controls'].type.value == 'Pontos de Controle' && importResult?.to_register?.length !== 0 && send">
+
+          <div class="col-md-12">
+            <p class="descricaoTitulo">Essas linhas pode ser cadastradas a partir do Excel</p>
+            <alert type="warning" dismissible="true">
+              <strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem do banco
+              de dados.
+            </alert>
+          </div>
+
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr class="cabecalho">
+                    <th>linha</th>
+                    <th>geofence_type</th>
+                    <th>coordinates</th>
+                    <th>radius</th>
+                    <th>name</th>
+                    <th>full_address</th>
+                    <th>type</th>
+                    <th>company</th>
+                    <th>duns</th>
+                  </tr>
+                </thead>
+                <tbody class="">
+                  <tr *ngFor="let error of importResult?.updated">
+                    <td>{{ error.line }}</td>
+                    <td>{{ error.data.geofence_type }}</td>
+                    <td>{{ error.data.coordinates }}</td>
+                    <td>{{ error.data.radius }}</td>
+                    <td>{{ error.data.name }}</td>
+                    <td>{{ error.data.full_address }}</td>
+                    <td>{{ error.data.type }}</td>
+                    <td>{{ error.data.company }}</td>
+                    <td>{{ error.data.duns }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
