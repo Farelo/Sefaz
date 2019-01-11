@@ -104,7 +104,7 @@
       <marker *ngFor="let posPlants of controlPoints" 
       [position]="[posPlants.lat, posPlants.lng]" 
       (click)="clickedPlant($event, posPlants)" 
-      [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
+      [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
       [visible]="showControlledPlants">
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="pw">
@@ -134,7 +134,7 @@
       <marker *ngFor="let posLogistic of logistics" 
         [position]="[posLogistic.plant.lat, posLogistic.plant.lng]" 
         (click)="clickedLogistic($event, posLogistic)"
-        [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }" 
+        [icon]="{ url: 'assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }" 
         [visible]="showControlledPlants">
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="lw">
@@ -157,7 +157,7 @@
       <marker *ngFor="let posSuppliers of suppliers" 
         [position]="[posSuppliers.plant.lat, posSuppliers.plant.lng]" 
         (click)="clickedSupplier($event, posSuppliers)"
-        [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" 
+        [icon]="{ url: 'assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" 
         [visible]="showControlledPlants">
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="sw">
