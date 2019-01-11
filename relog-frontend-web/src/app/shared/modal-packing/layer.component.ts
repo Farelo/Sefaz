@@ -464,39 +464,39 @@ export class LayerModalComponent implements OnInit {
 
     switch (current_state) {
       case constants.ALERTS.ANALISYS:
-        pin = { url: '../../../assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
       case constants.ALERTS.ABSENT:
-        pin = { url: '../../../assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
       case constants.ALERTS.INCORRECT_LOCAL:
-        pin = { url: '../../../assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
       case constants.ALERTS.LOW_BATTERY:
-        pin = { url: '../../../assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
       case constants.ALERTS.LATE:
-        pin = { url: '../../../assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
       case constants.ALERTS.PERMANENCE_TIME:
-        pin = { url: '../../../assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
       case constants.ALERTS.NO_SIGNAL:
-        pin = { url: '../../../assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
       case constants.ALERTS.MISSING:
-        pin = { url: '../../../assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
       default:
-        pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
     }
     return pin;
@@ -508,74 +508,74 @@ export class LayerModalComponent implements OnInit {
 
     switch (current_state) {
       case constants.ALERTS.ANALISYS:
-        pin = { url: '../../../assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: '../../../assets/images/pin_analise_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_analise_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0) pin = { url: 'assets/images/pin_analise_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_analise_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case constants.ALERTS.ABSENT:
-        pin = { url: '../../../assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: '../../../assets/images/pin_ausente_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_ausente_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0) pin = { url: 'assets/images/pin_ausente_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_ausente_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case constants.ALERTS.INCORRECT_LOCAL:
-        pin = { url: '../../../assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: '../../../assets/images/pin_incorreto_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_incorreto_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0) pin = { url: 'assets/images/pin_incorreto_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_incorreto_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case constants.ALERTS.LOW_BATTERY:
-        pin = { url: '../../../assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: '../../../assets/images/pin_bateria_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_bateria_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0) pin = { url: 'assets/images/pin_bateria_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_bateria_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case constants.ALERTS.LATE:
-        pin = { url: '../../../assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: '../../../assets/images/pin_atrasado_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_atrasado_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0) pin = { url: 'assets/images/pin_atrasado_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_atrasado_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case constants.ALERTS.PERMANENCE_TIME:
-        pin = { url: '../../../assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: '../../../assets/images/pin_permanencia_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_permanencia_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0) pin = { url: 'assets/images/pin_permanencia_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_permanencia_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case constants.ALERTS.NO_SIGNAL:
-        pin = { url: '../../../assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: '../../../assets/images/pin_sem_sinal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_sem_sinal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0) pin = { url: 'assets/images/pin_sem_sinal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_sem_sinal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       case constants.ALERTS.MISSING:
-        pin = { url: '../../../assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: '../../../assets/images/pin_perdido_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_perdido_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0) pin = { url: 'assets/images/pin_perdido_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_perdido_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
 
       default:
-        pin = { url: '../../../assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = { url: 'assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: '../../../assets/images/pin_normal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: '../../../assets/images/pin_normal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0) pin = { url: 'assets/images/pin_normal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_normal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         }
         break;
     }
