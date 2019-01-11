@@ -14,40 +14,57 @@
         <ng-template #content>
           <div class="modalFilho">
             <div class="header">
-              <p class="titulo">DETALHES DAS COLUNAS</p>
+              <h3>Detalhes das colunas</h3>
             </div>
             <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
               <span aria-hidden="true">&times;</span>
             </button>
-            <p style="border: none; font-weight: none!important; width: 564px;">Para cadastrar informações no sistema via planilha excel, é preciso carregar arquivos (.xlsx) e seguir o template
+            <p style="border: none; font-weight: none!important;">
+              Para cadastrar informações no sistema via planilha excel, é preciso carregar arquivos (.xlsx) e seguir o
+              template
               conforme demonstrado nos exemplos abaixo (seguindo a ordem de colunas e nomenclaturas).</p>
+
             <div class="modalBody">
-              <h4>Tag</h4>
+              <!--<h4>Tag</h4>
               <p>
                 <span class="lg1">CODE</span>
               </p>
               <p>code: Código do beacon</p>
-              <br>
-              
-              <h4>Projeto</h4>
+              <br> -->
+
+              <!-- <h4>Projeto</h4>
               <p>
                 <span class="lg1">NAME</span>
               </p>
               <p>name: Nome do projeto</p>
-              <br>
-              
-              <h4>Planta</h4>
+              <br> -->
+
+              <!-- CÍRCULO POR DEFAULT -->
+              <h4>Ponto de Controle</h4>
               <p>
-                <span class="lg1">PLANT_NAME</span>
-                <span class="lg1">LAT</span>
-                <span class="lg1">LNG</span>
+                <span class="badge badge-secondary">GEOFENCE_TYPE</span>
+                <span class="badge badge-secondary">COORDINATES</span>
+                <span class="badge badge-secondary">RADIUS</span>
+                <span class="badge badge-secondary">NAME</span>
+                <span class="badge badge-secondary">FULL_ADDRESS</span>
+                <span class="badge badge-secondary">TYPE</span>
+                <span class="badge badge-secondary">COMPANY_NAME</span>
+                <span class="badge badge-secondary">DUNS</span>
               </p>
-              <p>plant_name: Nome da planta da fábrica</p>
-              <p>lat: Latitude da planta</p>
-              <p>lng: Longitude da planta</p>
+              <p><b>geofence_type:</b> Iipo de contorno do ponto de controle. Assume valores C ou P, respectivamente:
+                Círculo ou Polígono.</p>
+              <p><b>coordinates:</b> Se for círculo, contém a latitude e longitude do centro do círculo no formato <i>(11.222,
+                  33.444)</i>. Se for polígono, contém uma lista de latitudes e longitudes no formato <i>[(11.222,
+                  33.444), (11.222, 33.444), ...]</i>.</p>
+              <p><b>radius:</b> Se for círculo, é necessário especificar o raio do ponto de controle em metros.</p>
+              <p><b>name:</b> Nome do ponto de controle.</p>
+              <p><b>full_address:</b> Endereço completo do ponto de controle.</p>
+              <p><b>type:</b> Tipo do ponto de controle.</p>
+              <p><b>company:</b> Nome da empresa a qual o ponto de controle está vinculado.</p>
+              <p><b>duns:</b> Código identificador da empresa a qual o ponto de controle está vinculado.</p>
               <br>
-              
-              <h4>Departamento</h4>
+
+              <!-- <h4>Departamento</h4>
               <p>
                 <span class="lg1">NAME</span>
                 <span class="lg1">PLANT</span>
@@ -58,37 +75,41 @@
               <p>plant: Nome da planta da fábrica</p>
               <p>lat: Latitude da planta</p>
               <p>lng: Longitude da planta</p>
-              <br>
-              
+              <br> -->
+
               <h4>Embalagem</h4>
               <p>
-                <span class="lg1">CODE</span>
-                <span class="lg1">SERIAL</span>
-                <span class="lg1">TAG</span>
-                <span class="lg1">TYPE</span>
-                <span class="lg1">CAPACITY</span>
-                <span class="lg1">SUPPLIER</span>
-                <span class="lg1">DUNS</span>
-                <span class="lg1">PROJECT</span>
-                <span class="lg1">WEIGTH</span>
-                <span class="lg1">WIDTH</span>
-                <span class="lg1">HEIGTH</span>
-                <span class="lg1">LENGTH</span>
+                <span class="badge badge-secondary">FAMILY</span>
+                <span class="badge badge-secondary">SERIAL</span>
+                <span class="badge badge-secondary">TAG</span>
+                <span class="badge badge-secondary">VERSION</span>
+                <span class="badge badge-secondary">MANUFACTORER</span>
+                <span class="badge badge-secondary">WEIGTH</span>
+                <span class="badge badge-secondary">WIDTH</span>
+                <span class="badge badge-secondary">HEIGTH</span>
+                <span class="badge badge-secondary">LENGTH</span>
+                <span class="badge badge-secondary">CAPACITY</span>
+                <span class="badge badge-secondary">OBSERVATIONS</span>
+                <span class="badge badge-secondary">TYPE</span>
+                <span class="badge badge-secondary">PROJECT</span>
               </p>
-              <p>code: Código da embalagem</p>
-              <p>serial: Número serial da embalagem</p>
-              <p>type: Descrição da embalagem</p>
-              <p>capacity: Capacidade da embalagem</p>
-              <p>supplier: Nome Fornecedor da embalagem</p>
-              <p>duns: Número do duns do fornecedor da embalagem</p>
-              <p>project: Nome do projeto a qual a embalagem esta associada</p>
-              <p>weigth: Peso da embalagem</p>
-              <p>width: Largura da embalagem</p>
-              <p>height: Altura da embalagem</p>
-              <p>length: Comprimento da Embalagem</p>
+
+              <p><b>family:</b> Família da embalagem</p>
+              <p><b>serial:</b> Número serial da embalagem</p>
+              <p><b>tag:</b> Número TAG do dispositivo</p>
+              <p><b>version:</b> Versão do dispositivo</p>
+              <p><b>manufactorer:</b> Fabricante da embalagem</p>
+              <p><b>weigth:</b> Peso da embalagem</p>
+              <p><b>width:</b> Largura da embalagem</p>
+              <p><b>height:</b> Altura da embalagem</p>
+              <p><b>length:</b> Comprimento da Embalagem</p>
+              <p><b>capacity:</b> Capacidade da embalagem</p>
+              <p><b>observations:</b> Observações sobre a embalagem</p>
+              <p><b>type:</b> Descrição da embalagem</p>
+              <p><b>project:</b> Nome do projeto a qual a embalagem está associada.</p>
               <br>
-              
-              <h4>Rota</h4>
+
+              <!-- <h4>Rota</h4>
               <p>
                 <span class="lg1">SUPPLIER</span>
                 <span class="lg1">DUNS</span>
@@ -101,135 +122,235 @@
               <p>project: Latitude da planta</p>
               <p>plant_factory: Longitude da planta</p>
               <p>packing_code: Longitude da planta</p>
-              <br>
-
+              <br> -->
             </div>
           </div>
         </ng-template>
 
-        <form novalidate (ngSubmit)="onSubmit(import)" [formGroup]="import" #formDir="ngForm">
-          <div class="row">
-            <div class="col-sm-12 col-md-4 importar">
+        <div class="row .no-gutters">
+          <div class="col-sm-12">
+            <form novalidate (ngSubmit)="onSubmit(import)" [formGroup]="import" #formDir="ngForm">
               <p>Escolha um arquivo xlxs para importar</p>
-              <form>
-                <div class="form-group">
-                  <div class="botaoImport">
-                    <label for="single">ARQUIVO</label>
-                  </div>
-                  <input type="file" class="form-control" id="single" (change)=fileEvent($event) accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                  />
-                </div>
-              </form>
-            </div>
 
-            <div class="col-sm-12 col-md-8">
               <div class="table-responsive tabela">
                 <table class="table">
                   <thead>
                     <tr class="cabecalho">
+                      <th>Arquivo</th>
                       <th width="30%">Name</th>
                       <th>Size</th>
-                      <th>Status</th>
                       <th>Tipo de Cadastro</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
+
                   <tbody>
-                    <tr *ngFor="let item of uploader">
+                    <tr>
                       <td>
-                        <strong>{{ item?.name }}</strong>
+                        <form>
+                          <div class="form-group">
+                            <!-- <div class="editar">
+                            </div> -->
+                            <label for="single">ARQUIVO</label>
+                            <input [attr.disabled]="(uploader.length !== 0) ? '' : null" type="file" class="form-control" id="single" (change)=fileEvent($event) accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                          </div>
+                        </form>
                       </td>
-                      <td nowrap>{{ item?.size/1024/1024 | number:'.2' }} MB</td>
-                      <td class="text-center">
-                        <i *ngIf="send" class="glyphicon glyphicon-ok"></i>
-                        <i *ngIf="!send" class="glyphicon glyphicon-cloud-upload"></i>
+
+                      <td>
+                        <div *ngIf="(uploader.length !== 0)">
+                          {{ uploader[0]?.name }}
+                        </div>
                       </td>
+
                       <td nowrap>
-                        <select [(ngModel)]="type" type data-style="btn-primary" class="selectEq" formControlName="type" [ngClass]="{'required': (import.get('type').hasError('required') && import.get('type').touched)
-                  || (import.get('type').hasError('required') && formDir.submitted)}">
-                          <option value="">Escolha</option>
-                          <option>Tags</option>
-                          <option>Plantas</option>
-                          <option>Projetos</option>
-                          <option>Setores</option>
-                          <option>Embalagens</option>
-                          <option>Rotas</option>
-                        </select>
-                        <p class="requiredText" *ngIf="(import.get('type').hasError('required') && import.get('type').touched)
-                 || (import.get('type').hasError('required') && formDir.submitted)">Campo Obrigatório</p>
+                        <div *ngIf="(uploader.length !== 0)">
+                          {{ uploader[0]?.size/1024/1024 | number:'.2' }} MB
+                        </div>
                       </td>
+
                       <td nowrap>
-                        <button type="submit" class="editar">
-                          <span class="glyphicon glyphicon-upload"></span> Upload
-                        </button>
-                        <button type="button" class="excluir" (click)="remove()">
-                          <span class="glyphicon glyphicon-trash"></span> Remove
-                        </button>
+                        <div *ngIf="(uploader.length !== 0)">
+                          <select type 
+                            [(ngModel)]="type" 
+                            data-style="btn-primary" 
+                            class="selectEq" 
+                            formControlName="type"
+                            [ngClass]="{'required': (import.get('type').hasError('required') && import.get('type').touched)
+                              || (import.get('type').hasError('required') && formDir.submitted)}">
+                            <option value="">Escolha</option>
+                            <option>Pontos de Controle</option>
+                            <option>Embalagens</option>
+                            <!-- <option>Tags</option> -->
+                            <!-- <option>Projetos</option> -->
+                            <!-- <option>Setores</option> -->
+                            <!-- <option>Rotas</option> -->
+                          </select>
+
+                          <p class="requiredText" 
+                          *ngIf="(import.get('type').hasError('required') && import.get('type').touched) 
+                            || (import.get('type').hasError('required') && formDir.submitted)">
+                            Campo Obrigatório</p>
+                        </div>
                       </td>
-                    </tr>
-                    <tr *ngIf="(uploader.length == 0)" class="none">
-                      <td colspan="5">
-                        Você ainda não carregou nenhum arquivo
+
+                      <td nowrap>
+                        <div *ngIf="(uploader.length !== 0)">
+                          <button type="submit" class="editar">Upload</button>
+                          <button type="button" class="excluir" (click)="remove()">Remove</button>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-            </div>
+            </form>
           </div>
-        </form>
+        </div>
 
         <br />
         <br />
 
-        <div class="row" *ngIf="data?.row_missing.length != 0 && send">
+        <!-- Imprimir tipo do import -->
+        <!-- <div class="row" *ngIf="importResult?.to_register?.length > 0 && send">
+          <div class="col-md-12">
+            <p class="descricaoTitulo"> Importar {{import['controls'].type.value}} </p>
+          </div>
+        </div> -->
+
+        <!-- ========================================================== -->
+        <!-- Tabela de erro -->
+        <div class="row" *ngIf="importResult?.errors?.length > 0 && send">
+          
           <div class="col-md-12">
             <p class="descricaoTitulo">Essas Linhas não foram importadas do Excel</p>
+            <div class="col-md-12" *ngIf="importResult?.errors?.length !== 0 && send">
+              <alert type="danger" dismissible="true">
+                <strong>Atenção!</strong> Existe algum problema no excel que você tentou importar, verifique se ele
+                apresenta os campos corretos para inserir os cadastros da/o(s) {{import['controls'].type.value}}.
+              </alert>
+            </div>
           </div>
-          <div class="col-md-12">
-            <div *ngFor="let error of data.row_missing">
-              <div class="col-md-12" style="border: solid;margin: 2px;
-              border-color: #dc3545;background: #dc3545;
-              border-radius: 10px;">
-                <div class="col-md-6" style="text-align: center;
-                padding: 15px;">
-                  <span class="lg2">{{error.line}}</span>
-                </div>
-                <div class="col-md-6" style=" padding: 15px;">
-                  <div *ngFor="let erros of error.errors">
-                    <span class="lg3"> {{erros}} </span>
-                  </div>
-                </div>
-              </div>
 
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr class="cabecalho">
+                    <th>Linha</th>
+                    <th>Descrição</th>
+                  </tr>
+                </thead>
+                <tbody class="">
+                  <tr *ngFor="let error of importResult?.errors">
+                    <td>{{ error.line }}</td>
+                    <td>{{ error.description }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
         <br />
         <br />
-        <div class="row" *ngIf="data?.datas.length > 0 && send">
-          <div class="col-md-12">
-            <p class="descricaoTitulo">{{import['controls'].type.value}}</p>
-          </div>
-        </div>
 
-        <div class="row">
-          <div class="col-md-12" *ngIf="data?.datas.length == 0 && send">
-            <alert type="danger" dismissible="true">
-              <strong>Atenção!</strong> Existe algum problema no excel que você tentou importar, verifique se ele apresenta os campos
-              corretos para inserir os cadastros da/o (s) {{import['controls'].type.value}}.
+        <!-- ========================================================== -->
+        <!-- Tabela de cadastro: Embalagens -->
+        <div class="row" *ngIf="importResult?.updated?.length !== 0 && send">
+          
+          <div class="col-md-12">
+            <p class="descricaoTitulo">Essas linhas foram atualizadas a partir do Excel</p>
+            <alert type="success " dismissible="true">
+              <strong>Atenção!</strong> Alguns dados foram atualizados com sucesso.
             </alert>
           </div>
+
           <div class="col-md-12">
-            <br />
-            <br />
-            <div class="row classeDoCacete" *ngIf="data?.datas.length > 0 && send">
-              <hotTable [data]="data.datas" [colHeaders]="colHeaders" [columns]="columns" [options]="options" width=400px (afterLoadData)="editTable()"></hotTable>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr class="cabecalho">
+                    <th>linha</th>
+                    <th>family</th>
+                    <th>serial</th>
+                    <th>tag</th>
+                    <th>version</th>
+                    <th>manufactorer</th>
+                    <th>weigth</th>
+                    <th>width</th>
+                    <th>height</th>
+                    <th>length</th>
+                    <th>capacity</th>
+                    <th>observations</th>
+                    <th>type</th>
+                    <th>projec</th>
+                  </tr>
+                </thead>
+                <tbody class="">
+                  <tr *ngFor="let error of importResult?.updated">
+                    <td>{{ error.line }}</td>
+                    <th>{{ error.description.data.family }}</th>
+                    <th>{{ error.description.data.serial }}</th>
+                    <th>{{ error.description.data.tag }}</th>
+                    <th>{{ error.description.data.version }}</th>
+                    <th>{{ error.description.data.manufactorer }}</th>
+                    <th>{{ error.description.data.weigth }}</th>
+                    <th>{{ error.description.data.width }}</th>
+                    <th>{{ error.description.data.height }}</th>
+                    <th>{{ error.description.data.length }}</th>
+                    <th>{{ error.description.data.capacity }}</th>
+                    <th>{{ error.description.data.observations }}</th>
+                    <th>{{ error.description.data.type }}</th>
+                    <th>{{ error.description.data.projec }}</th>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <br />
-            <div class="botoes" *ngIf="data?.datas.length > 0 && send">
-              <button type="button" class="botaoRegistrar" name="button" (click)="register()">REGISTRAR</button>
+          </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- Tabela de cadastro: Ponto de Controle-->
+        <div class="row" *ngIf="importResult?.updated?.length !== 0 && send">
+          
+          <div class="col-md-12">
+            <p class="descricaoTitulo">Essas linhas foram atualizadas a partir do Excel</p>
+            <alert type="success " dismissible="true">
+              <strong>Atenção!</strong> Alguns dados foram atualizados com sucesso.
+            </alert>
+          </div>
+
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr class="cabecalho">
+                    <th>linha</th>
+                    <th>geofence_type</th>
+                    <th>coordinates</th>
+                    <th>radius</th>
+                    <th>name</th>
+                    <th>full_address</th>
+                    <th>type</th>
+                    <th>company</th>
+                    <th>duns</th>
+                  </tr>
+                </thead>
+                <tbody class="">
+                  <tr *ngFor="let error of importResult?.updated">
+                    <td>{{ error.line }}</td>
+                    <td>{{ error.description.data.geofence_type }}</td>
+                    <td>{{ error.description.data.coordinates }}</td>
+                    <td>{{ error.description.data.radius }}</td>
+                    <td>{{ error.description.data.name }}</td>
+                    <td>{{ error.description.data.full_address }}</td>
+                    <td>{{ error.description.data.type }}</td>
+                    <td>{{ error.description.data.company }}</td>
+                    <td>{{ error.description.data.duns }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
