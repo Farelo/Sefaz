@@ -289,7 +289,7 @@ export class PontoDeControleEditarComponent implements OnInit {
 
     this.submitted = true;
 
-    if (valid && this.pointWasSelected) {  
+    if (valid && this.mGeofence.coordinates.length > 0) {  
 
       value.type = this.mControlPoint.controls.type.value._id;
       value.company = this.mControlPoint.controls.company.value._id;
@@ -318,15 +318,18 @@ export class PontoDeControleEditarComponent implements OnInit {
   }
 
 
-  placeChanged(place) {
+  placeChanged(place: any) {
     this.center = place.geometry.location;
-    for (let i = 0; i < place.address_components.length; i++) {
-      let addressType = place.address_components[i].types[0];
-      this.address[addressType] = place.address_components[i].long_name;
-    }
+    // for (let i = 0; i < place.address_components.length; i++) {
+    //   let addressType = place.address_components[i].types[0];
+    //   this.address[addressType] = place.address_components[i].long_name;
+    // }
 
-    this.mControlPoint.controls.lat.setValue(0);
-    this.mControlPoint.controls.lng.setValue(0);
+    this.address = place.formatted_address;
+    this.mControlPoint.controls.full_address.setValue(this.address);
+
+    // this.mControlPoint.controls.lat.setValue(0);
+    // this.mControlPoint.controls.lng.setValue(0);
 
     this.zoom = 18;
     this.ref.detectChanges();

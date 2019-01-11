@@ -159,24 +159,36 @@
 
             <!-- ///////////// -->
             <!-- Control Point -->
-            <marker *ngFor="let posCP of listOfControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+            <!-- <marker *ngFor="let posCP of listOfControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
               [visible]="showControlledPlants" [title]="posCP.name" (click)="clicked($event, posCP)">
-            </marker>
+            </marker> -->
 
             <!-- <circle *ngFor="let posCPRadius of listOfControlPoints" [center]="posCPRadius.position" [fillColor]="'#0044a8'"
               [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"
               radius="{{ settings.range_radius }}"></circle> -->
 
+            <!-- ######################## -->
+            <!-- Marker para os polígonos -->
+            <marker *ngFor="let posCP of listOfPolygonControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+              [visible]="showControlledPlants" [title]="posCP.name" (click)="clicked($event, posCP)"> </marker>
+
             <polygon *ngFor="let posCPPolygon of listOfPolygonControlPoints" [paths]="posCPPolygon.geofence.coordinates" [editable]="false" [fillColor]="'#0044a8'"
               [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"> </polygon>
             
+            <!-- ######################## -->
+            <!-- Marker para os círculos -->
+            <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+              [visible]="showControlledPlants" [title]="posCP.name" (click)="clicked($event, posCP)"> </marker>
+
             <circle *ngFor="let posCPCircle of listOfCircleControlPoints" [center]="posCPCircle.geofence.coordinates[0]" [radius]="posCPCircle.geofence.radius"
               [editable]="false" [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4"
               [strokeWeight]="1" [visible]="showControlledPlants"> </circle>
 
+            <!-- ######################## -->
+            <!-- Infowindow de tabela -->
             <info-window id="iw" width="200" maxWidth="200">
               <div *ngIf="marker.display">
-                <div class="iw-title"> {{marker.plant}} </div>
+                <div class="iw-title"> {{marker.name}} </div>
 
                 <div>
                   <div class="table-responsive tabela">

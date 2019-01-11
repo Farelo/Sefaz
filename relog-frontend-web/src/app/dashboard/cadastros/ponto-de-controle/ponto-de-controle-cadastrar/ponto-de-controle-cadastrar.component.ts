@@ -26,7 +26,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   }
   public pos: any;
   public geocoder = new google.maps.Geocoder;
-  public pointWasSelected: boolean = false;
+  // public pointWasSelected: boolean = false;
 
   selectedOverlay: any;
   @ViewChild(DrawingManager) drawingManager: DrawingManager;
@@ -226,14 +226,14 @@ export class PontoDeControleCadastrarComponent implements OnInit {
    */
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
-    // console.log(value);
+     console.log(value);
     // console.log(valid);
     // console.log('submit');
-    // console.log(this.mControlPoint);
+     console.log(this.mControlPoint);
 
     this.submitted = true;
 
-    if (valid && this.pointWasSelected) {
+    if (valid && this.mGeofence.coordinates.length > 0) {
 
       value.type = this.mControlPoint.controls.type.value._id;
       value.company = this.mControlPoint.controls.company.value._id;
@@ -259,17 +259,24 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.autocomplete = autocomplete;
   }
 
-  placeChanged(place) {
+  placeChanged(place: any) {
     this.center = place.geometry.location;
-    for (let i = 0; i < place.address_components.length; i++) {
-      let addressType = place.address_components[i].types[0];
-      this.address[addressType] = place.address_components[i].long_name;
-    }
+    
+    // for (let i = 0; i < place.address_components.length; i++) {
+      //   let addressType = place.address_components[i].types[0];
+      //   this.address = place.address_components[i].long_name;
+      //   console.log(place.address_components[i]);
+      // }
+      
+    this.address = place.formatted_address;
+    this.mControlPoint.controls.full_address.setValue(this.address);
 
-    this.mControlPoint.controls.lat.setValue(0);
-    this.mControlPoint.controls.lng.setValue(0);
+    console.log(this.address);
 
-    this.pointWasSelected = false;
+    // this.mControlPoint.controls.lat.setValue(0);
+    // this.mControlPoint.controls.lng.setValue(0);
+
+    // this.pointWasSelected = false;
 
     this.zoom = 16;
     this.ref.detectChanges();
@@ -289,22 +296,22 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   //   this.mControlPoint.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
   // }
 
-  onClick(event, str) {
+  // onClick(event, str) {
 
-    this.pointWasSelected = true;
+  //   this.pointWasSelected = true;
 
-    if (event instanceof MouseEvent) {
-      return;
-    }
+  //   if (event instanceof MouseEvent) {
+  //     return;
+  //   }
 
-    this.pos = event.latLng;
-    this.geocodingService.geocode(event.latLng).subscribe(results => {
-      this.mControlPoint.controls.full_address.setValue(results[1].formatted_address);
-    });
-    this.mControlPoint.controls.lat.setValue(event.latLng.lat());
-    this.mControlPoint.controls.lng.setValue(event.latLng.lng());
-    event.target.panTo(event.latLng);
-  }
+  //   this.pos = event.latLng;
+  //   this.geocodingService.geocode(event.latLng).subscribe(results => {
+  //     this.mControlPoint.controls.full_address.setValue(results[1].formatted_address);
+  //   });
+  //   this.mControlPoint.controls.lat.setValue(event.latLng.lat());
+  //   this.mControlPoint.controls.lng.setValue(event.latLng.lng());
+  //   event.target.panTo(event.latLng);
+  // }
 
   validateName(event: any) {
     if (!this.mControlPoint.get('name').errors) {

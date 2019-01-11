@@ -274,14 +274,40 @@ export class LayerModalComponent implements OnInit {
   /*
    * Plants
    */
+  public listOfCircleControlPoints: any;
+  public listOfPolygonControlPoints: any;
+
   getPlants() {
     this.controlPointsService.getAllControlPoint().subscribe(result => {
       this.controlPoints = result;
 
-      this.controlPoints.map(e => {
-        e.latLng = new google.maps.LatLng(e.lat, e.lng);
-        return e;
-      });
+      // this.controlPoints.map(e => {
+      //   e.latLng = new google.maps.LatLng(e.lat, e.lng);
+      //   return e;
+      // });
+
+      this.listOfCircleControlPoints = result
+        .filter(elem => elem.geofence.type == 'c')
+        .map(elem => {
+          elem.position = (new google.maps.LatLng(elem.geofence.coordinates[0].lat, elem.geofence.coordinates[0].lng));
+          return elem;
+        });
+
+      this.listOfPolygonControlPoints = result
+        .filter(elem => elem.geofence.type == 'p')
+        .map(elem => {
+
+          let lat = elem.geofence.coordinates.map(p =>  p.lat);
+          let lng = elem.geofence.coordinates.map(p =>  p.lng);
+
+          elem.position = {
+            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
+            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
+          }
+
+          return elem;
+        });
+
     });
   }
 

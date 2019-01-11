@@ -28,24 +28,20 @@ export class RastreamentoComponent implements OnInit {
   address: any = {};
   center: any = { lat: 0, lng: 0 };
   pos: any;
-  
+
   departments: Department[];
   options = [];
   circles = [];
   zoom = 14;
   marker = {
     id: null,
+    name: null,
     target: null,
     opt: null,
     display: true,
     lat: null,
     lng: null,
-    plant: null,
-    packingsByPlant: [],
-    department: null,
-    packing: null,
-    nothing: null,
-    profile: null
+    packing: null
   };
   public packMarker = {
     display: true,
@@ -89,7 +85,7 @@ export class RastreamentoComponent implements OnInit {
   public listOfFamilies: any = [];
   public auxListOfFamilies: any = [];
 
-  public listOfCompanies: any = []; 
+  public listOfCompanies: any = [];
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -107,14 +103,14 @@ export class RastreamentoComponent implements OnInit {
 
   ngOnInit() {
 
-    this.getPlantRadius(); 
+    this.getPlantRadius();
     this.loadCompanies();
     this.loadControlPoints();
   }
 
   public mMap: any;
   onInitMap(map) {
- 
+
     this.zoom = 14;
     this.mMap = map;
     this.loadPackings();
@@ -145,18 +141,18 @@ export class RastreamentoComponent implements OnInit {
       this.listOfFamilies = result;
       this.auxListOfFamilies = result;
 
-      // console.log('..'); 
-      // console.log(result); 
+      // console.log('..');
+      // console.log(result);
       let auxListOfCompanies = [];
 
       this.listOfCompanies = result.map(elem => {
         if (auxListOfCompanies.length < 1) {
           auxListOfCompanies.push(elem.company);
         } else {
-          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1) 
+          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1)
             auxListOfCompanies.push(elem.company);
         }
-      }); 
+      });
 
       // console.log(auxListOfCompanies);
 
@@ -171,30 +167,41 @@ export class RastreamentoComponent implements OnInit {
   loadControlPoints(){
 
     this.controlPointsService.getAllControlPoint().subscribe(result => {
-      this.listOfControlPoints = result.map(elem => {
-        elem.position = (new google.maps.LatLng(elem.lat, elem.lng));
-        return elem;
-      });
+      // this.listOfControlPoints = result.map(elem => {
+      //   elem.position = (new google.maps.LatLng(elem.lat, elem.lng));
+      //   return elem;
+      // });
 
-      this.listOfCircleControlPoints = result.filter(elem => {
-        return elem.geofence.type == 'c';
-      });
+      this.listOfCircleControlPoints = result
+        .filter(elem => elem.geofence.type == 'c')
+        .map(elem => {
+          elem.position = (new google.maps.LatLng(elem.geofence.coordinates[0].lat, elem.geofence.coordinates[0].lng));
+          return elem;
+        });
 
-      this.listOfPolygonControlPoints = result.filter(elem => {
-        return elem.geofence.type == 'p';
-      })
-      .map(elem => {
-        
-      });
+      this.listOfPolygonControlPoints = result
+        .filter(elem => elem.geofence.type == 'p')
+        .map(elem => {
 
-      console.log(this.listOfCircleControlPoints);
-      console.log(this.listOfPolygonControlPoints);
+          let lat = elem.geofence.coordinates.map(p =>  p.lat);
+          let lng = elem.geofence.coordinates.map(p =>  p.lng);
+
+          elem.position = {
+            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
+            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
+          }
+
+          return elem;
+        });
+
+      // console.log(this.listOfCircleControlPoints);
+      // console.log(this.listOfPolygonControlPoints);
 
     }, err => console.error(err));
   }
 
   /**
-   * Carrega todos os pacotes do mapa 
+   * Carrega todos os pacotes do mapa
    */
   public spiralPath: google.maps.Polyline = new google.maps.Polyline();
   public spiralPoints: any = [];
@@ -245,7 +252,7 @@ export class RastreamentoComponent implements OnInit {
   loadPackings() {
 
     // console.log('.');
-    
+
     let cp_id = this.selectedCompany !== null ? this.selectedCompany._id : null;
     let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
     let serial_id = this.selectedSerial !== null ? this.selectedSerial : null;
@@ -255,10 +262,10 @@ export class RastreamentoComponent implements OnInit {
 
     // console.log('this.selectedCompany');
     // console.log(this.selectedFamily);
-    
+
     // console.log('this.selectedSerial');
     // console.log(this.selectedSerial);
-    
+
     this.deviceService.getDeviceData(cp_id, family_id, serial_id).subscribe((result: any[]) => {
 
       this.plotedPackings = result.filter(elem => {
@@ -328,7 +335,7 @@ export class RastreamentoComponent implements OnInit {
    * Clear e disable the Serial Select.
    */
   onEquipmentSelectClear() {
-    
+
     this.selectedSerial = null;
     this.loadPackings();
   }
@@ -340,18 +347,15 @@ export class RastreamentoComponent implements OnInit {
 
     var marker = _a.target;
     //this.marker.target = _a
-    //this.marker.opt = opt
-    this.marker.id = opt._id
+    this.marker.id = opt._id;
+    this.marker.name = opt.name;
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
 
     this.packingService.packingsOnControlPoint(opt._id).subscribe(result => {
-
       // console.log('');
       // console.log(result);
-
       this.packingsByPlant = result;
-
       this.startWindow(marker);
     });
   }
