@@ -121,11 +121,11 @@ export class ImportarComponent implements OnInit {
 
     switch (this.import['controls'].type.value) {
       case 'Embalagens':
-        this.packingService.createPackingArray(this.importResult.datas).subscribe(result => { this.send = false; this.toastService.successArray('', 'Embalagens') }, err => this.toastService.errorArray(err));
+        this.packingService.createPackingArray(this.importResult.to_register).subscribe(result => { this.send = false; this.toastService.successArray('', 'Embalagens') }, err => this.toastService.errorArray(err));
         break;
 
       case 'Embalagens':
-        this.packingService.createPackingArray(this.importResult.datas).subscribe(result => { this.send = false; this.toastService.successArray('', 'Embalagens') }, err => this.toastService.errorArray(err));
+        this.packingService.createPackingArray(this.importResult.to_register).subscribe(result => { this.send = false; this.toastService.successArray('', 'Embalagens') }, err => this.toastService.errorArray(err));
         break;
     }
   }

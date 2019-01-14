@@ -177,6 +177,7 @@ export class PackingService {
   // }
 
   createPackingArray(array: any): Observable<any>{
+    console.log(array);
     return this.http.post(`${environment.url}/packing/create/array`, array)
       .catch(this.handleError);
   }

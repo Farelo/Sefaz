@@ -208,7 +208,7 @@ export class ImportService {
         {
           "line": 1,
           "data": {
-            "family": "5c17c511ebad931c8c6d7359",
+            "family": { name: "Fase 2" },
             "serial": 727,
             "tag": {
               "code": "40801392",
@@ -220,6 +220,7 @@ export class ImportService {
             "height": "3.063",
             "length": "3.78",
             "capacity": "6",
+            "project": { name: "Fase 2" },
             "type": "CAVALETE"
           }
         }
