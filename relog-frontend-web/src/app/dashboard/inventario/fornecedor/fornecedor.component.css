@@ -173,3 +173,8 @@ hr {
   margin-bottom: 10px;
   border-radius: 0em;
 }
+
+.export-button {
+  height: 30px;
+  cursor: pointer;
+ }
