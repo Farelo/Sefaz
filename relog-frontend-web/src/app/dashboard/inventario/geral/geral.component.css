@@ -102,3 +102,8 @@ tbody > tr:nth-child(even) {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+.export-button {
+  height: 30px;
+  cursor: pointer;
+ }

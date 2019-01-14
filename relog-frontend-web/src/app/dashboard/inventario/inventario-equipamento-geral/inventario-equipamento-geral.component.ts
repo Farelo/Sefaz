@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LayerModalComponent } from '../../../shared/modal-packing/layer.component';
 import { constants } from '../../../../environments/constants';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { RoundPipe } from '../../../shared/pipes/round';
 
 @Component({
   selector: 'app-inventario-equipamento-geral',
@@ -55,6 +56,9 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     }, err => console.error(err));
   }
 
+  /**
+   * Default list
+   */
   generalInventoryEquipament() {
 
     this.reportsService.getGeneralInventory().subscribe(result => {
@@ -98,11 +102,11 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   };
 
   loadTableHeaders() {
-    this.headers.push({ label: 'Código', name: 'family_code' });
+    this.headers.push({ label: 'Família', name: 'family_code' });
     this.headers.push({ label: 'Serial', name: 'serial' });
     this.headers.push({ label: 'Tag', name: 'tag' });
 
-    this.headers.push({ label: 'Fornecedor?', name: 'company' });
+    this.headers.push({ label: 'Fornecedor', name: 'company' });
     this.headers.push({ label: 'Status Atual', name: 'current_state' });
     this.headers.push({ label: 'Planta Atual', name: 'current_control_point_name' });
 
@@ -193,7 +197,8 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
         });
         return plain;
      */
-
+     
+     let transformer= new RoundPipe();
      let plainArray = mArray.map(obj => {
           return {
             a1: obj.family_code,
@@ -203,7 +208,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
             a5: obj.current_state,
             a6: obj.current_control_point_name,
             a7: obj.current_control_point_type,
-            a8: (obj.battery_percentage == null) ? 0 : obj.battery_percentage,
+            a8: (obj.battery_percentage != undefined && obj.battery_percentage >= 0) ? transformer.transform(obj.battery_percentage):"Sem Registro",
             a9: obj.accuracy,
             a10: obj.date
           };

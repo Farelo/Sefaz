@@ -25,6 +25,7 @@ export class InventarioGeralComponent implements OnInit {
   public actualPage: number = -1;
   
   public settings: any = {};
+  
 
   constructor(
     private reportService: ReportsService,
@@ -148,13 +149,6 @@ export class InventarioGeralComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-
   /**
   * Initial configuration of all collapses
   * @param  Initial state: true(collapsed) or false(expanded)
@@ -165,70 +159,94 @@ export class InventarioGeralComponent implements OnInit {
       return o;
     })
   }
-  
+
+   /**
+   * ================================================
+   * Downlaod csv file
+   */
+
   private csvOptions = {
     showLabels: true,
     fieldSeparator: ';'
   };
 
-  downloadExcel(): void {
-    console.log('Download on excel');
+  /**
+  * Click to download
+  */
+  downloadCsv(){
 
-    let params = {};
-    // if (this.selectedSupplier) params['supplier_id'] = this.selectedSupplier._id;
-    // if (this.selectedEquipament) params['package_code'] = this.selectedEquipament._id.code;
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.detailedGeneralInventory .slice());
 
-    this.inventoryService.getDataToCsv(params).subscribe(result => {
+    //Add a header in the flat json data
+    flatObjectData = this.addHeader(flatObjectData);
 
-      new Angular2Csv(this.shapeObject(result.data), 'InventarioGeral', this.csvOptions);
-    }, err => { console.log(err) });
-
+    //Instantiate a new csv object and initiate the download
+    new Angular2Csv(flatObjectData, 'Inventario Inventário Geral', this.csvOptions);
   }
 
-  /**
-   * Retrieves the data in the server and shape the object to the csv library
-   * @param array The array of objects to save in the csv. Each object represents a row in the file
-   */
-  shapeObject(array: any) {
+  flatObject(mArray: any) {
+        
+    //console.log(mArray);
 
-    let plain = array.map(obj => {
-      return {
-        supplierName: obj.supplier.name,
-        equipmentCode: obj._id.code,
-        quantityTotal: obj.quantityTotal,
-        quantityInFactory: obj.quantityInFactory,
-        quantityInSupplier: obj.quantityInSupplier,
-        quantityTraveling: obj.quantityTraveling,
-        quantityProblem: obj.quantityProblem,
-        totalOnline: (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling)),
-        quantityDifference: (parseInt(obj.quantityTotal) - (parseInt(obj.quantityInFactory) + parseInt(obj.quantityInSupplier) + parseInt(obj.quantityTraveling))),
-        lateObject: obj.all_alerts[0] == undefined ? 0 : obj.all_alerts[0].late_object,
-        incorrectObject: obj.all_alerts[0] == undefined ? 0 : obj.all_alerts[0].incorrect_object,
-        permanenceTime: obj.all_alerts[0] == undefined ? 0 : obj.all_alerts[0].permanence_time,
-        lostObject: obj.all_alerts[0] == undefined ? 0 : obj.all_alerts[0].lost_object
-      };
-    });
+    /**
+     * Example:
+        let plain = mArray.map(obj => {
+          return {
+            supplierName: obj.supplier.name,
+            equipmentCode: obj._id.code,
+            quantityTotal: obj.quantityTotal,
+            quantityInFactory: obj.quantityInFactory,
+            quantityInSupplier: obj.quantityInSupplier,
+            quantityTraveling: obj.quantityTraveling,
+            quantityProblem: obj.quantityProblem,
+            lostObject: obj.quantityProblem == undefined ? 0 : obj.quantityProblem
+          };
+        });
+        return plain;
+     */
 
+     let plainArray = mArray.map(obj => {
+        return {
+          a1: obj.company,
+          a2: obj.family_name,
+          a3: obj.qtd_total,
+          a4: obj.qtd_in_owner,
+          a5: obj.qtd_in_clients,
+          a6: obj.qtd_in_traveling,
+          a7: ((obj.qtd_in_owner) + (obj.qtd_in_clients) + (obj.qtd_in_traveling)),
+          a8: ((obj.qtd_total) - ((obj.qtd_in_owner) + (obj.qtd_in_clients ) + (obj.qtd_in_traveling))),
+          a9: (obj.qtd_in_traveling_late  == undefined) ? 0 : obj.qtd_in_traveling_late ,
+          a10: (obj.qtd_in_incorrect_cp == undefined)  ? 0 : obj.qtd_in_incorrect_cp ,
+          a11: (obj.qtd_with_permanence_time_exceeded == undefined)? 0 : obj.qtd_with_permanence_time_exceeded,
+          a12: (obj.qtd_in_traveling_missing == undefined)? 0 : obj.qtd_in_traveling_missing,
+        };
+      });
+    // As my array is already flat, I'm just returning it.
+    return plainArray;
+  }
+
+  addHeader(mArray: any){
     let cabecalho = {
-      supplierName: 'Fornecedor',
-      equipmentCode: 'Equipamento',
-      quantityTotal: 'Total de Equipamentos do Fornecedor(TEF)',
-      quantityInFactory: 'Quantidade nas Plantas(A)',
-      quantityInSupplier: 'Quantidade no Fornecedor(B)',
-      quantityTraveling: 'Quantidade no Transito(C)',
-      quantityProblem: 'Quantidade em Local Incorreto',
-      totalOnline: 'Total do Inventário On Line(TIOL = A + B + C)',
-      quantityDifference: 'Diferença(TEF - TIOL)',
-      lateObject: 'Atraso de Rota',
-      incorrectObject: 'Local Incorreto',
-      permanenceTime: 'Tempo de Permanencia',
-      lostObject: 'Embalagem Ausente'
+      a1: 'Fornecedor',
+      a2: 'Família',
+      a3: 'Total de Equipamentos do Fornecedor(TEF)',
+      a4: 'Quantidade nas Plantas(A)',
+      a5: 'Quantidade no Fornecedor(B)',
+      a6: 'Quantidade no Transito(C)',
+      a7: 'Total do Inventário On Line(TIOL = A + B + C)',
+      a8: 'Diferença(TEF - TIOL)',
+      a9: 'Atraso de Rota',
+      a10: 'Local Incorreto',
+      a11: 'Tempo de Permanência',
+      a12: 'Embalagem Ausente'
     }
 
     //adiciona o cabeçalho
-    plain.unshift(cabecalho);
+    mArray.unshift(cabecalho);
 
-    return plain;
+    return mArray;
   }
 
 }
