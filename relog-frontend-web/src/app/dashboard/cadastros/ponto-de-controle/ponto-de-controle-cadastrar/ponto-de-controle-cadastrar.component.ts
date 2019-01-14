@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ToastService, GeocodingService, CompaniesService, ControlPointsService, ControlPointTypesService } from 'app/servicos/index.service';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/first'
+import { NguiMap, NguiMapComponent, DrawingManager } from '@ngui/map';
 
 @Component({
   selector: 'app-ponto-de-controle-cadastrar',
@@ -13,7 +14,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   public mControlPoint: FormGroup;
   public allCompanies: any[] = [];
-  public allTypes: any[] = []; 
+  public allTypes: any[] = [];
   public autocomplete: any;
   public address: any = {};
   public center: any;
@@ -25,7 +26,10 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   }
   public pos: any;
   public geocoder = new google.maps.Geocoder;
-  public pointWasSelected: boolean = false;
+  // public pointWasSelected: boolean = false;
+
+  selectedOverlay: any;
+  @ViewChild(DrawingManager) drawingManager: DrawingManager;
 
   constructor(
     private companyService: CompaniesService,
@@ -40,8 +44,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.mControlPoint = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       duns: ['', []],
-      lat: ['', [Validators.required]],
-      lng: ['', [Validators.required]],
+      // lat: ['', [Validators.required]],
+      // lng: ['', [Validators.required]],
       full_address: ['', [Validators.required]],
       type: [null, [Validators.required, Validators.minLength(5)]],
       company: [undefined, [Validators.required]]
@@ -51,8 +55,122 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   ngOnInit() {
 
+    this.prepareMap();
     this.fillCompanySelect();
-    this.fillTypesSelect(); 
+    this.fillTypesSelect();
+  }
+
+  /*
+  google.maps.event.addListener(drawingManager, 'circlecomplete', function(circle) {
+    var radius = circle.getRadius();
+  });
+
+  google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+    if (event.type == 'circle') {
+      var radius = event.overlay.getRadius();
+    }
+  });
+   */
+
+  public controlPointCircle: google.maps.Circle = null;
+  public controlPointPolygon: google.maps.Polygon = null;
+  public mGeofence: any;
+  //  = {
+  //   coordinates: [],
+  //   type: '',
+  //   radius: 1000
+  // };
+
+  generateCircleGeofence(circle: any) {
+
+    this.controlPointCircle = circle;
+
+    this.mGeofence = { coordinates: [] };
+    this.mGeofence.coordinates.push({ lat: this.controlPointCircle.getCenter().lat(), lng: this.controlPointCircle.getCenter().lng() });
+    this.mGeofence.type = 'c';
+    this.mGeofence.radius = this.controlPointCircle.getRadius();
+
+    console.log(JSON.stringify(this.mGeofence));
+  }
+
+  generatePolygonGeofence(poly: any) {
+
+    this.controlPointPolygon = poly;
+
+    let arr = [];
+    this.mGeofence = { coordinates: [] };
+    this.mGeofence.type = 'p';
+    this.controlPointPolygon.getPath().forEach(latLng => arr.push({ lat: latLng.lat(), lng: latLng.lng() }))
+    this.mGeofence.coordinates = arr;
+
+    console.log(JSON.stringify(this.mGeofence));
+  }
+
+  prepareMap() {
+    this.drawingManager['initialized$'].subscribe(dm => {
+
+      /**
+       * Circle
+       */
+      google.maps.event.addListener(dm, 'circlecomplete', circle => {
+
+        //listener when radius is changed
+        google.maps.event.addListener(circle, 'radius_changed', () => {
+          this.generateCircleGeofence(circle);
+        });
+
+        //listener when cender is dragged
+        google.maps.event.addListener(circle, 'center_changed', () => {
+          this.generateCircleGeofence(circle);
+        });
+
+        //reseting previous circles
+        if (this.controlPointCircle !== null) {
+          this.controlPointCircle.setMap(null);
+          this.controlPointCircle = null;
+        }
+
+        //reseting previous polygons
+        if (this.controlPointPolygon !== null) {
+          this.controlPointPolygon.setMap(null);
+          this.controlPointPolygon = null;
+        }
+
+        this.generateCircleGeofence(circle);
+      });
+
+
+      /**
+       * Polygon
+       */
+      google.maps.event.addListener(dm, 'polygoncomplete', polygon => {
+
+        //listener when a vertice is dragged
+        google.maps.event.addListener(polygon.getPath(), 'insert_at', () => {
+          this.generatePolygonGeofence(polygon);
+        });
+
+        //listener when a new vertice is created
+        google.maps.event.addListener(polygon.getPath(), 'set_at', () => {
+          this.generatePolygonGeofence(polygon);
+        });
+
+        //reseting previous circlesc
+        if (this.controlPointCircle !== null) {
+          this.controlPointCircle.setMap(null);
+          this.controlPointCircle = null;
+        }
+
+        //reseting previous polygons
+        if (this.controlPointPolygon !== null) {
+          this.controlPointPolygon.setMap(null);
+          this.controlPointPolygon = null;
+        }
+
+        this.generatePolygonGeofence(polygon);
+      });
+
+    });
   }
 
   /**
@@ -75,24 +193,24 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     }, err => console.error(err));
   }
 
-  onAddItem(event: any){
- 
+  onAddItem(event: any) {
+
     console.log(event);
 
-    if(!event._id){
+    if (!event._id) {
 
-      if (event.name.length < 5){
+      if (event.name.length < 5) {
         this.fillTypesSelect();
         this.mControlPoint.controls.type.setErrors({ minlength: true });
         return false;
       }
-  
+
       if (event.name.length > 50) {
         this.fillTypesSelect();
         this.mControlPoint.controls.type.setErrors({ maxlength: true });
         return false;
       }
-  
+
       this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
         this.controlPointsTypeService.getAllTypes().toPromise().then(() => {
           this.mControlPoint.controls.type.setValue(result);
@@ -108,17 +226,18 @@ export class PontoDeControleCadastrarComponent implements OnInit {
    */
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
-    // console.log(value);
+     console.log(value);
     // console.log(valid);
     // console.log('submit');
-    // console.log(this.mControlPoint);
+     console.log(this.mControlPoint);
 
     this.submitted = true;
 
-    if (valid && this.pointWasSelected) {  
-      
+    if (valid && this.mGeofence.coordinates.length > 0) {
+
       value.type = this.mControlPoint.controls.type.value._id;
-      value.company = this.mControlPoint.controls.company.value._id; 
+      value.company = this.mControlPoint.controls.company.value._id;
+      value.geofence = this.mGeofence;
 
       console.log(value);
       this.finishRegister(value);
@@ -140,17 +259,24 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.autocomplete = autocomplete;
   }
 
-  placeChanged(place) {
+  placeChanged(place: any) {
     this.center = place.geometry.location;
-    for (let i = 0; i < place.address_components.length; i++) {
-      let addressType = place.address_components[i].types[0];
-      this.address[addressType] = place.address_components[i].long_name;
-    }
     
-    this.mControlPoint.controls.lat.setValue(0);
-    this.mControlPoint.controls.lng.setValue(0);
+    // for (let i = 0; i < place.address_components.length; i++) {
+      //   let addressType = place.address_components[i].types[0];
+      //   this.address = place.address_components[i].long_name;
+      //   console.log(place.address_components[i]);
+      // }
+      
+    this.address = place.formatted_address;
+    this.mControlPoint.controls.full_address.setValue(this.address);
 
-    this.pointWasSelected = false;
+    console.log(this.address);
+
+    // this.mControlPoint.controls.lat.setValue(0);
+    // this.mControlPoint.controls.lng.setValue(0);
+
+    // this.pointWasSelected = false;
 
     this.zoom = 16;
     this.ref.detectChanges();
@@ -170,24 +296,24 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   //   this.mControlPoint.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
   // }
 
-  onClick(event, str) {
+  // onClick(event, str) {
 
-    this.pointWasSelected = true;
+  //   this.pointWasSelected = true;
 
-    if (event instanceof MouseEvent) {
-      return;
-    }
+  //   if (event instanceof MouseEvent) {
+  //     return;
+  //   }
 
-    this.pos = event.latLng;
-    this.geocodingService.geocode(event.latLng).subscribe(results => {
-      this.mControlPoint.controls.full_address.setValue(results[1].formatted_address);
-    });
-    this.mControlPoint.controls.lat.setValue(event.latLng.lat());
-    this.mControlPoint.controls.lng.setValue(event.latLng.lng());
-    event.target.panTo(event.latLng);
-  }
+  //   this.pos = event.latLng;
+  //   this.geocodingService.geocode(event.latLng).subscribe(results => {
+  //     this.mControlPoint.controls.full_address.setValue(results[1].formatted_address);
+  //   });
+  //   this.mControlPoint.controls.lat.setValue(event.latLng.lat());
+  //   this.mControlPoint.controls.lng.setValue(event.latLng.lng());
+  //   event.target.panTo(event.latLng);
+  // }
 
-  validateName(event: any){
+  validateName(event: any) {
     if (!this.mControlPoint.get('name').errors) {
 
       this.validateNotTakenLoading = true;
@@ -224,5 +350,6 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   //       }
   //     })
   // }
-  
+
 }
+

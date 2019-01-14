@@ -117,9 +117,7 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     NgxPaginationModule,
     ApplicationPipes,
     NguiMapModule.forRoot({
-      apiUrl:
-        `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}` +
-        "&libraries=visualization,places,drawing"
+      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}`
     })
   ],
   providers: [

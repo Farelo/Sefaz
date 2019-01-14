@@ -10,38 +10,32 @@
         <p class="descricao">NOME</p>
         <p class="explicacao">Ex. "Planta B1"</p>
         <div class="input-group">
-          <input type="text" 
-            class="form-control" 
-            maxlength="50" 
-            placeholder="Digite o nome da planta" 
-            aria-describedby="basic-addon2"
-            formControlName="name" 
-            (focusout)="validateName($event)"
-            [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
-              || (mControlPoint.get('name').hasError('required') && formDir.submitted)
+          <input type="text" class="form-control" maxlength="50" placeholder="Digite o nome da planta" aria-describedby="basic-addon2"
+            formControlName="name" (focusout)="validateName($event)" [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
+              || (mControlPoint.get('name').hasError('required') && submitted)
               || (mControlPoint.get('name').hasError('pattern')) 
               || (mControlPoint.get('name').hasError('pattern') && submitted)
               || (mControlPoint.get('name').hasError('minlength'))
-              || (mControlPoint.get('name').hasError('minlength') && formDir.submitted)
+              || (mControlPoint.get('name').hasError('minlength') && submitted)
               || (mControlPoint.get('name').hasError('uniqueValidation'))
               || (mControlPoint.get('name').hasError('uniqueValidation') && submitted)}">
         </div>
-      
+
         <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
                 || (mControlPoint.get('name').hasError('required') && formDir.submitted)">
           Campo Obrigatório</p>
-      
+
         <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('minlength'))
                 || (mControlPoint.get('name').hasError('minlength') && formDir.submitted)">
           Mínimo de 5 caracteres</p>
-      
+
         <p class="explicacao" *ngIf="validateNotTakenLoading">
           Verificando disponibilidade ...</p>
-      
+
         <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('uniqueValidation')) 
                 || (mControlPoint.get('name').hasError('uniqueValidation') && submitted)">
           Este Ponto de Controle já existe. O nome deve ser único.</p>
-      
+
         <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('pattern')) || (mControlPoint.get('name').hasError('pattern') && submitted)">
           Excesso de espaços em branco</p>
       </div>
@@ -51,12 +45,8 @@
         <p class="descricao">CÓDIGO DE IDENTIFICAÇÃO DA EMPRESA/DUNS</p>
         <p class="explicacao">Ex. "123456789"</p>
         <div class="input-group">
-          <input type="text" 
-            class="form-control" 
-            placeholder="Digite o código de identificação da empresa" 
-            maxlength="30"
-            aria-describedby="basic-addon2"
-            formControlName="duns" [ngClass]="{'required': (mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
+          <input type="text" class="form-control" placeholder="Digite o código de identificação da empresa" maxlength="30"
+            aria-describedby="basic-addon2" formControlName="duns" [ngClass]="{'required': (mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
               || (mControlPoint.get('duns').hasError('required') && submitted)}">
         </div>
         <p class="requiredText" *ngIf="(mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
@@ -73,15 +63,15 @@
             {{item.name}}
           </ng-template>
         </ng-select>
-      
+
         <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('required') && mControlPoint.get('type').touched)
                 || (mControlPoint.get('type').hasError('required') && submitted)">
           Campo Obrigatório</p>
-      
+
         <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('minlength') && mControlPoint.get('type').touched)
                 || (mControlPoint.get('type').hasError('minlength') && submitted)">
           Mínimo de 5 caracteres</p>
-      
+
         <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('maxlength') && mControlPoint.get('type').touched)
                 || (mControlPoint.get('type').hasError('maxlength') && submitted)">
           Máximo de 50 caracteres</p>
@@ -106,25 +96,66 @@
         <p class="descricao">LOCAL</p>
         <input places-auto-complete class="form-control" (place_changed)="placeChanged($event)" [types]="['geocode']"
           formControlName="full_address" placeholder="Digite o local da planta" [ngClass]="{'required': (mControlPoint.get('full_address').hasError('required') && mControlPoint.get('full_address').touched)
-            || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)}" />
+                  || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)}" />
 
         <p class="requiredText" *ngIf="(mControlPoint.get('full_address').hasError('required') && mControlPoint.get('full_address').touched)
-            || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)">
+                  || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)">
           Campo Obrigatório
         </p>
 
-        <ngui-map 
-          [zoom]="zoom" 
-          [center]="center" 
-          (click)="onClick($event)" 
-          style="margin-top: 10px;">
-          <marker [position]="pos"></marker>
+        <!-- (click)="onClick($event)" -->
+        <ngui-map [zoom]="zoom" [center]="center" style="margin-top: 10px;">
+          <!-- <marker [position]="pos"></marker> -->
+          <drawing-manager 
+            [drawingMode]="'null'" 
+            [drawingControl]="true" 
+            [drawingControlOptions]="{
+              position: 2,
+              drawingModes: ['circle', 'polygon']}"
+            [polygonOptions]="{
+              fillColor: '#0044a8',
+              fillOpacity: 0.2,
+              strokeColor: '#0044a8',
+              strokeWeight: 1,
+              strokeOpacity: '0.4',
+              editable: true,
+              zIndex: 1}"
+            [circleOptions]="{
+              fillColor: '#0044a8',
+              fillOpacity: 0.2,
+              strokeColor: '#0044a8',
+              strokeWeight: 1,
+              strokeOpacity: '0.4',
+              editable: true,
+              zIndex: 1}">
+          </drawing-manager>
+
+          <polygon 
+            *ngIf="!polygonEdited && mGeofence.type == 'p'"
+            [paths]="mGeofence.coordinates"  
+            [editable]="false"
+            [fillColor]="'#0044a8'"
+            [fillOpacity]="0.2" 
+            [strokeColor]="'#0044a8'" 
+            [strokeOpacity]="0.4" 
+            [strokeWeight]="1"> </polygon>
+
+          <circle 
+            *ngIf="!circleEdited && mGeofence.type == 'c'" 
+            [center]="mGeofence.coordinates[0]" 
+            [radius]="mGeofence.radius"
+            [editable]="false" 
+            [fillColor]="'#0044a8'"
+            [fillOpacity]="0.2" 
+            [strokeColor]="'#0044a8'" 
+            [strokeOpacity]="0.4" 
+            [strokeWeight]="1"> </circle>
+
         </ngui-map>
 
         <p class="requiredText" *ngIf="(mControlPoint.get('full_address').value !== '' && mControlPoint.get('full_address').touched 
-                      && !pointWasSelected)">
-          Clique no mapa para configurar a localização</p>
-
+                    && !pointWasSelected)">
+          Selecione contorno círculo ou polígono</p>
       </div>
 
       <div class="campo col-sm-12 informacoes">
@@ -137,7 +168,7 @@
 
 
       <!-- Input para a latitude -->
-      <div class="campo col-md-6">
+      <!-- <div class="campo col-md-6">
         <p class="descricao">LATITUDE</p>
         <div class="input-group">
           <input type="text" readonly class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2"
@@ -148,11 +179,11 @@
         <p class="requiredText" *ngIf="(mControlPoint.get('lat').hasError('required') && mControlPoint.get('lat').touched)
           || (mControlPoint.get('lat').hasError('required') && submitted)">
           Campo Obrigatório</p>
-      </div>
+      </div> -->
 
 
       <!-- Input para a longitude -->
-      <div class="campo col-md-6">
+      <!-- <div class="campo col-md-6">
         <p class="descricao">LONGITUDE</p>
         <div class="input-group">
           <input type="text" readonly class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2"
@@ -163,7 +194,7 @@
         <p class="requiredText" *ngIf="(mControlPoint.get('lng').hasError('required') && mControlPoint.get('lng').touched)
           || (mControlPoint.get('lng').hasError('required') && submitted)">
           Campo Obrigatório</p>
-      </div>
+      </div> -->
     </div>
 
     <br />

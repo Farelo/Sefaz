@@ -28,24 +28,20 @@ export class RastreamentoComponent implements OnInit {
   address: any = {};
   center: any = { lat: 0, lng: 0 };
   pos: any;
-  
+
   departments: Department[];
   options = [];
   circles = [];
   zoom = 14;
   marker = {
     id: null,
+    name: null,
     target: null,
     opt: null,
     display: true,
     lat: null,
     lng: null,
-    plant: null,
-    packingsByPlant: [],
-    department: null,
-    packing: null,
-    nothing: null,
-    profile: null
+    packing: null
   };
   public packMarker = {
     display: true,
@@ -89,7 +85,7 @@ export class RastreamentoComponent implements OnInit {
   public listOfFamilies: any = [];
   public auxListOfFamilies: any = [];
 
-  public listOfCompanies: any = []; 
+  public listOfCompanies: any = [];
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -107,14 +103,14 @@ export class RastreamentoComponent implements OnInit {
 
   ngOnInit() {
 
-    this.getPlantRadius(); 
+    this.getPlantRadius();
     this.loadCompanies();
     this.loadControlPoints();
   }
 
   public mMap: any;
   onInitMap(map) {
- 
+
     this.zoom = 14;
     this.mMap = map;
     this.loadPackings();
@@ -140,49 +136,72 @@ export class RastreamentoComponent implements OnInit {
    */
   loadCompanies() {
 
-    console.log('.'); 
-
     this.familyService.getAllFamilies().subscribe(result => {
 
       this.listOfFamilies = result;
       this.auxListOfFamilies = result;
 
-      console.log('..'); 
-      console.log(result); 
+      // console.log('..');
+      // console.log(result);
       let auxListOfCompanies = [];
 
       this.listOfCompanies = result.map(elem => {
         if (auxListOfCompanies.length < 1) {
           auxListOfCompanies.push(elem.company);
         } else {
-          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1) 
+          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1)
             auxListOfCompanies.push(elem.company);
         }
-      }); 
+      });
 
-      console.log(auxListOfCompanies);
+      // console.log(auxListOfCompanies);
 
       this.listOfCompanies = auxListOfCompanies;
 
     }, err => console.error(err));
   }
 
+  public listOfCircleControlPoints: any = [];
+  public listOfPolygonControlPoints: any = [];
+
   loadControlPoints(){
 
     this.controlPointsService.getAllControlPoint().subscribe(result => {
-      this.listOfControlPoints = result.map(elem => {
-        elem.position = (new google.maps.LatLng(elem.lat, elem.lng));
-        return elem;
-      });
+      // this.listOfControlPoints = result.map(elem => {
+      //   elem.position = (new google.maps.LatLng(elem.lat, elem.lng));
+      //   return elem;
+      // });
 
-      //console.log(JSON.stringify(this.listOfControlPoints));
+      this.listOfCircleControlPoints = result
+        .filter(elem => elem.geofence.type == 'c')
+        .map(elem => {
+          elem.position = (new google.maps.LatLng(elem.geofence.coordinates[0].lat, elem.geofence.coordinates[0].lng));
+          return elem;
+        });
+
+      this.listOfPolygonControlPoints = result
+        .filter(elem => elem.geofence.type == 'p')
+        .map(elem => {
+
+          let lat = elem.geofence.coordinates.map(p =>  p.lat);
+          let lng = elem.geofence.coordinates.map(p =>  p.lng);
+
+          elem.position = {
+            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
+            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
+          }
+
+          return elem;
+        });
+
+      // console.log(this.listOfCircleControlPoints);
+      // console.log(this.listOfPolygonControlPoints);
 
     }, err => console.error(err));
-    
   }
 
   /**
-   * Carrega todos os pacotes do mapa 
+   * Carrega todos os pacotes do mapa
    */
   public spiralPath: google.maps.Polyline = new google.maps.Polyline();
   public spiralPoints: any = [];
@@ -214,7 +233,7 @@ export class RastreamentoComponent implements OnInit {
   }
 
   companyChanged(event: any){
-    console.log(event);
+    // console.log(event);
 
     if(event){
       this.listOfFamilies = this.auxListOfFamilies.filter(elem => {
@@ -232,8 +251,8 @@ export class RastreamentoComponent implements OnInit {
    */
   loadPackings() {
 
-    console.log('.');
-    
+    // console.log('.');
+
     let cp_id = this.selectedCompany !== null ? this.selectedCompany._id : null;
     let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
     let serial_id = this.selectedSerial !== null ? this.selectedSerial : null;
@@ -243,10 +262,10 @@ export class RastreamentoComponent implements OnInit {
 
     // console.log('this.selectedCompany');
     // console.log(this.selectedFamily);
-    
+
     // console.log('this.selectedSerial');
     // console.log(this.selectedSerial);
-    
+
     this.deviceService.getDeviceData(cp_id, family_id, serial_id).subscribe((result: any[]) => {
 
       this.plotedPackings = result.filter(elem => {
@@ -263,7 +282,7 @@ export class RastreamentoComponent implements OnInit {
         return elem;
       });
 
-      console.log(JSON.stringify(this.plotedPackings[0]));
+      // console.log(JSON.stringify(this.plotedPackings[0]));
 
       //this.resolveClustering();
       if (this.mSpiralize) {
@@ -316,7 +335,7 @@ export class RastreamentoComponent implements OnInit {
    * Clear e disable the Serial Select.
    */
   onEquipmentSelectClear() {
-    
+
     this.selectedSerial = null;
     this.loadPackings();
   }
@@ -328,74 +347,19 @@ export class RastreamentoComponent implements OnInit {
 
     var marker = _a.target;
     //this.marker.target = _a
-    //this.marker.opt = opt
-    this.marker.id = opt._id
+    this.marker.id = opt._id;
+    this.marker.name = opt.name;
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
 
     this.packingService.packingsOnControlPoint(opt._id).subscribe(result => {
-
-      console.log('');
-      console.log(result);
-
+      // console.log('');
+      // console.log(result);
       this.packingsByPlant = result;
-
       this.startWindow(marker);
     });
   }
 
-  // retrievePackings(_a, opt) {
-  //   var marker = _a.target;
-  //   this.marker.target = _a
-  //   this.marker.opt = opt
-  //   this.marker.lat = marker.getPosition().lat();
-  //   this.marker.lng = marker.getPosition().lng();
-  //   this.packingService.retrieveByPlants(10, this.marker.packings.meta.page, opt.id).subscribe(result => {
-
-  //     if (result.data.length > 0) {
-  //       this.marker.department = false;
-  //       this.marker.packing = true;
-  //       this.marker.nothing = false;
-  //       this.marker.packings = result;
-  //       this.startWindow(marker);
-  //     } else {
-  //       this.marker.department = null
-  //       this.marker.packing = null
-  //       this.marker.nothing = true;
-  //       this.startWindow(marker);
-  //     }
-  //   })
-  // }
-
-  // retrieveDepartments(_a, opt) {
-  //   var marker = _a.target;
-  //   this.marker.target = _a
-  //   this.marker.opt = opt
-  //   this.marker.lat = marker.getPosition().lat();
-  //   this.marker.lng = marker.getPosition().lng();
-
-  //   this.departmentService.retrieveByPlants(10, this.marker.departments.meta.page, opt.id).subscribe(result => {
-  //     this.marker.plant = opt.name;
-  //     this.marker.profile = opt.profile;
-  //     if (result.data.length > 0) {
-  //       this.marker.department = true;
-  //       this.marker.packing = false;
-  //       this.marker.nothing = false;
-  //       this.marker.departments = result;
-  //       this.startPackWindow(marker);
-  //     }
-  //   })
-  // }
-
-  // pageChangedDepart(page: any): void {
-  //   this.marker.departments.meta.page = page;
-  //   this.retrieveDepartments(this.marker.target, this.marker.opt);
-  // }
-
-  // pageChangedPacking(page: any): void {
-  //   this.marker.packings.meta.page = page;
-  //   this.retrievePackings(this.marker.target, this.marker.opt);
-  // }
 
   open(id) {
     const modalRef = this.modalService.open(ModalRastComponent);
@@ -406,9 +370,6 @@ export class RastreamentoComponent implements OnInit {
     marker.nguiMapComponent.openInfoWindow('iw', marker);
   }
 
-  // startPackWindow(marker) {
-  //   marker.nguiMapComponent.openInfoWindow('pw', marker);
-  // }
 
   /**
    * Recupera o pino da embalagem de acordo com seu alerta

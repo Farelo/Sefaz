@@ -175,14 +175,42 @@ module.exports = router
  *     properties:
  *       name:
  *         type: string
- *       lat:
- *         type: number
- *       lng:
- *         type: number
+ *       geofence:
+ *         $ref: '#/definitions/GeofenceObject'
  *       full_address:
  *         type: string
  *       type:
  *         type: string
  *       company:
  *         type: string
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   GeofenceObject:
+ *     type: object
+ *     properties:
+ *       coordinates:
+ *         $ref: '#/definitions/GeofenceCoordinatesObject'
+ *       type:
+ *         type: number
+ *       radius:
+ *         type: number
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   GeofenceCoordinatesObject:
+ *     type: array
+ *     items:
+ *       type: object
+ *       properties:
+ *         lat:
+ *           type: number
+ *         lng:
+ *           type: number
  */

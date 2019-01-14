@@ -11,20 +11,36 @@ const controlPointSchema = new mongoose.Schema({
     },
     duns: {
         type: String,
-        minlength: 2,
-        maxlength: 50,
+        minlength: 0,
+        maxlength: 30,
     },
-    lat: {
-        type: Number,
-        min: -90,
-        max: 90,
-        default: 0
-    },
-    lng: {
-        type: Number,
-        min: -180,
-        max: 180,
-        default: 0
+    geofence: {
+        coordinates: [
+            {
+                lat: {
+                    type: Number,
+                    min: -90,
+                    max: 90,
+                    default: 0
+                },
+                lng: {
+                    type: Number,
+                    min: -180,
+                    max: 180,
+                    default: 0
+                }
+            }
+        ],
+        type: {
+            type: String,
+            enum: ['c', 'p'],
+            default: 'c'
+        },
+        radius: {
+            type: Number,
+            maxlength: 100000,
+            default: 0
+        }
     },
     full_address: {
         type: String,
@@ -40,6 +56,10 @@ const controlPointSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company',
         required: true
+    },
+    gc16: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'GC16'
     },
     created_at: {
         type: Date,

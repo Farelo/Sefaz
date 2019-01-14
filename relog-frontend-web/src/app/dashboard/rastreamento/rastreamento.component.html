@@ -159,95 +159,36 @@
 
             <!-- ///////////// -->
             <!-- Control Point -->
-            <marker *ngFor="let posCP of listOfControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+            <!-- <marker *ngFor="let posCP of listOfControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
               [visible]="showControlledPlants" [title]="posCP.name" (click)="clicked($event, posCP)">
-            </marker>
+            </marker> -->
 
-            <circle *ngFor="let posCPRadius of listOfControlPoints" [center]="posCPRadius.position" [fillColor]="'#0044a8'"
+            <!-- <circle *ngFor="let posCPRadius of listOfControlPoints" [center]="posCPRadius.position" [fillColor]="'#0044a8'"
               [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"
-              radius="{{ settings.range_radius }}"></circle>
-
-
-            <!-- ///////////// -->
-            <!-- Logistic operator -->
-            <!-- <marker *ngFor="let posLogistic of listOfLogistic" [position]="posLogistic.position" [icon]="{ url: '../../../assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }"
-              [visible]="showControlledLogistics" [title]="posLogistic.name" (click)="clicked($event, posLogistic)">
-            </marker>
-
-            <circle *ngFor="let posLogisticRadius of listOfLogistic" [center]="posLogisticRadius.position" [fillColor]="'#4d4d4d'"
-              [fillOpacity]="0.15" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledLogistics"
               radius="{{ settings.range_radius }}"></circle> -->
 
+            <!-- ######################## -->
+            <!-- Marker para os polígonos -->
+            <marker *ngFor="let posCP of listOfPolygonControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+              [visible]="showControlledPlants" [title]="posCP.name" (click)="clicked($event, posCP)"> </marker>
 
-            <!-- ///////////// -->
-            <!-- Supplier -->
-            <!-- <marker *ngFor="let posSuppliers of listOfSuppliers" [position]="posSuppliers.position" [icon]="{ url: '../../../assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }"
-              [visible]="showControlledSuppliers" [title]="posSuppliers.name" (click)="clicked($event, posSuppliers)">
-            </marker>
+            <polygon *ngFor="let posCPPolygon of listOfPolygonControlPoints" [paths]="posCPPolygon.geofence.coordinates" [editable]="false" [fillColor]="'#0044a8'"
+              [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"> </polygon>
+            
+            <!-- ######################## -->
+            <!-- Marker para os círculos -->
+            <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+              [visible]="showControlledPlants" [title]="posCP.name" (click)="clicked($event, posCP)"> </marker>
 
-            <circle *ngFor="let posSuppliersRadius of listOfSuppliers" [center]="posSuppliersRadius.position"
-              [fillColor]="'#4d4d4d'" [fillOpacity]="0.2" [strokeColor]="'#4d4d4d'" [strokeOpacity]="0.4"
-              [strokeWeight]="1" [visible]="showControlledSuppliers" radius="{{ settings.range_radius }}"></circle> -->
+            <circle *ngFor="let posCPCircle of listOfCircleControlPoints" [center]="posCPCircle.geofence.coordinates[0]" [radius]="posCPCircle.geofence.radius"
+              [editable]="false" [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4"
+              [strokeWeight]="1" [visible]="showControlledPlants"> </circle>
 
-
-            <!-- ///////////// -->
-            <!-- Embalagens.  -->
-            <!-- <ng-container *ngFor="let pack of plotedPackings">
-              <marker *ngIf="pack.status == 'MISSING'" [icon]="{ url: '../../../assets/images/pin_ausente.png', size: [28, 43], scaledSize: [28, 43]}" 
-                [position]="pack.position"
-                [visible]="showPackings"
-                (click)="clickedPack($event, pack)">
-              </marker>
-
-              <marker *ngIf="pack.status == 'INCORRECT_LOCAL'" [icon]="{ url: '../../../assets/images/pin_incorreto.png', size: [28, 43], scaledSize: [28, 43]}"
-                [position]="pack.position"
-                [visible]="showPackings" 
-                (click)="clickedPack($event, pack)">
-              </marker>
-
-              <marker *ngIf="pack.status == 'LATE'" [icon]="{ url: '../../../assets/images/pin_atrasado.png', size: [28, 43], scaledSize: [28, 43]}"
-                [position]="pack.position"
-                [visible]="showPackings" 
-                (click)="clickedPack($event, pack)">
-              </marker>
-
-              <marker *ngIf="pack.status == 'PERMANENCE_EXCEEDED'" [icon]="{ url: '../../../assets/images/pin_permanencia.png', size: [28, 43], scaledSize: [28, 43]}"
-                [position]="pack.position"
-                [visible]="showPackings"
-                (click)="clickedPack($event, pack)">
-              </marker>
-
-              <marker *ngIf="(pack.status != 'MISSING') && 
-                (pack.status != 'INCORRECT_LOCAL') && 
-                (pack.status != 'LATE') && 
-                (pack.status != 'PERMANENCE_EXCEEDED')" 
-                [icon]="{ url: '../../../assets/images/pin_normal.png', size: [28, 43], scaledSize: [28, 43]}"
-                [position]="pack.position"
-                [visible]="showPackings"
-                (click)="clickedPack($event, pack)">
-              </marker>
-            </ng-container> -->
-
-            <!-- <info-window id="iw">
-              <div class="iw-title">INFORMAÇÕES</div>
-              <div *ngIf="marker.display" class="info-window-content">
-                <p style="margin-bottom: 2px;"> <span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yyyy - hh:mm a' }}</p>
-                <p style="margin-bottom: 2px;"> <span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yyyy - hh:mm a') : 'Sem Informação'}}</p>
-                <p style="margin-bottom: 2px;"> <span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
-                <p style="margin-bottom: 2px;"> <span class="bold">Acurácia:</span> {{ marker.accuracy || '-' }}m</p>
-              </div>
-            </info-window> -->
-
-
-            <!-- <ng-container *ngFor="let posRadius of plotedPackings">
-              <circle *ngIf="showPackings" [center]="[pack.latitude, pack.longitude]" [fillColor]="getRadiusWithAlert()"
-                [fillOpacity]="0.2" [strokeColor]="getRadiusWithAlert()" [strokeOpacity]="0.7" [strokeWeight]="1" radius="{{ posRadius.accuracy || 0 }}"></circle>
-            </ng-container> -->
-
-
+            <!-- ######################## -->
+            <!-- Infowindow de tabela -->
             <info-window id="iw" width="200" maxWidth="200">
               <div *ngIf="marker.display">
-                <div class="iw-title"> {{marker.plant}} </div>
+                <div class="iw-title"> {{marker.name}} </div>
 
                 <div>
                   <div class="table-responsive tabela">
