@@ -332,9 +332,9 @@
                 <tbody class="">
                   <tr *ngFor="let error of importResult?.updated">
                     <td>{{ error.line }}</td>
-                    <td>{{ error.data.geofence_type }}</td>
-                    <td>{{ error.data.coordinates }}</td>
-                    <td>{{ error.data.radius }}</td>
+                    <td>{{ error.data.type }}</td>
+                    <td>{{ arrayToString(error.data.geofence.coordinates) }}</td>
+                    <td>{{ error.data.geofence.radius }}</td>
                     <td>{{ error.data.name }}</td>
                     <td>{{ error.data.full_address }}</td>
                     <td>{{ error.data.type }}</td>
@@ -446,11 +446,11 @@
                   </tr>
                 </thead>
                 <tbody class="">
-                  <tr *ngFor="let error of importResult?.updated">
+                  <tr *ngFor="let error of importResult?.to_register">
                     <td>{{ error.line }}</td>
-                    <td>{{ error.data.geofence_type }}</td>
-                    <td>{{ error.data.coordinates }}</td>
-                    <td>{{ error.data.radius }}</td>
+                    <td>{{ error.data.geofence.type }}</td>
+                    <td>{{ arrayToString(error.data.geofence.coordinates) }}</td>
+                    <td>{{ error.data.geofence.radius }}</td>
                     <td>{{ error.data.name }}</td>
                     <td>{{ error.data.full_address }}</td>
                     <td>{{ error.data.type }}</td>
@@ -460,6 +460,10 @@
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <div class="col-md-12 botoes">
+            <button type="button" class="botaoRegistrar" name="button" (click)="register()">REGISTRAR</button>
           </div>
         </div>
 
