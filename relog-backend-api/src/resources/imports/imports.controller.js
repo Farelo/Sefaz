@@ -140,7 +140,19 @@ exports.import_control_points = async (req, res) => {
                         if (!current_control_point) {
                             temp_obj.line = index + 1
                             if (control_point[0] === 'p') {
-                                coordinates = control_point[1].split('').filter(ele => ele != '[' && ele != ']').join('').split(',')
+
+                                let temp_coordinates = control_point[1].split('').filter(ele => ele != '[' && ele != ']').join('').split(',')
+                                
+                                coordinates = temp_coordinates.map((e, index) => {
+                                    let obj = {}
+
+                                    if (index % 2 == 0) {
+                                        obj.lat = e
+                                        obj.lng = temp_coordinates[index + 1]
+                                        return obj
+                                    }
+                                }).filter(element => element != undefined)
+
                                 temp_obj.data = {
                                     name: control_point[3],
                                     company: company._id,
@@ -148,7 +160,7 @@ exports.import_control_points = async (req, res) => {
                                     duns: control_point[7],
                                     full_address: control_point[4],
                                     geofence: {
-                                        coordinates: { lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) },
+                                        coordinates: coordinates,
                                         radius: control_point[2],
                                         type: control_point[0]
                                     }
@@ -184,7 +196,7 @@ exports.import_control_points = async (req, res) => {
                                 duns: control_point[7],
                                 full_address: control_point[4],
                                 geofence: {
-                                    coordinates: { lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) },
+                                    coordinates: [{ lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) }],
                                     radius: control_point[2],
                                     type: control_point[0]
                                 }
