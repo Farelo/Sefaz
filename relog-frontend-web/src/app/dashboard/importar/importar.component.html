@@ -137,10 +137,10 @@
                   <thead>
                     <tr class="cabecalho">
                       <th>Arquivo</th>
-                      <th width="30%">Name</th>
-                      <th>Size</th>
+                      <th width="30%">Nome</th>
+                      <th>Tamanho</th>
                       <th>Tipo de Cadastro</th>
-                      <th>Actions</th>
+                      <th>Ações</th>
                     </tr>
                   </thead>
 
@@ -332,9 +332,9 @@
                 <tbody class="">
                   <tr *ngFor="let error of importResult?.updated">
                     <td>{{ error.line }}</td>
-                    <td>{{ error.data.geofence_type }}</td>
-                    <td>{{ error.data.coordinates }}</td>
-                    <td>{{ error.data.radius }}</td>
+                    <td>{{ error.data.type }}</td>
+                    <td>{{ arrayToString(error.data.geofence.coordinates) }}</td>
+                    <td>{{ error.data.geofence.radius }}</td>
                     <td>{{ error.data.name }}</td>
                     <td>{{ error.data.full_address }}</td>
                     <td>{{ error.data.type }}</td>
@@ -390,9 +390,9 @@
                   </tr>
                 </thead>
                 <tbody class="">
-                  <tr *ngFor="let updated of importResult?.updated">
+                  <tr *ngFor="let updated of importResult?.to_register">
                     <td>{{ updated.line }}</td>
-                    <td>{{ updated.data.family.name }}</td>
+                    <td>{{ updated.data.family?.name }}</td>
                     <td>{{ updated.data.serial }}</td>
                     <td>{{ updated.data.tag.code }}</td>
                     <td>{{ updated.data.tag.version }}</td>
@@ -404,17 +404,21 @@
                     <td>{{ updated.data.capacity }}</td>
                     <td>{{ updated.data.observations }}</td>
                     <td>{{ updated.data.type }}</td>
-                    <td>{{ updated.data.project.name }}</td>
+                    <td>{{ updated.data?.project?.name }}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+
+          <div class="col-md-12 botoes">
+            <button type="button" class="botaoRegistrar" name="button" (click)="register()">REGISTRAR</button>
+          </div>
         </div>
 
 
         <!-- ========================================================== -->
-        <!-- Tabela de atualização: Ponto de Controle-->
+        <!-- Tabela de cadastro: Ponto de Controle-->
         <div class="row" *ngIf="import['controls'].type.value == 'Pontos de Controle' && importResult?.to_register?.length !== 0 && send">
 
           <div class="col-md-12">
@@ -442,11 +446,11 @@
                   </tr>
                 </thead>
                 <tbody class="">
-                  <tr *ngFor="let error of importResult?.updated">
+                  <tr *ngFor="let error of importResult?.to_register">
                     <td>{{ error.line }}</td>
-                    <td>{{ error.data.geofence_type }}</td>
-                    <td>{{ error.data.coordinates }}</td>
-                    <td>{{ error.data.radius }}</td>
+                    <td>{{ error.data.geofence.type }}</td>
+                    <td>{{ arrayToString(error.data.geofence.coordinates) }}</td>
+                    <td>{{ error.data.geofence.radius }}</td>
                     <td>{{ error.data.name }}</td>
                     <td>{{ error.data.full_address }}</td>
                     <td>{{ error.data.type }}</td>
@@ -456,6 +460,10 @@
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <div class="col-md-12 botoes">
+            <button type="button" class="botaoRegistrar" name="button" (click)="register()">REGISTRAR</button>
           </div>
         </div>
 

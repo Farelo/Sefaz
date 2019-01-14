@@ -3,6 +3,8 @@ import { Pagination } from '../../../shared/models/pagination';
 import { InventoryService, PackingService, AuthenticationService, InventoryLogisticService, FamiliesService, ReportsService, ControlPointTypesService } from '../../../servicos/index.service';
 import { AbscenseModalComponent } from '../../../shared/modal-packing-absence/abscense.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { FloatTimePipe } from '../../../shared/pipes/floatTime';
 
 @Component({
   selector: 'app-inventario-ausencia',
@@ -37,12 +39,17 @@ export class InventarioAusenciaComponent implements OnInit {
   }
 
   ngOnInit() {
+    //Loads the table headers
+    this.loadTableHeaders();
 
     this.loadFamilies();
     this.loadLocals();
     this.loadAbsenceInventory();
   }
 
+  /**
+   * Loading the families
+   */
   loadFamilies(){
     this.familyService.getAllFamilies().subscribe(result => {
 
@@ -162,5 +169,137 @@ export class InventarioAusenciaComponent implements OnInit {
     const modalRef = this.modalService.open(AbscenseModalComponent, { backdrop: "static", size: "lg" });
     modalRef.componentInstance.packing = packing;
   }
+ /**
+   * 
+   * Ordenação da tabela
+   */ 
+  public headers: any = [];
+  public sortStatus: any = ['asc', 'desc'];
+  public sort: any = {
+    name: '',
+    order: ''
+  };
+
+  loadTableHeaders() {
+    this.headers.push({ label: 'Família', name: 'family.code' });
+    this.headers.push({ label: 'Serial', name: 'serial' });
+    this.headers.push({ label: 'Tag', name: 'tag.code' });
+
+    this.headers.push({ label: 'Última Planta Conhecida', name: 'last_event_record'});
+    this.headers.push({ label: 'Tempo de Ausência', name: 'absent_time_in_hours' });
+    
+
+    //console.log('this.headers: ' + JSON.stringify(this.headers));
+  }
+
+  headerClick(item: any) {
+    this.sort.name = item.name;
+    this.sort.order = this.sortStatus[(this.sortStatus.indexOf(this.sort.order) + 1) % 2];
+
+    console.log('---');
+    console.log('this.sort: ' + JSON.stringify(this.sort));
+
+    this.listOfAbsent  = this.customSort(this.listOfAbsent , item.name.split("."), this.sort.order);
+  }
+
+  /**
+   * 
+   * @param array     All items.
+   * @param keyArr    Array with attribute path, if exists.
+   * @param reverse   optional. 1 if ascendent, -1 else.
+   */
+  customSort(array: any[], keyArr: any[], reverse = 'asc') {
+    var sortOrder = 1;
+    if (reverse == 'desc') sortOrder = -1;
+
+    console.log('array.length: ' + array.length);
+    console.log('keyArr: ' + keyArr);
+    console.log('sortOrder: ' + sortOrder);
+
+    return array.sort(function (a, b) {
+      var x = a, y = b;
+      for (var i = 0; i < keyArr.length; i++) {
+        x = x[keyArr[i]];
+        y = y[keyArr[i]];
+      }
+      return sortOrder * ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+  }
+
+  /**
+   * ================================================
+   * Downlaod csv file
+   */
+
+  private csvOptions = {
+    showLabels: true,
+    fieldSeparator: ';'
+  };
   
+  /**
+  * Click to download
+  */
+  downloadCsv(){
+
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.listOfAbsent.slice());
+
+    //Add a header in the flat json data
+    flatObjectData = this.addHeader(flatObjectData);
+
+    //Instantiate a new csv object and initiate the download
+    new Angular2Csv(flatObjectData, 'Inventario Equipamento Tempo de Ausência', this.csvOptions);
+  }
+
+  flatObject(mArray: any) {
+    
+    //console.log(mArray);
+
+    /**
+     * Example:
+        let plain = mArray.map(obj => {
+          return {
+            supplierName: obj.supplier.name,
+            equipmentCode: obj._id.code,
+            quantityTotal: obj.quantityTotal,
+            quantityInFactory: obj.quantityInFactory,
+            quantityInSupplier: obj.quantityInSupplier,
+            quantityTraveling: obj.quantityTraveling,
+            quantityProblem: obj.quantityProblem,
+            lostObject: obj.quantityProblem == undefined ? 0 : obj.quantityProblem
+          };
+        });
+        return plain;
+     */
+     const transformer = new FloatTimePipe();   
+     let plainArray = mArray.map(obj => {
+          return {
+            a1: obj.family.code,
+            a2: obj.serial,
+            a3: obj.tag.code,
+            a4: obj.last_event_record ? obj.last_event_record.control_point.name : 'Sem histórico',
+            a5: obj.absent_time_in_hours !== '-' ? transformer.transform(obj.absent_time_in_hours) : 'Sem histórico',
+          };
+        });
+      
+    // As my array is already flat, I'm just returning it.
+    return plainArray;
+  }
+
+  addHeader(mArray: any){
+    let cabecalho = {
+      a1: 'Família',
+      a2: 'Serial',
+      a3: 'Tag',
+      a4: 'Última Planta Conhecida',
+      a5: 'Tempo de Ausência',
+    }
+
+    //adiciona o cabeçalho
+    mArray.unshift(cabecalho);
+
+    return mArray;
+  }
 }
+

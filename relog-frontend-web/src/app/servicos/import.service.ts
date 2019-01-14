@@ -16,61 +16,144 @@ export class ImportService {
   sendDataToImportControlPoint(file: any): Observable<any> {
     // return this.http.post(`${environment.url}upload/plant`, file)
     //   .catch(this.handleError);
+    
     let result = {
-      errors: [
+      "errors": [
         {
-          line: 1,
-          description: "Erro por motivo x"
-        },
-        {
-          line: 2,
-          description: "Erro por motivo y"
+          "line": 1,
+          "description": "Type with this name TRANSPORTADORAX do not exists"
         }
       ],
-      updated: [
+      "updated": [
         {
-          line: 3,
-          data: {
-            geofence_type: "C",
-            coordinates: "(11.222, 23.444)",
-            radius: 250,
-            name: "Nome 1",
-            full_address: "Endereço 1",
-            type: "Fábrica",
-            company: "Transporte Nogueira",
-            duns: "11223344",
+          "line": 2,
+          "data": {
+            "name": "JSL BVE - OpLog",
+            "company": "5c17c53062c3a61cba96b3fd",
+            "type": "5c2fa1d132d19827b5069007",
+            "full_address": "R. Epifanio Manoel Ignacio, 189 - Sertãozinho, Barra Velha - SC, 88390-000, Brazil",
+            "geofence": {
+              "coordinates": [
+                {
+                  "lat": -26.6218608,
+                  "lng": -48.7178818
+                }
+              ],
+              "radius": 1000,
+              "type": "c"
+            }
           }
         },
         {
-          line: 4,
-          data: {
-            geofence_type: "C",
-            coordinates: "(11.222, 23.444)",
-            radius: 250,
-            name: "Nome 2",
-            full_address: "Endereço 2",
-            type: "Fábrica",
-            company: "Transporte Lima",
-            duns: "22003",
+          "line": 3,
+          "data": {
+            "name": "TEMPERLANDIA - CAMPO GRANDE",
+            "company": "5c17c53162c3a61cba96b56c",
+            "type": "5c2fa1d132d19827b5068fc5",
+            "full_address": "Av. Gury Marques, 5413 - Universitário, Campo Grande - MS, 79070-005, Brazil",
+            "geofence": {
+              "coordinates": [
+                {
+                  "lat": -20.52879715,
+                  "lng": -54.59750748
+                }
+              ],
+              "radius": 1000,
+              "type": "c"
+            }
+          }
+        },
+        {
+          "line": 4,
+          "data": {
+            "name": "TEMPERMAX - SOROCABA",
+            "company": "5c17c53162c3a61cba96b571",
+            "type": "5c2fa1d132d19827b5068fc5",
+            "full_address": "Av. John Boid Dunlop, 681 - Iporanga, Sorocaba - SP, Brazil",
+            "geofence": {
+              "coordinates": [
+                {
+                  "lat": -23.45395279,
+                  "lng": -47.42467117
+                }
+              ],
+              "radius": 1000,
+              "type": "c"
+            }
+          }
+        },
+        {
+          "line": 5,
+          "data": {
+            "name": "CEBRACE ITAQUAQUECETUBA",
+            "company": "5c17c511ebad931c8c6d7357",
+            "type": "5c2fa1d132d19827b5068fd7",
+            "full_address": "Estr. Pinheirinho Novo, 1279 - Estância Guatambu, Itaquaquecetuba - SP, 08588-640, Brasil",
+            "geofence": {
+              "coordinates": [
+                {
+                  "lat": -23.442917597503875,
+                  "lng": -46.30935742229843
+                }
+              ],
+              "radius": 1000,
+              "type": "c"
+            }
+          }
+        },
+        {
+          "line": 6,
+          "data": {
+            "name": "CEBRACE - FORTALEZA",
+            "company": "5c17c53162c3a61cba96b5ed",
+            "type": "5c2fa1d132d19827b5068fd7",
+            "full_address": "Jangurussu, Fortaleza - CE, Brasil",
+            "geofence": {
+              "coordinates": [
+                {
+                  "lat": -3.8425136113774583,
+                  "lng": -38.50006878376007
+                }
+              ],
+              "radius": 1000,
+              "type": "c"
+            }
           }
         }
       ],
-      to_register: [
+      "to_register": [
         {
-          line: 5,
-          data: {
-            geofence_type: "C",
-            coordinates: "(11.222, 23.444)",
-            radius: 250,
-            name: "Nome 3",
-            full_address: "Endereço 3",
-            type: "Fábrica",
-            company: "Transporte Rapidex",
-            duns: "4488",
+          "line": 7,
+          "data": {
+            "name": "Cin - ufpe",
+            "company": "5c17c511ebad931c8c6d7357",
+            "type": "5c2fa1d132d19827b5068fd7",
+            "full_address": "Av. Prof. Moraes Rego, 1235 - Cidade Universitária, Recife - PE, 50670-901, Brasil",
+            "geofence": {
+              "coordinates": [
+                {
+                  "lat": "-8.0551340502225",
+                  "lng": "-34.95324388941367"
+                },
+                {
+                  "lat": "-8.055399624685807",
+                  "lng": "-34.950626053415135"
+                },
+                {
+                  "lat": "-8.05696119900596",
+                  "lng": "-34.95073334177573"
+                },
+                {
+                  "lat": "-8.056738117329056",
+                  "lng": "-34.95324388941367"
+                }
+              ],
+              "type": "p"
+            }
           }
         }
       ]
-    }
+    };
 
     return Observable.of(result);
   }
@@ -208,7 +291,7 @@ export class ImportService {
         {
           "line": 1,
           "data": {
-            "family": "5c17c511ebad931c8c6d7359",
+            "family": { name: "Fase 2" },
             "serial": 727,
             "tag": {
               "code": "40801392",
@@ -220,6 +303,7 @@ export class ImportService {
             "height": "3.063",
             "length": "3.78",
             "capacity": "6",
+            "project": { name: "Fase 2" },
             "type": "CAVALETE"
           }
         }

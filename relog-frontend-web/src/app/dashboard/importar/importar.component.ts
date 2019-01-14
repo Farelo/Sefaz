@@ -102,15 +102,22 @@ export class ImportarComponent implements OnInit {
     this.importService.sendDataToImportPacking(this.file).subscribe(res => {
       this.send = true;
       this.importResult = res;
-      this.colHeaders = ['Nome'];
-      this.columns = [
-        { data: 'data.name', type: 'text' },
-      ];
+      // this.colHeaders = ['Nome'];
+      // this.columns = [
+      //   { data: 'data.name', type: 'text' },
+      // ];
     }, err => this.toastService.errorArray(err));
   }
 
   sendControlPoints() {
-
+    this.importService.sendDataToImportControlPoint(this.file).subscribe(res => {
+      this.send = true;
+      this.importResult = res;
+      // this.colHeaders = ['Nome'];
+      // this.columns = [
+      //   { data: 'data.name', type: 'text' },
+      // ];
+    }, err => this.toastService.errorArray(err));
   }
 
   /**
@@ -121,11 +128,11 @@ export class ImportarComponent implements OnInit {
 
     switch (this.import['controls'].type.value) {
       case 'Embalagens':
-        this.packingService.createPackingArray(this.importResult.datas).subscribe(result => { this.send = false; this.toastService.successArray('', 'Embalagens') }, err => this.toastService.errorArray(err));
+        this.packingService.createPackingArray(this.importResult.to_register).subscribe(result => { this.send = false; this.toastService.successArray('', 'Embalagens') }, err => this.toastService.errorArray(err));
         break;
 
-      case 'Embalagens':
-        this.packingService.createPackingArray(this.importResult.datas).subscribe(result => { this.send = false; this.toastService.successArray('', 'Embalagens') }, err => this.toastService.errorArray(err));
+      case 'Pontos de Controle':
+        this.packingService.createPackingArray(this.importResult.to_register).subscribe(result => { this.send = false; this.toastService.successArray('', 'Embalagens') }, err => this.toastService.errorArray(err));
         break;
     }
   }
@@ -134,6 +141,13 @@ export class ImportarComponent implements OnInit {
     this.activeModal = this.modalService.open(content, { size: "lg" });
   }
 
+  arrayToString(mArray: any[]){
+    let result = '';
+    mArray.map(elem => {
+      result = JSON.stringify(mArray);
+    });
+    return result;
+  }
   // sendProjects(){
   //   this.importService.sendDataToImportProject(this.file).subscribe(res => {
   //     this.send = true;
