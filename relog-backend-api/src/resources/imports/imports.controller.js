@@ -154,8 +154,8 @@ exports.import_control_points = async (req, res) => {
 
                                 temp_obj.data = {
                                     name: control_point[3],
-                                    company: company._id,
-                                    type: type._id,
+                                    company: company,
+                                    type: type,
                                     duns: control_point[7],
                                     full_address: control_point[4],
                                     geofence: {
@@ -168,8 +168,8 @@ exports.import_control_points = async (req, res) => {
                                 coordinates = control_point[1].split('').filter(ele => ele != '[' && ele != ']').join('').split(',')
                                 temp_obj.data = {
                                     name: control_point[3],
-                                    company: company._id,
-                                    type: type._id,
+                                    company: company,
+                                    type: type,
                                     duns: control_point[7],
                                     full_address: control_point[4],
                                     geofence: {
@@ -190,8 +190,8 @@ exports.import_control_points = async (req, res) => {
                             temp_obj.line = index + 1
                             temp_obj.data = {
                                 name: control_point[3],
-                                company: company._id,
-                                type: type._id,
+                                company: company,
+                                type: type,
                                 duns: control_point[7],
                                 full_address: control_point[4],
                                 geofence: {

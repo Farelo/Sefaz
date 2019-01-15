@@ -10,6 +10,7 @@ const { validate_control_points } = require('./control_points.model')
 router.get('/', [auth, authz], control_points_controller.all)
 router.get('/:id', [auth, authz, validate_object_id], control_points_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_control_points)], control_points_controller.create)
+router.post('/create_many', [auth, authz], control_points_controller.create_many)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_control_points)], control_points_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], control_points_controller.delete)
 
@@ -94,6 +95,41 @@ module.exports = router
  *         required: true
  *         schema:
  *           $ref: '#/definitions/ControlPointObject'
+ *     responses:
+ *       200:
+ *         description: ControlPoint is valid request
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *
+ */
+
+// POST '/'
+/**
+ * @swagger
+ *
+ * /control_points/create_many:
+ *   post:
+ *     summary: Create many control point
+ *     description: Create many control point
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - ControlPoints
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: control_point
+ *         description: ControlPoint array
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
  *     responses:
  *       200:
  *         description: ControlPoint is valid request
