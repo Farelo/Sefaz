@@ -39,10 +39,7 @@ exports.create = async (req, res) => {
 }
 
 exports.create_many = async (req, res) => {
-    let errors = []
     let packings = []
-
-    // console.log(req.body[0].data);
 
     for (let packing of req.body) {
         let current_packing = await packings_service.find_by_tag(packing.data.tag)
