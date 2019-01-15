@@ -53,9 +53,9 @@
               </p>
               <p><b>geofence_type:</b> Iipo de contorno do ponto de controle. Assume valores C ou P, respectivamente:
                 Círculo ou Polígono.</p>
-              <p><b>coordinates:</b> Se for círculo, contém a latitude e longitude do centro do círculo no formato <i>(11.222,
-                  33.444)</i>. Se for polígono, contém uma lista de latitudes e longitudes no formato <i>[(11.222,
-                  33.444), (11.222, 33.444), ...]</i>.</p>
+              <p><b>coordinates:</b> Se for círculo, contém a latitude e longitude do centro do círculo no formato <i>[11.222,
+                  33.444]</i>. Se for polígono, contém uma lista de latitudes e longitudes no formato <i>[[11.222,
+                  33.444], [11.222, 33.444], ...]</i>.</p>
               <p><b>radius:</b> Se for círculo, é necessário especificar o raio do ponto de controle em metros.</p>
               <p><b>name:</b> Nome do ponto de controle.</p>
               <p><b>full_address:</b> Endereço completo do ponto de controle.</p>
@@ -422,7 +422,7 @@
         <div class="row" *ngIf="import['controls'].type.value == 'Pontos de Controle' && importResult?.to_register?.length !== 0 && send">
 
           <div class="col-md-12">
-            <p class="descricaoTitulo">Essas linhas pode ser cadastradas a partir do Excel</p>
+            <p class="descricaoTitulo">Essas linhas podem ser cadastradas a partir do Excel</p>
             <alert type="warning" dismissible="true">
               <strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem do banco
               de dados.

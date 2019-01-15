@@ -73,7 +73,7 @@ export class ImportarComponent implements OnInit {
     const files = fileInput.target.files || fileInput.srcElement.files;
     const file = files[0];
     const formData = new FormData();
-    formData.append('upfile', file);
+    formData.append('control_point_xlsx', file);
     this.file = formData;
     if (this.uploader.length != 0 && file) this.uploader.pop()
     if (file) this.uploader.push(file);
