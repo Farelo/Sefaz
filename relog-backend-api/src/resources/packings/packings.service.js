@@ -73,6 +73,18 @@ exports.create_packing = async (packing) => {
     }
 }
 
+// exports.create_many_packings = async (packings) => {
+//     try {
+//         Packing.insertMany(packings, (error, docs) => {
+//             if (error) throw new Error(error)
+//             return docs
+//         })
+//     } catch (error) {
+//         throw new Error(error)
+//     }
+// }
+
+
 exports.find_by_id = async (id) => {
     try {
         const packing = await Packing.findById(id)
