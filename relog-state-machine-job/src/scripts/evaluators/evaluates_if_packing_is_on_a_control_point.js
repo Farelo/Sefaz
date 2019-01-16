@@ -32,7 +32,6 @@ module.exports = async (packing, controlPoints, setting) => {
         })
 
         await checkIn(packing, setting, range_radius, distance, currentControlPoint)
-        // if (currentControlPoint !== null) await checkIn(packing, setting, range_radius, distance, currentControlPoint)
 
         if (distance > range_radius && packing.last_device_data.accuracy > setting.accuracy_limit) return null
         return currentControlPoint
@@ -88,11 +87,24 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
                     })
 
                     await eventRecord.save()
+
+                } else {
+                    if (packing.last_event_record.type === 'outbound') {
+                        const eventRecord = new EventRecord({
+                            packing: packing._id,
+                            control_point: currentControlPoint._id,
+                            distance_km: distance,
+                            accuracy: packing.last_device_data.accuracy,
+                            type: 'inbound'
+                        })
+
+                        await eventRecord.save()
+                    }
                 }
             } else {
                 // console.log('EMBALAGEM NÃO ESTÀ EM UM PONTO DE CONTROLE')
                 // Não estou em um ponto de controle próximo!
-                // Checa se o último ponto de controle é um INBOUND
+                // Checa se o último poncheckInto de controle é um INBOUND
                 if (packing.last_event_record.type === 'inbound') {
                     // Se sim
                     const eventRecord = new EventRecord({
