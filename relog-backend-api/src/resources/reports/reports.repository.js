@@ -98,7 +98,7 @@ exports.general_inventory_report = async () => {
                 const qtd_missing = await Packing.find({ family: family._id, current_state: 'perdida', active: true }).count()
                 const locations = await general_inventory_report_detailed(family._id)
 
-                qtd_in_clients = qtd_in_clients.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
+                //qtd_in_clients = qtd_in_clients.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
                 qtd_in_cp = qtd_in_cp.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
 
                 family_obj.company = family.company.name

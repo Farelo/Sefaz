@@ -313,8 +313,8 @@ export class ImportService {
     // return Observable.of(result);
   }
 
-  sendDataToImportRoute(file: any): Observable<any> {
-    return this.http.post(`${environment.url}upload/route`, file)
+  sendDataToImportCompany(file: any): Observable<any> {
+    return this.http.post(`${environment.url}/imports/company_xlsx`, file)
       .catch(this.handleError);
   }
 
