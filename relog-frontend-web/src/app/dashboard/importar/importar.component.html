@@ -358,16 +358,16 @@
                   </tr>
                 </thead>
                 <tbody class="">
-                  <tr *ngFor="let error of importResult?.updated">
-                    <td>{{ error.linha }}</td>
-                    <td>{{ error.type }}</td>
-                    <td>{{ error.name }}</td>
-                    <td>{{ error.phone }}</td>
-                    <td>{{ error.cnpj }}</td>
-                    <td>{{ error.street }}</td>
-                    <td>{{ error.cep }}</td>
-                    <td>{{ error.city }}</td>
-                    <td>{{ error.uf }}</td>
+                  <tr *ngFor="let updatedItem of importResult?.updated">
+                    <td>{{ updatedItem.line }}</td>
+                    <td>{{ updatedItem.data.type }}</td>
+                    <td>{{ updatedItem.data.name }}</td>
+                    <td>{{ updatedItem.data.phone }}</td>
+                    <td>{{ updatedItem.data.cnpj }}</td>
+                    <td>{{ updatedItem.data?.address?.street }}</td>
+                    <td>{{ updatedItem.data?.address?.cep }}</td>
+                    <td>{{ updatedItem.data?.address?.city }}</td>
+                    <td>{{ updatedItem.data?.address?.uf }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -525,16 +525,16 @@
                   </tr>
                 </thead>
                 <tbody class="">
-                  <tr *ngFor="let error of importResult?.updated">
-                    <td>{{ error.linha }}</td>
-                    <td>{{ error.type }}</td>
-                    <td>{{ error.name }}</td>
-                    <td>{{ error.phone }}</td>
-                    <td>{{ error.cnpj }}</td>
-                    <td>{{ error.street }}</td>
-                    <td>{{ error.cep }}</td>
-                    <td>{{ error.city }}</td>
-                    <td>{{ error.uf }}</td>
+                  <tr *ngFor="let error of importResult?.to_register">
+                    <td>{{ error.line }}</td>
+                    <td>{{ error.data.type }}</td>
+                    <td>{{ error.data.name }}</td>
+                    <td>{{ error.data.phone }}</td>
+                    <td>{{ error.data.cnpj }}</td>
+                    <td>{{ error.data?.address?.street }}</td>
+                    <td>{{ error.data?.address?.cep }}</td>
+                    <td>{{ error.data?.address?.city }}</td>
+                    <td>{{ error.data?.address?.uf }}</td>
                   </tr>
                 </tbody>
               </table>
