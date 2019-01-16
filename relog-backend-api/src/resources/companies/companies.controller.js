@@ -20,6 +20,17 @@ exports.create = async (req, res) => {
     res.status(HttpStatus.CREATED).send(company)
 }
 
+exports.create_many = async (req, res) => {
+    let companies = []
+
+    for (let company of req.body) {
+        current_company = await companies_service.create_company(company.data)
+        companies.push(current_company)
+    }
+
+    res.status(HttpStatus.CREATED).send(companies)
+}
+
 exports.update = async(req, res) => {
     let company = await companies_service.find_by_id(req.params.id)
     if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
