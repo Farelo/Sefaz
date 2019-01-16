@@ -4,7 +4,7 @@ const { EventRecord } = require('../../models/event_record.model')
 module.exports = async (packing, controlPoints, setting) => {
     try {
         let distance = Infinity
-        let currentControlPoint = {}
+        let currentControlPoint = null
         let range_radius = setting.range_radius
 
         controlPoints.forEach(async (controlPoint) => {
@@ -13,7 +13,6 @@ module.exports = async (packing, controlPoints, setting) => {
                     console.log(`>>>>>>>>>>>>>>>>>>>>>>>>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
                     distance = 0
                     currentControlPoint = controlPoint
-                    await checkIn(packing, setting, range_radius, distance, currentControlPoint)
                 }
             } else {
                 const calculate = getDistanceFromLatLonInKm(
