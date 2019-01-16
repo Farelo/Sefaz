@@ -38,6 +38,28 @@ exports.create = async (req, res) => {
     res.status(HttpStatus.CREATED).send(packing)
 }
 
+exports.create_many = async (req, res) => {
+    let packings = []
+
+    for (let packing of req.body) {
+        let current_packing = await packings_service.find_by_tag(packing.data.tag)
+        if (current_packing) return res.status(HttpStatus.BAD_REQUEST).send({ message: `Packing already exists with this code ${packing.data.tag.code}.` })
+    
+        const family = await families_service.find_by_id(packing.data.family._id)
+        if (!family) return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid family ${packing.data.family}.` })
+    
+        if (packing.data.project) {
+            const project = await projects_service.find_by_id(packing.data.project)
+            if (!project) return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid project ${packing.data.project}.` })
+        }
+    
+        current_packing = await packings_service.create_packing(packing.data)
+        packings.push(current_packing)
+    }
+
+    res.status(HttpStatus.CREATED).send(packings)
+}
+
 exports.update = async (req, res) => {
     let packing = await packings_service.find_by_id(req.params.id)
     if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid packing' })

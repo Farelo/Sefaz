@@ -42,7 +42,7 @@ exports.import_packing = async (req, res) => {
                     if (!current_packing) {
                         temp_obj.line = index + 1
                         temp_obj.data = {
-                            family: family._id,
+                            family: family,
                             serial: packing[1],
                             tag: {
                                 code: packing[2],
@@ -63,9 +63,8 @@ exports.import_packing = async (req, res) => {
                         to_register.push(temp_obj)
 
                     } else {
-                        
                         await Packing.findByIdAndUpdate(current_packing._id, {
-                            family: family._id,
+                            family: family,
                             serial: packing[1],
                             tag: {
                                 code: packing[2],
@@ -83,7 +82,7 @@ exports.import_packing = async (req, res) => {
                         })
                         
                         temp_obj.line = index + 1
-                        temp_obj.data = await Packing.findById(current_packing._id)
+                        temp_obj.data = await Packing.findById(current_packing._id).populate('family')
 
                         updated.push(temp_obj)
                     }
@@ -155,8 +154,8 @@ exports.import_control_points = async (req, res) => {
 
                                 temp_obj.data = {
                                     name: control_point[3],
-                                    company: company._id,
-                                    type: type._id,
+                                    company: company,
+                                    type: type,
                                     duns: control_point[7],
                                     full_address: control_point[4],
                                     geofence: {
@@ -169,8 +168,8 @@ exports.import_control_points = async (req, res) => {
                                 coordinates = control_point[1].split('').filter(ele => ele != '[' && ele != ']').join('').split(',')
                                 temp_obj.data = {
                                     name: control_point[3],
-                                    company: company._id,
-                                    type: type._id,
+                                    company: company,
+                                    type: type,
                                     duns: control_point[7],
                                     full_address: control_point[4],
                                     geofence: {
@@ -191,8 +190,8 @@ exports.import_control_points = async (req, res) => {
                             temp_obj.line = index + 1
                             temp_obj.data = {
                                 name: control_point[3],
-                                company: company._id,
-                                type: type._id,
+                                company: company,
+                                type: type,
                                 duns: control_point[7],
                                 full_address: control_point[4],
                                 geofence: {
