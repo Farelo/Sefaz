@@ -42,4 +42,8 @@ export class ControlPointsService {
       .catch(this.handleError);
   }
 
+  createControlPointArray(array: any): Observable<any> { 
+    return this.http.post(`${environment.url}/control_points/create/array`, array)
+      .catch(this.handleError);
+  }
 }

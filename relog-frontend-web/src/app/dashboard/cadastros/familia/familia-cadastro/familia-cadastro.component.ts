@@ -61,6 +61,14 @@ export class FamiliaCadastroComponent implements OnInit {
       }, err => { console.log(err) });
   }
 
+  selectAll(){
+    this.mFamily.controls.selectedControlPoints.setValue(this.allControlPoints);
+  }
+
+  unselectAll(){
+    this.mFamily.controls.selectedControlPoints.setValue([]);
+  }
+
   onSubmit(): void {
 
     this.submited = true;

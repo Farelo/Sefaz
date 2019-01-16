@@ -108,7 +108,7 @@ exports.import_packing = async (req, res) => {
 exports.import_control_points = async (req, res) => {
     if (Object.keys(req.files).length == 0) return res.status(HttpStatus.BAD_REQUEST).send({ message: 'No files were uploaded.' })
     
-    const control_point_xlsx = req.files.control_point_xlsx
+    const control_point_xlsx = req.files.control_point_xlsx 
     const file_name = new Date().getTime().toString() + 'control_point'
     const file_path = `${__dirname}/uploads/${file_name}.xlsx`
 

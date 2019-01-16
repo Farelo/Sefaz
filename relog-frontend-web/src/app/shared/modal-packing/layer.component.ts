@@ -459,7 +459,7 @@ export class LayerModalComponent implements OnInit {
     //console.log('getLastPostition');
 
     if (this.rangedMarkers.length > 0) {
-      this.lastPosition = this.rangedMarkers[this.rangedMarkers.length - 1];
+      this.lastPosition = this.rangedMarkers[0];
       this.center = this.lastPosition.latLng;
 
     } else {

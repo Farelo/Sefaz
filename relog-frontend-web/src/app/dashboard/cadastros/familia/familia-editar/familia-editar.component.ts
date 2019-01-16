@@ -60,6 +60,13 @@ export class FamiliaEditarComponent implements OnInit {
     }, err => { console.log(err) });
   }
 
+  selectAll() {
+    this.mFamily.controls.control_points.setValue(this.allControlPoints);
+  }
+
+  unselectAll() {
+    this.mFamily.controls.control_points.setValue([]);
+  }
 
   configureFormGroup() {
     this.mFamily = this.fb.group({
