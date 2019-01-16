@@ -43,7 +43,7 @@ export class ControlPointsService {
   }
 
   createControlPointArray(array: any): Observable<any> { 
-    return this.http.post(`${environment.url}/control_points/create/array`, array)
+    return this.http.post(`${environment.url}/control_points/create_many`, array)
       .catch(this.handleError);
   }
 }

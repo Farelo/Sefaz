@@ -44,16 +44,38 @@ export class ImportarComponent implements OnInit {
     this.send = false;
   }
 
+  public upFile: any;
   fileEvent(fileInput: any) {
+    this.send = false;
+
     const files = fileInput.target.files || fileInput.srcElement.files;
-    const file = files[0];
+    this.upFile = files[0];
     const formData = new FormData();
-    formData.append('control_point_xlsx', file);
     this.file = formData;
-    if (this.uploader.length != 0 && file) this.uploader.pop()
-    if (file) this.uploader.push(file);
+
+    if (this.uploader.length != 0 && this.upFile) this.uploader.pop()
+    if (this.upFile) this.uploader.push(this.upFile);
+  }
+
+  typeSelected(event) {
+
+    console.log(event.target.value);
 
     this.send = false;
+
+    switch (this.import['controls'].type.value) {
+      case 'Embalagens':
+        this.file.append('packing_xlsx', this.upFile);
+        break;
+
+      case 'Pontos de Controle':
+        this.file.append('control_point_xlsx', this.upFile);
+        break;
+
+      case 'Empresas':
+        this.file.append('company_xlsx', this.upFile);
+        break;
+    }
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {

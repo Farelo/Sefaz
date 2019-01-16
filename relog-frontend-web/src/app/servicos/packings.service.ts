@@ -49,7 +49,7 @@ export class PackingService {
   }
 
   createPackingArray(array: any): Observable<any> { 
-    return this.http.post(`${environment.url}/packing/create/array`, array)
+    return this.http.post(`${environment.url}/packings/create_many`, array)
       .catch(this.handleError);
   }
 

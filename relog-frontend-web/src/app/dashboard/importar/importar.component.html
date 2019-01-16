@@ -152,7 +152,11 @@
 
                       <td nowrap>
                         <div *ngIf="(uploader.length !== 0)">
-                          <select type [(ngModel)]="type" data-style="btn-primary" class="selectEq" formControlName="type"
+                          <select type [(ngModel)]="type" 
+                            data-style="btn-primary" 
+                            class="selectEq" 
+                            formControlName="type"
+                            (click)="typeSelected($event)"
                             [ngClass]="{'required': (import.get('type').hasError('required') && import.get('type').touched)
                               || (import.get('type').hasError('required') && formDir.submitted)}">
                             <option value="">Escolha</option>
@@ -263,7 +267,7 @@
                 <tbody class="">
                   <tr *ngFor="let updated of importResult?.updated">
                     <td>{{ updated.line }}</td>
-                    <td>{{ updated.data.family.name }}</td>
+                    <td>{{ updated.data.family.code }}</td>
                     <td>{{ updated.data.serial }}</td>
                     <td>{{ updated.data.tag.code }}</td>
                     <td>{{ updated.data.tag.version }}</td>
@@ -275,7 +279,7 @@
                     <td>{{ updated.data.capacity }}</td>
                     <td>{{ updated.data.observations }}</td>
                     <td>{{ updated.data.type }}</td>
-                    <td>{{ updated.data.project.name }}</td>
+                    <td>{{ updated.data?.project?.name }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -312,13 +316,13 @@
                 <tbody class="">
                   <tr *ngFor="let error of importResult?.updated">
                     <td>{{ error.line }}</td>
-                    <td>{{ error.data.type }}</td>
+                    <td>{{ error.data.geofence.type }}</td>
                     <td>{{ arrayToString(error.data.geofence.coordinates) }}</td>
                     <td>{{ error.data.geofence.radius }}</td>
                     <td>{{ error.data.name }}</td>
                     <td>{{ error.data.full_address }}</td>
-                    <td>{{ error.data.type }}</td>
-                    <td>{{ error.data.company }}</td>
+                    <td>{{ error.data.type.name }}</td>
+                    <td>{{ error.data.company.name }}</td>
                     <td>{{ error.data.duns }}</td>
                   </tr>
                 </tbody>
@@ -328,7 +332,7 @@
         </div>
 
         <!-- ========================================================== -->
-        <!-- Tabela de atualização: Pontos de Controle -->
+        <!-- Tabela de atualização: Empresas -->
         <div class="row" *ngIf="import['controls'].type.value == 'Empresas' && importResult?.updated?.length !== 0 && send">
           <div class="col-md-12">
             <p class="descricaoTitulo">Essas linhas foram atualizadas a partir do Excel</p>
@@ -416,7 +420,7 @@
                 <tbody class="">
                   <tr *ngFor="let updated of importResult?.to_register">
                     <td>{{ updated.line }}</td>
-                    <td>{{ updated.data.family?.name }}</td>
+                    <td>{{ updated.data.family?.code }}</td>
                     <td>{{ updated.data.serial }}</td>
                     <td>{{ updated.data.tag.code }}</td>
                     <td>{{ updated.data.tag.version }}</td>
@@ -477,8 +481,8 @@
                     <td>{{ error.data.geofence.radius }}</td>
                     <td>{{ error.data.name }}</td>
                     <td>{{ error.data.full_address }}</td>
-                    <td>{{ error.data.type }}</td>
-                    <td>{{ error.data.company }}</td>
+                    <td>{{ error.data.type.name }}</td>
+                    <td>{{ error.data.company.name }}</td>
                     <td>{{ error.data.duns }}</td>
                   </tr>
                 </tbody>

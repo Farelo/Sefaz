@@ -32,9 +32,10 @@ exports.import_packing = async (req, res) => {
                 const tag = { code: packing[2] }
                 const current_packing = await Packing.findByTag(tag)
                 const family = await Family.findByCode(packing[0])
-                const project = packing[12] != undefined ? await Project.findOne({ name: packing[12].toString() }) : null
-
-                if (!project && packing[12] != undefined) errors.push({ line: index + 1, description: `Project with this name ${packing[12]} do not exists` })
+                const project = packing[12] !== undefined ? await Project.findOne({ name: packing[12].toString() }) : null
+                console.log('>>>>>>>>>>>>>>>>project')
+                console.log(project)
+                if (!project && packing[12] !== undefined) errors.push({ line: index + 1, description: `Project with this name ${packing[12]} do not exists` })
 
                 if (!family) {
                     errors.push({ line: index + 1, description: `Family code ${packing[0]} do not exists` })
@@ -58,7 +59,7 @@ exports.import_packing = async (req, res) => {
                             type: packing[11],
                         }
                         
-                        if(project) temp_obj.data.project 
+                        if (project) temp_obj.data.project = project
 
                         to_register.push(temp_obj)
 
