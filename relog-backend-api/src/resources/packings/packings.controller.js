@@ -4,6 +4,7 @@ const packings_service = require('./packings.service')
 const families_service = require('../families/families.service')
 const projects_service = require('../projects/projects.service')
 const control_points_service = require('../control_points/control_points.service')
+const companies_service = require('../companies/companies.service')
 
 exports.all = async (req, res) => {
     const tag = req.query.tag_code ? { code: req.query.tag_code } : null
@@ -95,4 +96,26 @@ exports.check_device = async (req, res) => {
     const data = await packings_service.check_device(device_id)
 
     res.json(data)
+}
+
+exports.geolocation = async (req, res) => {
+    const query = {
+        company_id: req.query.company_id ? req.query.company_id : null,
+        family_id: req.query.family_id ? req.query.family_id : null,
+        packing_serial: req.query.packing_serial ? req.query.packing_serial : null
+    }
+
+    if (req.query.family_id) {
+        const family = await families_service.get_family(req.query.family_id)
+        if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
+    }
+
+    if (req.query.company_id) {
+        const company = await companies_service.get_company(req.query.company_id)
+        if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+    }
+
+    const packings = await packings_service.geolocation(query)
+
+    res.json(packings)
 }

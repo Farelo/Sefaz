@@ -112,7 +112,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - ControlPoints
+ *       - Companies
  *     produces:
  *       - application/json
  *     parameters:
