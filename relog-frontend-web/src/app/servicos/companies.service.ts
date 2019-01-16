@@ -39,7 +39,7 @@ export class CompaniesService {
   }
 
   createCompanyArray(array: any): Observable<any> {
-    return this.http.post(`${environment.url}/companies/create/array`, array)
+    return this.http.post(`${environment.url}/companies/create_many`, array)
       .catch(this.handleError);
   }
 }
