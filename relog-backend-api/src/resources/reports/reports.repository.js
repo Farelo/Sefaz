@@ -533,11 +533,12 @@ exports.clients_report = async(company_id = null) => {
                     .filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
                     .map(async packing => {
                         let obj_temp = {}
-                        const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
+                        const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type').populate('company')
 
                         obj_temp.control_point_id = cp._id
                         obj_temp.control_point_name = cp.name
                         obj_temp.control_point_type = cp.type.name
+                        obj_temp.company_control_point_name = cp.company.name
 
                         return obj_temp
                     })
@@ -548,7 +549,7 @@ exports.clients_report = async(company_id = null) => {
                 return {
                     family_code: family.code,
                     company_id: family.company._id,
-                    company: family.company.name,
+                    company: family.company.name, 
                     packings_traveling: packings_outbound.length,
                     control_point_name: key,
                     control_point_type: packing_temp[0].control_point_type,

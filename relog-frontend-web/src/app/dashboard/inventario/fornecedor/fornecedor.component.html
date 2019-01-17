@@ -18,7 +18,7 @@
           <p>FORNECEDOR</p>
 
           <ng-select [(ngModel)]="selectedCompany" (change)="companySelected($event)" [items]="listOfCompanies" bindLabel="name"
-            placeholder="Selecione um Fornecedor">
+            placeholder="Selecione um Ponto de Controle">
 
             <ng-template ng-label-tmp let-item="item">
               {{item.name}}
@@ -44,7 +44,7 @@
           <!-- <th>Descrição</th> -->
           <!-- <th>Projeto</th> -->
           <th>Empresa Vinculada</th>
-          <th>Planta Atual</th>
+          <th>Ponto de Controle Atual</th>
           <th>Local</th>
           <th style="text-align: center">Quantidade</th>
         </tr>

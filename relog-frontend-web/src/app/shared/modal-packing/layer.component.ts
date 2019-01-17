@@ -264,7 +264,7 @@ export class LayerModalComponent implements OnInit {
   }
 
   rangechanged() {
-    console.log('rangechanged');
+    // console.log('rangechanged');
 
     this.updatePaths();
     // this.getLastPostition();

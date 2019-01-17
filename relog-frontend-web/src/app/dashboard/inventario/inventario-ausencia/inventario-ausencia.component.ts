@@ -5,6 +5,7 @@ import { AbscenseModalComponent } from '../../../shared/modal-packing-absence/ab
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { FloatTimePipe } from '../../../shared/pipes/floatTime';
+import { LayerModalComponent } from 'app/shared/modal-packing/layer.component';
 
 @Component({
   selector: 'app-inventario-ausencia',
@@ -32,7 +33,6 @@ export class InventarioAusenciaComponent implements OnInit {
   constructor( 
     private familyService: FamiliesService,
     private reportService: ReportsService,
-    private controlPointsTypeService: ControlPointTypesService,
     private modalService: NgbModal,
     private auth: AuthenticationService) {
 
@@ -86,7 +86,7 @@ export class InventarioAusenciaComponent implements OnInit {
    * Filtros
    */
   familyFilter(event: any){
-    console.log(event);
+    //console.log(event);
     
     if(!event) {
       this.listOfSerials = [];
@@ -124,7 +124,7 @@ export class InventarioAusenciaComponent implements OnInit {
 
   intervalFilter(){
 
-    console.log(this.timeInterval);
+    //console.log(this.timeInterval);
     
     if (this.timeInterval){
       let aux = this.listOfAbsent.filter(elem => {
@@ -137,16 +137,16 @@ export class InventarioAusenciaComponent implements OnInit {
 
   applyGeneralFilter(){
 
-    console.log('apply filter');
-    console.log(this.selectedFamily);
-    console.log(this.selectedSerial);
-    console.log(this.timeInterval);
+    // console.log('apply filter');
+    // console.log(this.selectedFamily);
+    // console.log(this.selectedSerial);
+    // console.log(this.timeInterval);
     // console.log(this.selectedType);
     
     if (!this.selectedFamily) {
       this.listOfSerials = [];
       this.selectedSerial = null;
-      return;
+      //return;
     }
 
     let aux = this.auxListOfAbsent.filter(elem => {
@@ -156,17 +156,32 @@ export class InventarioAusenciaComponent implements OnInit {
       let bInterval = (this.timeInterval == null ? true : (elem.absent_time_in_hours <= this.timeInterval));
       // let bLocal = (this.selectedType == null ? true : (elem.last_event_record.control_point.type == this.selectedType._id));
 
-      console.log(`${bFamily}, ${bSerial}, ${bInterval}` )
+      //console.log(`${bFamily}, ${bSerial}, ${bInterval}` )
 
       return (bFamily && bSerial && bInterval);
     });
+
+    //console.log('aux.length: ' + aux.length);
 
     this.listOfAbsent = aux;
   }
 
 
   openAbsence(packing) {
-    const modalRef = this.modalService.open(AbscenseModalComponent, { backdrop: "static", size: "lg" });
+    // const modalRef = this.modalService.open(AbscenseModalComponent, { backdrop: "static", size: "lg" });
+    // modalRef.componentInstance.packing = packing;
+    const modalRef = this.modalService.open(LayerModalComponent, {
+      backdrop: 'static',
+      size: 'lg',
+      windowClass: 'modal-xl',
+    });
+    
+    packing.tag = packing.tag.code;
+    packing.family_code = packing.family.code;
+    
+    packing.current_control_point_name = packing.last_event_record.control_point.name;
+    
+    
     modalRef.componentInstance.packing = packing;
   }
  /**
@@ -185,9 +200,8 @@ export class InventarioAusenciaComponent implements OnInit {
     this.headers.push({ label: 'Serial', name: 'serial' });
     this.headers.push({ label: 'Tag', name: 'tag.code' });
 
-    this.headers.push({ label: 'Última Planta Conhecida', name: 'last_event_record'});
+    this.headers.push({ label: 'Última Planta Conhecida', name: 'last_event_record.control_point.name'});
     this.headers.push({ label: 'Tempo de Ausência', name: 'absent_time_in_hours' });
-    
 
     //console.log('this.headers: ' + JSON.stringify(this.headers));
   }
@@ -196,8 +210,8 @@ export class InventarioAusenciaComponent implements OnInit {
     this.sort.name = item.name;
     this.sort.order = this.sortStatus[(this.sortStatus.indexOf(this.sort.order) + 1) % 2];
 
-    console.log('---');
-    console.log('this.sort: ' + JSON.stringify(this.sort));
+    // console.log('---');
+    // console.log('this.sort: ' + JSON.stringify(this.sort));
 
     this.listOfAbsent  = this.customSort(this.listOfAbsent , item.name.split("."), this.sort.order);
   }
@@ -212,15 +226,15 @@ export class InventarioAusenciaComponent implements OnInit {
     var sortOrder = 1;
     if (reverse == 'desc') sortOrder = -1;
 
-    console.log('array.length: ' + array.length);
-    console.log('keyArr: ' + keyArr);
-    console.log('sortOrder: ' + sortOrder);
+    // console.log('array.length: ' + array.length);
+    // console.log('keyArr: ' + keyArr);
+    // console.log('sortOrder: ' + sortOrder);
 
     return array.sort(function (a, b) {
       var x = a, y = b;
       for (var i = 0; i < keyArr.length; i++) {
-        x = x[keyArr[i]];
-        y = y[keyArr[i]];
+        x = (x[keyArr[i]] !== undefined) ? x[keyArr[i]] : "";
+        y = (y[keyArr[i]] !== undefined) ? y[keyArr[i]] : "";
       }
       return sortOrder * ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });

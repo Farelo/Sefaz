@@ -121,8 +121,8 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     this.sort.name = item.name;
     this.sort.order = this.sortStatus[(this.sortStatus.indexOf(this.sort.order) + 1) % 2];
 
-    console.log('---');
-    console.log('this.sort: ' + JSON.stringify(this.sort));
+    // console.log('---');
+    // console.log('this.sort: ' + JSON.stringify(this.sort));
 
     this.generalEquipament = this.customSort(this.generalEquipament, item.name.split("."), this.sort.order);
   }
@@ -137,9 +137,9 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     var sortOrder = 1;
     if (reverse == 'desc') sortOrder = -1;
 
-    console.log('array.length: ' + array.length);
-    console.log('keyArr: ' + keyArr);
-    console.log('sortOrder: ' + sortOrder);
+    // console.log('array.length: ' + array.length);
+    // console.log('keyArr: ' + keyArr);
+    // console.log('sortOrder: ' + sortOrder);
 
     return array.sort(function (a, b) {
       var x = a, y = b;

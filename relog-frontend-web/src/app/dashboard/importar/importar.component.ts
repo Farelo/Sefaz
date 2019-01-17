@@ -35,10 +35,12 @@ export class ImportarComponent implements OnInit {
     this.import = this.fb.group({
       type: ['', [Validators.required]],
     });
-    this.import['controls'].type.setValue("");
+    this.import['controls'].type.setValue("Escolha");
   }
 
   remove() {
+    this.import['controls'].type.setValue("Escolha");
+
     this.uploader.pop();
     console.log(this.uploader);
     this.send = false;
