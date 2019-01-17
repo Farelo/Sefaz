@@ -92,8 +92,8 @@
 
 
       <!-- Input para digitar o endereço -->
-      <div class="campo col-sm-12">
-        <p class="descricao">LOCAL</p>
+      <div class="col-sm-12" style="margin-bottom: 10px;">
+        <p class=" descricao">LOCAL</p>
         <input places-auto-complete class="form-control" (place_changed)="placeChanged($event)" [types]="['geocode']"
           formControlName="full_address" placeholder="Digite o local da planta" [ngClass]="{'required': (mControlPoint.get('full_address').hasError('required') && mControlPoint.get('full_address').touched)
                   || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)}" />
@@ -106,10 +106,7 @@
         <!-- (click)="onClick($event)" -->
         <ngui-map [zoom]="zoom" [center]="center" style="margin-top: 10px;">
           <!-- <marker [position]="pos"></marker> -->
-          <drawing-manager 
-            [drawingMode]="'null'" 
-            [drawingControl]="true" 
-            [drawingControlOptions]="{
+          <drawing-manager [drawingMode]="'null'" [drawingControl]="true" [drawingControlOptions]="{
               position: 2,
               drawingModes: ['circle', 'polygon']}"
             [polygonOptions]="{
@@ -130,32 +127,19 @@
               zIndex: 1}">
           </drawing-manager>
 
-          <polygon 
-            *ngIf="!polygonEdited && mGeofence.type == 'p'"
-            [paths]="mGeofence.coordinates"  
-            [editable]="false"
-            [fillColor]="'#0044a8'"
-            [fillOpacity]="0.2" 
-            [strokeColor]="'#0044a8'" 
-            [strokeOpacity]="0.4" 
-            [strokeWeight]="1"> </polygon>
+          <polygon *ngIf="!polygonEdited && mGeofence.type == 'p'" [paths]="mGeofence.coordinates" [editable]="false"
+            [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1">
+          </polygon>
 
-          <circle 
-            *ngIf="!circleEdited && mGeofence.type == 'c'" 
-            [center]="mGeofence.coordinates[0]" 
-            [radius]="mGeofence.radius"
-            [editable]="false" 
-            [fillColor]="'#0044a8'"
-            [fillOpacity]="0.2" 
-            [strokeColor]="'#0044a8'" 
-            [strokeOpacity]="0.4" 
+          <circle *ngIf="!circleEdited && mGeofence.type == 'c'" [center]="mGeofence.coordinates[0]" [radius]="mGeofence.radius"
+            [editable]="false" [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4"
             [strokeWeight]="1"> </circle>
 
         </ngui-map>
 
-        <p class="requiredText" *ngIf="(mControlPoint.get('full_address').value !== '' && mControlPoint.get('full_address').touched 
-                    && !pointWasSelected)">
+        <p class="requiredText">
           Selecione contorno círculo ou polígono</p>
+        <div *ngIf="mGeofence.radius">Raio: {{ this.mGeofence.radius }} </div>
       </div>
 
       <div class="campo col-sm-12 informacoes">

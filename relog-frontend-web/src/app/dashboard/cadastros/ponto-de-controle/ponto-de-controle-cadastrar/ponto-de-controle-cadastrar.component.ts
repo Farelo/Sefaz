@@ -90,7 +90,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.mGeofence.type = 'c';
     this.mGeofence.radius = this.controlPointCircle.getRadius();
 
-    console.log(JSON.stringify(this.mGeofence));
+    //console.log(JSON.stringify(this.mGeofence));
   }
 
   generatePolygonGeofence(poly: any) {
@@ -103,7 +103,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.controlPointPolygon.getPath().forEach(latLng => arr.push({ lat: latLng.lat(), lng: latLng.lng() }))
     this.mGeofence.coordinates = arr;
 
-    console.log(JSON.stringify(this.mGeofence));
+    // console.log(JSON.stringify(this.mGeofence));
   }
 
   prepareMap() {
@@ -195,7 +195,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   onAddItem(event: any) {
 
-    console.log(event);
+    // console.log(event);
 
     if (!event._id) {
 
@@ -226,10 +226,10 @@ export class PontoDeControleCadastrarComponent implements OnInit {
    */
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
-     console.log(value);
+    //  console.log(value);
     // console.log(valid);
     // console.log('submit');
-     console.log(this.mControlPoint);
+    //  console.log(this.mControlPoint);
 
     this.submitted = true;
 
@@ -239,7 +239,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
       value.company = this.mControlPoint.controls.company.value._id;
       value.geofence = this.mGeofence;
 
-      console.log(value);
+      // console.log(value);
       this.finishRegister(value);
     }
   }
@@ -271,7 +271,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.address = place.formatted_address;
     this.mControlPoint.controls.full_address.setValue(this.address);
 
-    console.log(this.address);
+    // console.log(this.address);
 
     // this.mControlPoint.controls.lat.setValue(0);
     // this.mControlPoint.controls.lng.setValue(0);

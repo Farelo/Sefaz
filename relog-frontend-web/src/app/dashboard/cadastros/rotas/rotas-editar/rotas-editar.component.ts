@@ -132,9 +132,9 @@ export class RotasEditarComponent implements OnInit {
         this.mActualRoute = result;
         (<FormGroup>this.mRoute).patchValue(result, { onlySelf: true });
 
-        console.log('recuperado');
-        console.log(result);
-        console.log(this.mRoute);
+        // console.log('recuperado');
+        // console.log(result);
+        // console.log(this.mRoute);
   
         this.calculateTime(result);
         //console.log(this.controlPointType);
@@ -148,7 +148,7 @@ export class RotasEditarComponent implements OnInit {
 
   calculateTime(result: any){
     
-    console.log(result);
+    // console.log(result);
 
     let time = 0;
 
@@ -225,12 +225,12 @@ export class RotasEditarComponent implements OnInit {
    * @param param0 
    */
   firstPointChange(event: any) {
-    console.log(event);
+    // console.log(event);
     this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
   }
 
   secondPointChange(event: any) {
-    console.log(event);
+    // console.log(event);
     this.direction.destination = new google.maps.LatLng(event.lat, event.lng);
   }
 
@@ -253,8 +253,8 @@ export class RotasEditarComponent implements OnInit {
     partial_delay = partial_delay + this.time_delay.minute * 1000 * 60 * 60;
     partial_delay = partial_delay + this.time_delay.second * 1000 * 60;
 
-    console.log('submit mRoute');
-    console.log(this.mRoute);
+    // console.log('submit mRoute');
+    // console.log(this.mRoute);
 
     //Ajustando objeto
     value.family = value.family._id;
@@ -265,17 +265,17 @@ export class RotasEditarComponent implements OnInit {
     value.traveling_time.min = partial_min;
     value.traveling_time.overtime = partial_delay;
 
-    console.log('value');
-    console.log(value);
+    // console.log('value');
+    // console.log(value);
 
-    console.log(this.mRoute);
+    // console.log(this.mRoute);
 
     if (this.mRoute.valid) {
 
       this.proceedToRegister(value);
 
     } else {
-      console.log('mRoute not valid');
+      // console.log('mRoute not valid');
     }
   }
 
@@ -293,8 +293,8 @@ export class RotasEditarComponent implements OnInit {
 
   directionsChanged() {
 
-    console.log('directionsChanged');
-    console.log(this.mRoute);
+    // console.log('directionsChanged');
+    // console.log(this.mRoute);
 
     // value.distance = this.directionsResult.routes[0].legs[0].distance.value;
     // value.duration_time = this.directionsResult.routes[0].legs[0].duration.value;
@@ -322,8 +322,8 @@ export class RotasEditarComponent implements OnInit {
 
   onChangeFactory(event: any) {
 
-    console.log('directionsChanged');
-    console.log(this.mRoute);
+    // console.log('directionsChanged');
+    // console.log(this.mRoute);
 
     if (event) {
       this.direction.origin = new google.maps.LatLng(event.lat, event.lng);

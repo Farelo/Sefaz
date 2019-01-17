@@ -3,6 +3,9 @@ import { Pagination } from '../../../shared/models/pagination';
 import { InventoryService, PackingService, AuthenticationService, ReportsService, FamiliesService } from '../../../servicos/index.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { FloatTimePipe } from '../../../shared/pipes/floatTime';
+import 'jspdf';
+import 'jspdf-autotable';
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-permanencia',
@@ -143,8 +146,8 @@ export class InventarioPermanenciaComponent implements OnInit {
     this.sort.name = item.name;
     this.sort.order = this.sortStatus[(this.sortStatus.indexOf(this.sort.order) + 1) % 2];
 
-    console.log('---');
-    console.log('this.sort: ' + JSON.stringify(this.sort));
+    // console.log('---');
+    // console.log('this.sort: ' + JSON.stringify(this.sort));
 
     this.listOfPermanence  = this.customSort(this.listOfPermanence , item.name.split("."), this.sort.order);
   }
@@ -159,9 +162,9 @@ export class InventarioPermanenciaComponent implements OnInit {
     var sortOrder = 1;
     if (reverse == 'desc') sortOrder = -1;
 
-    console.log('array.length: ' + array.length);
-    console.log('keyArr: ' + keyArr);
-    console.log('sortOrder: ' + sortOrder);
+    // console.log('array.length: ' + array.length);
+    // console.log('keyArr: ' + keyArr);
+    // console.log('sortOrder: ' + sortOrder);
 
     return array.sort(function (a, b) {
       var x = a, y = b;
@@ -198,26 +201,36 @@ export class InventarioPermanenciaComponent implements OnInit {
     new Angular2Csv(flatObjectData, 'Inventario Equipamento Tempo de permanência', this.csvOptions);
   }
 
+    /**
+   * Click to download pdf file
+   */
+  downloadPdf(){
+    var doc = jsPDF('l', 'pt');
+
+    // You can use html:
+    //doc.autoTable({ html: '#my-table' });
+
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.listOfPermanence.slice());
+    flatObjectData = flatObjectData.map(elem => {
+      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6];
+    });
+    // console.log(flatObjectData);
+
+    // Or JavaScript:
+    doc.autoTable({
+      head: [['Família', 'Serial', 'Tag', 'Planta Atual', 'Local', 'Tempo na Planta']],
+      body: flatObjectData
+    });
+
+    doc.save('permanence.pdf');
+  }
+
   flatObject(mArray: any) {
     
     //console.log(mArray);
 
-    /**
-     * Example:
-        let plain = mArray.map(obj => {
-          return {
-            supplierName: obj.supplier.name,
-            equipmentCode: obj._id.code,
-            quantityTotal: obj.quantityTotal,
-            quantityInFactory: obj.quantityInFactory,
-            quantityInSupplier: obj.quantityInSupplier,
-            quantityTraveling: obj.quantityTraveling,
-            quantityProblem: obj.quantityProblem,
-            lostObject: obj.quantityProblem == undefined ? 0 : obj.quantityProblem
-          };
-        });
-        return plain;
-     */
      let transformer = new FloatTimePipe();
      let plainArray = mArray.map(obj => {
           return {

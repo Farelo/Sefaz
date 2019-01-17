@@ -359,10 +359,10 @@ export class Spiralize {
                         e.addListener('click', () => {
 
                             // console.log('Clique no pino interno');
-                            console.log(JSON.stringify(e.packing_code));
-                            console.log(JSON.stringify(e.serial));
-                            console.log(JSON.stringify(e.battery));
-                            console.log(JSON.stringify(e.accuracy));
+                            // console.log(JSON.stringify(e.packing_code));
+                            // console.log(JSON.stringify(e.serial));
+                            // console.log(JSON.stringify(e.battery));
+                            // console.log(JSON.stringify(e.accuracy));
                             // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
                             
                             this.packMarker = {

@@ -132,7 +132,11 @@
                             <!-- <div class="editar">
                             </div> -->
                             <label for="single">ARQUIVO</label>
-                            <input [attr.disabled]="(uploader.length !== 0) ? '' : null" type="file" class="form-control"
+                            <!-- [ngbTooltip]="getMessage()" placement="top" container="body" -->
+                            <!-- [attr.disabled]="(uploader.length !== 0) ? '' : null" -->
+                            <input  
+                              type="file" 
+                              class="form-control"
                               id="single" (change)=fileEvent($event) accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
                           </div>
                         </form>
@@ -189,13 +193,7 @@
         </div>
 
         <br />
-        <!-- Imprimir tipo do import -->
-        <!-- <div class="row" *ngIf="importResult?.to_register?.length > 0 && send">
-          <div class="col-md-12">
-            <p class="descricaoTitulo"> Importar {{import['controls'].type.value}} </p>
-          </div>
-        </div> -->
-
+        
         <!-- ========================================================== -->
         <!-- Tabela de erro -->
         <div class="row" *ngIf="importResult?.errors?.length > 0 && send">
@@ -464,7 +462,7 @@
                   <tr class="cabecalho">
                     <th>linha</th>
                     <th>geofence_type</th>
-                    <th>coordinates</th>
+                    <th width="5%">coordinates</th>
                     <th>radius</th>
                     <th>name</th>
                     <th>full_address</th>

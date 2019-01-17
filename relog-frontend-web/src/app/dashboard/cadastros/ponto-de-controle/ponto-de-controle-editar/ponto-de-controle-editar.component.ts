@@ -129,7 +129,7 @@ export class PontoDeControleEditarComponent implements OnInit {
       lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
       lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
     }
-    console.log('center: ' + this.center);
+    // console.log('center: ' + this.center);
   }
 
   calculateCircleCenter(){
@@ -158,7 +158,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.mGeofence.type = 'c';
     this.mGeofence.radius = this.controlPointCircle.getRadius();
 
-    console.log(JSON.stringify(this.mGeofence));
+    // console.log(JSON.stringify(this.mGeofence));
   }
 
   generatePolygonGeofence(poly: any) {
@@ -171,11 +171,11 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.controlPointPolygon.getPath().forEach(latLng => arr.push({ lat: latLng.lat(), lng: latLng.lng() }))
     this.mGeofence.coordinates = arr;
 
-    console.log(JSON.stringify(this.mGeofence));
+    // console.log(JSON.stringify(this.mGeofence));
   }
 
   dragPolygon(event: any){
-    console.log(JSON.stringify('aquiiii...'));
+    // console.log(JSON.stringify('aquiiii...'));
   }
 
   prepareMap() {

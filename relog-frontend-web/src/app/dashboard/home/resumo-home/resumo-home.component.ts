@@ -37,8 +37,8 @@ export class ResumoHomeComponent implements OnInit {
       this.progressViagem.push((parseFloat(this.resume.qtd_in_traveling) / parseFloat(this.resume.qtd_total)) * 100);
       this.progressViagem.push(100 - (this.progressViagem[0] + this.progressViagem[1]));
 
-      console.log(this.progressControle);
-      console.log(this.progressViagem);
+      // console.log(this.progressControle);
+      // console.log(this.progressViagem);
     }
   }
 

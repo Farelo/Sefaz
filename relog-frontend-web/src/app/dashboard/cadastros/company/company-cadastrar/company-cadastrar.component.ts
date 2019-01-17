@@ -57,8 +57,8 @@ export class CompanyCadastrarComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
     this.submitted = true;
-    console.log('submit...:' + JSON.stringify(value));
-    console.log('valid...:' + JSON.stringify(valid));
+    // console.log('submit...:' + JSON.stringify(value));
+    // console.log('valid...:' + JSON.stringify(valid));
 
     if (valid) {
       value.type = value.type.name;
@@ -69,15 +69,15 @@ export class CompanyCadastrarComponent implements OnInit {
           this.router.navigate(['/rc/cadastros/company']); this.toastService.successModal('Empresa criada!') ;
 
         }, err => {
-          console.log(err);
+          // console.log(err);
           this.toastService.showError('', { title: "Erro na atualização", body: "Houve um problema na atualização da Empresa" });
         });
     }
   }
 
   trim(path){
-    console.log('path:' + path);
-    console.log('aqui:' + this.newCompany.controls[path].value);
+    // console.log('path:' + path);
+    // console.log('aqui:' + this.newCompany.controls[path].value);
 
     this.newCompany.controls[path].setValue(this.newCompany.get(path).value.replace(/\s+/g, ' ').replace(/^\s+|\s+$/, ''));
   }

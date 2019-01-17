@@ -7,6 +7,10 @@ import { LayerModalComponent } from '../../../shared/modal-packing/layer.compone
 import { constants } from '../../../../environments/constants';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { RoundPipe } from '../../../shared/pipes/round';
+import 'jspdf';
+import 'jspdf-autotable';
+import { PackingStatus } from 'app/shared/pipes/packingStatus';
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-equipamento-geral',
@@ -75,6 +79,22 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       this.generalEquipament = this.auxGeneralEquipament;
   }
 
+  searchEvent(event): void {
+    const val = event.target.value.toLowerCase();
+
+    // filter our data
+    const temp = this.auxGeneralEquipament.filter(function (item) {
+      return ((item.family_code.toLowerCase().indexOf(val) !== -1 || !val)
+        || (item.serial.toLowerCase().indexOf(val) !== -1 || !val)
+        || (item.tag.toLowerCase().indexOf(val) !== -1 || !val));
+    });
+
+    // update the rows
+    this.generalEquipament = temp;
+    // Whenever the filter changes, always go back to the first page
+    this.actualPage = 0;
+  }
+
   openLayer(packing) {
     const modalRef = this.modalService.open(LayerModalComponent, {
       backdrop: 'static',
@@ -106,7 +126,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     this.headers.push({ label: 'Serial', name: 'serial' });
     this.headers.push({ label: 'Tag', name: 'tag' });
 
-    this.headers.push({ label: 'Fornecedor', name: 'company' });
+    this.headers.push({ label: 'Vinculada', name: 'company' });
     this.headers.push({ label: 'Status Atual', name: 'current_state' });
     this.headers.push({ label: 'Planta Atual', name: 'current_control_point_name' });
 
@@ -177,26 +197,36 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     new Angular2Csv(flatObjectData, 'Inventario Equipamento Geral', this.csvOptions);
   }
 
+  /**
+   * Click to download pdf file
+   */
+  downloadPdf(){
+    var doc = jsPDF('l', 'pt');
+
+    // You can use html:
+    //doc.autoTable({ html: '#my-table' });
+
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.generalEquipament.slice());
+    let packingStatus = new PackingStatus();
+    flatObjectData = flatObjectData.map(elem => {
+      return [elem.a1, elem.a2, elem.a3, elem.a4, packingStatus.transform(elem.a5), elem.a6, elem.a7, elem.a8, elem.a9, elem.a10];
+    });
+    // console.log(flatObjectData);
+
+    // Or JavaScript:
+    doc.autoTable({
+      head: [['Família', 'Serial', 'Tag', 'Vinculada', 'Status Atual', 'Planta Atual', 'Local', 'Bateria', 'Acurácia', 'Data do sinal']],
+      body: flatObjectData
+    });
+
+    doc.save('general_equipment.pdf');
+  }
+
   flatObject(mArray: any) {
     
     //console.log(mArray);
-
-    /**
-     * Example:
-        let plain = mArray.map(obj => {
-          return {
-            supplierName: obj.supplier.name,
-            equipmentCode: obj._id.code,
-            quantityTotal: obj.quantityTotal,
-            quantityInFactory: obj.quantityInFactory,
-            quantityInSupplier: obj.quantityInSupplier,
-            quantityTraveling: obj.quantityTraveling,
-            quantityProblem: obj.quantityProblem,
-            lostObject: obj.quantityProblem == undefined ? 0 : obj.quantityProblem
-          };
-        });
-        return plain;
-     */
      
      let transformer= new RoundPipe();
      let plainArray = mArray.map(obj => {

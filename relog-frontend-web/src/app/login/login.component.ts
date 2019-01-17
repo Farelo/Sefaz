@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     if(valid){
       this.authenticationService.login(value.password, value.email).subscribe(result =>  {
 
-        console.log('result: ' + JSON.stringify(result));
+        // console.log('result: ' + JSON.stringify(result));
 
         if(result){
           this.erroAuth = false;

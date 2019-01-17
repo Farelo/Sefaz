@@ -14,7 +14,7 @@ declare var $: any;
 export class ImportarComponent implements OnInit {
 
   private importResult: any = {};
-  public file: any;
+  public file: FormData;
   public fileName: string;
   public uploader = [];   //usado para imprimir metadados do arquivo no front
   public send = false;
@@ -41,8 +41,11 @@ export class ImportarComponent implements OnInit {
   remove() {
     this.import['controls'].type.setValue("Escolha");
 
-    this.uploader.pop();
-    console.log(this.uploader);
+    this.file.delete('packing_xlsx');
+    this.file.delete('control_point_xlsx');
+    this.file.delete('company_xlsx');
+    
+    this.uploader.pop(); 
     this.send = false;
   }
 
@@ -64,6 +67,11 @@ export class ImportarComponent implements OnInit {
     console.log(event.target.value);
 
     this.send = false;
+
+    //clear the formdata
+    this.file.delete('packing_xlsx');
+    this.file.delete('control_point_xlsx');
+    this.file.delete('company_xlsx');
 
     switch (this.import['controls'].type.value) {
       case 'Embalagens':

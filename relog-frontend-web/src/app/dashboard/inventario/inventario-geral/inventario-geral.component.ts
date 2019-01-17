@@ -1,9 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, Input, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Pagination } from '../../../shared/models/pagination'; 
+import { Pagination } from '../../../shared/models/pagination';
 import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService, ReportsService, CompaniesService, FamiliesService } from '../../../servicos/index.service';
 import { ChatService } from '../../../servicos/teste';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import 'jspdf';
+import 'jspdf-autotable';
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-geral',
@@ -13,7 +16,7 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 export class InventarioGeralComponent implements OnInit {
 
-  public listOfCompanies: any[] = []; 
+  public listOfCompanies: any[] = [];
   public mCompany: any = null;
 
   public listOfPackings: any[] = [];
@@ -21,11 +24,11 @@ export class InventarioGeralComponent implements OnInit {
 
   public detailedGeneralInventory: any[] = [];
   public auxDetailedGeneralInventory: any[] = [];
-  
+
   public actualPage: number = -1;
-  
+
   public settings: any = {};
-  
+
 
   constructor(
     private reportService: ReportsService,
@@ -43,10 +46,10 @@ export class InventarioGeralComponent implements OnInit {
   ngOnInit() {
 
     this.getSettings();
-    this.loadCompanies(); 
+    this.loadCompanies();
     this.loadDetailedInventory();
   }
-  
+
   /**
    * Recupera a configuração dos alertas
    */
@@ -60,7 +63,7 @@ export class InventarioGeralComponent implements OnInit {
    */
   loadCompanies(): void {
 
-    this.familyService.getAllFamilies().subscribe(result => { 
+    this.familyService.getAllFamilies().subscribe(result => {
 
       let auxListOfCompanies = [];
 
@@ -69,12 +72,12 @@ export class InventarioGeralComponent implements OnInit {
           auxListOfCompanies.push(elem.company);
 
         } else {
-          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1) 
+          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1)
             auxListOfCompanies.push(elem.company);
         }
-      }); 
+      });
 
-      console.log(JSON.stringify(auxListOfCompanies));
+      // console.log(JSON.stringify(auxListOfCompanies));
 
       // o view só muda quando há atribuição, 
       // se fizer push direto no array ele não muda no select do view
@@ -100,11 +103,11 @@ export class InventarioGeralComponent implements OnInit {
    * A company was selected
    * @param event 
    */
-  companyFilter(event: any){
-    console.log(event);
+  companyFilter(event: any) {
+    // console.log(event);
     this.mPacking = null;
 
-    if (!event){
+    if (!event) {
       this.detailedGeneralInventory = this.auxDetailedGeneralInventory;
       return;
     }
@@ -120,15 +123,15 @@ export class InventarioGeralComponent implements OnInit {
    * Once a company was selected, loads the packings
    * @param event
    */
-  loadPackings(event: any){
-    console.log(event);
+  loadPackings(event: any) {
+    // console.log(event);
 
-    let aux =  this.detailedGeneralInventory.filter(elem => {
+    let aux = this.detailedGeneralInventory.filter(elem => {
       return (elem.company == event.name);
     });
- 
+
     this.listOfPackings = aux;
-    console.log(this.listOfPackings);
+    // console.log(this.listOfPackings);
   }
 
   /**
@@ -136,7 +139,7 @@ export class InventarioGeralComponent implements OnInit {
    * @param event 
    */
   packingFilter(event: any) {
-    console.log(event);
+    // console.log(event);
 
     if (!event) {
       this.detailedGeneralInventory = this.auxDetailedGeneralInventory;
@@ -160,10 +163,10 @@ export class InventarioGeralComponent implements OnInit {
     })
   }
 
-   /**
-   * ================================================
-   * Downlaod csv file
-   */
+  /**
+  * ================================================
+  * Downlaod csv file
+  */
 
   private csvOptions = {
     showLabels: true,
@@ -173,11 +176,11 @@ export class InventarioGeralComponent implements OnInit {
   /**
   * Click to download
   */
-  downloadCsv(){
+  downloadCsv() {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
-    let flatObjectData = this.flatObject(this.detailedGeneralInventory .slice());
+    let flatObjectData = this.flatObject(this.detailedGeneralInventory.slice());
 
     //Add a header in the flat json data
     flatObjectData = this.addHeader(flatObjectData);
@@ -186,48 +189,70 @@ export class InventarioGeralComponent implements OnInit {
     new Angular2Csv(flatObjectData, 'Inventario Inventário Geral', this.csvOptions);
   }
 
+  /**
+  * Click to download pdf file
+  */
+  downloadPdf() {
+    var doc = jsPDF('l', 'pt');
+
+    // You can use html:
+    //doc.autoTable({ html: '#my-table' });
+
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.detailedGeneralInventory.slice());
+    flatObjectData = flatObjectData.map(elem => {
+      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7, elem.a8, elem.a9, elem.a10, elem.a11, elem.a12];
+    });
+    
+    // console.log(flatObjectData);
+
+    // Or JavaScript:
+    doc.autoTable({
+      head: [['Fornecedor',
+        'Família',
+        'Total de Equipamentos do Fornecedor(TEF)',
+        'Quantidade nas Plantas(A)',
+        'Quantidade no Fornecedor(B)',
+        'Quantidade no Transito(C)',
+        'Total do Inventário On Line(TIOL = A + B + C)',
+        'Diferença(TEF - TIOL)',
+        'Atraso de Rota',
+        'Local Incorreto',
+        'Tempo de Permanência',
+        'Embalagem Ausente'
+      ]],
+      body: flatObjectData
+    });
+
+    doc.save('general_inventory.pdf');
+  }
+
   flatObject(mArray: any) {
-        
+
     //console.log(mArray);
 
-    /**
-     * Example:
-        let plain = mArray.map(obj => {
-          return {
-            supplierName: obj.supplier.name,
-            equipmentCode: obj._id.code,
-            quantityTotal: obj.quantityTotal,
-            quantityInFactory: obj.quantityInFactory,
-            quantityInSupplier: obj.quantityInSupplier,
-            quantityTraveling: obj.quantityTraveling,
-            quantityProblem: obj.quantityProblem,
-            lostObject: obj.quantityProblem == undefined ? 0 : obj.quantityProblem
-          };
-        });
-        return plain;
-     */
-
-     let plainArray = mArray.map(obj => {
-        return {
-          a1: obj.company,
-          a2: obj.family_name,
-          a3: obj.qtd_total,
-          a4: obj.qtd_in_owner,
-          a5: obj.qtd_in_clients,
-          a6: obj.qtd_in_traveling,
-          a7: ((obj.qtd_in_owner) + (obj.qtd_in_clients) + (obj.qtd_in_traveling)),
-          a8: ((obj.qtd_total) - ((obj.qtd_in_owner) + (obj.qtd_in_clients ) + (obj.qtd_in_traveling))),
-          a9: (obj.qtd_in_traveling_late  == undefined) ? 0 : obj.qtd_in_traveling_late ,
-          a10: (obj.qtd_in_incorrect_cp == undefined)  ? 0 : obj.qtd_in_incorrect_cp ,
-          a11: (obj.qtd_with_permanence_time_exceeded == undefined)? 0 : obj.qtd_with_permanence_time_exceeded,
-          a12: (obj.qtd_in_traveling_missing == undefined)? 0 : obj.qtd_in_traveling_missing,
-        };
-      });
+    let plainArray = mArray.map(obj => {
+      return {
+        a1: obj.company,
+        a2: obj.family_name,
+        a3: obj.qtd_total,
+        a4: obj.qtd_in_owner,
+        a5: obj.qtd_in_clients,
+        a6: obj.qtd_in_traveling,
+        a7: ((obj.qtd_in_owner) + (obj.qtd_in_clients) + (obj.qtd_in_traveling)),
+        a8: ((obj.qtd_total) - ((obj.qtd_in_owner) + (obj.qtd_in_clients) + (obj.qtd_in_traveling))),
+        a9: (obj.qtd_in_traveling_late == undefined) ? 0 : obj.qtd_in_traveling_late,
+        a10: (obj.qtd_in_incorrect_cp == undefined) ? 0 : obj.qtd_in_incorrect_cp,
+        a11: (obj.qtd_with_permanence_time_exceeded == undefined) ? 0 : obj.qtd_with_permanence_time_exceeded,
+        a12: (obj.qtd_in_traveling_missing == undefined) ? 0 : obj.qtd_in_traveling_missing,
+      };
+    });
     // As my array is already flat, I'm just returning it.
     return plainArray;
   }
 
-  addHeader(mArray: any){
+  addHeader(mArray: any) {
     let cabecalho = {
       a1: 'Fornecedor',
       a2: 'Família',

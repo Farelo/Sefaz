@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
 import {
-  InventoryLogisticService,
-  InventoryService,
   AuthenticationService,
-  PackingService,
   ReportsService,
   FamiliesService,
 } from '../../../servicos/index.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { RoundPipe } from '../../../shared/pipes/round';
+import 'jspdf';
+import 'jspdf-autotable';
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-bateria',
@@ -88,26 +88,37 @@ export class InventarioBateriaComponent implements OnInit {
     new Angular2Csv(flatObjectData, 'Inventario Equipamento Bateria', this.csvOptions);
   }
 
+  /**
+   * Click to download pdf file
+   */
+  downloadPdf(){
+    var doc = jsPDF('l', 'pt');
+
+    // You can use html:
+    //doc.autoTable({ html: '#my-table' });
+
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.listOfBattery.slice());
+    flatObjectData = flatObjectData.map(elem => {
+      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6];
+    });
+    // console.log(flatObjectData);
+
+    // Or JavaScript:
+    doc.autoTable({
+      head: [['Família', 'Serial', 'Planta Atual', 'Local', 'Bateria', 'Nível']],
+      body: flatObjectData
+    });
+
+    doc.save('battery.pdf');
+  }
+
+
   flatObject(mArray: any) {
     
     //console.log(mArray);
 
-    /**
-     * Example:
-        let plain = mArray.map(obj => {
-          return {
-            supplierName: obj.supplier.name,
-            equipmentCode: obj._id.code,
-            quantityTotal: obj.quantityTotal,
-            quantityInFactory: obj.quantityInFactory,
-            quantityInSupplier: obj.quantityInSupplier,
-            quantityTraveling: obj.quantityTraveling,
-            quantityProblem: obj.quantityProblem,
-            lostObject: obj.quantityProblem == undefined ? 0 : obj.quantityProblem
-          };
-        });
-        return plain;
-     */
      let transformer= new RoundPipe();
      let plainArray = mArray.map(obj => {
           return {

@@ -13,6 +13,12 @@
   color: white;
 }
 
+.explicacao {
+  color: #777;
+  font-size: 10px;
+  margin-bottom: 0px;
+}
+
 span {
   cursor: pointer;
 }

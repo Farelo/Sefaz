@@ -54,7 +54,7 @@ export class EmbalagemCadastroComponent implements OnInit {
    */
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
     
-    console.log(value);
+    // console.log(value);
 
     value.family = value.family._id;
     value.project = value.project._id;

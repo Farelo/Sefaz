@@ -108,7 +108,7 @@
 
 
       <!-- Input para digitar o endereço -->
-      <div class="campo col-sm-12">
+      <div class="col-sm-12" style="margin-bottom: 10px;">
         <p class="descricao">LOCAL</p>
         <input places-auto-complete 
           class="form-control"
@@ -135,8 +135,7 @@
               [drawingControl]="true" 
               [drawingControlOptions]="{
                 position: 2,
-                drawingModes: ['circle', 'polygon']
-              }"
+                drawingModes: ['circle', 'polygon']}"
               [polygonOptions]="{
                 fillColor: '#0044a8',
                 fillOpacity: 0.2,
@@ -144,8 +143,7 @@
                 strokeWeight: 1,
                 strokeOpacity: '0.4',
                 editable: true,
-                zIndex: 1
-              }"
+                zIndex: 1}"
               [circleOptions]="{
                 fillColor: '#0044a8',
                 fillOpacity: 0.2,
@@ -153,21 +151,21 @@
                 strokeWeight: 1,
                 strokeOpacity: '0.4',
                 editable: true,
-                zIndex: 1
-              }"></drawing-manager>
+                zIndex: 1}"></drawing-manager>
           </ngui-map>
 
           <p class="requiredText" 
             *ngIf="(mControlPoint.get('full_address').value !== '' && mControlPoint.get('full_address').touched 
               && !pointWasSelected)">
             Selecione contorno círculo ou polígono</p>
+            <div *ngIf="this.controlPointCircle">Raio: {{ this.controlPointCircle.getRadius() }} </div>
       </div>
 
       <div class="campo col-sm-12 informacoes">
         <div class="bigger2">
           <div class="fromSun"></div>
         </div>
-        <span class="forn">{{ this.mControlPoint.controls.full_address.value || 'Nenhuma informação sobre a localidade' }}</span>
+        <div class="forn">{{ this.mControlPoint.controls.full_address.value || 'Nenhuma informação sobre a localidade' }}</div>
       </div>
 
 

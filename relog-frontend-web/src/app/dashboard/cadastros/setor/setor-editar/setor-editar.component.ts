@@ -75,7 +75,7 @@ export class SetorEditarComponent implements OnInit {
   onSubmit({ value, valid }): void {
 
     value.control_point = value.control_point._id;
-    console.log(value);
+    // console.log(value);
 
     if (valid) {
       this.departmentService.editDepartment(this.mId, value).subscribe(result => {
