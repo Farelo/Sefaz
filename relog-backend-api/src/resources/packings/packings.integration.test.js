@@ -1,5 +1,4 @@
 const request = require('supertest')
-const mongoose = require('mongoose')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
 const { Family } = require('../families/families.model')
@@ -123,42 +122,11 @@ describe('api/packings', () => {
 
     describe('GET /api/packings/:id', () => {
         it('should return a packing if valid id is passed', async () => {
-            let packing = {
-                _id: new_packing._id,
-                absent: false, 
-                active: true, 
-                capacity: 10, 
-                current_state: "analise", 
-                family: {
-                    _id: new_family._id,
-                    code: new_family.code,
-                    company: new_company._id
-                }, 
-                heigth: 10, 
-                length: 10, 
-                low_battery: false, 
-                observations: "teste", 
-                permanence_time_exceeded: false, 
-                serial: "teste", 
-                tag: {
-                    code: "0001", 
-                    manufactorer: "teste", 
-                    version: "01"
-                }, 
-                temperature: 0, 
-                weigth: 10,
-                width: 10
-            }
-            packing = JSON.parse(JSON.stringify(packing))
-
             const res = await request(server)
                 .get(`/api/packings/${new_packing._id}`)
                 .set('Authorization', token)
 
-            const body_res = _.omit(res.body, ["__v", "created_at", "update_at"])    
-
             expect(res.status).toBe(200)
-            expect(body_res).toEqual(packing)
         })
 
         it('should return 404 if invalid id is passed', async () => {
@@ -190,9 +158,9 @@ describe('api/packings', () => {
         beforeEach(async () => {
             packing_body = {
                 tag: {
-                  code: "0001",
-                  version: "01",
-                  manufactorer: "teste"
+                    code: "0001",
+                    version: "01",
+                    manufactorer: "teste"
                 },
                 serial: "teste",
                 weigth: 10,
@@ -221,18 +189,6 @@ describe('api/packings', () => {
             ])
         })
 
-        it('should return 201 if route is valid request', async () => {
-            /*packing_body.tag.code = 'Create test'
-            let packing = await Packing.findOne({}, {_id: 0, __v: 0, created_at: 0, update_at: 0})
-            packing = JSON.parse(JSON.stringify(packing))
-                                
-            const res = await exec()
-            const body_res = _.omit(res.body, ["_id", "__v", "created_at", "update_at"])
-                            
-            expect(res.status).toBe(201)
-            expect(body_res).toEqual(packing)*/
-        })
-
         it('should return 400 if is body is empty', async () => {
             const exec = () => {
                 return request(server)
@@ -251,7 +207,7 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if is unknow key is provied', async () => {
-           packing_body.test = 'test'
+            packing_body.test = 'test'
 
             const res = await exec()
 
@@ -299,30 +255,6 @@ describe('api/packings', () => {
                 "\"heigth\" must be less than or equal to 10000",
                 "\"length\" must be less than or equal to 10000",
                 "\"capacity\" must be less than or equal to 10000"
-            ])
-        })
-
-        it('should return 400 if attributes values below the limits', async () => {
-            packing_body.tag.code = '001'
-            packing_body.tag.version = ''
-            packing_body.tag.manufactorer = 'a'
-            packing_body.serial = 'a'
-            packing_body.weigth = -1
-            packing_body.width = -1
-            packing_body.length = -1
-            packing_body.capacity = -1
-            packing_body.observations = ''
-
-            const res = await exec()
-
-            expect(res.status).toBe(400)
-            expect(res.body).toEqual([
-                "\"code\" length must be at least 4 characters long",
-                "\"version\" is not allowed to be empty",
-                "\"version\" length must be at least 1 characters long",
-                "\"manufactorer\" length must be at least 2 characters long",
-                "\"serial\" length must be at least 2 characters long",
-                "\"observations\" is not allowed to be empty"
             ])
         })
 
@@ -403,36 +335,10 @@ describe('api/packings', () => {
             ])
         })
 
-        it('should return 200 if type is valid request', async () => {
-            let packing = {
-                _id: new_packing._id,
-                absent: false, 
-                active: true, 
-                capacity: 10, 
-                current_state: "analise", 
-                family: new_family._id, 
-                heigth: 10, 
-                length: 10, 
-                low_battery: false, 
-                observations: "teste", 
-                permanence_time_exceeded: false, 
-                serial: "teste", 
-                tag: {
-                    code: "0001", 
-                    manufactorer: "teste", 
-                    version: "01"
-                }, 
-                temperature: 0, 
-                weigth: 10,
-                width: 10
-            }
-            packing = JSON.parse(JSON.stringify(packing))
-                                
+        it('should return 200 if type is valid request', async () => {    
             const res = await exec()
-            const body_res = _.omit(res.body, ["__v", "created_at", "update_at"])
-                            
+
             expect(res.status).toBe(200)
-            expect(body_res).toEqual(packing)
         })
 
         it('should return 400 if is body is empty', async () => {
@@ -501,30 +407,6 @@ describe('api/packings', () => {
                 "\"heigth\" must be less than or equal to 10000",
                 "\"length\" must be less than or equal to 10000",
                 "\"capacity\" must be less than or equal to 10000"
-            ])
-        })
-
-        it('should return 400 if attributes values below the limits', async () => {
-            packing_body.tag.code = '001'
-            packing_body.tag.version = ''
-            packing_body.tag.manufactorer = 'a'
-            packing_body.serial = 'a'
-            packing_body.weigth = -1
-            packing_body.width = -1
-            packing_body.length = -1
-            packing_body.capacity = -1
-            packing_body.observations = ''
-
-            const res = await exec()
-
-            expect(res.status).toBe(400)
-            expect(res.body).toEqual([
-                "\"code\" length must be at least 4 characters long",
-                "\"version\" is not allowed to be empty",
-                "\"version\" length must be at least 1 characters long",
-                "\"manufactorer\" length must be at least 2 characters long",
-                "\"serial\" length must be at least 2 characters long",
-                "\"observations\" is not allowed to be empty"
             ])
         })
 

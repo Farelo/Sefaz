@@ -48,10 +48,8 @@ export class DevicesService {
 
     let queryString = Object.keys(param).map(key => key + '=' + param[key]).join('&');
     if (queryString) queryString = '?' + queryString;
-    
-    console.log(queryString);
 
-    return this.http.get(`${environment.url}/device_data/data${queryString}`).catch(this.handleError);
+    return this.http.get(`${environment.url}/packings/data/geolocation${queryString}`).catch(this.handleError);
   }
 
 }

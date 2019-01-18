@@ -105,7 +105,10 @@ exports.home_low_battery_report = async () => {
                 obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
                 obj_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
                 obj_temp.battery_percentage = battery_level
-                obj_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : 'Sem registro'
+
+                obj_temp.last_device_data_battery = packing.last_device_data_battery ? packing.last_device_data_battery : '-'
+                
+                obj_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
                 obj_temp.date = date
 
                 return obj_temp

@@ -18,11 +18,11 @@
             formControlName="name"
             (focusout)="validateName($event)"
             [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
-              || (mControlPoint.get('name').hasError('required') && formDir.submitted)
+              || (mControlPoint.get('name').hasError('required') && submitted)
               || (mControlPoint.get('name').hasError('pattern')) 
               || (mControlPoint.get('name').hasError('pattern') && submitted)
               || (mControlPoint.get('name').hasError('minlength'))
-              || (mControlPoint.get('name').hasError('minlength') && formDir.submitted)
+              || (mControlPoint.get('name').hasError('minlength') && submitted)
               || (mControlPoint.get('name').hasError('uniqueValidation'))
               || (mControlPoint.get('name').hasError('uniqueValidation') && submitted)}">
         </div>
@@ -108,7 +108,7 @@
 
 
       <!-- Input para digitar o endereço -->
-      <div class="campo col-sm-12">
+      <div class="col-sm-12" style="margin-bottom: 10px;">
         <p class="descricao">LOCAL</p>
         <input places-auto-complete 
           class="form-control"
@@ -124,30 +124,53 @@
             Campo Obrigatório
           </p>
 
+          <!-- (click)="onClick($event)" -->
           <ngui-map 
             [zoom]="zoom" 
-            [center]="center"  
-            (click)="onClick($event)" 
+            [center]="center"   
             style="margin-top: 10px;" >
-            <marker [position]="pos"></marker>
+            <!-- <marker [position]="pos"></marker> -->
+            <drawing-manager 
+              [drawingMode]="'null'" 
+              [drawingControl]="true" 
+              [drawingControlOptions]="{
+                position: 2,
+                drawingModes: ['circle', 'polygon']}"
+              [polygonOptions]="{
+                fillColor: '#0044a8',
+                fillOpacity: 0.2,
+                strokeColor: '#0044a8',
+                strokeWeight: 1,
+                strokeOpacity: '0.4',
+                editable: true,
+                zIndex: 1}"
+              [circleOptions]="{
+                fillColor: '#0044a8',
+                fillOpacity: 0.2,
+                strokeColor: '#0044a8',
+                strokeWeight: 1,
+                strokeOpacity: '0.4',
+                editable: true,
+                zIndex: 1}"></drawing-manager>
           </ngui-map>
 
           <p class="requiredText" 
             *ngIf="(mControlPoint.get('full_address').value !== '' && mControlPoint.get('full_address').touched 
               && !pointWasSelected)">
-            Clique no mapa para configurar a localização</p>
+            Selecione contorno círculo ou polígono</p>
+            <div *ngIf="mGeofence?.radius">Raio: {{ mGeofence.radius }} </div>
       </div>
 
       <div class="campo col-sm-12 informacoes">
         <div class="bigger2">
           <div class="fromSun"></div>
         </div>
-        <span class="forn">{{ this.mControlPoint.controls.full_address.value || 'Nenhuma informação sobre a localidade' }}</span>
+        <div class="forn">{{ this.mControlPoint.controls.full_address.value || 'Nenhuma informação sobre a localidade' }}</div>
       </div>
 
 
       <!-- Input para a latitude -->
-      <div class="campo col-md-6">
+      <!-- <div class="campo col-md-6">
         <p class="descricao">LATITUDE</p>
         <div class="input-group">
           <input type="text" 
@@ -164,11 +187,11 @@
         <p class="requiredText" *ngIf="(mControlPoint.get('lat').hasError('required') && mControlPoint.get('lat').touched)
           || (mControlPoint.get('lat').hasError('required') && submitted)">
           Campo Obrigatório</p>
-      </div>
+      </div> -->
 
 
       <!-- Input para a longitude -->
-      <div class="campo col-md-6">
+      <!-- <div class="campo col-md-6">
         <p class="descricao">LONGITUDE</p>
         <div class="input-group">
           <input type="text" 
@@ -185,7 +208,7 @@
         <p class="requiredText" *ngIf="(mControlPoint.get('lng').hasError('required') && mControlPoint.get('lng').touched)
           || (mControlPoint.get('lng').hasError('required') && submitted)">
           Campo Obrigatório</p>
-      </div>
+      </div> -->
     </div>
 
     <br />

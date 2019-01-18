@@ -48,7 +48,10 @@ export class PackingService {
       .catch(this.handleError);
   }
 
-
+  createPackingArray(array: any): Observable<any> { 
+    return this.http.post(`${environment.url}/packings/create_many`, array)
+      .catch(this.handleError);
+  }
 
 
 
@@ -176,10 +179,7 @@ export class PackingService {
   //     .catch(this.handleError);
   // }
 
-  createPackingArray(array: any): Observable<any>{
-    return this.http.post(`${environment.url}/packing/create/array`, array)
-      .catch(this.handleError);
-  }
+  
 
   loadingPackingPerPlant(limit: number, page: number): Observable<any>{
     return this.http.get(`${environment.url}/packing/list/quantiy/per/plant/${limit}/${page}`)

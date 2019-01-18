@@ -48,13 +48,13 @@ export class TimelineComponent implements OnInit {
           (elem.current_state !== constants.ALERTS.CORRECT_LOCAL));
       });
 
-      console.log('this.settings.enable_viagem_perdida: ' + JSON.stringify(this.listOfAlerts));
-      console.log('this.settings: ' + JSON.stringify(this.settings));
+      // console.log('this.settings.enable_viagem_perdida: ' + JSON.stringify(this.listOfAlerts));
+      // console.log('this.settings: ' + JSON.stringify(this.settings));
 
       this.listOfAlerts = this.listOfAlerts.filter(elem => {
         
         //console.log('');
-        console.log('elem.current_state: ' + elem.current_state);
+        // console.log('elem.current_state: ' + elem.current_state);
 
         return ((constants.ALERTS.ABSENT == elem.current_state) && this.settings.enable_viagem_perdida)       //1
         || ((constants.ALERTS.INCORRECT_LOCAL == elem.current_state) && this.settings.enable_local_incorreto) //2
@@ -65,7 +65,7 @@ export class TimelineComponent implements OnInit {
         || ((constants.ALERTS.MISSING == elem.current_state) && this.settings.enable_perdida)                 //7
       });
       
-      console.log(this.listOfAlerts);
+      // console.log(this.listOfAlerts);
       
     }, err => { console.log(err); }); 
   }

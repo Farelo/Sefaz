@@ -66,7 +66,7 @@ export class Gc16EditarComponent implements OnInit {
   }
 
   companySelected(event: any) {
-    console.log(event);
+    // console.log(event);
     
     this.gc16.patchValue({control_point: null});
 
@@ -142,7 +142,7 @@ export class Gc16EditarComponent implements OnInit {
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
-    console.log(valid)
+    // console.log(valid)
 
     if(valid){
 

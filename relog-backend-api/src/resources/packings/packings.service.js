@@ -2,8 +2,8 @@ const debug = require('debug')('service:packings')
 const _ = require('lodash')
 const config = require('config')
 const { Packing } = require('./packings.model')
+const { Family } = require('../families/families.model')
 const rp = require('request-promise')
-// const request = require('request').defaults({ baseUrl: 'https://dm.loka.systems' })
 
 exports.get_packings = async (tag, family) => {
     try {
@@ -116,6 +116,72 @@ exports.check_device = async (device_id) => {
         return response
     } catch (error) {
         debug(error)
+        throw new Error(error)
+    }
+}
+
+exports.geolocation = async (query = { company_id: null, family_id: null, packing_serial: null }) => {
+    try {
+        let packings = []
+        let families = []
+        let data = []
+
+        switch (true) {
+            case query.company_id != null && query.family_id != null && query.packing_serial != null:
+                families = await Family.find({ _id: query.family_id })
+                data = await Promise.all(
+                    families.map(async family => {
+                        return await Packing.find({ family: family._id, serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
+                    })
+                )
+                packings = _.flatMap(data)
+                break
+            case query.company_id != null && query.family_id != null:
+                families = await Family.find({ _id: query.family_id })
+                data = await Promise.all(
+                    families.map(async family => {
+                        return await Packing.find({ family: family._id }).populate('last_device_data').populate('last_device_data_battery').populate('family')
+                    })
+                )
+                packings = _.flatMap(data)
+                break
+            case query.company_id != null && query.packing_serial != null:
+                families = await Family.find({ company: query.company_id })
+                data = await Promise.all(
+                    families.map(async family => {
+                        return await Packing.find({ family: family._id, serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
+                    })
+                )
+                packings = _.flatMap(data)
+                break
+            case query.family_id != null && query.packing_serial != null:
+                packings = await Packing
+                    .find({ family: query.family_id, serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
+                break
+            case query.company_id != null:
+                families = await Family.find({ company: query.company_id })
+                data = await Promise.all(
+                    families.map(async family => {
+                        return await Packing.find({ family: family._id }).populate('last_device_data').populate('last_device_data_battery').populate('family')
+                    })
+                )
+                packings = _.flatMap(data)
+                break
+            case query.family_id != null:
+                packings = await Packing
+                    .find({ family: query.family_id }).populate('last_device_data').populate('last_device_data_battery').populate('family')
+                break
+            case query.packing_serial != null:
+                packings = await Packing
+                    .find({ serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
+                break
+            default:
+                packings = await Packing.find({}).populate('last_device_data').populate('last_device_data_battery').populate('family')
+                break
+        }
+
+        return packings
+    } catch (error) {
         throw new Error(error)
     }
 }

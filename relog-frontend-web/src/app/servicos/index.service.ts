@@ -24,8 +24,8 @@ export { CompaniesService } from './companies.service';
 export { UsersService } from './users.service';
 export { FamiliesService } from './families.service';
 export { MapsService } from './maps.service';
-export { ControlPointsService } from './controlPoints.service';
-export { ControlPointTypesService } from './types.service';
+export { ControlPointsService } from './controlPoints.service'; 
 export { ReportsService } from './reports.service';
 export { DevicesService } from './devices.service';
+export { ControlPointTypesService } from './controlPointTypes.service';
 

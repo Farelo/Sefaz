@@ -44,7 +44,7 @@
                 <th>Planta Atual</th>
                 <th>Local</th>
                 <th>Bateria</th>
-                <th>Data</th>
+                <th>Sinal da Bateria</th>
               </tr>
             </thead>
 
@@ -59,8 +59,8 @@
                 <td>{{ item.tag }}</td>
                 <td>{{ item.current_control_point_name }}</td>
                 <td>{{ item.current_control_point_type }}</td>
-                <td>{{ item.battery_percentage ? ((item.battery_percentage | round) + '%') : "Sem registro" }}</td>
-                <td>{{ item.date }}</td>
+                <td>{{ item.last_device_data_battery !== '-' ? ((item.last_device_data_battery.battery.percentage | round) + '%') : "Sem registro" }}</td> 
+                <td>{{ item.last_device_data_battery !== '-' ? ((item.last_device_data_battery.last_communication | date: 'dd/MM/yy HH:MM:ss') ) : "Sem registro" }}</td> 
               </tr>
             </tbody>
           </table>

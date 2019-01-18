@@ -111,23 +111,15 @@
           <div class="iw-title">INFORMAÇÕES</div> 
           <div *ngIf="plant.display" class="info-window-content">
             <p>
-              <span class="bold">Planta:</span> {{ plant.name }}</p> 
-            <!-- <p>
-              <span class="bold">Localização:</span> {{ plant.location }}</p> -->
+              <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p> 
           </div>
         </info-window>
       </marker>
-      
-      <circle *ngFor="let posPlantsRadius of controlPoints" 
-          [center]="posPlantsRadius.latLng"
-          [fillColor]="'#0044a8'"
-          [fillOpacity]="0.2"
-          [strokeColor]="'#0044a8'"
-          [strokeOpacity]="0.4" 
-          [strokeWeight]="1" 
-          [visible]="showControlledPlants"
-          radius="{{ settings.range_radius }}"></circle>
-      
+              
+      <circle *ngFor="let posCPCircle of listOfCircleControlPoints" [center]="posCPCircle.geofence.coordinates[0]" [radius]="posCPCircle.geofence.radius"
+              [editable]="false" [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4"
+              [strokeWeight]="1" [visible]="showControlledPlants"> </circle>
+
 
       <!-- ///////////// -->
       <!-- Logistic operator -->
@@ -141,32 +133,27 @@
           <div class="iw-title">INFORMAÇÕES</div>
           <div *ngIf="plant.display" class="info-window-content">
             <p>
-              <span class="bold">Operador Logístico:</span> {{ logistic.name }}</p>
-            <!-- <p>
-                    <span class="bold">Localização:</span> {{ plant.location }}</p> -->
+              <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
           </div>
         </info-window>
       </marker>
       
-      <circle *ngFor="let posLogisticRadius of logistics" [center]="posLogisticRadius.latLng" [fillColor]="'#0044a8'" [fillOpacity]="0.15"
-        [strokeColor]="'#0044a8'" [strokeOpacity]="0.35" [strokeWeight]="1" [visible]="showControlledPlants" radius="{{ settings.range_radius }}"></circle>
-      
+      <polygon *ngFor="let posCPPolygon of listOfPolygonControlPoints" [paths]="posCPPolygon.geofence.coordinates" [editable]="false" [fillColor]="'#0044a8'"
+        [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"> </polygon>
+
 
       <!-- ///////////// -->
       <!-- Supplier -->
-      <marker *ngFor="let posSuppliers of suppliers" 
+      <!-- <marker *ngFor="let posSuppliers of suppliers" 
         [position]="[posSuppliers.plant.lat, posSuppliers.plant.lng]" 
         (click)="clickedSupplier($event, posSuppliers)"
         [icon]="{ url: 'assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" 
         [visible]="showControlledPlants">
-        <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="sw">
           <div class="iw-title">INFORMAÇÕES</div>
           <div *ngIf="supplier.display" class="info-window-content">
             <p>
               <span class="bold">Fornecedor:</span> {{ supplier.name }}</p>
-            <!-- <p>
-                    <span class="bold">Localização:</span> {{ plant.location }}</p> -->
           </div>
         </info-window>
       </marker>
@@ -179,7 +166,7 @@
         [strokeOpacity]="0.4" 
         [strokeWeight]="1" 
         [visible]="showControlledPlants"
-        radius="{{ settings.range_radius }}"></circle>
+        radius="{{ settings.range_radius }}"></circle> -->
 
 
       <!-- ///////////// -->

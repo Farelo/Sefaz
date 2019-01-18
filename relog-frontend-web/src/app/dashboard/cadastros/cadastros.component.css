@@ -303,6 +303,15 @@ select {
   text-align: left;
 }
 
+.select-link {
+  display: inline;
+  cursor: pointer;
+}
+
+.select-link:hover {
+  text-decoration: underline;
+}
+
 option {
   color: grey;
 }

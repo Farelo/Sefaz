@@ -225,7 +225,7 @@ export class Gc16AdicionarComponent implements OnInit {
   }
 
   companySelected(event: any){
-    console.log(event);
+    // console.log(event);
 
     this.listOfControlPoints = this.auxListOfControlPoints.filter(elem => {
       return elem.company._id == event._id;

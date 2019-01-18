@@ -114,9 +114,9 @@ export class CompanyEditarComponent implements OnInit {
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
     
-    console.log('this.newCompany: ');
-    console.log(this.newCompany);
-    console.log('valid...:' + JSON.stringify(valid));
+    // console.log('this.newCompany: ');
+    // console.log(this.newCompany);
+    // console.log('valid...:' + JSON.stringify(valid));
     
     this.submitted = true;
 
@@ -128,9 +128,8 @@ export class CompanyEditarComponent implements OnInit {
         .subscribe(result => { 
           this.router.navigate(['/rc/cadastros/company']); 
           this.toastService.successModal('Empresa', true);
-
         }, err => { 
-          console.log(err);
+          // console.log(err);
             this.toastService.showError('', {title: "Erro na atualização", body: "Houve um problema na atualização da Empresa"});
         });
     }

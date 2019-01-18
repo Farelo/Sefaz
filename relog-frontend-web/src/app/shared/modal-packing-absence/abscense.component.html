@@ -1,11 +1,11 @@
 <div class="modalFilho">
   <div class="header">
-    <h2><span>Detalhes do Embalagem </span> </h2>
+    <h2><span>Detalhes da Embalagem </span> </h2>
 
     <p>
       <span class="badge badge-secondary">Código: {{packing.code}}</span>
       <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{packing.serial}}</span>
-      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.code_tag}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.tag.code}}</span>
     </p>
 
   </div>
@@ -14,7 +14,7 @@
   </button>
 
   <div class="modalBody">
-    <ngui-map [center]="center" mapTypeId="terrain" scrollwheel="false">
+    <ngui-map [center]="center" scrollwheel="false">
       <polyline [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3"></polyline>
       <marker *ngFor="let pos of markers" [position]="pos.position" (click)="clicked($event,pos)">
         <info-window id="iw">

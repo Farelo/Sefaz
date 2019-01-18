@@ -152,10 +152,13 @@ export class Spiralize {
 
         //console.log('listener this.listOfObjects: ' + this.listOfObjects);
         this.markers = this.listOfObjects.map((location, i) => {
+            //console.log(location.last_device_data_battery);
+
             let m = new google.maps.Marker({
                 family_code: location.family.code,
                 serial: location.serial,
-                battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                //battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                battery: (location.last_device_data_battery) ? (location.last_device_data_battery.battery.percentage.toFixed(2) + '%') : 'Sem registro',
                 accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
                 position: location.position,
                 icon: this.getPinWithAlert(location.current_state)
@@ -339,7 +342,8 @@ export class Spiralize {
                             packing_code: array[sc - 1].family.code,
                             serial: array[sc - 1].serial,
                             position: spiralCoordinates[sc],
-                            battery: (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.battery.percentage ? (array[sc - 1].last_device_data.battery.percentage + '%') : 'Sem registro') : 'Sem registro', 
+                            battery: (array[sc - 1].last_device_data_battery) ? (array[sc - 1].last_device_data_battery.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                            //battery: (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.battery.percentage ? (array[sc - 1].last_device_data.battery.percentage + '%') : 'Sem registro') : 'Sem registro', 
                             accuracy: (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.accuracy + 'm') : 'Sem registro',
                             icon: this.getPinWithAlert(array[sc - 1].status, true),
                             zIndex: 999,
@@ -355,10 +359,10 @@ export class Spiralize {
                         e.addListener('click', () => {
 
                             // console.log('Clique no pino interno');
-                            console.log(JSON.stringify(e.packing_code));
-                            console.log(JSON.stringify(e.serial));
-                            console.log(JSON.stringify(e.battery));
-                            console.log(JSON.stringify(e.accuracy));
+                            // console.log(JSON.stringify(e.packing_code));
+                            // console.log(JSON.stringify(e.serial));
+                            // console.log(JSON.stringify(e.battery));
+                            // console.log(JSON.stringify(e.accuracy));
                             // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
                             
                             this.packMarker = {

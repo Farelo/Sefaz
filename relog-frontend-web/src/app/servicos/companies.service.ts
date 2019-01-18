@@ -38,4 +38,8 @@ export class CompaniesService {
       .catch(this.handleError);
   }
 
+  createCompanyArray(array: any): Observable<any> {
+    return this.http.post(`${environment.url}/companies/create_many`, array)
+      .catch(this.handleError);
+  }
 }

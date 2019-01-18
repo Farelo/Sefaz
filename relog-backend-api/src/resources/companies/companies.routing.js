@@ -10,6 +10,7 @@ const { validate_companies } = require('./companies.model')
 router.get('/', [auth, authz],companies_controller.all)
 router.get('/:id', [auth, authz, validate_object_id], companies_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_companies)], companies_controller.create)
+router.post('/create_many', [auth, authz], companies_controller.create_many)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_companies)], companies_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], companies_controller.delete)
 
@@ -88,6 +89,41 @@ module.exports = router
  *         required: true
  *         schema:
  *           $ref: '#/definitions/CompanyObject'
+ *     responses:
+ *       200:
+ *         description: Company is valid request
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *
+ */
+
+// POST '/'
+/**
+ * @swagger
+ *
+ * /companies/create_many:
+ *   post:
+ *     summary: Create many company
+ *     description: Create many company
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Companies
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: company
+ *         description: Company array
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
  *     responses:
  *       200:
  *         description: Company is valid request

@@ -10,10 +10,12 @@ const { validate_packings } = require('./packings.model')
 router.get('/', [auth, authz], packings_controller.all)
 router.get('/:id', [auth, authz, validate_object_id], packings_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_packings)], packings_controller.create)
+router.post('/create_many', [auth, authz], packings_controller.create_many)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_packings)], packings_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], packings_controller.delete)
 router.get('/on_control_point/:control_point_id', [auth, authz], packings_controller.show_packings_on_control_point)
 router.get('/check_device/:device_id', [auth, authz], packings_controller.check_device)
+router.get('/data/geolocation', [auth, authz], packings_controller.geolocation)
 
 module.exports = router
 
@@ -101,6 +103,41 @@ module.exports = router
  *         required: true
  *         schema:
  *           $ref: '#/definitions/PackingObject'
+ *     responses:
+ *       200:
+ *         description: Packing is valid request
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *
+ */
+
+// POST '/'
+/**
+ * @swagger
+ *
+ * /packings/create_many:
+ *   post:
+ *     summary: Create a packing
+ *     description: Create a packing
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Packings
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: packing
+ *         description: Packing array
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
  *     responses:
  *       200:
  *         description: Packing is valid request
@@ -211,6 +248,42 @@ module.exports = router
  *         description: Check if packings exists in loka's database
  *         in: path
  *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// GET '/'
+/**
+ * @swagger
+ * /packings/data/geolocation:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Packings
+ *     parameters:
+ *       - name: company_id
+ *         description: Filter localization
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: family_id
+ *         description: Filter localization
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: packing_serial
+ *         description: Filter localization
+ *         in: query
+ *         required: false
  *         type: string
  *     responses:
  *       200:

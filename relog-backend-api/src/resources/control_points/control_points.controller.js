@@ -33,6 +33,26 @@ exports.create = async (req, res) => {
     res.status(HttpStatus.CREATED).send(control_point)
 }
 
+exports.create_many = async (req, res) => {
+    let control_points = []
+
+    for (let control_point of req.body) {
+        let current_control_point = await control_points_service.find_by_name(control_point.data.name)
+        if (current_control_point) return res.status(HttpStatus.BAD_REQUEST).send({ message: `Control Point already exists with this name: ${control_point.data.name};` })
+
+        let type = await types_service.find_by_id(control_point.data.type._id)
+        if (!type) return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid type: ${control_point.data.type._id};` })
+
+        let company = await companies_service.find_by_id(control_point.data.company._id)
+        if (!company) return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid company: ${control_point.data.company._id}` })
+
+        current_control_point = await control_points_service.create_control_point(control_point.data)
+        control_points.push(current_control_point)
+    }
+
+    res.status(HttpStatus.CREATED).send(control_points)
+}
+
 exports.update = async (req, res) => {
     let control_point = await control_points_service.find_by_id(req.params.id)
     if (!control_point) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid control point.' })

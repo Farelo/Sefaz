@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../../servicos/auth.service';
-import {
-  PackingService,
-  InventoryLogisticService,
-  InventoryService,
-  ReportsService,
-  FamiliesService,
-} from '../../../servicos/index.service';
+import { ReportsService, FamiliesService } from '../../../servicos/index.service';
 import { Pagination } from '../../../shared/models/pagination';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LayerModalComponent } from '../../../shared/modal-packing/layer.component';
 import { constants } from '../../../../environments/constants';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { RoundPipe } from '../../../shared/pipes/round';
+import 'jspdf';
+import 'jspdf-autotable';
+import { PackingStatus } from 'app/shared/pipes/packingStatus';
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-equipamento-geral',
@@ -60,6 +60,9 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     }, err => console.error(err));
   }
 
+  /**
+   * Default list
+   */
   generalInventoryEquipament() {
 
     this.reportsService.getGeneralInventory().subscribe(result => {
@@ -74,6 +77,22 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       this.generalEquipament = this.auxGeneralEquipament.filter(item => item.family_code == family.code);
     else
       this.generalEquipament = this.auxGeneralEquipament;
+  }
+
+  searchEvent(event): void {
+    const val = event.target.value.toLowerCase();
+
+    // filter our data
+    const temp = this.auxGeneralEquipament.filter(function (item) {
+      return ((item.family_code.toLowerCase().indexOf(val) !== -1 || !val)
+        || (item.serial.toLowerCase().indexOf(val) !== -1 || !val)
+        || (item.tag.toLowerCase().indexOf(val) !== -1 || !val));
+    });
+
+    // update the rows
+    this.generalEquipament = temp;
+    // Whenever the filter changes, always go back to the first page
+    this.actualPage = 0;
   }
 
   openLayer(packing) {
@@ -103,11 +122,11 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   };
 
   loadTableHeaders() {
-    this.headers.push({ label: 'Código', name: 'family_code' });
+    this.headers.push({ label: 'Família', name: 'family_code' });
     this.headers.push({ label: 'Serial', name: 'serial' });
     this.headers.push({ label: 'Tag', name: 'tag' });
 
-    this.headers.push({ label: 'Fornecedor?', name: 'company' });
+    this.headers.push({ label: 'Vinculada', name: 'company' });
     this.headers.push({ label: 'Status Atual', name: 'current_state' });
     this.headers.push({ label: 'Planta Atual', name: 'current_control_point_name' });
 
@@ -122,8 +141,8 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     this.sort.name = item.name;
     this.sort.order = this.sortStatus[(this.sortStatus.indexOf(this.sort.order) + 1) % 2];
 
-    console.log('---');
-    console.log('this.sort: ' + JSON.stringify(this.sort));
+    // console.log('---');
+    // console.log('this.sort: ' + JSON.stringify(this.sort));
 
     this.generalEquipament = this.customSort(this.generalEquipament, item.name.split("."), this.sort.order);
   }
@@ -138,9 +157,9 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     var sortOrder = 1;
     if (reverse == 'desc') sortOrder = -1;
 
-    console.log('array.length: ' + array.length);
-    console.log('keyArr: ' + keyArr);
-    console.log('sortOrder: ' + sortOrder);
+    // console.log('array.length: ' + array.length);
+    // console.log('keyArr: ' + keyArr);
+    // console.log('sortOrder: ' + sortOrder);
 
     return array.sort(function (a, b) {
       var x = a, y = b;
@@ -150,5 +169,102 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       }
       return sortOrder * ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
+  }
+
+  /**
+   * ================================================
+   * Downlaod csv file
+   */
+
+  private csvOptions = {
+    showLabels: true,
+    fieldSeparator: ';'
+  };
+
+  /**
+  * Click to download
+  */
+  downloadCsv(){
+
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.generalEquipament.slice());
+
+    //Add a header in the flat json data
+    flatObjectData = this.addHeader(flatObjectData);
+
+    //Instantiate a new csv object and initiate the download
+    new Angular2Csv(flatObjectData, 'Inventario Equipamento Geral', this.csvOptions);
+  }
+
+  /**
+   * Click to download pdf file
+   */
+  downloadPdf(){
+    var doc = jsPDF('l', 'pt');
+
+    // You can use html:
+    //doc.autoTable({ html: '#my-table' });
+
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.generalEquipament.slice());
+    let packingStatus = new PackingStatus();
+    flatObjectData = flatObjectData.map(elem => {
+      return [elem.a1, elem.a2, elem.a3, elem.a4, packingStatus.transform(elem.a5), elem.a6, elem.a7, elem.a8, elem.a9, elem.a10];
+    });
+    // console.log(flatObjectData);
+
+    // Or JavaScript:
+    doc.autoTable({
+      head: [['Família', 'Serial', 'Tag', 'Vinculada', 'Status Atual', 'Planta Atual', 'Local', 'Bateria', 'Acurácia', 'Data do sinal']],
+      body: flatObjectData
+    });
+
+    doc.save('general_equipment.pdf');
+  }
+
+  flatObject(mArray: any) {
+    
+    //console.log(mArray);
+     
+     let transformer= new RoundPipe();
+     let plainArray = mArray.map(obj => {
+          return {
+            a1: obj.family_code,
+            a2: obj.serial,
+            a3: obj.tag,
+            a4: obj.company,
+            a5: obj.current_state,
+            a6: obj.current_control_point_name,
+            a7: obj.current_control_point_type,
+            a8: (obj.battery_percentage != undefined && obj.battery_percentage >= 0) ? transformer.transform(obj.battery_percentage):"Sem Registro",
+            a9: obj.accuracy,
+            a10: obj.date
+          };
+        });
+      
+    // As my array is already flat, I'm just returning it.
+    return plainArray;
+  }
+
+  addHeader(mArray: any){
+    let cabecalho = {
+      a1: 'Família',
+      a2: 'Serial',
+      a3: 'Tag',
+      a4: 'Fornecedor',
+      a5: 'Status Atual',
+      a6: 'Planta Atual',
+      a7: 'Local',
+      a8: 'Bateria',
+      a9: 'Acurácia',
+      a10: 'Data do sinal'
+    }
+
+    //adiciona o cabeçalho
+    mArray.unshift(cabecalho);
+
+    return mArray;
   }
 }
