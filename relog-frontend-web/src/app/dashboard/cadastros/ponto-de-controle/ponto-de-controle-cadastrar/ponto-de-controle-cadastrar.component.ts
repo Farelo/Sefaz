@@ -52,25 +52,12 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     });
   }
 
-
   ngOnInit() {
 
     this.prepareMap();
     this.fillCompanySelect();
     this.fillTypesSelect();
   }
-
-  /*
-  google.maps.event.addListener(drawingManager, 'circlecomplete', function(circle) {
-    var radius = circle.getRadius();
-  });
-
-  google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-    if (event.type == 'circle') {
-      var radius = event.overlay.getRadius();
-    }
-  });
-   */
 
   public controlPointCircle: google.maps.Circle = null;
   public controlPointPolygon: google.maps.Polygon = null;
@@ -90,7 +77,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.mGeofence.type = 'c';
     this.mGeofence.radius = this.controlPointCircle.getRadius();
 
-    //console.log(JSON.stringify(this.mGeofence));
+    console.log(JSON.stringify(this.mGeofence));
   }
 
   generatePolygonGeofence(poly: any) {
@@ -103,26 +90,24 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.controlPointPolygon.getPath().forEach(latLng => arr.push({ lat: latLng.lat(), lng: latLng.lng() }))
     this.mGeofence.coordinates = arr;
 
-    // console.log(JSON.stringify(this.mGeofence));
+    console.log(JSON.stringify(this.mGeofence));
   }
 
   prepareMap() {
-    this.drawingManager['initialized$'].subscribe(dm => {
+    this.drawingManager['initialized$'].subscribe((drawingManager: google.maps.drawing.DrawingManager) => {
 
       /**
-       * Circle
+       * Circle Listeners 
        */
-      google.maps.event.addListener(dm, 'circlecomplete', circle => {
+      google.maps.event.addListener(drawingManager, 'circlecomplete', event => {
 
-        //listener when radius is changed
-        google.maps.event.addListener(circle, 'radius_changed', () => {
-          this.generateCircleGeofence(circle);
-        });
+        // Get circle center and radius
+        let center = event.getCenter();
+        let radius = event.getRadius();
 
-        //listener when cender is dragged
-        google.maps.event.addListener(circle, 'center_changed', () => {
-          this.generateCircleGeofence(circle);
-        });
+        // Remove overlay from map
+        event.setMap(null);
+        drawingManager.setDrawingMode(null);
 
         //reseting previous circles
         if (this.controlPointCircle !== null) {
@@ -136,14 +121,14 @@ export class PontoDeControleCadastrarComponent implements OnInit {
           this.controlPointPolygon = null;
         }
 
-        this.generateCircleGeofence(circle);
+        // Create circle
+        this.createCircle(drawingManager, center, radius);
       });
 
-
       /**
-       * Polygon
+       * Polygon Listeners 
        */
-      google.maps.event.addListener(dm, 'polygoncomplete', polygon => {
+      google.maps.event.addListener(drawingManager, 'polygoncomplete', polygon => {
 
         //listener when a vertice is dragged
         google.maps.event.addListener(polygon.getPath(), 'insert_at', () => {
@@ -154,6 +139,9 @@ export class PontoDeControleCadastrarComponent implements OnInit {
         google.maps.event.addListener(polygon.getPath(), 'set_at', () => {
           this.generatePolygonGeofence(polygon);
         });
+
+        //reset the drawing control
+        drawingManager.setDrawingMode(null);
 
         //reseting previous circlesc
         if (this.controlPointCircle !== null) {
@@ -169,7 +157,43 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
         this.generatePolygonGeofence(polygon);
       });
+    });
+  }
 
+  createCircle(drawingManager: google.maps.drawing.DrawingManager, center: any, radius: any) {
+
+    console.log('createCircle');
+
+    if (this.controlPointCircle !== null) {
+      this.controlPointCircle.setMap(null);
+      this.controlPointCircle = null;
+    }
+
+    this.controlPointCircle = new google.maps.Circle({
+      fillColor: '#0044a8',
+      fillOpacity: 0.2,
+      strokeWeight: 1,
+      strokeColor: '#0044a8',
+      strokeOpacity: 0.4,
+      draggable: true,
+      editable: true,
+      map: drawingManager.getMap(),
+      center: center,
+      radius: radius
+    });
+
+    this.generateCircleGeofence(this.controlPointCircle);
+
+    google.maps.event.addListener(this.controlPointCircle, 'radius_changed', event => {
+
+      console.log('circle radius changed');
+      this.generateCircleGeofence(this.controlPointCircle);
+    });
+
+    google.maps.event.addListener(this.controlPointCircle, 'center_changed', event => {
+
+      console.log('circle center changed');
+      this.generateCircleGeofence(this.controlPointCircle);
     });
   }
 
@@ -261,13 +285,13 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
   placeChanged(place: any) {
     this.center = place.geometry.location;
-    
+
     // for (let i = 0; i < place.address_components.length; i++) {
-      //   let addressType = place.address_components[i].types[0];
-      //   this.address = place.address_components[i].long_name;
-      //   console.log(place.address_components[i]);
-      // }
-      
+    //   let addressType = place.address_components[i].types[0];
+    //   this.address = place.address_components[i].long_name;
+    //   console.log(place.address_components[i]);
+    // }
+
     this.address = place.formatted_address;
     this.mControlPoint.controls.full_address.setValue(this.address);
 

@@ -104,7 +104,7 @@
         </p>
 
         <!-- (click)="onClick($event)" -->
-        <ngui-map [zoom]="zoom" [center]="center" style="margin-top: 10px;">
+        <ngui-map [zoom]="zoom" [center]="center" style="margin-top: 10px;" (mapReady$)="onMapReady()">
           <!-- <marker [position]="pos"></marker> -->
           <drawing-manager [drawingMode]="'null'" [drawingControl]="true" [drawingControlOptions]="{
               position: 2,
@@ -126,20 +126,20 @@
               editable: true,
               zIndex: 1}">
           </drawing-manager>
-
-          <polygon *ngIf="!polygonEdited && mGeofence.type == 'p'" [paths]="mGeofence.coordinates" [editable]="false"
+<!-- 
+          <polygon *ngIf="!polygonEdited && mGeofence.type == 'p' && (alreadyprinted == false)" [paths]="mGeofence.coordinates" [editable]="false"
             [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1">
           </polygon>
 
-          <circle *ngIf="!circleEdited && mGeofence.type == 'c'" [center]="mGeofence.coordinates[0]" [radius]="mGeofence.radius"
+          <circle *ngIf="!circleEdited && mGeofence.type == 'c' && (alreadyprinted == false)" [center]="mGeofence.coordinates[0]" [radius]="mGeofence.radius"
             [editable]="false" [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4"
-            [strokeWeight]="1"> </circle>
+            [strokeWeight]="1"> </circle> -->
 
         </ngui-map>
 
         <p class="requiredText">
           Selecione contorno círculo ou polígono</p>
-        <div *ngIf="mGeofence.radius">Raio: {{ this.mGeofence.radius }} </div>
+        <div *ngIf="mGeofence?.radius">Raio: {{ mGeofence.radius }} </div>
       </div>
 
       <div class="campo col-sm-12 informacoes">

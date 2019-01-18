@@ -158,7 +158,7 @@
             *ngIf="(mControlPoint.get('full_address').value !== '' && mControlPoint.get('full_address').touched 
               && !pointWasSelected)">
             Selecione contorno círculo ou polígono</p>
-            <div *ngIf="this.controlPointCircle">Raio: {{ this.controlPointCircle.getRadius() }} </div>
+            <div *ngIf="mGeofence?.radius">Raio: {{ mGeofence.radius }} </div>
       </div>
 
       <div class="campo col-sm-12 informacoes">

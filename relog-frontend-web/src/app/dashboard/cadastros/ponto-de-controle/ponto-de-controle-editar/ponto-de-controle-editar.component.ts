@@ -37,7 +37,7 @@ export class PontoDeControleEditarComponent implements OnInit {
   public circleEdited: boolean = false;
 
   selectedOverlay: any;
-  @ViewChild(DrawingManager) drawingManager: DrawingManager;
+  @ViewChild(DrawingManager) drawingManager: google.maps.drawing.DrawingManager;
 
   constructor(
     private companyService: CompaniesService,
@@ -65,10 +65,13 @@ export class PontoDeControleEditarComponent implements OnInit {
 
     this.fillCompanySelect();
     this.fillTypesSelect();
-    this.retrieveControlPoint();
-    this.prepareMap();
+    
   }
 
+  onMapReady(){
+    console.log('onMapReady'); 
+    this.initializeDrawingManager(); 
+  }
 
   /**
    * Fill the select of companies
@@ -94,7 +97,8 @@ export class PontoDeControleEditarComponent implements OnInit {
   /**
    * 
    */
-  retrieveControlPoint() {
+  retrieveControlPoint(dm: any) {
+    console.log('retrieveControlPoint');
     this.inscricao = this.route.params.subscribe((params: any) => {
       this.mId = params['id'];
       this.controlPointsService.getControlPoint(this.mId).subscribe(result => {
@@ -103,6 +107,7 @@ export class PontoDeControleEditarComponent implements OnInit {
         this.mGeofence = this.mActualControlPoint.geofence;
 
         this.printGeofence();
+        this.prepareMap(dm);
 
         (<FormGroup>this.mControlPoint).patchValue(result, { onlySelf: true });
 
@@ -112,11 +117,14 @@ export class PontoDeControleEditarComponent implements OnInit {
   }
 
   printGeofence(){
-    
-    if (this.mGeofence.type == 'p')
+    console.log('printGeofence');
+
+    if (this.mGeofence.type == 'p'){
       this.calculatePolygonCenter();
-    else
+
+    } else {
       this.calculateCircleCenter();
+    }
   }
 
   calculatePolygonCenter(){
@@ -129,7 +137,7 @@ export class PontoDeControleEditarComponent implements OnInit {
       lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
       lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
     }
-    // console.log('center: ' + this.center);
+    console.log('center: ' + JSON.stringify(this.center));
   }
 
   calculateCircleCenter(){
@@ -143,12 +151,7 @@ export class PontoDeControleEditarComponent implements OnInit {
   public controlPointCircle: google.maps.Circle = null;
   public controlPointPolygon: google.maps.Polygon = null;
   public mGeofence: any = { coordinates: [] };
-  //  = {
-  //   coordinates: [],
-  //   type: '',
-  //   radius: 1000
-  // };
-
+  
   generateCircleGeofence(circle: any) {
 
     this.controlPointCircle = circle;
@@ -158,7 +161,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.mGeofence.type = 'c';
     this.mGeofence.radius = this.controlPointCircle.getRadius();
 
-    // console.log(JSON.stringify(this.mGeofence));
+    console.log(JSON.stringify(this.mGeofence));
   }
 
   generatePolygonGeofence(poly: any) {
@@ -171,81 +174,171 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.controlPointPolygon.getPath().forEach(latLng => arr.push({ lat: latLng.lat(), lng: latLng.lng() }))
     this.mGeofence.coordinates = arr;
 
-    // console.log(JSON.stringify(this.mGeofence));
+    console.log(JSON.stringify(this.mGeofence));
   }
 
   dragPolygon(event: any){
     // console.log(JSON.stringify('aquiiii...'));
   }
 
-  prepareMap() {
-    this.drawingManager['initialized$'].subscribe(dm => {
+  private alreadyprinted: boolean = false;
 
-      /**
-       * Circle
-       */
-      google.maps.event.addListener(dm, 'circlecomplete', circle => {
+  prepareMap(dm: any) {
+    console.log('initialized');
 
-        this.circleEdited = true;
+    if (!this.alreadyprinted && this.mGeofence.type == 'c') {
+      console.log('printing');
+      this.createCircle(dm, this.mGeofence.coordinates[0], this.mGeofence.radius);
+      this.alreadyprinted = true;
+    }
 
-        //listener when radius is changed
-        google.maps.event.addListener(circle, 'radius_changed', () => {
-          this.generateCircleGeofence(circle);
-        });
+    if (!this.alreadyprinted && this.mGeofence.type == 'p') {
+      console.log('printing');
+      this.createPolygon(dm, this.mGeofence.coordinates);
+      this.alreadyprinted = true;
+    }
 
-        //listener when cender is dragged
-        google.maps.event.addListener(circle, 'center_changed', () => {
-          this.generateCircleGeofence(circle);
-        });
+    /**
+     * Circle Listeners 
+     */
+    google.maps.event.addListener(dm, 'circlecomplete', event => {
 
-        //reseting previous circles
-        if (this.controlPointCircle !== null) {
-          this.controlPointCircle.setMap(null);
-          this.controlPointCircle = null;
-        }
+      // Get circle center and radius
+      let center = event.getCenter();
+      let radius = event.getRadius();
 
-        //reseting previous polygons
-        if (this.controlPointPolygon !== null) {
-          this.controlPointPolygon.setMap(null);
-          this.controlPointPolygon = null;
-        }
+      // Remove overlay from map
+      event.setMap(null);
 
-        this.generateCircleGeofence(circle);
-      });
+      //reset the drawing control
+      dm.setDrawingMode(null);
 
+      //reseting previous circle
+      if (this.controlPointCircle !== null) {
+        this.controlPointCircle.setMap(null);
+        this.controlPointCircle = null;
+      }
 
-      /**
-       * Polygon
-       */
-      google.maps.event.addListener(dm, 'polygoncomplete', polygon => {
+      //reseting previous polygon
+      if (this.controlPointPolygon !== null) {
+        this.controlPointPolygon.setMap(null);
+        this.controlPointPolygon = null;
+      }
 
-        this.polygonEdited = true;
+      // Create circle
+      this.createCircle(dm, center, radius);
+    });
 
-        //listener when a vertice is dragged
-        google.maps.event.addListener(polygon.getPath(), 'insert_at', () => {
-          this.generatePolygonGeofence(polygon);
-        });
+    /**
+     * Polygon Listeners 
+     */
+    google.maps.event.addListener(dm, 'polygoncomplete', polygon => {
 
-        //listener when a new vertice is created
-        google.maps.event.addListener(polygon.getPath(), 'set_at', () => {
-          this.generatePolygonGeofence(polygon);
-        });
+      // Remove overlay from map
+      polygon.setMap(null);
 
-        //reseting previous circles
-        if (this.controlPointCircle !== null) {
-          this.controlPointCircle.setMap(null);
-          this.controlPointCircle = null;
-        }
+      //reset the drawing control
+      dm.setDrawingMode(null);
 
-        //reseting previous polygons
-        if (this.controlPointPolygon !== null) {
-          this.controlPointPolygon.setMap(null);
-          this.controlPointPolygon = null;
-        }
+      //reseting previous circle
+      if (this.controlPointCircle !== null) {
+        this.controlPointCircle.setMap(null);
+        this.controlPointCircle = null;
+      }
 
-        this.generatePolygonGeofence(polygon);
-      });
+      //reseting previous polygon
+      if (this.controlPointPolygon !== null) {
+        this.controlPointPolygon.setMap(null);
+        this.controlPointPolygon = null;
+      }
 
+      this.createPolygon(dm, polygon.getPaths());
+    });
+  }
+
+  initializeDrawingManager() {
+
+    console.log('prepareMap');
+
+    this.drawingManager['initialized$'].subscribe((dm: google.maps.drawing.DrawingManager) => {
+
+      this.retrieveControlPoint(dm);
+      
+    });
+  }
+
+  createCircle(dm: google.maps.drawing.DrawingManager, center: any, radius: any) {
+
+    console.log('createCircle');
+    console.log('center: ' + center);
+    console.log('radius: ' + radius);
+
+    // if (this.controlPointCircle !== null) {
+    //   this.controlPointCircle.setMap(null);
+    //   this.controlPointCircle = null;
+    // }
+
+    //console.log(drawingManager.getMap());
+    this.controlPointCircle = new google.maps.Circle({
+      fillColor: '#0044a8',
+      fillOpacity: 0.2,
+      strokeWeight: 1,
+      strokeColor: '#0044a8',
+      strokeOpacity: 0.4,
+      draggable: true,
+      editable: true,
+      map: dm.getMap(),
+      center: center,
+      radius: radius
+    });
+
+    this.generateCircleGeofence(this.controlPointCircle);
+
+    google.maps.event.addListener(this.controlPointCircle, 'radius_changed', event => {
+
+      console.log('circle radius changed');
+      this.generateCircleGeofence(this.controlPointCircle);
+    });
+
+    google.maps.event.addListener(this.controlPointCircle, 'center_changed', event => {
+
+      console.log('circle center changed');
+      this.generateCircleGeofence(this.controlPointCircle);
+    });
+  }
+
+  createPolygon(dm: google.maps.drawing.DrawingManager, polygon: any){
+
+    console.log('createPolygon');
+
+    // if (this.controlPointCircle !== null) {
+    //   this.controlPointCircle.setMap(null);
+    //   this.controlPointCircle = null;
+    // }
+
+    //console.log(dm.getMap());
+    this.controlPointPolygon = new google.maps.Polygon({
+      fillColor: '#0044a8',
+      fillOpacity: 0.2,
+      strokeWeight: 1,
+      strokeColor: '#0044a8',
+      strokeOpacity: 0.4,
+      draggable: true,
+      editable: true,
+      paths: polygon,
+      map: dm.getMap()
+    });
+
+    this.generatePolygonGeofence(this.controlPointPolygon);
+
+    //listener when a vertice is dragged
+    google.maps.event.addListener(this.controlPointPolygon.getPath(), 'insert_at', () => {
+      this.generatePolygonGeofence(this.controlPointPolygon);
+    });
+
+    //listener when a new vertice is created
+    google.maps.event.addListener(this.controlPointPolygon.getPath(), 'set_at', () => {
+      this.generatePolygonGeofence(this.controlPointPolygon);
     });
   }
 
