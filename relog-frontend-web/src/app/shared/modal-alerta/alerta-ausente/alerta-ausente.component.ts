@@ -67,6 +67,9 @@ export class AlertaAusenteComponent implements OnInit {
           });
           actualPackage.alertCode = this.alerta.current_state;
           actualPackage.tag = actualPackage.tag.code;
+
+          console.log(this.alerta);
+          console.log(actualPackage);
           modalRef.componentInstance.packing = actualPackage;
         },
         err => {

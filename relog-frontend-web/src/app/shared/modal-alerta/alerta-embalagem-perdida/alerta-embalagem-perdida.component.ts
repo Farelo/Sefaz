@@ -31,7 +31,7 @@ export class AlertaEmbalagemPerdidaComponent implements OnInit {
       .getPacking(this.alerta._id)
       .subscribe(
         result => {
-          let actualPackage = result.data;
+          let actualPackage = result;
 
           this.activeAlerta.dismiss('open map');
           const modalRef = this.modalService.open(LayerModalComponent, {

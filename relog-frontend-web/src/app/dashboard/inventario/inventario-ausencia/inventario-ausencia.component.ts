@@ -6,9 +6,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { FloatTimePipe } from '../../../shared/pipes/floatTime';
 import { LayerModalComponent } from 'app/shared/modal-packing/layer.component';
-import 'jspdf';
-import 'jspdf-autotable';
-declare var jsPDF: any;
+// import 'jspdf';
+// import 'jspdf-autotable';
+// declare var jsPDF: any;
 
 
 @Component({

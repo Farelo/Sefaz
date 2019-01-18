@@ -4,9 +4,9 @@ import { Pagination } from '../../../shared/models/pagination';
 import { ModalInvComponent } from '../../../shared/modal-inv/modal-inv.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
-import 'jspdf';
-import 'jspdf-autotable';
-declare var jsPDF: any;
+// import 'jspdf';
+// import 'jspdf-autotable';
+// declare var jsPDF: any;
 
 @Component({
   selector: 'app-geral',

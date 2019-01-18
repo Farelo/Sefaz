@@ -3,9 +3,9 @@ import { Pagination } from '../../../shared/models/pagination';
 import { InventoryService, PackingService, AuthenticationService, ReportsService, FamiliesService } from '../../../servicos/index.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { FloatTimePipe } from '../../../shared/pipes/floatTime';
-import 'jspdf';
-import 'jspdf-autotable';
-declare var jsPDF: any;
+// import 'jspdf';
+// import 'jspdf-autotable';
+// declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-permanencia',
