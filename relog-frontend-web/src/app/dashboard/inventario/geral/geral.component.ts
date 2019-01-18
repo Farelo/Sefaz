@@ -78,28 +78,28 @@ export class GeralComponent implements OnInit {
   /**
    * Click to download pdf file
    */
-  downloadPdf(){
-    var doc = jsPDF('l', 'pt');
+  // downloadPdf(){
+  //   var doc = jsPDF('l', 'pt');
 
-    // You can use html:
-    //doc.autoTable({ html: '#my-table' });
+  //   // You can use html:
+  //   //doc.autoTable({ html: '#my-table' });
 
-    //Flat the json object to print
-    //I'm using the method slice() just to copy the array as value.
-    let flatObjectData = this.flatObject(this.listOfGeneral.slice());
-    flatObjectData = flatObjectData.map(elem => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4];
-    });
-    // console.log(flatObjectData);
+  //   //Flat the json object to print
+  //   //I'm using the method slice() just to copy the array as value.
+  //   let flatObjectData = this.flatObject(this.listOfGeneral.slice());
+  //   flatObjectData = flatObjectData.map(elem => {
+  //     return [elem.a1, elem.a2, elem.a3, elem.a4];
+  //   });
+  //   // console.log(flatObjectData);
 
-    // Or JavaScript:
-    doc.autoTable({
-      head: [['Família', 'Empresa', 'Projeto', 'Quantidade']],
-      body: flatObjectData
-    });
+  //   // Or JavaScript:
+  //   doc.autoTable({
+  //     head: [['Família', 'Empresa', 'Projeto', 'Quantidade']],
+  //     body: flatObjectData
+  //   });
 
-    doc.save('general.pdf');
-  }
+  //   doc.save('general.pdf');
+  // }
 
   flatObject(mArray: any) {
     
