@@ -29,8 +29,7 @@
         "../node_modules/font-awesome/css/font-awesome.css"
       ],
       "scripts": [
-        "../node_modules/jspdf/dist/jspdf.min.js",
-        "../node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
+        
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
