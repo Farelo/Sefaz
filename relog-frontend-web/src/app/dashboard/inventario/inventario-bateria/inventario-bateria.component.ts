@@ -91,28 +91,28 @@ export class InventarioBateriaComponent implements OnInit {
   /**
    * Click to download pdf file
    */
-  downloadPdf(){
-    var doc = jsPDF('l', 'pt');
+  // downloadPdf(){
+  //   var doc = jsPDF('l', 'pt');
 
-    // You can use html:
-    //doc.autoTable({ html: '#my-table' });
+  //   // You can use html:
+  //   //doc.autoTable({ html: '#my-table' });
 
-    //Flat the json object to print
-    //I'm using the method slice() just to copy the array as value.
-    let flatObjectData = this.flatObject(this.listOfBattery.slice());
-    flatObjectData = flatObjectData.map(elem => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6];
-    });
-    // console.log(flatObjectData);
+  //   //Flat the json object to print
+  //   //I'm using the method slice() just to copy the array as value.
+  //   let flatObjectData = this.flatObject(this.listOfBattery.slice());
+  //   flatObjectData = flatObjectData.map(elem => {
+  //     return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6];
+  //   });
+  //   // console.log(flatObjectData);
 
-    // Or JavaScript:
-    doc.autoTable({
-      head: [['Família', 'Serial', 'Planta Atual', 'Local', 'Bateria', 'Nível']],
-      body: flatObjectData
-    });
+  //   // Or JavaScript:
+  //   doc.autoTable({
+  //     head: [['Família', 'Serial', 'Planta Atual', 'Local', 'Bateria', 'Nível']],
+  //     body: flatObjectData
+  //   });
 
-    doc.save('battery.pdf');
-  }
+  //   doc.save('battery.pdf');
+  // }
 
 
   flatObject(mArray: any) {

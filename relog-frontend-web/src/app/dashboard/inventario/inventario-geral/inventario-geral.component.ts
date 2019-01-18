@@ -192,41 +192,41 @@ export class InventarioGeralComponent implements OnInit {
   /**
   * Click to download pdf file
   */
-  downloadPdf() {
-    var doc = jsPDF('l', 'pt');
+  // downloadPdf() {
+  //   var doc = jsPDF('l', 'pt');
 
-    // You can use html:
-    //doc.autoTable({ html: '#my-table' });
+  //   // You can use html:
+  //   //doc.autoTable({ html: '#my-table' });
 
-    //Flat the json object to print
-    //I'm using the method slice() just to copy the array as value.
-    let flatObjectData = this.flatObject(this.detailedGeneralInventory.slice());
-    flatObjectData = flatObjectData.map(elem => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7, elem.a8, elem.a9, elem.a10, elem.a11, elem.a12];
-    });
+  //   //Flat the json object to print
+  //   //I'm using the method slice() just to copy the array as value.
+  //   let flatObjectData = this.flatObject(this.detailedGeneralInventory.slice());
+  //   flatObjectData = flatObjectData.map(elem => {
+  //     return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7, elem.a8, elem.a9, elem.a10, elem.a11, elem.a12];
+  //   });
     
-    // console.log(flatObjectData);
+  //   // console.log(flatObjectData);
 
-    // Or JavaScript:
-    doc.autoTable({
-      head: [['Fornecedor',
-        'Família',
-        'Total de Equipamentos do Fornecedor(TEF)',
-        'Quantidade nas Plantas(A)',
-        'Quantidade no Fornecedor(B)',
-        'Quantidade no Transito(C)',
-        'Total do Inventário On Line(TIOL = A + B + C)',
-        'Diferença(TEF - TIOL)',
-        'Atraso de Rota',
-        'Local Incorreto',
-        'Tempo de Permanência',
-        'Embalagem Ausente'
-      ]],
-      body: flatObjectData
-    });
+  //   // Or JavaScript:
+  //   doc.autoTable({
+  //     head: [['Fornecedor',
+  //       'Família',
+  //       'Total de Equipamentos do Fornecedor(TEF)',
+  //       'Quantidade nas Plantas(A)',
+  //       'Quantidade no Fornecedor(B)',
+  //       'Quantidade no Transito(C)',
+  //       'Total do Inventário On Line(TIOL = A + B + C)',
+  //       'Diferença(TEF - TIOL)',
+  //       'Atraso de Rota',
+  //       'Local Incorreto',
+  //       'Tempo de Permanência',
+  //       'Embalagem Ausente'
+  //     ]],
+  //     body: flatObjectData
+  //   });
 
-    doc.save('general_inventory.pdf');
-  }
+  //   doc.save('general_inventory.pdf');
+  // }
 
   flatObject(mArray: any) {
 
