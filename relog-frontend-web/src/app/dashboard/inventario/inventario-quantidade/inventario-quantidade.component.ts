@@ -4,9 +4,9 @@ import { ReportsService, FamiliesService } from '../../../servicos/index.service
 import { Pagination } from '../../../shared/models/pagination';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { CompanyType } from '../../../shared/pipes/plantType';
-import 'jspdf';
-import 'jspdf-autotable';
-declare var jsPDF: any;
+// import 'jspdf';
+// import 'jspdf-autotable';
+// declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-quantidade',

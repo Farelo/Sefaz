@@ -7,9 +7,9 @@ import {
 } from '../../../servicos/index.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { RoundPipe } from '../../../shared/pipes/round';
-import 'jspdf';
-import 'jspdf-autotable';
-declare var jsPDF: any;
+// import 'jspdf';
+// import 'jspdf-autotable';
+// declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-bateria',

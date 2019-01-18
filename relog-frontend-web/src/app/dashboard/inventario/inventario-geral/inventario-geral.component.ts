@@ -4,9 +4,9 @@ import { Pagination } from '../../../shared/models/pagination';
 import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService, ReportsService, CompaniesService, FamiliesService } from '../../../servicos/index.service';
 import { ChatService } from '../../../servicos/teste';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
-import 'jspdf';
-import 'jspdf-autotable';
-declare var jsPDF: any;
+// import 'jspdf';
+// import 'jspdf-autotable';
+// declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-geral',

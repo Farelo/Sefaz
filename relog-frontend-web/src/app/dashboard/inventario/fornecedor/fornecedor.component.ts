@@ -3,8 +3,8 @@ import { Pagination } from '../../../shared/models/pagination';
 import { AuthenticationService } from '../../../servicos/auth.service';
 import { SuppliersService, InventoryService, ReportsService, CompaniesService } from '../../../servicos/index.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
-import 'jspdf';
-import 'jspdf-autotable';
+// import 'jspdf';
+// import 'jspdf-autotable';
 // declare var jsPDF: any;
 
 @Component({
