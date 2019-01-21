@@ -1,7 +1,6 @@
 import { Component, OnInit, Input,OnDestroy, NgZone, ComponentRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Alert } from '../../../shared/models/alert';
-import { ChatService } from '../../../servicos/teste';
+import { Alert } from '../../../shared/models/alert'; 
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Pagination } from '../../../shared/models/pagination';

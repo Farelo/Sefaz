@@ -8,9 +8,9 @@ import { constants } from '../../../../environments/constants';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { RoundPipe } from '../../../shared/pipes/round';
 import { PackingStatus } from 'app/shared/pipes/packingStatus';
-// import 'jspdf';
-// import 'jspdf-autotable';
-// declare var jsPDF: any;
+import 'jspdf';
+import 'jspdf-autotable';
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-equipamento-geral',
@@ -200,29 +200,29 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   /**
    * Click to download pdf file
    */
-  // downloadPdf(){
-  //   var doc = jsPDF('l', 'pt');
+  downloadPdf(){
+    var doc = jsPDF('l', 'pt');
 
-  //   // You can use html:
-  //   //doc.autoTable({ html: '#my-table' });
+    // You can use html:
+    //doc.autoTable({ html: '#my-table' });
 
-  //   //Flat the json object to print
-  //   //I'm using the method slice() just to copy the array as value.
-  //   let flatObjectData = this.flatObject(this.generalEquipament.slice());
-  //   let packingStatus = new PackingStatus();
-  //   flatObjectData = flatObjectData.map(elem => {
-  //     return [elem.a1, elem.a2, elem.a3, elem.a4, packingStatus.transform(elem.a5), elem.a6, elem.a7, elem.a8, elem.a9, elem.a10];
-  //   });
-  //   // console.log(flatObjectData);
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.generalEquipament.slice());
+    let packingStatus = new PackingStatus();
+    flatObjectData = flatObjectData.map(elem => {
+      return [elem.a1, elem.a2, elem.a3, elem.a4, packingStatus.transform(elem.a5), elem.a6, elem.a7, elem.a8, elem.a9, elem.a10];
+    });
+    // console.log(flatObjectData);
 
-  //   // Or JavaScript:
-  //   doc.autoTable({
-  //     head: [['Família', 'Serial', 'Tag', 'Vinculada', 'Status Atual', 'Planta Atual', 'Local', 'Bateria', 'Acurácia', 'Data do sinal']],
-  //     body: flatObjectData
-  //   });
+    // Or JavaScript:
+    doc.autoTable({
+      head: [['Família', 'Serial', 'Tag', 'Vinculada', 'Status Atual', 'Planta Atual', 'Local', 'Bateria', 'Acurácia', 'Data do sinal']],
+      body: flatObjectData
+    });
 
-  //   doc.save('general_equipment.pdf');
-  // }
+    doc.save('general_equipment.pdf');
+  }
 
   flatObject(mArray: any) {
     

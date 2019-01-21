@@ -57,6 +57,8 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
           });
           actualPackage.alertCode = this.alerta.current_state;
           actualPackage.tag = actualPackage.tag.code;
+          actualPackage.family_code = this.alerta.family.code;
+          
           modalRef.componentInstance.packing = actualPackage;
         },
         err => {
