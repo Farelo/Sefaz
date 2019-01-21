@@ -103,7 +103,7 @@
       <!-- Ponto de Controle -->
       <marker *ngFor="let posCP of listOfCircleControlPoints" 
         [position]="posCP.position" 
-        [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+        [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
         [visible]="showControlledPlants" 
         [title]="posCP.name" 
         (click)="clickedPlant($event, posCP)">
@@ -126,7 +126,7 @@
       <marker *ngFor="let posCP of listOfPolygonControlPoints" 
         [position]="posCP.position" 
         (click)="clickedPlant($event, posCP)"
-        [icon]="{ url: '../../../assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
+        [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
         [visible]="showControlledPlants">
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="lw">
