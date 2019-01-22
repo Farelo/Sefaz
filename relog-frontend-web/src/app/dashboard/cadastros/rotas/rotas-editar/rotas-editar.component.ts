@@ -226,12 +226,14 @@ export class RotasEditarComponent implements OnInit {
    */
   firstPointChange(event: any) {
     // console.log(event);
-    this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
+    this.direction.origin = event.full_address;
+    //this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
   }
 
   secondPointChange(event: any) {
     // console.log(event);
-    this.direction.destination = new google.maps.LatLng(event.lat, event.lng);
+    this.direction.destination = event.full_address;
+    //this.direction.destination = new google.maps.LatLng(event.lat, event.lng);
   }
 
   /**
