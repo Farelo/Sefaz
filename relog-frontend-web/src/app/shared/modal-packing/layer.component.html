@@ -73,7 +73,7 @@
     <div class="form-group form-check">
       <div class="checkbox">
         <label>
-          <input type="checkbox" value="" [(ngModel)]="showLastPosition">
+          <input type="checkbox" value="" [(ngModel)]="showLastPosition" (click)="lastPositionClicked($event)">
           <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
           Apenas última posição
         </label>

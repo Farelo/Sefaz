@@ -232,6 +232,8 @@ export class LayerModalComponent implements OnInit {
           return elem;
         });
 
+        this.markers = this.markers.reverse();
+
         //atualiza o path
         this.updatePaths();
 
@@ -452,15 +454,31 @@ export class LayerModalComponent implements OnInit {
     // console.log('-');
   }
 
+  lastPositionClicked(event: any){
+    // console.log('event');
+    // console.log(event);
+
+    // console.log('lastPositionClicked');
+    // console.log(this.showLastPosition);
+
+    if (!this.showLastPosition){
+      this.center = null;
+      this.getLastPostition();
+    }
+  }
+
   /**
-   * This method updates the array 'path' with markers that satisfies the given accuracy.
+   * This method updates the array 'path' with markers that satisfies the given accuracy. 
    */
   getLastPostition() {
     //console.log('getLastPostition');
 
     if (this.rangedMarkers.length > 0) {
-      this.lastPosition = this.rangedMarkers[0];
-      this.center = this.lastPosition.latLng;
+      this.lastPosition = this.rangedMarkers[this.rangedMarkers.length - 1];
+      // console.log(this.lastPosition);
+
+      //this.center = this.lastPosition.latLng;
+      this.center = (new google.maps.LatLng(this.lastPosition.latitude, this.lastPosition.longitude));
 
     } else {
       this.lastPosition = null;
@@ -468,7 +486,7 @@ export class LayerModalComponent implements OnInit {
 
     this.isLoading = false;
     //console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
-    //console.log('center: ' + JSON.stringify(this.center));
+    // console.log('center: ' + JSON.stringify(this.center));
   }
 
   formatDate(date: any) {
