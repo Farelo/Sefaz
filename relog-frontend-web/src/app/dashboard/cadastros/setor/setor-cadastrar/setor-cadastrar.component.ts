@@ -2,7 +2,7 @@ import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
 import { Department } from '../../../../shared/models/department';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { GeocodingService, ToastService, PlantsService, DepartmentService, ControlPointsService} from '../../../../servicos/index.service';
+import { GeocodingService, ToastService, DepartmentService, ControlPointsService} from '../../../../servicos/index.service';
 
 @Component({
   selector: 'app-setor-cadastrar',
@@ -71,17 +71,47 @@ export class SetorCadastrarComponent implements OnInit {
   }
 
   onChange(event){
+    console.log(event);
 
     if(event){
-      this.pos = new google.maps.LatLng(event.lat,event.lng);
-      this.center = this.pos;
+      //this.pos = new google.maps.LatLng(event.lat,event.lng);
+
+      if(event.geofence.type == 'c'){
+        this.calculateCircleCenter(event);
+      } else{
+        this.calculatePolygonCenter(event);
+      }
+
+      // this.pos = event.full_address;
+      this.pos = this.center;
       this.zoom = 20;
 
+      console.log(this.center);
+
       //update on form group
-      this.mDepartment.controls.lat.setValue(event.lat);
-      this.mDepartment.controls.lng.setValue(event.lng);
+      this.mDepartment.controls.lat.setValue(this.center.lat);
+      this.mDepartment.controls.lng.setValue(this.center.lng);
     }
   }
+
+   calculatePolygonCenter(event: any){
+
+    let lat = event.geofence.coordinates.map(p =>  p.lat);
+    let lng = event.geofence.coordinates.map(p =>  p.lng);
+
+    //new google.maps.LatLng();
+    this.center = {
+      lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
+      lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
+    }
+    console.log('center: ' + JSON.stringify(this.center));
+  }
+
+  calculateCircleCenter(event: any){
+    this.center = event.geofence.coordinates[0];
+  }
+
+
 
   loadControlPoints():void {
 
