@@ -6,9 +6,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { FloatTimePipe } from '../../../shared/pipes/floatTime';
 import { LayerModalComponent } from 'app/shared/modal-packing/layer.component';
-// import 'jspdf';
-// import 'jspdf-autotable';
-// declare var jsPDF: any;
+import 'jspdf';
+import 'jspdf-autotable';
+declare var jsPDF: any;
 
 
 @Component({
@@ -273,28 +273,28 @@ export class InventarioAusenciaComponent implements OnInit {
   /**
    * Click to download pdf file
    */
-  // downloadPdf() {
-  //   var doc = jsPDF('l', 'pt');
+  downloadPdf() {
+    var doc = jsPDF('l', 'pt');
 
-  //   // You can use html:
-  //   //doc.autoTable({ html: '#my-table' });
+    // You can use html:
+    //doc.autoTable({ html: '#my-table' });
 
-  //   //Flat the json object to print
-  //   //I'm using the method slice() just to copy the array as value.
-  //   let flatObjectData = this.flatObject(this.listOfAbsent.slice());
-  //   flatObjectData = flatObjectData.map(elem => {
-  //     return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5];
-  //   });
-  //   console.log(flatObjectData);
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.listOfAbsent.slice());
+    flatObjectData = flatObjectData.map(elem => {
+      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5];
+    });
+    console.log(flatObjectData);
 
-  //   // Or JavaScript:
-  //   doc.autoTable({
-  //     head: [['Família', 'Serial', 'Tag', 'Última Planta Conhecida', 'Tempo de Ausência']],
-  //     body: flatObjectData
-  //   });
+    // Or JavaScript:
+    doc.autoTable({
+      head: [['Família', 'Serial', 'Tag', 'Última Planta Conhecida', 'Tempo de Ausência']],
+      body: flatObjectData
+    });
 
-  //   doc.save('absent.pdf');
-  // }
+    doc.save('absent.pdf');
+  }
 
   flatObject(mArray: any) {
     

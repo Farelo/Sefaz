@@ -73,7 +73,7 @@
     <div class="form-group form-check">
       <div class="checkbox">
         <label>
-          <input type="checkbox" value="" [(ngModel)]="showLastPosition">
+          <input type="checkbox" value="" [(ngModel)]="showLastPosition" (click)="lastPositionClicked($event)">
           <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
           Apenas última posição
         </label>
@@ -100,13 +100,13 @@
       
 
       <!-- ///////////// -->
-      <!-- Plant -->
-      <marker *ngFor="let posPlants of controlPoints" 
-      [position]="[posPlants.lat, posPlants.lng]" 
-      (click)="clickedPlant($event, posPlants)" 
-      [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
-      [visible]="showControlledPlants">
-        <!-- <div class="custom-icon-map-plant"></div> -->
+      <!-- Ponto de Controle -->
+      <marker *ngFor="let posCP of listOfCircleControlPoints" 
+        [position]="posCP.position" 
+        [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+        [visible]="showControlledPlants" 
+        [title]="posCP.name" 
+        (click)="clickedPlant($event, posCP)">
         <info-window id="pw">
           <div class="iw-title">INFORMAÇÕES</div> 
           <div *ngIf="plant.display" class="info-window-content">
@@ -122,11 +122,11 @@
 
 
       <!-- ///////////// -->
-      <!-- Logistic operator -->
-      <marker *ngFor="let posLogistic of logistics" 
-        [position]="[posLogistic.plant.lat, posLogistic.plant.lng]" 
-        (click)="clickedLogistic($event, posLogistic)"
-        [icon]="{ url: 'assets/images/pin_logistic.png', size: [28, 43], scaledSize: [28, 43] }" 
+      <!-- Ponto de Controle -->
+      <marker *ngFor="let posCP of listOfPolygonControlPoints" 
+        [position]="posCP.position" 
+        (click)="clickedPlant($event, posCP)"
+        [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
         [visible]="showControlledPlants">
         <!-- <div class="custom-icon-map-plant"></div> -->
         <info-window id="lw">

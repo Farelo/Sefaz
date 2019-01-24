@@ -112,13 +112,15 @@ export class RotasCadastrarComponent implements OnInit {
    * @param param0 
    */
   firstPointChange(event: any){
-    // console.log(event);
-    this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
+    console.log(event);
+    this.direction.origin = event.full_address;
+    //this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
   }
 
   secondPointChange(event: any) {
-    // console.log(event);
-    this.direction.destination = new google.maps.LatLng(event.lat, event.lng);
+    console.log(event);
+    this.direction.destination = event.full_address;
+    //this.direction.destination = new google.maps.LatLng(event.lat, event.lng);
   }
 
   /**
@@ -140,8 +142,11 @@ export class RotasCadastrarComponent implements OnInit {
     partial_delay = partial_delay + this.time_delay.minute * 1000 * 60 * 60;
     partial_delay = partial_delay + this.time_delay.second * 1000 * 60;
 
-    // console.log('submit mRoute');
-    // console.log(this.mRoute);
+    console.log('submit mRoute');
+    console.log(this.mRoute);
+
+    console.log('value');
+    console.log(value);
     
     //Ajustando objeto
     value.family = value.family._id;

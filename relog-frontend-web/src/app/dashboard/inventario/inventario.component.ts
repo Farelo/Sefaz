@@ -4,8 +4,7 @@ import { Pagination } from '../../shared/models/pagination';
 import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
 import { LayerModalComponent } from '../../shared/modal-packing/layer.component';
 import { AbscenseModalComponent } from '../../shared/modal-packing-absence/abscense.component';
-import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service';
-import { ChatService } from '../../servicos/teste';
+import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service'; 
 import { Angular2Csv } from 'angular2-csv/Angular2-csv'; 
 
 declare var $: any;
@@ -66,16 +65,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     // this.loadPackings();
     // this.loadAbPackings();
     // this.loadLocals();
-
-    // REAL TIME SOCKER IO TEST
-    // this.connection = this.chatService.getMessages().subscribe(message => {
-    //   console.log(this.messages.length)
-    //   this.messages.push(message);
-
-    // })
   }
 
-  // <!--TEST SOCKER IO REAL TIME-- >
   ngOnDestroy() {
 
     // this.connection.unsubscribe();
@@ -90,9 +81,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     private modalService: NgbModal,
     private modalActive: NgbActiveModal,
     private ref: ChangeDetectorRef,
-    private auth: AuthenticationService,
-    private chatService: ChatService,
-  ) {
+    private auth: AuthenticationService) {
 
     let user = this.auth.currentUser();
     let current_user = this.auth.currentUser();
@@ -113,16 +102,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
         { name: 'FORNECEDOR' }];
     }
   }
-
-// REAL TIME SOCKER IO TEST
-  // sendMessage() {
-  //   console.log(this.message)
-  //   this.chatService.sendMessage(this.message);
-
-  //   this.message = '';
-
-  // }
-
 
   changeSelect(event) {
     // if (event === "Bateria") {

@@ -4,9 +4,9 @@ import { ReportsService, FamiliesService } from '../../../servicos/index.service
 import { Pagination } from '../../../shared/models/pagination';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { CompanyType } from '../../../shared/pipes/plantType';
-// import 'jspdf';
-// import 'jspdf-autotable';
-// declare var jsPDF: any;
+import 'jspdf';
+import 'jspdf-autotable';
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-inventario-quantidade',
@@ -106,28 +106,28 @@ export class InventarioQuantidadeComponent implements OnInit {
   /**
    * Click to download pdf file
    */
-  // downloadPdf() {
-  //   var doc = jsPDF('l', 'pt');
+  downloadPdf() {
+    var doc = jsPDF('l', 'pt');
 
-  //   // You can use html:
-  //   //doc.autoTable({ html: '#my-table' });
+    // You can use html:
+    //doc.autoTable({ html: '#my-table' });
 
-  //   //Flat the json object to print
-  //   //I'm using the method slice() just to copy the array as value.
-  //   let flatObjectData = this.flatObject(this.listOfQuantity.slice());
-  //   flatObjectData = flatObjectData.map(elem => {
-  //     return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7, elem.a8];
-  //   });
-  //   // console.log(flatObjectData);
+    //Flat the json object to print
+    //I'm using the method slice() just to copy the array as value.
+    let flatObjectData = this.flatObject(this.listOfQuantity.slice());
+    flatObjectData = flatObjectData.map(elem => {
+      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7, elem.a8];
+    });
+    // console.log(flatObjectData);
 
-  //   // Or JavaScript:
-  //   doc.autoTable({
-  //     head: [['Família', 'Empresa', 'Ponto de controle', 'Tipo', 'Local', 'Min', 'Quantidade', 'Max']],
-  //     body: flatObjectData
-  //   });
+    // Or JavaScript:
+    doc.autoTable({
+      head: [['Família', 'Empresa', 'Ponto de controle', 'Tipo', 'Local', 'Min', 'Quantidade', 'Max']],
+      body: flatObjectData
+    });
 
-  //   doc.save('quantity.pdf');
-  // }
+    doc.save('quantity.pdf');
+  }
 
   flatObject(mArray: any) {
     

@@ -33,7 +33,7 @@ export class AlertaSemSinalComponent implements OnInit {
       .getPacking(this.alerta._id)
       .subscribe(
         result => {
-          let actualPackage = result.data;
+          let actualPackage = result;
           //console.log('actualPackage: ' + JSON.stringify(actualPackage[0]));
 
           this.activeAlerta.dismiss('open map');
@@ -44,6 +44,10 @@ export class AlertaSemSinalComponent implements OnInit {
           });
           actualPackage.alertCode = this.alerta.current_state;
           actualPackage.tag = actualPackage.tag.code;
+          actualPackage.family_code = this.alerta.family.code; 
+
+          console.log(actualPackage);
+
           modalRef.componentInstance.packing = actualPackage;
         },
         err => {
