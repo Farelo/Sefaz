@@ -36,17 +36,18 @@
                 <span class="badge badge-secondary">company_name</span>
                 <span class="badge badge-secondary">duns</span>
               </p>
-              <p><b>geofence_type:</b> Iipo de contorno do ponto de controle. Assume valores C ou P, respectivamente:
-                Círculo ou Polígono.</p>
-              <p><b>coordinates:</b> Se for círculo, contém a latitude e longitude do centro do círculo no formato <i>[11.222,
-                  33.444]</i>. Se for polígono, contém uma lista de latitudes e longitudes no formato <i>[[11.222,
-                  33.444], [11.222, 33.444], ...]</i>.</p>
-              <p><b>radius:</b> Se for círculo, é necessário especificar o raio do ponto de controle em metros.</p>
-              <p><b>name:</b> Nome do ponto de controle.</p>
-              <p><b>full_address:</b> Endereço completo do ponto de controle.</p>
-              <p><b>type:</b> Tipo do ponto de controle.</p>
-              <p><b>company:</b> Nome da empresa a qual o ponto de controle está vinculado.</p>
-              <p><b>duns:</b> Código identificador da empresa a qual o ponto de controle está vinculado.</p>
+              <p><b>geofence_type:</b> Tipo de contorno do ponto de controle. Assume valores "c" ou "p", 
+                respectivamente para os tipos Círculo ou Polígono. Obrigatório. Os valores devem ser em letra minúscula.</p>
+              <p><b>coordinates:</b> Se o ponto de controle for um círculo, o valor deve conter a latitude e 
+                longitude do centro do círculo no formato [latitude, longitude], por exemplo: [11.222, 33.444].
+              Se o ponto de controle for um polígono, o valor deve conter uma lista de latitudes e longitudes no formato [[latitude,
+              longitude], [latitude, longitude], ...], por exemplo: [[11.222, 33.444], [11.222, 33.444], ...]..</p>
+              <p><b>radius:</b> Se for círculo, é necessário especificar o raio do ponto de controle em metros. Obrigatório.</p>
+              <p><b>name:</b> Nome do ponto de controle. Obrigatório. Mínimo de 5 e máximo de 50 caracteres alfanuméricos.</p>
+              <p><b>full_address:</b> Endereço completo do ponto de controle. Obrigatório.</p>
+              <p><b>type:</b> Tipo do ponto de controle. Obrigatório.</p>
+              <p><b>company:</b> Nome da empresa a qual o ponto de controle está vinculado. Obrigatório.</p>
+              <p><b>duns:</b> Código identificador da empresa a qual o ponto de controle está vinculado. Máximo de 30 caracteres alfanuméricos. Opcional.</p>
               <br>
 
               <h4>Embalagem</h4>
@@ -66,19 +67,19 @@
                 <span class="badge badge-secondary">project</span>
               </p>
 
-              <p><b>family:</b> Família da embalagem</p>
-              <p><b>serial:</b> Número serial da embalagem</p>
-              <p><b>tag:</b> Número TAG do dispositivo</p>
-              <p><b>version:</b> Versão do dispositivo</p>
-              <p><b>manufactorer:</b> Fabricante da embalagem</p>
-              <p><b>weigth:</b> Peso da embalagem</p>
-              <p><b>width:</b> Largura da embalagem</p>
-              <p><b>height:</b> Altura da embalagem</p>
-              <p><b>length:</b> Comprimento da Embalagem</p>
-              <p><b>capacity:</b> Capacidade da embalagem</p>
-              <p><b>observations:</b> Observações sobre a embalagem</p>
-              <p><b>type:</b> Descrição da embalagem</p>
-              <p><b>project:</b> Nome do projeto a qual a embalagem está associada.</p>
+              <p><b>family:</b> Família da embalagem. Obrigatório.</p>
+              <p><b>serial:</b> Número serial da embalagem. Obrigatório. Mínimo de 2 e máximo de 30 caracteres alfanuméricos.</p>
+              <p><b>tag:</b> Número TAG do dispositivo. Obrigatório. Mínimo de 4 e máximo de 50 caracteres alfanuméricos.</p>
+              <p><b>version:</b> Versão do dispositivo. Obrigatório. Máximo de 30 caracteres alfanuméricos.</p>
+              <p><b>manufactorer:</b> Fabricante da embalagem. Obrigatório. Mínimo de 2 e máximo de 30 caracteres alfanuméricos</p>
+              <p><b>weigth:</b> Peso da embalagem. Obrigatório. Valor numérico.</p>
+              <p><b>width:</b> Largura da embalagem. Obrigatório. Valor numérico.</p>
+              <p><b>height:</b> Altura da embalagem. Obrigatório. Valor numérico.</p>
+              <p><b>length:</b> Comprimento da Embalagem. Obrigatório. Valor numérico.</p>
+              <p><b>capacity:</b> Capacidade da embalagem. Obrigatório. Valor numérico.</p>
+              <p><b>observations:</b> Observações sobre a embalagem. Opcional. Máximo de 140 caracteres alfanuméricos.</p>
+              <p><b>type:</b> Descrição da embalagem. Obrigatório. Máximo de 50 caracteres alfanuméricos.</p>
+              <p><b>project:</b> Nome do projeto a qual a embalagem está associada. Obrigatório.</p>
               <br>
 
               <h4>Empresas</h4>
@@ -93,14 +94,14 @@
                 <span class="badge badge-secondary">uf</span>  
               </p>
 
-              <p><b>type:</b> Tipo do ponto de controle. Pode ser 'owner' ou 'client'</p>
-              <p><b>name:</b> Nome da empresa</p>
-              <p><b>phone:</b> Telefone da empresa</p>
-              <p><b>cnpj:</b> CNPJ da empresa</p>
-              <p><b>street:</b> Rua da empresa</p>
-              <p><b>cep:</b> CEP da empresa</p>
-              <p><b>city:</b> Cidade da empresa</p>
-              <p><b>uf:</b> UF da empresa</p>
+              <p><b>type:</b> Tipo do ponto de controle. Pode ser 'owner' ou 'client'. Obrigatório.</p>
+              <p><b>name:</b> Nome da empresa. Obrigatório. Mínimo de 5 e máximo de 50 caracteres alfanuméricos.</p>
+              <p><b>phone:</b> Telefone da empresa. Opcional. Apenas caracteres numéricos.</p>
+              <p><b>cnpj:</b> CNPJ da empresa. Opcional. Apenas caracteres numéricos.</p>
+              <p><b>street:</b> Rua da empresa. Opcional. Máximo de 60 caracteres alfanuméricos.</p>
+              <p><b>cep:</b> CEP da empresa. Opcional. Apenas caracteres numéricos.</p>
+              <p><b>city:</b> Cidade da empresa. Opcional. Máximo de 60 caracteres alfanuméricos.</p>
+              <p><b>uf:</b> UF da empresa. Opcional. Máximo de 2 caracteres alfanuméricos.</p>
               <br>
 
             </div>
