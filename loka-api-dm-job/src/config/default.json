@@ -8,7 +8,7 @@
         "port": 4001
     },
     "db": {
-        "url": "mongodb://localhost:27017/cebrace",
+        "url": "mongodb://127.0.0.1:27017/cebrace",
         "mongodb_container": "mongodb://<user>:<password>@<host>:27017/cebrace"
     },
     "database_options": {

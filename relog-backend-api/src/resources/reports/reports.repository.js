@@ -102,6 +102,7 @@ exports.general_inventory_report = async () => {
                 qtd_in_cp = qtd_in_cp.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
 
                 family_obj.company = family.company.name
+                family_obj.family_id = family._id
                 family_obj.family_name = family.code
                 family_obj.qtd_total = qtd_total 
                 family_obj.qtd_in_owner = qtd_in_owner

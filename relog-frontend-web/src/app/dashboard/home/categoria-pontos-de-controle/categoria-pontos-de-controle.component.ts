@@ -22,7 +22,7 @@ export class CategoriaPontosDeControleComponent implements OnInit {
   
   public listIncorrectActualPage: number = -1;
   public listPermanenceActualPage: number = -1;
-  public settings: any;
+  public settings: any = {};
 
   constructor(private homeService: HomeService,
     private authenticationService: AuthenticationService) { }
@@ -32,13 +32,14 @@ export class CategoriaPontosDeControleComponent implements OnInit {
     this.getSettings();
     this.getListIncorrectLocal();
     this.getListPermanenceTime();
+    this.calculateProgress();
   }
 
   ngOnChanges() {
 
     // console.log('[ngOnChanges] resume: ');
     // console.log(JSON.stringify(this.resume));
-    this.calculateProgress();
+    //this.calculateProgress();
   }
 
   /**
@@ -47,6 +48,7 @@ export class CategoriaPontosDeControleComponent implements OnInit {
   getSettings() {
 
     this.settings = this.authenticationService.currentSettings();
+    console.log(this.settings);
   }
 
   calculateProgress() {
@@ -54,6 +56,8 @@ export class CategoriaPontosDeControleComponent implements OnInit {
     let base = parseFloat(this.resume.qtd_in_incorrect_cp + this.resume.qtd_permanence_time_exceeded);
 
     if (base > 0) {
+
+      console.log(this.settings);
 
       //Categoria em pontos de controle
       this.progressControle[0] = this.settings.enable_local_incorreto? ((parseFloat(this.resume.qtd_in_incorrect_cp) / base) * 100) : 0;

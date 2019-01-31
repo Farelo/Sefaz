@@ -20,7 +20,7 @@ export class CategoriaEmViagemComponent implements OnInit {
   public listLateActualPage: number = -1;
   public listMissingActualPage: number = -1;
 
-  public settings: any;
+  public settings: any = {};
 
   constructor(private homeService: HomeService,
     private authenticationService: AuthenticationService) { }
@@ -30,11 +30,12 @@ export class CategoriaEmViagemComponent implements OnInit {
     this.getSettings();
     this.getListLate();
     this.getListMissing();
+    this.calculateProgress();
   }
 
   ngOnChanges() {
     
-    this.calculateProgress();
+    
   }
 
   /**
