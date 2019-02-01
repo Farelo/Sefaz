@@ -12,7 +12,7 @@ import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 //import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TooltipModule, PopoverModule } from 'ngx-bootstrap'
+import { TooltipModule, PopoverModule, BsDatepickerModule } from 'ngx-bootstrap'
 import { GeralComponent } from './geral/geral.component';
 import { InventarioGeralComponent } from './inventario-geral/inventario-geral.component';
 import { InventarioPermanenciaComponent } from './inventario-permanencia/inventario-permanencia.component';
@@ -21,6 +21,7 @@ import { InventarioQuantidadeComponent } from './inventario-quantidade/inventari
 import { InventarioEquipamentoGeralComponent } from './inventario-equipamento-geral/inventario-equipamento-geral.component';
 import { FornecedorComponent } from './fornecedor/fornecedor.component';
 import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-ausencia.component';
+import { InventarioPosicoesComponent } from './inventario-posicoes/inventario-posicoes.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-au
     RouterModule,
     NgxPaginationModule,
     PopoverModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     ApplicationPipes,
     NgbModule,
     TooltipModule,
@@ -45,7 +47,8 @@ import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-au
     InventarioQuantidadeComponent,
     InventarioEquipamentoGeralComponent,
     FornecedorComponent,
-    InventarioAusenciaComponent
+    InventarioAusenciaComponent,
+    InventarioPosicoesComponent
   ],
   providers: [],
 })

@@ -15,7 +15,7 @@ import {ToastyModule} from 'ng2-toasty';
 import { AuthGuard } from '../guard/auth.guard';
 import { NgSelectModule } from '@ng-select/ng-select'; 
 import { SidebarModule } from 'ng-sidebar'; 
-
+ 
 @NgModule({
   imports: [
     CommonModule,
