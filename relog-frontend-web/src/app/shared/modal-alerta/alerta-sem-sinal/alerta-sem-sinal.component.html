@@ -23,11 +23,11 @@
 
     <div class="row">
       <div class="col-12">
-        <p class="titulo-modal">ALERTA EM:</p>
+        <p class="titulo-modal">ÚLTIMO SINAL:</p>
         <br>
-        <p> {{ alerta.last_device_data ? 
-                (alerta.last_device_data.message_date | date: 'dd/MM/yy HH:MM:ss')
-                : "Sem Registro" }}</p> 
+        <p> {{ alerta.last_device_data ?
+          (alerta.last_device_data.message_date | date: 'dd/MM/yy - HH:MM:ss')
+          : "Sem Registro" }}</p>
       </div>
     </div>
 

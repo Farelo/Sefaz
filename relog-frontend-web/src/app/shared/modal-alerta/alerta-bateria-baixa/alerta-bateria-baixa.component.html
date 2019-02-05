@@ -44,7 +44,7 @@
 
       <div class="col-12 col-md-6">
         <p class="titulo-modal">NÍVEL DA BATERIA:</p><br>
-        <p style="font-weight: bold;"> {{ alerta?.last_device_data_battery ?
+        <p style="font-weight: bold;"> {{ alerta?.last_device_data_battery?.battery?.percentage ?
           ((alerta.last_device_data_battery.battery.percentage | round) + '%') : mConstants.NO_REGISTER }} </p>
       </div>
     </div>

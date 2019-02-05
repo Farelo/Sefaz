@@ -18,14 +18,14 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-
+ 
   <div class="modalBody">
 
     <div class="row">
       <div class="col-12">
         <p class="titulo-modal">ÚLTIMO SINAL:</p>
         <br>
-        <p> {{ alerta.last_device_data ?
+        <p> {{ alerta?.last_device_data ?
                 (alerta.last_device_data.message_date | date: 'dd/MM/yy - HH:MM:ss')
                 : "Sem Registro" }}</p>
       </div>
@@ -37,14 +37,14 @@
       <div class="col-12 col-md-6">
         <p class="titulo-modal">ÚLTIMA LOCALIZAÇÃO:</p>
         <br>
-        <p> {{ alerta?.last_event_record?.control_point?.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p> 
+        <p> {{ alerta?.last_event_record?.control_point?.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p>  
       </div>
 
       <div class="col-12 col-md-6">
         <p class="titulo-modal">ÚLTIMO NÍVEL DE BATERIA:</p>
         <br>
-        <p style="font-weight: bold;"> {{ alerta?.last_device_data?.battery?.percentage ?
-          (alerta.last_device_data.battery.percentage >=0 ? ((alerta.last_device_data.battery.percentage | round) + '%') : mConstants.NO_REGISTER )
+        <p style="font-weight: bold;"> {{ alerta?.last_device_data_battery?.battery?.percentage ?
+          (alerta.last_device_data_battery.battery.percentage >= 0 ? ((alerta.last_device_data_battery.battery.percentage | round) + '%') : mConstants.NO_REGISTER )
           : mConstants.NO_REGISTER }} </p>
       </div>
     </div>

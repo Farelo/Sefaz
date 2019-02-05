@@ -45,6 +45,9 @@ export class InventarioPosicoesComponent implements OnInit {
     private localeService: BsLocaleService) {
 
     this.configureDatePicker();
+
+    console.log(this.initialDate);
+    console.log(this.finalDate);
   }
 
   configureDatePicker(){
@@ -128,8 +131,18 @@ export class InventarioPosicoesComponent implements OnInit {
       return elem.family.code == family.code;
     });
 
-    if (this.selectedSerial)
-      this.getFilteredPositions(this.selectedSerial.tag.code, this.initialDate, this.finalDate, 32000);
+    if (this.initialDate !== null && this.finalDate !== null) {
+
+      this.isLoading = true;
+      let initialD = this.formatDate(this.initialDate.getTime());
+      let finalD = this.formatDate(this.finalDate);
+
+      console.log(initialD);
+      console.log(finalD);
+
+      if (this.selectedSerial)
+        this.getFilteredPositions(this.selectedSerial.tag.code, initialD, finalD, 32000);
+    }
   }
 
   /**
@@ -152,13 +165,18 @@ export class InventarioPosicoesComponent implements OnInit {
    */
   onFirstDateChange(newDate: Date) {
 
-    //console.log(newDate);
+    console.log(newDate);
+    console.log(newDate.getTime());
+    console.log(this.initialDate);
 
     if (newDate !== null && this.finalDate !== null) {
 
       this.isLoading = true;
       let initialD = this.formatDate(newDate.getTime());
       let finalD = this.formatDate(this.finalDate);
+
+      console.log(initialD);
+      console.log(finalD);
 
       if (this.selectedSerial)
         this.getFilteredPositions(this.selectedSerial.tag.code, initialD, finalD, 32000);
@@ -167,13 +185,18 @@ export class InventarioPosicoesComponent implements OnInit {
 
   onFinalDateChange(newDate: Date) {
 
-    //console.log(newDate);
+    console.log(newDate);
+    console.log(newDate.getTime());
+    console.log(this.initialDate);
 
     if (this.initialDate !== null && newDate !== null) {
 
       this.isLoading = true;
       let initialD = this.formatDate(this.initialDate);
       let finalD = this.formatDate(newDate.getTime());
+
+      console.log(initialD);
+      console.log(finalD);
 
       if (this.selectedSerial)
         this.getFilteredPositions(this.selectedSerial.tag.code, initialD, finalD, 32000);
@@ -247,18 +270,26 @@ export class InventarioPosicoesComponent implements OnInit {
 
   flatObject(mArray: any) {
 
-    //console.log(mArray);
-    //let datePipe = new DatePipe();
+    //console.log(mArray);    
     let plainArray = mArray.map(obj => {
+
+      let d = new Date(obj.message_date),
+        day = '' + (d.getDate()),  
+        month = '' + (d.getMonth() + 1),
+        year = d.getFullYear(),
+        hour = d.getHours(),
+        minute = d.getMinutes(),
+        second = d.getSeconds();
+        
       return {
         a1: obj.accuracy,
-        a2: obj.battery.percentage == null ? '-' : obj.battery.percentage,
+        a2: (obj.battery.percentage == null) ? '-' : obj.battery.percentage,
         a3: obj.latitude,
         a4: obj.longitude,
-        a5: obj.message_date,
-        //a5: datePipe.transform(obj.message_date),
+        //a5: obj.message_date,
+        a5: `${day}/${month}/${year} ${hour}:${minute}:${second}`,
         a6: obj.seq_number,
-        a7: obj.temperature
+        a7: (obj.temperature == null) ? '-' : obj.temperature
       };
     });
 
