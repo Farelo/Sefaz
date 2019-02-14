@@ -7,7 +7,7 @@
       <p class="descricao">NOME</p>
       <p class="explicacao">Ex. "Armazém"</p>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Digite o nome do projeto" aria-describedby="basic-addon2"
+        <input type="text" class="form-control" placeholder="Digite o nome do ponto de controle" aria-describedby="basic-addon2"
           maxlength="50" (focusout)="validateName($event)" [(ngModel)]="name" formControlName="name" [ngClass]="{'required': 
             (mType.get('name').hasError('required') && mType.get('name').touched)
             || (mType.get('name').hasError('required') && formDir.submitted)
