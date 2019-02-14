@@ -26,7 +26,7 @@ export class RastreamentoComponent implements OnInit {
   public logged_user: any;
   autocomplete: any;
   address: any = {};
-  center: any = { lat: 0, lng: 0 };
+  center: any = { lat: -15.793537, lng: -47.882803 }; //O mapa inicia centralizado no Brasil
   pos: any;
 
   departments: Department[];

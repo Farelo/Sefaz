@@ -109,7 +109,7 @@ export class LayerModalComponent implements OnInit {
 
     //get all point according the given filter
     let initialD = this.formatDate(this.initialDate);
-    let finalD = this.formatDate(this.finalDate);
+    let finalD = this.formatDate(this.finalDate, true);
 
     // console.log(this.initialDate);
     // console.log(this.finalDate);
@@ -191,8 +191,8 @@ export class LayerModalComponent implements OnInit {
     if (newDate !== null && this.finalDate !== null) {
 
       this.isLoading = true;
-      let initialD = this.formatDate(newDate.getTime());
-      let finalD = this.formatDate(this.finalDate);
+      let initialD = this.formatDate(newDate);
+      let finalD = this.formatDate(this.finalDate, true);
       this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
     }
   }
@@ -203,7 +203,7 @@ export class LayerModalComponent implements OnInit {
 
       this.isLoading = true;
       let initialD = this.formatDate(this.initialDate);
-      let finalD = this.formatDate(newDate.getTime());
+      let finalD = this.formatDate(newDate, true);
       this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
     }
   }
@@ -319,7 +319,7 @@ export class LayerModalComponent implements OnInit {
 
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
-    this.marker.messageDate = opt.last_communication_timestamp;
+    this.marker.messageDate = opt.message_date_timestamp;
     this.marker.battery = this.packing.battery_percentage;
     this.marker.end = opt.end;
     this.marker.accuracy = opt.accuracy;
@@ -489,18 +489,56 @@ export class LayerModalComponent implements OnInit {
     // console.log('center: ' + JSON.stringify(this.center));
   }
 
-  formatDate(date: any) {
+  formatDate(date: any, endDate: boolean = false) {
+    
+    // console.log(endDate);
+    // console.log(date);
 
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + (d.getDate()),
-      year = d.getFullYear();
+    let d = date;
+    let result = 0;
 
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
+    if (!endDate) {
+      d.setHours(0, 0, 0, 0);
+      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
+      result = d.getTime() / 1000;
 
-    return [year, month, day].join('-');
+    } else {
+      d.setHours(23, 59, 59, 0);
+      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
+      result = d.getTime()/1000;
+    }
+
+    // console.log(d);
+    // console.log(result);
+
+    return result;
   }
+
+  // formatDate(date: any, endDate: boolean = false) {
+    
+  //   console.log(endDate);
+  //   console.log(date);
+
+  //   let d = new Date(date.getTime() + date.getTimezoneOffset() * 60000); //offset to user timezone
+  //   console.log(d);
+    
+  //   let result = 0;
+
+  //   if (!endDate) {
+  //     //d.setHours(0, 0, 0, 0);
+  //     console.log(d);
+  //     result = d.getTime() / 1000;
+
+  //   } else {
+  //     //d.setHours(23, 59, 59, 0);
+  //     console.log(d);
+  //     result = d.getTime()/1000;
+  //   }
+
+  //   console.log(result);
+
+  //   return result;
+  // }
 
   getPin() {
     let pin = null;

@@ -4,7 +4,7 @@ const current_state_history_controller = require('./current_state_history.contro
 const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 
-router.get('/:packing_id', [auth, authz], current_state_history_controller.all)
+router.get('/:packing_id', [auth], current_state_history_controller.all)
 
 module.exports = router
 

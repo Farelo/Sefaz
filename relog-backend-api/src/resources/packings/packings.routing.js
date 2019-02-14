@@ -7,15 +7,15 @@ const validate_object_id = require('../../middlewares/validate_object_id.middlew
 const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_packings } = require('./packings.model')
 
-router.get('/', [auth, authz], packings_controller.all)
-router.get('/:id', [auth, authz, validate_object_id], packings_controller.show)
+router.get('/', [auth], packings_controller.all)
+router.get('/:id', [auth, validate_object_id], packings_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_packings)], packings_controller.create)
 router.post('/create_many', [auth, authz], packings_controller.create_many)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_packings)], packings_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], packings_controller.delete)
-router.get('/on_control_point/:control_point_id', [auth, authz], packings_controller.show_packings_on_control_point)
-router.get('/check_device/:device_id', [auth, authz], packings_controller.check_device)
-router.get('/data/geolocation', [auth, authz], packings_controller.geolocation)
+router.get('/on_control_point/:control_point_id', [auth], packings_controller.show_packings_on_control_point)
+router.get('/check_device/:device_id', [auth], packings_controller.check_device)
+router.get('/data/geolocation', [auth], packings_controller.geolocation)
 
 module.exports = router
 

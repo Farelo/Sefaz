@@ -81,15 +81,15 @@
             <th>Fornecedor</th> -->
           <tr class="cabecalho">
             <th>Acurácia</th>
-            <th>Bateria</th>
+            <th style="text-align: center">Bateria</th>
 
             <th>Latitude</th>
             <th>Longitude</th>
 
             <th>Data da mensagem</th>
-            <th># sequência</th>
+            <th style="text-align: center"># sequência</th>
 
-            <th>Temperatura</th>
+            <th style="text-align: center">Temperatura</th>
           </tr>
         </thead>
         <tbody>
@@ -104,7 +104,7 @@
             <td>{{ item.latitude || '-' }}</td>
             <td>{{ item.longitude || '-' }}</td>
 
-            <td>{{ (item.message_date | date: 'dd/MM/yy HH:MM:ss') || '-' }}</td>
+            <td>{{ (item.message_date | date: 'dd/MM/yy hh:mm:ss z') || '-' }}</td>
             <td style="text-align: center">{{ item.seq_number || '-' }}</td>
 
             <td style="text-align: center">{{ item.temperature || '-' }}ºC</td>

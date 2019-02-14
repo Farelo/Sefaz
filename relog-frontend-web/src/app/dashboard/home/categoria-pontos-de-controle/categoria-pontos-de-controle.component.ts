@@ -48,7 +48,7 @@ export class CategoriaPontosDeControleComponent implements OnInit {
   getSettings() {
 
     this.settings = this.authenticationService.currentSettings();
-    console.log(this.settings);
+    //console.log(this.settings);
   }
 
   calculateProgress() {
@@ -57,7 +57,7 @@ export class CategoriaPontosDeControleComponent implements OnInit {
 
     if (base > 0) {
 
-      console.log(this.settings);
+      //console.log(this.settings);
 
       //Categoria em pontos de controle
       this.progressControle[0] = this.settings.enable_local_incorreto? ((parseFloat(this.resume.qtd_in_incorrect_cp) / base) * 100) : 0;

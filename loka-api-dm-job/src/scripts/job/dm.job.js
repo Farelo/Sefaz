@@ -24,16 +24,21 @@ module.exports = async () => {
         let device_data_promises = devices.map(async packing => {
 
             try {
+                //recupera a última mensagem
                 const last_message_date = await DeviceData.find({device_id: packing.tag.code}, {_id: 0, message_date: 1}).sort({message_date: 'desc'}).limit(1)
 
                 const week_in_milliseconds = 604800000
 
+                //cria janela de tempo de uma semana antes da última mensagem enviada
                 let start_search_date = last_message_date[0] ? add_seconds(last_message_date[0].message_date, 1) :  new Date(Date.parse(new Date()) - week_in_milliseconds)
 
+                //convete esse timestamp para string
                 start_search_date = start_search_date.toLocaleString()
 
+                //verifica na loka se o device existe
                 await dm_controller.confirmDevice(packing.tag.code, cookie)
 
+                
                 const device_data_array = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, start_search_date, end_search_date, null, cookie)
 
                 if (device_data_array) {

@@ -26,11 +26,22 @@ exports.get_device_data = async (device_id, {start_date = null, end_date = null,
 
     try {
         if (start_date && end_date)
-            conditions.message_date = { $gte: new Date(start_date), $lte: new Date(end_date)}
+            if (isNaN(start_date) && isNaN(end_date))
+                conditions.message_date = { $gte: new Date(start_date), $lte: new Date(end_date)}
+            else
+                conditions.message_date_timestamp = { $gte: start_date, $lte: end_date }
+
         else if (start_date)
-            conditions.message_date = { $gte: new Date(start_date)}
+            if (isNaN(start_date))
+                conditions.message_date = { $gte: new Date(start_date) }
+            else
+                conditions.message_date_timestamp = { $gte: start_date }
+
         else if (end_date)
-            conditions.message_date = { $lte: new Date(end_date)}
+            if (isNaN(start_date))
+                conditions.message_date = { $lte: new Date(end_date) }
+            else
+                conditions.message_date_timestamp = { $lte: end_date }
 
         if(accuracy)
             conditions.accuracy = { $lte: accuracy }

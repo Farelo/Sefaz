@@ -134,8 +134,8 @@ export class InventarioPosicoesComponent implements OnInit {
     if (this.initialDate !== null && this.finalDate !== null) {
 
       this.isLoading = true;
-      let initialD = this.formatDate(this.initialDate.getTime());
-      let finalD = this.formatDate(this.finalDate);
+      let initialD = this.formatDate(this.initialDate);
+      let finalD = this.formatDate(this.finalDate, true);
 
       console.log(initialD);
       console.log(finalD);
@@ -165,18 +165,18 @@ export class InventarioPosicoesComponent implements OnInit {
    */
   onFirstDateChange(newDate: Date) {
 
-    console.log(newDate);
-    console.log(newDate.getTime());
-    console.log(this.initialDate);
+    // console.log(newDate);
+    // console.log(newDate.getTime());
+    // console.log(this.initialDate);
 
     if (newDate !== null && this.finalDate !== null) {
 
       this.isLoading = true;
-      let initialD = this.formatDate(newDate.getTime());
-      let finalD = this.formatDate(this.finalDate);
+      let initialD = this.formatDate(newDate);
+      let finalD = this.formatDate(this.finalDate, true);
 
-      console.log(initialD);
-      console.log(finalD);
+      // console.log(initialD);
+      // console.log(finalD);
 
       if (this.selectedSerial)
         this.getFilteredPositions(this.selectedSerial.tag.code, initialD, finalD, 32000);
@@ -185,36 +185,77 @@ export class InventarioPosicoesComponent implements OnInit {
 
   onFinalDateChange(newDate: Date) {
 
-    console.log(newDate);
-    console.log(newDate.getTime());
-    console.log(this.initialDate);
+    // console.log(newDate);
+    // console.log(newDate.getTime());
+    // console.log(this.initialDate);
 
     if (this.initialDate !== null && newDate !== null) {
 
       this.isLoading = true;
       let initialD = this.formatDate(this.initialDate);
-      let finalD = this.formatDate(newDate.getTime());
+      let finalD = this.formatDate(newDate, true);
 
-      console.log(initialD);
-      console.log(finalD);
+      // console.log(initialD);
+      // console.log(finalD);
 
       if (this.selectedSerial)
         this.getFilteredPositions(this.selectedSerial.tag.code, initialD, finalD, 32000);
     }
   }
 
-  formatDate(date: any) {
+  formatDate(date: any, endDate: boolean = false) {
+    
+    // console.log(endDate);
+    // console.log(date);
 
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + (d.getDate()),
-      year = d.getFullYear();
+    let d = date;
+    let result = 0;
 
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
+    if (!endDate) {
+      d.setHours(0, 0, 0, 0);
+      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
+      result = d.getTime() / 1000;
 
-    return [year, month, day].join('-');
+    } else {
+      d.setHours(23, 59, 59, 0);
+      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
+      result = d.getTime()/1000;
+    }
+    
+    // console.log(d);
+    // console.log(result);
+
+    return result;
   }
+  
+// formatDate(date: any, endDate: boolean = false) {
+    
+//     console.log(endDate);
+//     console.log(date);
+//     let d = new Date(date.getTime() + date.getTimezoneOffset() * 60000); //offset to user timezone
+//     console.log(d);
+
+//     let month = '' + (d.getMonth() + 1);
+//     let day = '' + (d.getDate());
+//     let year = d.getFullYear();
+
+//     if (month.length < 2) month = '0' + month;
+//     if (day.length < 2) day = '0' + day;
+
+//     //[year, month, day].join('-');
+//     //console.log(endDate); 
+
+//     let result = '';
+
+//     if (endDate) 
+//       result = `${year}-${month}-${day}T23:59:59Z`;
+//     else
+//       result = `${year}-${month}-${day}T00:00:00Z`;
+
+//     console.log(result);
+
+//     return result;
+//   }
 
   /**
    * ================================================

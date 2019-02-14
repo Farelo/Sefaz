@@ -7,7 +7,7 @@ const validate_object_id = require('../../middlewares/validate_object_id.middlew
 const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_settings } = require('./settings.model')
 
-router.get('/', [auth, authz], settings_controller.show)
+router.get('/', [auth], settings_controller.show)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_settings)], settings_controller.update)
 
 module.exports = router

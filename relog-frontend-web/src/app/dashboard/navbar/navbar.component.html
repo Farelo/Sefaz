@@ -81,13 +81,13 @@
           <div>
             <div style="float: left;">
               <img width="50" *ngIf="currentUser?.role === 'admin'" src="assets/images/icon_a.png">
-              <img width="50" *ngIf="currentUser?.role === 'client'" src="assets/images/icon_f.png">
+              <img width="50" *ngIf="currentUser?.role === 'user'" src="assets/images/icon_f.png">
             </div>
             <div style="float: left;">
               <p id="username">{{this.currentUser.full_name}} </p>
 
               <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa</p>
-              <p class="user-type" *ngIf="currentUser?.role === 'client'">Funcionário da Empresa</p>
+              <p class="user-type" *ngIf="currentUser?.role === 'user'">Funcionário da Empresa</p>
             </div>
           </div>
         </li>
@@ -109,7 +109,9 @@
           <a (click)="p.close();openModalEditar()"> Editar </a>
         </li> -->
 
-        <li style="padding: 5px 0px;"> <hr> </li>
+        <li *ngIf="currentUser?.role !== 'user'" style="padding: 5px 0px;"> 
+          <hr> 
+        </li>
 
         <li>
           <a (click)="logout()"> Sair </a>
@@ -126,7 +128,7 @@
         <div>
           <div style="float: left;">
             <img width="50" *ngIf="currentUser?.role === 'admin'" src="assets/images/icon_a.png">
-            <img width="50" *ngIf="currentUser?.role === 'client'" src="assets/images/icon_f.png">
+            <img width="50" *ngIf="currentUser?.role === 'user'" src="assets/images/icon_f.png">
           </div>
 
           <div style="float: left;">
@@ -134,7 +136,7 @@
             <p id="username">{{ this.currentUser.full_name }} </p>
     
             <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa.</p>
-            <p class="user-type" *ngIf="currentUser?.role === 'client'">Funcionário da Empresa.</p>
+            <p class="user-type" *ngIf="currentUser?.role === 'user'">Funcionário da Empresa.</p>
           </div>
         </div>
       </li>
@@ -155,7 +157,7 @@
         <a (click)="p.close(); openModalEditar()"> Editar </a>
       </li> -->
     
-      <li style="padding: 5px 0px;">
+      <li *ngIf="currentUser?.role !== 'user'" style="padding: 5px 0px;">
         <hr> 
       </li>
       

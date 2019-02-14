@@ -7,8 +7,8 @@ const validate_object_id = require('../../middlewares/validate_object_id.middlew
 const validate_joi = require('../../middlewares/validate_joi.middleware')
 const { validate_types } = require('./types.model')
 
-router.get('/', [auth, authz], types_controller.all)
-router.get('/:id', [auth, authz, validate_object_id], types_controller.show)
+router.get('/', [auth], types_controller.all)
+router.get('/:id', [auth, validate_object_id], types_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_types)], types_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_types)], types_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], types_controller.delete)

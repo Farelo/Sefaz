@@ -35,12 +35,12 @@
     <div class="col-md-2">
       <!-- <label for="dateBegin" class="col-form-label-sm">Data inicial</label> -->
       <!-- <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDaterangepicker [(ngModel)]="initialDate" [bsConfig]="datePickerConfig" placement="right"> -->
-      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker [(ngModel)]="initialDate" (ngModelChange)="onFirstDateChange($event)" [bsConfig]="datePickerConfig">
+      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker [(ngModel)]="initialDate" (ngModelChange)="onFirstDateChange($event)" [bsConfig]="datePickerConfig" style="cursor: pointer;">
     </div>
 
     <div class="col-md-2">
       <!-- <label for="dateEnd" class="col-form-label-sm">Data final</label> -->
-      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker [(ngModel)]="finalDate" (ngModelChange)="onFinalDateChange($event)" [bsConfig]="datePickerConfig">
+      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker [(ngModel)]="finalDate" (ngModelChange)="onFinalDateChange($event)" [bsConfig]="datePickerConfig" style="cursor: pointer;">
     </div>
 
     <span style="padding-top: 5px;" class="col-auto">Acurácia:</span>
@@ -179,7 +179,7 @@
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display" class="info-window-content">
-              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yyyy - hh:mm:ss z' }}</p>
               <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
               <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
             </div>

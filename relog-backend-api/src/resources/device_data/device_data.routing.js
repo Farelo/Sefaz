@@ -5,7 +5,7 @@ const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 
 // router.get('/data', [auth, authz], device_data_controller.geolocation)
-router.get('/data/:device_id', [auth, authz], device_data_controller.all)
+router.get('/data/:device_id', [auth], device_data_controller.all)
 
 module.exports = router
 
