@@ -35,7 +35,7 @@
         <tr>
           <td [attr.title]="user.full_name">{{ user.full_name | truncate : 20 }}</td>
           <td>{{ getTypeLabel(user.role) }}</td>
-          <td>{{ user.company.name || '-' }}</td>
+          <td>{{ user?.company?.name || '-' }}</td>
           <td style="text-align: right">
             <a (click)="editUser(user)">Editar</a>
             <a (click)="removeProfile(user)">Excluir</a>
