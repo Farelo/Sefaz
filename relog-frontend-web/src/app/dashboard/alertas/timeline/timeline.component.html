@@ -83,7 +83,7 @@
               'f7': getAlertCode(alert.current_state) == 7 }">
             </div>
           </div>
-          <span tooltip="Fornecedor da Embalagem" class="forn">{{alert.company.name}}</span>
+          <span tooltip="Fornecedor da Embalagem" class="forn">{{alert?.company?.name || '-'}}</span>
           <br />
           <span class="quantidade" tooltip="Quantidade de embalagens" [ngClass]="{
               'quantidade0': getAlertCode(alert.current_state) == 0,
