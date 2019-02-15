@@ -5,9 +5,11 @@
   <div class="detalhes" *ngIf="mType == 'COMPANY'">
     <h2> Deletar Empresa </h2>
     <hr>
-    <p>Tipo: {{ mObject.type }}</p>
+    <p>Tipo: {{ mObject.type == 'client' ? 'Cliente' : '' }} {{ mObject.type == 'owner' ? 'Owner' : ''}} </p>
     <p>Nome: {{ mObject.name }}</p>
-    <p>Endereço: {{ mObject.address.street }}, {{ mObject.address.city }} - {{ mObject.address.uf }} </p>
+    <p>Rua: {{ mObject?.address?.street || '-' }} </p>
+    <p>Cidade: {{ mObject?.address?.city || '-' }} </p>
+    <p>UF: {{ mObject?.address?.uf || '-' }} </p>
 
     <hr>
     <div class="alerta">
@@ -77,7 +79,7 @@
     <h2> Deletar Ponto de Controle </h2>
     <hr>
     <p>Nome: {{ mObject.name }}</p>
-    <p>DUNS: {{ mObject.duns }}</p>
+    <p>DUNS: {{ mObject?.duns || '-' }}</p>
     <p>Empresa Vinculada: {{ mObject.company.name }}</p>
 
     <hr>

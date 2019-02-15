@@ -1,5 +1,9 @@
 * { font-family: 'Roboto', sans-serif; }
 
+p {
+  margin-bottom: 6px;
+}
+
 .modalFilho {
   max-width: 800px;
   width: 100%;
