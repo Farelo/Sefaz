@@ -66,7 +66,7 @@
               <td>{{packing.current_control_point_name || '-'}}</td>
               <td>{{packing.current_control_point_type}}</td>
 
-              <td [ngbTooltip]="packing.battery_date !== '-' ? (packing.battery_date | date: 'dd/MM/yy HH:MM:ss') : 'Sem data da bateria'" placement="top" container="body">{{packing.battery_percentage !== '-' ? ((packing.battery_percentage | round) + "%") : "Sem Registro"}}</td>
+              <td [ngbTooltip]="packing.battery_date !== '-' ? (packing.battery_date | date: 'dd/MM/yy HH:mm:ss z') : 'Sem data da bateria'" placement="top" container="body">{{packing.battery_percentage !== '-' ? ((packing.battery_percentage | round) + "%") : "Sem Registro"}}</td>
 
               <td>{{packing.battery_level}}</td>
 

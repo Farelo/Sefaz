@@ -180,11 +180,12 @@ export class InventarioAusenciaComponent implements OnInit {
       windowClass: 'modal-xl',
     });
     
+    console.log(packing);
+
     packing.tag = packing.tag.code;
     packing.family_code = packing.family.code;
     
-    packing.current_control_point_name = packing.last_event_record.control_point.name;
-    
+    //packing.current_control_point_name = packing.last_event_record.control_point.name ? packing.last_event_record.control_point.name : '';
     
     modalRef.componentInstance.packing = packing;
   }

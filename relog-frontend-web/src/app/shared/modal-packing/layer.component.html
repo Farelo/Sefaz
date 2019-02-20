@@ -8,13 +8,13 @@
       <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.tag}}</span>
     </p>
 
-    <div id="collapseExample" [ngbCollapse]="detailsIsCollapsed">
+    <div id="collapseExample" *ngIf="packing.current_control_point_name" [ngbCollapse]="detailsIsCollapsed">
       <!-- <p>Projeto: {{ packing.project.name }}</p> -->
       <!-- <p>Fornecedor: {{ packing.actual_plant?.plant?.plant_name ? packing.actual_plant?.plant?.plant_name : "Sem informação" }}</p> -->
       <p>Ponto de controle atual: {{ packing.current_control_point_name }}</p>
     </div>
 
-    <span id="showDetails" (click)="detailsIsCollapsed = !detailsIsCollapsed" [attr.aria-expanded]="!detailsIsCollapsed" aria-controls="collapseExample"
+    <span id="showDetails" *ngIf="packing.current_control_point_name" (click)="detailsIsCollapsed = !detailsIsCollapsed" [attr.aria-expanded]="!detailsIsCollapsed" aria-controls="collapseExample"
       style="cursor: pointer;">{{ detailsIsCollapsed == true ? 'Mostrar detalhes' : 'Esconder detalhes' }}</span>
   </div>
 
@@ -179,7 +179,7 @@
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display" class="info-window-content">
-              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yyyy - hh:mm:ss z' }}</p>
+              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yy HH:mm:ss z' }}</p>
               <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
               <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
             </div>
@@ -207,7 +207,7 @@
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display" class="info-window-content">
-              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yyyy - hh:mm a' }}</p>
+              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yy HH:mm:ss z' }}</p>
               <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
               <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
             </div>

@@ -100,7 +100,7 @@ export class LayerModalComponent implements OnInit {
 
   ngOnInit() {
 
-    //console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
+    console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
 
     this.getPacking();
 

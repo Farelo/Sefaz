@@ -26,7 +26,7 @@
         <p class="titulo-modal">ÚLTIMO SINAL:</p>
         <br>
         <p> {{ alerta.last_device_data ?
-          (alerta.last_device_data.message_date | date: 'dd/MM/yy - HH:MM:ss')
+          (alerta.last_device_data.message_date | date: 'dd/MM/yy HH:mm:ss z')
           : "Sem Registro" }}</p>
       </div>
     </div>
@@ -45,9 +45,9 @@
       <div class="col-12 col-md-6">
         <p class="titulo-modal">DATA DE ENTRADA:</p>
         <br>
-        <!-- | {{ alerta.last_event_record.created_at | date: 'HH:MM:ss' }} -->
+        <!-- | {{ alerta.last_event_record.created_at | date: 'dd/MM/yy HH:mm:ss z' }} -->
         <p> {{ alerta.last_event_record ?
-            (alerta.last_event_record.created_at | date: 'dd/MM/yy - HH:MM:ss')
+            (alerta.last_event_record.created_at | date: 'dd/MM/yy HH:mm:ss z')
               : "Sem Registro" }} </p>
       </div>
     </div>
