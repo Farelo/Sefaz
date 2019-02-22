@@ -25,7 +25,7 @@
       <div class="col-12">
         <p class="titulo-modal">EMITIDO EM:</p>
         <br>
-        <p> {{ alerta.last_device_data.message_date | date: 'dd/MM/yy HH:mm:ss z' }} </p>
+        <p> {{ alerta.last_device_data.message_date | date: 'dd/MM/yy HH:mm:ss' : '+00:00'}} </p>
       </div>
     </div> -->
 
@@ -42,7 +42,7 @@
 
       <div class="col-12 col-md-6">
         <p class="titulo-modal">TEMPO DE AUSÊNCIA EM:</p>
-        <p> {{ alerta?.last_event_record?.created_at | date: 'dd/MM/yy HH:mm:ss z' }} </p>
+        <p> {{ alerta?.last_event_record?.created_at | date: 'dd/MM/yy HH:mm:ss' : '+00:00' }} </p>
       </div>
     </div>
 

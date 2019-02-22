@@ -100,7 +100,7 @@
           <td class="text-center">{{ item.qtd_total }}</td>
 
           <td class="text-center">{{ item.qtd_in_owner }}</td>
-          <td class="text-center">{{ item.qtd_in_clients }}</td>
+          <td class="text-center">{{ item.qtd_in_clients - item.qtd_in_traveling}}</td>
           <td class="text-center">{{ item.qtd_in_traveling }}</td>
 
           <!-- <td> ? </td> -->
@@ -116,28 +116,28 @@
 
           <!-- Alerta: atraso de rota -->
           <td class="text-center">
-            <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', item.family_id, 'viagem_atrasada']">
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/', item.family_id, 'viagem_atrasada']">
               <span class="badge badge-pill badge-atrasado">{{item.qtd_in_traveling_late || '0'}}</span>
             </a>
           </td>
 
           <!-- Alerta: local incorreto -->
           <td class="text-center">
-            <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', item.family_id, 'local_incorreto']">
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/', item.family_id, 'local_incorreto']">
               <span class="badge badge-pill badge-incorreto">{{item.qtd_in_incorrect_cp || '0'}}</span>
             </a>
           </td>
 
           <!-- Alerta: tempo de permanência -->
           <td class="text-center">
-            <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', item.family_id, 'family_name']">
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/', item.family_id, 'family_name']">
               <span class="badge badge-pill badge-permanencia">{{item.qtd_with_permanence_time_exceeded || '0'}}</span>
             </a>
           </td>
 
           <!-- Alerta: embalagem ausente -->
           <td class="text-center" *ngIf="settings.enable_viagem_perdida">
-            <a routerLinkActive="active" [routerLink]="['/rc/alertas/list/', item.family_id, 'viagem_perdida']">
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/', item.family_id, 'viagem_perdida']">
               <span class="badge badge-pill badge-ausente">{{item.qtd_in_traveling_missing || '0'}}</span>
             </a>
           </td>

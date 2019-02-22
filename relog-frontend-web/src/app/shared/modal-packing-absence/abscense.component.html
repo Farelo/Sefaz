@@ -20,8 +20,8 @@
         <info-window id="iw">
           <div class="iw-title">INFORMAÇÕES</div>
           <div *ngIf="marker.display">
-            <p><span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yy HH:mm:ss z' }}</p>
-            <p><span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yy HH:mm:ss z')
+            <p><span class="bold">Data de entrada:</span> {{ marker.start | date: 'dd/MM/yy HH:mm:ss' : '+00:00' }}</p>
+            <p><span class="bold">Ultima visualização:</span> {{ marker.end ? (marker.end | date: 'dd/MM/yy HH:mm:ss' : '+00:00')
               : 'Sem Informação'}}</p>
             <p><span class="bold">Bateria:</span> {{ marker.battery | round }} %</p>
           </div>

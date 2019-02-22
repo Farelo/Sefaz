@@ -179,7 +179,7 @@
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display" class="info-window-content">
-              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yy HH:mm:ss z' }}</p>
+              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss' : '+00:00' }}</p>
               <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
               <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
             </div>
@@ -207,7 +207,7 @@
           <info-window id="iw">
             <div class="iw-title">INFORMAÇÕES</div>
             <div *ngIf="marker.display" class="info-window-content">
-              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate*1000) | date: 'dd/MM/yy HH:mm:ss z' }}</p>
+              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss' : '+00:00'}}</p>
               <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
               <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
             </div>

@@ -316,10 +316,10 @@ export class LayerModalComponent implements OnInit {
 
   clicked(_a, opt) {
     var marker = _a.target;
-
+    console.log(opt);
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
-    this.marker.messageDate = opt.message_date_timestamp;
+    this.marker.messageDate = opt.message_date;
     this.marker.battery = this.packing.battery_percentage;
     this.marker.end = opt.end;
     this.marker.accuracy = opt.accuracy;

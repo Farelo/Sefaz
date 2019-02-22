@@ -60,7 +60,7 @@
                 <td>{{ item.current_control_point_name }}</td>
                 <td>{{ item.current_control_point_type }}</td>
                 <td>{{ item.last_device_data_battery !== '-' ? ((item.last_device_data_battery.battery.percentage | round) + '%') : "Sem registro" }}</td> 
-                <td>{{ item.last_device_data_battery !== '-' ? ((item.last_device_data_battery.last_communication | date: 'dd/MM/yy HH:mm:ss z') ) : "Sem registro" }}</td> 
+                <td>{{ item.last_device_data_battery !== '-' ? ((item.last_device_data_battery.last_communication | date: 'dd/MM/yy HH:mm:ss' : '+00:00') ) : "Sem registro" }}</td> 
               </tr>
             </tbody>
           </table>

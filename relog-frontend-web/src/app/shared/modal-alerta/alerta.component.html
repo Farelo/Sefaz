@@ -18,7 +18,7 @@
         height="25" style="float: right;">
     </div>
 
-    <p>Momento do alerta: {{alerta.data.date | date: 'dd/MM/yy HH:mm:ss z'}} </p>
+    <p>Momento do alerta: {{alerta.data.date | date: 'dd/MM/yy HH:mm:ss' : '+00:00'}} </p>
 
     <p>Tipo:
       <span>{{alerta.data.status === 1 ? 'Embalagem ausente' : (alerta.data.status === 2 ? 'Local Incorreto' : (alerta.data.status
@@ -57,7 +57,7 @@
                                                             currentPage: historic.meta.page,
                                                             totalItems: historic.meta.total_docs}">
               <td>{{ packing.date | date: 'dd/MM/yy' }}</td>
-              <td>{{ packing.date | date: 'HH:mm:ss' }}</td>
+              <td>{{ packing.date | date: 'HH:mm:ss' : '+00:00' }}</td>
               <td>{{ packing.supplier?.name || '-' }}</td>
               <td>{{ packing.status }}</td>
               <td>{{ packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro' }}</td>
@@ -152,7 +152,7 @@
 
     <p>
       <span>Permanência Excedido em:</span> {{alerta.data?.packing.permanence.date_exceeded >= 0 ? (alerta.data?.packing.permanence.date_exceeded
-      | date: 'dd/MM/yy HH:mm:ss z' ): 'Sem Registro' }}</p>
+      | date: 'dd/MM/yy HH:mm:ss' : '+00:00' ): 'Sem Registro' }}</p>
     <p>
       <span>Permanência Atual:</span> {{alerta.data?.packing.permanence.amount_days_exceeded >= 0 ? (alerta.data?.packing.permanence.amount_days_exceeded
       | time ): 'Sem Registro' }}</p>
