@@ -15,25 +15,25 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             const packingIsOk = controlPointOwner.filter(cp => isAbsent(cp, currentControlPoint))
 
             /* Se não estiver no ponto de controle OWNER atualiza a embalagem com o status ABSENT */
-            if (!packingIsOk.length > 0) {
-                console.log('NÃO ESTÁ NUMA PLANTA DONA')
+            if (!(packingIsOk.length > 0)) {
+                //console.log('NÃO ESTÁ NUMA PLANTA DONA')
                 if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date() }, { new: true })
 
                 const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 if (current_state_history) {
-                    console.log("ESTADO DE AUSENTE JÁ CRIADO!")
+                    //console.log("ESTADO DE AUSENTE JÁ CRIADO!") 
                 } else {
                     await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
                 }
             } else {
-                console.log('ESTÁ NUMA PLANTA DONA')
+                //console.log('ESTÁ NUMA PLANTA DONA')
                 await Packing.findByIdAndUpdate(packing._id, { absent: false, absent_time: null }, { new: true })
 
                 current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 if (current_state_history) {
                     await current_state_history.remove()
                 } else {
-                    console.log("ESTADO DE AUSENTE JÁ REMOVIDO!")
+                    //console.log("ESTADO DE AUSENTE JÁ REMOVIDO!")
                 }
             }
         } else {
@@ -41,7 +41,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             
             const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
             if (current_state_history) {
-                console.log("ESTADO DE AUSENTE JÁ CRIADO!")
+                //console.log("ESTADO DE AUSENTE JÁ CRIADO!")
             } else {
                 await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
             }

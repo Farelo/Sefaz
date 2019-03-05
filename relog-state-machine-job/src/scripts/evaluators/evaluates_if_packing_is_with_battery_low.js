@@ -16,7 +16,7 @@ module.exports = async (packing, setting) => {
 
       current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
       if (current_state_history) {
-        console.log("ESTADO DE BATERIA BAIXA JÁ CRIADO!")
+        //console.log("ESTADO DE BATERIA BAIXA JÁ CRIADO!")
       } else {
         await CurrentStateHistory.create({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
       }
@@ -28,7 +28,7 @@ module.exports = async (packing, setting) => {
       if (current_state_history) {
         await current_state_history.remove()
       } else {
-        console.log("ESTADO DE BATERIA BAIXA JÁ REMOVIDO!")
+        //console.log("ESTADO DE BATERIA BAIXA JÁ REMOVIDO!")
       }
     }
   } catch (error) {

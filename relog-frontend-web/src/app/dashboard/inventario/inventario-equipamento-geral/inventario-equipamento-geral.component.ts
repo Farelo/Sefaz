@@ -132,7 +132,11 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
     this.headers.push({ label: 'Local', name: 'current_control_point_type' });
     this.headers.push({ label: 'Bateria', name: 'battery_percentage' });
-    this.headers.push({ label: 'Acurácia', name: 'accuracy' });
+    this.headers.push({ label: 'Acurácia da Entrada/Saída', name: 'in_out_accuracy' });
+
+    this.headers.push({ label: 'Data da Entrada/Saída', name: 'in_out_date' });
+    this.headers.push({ label: 'Última Acurácia', name: 'accuracy' });
+    this.headers.push({ label: 'Último Sinal', name: 'date' });
     
     //console.log('this.headers: ' + JSON.stringify(this.headers));
   }

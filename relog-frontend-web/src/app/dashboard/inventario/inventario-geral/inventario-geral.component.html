@@ -65,7 +65,8 @@
           <th class="empty-super-th"></th>
           <th class="super-th" colspan="2">Inventário Físico</th>
           <th class="super-th" colspan="5">Inventário On Line</th>
-          <th class="super-th" colspan="5">Alertas</th>
+          <th *ngIf="settings.enable_perdida" class="super-th" colspan="7">Alertas</th>
+          <th *ngIf="!settings.enable_perdida" class="super-th" colspan="6">Alertas</th>
         </tr>
         <tr class="cabecalho">
           <th>Fornecedor</th>
@@ -76,14 +77,16 @@
           <th>Nos Pontos de Controle Administrados (B)</th>
           <th>Quantidade no Transito (C)</th>
 
-          <!-- <th>Quantidade no Operator Logístico (D)</th> -->
-          <th>Total do Inventário On Line (TIOL = A+B+C)</th>
+          <th>Análise (D)</th>
+          <th>Total do Inventário On Line (TIOL = A+B+C+D)</th>
           <th>Diferença (TEA - TIOL)</th>
 
           <th>Atraso de Rota</th>
           <th>Local Incorreto</th>
           <th>Tempo de Permanencia</th>
-          <th *ngIf="settings.enable_viagem_perdida">Embalagem Ausente</th>
+          <th>Embalagem Ausente</th>
+          <th>Sem sinal</th>
+          <th *ngIf="settings.enable_perdida">Perdida</th>
         </tr>
       </thead>
 
@@ -100,13 +103,12 @@
           <td class="text-center">{{ item.qtd_total }}</td>
 
           <td class="text-center">{{ item.qtd_in_owner }}</td>
-          <td class="text-center">{{ item.qtd_in_clients - item.qtd_in_traveling}}</td>
-          <td class="text-center">{{ item.qtd_in_traveling }}</td>
+          <td class="text-center">{{ item.qtd_in_clients }}</td>
+          <td class="text-center">{{ (item.qtd_in_traveling + item.qtd_in_traveling_late) }}</td>
 
-          <!-- <td> ? </td> -->
-          <td class="text-center">{{ item.qtd_in_owner + item.qtd_in_clients + item.qtd_in_traveling }}</td>
-          <td class="text-center">{{ item.qtd_total -
-            (item.qtd_in_owner + item.qtd_in_clients + item.qtd_in_traveling) }}</td>
+          <td> {{ item.qtd_in_analysis }} </td>
+          <td class="text-center">{{ item.qtd_in_owner + item.qtd_in_clients + (item.qtd_in_traveling + item.qtd_in_traveling_late) + item.qtd_in_analysis }}</td>
+          <td class="text-center">{{ item.qtd_total - (item.qtd_in_owner + item.qtd_in_clients + (item.qtd_in_traveling + item.qtd_in_traveling_late) + item.qtd_in_analysis) }}</td>
           <!-- - (item.all_alerts[0]?.late || 0) }}</td> -->
 
 
@@ -136,9 +138,23 @@
           </td>
 
           <!-- Alerta: embalagem ausente -->
-          <td class="text-center" *ngIf="settings.enable_viagem_perdida">
+          <td class="text-center" >
             <a routerLinkActive="active" [routerLink]="['/rc/alertas/', item.family_id, 'viagem_perdida']">
               <span class="badge badge-pill badge-ausente">{{item.qtd_in_traveling_missing || '0'}}</span>
+            </a>
+          </td>
+
+          <!-- Alerta: embalagem sem sinal -->
+          <td class="text-center" >
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/', item.family_id, 'sem_sinal']">
+              <span class="badge badge-pill badge-sem-sinal">{{item.qtd_no_signal || '0'}}</span>
+            </a>
+          </td>
+
+          <!-- Alerta: embalagem perdida -->
+          <td class="text-center" *ngIf="settings.enable_perdida">
+            <a routerLinkActive="active" [routerLink]="['/rc/alertas/', item.family_id, 'perdida']">
+              <span class="badge badge-pill badge-perdida">{{item.qtd_missing || '0'}}</span>
             </a>
           </td>
         </tr>
@@ -171,7 +187,7 @@
                   </thead>
 
                   <tbody *ngFor="let subItem of item.locations">
-                    <tr>
+                    <tr *ngIf="subItem.qtd > 0">
                       <td>{{ subItem.cp }}</td>
                       <td style="text-align: center">{{ subItem.qtd }}</td>
                     </tr>

@@ -162,6 +162,14 @@ hr {
   background-color: #ef5562;
 }
 
+.badge-sem-sinal{
+  background-color: #9ecf99;
+}
+
+.badge-perdida{
+  background-color: #3a9ca6;
+}
+
 .base-bg{
   background-color: white;
   padding: 20px 20px;

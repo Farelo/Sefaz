@@ -11,7 +11,7 @@
 
       <div class="row">
 
-        <div class="col-sm-12 col-md-8 campo">
+        <div class="col-sm-12 col-md-8">
           <div class="col-sm-12">
             <p class="descricao-slider">NÍVEL DA BATERIA PARA GERAR ALERTA</p>
             <nouislider [config]="batteryConfig" style="margin-top: 2em;" [formControl]="settings.controls.battery_level_limit"></nouislider>
@@ -22,18 +22,18 @@
             <nouislider [config]="accuracyConfig" style="margin-top: 2em;" [formControl]="settings.controls.accuracy_limit"></nouislider>
           </div>
 
-          <div class="col-sm-12 campo">
+          <!-- <div class="col-sm-12 campo">
             <p class="descricao-slider">RAIO DA PLANTA </p>
             <nouislider [config]="radiusConfig" style="margin-top: 2em;" [formControl]="settings.controls.range_radius"></nouislider>
-          </div>
+          </div> -->
 
-          <div class="col-sm-12 col-md-8 campo">
+          <div class="col-sm-12 col-md-8">
 
             <p class="descricao-slider">HABILITAR ALERTAS:</p>
 
             <div class="row">
-              <div class="col-sm-12">
-                <!-- Local incorreto -->
+              <!-- Embalagem Ausente -->
+              <!-- <div class="col-sm-12">
                 <div class="form-group form-check checkbox">
                   <label>
                     <input type="checkbox" [formControl]="settings.controls.enable_viagem_perdida">
@@ -41,10 +41,10 @@
                     Embalagem Ausente
                   </label>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="col-sm-12">
-                <!-- Perdida -->
+              <!-- Local Incorreto -->
+              <!-- <div class="col-sm-12">
                 <div class="form-group form-check checkbox">
                   <label>
                     <input type="checkbox" [formControl]="settings.controls.enable_local_incorreto">
@@ -52,10 +52,10 @@
                     Local Incorreto
                   </label>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="col-sm-12">
-                <!-- Sem sinal -->
+              <!-- Viagem Atrasada -->
+              <!-- <div class="col-sm-12">
                 <div class="form-group form-check checkbox">
                   <label>
                     <input type="checkbox" [formControl]="settings.controls.enable_viagem_atrasada">
@@ -63,9 +63,10 @@
                     Viagem Atrasada
                   </label>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="col-sm-12">
+              <!-- Sem Sinal -->
+              <!-- <div class="col-sm-12">
                 <div class="form-group form-check checkbox">
                   <label>
                     <input type="checkbox" [formControl]="settings.controls.enable_sem_sinal">
@@ -73,7 +74,7 @@
                     Sem Sinal
                   </label>
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-sm-12">
                 <div class="form-group form-check checkbox">
@@ -88,7 +89,7 @@
           </div>
         </div>
 
-        <div class="col-md-4 campo">
+        <div class="col-md-4">
 
           <div class="col-sm-12 campo">
             <p class="descricao">CICLO DO JOB (SEG)</p>
@@ -157,9 +158,9 @@
           </div>
 
 
-          <div class="col-sm-12 campo">
+          <div class="col-sm-12">
             <div class="row">
-              <div class="col-sm-12 campo">
+              <div class="col-sm-12">
                 <p class="descricao">ATIVAR BPLINE</p>
                 <bSwitch [switch-off-text]="'Não'" [switch-on-text]="'Sim'" [switch-on-color]="'success'"
                   [switch-off-color]="'danger'" [switch-size]="'mini'" [switch-animate]="true" [switch-base-class]="'bootstrap-switch'"
@@ -170,17 +171,6 @@
           </div>
 
         </div>
-      </div>
-
-
-
-
-
-
-
-      <!-- Linha 4 -->
-      <div class="row">
-
       </div>
 
       <!-- Botões de ação -->

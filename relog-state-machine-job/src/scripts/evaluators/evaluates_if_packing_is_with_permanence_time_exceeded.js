@@ -21,48 +21,48 @@ module.exports = async (packing, currentControlPoint) => {
 
             if (family.company.type === 'owner') {
                 if (timeIntervalInDays > gc16.owner_stock.days) {
-                    console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
+                    //console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
 
                     const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     if (current_state_history) {
-                        console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ CRIADO!")
+                        //console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ CRIADO!")
                     } else {
                         await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     }
 
                 } else {
-                    console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
+                    //console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
                     
                     current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     if (current_state_history) {
                         await current_state_history.remove()
                     } else {
-                        console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ REMOVIDO!")
+                        //console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ REMOVIDO!")
                     }
                 }
             } else {
                 if (timeIntervalInDays > gc16.client_stock.days) {
-                    console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
+                    //console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
                     
                     const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     if (current_state_history) {
-                        console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ CRIADO!")
+                        //console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ CRIADO!")
                     } else {
                         await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     }
 
                 } else {
-                    console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
+                    //console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
                     current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     if (current_state_history) {
                         await current_state_history.remove()
                     } else {
-                        console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ REMOVIDO!")
+                        //console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ REMOVIDO!")
                     }
                 }
             }

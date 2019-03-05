@@ -282,7 +282,13 @@ export class RastreamentoComponent implements OnInit {
         return elem;
       });
 
-      // console.log(JSON.stringify(this.plotedPackings[0]));
+      //Se só há um objeto selecionado, centralize o mapa nele
+      if (this.plotedPackings.length == 1){
+        if (this.plotedPackings[0].last_device_data){
+          this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
+        }
+      }
+      console.log(JSON.stringify(this.plotedPackings));
 
       //this.resolveClustering();
       if (this.mSpiralize) {

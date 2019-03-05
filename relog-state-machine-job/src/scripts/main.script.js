@@ -9,32 +9,60 @@ const runSM = require('./runSM.script')
 const spinner = ora('State Machine working...')
 
 module.exports = async () => {
-    const setting = await getSettings()
-    cron.schedule(`*/${setting.job_schedule_time_in_sec} * * * * *`, async () => {
-    // cron.schedule(`*/5 * * * * *`, async () => {
-        spinner.start()
-        setTimeout(async () => {
-            // const device_data_array = await DeviceData.find({})
-            const controlPoints = await ControlPoint.find({})
-                .populate('company')
-                .populate('type')
-            const packings = await Packing.find({})
-                .populate('family')
-                .populate('last_device_data')
-                .populate('last_device_data_battery')
-                .populate('last_current_state_history')
-                .populate('last_event_record')
+    
+    let setting = await getSettings()
 
-            // for (let packing of packings) {
-            //     runSM(setting, packing, controlPoints)
-            // }
-            packings.forEach(packing => {
-                runSM(setting, packing, controlPoints)
-            })
+    let nextSemaphor = true
+    
+    cron.schedule(`*/1 * * * *`, async () => { 
 
-            spinner.succeed('Finished!')
-        }, 2000)
+        if (nextSemaphor){
+
+            //close the semaphor
+            nextSemaphor = false
+
+            setTimeout(async () => {
+                
+                spinner.start()
+                
+                console.log('START')
+                console.log((new Date().toISOString()))
+
+                setting = await getSettings()
+
+                // const device_data_array = await DeviceData.find({})
+                const controlPoints = await ControlPoint.find({})
+                    .populate('company')
+                    .populate('type')
+                    
+                const packings = await Packing.find({ })
+                    .populate('family')
+                    .populate('last_device_data')
+                    .populate('last_device_data_battery')
+                    .populate('last_current_state_history')
+                    .populate('last_event_record')
+
+                await iteratePackings(setting, packings, controlPoints)
+            
+                // packings.forEach(packing => {
+                //     runSM(setting, packing, controlPoints)
+                // })
+
+                spinner.succeed('Finished!')
+
+                //open the semmaphor
+                nextSemaphor = true
+
+            }, setting.job_schedule_time_in_sec * 1000)
+            
+        }
     })
+}
+
+const iteratePackings = async (setting, packings, controlPoints) => {
+    for await (let packing of packings) {
+        runSM(setting, packing, controlPoints)
+    }
 }
 
 const getSettings = async () => {

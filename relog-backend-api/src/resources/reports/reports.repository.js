@@ -4,6 +4,7 @@ const moment = require('moment')
 const { Company } = require('../companies/companies.model')
 const { ControlPoint } = require('../control_points/control_points.model')
 const { EventRecord } = require('../event_record/event_record.model')
+const { DeviceData } = require('../device_data/device_data.model')
 const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
 const { GC16 } = require('../gc16/gc16.model')
@@ -83,22 +84,29 @@ exports.general_inventory_report = async () => {
         const families_with_packings = await Promise.all(
             families.map(async (family) => {
                 let family_obj = {}
-
-                const qtd_total = await Packing.find({ family: family._id, active: true }).count()
-                const qtd_in_owner = await Packing.find({ family: family._id, absent: false, active: true }).count()
-                let qtd_in_clients = await Packing.find({ family: family._id, absent: true, active: true }).populate('last_event_record')
+ 
+                const _in_owner = await Packing.find({ family: family._id, absent: false, active: true, current_state: { $ne: 'analise' } }) 
+                const _in_clients = await Packing.find({ family: family._id, absent: true, active: true })
+                
+                const qtd_total = await Packing.find({ family: family._id, active: true }).count() 
+                const qtd_in_owner = await Packing.find({ family: family._id, absent: false, active: true, current_state: { $ne: 'analise' }  }).count()
+                let qtd_in_clients = await Packing.find({ family: family._id, absent: true, active: true, current_state: { $in: ['local_correto'] } }).populate('last_event_record')
                 let qtd_in_cp = await Packing.find({ family: family._id, active: true }).populate('last_event_record')
                 const qtd_in_analysis = await Packing.find({ family: family._id, current_state: 'analise', active: true }).count()
-                const qtd_in_traveling = await Packing.find({ family: family._id, current_state: 'viagem_em_prazo', active: true }).count()
+                
+                const qtd_in_traveling = await Packing.find({ family: family._id, active: true, absent: true, current_state: { $in: ['viagem_em_prazo'] } }).count()
                 const qtd_in_traveling_late = await Packing.find({ family: family._id, current_state: 'viagem_atrasada', active: true }).count()
                 const qtd_in_traveling_missing = await Packing.find({ family: family._id, current_state: 'viagem_perdida', active: true }).count()
+
                 const qtd_in_correct_cp = await Packing.find({ family: family._id, current_state: 'local_correto', active: true }).count()
                 const qtd_in_incorrect_cp = await Packing.find({ family: family._id, current_state: 'local_incorreto', active: true }).count()
                 const qtd_with_permanence_time_exceeded = await Packing.find({ family: family._id, permanence_time_exceeded: true, active: true }).count()
+                const qtd_no_signal = await Packing.find({ family: family._id, current_state: 'sem_sinal', active: true }).count()
                 const qtd_missing = await Packing.find({ family: family._id, current_state: 'perdida', active: true }).count()
-                const locations = await general_inventory_report_detailed(family._id)
-
-                //qtd_in_clients = qtd_in_clients.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
+                //const locations = await general_inventory_report_detailed(family._id)
+                const locations = await owner_general_inventory_report_detailed(family._id)
+                
+                qtd_in_clients = qtd_in_clients.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
                 qtd_in_cp = qtd_in_cp.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
 
                 family_obj.company = family.company.name
@@ -114,8 +122,13 @@ exports.general_inventory_report = async () => {
                 family_obj.qtd_in_traveling_missing = qtd_in_traveling_missing
                 family_obj.qtd_in_incorrect_cp = qtd_in_incorrect_cp
                 family_obj.qtd_with_permanence_time_exceeded = qtd_with_permanence_time_exceeded
+                family_obj.qtd_no_signal = qtd_no_signal
                 family_obj.qtd_missing = qtd_missing
                 family_obj.locations = Object.entries(_.countBy(locations, 'control_point_name')).map(([key, value]) => ({cp: key, qtd: value}))
+                family_obj.locations.push({ cp: '', qtd: 0})
+
+                family_obj._in_owner = _in_owner
+                family_obj._in_clients = _in_clients
 
                 return family_obj
             })
@@ -125,6 +138,49 @@ exports.general_inventory_report = async () => {
     } catch (error) {
         throw new Error(error)
     }
+}
+
+const owner_general_inventory_report_detailed = async (family_id) => {
+    const family = await Family.findById(family_id)
+    const packings = await Packing.find({ family: family._id, absent: false, active: true }).populate('last_event_record')
+    
+    const data = await Promise.all(
+        packings
+            .filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
+            .map(async packing => {
+                let data_temp = {}
+
+                const control_point = await ControlPoint.findById(packing.last_event_record.control_point)
+
+                data_temp.packing = packing._id
+                data_temp.control_point_name = control_point.name
+
+                return data_temp
+            })
+    )
+
+    return data
+}
+
+const general_inventory_report_detailed = async (family_id) => {
+    const family = await Family.findById(family_id)
+    const packings = await Packing.find({ family: family._id }).populate('last_event_record')
+    const data = await Promise.all(
+        packings
+            .filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
+            .map(async packing => {
+                let data_temp = {}
+
+                const control_point = await ControlPoint.findById(packing.last_event_record.control_point)
+
+                data_temp.packing = packing._id
+                data_temp.control_point_name = control_point.name
+
+                return data_temp
+            })
+    )
+
+    return data
 }
 
 exports.snapshot_report = async () => {
@@ -138,11 +194,13 @@ exports.snapshot_report = async () => {
 
         const data = await Promise.all(
             packings.map(async packing => {
+                                
                 let obj = {}
                 const battery_level = packing.last_device_data && packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
+                const lastAccurateMessage = await getLastAccurateMessage(packing, settings[0])
 
                 obj.id = packing._id
-                obj.message_date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : '-'
+                obj.message_date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LTS')}` : '-'
                 obj.family = packing.family ? packing.family.code : '-'
                 obj.serial = packing.serial
                 obj.tag = packing.tag.code
@@ -151,17 +209,24 @@ exports.snapshot_report = async () => {
                 obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
                 obj.lat_lng_device = await getLatLngOfPacking(packing)
                 obj.lat_lng_cp = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getLatLngOfControlPoint(packing) : '-'
-                obj.cp_type = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getTypeOfControlPoint(packing) : '-'
-                obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getNameOfControlPoint(packing) : '-'
-                obj.geo = 'C'
-                obj.area = `{(${await getLatLngOfPacking(packing)}),${settings[0].range_radius}}`
+                obj.cp_type = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).type.name : '-'
+                obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).name : '-'
+                obj.geo = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).geofence.type : '-'
+                obj.area =packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getAreaControlPoint(packing)) : '-'
+                //obj.area = `{(${await getLatLngOfPacking(packing)}),${settings[0].range_radius}}`
                 obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : '-'
                 obj.signal = packing.current_state === 'sem_sinal' ? 'FALSE' : packing.current_state === 'desabilitada_sem_sinal' ? 'FALSE' : packing.current_state === 'perdida' ? 'FALSE' : 'TRUE'
                 obj.battery = battery_level ? battery_level : "-"
                 obj.battery_alert = battery_level > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
                 obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : "-"
                 obj.absent_time = packing.absent && packing.absent_time !== null ? await getDiffDateTodayInHours(packing.absent_time) : '-'
-
+                //
+                obj.last_elegible_accuracy = packing.last_device_data ? lastAccurateMessage[0].accuracy : "-"
+                obj.last_elegible_lat_lng_device = packing.last_device_data ? `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}` : "-"
+                obj.last_elegible_message_date = packing.last_device_data ? `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}` : '-'
+                
+                console.log('-')
+                console.log(JSON.stringify(lastAccurateMessage[0]))
                 // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
                 //     obj.absent_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
                 // } else {
@@ -477,13 +542,20 @@ exports.general_info_report = async(family_id = null) => {
                 .populate('last_device_data')
                 .populate('last_device_data_battery')
                 .populate('last_event_record')
+                .populate('last_current_state_history')
 
         const data = await Promise.all(
             packings
                 .map(async packing => {
                     let object_temp = {}
 
-                    const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
+                    let current_control_point = null;
+                    if (packing.last_event_record){
+                        if(packing.last_event_record.type !== 'outbound'){
+                            current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type') 
+                        }
+                    }
+                    //const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
                     const company = await Company.findById(packing.family.company)
 
                     object_temp._id = packing._id
@@ -494,8 +566,17 @@ exports.general_info_report = async(family_id = null) => {
                     object_temp.current_state = packing.current_state
                     object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
                     object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
+                    
+                    //dados do último inbound/outbound
+                    object_temp.in_out_accuracy = packing.last_event_record ? packing.last_event_record.accuracy : '-'
+                    object_temp.in_out_date = packing.last_event_record ? packing.last_event_record.created_at : '-'
+                    // object_temp.in_out_accuracy = packing.last_current_state_history ? packing.last_current_state_history.accuracy : '-'
+                    // object_temp.in_out_date = packing.last_current_state_history ? packing.last_current_state_history.created_at : '-'
+
+                    //dados atuais
                     object_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : 'Sem registro'
                     object_temp.date = packing.last_device_data ? packing.last_device_data.message_date : 'Sem registro'
+                    
                     object_temp.battery_percentage = packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : 'Sem registro'
                     object_temp.battery_date = packing.last_device_data_battery ? packing.last_device_data_battery.message_date : '-'
 
@@ -567,36 +648,60 @@ exports.clients_report = async(company_id = null) => {
     }
 }
 
-const general_inventory_report_detailed = async (family_id) => {
-    const family = await Family.findById(family_id)
-    const packings = await Packing.find({ family: family._id }).populate('last_event_record')
-    const data = await Promise.all(
-        packings
-            .filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
-            .map(async packing => {
-                let data_temp = {}
-
-                const control_point = await ControlPoint.findById(packing.last_event_record.control_point)
-
-                data_temp.packing = packing._id
-                data_temp.control_point_name = control_point.name
-
-                return data_temp
-            })
-    )
-
-    return data
-}
-
 const getLatLngOfPacking = async (packing) => {
     // const current_device_data = await DeviceData.findById(packing.last_device_data._id)
     if (!packing.last_device_data) return '-'
     return `${packing.last_device_data.latitude} ${packing.last_device_data.longitude}`
 }
 
+const getActualControlPoint = async (packing) => {
+    const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
+    console.log(' ')
+    // console.log('---')
+    console.log(current_control_point.name)
+    console.log(current_control_point.type.name)
+    console.log(current_control_point.geofence.type)
+    // console.log(current_control_point)
+    // console.log('---')
+    return current_control_point
+}
+
 const getLatLngOfControlPoint = async (packing) => {
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
-    return `${current_control_point.lat} ${current_control_point.lng}`
+
+    if (current_control_point.geofence.type == 'c') {
+        return `${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}`
+
+    } else {
+        let lat = current_control_point.geofence.coordinates.map(p => p.lat)
+        let lng = current_control_point.geofence.coordinates.map(p => p.lng)
+        return `${((Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2)} ${((Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2)}`        
+    }
+}
+
+const getAreaControlPoint = async (packing) => {
+    const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
+
+    if (current_control_point.geofence.type == 'c') {
+        return `{(${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}), ${current_control_point.geofence.radius}}`
+
+    } else { 
+        let result = '['
+        current_control_point.geofence.coordinates.map((p, i, arr) => {
+            if (arr.length - 1 == i)
+                result += `(${p.lat} ${p.lng})`
+            else
+                result += `(${p.lat} ${p.lng}), `
+        })
+        result += ']'
+
+        return result
+    }
+}
+
+const getLastAccurateMessage = async (packing, settings) => {
+    const last_accurate_message = await DeviceData.find({ device_id: packing.tag.code, accuracy: { $lte: settings.accuracy_limit } }).sort({ message_date_timestamp: -1 }).limit(1)
+    return last_accurate_message
 }
 
 const getTypeOfControlPoint = async (packing) => {
