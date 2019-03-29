@@ -106,7 +106,8 @@
         <!-- (click)="onClick($event)" -->
         <ngui-map [zoom]="zoom" [center]="center" style="margin-top: 10px;" (mapReady$)="onMapReady()">
           <!-- <marker [position]="pos"></marker> -->
-          <drawing-manager [drawingMode]="'null'" [drawingControl]="true" [drawingControlOptions]="{
+          <drawing-manager [drawingControl]="true" 
+            [drawingControlOptions]="{
               position: 2,
               drawingModes: ['circle', 'polygon']}"
             [polygonOptions]="{
@@ -126,15 +127,43 @@
               editable: true,
               zIndex: 1}">
           </drawing-manager>
-<!-- 
-          <polygon *ngIf="!polygonEdited && mGeofence.type == 'p' && (alreadyprinted == false)" [paths]="mGeofence.coordinates" [editable]="false"
-            [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1">
+
+          <!-- ///////////// -->
+          <!-- Ponto de Controle -->
+          <circle *ngFor="let posCPCircle of listOfCircleControlPoints" [center]="posCPCircle.geofence.coordinates[0]" [radius]="posCPCircle.geofence.radius"
+            [editable]="false" [fillColor]="'#455A64'" [fillOpacity]="0.2" [strokeColor]="'#263238'" [strokeOpacity]="0.4"
+            [strokeWeight]="1"> </circle>
+          
+            <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+            [title]="posCP.name" (click)="clickedPlant($event, posCP)">
+            <info-window id="pw">
+              <div class="iw-title">INFORMAÇÕES</div>
+              <div *ngIf="plant.display" class="info-window-content">
+                <p>
+                  <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
+              </div>
+            </info-window>
+          </marker>
+
+          <!-- ///////////// -->
+          <!-- Ponto de Controle -->
+          <polygon *ngFor="let posCPPolygon of listOfPolygonControlPoints" [paths]="posCPPolygon.geofence.coordinates" [editable]="false"
+            [fillColor]="'#455A64'" [fillOpacity]="0.2" [strokeColor]="'#263238'" [strokeOpacity]="0.4" [strokeWeight]="1">
           </polygon>
 
-          <circle *ngIf="!circleEdited && mGeofence.type == 'c' && (alreadyprinted == false)" [center]="mGeofence.coordinates[0]" [radius]="mGeofence.radius"
-            [editable]="false" [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4"
-            [strokeWeight]="1"> </circle> -->
-
+          <marker *ngFor="let posCP of listOfPolygonControlPoints" [position]="posCP.position" (click)="clickedPlant($event, posCP)"
+            [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }">
+            <!-- <div class="custom-icon-map-plant"></div> -->
+            <info-window id="lw">
+              <div class="iw-title">INFORMAÇÕES</div>
+              <div *ngIf="plant.display" class="info-window-content">
+                <p>
+                  <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
+              </div>
+            </info-window>
+          </marker>
+        
+          
         </ngui-map>
 
         <p class="requiredText">

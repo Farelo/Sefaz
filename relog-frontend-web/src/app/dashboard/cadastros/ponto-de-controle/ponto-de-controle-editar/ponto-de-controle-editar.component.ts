@@ -64,12 +64,13 @@ export class PontoDeControleEditarComponent implements OnInit {
   ngOnInit() {
 
     this.fillCompanySelect();
+    this.getOthersControlPoints();
     this.fillTypesSelect();
     
   }
 
   onMapReady(){
-    console.log('onMapReady'); 
+    //console.log('onMapReady'); 
     this.initializeDrawingManager(); 
   }
 
@@ -98,7 +99,7 @@ export class PontoDeControleEditarComponent implements OnInit {
    * 
    */
   retrieveControlPoint(dm: any) {
-    console.log('retrieveControlPoint');
+    //console.log('retrieveControlPoint');
     this.inscricao = this.route.params.subscribe((params: any) => {
       this.mId = params['id'];
       this.controlPointsService.getControlPoint(this.mId).subscribe(result => {
@@ -117,7 +118,7 @@ export class PontoDeControleEditarComponent implements OnInit {
   }
 
   printGeofence(){
-    console.log('printGeofence');
+    //console.log('printGeofence');
 
     if (this.mGeofence.type == 'p'){
       this.calculatePolygonCenter();
@@ -137,7 +138,7 @@ export class PontoDeControleEditarComponent implements OnInit {
       lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
       lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
     }
-    console.log('center: ' + JSON.stringify(this.center));
+    //console.log('center: ' + JSON.stringify(this.center));
   }
 
   calculateCircleCenter(){
@@ -161,7 +162,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.mGeofence.type = 'c';
     this.mGeofence.radius = this.controlPointCircle.getRadius();
 
-    console.log(JSON.stringify(this.mGeofence));
+    //console.log(JSON.stringify(this.mGeofence));
   }
 
   generatePolygonGeofence(poly: any) {
@@ -174,7 +175,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.controlPointPolygon.getPath().forEach(latLng => arr.push({ lat: latLng.lat(), lng: latLng.lng() }))
     this.mGeofence.coordinates = arr;
 
-    console.log(JSON.stringify(this.mGeofence));
+    //console.log(JSON.stringify(this.mGeofence));
   }
 
   dragPolygon(event: any){
@@ -184,16 +185,16 @@ export class PontoDeControleEditarComponent implements OnInit {
   private alreadyprinted: boolean = false;
 
   prepareMap(dm: any) {
-    console.log('initialized');
+    //console.log('initialized');
 
     if (!this.alreadyprinted && this.mGeofence.type == 'c') {
-      console.log('printing');
+      //console.log('printing');
       this.createCircle(dm, this.mGeofence.coordinates[0], this.mGeofence.radius);
       this.alreadyprinted = true;
     }
 
     if (!this.alreadyprinted && this.mGeofence.type == 'p') {
-      console.log('printing');
+      //console.log('printing');
       this.createPolygon(dm, this.mGeofence.coordinates);
       this.alreadyprinted = true;
     }
@@ -258,7 +259,7 @@ export class PontoDeControleEditarComponent implements OnInit {
 
   initializeDrawingManager() {
 
-    console.log('prepareMap');
+    //console.log('prepareMap');
 
     this.drawingManager['initialized$'].subscribe((dm: google.maps.drawing.DrawingManager) => {
 
@@ -269,9 +270,9 @@ export class PontoDeControleEditarComponent implements OnInit {
 
   createCircle(dm: google.maps.drawing.DrawingManager, center: any, radius: any) {
 
-    console.log('createCircle');
-    console.log('center: ' + center);
-    console.log('radius: ' + radius);
+    // console.log('createCircle');
+    // console.log('center: ' + center);
+    // console.log('radius: ' + radius);
 
     // if (this.controlPointCircle !== null) {
     //   this.controlPointCircle.setMap(null);
@@ -296,20 +297,20 @@ export class PontoDeControleEditarComponent implements OnInit {
 
     google.maps.event.addListener(this.controlPointCircle, 'radius_changed', event => {
 
-      console.log('circle radius changed');
+      //console.log('circle radius changed');
       this.generateCircleGeofence(this.controlPointCircle);
     });
 
     google.maps.event.addListener(this.controlPointCircle, 'center_changed', event => {
 
-      console.log('circle center changed');
+      //console.log('circle center changed');
       this.generateCircleGeofence(this.controlPointCircle);
     });
   }
 
   createPolygon(dm: google.maps.drawing.DrawingManager, polygon: any){
 
-    console.log('createPolygon');
+    //console.log('createPolygon');
 
     // if (this.controlPointCircle !== null) {
     //   this.controlPointCircle.setMap(null);
@@ -495,4 +496,71 @@ export class PontoDeControleEditarComponent implements OnInit {
   //       }
   //     });
   // }
+
+
+  /**
+   * Methods relative to all others control points
+   */
+
+  public plant = {
+    display: true,
+    lat: null,
+    lng: null,
+    name: null,
+    location: null
+  };
+
+  clickedPlant(_a, opt) {
+    console.log('clickedPlant')
+    console.log(this.plant)
+
+    var p = _a.target;
+    this.plant.lat = p.lat;
+    this.plant.lng = p.lng;
+    this.plant.name = opt.name;
+    // this.plant.location = opt.location;
+
+    this.clickedPlantDetail(p);
+  }
+
+
+  /*
+   * Info window 
+   */
+  clickedPlantDetail(plant) {
+    console.log('clickedPlantDetail')
+
+    plant.nguiMapComponent.openInfoWindow('pw', plant);
+  }
+
+  public listOfCircleControlPoints: any;  //Control Points arrays
+  public listOfPolygonControlPoints: any; //Control Points arrays
+
+  getOthersControlPoints() {
+    this.controlPointsService.getAllControlPoint().subscribe(result => {
+
+      this.listOfCircleControlPoints = result
+        .filter(elem => elem.geofence.type == 'c')
+        .map(elem => {
+          elem.position = (new google.maps.LatLng(elem.geofence.coordinates[0].lat, elem.geofence.coordinates[0].lng));
+          return elem;
+        });
+
+      this.listOfPolygonControlPoints = result
+        .filter(elem => elem.geofence.type == 'p')
+        .map(elem => {
+
+          let lat = elem.geofence.coordinates.map(p => p.lat);
+          let lng = elem.geofence.coordinates.map(p => p.lng);
+
+          elem.position = {
+            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2,
+            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2
+          }
+
+          return elem;
+        });
+
+    });
+  }
 }
