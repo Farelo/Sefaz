@@ -64,7 +64,8 @@ export class CompanyEditarComponent implements OnInit {
   fillSelectType() {
     this.typesOnSelect = [
       { label: "Owner", name: "owner" },
-      { label: "Cliente", name: "client" }];
+      { label: "Suplier", name: "suplier" },
+      { label: "Client", name: "client" }];
 
       //default
       this.companyType = this.typesOnSelect[0];
@@ -78,7 +79,7 @@ export class CompanyEditarComponent implements OnInit {
         //console.log('result...' + JSON.stringify(result));
 
         let actualValues = {
-          type: (result.type == this.typesOnSelect[0].name) ? this.typesOnSelect[0] : this.typesOnSelect[1],
+          type: '',
           name: result.name,
           phone: result.phone ? result.phone : '',
           cnpj: result.cnpj ? result.cnpj : '',
@@ -90,6 +91,10 @@ export class CompanyEditarComponent implements OnInit {
           }
         };
         
+        if(result.type == this.typesOnSelect[0].name) actualValues.type = this.typesOnSelect[0];
+        if(result.type == this.typesOnSelect[1].name) actualValues.type = this.typesOnSelect[1];
+        if(result.type == this.typesOnSelect[2].name) actualValues.type = this.typesOnSelect[2];
+
         //console.log('this.actualValues...' + JSON.stringify(actualValues));
 
         (<FormGroup> this.newCompany).patchValue(actualValues, { onlySelf: true });

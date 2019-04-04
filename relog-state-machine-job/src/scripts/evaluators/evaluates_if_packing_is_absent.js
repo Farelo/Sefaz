@@ -9,7 +9,10 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
     try {
         if (currentControlPoint) {
             /* Recupera os pontos de controle que são owner */
-            const controlPointOwner = controlPoints.filter(isOwner)
+            const controlPointOwner = controlPoints.filter(isOwnerOrSuplier)
+
+            //console.log('filter isOwnerOrSuplier')
+            //console.log(controlPointOwner)
 
             /* Checa se a embalagem está em algum ponto de controle OWNER */
             const packingIsOk = controlPointOwner.filter(cp => isAbsent(cp, currentControlPoint))
@@ -53,8 +56,16 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
     }
 }
 
+const isOwnerOrSuplier = (value) => {
+    return (isOwner(value) || isSuplier(value))
+}
+
 const isOwner = (value) => {
     return value.company.type === 'owner'
+}
+
+const isSuplier = (value) => {
+    return value.company.type === 'suplier'
 }
 
 const isAbsent = (value, currentControlPoint) => {

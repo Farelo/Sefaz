@@ -25,7 +25,7 @@ module.exports = async (setting, packing, controlPoints) => {
     let isPermanenceTimeExceeded
 
     ////// console.log(' ')
-    //// console.log('==============================')
+    //console.log('==============================')
     //// console.log(packing.tag.code)
 
     try {
