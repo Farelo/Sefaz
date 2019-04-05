@@ -10,18 +10,20 @@ module.exports = async (packing, controlPoints, setting) => {
 
         //Deve ser otimizado para sair do loop quando for encontrado dentro de um polígono
         controlPoints.forEach(async (controlPoint) => {
-            isInsidePolygon = false
+            //isInsidePolygon = false
 
             if (controlPoint.geofence.type === 'p') {
-                if (pnpoly(packing, controlPoint)) {
-                    //console.log(`>>>>>>>>>>>>>>>>>>>>>>>>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
-                    distance = 0
-                    currentControlPoint = controlPoint
-                    isInsidePolygon = true
+                if (!isInsidePolygon){
+                    if (pnpoly(packing, controlPoint)) {
+                        console.log(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
+                        distance = 0
+                        currentControlPoint = controlPoint
+                        isInsidePolygon = true
+                    }
                 }
             } else {
                 if (!isInsidePolygon){
-                    //console.log(`=========================== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
+                    console.log(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
 
                     const calculate = getDistanceFromLatLonInKm(
                         packing.last_device_data.latitude,
@@ -46,35 +48,35 @@ module.exports = async (packing, controlPoints, setting) => {
             return null
             
         } else {
-            //console.log('COM INTERSECÇÃO') 
+            console.log('COM INTERSECÇÃO') 
 
             if (packing.last_event_record){
                 if (packing.last_event_record.type === 'inbound'){
-                    //console.log('FEZ INBOUND') 
+                    console.log('FEZ INBOUND') 
                     await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
                     return currentControlPoint
 
                 } else{
-                    //console.log('FEZ OUTBOUND')
+                    console.log('FEZ OUTBOUND')
 
                     if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
-                        //console.log('BOA ACURACIA')
+                        console.log('BOA ACURACIA')
                         await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
                         return currentControlPoint
                     } else {
-                        //console.log('NÃO TEM BOA ACURACIA')
+                        console.log('NÃO TEM BOA ACURACIA')
                         return null
                     }
                 }
 
             }else{
-                //console.log('NÃO TEM EVENT RECORD')
+                console.log('NÃO TEM EVENT RECORD')
                 if(packing.last_device_data.accuracy <= setting.accuracy_limit){
-                    //console.log('BOA ACURACIA')
+                    console.log('BOA ACURACIA')
                     await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
                     return currentControlPoint
                 } else {
-                    //console.log('NÃO TEM BOA ACURACIA')
+                    console.log('NÃO TEM BOA ACURACIA')
                     return null
                 }
             }
@@ -141,16 +143,16 @@ const newcheckIn = async (packing, setting, range_radius, distance, currentContr
             }
         } else {
 
-            //console.log('EMBALAGEM JÁ TEM O EVENT RECORD')
+            console.log('EMBALAGEM JÁ TEM O EVENT RECORD')
             if ((isInsidePolygon || (distance <= (range_radius + packing.last_device_data.accuracy))) && (packing.last_device_data.accuracy <= setting.accuracy_limit)) {
-                //console.log('..EMBALAGEM ESTÁ EM UM PONTO DE CONTROLE')
+                console.log('..EMBALAGEM ESTÁ EM UM PONTO DE CONTROLE')
                 // Estou em um ponto de controle!
                 // Checa se o ponto de controle onde a embalagem está é novo
                 if (packing.last_event_record.control_point.toString() !== currentControlPoint._id.toString()) {
-                    //console.log('TENTAR OUTBOUND')
+                    console.log('TENTAR OUTBOUND')
 
                     if (packing.last_event_record.type === 'inbound') {
-                        //console.log('CRIAR OUTBOUND')
+                        console.log('CRIAR OUTBOUND')
                         const eventRecord = new EventRecord({
                             packing: packing._id,
                             control_point: packing.last_event_record.control_point._id,
@@ -162,7 +164,7 @@ const newcheckIn = async (packing, setting, range_radius, distance, currentContr
                         await eventRecord.save()
                     }
 
-                    //console.log('CRIAR INBOUND')
+                    console.log('CRIAR INBOUND')
                     const eventRecord = new EventRecord({
                         packing: packing._id,
                         control_point: currentControlPoint._id,
@@ -174,9 +176,9 @@ const newcheckIn = async (packing, setting, range_radius, distance, currentContr
                     await eventRecord.save()
 
                 } else {
-                    //console.log('TENTAR INBOUND')
+                    console.log('TENTAR INBOUND')
                     if (packing.last_event_record.type === 'outbound') {
-                        //console.log('CRIAR INBOUND')
+                        console.log('CRIAR INBOUND')
 
                         const eventRecord = new EventRecord({
                             packing: packing._id,
@@ -190,7 +192,7 @@ const newcheckIn = async (packing, setting, range_radius, distance, currentContr
                     }
                 }
             } else {
-                //console.log('EMBALAGEM NÃO ESTÀ EM UM PONTO DE CONTROLE')
+                console.log('EMBALAGEM NÃO ESTÀ EM UM PONTO DE CONTROLE')
                 // Não estou em um ponto de controle próximo!
                 // Checa se o último poncheckInto de controle é um INBOUND
                 // if (packing.last_event_record.type === 'inbound') {

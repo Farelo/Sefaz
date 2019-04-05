@@ -157,14 +157,14 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.LOCAL_CORRETO.key:
                 /* ******************************LOCAL_CORRETO***************************** */
-                //console.log('LOCAL_CORRETO')
+                console.log('LOCAL_CORRETO')
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
 
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
-                    ////console.log(currentControlPoint.name)
+                    console.log(currentControlPoint.name)
 
                     /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
                     await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
