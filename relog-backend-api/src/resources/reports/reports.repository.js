@@ -1,6 +1,7 @@
 const debug = require('debug')('repository:reports')
 const _ = require('lodash')
 const moment = require('moment')
+const { CurrentStateHistory } = require('../current_state_history/current_state_history.model')
 const { Company } = require('../companies/companies.model')
 const { ControlPoint } = require('../control_points/control_points.model')
 const { EventRecord } = require('../event_record/event_record.model')
@@ -194,7 +195,25 @@ exports.snapshot_report = async () => {
 
         const data = await Promise.all(
             packings.map(async packing => {
-                                
+                
+                //Begin: Calculate no signal while absent, if absent
+                let currentStatesSinceAbsent = []
+                if(packing.absent && packing.absent_time !== null){
+                    currentStatesSinceAbsent = await CurrentStateHistory.find({
+                        packing: packing._id,
+                        created_at: {
+                            $gte: packing.absent_time
+                          }
+                    })
+                }
+                let currentStatesSinceAbsentFiltered = currentStatesSinceAbsent.filter(elem => {
+                    return ((elem.type == 'sem_sinal') || (elem.type == 'perdida') || (elem.type == 'sinal'))
+                })
+                let noSignalTimeSinceAbsent = 0
+                noSignalTimeSinceAbsent = await calculateAbsentWithoutLostTime(currentStatesSinceAbsentFiltered)
+                //console.log(noSignalTimeSinceAbsent)
+                //End: Calculate no signal while absent, if absent
+
                 let obj = {}
                 const battery_level = packing.last_device_data && packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
                 const lastAccurateMessage = await getLastAccurateMessage(packing, settings[0])
@@ -219,14 +238,20 @@ exports.snapshot_report = async () => {
                 obj.battery = battery_level ? battery_level : "-"
                 obj.battery_alert = battery_level > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
                 obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : "-"
-                obj.absent_time = packing.absent && packing.absent_time !== null ? await getDiffDateTodayInHours(packing.absent_time) : '-'
+                
+                if(noSignalTimeSinceAbsent > 0.0){
+                    obj.absent_time = packing.absent && packing.absent_time !== null ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
+                } else{
+                    obj.absent_time = packing.absent && packing.absent_time !== null ? await getDiffDateTodayInHours(packing.absent_time) : '-'
+                }
+                obj.absent_time2 = noSignalTimeSinceAbsent
                 //
                 obj.last_elegible_accuracy = packing.last_device_data ? lastAccurateMessage[0].accuracy : "-"
                 obj.last_elegible_lat_lng_device = packing.last_device_data ? `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}` : "-"
                 obj.last_elegible_message_date = packing.last_device_data ? `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}` : '-'
                 
                 console.log('-')
-                console.log(JSON.stringify(lastAccurateMessage[0]))
+                //console.log(JSON.stringify(lastAccurateMessage[0]))
                 // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
                 //     obj.absent_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
                 // } else {
@@ -240,6 +265,83 @@ exports.snapshot_report = async () => {
     } catch (error) {
         throw new Error(error)
     }
+}
+
+const calculateAbsentWithoutLostTime = async (statuses) => { 
+    //console.log('0')
+    if(statuses.length == 0){
+        return 0
+    } else {
+
+        let pivot = 0;
+        let lostSignal = false;
+        let lostSignalFrom = null;
+        let lostSignalTo = null;
+        let totalTime = 0.0;
+
+        //console.log('1')
+        while(pivot < statuses.length){
+            //console.log('2')
+            if(lostSignal){
+                //console.log('3')
+                if(statuses[pivot].type == 'sinal'){
+                    //console.log('4')
+                    lostSignal = false;
+                    lostSignalTo = statuses[pivot].created_at;
+
+                    totalTime += await calculateRangeTime(lostSignalFrom, lostSignalTo)
+                    //console.log('totalTime: ' + totalTime)
+                    lostSignalFrom = 0
+                    lostSignalTo = 0
+                }
+            }else{
+                //console.log('5')
+                //if((statuses[pivot] == 'sem_sinal') || (statuses[pivot] == 'perdida')){
+                if(statuses[pivot].type == 'sem_sinal'){
+                    //console.log('6')
+                    lostSignal = true;
+                    lostSignalFrom = statuses[pivot].created_at;
+                }
+            }
+            pivot++
+        }
+
+        // console.log('>>')
+        // console.log(totalTime)
+        
+        return totalTime
+    }
+};
+
+const calculateRangeTime = async (dateFrom, dateTo) => {
+
+    //has begin and end
+    if((dateFrom !== 0) && (dateTo !== 0)){
+        const today = moment()
+        dateTo = moment(dateTo)
+        let duration = moment.duration(dateTo.diff(dateFrom))
+        //console.log('.1: ' + duration.asHours())
+        return duration.asHours()
+    }
+
+    //has not begin, but has end
+    if((dateFrom == 0) && (dateTo !== 0)){
+        //console.log('.2: 0')
+        return 0
+    }
+
+    //has begin, but no end
+    if((dateFrom !== 0) && (dateTo == 0)){
+        //console.log('.3: ' + getDiffDateTodayInHours(dateFrom))
+        return getDiffDateTodayInHours(dateFrom)
+    }
+
+    //nas not begin neither end
+    if((dateFrom == 0) && (dateTo == 0)){
+        //console.log('.4: 0')
+        return 0
+    }
+
 }
 
 exports.absent_report = async (query = { family: null, serial: null, absent_time_in_hours: null }) => {

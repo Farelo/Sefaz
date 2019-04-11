@@ -35,8 +35,8 @@ module.exports = async () => {
                     .populate('company')
                     .populate('type')
                     
-                const packings = await Packing.find({ })
                 //const packings = await Packing.find({ })
+                const packings = await Packing.find({ })
                     .populate('family')
                     .populate('last_device_data')
                     .populate('last_device_data_battery')
@@ -61,17 +61,17 @@ module.exports = async () => {
     })
 }
 
-const iteratePackings = (setting, packings, controlPoints) => {
-    for(let packing of packings) {
-        runSM(setting, packing, controlPoints)
-    }
-}
-
-// const iteratePackings = async (setting, packings, controlPoints) => {
-//     for await (let packing of packings) {
+// const iteratePackings = (setting, packings, controlPoints) => {
+//     for(let packing of packings) {
 //         runSM(setting, packing, controlPoints)
 //     }
 // }
+
+const iteratePackings = async (setting, packings, controlPoints) => {
+    for await (let packing of packings) {
+        runSM(setting, packing, controlPoints)
+    }
+}
 
 const getSettings = async () => {
     const settings = await Setting.find({})

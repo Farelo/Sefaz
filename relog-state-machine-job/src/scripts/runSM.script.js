@@ -294,7 +294,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 //console.log('SEM_SINAL')
 
                 /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
-                await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+                //await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
 
                 //Executa apenas se o alerta de perdido está habilitado
                 if(setting.enable_perdida){
@@ -302,6 +302,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
                         /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                         if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
+                            await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
                             await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                             if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
@@ -320,6 +321,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     //console.log('PERDIDO NÃO HABILITADO')
                     /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
+                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
@@ -335,10 +337,11 @@ module.exports = async (setting, packing, controlPoints) => {
                 if (setting.enable_perdida) {
                     //console.log('STATUS PERDIDA HABILITADO')
                     /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
-                    await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
+                    //await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
 
                     // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
+                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
@@ -347,6 +350,9 @@ module.exports = async (setting, packing, controlPoints) => {
 
                 } else{
                     //console.log('STATUS PERDIDA NÃO HABILITADO')
+                    if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
+                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
+                    }
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
