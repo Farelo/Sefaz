@@ -1,3 +1,4 @@
+const moment = require('jsts')
 const getDistanceFromLatLonInKm = require('../common/get_distance_from_lat_lng_in_km')
 const { EventRecord } = require('../../models/event_record.model')
 
@@ -14,7 +15,8 @@ module.exports = async (packing, controlPoints, setting) => {
 
             if (controlPoint.geofence.type === 'p') {
                 if (!isInsidePolygon){
-                    if (pnpoly(packing, controlPoint)) {
+                    //if (pnpoly(packing, controlPoint)) {
+                    if (intersectionpoly(packing, controlPoint)) {
                         console.log(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
                         distance = 0
                         currentControlPoint = controlPoint
@@ -341,4 +343,29 @@ const pnpoly = (packing, controlPoint) => {
     }
 
     return c
+}
+
+const intersectionpoly = (packing, controlPoint) => {
+    let geometryFactory = new jsts.geom.geometryFactory();
+    let controlPointPolygon = createJstsPolygon(geometryFactory, controlPoint);
+    let packingCircle = pointJSTS({x: packing.last_device_data.latitude, y: packing.last_device_data.longitude}, packing.last_device_data.accuracy);
+    let intersection = controlPointPolygon.intersection(packingCircle);
+    console.log(intersection);
+}
+
+const createJstsPolygon = (geometryFactory, polygon) => {
+    var path = polygon.getPath();
+    var coordinates = path.getArray().map(function name(coord) {
+      return new jsts.geom.Coordinate(coord.lat(), coord.lng());
+    });
+    coordinates.push(coordinates[0]);
+    var shell = geometryFactory.createLinearRing(coordinates);
+    return geometryFactory.createPolygon(shell);
+}
+
+// this returns a JSTS polygon circle approximation with provided center and radius
+// b = pointJSTS({x:10,y:20}, 40);
+const pointJSTS = (center, radius) => {
+    var point = new jsts.geom.Point(center);
+    return point.buffer(radius);
 }
