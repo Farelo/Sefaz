@@ -16,16 +16,25 @@ const startupUser = async () => {
             const newUser = new User({ full_name: 'Admin', email: 'admin@admin.smart', password: 'admin', role: 'admin', company: newCompany._id })
             await newUser.save()
 
-            // const setting = new Setting({
-            //     enable_gc16: true,
-            //     battery_level_limit: 18,
-            //     job_schedule_time_in_sec: 50,
-            //     range_radius: 3000,
-            //     clean_historic_moviments_time: 1440,
-            //     no_signal_limit_in_days: 2
-            // })
-
-            // await setting.save()
+            const has_settings = await Setting.find()
+            if (!has_settings.length > 0){
+                const setting = new Setting({
+                    "enable_gc16" : true,
+                    "battery_level_limit" : 29,
+                    "accuracy_limit" : 100,
+                    "job_schedule_time_in_sec" : 10,
+                    "range_radius" : 493,
+                    "clean_historic_moviments_time" : 1440,
+                    "no_signal_limit_in_days" : 1,
+                    "missing_sinal_limit_in_days" : 2,
+                    "enable_local_incorreto" : true,
+                    "enable_perdida" : true,
+                    "enable_sem_sinal" : true,
+                    "enable_viagem_atrasada" : true,
+                    "enable_viagem_perdida" : true
+                })
+                await setting.save()    
+            }
             
             debug('Startup user with success.')
         } else {
