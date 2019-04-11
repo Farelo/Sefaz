@@ -27,6 +27,10 @@ module.exports = {
     key: 'viagem_perdida',
     alert: 'viagem_perdida'
   },
+  SINAL: {
+    key: 'sinal',
+    alert: 'sinal'
+  },
   SEM_SINAL: {
     key: 'sem_sinal',
     alert: 'sem_sinal'

@@ -42,7 +42,7 @@ const companySchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['owner', 'client'],
+        enum: ['owner', 'suplier', 'client'],
         lowercase: true,
         default: 'client',
         trim: true
@@ -74,7 +74,7 @@ const validate_companies = (company) => {
             cep: Joi.string().max(9).allow(null, ''),
             uf: Joi.string().max(2).allow(null, '')
         },
-        type: Joi.string().valid(['owner','client'])
+        type: Joi.string().valid(['owner', 'suplier', 'client'])
     })
     return Joi.validate(company, schema, { abortEarly: false })
 }

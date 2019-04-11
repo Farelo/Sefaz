@@ -130,8 +130,8 @@
             [center]="center"   
             style="margin-top: 10px;" >
             <!-- <marker [position]="pos"></marker> -->
+            <!-- [drawingMode]="'null'"  -->
             <drawing-manager 
-              [drawingMode]="'null'" 
               [drawingControl]="true" 
               [drawingControlOptions]="{
                 position: 2,
@@ -152,6 +152,41 @@
                 strokeOpacity: '0.4',
                 editable: true,
                 zIndex: 1}"></drawing-manager>
+
+                <!-- ///////////// -->
+                <!-- Ponto de Controle -->
+                <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+                  [title]="posCP.name" (click)="clickedPlant($event, posCP)">
+                  <info-window id="pw">
+                    <div class="iw-title">INFORMAÇÕES</div>
+                    <div *ngIf="plant.display" class="info-window-content">
+                      <p>
+                        <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
+                    </div>
+                  </info-window>
+                </marker>
+                
+                <circle *ngFor="let posCPCircle of listOfCircleControlPoints" [center]="posCPCircle.geofence.coordinates[0]" [radius]="posCPCircle.geofence.radius"
+                  [editable]="false" [fillColor]="'#546E7A'" [fillOpacity]="0.2" [strokeColor]="'#37474F'" [strokeOpacity]="0.4"
+                  [strokeWeight]="1"> </circle>
+                
+                <!-- ///////////// -->
+                <!-- Ponto de Controle -->
+                <marker *ngFor="let posCP of listOfPolygonControlPoints" [position]="posCP.position" (click)="clickedPlant($event, posCP)"
+                  [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }">
+                  <!-- <div class="custom-icon-map-plant"></div> -->
+                  <info-window id="lw">
+                    <div class="iw-title">INFORMAÇÕES</div>
+                    <div *ngIf="plant.display" class="info-window-content">
+                      <p>
+                        <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
+                    </div>
+                  </info-window>
+                </marker>
+                
+                <polygon *ngFor="let posCPPolygon of listOfPolygonControlPoints" [paths]="posCPPolygon.geofence.coordinates" [editable]="false"
+                  [fillColor]="'#546E7A'" [fillOpacity]="0.2" [strokeColor]="'#37474F'" [strokeOpacity]="0.4" [strokeWeight]="1"> </polygon>
+
           </ngui-map>
 
           <p class="requiredText" 

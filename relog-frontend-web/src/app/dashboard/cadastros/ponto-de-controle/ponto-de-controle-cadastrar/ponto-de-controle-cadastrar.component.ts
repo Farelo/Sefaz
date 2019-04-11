@@ -55,6 +55,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   ngOnInit() {
 
     this.prepareMap();
+    this.getOthersControlPoints();
     this.fillCompanySelect();
     this.fillTypesSelect();
   }
@@ -77,7 +78,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.mGeofence.type = 'c';
     this.mGeofence.radius = this.controlPointCircle.getRadius();
 
-    console.log(JSON.stringify(this.mGeofence));
+    //console.log(JSON.stringify(this.mGeofence));
   }
 
   generatePolygonGeofence(poly: any) {
@@ -90,7 +91,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.controlPointPolygon.getPath().forEach(latLng => arr.push({ lat: latLng.lat(), lng: latLng.lng() }))
     this.mGeofence.coordinates = arr;
 
-    console.log(JSON.stringify(this.mGeofence));
+    //console.log(JSON.stringify(this.mGeofence));
   }
 
   prepareMap() {
@@ -304,6 +305,11 @@ export class PontoDeControleCadastrarComponent implements OnInit {
 
     this.zoom = 16;
     this.ref.detectChanges();
+
+    //
+
+    //this.drawingManager.drawingControl.setOptions({ drawingControl: true}); 
+    //this.drawingManager.setMap(map);
   }
 
   // onMapReady(map) {
@@ -374,6 +380,68 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   //       }
   //     })
   // }
+
+
+  /**
+   * Methods relative to all others control points
+   */
+
+  public plant = {
+    display: true,
+    lat: null,
+    lng: null,
+    name: null,
+    location: null
+  };
+
+  clickedPlant(_a, opt) {
+    var p = _a.target;
+    this.plant.lat = p.lat;
+    this.plant.lng = p.lng;
+    this.plant.name = opt.name;
+    // this.plant.location = opt.location;
+
+    this.clickedPlantDetail(p);
+  }
+
+
+  /*
+   * Info window 
+   */
+  clickedPlantDetail(plant) {
+    plant.nguiMapComponent.openInfoWindow('pw', plant);
+  }
+
+  public listOfCircleControlPoints: any;  //Control Points arrays
+  public listOfPolygonControlPoints: any; //Control Points arrays
+
+  getOthersControlPoints() {
+    this.controlPointsService.getAllControlPoint().subscribe(result => {
+
+      this.listOfCircleControlPoints = result
+        .filter(elem => elem.geofence.type == 'c')
+        .map(elem => {
+          elem.position = (new google.maps.LatLng(elem.geofence.coordinates[0].lat, elem.geofence.coordinates[0].lng));
+          return elem;
+        });
+
+      this.listOfPolygonControlPoints = result
+        .filter(elem => elem.geofence.type == 'p')
+        .map(elem => {
+
+          let lat = elem.geofence.coordinates.map(p => p.lat);
+          let lng = elem.geofence.coordinates.map(p => p.lng);
+
+          elem.position = {
+            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2,
+            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2
+          }
+
+          return elem;
+        });
+
+    });
+  }
 
 }
 

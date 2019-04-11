@@ -36,7 +36,8 @@ export class CompanyCadastrarComponent implements OnInit {
   fillSelectType() {
     this.typesOnSelect = [
       { label: "Owner", name: "owner" },
-      { label: "Cliente", name: "client" }];
+      { label: "Suplier", name: "suplier" },
+      { label: "Client", name: "client" }];
   }
 
   formProfile() {

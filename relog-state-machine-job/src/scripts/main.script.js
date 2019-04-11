@@ -35,6 +35,7 @@ module.exports = async () => {
                     .populate('company')
                     .populate('type')
                     
+                //const packings = await Packing.find({ })
                 const packings = await Packing.find({ })
                     .populate('family')
                     .populate('last_device_data')
@@ -42,6 +43,7 @@ module.exports = async () => {
                     .populate('last_current_state_history')
                     .populate('last_event_record')
 
+                //await iteratePackings(setting, packings, controlPoints)
                 await iteratePackings(setting, packings, controlPoints)
             
                 // packings.forEach(packing => {
@@ -58,6 +60,12 @@ module.exports = async () => {
         }
     })
 }
+
+// const iteratePackings = (setting, packings, controlPoints) => {
+//     for(let packing of packings) {
+//         runSM(setting, packing, controlPoints)
+//     }
+// }
 
 const iteratePackings = async (setting, packings, controlPoints) => {
     for await (let packing of packings) {
