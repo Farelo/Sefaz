@@ -246,9 +246,21 @@ exports.snapshot_report = async () => {
                 }
                 obj.absent_time2 = noSignalTimeSinceAbsent
                 //
-                obj.last_elegible_accuracy = packing.last_device_data ? lastAccurateMessage[0].accuracy : "-"
-                obj.last_elegible_lat_lng_device = packing.last_device_data ? `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}` : "-"
-                obj.last_elegible_message_date = packing.last_device_data ? `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}` : '-'
+
+                obj.last_elegible_accuracy = '-'
+                obj.last_elegible_lat_lng_device = '-'
+                obj.last_elegible_message_date = '-'
+
+                if(packing.last_device_data){
+                    if(lastAccurateMessage.length > 0){
+                        obj.last_elegible_accuracy = lastAccurateMessage[0].accuracy
+                        obj.last_elegible_lat_lng_device = packing.last_device_data ? `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}` : "-"
+                        obj.last_elegible_message_date = packing.last_device_data ? `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}` : '-'
+                    }
+                }
+                // obj.last_elegible_accuracy = packing.last_device_data ? lastAccurateMessage[0].accuracy : "-"
+                // obj.last_elegible_lat_lng_device = packing.last_device_data ? `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}` : "-"
+                // obj.last_elegible_message_date = packing.last_device_data ? `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}` : '-'
                 
                 console.log('-')
                 //console.log(JSON.stringify(lastAccurateMessage[0]))
@@ -758,11 +770,11 @@ const getLatLngOfPacking = async (packing) => {
 
 const getActualControlPoint = async (packing) => {
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
-    console.log(' ')
+    // console.log(' ')
     // console.log('---')
-    console.log(current_control_point.name)
-    console.log(current_control_point.type.name)
-    console.log(current_control_point.geofence.type)
+    // console.log(current_control_point.name)
+    // console.log(current_control_point.type.name)
+    // console.log(current_control_point.geofence.type)
     // console.log(current_control_point)
     // console.log('---')
     return current_control_point

@@ -80,7 +80,7 @@ export const constants = {
     SUPPLIER: 'Fornecedor',
     LOGISTIC: 'Operador Logístico',
     OWNER: 'Owner',
-    SUPLIER: 'Suplier',
+    SUPPLIER: 'Supplier',
     CLIENT: 'Client'
   }
   
