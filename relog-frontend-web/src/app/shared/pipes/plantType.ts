@@ -13,8 +13,8 @@ export class CompanyType {
       case 'owner':
         return constants.PLANT_TYPE.OWNER;  
       
-      case 'suplier':
-        return constants.PLANT_TYPE.SUPLIER; 
+      case 'supplier':
+        return constants.PLANT_TYPE.SUPPLIER; 
 
       case 'client':
         return constants.PLANT_TYPE.CLIENT; 
