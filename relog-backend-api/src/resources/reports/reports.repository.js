@@ -805,7 +805,7 @@ const getActualControlPoint = async (packing) => {
     // console.log(' ')
     // console.log('---')
     // console.log(current_control_point.name)
-    // console.log(current_control_point.type.name)
+    console.log(current_control_point.type)
     // console.log(current_control_point.geofence.type)
     // console.log(current_control_point)
     // console.log('---')
