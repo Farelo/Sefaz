@@ -788,6 +788,7 @@ const getLatLngOfPacking = async (packing) => {
 }
 
 const getActualControlPoint = async (packing) => {
+    console.log('getActualControlPoint')
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
     // console.log(' ')
     // console.log('---')
@@ -800,35 +801,41 @@ const getActualControlPoint = async (packing) => {
 }
 
 const getLatLngOfControlPoint = async (packing) => {
+    console.log('getLatLngOfControlPoint')
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
 
-    if (current_control_point.geofence.type == 'c') {
-        return `${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}`
+    if (current_control_point) {   
+        if (current_control_point.geofence.type == 'c') {
+            return `${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}`
 
-    } else {
-        let lat = current_control_point.geofence.coordinates.map(p => p.lat)
-        let lng = current_control_point.geofence.coordinates.map(p => p.lng)
-        return `${((Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2)} ${((Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2)}`        
+        } else {
+            let lat = current_control_point.geofence.coordinates.map(p => p.lat)
+            let lng = current_control_point.geofence.coordinates.map(p => p.lng)
+            return `${((Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2)} ${((Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2)}`        
+        }
     }
 }
 
 const getAreaControlPoint = async (packing) => {
+    console.log('getAreaControlPoint')
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
 
-    if (current_control_point.geofence.type == 'c') {
-        return `{(${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}), ${current_control_point.geofence.radius}}`
+    if (current_control_point) {   
+        if (current_control_point.geofence.type == 'c') {
+            return `{(${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}), ${current_control_point.geofence.radius}}`
 
-    } else { 
-        let result = '['
-        current_control_point.geofence.coordinates.map((p, i, arr) => {
-            if (arr.length - 1 == i)
-                result += `(${p.lat} ${p.lng})`
-            else
-                result += `(${p.lat} ${p.lng}), `
-        })
-        result += ']'
+        } else { 
+            let result = '['
+            current_control_point.geofence.coordinates.map((p, i, arr) => {
+                if (arr.length - 1 == i)
+                    result += `(${p.lat} ${p.lng})`
+                else
+                    result += `(${p.lat} ${p.lng}), `
+            })
+            result += ']'
 
-        return result
+            return result
+        }
     }
 }
 
