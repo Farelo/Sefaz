@@ -227,22 +227,41 @@ exports.snapshot_report = async () => {
                 obj.collect_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
                 obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
                 obj.lat_lng_device = await getLatLngOfPacking(packing)
-                obj.lat_lng_cp = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getLatLngOfControlPoint(packing) : '-'
-                obj.cp_type = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).type.name : '-'
-                obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).name : '-'
-                obj.geo = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).geofence.type : '-'
-                obj.area =packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getAreaControlPoint(packing)) : '-'
-                //obj.area = `{(${await getLatLngOfPacking(packing)}),${settings[0].range_radius}}`
-                obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : '-'
-                obj.signal = packing.current_state === 'sem_sinal' ? 'FALSE' : packing.current_state === 'desabilitada_sem_sinal' ? 'FALSE' : packing.current_state === 'perdida' ? 'FALSE' : 'TRUE'
+
+                
+                obj.lat_lng_cp = '-'
+                obj.cp_type = '-'
+                obj.cp_name = '-'
+                obj.geo = '-'
+                obj.area = '-'
+                obj.permanence_time = '-'
+
+                if(packing.last_event_record){
+                    if(packing.last_event_record.type === 'inbound'){
+                        obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
+                        obj.cp_type = (await getActualControlPoint(packing)).type.name
+                        obj.cp_name = (await getActualControlPoint(packing)).name
+                        obj.geo = (await getActualControlPoint(packing)).geofence.type
+                        obj.area = (await getAreaControlPoint(packing))
+                        obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                    }
+                }
+                
+                //obj.lat_lng_cp = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getLatLngOfControlPoint(packing) : '-'
+                //obj.cp_type = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).type.name : '-'
+                //obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).name : '-'
+                //obj.geo = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).geofence.type : '-'
+                //obj.area =packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getAreaControlPoint(packing)) : '-'
+                //obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : '-'
+                obj.signal = (packing.current_state === 'sem_sinal') ? 'FALSE' : (packing.current_state === 'desabilitada_sem_sinal') ? 'FALSE' : (packing.current_state === 'perdida') ? 'FALSE' : 'TRUE'
                 obj.battery = battery_level ? battery_level : "-"
-                obj.battery_alert = battery_level > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
-                obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : "-"
+                obj.battery_alert = (battery_level > settings[0].battery_level_limit) ? 'FALSE' : 'TRUE'
+                obj.travel_time = (packing.last_event_record && packing.last_event_record.type === 'outbound') ? getDiffDateTodayInHours(packing.last_event_record.created_at) : "-"
                 
                 if(noSignalTimeSinceAbsent > 0.0){
-                    obj.absent_time = packing.absent && packing.absent_time !== null ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
+                    obj.absent_time = (packing.absent && packing.absent_time !== null) ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
                 } else{
-                    obj.absent_time = packing.absent && packing.absent_time !== null ? await getDiffDateTodayInHours(packing.absent_time) : '-'
+                    obj.absent_time = (packing.absent && packing.absent_time !== null) ? await getDiffDateTodayInHours(packing.absent_time) : '-'
                 }
                 obj.absent_time2 = noSignalTimeSinceAbsent
                 //
