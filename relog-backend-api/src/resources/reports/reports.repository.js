@@ -242,9 +242,13 @@ exports.snapshot_report = async () => {
                         if(packing.last_event_record.type == 'inbound'){
                             console.log('_: ', packing.tag.code)
                             obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
-                            obj.cp_type = (await getActualControlPoint(packing)).type.name
-                            obj.cp_name = (await getActualControlPoint(packing)).name
-                            obj.geo = (await getActualControlPoint(packing)).geofence.type
+
+                            let tempActualControlPoint = (await getActualControlPoint(packing))
+                            if(tempActualControlPoint){
+                                obj.cp_type = tempActualControlPoint.type.name
+                                obj.cp_name = tempActualControlPoint.name
+                                obj.geo = tempActualControlPoint.geofence.type
+                            }
                             obj.area = (await getAreaControlPoint(packing))
                             obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
                         }
@@ -800,11 +804,11 @@ const getLatLngOfPacking = async (packing) => {
 }
 
 const getActualControlPoint = async (packing) => {
-    console.log('getActualControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
     // console.log(' ')
     // console.log('---')
     // console.log(current_control_point.name)
+    console.log('getActualControlPoint ', packing.tag.code)
     console.log(current_control_point.type)
     // console.log(current_control_point.geofence.type)
     // console.log(current_control_point)
@@ -823,7 +827,7 @@ const getLatLngOfControlPoint = async (packing) => {
         } else {
             let lat = current_control_point.geofence.coordinates.map(p => p.lat)
             let lng = current_control_point.geofence.coordinates.map(p => p.lng)
-            return `${((Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2)} ${((Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2)}`        
+            return `${((Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2)} ${((Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2)}`
         }
     }
 }
@@ -832,7 +836,7 @@ const getAreaControlPoint = async (packing) => {
     console.log('getAreaControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
     
-    if (current_control_point) {   
+    if (current_control_point) {
         if (current_control_point.geofence.type == 'c') {
             return `{(${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}), ${current_control_point.geofence.radius}}`
 
