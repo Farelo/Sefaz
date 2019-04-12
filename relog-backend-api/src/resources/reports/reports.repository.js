@@ -195,8 +195,6 @@ exports.snapshot_report = async () => {
 
         const data = await Promise.all(
             packings.map(async packing => {
-                
-                console.log(packing.tag.code)
 
                 //Begin: Calculate no signal while absent, if absent
                 let currentStatesSinceAbsent = []
@@ -209,6 +207,7 @@ exports.snapshot_report = async () => {
                     })
                 }
                 let currentStatesSinceAbsentFiltered = currentStatesSinceAbsent.filter(elem => {
+                    if(!elem) console.log('filter ', packing.tag.code)
                     return ((elem.type == 'sem_sinal') || (elem.type == 'perdida') || (elem.type == 'sinal'))
                 })
                 let noSignalTimeSinceAbsent = 0
@@ -312,7 +311,7 @@ exports.snapshot_report = async () => {
 }
 
 const calculateAbsentWithoutLostTime = async (statuses) => { 
-    //console.log('0')
+    console.log('calculateAbsentWithoutLostTime')
     if(statuses.length == 0){
         return 0
     } else {
@@ -801,7 +800,7 @@ const getLatLngOfPacking = async (packing) => {
 }
 
 const getActualControlPoint = async (packing) => {
-    console.log('getActualControlPoint')
+    console.log('getActualControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
     // console.log(' ')
     // console.log('---')
@@ -814,7 +813,7 @@ const getActualControlPoint = async (packing) => {
 }
 
 const getLatLngOfControlPoint = async (packing) => {
-    console.log('getLatLngOfControlPoint')
+    console.log('getLatLngOfControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
     
     if (current_control_point) {   
@@ -830,7 +829,7 @@ const getLatLngOfControlPoint = async (packing) => {
 }
 
 const getAreaControlPoint = async (packing) => {
-    console.log('getAreaControlPoint')
+    console.log('getAreaControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
     
     if (current_control_point) {   
