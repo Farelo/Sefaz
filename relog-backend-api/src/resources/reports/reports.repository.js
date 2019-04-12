@@ -196,6 +196,8 @@ exports.snapshot_report = async () => {
         const data = await Promise.all(
             packings.map(async packing => {
                 
+                console.log(packing.tag.code)
+
                 //Begin: Calculate no signal while absent, if absent
                 let currentStatesSinceAbsent = []
                 if(packing.absent && packing.absent_time !== null){
@@ -237,13 +239,16 @@ exports.snapshot_report = async () => {
                 obj.permanence_time = '-'
 
                 if(packing.last_event_record){
-                    if(packing.last_event_record.type === 'inbound'){
-                        obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
-                        obj.cp_type = (await getActualControlPoint(packing)).type.name
-                        obj.cp_name = (await getActualControlPoint(packing)).name
-                        obj.geo = (await getActualControlPoint(packing)).geofence.type
-                        obj.area = (await getAreaControlPoint(packing))
-                        obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                    if(packing.last_event_record.type){
+                        if(packing.last_event_record.type == 'inbound'){
+                            console.log('_: ', packing.tag.code)
+                            obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
+                            obj.cp_type = (await getActualControlPoint(packing)).type.name
+                            obj.cp_name = (await getActualControlPoint(packing)).name
+                            obj.geo = (await getActualControlPoint(packing)).geofence.type
+                            obj.area = (await getAreaControlPoint(packing))
+                            obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                        }
                     }
                 }
                 
@@ -256,7 +261,15 @@ exports.snapshot_report = async () => {
                 obj.signal = (packing.current_state === 'sem_sinal') ? 'FALSE' : (packing.current_state === 'desabilitada_sem_sinal') ? 'FALSE' : (packing.current_state === 'perdida') ? 'FALSE' : 'TRUE'
                 obj.battery = battery_level ? battery_level : "-"
                 obj.battery_alert = (battery_level > settings[0].battery_level_limit) ? 'FALSE' : 'TRUE'
-                obj.travel_time = (packing.last_event_record && packing.last_event_record.type === 'outbound') ? getDiffDateTodayInHours(packing.last_event_record.created_at) : "-"
+
+                obj.travel_time = ''
+                if(packing.last_event_record){
+                    if(packing.last_event_record.type){
+                        if(packing.last_event_record.type === 'outbound'){
+                            obj.travel_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                        }
+                    }
+                }
                 
                 if(noSignalTimeSinceAbsent > 0.0){
                     obj.absent_time = (packing.absent && packing.absent_time !== null) ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
@@ -803,7 +816,7 @@ const getActualControlPoint = async (packing) => {
 const getLatLngOfControlPoint = async (packing) => {
     console.log('getLatLngOfControlPoint')
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
-
+    
     if (current_control_point) {   
         if (current_control_point.geofence.type == 'c') {
             return `${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}`
@@ -819,7 +832,7 @@ const getLatLngOfControlPoint = async (packing) => {
 const getAreaControlPoint = async (packing) => {
     console.log('getAreaControlPoint')
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
-
+    
     if (current_control_point) {   
         if (current_control_point.geofence.type == 'c') {
             return `{(${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}), ${current_control_point.geofence.radius}}`
