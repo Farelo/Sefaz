@@ -809,10 +809,10 @@ const getActualControlPoint = async (packing) => {
     // console.log('---')
     // console.log(current_control_point.name)
     if(current_control_point == null){
-        console.log('TYPE NULO getActualControlPoint ', packing.tag.code)
+        console.log('.TYPE NULO getActualControlPoint ', packing.tag.code)
     } 
     if(current_control_point == undefined){
-        console.log('TYPE NULO getActualControlPoint ', packing.tag.code)
+        console.log('.TYPE NULO getActualControlPoint ', packing.tag.code)
     }
 
     console.log('getActualControlPoint ', packing.tag.code)
