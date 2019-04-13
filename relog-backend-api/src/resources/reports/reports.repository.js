@@ -244,11 +244,10 @@ exports.snapshot_report = async () => {
                             obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
 
                             let tempActualControlPoint = (await getActualControlPoint(packing))
-                            if(tempActualControlPoint){
-                                obj.cp_type = tempActualControlPoint.type.name
-                                obj.cp_name = tempActualControlPoint.name
-                                obj.geo = tempActualControlPoint.geofence.type
-                            }
+                            obj.cp_type = tempActualControlPoint.type.name
+                            obj.cp_name = tempActualControlPoint.name
+                            obj.geo = tempActualControlPoint.geofence.type
+
                             obj.area = (await getAreaControlPoint(packing))
                             obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
                         }
@@ -819,7 +818,9 @@ const getActualControlPoint = async (packing) => {
         let result = { 
             name: '-',
             full_address: '-',
-            type: '-',
+            type: {
+                name : '-'
+            },
             company: '-',
             geofence: {
                 coordinates: [],
