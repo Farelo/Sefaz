@@ -244,9 +244,9 @@ exports.snapshot_report = async () => {
                             obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
 
                             let tempActualControlPoint = (await getActualControlPoint(packing))
-                            obj.cp_type = tempActualControlPoint.type.name
-                            obj.cp_name = tempActualControlPoint.name
-                            obj.geo = tempActualControlPoint.geofence.type
+                            // obj.cp_type = tempActualControlPoint.type.name
+                            // obj.cp_name = tempActualControlPoint.name
+                            // obj.geo = tempActualControlPoint.geofence.type
 
                             obj.area = (await getAreaControlPoint(packing))
                             obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
@@ -296,7 +296,7 @@ exports.snapshot_report = async () => {
                 // obj.last_elegible_lat_lng_device = packing.last_device_data ? `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}` : "-"
                 // obj.last_elegible_message_date = packing.last_device_data ? `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}` : '-'
                 
-                console.log('-')
+                //console.log('-')
                 //console.log(JSON.stringify(lastAccurateMessage[0]))
                 // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
                 //     obj.absent_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
