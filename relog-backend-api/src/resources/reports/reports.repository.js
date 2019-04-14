@@ -550,10 +550,10 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
                         object_temp.family_id = packing.family._id
                         object_temp.family_code = packing.family ? packing.family.code : '-'
                         object_temp.serial = packing.serial
-                        object_temp.current_control_point_name = current_control_point.name
-                        object_temp.current_control_point_type = current_control_point.type.name
+                        object_temp.current_control_point_name = (current_control_point !== null) ? current_control_point.name : '-'
+                        object_temp.current_control_point_type = (current_control_point !== null) ? current_control_point.type.name : '-'
                         object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at)
-                        object_temp.company = current_company.name
+                        object_temp.company = (current_company !== null) ? current_company.name : '-'
 
                         return object_temp
                     })
