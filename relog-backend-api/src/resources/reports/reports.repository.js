@@ -241,7 +241,7 @@ exports.snapshot_report = async () => {
                     if(packing.last_event_record.type){
                         if(packing.last_event_record.type == 'inbound'){
                             console.log('_: ', packing.tag.code)
-                            obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
+                            //obj.lat_lng_cp = await getLatLngOfControlPoint(packing) <<
 
                             //let tempActualControlPoint = (await getActualControlPoint(packing)) <<
                             // obj.cp_type = tempActualControlPoint.type.name
