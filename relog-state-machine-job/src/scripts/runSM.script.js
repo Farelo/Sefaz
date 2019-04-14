@@ -164,7 +164,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
-                    console.log(currentControlPoint.name)
+                    //console.log(currentControlPoint.name)
 
                     /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
                     await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)

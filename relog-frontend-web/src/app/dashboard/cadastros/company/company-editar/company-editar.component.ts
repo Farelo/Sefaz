@@ -64,7 +64,7 @@ export class CompanyEditarComponent implements OnInit {
   fillSelectType() {
     this.typesOnSelect = [
       { label: "Owner", name: "owner" },
-      { label: "Suplier", name: "suplier" },
+      { label: "Supplier", name: "supplier" },
       { label: "Client", name: "client" }];
 
       //default

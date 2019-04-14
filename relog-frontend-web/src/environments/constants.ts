@@ -76,11 +76,10 @@ export const constants = {
   },
 
   PLANT_TYPE: {
-    FACTORY: 'Fábrica',
-    SUPPLIER: 'Fornecedor',
+    FACTORY: 'Fábrica', 
     LOGISTIC: 'Operador Logístico',
     OWNER: 'Owner',
-    SUPLIER: 'Suplier',
+    SUPPLIER: 'Supplier',
     CLIENT: 'Client'
   }
   

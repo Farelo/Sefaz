@@ -195,7 +195,7 @@ exports.snapshot_report = async () => {
 
         const data = await Promise.all(
             packings.map(async packing => {
-                
+
                 //Begin: Calculate no signal while absent, if absent
                 let currentStatesSinceAbsent = []
                 if(packing.absent && packing.absent_time !== null){
@@ -207,6 +207,7 @@ exports.snapshot_report = async () => {
                     })
                 }
                 let currentStatesSinceAbsentFiltered = currentStatesSinceAbsent.filter(elem => {
+                    if(!elem) console.log('filter ', packing.tag.code)
                     return ((elem.type == 'sem_sinal') || (elem.type == 'perdida') || (elem.type == 'sinal'))
                 })
                 let noSignalTimeSinceAbsent = 0
@@ -227,30 +228,73 @@ exports.snapshot_report = async () => {
                 obj.collect_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
                 obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
                 obj.lat_lng_device = await getLatLngOfPacking(packing)
-                obj.lat_lng_cp = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getLatLngOfControlPoint(packing) : '-'
-                obj.cp_type = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).type.name : '-'
-                obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).name : '-'
-                obj.geo = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).geofence.type : '-'
-                obj.area =packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getAreaControlPoint(packing)) : '-'
-                //obj.area = `{(${await getLatLngOfPacking(packing)}),${settings[0].range_radius}}`
-                obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : '-'
-                obj.signal = packing.current_state === 'sem_sinal' ? 'FALSE' : packing.current_state === 'desabilitada_sem_sinal' ? 'FALSE' : packing.current_state === 'perdida' ? 'FALSE' : 'TRUE'
+
+                
+                obj.lat_lng_cp = '-'
+                obj.cp_type = '-'
+                obj.cp_name = '-'
+                obj.geo = '-'
+                obj.area = '-'
+                obj.permanence_time = '-'
+
+                if(packing.last_event_record){
+                    if(packing.last_event_record.type){
+                        if(packing.last_event_record.type == 'inbound'){
+                            // console.log('_: ', packing.tag.code)
+                            obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
+
+                            let tempActualControlPoint = (await getActualControlPoint(packing))
+                            obj.cp_type = tempActualControlPoint.type.name
+                            obj.cp_name = tempActualControlPoint.name
+                            obj.geo = tempActualControlPoint.geofence.type
+
+                            obj.area = (await getAreaControlPoint(packing))
+                            obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                        }
+                    }
+                }
+                
+                //obj.lat_lng_cp = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getLatLngOfControlPoint(packing) : '-'
+                //obj.cp_type = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).type.name : '-'
+                //obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).name : '-'
+                //obj.geo = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).geofence.type : '-'
+                //obj.area =packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getAreaControlPoint(packing)) : '-'
+                //obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : '-'
+                obj.signal = (packing.current_state === 'sem_sinal') ? 'FALSE' : (packing.current_state === 'desabilitada_sem_sinal') ? 'FALSE' : (packing.current_state === 'perdida') ? 'FALSE' : 'TRUE'
                 obj.battery = battery_level ? battery_level : "-"
-                obj.battery_alert = battery_level > settings[0].battery_level_limit ? 'FALSE' : 'TRUE'
-                obj.travel_time = packing.last_event_record && packing.last_event_record.type === 'outbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : "-"
+                obj.battery_alert = (battery_level > settings[0].battery_level_limit) ? 'FALSE' : 'TRUE'
+
+                obj.travel_time = ''
+                if(packing.last_event_record){
+                    if(packing.last_event_record.type){
+                        if(packing.last_event_record.type === 'outbound'){
+                            obj.travel_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                        }
+                    }
+                }
                 
                 if(noSignalTimeSinceAbsent > 0.0){
-                    obj.absent_time = packing.absent && packing.absent_time !== null ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
+                    obj.absent_time = (packing.absent && packing.absent_time !== null) ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
                 } else{
-                    obj.absent_time = packing.absent && packing.absent_time !== null ? await getDiffDateTodayInHours(packing.absent_time) : '-'
+                    obj.absent_time = (packing.absent && packing.absent_time !== null) ? await getDiffDateTodayInHours(packing.absent_time) : '-'
                 }
-                obj.absent_time2 = noSignalTimeSinceAbsent
-                //
-                obj.last_elegible_accuracy = packing.last_device_data ? lastAccurateMessage[0].accuracy : "-"
-                obj.last_elegible_lat_lng_device = packing.last_device_data ? `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}` : "-"
-                obj.last_elegible_message_date = packing.last_device_data ? `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}` : '-'
                 
-                console.log('-')
+                obj.last_elegible_accuracy = '-'
+                obj.last_elegible_lat_lng_device = '-'
+                obj.last_elegible_message_date = '-'
+
+                if(packing.last_device_data){
+                    if(lastAccurateMessage.length > 0){
+                        obj.last_elegible_accuracy = lastAccurateMessage[0].accuracy
+                        obj.last_elegible_lat_lng_device = `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}`
+                        obj.last_elegible_message_date = `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}`
+                    }
+                }
+                // obj.last_elegible_accuracy = packing.last_device_data ? lastAccurateMessage[0].accuracy : "-"
+                // obj.last_elegible_lat_lng_device = packing.last_device_data ? `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}` : "-"
+                // obj.last_elegible_message_date = packing.last_device_data ? `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}` : '-'
+                
+                //console.log('-')
                 //console.log(JSON.stringify(lastAccurateMessage[0]))
                 // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
                 //     obj.absent_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
@@ -268,7 +312,7 @@ exports.snapshot_report = async () => {
 }
 
 const calculateAbsentWithoutLostTime = async (statuses) => { 
-    //console.log('0')
+    console.log('calculateAbsentWithoutLostTime')
     if(statuses.length == 0){
         return 0
     } else {
@@ -482,8 +526,8 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
                         object_temp.family_id = packing.family._id
                         object_temp.family_code = packing.family ? packing.family.code : '-'
                         object_temp.serial = packing.serial
-                        object_temp.current_control_point_name = current_control_point.name
-                        object_temp.current_control_point_type = current_control_point.type.name
+                        object_temp.current_control_point_name = (current_control_point !== null) ? current_control_point.name : '-'
+                        object_temp.current_control_point_type = (current_control_point !== null) ? current_control_point.type.name : '-'
                         object_temp.date = packing.last_event_record.created_at
                         object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at)
                         if (gc16) object_temp.stock_in_days = stock_in_days.days
@@ -506,10 +550,10 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
                         object_temp.family_id = packing.family._id
                         object_temp.family_code = packing.family ? packing.family.code : '-'
                         object_temp.serial = packing.serial
-                        object_temp.current_control_point_name = current_control_point.name
-                        object_temp.current_control_point_type = current_control_point.type.name
+                        object_temp.current_control_point_name = (current_control_point !== null) ? current_control_point.name : '-'
+                        object_temp.current_control_point_type = (current_control_point !== null) ? current_control_point.type.name : '-'
                         object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at)
-                        object_temp.company = current_company.name
+                        object_temp.company = (current_company !== null) ? current_company.name : '-'
 
                         return object_temp
                     })
@@ -598,8 +642,8 @@ exports.quantity_report = async (family_id = null) => {
                         let obj_temp = {}
                         const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
 
-                        obj_temp.control_point_name = cp.name
-                        obj_temp.control_point_type = cp.type.name
+                        obj_temp.control_point_name = (cp !== null) ? cp.name : '-'
+                        obj_temp.control_point_type = (cp !== null) ? cp.type.name : '-'
 
                         return obj_temp
                     })
@@ -609,7 +653,7 @@ exports.quantity_report = async (family_id = null) => {
                 const packing_temp = packings_inbound.filter(p => p.control_point_name === key)
                 return {
                     family_code: family.code,
-                    company: family.company.name,
+                    company: (family.company) ? family.company.name : '-', 
                     stock_min: stock ? stock.qty_container : '-',
                     stock_max: stock ? stock.qty_container_max : '-',
                     packings_traveling: packings_outbound.length,
@@ -758,46 +802,73 @@ const getLatLngOfPacking = async (packing) => {
 
 const getActualControlPoint = async (packing) => {
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
-    console.log(' ')
-    // console.log('---')
-    console.log(current_control_point.name)
-    console.log(current_control_point.type.name)
-    console.log(current_control_point.geofence.type)
-    // console.log(current_control_point)
-    // console.log('---')
-    return current_control_point
+
+    if((current_control_point == null) || (current_control_point == undefined)){
+        // console.log('.TYPE NULO getActualControlPoint ', packing.tag.code)
+        let result = { 
+            name: '-',
+            full_address: '-',
+            type: {
+                name : '-'
+            },
+            company: '-',
+            geofence: {
+                coordinates: [],
+                type: "-"
+            },
+            duns: ""
+        }
+        return result
+
+    } else {
+        // console.log('getActualControlPoint ', packing.tag.code)
+        // console.log(current_control_point.name)
+        // console.log(current_control_point.type)
+        // console.log(current_control_point.geofence.type)
+        return current_control_point
+    }
 }
 
 const getLatLngOfControlPoint = async (packing) => {
+    //console.log('getLatLngOfControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
+    
+    if ((current_control_point !== null) && (current_control_point !== undefined)) {
+        if (current_control_point.geofence.type == 'c') {
+            return `${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}`
 
-    if (current_control_point.geofence.type == 'c') {
-        return `${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}`
-
+        } else {
+            let lat = current_control_point.geofence.coordinates.map(p => p.lat)
+            let lng = current_control_point.geofence.coordinates.map(p => p.lng)
+            return `${((Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2)} ${((Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2)}`
+        }
     } else {
-        let lat = current_control_point.geofence.coordinates.map(p => p.lat)
-        let lng = current_control_point.geofence.coordinates.map(p => p.lng)
-        return `${((Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2)} ${((Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2)}`        
+        return '-'
     }
 }
 
 const getAreaControlPoint = async (packing) => {
+    //console.log('getAreaControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
+    
+    if ((current_control_point !== null) && (current_control_point !== undefined)) {
+        if (current_control_point.geofence.type == 'c') {
+            return `{(${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}), ${current_control_point.geofence.radius}}`
 
-    if (current_control_point.geofence.type == 'c') {
-        return `{(${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}), ${current_control_point.geofence.radius}}`
+        } else { 
+            let result = '['
+            current_control_point.geofence.coordinates.map((p, i, arr) => {
+                if (arr.length - 1 == i)
+                    result += `(${p.lat} ${p.lng})`
+                else
+                    result += `(${p.lat} ${p.lng}), `
+            })
+            result += ']'
 
-    } else { 
-        let result = '['
-        current_control_point.geofence.coordinates.map((p, i, arr) => {
-            if (arr.length - 1 == i)
-                result += `(${p.lat} ${p.lng})`
-            else
-                result += `(${p.lat} ${p.lng}), `
-        })
-        result += ']'
-
-        return result
+            return result
+        }
+    } else {
+        return '-'
     }
 }
 
