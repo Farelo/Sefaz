@@ -278,9 +278,7 @@ exports.snapshot_report = async () => {
                 } else{
                     obj.absent_time = (packing.absent && packing.absent_time !== null) ? await getDiffDateTodayInHours(packing.absent_time) : '-'
                 }
-                obj.absent_time2 = noSignalTimeSinceAbsent
-                //
-
+                
                 obj.last_elegible_accuracy = '-'
                 obj.last_elegible_lat_lng_device = '-'
                 obj.last_elegible_message_date = '-'
