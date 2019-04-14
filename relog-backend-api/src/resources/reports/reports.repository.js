@@ -248,7 +248,7 @@ exports.snapshot_report = async () => {
                             // obj.cp_name = tempActualControlPoint.name
                             // obj.geo = tempActualControlPoint.geofence.type
 
-                            //obj.area = (await getAreaControlPoint(packing)) <<
+                            obj.area = (await getAreaControlPoint(packing))
                             obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
                         }
                     }
