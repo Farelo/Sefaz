@@ -526,8 +526,8 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
                         object_temp.family_id = packing.family._id
                         object_temp.family_code = packing.family ? packing.family.code : '-'
                         object_temp.serial = packing.serial
-                        object_temp.current_control_point_name = current_control_point.name
-                        object_temp.current_control_point_type = current_control_point.type.name
+                        object_temp.current_control_point_name = current_control_point ? current_control_point.name : '-'
+                        object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : '-'
                         object_temp.date = packing.last_event_record.created_at
                         object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at)
                         if (gc16) object_temp.stock_in_days = stock_in_days.days
@@ -829,7 +829,6 @@ const getActualControlPoint = async (packing) => {
     }
 }
 
-//aqui
 const getLatLngOfControlPoint = async (packing) => {
     //console.log('getLatLngOfControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
