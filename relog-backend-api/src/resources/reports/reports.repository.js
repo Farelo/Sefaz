@@ -843,7 +843,7 @@ const getLatLngOfControlPoint = async (packing) => {
     console.log('getLatLngOfControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
     
-    if((current_control_point == null) || (current_control_point == undefined)){
+    if ((current_control_point == null) && (current_control_point == undefined)) {
         if (current_control_point.geofence.type == 'c') {
             return `${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}`
 
