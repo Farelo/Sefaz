@@ -240,8 +240,8 @@ exports.snapshot_report = async () => {
                 if(packing.last_event_record){
                     if(packing.last_event_record.type){
                         if(packing.last_event_record.type == 'inbound'){
-                            console.log('_: ', packing.tag.code)
-                            //obj.lat_lng_cp = await getLatLngOfControlPoint(packing) <<
+                            // console.log('_: ', packing.tag.code)
+                            obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
 
                             let tempActualControlPoint = (await getActualControlPoint(packing))
                             obj.cp_type = tempActualControlPoint.type.name
@@ -804,17 +804,9 @@ const getLatLngOfPacking = async (packing) => {
 
 const getActualControlPoint = async (packing) => {
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
-    // console.log(' ')
-    // console.log('---')
-    // console.log('getActualControlPoint ', packing.tag.code)
-    // console.log(current_control_point.name)
-    // console.log(current_control_point.type)
-    // console.log(current_control_point.geofence.type)
-    // console.log(current_control_point)
-    // console.log('---')
 
     if((current_control_point == null) || (current_control_point == undefined)){
-        console.log('.TYPE NULO getActualControlPoint ', packing.tag.code)
+        // console.log('.TYPE NULO getActualControlPoint ', packing.tag.code)
         let result = { 
             name: '-',
             full_address: '-',
@@ -831,16 +823,16 @@ const getActualControlPoint = async (packing) => {
         return result
 
     } else {
-        console.log('getActualControlPoint ', packing.tag.code)
-        console.log(current_control_point.name)
-        console.log(current_control_point.type)
-        console.log(current_control_point.geofence.type)
+        // console.log('getActualControlPoint ', packing.tag.code)
+        // console.log(current_control_point.name)
+        // console.log(current_control_point.type)
+        // console.log(current_control_point.geofence.type)
         return current_control_point
     }
 }
 
 const getLatLngOfControlPoint = async (packing) => {
-    console.log('getLatLngOfControlPoint ', packing.tag.code)
+    //console.log('getLatLngOfControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
     
     if ((current_control_point == null) && (current_control_point == undefined)) {
@@ -858,7 +850,7 @@ const getLatLngOfControlPoint = async (packing) => {
 }
 
 const getAreaControlPoint = async (packing) => {
-    console.log('getAreaControlPoint ', packing.tag.code)
+    //console.log('getAreaControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
     
     if ((current_control_point !== null) && (current_control_point !== undefined)) {
