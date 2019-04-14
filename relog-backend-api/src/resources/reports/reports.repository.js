@@ -642,8 +642,8 @@ exports.quantity_report = async (family_id = null) => {
                         let obj_temp = {}
                         const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
 
-                        obj_temp.control_point_name = cp.name
-                        obj_temp.control_point_type = cp.type.name
+                        obj_temp.control_point_name = (cp !== null) ? cp.name : '-'
+                        obj_temp.control_point_type = (cp !== null) ? cp.type.name : '-'
 
                         return obj_temp
                     })
@@ -653,7 +653,7 @@ exports.quantity_report = async (family_id = null) => {
                 const packing_temp = packings_inbound.filter(p => p.control_point_name === key)
                 return {
                     family_code: family.code,
-                    company: family.company.name,
+                    company: (family.company) ? family.company.name : '-', 
                     stock_min: stock ? stock.qty_container : '-',
                     stock_max: stock ? stock.qty_container_max : '-',
                     packings_traveling: packings_outbound.length,
