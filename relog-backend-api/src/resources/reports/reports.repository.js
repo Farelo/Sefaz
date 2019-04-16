@@ -279,20 +279,17 @@ exports.snapshot_report = async () => {
                     obj.absent_time = (packing.absent && packing.absent_time !== null) ? await getDiffDateTodayInHours(packing.absent_time) : '-'
                 }
                 
-                obj.last_elegible_accuracy = '-'
-                obj.last_elegible_lat_lng_device = '-'
-                obj.last_elegible_message_date = '-'
+                // obj.last_elegible_accuracy = '-'
+                // obj.last_elegible_lat_lng_device = '-'
+                // obj.last_elegible_message_date = '-'
 
-                if(packing.last_device_data){
-                    if(lastAccurateMessage.length > 0){
-                        obj.last_elegible_accuracy = lastAccurateMessage[0].accuracy
-                        obj.last_elegible_lat_lng_device = `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}`
-                        obj.last_elegible_message_date = `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}`
-                    }
-                }
-                // obj.last_elegible_accuracy = packing.last_device_data ? lastAccurateMessage[0].accuracy : "-"
-                // obj.last_elegible_lat_lng_device = packing.last_device_data ? `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}` : "-"
-                // obj.last_elegible_message_date = packing.last_device_data ? `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}` : '-'
+                // if(packing.last_device_data){
+                //     if(lastAccurateMessage.length > 0){
+                //         obj.last_elegible_accuracy = lastAccurateMessage[0].accuracy
+                //         obj.last_elegible_lat_lng_device = `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}`
+                //         obj.last_elegible_message_date = `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}`
+                //     }
+                // }
                 
                 //console.log('-')
                 //console.log(JSON.stringify(lastAccurateMessage[0]))
