@@ -16,18 +16,18 @@ module.exports = async (packing, controlPoints, setting) => {
             //console.log('controlPoints')
 
             if (controlPoint.geofence.type === 'p') {
-                if (!isInsidePolygon){
+                if (!isInsidePolygon) {
                     //if (pnpoly(packing, controlPoint)) {
                     if (intersectionpoly(packing, controlPoint)) {
-                        console.log(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
+                        //console.log(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
                         distance = 0
                         currentControlPoint = controlPoint
                         isInsidePolygon = true
                     }
                 }
             } else {
-                if (!isInsidePolygon){
-                    console.log(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
+                if (!isInsidePolygon) {
+                    //console.log(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
 
                     const calculate = getDistanceFromLatLonInKm(
                         packing.last_device_data.latitude,
@@ -46,17 +46,17 @@ module.exports = async (packing, controlPoints, setting) => {
         })
 
         //diferenciar intersecção de inbound e outbound
-        if (!isInsidePolygon && (distance > (range_radius + packing.last_device_data.accuracy)) ) {
+        if (!isInsidePolygon && (distance > (range_radius + packing.last_device_data.accuracy))) {
             //console.log('SEM INTERSECÇÃO')
             await newcheckOut(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
             return null
-            
-        } else {
-            console.log('COM INTERSECÇÃO') 
 
-            if (packing.last_event_record){
-                if (packing.last_event_record.type === 'inbound'){
-                    console.log('FEZ INBOUND') 
+        } else {
+            console.log('COM INTERSECÇÃO')
+
+            if (packing.last_event_record) {
+                if (packing.last_event_record.type === 'inbound') {
+                    console.log('FEZ INBOUND')
                     if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
                         console.log('BOA ACURACIA')
                         await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
@@ -66,7 +66,7 @@ module.exports = async (packing, controlPoints, setting) => {
                         return null
                     }
 
-                } else{
+                } else {
                     console.log('FEZ OUTBOUND')
 
                     if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
@@ -79,9 +79,9 @@ module.exports = async (packing, controlPoints, setting) => {
                     }
                 }
 
-            }else{
+            } else {
                 console.log('NÃO TEM EVENT RECORD')
-                if(packing.last_device_data.accuracy <= setting.accuracy_limit){
+                if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
                     console.log('BOA ACURACIA')
                     await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
                     return currentControlPoint
@@ -115,7 +115,7 @@ const newcheckOut = async (packing, setting, range_radius, distance, currentCont
     //console.log('EMBALAGEM NÃO ESTÁ EM UM PONTO DE CONTROLE')
     // Não estou em um ponto de controle próximo!
     // Checa se o último poncheckInto de controle é um INBOUND
-    if (packing.last_event_record){
+    if (packing.last_event_record) {
         if (packing.last_event_record.type === 'inbound') {
             //console.log('CRIAR OUTBOUND!')
             // Se sim
@@ -353,45 +353,84 @@ const pnpoly = (packing, controlPoint) => {
 }
 
 const intersectionpoly = (packing, controlPoint) => {
-    
-    //criar polígono da planta
-    let coordinates = controlPoint.geofence.coordinates
-    
-    let path = []
-    let templateTurfPolygon = []
+    try {
+        //criar polígono da planta
+        let coordinates = controlPoint.geofence.coordinates
 
-    coordinates.forEach(elem => {
-        path.push([elem.lat, elem.lng])
-    })
-    path.push(path[0])
-    //console.log([path])
+        let path = []
+        let templateTurfPolygon = []
 
-    let controlPointLine  = turf.lineString(path)
-    controlPointPolygon = turf.lineToPolygon(controlPointLine);
-
-    console.log('antes:')
-    console.log(JSON.stringify(controlPointPolygon))
-    
-    let unkinkControlPointPolygon = turf.unkinkPolygon(controlPointPolygon)
-
-    if(unkinkControlPointPolygon.features.length > 1) {
-        console.log('.depois:')
-        console.log(JSON.stringify(unkinkControlPointPolygon))
-
-        let controlPointPolygonArray = [];
-
-        unkinkControlPointPolygon.features.forEach(feature => {
-            let auxPolygon = turf.polygon(feature.geometry.coordinates);
-            controlPointPolygonArray.push(auxPolygon)
+        coordinates.forEach(elem => {
+            path.push([elem.lat, elem.lng])
         })
+        path.push(path[0])
+        //console.log('> ', path)
 
-        result = null
+        //linha do polígono
+        let controlPointLine = turf.lineString(path)
+        //console.log('. ', JSON.stringify(controlPointLine)) 
 
-        controlPointPolygonArray.forEach(mPolygon => {
+        //limpando a linha do polígono
+        controlPointLine.geometry.type = "LineString"
+        controlPointLine = turf.cleanCoords(controlPointLine).geometry.coordinates;
+        //console.log('.. ', controlPointLine)
+
+        //reconverte para o LineString limpo para polígno
+        controlPointPolygon = turf.lineToPolygon(controlPointLine);
+
+        // console.log('antes:')
+        // console.log(JSON.stringify(controlPointPolygon))
+
+        //se o polígono tem autointersecção, então quebra em 2 ou mais features
+        //se o polígono não tem auto intersecção, então o mantém
+        let unkinkControlPointPolygon = turf.unkinkPolygon(controlPointPolygon)
+
+        if (unkinkControlPointPolygon.features.length > 1) {    //Caso o polígono tenha auto intersecção
+            // console.log('.depois:')
+            // console.log(JSON.stringify(unkinkControlPointPolygon))
+
+            let controlPointPolygonArray = [];
+
+            unkinkControlPointPolygon.features.forEach(feature => {
+                let auxPolygon = turf.polygon(feature.geometry.coordinates);
+                controlPointPolygonArray.push(auxPolygon)
+            })
+
+            result = null
+
+            controlPointPolygonArray.forEach(mPolygon => {
+                //criar polígono da embalagem
+                let center = [packing.last_device_data.latitude, packing.last_device_data.longitude]
+                let radius = packing.last_device_data.accuracy / 1000
+                let options = { steps: 64, units: 'kilometers' }
+
+                //console.log(center, radius)
+                let packingPolygon = turf.circle(center, radius, options);
+                //console.log('c: ')
+                //console.log(JSON.stringify(packingPolygon))
+
+                //checar intersecção
+                let intersection = turf.intersect(mPolygon, packingPolygon);
+
+                console.log(' ')
+                console.log('i: ', packing.tag.code)
+
+                result = intersection
+            })
+
+            console.log(result)
+
+            return result
+
+        } else {    //Caso o polígono não tenha autointersecção
+
+            // console.log('..depois:')
+            // console.log(JSON.stringify(unkinkControlPointPolygon))
+
             //criar polígono da embalagem
-            let center = [packing.last_device_data.latitude, packing.last_device_data.longitude] 
+            let center = [packing.last_device_data.latitude, packing.last_device_data.longitude]
             let radius = packing.last_device_data.accuracy / 1000
-            let options = {steps: 64, units: 'kilometers'}
+            let options = { steps: 64, units: 'kilometers' }
 
             //console.log(center, radius)
             let packingPolygon = turf.circle(center, radius, options);
@@ -399,49 +438,27 @@ const intersectionpoly = (packing, controlPoint) => {
             //console.log(JSON.stringify(packingPolygon))
 
             //checar intersecção
-            let intersection = turf.intersect(mPolygon, packingPolygon);
+            let intersection = turf.intersect(controlPointPolygon, packingPolygon);
 
             console.log(' ')
-            console.log('i: ', packing.tag.code, packing.serial) 
+            console.log('i: ', packing.tag.code)
             console.log(intersection)
 
-            result = intersection
-        })
-
-        return result
-
-    } else{       
-        
-        console.log('..depois:')
-        console.log(JSON.stringify(unkinkControlPointPolygon))
-
-        //criar polígono da embalagem
-        let center = [packing.last_device_data.latitude, packing.last_device_data.longitude] 
-        let radius = packing.last_device_data.accuracy / 1000
-        let options = {steps: 64, units: 'kilometers'}
-
-        //console.log(center, radius)
-        let packingPolygon = turf.circle(center, radius, options);
-        //console.log('c: ')
-        //console.log(JSON.stringify(packingPolygon))
-
-        //checar intersecção
-        let intersection = turf.intersect(controlPointPolygon, packingPolygon);
-
-        console.log(' ')
-        console.log('i: ', packing.tag.code, packing.serial) 
-        console.log(intersection)
-
-        return intersection
+            return intersection
+        }
+    } catch (error) {
+        //console.log('erro: ', controlPointLine)
+        //console.log(controlPoint.name)
+        //throw new Error(error)
     }
 }
 
 // const intersectionpoly = (packing, controlPoint) => {
 //     //turf
-    
+
 //     //criar polígono da planta
 //     let coordinates = controlPoint.geofence.coordinates
-    
+
 //     let path = []
 //     let templateTurfPolygon = []
 
