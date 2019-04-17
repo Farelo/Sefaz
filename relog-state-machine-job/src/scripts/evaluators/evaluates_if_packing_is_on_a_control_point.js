@@ -57,8 +57,14 @@ module.exports = async (packing, controlPoints, setting) => {
             if (packing.last_event_record){
                 if (packing.last_event_record.type === 'inbound'){
                     console.log('FEZ INBOUND') 
-                    await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
-                    return currentControlPoint
+                    if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
+                        console.log('BOA ACURACIA')
+                        await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
+                        return currentControlPoint
+                    } else {
+                        console.log('NÃO TEM BOA ACURACIA')
+                        return null
+                    }
 
                 } else{
                     console.log('FEZ OUTBOUND')
@@ -128,7 +134,6 @@ const newcheckOut = async (packing, setting, range_radius, distance, currentCont
 
 const newcheckIn = async (packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon) => {
 
-    
     try {
         if (!packing.last_event_record) {
             //console.log('EMBALAGEM SEM EVENT RECORD')
@@ -348,7 +353,6 @@ const pnpoly = (packing, controlPoint) => {
 }
 
 const intersectionpoly = (packing, controlPoint) => {
-    //turf
     
     //criar polígono da planta
     let coordinates = controlPoint.geofence.coordinates
@@ -364,26 +368,72 @@ const intersectionpoly = (packing, controlPoint) => {
 
     let controlPointLine  = turf.lineString(path)
     controlPointPolygon = turf.lineToPolygon(controlPointLine);
-    //console.log(controlPointPolygon)
 
-    //criar polígono da embalagem
-    let center = [packing.last_device_data.latitude, packing.last_device_data.longitude] 
-    let radius = packing.last_device_data.accuracy / 1000
-    let options = {steps: 64, units: 'kilometers'}
+    console.log('antes:')
+    console.log(JSON.stringify(controlPointPolygon))
+    
+    let unkinkControlPointPolygon = turf.unkinkPolygon(controlPointPolygon)
 
-    //console.log(center, radius)
-    let packingPolygon = turf.circle(center, radius, options);
-    //console.log('c: ')
-    //console.log(JSON.stringify(packingPolygon))
+    if(unkinkControlPointPolygon.features.length > 1) {
+        console.log('.depois:')
+        console.log(JSON.stringify(unkinkControlPointPolygon))
 
-    //checar intersecção
-    let intersection = turf.intersect(controlPointPolygon, packingPolygon);
+        let controlPointPolygonArray = [];
 
-    console.log(' ')
-    console.log('i: ', packing.tag.code, packing.serial) 
-    console.log(intersection)
+        unkinkControlPointPolygon.features.forEach(feature => {
+            let auxPolygon = turf.polygon(feature.geometry.coordinates);
+            controlPointPolygonArray.push(auxPolygon)
+        })
 
-    return intersection
+        result = null
+
+        controlPointPolygonArray.forEach(mPolygon => {
+            //criar polígono da embalagem
+            let center = [packing.last_device_data.latitude, packing.last_device_data.longitude] 
+            let radius = packing.last_device_data.accuracy / 1000
+            let options = {steps: 64, units: 'kilometers'}
+
+            //console.log(center, radius)
+            let packingPolygon = turf.circle(center, radius, options);
+            //console.log('c: ')
+            //console.log(JSON.stringify(packingPolygon))
+
+            //checar intersecção
+            let intersection = turf.intersect(mPolygon, packingPolygon);
+
+            console.log(' ')
+            console.log('i: ', packing.tag.code, packing.serial) 
+            console.log(intersection)
+
+            result = intersection
+        })
+
+        return result
+
+    } else{       
+        
+        console.log('..depois:')
+        console.log(JSON.stringify(unkinkControlPointPolygon))
+
+        //criar polígono da embalagem
+        let center = [packing.last_device_data.latitude, packing.last_device_data.longitude] 
+        let radius = packing.last_device_data.accuracy / 1000
+        let options = {steps: 64, units: 'kilometers'}
+
+        //console.log(center, radius)
+        let packingPolygon = turf.circle(center, radius, options);
+        //console.log('c: ')
+        //console.log(JSON.stringify(packingPolygon))
+
+        //checar intersecção
+        let intersection = turf.intersect(controlPointPolygon, packingPolygon);
+
+        console.log(' ')
+        console.log('i: ', packing.tag.code, packing.serial) 
+        console.log(intersection)
+
+        return intersection
+    }
 }
 
 // const intersectionpoly = (packing, controlPoint) => {
