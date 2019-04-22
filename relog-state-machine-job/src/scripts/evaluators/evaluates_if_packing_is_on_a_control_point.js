@@ -97,7 +97,6 @@ module.exports = async (packing, controlPoints, setting) => {
                             mLog('SINAL RUIM')
 
                             //Se está longe o suficiente:
-                            // Faz OUT
                             return currentControlPoint
                         }
                     }
