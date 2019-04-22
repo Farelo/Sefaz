@@ -24,9 +24,9 @@ module.exports = async (setting, packing, controlPoints) => {
     let isIncorrectLocal
     let isPermanenceTimeExceeded
 
-    ////// console.log(' ')
+    //console.log(' ')
     //console.log('==============================')
-    //// console.log(packing.tag.code)
+    //console.log(packing.tag.code)
 
     try {
         /* Se a embalagem está sem registro da loka eu não faço nada */

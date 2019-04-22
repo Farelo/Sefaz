@@ -45,60 +45,195 @@ module.exports = async (packing, controlPoints, setting) => {
             }
         })
 
-        //diferenciar intersecção de inbound e outbound
-        if (!isInsidePolygon && (distance > (range_radius + packing.last_device_data.accuracy))) {
-            //console.log('SEM INTERSECÇÃO')
-            await newcheckOut(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
-            return null
 
-        } else {
-            console.log('COM INTERSECÇÃO')
+        //TEM INTERSECÇÃO
+        if (thereIsIntersection(isInsidePolygon, distance, range_radius, packing.last_device_data.accuracy, setting.accuracy_limit) == true) {
+            mLog('INTERSECÇÃO')
 
             if (packing.last_event_record) {
+
+                //============================
+                //SE ÚLTIMO EVENTO FOI INBOUND
                 if (packing.last_event_record.type === 'inbound') {
-                    console.log('FEZ INBOUND')
-                    if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
-                        console.log('BOA ACURACIA')
-                        await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
-                        return currentControlPoint
-                    } else {
-                        console.log('NÃO TEM BOA ACURACIA')
-                        return null
-                    }
+                    mLog('ULTIMO EVENTO FOI INBOUND')
 
-                } else {
-                    console.log('FEZ OUTBOUND')
-
-                    if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
-                        console.log('BOA ACURACIA')
-                        await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
+                    //Se é a mesma planta
+                    if (packing.last_event_record.control_point.toString() == currentControlPoint._id.toString()) {
+                        mLog('MESMO CP')
                         return currentControlPoint
-                    } else {
-                        console.log('NÃO TEM BOA ACURACIA')
-                        return null
+
+                    } else { 
+                    //Se é planta diferente:
+                        mLog('CP DIFERENTE')
+
+                        //Se tem bom sinal
+                        if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
+                            mLog('BOM SINAL')
+                            mLog('OUT')
+                            mLog('IN')
+
+                            // Faz OUT do ponto de controle anterior
+                            const outEventRecord = new EventRecord({
+                                packing: packing._id,
+                                control_point: packing.last_event_record.control_point._id,
+                                distance_km: packing.last_event_record.distance_km,
+                                accuracy: packing.last_device_data.accuracy,
+                                type: 'outbound'
+                            })
+                            await outEventRecord.save()
+
+                            //Faz IN no ponto de controle atual
+                            const inEventRecord = new EventRecord({
+                                packing: packing._id,
+                                control_point: currentControlPoint._id,
+                                distance_km: distance,
+                                accuracy: packing.last_device_data.accuracy,
+                                type: 'inbound'
+                            })
+                            await inEventRecord.save()
+                            
+                            return currentControlPoint
+                        } else{
+                            mLog('SINAL RUIM')
+
+                            //Se está longe o suficiente:
+                            // Faz OUT
+                            return currentControlPoint
+                        }
                     }
                 }
 
-            } else {
-                console.log('NÃO TEM EVENT RECORD')
+                //=============================
+                //SE ÚLTIMO EVENTO FOI OUTBOUND
+                if (packing.last_event_record.type == 'outbound') {
+
+                    mLog('ULTIMO EVENTO FOI OUTBOUND')
+                    //Se tem bom sinal
+                    if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
+                        mLog('BOM SINAL')
+                        mLog('IN')
+                        //Faz IN
+                        const eventRecord = new EventRecord({
+                            packing: packing._id,
+                            control_point: currentControlPoint._id,
+                            distance_km: distance,
+                            accuracy: packing.last_device_data.accuracy,
+                            type: 'inbound'
+                        })
+                        await eventRecord.save()
+                        return currentControlPoint
+
+                    } else{
+                        mLog('SINAL RUIM')
+                        return null
+                    }
+                }
+            } else{
+                mLog('NUNCA TEVE EVENTO')
+                //Se tem bom sinal
                 if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
-                    console.log('BOA ACURACIA')
-                    await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
+                    mLog('BOM SINAL')
+                    mLog('IN')
+                    //Faz IN
+                    const eventRecord = new EventRecord({
+                        packing: packing._id,
+                        control_point: currentControlPoint._id,
+                        distance_km: distance,
+                        accuracy: packing.last_device_data.accuracy,
+                        type: 'inbound'
+                    })
+                    await eventRecord.save()
                     return currentControlPoint
-                } else {
-                    console.log('NÃO TEM BOA ACURACIA')
+
+                } else{
+                    mLog('SINAL RUIM')
                     return null
                 }
             }
+
+        } else { //NÃO TEM INTERSECÇÃO
+
+            if (packing.last_event_record) {
+                mLog('SEM INTERSECÇÃO')
+                //SE ÚLTIMO EVENTO FOI INBOUND
+                if (packing.last_event_record.type === 'inbound') {
+                    mLog('ULTIMO EVENTO FOI IN')
+                    mLog('OUT')
+
+                    // Faz OUT
+                    const eventRecord = new EventRecord({
+                        packing: packing._id,
+                        control_point: packing.last_event_record.control_point._id,
+                        distance_km: packing.last_event_record.distance_km,
+                        accuracy: packing.last_device_data.accuracy,
+                        type: 'outbound'
+                    })
+                    await eventRecord.save()
+                    return null
+
+                } else{
+                    mLog('ULTIMO EVENTO FOI OUT')
+                    return null
+                }
+            } else{
+                //TODO
+            }
         }
-        //
 
-        //await checkIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
+        // //diferenciar intersecção de inbound e outbound
+        // if (!isInsidePolygon && (distance > (range_radius + packing.last_device_data.accuracy))) {
+        //     console.log('SEM INTERSECÇÃO')
+        //     await newcheckOut(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
+        //     return null
 
-        //Emanoel
-        ////if ((distance > range_radius) && (packing.last_device_data.accuracy > setting.accuracy_limit)) return null
-        //if ((distance > range_radius) || (packing.last_device_data.accuracy > setting.accuracy_limit)) return null
-        //else return currentControlPoint
+        // } else {
+        //     console.log('COM INTERSECÇÃO')
+
+        //     if (packing.last_event_record) {
+        //         if (packing.last_event_record.type === 'inbound') {
+        //             console.log('FEZ INBOUND')
+        //             if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
+        //                 console.log('BOA ACURACIA')
+        //                 await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
+        //                 return currentControlPoint
+        //             } else {
+        //                 console.log('NÃO TEM BOA ACURACIA')
+        //                 return null
+        //             }
+
+        //         } else {
+        //             console.log('FEZ OUTBOUND')
+
+        //             if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
+        //                 console.log('BOA ACURACIA')
+        //                 await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
+        //                 return currentControlPoint
+        //             } else {
+        //                 console.log('NÃO TEM BOA ACURACIA')
+        //                 return null
+        //             }
+        //         }
+
+        //     } else {
+        //         console.log('NÃO TEM EVENT RECORD')
+        //         if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
+        //             console.log('BOA ACURACIA')
+        //             await newcheckIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
+        //             return currentControlPoint
+        //         } else {
+        //             console.log('NÃO TEM BOA ACURACIA')
+        //             return null
+        //         }
+        //     }
+        // }
+        // //
+
+        // //await checkIn(packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon)
+
+        // //Emanoel
+        // ////if ((distance > range_radius) && (packing.last_device_data.accuracy > setting.accuracy_limit)) return null
+        // //if ((distance > range_radius) || (packing.last_device_data.accuracy > setting.accuracy_limit)) return null
+        // //else return currentControlPoint
     } catch (error) {
         console.error(error)
         throw new Error(error)
@@ -106,9 +241,31 @@ module.exports = async (packing, controlPoints, setting) => {
 
 }
 
-const verifyCheck = async (distance, range_radius, accuracy, accuracy_limit, isInsidePolygon) => {
+let idAbleToPrint = true
+
+const mLog = (mText) => {
+    if(idAbleToPrint) console.log(mText)
+}
+
+const thereIsIntersection = (isInsidePolygon, distance, range_radius, accuracy, accuracy_limit) => {
     //console.log('verifyCheck: ' + ((isInsidePolygon || (distance <= (range_radius + accuracy))) && (accuracy <= accuracy_limit)))
-    return ((isInsidePolygon || (distance <= (range_radius + accuracy))) && (accuracy <= accuracy_limit))
+
+    // console.log('isInsidePolygon ', isInsidePolygon)
+    // console.log('distance ', distance)
+    // console.log('range_radius ', range_radius)
+    // console.log('accuracy ', accuracy)
+    // console.log('accuracy_limit ', accuracy_limit)
+
+    let result = false
+
+    if (isInsidePolygon) {
+        result = true
+    } else {
+        if ((distance <= (range_radius + accuracy)) && (accuracy <= accuracy_limit)) {
+            result = true
+        }
+    }
+    return result
 }
 
 const newcheckOut = async (packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon) => {
@@ -132,100 +289,100 @@ const newcheckOut = async (packing, setting, range_radius, distance, currentCont
     }
 }
 
-const newcheckIn = async (packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon) => {
+// const newcheckIn = async (packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon) => {
 
-    try {
-        if (!packing.last_event_record) {
-            //console.log('EMBALAGEM SEM EVENT RECORD')
-            //if (verifyCheck(distance, range_radius, packing.last_device_data.accuracy, setting.accuracy_limit, isInsidePolygon) == true) {
-            if (((isInsidePolygon && (packing.last_device_data.accuracy <= setting.accuracy_limit)) || (distance <= (range_radius + packing.last_device_data.accuracy))) && (packing.last_device_data.accuracy <= setting.accuracy_limit)) {
-                console.log('.EMBALAGEM ESTÀ EM UM PONTO DE CONTROLE')
-                const eventRecord = new EventRecord({
-                    packing: packing._id,
-                    control_point: currentControlPoint._id,
-                    distance_km: distance,
-                    accuracy: packing.last_device_data.accuracy,
-                    type: 'inbound'
-                })
+//     try {
+//         if (!packing.last_event_record) {
+//             //console.log('EMBALAGEM SEM EVENT RECORD')
+//             //if (verifyCheck(distance, range_radius, packing.last_device_data.accuracy, setting.accuracy_limit, isInsidePolygon) == true) {
+//             if (((isInsidePolygon && (packing.last_device_data.accuracy <= setting.accuracy_limit)) || (distance <= (range_radius + packing.last_device_data.accuracy))) && (packing.last_device_data.accuracy <= setting.accuracy_limit)) {
+//                 console.log('.EMBALAGEM ESTÀ EM UM PONTO DE CONTROLE')
+//                 const eventRecord = new EventRecord({
+//                     packing: packing._id,
+//                     control_point: currentControlPoint._id,
+//                     distance_km: distance,
+//                     accuracy: packing.last_device_data.accuracy,
+//                     type: 'inbound'
+//                 })
 
-                await eventRecord.save()
-            }
-        } else {
+//                 await eventRecord.save()
+//             }
+//         } else {
 
-            console.log('EMBALAGEM JÁ TEM O EVENT RECORD')
-            if ((isInsidePolygon || (distance <= (range_radius + packing.last_device_data.accuracy))) && (packing.last_device_data.accuracy <= setting.accuracy_limit)) {
-                console.log('..EMBALAGEM ESTÁ EM UM PONTO DE CONTROLE')
-                // Estou em um ponto de controle!
-                // Checa se o ponto de controle onde a embalagem está é novo
-                if (packing.last_event_record.control_point.toString() !== currentControlPoint._id.toString()) {
-                    console.log('TENTAR OUTBOUND')
+//             console.log('EMBALAGEM JÁ TEM O EVENT RECORD')
+//             if ((isInsidePolygon || (distance <= (range_radius + packing.last_device_data.accuracy))) && (packing.last_device_data.accuracy <= setting.accuracy_limit)) {
+//                 console.log('..EMBALAGEM ESTÁ EM UM PONTO DE CONTROLE')
+//                 // Estou em um ponto de controle!
+//                 // Checa se o ponto de controle onde a embalagem está é novo
+//                 if (packing.last_event_record.control_point.toString() !== currentControlPoint._id.toString()) {
+//                     console.log('TENTAR OUTBOUND')
 
-                    if (packing.last_event_record.type === 'inbound') {
-                        console.log('CRIAR OUTBOUND')
-                        const eventRecord = new EventRecord({
-                            packing: packing._id,
-                            control_point: packing.last_event_record.control_point._id,
-                            distance_km: packing.last_event_record.distance_km,
-                            accuracy: packing.last_device_data.accuracy,
-                            type: 'outbound'
-                        })
+//                     if (packing.last_event_record.type === 'inbound') {
+//                         console.log('CRIAR OUTBOUND')
+//                         const eventRecord = new EventRecord({
+//                             packing: packing._id,
+//                             control_point: packing.last_event_record.control_point._id,
+//                             distance_km: packing.last_event_record.distance_km,
+//                             accuracy: packing.last_device_data.accuracy,
+//                             type: 'outbound'
+//                         })
 
-                        await eventRecord.save()
-                    }
+//                         await eventRecord.save()
+//                     }
 
-                    console.log('CRIAR INBOUND')
-                    const eventRecord = new EventRecord({
-                        packing: packing._id,
-                        control_point: currentControlPoint._id,
-                        distance_km: distance,
-                        accuracy: packing.last_device_data.accuracy,
-                        type: 'inbound'
-                    })
+//                     console.log('CRIAR INBOUND')
+//                     const eventRecord = new EventRecord({
+//                         packing: packing._id,
+//                         control_point: currentControlPoint._id,
+//                         distance_km: distance,
+//                         accuracy: packing.last_device_data.accuracy,
+//                         type: 'inbound'
+//                     })
 
-                    await eventRecord.save()
+//                     await eventRecord.save()
 
-                } else {
-                    console.log('TENTAR INBOUND')
-                    if (packing.last_event_record.type === 'outbound') {
-                        console.log('CRIAR INBOUND')
+//                 } else {
+//                     console.log('TENTAR INBOUND')
+//                     if (packing.last_event_record.type === 'outbound') {
+//                         console.log('CRIAR INBOUND')
 
-                        const eventRecord = new EventRecord({
-                            packing: packing._id,
-                            control_point: currentControlPoint._id,
-                            distance_km: distance,
-                            accuracy: packing.last_device_data.accuracy,
-                            type: 'inbound'
-                        })
+//                         const eventRecord = new EventRecord({
+//                             packing: packing._id,
+//                             control_point: currentControlPoint._id,
+//                             distance_km: distance,
+//                             accuracy: packing.last_device_data.accuracy,
+//                             type: 'inbound'
+//                         })
 
-                        await eventRecord.save()
-                    }
-                }
-            } else {
-                console.log('EMBALAGEM NÃO ESTÀ EM UM PONTO DE CONTROLE')
-                // Não estou em um ponto de controle próximo!
-                // Checa se o último poncheckInto de controle é um INBOUND
-                // if (packing.last_event_record.type === 'inbound') {
-                //     //console.log('INBOUND!')
-                //     // Se sim
-                //     const eventRecord = new EventRecord({
-                //         packing: packing._id,
-                //         control_point: packing.last_event_record.control_point._id,
-                //         distance_km: distance,
-                //         accuracy: packing.last_device_data.accuracy,
-                //         type: 'outbound'
-                //     })
+//                         await eventRecord.save()
+//                     }
+//                 }
+//             } else {
+//                 console.log('EMBALAGEM NÃO ESTÀ EM UM PONTO DE CONTROLE')
+//                 // Não estou em um ponto de controle próximo!
+//                 // Checa se o último poncheckInto de controle é um INBOUND
+//                 // if (packing.last_event_record.type === 'inbound') {
+//                 //     //console.log('INBOUND!')
+//                 //     // Se sim
+//                 //     const eventRecord = new EventRecord({
+//                 //         packing: packing._id,
+//                 //         control_point: packing.last_event_record.control_point._id,
+//                 //         distance_km: distance,
+//                 //         accuracy: packing.last_device_data.accuracy,
+//                 //         type: 'outbound'
+//                 //     })
 
-                //     await eventRecord.save()
-                // }
+//                 //     await eventRecord.save()
+//                 // }
 
-            }
-        }
-    } catch (error) {
-        console.error(error)
-        throw new Error(error)
-    }
+//             }
+//         }
+//     } catch (error) {
+//         console.error(error)
+//         throw new Error(error)
+//     }
 
-}
+// }
 
 
 
@@ -354,6 +511,8 @@ const pnpoly = (packing, controlPoint) => {
 
 const intersectionpoly = (packing, controlPoint) => {
     try {
+        //console.log('intersectionpoly?')
+
         //criar polígono da planta
         let coordinates = controlPoint.geofence.coordinates
 
@@ -368,15 +527,20 @@ const intersectionpoly = (packing, controlPoint) => {
 
         //linha do polígono
         let controlPointLine = turf.lineString(path)
-        //console.log('. ', JSON.stringify(controlPointLine)) 
+        // console.log('lineString') 
+        // console.log(JSON.stringify(controlPointLine)) 
 
         //limpando a linha do polígono
-        controlPointLine.geometry.type = "LineString"
+        //controlPointLine.geometry.type = "Polygon"
+        //console.log(controlPointLine)
         controlPointLine = turf.cleanCoords(controlPointLine).geometry.coordinates;
-        //console.log('.. ', controlPointLine)
+        // console.log('cleanCoords')
+        // console.log(controlPointLine)
+
+        let newControlPointLine = turf.lineString(controlPointLine)
 
         //reconverte para o LineString limpo para polígno
-        controlPointPolygon = turf.lineToPolygon(controlPointLine);
+        controlPointPolygon = turf.lineToPolygon(newControlPointLine);
 
         // console.log('antes:')
         // console.log(JSON.stringify(controlPointPolygon))
@@ -386,6 +550,7 @@ const intersectionpoly = (packing, controlPoint) => {
         let unkinkControlPointPolygon = turf.unkinkPolygon(controlPointPolygon)
 
         if (unkinkControlPointPolygon.features.length > 1) {    //Caso o polígono tenha auto intersecção
+            // console.log('p com auto intersecção')
             // console.log('.depois:')
             // console.log(JSON.stringify(unkinkControlPointPolygon))
 
@@ -412,8 +577,8 @@ const intersectionpoly = (packing, controlPoint) => {
                 //checar intersecção
                 let intersection = turf.intersect(mPolygon, packingPolygon);
 
-                console.log(' ')
-                console.log('i: ', packing.tag.code)
+                // console.log(' ')
+                // console.log('i: ', packing.tag.code)
 
                 result = intersection
             })
@@ -423,7 +588,7 @@ const intersectionpoly = (packing, controlPoint) => {
             return result
 
         } else {    //Caso o polígono não tenha autointersecção
-
+            // console.log('p sem auto intersecção')
             // console.log('..depois:')
             // console.log(JSON.stringify(unkinkControlPointPolygon))
 
@@ -440,16 +605,16 @@ const intersectionpoly = (packing, controlPoint) => {
             //checar intersecção
             let intersection = turf.intersect(controlPointPolygon, packingPolygon);
 
-            console.log(' ')
-            console.log('i: ', packing.tag.code)
-            console.log(intersection)
+            // console.log(' ')
+            // console.log('i: ', packing.tag.code)
+            // console.log(intersection)
 
             return intersection
         }
     } catch (error) {
         //console.log('erro: ', controlPointLine)
         //console.log(controlPoint.name)
-        //throw new Error(error)
+        throw new Error(error)
     }
 }
 
