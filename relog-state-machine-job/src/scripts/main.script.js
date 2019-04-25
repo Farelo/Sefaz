@@ -31,12 +31,12 @@ module.exports = async () => {
                 setting = await getSettings()
 
                 // const device_data_array = await DeviceData.find({})
-                const controlPoints = await ControlPoint.find({})
+                const controlPoints = await ControlPoint.find({ })
                     .populate('company')
                     .populate('type')
                     
-                //const packings = await Packing.find({ })
                 const packings = await Packing.find({ })
+                //const packings = await Packing.find({ })
                     .populate('family')
                     .populate('last_device_data')
                     .populate('last_device_data_battery')
@@ -56,7 +56,6 @@ module.exports = async () => {
                 nextSemaphor = true
 
             }, setting.job_schedule_time_in_sec * 1000)
-            
         }
     })
 }

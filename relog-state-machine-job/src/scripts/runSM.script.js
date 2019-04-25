@@ -24,9 +24,9 @@ module.exports = async (setting, packing, controlPoints) => {
     let isIncorrectLocal
     let isPermanenceTimeExceeded
 
-    ////// console.log(' ')
-    //console.log('==============================')
-    //// console.log(packing.tag.code)
+    //mLog(' ')
+    //mLog('==============================')
+    //mLog(packing.tag.code)
 
     try {
         /* Se a embalagem está sem registro da loka eu não faço nada */
@@ -65,11 +65,11 @@ module.exports = async (setting, packing, controlPoints) => {
         switch (packing.current_state) {
             case STATES.ANALISE.key:
                 /* ******************************ANALISE******************************* */
-                //console.log('ANÁLISE')
+                mLog('ANÁLISE')
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
-                    //console.log('Menor que a tolerância de sem sinal')
+                    //mLog('Menor que a tolerância de sem sinal')
 
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
@@ -88,20 +88,20 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
-                        //console.log("EM VIAGEM")
+                        //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
                     }
                 } else {
                     /* Embalagem sem sinal */
-                    //console.log('Avaliar sem sinal')
+                    //mLog('Avaliar sem sinal')
                     await evaluatesIfPackingIsNoSignal(packing, setting)
                 }
 
                 break
             case STATES.DESABILITADA_COM_SINAL.key:
                 /* ******************************DESABILITADA_COM_SINAL***************************** */
-                //console.log('DESABILITADA_COM_SINAL')
+                mLog('DESABILITADA_COM_SINAL')
                 if (packing.active) {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
@@ -111,7 +111,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.DESABILITADA_SEM_SINAL.key:
                 /* ******************************DESABILITADA_SEM_SINAL***************************** */
-                //console.log('DESABILITADA_SEM_SINAL')
+                mLog('DESABILITADA_SEM_SINAL')
                 if (packing.active) {
                     /* Eu checo se a embalagem está com sinal */
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
@@ -124,7 +124,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.LOCAL_INCORRETO.key:
                 /* ******************************LOCAL_INCORRETO***************************** */
-                //console.log('LOCAL_INCORRETO')
+                mLog('LOCAL_INCORRETO')
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
@@ -146,7 +146,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
-                        //console.log("EM VIAGEM")
+                        //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
                     }
@@ -156,15 +156,20 @@ module.exports = async (setting, packing, controlPoints) => {
                 }
                 break
             case STATES.LOCAL_CORRETO.key:
+<<<<<<< HEAD
                 /* ******************************LOCAL_CORRETO***************************** */ 
                 console.log('LOCAL_CORRETO')
+=======
+                /* ******************************LOCAL_CORRETO***************************** */
+                mLog('LOCAL_CORRETO')
+>>>>>>> develop-emanoel
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
 
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
-                    //console.log(currentControlPoint.name)
+                    //mLog(currentControlPoint.name)
 
                     /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
                     await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
@@ -181,7 +186,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
-                        //console.log("EM VIAGEM")
+                        //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
                     }
@@ -192,7 +197,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.VIAGEM_PRAZO.key:
                 /* ******************************VIAGEM_PRAZO***************************** */
-                //console.log('VIAGEM_PRAZO')
+                mLog('VIAGEM_PRAZO')
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
@@ -214,7 +219,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
-                        //console.log("EM VIAGEM")
+                        //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
                     }
@@ -225,7 +230,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.VIAGEM_ATRASADA.key:
                 /* ******************************VIAGEM_ATRASADA***************************** */
-                //console.log('VIAGEM_ATRASADA')
+                mLog('VIAGEM_ATRASADA')
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
@@ -247,7 +252,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
-                        //console.log("EM VIAGEM")
+                        //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
                     }
@@ -258,7 +263,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.VIAGEM_PERDIDA.key:
                 /* ******************************VIAGEM_PERDIDA***************************** */
-                //console.log('VIAGEM_PERDIDA')
+                mLog('VIAGEM_PERDIDA')
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
@@ -280,7 +285,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
-                        //console.log("EM VIAGEM")
+                        //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
                     }
@@ -291,14 +296,14 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.SEM_SINAL.key:
                 /* ******************************SEM_SINAL***************************** */
-                //console.log('SEM_SINAL')
+                mLog('SEM_SINAL')
 
                 /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
                 //await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
 
                 //Executa apenas se o alerta de perdido está habilitado
                 if(setting.enable_perdida){
-                    //console.log('PERDIDO HABILITADO')
+                    //mLog('PERDIDO HABILITADO')
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
                         /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                         if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
@@ -318,7 +323,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 //Executa apenas se o alerta de perdido está desabilitado
                 //Mantém acumulado em sem sinal
                 } else{
-                    //console.log('PERDIDO NÃO HABILITADO')
+                    //mLog('PERDIDO NÃO HABILITADO')
                     /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
                         await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
@@ -332,10 +337,10 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.PERDIDA.key:
                 /* ******************************PERDIDA***************************** */
-                //console.log('PERDIDA')
+                mLog('PERDIDA')
                 
                 if (setting.enable_perdida) {
-                    //console.log('STATUS PERDIDA HABILITADO')
+                    //mLog('STATUS PERDIDA HABILITADO')
                     /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
                     //await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
 
@@ -349,7 +354,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     }
 
                 } else{
-                    //console.log('STATUS PERDIDA NÃO HABILITADO')
+                    //mLog('STATUS PERDIDA NÃO HABILITADO')
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
                         await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
                     }
@@ -373,4 +378,9 @@ const getDiffDateTodayInDays = (date) => {
 
     const duration = moment.duration(today.diff(date))
     return duration.asDays()
+}
+
+let idAbleToLog = true
+const mLog = (mText) => {
+    if (idAbleToLog) console.log(mText)
 }
