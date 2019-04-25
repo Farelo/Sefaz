@@ -156,13 +156,8 @@ module.exports = async (setting, packing, controlPoints) => {
                 }
                 break
             case STATES.LOCAL_CORRETO.key:
-<<<<<<< HEAD
-                /* ******************************LOCAL_CORRETO***************************** */ 
-                console.log('LOCAL_CORRETO')
-=======
                 /* ******************************LOCAL_CORRETO***************************** */
                 mLog('LOCAL_CORRETO')
->>>>>>> develop-emanoel
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
