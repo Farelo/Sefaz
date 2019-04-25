@@ -25,7 +25,9 @@
     "nodemon": "^1.18.9",
     "pm2": "^3.2.2",
     "websocket": "^1.0.28",
-    "winston": "^3.0.0"
+    "winston": "^3.0.0",
+    "jsts": "2.0.3",
+    "@turf/turf": "^5.1.6"
   },
   "devDependencies": {
     "chalk": "^2.4.1",
