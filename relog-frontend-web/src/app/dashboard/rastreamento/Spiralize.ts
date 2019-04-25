@@ -1,4 +1,5 @@
 import { constants } from "environments/constants";
+import { DatePipe } from '@angular/common';
 
 declare var $: any;
 declare var google: any;
@@ -13,17 +14,17 @@ export class Spiralize {
     public spiralPoints: any = [];
     public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
     public mMap: any;
-    public packMarker = {
-        display: true,
-        position: null,
-        lat: null,
-        lng: null,
-        start: null,
-        packing_code: null,
-        serial: null,
-        battery: null,
-        accuracy: null
-    };
+    // public packMarker = {
+    //     display: true,
+    //     position: null,
+    //     lat: null,
+    //     lng: null,
+    //     start: null,
+    //     family_code: null,
+    //     serial: null,
+    //     battery: null,
+    //     accuracy: null
+    // };
     public clustered: boolean;
 
     /**
@@ -153,13 +154,15 @@ export class Spiralize {
         //console.log('listener this.listOfObjects: ' + this.listOfObjects);
         this.markers = this.listOfObjects.map((location, i) => {
             //console.log(location.last_device_data_battery);
+            let datePipe = new DatePipe('en');
 
             let m = new google.maps.Marker({
                 family_code: location.family.code,
                 serial: location.serial,
-                //battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                tag: location.tag.code,
                 battery: (location.last_device_data_battery) ? (location.last_device_data_battery.battery.percentage.toFixed(2) + '%') : 'Sem registro',
                 accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
+                message_date : (location.last_device_data !== null) ? (location.last_device_data.message_date) : 'Sem registro',
                 position: location.position,
                 icon: this.getPinWithAlert(location.current_state)
             })
@@ -167,19 +170,17 @@ export class Spiralize {
             google.maps.event.addListener(m, 'click', (evt) => {
                 // console.log('click location:' + JSON.stringify(location));
 
-                let bateryLevel =
-                    this.infoWin.setContent(
-                        `<div id="m-iw" style="">
-                        <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
-                        INFORMAÇÕES</div>
-                        <div style="padding: 0px 6px;">
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${ m.family_code}</p>
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${ m.serial}</p>
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${ m.battery}</p>
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${ m.accuracy}</p>
-                        </div>
+                this.infoWin.setContent(
+                    `<div style="padding: 0px 6px;">
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Emb:</span> ${ m.family_code }</p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Ser:</span> ${ m.serial }</p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Tag:</span> ${ m.tag }</p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acu:</span> ${ m.accuracy }</p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bat:</span> ${ m.battery }</p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(m.message_date, 'dd/MM/yy HH:mm:ss', '+00:00') } </p>
                     </div>`);
 
+                this.infoWin.setOptions({maxWidth: 250});
                 this.infoWin.open(this.mMap, m);
             });
 
@@ -336,14 +337,15 @@ export class Spiralize {
                      * Plotar os pontos na espiral
                      */
                     for (let sc = 1; sc <= array.length; sc++) {
-                        //console.log(`${array.length} array[sc-1].packing_code: ${array[sc - 1].packing_code}`);
+                        //console.log(`${array.length} array[sc-1].family_code: ${array[sc - 1].family_code}`);
 
                         let e = new google.maps.Marker({
-                            packing_code: array[sc - 1].family.code,
+                            family_code: array[sc - 1].family.code,
                             serial: array[sc - 1].serial,
+                            tag: array[sc - 1].tag.code,
                             position: spiralCoordinates[sc],
                             battery: (array[sc - 1].last_device_data_battery) ? (array[sc - 1].last_device_data_battery.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                            //battery: (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.battery.percentage ? (array[sc - 1].last_device_data.battery.percentage + '%') : 'Sem registro') : 'Sem registro', 
+                            message_date : (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.message_date) : 'Sem registro',
                             accuracy: (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.accuracy + 'm') : 'Sem registro',
                             icon: this.getPinWithAlert(array[sc - 1].status, true),
                             zIndex: 999,
@@ -359,44 +361,45 @@ export class Spiralize {
                         e.addListener('click', () => {
 
                             // console.log('Clique no pino interno');
-                            // console.log(JSON.stringify(e.packing_code));
+                            // console.log(JSON.stringify(e.family_code));
                             // console.log(JSON.stringify(e.serial));
                             // console.log(JSON.stringify(e.battery));
                             // console.log(JSON.stringify(e.accuracy));
                             // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
                             
-                            this.packMarker = {
-                                // family_code: location.family.code,
-                                // serial: location.serial,
-                                // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                                // accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
-                                // position: location.position,
-                                // icon: this.getPinWithAlert(location.current_state)
+                            // this.packMarker = {
+                            //     // family_code: location.family.code,
+                            //     // serial: location.serial,
+                            //     // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                            //     // accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
+                            //     // position: location.position,
+                            //     // icon: this.getPinWithAlert(location.current_state)
 
-                                display: true,
-                                position: spiralCoordinates[sc],
-                                lat: spiralCoordinates[sc].lat,
-                                lng: spiralCoordinates[sc].lng,
-                                start: null,
-                                packing_code: e.packing_code,
-                                serial: e.serial,
-                                battery: `${e.battery}`,
-                                accuracy: `${e.accuracy}`
-                            };
+                            //     display: true,
+                            //     family_code: e.family_code,
+                            //     serial: e.serial,
+                            //     tag: e.tag,
+                            //     accuracy: `${e.accuracy}`
+                            //     battery: `${e.battery}`,
+                            //     position: spiralCoordinates[sc],
+                            //     lat: spiralCoordinates[sc].lat,
+                            //     lng: spiralCoordinates[sc].lng,
+                            //     start: null,
+                            // };
+
+                            let datePipe = new DatePipe('en');
 
                             this.infoWin
-                                .setContent(`<div id="m-iw" style="">
-                                                <div style="color: #3e4f5f; padding: 10px 6px; font-weight: 700; font-size: 16px;">
-                                                    INFORMAÇÕES</div>
-                                                <div style="padding: 0px 6px;">
-                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Embalagem:</span> ${e.packing_code}</p>
-                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Serial:</span> ${e.serial}</p>
-                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${e.battery}</p>
-                                                    <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${e.accuracy}</p>
-                                                </div>
+                                .setContent(`<div style="padding: 0px 6px;">
+                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Emb:</span> ${ e.family_code }</p>
+                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Ser:</span> ${ e.serial }</p>
+                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Tag:</span> ${ e.tag }</p>
+                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acu:</span> ${ e.accuracy }</p>
+                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bat:</span> ${ e.battery }</p>
+                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(e.message_date, 'dd/MM/yy HH:mm:ss', '+00:00') } </p>
                                             </div>`);
 
-                            this.infoWin.setOptions({ maxWidth: 180 });
+                            this.infoWin.setOptions({ maxWidth: 250 });
                             this.infoWin.open(this.mMap, e);
                         });
 
