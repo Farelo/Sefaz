@@ -77,6 +77,18 @@ const packingSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    cicle_start: {
+        type: Date,
+        default: null
+    },
+    cicle_end: {
+        type: Date,
+        default: null
+    },
+    last_cicle_duration: {
+        type: Date,
+        default: null
+    },
     low_battery: {
         type: Boolean,
         default: false

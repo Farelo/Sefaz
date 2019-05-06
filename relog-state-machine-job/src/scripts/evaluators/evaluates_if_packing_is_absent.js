@@ -18,9 +18,10 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             const packingIsOk = controlPointOwner.filter(cp => isAbsent(cp, currentControlPoint))
 
             /* Se não estiver no ponto de controle OWNER atualiza a embalagem com o status ABSENT */
+            // Inicia o giro
             if (!(packingIsOk.length > 0)) {
-                //console.log('NÃO ESTÁ NUMA PLANTA DONA')
-                if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date() }, { new: true })
+                console.log('NÃO ESTÁ NUMA PLANTA DONA')
+                if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
 
                 const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 if (current_state_history) {
@@ -29,8 +30,13 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                     await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
                 }
             } else {
-                //console.log('ESTÁ NUMA PLANTA DONA')
-                await Packing.findByIdAndUpdate(packing._id, { absent: false, absent_time: null }, { new: true })
+                // Finaliza o giro
+                console.log('ESTÁ NUMA PLANTA DONA')
+                if (packing.absent_time){
+                    let calculate = 0
+                    if(packing.cicle_start) getDiffDateTodayInDays(packing.cicle_start)
+                    await Packing.findByIdAndUpdate(packing._id, { absent: false, absent_time: null, cicle_end: new Date(), last_cicle_duration: calculate }, { new: true })
+                } 
 
                 current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 if (current_state_history) {
@@ -40,7 +46,11 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 }
             }
         } else {
-            if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date() }, { new: true })
+            if (!packing.absent_time) {
+                console.log('NÃO ESTÁ NUMA PLANTA DONA.')
+                // Inicia o giro
+                await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
+            }
             
             const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
             if (current_state_history) {
@@ -70,4 +80,12 @@ const isSupplier = (value) => {
 
 const isAbsent = (value, currentControlPoint) => {
     return value._id.toString() === currentControlPoint._id.toString()
+}
+
+const getDiffDateTodayInDays = (date) => {
+    const today = moment()
+    date = moment(date)
+
+    const duration = moment.duration(today.diff(date))
+    return duration.asHours()
 }

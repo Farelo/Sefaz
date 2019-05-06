@@ -279,6 +279,10 @@ exports.snapshot_report = async () => {
                     obj.absent_time = (packing.absent && packing.absent_time !== null) ? await getDiffDateTodayInHours(packing.absent_time) : '-'
                 }
                 
+                obj.cicle_start = packing.cicle_start ? packing.cicle_start : '-'
+                obj.cicle_end = packing.cicle_end ? packing.cicle_end : '-'
+                obj.last_cicle_duration = packing.last_cicle_duration ? packing.last_cicle_duration : '-'
+
                 // obj.last_elegible_accuracy = '-'
                 // obj.last_elegible_lat_lng_device = '-'
                 // obj.last_elegible_message_date = '-'
@@ -309,7 +313,7 @@ exports.snapshot_report = async () => {
 }
 
 const calculateAbsentWithoutLostTime = async (statuses) => { 
-    console.log('calculateAbsentWithoutLostTime')
+    //console.log('calculateAbsentWithoutLostTime')
     if(statuses.length == 0){
         return 0
     } else {
