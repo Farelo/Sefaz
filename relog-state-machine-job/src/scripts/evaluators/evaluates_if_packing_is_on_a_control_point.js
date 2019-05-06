@@ -4,34 +4,8 @@ const getDistanceFromLatLonInKm = require('../common/get_distance_from_lat_lng_i
 const { EventRecord } = require('../../models/event_record.model')
 
 module.exports = async (packing, controlPoints, setting) => {
+    
     try {
-
-        //verifica se há intersecção com último inbound
-        //se há, retorna esse controlpoint
-        //se não há, prossegue com a busca de intersecção em outros pontos de controle
-        if (packing.last_event_record) {
-
-            //SE ÚLTIMO EVENTO FOI INBOUND
-            if (packing.last_event_record.type == 'inbound') {
-                mLog('inbound')
-                // mLog('packing')
-                // mLog(packing)
-
-                let lastInboundControlPoint = controlPoints.filter(cp => {
-                    //mLog(packing.last_event_record.control_point, cp._id, packing.last_event_record.control_point.toString() == cp._id.toString())
-                    return packing.last_event_record.control_point.toString() == cp._id.toString()
-                })
-
-                //mLog('lastInboundControlPoint')
-                //mLog(lastInboundControlPoint)
-
-                if (lastInboundControlPoint.length > 0) {
-                    mLog('mesmo cp')
-                    return lastInboundControlPoint[0]
-                }
-            }
-        }
-
         return findAndHandleIntersection(packing, controlPoints, setting)
 
     } catch (error) {
