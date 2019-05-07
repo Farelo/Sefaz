@@ -4,8 +4,8 @@ const getDistanceFromLatLonInKm = require('../common/get_distance_from_lat_lng_i
 const { EventRecord } = require('../../models/event_record.model')
 
 module.exports = async (packing, controlPoints, setting) => {
+    
     try {
-        
         return findAndHandleIntersection(packing, controlPoints, setting)
 
     } catch (error) {
