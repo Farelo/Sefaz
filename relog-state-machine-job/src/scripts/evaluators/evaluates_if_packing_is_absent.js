@@ -1,5 +1,6 @@
 // COMMON
 const STATES = require('../common/states')
+const moment = require('moment')
 
 // MODELS
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
@@ -18,7 +19,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             const packingIsOk = controlPointOwner.filter(cp => isAbsent(cp, currentControlPoint))
 
             /* Se não estiver no ponto de controle OWNER atualiza a embalagem com o status ABSENT */
-            // Inicia o giro
+            // Se não iniciou, inicia o giro
             if (!(packingIsOk.length > 0)) {
                 console.log('NÃO ESTÁ NUMA PLANTA DONA')
                 if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
@@ -34,7 +35,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 console.log('ESTÁ NUMA PLANTA DONA')
                 if (packing.absent_time){
                     let calculate = 0
-                    if(packing.cicle_start) getDiffDateTodayInDays(packing.cicle_start)
+                    if(packing.cicle_start) calculate = getDiffDateTodayInHours(packing.cicle_start)
                     await Packing.findByIdAndUpdate(packing._id, { absent: false, absent_time: null, cicle_end: new Date(), last_cicle_duration: calculate }, { new: true })
                 } 
 
@@ -46,6 +47,8 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 }
             }
         } else {
+            console.log('ABSENT. FORA DE PLANTA')
+
             if (!packing.absent_time) {
                 console.log('NÃO ESTÁ NUMA PLANTA DONA.')
                 // Inicia o giro
@@ -82,7 +85,7 @@ const isAbsent = (value, currentControlPoint) => {
     return value._id.toString() === currentControlPoint._id.toString()
 }
 
-const getDiffDateTodayInDays = (date) => {
+const getDiffDateTodayInHours = (date) => {
     const today = moment()
     date = moment(date)
 

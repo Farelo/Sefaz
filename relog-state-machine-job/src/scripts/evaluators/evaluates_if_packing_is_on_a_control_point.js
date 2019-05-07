@@ -216,7 +216,7 @@ const thereIsIntersection = (isInsidePolygon, distance, range_radius, accuracy, 
             result = true
         }
     }
-    mLog('result ', result)
+    mLog('result ' + result)
     return result
 }
 

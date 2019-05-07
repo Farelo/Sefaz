@@ -86,8 +86,8 @@ const packingSchema = new mongoose.Schema({
         default: null
     },
     last_cicle_duration: {
-        type: Date,
-        default: null
+        type: Number,
+        default: 0
     },
     low_battery: {
         type: Boolean,
