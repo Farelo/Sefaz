@@ -33,8 +33,7 @@ exports.import_packing = async (req, res) => {
                 const current_packing = await Packing.findByTag(tag)
                 const family = await Family.findByCode(packing[0])
                 const project = packing[12] !== undefined ? await Project.findOne({ name: packing[12].toString() }) : null
-                console.log('>>>>>>>>>>>>>>>>project')
-                console.log(project)
+                
                 if (!project && packing[12] !== undefined) errors.push({ line: index + 1, description: `Project with this name ${packing[12]} do not exists` })
 
                 if (!family) {
@@ -52,7 +51,7 @@ exports.import_packing = async (req, res) => {
                             },
                             weigth: packing[5],
                             width: packing[6],
-                            height: packing[7],
+                            heigth: packing[7],
                             length: packing[8],
                             capacity: packing[9],
                             observations: packing[10],
@@ -74,16 +73,17 @@ exports.import_packing = async (req, res) => {
                             },
                             weigth: packing[5],
                             width: packing[6],
-                            height: packing[7],
+                            heigth: packing[7],
                             length: packing[8],
                             capacity: packing[9],
                             observations: packing[10],
                             type: packing[11],
-                            project: project ? project._id : undefined
+                            project: project ? project : undefined
                         })
                         
                         temp_obj.line = index + 1
                         temp_obj.data = await Packing.findById(current_packing._id).populate('family')
+                        temp_obj.data.project = project ? project : ''
 
                         updated.push(temp_obj)
                     }

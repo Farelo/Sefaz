@@ -16,7 +16,7 @@
             <div class="header">
               <h3>Detalhes das colunas</h3>
             </div>
-            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"> 
               <span aria-hidden="true">&times;</span>
             </button>
             <p style="border: none; font-weight: none!important;">
@@ -57,7 +57,7 @@
                 <span class="badge badge-secondary">tag</span>
                 <span class="badge badge-secondary">version</span>
                 <span class="badge badge-secondary">manufactores</span>
-                <span class="badge badge-secondary">weigth</span>
+                <span class="badge badge-secondary">weight</span>
                 <span class="badge badge-secondary">width</span>
                 <span class="badge badge-secondary">height</span>
                 <span class="badge badge-secondary">length</span>
@@ -72,7 +72,7 @@
               <p><b>tag:</b> Número TAG do dispositivo. Obrigatório. Mínimo de 4 e máximo de 50 caracteres alfanuméricos.</p>
               <p><b>version:</b> Versão do dispositivo. Obrigatório. Máximo de 30 caracteres alfanuméricos.</p>
               <p><b>manufactorer:</b> Fabricante da embalagem. Obrigatório. Mínimo de 2 e máximo de 30 caracteres alfanuméricos</p>
-              <p><b>weigth:</b> Peso da embalagem. Obrigatório. Valor numérico.</p>
+              <p><b>weight:</b> Peso da embalagem. Obrigatório. Valor numérico.</p>
               <p><b>width:</b> Largura da embalagem. Obrigatório. Valor numérico.</p>
               <p><b>height:</b> Altura da embalagem. Obrigatório. Valor numérico.</p>
               <p><b>length:</b> Comprimento da Embalagem. Obrigatório. Valor numérico.</p>
@@ -196,6 +196,14 @@
         <br />
         
         <!-- ========================================================== -->
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+        <!-- ERRO -->
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+
+        <!-- ========================================================== -->
         <!-- Tabela de erro -->
         <div class="row" *ngIf="importResult?.errors?.length > 0 && send">
 
@@ -232,6 +240,14 @@
         <br />
 
         <!-- ========================================================== -->
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+        <!-- ATUALIZAÇÕES -->
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+        <!-- ========================================================== -->
+
+        <!-- ========================================================== -->
         <!-- Tabela de atualização: Embalagens -->
         <div class="row" *ngIf="import['controls'].type.value == 'Embalagens' && importResult?.updated?.length !== 0 && send">
 
@@ -253,7 +269,7 @@
                     <th>tag</th>
                     <th>version</th>
                     <th>manufactorer</th>
-                    <th>weigth</th>
+                    <th>weight</th>
                     <th>width</th>
                     <th>height</th>
                     <th>length</th>
@@ -273,7 +289,7 @@
                     <td>{{ updated.data.tag.manufactorer }}</td>
                     <td>{{ updated.data.weigth }}</td>
                     <td>{{ updated.data.width }}</td>
-                    <td>{{ updated.data.height }}</td>
+                    <td>{{ updated.data.heigth }}</td>
                     <td>{{ updated.data.length }}</td>
                     <td>{{ updated.data.capacity }}</td>
                     <td>{{ updated.data.observations }}</td>
@@ -406,7 +422,7 @@
                     <th>tag</th>
                     <th>version</th>
                     <th>manufactorer</th>
-                    <th>weigth</th>
+                    <th>weight</th>
                     <th>width</th>
                     <th>height</th>
                     <th>length</th>
@@ -426,7 +442,7 @@
                     <td>{{ updated.data.tag.manufactorer }}</td>
                     <td>{{ updated.data.weigth }}</td>
                     <td>{{ updated.data.width }}</td>
-                    <td>{{ updated.data.height }}</td>
+                    <td>{{ updated.data.heigth }}</td>
                     <td>{{ updated.data.length }}</td>
                     <td>{{ updated.data.capacity }}</td>
                     <td>{{ updated.data.observations }}</td>
