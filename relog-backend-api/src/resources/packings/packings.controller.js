@@ -54,6 +54,8 @@ exports.create_many = async (req, res) => {
             if (!project) return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid project ${packing.data.project}.` })
         }
     
+        packing.data.active = true
+        
         current_packing = await packings_service.create_packing(packing.data)
         packings.push(current_packing)
     }
