@@ -268,7 +268,7 @@ exports.snapshot_report = async () => {
                 obj.battery = battery_level ? battery_level : "-"
                 obj.battery_alert = (battery_level > settings[0].battery_level_limit) ? 'FALSE' : 'TRUE'
 
-                obj.travel_time = ''
+                obj.travel_time = '-'
                 if(packing.last_event_record){
                     if(packing.last_event_record.type){
                         if(packing.last_event_record.type === 'outbound'){
