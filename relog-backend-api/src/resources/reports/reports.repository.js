@@ -228,7 +228,6 @@ exports.snapshot_report = async () => {
                 obj.collect_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
                 obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
                 obj.lat_lng_device = await getLatLngOfPacking(packing)
-
                 
                 obj.lat_lng_cp = '-'
                 obj.cp_type = '-'
@@ -249,7 +248,12 @@ exports.snapshot_report = async () => {
                             obj.geo = tempActualControlPoint.geofence.type
 
                             obj.area = (await getAreaControlPoint(packing))
-                            obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+
+                            if(['analise', 'perdida', 'sem_sinal'].includes(packing.current_state)){
+                                obj.permanence_time = '-'
+                            } else{
+                                obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                            }
                         }
                     }
                 }
@@ -273,12 +277,16 @@ exports.snapshot_report = async () => {
                     }
                 }
                 
-                if(noSignalTimeSinceAbsent > 0.0){
-                    obj.absent_time = (packing.absent && packing.absent_time !== null) ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
+                if(['analise', 'perdida', 'sem_sinal'].includes(packing.current_state)){
+                    obj.absent_time = '-'
                 } else{
-                    obj.absent_time = (packing.absent && packing.absent_time !== null) ? await getDiffDateTodayInHours(packing.absent_time) : '-'
+                    if(noSignalTimeSinceAbsent > 0.0){
+                        obj.absent_time = (packing.absent && packing.absent_time !== null) ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
+                    } else{
+                        obj.absent_time = (packing.absent && packing.absent_time !== null) ? await getDiffDateTodayInHours(packing.absent_time) : '-'
+                    }
                 }
-                
+
                 // obj.last_elegible_accuracy = '-'
                 // obj.last_elegible_lat_lng_device = '-'
                 // obj.last_elegible_message_date = '-'
