@@ -375,7 +375,7 @@ const getDiffDateTodayInDays = (date) => {
     return duration.asDays()
 }
 
-let idAbleToLog = true
+let idAbleToLog = false
 const mLog = (mText) => {
     if (idAbleToLog) console.log(mText)
 }

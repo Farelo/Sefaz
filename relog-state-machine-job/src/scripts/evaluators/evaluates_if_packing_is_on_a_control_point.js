@@ -194,7 +194,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
     }
 }
 
-let idAbleToLog = true
+let idAbleToLog = false
 const mLog = (mText) => {
     if (idAbleToLog) console.log(mText)
 }
