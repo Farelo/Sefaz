@@ -82,6 +82,8 @@ module.exports = async () => {
     }
 }
 
+const add_seconds = (date_time, seconds_to_add) => { return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add)) }
+
 const promise_wait_seconds = async seconds => {
 
     return new Promise((resolve) => {
