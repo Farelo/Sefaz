@@ -21,7 +21,7 @@ module.exports = async () => {
         let error_devices = 0
         let total_devices = devices.length
 
-        let device_data_promises = devices.map(async packing => {
+        let device_data_promises = devices.map(async packing => {    
 
             try {
                 //recupera a última mensagem
@@ -57,6 +57,8 @@ module.exports = async () => {
 
                 error_devices++
             }
+
+            await promise_wait_seconds(3)
         })
 
         //esse for existe dessa maneira somente para garantir que cada promessa do array de promessas de devices seja finalizado (resolvido ou rejeitado) 
@@ -80,4 +82,14 @@ module.exports = async () => {
     }
 }
 
-const add_seconds = (date_time, seconds_to_add) => { return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add)) }
+const promise_wait_seconds = async seconds => {
+
+    return new Promise((resolve) => {
+
+        setTimeout(() => {
+            resolve(`SLEEP: Aguardou ${seconds} segundos`)            
+        }, seconds * 1000);
+
+    })
+
+}
