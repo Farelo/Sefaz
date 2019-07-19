@@ -1,6 +1,6 @@
 const debug = require('debug')('dm.service')
 const config = require('config')
-const request = require('request').defaults({baseUrl: config.get('loka.baseUrl')/* 'https://dm.loka.systems' */, pool: {maxSockets: 4096}})
+const request = require('request').defaults({baseUrl: config.get('loka.baseUrl')/* 'https://dm.loka.systems' */})
 const qs = require('qs')
 
 // inejta o certificado SSL para poder fazer as requisições https
