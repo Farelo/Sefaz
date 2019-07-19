@@ -10,8 +10,6 @@ module.exports = async () => {
     const results = {}
 
     try {
-        debug("Login")
-
         const cookie = await dm_controller.loginDM()
 
         // let devices = [ { tag: { code: 4085902 } } ]
@@ -22,55 +20,8 @@ module.exports = async () => {
         let concluded_devices = 0
         let error_devices = 0
         let total_devices = devices.length
-        
-        devices.forEach(function(packing){
-            debug("Iniciando packing: "+packing)
 
-            try {
-                //recupera a última mensagem
-                const last_message_date = await DeviceData.find({device_id: packing.tag.code}, {_id: 0, message_date: 1}).sort({message_date: 'desc'}).limit(1)
-
-                const week_in_milliseconds = 604800000
-
-                //cria janela de tempo de uma semana antes da última mensagem enviada
-                let start_search_date = last_message_date[0] ? add_seconds(last_message_date[0].message_date, 1) :  new Date(Date.parse(new Date()) - week_in_milliseconds)
-
-                //convete esse timestamp para string
-                start_search_date = start_search_date.toLocaleString()
-
-                //verifica na loka se o device existe
-                await dm_controller.confirmDevice(packing.tag.code, cookie)
-
-                
-                const device_data_array = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, start_search_date, end_search_date, null, cookie)
-
-                if (device_data_array) {
-
-                    await device_data_save(device_data_array)
-
-                    concluded_devices++
-
-                    //nao precisa realizar o return device_data_array, a nao ser que queira debugar o loop for-await-for abaixo
-                    // return device_data_array
-                }
-                debug("SUCESSO DO PACKING: "+packing)
-            } catch (error) {
-
-                debug('Erro ocorrido no device: ' + packing.tag.code + ' | ' + error)
-
-                error_devices++
-            }
-            debug("Iniciando sleep")
-
-            await promise_wait_seconds(10)
-            debug("Fim do sleep")
-        })
-        debug("Fim dos devices")
-
-
-        // TODO Rever trecho comentado
-        /*
-        let device_data_promises = devices.map(async packing => {    
+        let device_data_promises = devices.map(async packing => {
 
             try {
                 //recupera a última mensagem
@@ -106,16 +57,12 @@ module.exports = async () => {
 
                 error_devices++
             }
-
-            await promise_wait_seconds(3)
         })
 
         //esse for existe dessa maneira somente para garantir que cada promessa do array de promessas de devices seja finalizado (resolvido ou rejeitado) 
         for await (const device_data_promise of device_data_promises) {
             
         }
-        */
-       debug("Logout")
 
         await dm_controller.logoutDM(cookie)
         
@@ -134,15 +81,3 @@ module.exports = async () => {
 }
 
 const add_seconds = (date_time, seconds_to_add) => { return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add)) }
-
-const promise_wait_seconds = async seconds => {
-
-    return new Promise((resolve) => {
-
-        setTimeout(() => {
-            resolve(`SLEEP: Aguardou ${seconds} segundos`)            
-        }, seconds * 1000);
-
-    })
-
-}
