@@ -10,7 +10,7 @@ module.exports = async () => {
     const results = {}
 
     try {
-        const cookie = await dm_controller.loginDM()
+        //const cookie = await dm_controller.loginDM()
 
         // let devices = [ { tag: { code: 4085902 } } ]
         let devices = await Packing.find({}, {_id: 0, tag: 1})//.limit(2)
@@ -22,7 +22,10 @@ module.exports = async () => {
         let total_devices = devices.length
 
         let device_data_promises = devices.map(async packing => {    
-
+            
+            // TODO Código para teste
+            const cookie = await dm_controller.loginDM()
+            
             try {
                 //recupera a última mensagem
                 const last_message_date = await DeviceData.find({device_id: packing.tag.code}, {_id: 0, message_date: 1}).sort({message_date: 'desc'}).limit(1)
@@ -59,6 +62,9 @@ module.exports = async () => {
             }
 
             await promise_wait_seconds(3)
+            // logout
+            // TODO Código para teste
+            await dm_controller.logoutDM(cookie)
         })
 
         //esse for existe dessa maneira somente para garantir que cada promessa do array de promessas de devices seja finalizado (resolvido ou rejeitado) 
@@ -66,7 +72,7 @@ module.exports = async () => {
             
         }
 
-        await dm_controller.logoutDM(cookie)
+        //await dm_controller.logoutDM(cookie)
         
         results.result1 = `Devices que deram certo:  ${concluded_devices} de ${total_devices}`
 
