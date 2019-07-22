@@ -25,7 +25,7 @@ module.exports = async () => {
 
             let devices = await Packing.find({}, {_id: 0, tag: 1}).skip(skip).limit(skip)
 
-            if(devices === null || isEmpty(devices)){
+            if(devices === null || devices.length === 0) {
                 break;
             }
             let device_data_promises = devices.map(async packing => {
