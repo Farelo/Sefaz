@@ -97,7 +97,7 @@ module.exports = async () => {
 
     } catch (error) {
 
-        return Promise.reject(`Job LOKA encerrado em ${new Date().toISOString()} com erro | `, error)
+        return Promise.reject(`Job LOKA encerrado em ${new Date().toISOString()} com erro | `+ error)
     }
 }
 
