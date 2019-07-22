@@ -48,13 +48,13 @@ public class CadastrarPessoaController {
 	}
 	
 	/**
-	 *SALVA UM NOVO REGISTRO VIA INPUT 
+	 *SALVA UM NOVO REGISTRO  
 	 */
 	public void SalvarNovaPessoa(){
 		
 		pessoaModel.setUsuarioModel(this.usuarioController.GetUsuarioSession());
 		
-		//INFORMANDO QUE O CADASTRO FOI VIA INPUT
+		//INFORMANDO QUE O CADASTRO FOI REALIZADO
 		pessoaModel.setOrigemCadastro("I");
 		
 		pessoaRepository.SalvarNovoRegistro(this.pessoaModel);
