@@ -29,15 +29,7 @@
 	            				  required="true"
 	            				  requiredMessage="O nome é de preenchimento obrigatório"/>
  
-	            		<p:outputLabel for="selectOneRadio-sexo" value="Sexo:" />
-        				<p:selectOneRadio id="selectOneRadio-sexo" 
-        						  value="#{cadastrarPessoaController.pessoaModel.sexo}"
-        						  required="true"
-	            				     	  requiredMessage="O sexo é de preenchimento obrigatório">
- 
-            				<f:selectItem itemLabel="Masculino" itemValue="M" />
-            				<f:selectItem itemLabel="Feminino" itemValue="F" />            				
-        				</p:selectOneRadio>
+	            		
  
 	            		<p:outputLabel value="E-mail" for="inputText-email"/>
 	            		<p:inputText id="inputText-email" 
@@ -48,13 +40,13 @@
 	            			     requiredMessage="O email é de preenchimento obrigatório"/>           		
  
  
-	            		<p:outputLabel value="Endereço" for="inputText-endereco"/>
+	            		<p:outputLabel value="Telefone" for="inputText-endereco"/>
 	            		<p:inputText id="inputText-endereco" 
 	            			     style="width:400px" 
 	            			     maxlength="200" 
-	            			     value="#{cadastrarPessoaController.pessoaModel.endereco}"
+	            			     value="#{cadastrarPessoaController.pessoaModel.telefone}"
 	            			     required="true"
-	            		             requiredMessage="O endereço é de preenchimento obrigatório"/>
+	            		             requiredMessage="O telefone é de preenchimento obrigatório"/>
  
 	            		<p:spacer/>
  
