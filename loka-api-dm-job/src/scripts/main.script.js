@@ -22,7 +22,7 @@ module.exports = () => {
 
             debug(`Job ${count} encerrado com inicio em  ${timeStart} e finalizado em  ${new Date()}`)
 
-            await promise_wait(10)
+            await promise_wait(15)
 
             count++
 

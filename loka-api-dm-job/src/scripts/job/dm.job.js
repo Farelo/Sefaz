@@ -8,67 +8,88 @@ module.exports = async () => {
     const end_search_date = (new Date()).toLocaleString()
     
     const results = {}
+    
+    let concluded_devices = 0
+    let error_devices = 0
 
     try {
-        const cookie = await dm_controller.loginDM()
 
         // let devices = [ { tag: { code: 4085902 } } ]
-        let devices = await Packing.find({}, {_id: 0, tag: 1})//.limit(2)
+        let skip=0
+        let jump=50
+        while(true){
+            debug("Skip: "+skip)
+            debug("Login")
 
+            const cookie = await dm_controller.loginDM()
+
+            let devices = await Packing.find({}, {_id: 0, tag: 1}).skip(skip).limit(skip)
+
+            if(devices === null || isEmpty(devices)){
+                break;
+            }
+            let device_data_promises = devices.map(async packing => {
+                try {
+                    //recupera a última mensagem
+                    const last_message_date = await DeviceData.find({device_id: packing.tag.code}, {_id: 0, message_date: 1}).sort({message_date: 'desc'}).limit(1)
+    
+                    const week_in_milliseconds = 604800000
+    
+                    //cria janela de tempo de uma semana antes da última mensagem enviada
+                    let start_search_date = last_message_date[0] ? add_seconds(last_message_date[0].message_date, 1) :  new Date(Date.parse(new Date()) - week_in_milliseconds)
+    
+                    //convete esse timestamp para string
+                    start_search_date = start_search_date.toLocaleString()
+    
+                    //verifica na loka se o device existe
+                    await dm_controller.confirmDevice(packing.tag.code, cookie)
+    
+                    
+                    const device_data_array = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, start_search_date, end_search_date, null, cookie)
+    
+                    if (device_data_array) {
+    
+                        await device_data_save(device_data_array)
+    
+                        concluded_devices++
+    
+                        //nao precisa realizar o return device_data_array, a nao ser que queira debugar o loop for-await-for abaixo
+                        // return device_data_array
+                    }
+    
+                } catch (error) {
+    
+                    debug('Erro ocorrido no device: ' + packing.tag.code + ' | ' + error)
+    
+                    error_devices++
+                }
+                
+            })
+    
+            //esse for existe dessa maneira somente para garantir que cada promessa do array de promessas de devices seja finalizado (resolvido ou rejeitado) 
+            for await (const device_data_promise of device_data_promises) {
+                
+            }
+
+            skip=skip+jump;
+            debug("Logout")
+
+            await dm_controller.logoutDM(cookie)
+
+            debug("Sleep inicio")
+            await promise_wait_seconds(100)
+            debug("Sleep fim")
+        }
+        
         debug(devices)
 
-        let concluded_devices = 0
-        let error_devices = 0
-        let total_devices = devices.length
 
-        let device_data_promises = devices.map(async packing => {
-
-            try {
-                //recupera a última mensagem
-                const last_message_date = await DeviceData.find({device_id: packing.tag.code}, {_id: 0, message_date: 1}).sort({message_date: 'desc'}).limit(1)
-
-                const week_in_milliseconds = 604800000
-
-                //cria janela de tempo de uma semana antes da última mensagem enviada
-                let start_search_date = last_message_date[0] ? add_seconds(last_message_date[0].message_date, 1) :  new Date(Date.parse(new Date()) - week_in_milliseconds)
-
-                //convete esse timestamp para string
-                start_search_date = start_search_date.toLocaleString()
-
-                //verifica na loka se o device existe
-                await dm_controller.confirmDevice(packing.tag.code, cookie)
-
-                
-                const device_data_array = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, start_search_date, end_search_date, null, cookie)
-
-                if (device_data_array) {
-
-                    await device_data_save(device_data_array)
-
-                    concluded_devices++
-
-                    //nao precisa realizar o return device_data_array, a nao ser que queira debugar o loop for-await-for abaixo
-                    // return device_data_array
-                }
-
-            } catch (error) {
-
-                debug('Erro ocorrido no device: ' + packing.tag.code + ' | ' + error)
-
-                error_devices++
-            }
-        })
-
-        //esse for existe dessa maneira somente para garantir que cada promessa do array de promessas de devices seja finalizado (resolvido ou rejeitado) 
-        for await (const device_data_promise of device_data_promises) {
-            
-        }
-
-        await dm_controller.logoutDM(cookie)
         
-        results.result1 = `Devices que deram certo:  ${concluded_devices} de ${total_devices}`
 
-        results.result2 = `Devices que deram errado:  ${error_devices} de  ${total_devices}`
+        
+        results.result1 = `Devices que deram certo:  ${concluded_devices}`
+
+        results.result2 = `Devices que deram errado:  ${error_devices}`
 
         results.result3 = `Job LOKA encerrado em ${new Date().toISOString()} com sucesso!`
 
@@ -81,3 +102,15 @@ module.exports = async () => {
 }
 
 const add_seconds = (date_time, seconds_to_add) => { return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add)) }
+
+const promise_wait_seconds = async seconds => {
+
+    return new Promise((resolve) => {
+
+        setTimeout(() => {
+            resolve(`SLEEP: Aguardou ${seconds} segundos`)            
+        }, seconds * 1000);
+
+    })
+
+}
