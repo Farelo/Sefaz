@@ -5,8 +5,7 @@ public class PessoaModel {
 	private Integer codigo;
 	private String  nome;
 	private String  email;
-	private String  origemCadastro;
-	private String  telefone;   
+	private String  origemCadastro;  
 	private UsuarioModel    usuarioModel;
  
 	public Integer getCodigo() {
@@ -29,12 +28,7 @@ public class PessoaModel {
 		this.email = email;
 
 	}
-	public String getTelefone() {
-		return nome;
-	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
+
 	public String getOrigemCadastro() {
 		return origemCadastro;
 	}
