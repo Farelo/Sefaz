@@ -17,20 +17,13 @@
  
 	<p:outputLabel value="Nome" for="inputText-nome"/>
 	<p:inputText   id="inputText-nome" 
-	               style="width:300px" maxlength="70" 
+	               style="width:300px" 
+	               maxlength="70" 
 	               value="#{consultarPessoaController.pessoaModel.nome}"
 	               required="true"
 	               requiredMessage="O nome é de preenchimento obrigatório"/>
  
-	<p:outputLabel for="selectOneRadio-telefone" value="Telefone:" />
-        <p:selectOneRadio id="selectOneRadio-telefone" 
-        		  value="#{consultarPessoaController.pessoaModel.telefone}"
-        		  required="true"
-	            	  requiredMessage="O telefone é de preenchimento obrigatório">
- 
-            	<f:selectItem itemLabel="Numero" itemValue="911112222"/>
-            	           				
-        </p:selectOneRadio>
+	
  
 	<p:outputLabel value="E-mail" for="inputText-email"/>
 	<p:inputText id="inputText-email" 
@@ -56,4 +49,4 @@
  
     </h:form>
  
-</ui:composition>>
+</ui:composition>
