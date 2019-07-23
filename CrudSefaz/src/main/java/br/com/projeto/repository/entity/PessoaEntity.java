@@ -29,9 +29,6 @@ public class PessoaEntity {
 	@Column(name = "nm_pessoa")
 	private String  nome;
 	
-	@Column(name = "id_telefone")
-	private String  telefone;
-	
 	@Column(name = "ds_email")
 	private String  email;
  
@@ -41,6 +38,8 @@ public class PessoaEntity {
 	@OneToOne
 	@JoinColumn(name="id_usuario_cadastro")
 	private UsuarioEntity usuarioEntity;
+	
+	
  
 	public Integer getCodigo() {
 		return codigo;
@@ -61,12 +60,7 @@ public class PessoaEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getTelefone() {
-		return telefone;
-	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
+
 	public String getOrigemCadastro() {
 		return origemCadastro;
 	}

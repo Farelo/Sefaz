@@ -31,7 +31,6 @@ public class PessoaRepository {
 		entityManager =  Uteis.JpaEntityManager();
  
 		pessoaEntity = new PessoaEntity();
-		pessoaEntity.setTelefone(pessoaModel.getTelefone());
 		pessoaEntity.setEmail(pessoaModel.getEmail());
 		pessoaEntity.setNome(pessoaModel.getNome());
 		pessoaEntity.setOrigemCadastro(pessoaModel.getOrigemCadastro());
@@ -66,7 +65,6 @@ public class PessoaRepository {
  
 			pessoaModel = new PessoaModel();
 			pessoaModel.setCodigo(pessoaEntity.getCodigo());
-			pessoaModel.setTelefone(pessoaEntity.getTelefone());
 			pessoaModel.setEmail(pessoaEntity.getEmail());
 			pessoaModel.setNome(pessoaEntity.getNome());
  
@@ -109,7 +107,7 @@ public class PessoaRepository {
  
 		pessoaEntity.setEmail(pessoaModel.getEmail());
 		pessoaEntity.setNome(pessoaModel.getNome());
-		pessoaEntity.setTelefone(pessoaModel.getTelefone());
+		
  
 		entityManager.merge(pessoaEntity);
 	}
