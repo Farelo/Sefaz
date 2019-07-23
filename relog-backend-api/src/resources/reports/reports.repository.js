@@ -337,7 +337,7 @@ exports.snapshot_report = async () => {
                 // } else {
                 //     obj.absent_time = await getAbsentTimeCountDown(packing)
                 // }
-                console(obj)
+                console.log(obj)
                 return obj
             })
         )
