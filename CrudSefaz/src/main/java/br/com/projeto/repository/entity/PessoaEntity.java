@@ -35,6 +35,9 @@ public class PessoaEntity {
  
 	@Column(name = "fl_origemCadastro")
 	private String  origemCadastro;
+	
+	@Column(name = "ds_senha")
+	private String  senha;
  
 	@OneToOne
 	@JoinColumn(name="id_usuario_cadastro")
@@ -60,6 +63,12 @@ public class PessoaEntity {
 		this.email = email;
 	}
 
+	public String getSenha() {
+		return senha;
+	}
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 	public String getOrigemCadastro() {
 		return origemCadastro;
 	}

@@ -1,11 +1,8 @@
 package br.com.projeto.pessoa.controller;
 
-import java.io.IOException;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 
 import org.primefaces.model.UploadedFile;
 
@@ -64,7 +61,6 @@ public class CadastrarPessoaController {
 		Uteis.MensagemInfo("Registro cadastrado com sucesso");
 		
 	}
-	
 	
 	 }
 

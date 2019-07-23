@@ -40,15 +40,17 @@
 	            			     requiredMessage="O email é de preenchimento obrigatório"/>           		
  
  
-	            		<p:outputLabel value="Telefone" for="inputText-endereco"/>
-	            		<p:inputText id="inputText-endereco" 
-	            			     style="width:400px" 
-	            			     maxlength="200" 
-	            			     value="#{cadastrarPessoaController.pessoaModel.telefone}"
+	      
+	          <p:outputLabel value="Senha" for="inputText-senha"/>
+	            		<p:inputText id="inputText-senha" 
+	            			     style="width:300px" 
+	            			     maxlength="80" 
+	            			     value="#{cadastrarPessoaController.pessoaModel.senha}"
 	            			     required="true"
-	            		             requiredMessage="O telefone é de preenchimento obrigatório"/>
+	            		             requiredMessage="a senha é de preenchimento obrigatório"/>
  
 	            		<p:spacer/>
+	      
  
 	            		<p:commandButton value="Salvar" 
 	            				 id="commandButton-salvar"

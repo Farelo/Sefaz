@@ -3,6 +3,7 @@ package br.com.projeto.model;
 public class PessoaModel {
 	 
 	private Integer codigo;
+	private String senha;
 	private String  nome;
 	private String  email;
 	private String  origemCadastro;  
@@ -29,6 +30,12 @@ public class PessoaModel {
 
 	}
 
+	public String getSenha() {
+		return senha;
+	}
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 	public String getOrigemCadastro() {
 		return origemCadastro;
 	}
