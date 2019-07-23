@@ -67,6 +67,6 @@ exports.snapshot_report = async (req, res) => {
     req.setTimeout(5000000)
 
     const data = await reports_service.snapshot_report()
-    //res.json(data)
-    res.json("{}")
+    res.json(data)
+    //res.json("{}")
 }
