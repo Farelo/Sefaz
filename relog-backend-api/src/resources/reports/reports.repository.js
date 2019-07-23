@@ -186,19 +186,26 @@ const general_inventory_report_detailed = async (family_id) => {
 
 exports.snapshot_report = async () => {
     try {
+        debug('snapshot_report')
         const packings = await Packing.find({})
             .populate('family')
             .populate('last_device_data')
             .populate('last_device_data_battery')
             .populate('last_event_record')
         const settings = await Setting.find({})
+        debug(packings.length)
+        debug(settings.length)
 
         const data = await Promise.all(
             packings.map(async packing => {
+                debug(packing.tag.code)
+
 
                 //Begin: Calculate no signal while absent, if absent
                 let currentStatesSinceAbsent = []
                 if(packing.absent && packing.absent_time !== null){
+                    debug("IF 1")
+
                     currentStatesSinceAbsent = await CurrentStateHistory.find({
                         packing: packing._id,
                         created_at: {
@@ -207,17 +214,19 @@ exports.snapshot_report = async () => {
                     })
                 }
                 let currentStatesSinceAbsentFiltered = currentStatesSinceAbsent.filter(elem => {
-                    if(!elem) console.log('filter ', packing.tag.code)
+                    if(!elem) debug('filter ', packing.tag.code)
                     return ((elem.type == 'sem_sinal') || (elem.type == 'perdida') || (elem.type == 'sinal'))
                 })
                 let noSignalTimeSinceAbsent = 0
                 noSignalTimeSinceAbsent = await calculateAbsentWithoutLostTime(currentStatesSinceAbsentFiltered)
-                //console.log(noSignalTimeSinceAbsent)
+                debug(noSignalTimeSinceAbsent)
+                //debug(noSignalTimeSinceAbsent)
                 //End: Calculate no signal while absent, if absent
 
                 let obj = {}
                 const battery_level = packing.last_device_data && packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
                 const lastAccurateMessage = await getLastAccurateMessage(packing, settings[0])
+                debug(battery_level)
 
                 obj.id = packing._id
                 obj.message_date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LTS')}` : '-'
@@ -228,7 +237,8 @@ exports.snapshot_report = async () => {
                 obj.collect_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
                 obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
                 obj.lat_lng_device = await getLatLngOfPacking(packing)
-                
+                debug(obj.lat_lng_device)
+
                 obj.lat_lng_cp = '-'
                 obj.cp_type = '-'
                 obj.cp_name = '-'
@@ -239,20 +249,30 @@ exports.snapshot_report = async () => {
                 if(packing.last_event_record){
                     if(packing.last_event_record.type){
                         if(packing.last_event_record.type == 'inbound'){
-                            // console.log('_: ', packing.tag.code)
+                            // debug('_: ', packing.tag.code)
+                            debug("IF 2")
+
                             obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
+                            debug(obj.lat_lng_cp)
 
                             let tempActualControlPoint = (await getActualControlPoint(packing))
+                            debug(tempActualControlPoint)
+
                             obj.cp_type = tempActualControlPoint.type.name
                             obj.cp_name = tempActualControlPoint.name
                             obj.geo = tempActualControlPoint.geofence.type
 
                             obj.area = (await getAreaControlPoint(packing))
+                            debug(obj.area)
 
                             if(['analise', 'perdida', 'sem_sinal'].includes(packing.current_state)){
                                 obj.permanence_time = '-'
                             } else{
                                 obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                                debug("ELSE")
+
+                                debug(obj.area)
+
                             }
                         }
                     }
@@ -273,6 +293,10 @@ exports.snapshot_report = async () => {
                     if(packing.last_event_record.type){
                         if(packing.last_event_record.type === 'outbound'){
                             obj.travel_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                            debug("IF 3")
+
+                            debug(obj.travel_time)
+
                         }
                     }
                 }
@@ -282,8 +306,15 @@ exports.snapshot_report = async () => {
                 } else{
                     if(noSignalTimeSinceAbsent > 0.0){
                         obj.absent_time = (packing.absent && packing.absent_time !== null) ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
+                        debug("IF 4")
+
+                        debug(obj.absent_time)
+
                     } else{
                         obj.absent_time = (packing.absent && packing.absent_time !== null) ? await getDiffDateTodayInHours(packing.absent_time) : '-'
+                        debug("ELSE 2")
+
+                        debug(obj.absent_time)
                     }
                 }
 
@@ -299,25 +330,31 @@ exports.snapshot_report = async () => {
                 //     }
                 // }
                 
-                //console.log('-')
-                //console.log(JSON.stringify(lastAccurateMessage[0]))
+                //debug('-')
+                //debug(JSON.stringify(lastAccurateMessage[0]))
                 // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
                 //     obj.absent_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
                 // } else {
                 //     obj.absent_time = await getAbsentTimeCountDown(packing)
                 // }
+                debug(obj)
                 return obj
             })
         )
+        debug("DATA")
+        debug(data)
 
         return data
     } catch (error) {
+        debug("ERROR")
+        debug(error)
+
         throw new Error(error)
     }
 }
 
 const calculateAbsentWithoutLostTime = async (statuses) => { 
-    console.log('calculateAbsentWithoutLostTime')
+    //debug('calculateAbsentWithoutLostTime')
     if(statuses.length == 0){
         return 0
     } else {
@@ -328,26 +365,26 @@ const calculateAbsentWithoutLostTime = async (statuses) => {
         let lostSignalTo = null;
         let totalTime = 0.0;
 
-        //console.log('1')
+        //debug('1')
         while(pivot < statuses.length){
-            //console.log('2')
+            //debug('2')
             if(lostSignal){
-                //console.log('3')
+                //debug('3')
                 if(statuses[pivot].type == 'sinal'){
-                    //console.log('4')
+                    //debug('4')
                     lostSignal = false;
                     lostSignalTo = statuses[pivot].created_at;
 
                     totalTime += await calculateRangeTime(lostSignalFrom, lostSignalTo)
-                    //console.log('totalTime: ' + totalTime)
+                    //debug('totalTime: ' + totalTime)
                     lostSignalFrom = 0
                     lostSignalTo = 0
                 }
             }else{
-                //console.log('5')
+                //debug('5')
                 //if((statuses[pivot] == 'sem_sinal') || (statuses[pivot] == 'perdida')){
                 if(statuses[pivot].type == 'sem_sinal'){
-                    //console.log('6')
+                    //debug('6')
                     lostSignal = true;
                     lostSignalFrom = statuses[pivot].created_at;
                 }
@@ -355,8 +392,8 @@ const calculateAbsentWithoutLostTime = async (statuses) => {
             pivot++
         }
 
-        // console.log('>>')
-        // console.log(totalTime)
+        // debug('>>')
+        // debug(totalTime)
         
         return totalTime
     }
@@ -369,25 +406,25 @@ const calculateRangeTime = async (dateFrom, dateTo) => {
         const today = moment()
         dateTo = moment(dateTo)
         let duration = moment.duration(dateTo.diff(dateFrom))
-        //console.log('.1: ' + duration.asHours())
+        //debug('.1: ' + duration.asHours())
         return duration.asHours()
     }
 
     //has not begin, but has end
     if((dateFrom == 0) && (dateTo !== 0)){
-        //console.log('.2: 0')
+        //debug('.2: 0')
         return 0
     }
 
     //has begin, but no end
     if((dateFrom !== 0) && (dateTo == 0)){
-        //console.log('.3: ' + getDiffDateTodayInHours(dateFrom))
+        //debug('.3: ' + getDiffDateTodayInHours(dateFrom))
         return getDiffDateTodayInHours(dateFrom)
     }
 
     //nas not begin neither end
     if((dateFrom == 0) && (dateTo == 0)){
-        //console.log('.4: 0')
+        //debug('.4: 0')
         return 0
     }
 
@@ -809,7 +846,7 @@ const getActualControlPoint = async (packing) => {
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
 
     if((current_control_point == null) || (current_control_point == undefined)){
-        // console.log('.TYPE NULO getActualControlPoint ', packing.tag.code)
+        // debug('.TYPE NULO getActualControlPoint ', packing.tag.code)
         let result = { 
             name: '-',
             full_address: '-',
@@ -826,16 +863,16 @@ const getActualControlPoint = async (packing) => {
         return result
 
     } else {
-        // console.log('getActualControlPoint ', packing.tag.code)
-        // console.log(current_control_point.name)
-        // console.log(current_control_point.type)
-        // console.log(current_control_point.geofence.type)
+        // debug('getActualControlPoint ', packing.tag.code)
+        // debug(current_control_point.name)
+        // debug(current_control_point.type)
+        // debug(current_control_point.geofence.type)
         return current_control_point
     }
 }
 
 const getLatLngOfControlPoint = async (packing) => {
-    //console.log('getLatLngOfControlPoint ', packing.tag.code)
+    //debug('getLatLngOfControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
     
     if ((current_control_point !== null) && (current_control_point !== undefined)) {
@@ -853,7 +890,7 @@ const getLatLngOfControlPoint = async (packing) => {
 }
 
 const getAreaControlPoint = async (packing) => {
-    //console.log('getAreaControlPoint ', packing.tag.code)
+    //debug('getAreaControlPoint ', packing.tag.code)
     const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point)
     
     if ((current_control_point !== null) && (current_control_point !== undefined)) {
