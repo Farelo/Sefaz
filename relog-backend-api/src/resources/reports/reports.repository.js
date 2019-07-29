@@ -186,7 +186,7 @@ const general_inventory_report_detailed = async (family_id) => {
 
 exports.snapshot_report = async () => {
     try {
-        console.log('snapshot_report')
+        //console.log('snapshot_report')
         const packings = await Packing.find({})
             .populate('family')
             .populate('last_device_data')
@@ -212,7 +212,7 @@ exports.snapshot_report = async () => {
                     })
                 }
                 let currentStatesSinceAbsentFiltered = currentStatesSinceAbsent.filter(elem => {
-                    if(!elem) console.log('filter ', packing.tag.code)
+                    //if(!elem) console.log('filter ', packing.tag.code)
                     return ((elem.type == 'sem_sinal') || (elem.type == 'perdida') || (elem.type == 'sinal'))
                 })
                 let noSignalTimeSinceAbsent = 0
@@ -331,7 +331,7 @@ exports.snapshot_report = async () => {
                 // } else {
                 //     obj.absent_time = await getAbsentTimeCountDown(packing)
                 // }
-                console.log(obj)
+                //console.log(obj)
                 return obj
             })
         )
@@ -348,7 +348,7 @@ exports.snapshot_report = async () => {
 }
 
 const calculateAbsentWithoutLostTime = async (statuses) => { 
-    console.log('calculateAbsentWithoutLostTime')
+    //console.log('calculateAbsentWithoutLostTime')
     if(statuses.length == 0){
         return 0
     } else {
