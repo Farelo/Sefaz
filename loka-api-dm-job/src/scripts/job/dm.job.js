@@ -15,8 +15,12 @@ module.exports = async () => {
     try {
 
         // let devices = [ { tag: { code: 4085902 } } ]
+        let timeInit = new Date().getTime();
+
         let skip=0
         let jump=50
+        let sleepTime=100
+        let sleepped=0
         while(true){
             debug("Skip: "+skip)
             debug("Login")
@@ -79,12 +83,14 @@ module.exports = async () => {
             debug("Sleep inicio")
             await promise_wait_seconds(100)
             debug("Sleep fim")
+            sleepped+=sleepped
         }
         
         debug(devices)
 
 
-        
+        let timeFinish = new Date().getTime();
+        let timeTotal = timeFinish-timeInit
 
         
         results.result1 = `Devices que deram certo:  ${concluded_devices}`
@@ -92,6 +98,10 @@ module.exports = async () => {
         results.result2 = `Devices que deram errado:  ${error_devices}`
 
         results.result3 = `Job LOKA encerrado em ${new Date().toISOString()} com sucesso!`
+
+        results.result4 = 'Tempo de sleep (sec): '+sleepped
+
+        results.result5 = 'Tempo total de execução (sec): '+timeTotal/1000
 
         return Promise.resolve(results)
 
