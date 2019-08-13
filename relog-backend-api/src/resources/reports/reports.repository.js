@@ -186,25 +186,23 @@ const general_inventory_report_detailed = async (family_id) => {
 
 exports.snapshot_report = async () => {
     try {
-        console.log('snapshot_report')
+        //console.log('snapshot_report')
         const packings = await Packing.find({})
             .populate('family')
             .populate('last_device_data')
             .populate('last_device_data_battery')
             .populate('last_event_record')
         const settings = await Setting.find({})
-        console.log(packings.length)
-        console.log(settings.length)
+        // console.log(packings.length)
+        // console.log(settings.length)
 
         const data = await Promise.all(
             packings.map(async packing => {
-                console.log(packing.tag.code)
-
-
+                // console.log(packing.tag.code)
                 //Begin: Calculate no signal while absent, if absent
                 let currentStatesSinceAbsent = []
                 if(packing.absent && packing.absent_time !== null){
-                    console.log("IF 1")
+                    // console.log("IF 1")
 
                     currentStatesSinceAbsent = await CurrentStateHistory.find({
                         packing: packing._id,
@@ -214,19 +212,19 @@ exports.snapshot_report = async () => {
                     })
                 }
                 let currentStatesSinceAbsentFiltered = currentStatesSinceAbsent.filter(elem => {
-                    if(!elem) console.log('filter ', packing.tag.code)
+                    //if(!elem) console.log('filter ', packing.tag.code)
                     return ((elem.type == 'sem_sinal') || (elem.type == 'perdida') || (elem.type == 'sinal'))
                 })
                 let noSignalTimeSinceAbsent = 0
                 noSignalTimeSinceAbsent = await calculateAbsentWithoutLostTime(currentStatesSinceAbsentFiltered)
-                console.log(noSignalTimeSinceAbsent)
+                // console.log(noSignalTimeSinceAbsent)
                 //console.log(noSignalTimeSinceAbsent)
                 //End: Calculate no signal while absent, if absent
 
                 let obj = {}
                 const battery_level = packing.last_device_data && packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
                 const lastAccurateMessage = await getLastAccurateMessage(packing, settings[0])
-                console.log(battery_level)
+                // console.log(battery_level)
 
                 obj.id = packing._id
                 obj.message_date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LTS')}` : '-'
@@ -237,7 +235,7 @@ exports.snapshot_report = async () => {
                 obj.collect_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
                 obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
                 obj.lat_lng_device = await getLatLngOfPacking(packing)
-                console.log(obj.lat_lng_device)
+                // console.log(obj.lat_lng_device)
 
                 obj.lat_lng_cp = '-'
                 obj.cp_type = '-'
@@ -250,28 +248,27 @@ exports.snapshot_report = async () => {
                     if(packing.last_event_record.type){
                         if(packing.last_event_record.type == 'inbound'){
                             // console.log('_: ', packing.tag.code)
-                            console.log("IF 2")
+                            // console.log("IF 2")
 
                             obj.lat_lng_cp = await getLatLngOfControlPoint(packing)
-                            console.log(obj.lat_lng_cp)
+                            // console.log(obj.lat_lng_cp)
 
                             let tempActualControlPoint = (await getActualControlPoint(packing))
-                            console.log(tempActualControlPoint)
+                            // console.log(tempActualControlPoint)
 
                             obj.cp_type = tempActualControlPoint.type.name
                             obj.cp_name = tempActualControlPoint.name
                             obj.geo = tempActualControlPoint.geofence.type
 
                             obj.area = (await getAreaControlPoint(packing))
-                            console.log(obj.area)
+                            // console.log(obj.area)
 
                             if(['analise', 'perdida', 'sem_sinal'].includes(packing.current_state)){
                                 obj.permanence_time = '-'
                             } else{
                                 obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
-                                console.log("ELSE")
-
-                                console.log(obj.area)
+                                // console.log("ELSE")
+                                // console.log(obj.area)
 
                             }
                         }
@@ -293,9 +290,8 @@ exports.snapshot_report = async () => {
                     if(packing.last_event_record.type){
                         if(packing.last_event_record.type === 'outbound'){
                             obj.travel_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
-                            console.log("IF 3")
-
-                            console.log(obj.travel_time)
+                            // console.log("IF 3")
+                            // console.log(obj.travel_time)
 
                         }
                     }
@@ -306,15 +302,13 @@ exports.snapshot_report = async () => {
                 } else{
                     if(noSignalTimeSinceAbsent > 0.0){
                         obj.absent_time = (packing.absent && packing.absent_time !== null) ? ((await getDiffDateTodayInHours(packing.absent_time)) - noSignalTimeSinceAbsent) : '-'
-                        console.log("IF 4")
-
-                        console.log(obj.absent_time)
+                        // console.log("IF 4")
+                        // console.log(obj.absent_time)
 
                     } else{
                         obj.absent_time = (packing.absent && packing.absent_time !== null) ? await getDiffDateTodayInHours(packing.absent_time) : '-'
-                        console.log("ELSE 2")
-
-                        console.log(obj.absent_time)
+                        // console.log("ELSE 2")
+                        // console.log(obj.absent_time)
                     }
                 }
 
@@ -337,24 +331,24 @@ exports.snapshot_report = async () => {
                 // } else {
                 //     obj.absent_time = await getAbsentTimeCountDown(packing)
                 // }
-                console.log(obj)
+                //console.log(obj)
                 return obj
             })
         )
-        console.log("DATA")
-        console.log(data)
+        // console.log("DATA")
+        // console.log(data)
 
         return data
     } catch (error) {
-        console.log("data")
-        console.log(error)
+        // console.log("data")
+        // console.log(error)
 
         throw new Error(error)
     }
 }
 
 const calculateAbsentWithoutLostTime = async (statuses) => { 
-    console.log('calculateAbsentWithoutLostTime')
+    //console.log('calculateAbsentWithoutLostTime')
     if(statuses.length == 0){
         return 0
     } else {
