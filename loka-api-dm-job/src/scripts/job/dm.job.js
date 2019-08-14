@@ -81,9 +81,9 @@ module.exports = async () => {
             await dm_controller.logoutDM(cookie)
 
             debug("Sleep inicio -")
-            await promise_wait_seconds(100)
+            await promise_wait_seconds(sleepTime)
             debug("Sleep fim -")
-            sleepped+=sleepped
+            sleepped+=sleepped+sleepTime
         }
         
         // debug(devices)
