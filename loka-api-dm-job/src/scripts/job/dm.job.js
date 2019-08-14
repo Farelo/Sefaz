@@ -99,9 +99,9 @@ module.exports = async () => {
 
         results.result3 = `Job LOKA encerrado em ${new Date().toISOString()} com sucesso!`
 
-        results.result4 = 'Tempo de sleep (sec): '+sleepped
+        debug('Tempo de sleep (sec): '+sleepped)
 
-        results.result5 = 'Tempo total de execução (sec): '+timeTotal/1000
+        debug('Tempo total de execução (sec): '+timeTotal/1000)
 
         return Promise.resolve(results)
 
