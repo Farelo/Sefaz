@@ -86,7 +86,7 @@ module.exports = async () => {
             sleepped+=sleepped
         }
         
-        debug(devices)
+        // debug(devices)
 
 
         let timeFinish = new Date().getTime();
