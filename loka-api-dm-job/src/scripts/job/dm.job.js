@@ -83,7 +83,7 @@ module.exports = async () => {
             debug("Sleep inicio -")
             await promise_wait_seconds(sleepTime)
             debug("Sleep fim -")
-            sleepped+=sleepped+sleepTime
+            sleepped+=sleepTime
         }
         
         // debug(devices)
