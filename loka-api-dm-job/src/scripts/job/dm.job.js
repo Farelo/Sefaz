@@ -18,7 +18,7 @@ module.exports = async () => {
         let timeInit = new Date().getTime();
 
         let skip=0
-        let jump=50
+        let jump=20
         let sleepTime=100
         let sleepped=0
         while(true){
