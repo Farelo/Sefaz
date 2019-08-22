@@ -132,13 +132,13 @@ const update_updated_at_middleware = function (next) {
 }
 
 const device_data_save = async (device_data) => {
-    logger.info("Saving DeviceData: "+device_data)
+    logger.info("Saving DeviceData: "+device_data.device_id)
     try {
         const new_device_data = new DeviceData({
             device_id: device_data.device_id.toString(),
-            message_date: new Date(device_data.message_date),
+            message_date: device_data.message_date,
             message_date_timestamp: device_data.message_date_timestamp,
-            last_communication: new Date(device_data.last_communication),
+            last_communication: device_data.last_communication,
             last_communication_timestamp: device_data.last_communication_timestamp,
             latitude: device_data.latitude,
             longitude: device_data.longitude,

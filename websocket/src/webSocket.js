@@ -23,10 +23,29 @@ async function getDeviceDictList(){
                                     let packMapped = packFind.filter(packFilter => {
                                             return packFilter.tag.code != undefined
                                         }).map(async packMap => {
-                                            let lastDeviceData = await DeviceData.find({ 'device_id': packMap.tag.code}).sort( { device_id: 1, message_date: -1 }).limit(1)
+                                            /*let lastDeviceData = await DeviceData.find({ 'device_id': packMap.tag.code}).sort( { device_id: 1, message_date: -1 }).limit(1)
                                                                         .then(resultFind =>{
                                                                             return resultFind[0]
                                                                         })
+                                            */
+
+                                            let lastDeviceData = {
+                                                device_id: packMap.tag.code,
+                                                message_date: null,
+                                                message_date_timestamp: null,
+                                                last_communication: null,
+                                                last_communication_timestamp: null,
+                                                latitude: null,
+                                                longitude: null,
+                                                accuracy: null,
+                                                temperature: null,
+                                                seq_number: null,
+                                                battery: {
+                                                    percentage: null,
+                                                    voltage: null
+                                                },
+                                                message: null
+                                            }
 
                                             let dict = {
                                                 deviceId: packMap.tag.code,
@@ -72,6 +91,36 @@ async function subscribingDeviceIds(deviceDictList){
     });
 }
 
+// Unsubscribing Devices in Websocket
+async function unsubscribingDeviceIds(deviceDictList){
+    logger.info("Unsubscribing Devices in Websocket")
+
+    deviceDictList.forEach(async deviceDict => {
+        logger.info("Unsubscribing device with id "+deviceDict.deviceId)
+        var optionsget = {
+            host: "core.loka.systems",
+            port: 443,
+            path: "/unsubscribe_terminal/" + deviceDict.deviceId,
+            method: "GET",
+            headers: { Authorization: "Bearer " + token }
+        };
+    
+        // do the GET request
+        var reqGet = https.request(optionsget, function(res) {
+            logger.info("Response code on Unsubscribing of device with id "+deviceDict.deviceId+": "+res.statusCode)
+            res.on("data", function(d) {
+                logger.info("GET result:\n"+d);
+            });
+        });
+    
+        reqGet.end();
+        reqGet.on("error", function(e) {
+            logger.info("Error on Unsubscribing of device with id "+deviceDict.deviceId+": "+e)
+            logger.info(e);
+        });
+    });
+}
+
 // Start and manage the WebSocket
 function initWebSocket(){
     client.on("connectFailed", function(error) {
@@ -98,14 +147,15 @@ function initWebSocket(){
                 let deviceDict = deviceDictList.find(function(elem) { 
                     return elem.deviceId==jsonMessage.src; 
                 }); 
-        
+
+                console.log(jsonMessage)
                 let deviceData = deviceDict.lastDeviceData
                 
                 let deviceDataToSave = await parserMessage(jsonMessage, deviceData)
-                
-                device_data_save(deviceDataToSave)
-
-                deviceData = deviceDataToSave
+                if(deviceDataToSave !== null){
+                    device_data_save(deviceDataToSave)
+                    deviceData = deviceDataToSave
+                }                
             }
         });
     });
@@ -123,7 +173,8 @@ function initWebSocket(){
 
 const runWS = async () => {
     await getDeviceDictList()    
-    await subscribingDeviceIds(deviceDictList)
+    //await subscribingDeviceIds(deviceDictList)
+    //await unsubscribingDeviceIds(deviceDictList)
     await initWebSocket()
 }
 
