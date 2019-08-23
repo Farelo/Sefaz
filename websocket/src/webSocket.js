@@ -23,16 +23,20 @@ async function getDeviceDictList(){
                                     let packMapped = packFind.filter(packFilter => {
                                             return packFilter.tag.code != undefined
                                         }).map(async packMap => {
-                                            /*let lastDeviceData = await DeviceData.find({ 'device_id': packMap.tag.code}).sort( { device_id: 1, message_date: -1 }).limit(1)
+                                            //Get last deviceData from DB
+                                            let lastDeviceData = await DeviceData.find({ 'device_id': packMap.tag.code}).sort( { device_id: 1, message_date: -1 }).limit(1)
                                                                         .then(resultFind =>{
                                                                             return resultFind[0]
                                                                         })
-                                            */
+                                            
 
+                                            //Get last deviceData from mock empty
+                                            /*
                                             let lastDeviceData = {
                                                 device_id: packMap.tag.code,
                                                 message_date: null,
                                                 message_date_timestamp: null,
+                                                message_type: null,
                                                 last_communication: null,
                                                 last_communication_timestamp: null,
                                                 latitude: null,
@@ -46,7 +50,8 @@ async function getDeviceDictList(){
                                                 },
                                                 message: null
                                             }
-
+                                            */
+                                           
                                             let dict = {
                                                 deviceId: packMap.tag.code,
                                                 lastDeviceData: lastDeviceData
@@ -148,12 +153,11 @@ function initWebSocket(){
                     return elem.deviceId==jsonMessage.src; 
                 }); 
 
-                console.log(jsonMessage)
                 let deviceData = deviceDict.lastDeviceData
                 
                 let deviceDataToSave = await parserMessage(jsonMessage, deviceData)
                 if(deviceDataToSave !== null){
-                    device_data_save(deviceDataToSave)
+                    await device_data_save(deviceDataToSave)
                     deviceData = deviceDataToSave
                 }                
             }
@@ -173,7 +177,7 @@ function initWebSocket(){
 
 const runWS = async () => {
     await getDeviceDictList()    
-    //await subscribingDeviceIds(deviceDictList)
+    await subscribingDeviceIds(deviceDictList)
     //await unsubscribingDeviceIds(deviceDictList)
     await initWebSocket()
 }

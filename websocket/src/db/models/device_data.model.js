@@ -11,6 +11,10 @@ const deviceDataSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    message_type: {
+        type: String,
+        required: true
+    },
     message_date_timestamp: {
         type: Number,
         required: true
@@ -59,7 +63,7 @@ const deviceDataSchema = new mongoose.Schema({
 })
 
 
-deviceDataSchema.index({ device_id: 1, message_date: -1 }, { unique: true })
+deviceDataSchema.index({ device_id: 1, message_date: -1, message_type: 1 }, { unique: true })
 
 const update_packing = async (device_data, next) => {
     logger.info("Update packing after save DeviceData")
@@ -138,6 +142,7 @@ const device_data_save = async (device_data) => {
             device_id: device_data.device_id.toString(),
             message_date: device_data.message_date,
             message_date_timestamp: device_data.message_date_timestamp,
+            message_type: device_data.message_type,
             last_communication: device_data.last_communication,
             last_communication_timestamp: device_data.last_communication_timestamp,
             latitude: device_data.latitude,
