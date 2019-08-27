@@ -4,7 +4,7 @@ const {runWS} = require("./webSocket")
 
 async function main(){
     logger.info("Starting websocket job")
-    runWS()
+    await runWS()
     logger.info("Stopping websocket job")
 }
 

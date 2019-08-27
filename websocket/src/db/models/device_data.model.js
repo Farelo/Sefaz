@@ -63,7 +63,7 @@ const deviceDataSchema = new mongoose.Schema({
 })
 
 
-deviceDataSchema.index({ device_id: 1, message_date: -1, message_type: 1 }, { unique: true })
+//deviceDataSchema.index({ device_id: 1, message_date: -1, message_type: 1 }, { unique: true })
 
 const update_packing = async (device_data, next) => {
     logger.info("Update packing after save DeviceData")
@@ -122,7 +122,7 @@ deviceDataSchema.statics.findByDeviceId = function (device_id, projection = '') 
 }
 
 deviceDataSchema.statics.findMosRecentById = function (id) {
-    return this.find({ 'device_id': id}).sort( { device_id: 1, message_date: -1 }).limit(1)
+    return this.find({ 'device_id': id}).sort( {_id: -1 }).limit(1)
 }
 
 const saveDeviceDataToPacking = function (doc, next) {

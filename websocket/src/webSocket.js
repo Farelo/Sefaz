@@ -24,7 +24,7 @@ async function getDeviceDictList(){
                                             return packFilter.tag.code != undefined
                                         }).map(async packMap => {
                                             //Get last deviceData from DB
-                                            let lastDeviceData = await DeviceData.find({ 'device_id': packMap.tag.code}).sort( { device_id: 1, message_date: -1 }).limit(1)
+                                            let lastDeviceData = await DeviceData.find({ 'device_id': packMap.tag.code}).sort( {_id: -1}).limit(1)
                                                                         .then(resultFind =>{
                                                                             return resultFind[0]
                                                                         })
@@ -136,11 +136,13 @@ function initWebSocket(){
         logger.info("WebSocket Client Connected");
     
         connection.on("error", function(error) {
-            logger.info("WebSocket Connection Error: " + error.toString());
+            logger.info("WebSocket Connection Error: " + error.toString())
+            initWebSocket()
         });
     
         connection.on("close", function() {
-            logger.info("WebSocket Echo-protocol Connection Closed");
+            logger.info("WebSocket Echo-protocol Connection Closed")
+            initWebSocket()
         });
     
         connection.on("message", async function(message) {
@@ -177,7 +179,7 @@ function initWebSocket(){
 
 const runWS = async () => {
     await getDeviceDictList()    
-    await subscribingDeviceIds(deviceDictList)
+    //await subscribingDeviceIds(deviceDictList)
     //await unsubscribingDeviceIds(deviceDictList)
     await initWebSocket()
 }
