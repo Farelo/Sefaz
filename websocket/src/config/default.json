@@ -1,13 +1,13 @@
 {
-    "db": {
-        "url": "mongodb://localhost:27017/cebrace"
-    },
-    "database_options": {
-        "reconnectTries": 100000,
-        "reconnectInterval": 500,
-        "poolSize": 10,
-        "bufferMaxEntries": 0,
-        "socketTimeoutMS": 0,
-        "keepAlive": true
-    }
+  "db": {
+    "url": "mongodb://localhost:27017/cebrace"
+  },
+  "database_options": {
+    "reconnectTries": 100000,
+    "reconnectInterval": 500,
+    "poolSize": 10,
+    "bufferMaxEntries": 0,
+    "socketTimeoutMS": 0,
+    "keepAlive": true
+  }
 }
