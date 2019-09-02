@@ -89,11 +89,11 @@ const packingSchema = new mongoose.Schema({
   },
   last_device_data: {
     type: mongoose.Schema.ObjectId,
-    ref: "DeviceData"
+    ref: "DeviceData2"
   },
   last_device_data_battery: {
     type: mongoose.Schema.ObjectId,
-    ref: "DeviceData"
+    ref: "DeviceData2"
   },
   last_current_state_history: {
     type: mongoose.Schema.ObjectId,

@@ -1,0 +1,23 @@
+{
+  "company": {
+    "name": "Cebrace",
+    "enabled": true
+  },
+  "server": {
+    "url": "localhost",
+    "port": 8014
+  },
+  "db": {
+    "url": "mongodb://mongo:27017/cebrace",
+    "url-dev": "mongodb://localhost:27017/recicla",
+    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/cebrace"
+  },
+  "database_options": {
+    "reconnectTries": 100000,
+    "reconnectInterval": 500,
+    "poolSize": 50,
+    "bufferMaxEntries": 0,
+    "socketTimeoutMS": 0,
+    "keepAlive": true
+  }
+}

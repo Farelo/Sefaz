@@ -1,0 +1,345 @@
+{"message":"Starting websocket job","level":"info"}
+{"message":"Getting Dict DevicesIds x last DeviceData","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://localhost:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Stopping websocket job","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Location check interval [minutes]\"},\"value\":480},\"timestamp\":1566798235,\"src\":4102437,\"dst\":4102437}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Reset/Resend interval [hours]\"},\"value\":12.0},\"timestamp\":1566798235,\"src\":4102437,\"dst\":4102437}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Movement sensitivity\"},\"value\":15},\"timestamp\":1566798235,\"src\":4102437,\"dst\":4102437}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Enable GPS\"},\"value\":false},\"timestamp\":1566798235,\"src\":4102437,\"dst\":4102437}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":541,\"message\":\"5058108ca23febcde0350000\",\"sigfoxBaseStationList\":[{\"id\":\"8F2E\",\"signalStrength\":-129,\"signalToNoiseRatio\":12,\"latitude\":-27.0,\"longitude\":-49.0,\"repetitions\":2}]},\"source\":\"MESSAGE\",\"id\":\"9c2684e4-ad8c-4c56-9ad0-b25056fc7d70\",\"timestamp\":1566798184,\"src\":\"4075389\",\"dst\":\"4075389\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":323,\"message\":\"515c0e8bc91170c911717bc0\",\"sigfoxBaseStationList\":[{\"id\":\"8DFC\",\"signalStrength\":-114,\"signalToNoiseRatio\":11,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":3},{\"id\":\"2FFC\",\"signalStrength\":-97,\"signalToNoiseRatio\":27,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":3}]},\"source\":\"MESSAGE\",\"id\":\"dbed00a3-cd5c-478e-bd0a-a286205019fe\",\"timestamp\":1566798182,\"src\":\"4071643\",\"dst\":\"4071643\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":3202,\"message\":\"5000156d65424ea280340000\",\"sigfoxBaseStationList\":[{\"id\":\"2F8F\",\"signalStrength\":-116,\"signalToNoiseRatio\":22,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":3}]},\"source\":\"MESSAGE\",\"id\":\"3ee71498-f519-491f-91b0-5d90192ec30a\",\"timestamp\":1566798179,\"src\":\"4090192\",\"dst\":\"4090192\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-26.6227,\"longitude\":-48.7155,\"accuracy\":100.0},\"src\":\"4075389\",\"dst\":\"4075389\",\"timestamp\":1566798184,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-23.294,\"longitude\":-45.9305,\"accuracy\":31.0},\"src\":\"4071643\",\"dst\":\"4071643\",\"timestamp\":1566798182,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-23.1744,\"longitude\":-45.8279,\"accuracy\":32000.0},\"src\":\"4090192\",\"dst\":\"4090192\",\"timestamp\":1566798179,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":2829,\"message\":\"5068ff7b501e3661803d0000\",\"sigfoxBaseStationList\":[{\"id\":\"769F\",\"signalStrength\":-127,\"signalToNoiseRatio\":16,\"latitude\":-19.0,\"longitude\":-42.0,\"repetitions\":0}]},\"source\":\"MESSAGE\",\"id\":\"57d619ac-75b1-46f3-8b6b-1fca8599b38c\",\"timestamp\":1566798194,\"src\":\"4104320\",\"dst\":\"4104320\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":2828,\"message\":\"50ac84c68b84584d603d0000\",\"sigfoxBaseStationList\":[{\"id\":\"769F\",\"signalStrength\":-127,\"signalToNoiseRatio\":17,\"latitude\":-19.0,\"longitude\":-42.0,\"repetitions\":3}]},\"source\":\"MESSAGE\",\"id\":\"c9ff5aab-ee5b-4abc-8c9f-07ab916922f5\",\"timestamp\":1566798190,\"src\":\"4104320\",\"dst\":\"4104320\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-18.8954,\"longitude\":-41.993,\"accuracy\":100.0},\"src\":\"4104320\",\"dst\":\"4104320\",\"timestamp\":1566798194,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"a6238578-8ed8-45e4-a7b0-3dddbf823550\",\"timestamp\":1566798274,\"src\":\"4085529\",\"dst\":\"4085529\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"101\",\"value\":true},\"timestamp\":1566798274,\"src\":4085529,\"dst\":4085529}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"105\",\"value\":true},\"timestamp\":1566798274,\"src\":4085529,\"dst\":4085529}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"106\",\"value\":false},\"timestamp\":1566798274,\"src\":4085529,\"dst\":4085529}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"102\",\"value\":16.0},\"timestamp\":1566798274,\"src\":4085529,\"dst\":4085529}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"wifi\":[{\"mac\":\"08:96:AD:A3:30:10\",\"rssi\":-68.0},{\"mac\":\"08:96:AD:A3:30:11\",\"rssi\":-68.0},{\"mac\":\"08:96:AD:A3:30:12\",\"rssi\":-68.0}],\"timestamp\":1566798274,\"src\":4085529,\"dst\":4085529}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: wifi","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"1de180ed-824c-4cb8-8a32-7c2415ee3047\",\"timestamp\":1566798286,\"src\":\"4073679\",\"dst\":\"4073679\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Software Version\"},\"value\":\"2.7\"},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Configuration Program\"},\"value\":\"Tracker\"},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Firmware Type\"},\"value\":\"Standard\"},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"103\",\"value\":3.328125},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"104\",\"value\":3.1875},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"200\",\"value\":100},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Location check interval [minutes]\"},\"value\":480},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Reset/Resend interval [hours]\"},\"value\":12.0},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Movement sensitivity\"},\"value\":15},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Enable GPS\"},\"value\":false},\"timestamp\":1566798286,\"src\":4073679,\"dst\":4073679}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"8eac3b8a-934f-422c-989e-a4af0b071bd1\",\"timestamp\":1566798293,\"src\":\"4064287\",\"dst\":\"4064287\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Software Version\"},\"value\":\"1.2\"},\"timestamp\":1566798293,\"src\":4064287,\"dst\":4064287}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Configuration Program\"},\"value\":\"Unknown Program\"},\"timestamp\":1566798293,\"src\":4064287,\"dst\":4064287}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Firmware Type\"},\"value\":\"Standard\"},\"timestamp\":1566798293,\"src\":4064287,\"dst\":4064287}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"103\",\"value\":2.9765625},\"timestamp\":1566798293,\"src\":4064287,\"dst\":4064287}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"104\",\"value\":2.8828125},\"timestamp\":1566798293,\"src\":4064287,\"dst\":4064287}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"200\",\"value\":90.56408620312499},\"timestamp\":1566798293,\"src\":4064287,\"dst\":4064287}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":15,\"message\":\"5f45c0401888e11e02d0f000\",\"sigfoxBaseStationList\":[{\"id\":\"8F2E\",\"signalStrength\":-116,\"signalToNoiseRatio\":22,\"latitude\":-27.0,\"longitude\":-49.0,\"repetitions\":3}]},\"source\":\"MESSAGE\",\"id\":\"7e4c9dec-efc3-442a-8d81-cfe63437547a\",\"timestamp\":1566798235,\"src\":\"4102437\",\"dst\":\"4102437\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-26.6369,\"longitude\":-48.6892,\"accuracy\":32000.0},\"src\":\"4102437\",\"dst\":\"4102437\",\"timestamp\":1566798235,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":154,\"message\":\"09270b2c0b9f0002\",\"sigfoxBaseStationList\":[{\"id\":\"2FBF\",\"signalStrength\":-113,\"signalToNoiseRatio\":25,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":1}]},\"source\":\"MESSAGE\",\"id\":\"237d5fe8-a233-49c7-9f4e-4338710442b7\",\"timestamp\":1566798327,\"src\":\"4064287\",\"dst\":\"4064287\",\"ack\":true,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"de861b76-bb2b-48b5-8629-c172454d3393\",\"timestamp\":1566798332,\"src\":\"4064287\",\"dst\":\"4064287\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":102,\"value\":13.0},\"timestamp\":1566798332,\"src\":4064287,\"dst\":4064287}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-23.5841,\"longitude\":-46.472,\"accuracy\":32000.0},\"src\":\"4064287\",\"dst\":\"4064287\",\"timestamp\":1566798327,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":1768,\"message\":\"520896ada3301011128421b8\",\"sigfoxBaseStationList\":[{\"id\":\"2F8F\",\"signalStrength\":-130,\"signalToNoiseRatio\":10,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":1}]},\"source\":\"MESSAGE\",\"id\":\"e03a7250-b76f-4041-a3ba-7f1a9b07a872\",\"timestamp\":1566798274,\"src\":\"4085529\",\"dst\":\"4085529\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-23.2863,\"longitude\":-45.9498,\"accuracy\":26.0},\"src\":\"4085529\",\"dst\":\"4085529\",\"timestamp\":1566798274,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"739e42d8-da7a-4cdd-8f75-946bb62d8073\",\"timestamp\":1566798346,\"src\":\"4084913\",\"dst\":\"4084913\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Software Version\"},\"value\":\"2.7\"},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Configuration Program\"},\"value\":\"Tracker\"},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Firmware Type\"},\"value\":\"Standard\"},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"103\",\"value\":3.328125},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"104\",\"value\":3.1875},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"200\",\"value\":100},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Location check interval [minutes]\"},\"value\":480},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Reset/Resend interval [hours]\"},\"value\":12.0},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Movement sensitivity\"},\"value\":15},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Enable GPS\"},\"value\":false},\"timestamp\":1566798346,\"src\":4084913,\"dst\":4084913}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":1546,\"message\":\"5f45c0802888e11e02d0f000\",\"sigfoxBaseStationList\":[{\"id\":\"7634\",\"signalStrength\":-127,\"signalToNoiseRatio\":16,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":2},{\"id\":\"2FFC\",\"signalStrength\":-133,\"signalToNoiseRatio\":9,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":1},{\"id\":\"30A6\",\"signalStrength\":-129,\"signalToNoiseRatio\":6,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":1},{\"id\":\"8DFC\",\"signalStrength\":-117,\"signalToNoiseRatio\":11,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":1}]},\"source\":\"MESSAGE\",\"id\":\"ed536482-52f0-4a3c-94e4-273a58063fb6\",\"timestamp\":1566798286,\"src\":\"4073679\",\"dst\":\"4073679\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":153,\"message\":\"5fc2800007b7f600aa499000\",\"sigfoxBaseStationList\":[{\"id\":\"6E80\",\"signalStrength\":-100,\"signalToNoiseRatio\":30,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":3},{\"id\":\"8F7D\",\"signalStrength\":-119,\"signalToNoiseRatio\":13,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":2},{\"id\":\"90DF\",\"signalStrength\":-109,\"signalToNoiseRatio\":24,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":3},{\"id\":\"2FBF\",\"signalStrength\":-114,\"signalToNoiseRatio\":23,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":3},{\"id\":\"3004\",\"signalStrength\":-130,\"signalToNoiseRatio\":9,\"latitude\":-24.0,\"longitude\":-47.0,\"repetitions\":2},{\"id\":\"6E99\",\"signalStrength\":-125,\"signalToNoiseRatio\":6,\"latitude\":-24.0,\"longitude\":-47.0,\"repetitions\":2},{\"id\":\"8FEF\",\"signalStrength\":-112,\"signalToNoiseRatio\":17,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":2},{\"id\":\"6EBD\",\"signalStrength\":-125,\"signalToNoiseRatio\":13,\"latitude\":-24.0,\"longitude\":-47.0,\"repetitions\":1}]},\"source\":\"MESSAGE\",\"id\":\"c390f5e3-8a3e-44d8-9b03-c29829a4760d\",\"timestamp\":1566798293,\"src\":\"4064287\",\"dst\":\"4064287\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-23.2466,\"longitude\":-45.9225,\"accuracy\":15043.0},\"src\":\"4073679\",\"dst\":\"4073679\",\"timestamp\":1566798286,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-23.6013,\"longitude\":-46.4618,\"accuracy\":13256.0},\"src\":\"4064287\",\"dst\":\"4064287\",\"timestamp\":1566798293,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":2866,\"message\":\"09400b360bcb0012\",\"sigfoxBaseStationList\":[{\"id\":\"2FFC\",\"signalStrength\":-94,\"signalToNoiseRatio\":28,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":1},{\"id\":\"8DFC\",\"signalStrength\":-121,\"signalToNoiseRatio\":11,\"latitude\":-23.0,\"longitude\":-46.0,\"repetitions\":1}]},\"source\":\"MESSAGE\",\"id\":\"1e3b893a-9718-4562-b212-ca7922c6e9a0\",\"timestamp\":1566769792,\"src\":\"4104416\",\"dst\":\"4104416\",\"ack\":true,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"0925b564-7941-4209-8f0c-aca8c19a8089\",\"timestamp\":1566798370,\"src\":\"4104416\",\"dst\":\"4104416\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"101\",\"value\":true},\"timestamp\":1566798370,\"src\":4104416,\"dst\":4104416}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"105\",\"value\":true},\"timestamp\":1566798370,\"src\":4104416,\"dst\":4104416}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"106\",\"value\":false},\"timestamp\":1566798370,\"src\":4104416,\"dst\":4104416}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"wifi\":[{\"mac\":\"5C:0E:8B:CE:AE:91\",\"rssi\":-59.0},{\"mac\":\"5C:0E:8B:CE:B3:61\",\"rssi\":-59.0}],\"timestamp\":1566798370,\"src\":4104416,\"dst\":4104416}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: wifi","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-23.2755,\"longitude\":-45.923,\"accuracy\":32000.0},\"src\":\"4104416\",\"dst\":\"4104416\",\"timestamp\":1566769792,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"7f29454a-416d-461c-99e9-459856acdc07\",\"timestamp\":1566798374,\"src\":\"4104416\",\"dst\":\"4104416\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"101\",\"value\":false},\"timestamp\":1566798374,\"src\":4104416,\"dst\":4104416}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"105\",\"value\":false},\"timestamp\":1566798374,\"src\":4104416,\"dst\":4104416}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"106\",\"value\":false},\"timestamp\":1566798374,\"src\":4104416,\"dst\":4104416}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"102\",\"value\":13.0},\"timestamp\":1566798374,\"src\":4104416,\"dst\":4104416}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"wifi\":[{\"mac\":\"5C:0E:8B:CE:AE:90\",\"rssi\":-59.0,\"channel\":6}],\"timestamp\":1566798374,\"src\":4104416,\"dst\":4104416}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: wifi","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"92302ba3-5b53-4a97-a986-915ff687c367\",\"timestamp\":1566798393,\"src\":\"4082618\",\"dst\":\"4082618\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"101\",\"value\":true},\"timestamp\":1566798393,\"src\":4082618,\"dst\":4082618}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"105\",\"value\":false},\"timestamp\":1566798393,\"src\":4082618,\"dst\":4082618}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"106\",\"value\":true},\"timestamp\":1566798393,\"src\":4082618,\"dst\":4082618}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"102\",\"value\":13.0},\"timestamp\":1566798393,\"src\":4082618,\"dst\":4082618}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"wifi\":[{\"mac\":\"58:10:8C:8F:C5:01\",\"rssi\":-62.0,\"channel\":9}],\"timestamp\":1566798393,\"src\":4082618,\"dst\":4082618}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: wifi","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":155,\"message\":\"1c6641500000\",\"sigfoxBaseStationList\":[{\"id\":\"90DF\",\"signalStrength\":-112,\"signalToNoiseRatio\":23,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":3},{\"id\":\"2FBF\",\"signalStrength\":-113,\"signalToNoiseRatio\":25,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":3},{\"id\":\"6E80\",\"signalStrength\":-106,\"signalToNoiseRatio\":29,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":3},{\"id\":\"3023\",\"signalStrength\":-134,\"signalToNoiseRatio\":9,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":2},{\"id\":\"3004\",\"signalStrength\":-127,\"signalToNoiseRatio\":7,\"latitude\":-24.0,\"longitude\":-47.0,\"repetitions\":3},{\"id\":\"8F7D\",\"signalStrength\":-117,\"signalToNoiseRatio\":14,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":2},{\"id\":\"3076\",\"signalStrength\":-123,\"signalToNoiseRatio\":15,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":2},{\"id\":\"8E32\",\"signalStrength\":-123,\"signalToNoiseRatio\":6,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":1},{\"id\":\"8E3D\",\"signalStrength\":-130,\"signalToNoiseRatio\":6,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":1},{\"id\":\"8FEF\",\"signalStrength\":-115,\"signalToNoiseRatio\":7,\"latitude\":-24.0,\"longitude\":-46.0,\"repetitions\":2},{\"id\":\"6EBD\",\"signalStrength\":-125,\"signalToNoiseRatio\":13,\"latitude\":-24.0,\"longitude\":-47.0,\"repetitions\":1},{\"id\":\"6E99\",\"signalStrength\":-126,\"signalToNoiseRatio\":8,\"latitude\":-24.0,\"longitude\":-47.0,\"repetitions\":1}]},\"source\":\"MESSAGE\",\"id\":\"dfd942ca-7612-4df7-9de4-3c34d938e8f5\",\"timestamp\":1566798332,\"src\":\"4064287\",\"dst\":\"4064287\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"7dbc0e81-cc49-4bf9-a6b8-8b4c5cfc7ba5\",\"timestamp\":1566798397,\"src\":\"4080020\",\"dst\":\"4080020\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Software Version\"},\"value\":\"2.7\"},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Configuration Program\"},\"value\":\"Tracker\"},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Firmware Type\"},\"value\":\"Standard\"},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"103\",\"value\":3.328125},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"104\",\"value\":3.2109375},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"200\",\"value\":100},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Location check interval [minutes]\"},\"value\":480},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Reset/Resend interval [hours]\"},\"value\":12.0},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Movement sensitivity\"},\"value\":15},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Enable GPS\"},\"value\":false},\"timestamp\":1566798397,\"src\":4080020,\"dst\":4080020}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-23.629,\"longitude\":-46.4597,\"accuracy\":14186.0},\"src\":\"4064287\",\"dst\":\"4064287\",\"timestamp\":1566798332,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"networkInformation\":{\"sequenceNumber\":795,\"message\":\"5f45c0402888e11e02d0f000\",\"sigfoxBaseStationList\":[{\"id\":\"2FBA\",\"signalStrength\":-122,\"signalToNoiseRatio\":20,\"latitude\":-16.0,\"longitude\":-48.0,\"repetitions\":3},{\"id\":\"3031\",\"signalStrength\":-126,\"signalToNoiseRatio\":14,\"latitude\":-16.0,\"longitude\":-48.0,\"repetitions\":2},{\"id\":\"3000\",\"signalStrength\":-138,\"signalToNoiseRatio\":6,\"latitude\":-16.0,\"longitude\":-48.0,\"repetitions\":1}]},\"source\":\"MESSAGE\",\"id\":\"582fc364-a4f0-454a-8711-9afc5167e824\",\"timestamp\":1566798346,\"src\":\"4084913\",\"dst\":\"4084913\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: networkInformation","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-15.846,\"longitude\":-47.9432,\"accuracy\":14104.0},\"src\":\"4084913\",\"dst\":\"4084913\",\"timestamp\":1566798346,\"historical\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: location","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"5a8c2b16-b34d-4e88-a4c5-9378db838072\",\"timestamp\":1566798409,\"src\":\"4085817\",\"dst\":\"4085817\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Software Version\"},\"value\":\"2.7\"},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Configuration Program\"},\"value\":\"Tracker\"},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Firmware Type\"},\"value\":\"Standard\"},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"103\",\"value\":3.328125},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"104\",\"value\":3.2578125},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"200\",\"value\":100},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Location check interval [minutes]\"},\"value\":480},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Reset/Resend interval [hours]\"},\"value\":12.0},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Movement sensitivity\"},\"value\":15},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Enable GPS\"},\"value\":false},\"timestamp\":1566798409,\"src\":4085817,\"dst\":4085817}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"control\":{\"type\":\"REGISTER\"},\"id\":\"1d4f03a1-271b-4a2d-8b86-de9b8b976499\",\"timestamp\":1566798413,\"src\":\"4081499\",\"dst\":\"4081499\",\"ack\":false,\"unique\":false}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: control","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Software Version\"},\"value\":\"2.7\"},\"timestamp\":1566798413,\"src\":4081499,\"dst\":4081499}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"WebSocket Received: '{\"metadata\":{\"key\":{\"en_EN\":\"Configuration Program\"},\"value\":\"Tracker\"},\"timestamp\":1566798413,\"src\":4081499,\"dst\":4081499}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: metadata","level":"info"}
+{"message":"Starting websocket job","level":"info"}
+{"message":"Getting Dict DevicesIds x last DeviceData","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://localhost:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Stopping websocket job","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"101\",\"value\":true},\"timestamp\":1566798463,\"src\":4081499,\"dst\":4081499}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"DeviceData to update AFTER parser: [object Object]","level":"info"}
+{"message":"Saving DeviceData: 4081499","level":"info"}
+{"message":"Update packing after save DeviceData","level":"info"}
+{"message":"Update packing after save DeviceData SUCESS!","level":"info"}
+{"message":"Save DeviceData with Sucess!","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"105\",\"value\":true},\"timestamp\":1566798463,\"src\":4081499,\"dst\":4081499}'","level":"info"}
