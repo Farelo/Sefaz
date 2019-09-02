@@ -343,3 +343,31 @@
 {"message":"Update packing after save DeviceData SUCESS!","level":"info"}
 {"message":"Save DeviceData with Sucess!","level":"info"}
 {"message":"WebSocket Received: '{\"gpio\":{\"port\":\"105\",\"value\":true},\"timestamp\":1566798463,\"src\":4081499,\"dst\":4081499}'","level":"info"}
+{"message":"Starting websocket job","level":"info"}
+{"message":"Getting Dict DevicesIds x last DeviceData","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://localhost:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Stopping websocket job","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"105\",\"value\":true},\"timestamp\":1566848878,\"src\":4089879,\"dst\":4089879}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"DeviceData to update AFTER parser: [object Object]","level":"info"}
+{"message":"Saving DeviceData: 4089879","level":"info"}
+{"message":"WebSocket Received: '{\"gpio\":{\"port\":\"106\",\"value\":false},\"timestamp\":1566848878,\"src\":4089879,\"dst\":4089879}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: gpio","level":"info"}
+{"message":"DeviceData to update AFTER parser: [object Object]","level":"info"}
+{"message":"Saving DeviceData: 4089879","level":"info"}
+{"message":"WebSocket Received: '{\"analog\":{\"port\":\"102\",\"value\":20.0},\"timestamp\":1566848878,\"src\":4089879,\"dst\":4089879}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: analog","level":"info"}
+{"message":"DeviceData to update AFTER parser: [object Object]","level":"info"}
+{"message":"Saving DeviceData: 4089879","level":"info"}
+{"message":"WebSocket Received: '{\"wifi\":[{\"mac\":\"9C:D9:17:E3:87:AD\",\"rssi\":-74.0,\"channel\":10}],\"timestamp\":1566848878,\"src\":4089879,\"dst\":4089879}'","level":"info"}
+{"message":"DeviceData to update BEFORE parser: [object Object]","level":"info"}
+{"message":"Message type: wifi","level":"info"}
+{"message":"DeviceData to update AFTER parser: [object Object]","level":"info"}
+{"message":"Saving DeviceData: 4089879","level":"info"}
+{"message":"Update packing after save DeviceData","level":"info"}
+{"message":"WebSocket Received: '{\"location\":{\"latitude\":-10.9247,\"longitude\":-37.0687,\"accuracy\":100.0},\"src\":\"4083564\",\"dst\":\"4083564\",\"timestamp\":1566848815,\"historical\":false}'","level":"info"}
