@@ -5,10 +5,7 @@ const parserMessage = async (jsonMessage, deviceData) => {
 
   let key = Object.keys(jsonMessage)[0];
   logger.info("Message type: " + key);
-  console.log("MESSAGE");
-  console.log(jsonMessage);
-  console.log("ANTES");
-  console.log(deviceData);
+
   deviceData.message_type = key;
   deviceData.last_communication = new Date(
     deviceData.message_date_timestamp * 1000
@@ -17,8 +14,7 @@ const parserMessage = async (jsonMessage, deviceData) => {
   deviceData.message_date = new Date(jsonMessage.timestamp * 1000);
   deviceData.message_date_timestamp = jsonMessage.timestamp;
   deviceData.message = JSON.stringify(jsonMessage);
-  console.log("Depois");
-  console.log(deviceData);
+
   switch (key) {
     case "location":
       deviceData.latitude = jsonMessage.location.latitude;
