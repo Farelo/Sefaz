@@ -64,7 +64,7 @@ const deviceDataSchema = new mongoose.Schema({
 //deviceDataSchema.index({ device_id: 1, message_date: -1, message_type: 1 }, { unique: true })
 
 const update_packing = async (device_data, next) => {
-  logger.info("Update packing after save DeviceData");
+  //logger.info("Update packing after save DeviceData");
   try {
     let update_attrs = {};
     let update = false;
@@ -112,10 +112,10 @@ const update_packing = async (device_data, next) => {
       await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
 
     next();
-    logger.info("Update packing after save DeviceData SUCESS!");
+    //logger.info("Update packing after save DeviceData SUCESS!");
   } catch (error) {
-    logger.info("Update packing after save DeviceData ERROR!");
-    logger.info(error);
+    //logger.info("Update packing after save DeviceData ERROR!");
+    //logger.info(error);
 
     next(error);
   }
@@ -142,7 +142,7 @@ const update_updated_at_middleware = function(next) {
 };
 
 const device_data_save = async device_data => {
-  logger.info("Saving DeviceData: " + device_data.device_id);
+  //logger.info("Saving DeviceData: " + device_data.device_id);
   try {
     const new_device_data = new DeviceData({
       device_id: device_data.device_id.toString(),
@@ -166,12 +166,12 @@ const device_data_save = async device_data => {
     //salva no banco | observação: não salva mensagens iguais porque o model possui indice unico e composto por device_id e message_date,
     //e o erro de duplicidade nao interrompe o job
     await new_device_data.save();
-    logger.info("Save DeviceData with Sucess!");
+    //.info("Save DeviceData with Sucess!");
 
     // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
   } catch (error) {
-    logger.info("Error to save DeviceData!");
-    logger.info(error);
+    //logger.info("Error to save DeviceData!");
+    //logger.info(error);
   }
 };
 

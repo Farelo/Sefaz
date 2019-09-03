@@ -1,3 +1,4 @@
+process.setMaxListeners(0);
 const logger = require("./config/winston.config");
 var https = require("https");
 var WebSocketClient = require("websocket").client;
@@ -18,7 +19,7 @@ let deviceDictList;
 async function getDeviceDictList() {
   await require("./db/db")();
 
-  logger.info("Getting Dict DevicesIds x last DeviceData");
+  //logger.info("Getting Dict DevicesIds x last DeviceData");
 
   //Getting all DeviceIds
   let result = await Packing.find({}, { _id: 0, tag: 1 }).then(packFind => {
@@ -74,10 +75,10 @@ async function getDeviceDictList() {
 
 // Subscribing Devices in Websocket
 async function subscribingDeviceIds(deviceDictList) {
-  logger.info("Subscribing Devices in Websocket");
+  //logger.info("Subscribing Devices in Websocket");
 
   deviceDictList.forEach(async deviceDict => {
-    logger.info("Subscribing device with id " + deviceDict.deviceId);
+    //logger.info("Subscribing device with id " + deviceDict.deviceId);
     var optionsget = {
       host: "core.loka.systems",
       port: 443,
@@ -88,12 +89,12 @@ async function subscribingDeviceIds(deviceDictList) {
 
     // do the GET request
     var reqGet = https.request(optionsget, function(res) {
-      logger.info(
+      /*logger.info(
         "Response code on subscribing of device with id " +
           deviceDict.deviceId +
           ": " +
           res.statusCode
-      );
+      );*/
       res.on("data", function(d) {
         logger.info("GET result:\n" + d);
       });
@@ -101,12 +102,12 @@ async function subscribingDeviceIds(deviceDictList) {
 
     reqGet.end();
     reqGet.on("error", function(e) {
-      logger.info(
+      /*logger.info(
         "Error on subscribing of device with id " +
           deviceDict.deviceId +
           ": " +
           e
-      );
+      );*/
       logger.info(e);
     });
   });
@@ -114,10 +115,10 @@ async function subscribingDeviceIds(deviceDictList) {
 
 // Unsubscribing Devices in Websocket
 async function unsubscribingDeviceIds(deviceDictList) {
-  logger.info("Unsubscribing Devices in Websocket");
+  //logger.info("Unsubscribing Devices in Websocket");
 
   deviceDictList.forEach(async deviceDict => {
-    logger.info("Unsubscribing device with id " + deviceDict.deviceId);
+    //logger.info("Unsubscribing device with id " + deviceDict.deviceId);
     var optionsget = {
       host: "core.loka.systems",
       port: 443,
@@ -128,12 +129,12 @@ async function unsubscribingDeviceIds(deviceDictList) {
 
     // do the GET request
     var reqGet = https.request(optionsget, function(res) {
-      logger.info(
+      /*logger.info(
         "Response code on Unsubscribing of device with id " +
           deviceDict.deviceId +
           ": " +
           res.statusCode
-      );
+      );*/
       res.on("data", function(d) {
         logger.info("GET result:\n" + d);
       });
@@ -141,12 +142,12 @@ async function unsubscribingDeviceIds(deviceDictList) {
 
     reqGet.end();
     reqGet.on("error", function(e) {
-      logger.info(
+      /*logger.info(
         "Error on Unsubscribing of device with id " +
           deviceDict.deviceId +
           ": " +
           e
-      );
+      );*/
       logger.info(e);
     });
   });
@@ -155,7 +156,7 @@ async function unsubscribingDeviceIds(deviceDictList) {
 // Start and manage the WebSocket
 function initWebSocket() {
   client.on("connectFailed", function(error) {
-    logger.info("WebSocket Connect Failed: " + error.toString());
+    //logger.info("WebSocket Connect Failed: " + error.toString());
   });
 
   client.on("connect", function(connection) {
@@ -167,13 +168,14 @@ function initWebSocket() {
     });
 
     connection.on("close", function() {
+      connection.removeAllListeners();
       logger.info("WebSocket Echo-protocol Connection Closed");
       initWebSocket();
     });
 
     connection.on("message", async function(message) {
       if (message.type === "utf8") {
-        logger.info("WebSocket Received: '" + message.utf8Data + "'");
+        //logger.info("WebSocket Received: '" + message.utf8Data + "'");
 
         let jsonMessage = JSON.parse(message.utf8Data);
 

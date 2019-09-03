@@ -1,10 +1,10 @@
 const logger = require("../config/winston.config");
 
 const parserMessage = async (jsonMessage, deviceData) => {
-  logger.info("DeviceData to update BEFORE parser: " + deviceData);
+  //logger.info("DeviceData to update BEFORE parser: " + deviceData);
 
   let key = Object.keys(jsonMessage)[0];
-  logger.info("Message type: " + key);
+  //logger.info("Message type: " + key);
 
   deviceData.message_type = key;
   deviceData.last_communication = new Date(
@@ -40,7 +40,7 @@ const parserMessage = async (jsonMessage, deviceData) => {
       break;
   }
 
-  logger.info("DeviceData to update AFTER parser: " + deviceData);
+  //logger.info("DeviceData to update AFTER parser: " + deviceData);
 
   return deviceData;
 };

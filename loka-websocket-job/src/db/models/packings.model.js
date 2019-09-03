@@ -1,4 +1,3 @@
-const debug = require("debug")("model:packings");
 const mongoose = require("mongoose");
 
 const packingSchema = new mongoose.Schema({
