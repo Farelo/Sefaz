@@ -336,14 +336,14 @@ export class InventarioPosicoesComponent implements OnInit {
         second = d.getSeconds();
         
       return {
-        a1: obj.accuracy,
-        a2: (obj.battery.percentage == null) ? '-' : obj.battery.percentage,
-        a3: obj.latitude,
-        a4: obj.longitude,
-        //a5: obj.message_date,
-        a5: `${day}/${month}/${year} ${hour}:${minute}:${second}`,
-        a6: obj.seq_number,
-        a7: (obj.temperature == null) ? '-' : obj.temperature
+        a1: obj.device_id,
+        a2: obj.accuracy,
+        a3: (obj.battery.percentage == null) ? '-' : obj.battery.percentage,
+        a4: obj.latitude,
+        a5: obj.longitude,
+        a6: `${day}/${month}/${year} ${hour}:${minute}:${second}`,
+        a7: obj.seq_number,
+        a8: (obj.temperature == null) ? '-' : obj.temperature
       };
     });
 
@@ -353,13 +353,14 @@ export class InventarioPosicoesComponent implements OnInit {
 
   addHeader(mArray: any) {
     let cabecalho = {
-      a1: 'Acurácia',
-      a2: 'Bateria',
-      a3: 'Latitude',
-      a4: 'Longitude',
-      a5: 'Data da mensagem',
-      a6: '# Sequência',
-      a7: 'Temperatura',
+      a1: 'Tag',
+      a2: 'Acurácia',
+      a3: 'Bateria',
+      a4: 'Latitude',
+      a5: 'Longitude',
+      a6: 'Data da mensagem',
+      a7: '# Sequência',
+      a8: 'Temperatura',
     }
 
     //adiciona o cabeçalho
