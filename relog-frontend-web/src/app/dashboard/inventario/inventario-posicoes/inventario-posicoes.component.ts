@@ -17,8 +17,8 @@ declare var jsPDF: any;
 })
 export class InventarioPosicoesComponent implements OnInit {
 
-  public listOfPositions: any[] = [];
-  public auxListOfPositions: any[] = [];
+  public actualListOfPositions: any[] = [];
+  public originalListOfPositions: any[] = [];
 
   public listOfFamilies: any[] = [];
   public selectedFamily: any = null;
@@ -31,6 +31,8 @@ export class InventarioPosicoesComponent implements OnInit {
   public actualPage: number = -1;
 
   public isLoading = true;
+
+  public withTemperature = false;
 
   /*
    * DataPicker
@@ -46,8 +48,8 @@ export class InventarioPosicoesComponent implements OnInit {
 
     this.configureDatePicker();
 
-    console.log(this.initialDate);
-    console.log(this.finalDate);
+    // console.log(this.initialDate);
+    // console.log(this.finalDate);
   }
 
   configureDatePicker(){
@@ -123,7 +125,7 @@ export class InventarioPosicoesComponent implements OnInit {
     if (!family) {
       this.selectedSerial = null;
       this.familyFilter(this.selectedFamily);
-      this.listOfPositions = [];
+      this.originalListOfPositions = [];
       return;
     }
 
@@ -137,8 +139,8 @@ export class InventarioPosicoesComponent implements OnInit {
       let initialD = this.formatDate(this.initialDate);
       let finalD = this.formatDate(this.finalDate, true);
 
-      console.log(initialD);
-      console.log(finalD);
+      // console.log(initialD);
+      // console.log(finalD);
 
       if (this.selectedSerial)
         this.getFilteredPositions(this.selectedSerial.tag.code, initialD, finalD, 32000);
@@ -156,7 +158,8 @@ export class InventarioPosicoesComponent implements OnInit {
 
     this.deviceService.getFilteredPositions(codeTag, startDate, finalDate, accuracy).subscribe((result: any[]) => {
       //console.log(result);
-      this.listOfPositions = result;
+      this.originalListOfPositions = result;
+      this.actualListOfPositions = this.originalListOfPositions
     });
   }
 
@@ -228,6 +231,16 @@ export class InventarioPosicoesComponent implements OnInit {
     return result;
   }
   
+  withTemperatureClicked(){
+    if(!this.withTemperature){
+      this.actualListOfPositions = this.originalListOfPositions.filter(elem =>{
+          return elem.temperature !== null
+      })
+    } else{
+      this.actualListOfPositions = this.originalListOfPositions
+    }
+  }
+
 // formatDate(date: any, endDate: boolean = false) {
     
 //     console.log(endDate);
@@ -274,7 +287,7 @@ export class InventarioPosicoesComponent implements OnInit {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
-    let flatObjectData = this.flatObject(this.listOfPositions.slice());
+    let flatObjectData = this.flatObject(this.actualListOfPositions.slice());
 
     //Add a header in the flat json data
     flatObjectData = this.addHeader(flatObjectData);
@@ -294,7 +307,7 @@ export class InventarioPosicoesComponent implements OnInit {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
-    let flatObjectData = this.flatObject(this.listOfPositions.slice());
+    let flatObjectData = this.flatObject(this.actualListOfPositions.slice());
     flatObjectData = flatObjectData.map(elem => {
       return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7];
     });
@@ -323,14 +336,14 @@ export class InventarioPosicoesComponent implements OnInit {
         second = d.getSeconds();
         
       return {
-        a1: obj.accuracy,
-        a2: (obj.battery.percentage == null) ? '-' : obj.battery.percentage,
-        a3: obj.latitude,
-        a4: obj.longitude,
-        //a5: obj.message_date,
-        a5: `${day}/${month}/${year} ${hour}:${minute}:${second}`,
-        a6: obj.seq_number,
-        a7: (obj.temperature == null) ? '-' : obj.temperature
+        a1: obj.device_id,
+        a2: obj.accuracy,
+        a3: (obj.battery.percentage == null) ? '-' : obj.battery.percentage,
+        a4: obj.latitude,
+        a5: obj.longitude,
+        a6: `${day}/${month}/${year} ${hour}:${minute}:${second}`,
+        a7: obj.seq_number,
+        a8: (obj.temperature == null) ? '-' : obj.temperature
       };
     });
 
@@ -340,13 +353,14 @@ export class InventarioPosicoesComponent implements OnInit {
 
   addHeader(mArray: any) {
     let cabecalho = {
-      a1: 'Acurácia',
-      a2: 'Bateria',
-      a3: 'Latitude',
-      a4: 'Longitude',
-      a5: 'Data da mensagem',
-      a6: '# Sequência',
-      a7: 'Temperatura',
+      a1: 'Tag',
+      a2: 'Acurácia',
+      a3: 'Bateria',
+      a4: 'Latitude',
+      a5: 'Longitude',
+      a6: 'Data da mensagem',
+      a7: '# Sequência',
+      a8: 'Temperatura',
     }
 
     //adiciona o cabeçalho
