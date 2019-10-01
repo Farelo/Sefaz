@@ -78,6 +78,18 @@ const packingSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    offlineWhileAbsent: [
+        {
+            start: {
+                type: Date,
+                default: null
+            },
+            end: {
+                type: Date,
+                default: null
+            }
+        }
+    ],
     permanence_time_exceeded: {
         type: Boolean,
         default: false
