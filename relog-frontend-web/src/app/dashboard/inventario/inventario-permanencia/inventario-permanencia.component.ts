@@ -135,9 +135,9 @@ export class InventarioPermanenciaComponent implements OnInit {
     this.headers.push({ label: 'Serial', name: 'serial' });
     this.headers.push({ label: 'Tag', name: 'tag.code' });
 
-    this.headers.push({ label: 'Planta Atual', name: 'current_control_point_name' });
+    this.headers.push({ label: 'Ponto de Controle Atual', name: 'current_control_point_name' });
     this.headers.push({ label: 'Local', name: 'current_control_point_type' });
-    this.headers.push({ label: 'Tempo na Planta', name: 'permanence_time_exceeded' });
+    this.headers.push({ label: 'Tempo no Ponto de Controle', name: 'permanence_time_exceeded' });
 
     //console.log('this.headers: ' + JSON.stringify(this.headers));
   }

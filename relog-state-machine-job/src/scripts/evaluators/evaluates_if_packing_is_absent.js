@@ -28,9 +28,13 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 } else {
                     await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
                 }
+
+                packing.absent = true
+                return packing
+
             } else {
                 //console.log('ESTÁ NUMA PLANTA DONA')
-                await Packing.findByIdAndUpdate(packing._id, { absent: false, absent_time: null }, { new: true })
+                await Packing.findByIdAndUpdate(packing._id, { absent: false, absent_time: null, offlineWhileAbsent: [] }, { new: true })
 
                 current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 if (current_state_history) {
@@ -38,7 +42,11 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 } else {
                     //console.log("ESTADO DE AUSENTE JÁ REMOVIDO!")
                 }
+
+                packing.absent = false
+                return packing
             }
+
         } else {
             if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date() }, { new: true })
             
@@ -48,6 +56,9 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             } else {
                 await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
             }
+
+            packing.absent = true
+            return packing
         }
 
     } catch (error) {
