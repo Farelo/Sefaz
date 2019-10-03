@@ -12,6 +12,7 @@ router.get('/quantity', auth, reports_controller.quantity_report)
 router.get('/general_info', auth, reports_controller.general_info_report)
 router.get('/clients', auth, reports_controller.clients_report)
 router.get('/snapshot', auth, reports_controller.snapshot_report)
+router.get('/snapshot_recovery', auth, reports_controller.snapshot_recovery_report)
 
 module.exports = router
 
@@ -245,3 +246,29 @@ module.exports = router
  *       404:
  *         description: Not Found
  */
+
+// // GET '/snapshot_recovery'
+// /**
+//  * @swagger
+//  * /reports/snapshot_recovery:
+//  *   get:
+//  *     summary: Retrieve reports on database
+//  *     description: Recover historical snapshot report about all packings
+//  *     security:
+//  *       - Bearer: []
+//  *     tags:
+//  *       - Reports
+//  *     parameters:
+//  *       - name: snapshot_date
+//  *         description: The moment of the snapshot
+//  *         in: query
+//  *         required: false
+//  *         type: string
+//  *     responses:
+//  *       200:
+//  *         description: historical snapshot
+//  *       400:
+//  *         description: Bad Request
+//  *       404:
+//  *         description: Not Found
+//  */

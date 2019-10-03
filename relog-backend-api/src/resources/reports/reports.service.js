@@ -82,3 +82,12 @@ exports.snapshot_report = async () => {
         throw new Error(error)
     }
 }
+
+exports.snapshot_recovery_report = async ({ snapshot_date = null }) => {
+    try {
+        const data = await reports_repository.snapshot_recovery_report(snapshot_date)
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}

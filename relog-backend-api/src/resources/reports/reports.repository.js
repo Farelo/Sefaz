@@ -10,6 +10,7 @@ const { Family } = require('../families/families.model')
 const { Packing } = require('../packings/packings.model')
 const { GC16 } = require('../gc16/gc16.model')
 const { Setting } = require('../settings/settings.model')
+const turf = require('@turf/turf')
 
 exports.general_report = async () => {
     try {
@@ -187,10 +188,10 @@ const general_inventory_report_detailed = async (family_id) => {
 exports.snapshot_report = async () => {
     // console.log('....................')
     // console.log(new Date())
-    
+
     try {
         //console.log('snapshot_report')
-        const packings = await Packing.find({ absent: true })
+        const packings = await Packing.find({})
             .populate('family')
             .populate('last_device_data')
             .populate('last_device_data_battery')
@@ -303,6 +304,130 @@ exports.snapshot_report = async () => {
                 return obj
             })
         )
+        // console.log('....................')
+        // console.log(new Date())
+        return data
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.snapshot_recovery_report = async (snapshot_date) => {
+
+    // console.log('snapshot_recovery_report')
+
+    try {
+        /**
+         * 1. Recuperar lista de packings. Para cada um:
+         * 2. Recuperar próximo devicedata a partir da data especificada.
+         * 3. calcular intersecção
+         * 4. Montar objeto do snapshot
+         */
+
+        const packings = await Packing.find({}).populate('family')
+        const controlPoints = await ControlPoint.find({}).populate('type')
+        const settings = await Setting.find({})
+
+        // 1. Recuperar lista de packings. Para cada um:
+        const data = await Promise.all(
+            packings.map(async packing => {
+
+                // 2. Recuperar próximo devicedata a partir da data especificada.
+                const deviceData = await DeviceData.findOne({ device_id: packing.tag.code, message_date: { '$lte': new Date(snapshot_date) } })
+                //console.log('deviceData')
+                //console.log(deviceData)
+
+                const deviceDataWithBattery = await DeviceData.findOne({ 'battery.percentage': { $ne: null }, device_id: packing.tag.code, message_date: { '$lte': new Date(snapshot_date) } })
+                // console.log('deviceDataWithBattery')
+                // console.log(deviceDataWithBattery)
+
+                let obj = {
+                    id: '',
+                    message_date: '',
+                    family: '',
+                    serial: '',
+                    tag: '',
+                    //current_state: packing.current_state
+                    collect_date: '',
+                    accuracy: '',
+                    lat_lng_device: '',
+                    lat_lng_cp: '',
+                    cp_type: '',
+                    cp_name: '',
+                    geo: '',
+                    area: '',
+                    // permanence_time: '',
+                    // signal: '',
+                    battery: '',
+                    battery_alert: '',
+                }
+
+                //if (deviceData == null) console.log('tag null:' + packing.tag.code)
+
+                if (deviceData !== null) {
+
+                    packing.last_device_data = deviceData
+
+                    // 3. calcular intersecção
+                    const current_control_point = await findControlPointIntersection(packing, controlPoints, settings)
+
+                    // console.log('current_control_point')
+                    // console.log(current_control_point)
+
+                    obj.id = packing._id
+                    obj.message_date = deviceData.message_date
+                    obj.family = packing.family ? packing.family.code : '-'
+                    obj.serial = packing.serial
+                    obj.tag = packing.tag.code
+                    obj.collect_date = snapshot_date
+                    obj.accuracy = deviceData.accuracy
+                    obj.lat_lng_device = await getLatLngOfPacking(packing)
+
+                    if(deviceDataWithBattery !== null){
+
+                        obj.battery = deviceDataWithBattery.battery.percentage
+                        obj.battery_alert = deviceDataWithBattery.battery.percentage < settings.battery_level_limit ? 'TRUE' : 'FALSE'
+                    }
+
+                    if (current_control_point) {
+
+                        obj.cp_type = current_control_point.type.name
+                        obj.cp_name = current_control_point.name
+                        obj.geo = current_control_point.geofence.type
+
+                        //lat_lng_cp
+                        if (current_control_point.geofence.type == 'c') {
+                            obj.lat_lng_cp = `${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}`
+
+                        } else {
+                            let lat = current_control_point.geofence.coordinates.map(p => p.lat)
+                            let lng = current_control_point.geofence.coordinates.map(p => p.lng)
+                            obj.lat_lng_cp = `${((Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2)} ${((Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2)}`
+                        }
+
+                        //area
+                        if (current_control_point.geofence.type == 'c') {
+                            obj.area = `{(${current_control_point.geofence.coordinates[0].lat} ${current_control_point.geofence.coordinates[0].lng}), ${current_control_point.geofence.radius}}`
+
+                        } else {
+                            let result = '['
+                            current_control_point.geofence.coordinates.map((p, i, arr) => {
+                                if (arr.length - 1 == i)
+                                    result += `(${p.lat} ${p.lng})`
+                                else
+                                    result += `(${p.lat} ${p.lng}), `
+                            })
+                            result += ']'
+
+                            obj.area = result
+                        }
+                    }
+                }
+                return obj
+            })
+        )
+
         // console.log('....................')
         // console.log(new Date())
         return data
@@ -938,4 +1063,177 @@ const getDiffDateTodayInHours = (date) => {
 
     const duration = moment.duration(today.diff(date))
     return duration.asHours()
+}
+
+
+const findControlPointIntersection = async (packing, controlPoints, setting) => {
+
+    let distance = Infinity
+    let currentControlPoint = null
+    let range_radius = 0
+    let isInsidePolygon = false
+
+    //Deve ser otimizado para sair do loop quando for encontrado dentro de um polígono
+    controlPoints.forEach(async (controlPoint) => {
+        //isInsidePolygon = false
+        //mLog('controlPoints')
+
+        if (controlPoint.geofence.type === 'p') {
+            if (!isInsidePolygon) {
+                //if (pnpoly(packing, controlPoint)) {
+                if (intersectionpoly(packing, controlPoint)) {
+                    //mLog(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
+                    distance = 0
+                    currentControlPoint = controlPoint
+                    isInsidePolygon = true
+                }
+            }
+        } else {
+            if (!isInsidePolygon) {
+                //mLog(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
+
+                const calculate = getDistanceFromLatLonInKm(
+                    packing.last_device_data.latitude,
+                    packing.last_device_data.longitude,
+                    controlPoint.geofence.coordinates[0].lat,
+                    controlPoint.geofence.coordinates[0].lng
+                )
+
+                if (calculate < distance) {
+                    distance = calculate
+                    currentControlPoint = controlPoint
+                    range_radius = controlPoint.geofence.radius
+                }
+            }
+        }
+    })
+
+    return currentControlPoint;
+}
+
+const intersectionpoly = (packing, controlPoint) => {
+    try {
+        //mLog('intersectionpoly?')
+
+        //criar polígono da planta
+        let coordinates = controlPoint.geofence.coordinates
+
+        let path = []
+        let templateTurfPolygon = []
+
+        coordinates.forEach(elem => {
+            path.push([elem.lat, elem.lng])
+        })
+        path.push(path[0])
+        //mLog('> ', path)
+
+        //linha do polígono
+        let controlPointLine = turf.lineString(path)
+        // mLog('lineString') 
+        // mLog(JSON.stringify(controlPointLine)) 
+
+        //limpando a linha do polígono
+        //controlPointLine.geometry.type = "Polygon"
+        //mLog(controlPointLine)
+        controlPointLine = turf.cleanCoords(controlPointLine).geometry.coordinates;
+        // mLog('cleanCoords')
+        // mLog(controlPointLine)
+
+        let newControlPointLine = turf.lineString(controlPointLine)
+
+        //reconverte para o LineString limpo para polígno
+        controlPointPolygon = turf.lineToPolygon(newControlPointLine);
+
+        // mLog('antes:')
+        // mLog(JSON.stringify(controlPointPolygon))
+
+        //se o polígono tem autointersecção, então quebra em 2 ou mais features
+        //se o polígono não tem auto intersecção, então o mantém
+        let unkinkControlPointPolygon = turf.unkinkPolygon(controlPointPolygon)
+
+        if (unkinkControlPointPolygon.features.length > 1) {    //Caso o polígono tenha auto intersecção
+            // mLog('p com auto intersecção')
+            // mLog('.depois:')
+            // mLog(JSON.stringify(unkinkControlPointPolygon))
+
+            let controlPointPolygonArray = [];
+
+            unkinkControlPointPolygon.features.forEach(feature => {
+                let auxPolygon = turf.polygon(feature.geometry.coordinates);
+                controlPointPolygonArray.push(auxPolygon)
+            })
+
+            result = null
+
+            controlPointPolygonArray.forEach(mPolygon => {
+                //criar polígono da embalagem
+                let center = [packing.last_device_data.latitude, packing.last_device_data.longitude]
+                let radius = packing.last_device_data.accuracy / 1000
+                let options = { steps: 64, units: 'kilometers' }
+
+                //mLog(center, radius)
+                let packingPolygon = turf.circle(center, radius, options);
+                //mLog('c: ')
+                //mLog(JSON.stringify(packingPolygon))
+
+                //checar intersecção
+                let intersection = turf.intersect(mPolygon, packingPolygon);
+
+                // mLog(' ')
+                // mLog('i: ', packing.tag.code)
+
+                result = intersection
+            })
+
+            //mLog(result)
+
+            return result
+
+        } else {    //Caso o polígono não tenha autointersecção
+            // mLog('p sem auto intersecção')
+            // mLog('..depois:')
+            // mLog(JSON.stringify(unkinkControlPointPolygon))
+
+            //criar polígono da embalagem
+            let center = [packing.last_device_data.latitude, packing.last_device_data.longitude]
+            let radius = packing.last_device_data.accuracy / 1000
+            let options = { steps: 64, units: 'kilometers' }
+
+            //mLog(center, radius)
+            let packingPolygon = turf.circle(center, radius, options);
+            //mLog('c: ')
+            //mLog(JSON.stringify(packingPolygon))
+
+            //checar intersecção
+            let intersection = turf.intersect(controlPointPolygon, packingPolygon);
+
+            // mLog(' ')
+            // mLog('i: ', packing.tag.code)
+            // mLog(intersection)
+
+            return intersection
+        }
+    } catch (error) {
+        //mLog('erro: ', controlPointLine)
+        //mLog(controlPoint.name)
+        throw new Error(error)
+    }
+}
+
+/**
+ * Calcula o grau entre a latitude e longitude
+ * @param {Number} deg grau
+ */
+const deg2rad = deg => deg * (Math.PI / 180)
+
+const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+    const R = 6371 // Radius of the earth in km
+    const dLat = deg2rad(lat2 - lat1) // deg2rad below
+    const dLon = deg2rad(lon2 - lon1)
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+        + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    const distance = R * c // Distance in km
+
+    return distance * 1000
 }
