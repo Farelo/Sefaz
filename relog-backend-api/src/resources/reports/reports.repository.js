@@ -347,8 +347,7 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                     message_date: '',
                     family: '',
                     serial: '',
-                    tag: '',
-                    //current_state: packing.current_state
+                    tag: '', 
                     collect_date: '',
                     accuracy: '',
                     lat_lng_device: '',
@@ -356,15 +355,19 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                     cp_type: '',
                     cp_name: '',
                     geo: '',
-                    area: '',
-                    // permanence_time: '',
-                    // signal: '',
+                    area: '',  
                     battery: '',
                     battery_alert: '',
                 }
 
                 //if (deviceData == null) console.log('tag null:' + packing.tag.code)
 
+                obj.id = packing._id
+                obj.family = packing.family ? packing.family.code : '-'
+                obj.serial = packing.serial
+                obj.tag = packing.tag.code 
+                obj.collect_date = snapshot_date
+                
                 if (deviceData !== null) {
 
                     packing.last_device_data = deviceData
@@ -375,19 +378,16 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                     // console.log('current_control_point')
                     // console.log(current_control_point)
 
-                    obj.id = packing._id
-                    obj.message_date = deviceData.message_date
-                    obj.family = packing.family ? packing.family.code : '-'
-                    obj.serial = packing.serial
-                    obj.tag = packing.tag.code
-                    obj.collect_date = snapshot_date
+                    obj.message_date = deviceData.message_date    
                     obj.accuracy = deviceData.accuracy
                     obj.lat_lng_device = await getLatLngOfPacking(packing)
+
+                    
 
                     if(deviceDataWithBattery !== null){
 
                         obj.battery = deviceDataWithBattery.battery.percentage
-                        obj.battery_alert = deviceDataWithBattery.battery.percentage < settings.battery_level_limit ? 'TRUE' : 'FALSE'
+                        obj.battery_alert = deviceDataWithBattery.battery.percentage < settings[0].battery_level_limit ? 'TRUE' : 'FALSE'
                     }
 
                     if (current_control_point) {
