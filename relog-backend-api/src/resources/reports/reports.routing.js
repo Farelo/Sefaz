@@ -247,28 +247,28 @@ module.exports = router
  *         description: Not Found
  */
 
-// // GET '/snapshot_recovery'
-// /**
-//  * @swagger
-//  * /reports/snapshot_recovery:
-//  *   get:
-//  *     summary: Retrieve reports on database
-//  *     description: Recover historical snapshot report about all packings
-//  *     security:
-//  *       - Bearer: []
-//  *     tags:
-//  *       - Reports
-//  *     parameters:
-//  *       - name: snapshot_date
-//  *         description: The moment of the snapshot
-//  *         in: query
-//  *         required: false
-//  *         type: string
-//  *     responses:
-//  *       200:
-//  *         description: historical snapshot
-//  *       400:
-//  *         description: Bad Request
-//  *       404:
-//  *         description: Not Found
-//  */
+// GET '/snapshot_recovery'
+/**
+ * @swagger
+ * /reports/snapshot_recovery:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Recover historical snapshot report about all packings
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     parameters:
+ *       - name: snapshot_date
+ *         description: The moment of the snapshot
+ *         in: query
+ *         required: false
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: historical snapshot
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
