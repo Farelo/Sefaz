@@ -309,13 +309,13 @@ export class InventarioPosicoesComponent implements OnInit {
     //I'm using the method slice() just to copy the array as value.
     let flatObjectData = this.flatObject(this.actualListOfPositions.slice());
     flatObjectData = flatObjectData.map(elem => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7];
+      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7, elem.a8];
     });
     // console.log(flatObjectData);
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Acurácia', 'Bateria', 'Latitude', 'Longitude', 'Data da mensagem', '# Sequência', 'Temperatura']],
+      head: [['Tag', 'Acurácia', 'Bateria', 'Latitude', 'Longitude', 'Data da mensagem', '# Sequência', 'Temperatura']],
       body: flatObjectData
     });
 
