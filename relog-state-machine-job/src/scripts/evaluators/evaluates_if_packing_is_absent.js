@@ -30,14 +30,19 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 } else {
                     await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
                 }
+
+                packing.absent = true
+                return packing
+
             } else {
                 // Finaliza o giro
                 console.log('ESTÁ NUMA PLANTA DONA')
                 if (packing.absent_time){
                     let calculate = 0
                     if(packing.cicle_start) calculate = getDiffDateTodayInHours(packing.cicle_start)
-                    await Packing.findByIdAndUpdate(packing._id, { absent: false, absent_time: null, cicle_end: new Date(), last_cicle_duration: calculate }, { new: true })
+                    await Packing.findByIdAndUpdate(packing._id, { absent: false, absent_time: null, offlineWhileAbsent: [], cicle_end: new Date(), last_cicle_duration: calculate }, { new: true })
                 } 
+                //console.log('ESTÁ NUMA PLANTA DONA')
 
                 current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 if (current_state_history) {
@@ -45,7 +50,11 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 } else {
                     //console.log("ESTADO DE AUSENTE JÁ REMOVIDO!")
                 }
+
+                packing.absent = false
+                return packing
             }
+
         } else {
             console.log('ABSENT. FORA DE PLANTA')
 
@@ -61,6 +70,9 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             } else {
                 await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
             }
+
+            packing.absent = true
+            return packing
         }
 
     } catch (error) {

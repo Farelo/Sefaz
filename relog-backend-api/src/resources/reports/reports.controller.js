@@ -15,7 +15,7 @@ exports.general_inventory_report = async (req, res) => {
 }
 
 exports.absent_report = async (req, res) => {
-    const query = { 
+    const query = {
         family: req.query.family ? req.query.family : null,
         serial: req.query.serial ? req.query.serial : null,
         absent_time_in_hours: req.query.absent_time_in_hours ? req.query.absent_time_in_hours : null,
@@ -64,6 +64,30 @@ exports.clients_report = async (req, res) => {
 }
 
 exports.snapshot_report = async (req, res) => {
+    req.setTimeout(5000000)
+
     const data = await reports_service.snapshot_report()
     res.json(data)
+    //res.json("{}")
+}
+
+exports.snapshot_recovery_report = async (req, res) => {
+
+    req.setTimeout(5000000)
+
+    console.log('req.query.snapshot_date: ' + req.query.snapshot_date)
+    console.log('obj req.query.snapshot_date: ' + new Date(req.query.snapshot_date))
+
+    if ((new Date(req.query.snapshot_date) !== "Invalid Date") && !isNaN(new Date(req.query.snapshot_date))) {
+        const query = {
+            snapshot_date: req.query.snapshot_date ? (new Date(req.query.snapshot_date)) : null
+        }
+    
+        const data = await reports_service.snapshot_recovery_report(query)
+        res.json(data)
+    } else{
+
+        return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid date' })
+    }
+    
 }

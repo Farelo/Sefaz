@@ -1,0 +1,46 @@
+{"level":"info","message":"db: mongodb is connected: mongodb://localhost:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://localhost:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Echo-protocol Connection Closed","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Echo-protocol Connection Closed","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Echo-protocol Connection Closed","level":"info"}
+{"message":"WebSocket Echo-protocol Connection Closed","level":"info"}
+{"error":{},"level":"error","message":"uncaughtException: (no error message)\nError","stack":"Error","exception":true,"date":"Tue Sep 03 2019 10:29:52 GMT-0300 (GMT-03:00)","process":{"pid":11200,"uid":null,"gid":null,"cwd":"C:\\Users\\ricardo.mendes\\git\\recicla\\loka-websocket-job\\src","execPath":"C:\\Program Files\\nodejs\\node.exe","version":"v10.16.0","argv":["C:\\Program Files\\nodejs\\node.exe","C:\\Users\\ricardo.mendes\\git\\recicla\\loka-websocket-job\\src\\index.js"],"memoryUsage":{"rss":112283648,"heapTotal":88326144,"heapUsed":47059664,"external":18832106}},"os":{"loadavg":[0,0,0],"uptime":8551},"trace":[]}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Connection Error: Error: read ECONNRESET","level":"info"}
+{"message":"WebSocket Connection Error: Error: read ECONNRESET","level":"info"}
+{"message":"WebSocket Echo-protocol Connection Closed","level":"info"}
+{"message":"WebSocket Echo-protocol Connection Closed","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://localhost:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://localhost:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://localhost:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Connection Error: Error: read ECONNRESET","level":"info"}
+{"message":"WebSocket Echo-protocol Connection Closed","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Echo-protocol Connection Closed","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}
+{"message":"WebSocket Client Connected","level":"info"}

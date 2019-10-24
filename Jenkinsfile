@@ -6,7 +6,7 @@ stage 'Checkout'
 
 stage 'Build project in docker'
    node('master') {
-   sh 'sudo docker-compose build'
+   sh 'sudo docker-compose build --no-cache'
  }
 
 stage 'Up project in docker'

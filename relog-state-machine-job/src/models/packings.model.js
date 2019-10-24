@@ -89,6 +89,18 @@ const packingSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    offlineWhileAbsent: [
+        {
+            start: {
+                type: Date,
+                default: null
+            },
+            end: {
+                type: Date,
+                default: null
+            }
+        }
+    ],
     low_battery: {
         type: Boolean,
         default: false
