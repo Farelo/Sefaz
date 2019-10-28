@@ -15,7 +15,7 @@ RUN apk add git
 RUN node write_environment.js && \
     npm config set unsafe-perm true && \
     npm install && \
-    ./node_modules/.bin/ng build --env=prod --base-href /cebrace/
+    ./node_modules/.bin/ng build --env=prod --base-href /
 
 FROM nginx:1.13.3-alpine as main
 
