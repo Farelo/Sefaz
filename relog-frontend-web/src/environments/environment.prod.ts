@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
     
-    url: "https://relogtechnology.com/api"
+    url: "https://qa.relogtechnology.com/api"
     
   }
