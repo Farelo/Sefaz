@@ -2,23 +2,21 @@ version: '3'
 
 services:
 
-  nginx-container:
-
-    container_name: production-nginx
-
+  nginx-qa:
+    container_name: qa-nginx
     image: nginx:latest
-    
+    volumes:
+      #volume para trazer o conf do nginx
+      - /home/ubuntu/recicla/nginx/conf/nginx-production.conf:/etc/nginx/conf.d/default.conf
+      #volume para trazer o fullchain.pem do dominio relog.com
+      - /etc/letsencrypt/:/etc/letsencrypt/
+    networks:
+      - front
     ports:
       - 80:80
       - 443:443
-    volumes:
-      #volume para trazer o conf do nginx
-      - ./conf/nginx-production.conf:/etc/nginx/conf.d/default.conf
 
-      #volume para trazer o fullchain.pem do dominio relog.com
-      - /etc/letsencrypt/live/relogtechnology.com/fullchain.pem:/etc/letsencrypt/live/relogtechnology.com/fullchain.pem
 
-      #volume para trazer o privkey.pem do dominio relog.com
-      - /etc/letsencrypt/live/relogtechnology.com/privkey.pem:/etc/letsencrypt/live/relogtechnology.com/privkey.pem
-
-    network_mode: bridge
+networks:
+  front:
+    external: true
