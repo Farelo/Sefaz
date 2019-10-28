@@ -5,7 +5,6 @@ USER root
 RUN apk update && apk upgrade \
     && apk add python2 alpine-sdk \
     && npm config set unsafe-perm true \
-    && npm cache clean --force \
     && npm i pm2 node-gyp node-pre-gyp -g
 
 WORKDIR /app
