@@ -4,7 +4,8 @@ USER root
 
 RUN apk update && apk upgrade \
     && apk add python2 alpine-sdk \
-    && npm i pm2 node-gyp node-pre-gyp -g
+    && npm cache clean
+    &&npm i pm2 node-gyp node-pre-gyp -g
 
 WORKDIR /app
 
