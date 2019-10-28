@@ -1,6 +1,6 @@
 FROM node:10-alpine as builder
 
-ENV BASE_URL=https://relogtechnology.com/api
+ENV BASE_URL=https://qa.relogtechnology.com/api
 
 ENV PORT $port
 
