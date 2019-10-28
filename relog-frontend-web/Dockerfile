@@ -13,6 +13,7 @@ COPY . .
 RUN apk add git
 
 RUN node write_environment.js && \
+    npm config set unsafe-perm true && \
     npm cache clean --force && \
     npm install && \
     ./node_modules/.bin/ng build --env=prod --base-href /cebrace/
