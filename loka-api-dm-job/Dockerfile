@@ -3,6 +3,7 @@ FROM node:10.14-alpine
 USER root
 
 RUN apk update && apk upgrade \
+    && npm config set unsafe-perm true \
     && apk add python2 alpine-sdk \
     && npm i pm2 node-gyp node-pre-gyp -g
 
