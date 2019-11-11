@@ -5,6 +5,7 @@ import { NouiFormatter } from 'ng2-nouislider';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import * as moment from 'moment-timezone';
 import 'jspdf';
 import 'jspdf-autotable';
 import { DatePipe } from '@angular/common';
@@ -40,7 +41,7 @@ export class InventarioPosicoesComponent implements OnInit {
   datePickerConfig = new BsDaterangepickerConfig(); //Configurations
   public initialDate: Date;  //Initial date
   public finalDate: Date;    //Initial date
-  
+
   constructor(private familyService: FamiliesService,
     private packingService: PackingService,
     private deviceService: DevicesService,
@@ -52,7 +53,7 @@ export class InventarioPosicoesComponent implements OnInit {
     // console.log(this.finalDate);
   }
 
-  configureDatePicker(){
+  configureDatePicker() {
     defineLocale('pt-br', ptBrLocale);
     this.localeService.use('pt-br');
 
@@ -63,7 +64,7 @@ export class InventarioPosicoesComponent implements OnInit {
 
     this.datePickerConfig.showWeekNumbers = false;
     this.datePickerConfig.displayMonths = 1;
-    this.datePickerConfig.containerClass = 'theme-dark-blue';  
+    this.datePickerConfig.containerClass = 'theme-dark-blue';
   }
   ngOnInit() {
 
@@ -207,7 +208,7 @@ export class InventarioPosicoesComponent implements OnInit {
   }
 
   formatDate(date: any, endDate: boolean = false) {
-    
+
     // console.log(endDate);
     // console.log(date);
 
@@ -222,54 +223,31 @@ export class InventarioPosicoesComponent implements OnInit {
     } else {
       d.setHours(23, 59, 59, 0);
       //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
-      result = d.getTime()/1000;
+      result = d.getTime() / 1000;
     }
-    
+
     // console.log(d);
     // console.log(result);
 
     return result;
   }
-  
-  withTemperatureClicked(){
-    if(!this.withTemperature){
-      this.actualListOfPositions = this.originalListOfPositions.filter(elem =>{
-          return elem.temperature !== null
+
+  withTemperatureClicked() {
+    if (!this.withTemperature) {
+      this.actualListOfPositions = this.originalListOfPositions.filter(elem => {
+        return elem.temperature !== null
       })
-    } else{
+    } else {
       this.actualListOfPositions = this.originalListOfPositions
     }
   }
 
-// formatDate(date: any, endDate: boolean = false) {
-    
-//     console.log(endDate);
-//     console.log(date);
-//     let d = new Date(date.getTime() + date.getTimezoneOffset() * 60000); //offset to user timezone
-//     console.log(d);
+  convertTimezone(timestamp) {
+    if(timestamp.toString().length == 10) timestamp *= 1000;
 
-//     let month = '' + (d.getMonth() + 1);
-//     let day = '' + (d.getDate());
-//     let year = d.getFullYear();
-
-//     if (month.length < 2) month = '0' + month;
-//     if (day.length < 2) day = '0' + day;
-
-//     //[year, month, day].join('-');
-//     //console.log(endDate); 
-
-//     let result = '';
-
-//     if (endDate) 
-//       result = `${year}-${month}-${day}T23:59:59Z`;
-//     else
-//       result = `${year}-${month}-${day}T00:00:00Z`;
-
-//     console.log(result);
-
-//     return result;
-//   }
-
+    return moment.utc(timestamp).tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss')
+  }
+  
   /**
    * ================================================
    * Downlaod csv file
@@ -327,21 +305,13 @@ export class InventarioPosicoesComponent implements OnInit {
     //console.log(mArray);    
     let plainArray = mArray.map(obj => {
 
-      let d = new Date(obj.message_date),
-        day = '' + (d.getDate()),  
-        month = '' + (d.getMonth() + 1),
-        year = d.getFullYear(),
-        hour = d.getHours(),
-        minute = d.getMinutes(),
-        second = d.getSeconds();
-        
       return {
         a1: obj.device_id,
         a2: obj.accuracy,
         a3: (obj.battery.percentage == null) ? '-' : obj.battery.percentage,
         a4: obj.latitude,
         a5: obj.longitude,
-        a6: `${day}/${month}/${year} ${hour}:${minute}:${second}`,
+        a6: this.convertTimezone(obj.message_date_timestamp),
         a7: obj.seq_number,
         a8: (obj.temperature == null) ? '-' : obj.temperature
       };

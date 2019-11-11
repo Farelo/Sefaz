@@ -151,7 +151,7 @@
             <td>{{ item.latitude || '-' }}</td>
 
             <td>{{ item.longitude || '-' }}</td>
-            <td>{{ (item.message_date | date: 'dd/MM/yy HH:mm:ss' : "+00:00") || '-' }}</td>
+            <td>{{ convertTimezone(item.message_date_timestamp) }}</td>
 
             <td style="text-align: center">{{ item.seq_number || '-' }}</td>
             <td style="text-align: center">{{ item.temperature || '-' }}ºC</td>
