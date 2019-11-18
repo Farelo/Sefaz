@@ -8,6 +8,7 @@ COPY . .
 
 RUN apk update && apk add python2 alpine-sdk && \
     npm install pm2 node-gyp node-pre-gyp -g && \
+    npm config set unsafe-perm true && \
     npm install && \
     npm i bcrypt --unsafe-perm=true --allow-root
 
