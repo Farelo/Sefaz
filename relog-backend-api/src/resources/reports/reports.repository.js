@@ -368,6 +368,29 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                 obj.tag = packing.tag.code 
                 obj.collect_date = snapshot_date
                 
+                obj.cicle_start = packing.cicle_start ? packing.cicle_start : '-'
+                obj.cicle_end = packing.cicle_end ? packing.cicle_end : '-'
+                obj.last_cicle_duration = packing.last_cicle_duration ? packing.last_cicle_duration : '-'
+
+                // obj.last_elegible_accuracy = '-'
+                // obj.last_elegible_lat_lng_device = '-'
+                // obj.last_elegible_message_date = '-'
+
+                // if(packing.last_device_data){
+                //     if(lastAccurateMessage.length > 0){
+                //         obj.last_elegible_accuracy = lastAccurateMessage[0].accuracy
+                //         obj.last_elegible_lat_lng_device = `${lastAccurateMessage[0].latitude} ${lastAccurateMessage[0].longitude}`
+                //         obj.last_elegible_message_date = `${moment(lastAccurateMessage[0].message_date).locale('pt-br').format('L LTS')}`
+                //     }
+                // }
+                
+                //console.log('-')
+                //console.log(JSON.stringify(lastAccurateMessage[0]))
+                // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
+                //     obj.absent_time = getDiffDateTodayInHours(packing.last_event_record.created_at)
+                // } else {
+                //     obj.absent_time = await getAbsentTimeCountDown(packing)
+                // }
                 if (deviceData !== null) {
 
                     packing.last_device_data = deviceData
@@ -436,6 +459,7 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
         throw new Error(error)
     }
 }
+
 
 /**
  * This method calculates the amount of time the package has been 'sem_sinal', 'perdida' ou 'ausente' since missing.
