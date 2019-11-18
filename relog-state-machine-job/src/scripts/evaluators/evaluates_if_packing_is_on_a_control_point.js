@@ -194,7 +194,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
     }
 }
 
-let idAbleToLog = true
+let idAbleToLog = false
 const mLog = (mText) => {
     if (idAbleToLog) console.log(mText)
 }
@@ -216,7 +216,7 @@ const thereIsIntersection = (isInsidePolygon, distance, range_radius, accuracy, 
             result = true
         }
     }
-    mLog('result ', result)
+    mLog('result ' + result)
     return result
 }
 
