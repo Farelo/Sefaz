@@ -1,6 +1,6 @@
 {
   "db": {
-    "url": "mongodb://localhost:27017/recicla"
+    "url": "mongodb://localhost:27017/cebrace"
   },
   "database_options": {
     "reconnectTries": 100000,

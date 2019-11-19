@@ -201,7 +201,7 @@ function initWebSocket() {
           message: JSON.stringify(jsonMessage),
           message_date: new Date(jsonMessage.timestamp * 1000)
         };
-        //logger.info(messageCollection);
+        logger.info(messageCollection);
         Message.create(messageCollection);
 
         let deviceDict = deviceDictList.find(function(elem) {
