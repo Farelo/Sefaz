@@ -234,7 +234,7 @@ const runWS = async () => {
   //logger.info(deviceDictList);
   //await subscribingDeviceIds(deviceDictList);
   //await unsubscribingDeviceIds(deviceDictList);
-  //await initWebSocket();
+  await initWebSocket();
 };
 
 exports.runWS = runWS;
