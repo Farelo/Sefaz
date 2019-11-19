@@ -182,7 +182,7 @@ deviceDataSchema.post("save", saveDeviceDataToPacking);
 deviceDataSchema.pre("update", update_updated_at_middleware);
 deviceDataSchema.pre("findOneAndUpdate", update_updated_at_middleware);
 
-const DeviceData = mongoose.model("DeviceData2", deviceDataSchema);
+const DeviceData = mongoose.model("DeviceData", deviceDataSchema);
 
 exports.DeviceData = DeviceData;
 exports.deviceDataSchema = deviceDataSchema;
