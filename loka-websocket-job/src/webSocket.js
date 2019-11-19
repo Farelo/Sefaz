@@ -19,6 +19,7 @@ var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 // Getting Dict DevicesIds x last DeviceData
 let deviceDictList;
 async function getDeviceDictList() {
+  console.log("aqui");
   await require("./db/db")();
 
   //logger.info("Getting Dict DevicesIds x last DeviceData");
