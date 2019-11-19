@@ -19,7 +19,7 @@ var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 // Getting Dict DevicesIds x last DeviceData
 let deviceDictList;
 async function getDeviceDictList() {
-  console.log("aqui");
+  logger.info("aqui");
   await require("./db/db")();
 
   //logger.info("Getting Dict DevicesIds x last DeviceData");
@@ -32,7 +32,7 @@ async function getDeviceDictList() {
       })
       .map(async packMap => {
         //Get last deviceData from DB
-        console.log("here");
+        logger.info("here");
         let lastDeviceData = await DeviceData.find({
           device_id: packMap.tag.code
         })
@@ -41,7 +41,7 @@ async function getDeviceDictList() {
           .then(resultFind => {
             return resultFind[0];
           });
-        console.log(lastDeviceData);
+        logger.info(lastDeviceData);
 
         //Get last deviceData from mock empty
         if (!lastDeviceData) {
@@ -64,7 +64,7 @@ async function getDeviceDictList() {
             message: null
           };
         }
-        console.log(lastDeviceData);
+        logger.info(lastDeviceData);
 
         let dict = {
           deviceId: packMap.tag.code,
