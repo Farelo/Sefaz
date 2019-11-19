@@ -190,7 +190,7 @@ function initWebSocket() {
     connection.on("message", async function(message) {
       if (message.type === "utf8") {
         //logger.info("WebSocket Received: '" + message.utf8Data + "'");
-        //console.log(message);
+        console.log(message);
         let jsonMessage = JSON.parse(message.utf8Data);
 
         //Save message
@@ -231,7 +231,7 @@ function initWebSocket() {
 
 const runWS = async () => {
   await getDeviceDictList();
-  //logger.info(deviceDictList);
+  logger.info(deviceDictList);
   //await subscribingDeviceIds(deviceDictList);
   //await unsubscribingDeviceIds(deviceDictList);
   await initWebSocket();
