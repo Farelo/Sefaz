@@ -230,7 +230,7 @@ function initWebSocket() {
 }
 
 const runWS = async () => {
-  //await getDeviceDictList();
+  await getDeviceDictList();
   //logger.info(deviceDictList);
   //await subscribingDeviceIds(deviceDictList);
   //await unsubscribingDeviceIds(deviceDictList);
