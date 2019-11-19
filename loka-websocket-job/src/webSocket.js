@@ -31,36 +31,37 @@ async function getDeviceDictList() {
       })
       .map(async packMap => {
         //Get last deviceData from DB
-        /*
-          let lastDeviceData = await DeviceData.find({
-            device_id: packMap.tag.code
-          })
-            .sort({ _id: -1 })
-            .limit(1)
-            .then(resultFind => {
-              return resultFind[0];
-            });
-          */
-        //Get last deviceData from mock empty
 
-        let lastDeviceData = {
-          device_id: packMap.tag.code,
-          message_date: null,
-          message_date_timestamp: null,
-          message_type: null,
-          last_communication: null,
-          last_communication_timestamp: null,
-          latitude: null,
-          longitude: null,
-          accuracy: null,
-          temperature: null,
-          seq_number: null,
-          battery: {
-            percentage: null,
-            voltage: null
-          },
-          message: null
-        };
+        let lastDeviceData = await DeviceData.find({
+          device_id: packMap.tag.code
+        })
+          .sort({ _id: -1 })
+          .limit(1)
+          .then(resultFind => {
+            return resultFind[0];
+          });
+
+        //Get last deviceData from mock empty
+        if (!lastDeviceData) {
+          lastDeviceData = {
+            device_id: packMap.tag.code,
+            message_date: null,
+            message_date_timestamp: null,
+            message_type: null,
+            last_communication: null,
+            last_communication_timestamp: null,
+            latitude: null,
+            longitude: null,
+            accuracy: null,
+            temperature: null,
+            seq_number: null,
+            battery: {
+              percentage: null,
+              voltage: null
+            },
+            message: null
+          };
+        }
 
         let dict = {
           deviceId: packMap.tag.code,
@@ -189,7 +190,7 @@ function initWebSocket() {
     connection.on("message", async function(message) {
       if (message.type === "utf8") {
         //logger.info("WebSocket Received: '" + message.utf8Data + "'");
-        console.log(message);
+        //console.log(message);
         let jsonMessage = JSON.parse(message.utf8Data);
 
         //Save message
@@ -211,6 +212,8 @@ function initWebSocket() {
           if (deviceDataToSave !== null) {
             await device_data_save(deviceDataToSave);
             deviceData = deviceDataToSave;
+            console.log("deviceData");
+            console.log(deviceData);
           }
         }
       }
