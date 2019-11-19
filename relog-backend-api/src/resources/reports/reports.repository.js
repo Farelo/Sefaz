@@ -214,7 +214,6 @@ exports.snapshot_report = async () => {
                 obj.collect_date = `${moment().locale('pt-br').format('L')} ${moment().locale('pt-br').format('LT')}`
                 obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
                 obj.lat_lng_device = await getLatLngOfPacking(packing)
-
                 obj.cicle_start = packing.cicle_start ? packing.cicle_start : '-'
                 obj.cicle_end = packing.cicle_end ? packing.cicle_end : '-'
                 obj.last_cicle_duration = packing.last_cicle_duration ? packing.last_cicle_duration : '-'
@@ -371,10 +370,6 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                 obj.serial = packing.serial
                 obj.tag = packing.tag.code 
                 obj.collect_date = snapshot_date
-                
-                obj.cicle_start = packing.cicle_start ? packing.cicle_start : '-'
-                obj.cicle_end = packing.cicle_end ? packing.cicle_end : '-'
-                obj.last_cicle_duration = packing.last_cicle_duration ? packing.last_cicle_duration : '-'
 
                 // obj.last_elegible_accuracy = '-'
                 // obj.last_elegible_lat_lng_device = '-'
