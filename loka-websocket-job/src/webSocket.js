@@ -25,56 +25,55 @@ async function getDeviceDictList() {
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
   //Getting all DeviceIds
-  let result = await Packing.find({}, { _id: 0, tag: 1 }).then(packFind => {
-    let packMapped = packFind
-      .filter(packFilter => {
-        return packFilter.tag.code != undefined;
-      })
-      .map(async packMap => {
-        //Get last deviceData from DB
-        logger.info("here");
-        let lastDeviceData = await DeviceData.find({
-          device_id: packMap.tag.code
+  let result = await Packing.find({}, { _id: 0, tag: 1 })
+    .limit(10)
+    .then(packFind => {
+      let packMapped = packFind
+        .filter(packFilter => {
+          return packFilter.tag.code != undefined;
         })
-          .sort({ _id: -1 })
-          .limit(1)
-          .then(resultFind => {
-            return resultFind[0];
-          });
-        logger.info(lastDeviceData);
+        .map(async packMap => {
+          //Get last deviceData from DB
+          let lastDeviceData = await DeviceData.find({
+            device_id: packMap.tag.code
+          })
+            .sort({ _id: -1 })
+            .limit(1)
+            .then(resultFind => {
+              return resultFind[0];
+            });
 
-        //Get last deviceData from mock empty
-        if (!lastDeviceData) {
-          lastDeviceData = {
-            device_id: packMap.tag.code,
-            message_date: null,
-            message_date_timestamp: null,
-            message_type: null,
-            last_communication: null,
-            last_communication_timestamp: null,
-            latitude: null,
-            longitude: null,
-            accuracy: null,
-            temperature: null,
-            seq_number: null,
-            battery: {
-              percentage: null,
-              voltage: null
-            },
-            message: null
+          //Get last deviceData from mock empty
+          if (!lastDeviceData) {
+            lastDeviceData = {
+              device_id: packMap.tag.code,
+              message_date: null,
+              message_date_timestamp: null,
+              message_type: null,
+              last_communication: null,
+              last_communication_timestamp: null,
+              latitude: null,
+              longitude: null,
+              accuracy: null,
+              temperature: null,
+              seq_number: null,
+              battery: {
+                percentage: null,
+                voltage: null
+              },
+              message: null
+            };
+          }
+
+          let dict = {
+            deviceId: packMap.tag.code,
+            lastDeviceData: lastDeviceData
           };
-        }
-        logger.info(lastDeviceData);
+          return dict;
+        });
 
-        let dict = {
-          deviceId: packMap.tag.code,
-          lastDeviceData: lastDeviceData
-        };
-        return dict;
-      });
-
-    return packMapped;
-  });
+      return packMapped;
+    });
   deviceDictList = await Promise.all(result);
   return deviceDictList;
 }
@@ -84,7 +83,6 @@ async function subscribingDeviceIds(deviceDictList) {
   //logger.info("Subscribing Devices in Websocket");
   for (let index in deviceDictList) {
     deviceDict = deviceDictList[index];
-    console.log(deviceDict);
     //deviceDictList.forEach(async deviceDict => {
     //logger.info("Subscribing device with id " + deviceDict.deviceId);
     var optionsget = {
@@ -97,11 +95,12 @@ async function subscribingDeviceIds(deviceDictList) {
 
     // do the GET request
     logger.info("id: " + deviceDict.deviceId);
-    await requestUrl(optionsget);
+    await requestSubscribe(optionsget);
     //});
   }
 }
-function requestUrl(optionsget) {
+
+function requestSubscribe(optionsget) {
   return new Promise((resolve, reject) => {
     var reqGet = https.request(optionsget, function(res) {
       /*logger.info(
@@ -132,10 +131,8 @@ function requestUrl(optionsget) {
 
 // Unsubscribing Devices in Websocket
 async function unsubscribingDeviceIds(deviceDictList) {
-  //logger.info("Unsubscribing Devices in Websocket");
-
-  deviceDictList.forEach(async deviceDict => {
-    //logger.info("Unsubscribing device with id " + deviceDict.deviceId);
+  for (let index in deviceDictList) {
+    deviceDict = deviceDictList[index];
     var optionsget = {
       host: "core.loka.systems",
       port: 443,
@@ -143,7 +140,14 @@ async function unsubscribingDeviceIds(deviceDictList) {
       method: "GET",
       headers: { Authorization: "Bearer " + token }
     };
+    // do the GET request
+    logger.info("id: " + deviceDict.deviceId);
+    await requestUnsubscribe(optionsget);
+  }
+}
 
+function requestUnsubscribe(optionsget) {
+  return new Promise((resolve, reject) => {
     // do the GET request
     var reqGet = https.request(optionsget, function(res) {
       /*logger.info(
@@ -154,6 +158,7 @@ async function unsubscribingDeviceIds(deviceDictList) {
       );*/
       res.on("data", function(d) {
         logger.info("GET result:\n" + d);
+        resolve(d);
       });
     });
 
@@ -166,6 +171,7 @@ async function unsubscribingDeviceIds(deviceDictList) {
           e
       );*/
       logger.info(e);
+      reject(e);
     });
   });
 }
@@ -215,8 +221,6 @@ function initWebSocket() {
           if (deviceDataToSave !== null) {
             await device_data_save(deviceDataToSave);
             deviceData = deviceDataToSave;
-            console.log("deviceData");
-            console.log(deviceData);
           }
         }
       }
@@ -235,9 +239,9 @@ function initWebSocket() {
 const runWS = async () => {
   await getDeviceDictList();
   logger.info(deviceDictList);
-  //await subscribingDeviceIds(deviceDictList);
   //await unsubscribingDeviceIds(deviceDictList);
-  //await initWebSocket();
+  await subscribingDeviceIds(deviceDictList);
+  await initWebSocket();
 };
 
 exports.runWS = runWS;
