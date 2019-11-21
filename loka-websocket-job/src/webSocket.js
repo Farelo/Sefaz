@@ -25,55 +25,53 @@ async function getDeviceDictList() {
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
   //Getting all DeviceIds
-  let result = await Packing.find({}, { _id: 0, tag: 1 })
-    .limit(10)
-    .then(packFind => {
-      let packMapped = packFind
-        .filter(packFilter => {
-          return packFilter.tag.code != undefined;
+  let result = await Packing.find({}, { _id: 0, tag: 1 }).then(packFind => {
+    let packMapped = packFind
+      .filter(packFilter => {
+        return packFilter.tag.code != undefined;
+      })
+      .map(async packMap => {
+        //Get last deviceData from DB
+        let lastDeviceData = await DeviceData.find({
+          device_id: packMap.tag.code
         })
-        .map(async packMap => {
-          //Get last deviceData from DB
-          let lastDeviceData = await DeviceData.find({
-            device_id: packMap.tag.code
-          })
-            .sort({ _id: -1 })
-            .limit(1)
-            .then(resultFind => {
-              return resultFind[0];
-            });
+          .sort({ _id: -1 })
+          .limit(1)
+          .then(resultFind => {
+            return resultFind[0];
+          });
 
-          //Get last deviceData from mock empty
-          if (!lastDeviceData) {
-            lastDeviceData = {
-              device_id: packMap.tag.code,
-              message_date: null,
-              message_date_timestamp: null,
-              message_type: null,
-              last_communication: null,
-              last_communication_timestamp: null,
-              latitude: null,
-              longitude: null,
-              accuracy: null,
-              temperature: null,
-              seq_number: null,
-              battery: {
-                percentage: null,
-                voltage: null
-              },
-              message: null
-            };
-          }
-
-          let dict = {
-            deviceId: packMap.tag.code,
-            lastDeviceData: lastDeviceData
+        //Get last deviceData from mock empty
+        if (!lastDeviceData) {
+          lastDeviceData = {
+            device_id: packMap.tag.code,
+            message_date: null,
+            message_date_timestamp: null,
+            message_type: null,
+            last_communication: null,
+            last_communication_timestamp: null,
+            latitude: null,
+            longitude: null,
+            accuracy: null,
+            temperature: null,
+            seq_number: null,
+            battery: {
+              percentage: null,
+              voltage: null
+            },
+            message: null
           };
-          return dict;
-        });
+        }
 
-      return packMapped;
-    });
+        let dict = {
+          deviceId: packMap.tag.code,
+          lastDeviceData: lastDeviceData
+        };
+        return dict;
+      });
+
+    return packMapped;
+  });
   deviceDictList = await Promise.all(result);
   return deviceDictList;
 }
@@ -199,7 +197,7 @@ function initWebSocket() {
     connection.on("message", async function(message) {
       if (message.type === "utf8") {
         //logger.info("WebSocket Received: '" + message.utf8Data + "'");
-        console.log(message);
+        //console.log(message);
         let jsonMessage = JSON.parse(message.utf8Data);
 
         //Save message
@@ -207,7 +205,6 @@ function initWebSocket() {
           message: JSON.stringify(jsonMessage),
           message_date: new Date(jsonMessage.timestamp * 1000)
         };
-        logger.info(messageCollection);
         Message.create(messageCollection);
 
         let deviceDict = deviceDictList.find(function(elem) {
@@ -239,7 +236,7 @@ function initWebSocket() {
 const runWS = async () => {
   await getDeviceDictList();
   logger.info(deviceDictList);
-  //await unsubscribingDeviceIds(deviceDictList);
+  await unsubscribingDeviceIds(deviceDictList);
   await subscribingDeviceIds(deviceDictList);
   await initWebSocket();
 };
