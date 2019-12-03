@@ -4,6 +4,8 @@ var https = require("https");
 var WebSocketClient = require("websocket").client;
 var client = new WebSocketClient();
 const { Packing } = require("./db/models/packings.model");
+const { Message } = require("./db/models/message.model");
+
 const {
   DeviceData,
   device_data_save
@@ -17,6 +19,7 @@ var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 // Getting Dict DevicesIds x last DeviceData
 let deviceDictList;
 async function getDeviceDictList() {
+  logger.info("aqui");
   await require("./db/db")();
 
   //logger.info("Getting Dict DevicesIds x last DeviceData");
@@ -29,7 +32,6 @@ async function getDeviceDictList() {
       })
       .map(async packMap => {
         //Get last deviceData from DB
-        /*
         let lastDeviceData = await DeviceData.find({
           device_id: packMap.tag.code
         })
@@ -38,27 +40,28 @@ async function getDeviceDictList() {
           .then(resultFind => {
             return resultFind[0];
           });
-        */
-        //Get last deviceData from mock empty
 
-        let lastDeviceData = {
-          device_id: packMap.tag.code,
-          message_date: null,
-          message_date_timestamp: null,
-          message_type: null,
-          last_communication: null,
-          last_communication_timestamp: null,
-          latitude: null,
-          longitude: null,
-          accuracy: null,
-          temperature: null,
-          seq_number: null,
-          battery: {
-            percentage: null,
-            voltage: null
-          },
-          message: null
-        };
+        //Get last deviceData from mock empty
+        if (!lastDeviceData) {
+          lastDeviceData = {
+            device_id: packMap.tag.code,
+            message_date: null,
+            message_date_timestamp: null,
+            message_type: null,
+            last_communication: null,
+            last_communication_timestamp: null,
+            latitude: null,
+            longitude: null,
+            accuracy: null,
+            temperature: null,
+            seq_number: null,
+            battery: {
+              percentage: null,
+              voltage: null
+            },
+            message: null
+          };
+        }
 
         let dict = {
           deviceId: packMap.tag.code,
@@ -76,8 +79,9 @@ async function getDeviceDictList() {
 // Subscribing Devices in Websocket
 async function subscribingDeviceIds(deviceDictList) {
   //logger.info("Subscribing Devices in Websocket");
-
-  deviceDictList.forEach(async deviceDict => {
+  for (let index in deviceDictList) {
+    deviceDict = deviceDictList[index];
+    //deviceDictList.forEach(async deviceDict => {
     //logger.info("Subscribing device with id " + deviceDict.deviceId);
     var optionsget = {
       host: "core.loka.systems",
@@ -88,6 +92,14 @@ async function subscribingDeviceIds(deviceDictList) {
     };
 
     // do the GET request
+    logger.info("id: " + deviceDict.deviceId);
+    await requestSubscribe(optionsget);
+    //});
+  }
+}
+
+function requestSubscribe(optionsget) {
+  return new Promise((resolve, reject) => {
     var reqGet = https.request(optionsget, function(res) {
       /*logger.info(
         "Response code on subscribing of device with id " +
@@ -97,6 +109,7 @@ async function subscribingDeviceIds(deviceDictList) {
       );*/
       res.on("data", function(d) {
         logger.info("GET result:\n" + d);
+        resolve(d);
       });
     });
 
@@ -109,16 +122,15 @@ async function subscribingDeviceIds(deviceDictList) {
           e
       );*/
       logger.info(e);
+      reject(e);
     });
   });
 }
 
 // Unsubscribing Devices in Websocket
 async function unsubscribingDeviceIds(deviceDictList) {
-  //logger.info("Unsubscribing Devices in Websocket");
-
-  deviceDictList.forEach(async deviceDict => {
-    //logger.info("Unsubscribing device with id " + deviceDict.deviceId);
+  for (let index in deviceDictList) {
+    deviceDict = deviceDictList[index];
     var optionsget = {
       host: "core.loka.systems",
       port: 443,
@@ -126,7 +138,14 @@ async function unsubscribingDeviceIds(deviceDictList) {
       method: "GET",
       headers: { Authorization: "Bearer " + token }
     };
+    // do the GET request
+    logger.info("id: " + deviceDict.deviceId);
+    await requestUnsubscribe(optionsget);
+  }
+}
 
+function requestUnsubscribe(optionsget) {
+  return new Promise((resolve, reject) => {
     // do the GET request
     var reqGet = https.request(optionsget, function(res) {
       /*logger.info(
@@ -137,6 +156,7 @@ async function unsubscribingDeviceIds(deviceDictList) {
       );*/
       res.on("data", function(d) {
         logger.info("GET result:\n" + d);
+        resolve(d);
       });
     });
 
@@ -149,6 +169,7 @@ async function unsubscribingDeviceIds(deviceDictList) {
           e
       );*/
       logger.info(e);
+      reject(e);
     });
   });
 }
@@ -176,19 +197,28 @@ function initWebSocket() {
     connection.on("message", async function(message) {
       if (message.type === "utf8") {
         //logger.info("WebSocket Received: '" + message.utf8Data + "'");
-
+        //console.log(message);
         let jsonMessage = JSON.parse(message.utf8Data);
+
+        //Save message
+        messageCollection = {
+          message: JSON.stringify(jsonMessage),
+          message_date: new Date(jsonMessage.timestamp * 1000)
+        };
+        Message.create(messageCollection);
 
         let deviceDict = deviceDictList.find(function(elem) {
           return elem.deviceId == jsonMessage.src;
         });
 
-        let deviceData = deviceDict.lastDeviceData;
+        if (deviceDict) {
+          let deviceData = deviceDict.lastDeviceData;
 
-        let deviceDataToSave = await parserMessage(jsonMessage, deviceData);
-        if (deviceDataToSave !== null) {
-          await device_data_save(deviceDataToSave);
-          deviceData = deviceDataToSave;
+          let deviceDataToSave = await parserMessage(jsonMessage, deviceData);
+          if (deviceDataToSave !== null) {
+            await device_data_save(deviceDataToSave);
+            deviceData = deviceDataToSave;
+          }
         }
       }
     });
@@ -205,8 +235,9 @@ function initWebSocket() {
 
 const runWS = async () => {
   await getDeviceDictList();
-  //await subscribingDeviceIds(deviceDictList)
-  //await unsubscribingDeviceIds(deviceDictList)
+  logger.info(deviceDictList);
+  await unsubscribingDeviceIds(deviceDictList);
+  await subscribingDeviceIds(deviceDictList);
   await initWebSocket();
 };
 

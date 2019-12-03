@@ -1,6 +1,6 @@
 FROM node:10-alpine as builder
 
-ENV BASE_URL=https://relogtechnology.com/api
+ENV BASE_URL=https://qa.relogtechnology.com/api
 
 ENV PORT $port
 
@@ -13,8 +13,10 @@ COPY . .
 RUN apk add git
 
 RUN node write_environment.js && \
+    npm config set unsafe-perm true && \
     npm install && \
-    ./node_modules/.bin/ng build --env=prod --base-href /cebrace/
+    npm config set unsafe-perm true && \
+    ./node_modules/.bin/ng build --env=prod --base-href /
 
 FROM nginx:1.13.3-alpine as main
 
