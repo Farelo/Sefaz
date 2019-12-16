@@ -1,21 +1,5 @@
 <div class="input-group d-flex justify-content-between mb-3 no-gutters">
-  <!-- <ng-select 
-    [items]="listOfFamilies" 
-    [(ngModel)]="selectedFamily" 
-    (change)="filterChanged()"  
-    placeholder="Filtrar por família" 
-    class="mb-0 col-md-6" 
-    style="margin-bottom: 10px;">
-
-    <ng-template ng-label-tmp let-item="item">
-      {{ item.code }}
-    </ng-template>
-
-    <ng-template ng-option-tmp let-item="item">
-      <div> Família: {{ item.code }} </div>
-    </ng-template>
-  </ng-select> -->
-
+ 
   <input 
     type="text" 
     class="form-control mr-4" 
@@ -31,18 +15,22 @@
   <table class="table">
     <thead>
       <tr class="cabecalho">
-        <th>Família</th>
+        <!-- <th>{{ 'PACKING.FAMILY' | translate }} ></th> -->
+        <th translate="PACKING.FAMILY"></th>
+        <!-- <th [translate]="'PACKING.FAMILY'"></th> -->
+        <!-- <th translate>PACKING.FAMILY</th> -->
         <th>Serial</th>
         <th>Tag</th>
         <th class="opcoes"></th>
       </tr>
+
     </thead>
     <tbody>
       <tr *ngFor="let packing of listOfPackings | paginate: {
                                                     itemsPerPage: 10,
                                                     currentPage: actualPage,
                                                     totalItems: listOfPackings.length}">
-        <td>{{ packing.family.code | truncate : 20 }}</td>
+        <td>{{ packing.family ? packing.family.code : '-' }}</td>
         <td>{{ packing.serial }}</td>
         <td>{{ packing.tag.code }}</td>
         <td class="teste">

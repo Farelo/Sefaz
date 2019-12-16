@@ -4,6 +4,7 @@ import { Packing } from '../../../shared/models/packing';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-embalagem',
@@ -24,13 +25,21 @@ export class EmbalagemComponent implements OnInit {
   public actualPage = -1;
 
   public logged_user: any;
-  
-  constructor(
-    private packingService: PackingService,
-    private familyService: FamiliesService,
-    private modalService: NgbModal,
+
+  constructor( public translate: TranslateService, private packingService: PackingService,
+    private familyService: FamiliesService, private modalService: NgbModal,
     private auth: AuthenticationService) {
 
+    //i18n
+    translate.addLangs(['en', 'fr', 'pt']);
+    translate.setDefaultLang('pt');
+
+    const browserLang = translate.getBrowserLang();
+    translate.use('en');
+    // translate.use(browserLang.match(/en|fr|pt/) ? browserLang : 'pt');
+    console.log(browserLang);
+
+    //Session
     let user = this.auth.currentUser(); 
     
     this.logged_user = (user.supplier ? user.supplier._id : (
@@ -40,8 +49,7 @@ export class EmbalagemComponent implements OnInit {
   }
 
 
-  ngOnInit() {
-    //this.loadFamilies();
+  ngOnInit() { 
     this.loadPackings();
   }
 

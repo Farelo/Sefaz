@@ -17,6 +17,15 @@ import {EmbalagemRoutingModule} from './embalagem.routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 
+import {HttpClient} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader'; 
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -29,7 +38,14 @@ import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    ApplicationPipes
+    ApplicationPipes,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+  })
   ],
   declarations: [
     EmbalagemCadastroComponent,
