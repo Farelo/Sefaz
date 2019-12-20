@@ -1,8 +1,9 @@
 <section class="bg-resumo">
-  <h3 class="total-embalagens">{{ resume.qtd_total }} Embalagens totais</h3>
+  <h3 class="total-embalagens">{{ resume.qtd_total }} </h3>
+  <!-- {{ 'HOME.TOTAL_PACKING' | translate }} -->
   
   <div class="grid">
-    <div class="item tipo-barra">Pontos de Controle</div>
+    <div translate="HOME.CONTROL_POINTS" class="item tipo-barra"></div>
     <div class="item">
       <div class="progress">
         <div class="progress-bar progress-bar-full" [tooltip]="getTooltipControle()" [style.width.%]="progressControle[0]"></div>
@@ -10,7 +11,7 @@
       </div>
     </div>
 
-    <div class="item tipo-barra">Em viagem</div>
+    <div translate="HOME.TRAVELING" class="item tipo-barra"></div>
     <div class="item">
       <div class="progress">
         <div class="progress-bar progress-bar-empty" [style.width.%]="progressViagem[0]"></div>
@@ -19,12 +20,5 @@
       </div>
     </div>
 
-    <!-- <div class="item tipo-barra">Sem sinal</div>
-    <div class="item">
-      <div class="progress">
-        <div class="progress-bar progress-bar-empty" style="width: 85%"></div>
-        <div class="progress-bar progress-bar-full" style="width: 15%"></div>
-      </div>
-    </div> -->
   </div>
 </section>

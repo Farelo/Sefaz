@@ -1,6 +1,7 @@
   import { Component, OnInit } from '@angular/core';
   import { PackingService, HomeService } from '../../servicos/index.service';
   import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
   @Component({
     selector: 'app-home',
@@ -27,7 +28,7 @@
       qtd_with_low_battery: 0
     };
 
-    constructor(private homeService: HomeService) { }
+    constructor(public translate: TranslateService, private homeService: HomeService) { }
 
     ngOnInit() {
       this.getResume();

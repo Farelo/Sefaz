@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-resumo-home',
@@ -14,7 +15,7 @@ export class ResumoHomeComponent implements OnInit {
   public progressViagem: any = [];
   public progressSemSinal: any = [];
 
-  constructor() { }
+  constructor(public translate: TranslateService) { }
 
   ngOnInit() {
 

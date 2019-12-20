@@ -1,5 +1,56 @@
 {
+    "MISC":{
+        "YES": "Yes",
+        "YES_CAP": "YES",
+        "NO": "No",
+        "NO_CAP": "NO",
+        "CLOSE": "Close",
+        "CLOSE_CAP": "CLOSE",
+        "UPDATE_CAP": "UPDATE",
+        "update": "Update"
+    },
+    "STATES":{
+        "TRAVELING": "Em viagem"
+    },
+    "HOME": {
+        "REGISTERED_PACKAGES": "Embalagens no Sistema",
+        "TOTAL_PACKING": "Embalagens totais",
+        "IN_CONTROL_POINTS": "Nos Pontos de controle",
+        "PERMANENCE_TIME": "Tempo de permanência",
+        "TRAVELING": "Em viagem",
+        "LATE_PACKAGE": "Embalagens atrasadas",
+        "ABSENT_PACKAGE": "Embalagens ausentes",
+        "LOW_BATTERY": "Bateria Baixa",
+        "LOW_BATTERY_DESCRIPTION": "Embalagens com Bateria Baixa",
+        "NO_RESULTS": "Não há embalagens nesta situação",
+        "TABLE": {
+            "CODE": "Código",
+            "SERIAL": "Serial",
+            "TAG": "Tag",
+            "ACTUAL_SITE": "Local Atual",
+            "TYPE_SITE": "Tipo de Local",
+            "BATTERY": "Bateria",
+            "BATTERY_SIGNAL": "Sinal da Bateria"
+        }
+    },
     "PACKING": {
-        "FAMILY": "Família"
+        "FAMILY": "Family"
+    },
+    "SETTINGS": {
+        "TITLE": "Edit System Configurarion",
+        "LANG": "LANGUAGE",
+        "BATTERY_LEVEL_ALERT": "BATTERY LEVEL TO GENERATE ALERT",
+        "ACCURACY_LEVEL_ALERT": "RELEVANT ACCURACY LEVEL",
+        "ENABLE_ALERTS": "ENABLE ALERTS:",
+        "LOST_PACKAGE_NAME": "Lost Package", 
+        "JOB_CYCLE": "JOB CYCLE (SEC)",
+        "JOB_CYCLE_DESCRIPTION": "e.g. 120 seconds",
+        "HISTORIC_LIFE": "HISTORIC LIFE (DAYS)",
+        "HISTORIC_LIFE_DESCRIPTION": "e.g. 60 days",
+        "NO_SIGNAL_LIMIT": "NO SIGNAL LIMIT (DAYS)",
+        "NO_SIGNAL_DESCRIPTION": "e.g. 2 days",
+        "LOST_PACKAGE": "LOST PACKAGE (DAYS)",
+        "LOST_PACKAGE_DESCRIPTION": "e.g. 2 days",
+        "ACTIVATE_BPLINE": "ACTIVATE BPLINE"
     }
 }

@@ -12,44 +12,77 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['../cadastros.component.css']
 })
 export class EmbalagemComponent implements OnInit {
-  
+
   //list
   private _listOfPackings: any[] = [];
   public listOfPackings: any[] = [];
-  
+
   //ng select
   public listOfFamilies: any[] = [];
   public selectedFamily: any;
-  
+
   //pagination
   public actualPage = -1;
 
   public logged_user: any;
 
-  constructor( public translate: TranslateService, private packingService: PackingService,
+  constructor(public translate: TranslateService, private packingService: PackingService,
     private familyService: FamiliesService, private modalService: NgbModal,
     private auth: AuthenticationService) {
 
     //i18n
-    translate.addLangs(['en', 'fr', 'pt']);
-    translate.setDefaultLang('pt');
+    translate.addLangs(['en', 'es', 'pt']);
+    //translate.setDefaultLang('pt');
 
     const browserLang = translate.getBrowserLang();
-    translate.use('en');
-    // translate.use(browserLang.match(/en|fr|pt/) ? browserLang : 'pt');
+    console.log(browserLang);
+    //translate.use('es');
+
+    //Use the browser language if exists, or pt if doesn't
+    translate.use(browserLang.match(/en|es|pt/) ? browserLang : 'pt');
     console.log(browserLang);
 
     //Session
-    let user = this.auth.currentUser(); 
-    
+    let user = this.auth.currentUser();
+
     this.logged_user = (user.supplier ? user.supplier._id : (
       user.official_supplier ? user.official_supplier : (
         user.logistic ? user.logistic.suppliers : (
           user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
+  changeLanguage() {
+    console.log(this.translate.getLangs())
+    console.log('changeLanguage')
+    console.log('this.translate.currentLang', this.translate.currentLang)
+    
+    switch(this.translate.currentLang){
+      case 'pt':
+        console.log('pt');
+        this.translate.use('en'); 
+        console.log('use en');
+        console.log('this.translate.currentLang', this.translate.currentLang)
+        break;
 
-  ngOnInit() { 
+      case 'en':
+        console.log('en');
+        this.translate.use('es'); 
+        console.log('use es');
+        console.log('this.translate.currentLang', this.translate.currentLang)
+        break;
+
+      case 'es':
+        console.log('es');
+        this.translate.use('pt'); 
+        console.log('use pt');
+        console.log('this.translate.currentLang', this.translate.currentLang)
+        break;
+    }
+
+    console.log('\n\n\n')
+  }
+
+  ngOnInit() {
     this.loadPackings();
   }
 
@@ -57,26 +90,26 @@ export class EmbalagemComponent implements OnInit {
   /**
    * Carregar todos os pacotes com paginação e sem filtro
    */
-  loadPackings(): void{
+  loadPackings(): void {
 
     this.packingService.getAllPackings().subscribe(result => {
 
       this._listOfPackings = result;
       this.listOfPackings = result;
-      }, err => {console.log(err)});
+    }, err => { console.log(err) });
   }
 
-  loadFamilies(){
+  loadFamilies() {
     this.familyService.getAllFamilies().subscribe(result => {
       this.listOfFamilies = result;
     }, err => console.error(err));
   }
-  
+
   /**
    * Proceed to remove a packing
    * @param packing 
    */
-  removePacking(packing):void{
+  removePacking(packing): void {
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.mObject = packing;
     modalRef.componentInstance.mType = "PACKING";
@@ -93,8 +126,8 @@ export class EmbalagemComponent implements OnInit {
     // filter our data
     const temp = this._listOfPackings.filter(function (item) {
       return ((item.family.code.toLowerCase().indexOf(val) !== -1 || !val)
-              || (item.serial.toLowerCase().indexOf(val) !== -1 || !val)
-              || (item.tag.code.toLowerCase().indexOf(val) !== -1 || !val));
+        || (item.serial.toLowerCase().indexOf(val) !== -1 || !val)
+        || (item.tag.code.toLowerCase().indexOf(val) !== -1 || !val));
     });
 
     // update the rows
