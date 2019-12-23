@@ -35,7 +35,7 @@ const eventRecordSchema = new mongoose.Schema({
     default: Date.now
   },
   device_data_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types,
     ref: "DeviceData"
   }
 });
