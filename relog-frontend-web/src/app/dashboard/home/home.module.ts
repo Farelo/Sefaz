@@ -15,6 +15,14 @@ import { CategoriaPontosDeControleComponent } from './categoria-pontos-de-contro
 import { CategoriaEmViagemComponent } from './categoria-em-viagem/categoria-em-viagem.component';
 import { CategoriaSemSinalComponent } from './categoria-sem-sinal/categoria-sem-sinal.component';
 import { CategoriaBateriaBaixaComponent } from './categoria-bateria-baixa/categoria-bateria-baixa.component';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 
 @NgModule({
   imports: [
@@ -25,7 +33,14 @@ import { CategoriaBateriaBaixaComponent } from './categoria-bateria-baixa/catego
     NgxChartsModule,
     NgbModule,
     TooltipModule, 
-    PopoverModule
+    PopoverModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   declarations: [
     HomeComponent,

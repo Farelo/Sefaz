@@ -15,7 +15,6 @@ describe('api/device_data', () => {
     let device_data_body
     let new_packing
 
-
     beforeEach(async () => {
 
         server = require('../../server')

@@ -28,7 +28,10 @@ import { TranslateService } from '@ngx-translate/core';
       qtd_with_low_battery: 0
     };
 
-    constructor(public translate: TranslateService, private homeService: HomeService) { }
+    constructor(public translate: TranslateService, private homeService: HomeService) { 
+      const browserLang = translate.getBrowserLang();
+      translate.use(browserLang.match(/en|es|pt/) ? browserLang : 'pt');
+    }
 
     ngOnInit() {
       this.getResume();

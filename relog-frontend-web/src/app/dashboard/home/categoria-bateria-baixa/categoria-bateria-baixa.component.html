@@ -1,5 +1,5 @@
 <section class="grupo-categoria">
-  <h5>Bateria Baixa</h5>
+  <h5 translate="HOME.BATTERY.TITLE"></h5>
 
   <div class="progress categoria-progress">
     <div class="progress-bar status-bateria" [style.width.%]="progressBateria[0]"></div>
@@ -15,7 +15,7 @@
           {{ resume.qtd_with_low_battery }}
         </div>
 
-        <span class="nome-categoria">Embalagens com Bateria Baixa</span>
+        <span translate="HOME.BATTERY.LOW_BATTERY" class="nome-categoria"></span>
 
         <button class="hamburger hamburger--squeeze" type="button" (click)="bateriaBaixaCollapsed = !bateriaBaixaCollapsed" [attr.aria-controls]="bateriaCollapsed"
           [ngClass]="{ 'is-active':bateriaBaixaCollapsed == true}">
@@ -31,20 +31,18 @@
     <!-- Conteúdo Embalagens Bateria Baixa -->
     <div [attr.id]="bateriaCollapsed" [ngbCollapse]="!bateriaBaixaCollapsed">
       <div class="">
-        <div *ngIf="listBattery.length < 1">
-          Não há embalagens nesta situação.
-        </div>
+        <div translate="HOME.NO_RESULTS" *ngIf="listBattery.length < 1"> </div>
         <div *ngIf="listBattery.length > 0" class="table-responsive meuInventario inner-table">
           <table class="table">
             <thead>
               <tr class="cabecalho">
-                <th>Código</th>
-                <th>Serial</th>
-                <th>Tag</th>
-                <th>Planta Atual</th>
-                <th>Local</th>
-                <th>Bateria</th>
-                <th>Sinal da Bateria</th>
+                <th translate="HOME.TABLE.CODE">Código</th>
+                <th translate="HOME.TABLE.SERIAL">Serial</th>
+                <th translate="HOME.TABLE.TAG">Tag</th>
+                <th translate="HOME.TABLE.LAST_SITE">Planta Atual</th>
+                <th translate="HOME.TABLE.ACTUAL_SITE_TYPE">Local</th>
+                <th translate="HOME.TABLE.BATTERY">Bateria</th>
+                <th translate="HOME.TABLE.LAST_BATTERY_SIGNAL">Sinal da Bateria</th>
               </tr>
             </thead>
 

@@ -13,10 +13,10 @@
         "TRAVELING": "Em viagem"
     },
     "HOME": {
+        "TITLE": "Embalagens do Sistema",
         "REGISTERED_PACKAGES": "Embalagens no Sistema",
         "TOTAL_PACKING": "Embalagens totais",
-        "IN_CONTROL_POINTS": "Nos Pontos de controle",
-        "PERMANENCE_TIME": "Tempo de permanência",
+        "CONTROL_POINTS": "Pontos de controle",
         "TRAVELING": "Em viagem",
         "LATE_PACKAGE": "Embalagens atrasadas",
         "ABSENT_PACKAGE": "Embalagens ausentes",
@@ -28,29 +28,48 @@
             "SERIAL": "Serial",
             "TAG": "Tag",
             "ACTUAL_SITE": "Local Atual",
-            "TYPE_SITE": "Tipo de Local",
+            "ACTUAL_SITE_TYPE": "Tipo",
             "BATTERY": "Bateria",
-            "BATTERY_SIGNAL": "Sinal da Bateria"
+            "LAST_BATTERY_SIGNAL": "Sinal da Bateria",
+            "LAST_SIGNAL": "Último Sinal",
+            "LAST_SITE": "Último Lugar",
+            "TRAVELING_TIME": "Tempo de viagem",
+            "ABSENT_TIME": "Tempo de ausência"
+        },
+        "IN_CONTROL_POINTS": {
+            "TITLE": "Nos Pontos de controle",
+            "PERMANENCE_TIME": "Tempo de permanência",
+            "INCORRECT_LOCAL": "Local Incorreto"
+        },
+        "TRAVELING_COMPONENT":{
+            "TITLE": "Em viagem",
+            "LATE": "Embalagens Atrasadas",
+            "ABSENT": "Embalagens Ausentes"
+        },
+        "BATTERY":{
+            "TITLE": "Bateria Baixa",
+            "LOW_BATTERY": "Embalagens com bateria baixa",
+            "ABSENT": "Embalagens Ausentes"
         }
     },
     "PACKING": {
         "FAMILY": "Family"
     },
     "SETTINGS": {
-        "TITLE": "Edit System Configurarion",
-        "LANG": "LANGUAGE",
-        "BATTERY_LEVEL_ALERT": "BATTERY LEVEL TO GENERATE ALERT",
-        "ACCURACY_LEVEL_ALERT": "RELEVANT ACCURACY LEVEL",
-        "ENABLE_ALERTS": "ENABLE ALERTS:",
-        "LOST_PACKAGE_NAME": "Lost Package", 
-        "JOB_CYCLE": "JOB CYCLE (SEC)",
-        "JOB_CYCLE_DESCRIPTION": "e.g. 120 seconds",
-        "HISTORIC_LIFE": "HISTORIC LIFE (DAYS)",
-        "HISTORIC_LIFE_DESCRIPTION": "e.g. 60 days",
-        "NO_SIGNAL_LIMIT": "NO SIGNAL LIMIT (DAYS)",
-        "NO_SIGNAL_DESCRIPTION": "e.g. 2 days",
-        "LOST_PACKAGE": "LOST PACKAGE (DAYS)",
-        "LOST_PACKAGE_DESCRIPTION": "e.g. 2 days",
-        "ACTIVATE_BPLINE": "ACTIVATE BPLINE"
+        "TITLE": "Editar configurações do sistema",
+        "LANG": "Idioma",
+        "BATTERY_LEVEL_ALERT": "NÍVEL DA BATERIA PARA GERAR ALERTA",
+        "ACCURACY_LEVEL_ALERT": "LIMITE DE ACURÁCIA RELEVANTE",
+        "ENABLE_ALERTS": "HABILITAR ALERTAS:",
+        "LOST_PACKAGE_NAME": "Embalagem perdida", 
+        "JOB_CYCLE": "CICLO DO JOB (SEG)",
+        "JOB_CYCLE_DESCRIPTION": "Ex. '120 segundos'",
+        "HISTORIC_LIFE": "VIDA ÚTIL DO HISTÓRICO (DIAS)",
+        "HISTORIC_LIFE_DESCRIPTION": "Ex. '60 dias'",
+        "NO_SIGNAL_LIMIT": "ALERTA SEM SINAL (DIAS)",
+        "NO_SIGNAL_DESCRIPTION": "Ex. '2 dias'",
+        "LOST_PACKAGE": "ALERTA PERDIDA (DIAS)",
+        "LOST_PACKAGE_DESCRIPTION": "Ex. '2 dias'",
+        "ACTIVATE_BPLINE": "ATIVAR BPLINE"
     }
 }

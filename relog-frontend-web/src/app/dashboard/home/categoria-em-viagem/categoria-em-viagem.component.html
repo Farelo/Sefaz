@@ -1,7 +1,7 @@
 <section class="grupo-categoria" *ngIf="settings.enable_viagem_atrasada || settings.enable_viagem_perdida">
 
   <div style="display: flex;">
-    <h5>Em Viagem</h5>
+    <h5 translate="HOME.TRAVELING_COMPONENT.TITLE">Em Viagem</h5>
     <div class="quantidade-total-categoria">{{ resume.qtd_in_traveling }}</div>
   </div>
 
@@ -20,7 +20,7 @@
           {{ resume.qtd_traveling_late }}
         </div>
 
-        <span class="nome-categoria">Embalagens Atrasadas</span>
+        <span translate="HOME.TRAVELING_COMPONENT.LATE" class="nome-categoria"></span>
 
         <button class="hamburger hamburger--squeeze" type="button" (click)="atrasadaCollapsed = !atrasadaCollapsed" [attr.aria-controls]="conteudoAtrasada"
           [ngClass]="{ 'is-active':atrasadaCollapsed == true}">
@@ -36,19 +36,17 @@
     <!-- Conteúdo Embalagens Atrasadas -->
     <div [attr.id]="conteudoAtrasada" [ngbCollapse]="!atrasadaCollapsed">
       <div class="">
-        <div *ngIf="listLate.length < 1">
-          Não há embalagens nesta situação.
-        </div>
+        <div translate="HOME.NO_RESULTS" *ngIf="listLate.length < 1"></div>
 
         <div *ngIf="listLate.length > 0" class="table-responsive meuInventario inner-table">
           <table class="table">
             <thead>
               <tr class="cabecalho">
-                <th>Code</th>
-                <th>Serial</th>
-                <th>Tag</th>
-                <th>Última Planta</th>
-                <th>Tempo de Viagem</th>
+                <th translate="HOME.TABLE.CODE">Code</th>
+                <th translate="HOME.TABLE.SERIAL">Serial</th>
+                <th translate="HOME.TABLE.TAG">Tag</th>
+                <th translate="HOME.TABLE.LAST_SITE">Última Planta</th>
+                <th translate="HOME.TABLE.TRAVELING_TIME">Tempo de Viagem</th>
               </tr>
             </thead>
 
@@ -61,8 +59,7 @@
                 <td>{{ itemLate.family_code }}</td>
                 <td>{{ itemLate.serial }}</td>
                 <td>{{ itemLate.tag }}</td>
-                <td>{{ itemLate.current_control_point_name }}</td>
-                <!-- <td>{{ ((itemLate.battery_percentage | round) + '%') }}</td> -->
+                <td>{{ itemLate.current_control_point_name }}</td> 
                 <td>{{ itemLate.date }}</td>
               </tr>
             </tbody>
@@ -88,7 +85,7 @@
           {{ resume.qtd_traveling_missing }}
         </div>
 
-        <span class="nome-categoria">Embalagens Ausentes</span>
+        <span translate="HOME.TRAVELING_COMPONENT.TITLE" class="nome-categoria"></span>
 
         <button class="hamburger hamburger--squeeze" type="button" (click)="ausenteCollapsed = !ausenteCollapsed" [attr.aria-controls]="conteudoAusente"
           [ngClass]="{ 'is-active':ausenteCollapsed == true}">
@@ -104,18 +101,16 @@
     <!-- Conteúdo Embalagens Ausentes -->
     <div [attr.id]="conteudoAusente" [ngbCollapse]="!ausenteCollapsed">
       <div class="">
-        <div *ngIf="listMissing.length < 1">
-          Não há embalagens nesta situação.
-        </div>
+        <div translate="HOME.NO_RESULTS" *ngIf="listMissing.length < 1"> </div>
         <div *ngIf="listMissing.length > 0" class="table-responsive meuInventario inner-table">
           <table class="table">
             <thead>
               <tr class="cabecalho">
-                <th>Code</th>
-                <th>Serial</th>
-                <th>Tag</th>
-                <th>Última Planta</th>
-                <th>Tempo de Ausência</th>
+                <th translate="HOME.TABLE.CODE"></th>
+                <th translate="HOME.TABLE.SERIAL"></th>
+                <th translate="HOME.TABLE.TAG"></th>
+                <th translate="HOME.TABLE.LAST_SITE"></th>
+                <th translate="HOME.TABLE.ABSENT_TIME"></th>
               </tr>
             </thead>
 
@@ -129,7 +124,6 @@
                 <td>{{ item.serial }}</td>
                 <td>{{ item.tag }}</td>
                 <td>{{ item.current_control_point_name }}</td>
-                <!-- <td>{{ ((item.battery_percentage | round) + '%') }}</td> -->
                 <td>{{ item.date }}</td>
               </tr>
             </tbody>
