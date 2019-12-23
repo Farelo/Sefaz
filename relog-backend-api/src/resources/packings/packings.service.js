@@ -3,6 +3,7 @@ const _ = require('lodash')
 const config = require('config')
 const { Packing } = require('./packings.model')
 const { Family } = require('../families/families.model')
+const { DeviceData } = require('../device_data/device_data.model')
 const rp = require('request-promise')
 const mongoose = require('mongoose')
 
@@ -146,6 +147,83 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
         }
         
         return await Packing.find(conditions).populate('last_device_data').populate('last_device_data_battery').populate('family')
+        
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.control_point_geolocation = async (query) => {
+    try {
+        let dateConditions = {}
+
+        if ((query.start_date != null && query.end_date)) {
+
+            dateConditions['message_date'] = {
+                $gte: new Date(query.start_date),
+                $lte: new Date(query.end_date),
+            }
+
+        } else if (query.date != null) {
+
+            dateConditions['message_date'] = {
+                $gte: new Date(query.date),
+                $lt: new Date(date2.setDate(query.date + 1)),
+            }
+
+        } else if (query.last_hours) {
+            let date = new Date()
+            date.setHours(date.getHours() - query.last_hours)
+            
+            dateConditions['message_date'] = {
+                $gte: date
+            }
+        }
+
+        console.log(dateConditions);
+
+        let recents_device_data = await DeviceData.aggregate([ 
+            { 
+                $match: dateConditions 
+            },
+            { 
+                $sort: { "message_date": -1 } 
+            }, 
+            { 
+                $group : { _id : "$device_id", "doc": { "$first":"$$ROOT" } } 
+            },
+            {  
+                $replaceRoot : { "newRoot": "$doc" }
+            }
+        ]).allowDiskUse(true)
+        
+        let packings = await Packing.aggregate([
+            {
+                $match: { "tag.code" : { $in: recents_device_data.map(pc => pc.device_id) } }
+            },
+            {
+                $lookup: {
+                    from: "families",
+                    localField: "family",
+                    foreignField: "_id",
+                    as: "family"
+                }
+            },
+            {
+                $unwind: '$family'
+            },
+        ]).allowDiskUse(true)
+        
+        packings = packings.map(p => {
+            let recent_device_data = recents_device_data.filter(pc => {
+                return pc.device_id == p.tag.code
+            })
+                
+            p['recent_device_data'] = recent_device_data.shift()
+            return p
+        })
+
+        return packings
         
     } catch (error) {
         throw new Error(error)

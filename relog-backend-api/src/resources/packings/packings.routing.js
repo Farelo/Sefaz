@@ -16,6 +16,7 @@ router.delete('/:id', [auth, authz, validate_object_id], packings_controller.del
 router.get('/on_control_point/:control_point_id', [auth], packings_controller.show_packings_on_control_point)
 router.get('/check_device/:device_id', [auth], packings_controller.check_device)
 router.get('/data/geolocation', [auth], packings_controller.geolocation)
+router.get('/data/control_point/geolocation', [auth], packings_controller.control_point_geolocation)
 
 module.exports = router
 
@@ -282,6 +283,46 @@ module.exports = router
  *         type: string
  *       - name: packing_serial
  *         description: Filter localization
+ *         in: query
+ *         required: false
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: list of all reports
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+ /**
+ * @swagger
+ * /packings/data/control_point/geolocation:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve general report about all packings based on control points
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Packings
+ *     parameters:
+ *       - name: start_date
+ *         description: Device Data message date
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: end_date
+ *         description: Device Data message date
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: date
+ *         description: Device Data message date
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: last_hours
+ *         description: Device Data message date
  *         in: query
  *         required: false
  *         type: string

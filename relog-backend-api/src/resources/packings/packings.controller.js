@@ -5,6 +5,7 @@ const families_service = require('../families/families.service')
 const projects_service = require('../projects/projects.service')
 const control_points_service = require('../control_points/control_points.service')
 const companies_service = require('../companies/companies.service')
+const utils = require('../../common/utils')
 
 exports.all = async (req, res) => {
     const tag = req.query.tag_code ? { code: req.query.tag_code } : null
@@ -118,6 +119,41 @@ exports.geolocation = async (req, res) => {
     }
 
     const packings = await packings_service.geolocation(query)
+
+    res.json(packings)
+}
+
+exports.control_point_geolocation = async (req, res) => {
+    const query = {
+        start_date: req.query.start_date ? req.query.start_date : null,
+        end_date: req.query.end_date ? req.query.end_date : null,
+        date: req.query.date ? req.query.date : null,
+        last_hours: req.query.last_hours ? req.query.last_hours : null,
+    }
+
+    if (query.start_date != null && !utils.is_valid_date(query.start_date)) {
+        return res.status(HttpStatus.NOT_FOUND).send('Invalid date')
+    }
+
+    if (query.end_date != null && !utils.is_valid_date(query.end_date)) {
+        return res.status(HttpStatus.NOT_FOUND).send('Invalid date')
+    }
+
+    if (query.date != null && !utils.is_valid_date(query.date)) {
+        return res.status(HttpStatus.NOT_FOUND).send('Invalid date')
+    }
+
+    // if (req.query.family_id) {
+    //     const family = await families_service.get_family(req.query.family_id)
+    //     if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
+    // }
+
+    // if (req.query.company_id) {
+    //     const company = await companies_service.get_company(req.query.company_id)
+    //     if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+    // }
+
+    const packings = await packings_service.control_point_geolocation(query)
 
     res.json(packings)
 }
