@@ -3,7 +3,10 @@ const _ = require('lodash')
 const config = require('config')
 const { Packing } = require('./packings.model')
 const { Family } = require('../families/families.model')
+const { Company } = require('../companies/companies.model')
+const { ControlPoint } = require('../control_points/control_points.model')
 const { DeviceData } = require('../device_data/device_data.model')
+const { EventRecord } = require('../event_record/event_record.model')
 const rp = require('request-promise')
 const mongoose = require('mongoose')
 
@@ -136,13 +139,13 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
 
         if (familiesIds.length) {
             conditions['family'] = {
-                '$in': familiesIds
+                $in: familiesIds
             }
         }
 
         if (query.packing_serial != null) {
             conditions['serial'] = {
-                '$eq': query.packing_serial
+                $eq: query.packing_serial
             }
         }
         
@@ -155,18 +158,18 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
 
 exports.control_point_geolocation = async (query) => {
     try {
-        let dateConditions = {}
+        let date_conditions = {}
 
         if ((query.start_date != null && query.end_date)) {
 
-            dateConditions['message_date'] = {
+            date_conditions = {
                 $gte: new Date(query.start_date),
                 $lte: new Date(query.end_date),
             }
 
         } else if (query.date != null) {
 
-            dateConditions['message_date'] = {
+            date_conditions = {
                 $gte: new Date(query.date),
                 $lt: new Date(date2.setDate(query.date + 1)),
             }
@@ -175,16 +178,76 @@ exports.control_point_geolocation = async (query) => {
             let date = new Date()
             date.setHours(date.getHours() - query.last_hours)
             
-            dateConditions['message_date'] = {
+            date_conditions = {
                 $gte: date
             }
         }
+        console.log(date_conditions);
+        
+        let event_record_conditions = {}
 
-        console.log(dateConditions);
+        if (query.company_id != null || query.company_type != null) {
+            let companyConditions = {}
+            if (query.company_id != null) {
+                companyConditions = { id: query.company_id }            
+            } else if (query.company_type != null) {
+                companyConditions = { type: query.company_type }            
+            }
+            console.log('companyConditions');
+            console.log(companyConditions);
+
+            let companies_ids = await Company.find(companyConditions).distinct('_id')
+            console.log('companies_ids');
+            console.log(companies_ids);
+
+            let control_points = await ControlPoint.find({ company: { $in: companies_ids } }).distinct('_id')
+            console.log('control_points');
+            console.log(control_points);
+
+            event_record_conditions = { control_point: { $in: control_points } }
+
+            console.log('event_record_conditions');
+            console.log(event_record_conditions);
+        }
+
+        if (!_.isEmpty(date_conditions)) {
+            event_record_conditions['created_at'] = date_conditions
+        }
+
+        let event_records = await EventRecord.aggregate([ 
+            { 
+                $match: event_record_conditions 
+            },
+            { 
+                $sort: { "created_at": -1 } 
+            }, 
+            {
+                $lookup: {
+                    from: "packings",
+                    localField: "packing",
+                    foreignField: "_id",
+                    as: "packings"
+                }
+            },
+            {
+                $unwind: '$packings'
+            },
+            { 
+                $group : { _id : "$packing", "doc": { "$first":"$$ROOT" } } 
+            },
+            {  
+                $replaceRoot : { "newRoot": "$doc" }
+            }
+        ])
+
+        console.log('event_records_count');
+        console.log(event_records.length);
+        
+        return event_records
 
         let recents_device_data = await DeviceData.aggregate([ 
             { 
-                $match: dateConditions 
+                $match: date_conditions 
             },
             { 
                 $sort: { "message_date": -1 } 

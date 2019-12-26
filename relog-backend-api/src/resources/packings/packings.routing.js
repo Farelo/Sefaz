@@ -326,6 +326,26 @@ module.exports = router
  *         in: query
  *         required: false
  *         type: string
+ *       - name: company_type
+ *         description: Company type
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: company_id
+ *         description: Company id
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: control_point_type
+ *         description: Control point type
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: control_point_id
+ *         description: Control point id
+ *         in: query
+ *         required: false
+ *         type: string
  *     responses:
  *       200:
  *         description: list of all reports
