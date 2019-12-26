@@ -1,6 +1,6 @@
-const debug = require("debug")("model:device_data");
 const mongoose = require("mongoose");
-const { Packing } = require("../packings/packings.model");
+const { Packing } = require("./packings.model");
+const logger = require("../../config/winston.config");
 
 const deviceDataSchema = new mongoose.Schema({
   device_id: {
@@ -9,6 +9,10 @@ const deviceDataSchema = new mongoose.Schema({
   },
   message_date: {
     type: Date,
+    required: true
+  },
+  message_type: {
+    type: String,
     required: true
   },
   message_date_timestamp: {
@@ -50,14 +54,20 @@ const deviceDataSchema = new mongoose.Schema({
   },
   update_at: {
     type: Date,
-
     default: Date.now
+  },
+  message: {
+    type: String
   }
 });
 
-deviceDataSchema.index({ device_id: 1, message_date: -1 }, { unique: true });
+deviceDataSchema.index(
+  { device_id: 1, message_date_timestamp: -1 },
+  { unique: true }
+);
 
 const update_packing = async (device_data, next) => {
+  //logger.info("Update packing after save DeviceData");
   try {
     let update_attrs = {};
     let update = false;
@@ -105,13 +115,23 @@ const update_packing = async (device_data, next) => {
       await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
 
     next();
+    //logger.info("Update packing after save DeviceData SUCESS!");
   } catch (error) {
+    //logger.info("Update packing after save DeviceData ERROR!");
+    //logger.info(error);
+
     next(error);
   }
 };
 
 deviceDataSchema.statics.findByDeviceId = function(device_id, projection = "") {
   return this.findOne({ device_id }, projection);
+};
+
+deviceDataSchema.statics.findMosRecentById = function(id) {
+  return this.find({ device_id: id })
+    .sort({ _id: -1 })
+    .limit(1);
 };
 
 const saveDeviceDataToPacking = function(doc, next) {
@@ -124,40 +144,43 @@ const update_updated_at_middleware = function(next) {
   next();
 };
 
-const device_data_save = async devide_data_array => {
-  for (device_data of devide_data_array) {
+const device_data_save = async device_data => {
+  //logger.info("Saving DeviceData: " + device_data.device_id);
+  const new_device_data = new DeviceData({
+    device_id: device_data.device_id.toString(),
+    message_date: device_data.message_date,
+    message_date_timestamp: device_data.message_date_timestamp,
+    message_type: device_data.message_type,
+    last_communication: device_data.last_communication,
+    last_communication_timestamp: device_data.last_communication_timestamp,
+    latitude: device_data.latitude,
+    longitude: device_data.longitude,
+    accuracy: device_data.accuracy,
+    temperature: device_data.temperature,
+    seq_number: device_data.seq_number,
+    battery: {
+      percentage: device_data.battery.percentage,
+      voltage: device_data.battery.voltage
+    },
+    message: device_data.message
+  });
+
+  try {
+    //salva no banco | observação: não salva mensagens iguais porque o model possui indice unico e composto por device_id e message_date,
+    //e o erro de duplicidade nao interrompe o job
+    await new_device_data.save();
+    logger.info("Saved:\t" + new_device_data);
+    //.info("Save DeviceData with Sucess!");
+
+    // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
+  } catch (error) {
     try {
-      const new_device_data = new DeviceData({
-        device_id: device_data.deviceId.toString(),
-        message_date: new Date(device_data.messageDate),
-        message_date_timestamp: device_data.messageDateTimestamp,
-        last_communication: new Date(device_data.lastCommunication),
-        last_communication_timestamp: device_data.lastCommunicationTimestamp,
-        latitude: device_data.latitude,
-        longitude: device_data.longitude,
-        accuracy: device_data.accuracy,
-        temperature: device_data.temperature,
-        seq_number: device_data.seqNumber,
-        battery: {
-          percentage: device_data.battery.percentage,
-          voltage: device_data.battery.voltage
-        }
-      });
-
-      //salva no banco | observação: não salva mensagens iguais porque o model possui indice unico e composto por device_id e message_date,
-      //e o erro de duplicidade nao interrompe o job
-      await new_device_data.save();
-
-      // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
+      new_device_data.update();
+      logger.info("Updated: \t" + new_device_data);
     } catch (error) {
-      debug(
-        "Erro ao salvar o device_data do device  ",
-        device_data.deviceId,
-        " para a data-hora ",
-        device_data.messageDate,
-        " | System Error ",
-        error.errmsg ? error.errmsg : error.errors
-      );
+      logger.info("Error to save DeviceData!");
+      logger.info(new_device_data);
+      logger.info(error);
     }
   }
 };
