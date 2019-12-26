@@ -30,18 +30,6 @@ export class EmbalagemComponent implements OnInit {
     private familyService: FamiliesService, private modalService: NgbModal,
     private auth: AuthenticationService) {
 
-    //i18n
-    translate.addLangs(['en', 'es', 'pt']);
-    //translate.setDefaultLang('pt');
-
-    const browserLang = translate.getBrowserLang();
-    console.log(browserLang);
-    //translate.use('es');
-
-    //Use the browser language if exists, or pt if doesn't
-    translate.use(browserLang.match(/en|es|pt/) ? browserLang : 'pt');
-    console.log(browserLang);
-
     //Session
     let user = this.auth.currentUser();
 

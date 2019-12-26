@@ -18,11 +18,7 @@ import { CategoriaBateriaBaixaComponent } from './categoria-bateria-baixa/catego
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-
-// AoT requires an exported function for factories
-export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient);
-}
+import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
 
 @NgModule({
   imports: [
@@ -34,13 +30,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NgbModule,
     TooltipModule, 
     PopoverModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+    TranslateSettingsModule
   ],
   declarations: [
     HomeComponent,

@@ -20,11 +20,7 @@ import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
 import {HttpClient} from '@angular/common/http';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader'; 
-
-// AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
-}
+import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
 
 @NgModule({
   imports: [
@@ -39,13 +35,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     NgSelectModule,
     ApplicationPipes,
-    TranslateModule.forRoot({
-      loader: {
-          provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient]
-      }
-  })
+    TranslateSettingsModule
   ],
   declarations: [
     EmbalagemCadastroComponent,

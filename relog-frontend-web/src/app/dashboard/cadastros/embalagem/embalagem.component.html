@@ -8,7 +8,7 @@
     [(ngModel)]="search"
     (keyup)="searchEvent($event)">
 
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">{{ "REGISTER.CREATE_BUTTON" | translate }}</button>
 </div>
 
 <div class="table-responsive">
@@ -20,7 +20,7 @@
       <tr class="cabecalho">
         <!-- <th>Família</th> -->
         <!-- <th>{{ 'PACKING.FAMILY' | translate }}</th> -->
-        <th translate="PACKING.FAMILY"></th>
+        <th translate="REGISTER.TABLE.FAMILY"></th>
         <!-- <th [translate]="'PACKING.FAMILY'"></th> -->
         <!-- <th translate>PACKING.FAMILY</th> -->
         <th>Serial</th>

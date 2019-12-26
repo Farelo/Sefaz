@@ -54,17 +54,15 @@
     },
     "REGISTER": {
         "CREATE_BUTTON": "Novo",
-        "EDIT_BUTTON": "Editar",
-        "REMOVE_BUTTON": "Excluir",
-        "PROJECT:": {
-            "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome",
-            "TABLE": {
-                "NAME": "Nome"
-            }
+        "EDIT_BUTTON": "EDITAR",
+        "REMOVE_BUTTON": "EXCLUIR",
+        "TABLE": {
+            "NAME": "Nome",
+            "FAMILY": "Família"
+        },
+        "PROJECT": {
+            "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome"
         }
-    },
-    "PACKING": {
-        "FAMILY": "Family"
     },
     "SETTINGS": {
         "TITLE": "Editar configurações do sistema",
