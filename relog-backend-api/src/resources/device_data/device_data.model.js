@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Packing } = require("./packings.model");
+const { Packing } = require("../packings/packings.model");
 const logger = require("../../config/winston.config");
 
 const deviceDataSchema = new mongoose.Schema({
