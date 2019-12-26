@@ -4,6 +4,7 @@ import { Project } from '../../../shared/models/project';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projeto',
@@ -18,6 +19,7 @@ export class ProjetoComponent implements OnInit {
   public auxAllProjects: any[] = [];
 
   constructor(
+    public translate: TranslateService,
     private projectService: ProjectService,
     private modalService: NgbModal) { }
 

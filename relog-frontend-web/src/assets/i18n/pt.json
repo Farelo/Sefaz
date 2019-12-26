@@ -1,5 +1,5 @@
 {
-    "MISC":{
+    "MISC": {
         "YES": "Yes",
         "YES_CAP": "YES",
         "NO": "No",
@@ -9,7 +9,7 @@
         "UPDATE_CAP": "UPDATE",
         "update": "Update"
     },
-    "STATES":{
+    "STATES": {
         "TRAVELING": "Em viagem"
     },
     "HOME": {
@@ -41,15 +41,26 @@
             "PERMANENCE_TIME": "Tempo de permanência",
             "INCORRECT_LOCAL": "Local Incorreto"
         },
-        "TRAVELING_COMPONENT":{
+        "TRAVELING_COMPONENT": {
             "TITLE": "Em viagem",
             "LATE": "Embalagens Atrasadas",
             "ABSENT": "Embalagens Ausentes"
         },
-        "BATTERY":{
+        "BATTERY": {
             "TITLE": "Bateria Baixa",
             "LOW_BATTERY": "Embalagens com bateria baixa",
             "ABSENT": "Embalagens Ausentes"
+        }
+    },
+    "REGISTER": {
+        "CREATE_BUTTON": "Novo",
+        "EDIT_BUTTON": "Editar",
+        "REMOVE_BUTTON": "Excluir",
+        "PROJECT:": {
+            "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome",
+            "TABLE": {
+                "NAME": "Nome"
+            }
         }
     },
     "PACKING": {
@@ -61,7 +72,7 @@
         "BATTERY_LEVEL_ALERT": "NÍVEL DA BATERIA PARA GERAR ALERTA",
         "ACCURACY_LEVEL_ALERT": "LIMITE DE ACURÁCIA RELEVANTE",
         "ENABLE_ALERTS": "HABILITAR ALERTAS:",
-        "LOST_PACKAGE_NAME": "Embalagem perdida", 
+        "LOST_PACKAGE_NAME": "Embalagem perdida",
         "JOB_CYCLE": "CICLO DO JOB (SEG)",
         "JOB_CYCLE_DESCRIPTION": "Ex. '120 segundos'",
         "HISTORIC_LIFE": "VIDA ÚTIL DO HISTÓRICO (DIAS)",
