@@ -67,6 +67,16 @@ exports.find_by_tag = async (tag) => {
     }
 }
 
+exports.find_by_serial = async (serial) => {
+    try {
+        const packings = await Packing.find({ serial })
+
+        return packings
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 exports.create_packing = async (packing) => {
     try {
         const new_packing = new Packing(packing)
@@ -159,7 +169,6 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
 exports.control_point_geolocation = async (query) => {
     try {
         let date_conditions = {}
-
         if ((query.start_date != null && query.end_date)) {
 
             date_conditions = {
@@ -182,32 +191,30 @@ exports.control_point_geolocation = async (query) => {
                 $gte: date
             }
         }
-        console.log(date_conditions);
         
-        let event_record_conditions = {}
+        let event_record_conditions = {
+            type: 'inbound'
+        }
 
         if (query.company_id != null || query.company_type != null) {
             let companyConditions = {}
             if (query.company_id != null) {
-                companyConditions = { id: query.company_id }            
+                companyConditions = { _id: query.company_id }            
             } else if (query.company_type != null) {
                 companyConditions = { type: query.company_type }            
             }
-            console.log('companyConditions');
-            console.log(companyConditions);
-
             let companies_ids = await Company.find(companyConditions).distinct('_id')
-            console.log('companies_ids');
-            console.log(companies_ids);
-
-            let control_points = await ControlPoint.find({ company: { $in: companies_ids } }).distinct('_id')
-            console.log('control_points');
-            console.log(control_points);
+            
+            let control_point_conditions = {}
+            if (query.control_point_id != null) {
+                control_point_conditions = { _id: query.control_point_id }            
+            } else if (query.control_point_type != null) {
+                control_point_conditions = { type: query.control_point_type }            
+            }
+            control_point_conditions['company'] = { $in: companies_ids }
+            let control_points = await ControlPoint.find(control_point_conditions).distinct('_id')
 
             event_record_conditions = { control_point: { $in: control_points } }
-
-            console.log('event_record_conditions');
-            console.log(event_record_conditions);
         }
 
         if (!_.isEmpty(date_conditions)) {
@@ -236,57 +243,34 @@ exports.control_point_geolocation = async (query) => {
                 $group : { _id : "$packing", "doc": { "$first":"$$ROOT" } } 
             },
             {  
-                $replaceRoot : { "newRoot": "$doc" }
+                $replaceRoot : { newRoot: "$doc" }
             }
         ])
-
         console.log('event_records_count');
         console.log(event_records.length);
-        
-        return event_records
 
-        let recents_device_data = await DeviceData.aggregate([ 
-            { 
-                $match: date_conditions 
-            },
-            { 
-                $sort: { "message_date": -1 } 
-            }, 
-            { 
-                $group : { _id : "$device_id", "doc": { "$first":"$$ROOT" } } 
-            },
-            {  
-                $replaceRoot : { "newRoot": "$doc" }
-            }
-        ]).allowDiskUse(true)
-        
-        let packings = await Packing.aggregate([
-            {
-                $match: { "tag.code" : { $in: recents_device_data.map(pc => pc.device_id) } }
-            },
-            {
-                $lookup: {
-                    from: "families",
-                    localField: "family",
-                    foreignField: "_id",
-                    as: "family"
+        if (query.family_id != null || query.serial != null) {
+            event_records = event_records.filter(er => {
+                if (query.family_id != null && query.serial != null) {
+                    if (er.packings.family == query.family_id && er.packings.serial == query.serial) {
+                        return true
+                    }
+                } else if (query.family_id != null) {
+                    if (er.packings.family == query.family_id) {
+                        return true
+                    }
+                } else {
+                    if (er.packings.serial == query.serial) {
+                        return true
+                    }
                 }
-            },
-            {
-                $unwind: '$family'
-            },
-        ]).allowDiskUse(true)
-        
-        packings = packings.map(p => {
-            let recent_device_data = recents_device_data.filter(pc => {
-                return pc.device_id == p.tag.code
+                return false
             })
-                
-            p['recent_device_data'] = recent_device_data.shift()
-            return p
-        })
+        }
+        console.log('event_records_count_filtered');
+        console.log(event_records.length);
 
-        return packings
+        return event_records
         
     } catch (error) {
         throw new Error(error)

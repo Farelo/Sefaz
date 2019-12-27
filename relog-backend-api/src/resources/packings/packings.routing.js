@@ -346,6 +346,16 @@ module.exports = router
  *         in: query
  *         required: false
  *         type: string
+ *       - name: family_id
+ *         description: Packing family id
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: serial
+ *         description: Packing serial
+ *         in: query
+ *         required: false
+ *         type: string
  *     responses:
  *       200:
  *         description: list of all reports

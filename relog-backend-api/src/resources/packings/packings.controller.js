@@ -131,6 +131,10 @@ exports.control_point_geolocation = async (req, res) => {
         last_hours: req.query.last_hours ? req.query.last_hours : null,
         company_type: req.query.company_type ? req.query.company_type : null,
         company_id: req.query.company_id ? req.query.company_id : null,
+        control_point_type: req.query.control_point_type ? req.query.control_point_type : null,
+        control_point_id: req.query.control_point_id ? req.query.control_point_id : null,
+        family: req.query.family ? req.query.family : null,
+        serial: req.query.serial ? req.query.serial : null,
     }
 
     if (query.start_date != null && !utils.is_valid_date(query.start_date)) {
@@ -153,6 +157,16 @@ exports.control_point_geolocation = async (req, res) => {
     if (req.query.company_id) {
         const company = await companies_service.get_company(req.query.company_id)
         if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+    }
+
+    if (req.query.family_id) {
+        const family = await families_service.get_family(req.query.family_id)
+        if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
+    }
+
+    if (req.query.serial) {
+        const packings = await packings_service.find_by_serial(req.query.serial)
+        if (!packings.length) return res.status(HttpStatus.NOT_FOUND).send('Invalid packings')
     }
 
     const packings = await packings_service.control_point_geolocation(query)
