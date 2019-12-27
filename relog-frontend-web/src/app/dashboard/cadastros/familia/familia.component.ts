@@ -3,6 +3,7 @@ import { PackingService, AuthenticationService, CompaniesService } from '../../.
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FamiliesService } from 'app/servicos/families.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-familia',
@@ -16,12 +17,10 @@ export class FamiliaComponent implements OnInit {
   public logged_user: any;
   public actualPage: number = -1; //página atual
 
-  constructor(
+  constructor(public translate: TranslateService,
     private familyService: FamiliesService,
     private modalService: NgbModal,
-    private auth: AuthenticationService) {
-  
-  }
+    private auth: AuthenticationService) { }
 
 
   /**

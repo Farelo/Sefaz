@@ -22,6 +22,7 @@ import { InventarioEquipamentoGeralComponent } from './inventario-equipamento-ge
 import { FornecedorComponent } from './fornecedor/fornecedor.component';
 import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-ausencia.component';
 import { InventarioPosicoesComponent } from './inventario-posicoes/inventario-posicoes.component';
+import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { InventarioPosicoesComponent } from './inventario-posicoes/inventario-po
     ApplicationPipes,
     NgbModule,
     TooltipModule,
+    TranslateSettingsModule
     //Angular2Csv
   ],
   declarations: [

@@ -3,12 +3,15 @@
   <input 
     type="text" 
     class="form-control mr-4" 
-    placeholder="Buscar embalagem por família, serial ou tag" 
+    [attr.placeholder]="'REGISTER.PACKING.SEARCH_BAR_PLACEHOLDER' | translate"
     aria-describedby="basic-addon1" 
     [(ngModel)]="search"
     (keyup)="searchEvent($event)">
 
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">{{ "REGISTER.CREATE_BUTTON" | translate }}</button>
+  <button 
+    routerLink="cadastrar" 
+    class="btn btn-outline-secondary" 
+    type="button">{{ "REGISTER.CREATE_BUTTON" | translate }}</button>
 </div>
 
 <div class="table-responsive">
@@ -17,14 +20,10 @@
 
   <table class="table">
     <thead>
-      <tr class="cabecalho">
-        <!-- <th>Família</th> -->
-        <!-- <th>{{ 'PACKING.FAMILY' | translate }}</th> -->
-        <th translate="REGISTER.TABLE.FAMILY"></th>
-        <!-- <th [translate]="'PACKING.FAMILY'"></th> -->
-        <!-- <th translate>PACKING.FAMILY</th> -->
-        <th>Serial</th>
-        <th>Tag</th>
+      <tr class="cabecalho"> 
+        <th translate="REGISTER.TABLE.FAMILY"></th> 
+        <th translate="REGISTER.TABLE.SERIAL"></th>
+        <th translate="REGISTER.TABLE.TAG"></th>
         <th class="opcoes"></th>
       </tr>
 
@@ -40,10 +39,10 @@
         <td class="teste">
           <div>
             <button class="editar" [routerLink]="['editar/', packing._id]">
-              EDITAR
+              {{ "REGISTER.EDIT_BUTTON" | translate }}
             </button>
             <button class="excluir" (click)="removePacking(packing)">
-              EXCLUIR
+              {{ "REGISTER.REMOVE_BUTTON" | translate }}
             </button>
           </div>
         </td>
@@ -53,7 +52,7 @@
 </div>
 
 <div class="classVazio" *ngIf="listOfPackings.length < 1">
-  Ainda não existem embalagens cadastradas.
+  {{ "REGISTER.PACKING.NO_RESULT" | translate }}
 </div>
 
 <br />

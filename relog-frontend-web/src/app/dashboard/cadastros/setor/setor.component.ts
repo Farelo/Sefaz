@@ -3,6 +3,7 @@ import { DepartmentService } from '../../../servicos/index.service';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-setor',
@@ -16,10 +17,9 @@ export class SetorComponent implements OnInit {
   public search = "";
   public actualPage = -1;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private departmentService : DepartmentService,
     private modalService: NgbModal) { }
-
 
   ngOnInit() {
 

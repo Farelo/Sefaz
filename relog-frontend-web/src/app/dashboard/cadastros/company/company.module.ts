@@ -17,6 +17,7 @@ import { CompanyComponent } from './company.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TextMaskModule } from 'angular2-text-mask';
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
+import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
 
 @NgModule({
   imports: [
@@ -36,8 +37,8 @@ import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
     NguiMapModule.forRoot({
       apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}` +
         '&libraries=visualization,places,drawing',
-    })
-
+    }),
+    TranslateSettingsModule
   ],
   declarations: [
     CompanyCadastrarComponent,

@@ -7,7 +7,12 @@
     (keyup)="searchEvent($event)">
     <!-- placeholder="{{ 'REGISTER.PROJECT.SEARCH_BAR_PLACEHOLDER' | translate }}"  -->
 
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button"><span [translate]="'REGISTER.CREATE_BUTTON'"></span></button>
+  <button 
+    routerLink="cadastrar" 
+    class="btn btn-outline-secondary" 
+    type="button">
+    <span [translate]="'REGISTER.CREATE_BUTTON'"></span>
+  </button>
     <!-- translate="REGISTER.CREATE_BUTTON">Novo</button> -->
 </div>
 
@@ -45,7 +50,7 @@
 </div>
 
 <div class="classVazio" *ngIf="allProjects.length < 1">
-  Ainda não existem projetos cadastrados.
+  {{ "REGISTER.PROJECT.NO_RESULT" | translate }}
 </div>
 
 <br />

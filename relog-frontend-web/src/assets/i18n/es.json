@@ -7,81 +7,115 @@
         "CLOSE": "[es] Close",
         "CLOSE_CAP": "[es] CLOSE",
         "UPDATE_CAP": "[es] UPDATE",
-        "update": "[es] Update"
+        "update": "Update"
     },
     "STATES": {
-        "TRAVELING": "Em [es] viagem"
+        "TRAVELING": "Em viagem"
     },
     "HOME": {
-        "TITLE": "Embalagens do [es] Sistema",
-        "REGISTERED_PACKAGES": "Embalagens no [es] Sistema",
-        "TOTAL_PACKING": "Embalagens [es] totais",
-        "CONTROL_POINTS": "Pontos de [es] controle",
-        "TRAVELING": "Em [es] viagem",
-        "LATE_PACKAGE": "Embalagens [es] atrasadas",
-        "ABSENT_PACKAGE": "Embalagens [es] ausentes",
-        "LOW_BATTERY": "Bateria [es] Baixa",
-        "LOW_BATTERY_DESCRIPTION": "Embalagens com Bateria [es] Baixa",
-        "NO_RESULTS": "Não há embalagens nesta [es] situação",
+        "TITLE": "[es] Embalagens do Sistema",
+        "REGISTERED_PACKAGES": "[es] Embalagens no Sistema",
+        "TOTAL_PACKING": "[es] Embalagens totais",
+        "CONTROL_POINTS": "[es] Pontos de controle",
+        "TRAVELING": "[es] Em viagem",
+        "LATE_PACKAGE": "[es] Embalagens atrasadas",
+        "ABSENT_PACKAGE": "[es] Embalagens ausentes",
+        "LOW_BATTERY": "[es] Bateria Baixa",
+        "LOW_BATTERY_DESCRIPTION": "[es] Embalagens com Bateria Baixa",
+        "NO_RESULTS": "[es] Não há embalagens nesta situação",
         "TABLE": {
             "CODE": "[es] Código",
             "SERIAL": "[es] Serial",
             "TAG": "[es] Tag",
-            "ACTUAL_SITE": "Local [es] Atual",
+            "ACTUAL_SITE": "[es] Local Atual",
             "ACTUAL_SITE_TYPE": "[es] Tipo",
             "BATTERY": "[es] Bateria",
-            "LAST_BATTERY_SIGNAL": "Sinal da [es] Bateria",
-            "LAST_SIGNAL": "Último [es] Sinal",
-            "LAST_SITE": "Último [es] Lugar",
-            "TRAVELING_TIME": "Tempo de [es] viagem",
-            "ABSENT_TIME": "Tempo de [es] ausência"
+            "LAST_BATTERY_SIGNAL": "[es] Sinal da Bateria",
+            "LAST_SIGNAL": "[es] Último Sinal",
+            "LAST_SITE": "[es] Último Lugar",
+            "TRAVELING_TIME": "[es] Tempo de viagem",
+            "ABSENT_TIME": "Tempo de ausência"
         },
         "IN_CONTROL_POINTS": {
-            "TITLE": "Nos Pontos de [es] controle",
-            "PERMANENCE_TIME": "Tempo de [es] permanência",
-            "INCORRECT_LOCAL": "Local [es] Incorreto"
+            "TITLE": "[es] Nos Pontos de controle",
+            "PERMANENCE_TIME": "[es] Tempo de permanência",
+            "INCORRECT_LOCAL": "Local Incorreto"
         },
         "TRAVELING_COMPONENT": {
-            "TITLE": "Em [es] viagem",
-            "LATE": "Embalagens [es] Atrasadas",
-            "ABSENT": "Embalagens [es] Ausentes"
+            "TITLE": "[es] Em viagem",
+            "LATE": "[es] Embalagens Atrasadas",
+            "ABSENT": "Embalagens Ausentes"
         },
         "BATTERY": {
-            "TITLE": "Bateria [es] Baixa",
-            "LOW_BATTERY": "Embalagens com bateria [es] baixa",
-            "ABSENT": "Embalagens [es] Ausentes"
+            "TITLE": "[es] Bateria Baixa",
+            "LOW_BATTERY": "[es] Embalagens com bateria baixa",
+            "ABSENT": "Embalagens Ausentes"
         }
     },
     "REGISTER": {
         "CREATE_BUTTON": "[es] Novo",
-        "EDIT_BUTTON": "[es] Editar",
-        "REMOVE_BUTTON": "[es] Excluir",
+        "EDIT_BUTTON": "[es] EDITAR",
+        "REMOVE_BUTTON": "[es] EXCLUIR",
         "TABLE": {
             "NAME": "[es] Nome",
-            "FAMILY": "[es] Família"
+            "FAMILY": "[es] Família",
+            "SERIAL": "[es] Serial",
+            "TAG": "[es] Tag",
+            "PHONE": "[es] Telefone",
+            "TYPE": "[es] Tipo",
+            "POINT_A": "[es] Ponto A",
+            "POINT_B": "[es] Ponto B",
+            "DISTANCE": "[es] Distância",
+            "CONTROL_POINT": "Ponto de controle"
         },
-        "PROJECT:": {
-            "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por [es] nome"
+        "PROJECT": {
+            "SEARCH_BAR_PLACEHOLDER": "[es] Buscar projeto por nome",
+            "NO_RESULT": "Ainda não existem projetos cadastrados"
+        },
+        "FAMILY": {
+            "SEARCH_BAR_PLACEHOLDER": "[es] Buscar projeto por nome",
+            "NO_RESULT": "Ainda não existem famílias cadastradas"
+        },
+        "CONTROL_POINT_TYPE": {
+            "SEARCH_BAR_PLACEHOLDER": "[es] Buscar tipo por nome",
+            "NO_RESULT": "Ainda não existem tipos cadastrados"
+        },
+        "CONTROL_POINT": {
+            "SEARCH_BAR_PLACEHOLDER": "[es] Buscar ponto de controle por nome",
+            "NO_RESULT": "Ainda não existem pontos de controle cadastrados"
+        },
+        "PACKING": {
+            "SEARCH_BAR_PLACEHOLDER": "[es] Buscar embalagem por família, serial ou tag",
+            "NO_RESULT": "Ainda não existem embalagens cadastradas"
+        },
+        "COMPANY": {
+            "SEARCH_BAR_PLACEHOLDER": "[es] Buscar empresa por nome",
+            "NO_RESULT": "Ainda não existem empresas cadastradas"
+        },
+        "ROUTES": {
+            "SEARCH_BAR_PLACEHOLDER": "[es] Buscar rota por família ou ponto de controle",
+            "NO_RESULT": "Ainda não existem rotas cadastradas"
+        },
+        "DEPARTMENT": {
+            "SEARCH_BAR_PLACEHOLDER": "[es] Buscar departamento por nome",
+            "NO_RESULT": "Ainda não existem departamentos cadastrados"
         }
     },
-    "PACKING": {
-        "FAMILY": "[es] Family"
-    },
     "SETTINGS": {
-        "TITLE": "Editar configurações do [es] sistema",
+        "TITLE": "[es] Editar configurações do sistema",
         "LANG": "[es] Idioma",
-        "BATTERY_LEVEL_ALERT": "NÍVEL DA BATERIA PARA GERAR [es] ALERTA",
-        "ACCURACY_LEVEL_ALERT": "LIMITE DE ACURÁCIA [es] RELEVANTE",
-        "ENABLE_ALERTS": "HABILITAR [es] ALERTAS:",
-        "LOST_PACKAGE_NAME": "Embalagem [es] perdida",
-        "JOB_CYCLE": "CICLO DO JOB ([es] SEG)",
-        "JOB_CYCLE_DESCRIPTION": "Ex. '120 [es] segundos'",
-        "HISTORIC_LIFE": "VIDA ÚTIL DO HISTÓRICO ([es] DIAS)",
-        "HISTORIC_LIFE_DESCRIPTION": "Ex. '60 [es] dias'",
-        "NO_SIGNAL_LIMIT": "ALERTA SEM SINAL ([es] DIAS)",
-        "NO_SIGNAL_DESCRIPTION": "Ex. '2 [es] dias'",
-        "LOST_PACKAGE": "ALERTA PERDIDA ([es] DIAS)",
-        "LOST_PACKAGE_DESCRIPTION": "Ex. '2 [es] dias'",
-        "ACTIVATE_BPLINE": "ATIVAR [es] BPLINE"
+        "BATTERY_LEVEL_ALERT": "[es] NÍVEL DA BATERIA PARA GERAR ALERTA",
+        "ACCURACY_LEVEL_ALERT": "[es] LIMITE DE ACURÁCIA RELEVANTE",
+        "ENABLE_ALERTS": "[es] HABILITAR ALERTAS:",
+        "LOST_PACKAGE_NAME": "[es] Embalagem perdida",
+        "JOB_CYCLE": "[es] CICLO DO JOB (SEG)",
+        "JOB_CYCLE_DESCRIPTION": "[es] Ex. '120 segundos'",
+        "HISTORIC_LIFE": "[es] VIDA ÚTIL DO HISTÓRICO (DIAS)",
+        "HISTORIC_LIFE_DESCRIPTION": "[es] Ex. '60 dias'",
+        "NO_SIGNAL_LIMIT": "[es] ALERTA SEM SINAL (DIAS)",
+        "NO_SIGNAL_DESCRIPTION": "[es] Ex. '2 dias'",
+        "LOST_PACKAGE": "[es] ALERTA PERDIDA (DIAS)",
+        "LOST_PACKAGE_DESCRIPTION": "[es] Ex. '2 dias'",
+        "ACTIVATE_BPLINE": "ATIVAR BPLINE"
     }
 }

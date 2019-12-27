@@ -58,10 +58,79 @@
         "REMOVE_BUTTON": "EXCLUIR",
         "TABLE": {
             "NAME": "Nome",
-            "FAMILY": "Família"
+            "FAMILY": "Família",
+            "SERIAL": "Serial",
+            "TAG": "Tag",
+            "PHONE": "Telefone",
+            "TYPE": "Tipo",
+            "POINT_A": "Ponto A",
+            "POINT_B": "Ponto B",
+            "DISTANCE": "Distância",
+            "CONTROL_POINT": "Ponto de controle"
         },
         "PROJECT": {
-            "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome"
+            "MENU": "Projetos",
+            "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome",
+            "NO_RESULT": "Ainda não existem projetos cadastrados"
+        },
+        "FAMILY": {
+            "MENU": "Família",
+            "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome",
+            "NO_RESULT": "Ainda não existem famílias cadastradas"
+        },
+        "CONTROL_POINT_TYPE": {
+            "MENU": "Tipos de Ponto de Controle",
+            "SEARCH_BAR_PLACEHOLDER": "Buscar tipo por nome",
+            "NO_RESULT": "Ainda não existem tipos cadastrados"
+        },
+        "CONTROL_POINT": {
+            "MENU": "Pontos de Controle",
+            "SEARCH_BAR_PLACEHOLDER": "Buscar ponto de controle por nome",
+            "NO_RESULT": "Ainda não existem pontos de controle cadastrados"
+        },
+        "PACKING": {
+            "MENU": "Embalagens",
+            "SEARCH_BAR_PLACEHOLDER": "Buscar embalagem por família, serial ou tag",
+            "NO_RESULT": "Ainda não existem embalagens cadastradas"
+        },
+        "COMPANY": {
+            "MENU": "Empresas",
+            "SEARCH_BAR_PLACEHOLDER": "Buscar empresa por nome",
+            "NO_RESULT": "Ainda não existem empresas cadastradas"
+        },
+        "ROUTES": {
+            "MENU": "Rotas",
+            "SEARCH_BAR_PLACEHOLDER": "Buscar rota por família ou ponto de controle",
+            "NO_RESULT": "Ainda não existem rotas cadastradas"
+        },
+        "DEPARTMENT": {
+            "MENU": "Departamentos",
+            "SEARCH_BAR_PLACEHOLDER": "Buscar departamento por nome",
+            "NO_RESULT": "Ainda não existem departamentos cadastrados"
+        }
+    },
+    "INVENTORY": {
+        "HEADER": {
+            "SEARCH_BY": "Busca por",
+            "GENERAL": "Geral",
+            "TYPE": "Tipo"
+        },
+        "GENERAL": {
+            "TITLE": "Geral",
+            "FAMILY": "Família",
+            "COMPANY": "Empresa",
+            "PROJECT": "Projeto",
+            "QUANTITY": "Quantidade",
+            "NO_RESULTS": "Ainda não existem embalagens cadastradas no sistema"
+        },
+        "GENERAL_INVENTORY": {
+            "TITLE": "Inventário Geral",
+            "PROVIDER": "Fornecedor",
+            "PROVIDER_PLACEHOLDER": "Selecione um Fornecedor",
+            "FAMILY": "Família",
+            "FAMILY_PLACEHOLDER": "Selecione uma Família",
+            "EXPORT_TO_EXCEL": "Exportar dados para o Excel",
+            "EXPORT_TO_PDF": "Exportar dados para o PDF"
         }
     },
     "SETTINGS": {

@@ -5,7 +5,7 @@
       <!-- Cabeçalho -->
       <div class="headerInventario">
 
-        <h4 id="titulo-busca">BUSCA POR </h4>
+        <h4 id="titulo-busca" translate="INVENTORY.HEADER.SEARCH_BY"></h4>
 
         <!-- <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal" (ngModelChange)="choiced($event)"> -->
         <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal">
@@ -41,7 +41,7 @@
       <div *ngIf="(escolhaGeral == 'EQUIPAMENTO')" class="row escolhaEquipamento">
         <div class="col-sm-4">
 
-          <p>TIPO</p>
+          <p translate="INVENTORY.HEADER.TYPE"></p>
           <!-- <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" (ngModelChange)="changeSelect($event)"
             class="selectEq"> -->
           <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" class="selectEq">

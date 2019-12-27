@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ControlPointTypesService } from 'app/servicos/index.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDeleteComponent } from 'app/shared/modal-delete/modal-delete.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tipo-ponto-controle',
@@ -15,7 +16,7 @@ export class TipoPontoControleComponent implements OnInit {
   public search = "";
   public auxAllTypes: any[] = [];
 
-  constructor(
+  constructor(public translate: TranslateService,
     private controlPointTypesService: ControlPointTypesService,
     private modalService: NgbModal) { }
 

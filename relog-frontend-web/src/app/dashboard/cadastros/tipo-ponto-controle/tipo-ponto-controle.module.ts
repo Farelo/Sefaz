@@ -15,6 +15,7 @@ import { TipoPontoControleRoutingModule } from './tipo-ponto-controle.routing.mo
 import { TipoPontoControleCadastrarComponent } from './tipo-cadastrar/tipo-cadastrar.component';
 import { TipoPontoControleEditarComponent } from './tipo-editar/tipo-editar.component';
 import { TipoPontoControleComponent } from './tipo-ponto-controle.component';
+import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { TipoPontoControleComponent } from './tipo-ponto-controle.component';
     ToastyModule.forRoot(),
     ApplicationPipes,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateSettingsModule
   ],
   declarations: [
     TipoPontoControleCadastrarComponent,

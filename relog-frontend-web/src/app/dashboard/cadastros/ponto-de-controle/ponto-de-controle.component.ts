@@ -3,6 +3,7 @@ import { ControlPointsService } from 'app/servicos/index.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDeleteComponent } from 'app/shared/modal-delete/modal-delete.component';
 import { MySorter } from 'app/shared/util/mySorter';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ponto-de-controle',
@@ -17,7 +18,7 @@ export class PontoDeControleComponent implements OnInit {
 
   public actualPage: number = 1; //página atual
 
-  constructor(
+  constructor(public translate: TranslateService,
     private controlPointsService: ControlPointsService,
     private modalService: NgbModal) { }
 

@@ -18,8 +18,7 @@ export class ProjetoComponent implements OnInit {
   public search = "";
   public auxAllProjects: any[] = [];
 
-  constructor(
-    public translate: TranslateService,
+  constructor(public translate: TranslateService,
     private projectService: ProjectService,
     private modalService: NgbModal) { }
 

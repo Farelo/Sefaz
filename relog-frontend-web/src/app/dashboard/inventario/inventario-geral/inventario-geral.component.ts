@@ -5,6 +5,7 @@ import { InventoryLogisticService, AuthenticationService, PackingService, Suppli
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import 'jspdf';
 import 'jspdf-autotable';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
 
 @Component({
@@ -29,7 +30,7 @@ export class InventarioGeralComponent implements OnInit {
   public settings: any = {};
 
 
-  constructor(
+  constructor(public translate: TranslateService,
     private reportService: ReportsService,
     private inventoryService: InventoryService,
     protected companiesService: CompaniesService,

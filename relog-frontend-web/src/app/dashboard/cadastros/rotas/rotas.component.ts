@@ -6,6 +6,7 @@ import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DirectionsRenderer } from '@ngui/map';
 import { MeterFormatter } from 'app/shared/pipes/meter_formatter';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-rotas',
@@ -19,7 +20,7 @@ export class RotasComponent implements OnInit {
   public actualPage = -1;
   public search = "";
 
-  constructor(
+  constructor(public translate: TranslateService,
     private routesService : RoutesService,
     private modalService: NgbModal) { }
 

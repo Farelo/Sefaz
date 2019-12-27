@@ -1,19 +1,19 @@
 <div class="input-group mb-3 d-flex justify-content-between">
   <input type="text" 
     class="form-control mr-4" 
-    placeholder="Buscar família por código" 
+    [attr.placeholder]="'REGISTER.PROJECT.SEARCH_BAR_PLACEHOLDER' | translate"
     aria-describedby="basic-addon1" 
     [(ngModel)]="search"
     (keyup)="searchEvent($event)">
     
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button" [translate]="'REGISTER.CREATE_BUTTON'"></button>
 </div>
 
 <div class="table-responsive">
   <table class="table">
     <thead>
       <tr class="cabecalho">
-        <th>Código</th>
+        <th translate="REGISTER.TABLE.NAME"></th>
         <th class="opcoes"></th>
       </tr>
     </thead>
@@ -26,10 +26,10 @@
         <td class="teste">
           <div>
             <button class="editar" [routerLink]="['editar/', family._id]">
-              EDITAR
+              {{ "REGISTER.EDIT_BUTTON" | translate }}
             </button>
             <button class="excluir" (click)="removePacking(family)">
-              EXCLUIR
+              {{ "REGISTER.REMOVE_BUTTON" | translate }}
             </button>
           </div>
         </td>
@@ -39,7 +39,7 @@
 </div>
 
 <div class="classVazio" *ngIf="listOfFamilies.length < 1">
-  Ainda não existem famílias de embalagens cadastradas.
+  {{ "REGISTER.FAMILY.NO_RESULT" | translate }}
 </div>
 
 <br />

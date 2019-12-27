@@ -6,6 +6,7 @@ import { LayerModalComponent } from '../../shared/modal-packing/layer.component'
 import { AbscenseModalComponent } from '../../shared/modal-packing-absence/abscense.component';
 import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service'; 
 import { Angular2Csv } from 'angular2-csv/Angular2-csv'; 
+import { TranslateService } from '@ngx-translate/core';
 
 declare var $: any;
 
@@ -74,6 +75,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   /////////////
   constructor(
+    public translate: TranslateService,
     private inventoryLogisticService: InventoryLogisticService,
     private inventoryService: InventoryService,
     private suppliersService: SuppliersService,

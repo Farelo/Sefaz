@@ -19,6 +19,7 @@ import { NguiMapModule } from '@ngui/map';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { constants } from './../../../../environments/constants';
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
+import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
 
 @NgModule({
   imports: [
@@ -36,8 +37,8 @@ import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
     NguiMapModule.forRoot({
       apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}` +
       '&libraries=visualization,places,drawing',
-    })
-
+    }),
+    TranslateSettingsModule
   ],
   declarations: [
     SetorCadastrarComponent,

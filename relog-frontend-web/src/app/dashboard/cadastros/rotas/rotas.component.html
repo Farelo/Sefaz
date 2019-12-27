@@ -1,23 +1,26 @@
 <div class="input-group mb-3 d-flex justify-content-between">
   <input type="text" 
     class="form-control mr-4" 
-    placeholder="Buscar rota por família ou ponto de controle" 
+    [attr.placeholder]="'REGISTER.ROUTES.SEARCH_BAR_PLACEHOLDER' | translate"
     aria-describedby="basic-addon1" 
     [(ngModel)]="search"
     (keyup)="searchEvent($event)">
 
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+  <button 
+    routerLink="cadastrar" 
+    class="btn btn-outline-secondary" 
+    type="button" 
+    [translate]="'REGISTER.CREATE_BUTTON'"></button>
 </div>
 
 <div class="table-responsive">
   <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
-        <th>Família</th>
-        <th>Ponto 1</th>
-        <th>Ponto 2</th>
-        <th>Distância</th>
-        <!-- <th>Duração</th> -->
+        <th translate="REGISTER.TABLE.FAMILY"></th>
+        <th translate="REGISTER.TABLE.POINT_A"></th>
+        <th translate="REGISTER.TABLE.POINT_B"></th>
+        <th translate="REGISTER.TABLE.DISTANCE"></th>
         <th class="opcoes"></th>
       </tr>
     </thead>
@@ -30,13 +33,12 @@
         <td>{{ route.first_point ? route.first_point.name : '' | truncate : 20 }}</td>
         <td>{{ route.second_point ? route.second_point.name : '' | truncate : 20 }}</td>
         <td>{{ getFormatedDistance(route.distance) }}</td>
-        <!-- <td>{{ route.duration_time }}</td>  -->
         <td class="teste">
           <button class="editar botaoPlanta" [routerLink]="['editar/', route._id]">
-            EDITAR
+            {{ "REGISTER.EDIT_BUTTON" | translate }}
           </button>
           <button class="excluir" (click)="removeRoutes(route)">
-            EXCLUIR
+            {{ "REGISTER.REMOVE_BUTTON" | translate }}
           </button>
         </td>
       </tr>
@@ -45,7 +47,7 @@
 </div>
 
 <div class="classVazio" *ngIf="allRoutes.length < 1">
-  Ainda não existem rotas cadastradas.
+  {{ "REGISTER.ROUTES.NO_RESULT" | translate }}
 </div>
 
 <br />
