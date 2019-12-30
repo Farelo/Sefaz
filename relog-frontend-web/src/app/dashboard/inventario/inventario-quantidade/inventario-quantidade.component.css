@@ -27,6 +27,13 @@ h3 {
   font-weight: 600;
 }
 
+.descricao {
+  display: inline;
+  font-weight: 600;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+}
+
 select {
   height: 34px;
   margin-left: 10px;

@@ -29,7 +29,7 @@
 
     <!-- Fornecedor -->
     <div class="col-sm-4">
-      <p translate="INVENTORY.GENERAL_INVENTORY.PROVIDER"></p>
+      <p translate="INVENTORY.GENERAL_INVENTORY.PROVIDER" class="descricao" style="display: block;"></p>
       <ng-select 
         [items]="listOfCompanies" 
         [(ngModel)]="mCompany"
@@ -50,7 +50,7 @@
 
     <!-- Equipamentos -->
     <div class="col-sm-4" *ngIf="mCompany">
-      <p>FAMÍLIA</p>
+      <p translate="INVENTORY.GENERAL_INVENTORY.FAMILY" class="descricao" style="display: block;"></p>
       <ng-select 
         [items]="listOfPackings"
         [(ngModel)]="mPacking"
@@ -76,30 +76,30 @@
       <thead>
         <tr class="cabecalho">
           <th class="empty-super-th"></th>
-          <th class="super-th" colspan="2">Inventário Físico</th>
-          <th class="super-th" colspan="5">Inventário On Line</th>
-          <th *ngIf="settings.enable_perdida" class="super-th" colspan="7">Alertas</th>
-          <th *ngIf="!settings.enable_perdida" class="super-th" colspan="6">Alertas</th>
+          <th class="super-th" colspan="2" translate="INVENTORY.GENERAL_INVENTORY.PHYSICAL_INVENTORY"></th>
+          <th class="super-th" colspan="5" translate="INVENTORY.GENERAL_INVENTORY.ONLINE_INVENTORY"></th>
+          <th *ngIf="settings.enable_perdida" class="super-th" colspan="7" translate="INVENTORY.GENERAL_INVENTORY.ALERTS"></th>
+          <th *ngIf="!settings.enable_perdida" class="super-th" colspan="6" translate="INVENTORY.GENERAL_INVENTORY.ALERTS"></th>
         </tr>
         <tr class="cabecalho">
-          <th>Fornecedor</th>
-          <th>Família</th>
-          <th>Total de Equipamentos Administrados (TEA)</th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.PROVIDER"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.FAMILY"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.TOTAL_ADMINISTRATED"></th>
 
-          <th>Nos Pontos de Controle Próprios (A)</th>
-          <th>Nos Pontos de Controle Administrados (B)</th>
-          <th>Quantidade no Transito (C)</th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.AT_OWNER_CONTROL_POINT"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.AT_ADMINISTRATED_CONTROL_POINT"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.TRAVEL_QUANTITY"></th>
 
-          <th>Análise (D)</th>
-          <th>Total do Inventário On Line (TIOL = A+B+C+D)</th>
-          <th>Diferença (TEA - TIOL)</th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.ANALYSIS"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.TOTAL_ONLINE"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.DIFF"></th>
 
-          <th>Atraso de Rota</th>
-          <th>Local Incorreto</th>
-          <th>Tempo de Permanencia</th>
-          <th>Embalagem Ausente</th>
-          <th>Sem sinal</th>
-          <th *ngIf="settings.enable_perdida">Perdida</th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.LATE"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.INCORRECT_LOCAL"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.PERMANENCE_TIME"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.ABSENT"></th>
+          <th translate="INVENTORY.GENERAL_INVENTORY.NO_SIGNAL"></th>
+          <th *ngIf="settings.enable_perdida" translate="INVENTORY.GENERAL_INVENTORY.LOST"></th>
         </tr>
       </thead>
 
@@ -184,7 +184,7 @@
               </div>
 
               <div class="" *ngIf="item.locations.length < 1">
-                Não há registros a serem exibidos.
+                {{ "INVENTORY.GENERAL_INVENTORY.NO_RESULTS" | translate }}
               </div>
 
 
@@ -194,8 +194,8 @@
                 <table class="table inner-table">
                   <thead>
                     <tr class="cabecalho">
-                      <th>Localização</th>
-                      <th style="text-align: center">Quantidade</th>
+                      <th translate="INVENTORY.GENERAL_INVENTORY.LOCATION"></th>
+                      <th style="text-align: center" translate="INVENTORY.GENERAL_INVENTORY.QUANTITY"></th>
                     </tr>
                   </thead>
 
@@ -216,7 +216,7 @@
         <tr>
           <td colspan=13>
             <div class="classVazio">
-              Não há registros a serem exibidos.
+              {{ "INVENTORY.GENERAL_INVENTORY.NO_RESULTS" | translate }}
             </div>
           </td>
         </tr>

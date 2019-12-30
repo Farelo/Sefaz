@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import { Pagination } from '../../../shared/models/pagination'; 
+import { Pagination } from '../../../shared/models/pagination';
 import { InventoryService, PackingService, AuthenticationService, ReportsService, FamiliesService } from '../../../servicos/index.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { FloatTimePipe } from '../../../shared/pipes/floatTime';
 import 'jspdf';
 import 'jspdf-autotable';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
 
 @Component({
@@ -14,23 +15,21 @@ declare var jsPDF: any;
 })
 export class InventarioPermanenciaComponent implements OnInit {
 
-  public listOfPermanence: any[] = []; 
-  public auxListOfPermanence: any[] = []; 
+  public listOfPermanence: any[] = [];
+  public auxListOfPermanence: any[] = [];
 
-  public listOfFamilies: any[] = [];  
+  public listOfFamilies: any[] = [];
   public selectedFamily: any = null;
-  
-  public listOfSerials: any[] = [];  
+
+  public listOfSerials: any[] = [];
   public selectedSerial: any = null;
 
   public actualPage: number = -1;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private reportService: ReportsService,
     private familyService: FamiliesService,
-    private auth: AuthenticationService) {
-
-  }
+    private auth: AuthenticationService) { }
 
   ngOnInit() {
     //Loads the table headers
@@ -42,14 +41,14 @@ export class InventarioPermanenciaComponent implements OnInit {
     //Loads the data in the table
     this.permanenceInventory();
   }
-  
+
   /**
    * Default list
    */
   permanenceInventory() {
     this.reportService.getPermanenceInventory().subscribe(result => {
-      this.listOfPermanence = result; 
-      this.auxListOfPermanence = result; 
+      this.listOfPermanence = result;
+      this.auxListOfPermanence = result;
     }, err => { console.log(err) });
   }
 
@@ -59,17 +58,17 @@ export class InventarioPermanenciaComponent implements OnInit {
   loadPackings() {
     this.familyService.getAllFamilies().subscribe(result => {
 
-      this.listOfFamilies = result; 
+      this.listOfFamilies = result;
     }, err => console.error(err));
   }
 
   /**
    * A family was selected
    */
-  familyFilter(event: any){
+  familyFilter(event: any) {
     console.log(event);
 
-    if(!event) {
+    if (!event) {
       this.listOfPermanence = this.auxListOfPermanence;
       this.selectedFamily = null;
 
@@ -88,11 +87,11 @@ export class InventarioPermanenciaComponent implements OnInit {
   /**
    * Loads the serials
    */
-  loadSerials(event: any){
+  loadSerials(event: any) {
 
     this.selectedSerial = null;
-    
-    let aux = this.listOfPermanence.filter(elem =>{
+
+    let aux = this.listOfPermanence.filter(elem => {
       return elem.family_code == event.code;
     });
 
@@ -104,7 +103,7 @@ export class InventarioPermanenciaComponent implements OnInit {
    * A serial was selected
    */
   serialFilter(event: any) {
-    
+
     if (!event) {
       this.selectedSerial = null;
       this.familyFilter(this.selectedFamily);
@@ -119,10 +118,10 @@ export class InventarioPermanenciaComponent implements OnInit {
     this.listOfPermanence = aux;
   }
 
-   /**
-   * 
-   * Ordenação da tabela
-   */ 
+  /**
+  * 
+  * Ordenação da tabela
+  */
   public headers: any = [];
   public sortStatus: any = ['asc', 'desc'];
   public sort: any = {
@@ -131,25 +130,20 @@ export class InventarioPermanenciaComponent implements OnInit {
   };
 
   loadTableHeaders() {
-    this.headers.push({ label: 'Família', name: 'family_code' });
-    this.headers.push({ label: 'Serial', name: 'serial' });
-    this.headers.push({ label: 'Tag', name: 'tag.code' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.FAMILY'), name: 'family_code' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SERIAL'), name: 'serial' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TAG'), name: 'tag.code' });
 
-    this.headers.push({ label: 'Ponto de Controle Atual', name: 'current_control_point_name' });
-    this.headers.push({ label: 'Local', name: 'current_control_point_type' });
-    this.headers.push({ label: 'Tempo no Ponto de Controle', name: 'permanence_time_exceeded' });
-
-    //console.log('this.headers: ' + JSON.stringify(this.headers));
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.ACTUAL_SITE'), name: 'current_control_point_name' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SITE_TYPE'), name: 'current_control_point_type' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TIME_AT_SITE'), name: 'permanence_time_exceeded' });
   }
 
   headerClick(item: any) {
     this.sort.name = item.name;
     this.sort.order = this.sortStatus[(this.sortStatus.indexOf(this.sort.order) + 1) % 2];
 
-    // console.log('---');
-    // console.log('this.sort: ' + JSON.stringify(this.sort));
-
-    this.listOfPermanence  = this.customSort(this.listOfPermanence , item.name.split("."), this.sort.order);
+    this.listOfPermanence = this.customSort(this.listOfPermanence, item.name.split("."), this.sort.order);
   }
 
   /**
@@ -188,7 +182,7 @@ export class InventarioPermanenciaComponent implements OnInit {
   /**
   * Click to download
   */
-  downloadCsv(){
+  downloadCsv() {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
@@ -201,10 +195,10 @@ export class InventarioPermanenciaComponent implements OnInit {
     new Angular2Csv(flatObjectData, 'Inventario Equipamento Tempo de permanência', this.csvOptions);
   }
 
-    /**
-   * Click to download pdf file
-   */
-  downloadPdf(){
+  /**
+ * Click to download pdf file
+ */
+  downloadPdf() {
     var doc = jsPDF('l', 'pt');
 
     // You can use html:
@@ -219,8 +213,16 @@ export class InventarioPermanenciaComponent implements OnInit {
     // console.log(flatObjectData);
 
     // Or JavaScript:
+    //head: [['Família', 'Serial', 'Tag', 'Planta Atual', 'Local', 'Tempo na Planta']],
     doc.autoTable({
-      head: [['Família', 'Serial', 'Tag', 'Planta Atual', 'Local', 'Tempo na Planta']],
+      head: [[
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.FAMILY'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SERIAL'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TAG'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.ACTUAL_SITE'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SITE_TYPE'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TIME_AT_SITE')
+      ]],
       body: flatObjectData
     });
 
@@ -228,33 +230,34 @@ export class InventarioPermanenciaComponent implements OnInit {
   }
 
   flatObject(mArray: any) {
-    
+
     //console.log(mArray);
 
-     let transformer = new FloatTimePipe();
-     let plainArray = mArray.map(obj => {
-          return {
-            a1: obj.family_code,
-            a2: obj.serial,
-            a3: obj.tag.code,
-            a4: obj.current_control_point_name,
-            a5: obj.current_control_point_type,
-            a6: obj.permanence_time_exceeded !== '-' ? transformer.transform(obj.permanence_time_exceeded) : 'Sem histórico',
-          };
-        });
-      
+    let transformer = new FloatTimePipe();
+    let plainArray = mArray.map(obj => {
+      return {
+        a1: obj.family_code,
+        a2: obj.serial,
+        a3: obj.tag.code,
+        a4: obj.current_control_point_name,
+        a5: obj.current_control_point_type,
+        a6: obj.permanence_time_exceeded !== '-' ? transformer.transform(obj.permanence_time_exceeded) : this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.NO_HISTORY')
+      };
+    });
+
     // As my array is already flat, I'm just returning it.
     return plainArray;
   }
 
-  addHeader(mArray: any){
+  addHeader(mArray: any) {
+
     let cabecalho = {
-      a1: 'Família',
-      a2: 'Serial',
-      a3: 'Tag',
-      a4: 'Planta Atual',
-      a5: 'Local',
-      a6: 'Tempo na Planta',
+      a1: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.FAMILY'),
+      a2: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SERIAL'),
+      a3: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TAG'),
+      a4: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.ACTUAL_SITE'),
+      a5: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SITE_TYPE'),
+      a6: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TIME_AT_SITE')
     }
 
     //adiciona o cabeçalho

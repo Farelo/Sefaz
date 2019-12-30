@@ -9,6 +9,7 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { RoundPipe } from '../../../shared/pipes/round';
 import 'jspdf';
 import 'jspdf-autotable';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
 
 @Component({
@@ -29,11 +30,10 @@ export class InventarioBateriaComponent implements OnInit {
   public listOfFamily: any[] = [];
   public selectedFamily = null;
 
-  constructor(private reportService: ReportsService,
+  constructor(public translate: TranslateService,
+    private reportService: ReportsService,
     private familyService: FamiliesService,
-    private auth: AuthenticationService) {
-    
-  }
+    private auth: AuthenticationService) { }
 
   ngOnInit() {
 
@@ -107,7 +107,14 @@ export class InventarioBateriaComponent implements OnInit {
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Família', 'Serial', 'Planta Atual', 'Local', 'Bateria', 'Nível']],
+      head: [[
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.FAMILY'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.SERIAL'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.ACTUAL_SITE'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.SITE_TYPE'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.BATTERY'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.LEVEL')
+      ]],
       body: flatObjectData
     });
 
@@ -126,7 +133,7 @@ export class InventarioBateriaComponent implements OnInit {
             a2: obj.serial,
             a3: obj.current_control_point_name,
             a4: obj.current_control_point_type,
-            a5: (obj.battery_percentage !== null) ? transformer.transform(obj.battery_percentage):"Sem Registro",
+            a5: (obj.battery_percentage !== null) ? transformer.transform(obj.battery_percentage): this.translate.instant('INVENTORY.BATTERY_INVENTORY.NO_HISTORY'),
             a6: obj.battery_level,
           };
         });
@@ -136,13 +143,14 @@ export class InventarioBateriaComponent implements OnInit {
   }
 
   addHeader(mArray: any){
+    //this.headers.push({ label: this.translate.instant('INVENTORY.BATTERY_INVENTORY.FAMILY')
     let cabecalho = {
-      a1: 'Família',
-      a2: 'Serial',
-      a3: 'Planta Atual',
-      a4: 'Local',
-      a5: 'Bateria',
-      a6: 'Nível',
+      a1: this.translate.instant('INVENTORY.BATTERY_INVENTORY.FAMILY'),
+      a2: this.translate.instant('INVENTORY.BATTERY_INVENTORY.SERIAL'),
+      a3: this.translate.instant('INVENTORY.BATTERY_INVENTORY.ACTUAL_SITE'),
+      a4: this.translate.instant('INVENTORY.BATTERY_INVENTORY.SITE_TYPE'),
+      a5: this.translate.instant('INVENTORY.BATTERY_INVENTORY.BATTERY'),
+      a6: this.translate.instant('INVENTORY.BATTERY_INVENTORY.LEVEL')
     }
 
     //adiciona o cabeçalho
