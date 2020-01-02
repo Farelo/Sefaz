@@ -54,7 +54,7 @@ module.exports = router;
 /**
  * @swagger
  * /device_data/data:
- *   get:
+ *   post:
  *     summary: Create a DeviceData
  *     description: Create a DeviceData
  *     security:
