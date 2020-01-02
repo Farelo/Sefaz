@@ -85,7 +85,7 @@ export class InventarioBateriaComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Equipamento Bateria', this.csvOptions);
+    new Angular2Csv(flatObjectData, this.translate.instant('INVENTORY.BATTERY_INVENTORY.TITLE'), this.csvOptions);
   }
 
   /**
@@ -124,8 +124,6 @@ export class InventarioBateriaComponent implements OnInit {
 
   flatObject(mArray: any) {
     
-    //console.log(mArray);
-
      let transformer= new RoundPipe();
      let plainArray = mArray.map(obj => {
           return {
@@ -143,7 +141,7 @@ export class InventarioBateriaComponent implements OnInit {
   }
 
   addHeader(mArray: any){
-    //this.headers.push({ label: this.translate.instant('INVENTORY.BATTERY_INVENTORY.FAMILY')
+    
     let cabecalho = {
       a1: this.translate.instant('INVENTORY.BATTERY_INVENTORY.FAMILY'),
       a2: this.translate.instant('INVENTORY.BATTERY_INVENTORY.SERIAL'),

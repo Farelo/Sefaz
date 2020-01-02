@@ -192,7 +192,7 @@ export class InventarioPermanenciaComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Equipamento Tempo de permanência', this.csvOptions);
+    new Angular2Csv(flatObjectData, this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TITLE'), this.csvOptions);
   }
 
   /**

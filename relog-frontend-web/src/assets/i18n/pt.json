@@ -115,12 +115,13 @@
             "GENERAL": "Geral",
             "TYPE": "Tipo"
         },
-        "GENERAL": {
+        "GENERAL_FILTER": {
             "TITLE": "Geral",
             "FAMILY": "Família",
             "COMPANY": "Empresa",
             "PROJECT": "Projeto",
             "QUANTITY": "Quantidade",
+            "NO_PROJECT": "Sem projeto",
             "NO_RESULTS": "Ainda não existem embalagens cadastradas no sistema"
         },
         "GENERAL_INVENTORY": {
@@ -196,13 +197,53 @@
             "COMPANY": "Empresa",
             "CONTROL_POINT": "Ponto de controle",
             "TYPE": "Tipo",
+            "LOCAL": "Local",
             "MIN": "Min.",
             "QUANTITY": "Quantidade",
             "MAX": "Max.",
             "TOTAL": "TOTAL:",
             "SELECT_A_PACKING": "Selecione um equipamento",
+            "SELECT_A_FAMILY": "Selecione uma família",
             "NO_RESULTS": "Não há registros a serem exibidos",
             "NO_HISTORY": "Sem histórico"
+        },
+        "EQUIPMENT_GENERAL": {
+            "TITLE": "Equipamentos",
+            "SEARCH_PACKING": "BUSCAR EMBALAGEM",
+            "SEARCH_PACKING_DESCRIPTION": "Buscar embalagem por família, serial ou tag",
+            "FAMILY": "Família",
+            "SERIAL": "Serial",
+            "TAG": "Tag",
+            "COMPANY": "Empresa",
+            "LINK": "Vínculo",
+            "STATUS": "Status Atual",
+            "ACTUAL_SITE": "Lugar Atual",
+            "SITE": "Local",
+            "BATTERY": "Bateria",
+            "ACCURACY": "Acurácia da entrada/saída",
+            "EVENT_DATE": "Data da entrada/saída",
+            "LAST_ACCURACY": "Última Acurácia",
+            "LAST_SIGNAL": "Último sinal",
+            "POSITION": "Posição",
+            "NO_RESULTS": "Não há registros a serem exibidos",
+            "NO_HISTORY": "Sem histórico"
+        },
+        "POSITIONS": {
+            "TITLE": "Posições",
+            "FAMILY": "Família",
+            "SERIAL": "Serial",
+            "TAG": "Tag",
+            "INITIAL_DATE": "Data Inicial",
+            "FINAL_DATE": "Data Final",
+            "CONTAINS": "Contém",
+            "TEMPERATURE": "Temperatura",
+            "ACCURACY": "Acurácia",
+            "BATTERY": "Bateria",
+            "LATITUDE": "Latitude",
+            "LONGITUDE": "Longitude",
+            "EVENT_DATE": "Data da mensagem",
+            "SEQUENCE_NUMBER": "# sequência",
+            "SELECT_EQUIPMENT": "Selecione um equipamento"
         }
     },
     "SETTINGS": {

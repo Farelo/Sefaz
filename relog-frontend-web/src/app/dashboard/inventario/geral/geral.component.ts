@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import 'jspdf';
 import 'jspdf-autotable';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
 
 @Component({
@@ -24,7 +25,8 @@ export class GeralComponent implements OnInit {
 
   public isCollapsed = false;
 
-  constructor(private reportService: ReportsService,
+  constructor(public translate: TranslateService,
+    private reportService: ReportsService,
     private modalService: NgbModal,
     private auth: AuthenticationService) {
 
@@ -72,7 +74,7 @@ export class GeralComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Geral', this.csvOptions);
+    new Angular2Csv(flatObjectData, 'General', this.csvOptions);
   }
 
   /**
@@ -93,8 +95,14 @@ export class GeralComponent implements OnInit {
     // console.log(flatObjectData);
 
     // Or JavaScript:
+    //head: [['Família', 'Empresa', 'Projeto', 'Quantidade']],
     doc.autoTable({
-      head: [['Família', 'Empresa', 'Projeto', 'Quantidade']],
+      head: [[
+        this.translate.instant('INVENTORY.GENERAL_FILTER.FAMILY'),
+        this.translate.instant('INVENTORY.GENERAL_FILTER.COMPANY'),
+        this.translate.instant('INVENTORY.GENERAL_FILTER.PROJECT'),
+        this.translate.instant('INVENTORY.GENERAL_FILTER.QUANTITY')
+      ]],
       body: flatObjectData
     });
 
@@ -108,7 +116,7 @@ export class GeralComponent implements OnInit {
           return {
             a1: obj.family.code,
             a2: obj.family.company.name,
-            a3: obj.project_name == null ? 'Sem projeto' :  obj.project_name,
+            a3: obj.project_name == null ? this.translate.instant('INVENTORY.GENERAL_FILTER.NO_PROJECT') :  obj.project_name,
             a4: (obj.packings_quantity >= 0) ? obj.packings_quantity : '-',
           };
         });
@@ -119,10 +127,10 @@ export class GeralComponent implements OnInit {
 
   addHeader(mArray: any){
     let cabecalho = {
-      a1: 'Família',
-      a2: 'Empresa',
-      a3: 'Projeto',
-      a4: 'Quantidade',
+      a1: this.translate.instant('INVENTORY.GENERAL_FILTER.FAMILY'),
+      a2: this.translate.instant('INVENTORY.GENERAL_FILTER.COMPANY'),
+      a3: this.translate.instant('INVENTORY.GENERAL_FILTER.PROJECT'),
+      a4: this.translate.instant('INVENTORY.GENERAL_FILTER.QUANTITY')
     }
 
     //adiciona o cabeçalho

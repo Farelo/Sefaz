@@ -9,6 +9,7 @@ import * as moment from 'moment-timezone';
 import 'jspdf';
 import 'jspdf-autotable';
 import { DatePipe } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
 
 @Component({
@@ -42,7 +43,8 @@ export class InventarioPosicoesComponent implements OnInit {
   public initialDate: Date;  //Initial date
   public finalDate: Date;    //Initial date
 
-  constructor(private familyService: FamiliesService,
+  constructor(public translate: TranslateService,
+    private familyService: FamiliesService,
     private packingService: PackingService,
     private deviceService: DevicesService,
     private localeService: BsLocaleService) {
@@ -271,7 +273,7 @@ export class InventarioPosicoesComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Posições', this.csvOptions);
+    new Angular2Csv(flatObjectData, this.translate.instant('INVENTORY.POSITIONS.TITLE'), this.csvOptions);
   }
 
   /**
@@ -293,7 +295,17 @@ export class InventarioPosicoesComponent implements OnInit {
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Tag', 'Acurácia', 'Bateria', 'Latitude', 'Longitude', 'Data da mensagem', '# Sequência', 'Temperatura']],
+      head: //[['Tag', 'Acurácia', 'Bateria', 'Latitude', 'Longitude', 'Data da mensagem', '# Sequência', 'Temperatura']],
+      [[
+        this.translate.instant('INVENTORY.POSITIONS.TAG'),
+        this.translate.instant('INVENTORY.POSITIONS.ACCURACY'),
+        this.translate.instant('INVENTORY.POSITIONS.BATTERY'),
+        this.translate.instant('INVENTORY.POSITIONS.LATITUDE'),
+        this.translate.instant('INVENTORY.POSITIONS.LONGITUDE'),
+        this.translate.instant('INVENTORY.POSITIONS.EVENT_DATE'),
+        this.translate.instant('INVENTORY.POSITIONS.SEQUENCE_NUMBER'),
+        this.translate.instant('INVENTORY.POSITIONS.TEMPERATURE')
+      ]],
       body: flatObjectData
     });
 
@@ -323,14 +335,14 @@ export class InventarioPosicoesComponent implements OnInit {
 
   addHeader(mArray: any) {
     let cabecalho = {
-      a1: 'Tag',
-      a2: 'Acurácia',
-      a3: 'Bateria',
-      a4: 'Latitude',
-      a5: 'Longitude',
-      a6: 'Data da mensagem',
-      a7: '# Sequência',
-      a8: 'Temperatura',
+      a1: this.translate.instant('INVENTORY.POSITIONS.TAG'),
+      a2: this.translate.instant('INVENTORY.POSITIONS.ACCURACY'),
+      a3: this.translate.instant('INVENTORY.POSITIONS.BATTERY'),
+      a4: this.translate.instant('INVENTORY.POSITIONS.LATITUDE'),
+      a5: this.translate.instant('INVENTORY.POSITIONS.LONGITUDE'),
+      a6: this.translate.instant('INVENTORY.POSITIONS.EVENT_DATE'),
+      a7: this.translate.instant('INVENTORY.POSITIONS.SEQUENCE_NUMBER'),
+      a8: this.translate.instant('INVENTORY.POSITIONS.TEMPERATURE')
     }
 
     //adiciona o cabeçalho

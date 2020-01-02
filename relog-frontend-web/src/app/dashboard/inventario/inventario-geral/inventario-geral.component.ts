@@ -185,7 +185,7 @@ export class InventarioGeralComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Inventário Geral', this.csvOptions);
+    new Angular2Csv(flatObjectData, this.translate.instant('INVENTORY.GENERAL_INVENTORY.TITLE'), this.csvOptions);
   }
 
   /**
@@ -193,7 +193,7 @@ export class InventarioGeralComponent implements OnInit {
   */
   downloadPdf() {
     var doc = jsPDF('l', 'pt');
-
+    
     // You can use html:
     //doc.autoTable({ html: '#my-table' });
 
@@ -201,29 +201,45 @@ export class InventarioGeralComponent implements OnInit {
     //I'm using the method slice() just to copy the array as value.
     let flatObjectData = this.flatObject(this.detailedGeneralInventory.slice());
     flatObjectData = flatObjectData.map(elem => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7, elem.a8, elem.a9, elem.a10, elem.a11, elem.a12];
+      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7, elem.a8, elem.a9, elem.a10, elem.a11, elem.a12, elem.a13, elem.a14, elem.a15];
     });
-    
+
     // console.log(flatObjectData);
+
+    let headerArray = [
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.PROVIDER'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.FAMILY'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.TOTAL_ADMINISTRATED'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.AT_OWNER_CONTROL_POINT'),
+
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.AT_ADMINISTRATED_CONTROL_POINT'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.TRAVEL_QUANTITY'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.ANALYSIS'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.TOTAL_ONLINE'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.DIFF'),
+
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.LATE'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.INCORRECT_LOCAL'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.PERMANENCE_TIME'),
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.ABSENT'),
+
+      this.translate.instant('INVENTORY.GENERAL_INVENTORY.NO_SIGNAL')];
+
+    if (this.settings.enable_perdida) headerArray.push(this.translate.instant('INVENTORY.GENERAL_INVENTORY.LOST'))
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Fornecedor',
-        'Família',
-        'Total de Equipamentos do Fornecedor(TEF)',
-        'Quantidade nas Plantas(A)',
-        'Quantidade no Fornecedor(B)',
-        'Quantidade no Transito(C)',
-        'Total do Inventário On Line(TIOL = A + B + C)',
-        'Diferença(TEF - TIOL)',
-        'Atraso de Rota',
-        'Local Incorreto',
-        'Tempo de Permanência',
-        'Embalagem Ausente'
-      ]],
-      body: flatObjectData
+      head: [headerArray],
+      body: flatObjectData,
+      headStyles: {
+        fontSize: 5
+      },
+      bodyStyles: {
+        fontSize: 5
+      }
     });
-
+    
+    //doc.setFontSize(3);
     doc.save('general_inventory.pdf');
   }
 
@@ -232,40 +248,56 @@ export class InventarioGeralComponent implements OnInit {
     //console.log(mArray);
 
     let plainArray = mArray.map(obj => {
-      return {
+      let auxObject = {
         a1: obj.company,
         a2: obj.family_name,
         a3: obj.qtd_total,
         a4: obj.qtd_in_owner,
         a5: obj.qtd_in_clients,
-        a6: obj.qtd_in_traveling,
-        a7: ((obj.qtd_in_owner) + (obj.qtd_in_clients) + (obj.qtd_in_traveling)),
-        a8: ((obj.qtd_total) - ((obj.qtd_in_owner) + (obj.qtd_in_clients) + (obj.qtd_in_traveling))),
-        a9: (obj.qtd_in_traveling_late == undefined) ? 0 : obj.qtd_in_traveling_late,
-        a10: (obj.qtd_in_incorrect_cp == undefined) ? 0 : obj.qtd_in_incorrect_cp,
-        a11: (obj.qtd_with_permanence_time_exceeded == undefined) ? 0 : obj.qtd_with_permanence_time_exceeded,
-        a12: (obj.qtd_in_traveling_missing == undefined) ? 0 : obj.qtd_in_traveling_missing,
+        a6: (obj.qtd_in_traveling + obj.qtd_in_traveling_late),
+        a7: obj.qtd_in_analysis,
+        a8: (obj.qtd_in_owner + obj.qtd_in_clients + (obj.qtd_in_traveling + obj.qtd_in_traveling_late) + obj.qtd_in_analysis),
+        a9: (obj.qtd_total - (obj.qtd_in_owner + obj.qtd_in_clients + (obj.qtd_in_traveling + obj.qtd_in_traveling_late) + obj.qtd_in_analysis)),
+        a10: (obj.qtd_in_traveling_late == undefined) ? 0 : obj.qtd_in_traveling_late,
+        a11: (obj.qtd_in_incorrect_cp == undefined) ? 0 : obj.qtd_in_incorrect_cp,
+        a12: (obj.qtd_with_permanence_time_exceeded == undefined) ? 0 : obj.qtd_with_permanence_time_exceeded,
+        a13: (obj.qtd_in_traveling_missing == undefined) ? 0 : obj.qtd_in_traveling_missing,
+        a14: (obj.qtd_no_signal == undefined) ? 0 : obj.qtd_no_signal,
+        a15: (obj.qtd_missing == undefined) ? 0 : obj.qtd_missing,
       };
+
+      if (!this.settings.enable_perdida) delete auxObject.a15;
+
+      return auxObject;
     });
+
     // As my array is already flat, I'm just returning it.
     return plainArray;
   }
 
   addHeader(mArray: any) {
     let cabecalho = {
-      a1: 'Fornecedor',
-      a2: 'Família',
-      a3: 'Total de Equipamentos do Fornecedor(TEF)',
-      a4: 'Quantidade nas Plantas(A)',
-      a5: 'Quantidade no Fornecedor(B)',
-      a6: 'Quantidade no Transito(C)',
-      a7: 'Total do Inventário On Line(TIOL = A + B + C)',
-      a8: 'Diferença(TEF - TIOL)',
-      a9: 'Atraso de Rota',
-      a10: 'Local Incorreto',
-      a11: 'Tempo de Permanência',
-      a12: 'Embalagem Ausente'
+      a1: this.translate.instant('INVENTORY.GENERAL_INVENTORY.PROVIDER'),
+      a2: this.translate.instant('INVENTORY.GENERAL_INVENTORY.FAMILY'),
+      a3: this.translate.instant('INVENTORY.GENERAL_INVENTORY.TOTAL_ADMINISTRATED'),
+      a4: this.translate.instant('INVENTORY.GENERAL_INVENTORY.AT_OWNER_CONTROL_POINT'),
+
+      a5: this.translate.instant('INVENTORY.GENERAL_INVENTORY.AT_ADMINISTRATED_CONTROL_POINT'),
+      a6: this.translate.instant('INVENTORY.GENERAL_INVENTORY.TRAVEL_QUANTITY'),
+      a7: this.translate.instant('INVENTORY.GENERAL_INVENTORY.ANALYSIS'),
+      a8: this.translate.instant('INVENTORY.GENERAL_INVENTORY.TOTAL_ONLINE'),
+      a9: this.translate.instant('INVENTORY.GENERAL_INVENTORY.DIFF'),
+
+      a10: this.translate.instant('INVENTORY.GENERAL_INVENTORY.LATE'),
+      a11: this.translate.instant('INVENTORY.GENERAL_INVENTORY.INCORRECT_LOCAL'),
+      a12: this.translate.instant('INVENTORY.GENERAL_INVENTORY.PERMANENCE_TIME'),
+      a13: this.translate.instant('INVENTORY.GENERAL_INVENTORY.ABSENT'),
+
+      a14: this.translate.instant('INVENTORY.GENERAL_INVENTORY.NO_SIGNAL'),
+      a15: this.translate.instant('INVENTORY.GENERAL_INVENTORY.LOST'),
     }
+
+    if (!this.settings.enable_perdida) delete cabecalho.a15;
 
     //adiciona o cabeçalho
     mArray.unshift(cabecalho);

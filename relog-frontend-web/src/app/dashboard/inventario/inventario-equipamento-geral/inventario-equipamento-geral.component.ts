@@ -10,6 +10,7 @@ import { RoundPipe } from '../../../shared/pipes/round';
 import { PackingStatus } from 'app/shared/pipes/packingStatus';
 import 'jspdf';
 import 'jspdf-autotable';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
 
 @Component({
@@ -27,9 +28,9 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   public actualPage: number = -1; //página atual
   public temp: any[] = [];
 
-  constructor(
+  constructor(public translate: TranslateService,
     private reportsService: ReportsService,
-    private familyService: FamiliesService, 
+    private familyService: FamiliesService,
     private modalService: NgbModal,
     private auth: AuthenticationService) {
 
@@ -56,7 +57,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
     this.familyService.getAllFamilies().subscribe(result => {
 
-      this.listOfFamilies = result; 
+      this.listOfFamilies = result;
     }, err => console.error(err));
   }
 
@@ -73,7 +74,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
   generalInventoryEquipamentChanged(family) {
 
-    if(family)
+    if (family)
       this.generalEquipament = this.auxGeneralEquipament.filter(item => item.family_code == family.code);
     else
       this.generalEquipament = this.auxGeneralEquipament;
@@ -113,7 +114,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   /**
    * 
    * Ordenação da tabela
-   */ 
+   */
   public headers: any = [];
   public sortStatus: any = ['asc', 'desc'];
   public sort: any = {
@@ -122,22 +123,22 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   };
 
   loadTableHeaders() {
-    this.headers.push({ label: 'Família', name: 'family_code' });
-    this.headers.push({ label: 'Serial', name: 'serial' });
-    this.headers.push({ label: 'Tag', name: 'tag' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.FAMILY'), name: 'family_code' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.SERIAL'), name: 'serial' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.TAG'), name: 'tag' });
 
-    this.headers.push({ label: 'Vinculada', name: 'company' });
-    this.headers.push({ label: 'Status Atual', name: 'current_state' });
-    this.headers.push({ label: 'Planta Atual', name: 'current_control_point_name' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LINK'), name: 'company' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.STATUS'), name: 'current_state' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.ACTUAL_SITE'), name: 'current_control_point_name' });
 
-    this.headers.push({ label: 'Local', name: 'current_control_point_type' });
-    this.headers.push({ label: 'Bateria', name: 'battery_percentage' });
-    this.headers.push({ label: 'Acurácia da Entrada/Saída', name: 'in_out_accuracy' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.SITE'), name: 'current_control_point_type' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.BATTERY'), name: 'battery_percentage' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.ACCURACY'), name: 'in_out_accuracy' });
 
-    this.headers.push({ label: 'Data da Entrada/Saída', name: 'in_out_date' });
-    this.headers.push({ label: 'Última Acurácia', name: 'accuracy' });
-    this.headers.push({ label: 'Último Sinal', name: 'date' });
-    
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.EVENT_DATE'), name: 'in_out_date' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LAST_ACCURACY'), name: 'accuracy' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LAST_SIGNAL'), name: 'date' });
+
     //console.log('this.headers: ' + JSON.stringify(this.headers));
   }
 
@@ -188,7 +189,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   /**
   * Click to download
   */
-  downloadCsv(){
+  downloadCsv() {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
@@ -198,13 +199,13 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Equipamento Geral', this.csvOptions);
+    new Angular2Csv(flatObjectData, this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.TITLE'), this.csvOptions);
   }
 
   /**
    * Click to download pdf file
    */
-  downloadPdf(){
+  downloadPdf() {
     var doc = jsPDF('l', 'pt');
 
     // You can use html:
@@ -215,13 +216,30 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     let flatObjectData = this.flatObject(this.generalEquipament.slice());
     let packingStatus = new PackingStatus();
     flatObjectData = flatObjectData.map(elem => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4, packingStatus.transform(elem.a5), elem.a6, elem.a7, elem.a8, elem.a9, elem.a10];
+      return [elem.a1, elem.a2, elem.a3, elem.a4, packingStatus.transform(elem.a5), elem.a6, elem.a7, elem.a8, elem.a9, elem.a10, elem.a11, elem.a12];
     });
     // console.log(flatObjectData);
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Família', 'Serial', 'Tag', 'Vinculada', 'Status Atual', 'Planta Atual', 'Local', 'Bateria', 'Acurácia', 'Data do sinal']],
+      head: //[['Família', 'Serial', 'Tag', 'Vinculada', 'Status Atual', 'Planta Atual', 'Local', 'Bateria', 'Acurácia', 'Data do sinal']],
+        [[
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.FAMILY'),
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.SERIAL'),
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.TAG'),
+
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LINK'),
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.STATUS'),
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.ACTUAL_SITE'),
+
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.SITE'),
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.BATTERY'),
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.ACCURACY'),
+
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.EVENT_DATE'),
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LAST_ACCURACY'),
+          this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LAST_SIGNAL')
+        ]],
       body: flatObjectData
     });
 
@@ -229,41 +247,68 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   }
 
   flatObject(mArray: any) {
-    
+
     //console.log(mArray);
-     
-     let transformer= new RoundPipe();
-     let plainArray = mArray.map(obj => {
-          return {
-            a1: obj.family_code,
-            a2: obj.serial,
-            a3: obj.tag,
-            a4: obj.company,
-            a5: obj.current_state,
-            a6: obj.current_control_point_name,
-            a7: obj.current_control_point_type,
-            a8: (obj.battery_percentage != undefined && obj.battery_percentage >= 0) ? transformer.transform(obj.battery_percentage):"Sem Registro",
-            a9: obj.accuracy,
-            a10: obj.date
-          };
-        });
-      
+
+    let transformer = new RoundPipe();
+    let plainArray = mArray.map(obj => {
+      return {
+        /**
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.FAMILY'), name: 'family_code' });
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.SERIAL'), name: 'serial' });
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.TAG'), name: 'tag' });
+
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LINK'), name: 'company' });
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.STATUS'), name: 'current_state' });
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.ACTUAL_SITE'), name: 'current_control_point_name' });
+
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.SITE'), name: 'current_control_point_type' });
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.BATTERY'), name: 'battery_percentage' });
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.ACCURACY'), name: 'in_out_accuracy' });
+
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.EVENT_DATE'), name: 'in_out_date' });
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LAST_ACCURACY'), name: 'accuracy' });
+          this.headers.push({ label: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LAST_SIGNAL'), name: 'date' });
+         */
+        a1: obj.family_code,
+        a2: obj.serial,
+        a3: obj.tag,
+
+        a4: obj.company,
+        a5: obj.current_state,
+        a6: obj.current_control_point_name,
+
+        a7: obj.current_control_point_type,
+        a8: (obj.battery_percentage != undefined && obj.battery_percentage >= 0) ? transformer.transform(obj.battery_percentage) : "Sem Registro",
+        a9: obj.in_out_accuracy,
+
+        a10: obj.in_out_date,
+        a11: obj.accuracy,
+        a12: obj.date
+      };
+    });
+
     // As my array is already flat, I'm just returning it.
     return plainArray;
   }
 
-  addHeader(mArray: any){
+  addHeader(mArray: any) {
     let cabecalho = {
-      a1: 'Família',
-      a2: 'Serial',
-      a3: 'Tag',
-      a4: 'Fornecedor',
-      a5: 'Status Atual',
-      a6: 'Planta Atual',
-      a7: 'Local',
-      a8: 'Bateria',
-      a9: 'Acurácia',
-      a10: 'Data do sinal'
+      a1: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.FAMILY'),
+      a2: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.SERIAL'),
+      a3: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.TAG'),
+
+      a4: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LINK'),
+      a5: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.STATUS'),
+      a6: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.ACTUAL_SITE'),
+
+      a7: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.SITE'),
+      a8: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.BATTERY'),
+      a9: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.ACCURACY'),
+
+      a10: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.EVENT_DATE'),
+      a11: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LAST_ACCURACY'),
+      a12: this.translate.instant('INVENTORY.EQUIPMENT_GENERAL.LAST_SIGNAL')
     }
 
     //adiciona o cabeçalho

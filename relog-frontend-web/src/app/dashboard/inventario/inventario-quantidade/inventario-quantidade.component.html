@@ -21,7 +21,7 @@
         [items]="listOfFamily" 
         (change)="familySelected($event)" 
         bindLabel="code"
-        placeholder="Selecione uma família">
+        placeholder="{{ 'INVENTORY.QUANTITY.SELECT_A_FAMILY' | translate }}">
       
         <ng-template ng-label-tmp let-item="item">
           {{item.code}}
@@ -41,16 +41,15 @@
     <table class="table">
       <thead>
         <tr class="cabecalho">
-          <th translate="INVENTORY.QUANTITY.FAMILY">Família</th>
-          <th translate="INVENTORY.QUANTITY.COMPANY">Empresa</th>
-          <th translate="INVENTORY.QUANTITY.CONTROL_POINT">Ponto de controle</th>
+          <th translate="INVENTORY.QUANTITY.FAMILY"></th>
+          <th translate="INVENTORY.QUANTITY.COMPANY"></th>
+          <th translate="INVENTORY.QUANTITY.CONTROL_POINT">  </th>
 
-          <th translate="INVENTORY.QUANTITY.TYPE">Tipo</th>
-          <!-- <th translate="INVENTORY.QUANTITY.EQUIPMENT">Local</th> -->
+          <th translate="INVENTORY.QUANTITY.TYPE"></th> 
           
-          <th translate="INVENTORY.QUANTITY.MIN" style="text-align:center;">Min</th>
-          <th translate="INVENTORY.QUANTITY.QUANTITY" style="text-align:center;">Quantidade</th>
-          <th translate="INVENTORY.QUANTITY.MAX" style="text-align:center;">Max</th>
+          <th translate="INVENTORY.QUANTITY.MIN" style="text-align:center;"></th>
+          <th translate="INVENTORY.QUANTITY.QUANTITY" style="text-align:center;"></th>
+          <th translate="INVENTORY.QUANTITY.MAX" style="text-align:center;"></th>
 
           <!-- <th>Diferença</th> -->
           <!-- <th>Status</th> -->
@@ -67,8 +66,7 @@
           <td>{{packing.company || '-'}}</td>
           <td>{{packing.control_point_name || '-'}}</td>
 
-          <td>{{packing.control_point_type}}</td>
-          <!-- <td>{{packing.actual_plant | type}}</td> -->
+          <td>{{packing.control_point_type}}</td> 
 
           <td style="text-align:center;">{{packing.stock_min}}</td>
           <td style="text-align:center;">{{packing.total || '-'}}</td>
