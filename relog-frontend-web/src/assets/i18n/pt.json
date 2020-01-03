@@ -113,7 +113,9 @@
         "HEADER": {
             "SEARCH_BY": "Busca por",
             "GENERAL": "Geral",
-            "TYPE": "Tipo"
+            "TYPE": "Tipo",
+            "EXPORTO_TO_CSV": "Exportar dados para CSV",
+            "EXPORTO_TO_PDF": "Exportar dados para PDF"
         },
         "GENERAL_FILTER": {
             "TITLE": "Geral",
@@ -244,7 +246,46 @@
             "EVENT_DATE": "Data da mensagem",
             "SEQUENCE_NUMBER": "# sequência",
             "SELECT_EQUIPMENT": "Selecione um equipamento"
+        },
+        "PROVIDER": {
+            "TITLE": "Fornecedor",
+            "SELECT_A_SITE": "Selecione um Ponto de controle",
+            "PACKING": "Equipamento",
+            "FAMILY": "Família",
+            "LINK": "Empresa Vinculada",
+            "ACTUAL_SITE": "Lugar Atual",
+            "SITE": "Local",
+            "QUANTITY": "Quantidade",
+            "NO_RESULTS": "Não há registros a serem exibidos",
+            "SELECT_A_PROVIDER": "Selecione um Fornecedor"
         }
+    },
+    "IMPORT_DATA": {
+        "TITLE": "Importar Dados",
+        "TITLE_DESC": "Escolha um arquivo xlxs para importar",
+        "FILE": "Arquivo",
+        "NAME": "Nome",
+        "SIZE": "Tamanho",
+        "TYPE": "Tipo de Cadastro",
+        "ACTIONS": "Ações",
+        "UPLOAD": "Upload",
+        "REMOVE": "Remove",
+        "CHOOSE": "Escolha",
+        "CONTROL_POINTS": "Pontos de controle",
+        "CONTROL_POINT": "Ponto de controle",
+        "PACKINGS": "Embalagens",
+        "COMPANIES": "Empresas",
+        "REQUIRED": "Campo Obrigatório",
+        "COLUMN_DETAIL": "Detalhes das colunas",
+        "REGISTER_INSTRUCIONS": "Para cadastrar informações no sistema via planilha excel, é preciso carregar arquivos (.xlsx) e seguir o template conforme demonstrado nos exemplos abaixo (seguindo a ordem de colunas e nomenclaturas).",
+        "GEOFENCE_TYPE_INSTRUCTION": "Tipo de contorno do ponto de controle. Assume valores 'c' ou 'p', respectivamente para os tipos Círculo ou Polígono. Obrigatório. Os valores devem ser em letra minúscula.",
+        "COORDINATES_INSTRUCTION": "Se o ponto de controle for um círculo, o valor deve conter a latitude e longitude do centro do círculo no formato [latitude, longitude], por exemplo: [11.222, 33.444]. Se o ponto de controle for um polígono, o valor deve conter uma lista de latitudes e longitudes no formato [[latitude, longitude], [latitude, longitude], ...], por exemplo: [[11.222, 33.444], [11.222, 33.444], ...].",
+        "RADIUS_INSTRUCTION": "Se for círculo, é necessário especificar o raio do ponto de controle em metros. Obrigatório.",
+        "NAME_INSTRUCTION": "Nome do ponto de controle. Obrigatório. Mínimo de 5 e máximo de 50 caracteres alfanuméricos.",
+        "ADDRESS_INSTRUCTION": "Endereço completo do ponto de controle. Obrigatório.",
+        "TYPE_INSTRUCTION": "Tipo do ponto de controle. Obrigatório.",
+        "COMPANY_INSTRUCTION": "Nome da empresa a qual o ponto de controle está vinculado. Obrigatório.",
+        "DUNS_INSTRUCTION": "Código identificador da empresa a qual o ponto de controle está vinculado. Máximo de 30 caracteres alfanuméricos. Opcional."
     },
     "SETTINGS": {
         "TITLE": "Editar configurações do sistema",

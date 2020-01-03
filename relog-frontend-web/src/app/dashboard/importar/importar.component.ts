@@ -4,6 +4,7 @@ import * as Handsontable from 'handsontable/dist/handsontable.full.js';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DepartmentService, RoutesService, PackingService, ToastService, PlantsService, ProjectService, TagsService, ImportService, ControlPointsService, CompaniesService } from '../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 declare var $: any;
 
 @Component({
@@ -22,7 +23,7 @@ export class ImportarComponent implements OnInit {
   public import: FormGroup;
  ;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private modalService: NgbModal,
     private importService: ImportService,
     private packingService: PackingService,

@@ -9,23 +9,20 @@
           </div>
         </button>
 
-        <h2>IMPORTAR DADOS</h2>
+        <h2 translate="INVENTORY.IMPORT_DATA.TITLE"></h2>
 
         <ng-template #content>
           <div class="modalFilho">
             <div class="header">
-              <h3>Detalhes das colunas</h3>
+              <h3 translate="INVENTORY.IMPORT_DATA.COLUMN_DETAIL"></h3>
             </div>
             <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"> 
               <span aria-hidden="true">&times;</span>
             </button>
-            <p style="border: none; font-weight: none!important;">
-              Para cadastrar informações no sistema via planilha excel, é preciso carregar arquivos (.xlsx) e seguir o
-              template
-              conforme demonstrado nos exemplos abaixo (seguindo a ordem de colunas e nomenclaturas).</p>
+            <p translate="INVENTORY.IMPORT_DATA.REGISTER_INSTRUCIONS" style="border: none; font-weight: none!important;"></p>
 
             <div class="modalBody">
-              <h4>Ponto de Controle</h4>
+              <h4 translate="INVENTORY.IMPORT_DATA.CONTROL_POINT"></h4>
               <p>
                 <span class="badge badge-secondary">geofence_type</span>
                 <span class="badge badge-secondary">coordinates</span>
@@ -36,21 +33,17 @@
                 <span class="badge badge-secondary">company_name</span>
                 <span class="badge badge-secondary">duns</span>
               </p>
-              <p><b>geofence_type:</b> Tipo de contorno do ponto de controle. Assume valores "c" ou "p", 
-                respectivamente para os tipos Círculo ou Polígono. Obrigatório. Os valores devem ser em letra minúscula.</p>
-              <p><b>coordinates:</b> Se o ponto de controle for um círculo, o valor deve conter a latitude e 
-                longitude do centro do círculo no formato [latitude, longitude], por exemplo: [11.222, 33.444].
-              Se o ponto de controle for um polígono, o valor deve conter uma lista de latitudes e longitudes no formato [[latitude,
-              longitude], [latitude, longitude], ...], por exemplo: [[11.222, 33.444], [11.222, 33.444], ...]..</p>
-              <p><b>radius:</b> Se for círculo, é necessário especificar o raio do ponto de controle em metros. Obrigatório.</p>
-              <p><b>name:</b> Nome do ponto de controle. Obrigatório. Mínimo de 5 e máximo de 50 caracteres alfanuméricos.</p>
-              <p><b>full_address:</b> Endereço completo do ponto de controle. Obrigatório.</p>
-              <p><b>type:</b> Tipo do ponto de controle. Obrigatório.</p>
-              <p><b>company:</b> Nome da empresa a qual o ponto de controle está vinculado. Obrigatório.</p>
-              <p><b>duns:</b> Código identificador da empresa a qual o ponto de controle está vinculado. Máximo de 30 caracteres alfanuméricos. Opcional.</p>
+              <p><b>geofence_type:</b> {{ "INVENTORY.IMPORT_DATA.GEOFENCE_TYPE_INSTRUCTION" | translate }}</p>
+              <p><b>coordinates:</b> {{ "INVENTORY.IMPORT_DATA.COORDINATES_INSTRUCTION" | translate }}</p>
+              <p><b>radius:</b> {{ "INVENTORY.IMPORT_DATA.RADIUS_INSTRUCTION" | translate }}</p>
+              <p><b>name:</b>{{ "INVENTORY.IMPORT_DATA.NAME_INSTRUCTION" | translate }} </p>
+              <p><b>full_address:</b> {{ "INVENTORY.IMPORT_DATA.ADDRESS_INSTRUCTION" | translate }}</p>
+              <p><b>type:</b> {{ "INVENTORY.IMPORT_DATA.TYPE_INSTRUCTION" | translate }}</p>
+              <p><b>company:</b> {{ "INVENTORY.IMPORT_DATA.COMPANY_INSTRUCTION" | translate }}</p>
+              <p><b>duns:</b> {{ "INVENTORY.IMPORT_DATA.DUNS_INSTRUCTION" | translate }}</p>
               <br>
 
-              <h4>Embalagem</h4>
+              <h4 translate="INVENTORY.IMPORT_DATA.PACKINGS"></h4>
               <p>
                 <span class="badge badge-secondary">family</span>
                 <span class="badge badge-secondary">serial</span>
