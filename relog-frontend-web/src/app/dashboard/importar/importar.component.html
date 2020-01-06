@@ -9,20 +9,20 @@
           </div>
         </button>
 
-        <h2 translate="INVENTORY.IMPORT_DATA.TITLE"></h2>
+        <h2 translate="IMPORT_DATA.TITLE"></h2>
 
         <ng-template #content>
           <div class="modalFilho">
             <div class="header">
-              <h3 translate="INVENTORY.IMPORT_DATA.COLUMN_DETAIL"></h3>
+              <h3 translate="IMPORT_DATA.COLUMN_DETAIL"></h3>
             </div>
             <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"> 
               <span aria-hidden="true">&times;</span>
             </button>
-            <p translate="INVENTORY.IMPORT_DATA.REGISTER_INSTRUCIONS" style="border: none; font-weight: none!important;"></p>
+            <p translate="IMPORT_DATA.REGISTER_INSTRUCTIONS" style="border: none; font-weight: none!important;"></p>
 
             <div class="modalBody">
-              <h4 translate="INVENTORY.IMPORT_DATA.CONTROL_POINT"></h4>
+              <h4 translate="IMPORT_DATA.CONTROL_POINT"></h4>
               <p>
                 <span class="badge badge-secondary">geofence_type</span>
                 <span class="badge badge-secondary">coordinates</span>
@@ -33,17 +33,17 @@
                 <span class="badge badge-secondary">company_name</span>
                 <span class="badge badge-secondary">duns</span>
               </p>
-              <p><b>geofence_type:</b> {{ "INVENTORY.IMPORT_DATA.GEOFENCE_TYPE_INSTRUCTION" | translate }}</p>
-              <p><b>coordinates:</b> {{ "INVENTORY.IMPORT_DATA.COORDINATES_INSTRUCTION" | translate }}</p>
-              <p><b>radius:</b> {{ "INVENTORY.IMPORT_DATA.RADIUS_INSTRUCTION" | translate }}</p>
-              <p><b>name:</b>{{ "INVENTORY.IMPORT_DATA.NAME_INSTRUCTION" | translate }} </p>
-              <p><b>full_address:</b> {{ "INVENTORY.IMPORT_DATA.ADDRESS_INSTRUCTION" | translate }}</p>
-              <p><b>type:</b> {{ "INVENTORY.IMPORT_DATA.TYPE_INSTRUCTION" | translate }}</p>
-              <p><b>company:</b> {{ "INVENTORY.IMPORT_DATA.COMPANY_INSTRUCTION" | translate }}</p>
-              <p><b>duns:</b> {{ "INVENTORY.IMPORT_DATA.DUNS_INSTRUCTION" | translate }}</p>
+              <p><b>geofence_type:</b> {{ "IMPORT_DATA.GEOFENCE_TYPE_INSTRUCTION" | translate }}</p>
+              <p><b>coordinates:</b> {{ "IMPORT_DATA.COORDINATES_INSTRUCTION" | translate }}</p>
+              <p><b>radius:</b> {{ "IMPORT_DATA.RADIUS_INSTRUCTION" | translate }}</p>
+              <p><b>name:</b>{{ "IMPORT_DATA.NAME_INSTRUCTION" | translate }} </p>
+              <p><b>full_address:</b> {{ "IMPORT_DATA.ADDRESS_INSTRUCTION" | translate }}</p>
+              <p><b>type:</b> {{ "IMPORT_DATA.TYPE_INSTRUCTION" | translate }}</p>
+              <p><b>company:</b> {{ "IMPORT_DATA.COMPANY_INSTRUCTION" | translate }}</p>
+              <p><b>duns:</b> {{ "IMPORT_DATA.DUNS_INSTRUCTION" | translate }}</p>
               <br>
 
-              <h4 translate="INVENTORY.IMPORT_DATA.PACKINGS"></h4>
+              <h4 translate="IMPORT_DATA.PACKINGS"></h4>
               <p>
                 <span class="badge badge-secondary">family</span>
                 <span class="badge badge-secondary">serial</span>
@@ -60,22 +60,22 @@
                 <span class="badge badge-secondary">project</span>
               </p>
 
-              <p><b>family:</b> Família da embalagem. Obrigatório.</p>
-              <p><b>serial:</b> Número serial da embalagem. Obrigatório. Mínimo de 2 e máximo de 30 caracteres alfanuméricos.</p>
-              <p><b>tag:</b> Número TAG do dispositivo. Obrigatório. Mínimo de 4 e máximo de 50 caracteres alfanuméricos.</p>
-              <p><b>version:</b> Versão do dispositivo. Obrigatório. Máximo de 30 caracteres alfanuméricos.</p>
-              <p><b>manufactorer:</b> Fabricante da embalagem. Obrigatório. Mínimo de 2 e máximo de 30 caracteres alfanuméricos</p>
-              <p><b>weight:</b> Peso da embalagem. Obrigatório. Valor numérico.</p>
-              <p><b>width:</b> Largura da embalagem. Obrigatório. Valor numérico.</p>
-              <p><b>height:</b> Altura da embalagem. Obrigatório. Valor numérico.</p>
-              <p><b>length:</b> Comprimento da Embalagem. Obrigatório. Valor numérico.</p>
-              <p><b>capacity:</b> Capacidade da embalagem. Obrigatório. Valor numérico.</p>
-              <p><b>observations:</b> Observações sobre a embalagem. Opcional. Máximo de 140 caracteres alfanuméricos.</p>
-              <p><b>type:</b> Descrição da embalagem. Obrigatório. Máximo de 50 caracteres alfanuméricos.</p>
-              <p><b>project:</b> Nome do projeto a qual a embalagem está associada. Obrigatório.</p>
+              <p><b>family:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.FAMILY" | translate }}</p>
+              <p><b>serial:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.SERIAL" | translate }}</p>
+              <p><b>tag:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.SERIAL" | translate }}</p>
+              <p><b>version:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.VERSION" | translate }}</p>
+              <p><b>manufactorer:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.MANUFACTORER" | translate }}</p>
+              <p><b>weight:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.WEIGHT" | translate }}</p>
+              <p><b>width:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.WIDTH" | translate }}</p>
+              <p><b>height:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.HEIGHT" | translate }}</p>
+              <p><b>length:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.LENGTH" | translate }}</p>
+              <p><b>capacity:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.CAPACITY" | translate }}</p>
+              <p><b>observations:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.OBSERVATIONS" | translate }}</p>
+              <p><b>type:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.TYPE_DESCRIPTION" | translate }}</p>
+              <p><b>project:</b> {{ "IMPORT_DATA.PACKINGS_DESCRIPTION.PROJECT" | translate }}</p>
               <br>
 
-              <h4>Empresas</h4>
+              <h4 translate="IMPORT_DATA.COMPANIES"></h4>
               <p>
                 <span class="badge badge-secondary">type</span>
                 <span class="badge badge-secondary">name</span>
@@ -87,14 +87,14 @@
                 <span class="badge badge-secondary">uf</span>  
               </p>
 
-              <p><b>type:</b> Tipo do ponto de controle. Pode ser 'owner' ou 'client'. Obrigatório.</p>
-              <p><b>name:</b> Nome da empresa. Obrigatório. Mínimo de 5 e máximo de 50 caracteres alfanuméricos.</p>
-              <p><b>phone:</b> Telefone da empresa. Opcional. Apenas caracteres numéricos.</p>
-              <p><b>cnpj:</b> CNPJ da empresa. Opcional. Apenas caracteres numéricos.</p>
-              <p><b>street:</b> Rua da empresa. Opcional. Máximo de 60 caracteres alfanuméricos.</p>
-              <p><b>cep:</b> CEP da empresa. Opcional. Apenas caracteres numéricos.</p>
-              <p><b>city:</b> Cidade da empresa. Opcional. Máximo de 60 caracteres alfanuméricos.</p>
-              <p><b>uf:</b> UF da empresa. Opcional. Máximo de 2 caracteres alfanuméricos.</p>
+              <p><b>type:</b> {{ "IMPORT_DATA.COMPANIES_DESCRIPTION.TYPE" | translate }} </p>
+              <p><b>name:</b> {{ "IMPORT_DATA.COMPANIES_DESCRIPTION.NAME" | translate }} </p>
+              <p><b>phone:</b> {{ "IMPORT_DATA.COMPANIES_DESCRIPTION.PHONE" | translate }} </p>
+              <p><b>cnpj:</b> {{ "IMPORT_DATA.COMPANIES_DESCRIPTION.CNPJ" | translate }} </p>
+              <p><b>street:</b> {{ "IMPORT_DATA.COMPANIES_DESCRIPTION.STREET" | translate }} </p>
+              <p><b>cep:</b> {{ "IMPORT_DATA.COMPANIES_DESCRIPTION.CEP" | translate }} </p>
+              <p><b>city:</b> {{ "IMPORT_DATA.COMPANIES_DESCRIPTION.CITY" | translate }} </p>
+              <p><b>uf:</b> {{ "IMPORT_DATA.COMPANIES_DESCRIPTION.UF" | translate }} </p>
               <br>
 
             </div>
@@ -104,17 +104,17 @@
         <div class="row .no-gutters">
           <div class="col-sm-12">
             <form novalidate (ngSubmit)="onSubmit(import)" [formGroup]="import" #formDir="ngForm">
-              <p>Escolha um arquivo xlxs para importar</p>
+              <p translate="IMPORT_DATA.CHOOSE_A_FILE"></p>
 
               <div class="table-responsive tabela">
                 <table class="table">
                   <thead>
                     <tr class="cabecalho">
-                      <th>Arquivo</th>
-                      <th width="30%">Nome</th>
-                      <th>Tamanho</th>
-                      <th>Tipo de Cadastro</th>
-                      <th>Ações</th>
+                      <th translate="IMPORT_DATA.FILE">Arquivo</th>
+                      <th translate="IMPORT_DATA.NAME" width="30%">Nome</th>
+                      <th translate="IMPORT_DATA.SIZE">Tamanho</th>
+                      <th translate="IMPORT_DATA.TYPE">Tipo de Cadastro</th>
+                      <th translate="IMPORT_DATA.ACTIONS">Ações</th>
                     </tr>
                   </thead>
 
@@ -125,7 +125,7 @@
                           <div class="form-group">
                             <!-- <div class="editar">
                             </div> -->
-                            <label for="single">ARQUIVO</label>
+                            <label translate="IMPORT_DATA.FILE" for="single"></label>
                             <!-- [ngbTooltip]="getMessage()" placement="top" container="body" -->
                             <!-- [attr.disabled]="(uploader.length !== 0) ? '' : null" -->
                             <input  
@@ -157,10 +157,10 @@
                             (click)="typeSelected($event)"
                             [ngClass]="{'required': (import.get('type').hasError('required') && import.get('type').touched)
                               || (import.get('type').hasError('required') && formDir.submitted)}">
-                            <option value="">Escolha</option>
-                            <option>Pontos de Controle</option>
-                            <option>Embalagens</option>
-                            <option>Empresas</option>
+                            <option translate="IMPORT_DATA.CHOOSE" value=""></option>
+                            <option translate="IMPORT_DATA.CONTROL_POINT">Pontos de Controle</option>
+                            <option translate="IMPORT_DATA.PACKINGS">Embalagens</option>
+                            <option translate="IMPORT_DATA.COMPANIES">Empresas</option>
                             <!-- <option>Projetos</option> -->
                             <!-- <option>Setores</option> -->
                             <!-- <option>Rotas</option> -->
@@ -168,14 +168,15 @@
 
                           <p class="requiredText" *ngIf="(import.get('type').hasError('required') && import.get('type').touched) 
                             || (import.get('type').hasError('required') && formDir.submitted)">
-                            Campo Obrigatório</p>
+                            {{ "IMPORT_DATA.REQUIRED" | translate }}  
+                          </p>
                         </div>
                       </td>
 
                       <td nowrap>
                         <div *ngIf="(uploader.length !== 0)">
-                          <button type="submit" class="editar">Upload</button>
-                          <button type="button" class="excluir" (click)="remove()">Remove</button>
+                          <button translate="IMPORT_DATA.UPLOAD" type="submit" class="editar">Upload</button>
+                          <button translate="IMPORT_DATA.REMOVE" type="button" class="excluir" (click)="remove()">Remove</button>
                         </div>
                       </td>
                     </tr>
@@ -201,11 +202,10 @@
         <div class="row" *ngIf="importResult?.errors?.length > 0 && send">
 
           <div class="col-md-12">
-            <p class="descricaoTitulo">Essas Linhas não foram importadas do Excel</p>
+            <p translate="IMPORT_DATA.ERROR.NOT_IMPORTED_LINES" class="descricaoTitulo"></p>
             <div class="col-md-12" *ngIf="importResult?.errors?.length !== 0 && send">
               <alert type="danger" dismissible="true">
-                <strong>Atenção!</strong> Existe algum problema no excel que você tentou importar, verifique se ele
-                apresenta os campos corretos para inserir os cadastros da/o(s) {{import['controls'].type.value}}.
+                {{ "IMPORT_DATA.THERE_IS_A_PROBLEM" | translate }}   {{import['controls'].type.value}}.
               </alert>
             </div>
           </div>
@@ -215,8 +215,8 @@
               <table class="table">
                 <thead>
                   <tr class="cabecalho">
-                    <th>Linha</th>
-                    <th>Descrição</th>
+                    <th translate="IMPORT_DATA.LINE"></th>
+                    <th translate="IMPORT_DATA.ERROR.DESCRIPTION">Descrição</th>
                   </tr>
                 </thead>
                 <tbody class="">
@@ -245,9 +245,9 @@
         <div class="row" *ngIf="import['controls'].type.value == 'Embalagens' && importResult?.updated?.length !== 0 && send">
 
           <div class="col-md-12">
-            <p class="descricaoTitulo">Essas linhas foram atualizadas a partir do Excel</p>
+            <p translate="IMPORT_DATA.UPDATE.UPDATED_LINES" class="descricaoTitulo"></p>
             <alert type="success " dismissible="true">
-              <strong>Atenção!</strong> Alguns dados foram atualizados com sucesso.
+              {{ "IMPORT_DATA.UPDATE.SUCCESS" | translate }}
             </alert>
           </div>
 
@@ -256,7 +256,7 @@
               <table class="table">
                 <thead>
                   <tr class="cabecalho">
-                    <th>linha</th>
+                    <th translate="IMPORT_DATA.LINE"></th>
                     <th>family</th>
                     <th>serial</th>
                     <th>tag</th>
@@ -299,9 +299,9 @@
         <!-- Tabela de atualização: Pontos de Controle -->
         <div class="row" *ngIf="import['controls'].type.value == 'Pontos de Controle' && importResult?.updated?.length !== 0 && send">
           <div class="col-md-12">
-            <p class="descricaoTitulo">Essas linhas foram atualizadas a partir do Excel</p>
+            <p translate="IMPORT_DATA.UPDATE.UPDATED_LINES" class="descricaoTitulo"></p>
             <alert type="success " dismissible="true">
-              <strong>Atenção!</strong> Alguns dados foram atualizados com sucesso.
+              {{ "IMPORT_DATA.UPDATE.SUCCESS" | translate }}
             </alert>
           </div>
 
@@ -310,7 +310,7 @@
               <table class="table">
                 <thead>
                   <tr class="cabecalho">
-                    <th>linha</th>
+                    <th translate="IMPORT_DATA.LINE"></th>
                     <th>geofence_type</th>
                     <th>coordinates</th>
                     <th>radius</th>
@@ -343,9 +343,9 @@
         <!-- Tabela de atualização: Empresas -->
         <div class="row" *ngIf="import['controls'].type.value == 'Empresas' && importResult?.updated?.length !== 0 && send">
           <div class="col-md-12">
-            <p class="descricaoTitulo">Essas linhas foram atualizadas a partir do Excel</p>
+            <p translate="IMPORT_DATA.UPDATE.UPDATED_LINES" class="descricaoTitulo"></p>
             <alert type="success " dismissible="true">
-              <strong>Atenção!</strong> Alguns dados foram atualizados com sucesso.
+              {{ "IMPORT_DATA.UPDATE.SUCCESS" | translate }}
             </alert>
           </div>
 
@@ -354,7 +354,7 @@
               <table class="table">
                 <thead>
                   <tr class="cabecalho">
-                    <th>linha</th>
+                    <th translate="IMPORT_DATA.LINE">linha</th>
                     <th>type</th>
                     <th>name</th>
                     <th>phone</th>
@@ -397,10 +397,9 @@
         <!-- Tabela de cadastros: Embalagens -->
         <div class="row" *ngIf="import['controls'].type.value == 'Embalagens' && importResult?.to_register?.length !== 0 && send">
           <div class="col-md-12">
-            <p class="descricaoTitulo">Essas linhas podem ser cadastradas a partir do Excel</p>
-            <alert type="warning  " dismissible="true">
-              <strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem do banco
-              de dados. Deseja prosseguir com o cadastro?
+            <p translate="IMPORT_DATA.REGISTER.CAN_BE_REGISTERED" class="descricaoTitulo"></p>
+            <alert type="warning" dismissible="true">
+              <div [innerHTML]="'IMPORT_DATA.REGISTER.CORRECT_PACKING_BUT_NEW' | translate"></div>
             </alert>
           </div>
 
@@ -409,7 +408,7 @@
               <table class="table">
                 <thead>
                   <tr class="cabecalho">
-                    <th>linha</th>
+                    <th translate="IMPORT_DATA.LINE">linha</th>
                     <th>family</th>
                     <th>serial</th>
                     <th>tag</th>
@@ -448,7 +447,9 @@
           </div>
 
           <div class="col-md-12 botoes">
-            <button type="button" class="botaoRegistrar" name="button" (click)="register()">REGISTRAR</button>
+            <button type="button" class="botaoRegistrar" name="button" (click)="register()">
+              {{ "IMPORT_DATA.REGISTER.REGISTER" | translate }}
+            </button>
           </div>
         </div>
 
@@ -458,10 +459,9 @@
         <div class="row" *ngIf="import['controls'].type.value == 'Pontos de Controle' && importResult?.to_register?.length !== 0 && send">
 
           <div class="col-md-12">
-            <p class="descricaoTitulo">Essas linhas podem ser cadastradas a partir do Excel</p>
+            <p translate="IMPORT_DATA.REGISTER.CAN_BE_REGISTERED" class="descricaoTitulo"></p>
             <alert type="warning" dismissible="true">
-              <strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem do banco
-              de dados.
+              <div [innerHTML]="'IMPORT_DATA.REGISTER.CORRECT_CONTROL_POINT_BUT_NEW' | translate"></div>
             </alert>
           </div>
 
@@ -470,7 +470,7 @@
               <table class="table">
                 <thead>
                   <tr class="cabecalho">
-                    <th>linha</th>
+                    <th translate="IMPORT_DATA.LINE">linha</th>
                     <th>geofence_type</th>
                     <th width="5%">coordinates</th>
                     <th>radius</th>
@@ -499,7 +499,7 @@
           </div>
 
           <div class="col-md-12 botoes">
-            <button type="button" class="botaoRegistrar" name="button" (click)="register()">REGISTRAR</button>
+            <button translate="IMPORT_DATA.REGISTER.REGISTER" type="button" class="botaoRegistrar" name="button" (click)="register()"></button>
           </div>
         </div>
 
@@ -509,10 +509,9 @@
         <div class="row" *ngIf="import['controls'].type.value == 'Empresas' && importResult?.to_register?.length !== 0 && send">
 
           <div class="col-md-12">
-            <p class="descricaoTitulo">Essas linhas podem ser cadastradas a partir do Excel</p>
+            <p translate="IMPORT_DATA.REGISTER.CAN_BE_REGISTERED" class="descricaoTitulo"></p>
             <alert type="warning" dismissible="true">
-              <strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem do banco
-              de dados.
+              <div [innerHTML]="'IMPORT_DATA.REGISTER.CORRECT_COMPANY_BUT_NEW' | translate"></div>
             </alert>
           </div>
 
@@ -521,7 +520,7 @@
               <table class="table">
                 <thead>
                   <tr class="cabecalho">
-                    <th>linha</th>
+                    <th translate="IMPORT_DATA.LINE"></th>
                     <th>type</th>
                     <th>name</th>
                     <th>phone</th>
@@ -550,7 +549,7 @@
           </div>
 
           <div class="col-md-12 botoes">
-            <button type="button" class="botaoRegistrar" name="button" (click)="register()">REGISTRAR</button>
+            <button translate="IMPORT_DATA.REGISTER.REGISTER" type="button" class="botaoRegistrar" name="button" (click)="register()"></button>
           </div>
         </div>
 

@@ -277,7 +277,7 @@
         "COMPANIES": "Empresas",
         "REQUIRED": "Campo Obrigatório",
         "COLUMN_DETAIL": "Detalhes das colunas",
-        "REGISTER_INSTRUCIONS": "Para cadastrar informações no sistema via planilha excel, é preciso carregar arquivos (.xlsx) e seguir o template conforme demonstrado nos exemplos abaixo (seguindo a ordem de colunas e nomenclaturas).",
+        "REGISTER_INSTRUCTIONS": "Para cadastrar informações no sistema via planilha excel, é preciso carregar arquivos (.xlsx) e seguir o template conforme demonstrado nos exemplos abaixo (seguindo a ordem de colunas e nomenclaturas).",
         "GEOFENCE_TYPE_INSTRUCTION": "Tipo de contorno do ponto de controle. Assume valores 'c' ou 'p', respectivamente para os tipos Círculo ou Polígono. Obrigatório. Os valores devem ser em letra minúscula.",
         "COORDINATES_INSTRUCTION": "Se o ponto de controle for um círculo, o valor deve conter a latitude e longitude do centro do círculo no formato [latitude, longitude], por exemplo: [11.222, 33.444]. Se o ponto de controle for um polígono, o valor deve conter uma lista de latitudes e longitudes no formato [[latitude, longitude], [latitude, longitude], ...], por exemplo: [[11.222, 33.444], [11.222, 33.444], ...].",
         "RADIUS_INSTRUCTION": "Se for círculo, é necessário especificar o raio do ponto de controle em metros. Obrigatório.",
@@ -285,7 +285,51 @@
         "ADDRESS_INSTRUCTION": "Endereço completo do ponto de controle. Obrigatório.",
         "TYPE_INSTRUCTION": "Tipo do ponto de controle. Obrigatório.",
         "COMPANY_INSTRUCTION": "Nome da empresa a qual o ponto de controle está vinculado. Obrigatório.",
-        "DUNS_INSTRUCTION": "Código identificador da empresa a qual o ponto de controle está vinculado. Máximo de 30 caracteres alfanuméricos. Opcional."
+        "DUNS_INSTRUCTION": "Código identificador da empresa a qual o ponto de controle está vinculado. Máximo de 30 caracteres alfanuméricos. Opcional.",
+        "CHOOSE_A_FILE": "Escolha um arquivo xlxs para importar",
+        "LINE": "linha",
+        "PACKINGS_DESCRIPTION": {
+            "FAMILY": "Família da embalagem. Obrigatório.",
+            "SERIAL": "Número serial da embalagem. Obrigatório. Mínimo de 2 e máximo de 30 caracteres alfanuméricos.",
+            "TAG": "Número TAG do dispositivo. Obrigatório. Mínimo de 4 e máximo de 50 caracteres alfanuméricos.",
+            "VERSION": "Versão do dispositivo. Obrigatório. Máximo de 30 caracteres alfanuméricos.",
+            "MANUFACTORER": "Fabricante da embalagem. Obrigatório. Mínimo de 2 e máximo de 30 caracteres alfanuméricos.",
+            "WEIGHT": "Peso da embalagem. Obrigatório. Valor numérico.",
+            "WIDTH": "Largura da embalagem. Obrigatório. Valor numérico.",
+            "HEIGHT": "Altura da embalagem. Obrigatório. Valor numérico.",
+            "LENGTH": "Comprimento da Embalagem. Obrigatório. Valor numérico.",
+            "CAPACITY": "Capacidade da embalagem. Obrigatório. Valor numérico.",
+            "OBSERVATIONS": "Observações sobre a embalagem. Opcional. Máximo de 140 caracteres alfanuméricos.",
+            "TYPE_DESCRIPTION": "Descrição da embalagem. Obrigatório. Máximo de 50 caracteres alfanuméricos.",
+            "PROJECT": "Nome do projeto a qual a embalagem está associada. Obrigatório."
+        },
+        "COMPANIES_DESCRIPTION": {
+            "TYPE": "Tipo do ponto de controle. Pode ser 'owner' ou 'client'. Obrigatório.",
+            "NAME": "Nome da empresa. Obrigatório. Mínimo de 5 e máximo de 50 caracteres alfanuméricos.",
+            "PHONE": "Telefone da empresa. Opcional. Apenas caracteres numéricos.",
+            "CNPJ": "CNPJ da empresa. Opcional. Apenas caracteres numéricos.",
+            "STREET": "Rua da empresa. Opcional. Máximo de 60 caracteres alfanuméricos.",
+            "CEP": "CEP da empresa. Opcional. Apenas caracteres numéricos.",
+            "CITY": "Cidade da empresa. Opcional. Máximo de 60 caracteres alfanuméricos.",
+            "UF": "UF da empresa. Opcional. Máximo de 2 caracteres alfanuméricos."
+        },
+        "ERROR": {
+            "NOT_IMPORTED_LINES": "Essas Linhas não foram importadas do Excel",
+            "THERE_IS_A_PROBLEM": "<strong>Atenção!</strong> Existe algum problema no excel que você tentou importar, verifique se ele apresenta os campos corretos para inserir os cadastros da/o(s)",
+            "DESCRIPTION": "Descrição"
+        },
+        "UPDATE": {
+            "UPDATED_LINES": "Essas linhas foram atualizadas a partir do Excel",
+            "SUCCESS": "<strong>Atenção!</strong> Alguns dados foram atualizados com sucesso.",
+            "DESCRIPTION": "Descrição"
+        },
+        "REGISTER": {
+            "CAN_BE_REGISTERED": "Essas linhas podem ser cadastradas a partir do Excel",
+            "CORRECT_PACKING_BUT_NEW": "<strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem no banco de dados. Deseja prosseguir com o cadastro?",
+            "CORRECT_CONTROL_POINT_BUT_NEW": "<strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a um Ponto de Controle no banco de dados. Deseja prosseguir com o cadastro?",
+            "CORRECT_COMPANY_BUT_NEW": "<strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem do banco de dados.",
+            "REGISTER": "REGISTRAR"
+        }
     },
     "SETTINGS": {
         "TITLE": "Editar configurações do sistema",
