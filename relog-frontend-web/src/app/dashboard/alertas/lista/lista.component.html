@@ -1,10 +1,9 @@
 <div class="conteudoTop">
   <div class="conteudoHome">
     <div class="header">
-      Timeline
-      <button routerLink="/rc/alertas" class="botaoVoltar">VOLTAR</button>
+      {{ "ALERTS.TIMELINE" | translate }}
+      <button translate="ALERTS.BACK_CAP" routerLink="/rc/alertas" class="botaoVoltar"></button>
     </div>
-
 
     <div class="painel">
       <div class="quadradoPequeno" 
@@ -26,13 +25,13 @@
           totalItems: listOfAlerts.length}">
 
         <div class="esquerda">
-          <span class="codigo" tooltip="Código da Embalagem">{{ alert.family.code }}</span>
+          <span class="codigo" ngbTooltip="{{ 'ALERTS.PACK_CODE' | translate }}">{{ alert.family.code }}</span>
           <br />
-          <span class="descricao" tooltip="Data do Alerta">{{ alert?.last_current_state_history?.created_at ? (alert.last_current_state_history.created_at | date) : '' }}</span>
+          <span class="descricao" ngbTooltip="{{ 'ALERTS.ALERT_DATE' | translate }}">{{ alert?.last_current_state_history?.created_at ? (alert.last_current_state_history.created_at | date) : '' }}</span>
         </div>
 
         <div class="direita">
-          <span class="fornecedor" tooltip="Ultima planta em que foi visto" *ngIf="alertCode == 1 || alertCode == 4"
+          <span class="fornecedor" ngbTooltip="{{ 'ALERTS.LAST_SITE' | translate }}" *ngIf="alertCode == 1 || alertCode == 4"
             [ngClass]="{
               'fornecedor0': alertCode == 0,
               'fornecedor1': alertCode == 1,
@@ -45,7 +44,7 @@
             {{ alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.' }}
           </span>
 
-          <span class="fornecedor" tooltip="Planta Atual" *ngIf="alertCode != 1 && alertCode != 4" [ngClass]="{
+          <span class="fornecedor" ngbTooltip="{{ 'ALERTS.ACTUAL_SITE' | translate }}" *ngIf="alertCode != 1 && alertCode != 4" [ngClass]="{
               'fornecedor0': alertCode == 0,
               'fornecedor1': alertCode == 1,
               'fornecedor2': alertCode == 2,
@@ -56,7 +55,7 @@
               'fornecedor7': alertCode == 7 }">
             {{ alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.' }}</span> <br />
 
-          <span class="quantidade" tooltip="Código Serial da Embalagem" [ngClass]="{
+          <span class="quantidade" ngbTooltip="{{ 'ALERTS.PACK_CODE' | translate }}" [ngClass]="{
               'quantidade0': alertCode == 0,
               'quantidade1': alertCode == 1,
               'quantidade2': alertCode == 2,
@@ -71,7 +70,10 @@
       </div>
 
       <div class="has-text-centered" style="width: 100%; margin-top: 20px;">
-        <pagination-controls id='list' class="my-pagination" (pageChange)="listOfAlertsActualPage = $event"
+        <pagination-controls 
+          id='list' 
+          class="my-pagination" 
+          (pageChange)="listOfAlertsActualPage = $event"
           directionLinks="false" autoHide="true">
         </pagination-controls>
       </div>

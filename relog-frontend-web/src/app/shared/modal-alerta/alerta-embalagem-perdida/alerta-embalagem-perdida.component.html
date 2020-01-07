@@ -1,17 +1,23 @@
 <div class="modalFilho">
   <div class="header">
 
-    <h2 style="color: #354052; margin-bottom: 0px;">Embalagem Perdida</h2>
+    <h2 translate="ALERTS.MISSING_PACK_DESCRIPTION" style="color: #354052; margin-bottom: 0px;"></h2>
 
     <div class="col-12 no-padding">
       <p class="alerta-badges">
-        <span class="badge badge-secondary">Código: {{ alerta.family.code }}</span>
-        <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{ alerta.serial }}</span>
-        <span class="badge badge-secondary" style="margin-left:5px;">Tag: {{ alerta.tag.code }}</span>
+        <span class="badge badge-secondary">{{ "ALERTS.FAMILY" | translate }}: {{ alerta.family.code }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">{{ "ALERTS.SERIAL" | translate }}: {{ alerta.serial }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">{{ "ALERTS.TAG" | translate }}: {{ alerta.tag.code }}</span>
       </p>
 
-      <img id="ver-no-mapa" (click)="visualizeOnMap()" tooltip="Visualizar no mapa" placement="left" src="assets/images/distancia.png"
-        height="25" style="float: right;">
+      <img 
+        id="ver-no-mapa" 
+        (click)="visualizeOnMap()" 
+        ngbTooltip="{{ 'ALERTS.GO_TO_MAP' | translate }}" 
+        placement="left" 
+        src="assets/images/distancia.png"
+        height="25" 
+        style="float: right;">
     </div>
 
     <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
@@ -23,7 +29,7 @@
 
     <div class="row">
       <div class="col-12">
-        <p class="titulo-modal">ÚLTIMO SINAL:</p>
+        <p class="titulo-modal">{{ "ALERTS.LAST_SIGNAL_CAP" | translate }}:</p>
         <br>
         <p> {{ alerta?.last_device_data ?
                 (alerta.last_device_data.message_date | date: 'dd/MM/yy HH:mm:ss' : '+00:00')
@@ -35,13 +41,13 @@
 
     <div class="row">
       <div class="col-12 col-md-6">
-        <p class="titulo-modal">ÚLTIMA LOCALIZAÇÃO:</p>
+        <p class="titulo-modal">{{ "ALERTS.LAST_LOCATION" | translate }}:</p>
         <br>
         <p> {{ alerta?.last_event_record?.control_point?.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p>  
       </div>
 
       <div class="col-12 col-md-6">
-        <p class="titulo-modal">ÚLTIMO NÍVEL DE BATERIA:</p>
+        <p class="titulo-modal">{{ "ALERTS.LAST_BATTERY_LEVEL_CAP" | translate }}:</p>
         <br>
         <p style="font-weight: bold;"> {{ alerta?.last_device_data_battery?.battery?.percentage ?
           (alerta.last_device_data_battery.battery.percentage >= 0 ? ((alerta.last_device_data_battery.battery.percentage | round) + '%') : mConstants.NO_REGISTER )

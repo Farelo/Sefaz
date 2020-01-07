@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService, InventoryLogisticService, PlantsService, PackingService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
 import { constants } from '../../../../environments/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-alerta-permanencia',
@@ -14,7 +15,8 @@ export class AlertaPermanenciaComponent implements OnInit {
   @Input() alerta;
   public mConstants: any;
 
-  constructor(public activeAlerta: NgbActiveModal,
+  constructor(public translate: TranslateService,
+    public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
     private modalService: NgbModal){ 
 

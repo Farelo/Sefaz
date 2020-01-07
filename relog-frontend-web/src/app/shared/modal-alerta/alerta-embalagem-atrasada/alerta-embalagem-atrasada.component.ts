@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService, InventoryLogisticService, PlantsService, PackingService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
 import { constants } from 'environments/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-alerta-embalagem-atrasada',
@@ -14,7 +15,7 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
   @Input() alerta;
   public mConstants: any;
   
-  constructor(
+  constructor(public translate: TranslateService,
     public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
     private modalService: NgbModal) { 
@@ -23,21 +24,11 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
   }
 
   ngOnInit() {
-    
-    //this.getLastPlant();
+
   }
 
   getLastPlant() {
-    // if (this.alerta.data.packing.last_plant.plant !== undefined) {
-    //   this.plantsService.retrievePlant(this.alerta.data.packing.last_plant.plant).subscribe(result => {
-    //     //console.log('result: ' + JSON.stringify(result));
 
-    //     if (result.data.length != {}) {
-    //       this.lastPlant = result.data;
-    //       //console.log('this.lastPlant: ' + JSON.stringify(this.lastPlant));
-    //     }
-    //   });
-    // }
   }
 
   visualizeOnMap() {
@@ -46,8 +37,7 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
       .getPacking(this.alerta._id)
       .subscribe(
         result => {
-          let actualPackage = result;
-          //console.log('actualPackage: ' + JSON.stringify(actualPackage[0]));
+          let actualPackage = result; 
 
           this.activeAlerta.dismiss('open map');
           const modalRef = this.modalService.open(LayerModalComponent, {

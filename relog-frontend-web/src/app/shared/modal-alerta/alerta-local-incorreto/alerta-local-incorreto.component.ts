@@ -4,6 +4,7 @@ import { Pagination } from '../../models/pagination';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService, InventoryLogisticService, RoutesService, PackingService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-alerta-local-incorreto',
@@ -17,7 +18,7 @@ export class AlertaLocalIncorretoComponent implements OnInit {
   public listOfRoutes: any[] = [];
   public mConstants: any;
 
-  constructor(
+  constructor(public translate: TranslateService,
     public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
     private routesService: RoutesService,
