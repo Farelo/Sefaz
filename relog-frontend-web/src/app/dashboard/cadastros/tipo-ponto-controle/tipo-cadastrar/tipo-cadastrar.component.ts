@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastService } from 'app/servicos/toast.service'; 
 import { ControlPointTypesService } from 'app/servicos/index.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tipo-cadastrar',
@@ -12,7 +13,7 @@ export class TipoPontoControleCadastrarComponent implements OnInit {
 
   public mType: FormGroup;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private controlPointTypesService: ControlPointTypesService,
     private toastService: ToastService,
     private fb: FormBuilder) { }

@@ -3,6 +3,7 @@ import { ToastService, PackingService, CompaniesService, ControlPointsService } 
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { Family } from 'app/shared/models/family';
 import { FamiliesService } from 'app/servicos/families.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-familia-cadastro',
@@ -18,7 +19,7 @@ export class FamiliaCadastroComponent implements OnInit {
   public validForm: boolean = true;
   public submited = false;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private companyService: CompaniesService,
     private familyService: FamiliesService,
     private controlPointsService: ControlPointsService,

@@ -1,13 +1,13 @@
 <div class="">
-  <h2 translate="REGISTER.PROJECT.CREATE.REGISTER"></h2>
+  <h2 translate="REGISTER.PROJECT.REGISTER_TITLE"></h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mProject)" [formGroup]="mProject" #formDir="ngForm">
     <div class="campo">
-      <p translate="REGISTER.PROJECT.CREATE.NAME" class="descricao"></p>
-      <p translate="REGISTER.PROJECT.CREATE.NAME_DESC" class="explicacao"></p>
+      <p translate="REGISTER.PROJECT.NAME" class="descricao"></p>
+      <p translate="REGISTER.PROJECT.NAME_DESC" class="explicacao"></p>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="{{ 'REGISTER.PROJECT.CREATE.NAME_PLACEHOLDER' | translate }}" aria-describedby="basic-addon2"
+        <input type="text" class="form-control" placeholder="{{ 'REGISTER.PROJECT.NAME_PLACEHOLDER' | translate }}" aria-describedby="basic-addon2"
           maxlength="50" [(ngModel)]="name" formControlName="name" 
           (focusout)="validateName($event)" [ngClass]="{'required': 
             (mProject.get('name').hasError('required') && mProject.get('name').touched)
@@ -44,8 +44,8 @@
     <br />
     
     <div class="botoes">
-      <button routerLink="/rc/cadastros/projeto" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+      <button translate="REGISTER.BACK_BUTTON" routerLink="/rc/cadastros/projeto" class="botaoVoltar">VOLTAR</button>
+      <button translate="REGISTER.REGISTER_BUTTON" type="submit" class="botaoRegistrar">REGISTRAR</button>
     </div>
     <br />
   </form>

@@ -116,7 +116,10 @@
     },
     "REGISTER": {
         "CREATE_BUTTON": "Novo",
+        "REGISTER_BUTTON": "REGISTRAR",
+        "BACK_BUTTON": "VOLTAR",
         "EDIT_BUTTON": "EDITAR",
+        "UPDATE_BUTTON": "ATUALIZAR",
         "REMOVE_BUTTON": "EXCLUIR",
         "TABLE": {
             "NAME": "Nome",
@@ -134,34 +137,88 @@
             "REQUIRED": "Campo Obrigatório",
             "CHECKING": "Verificando disponibilidade ...",
             "MIN_5": "Mínimo de 5 caracteres.",
+            "MIN_2": "Mínimo de 2 caracteres.",
+            "MAX_50": "Máximo de 50 caracteres.",
             "CONTROL_POINT_EXISTS": "Este Ponto de Controle já existe. O nome deve ser único.",
+            "FAMILY_EXISTS": "Esta família já existe. O código deve ser único.",
+            "CP_TYPE_EXISTS": "Este Tipo já existe. O nome deve ser único.",
+            "CP_EXISTS": "Este Ponto de Controle já existe. O nome deve ser único.",
             "WHITE_SPACE": "Excesso de espaços em branco."
         },
         "PROJECT": {
             "MENU": "Projetos",
             "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome",
             "NO_RESULT": "Ainda não existem projetos cadastrados",
-            "CREATE":{
-                "REGISTER": "Registrar Projeto",
-                "NAME": "Nome",
-                "NAME_DESC": "Ex. \"Projeto do Produto A1\"",
-                "NAME_PLACEHOLDER": "Digite o nome do projeto"
-            }
+            
+            "REGISTER_TITLE": "Registrar Projeto",
+            "UPDATE_TITLE": "Registrar Projeto",
+
+            "NAME": "Nome",
+            "NAME_DESC": "Ex. \"Projeto do Produto A1\"",
+            "NAME_PLACEHOLDER": "Digite o nome do projeto"
         },
         "FAMILY": {
             "MENU": "Família",
             "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome",
-            "NO_RESULT": "Ainda não existem famílias cadastradas"
+            "NO_RESULT": "Ainda não existem famílias cadastradas",
+
+            "REGISTER_TITLE": "Registrar Família de Embalagem",
+            "UPDATE_TITLE": "Atualizar Família de Embalagem",
+            
+            "CODE": "CÓDIGO DA FAMÍLIA",
+            "CODE_DESC": "Ex: \"AAA1\"",
+            "CODE_PLACEHOLDER": "Digite o Código da Família",
+
+            "LINK": "EMPRESA VINCULADA",
+            "LINK_PLACEHOLDER": "Associe uma empresa",
+
+            "CONTROL_POINTS": "PONTOS DE CONTROLE",
+            "CONTROL_POINT_PLACEHOLDER": "Associe pontos de controle",
+            "ALL_CONTROL_POINT": "Habilitar Todos",
+            "DISABLE_CONTROL_POINT": "Desabilitar Todos"
         },
         "CONTROL_POINT_TYPE": {
             "MENU": "Tipos de Ponto de Controle",
             "SEARCH_BAR_PLACEHOLDER": "Buscar tipo por nome",
-            "NO_RESULT": "Ainda não existem tipos cadastrados"
+            "NO_RESULT": "Ainda não existem tipos cadastrados",
+
+            "REGISTER_TITLE": "Registrar Tipo de Ponto de Controle",
+            "UPDATE_TITLE": "Atualizar Tipo de Ponto de Controle",
+
+            "NAME": "Nome",
+            "NAME_DESC": "Ex. \"Armazém\"",
+            "NAME_PLACEHOLDER": "Digite o nome do ponto de controle"
         },
         "CONTROL_POINT": {
             "MENU": "Pontos de Controle",
             "SEARCH_BAR_PLACEHOLDER": "Buscar ponto de controle por nome",
-            "NO_RESULT": "Ainda não existem pontos de controle cadastrados"
+            "NO_RESULT": "Ainda não existem pontos de controle cadastrados",
+
+            "REGISTER_TITLE": "Registrar Ponto de Controle",
+            "UPDATE_TITLE": "Atualizar Ponto de Controle",
+
+            "NAME": "Nome",
+            "NAME_DESC": "Ex. \"Planta B1\"",
+            "NAME_PLACEHOLDER": "Digite o nome do ponto de controle",
+
+            "DUNS": "DUNS/Código de identificação do Ponto de Controle",
+            "DUNS_DESC": "Ex. \"123456789\"",
+            "DUNS_PLACEHOLDER": "Digite o código de identificação do ponto de controle",
+
+            "TYPE": "Tipo",
+            "TYPE_PLACEHOLDER": "Selecione o tipo",
+
+            "LINK": "Empresa vinculada",
+            "LINK_PLACEHOLDER": "Associe uma empresa",
+
+            "SITE": "Local",
+            "SITE_PLACEHOLDER": "Digite o local do ponto de controle",
+
+            "INFO": "Informação",
+            "INFOS": "Informações",
+            "CONTROL_POINT": "Ponto de Controle",
+            "SELECT_EDGES": "Selecione contorno círculo ou polígono",
+            "RADIUS": "Raio"
         },
         "PACKING": {
             "MENU": "Embalagens",
