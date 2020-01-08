@@ -130,10 +130,23 @@
             "DISTANCE": "Distância",
             "CONTROL_POINT": "Ponto de controle"
         },
+        "ERRORS": {
+            "REQUIRED": "Campo Obrigatório",
+            "CHECKING": "Verificando disponibilidade ...",
+            "MIN_5": "Mínimo de 5 caracteres.",
+            "CONTROL_POINT_EXISTS": "Este Ponto de Controle já existe. O nome deve ser único.",
+            "WHITE_SPACE": "Excesso de espaços em branco."
+        },
         "PROJECT": {
             "MENU": "Projetos",
             "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome",
-            "NO_RESULT": "Ainda não existem projetos cadastrados"
+            "NO_RESULT": "Ainda não existem projetos cadastrados",
+            "CREATE":{
+                "REGISTER": "Registrar Projeto",
+                "NAME": "Nome",
+                "NAME_DESC": "Ex. \"Projeto do Produto A1\"",
+                "NAME_PLACEHOLDER": "Digite o nome do projeto"
+            }
         },
         "FAMILY": {
             "MENU": "Família",

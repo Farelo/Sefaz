@@ -223,8 +223,6 @@ export class ListaComponent implements OnInit {
       default:
         result = this.translate.instant('ALERTS.DEFAULT_DESCRIPTION');
     }
-    console.log(code)
-    console.log(result)
 
     return result;
   }
