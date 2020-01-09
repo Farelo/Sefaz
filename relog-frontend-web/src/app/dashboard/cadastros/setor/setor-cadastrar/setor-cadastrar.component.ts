@@ -3,6 +3,7 @@ import { Department } from '../../../../shared/models/department';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { GeocodingService, ToastService, DepartmentService, ControlPointsService} from '../../../../servicos/index.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-setor-cadastrar',
@@ -23,7 +24,7 @@ export class SetorCadastrarComponent implements OnInit {
   }
   public geocoder = new google.maps.Geocoder;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private controlPointsService: ControlPointsService,
     private departmentService: DepartmentService,
     private router: Router, 

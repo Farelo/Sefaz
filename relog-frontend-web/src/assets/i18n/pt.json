@@ -290,17 +290,84 @@
         "COMPANY": {
             "MENU": "Empresas",
             "SEARCH_BAR_PLACEHOLDER": "Buscar empresa por nome",
-            "NO_RESULT": "Ainda não existem empresas cadastradas"
+            "NO_RESULT": "Ainda não existem empresas cadastradas",
+
+            "REGISTER_TITLE": "Registrar Empresa",
+            "UPDATE_TITLE": "Atualizar Empresa",
+
+            "TYPE": "Tipo da empresa",
+            "TYPE_PLACEHOLDER": "Selecione um tipo",
+
+            "NAME": "Nome da empresa",
+            "NAME_PLACEHOLDER": "Digite o nome da empresa",
+
+            "PHONE": "Telefone",
+            "PHONE_PLACEHOLDER": "Telefone da empresa",
+
+            "CNPJ": "CNPJ",
+            "CNPJ_PLACEHOLDER": "__.___.___/____-__",
+
+            "STREET": "Rua",
+            "STREET_PLACEHOLDER": "Digite o nome da rua",
+
+            "CEP": "CEP",
+            "CEP_PLACEHOLDER": "Digite o CEP",
+
+            "CITY": "Cidade",
+            "CITY_PLACEHOLDER": "Nome da cidade",
+
+            "UF": "UF",
+            "UF_PLACEHOLDER": "UF"
         },
         "ROUTES": {
             "MENU": "Rotas",
             "SEARCH_BAR_PLACEHOLDER": "Buscar rota por família ou ponto de controle",
-            "NO_RESULT": "Ainda não existem rotas cadastradas"
+            "NO_RESULT": "Ainda não existem rotas cadastradas",
+
+            "REGISTER_TITLE": "Registrar Empresa",
+            "UPDATE_TITLE": "Atualizar Empresa",
+
+            "LINK_FAMILY": "Associe uma família",
+            "ACTIVE_PLACEHOLDER": "Selecione uma família",
+
+            "LINK_SITE_A": "Associe o primeiro ponto de controle",
+            "LINK_SITE_A_PLACEHOLDER": "Selecione um ponto de controle",
+
+            "LINK_SITE_B": "Associe o segundo ponto de controle",
+            "LINK_SITE_B_PLACEHOLDER": "Selecione um ponto de controle",
+
+            "MAX_TIME": "Defina um tempo máximo de viagem",
+            "MIN_TIME": "Defina um tempo mínimo de viagem",
+            "TOLERANCE_TIME": "Defina a tolerância máximo de atraso",
+
+            "NAME": "Nome",
+            "DAYS": "Dias",
+            "HOURS": "Horas",
+            "MINUTES": "Minutos",
+            "KM": "km",
+
+            "NO_PACKS": "<strong>Atenção!</strong> Não existe embalagens associadas a essa empresa."
         },
         "DEPARTMENT": {
             "MENU": "Departamentos",
             "SEARCH_BAR_PLACEHOLDER": "Buscar departamento por nome",
-            "NO_RESULT": "Ainda não existem departamentos cadastrados"
+            "NO_RESULT": "Ainda não existem departamentos cadastrados",
+
+            "REGISTER_TITLE": "Registrar Empresa",
+            "UPDATE_TITLE": "Atualizar Empresa",
+
+            "NAME": "Nome",
+            "NAME_DESC": "Ex. \"Setor B6\"",
+            "NAME_PLACEHOLDER": "Digite o nome do departamento",
+
+            "LINK": "Associe o ponto de controle",
+            "LINK_DESC": "Ponto de controle",
+            "LINK_PLACEHOLDER": "Selecione o ponto de controle",
+
+            "SITE": "Local",
+            "NO_INFO": "Nenhuma informação sobre a localidade",
+            "LAT": "Latitude",
+            "LNG": "Longitude"
         }
     },
     "INVENTORY": {
@@ -524,6 +591,18 @@
             "CORRECT_COMPANY_BUT_NEW": "<strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem do banco de dados.",
             "REGISTER": "REGISTRAR"
         }
+    },
+    "BPLINE": {
+        "NEW": "Novo",
+        "SEARCH_PLACEHOLDER": "Buscar por empresa ou família",
+        "ANUAL_VOLUME": "Volume anual",
+        "CAPACITY": "Capacidade",
+        "PRODUCTIVE_DAYS": "Dias produtivos",
+        "CONTROL_POINT": "Ponto de Controle",
+        "OPTIONS": "Opções",
+        "EDIT_BUTTON": "Editar",
+        "REMOVE_BUTTON": "Excluir",
+        "NO_REGISTER": "Ainda não existem registros BPline cadastrados."
     },
     "SETTINGS": {
         "TITLE": "Editar configurações do sistema",

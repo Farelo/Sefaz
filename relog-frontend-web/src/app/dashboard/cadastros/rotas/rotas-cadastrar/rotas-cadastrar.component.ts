@@ -4,6 +4,7 @@ import { DirectionsRenderer } from '@ngui/map';
 import { ToastService, RoutesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 declare var $: any;
 @Component({
@@ -40,7 +41,7 @@ export class RotasCadastrarComponent implements OnInit {
   public allFamilies: any[] = [];
   public allControlPoints: any[] = [];
 
-  constructor(
+  constructor(public translate: TranslateService,
     private routesService: RoutesService,
     private familyService: FamiliesService,
     private controlPointsService: ControlPointsService,

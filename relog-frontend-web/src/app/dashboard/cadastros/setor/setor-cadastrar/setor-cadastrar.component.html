@@ -1,5 +1,5 @@
 <div class="">
-  <h2>Registrar Departamento</h2>
+  <h2 translate="REGISTER.DEPARTMENT.REGISTER_TITLE"></h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mDepartment)" [formGroup]="mDepartment" #formDir="ngForm">
@@ -7,13 +7,13 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="campo">
-          <p class="descricao">NOME</p>
-          <p class="explicacao">Ex. "Setor B7"</p>
+          <p translate="REGISTER.DEPARTMENT.NAME" class="descricao"></p>
+          <p translate="REGISTER.DEPARTMENT.NAME_DESC" class="explicacao"></p>
           <div class="input-group">
             <input type="text"
               class="form-control"
               maxlength="50"
-              placeholder="Digite o nome do departamento"
+              placeholder="{{ 'REGISTER.DEPARTMENT.NAME_PLACEHOLDER' | translate }}"
               aria-describedby="basic-addon2"
               [(ngModel)]="name" formControlName="name"
               [ngClass]="{'required': (mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
@@ -24,31 +24,28 @@
                 || (mDepartment.get('name').hasError('pattern') && formDir.submitted)}">
           </div>
       
-          <p class="requiredText" 
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" 
             *ngIf="(mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
-              || (mDepartment.get('name').hasError('required') && formDir.submitted)">
-              Campo Obrigatório</p>
+              || (mDepartment.get('name').hasError('required') && formDir.submitted)"> </p>
 
-          <p class="requiredText" *ngIf="(mDepartment.get('name').hasError('minlength'))
-            || (mDepartment.get('name').hasError('minlength') && formDir.submitted)">
-            Mínimo de 5 caracteres</p>
+          <p translate="REGISTER.ERRORS.MIN_5" class="requiredText" *ngIf="(mDepartment.get('name').hasError('minlength'))
+            || (mDepartment.get('name').hasError('minlength') && formDir.submitted)"> </p>
           
-          <p class="requiredText" *ngIf="(mDepartment.get('name').hasError('pattern'))
-            || (mDepartment.get('name').hasError('pattern') && formDir.submitted)">
-            Excesso de espaços em branco</p>
+          <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" *ngIf="(mDepartment.get('name').hasError('pattern'))
+            || (mDepartment.get('name').hasError('pattern') && formDir.submitted)"> </p>
         </div>
       </div>
 
       <div class="col-sm-12">
         <div class="campo">
-          <p class="descricao">ASSOCIE O PONTO DE CONTROLE</p>
-          <p class="explicacao">Escolha um Ponto de Controle</p>
+          <p translate="REGISTER.DEPARTMENT.LINK" class="descricao"></p>
+          <p translate="REGISTER.DEPARTMENT.LINK_DESC" class="explicacao"></p>
       
           <ng-select 
             (change)="onChange($event)"
             [items]="allControlPoints" 
             bindLabel="name" 
-            placeholder="Associe um Ponto de Controle"
+            placeholder="{{ 'REGISTER.DEPARTMENT.LINK_PLACEHOLDER' | translate }}"
             formControlName="control_point" 
             [ngClass]="{'required': 
               (mDepartment.get('control_point').hasError('required') && mDepartment.get('control_point').touched) 
@@ -63,15 +60,14 @@
             </ng-template>
           </ng-select>
       
-          <p class="requiredText" *ngIf="(mDepartment.get('control_point').hasError('required') && mDepartment.get('control_point').touched)
-            || (mDepartment.get('control_point').hasError('required') && formDir.submitted)">
-            Campo Obrigatório</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mDepartment.get('control_point').hasError('required') && mDepartment.get('control_point').touched)
+            || (mDepartment.get('control_point').hasError('required') && formDir.submitted)"> </p>
         </div>
       </div>
 
       <div class="col-md-12">
         <div class="campo">
-          <p class="descricao">LOCAL</p>
+          <p translate="REGISTER.DEPARTMENT.SITE" class="descricao"></p>
           <p>
             <ngui-map 
               [zoom]="zoom" 
@@ -92,29 +88,27 @@
       </div>
 
       <div class="col-md-6 campo">
-        <p class="descricao">LATITUDE</p>
+        <p translate="REGISTER.DEPARTMENT.LAT" class="descricao"></p>
         <div class="input-group">
-          <input type="text" class="form-control" readonly placeholder="Digite a latitude" aria-describedby="basic-addon2"
+          <input type="text" class="form-control" readonly placeholder="{{ 'REGISTER.DEPARTMENT.LAT' | translate }}" aria-describedby="basic-addon2"
             [(ngModel)]="lat" formControlName="lat" [ngClass]="{'required': (mDepartment.get('lat').hasError('required') && mDepartment.get('lat').touched)
           || (mDepartment.get('lat').hasError('required') && formDir.submitted)}">
         </div>
 
-        <p class="requiredText" *ngIf="(mDepartment.get('lat').hasError('required') && mDepartment.get('lat').touched)
-        || (mDepartment.get('lat').hasError('required') && formDir.submitted)">Campo
-          Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mDepartment.get('lat').hasError('required') && mDepartment.get('lat').touched)
+        || (mDepartment.get('lat').hasError('required') && formDir.submitted)"> </p>
       </div>
 
       <div class="col-md-6 campo">
-        <p class="descricao">LONGITUDE</p>
+        <p translate="REGISTER.DEPARTMENT.LNG" class="descricao"></p>
         <div class="input-group">
-          <input type="text" class="form-control" readonly placeholder="Digite a longitude" aria-describedby="basic-addon2"
+          <input type="text" class="form-control" readonly placeholder="{{ 'REGISTER.DEPARTMENT.LNG' | translate }}" aria-describedby="basic-addon2"
             [(ngModel)]="lng" formControlName="lng" [ngClass]="{'required': (mDepartment.get('lng').hasError('required') && mDepartment.get('lng').touched)
           || (mDepartment.get('lng').hasError('required') && formDir.submitted)}">
         </div>
 
-        <p class="requiredText" *ngIf="(mDepartment.get('lng').hasError('required') && mDepartment.get('lng').touched)
-        || (mDepartment.get('lng').hasError('required') && formDir.submitted)">Campo
-          Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mDepartment.get('lng').hasError('required') && mDepartment.get('lng').touched)
+        || (mDepartment.get('lng').hasError('required') && formDir.submitted)"> </p>
       </div>
       <br />
     </div>
@@ -122,8 +116,8 @@
     <br />
 
     <div class="botoes">
-      <button routerLink="/rc/cadastros/setor" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+      <button translate="REGISTER.BACK_BUTTON" routerLink="/rc/cadastros/setor" class="botaoVoltar"></button>
+      <button translate="REGISTER.REGISTER_BUTTON" type="submit" class="botaoRegistrar"></button>
     </div>
     <br />
   </form>

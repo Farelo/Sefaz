@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GC16Service, AuthenticationService, PackingService, InventoryLogisticService, InventoryService } from '../../servicos/index.service'; 
 import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-gc16',
@@ -16,7 +17,7 @@ export class Gc16Component implements OnInit {
   public equipamentSearch = "";
   public packings: any[];
  
-  constructor( 
+  constructor( public translate: TranslateService,
     private GC16Service: GC16Service,
     private modalService: NgbModal,
     private auth: AuthenticationService) { 

@@ -10,10 +10,9 @@
       <!-- Codigo -->
       <div class="col-sm-12 col-md-4 campo" formGroupName="tag">
         <p translate="REGISTER.PACKING.TAG" class="descricao"></p>
-        <p translate="REGISTER.PACKING.TAG_DESC" class="explicacao">{{ 'REGISTER.PACKING.TAG_PLACEHOLDER' | translate }}
-        </p>
+        <p translate="REGISTER.PACKING.TAG_DESC" class="explicacao"></p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Código da tag" aria-describedby="basic-addon2"
+          <input type="text" class="form-control" placeholder="{{ 'REGISTER.PACKING.TAG_PLACEHOLDER' | translate }}" aria-describedby="basic-addon2"
             formControlName="code" maxlength="25" (focusout)="validateTag($event)" [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
               || (mPacking.get('tag.code').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.code').hasError('pattern'))
