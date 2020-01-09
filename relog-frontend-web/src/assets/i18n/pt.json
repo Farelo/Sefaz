@@ -136,14 +136,17 @@
         "ERRORS": {
             "REQUIRED": "Campo Obrigatório",
             "CHECKING": "Verificando disponibilidade ...",
-            "MIN_5": "Mínimo de 5 caracteres.",
-            "MIN_2": "Mínimo de 2 caracteres.",
-            "MAX_50": "Máximo de 50 caracteres.",
+            "MIN_5": "Mínimo de 5 caracteres",
+            "MIN_4": "Mínimo de 4 caracteres",
+            "MIN_2": "Mínimo de 2 caracteres",
+            "MAX_50": "Máximo de 50 caracteres",
             "CONTROL_POINT_EXISTS": "Este Ponto de Controle já existe. O nome deve ser único.",
             "FAMILY_EXISTS": "Esta família já existe. O código deve ser único.",
             "CP_TYPE_EXISTS": "Este Tipo já existe. O nome deve ser único.",
             "CP_EXISTS": "Este Ponto de Controle já existe. O nome deve ser único.",
-            "WHITE_SPACE": "Excesso de espaços em branco."
+            "PACK_EXISTS": "Esta Embalagem já existe. O código deve ser único.",
+            "WHITE_SPACE": "Excesso de espaços em branco.",
+            "INVALID_VALUE": "Valor inválido"
         },
         "PROJECT": {
             "MENU": "Projetos",
@@ -223,7 +226,66 @@
         "PACKING": {
             "MENU": "Embalagens",
             "SEARCH_BAR_PLACEHOLDER": "Buscar embalagem por família, serial ou tag",
-            "NO_RESULT": "Ainda não existem embalagens cadastradas"
+            "NO_RESULT": "Ainda não existem embalagens cadastradas",
+
+            "REGISTER_TITLE": "Registrar Ponto de Controle",
+            "UPDATE_TITLE": "Atualizar Ponto de Controle",
+
+            "TAG": "Tag",
+            "TAG_DESC": "Ex. \"994475545\"",
+            "TAG_PLACEHOLDER": "Código da Tag",
+
+            "VERSION": "Versão",
+            "VERSION_DESC": "Ex. \"v1\"",
+            "VERSION_PLACEHOLDER": "Versão do dispositivo",
+
+            "PROJECT": "Projeto",
+            "PROJECT_DESC": "Projeto da embalagem",
+            "PROJECT_PLACEHOLDER": "Associe um projeto",
+
+            "FAMILY": "Família",
+            "FAMILY_DESC": "Ex. \"AAB-01\"",
+            "FAMILY_PLACEHOLDER": "Associe uma família",
+
+            "SERIAL": "Serial",
+            "SERIAL_DESC": "Ex. \"001\"",
+            "SERIAL_PLACEHOLDER": "Serial da embalagem",
+
+            "MANUFACTORER": "Fabricante da embalagem",
+            "MANUFACTORER_DESC": "Ex. \"Acme Racks\"",
+            "MANUFACTORER_PLACEHOLDER": "Nome do fabricante",
+
+            "TYPE": "Tipo da embalagem",
+            "TYPE_DESC": "Ex. \"Rack metálico\"",
+            "TYPE_PLACEHOLDER": "Digite o tipo de embalagem",
+
+            "CAPACITY": "Capacidade da embalagem",
+            "CAPACITY_DESC": "Ex. \"57 PEÇAS\"",
+            "CAPACITY_PLACEHOLDER": "Peças",
+
+            "TARE": "Tara (Kg)",
+            "TARE_DESC": "Ex. \"86 Kg\"",
+            "TARE_PLACEHOLDER": "Kg",
+
+            "LENGTH": "Comprimento (m)",
+            "LENGTH_DESC": "Ex. \"7.1m\"",
+            "LENGTH_PLACEHOLDER": "Metros",
+
+            "WIDTH": "Largura (m)",
+            "WIDTH_DESC": "Ex. \"9.5m\"",
+            "WIDTH_PLACEHOLDER": "Metros",
+
+            "HEIGHT": "Altura (m)",
+            "HEIGHT_DESC": "Ex. \"3.2m\"",
+            "HEIGHT_PLACEHOLDER": "Metros",
+
+            "OBSERVATION": "Observações",
+            "OBSERVATION_DESC": "Ex. \"Embalagem nova\"",
+            "OBSERVATION_PLACEHOLDER": "",
+
+            "ACTIVE": "Embalagem ativa",
+            "ACTIVE_DESC": "",
+            "ACTIVE_PLACEHOLDER": ""
         },
         "COMPANY": {
             "MENU": "Empresas",
