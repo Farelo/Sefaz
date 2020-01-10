@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from
 import { ToastService, LogisticService, GeocodingService, CEPService, PlantsService, ProfileService, SuppliersService, CompaniesService, UsersService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
 import { PasswordValidation } from 'app/shared/validators/passwordValidator';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-user',
@@ -27,7 +28,7 @@ export class CreateUserComponent implements OnInit {
   public userType: any;
   public userCompany: any;
 
-  constructor(
+  constructor(public translate: TranslateService,
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private companiesService: CompaniesService,

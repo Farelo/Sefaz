@@ -5,6 +5,7 @@ import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/fo
 import { ToastService, CompaniesService, UsersService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
 import { PasswordValidation } from 'app/shared/validators/passwordValidator';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-edit-user',
@@ -21,9 +22,6 @@ export class EditUserComponent implements OnInit {
   public userType: any;
   public userCompany: any;
 
-
-
-
   public newUser: FormGroup;
   public autocomplete: google.maps.places.Autocomplete;
   public submitted = false;
@@ -34,7 +32,7 @@ export class EditUserComponent implements OnInit {
 
   public rolesOnSelect: any = [];
 
-  constructor(
+  constructor(public translate: TranslateService,
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private companiesService: CompaniesService,

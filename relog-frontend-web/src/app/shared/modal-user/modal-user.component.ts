@@ -8,6 +8,7 @@ import { ProfileService } from '../../servicos/index.service';
 import { constants } from '../../../environments/constants';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { TranslateService } from '@ngx-translate/core';
 declare var $:any;
 
 @Component({
@@ -21,7 +22,7 @@ export class ModalUserComponent implements OnInit {
   public userData: any[] = [];
   public actualPage = -1;
 
-  constructor(
+  constructor(public translate: TranslateService,
     public activeModal: NgbActiveModal,
     private profileService: ProfileService, 
     private modalService: NgbModal) { }
