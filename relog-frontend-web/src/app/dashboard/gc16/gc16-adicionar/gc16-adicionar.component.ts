@@ -4,6 +4,7 @@ import { ToastService, FamiliesService, GC16Service, CompaniesService, ControlPo
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import * as $ from 'jquery'
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class Gc16AdicionarComponent implements OnInit {
   public gc16: FormGroup;
   public submitted: boolean = false;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private gc16Service: GC16Service,
     private companiesService: CompaniesService,
     private controlPointService: ControlPointsService,

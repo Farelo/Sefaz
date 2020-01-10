@@ -3,16 +3,10 @@
     <div class="inicial">
 
       <div class="input-group mb-3 d-flex justify-content-between">
-        <input type="text" 
-          class="form-control mr-4" 
-          placeholder="{{ 'BPLINE.SEARCH_PLACEHOLDER' | translate }}" 
-          aria-describedby="basic-addon1"
-          [(ngModel)]="search" 
-          (keyup)="searchEvent($event)">
+        <input type="text" class="form-control mr-4" placeholder="{{ 'BPLINE.SEARCH_PLACEHOLDER' | translate }}"
+          aria-describedby="basic-addon1" [(ngModel)]="search" (keyup)="searchEvent($event)">
 
-        <button translate="BPLINE.NEW" 
-          routerLink="/rc/bpline/adicionar" 
-          class="btn btn-outline-secondary" 
+        <button translate="BPLINE.NEW" routerLink="/rc/bpline/adicionar" class="btn btn-outline-secondary"
           type="button"></button>
       </div>
 
@@ -39,7 +33,7 @@
               <td>{{ gc.productive_days }}</td>
               <!-- <td>{{gc.supplier.name}}</td> -->
               <td>{{ gc.control_point.name }}</td>
-              <td class="teste">                
+              <td class="teste">
                 <button translate="BPLINE.EDIT_BUTTON" class="editar" [routerLink]="['editar/', gc._id]"></button>
                 <button translate="BPLINE.REMOVE_BUTTON" class="excluir" (click)="removeGC16(gc)"> </button>
               </td>
@@ -49,7 +43,8 @@
       </div>
 
       <div class="has-text-centered">
-        <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
+        <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false"
+          autoHide="true">
         </pagination-controls>
       </div>
 

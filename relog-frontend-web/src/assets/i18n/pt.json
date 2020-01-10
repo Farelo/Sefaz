@@ -593,6 +593,7 @@
         }
     },
     "BPLINE": {
+        "TITLE": "BPline",
         "NEW": "Novo",
         "SEARCH_PLACEHOLDER": "Buscar por empresa ou família",
         "ANUAL_VOLUME": "Volume anual",
@@ -602,7 +603,57 @@
         "OPTIONS": "Opções",
         "EDIT_BUTTON": "Editar",
         "REMOVE_BUTTON": "Excluir",
-        "NO_REGISTER": "Ainda não existem registros BPline cadastrados."
+        "NO_REGISTER": "Ainda não existem registros BPline cadastrados.",
+
+        "COMPANY": "Empresa",
+        "COMPANY_PLACEHOLDER": "Selecione uma empresa",
+
+        "CONTROL_POINTS": "Pontos de controle",
+        "CONTROL_POINTS_PLACEHOLDER": "Associe um ponto de controle",
+
+        "ANUAL_VOLUME_DESC": "Ex. \"10000\"",
+        
+        "STOCK_FACTORY": "Estoque na montadora",
+        "STOCK_FACTORY_DESC": "Ex. \"5\"",
+        "STOCK_FACTORY_PLACEHOLDER": "Dias",
+        
+        "STOCK_PROVIDER": "Estoque no fornecedor",
+        "STOCK_PROVIDER_DESC": "Ex. \"5\"",
+        "STOCK_PROVIDER_PLACEHOLDER": "Dias",
+        
+        "DAYS_TO_GO": "Transporte ida",
+        "DAYS_TO_GO_DESC": "Ex. \"5\"",
+        "DAYS_TO_GO_PLACEHOLDER": "Dias",
+        
+        "DAYS_TO_GET_BACK": "Transporte volta",
+        "DAYS_TO_GET_BACK_DESC": "Ex. \"5\"",
+        "DAYS_TO_GET_BACK_PLACEHOLDER": "Dias",
+
+        "FREQUENCY": "Frequência",
+        "FREQUENCY_DESC": "Ex. \"5\"",
+        "FREQUENCY_PLACEHOLDER": "Dias",
+
+        "SECURITY_FACTOR": "Fator de segurança",
+        "SECURITY_FACTOR_DESC": "Ex. \"5\"",
+        "SECURITY_FACTOR_PLACEHOLDER": "Dias",
+
+        "PRODUCTIVE_DAYS_DESC": "Ex. \"252\"",
+        "PRODUCTIVE_DAYS_PLACEHOLDER": "Dias",
+
+        "EM": "EC",
+        "EF": "EF",
+        "TI": "TI",
+        "TV": "TV",
+        "FR": "FR",
+        "QUANTITY_CONTAINER": "Quantidade container",
+
+        "CAPACITY_DESC": "Ex. \"25\"",
+
+        "DAILY_CONTAINERS": "Containers/dia",
+        "EM_MAX": "EM máximo",
+        "EF_MAX": "EF máximo",
+        "TOTAL_DAYS": "Total de dias",
+        "TOTAL_BUILT": "Total construído"
     },
     "SETTINGS": {
         "TITLE": "Editar configurações do sistema",
