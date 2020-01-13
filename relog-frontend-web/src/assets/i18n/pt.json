@@ -150,6 +150,59 @@
             "INVALID_VALUE": "Valor inválido",
             "INCORRECT_FORMAT_EMAIL": "Formato do email está incorreto"
         },
+        "DELETE": {
+            "COMPANY_TITLE": "Deletar empresa",
+            "COMPANY_DESCRIPTION": "A remoção dessa Empresa poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "USER_TITLE": "Deletar usuário",
+            "USER_DESCRIPTION": "A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "FAMILY_TITLE": "Deletar família",
+            "FAMILY_DESCRIPTION": "A remoção dessa Família poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+            
+            "PACKAGE_TITLE": "Deletar Embalagem",
+            "PACKAGE_DESCRIPTION": "A remoção dessa Embalagem poderá desassociar Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "CONTROL_POINT_TITLE": "Deletar Ponto de Controle",
+            "CONTROL_POINT_DESCRIPTION": "A remoção desse Ponto de Controle poderá desassociar Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "ROUTE_TITLE": "Deletar Rota",
+            "ROUTE_DESCRIPTION": "A remoção dessa Rota poderá desassociar Embalagens, Plantas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "PROJECT_TITLE": "Deletar Projeto",
+            "PROJECT_DESCRIPTION": "A remoção desse Projeto desassociará Embalagens, Plantas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "DEPARTMENT_TITLE": "Deletar Departamento",
+            "DEPARTMENT_DESCRIPTION": "A remoção desse Departamento desassociará Embalagens, Plantas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "BPLINE_TITLE": "Deletar BPLine",
+            "BPLINE_DESCRIPTION": "A remoção desse BPline desassociará Embalagens, Plantas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "CONTROL_POINT_TYPE_TITLE": "Deletar Tipo de Ponto de Controle",
+            "CONTROL_POINT_TYPE_TITLE_DESCRIPTION": "A remoção desse Tipo desassociará Pontos de Controle. As informações serão perdidas, você tem certeza?",
+            
+            "TYPE": "Tipo",
+            "NAME": "Nome",
+            "STREET": "Rua",
+            "CITY": "Cidade",
+            "UF": "UF",
+            "EMAIL": "Email",
+            "FAMILY": "Família",
+            "TAG": "Tag",
+            "SERIAL": "Serial",
+            "VERSION": "Versão",
+            "COMPANY": "Empresa",
+            "DUNS": "DUNS",
+            "SITE_A": "Ponto 1",
+            "SITE_B": "Ponto 2",
+            "DISTANCE": "Distância",
+            "CONTROL_POINT": "Ponto de Controle",
+            "ANNUAL_VOLUME": "Volume anual",
+            "LINKED_COMPANY": "Empresa vinculada",
+
+            "CANCEL_BUTTON": "CANCELAR",
+            "DELETE_BUTTON": "DELETAR"
+        },
         "PROJECT": {
             "MENU": "Projetos",
             "SEARCH_BAR_PLACEHOLDER": "Buscar projeto por nome",
@@ -656,6 +709,11 @@
         "EF_MAX": "EF máximo",
         "TOTAL_DAYS": "Total de dias",
         "TOTAL_BUILT": "Total construído"
+    },
+    "MENU_CONFIG": {
+        "MANAGE_USER": "Gerenciar usuários",
+        "CONFIG": "Configurações",
+        "LOGOUT": "Sair"
     },
     "USERS": {
         "MANAGE_USERS": "Gerenciar usuários",
