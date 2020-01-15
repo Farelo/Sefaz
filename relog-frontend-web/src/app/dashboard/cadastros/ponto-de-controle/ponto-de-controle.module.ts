@@ -16,7 +16,7 @@ import { PlantaRoutingModule } from './ponto.routing.module';
 import { NguiMapModule } from '@ngui/map';
 import { constants } from '../../../../environments/constants'
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
-import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -34,7 +34,7 @@ import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.
     NguiMapModule.forRoot({
       apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}&libraries=drawing,visualization,places`
     }),
-    TranslateSettingsModule
+    TranslateModule
   ],
   declarations: [
     PontoDeControleComponent, 

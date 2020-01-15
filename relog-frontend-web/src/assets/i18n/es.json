@@ -7,10 +7,10 @@
         "CLOSE": "[es] Close",
         "CLOSE_CAP": "[es] CLOSE",
         "UPDATE_CAP": "[es] UPDATE",
-        "update": "Update"
+        "update": "[es] Update"
     },
     "STATES": {
-        "TRAVELING": "Em viagem"
+        "TRAVELING": "[es] Em viagem"
     },
     "HOME": {
         "TITLE": "[es] Embalagens do Sistema",
@@ -34,27 +34,92 @@
             "LAST_SIGNAL": "[es] Último Sinal",
             "LAST_SITE": "[es] Último Lugar",
             "TRAVELING_TIME": "[es] Tempo de viagem",
-            "ABSENT_TIME": "Tempo de ausência"
+            "ABSENT_TIME": "[es] Tempo de ausência"
         },
         "IN_CONTROL_POINTS": {
             "TITLE": "[es] Nos Pontos de controle",
             "PERMANENCE_TIME": "[es] Tempo de permanência",
-            "INCORRECT_LOCAL": "Local Incorreto"
+            "INCORRECT_LOCAL": "[es] Local Incorreto"
         },
         "TRAVELING_COMPONENT": {
             "TITLE": "[es] Em viagem",
             "LATE": "[es] Embalagens Atrasadas",
-            "ABSENT": "Embalagens Ausentes"
+            "ABSENT": "[es] Embalagens Ausentes"
         },
         "BATTERY": {
             "TITLE": "[es] Bateria Baixa",
             "LOW_BATTERY": "[es] Embalagens com bateria baixa",
-            "ABSENT": "Embalagens Ausentes"
+            "ABSENT": "[es] Embalagens Ausentes"
         }
+    },
+    "ALERTS": {
+        "TIMELINE": "[es] Timeline",
+        "BACK_CAP": "[es] VOLTAR",
+        "SUBTITLE": "[es] Alertas e seus significados",
+        "ABSENT_PACK_CAP": "[es] EMBALAGEM AUSENTE",
+        "INCORRECT_LOCAL_PACK_CAP": "[es] LOCAL INCORRETO",
+        "LOW_BATTERY_PACK_CAP": "[es] BATERIA BAIXA",
+        "LATE_PACK_PACK_CAP": "[es] EMBALAGEM ATRASADA",
+        "PERMANENCE_PACK_CAP": "[es] TEMPO DE PERMANÊNCIA",
+        "NO_SIGNAL_PACK_CAP": "[es] SEM SINAL",
+        "MISSING_PACK_CAP": "[es] PERDIDA",
+
+        "ABSENT_PACK": "[es] Embalagem Ausente",
+        "INCORRECT_LOCAL_PACK": "[es] Local Incorreto",
+        "LOW_BATTERY_PACK": "[es] Bateria Baixa",
+        "LATE_PACK_PACK": "[es] Embalagem Atrasada",
+        "PERMANENCE_PACK": "[es] Tempo de Permanência",
+        "NO_SIGNAL_PACK": "[es] Sem Sinal",
+        "MISSING_PACK_PACK": "[es] Perdida",
+
+        "ABSENT_PACK_DESCRIPTION": "[es] Embalagem Ausente",
+        "INCORRECT_LOCAL_PACK_DESCRIPTION": "[es] Embalagem em Local Incorreto",
+        "LOW_BATTERY_PACK_DESCRIPTION": "[es] Embalagem com Bateria Baixa",
+        "LATE_PACK_PACK_DESCRIPTION": "[es] Embalagem Atrasada",
+        "PERMANENCE_PACK_DESCRIPTION": "[es] Embalagem com Tempo de Permanência excedido",
+        "NO_SIGNAL_PACK_DESCRIPTION": "[es] Embalagem Sem Sinal",
+        "MISSING_PACK_DESCRIPTION": "[es] Embalagem Perdida",
+        "DEFAULT_DESCRIPTION": "[es] Não identificado",
+
+        "QUANTITY": "[es] Quantidade de Embalagens",
+        "PACK_CODE": "[es] Código da Embalagem",
+        "LAST_SITE": "[es] Última ponto de controle",
+        "ALERT_DATE": "[es] Data do alerta",
+        "ALERT_AT_CAP": "[es] ALERTA EM",
+        "ACTUAL_SITE": "[es] Ponto de controle atual",
+        "DESCRIPTION": "[es] Descrição",
+        "PROVIDER": "[es] Fornecedor",
+        "PACK_PROVIDER": "[es] Fornecedor da Embalagem",
+        "NO_RESULTS": "[es] No momento não existem alertas",
+        "NO_INFORMATION": "[es] Sem informação",
+
+        "CODE": "[es] Código",
+        "FAMILY": "[es] Família",
+        "SERIAL": "[es] Serial",
+        "TAG": "[es] Tag",
+        "GO_TO_MAP": "[es] Visualizar no mapa",
+        "TYPE": "[es] Tipo",
+
+        "MISSING_TIME": "[es] TEMPO DE AUSÊNCIA EM",
+        "LAST_SIGNAL_CAP": "[es] ÚLTIMO SINAL",
+        "LAST_LOCATION": "[es] ÚLTIMA LOCALIZAÇÃO",
+        "LAST_SITE_CAP": "[es] ÚLTIMO LOCAL",
+        "BATTERY_LEVEL_CAP": "[es] NÍVEL DA BATERIA",
+        "LAST_BATTERY_LEVEL_CAP": "[es] ÚLTIMO NÍVEL DA BATERIA",
+        "INBOUND_DATE_CAP": "[es] DATA DE ENTRADA",
+
+        "PACK_ROUTES": "[es] ROTAS DA EMBALAGEM",
+        "POINT_A": "[es] Ponto A",
+        "POINT_B": "[es] Ponto B",
+        "MAX_TIME": "[es] Tempo máximo",
+        "REALIZED_TIME": "[es] Tempo gasto"
     },
     "REGISTER": {
         "CREATE_BUTTON": "[es] Novo",
+        "REGISTER_BUTTON": "[es] REGISTRAR",
+        "BACK_BUTTON": "[es] VOLTAR",
         "EDIT_BUTTON": "[es] EDITAR",
+        "UPDATE_BUTTON": "[es] ATUALIZAR",
         "REMOVE_BUTTON": "[es] EXCLUIR",
         "TABLE": {
             "NAME": "[es] Nome",
@@ -66,40 +131,620 @@
             "POINT_A": "[es] Ponto A",
             "POINT_B": "[es] Ponto B",
             "DISTANCE": "[es] Distância",
-            "CONTROL_POINT": "Ponto de controle"
+            "CONTROL_POINT": "[es] Ponto de controle"
+        },
+        "ERRORS": {
+            "REQUIRED": "[es] Campo Obrigatório",
+            "CHECKING": "[es] Verificando disponibilidade ...",
+            "MIN_6": "[es] Mínimo de 6 caracteres",
+            "MIN_5": "[es] Mínimo de 5 caracteres",
+            "MIN_4": "[es] Mínimo de 4 caracteres",
+            "MIN_2": "[es] Mínimo de 2 caracteres",
+            "MAX_50": "[es] Máximo de 50 caracteres",
+            "CONTROL_POINT_EXISTS": "[es] Este Ponto de Controle já existe. O nome deve ser único.",
+            "FAMILY_EXISTS": "[es] Esta família já existe. O código deve ser único.",
+            "CP_TYPE_EXISTS": "[es] Este Tipo já existe. O nome deve ser único.",
+            "CP_EXISTS": "[es] Este Ponto de Controle já existe. O nome deve ser único.",
+            "PACK_EXISTS": "[es] Esta Embalagem já existe. O código deve ser único.",
+            "WHITE_SPACE": "[es] Excesso de espaços em branco.",
+            "INVALID_VALUE": "[es] Valor inválido",
+            "INCORRECT_FORMAT_EMAIL": "[es] Formato do email está incorreto"
+        },
+        "DELETE": {
+            "COMPANY_TITLE": "[es] Deletar empresa",
+            "COMPANY_DESCRIPTION": "[es] A remoção dessa Empresa poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "USER_TITLE": "[es] Deletar usuário",
+            "USER_DESCRIPTION": "[es] A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "FAMILY_TITLE": "[es] Deletar família",
+            "FAMILY_DESCRIPTION": "[es] A remoção dessa Família poderá desassociar Embalagens, Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+            
+            "PACKAGE_TITLE": "[es] Deletar Embalagem",
+            "PACKAGE_DESCRIPTION": "[es] A remoção dessa Embalagem poderá desassociar Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "CONTROL_POINT_TITLE": "[es] Deletar Ponto de Controle",
+            "CONTROL_POINT_DESCRIPTION": "[es] A remoção desse Ponto de Controle poderá desassociar Rotas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "ROUTE_TITLE": "[es] Deletar Rota",
+            "ROUTE_DESCRIPTION": "[es] A remoção dessa Rota poderá desassociar Embalagens, Plantas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "PROJECT_TITLE": "[es] Deletar Projeto",
+            "PROJECT_DESCRIPTION": "[es] A remoção desse Projeto desassociará Embalagens, Plantas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "DEPARTMENT_TITLE": "[es] Deletar Departamento",
+            "DEPARTMENT_DESCRIPTION": "[es] A remoção desse Departamento desassociará Embalagens, Plantas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "BPLINE_TITLE": "[es] Deletar BPLine",
+            "BPLINE_DESCRIPTION": "[es] A remoção desse BPline desassociará Embalagens, Plantas e registros do BPline. As informações serão perdidas, você tem certeza?",
+
+            "CONTROL_POINT_TYPE_TITLE": "[es] Deletar Tipo de Ponto de Controle",
+            "CONTROL_POINT_TYPE_TITLE_DESCRIPTION": "[es] A remoção desse Tipo desassociará Pontos de Controle. As informações serão perdidas, você tem certeza?",
+            
+            "TYPE": "[es] Tipo",
+            "NAME": "[es] Nome",
+            "STREET": "[es] Rua",
+            "CITY": "[es] Cidade",
+            "UF": "[es] UF",
+            "EMAIL": "[es] Email",
+            "FAMILY": "[es] Família",
+            "TAG": "[es] Tag",
+            "SERIAL": "[es] Serial",
+            "VERSION": "[es] Versão",
+            "COMPANY": "[es] Empresa",
+            "DUNS": "[es] DUNS",
+            "SITE_A": "[es] Ponto 1",
+            "SITE_B": "[es] Ponto 2",
+            "DISTANCE": "[es] Distância",
+            "CONTROL_POINT": "[es] Ponto de Controle",
+            "ANNUAL_VOLUME": "[es] Volume anual",
+            "LINKED_COMPANY": "[es] Empresa vinculada",
+
+            "CANCEL_BUTTON": "[es] CANCELAR",
+            "DELETE_BUTTON": "[es] DELETAR"
         },
         "PROJECT": {
+            "MENU": "[es] Projetos",
             "SEARCH_BAR_PLACEHOLDER": "[es] Buscar projeto por nome",
-            "NO_RESULT": "Ainda não existem projetos cadastrados"
+            "NO_RESULT": "[es] Ainda não existem projetos cadastrados",
+            
+            "REGISTER_TITLE": "[es] Registrar Projeto",
+            "UPDATE_TITLE": "[es] Registrar Projeto",
+
+            "NAME": "[es] Nome",
+            "NAME_DESC": "[es] Ex. \"Projeto do Produto A1\"",
+            "NAME_PLACEHOLDER": "[es] Digite o nome do projeto"
         },
         "FAMILY": {
+            "MENU": "[es] Família",
             "SEARCH_BAR_PLACEHOLDER": "[es] Buscar projeto por nome",
-            "NO_RESULT": "Ainda não existem famílias cadastradas"
+            "NO_RESULT": "[es] Ainda não existem famílias cadastradas",
+
+            "REGISTER_TITLE": "[es] Registrar Família de Embalagem",
+            "UPDATE_TITLE": "[es] Atualizar Família de Embalagem",
+            
+            "CODE": "[es] CÓDIGO DA FAMÍLIA",
+            "CODE_DESC": "[es] Ex: \"AAA1\"",
+            "CODE_PLACEHOLDER": "[es] Digite o Código da Família",
+
+            "LINK": "[es] EMPRESA VINCULADA",
+            "LINK_PLACEHOLDER": "[es] Associe uma empresa",
+
+            "CONTROL_POINTS": "[es] PONTOS DE CONTROLE",
+            "CONTROL_POINT_PLACEHOLDER": "[es] Associe pontos de controle",
+            "ALL_CONTROL_POINT": "[es] Habilitar Todos",
+            "DISABLE_CONTROL_POINT": "[es] Desabilitar Todos"
         },
         "CONTROL_POINT_TYPE": {
+            "MENU": "[es] Tipos de Ponto de Controle",
             "SEARCH_BAR_PLACEHOLDER": "[es] Buscar tipo por nome",
-            "NO_RESULT": "Ainda não existem tipos cadastrados"
+            "NO_RESULT": "[es] Ainda não existem tipos cadastrados",
+
+            "REGISTER_TITLE": "[es] Registrar Tipo de Ponto de Controle",
+            "UPDATE_TITLE": "[es] Atualizar Tipo de Ponto de Controle",
+
+            "NAME": "[es] Nome",
+            "NAME_DESC": "[es] Ex. \"Armazém\"",
+            "NAME_PLACEHOLDER": "[es] Digite o nome do ponto de controle"
         },
         "CONTROL_POINT": {
+            "MENU": "[es] Pontos de Controle",
             "SEARCH_BAR_PLACEHOLDER": "[es] Buscar ponto de controle por nome",
-            "NO_RESULT": "Ainda não existem pontos de controle cadastrados"
+            "NO_RESULT": "[es] Ainda não existem pontos de controle cadastrados",
+
+            "REGISTER_TITLE": "[es] Registrar Ponto de Controle",
+            "UPDATE_TITLE": "[es] Atualizar Ponto de Controle",
+
+            "NAME": "[es] Nome",
+            "NAME_DESC": "[es] Ex. \"Planta B1\"",
+            "NAME_PLACEHOLDER": "[es] Digite o nome do ponto de controle",
+
+            "DUNS": "[es] DUNS/Código de identificação do Ponto de Controle",
+            "DUNS_DESC": "[es] Ex. \"123456789\"",
+            "DUNS_PLACEHOLDER": "[es] Digite o código de identificação do ponto de controle",
+
+            "TYPE": "[es] Tipo",
+            "TYPE_PLACEHOLDER": "[es] Selecione o tipo",
+
+            "LINK": "[es] Empresa vinculada",
+            "LINK_PLACEHOLDER": "[es] Associe uma empresa",
+
+            "SITE": "[es] Local",
+            "SITE_PLACEHOLDER": "[es] Digite o local do ponto de controle",
+
+            "INFO": "[es] Informação",
+            "INFOS": "[es] Informações",
+            "CONTROL_POINT": "[es] Ponto de Controle",
+            "SELECT_EDGES": "[es] Selecione contorno círculo ou polígono",
+            "RADIUS": "[es] Raio"
         },
         "PACKING": {
+            "MENU": "[es] Embalagens",
             "SEARCH_BAR_PLACEHOLDER": "[es] Buscar embalagem por família, serial ou tag",
-            "NO_RESULT": "Ainda não existem embalagens cadastradas"
+            "NO_RESULT": "[es] Ainda não existem embalagens cadastradas",
+
+            "REGISTER_TITLE": "[es] Registrar Ponto de Controle",
+            "UPDATE_TITLE": "[es] Atualizar Ponto de Controle",
+
+            "TAG": "[es] Tag",
+            "TAG_DESC": "[es] Ex. \"994475545\"",
+            "TAG_PLACEHOLDER": "[es] Código da Tag",
+
+            "VERSION": "[es] Versão",
+            "VERSION_DESC": "[es] Ex. \"v1\"",
+            "VERSION_PLACEHOLDER": "[es] Versão do dispositivo",
+
+            "PROJECT": "[es] Projeto",
+            "PROJECT_DESC": "[es] Projeto da embalagem",
+            "PROJECT_PLACEHOLDER": "[es] Associe um projeto",
+
+            "FAMILY": "[es] Família",
+            "FAMILY_DESC": "[es] Ex. \"AAB-01\"",
+            "FAMILY_PLACEHOLDER": "[es] Associe uma família",
+
+            "SERIAL": "[es] Serial",
+            "SERIAL_DESC": "[es] Ex. \"001\"",
+            "SERIAL_PLACEHOLDER": "[es] Serial da embalagem",
+
+            "MANUFACTORER": "[es] Fabricante da embalagem",
+            "MANUFACTORER_DESC": "[es] Ex. \"Acme Racks\"",
+            "MANUFACTORER_PLACEHOLDER": "[es] Nome do fabricante",
+
+            "TYPE": "[es] Tipo da embalagem",
+            "TYPE_DESC": "[es] Ex. \"Rack metálico\"",
+            "TYPE_PLACEHOLDER": "[es] Digite o tipo de embalagem",
+
+            "CAPACITY": "[es] Capacidade da embalagem",
+            "CAPACITY_DESC": "[es] Ex. \"57 PEÇAS\"",
+            "CAPACITY_PLACEHOLDER": "[es] Peças",
+
+            "TARE": "[es] Tara (Kg)",
+            "TARE_DESC": "[es] Ex. \"86 Kg\"",
+            "TARE_PLACEHOLDER": "[es] Kg",
+
+            "LENGTH": "[es] Comprimento (m)",
+            "LENGTH_DESC": "[es] Ex. \"7.1m\"",
+            "LENGTH_PLACEHOLDER": "[es] Metros",
+
+            "WIDTH": "[es] Largura (m)",
+            "WIDTH_DESC": "[es] Ex. \"9.5m\"",
+            "WIDTH_PLACEHOLDER": "[es] Metros",
+
+            "HEIGHT": "[es] Altura (m)",
+            "HEIGHT_DESC": "[es] Ex. \"3.2m\"",
+            "HEIGHT_PLACEHOLDER": "[es] Metros",
+
+            "OBSERVATION": "[es] Observações",
+            "OBSERVATION_DESC": "[es] Ex. \"Embalagem nova\"",
+            "OBSERVATION_PLACEHOLDER": "[es] ",
+
+            "ACTIVE": "[es] Embalagem ativa",
+            "ACTIVE_DESC": "[es] ",
+            "ACTIVE_PLACEHOLDER": "[es] "
         },
         "COMPANY": {
+            "MENU": "[es] Empresas",
             "SEARCH_BAR_PLACEHOLDER": "[es] Buscar empresa por nome",
-            "NO_RESULT": "Ainda não existem empresas cadastradas"
+            "NO_RESULT": "[es] Ainda não existem empresas cadastradas",
+
+            "REGISTER_TITLE": "[es] Registrar Empresa",
+            "UPDATE_TITLE": "[es] Atualizar Empresa",
+
+            "TYPE": "[es] Tipo da empresa",
+            "TYPE_PLACEHOLDER": "[es] Selecione um tipo",
+
+            "NAME": "[es] Nome da empresa",
+            "NAME_PLACEHOLDER": "[es] Digite o nome da empresa",
+
+            "PHONE": "[es] Telefone",
+            "PHONE_PLACEHOLDER": "[es] Telefone da empresa",
+
+            "CNPJ": "[es] CNPJ",
+            "CNPJ_PLACEHOLDER": "[es] __.___.___/____-__",
+
+            "STREET": "[es] Rua",
+            "STREET_PLACEHOLDER": "[es] Digite o nome da rua",
+
+            "CEP": "[es] CEP",
+            "CEP_PLACEHOLDER": "[es] Digite o CEP",
+
+            "CITY": "[es] Cidade",
+            "CITY_PLACEHOLDER": "[es] Nome da cidade",
+
+            "UF": "[es] UF",
+            "UF_PLACEHOLDER": "[es] UF"
         },
         "ROUTES": {
+            "MENU": "[es] Rotas",
             "SEARCH_BAR_PLACEHOLDER": "[es] Buscar rota por família ou ponto de controle",
-            "NO_RESULT": "Ainda não existem rotas cadastradas"
+            "NO_RESULT": "[es] Ainda não existem rotas cadastradas",
+
+            "REGISTER_TITLE": "[es] Registrar Empresa",
+            "UPDATE_TITLE": "[es] Atualizar Empresa",
+
+            "LINK_FAMILY": "[es] Associe uma família",
+            "ACTIVE_PLACEHOLDER": "[es] Selecione uma família",
+
+            "LINK_SITE_A": "[es] Associe o primeiro ponto de controle",
+            "LINK_SITE_A_PLACEHOLDER": "[es] Selecione um ponto de controle",
+
+            "LINK_SITE_B": "[es] Associe o segundo ponto de controle",
+            "LINK_SITE_B_PLACEHOLDER": "[es] Selecione um ponto de controle",
+
+            "MAX_TIME": "[es] Defina um tempo máximo de viagem",
+            "MIN_TIME": "[es] Defina um tempo mínimo de viagem",
+            "TOLERANCE_TIME": "[es] Defina a tolerância máximo de atraso",
+
+            "NAME": "[es] Nome",
+            "DAYS": "[es] Dias",
+            "HOURS": "[es] Horas",
+            "MINUTES": "[es] Minutos",
+            "KM": "[es] km",
+
+            "NO_PACKS": "[es] <strong>Atenção!</strong> Não existe embalagens associadas a essa empresa."
         },
         "DEPARTMENT": {
+            "MENU": "[es] Departamentos",
             "SEARCH_BAR_PLACEHOLDER": "[es] Buscar departamento por nome",
-            "NO_RESULT": "Ainda não existem departamentos cadastrados"
+            "NO_RESULT": "[es] Ainda não existem departamentos cadastrados",
+
+            "REGISTER_TITLE": "[es] Registrar Empresa",
+            "UPDATE_TITLE": "[es] Atualizar Empresa",
+
+            "NAME": "[es] Nome",
+            "NAME_DESC": "[es] Ex. \"Setor B6\"",
+            "NAME_PLACEHOLDER": "[es] Digite o nome do departamento",
+
+            "LINK": "[es] Associe o ponto de controle",
+            "LINK_DESC": "[es] Ponto de controle",
+            "LINK_PLACEHOLDER": "[es] Selecione o ponto de controle",
+
+            "SITE": "[es] Local",
+            "NO_INFO": "[es] Nenhuma informação sobre a localidade",
+            "LAT": "[es] Latitude",
+            "LNG": "[es] Longitude"
         }
+    },
+    "INVENTORY": {
+        "HEADER": {
+            "SEARCH_BY": "[es] Busca por",
+            "GENERAL": "[es] Geral",
+            "TYPE": "[es] Tipo",
+            "EXPORTO_TO_CSV": "[es] Exportar dados para CSV",
+            "EXPORTO_TO_PDF": "[es] Exportar dados para PDF"
+        },
+        "GENERAL_FILTER": {
+            "TITLE": "[es] Geral",
+            "FAMILY": "[es] Família",
+            "COMPANY": "[es] Empresa",
+            "PROJECT": "[es] Projeto",
+            "QUANTITY": "[es] Quantidade",
+            "NO_PROJECT": "[es] Sem projeto",
+            "NO_RESULTS": "[es] Ainda não existem embalagens cadastradas no sistema"
+        },
+        "GENERAL_INVENTORY": {
+            "TITLE": "[es] Inventário Geral",
+            "PROVIDER": "[es] Fornecedor",
+            "PROVIDER_PLACEHOLDER": "[es] Selecione um Fornecedor",
+            "FAMILY": "[es] Família",
+            "FAMILY_PLACEHOLDER": "[es] Selecione uma Família",
+            "EXPORT_TO_EXCEL": "[es] Exportar dados para o Excel",
+            "EXPORT_TO_PDF": "[es] Exportar dados para o PDF",
+            "PHYSICAL_INVENTORY": "[es] Inventário Físico",
+            "ONLINE_INVENTORY": "[es] Inventário Online",
+            "ALERTS": "[es] Alertas",
+            "TOTAL_ADMINISTRATED": "[es] Total de Equipamentos Administrados (TEA)", 
+            "AT_OWNER_CONTROL_POINT": "[es] Nos Pontos de Controle Próprios (A)",
+            "AT_ADMINISTRATED_CONTROL_POINT": "[es] Nos Pontos de Controle Administrados (B)",
+            "TRAVEL_QUANTITY": "[es] Quantidade no Transito (C)",
+            "ANALYSIS": "[es] Análise (D)",
+            "TOTAL_ONLINE": "[es] Total do Inventário On Line (TIOL = A+B+C+D)",
+            "DIFF": "[es] Diferença (TEA - TIOL)",
+            "LATE": "[es] Atraso de Rota",
+            "INCORRECT_LOCAL": "[es] Local Incorreto",
+            "PERMANENCE_TIME": "[es] Tempo de Permanencia",
+            "ABSENT": "[es] Embalagem Ausente",
+            "NO_SIGNAL": "[es] Sem Sinal",
+            "LOST": "[es] Perdida",
+            "LOCATION": "[es] Localização",
+            "QUANTITY": "[es] Quantidade",
+            "NO_RESULTS": "[es] Não há registros a serem exibidos"
+        },
+        "PERMANENCE_TIME_INVENTORY": {
+            "TITLE": "[es] Tempo de Permanência",
+            "FAMILY": "[es] Família",
+            "FAMILY_CAP": "[es] FAMÍLIA",
+            "SERIAL": "[es] Serial",
+            "SERIAL_CAP": "[es] SERIAL",
+            "TAG": "[es] Tag",
+            "ACTUAL_SITE": "[es] Lugar Atual",
+            "SITE_TYPE": "[es] Tipo",
+            "TIME_AT_SITE": "[es] Tempo no Ponto de Controle",
+            "NO_HISTORY": "[es] Sem histórico"
+        },
+        "ABSENT_TIME_INVENTORY": {
+            "TITLE": "[es] Tempo de Ausência",
+            "TITLE_CAP": "[es] TEMPO DE AUSÊNCIA",
+            "FAMILY": "[es] Família",
+            "SERIAL": "[es] Serial",
+            "TAG": "[es] Tag",
+            "MAX_TIME": "[es] Tempo máximo (horas)",
+            "POSITIONS": "[es] Posições",
+            "LAST_SITE": "[es] Última Planta Conhecida",
+            "ABSENT_TIME": "[es] Tempo de Ausência",
+            "NO_RESULTS": "[es] Não há registros a serem exibidos",
+            "NO_HISTORY": "[es] Sem histórico",
+            "ABSENT_REPORT_NAME": "[es] Inventario Equipamento Tempo de Ausência"
+        },
+        "BATTERY_INVENTORY": {
+            "TITLE": "[es] Bateria baixa",
+            "FAMILY": "[es] Família",
+            "SERIAL": "[es] Serial",
+            "ACTUAL_SITE": "[es] Lugar Atual",
+            "SITE_TYPE": "[es] Tipo",
+            "BATTERY": "[es] Bateria",
+            "LEVEL": "[es] Nível",
+            "SELECT_A_PACKING": "[es] Selecione um equipamento",
+            "NO_RESULTS": "[es] Não há registros a serem exibidos",
+            "NO_HISTORY": "[es] Sem histórico"
+        },
+        "QUANTITY": {
+            "TITLE": "[es] Quantidade",
+            "EQUIPMENT": "[es] Equipamento",
+            "FAMILY": "[es] Família",
+            "COMPANY": "[es] Empresa",
+            "CONTROL_POINT": "[es] Ponto de controle",
+            "TYPE": "[es] Tipo",
+            "LOCAL": "[es] Local",
+            "MIN": "[es] Min.",
+            "QUANTITY": "[es] Quantidade",
+            "MAX": "[es] Max.",
+            "TOTAL": "[es] TOTAL:",
+            "SELECT_A_PACKING": "[es] Selecione um equipamento",
+            "SELECT_A_FAMILY": "[es] Selecione uma família",
+            "NO_RESULTS": "[es] Não há registros a serem exibidos",
+            "NO_HISTORY": "[es] Sem histórico"
+        },
+        "EQUIPMENT_GENERAL": {
+            "TITLE": "[es] Equipamentos",
+            "SEARCH_PACKING": "[es] BUSCAR EMBALAGEM",
+            "SEARCH_PACKING_DESCRIPTION": "[es] Buscar embalagem por família, serial ou tag",
+            "FAMILY": "[es] Família",
+            "SERIAL": "[es] Serial",
+            "TAG": "[es] Tag",
+            "COMPANY": "[es] Empresa",
+            "LINK": "[es] Vínculo",
+            "STATUS": "[es] Status Atual",
+            "ACTUAL_SITE": "[es] Lugar Atual",
+            "SITE": "[es] Local",
+            "BATTERY": "[es] Bateria",
+            "ACCURACY": "[es] Acurácia da entrada/saída",
+            "EVENT_DATE": "[es] Data da entrada/saída",
+            "LAST_ACCURACY": "[es] Última Acurácia",
+            "LAST_SIGNAL": "[es] Último sinal",
+            "POSITION": "[es] Posição",
+            "NO_RESULTS": "[es] Não há registros a serem exibidos",
+            "NO_HISTORY": "[es] Sem histórico"
+        },
+        "POSITIONS": {
+            "TITLE": "[es] Posições",
+            "FAMILY": "[es] Família",
+            "SERIAL": "[es] Serial",
+            "TAG": "[es] Tag",
+            "INITIAL_DATE": "[es] Data Inicial",
+            "FINAL_DATE": "[es] Data Final",
+            "CONTAINS": "[es] Contém",
+            "TEMPERATURE": "[es] Temperatura",
+            "ACCURACY": "[es] Acurácia",
+            "BATTERY": "[es] Bateria",
+            "LATITUDE": "[es] Latitude",
+            "LONGITUDE": "[es] Longitude",
+            "EVENT_DATE": "[es] Data da mensagem",
+            "SEQUENCE_NUMBER": "[es] # sequência",
+            "SELECT_EQUIPMENT": "[es] Selecione um equipamento"
+        },
+        "PROVIDER": {
+            "TITLE": "[es] Fornecedor",
+            "SELECT_A_SITE": "[es] Selecione um Ponto de controle",
+            "PACKING": "[es] Equipamento",
+            "FAMILY": "[es] Família",
+            "LINK": "[es] Empresa Vinculada",
+            "ACTUAL_SITE": "[es] Lugar Atual",
+            "SITE": "[es] Local",
+            "QUANTITY": "[es] Quantidade",
+            "NO_RESULTS": "[es] Não há registros a serem exibidos",
+            "SELECT_A_PROVIDER": "[es] Selecione um Fornecedor"
+        }
+    },
+    "IMPORT_DATA": {
+        "TITLE": "[es] Importar Dados",
+        "TITLE_DESC": "[es] Escolha um arquivo xlxs para importar",
+        "FILE": "[es] Arquivo",
+        "NAME": "[es] Nome",
+        "SIZE": "[es] Tamanho",
+        "TYPE": "[es] Tipo de Cadastro",
+        "ACTIONS": "[es] Ações",
+        "UPLOAD": "[es] Upload",
+        "REMOVE": "[es] Remove",
+        "CHOOSE": "[es] Escolha",
+        "CONTROL_POINTS": "[es] Pontos de controle",
+        "CONTROL_POINT": "[es] Ponto de controle",
+        "PACKINGS": "[es] Embalagens",
+        "COMPANIES": "[es] Empresas",
+        "REQUIRED": "[es] Campo Obrigatório",
+        "COLUMN_DETAIL": "[es] Detalhes das colunas",
+        "REGISTER_INSTRUCTIONS": "[es] Para cadastrar informações no sistema via planilha excel, é preciso carregar arquivos (.xlsx) e seguir o template conforme demonstrado nos exemplos abaixo (seguindo a ordem de colunas e nomenclaturas).",
+        "GEOFENCE_TYPE_INSTRUCTION": "[es] Tipo de contorno do ponto de controle. Assume valores 'c' ou 'p', respectivamente para os tipos Círculo ou Polígono. Obrigatório. Os valores devem ser em letra minúscula.",
+        "COORDINATES_INSTRUCTION": "[es] Se o ponto de controle for um círculo, o valor deve conter a latitude e longitude do centro do círculo no formato [latitude, longitude], por exemplo: [11.222, 33.444]. Se o ponto de controle for um polígono, o valor deve conter uma lista de latitudes e longitudes no formato [[latitude, longitude], [latitude, longitude], ...], por exemplo: [[11.222, 33.444], [11.222, 33.444], ...].",
+        "RADIUS_INSTRUCTION": "[es] Se for círculo, é necessário especificar o raio do ponto de controle em metros. Obrigatório.",
+        "NAME_INSTRUCTION": "[es] Nome do ponto de controle. Obrigatório. Mínimo de 5 e máximo de 50 caracteres alfanuméricos.",
+        "ADDRESS_INSTRUCTION": "[es] Endereço completo do ponto de controle. Obrigatório.",
+        "TYPE_INSTRUCTION": "[es] Tipo do ponto de controle. Obrigatório.",
+        "COMPANY_INSTRUCTION": "[es] Nome da empresa a qual o ponto de controle está vinculado. Obrigatório.",
+        "DUNS_INSTRUCTION": "[es] Código identificador da empresa a qual o ponto de controle está vinculado. Máximo de 30 caracteres alfanuméricos. Opcional.",
+        "CHOOSE_A_FILE": "[es] Escolha um arquivo xlxs para importar",
+        "LINE": "[es] linha",
+        "PACKINGS_DESCRIPTION": {
+            "FAMILY": "[es] Família da embalagem. Obrigatório.",
+            "SERIAL": "[es] Número serial da embalagem. Obrigatório. Mínimo de 2 e máximo de 30 caracteres alfanuméricos.",
+            "TAG": "[es] Número TAG do dispositivo. Obrigatório. Mínimo de 4 e máximo de 50 caracteres alfanuméricos.",
+            "VERSION": "[es] Versão do dispositivo. Obrigatório. Máximo de 30 caracteres alfanuméricos.",
+            "MANUFACTORER": "[es] Fabricante da embalagem. Obrigatório. Mínimo de 2 e máximo de 30 caracteres alfanuméricos.",
+            "WEIGHT": "[es] Peso da embalagem. Obrigatório. Valor numérico.",
+            "WIDTH": "[es] Largura da embalagem. Obrigatório. Valor numérico.",
+            "HEIGHT": "[es] Altura da embalagem. Obrigatório. Valor numérico.",
+            "LENGTH": "[es] Comprimento da Embalagem. Obrigatório. Valor numérico.",
+            "CAPACITY": "[es] Capacidade da embalagem. Obrigatório. Valor numérico.",
+            "OBSERVATIONS": "[es] Observações sobre a embalagem. Opcional. Máximo de 140 caracteres alfanuméricos.",
+            "TYPE_DESCRIPTION": "[es] Descrição da embalagem. Obrigatório. Máximo de 50 caracteres alfanuméricos.",
+            "PROJECT": "[es] Nome do projeto a qual a embalagem está associada. Obrigatório."
+        },
+        "COMPANIES_DESCRIPTION": {
+            "TYPE": "[es] Tipo do ponto de controle. Pode ser 'owner' ou 'client'. Obrigatório.",
+            "NAME": "[es] Nome da empresa. Obrigatório. Mínimo de 5 e máximo de 50 caracteres alfanuméricos.",
+            "PHONE": "[es] Telefone da empresa. Opcional. Apenas caracteres numéricos.",
+            "CNPJ": "[es] CNPJ da empresa. Opcional. Apenas caracteres numéricos.",
+            "STREET": "[es] Rua da empresa. Opcional. Máximo de 60 caracteres alfanuméricos.",
+            "CEP": "[es] CEP da empresa. Opcional. Apenas caracteres numéricos.",
+            "CITY": "[es] Cidade da empresa. Opcional. Máximo de 60 caracteres alfanuméricos.",
+            "UF": "[es] UF da empresa. Opcional. Máximo de 2 caracteres alfanuméricos."
+        },
+        "ERROR": {
+            "NOT_IMPORTED_LINES": "[es] Essas Linhas não foram importadas do Excel",
+            "THERE_IS_A_PROBLEM": "[es] <strong>Atenção!</strong> Existe algum problema no excel que você tentou importar, verifique se ele apresenta os campos corretos para inserir os cadastros da/o(s)",
+            "DESCRIPTION": "[es] Descrição"
+        },
+        "UPDATE": {
+            "UPDATED_LINES": "[es] Essas linhas foram atualizadas a partir do Excel",
+            "SUCCESS": "[es] <strong>Atenção!</strong> Alguns dados foram atualizados com sucesso.",
+            "DESCRIPTION": "[es] Descrição"
+        },
+        "REGISTER": {
+            "CAN_BE_REGISTERED": "[es] Essas linhas podem ser cadastradas a partir do Excel",
+            "CORRECT_PACKING_BUT_NEW": "[es] <strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem no banco de dados. Deseja prosseguir com o cadastro?",
+            "CORRECT_CONTROL_POINT_BUT_NEW": "[es] <strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a um Ponto de Controle no banco de dados. Deseja prosseguir com o cadastro?",
+            "CORRECT_COMPANY_BUT_NEW": "[es] <strong>Atenção!</strong> Estes registros estão corretos, mas não correspondem a uma Embalagem do banco de dados.",
+            "REGISTER": "[es] REGISTRAR"
+        }
+    },
+    "BPLINE": {
+        "TITLE": "[es] BPline",
+        "NEW": "[es] Novo",
+        "SEARCH_PLACEHOLDER": "[es] Buscar por empresa ou família",
+        "ANUAL_VOLUME": "[es] Volume anual",
+        "CAPACITY": "[es] Capacidade",
+        "PRODUCTIVE_DAYS": "[es] Dias produtivos",
+        "CONTROL_POINT": "[es] Ponto de Controle",
+        "OPTIONS": "[es] Opções",
+        "EDIT_BUTTON": "[es] Editar",
+        "REMOVE_BUTTON": "[es] Excluir",
+        "NO_REGISTER": "[es] Ainda não existem registros BPline cadastrados.",
+
+        "COMPANY": "[es] Empresa",
+        "COMPANY_PLACEHOLDER": "[es] Selecione uma empresa",
+
+        "CONTROL_POINTS": "[es] Pontos de controle",
+        "CONTROL_POINTS_PLACEHOLDER": "[es] Associe um ponto de controle",
+
+        "ANUAL_VOLUME_DESC": "[es] Ex. \"10000\"",
+        
+        "STOCK_FACTORY": "[es] Estoque na montadora",
+        "STOCK_FACTORY_DESC": "[es] Ex. \"5\"",
+        "STOCK_FACTORY_PLACEHOLDER": "[es] Dias",
+        
+        "STOCK_PROVIDER": "[es] Estoque no fornecedor",
+        "STOCK_PROVIDER_DESC": "[es] Ex. \"5\"",
+        "STOCK_PROVIDER_PLACEHOLDER": "[es] Dias",
+        
+        "DAYS_TO_GO": "[es] Transporte ida",
+        "DAYS_TO_GO_DESC": "[es] Ex. \"5\"",
+        "DAYS_TO_GO_PLACEHOLDER": "[es] Dias",
+        
+        "DAYS_TO_GET_BACK": "[es] Transporte volta",
+        "DAYS_TO_GET_BACK_DESC": "[es] Ex. \"5\"",
+        "DAYS_TO_GET_BACK_PLACEHOLDER": "[es] Dias",
+
+        "FREQUENCY": "[es] Frequência",
+        "FREQUENCY_DESC": "[es] Ex. \"5\"",
+        "FREQUENCY_PLACEHOLDER": "[es] Dias",
+
+        "SECURITY_FACTOR": "[es] Fator de segurança",
+        "SECURITY_FACTOR_DESC": "[es] Ex. \"5\"",
+        "SECURITY_FACTOR_PLACEHOLDER": "[es] Dias",
+
+        "PRODUCTIVE_DAYS_DESC": "[es] Ex. \"252\"",
+        "PRODUCTIVE_DAYS_PLACEHOLDER": "[es] Dias",
+
+        "EM": "[es] EC",
+        "EF": "[es] EF",
+        "TI": "[es] TI",
+        "TV": "[es] TV",
+        "FR": "[es] FR",
+        "QUANTITY_CONTAINER": "[es] Quantidade container",
+
+        "CAPACITY_DESC": "[es] Ex. \"25\"",
+
+        "DAILY_CONTAINERS": "[es] Containers/dia",
+        "EM_MAX": "[es] EM máximo",
+        "EF_MAX": "[es] EF máximo",
+        "TOTAL_DAYS": "[es] Total de dias",
+        "TOTAL_BUILT": "[es] Total construído"
+    },
+    "MENU_CONFIG": {
+        "MANAGE_USER": "[es] Gerenciar usuários",
+        "CONFIG": "[es] Configurações",
+        "LOGOUT": "[es] Sair"
+    },
+    "USERS": {
+        "MANAGE_USERS": "[es] Gerenciar usuários",
+        "MANAGE_USERS_DESC": "[es] Usuários cadastrados no sistema",
+        "CREATE_USER": "[es] Cadastrar usuário",
+        "UPDATE_USER": "[es] Editar usuário",
+        "NAME": "[es] Nome",
+        "PROFILE": "[es] Perfil",
+        "LINK": "[es] Vínculo",
+        "ACTIONS": "[es] Ações",
+
+        "CREATE_USER_TITLE": "[es] Cadastrar um novo usuário no sistema",
+        "UPDATE_USER_TITLE": "[es] Editar um usuário no sistema",
+        "USER_TYPE": "[es] Tipo de usuário",
+        "USER_TYPE_PLACEHOLDER": "[es] Selecione um tipo",
+        "TYPE": "[es] Tipo",
+        "LINKED_COMPANY": "[es] Empresa vinculada",
+        "LINKED_COMPANY_PLACEHOLDER": "[es] Selecione um fornecedor",
+        "USER_NAME": "[es] Nome do usuário",
+        "USER_NAME_PLACEHOLDER": "[es] Digite o nome do usuário",
+        "EMAIL": "[es] Email",
+        "EMAIL_PLACEHOLDER": "[es] Digite o email",
+        "PASSWORD": "[es] Password",
+        "PASSWORD_PLACEHOLDER": "[es] Digite a senha",
+        "CONFIRM_PASSWORD": "[es] Confirmar o password",
+        "BACK": "[es] VOLTAR",
+        "REGISTER": "[es] CADASTRAR",
+
+        "EMAIL_EXISTS_DIV": "[es] <strong>Atenção!</strong> O e-mail ja existe no sistema!",
+        "EMAIL_EXISTS": "[es] Este Usuário já existe. O email deve ser único",
+        "MATCH_PASSWORD": "[es] As senhas não coincidem"
     },
     "SETTINGS": {
         "TITLE": "[es] Editar configurações do sistema",
@@ -116,6 +761,6 @@
         "NO_SIGNAL_DESCRIPTION": "[es] Ex. '2 dias'",
         "LOST_PACKAGE": "[es] ALERTA PERDIDA (DIAS)",
         "LOST_PACKAGE_DESCRIPTION": "[es] Ex. '2 dias'",
-        "ACTIVATE_BPLINE": "ATIVAR BPLINE"
+        "ACTIVATE_BPLINE": "[es] ATIVAR BPLINE"
     }
 }

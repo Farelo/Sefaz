@@ -38,12 +38,27 @@ export class ListaComponent implements OnInit {
   inscricao: Subscription;
 
   constructor(public translate: TranslateService,
-    private alertsService: AlertsService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private modalService: NgbModal) { 
+    private alertsService: AlertsService, private router: Router,
+    private route: ActivatedRoute, private modalService: NgbModal) {
 
     this.mConstants = constants;
+    this.updateLanguage();
+  }
+
+  updateLanguage() {
+    //resolve the language
+    let actualSettings = this.currentSettings();
+
+    //i18n
+    this.translate.addLangs(['en', 'es', 'pt']);
+
+    //Use the saved user language if exists, or 'en' if doesn't
+    const browserLang = this.translate.getBrowserLang();
+    this.translate.use(actualSettings.language.match(/en|es|pt/) ? browserLang : 'en');
+  }
+
+  currentSettings() {
+    return JSON.parse(localStorage.getItem("currentSettings"));
   }
 
   ngOnInit() {
@@ -58,7 +73,7 @@ export class ListaComponent implements OnInit {
 
       // this.currentState = constants.ALERTS.PERMANENCE_TIME;
       // this.alertCode = constants.ALERTS_CODE.PERMANENCE_TIME;
-      
+
       // console.log(this.currentState);
       // console.log(this.alertCode);
     });
@@ -71,7 +86,7 @@ export class ListaComponent implements OnInit {
   getAlerts() {
     this.alertsService.getAlertsByFamily(this.familyId, this.currentState).subscribe((alerts: any[]) => {
       this.listOfAlerts = alerts;
-      
+
       // this.listOfAlerts = alerts.filter(elem => {
       //   return ((elem.current_state != constants.ALERTS.UNABLE_WITH_SIGNAL) &&
       //     (elem.current_state != constants.ALERTS.UNABLE_NO_SIGNAL) &&
@@ -219,7 +234,7 @@ export class ListaComponent implements OnInit {
       case constants.ALERTS.MISSING:
         result = this.translate.instant('ALERTS.MISSING_PACK_DESCRIPTION');
         break;
-      
+
       default:
         result = this.translate.instant('ALERTS.DEFAULT_DESCRIPTION');
     }

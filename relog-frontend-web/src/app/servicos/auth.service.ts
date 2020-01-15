@@ -49,7 +49,7 @@ export class AuthenticationService {
     return user;
   }
 
-  updateLanguage(lang) {
+  updateLanguage(lang = 'pt') {
     //resolve the language
     //i18n
     this.translate.addLangs(['en', 'es', 'pt']);
@@ -57,7 +57,6 @@ export class AuthenticationService {
     //Use the saved user language if exists, or 'en' if doesn't
     const browserLang = this.translate.getBrowserLang();
     this.translate.use(lang.match(/en|es|pt/) ? browserLang : 'en');
-    console.log('this.translate.currentLang', this.translate.currentLang)
   }
 
   currentUser() {

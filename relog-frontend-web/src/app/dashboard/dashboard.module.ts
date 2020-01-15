@@ -15,10 +15,7 @@ import {ToastyModule} from 'ng2-toasty';
 import { AuthGuard } from '../guard/auth.guard';
 import { NgSelectModule } from '@ng-select/ng-select'; 
 import { SidebarModule } from 'ng-sidebar'; 
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -37,7 +34,7 @@ import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.
     ReactiveFormsModule,
     DashboardRoutingModule,
     NgxPaginationModule,
-    TranslateSettingsModule
+    TranslateModule
   ],
   declarations: [
     DashboardComponent,

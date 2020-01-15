@@ -18,7 +18,7 @@ export class ResumoHomeComponent implements OnInit {
   constructor(public translate: TranslateService) { }
 
   ngOnInit() {
-
+    console.log(this.translate.getBrowserLang());
   }
 
   ngOnChanges() {

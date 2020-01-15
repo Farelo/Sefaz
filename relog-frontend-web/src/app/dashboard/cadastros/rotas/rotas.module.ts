@@ -20,7 +20,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { constants } from './../../../../environments/constants';
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
-import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -40,7 +40,7 @@ import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.
       apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}` +
       '&libraries=visualization,places,drawing',
     }),
-    TranslateSettingsModule
+    TranslateModule
   ],
   declarations: [
     RotasCadastrarComponent,

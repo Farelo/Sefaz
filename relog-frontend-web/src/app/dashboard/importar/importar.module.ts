@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HotTableModule } from 'ng2-handsontable';
 import { ReactiveFormsModule} from '@angular/forms';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -21,7 +21,7 @@ import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.
     FormsModule,
     HotTableModule,
     ReactiveFormsModule,
-    TranslateSettingsModule
+    TranslateModule
   ],
   declarations: [
     ImportarComponent

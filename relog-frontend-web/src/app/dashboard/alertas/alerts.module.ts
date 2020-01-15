@@ -11,7 +11,7 @@ import { NgxPaginationModule} from 'ngx-pagination';
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { ModalModule ,TooltipModule, PopoverModule} from 'ngx-bootstrap'
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -24,7 +24,7 @@ import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
-    TranslateSettingsModule
+    TranslateModule
   ],
   declarations: [
     ListaComponent,

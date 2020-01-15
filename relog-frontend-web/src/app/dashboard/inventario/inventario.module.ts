@@ -22,7 +22,7 @@ import { InventarioEquipamentoGeralComponent } from './inventario-equipamento-ge
 import { FornecedorComponent } from './fornecedor/fornecedor.component';
 import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-ausencia.component';
 import { InventarioPosicoesComponent } from './inventario-posicoes/inventario-posicoes.component';
-import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -37,7 +37,7 @@ import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.
     ApplicationPipes,
     NgbModule,
     TooltipModule,
-    TranslateSettingsModule
+    TranslateModule
     //Angular2Csv
   ],
   declarations: [

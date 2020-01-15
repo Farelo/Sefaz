@@ -15,7 +15,7 @@ import { TipoPontoControleRoutingModule } from './tipo-ponto-controle.routing.mo
 import { TipoPontoControleCadastrarComponent } from './tipo-cadastrar/tipo-cadastrar.component';
 import { TipoPontoControleEditarComponent } from './tipo-editar/tipo-editar.component';
 import { TipoPontoControleComponent } from './tipo-ponto-controle.component';
-import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -29,7 +29,7 @@ import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.
     ApplicationPipes,
     FormsModule,
     ReactiveFormsModule,
-    TranslateSettingsModule
+    TranslateModule
   ],
   declarations: [
     TipoPontoControleCadastrarComponent,

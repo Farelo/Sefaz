@@ -8,10 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { TextMaskModule } from 'angular2-text-mask';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
+import {  TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -23,7 +20,7 @@ import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.
     TextMaskModule,
     NgSelectModule,
     ApplicationPipes,
-    TranslateSettingsModule
+    TranslateModule
   ],
   declarations: [
     CadastrosComponent

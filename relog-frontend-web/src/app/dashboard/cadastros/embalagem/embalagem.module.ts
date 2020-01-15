@@ -16,11 +16,7 @@ import {EmbalagemComponent} from './embalagem.component';
 import {EmbalagemRoutingModule} from './embalagem.routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
-
-import {HttpClient} from '@angular/common/http';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader'; 
-import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -35,7 +31,7 @@ import { TranslateSettingsModule } from 'app/shared/translate/translateSettings.
     ReactiveFormsModule,
     NgSelectModule,
     ApplicationPipes,
-    TranslateSettingsModule
+    TranslateModule
   ],
   declarations: [
     EmbalagemCadastroComponent,

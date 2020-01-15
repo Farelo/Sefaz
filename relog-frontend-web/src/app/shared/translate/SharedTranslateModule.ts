@@ -1,17 +1,27 @@
 import { NgModule } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient, '../../../assets/i18n');
+  return new TranslateHttpLoader(httpClient, '../../../assets/i18n/', '.json');
 }
 
 @NgModule({
-  exports: [
-    TranslateModule,
-  ]
+  declarations: [],
+  imports: [
+    TranslateSettingsModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+      isolate: false
+    }),
+  ],
+  exports: [TranslateModule]
 })
 
 export class TranslateSettingsModule {
@@ -25,6 +35,6 @@ export class TranslateSettingsModule {
     //translate.use('es');
 
     //Use the browser language if exists, or pt if doesn't
-    translate.use(browserLang.match(/en|es|pt/) ? browserLang : 'pt');
+    translate.use(browserLang.match(/en|es|pt/) ? browserLang : 'en');
   }
 }
