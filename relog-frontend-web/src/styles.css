@@ -63,6 +63,10 @@ body {
 
 } */
 
+.base-container{
+  margin-top: 30px;
+}
+
 /* Slider */
 .noUi-tooltip {
   display: block !important;

@@ -29,13 +29,7 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(public translate: TranslateService, private homeService: HomeService) {
-    const browserLang = translate.getBrowserLang();
-    console.log(browserLang);
-    console.log(this.translate.currentLang);
-    if (browserLang == undefined || this.translate.currentLang == undefined) {
-      translate.use('pt');
-    }
-    //else translate.use(browserLang.match(/en|es|pt/) ? browserLang : 'pt');
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {

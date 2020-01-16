@@ -25,23 +25,23 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.funcaoTop();
+    // this.funcaoTop(); 
     this.menuAparecer = false;
     this.currentUser = this.authenticationService.currentUser();
   }
 
-  funcaoTop() {
-    $('.scroll').click(function () {
-      // $('label').click();
-      return false;
-    });
-  }
+  // funcaoTop() {
+  //   $('.scroll').click(function () {
+  //     // $('label').click();
+  //     return false;
+  //   });
+  // }
 
-  posicionarPopOver() {
-    $('.arrow').css({
-      right: 12
-    });
-  }
+  // posicionarPopOver() {
+  //   $('.arrow').css({
+  //     right: 12
+  //   });
+  // }
 
   mudar() {
     this.menuAparecer = !this.menuAparecer;

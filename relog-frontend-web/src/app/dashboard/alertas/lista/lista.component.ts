@@ -42,19 +42,12 @@ export class ListaComponent implements OnInit {
     private route: ActivatedRoute, private modalService: NgbModal) {
 
     this.mConstants = constants;
+    
     this.updateLanguage();
   }
 
   updateLanguage() {
-    //resolve the language
-    let actualSettings = this.currentSettings();
-
-    //i18n
-    this.translate.addLangs(['en', 'es', 'pt']);
-
-    //Use the saved user language if exists, or 'en' if doesn't
-    const browserLang = this.translate.getBrowserLang();
-    this.translate.use(actualSettings.language.match(/en|es|pt/) ? browserLang : 'en');
+    if (this.translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) this.translate.use('pt');
   }
 
   currentSettings() {

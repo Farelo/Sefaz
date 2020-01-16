@@ -746,6 +746,15 @@
         "EMAIL_EXISTS": "Este Usuário já existe. O email deve ser único",
         "MATCH_PASSWORD": "As senhas não coincidem"
     },
+    "NAVBAR":{
+        "HOME": "Home",
+        "ALERTS": "Alertas",
+        "REGISTERS": "Cadastros",
+        "INVENTARY": "Inventário",
+        "IMPORT_DATA": "Importar Dados",
+        "GEOLOCATION": "Geolocalização",
+        "BPLINE": "BPLine"
+    },
     "SETTINGS": {
         "TITLE": "Editar configurações do sistema",
         "LANG": "Idioma",

@@ -1,12 +1,144 @@
-<div class="m-navbar" (window:resize)="onResize($event)">
-  <div class="brand">
-    <h1>RECICLAPAC</h1>
-  </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand brand" routerLink="/rc/home">Evoy</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <ul class="lista-menu">
-    <li>
-      <a routerLinkActive="active" routerLink="/rc/home">Home</a>
-    </li>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto" style="margin-right: 90px;">
+
+        <li>
+          <a class="nav-link" routerLinkActive="active" routerLink="/rc/home">Home</a>
+        </li>
+
+        <li *ngIf="currentUser?.role === 'admin'">
+          <a class="nav-link" routerLinkActive="active" routerLink="/rc/alertas">Alertas</a>
+        </li>
+
+        <li *ngIf="currentUser?.role === 'admin'">
+          <a class="nav-link" routerLinkActive="active" routerLink="/rc/cadastros">Cadastros</a>
+        </li>
+
+        <li>
+          <a class="nav-link" routerLinkActive="active" routerLink="/rc/inventario">Inventário</a>
+        </li>
+
+        <li *ngIf="currentUser?.role === 'admin'">
+          <a class="nav-link" routerLinkActive="active" routerLink="/rc/importar">Importar Dados</a>
+        </li>
+
+        <li>
+          <a class="nav-link" routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
+        </li>
+
+        <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
+          <a class="nav-link" routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
+        </li>
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link dropdown-toggle usuario" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false"></a>
+
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <div class="lista-menu-escondido">
+              <div>
+                <img width="40" *ngIf="currentUser?.role === 'admin'" src="assets/images/icon_a.png">
+                <img width="40" *ngIf="currentUser?.role === 'user'" src="assets/images/icon_f.png">
+              </div>
+              <div>
+                <p id="username">{{ this.currentUser?.full_name || 'Sem Registro' }} </p>
+                <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa.</p>
+                <p class="user-type" *ngIf="currentUser?.role === 'user'">Funcionário da Empresa.</p>
+              </div>
+            </div>
+            <a class="dropdown-item" *ngIf="currentUser?.role === 'admin'" (click)="p.toggle(); openModal()"> Gerenciar
+              usuários </a>
+            <a class="dropdown-item" *ngIf="currentUser?.role === 'admin'"
+              (click)="p.close(); openSettings()">Configurações </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" (click)="logout()"> Sair </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- <a class="navbar-brand brand">Evoy</a>
+  <button class="navbar-toggler" 
+    type="button" 
+    data-toggle="collapse" 
+    data-target="#navbarSupportedContent" 
+    aria-controls="navbarSupportedContent" 
+    aria-expanded="false" 
+    aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse lista-menu" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+      <li class="nav-item active">
+        <a class="nav-link" routerLinkActive="active" routerLink="/rc/home">Home</a>
+      </li>
+
+      <li *ngIf="currentUser?.role === 'admin'">
+        <a class="nav-link" routerLinkActive="active" routerLink="/rc/alertas">Alertas</a>
+      </li>
+
+      <li *ngIf="currentUser?.role === 'admin'">
+        <a class="nav-link" routerLinkActive="active" routerLink="/rc/cadastros">Cadastros</a>
+      </li>
+
+      <li>
+        <a class="nav-link" routerLinkActive="active" routerLink="/rc/inventario">Inventário</a>
+      </li>
+
+      <li *ngIf="currentUser?.role === 'admin'">
+        <a class="nav-link" routerLinkActive="active" routerLink="/rc/importar">Importar Dados</a>
+      </li>
+
+      <li>
+        <a class="nav-link" routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
+      </li>
+
+      <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
+        <a class="nav-link" routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
+      </li>
+
+      <li class="nav-item dropdown">
+
+        <a class="nav-link dropdown-toggle usuario" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div class="lista-menu-escondido">
+            <div style="float: left;">
+              <img width="40" *ngIf="currentUser?.role === 'admin'" src="assets/images/icon_a.png">
+              <img width="40" *ngIf="currentUser?.role === 'user'" src="assets/images/icon_f.png">
+            </div>
+            <div style="float: left;">
+              <p id="username">{{ this.currentUser?.full_name || 'Sem Registro' }} </p>
+              <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa.</p>
+              <p class="user-type" *ngIf="currentUser?.role === 'user'">Funcionário da Empresa.</p>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" *ngIf="currentUser?.role === 'admin'" (click)="p.toggle(); openModal()"> Gerenciar usuários </a>
+          <a class="dropdown-item" *ngIf="currentUser?.role === 'admin'" (click)="p.close(); openSettings()">Configurações </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="logout()"> Sair </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav> -->
+
+
+
+
+  <!-- <div class="m-navbar" (window:resize)="onResize($event)">
+  
     <li *ngIf="currentUser?.role === 'admin'">
       <a routerLinkActive="active" routerLink="/rc/alertas">Alertas</a>
     </li>
@@ -59,16 +191,11 @@
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/inventario">Inventário</a>
         </li>
 
-        <!-- <li *ngIf="currentUser?.role === 'admin'">
-          <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/importar">Importar Dados</a>
-        </li> -->
-
         <li>
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
         </li>
 
         <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
-          <!-- <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">BPline</a> -->
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
         </li>
     
@@ -104,10 +231,6 @@
         <li>
           <a *ngIf="currentUser?.role === 'admin'" (click)="p.close();openSettings()"> Configurações </a>
         </li>
-
-        <!-- <li>
-          <a (click)="p.close();openModalEditar()"> Editar </a>
-        </li> -->
 
         <li *ngIf="currentUser?.role !== 'user'" style="padding: 5px 0px;"> 
           <hr> 
@@ -153,10 +276,6 @@
         <a *ngIf="currentUser?.role === 'admin'" (click)="p.close(); openSettings()">Configurações </a>
       </li>
     
-      <!-- <li>
-        <a (click)="p.close(); openModalEditar()"> Editar </a>
-      </li> -->
-    
       <li *ngIf="currentUser?.role !== 'user'" style="padding: 5px 0px;">
         <hr> 
       </li>
@@ -166,4 +285,4 @@
       </li>
     </ul>
   </div>
-</ng-template>
+</ng-template> -->
