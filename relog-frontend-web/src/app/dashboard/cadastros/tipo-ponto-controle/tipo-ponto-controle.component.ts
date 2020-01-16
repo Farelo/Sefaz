@@ -18,7 +18,10 @@ export class TipoPontoControleComponent implements OnInit {
 
   constructor(public translate: TranslateService,
     private controlPointTypesService: ControlPointTypesService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
 

@@ -34,7 +34,10 @@ export class CreateUserComponent implements OnInit {
     private companiesService: CompaniesService,
     private usersService: UsersService,
     private toastService: ToastService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
     this.formProfile();
@@ -53,20 +56,20 @@ export class CreateUserComponent implements OnInit {
       role: ['', [Validators.required]],
       full_name: ['',
         [Validators.required,
-         Validators.minLength(5),
-          Validators.pattern(/^((?!\s{2}).)*$/)]],
+        Validators.minLength(5),
+        Validators.pattern(/^((?!\s{2}).)*$/)]],
       email: ['',
-        [Validators.required, 
-         Validators.email,
-         Validators.minLength(5)],
+        [Validators.required,
+        Validators.email,
+        Validators.minLength(5)],
         // this.validateNotTaken.bind(this)
       ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
       company: ['', [Validators.required]]
     }, {
-        validator: PasswordValidation.MatchPassword // your validation method
-      });
+      validator: PasswordValidation.MatchPassword // your validation method
+    });
   }
 
   getCompaniesOnSelect() {
@@ -101,7 +104,7 @@ export class CreateUserComponent implements OnInit {
     this.activeModal.close();
   }
 
-  validateEmail(event: any){
+  validateEmail(event: any) {
 
     if (!this.newUser.get('email').errors) {
 
@@ -113,7 +116,7 @@ export class CreateUserComponent implements OnInit {
           this.newUser.controls.email.setErrors(null);
         else
           this.newUser.controls.email.setErrors({ uniqueValidation: true });
-        
+
         this.validateNotTakenLoading = false;
       });
     }

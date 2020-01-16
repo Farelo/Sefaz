@@ -21,6 +21,8 @@ export class AlertaBateriaBaixaComponent implements OnInit {
     private packingsService: PackingService,
     private modalService: NgbModal) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
     this.mConstants = constants;
   }
 

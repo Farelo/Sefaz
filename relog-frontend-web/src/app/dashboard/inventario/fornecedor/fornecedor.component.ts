@@ -25,7 +25,10 @@ export class FornecedorComponent implements OnInit {
   constructor(public translate: TranslateService,
     private reportsService: ReportsService,
     protected companiesService: CompaniesService,
-    private auth: AuthenticationService) { }
+    private auth: AuthenticationService) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
 

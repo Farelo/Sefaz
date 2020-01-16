@@ -42,6 +42,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     private fb: FormBuilder,
     private geocodingService: GeocodingService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
     this.mControlPoint = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       duns: ['', []],

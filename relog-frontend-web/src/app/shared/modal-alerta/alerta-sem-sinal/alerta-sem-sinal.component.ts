@@ -15,13 +15,15 @@ export class AlertaSemSinalComponent implements OnInit {
 
   @Input() alerta;
   public mConstants: any;
-  
+
   constructor(public translate: TranslateService,
     public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
-    private modalService: NgbModal){
+    private modalService: NgbModal) {
 
-    this.mConstants = constants; 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
+    this.mConstants = constants;
   }
 
   ngOnInit() {
@@ -29,8 +31,8 @@ export class AlertaSemSinalComponent implements OnInit {
     console.log(this.alerta);
   }
 
-  visualizeOnMap() { 
-    
+  visualizeOnMap() {
+
     this.packingsService
       .getPacking(this.alerta._id)
       .subscribe(
@@ -46,7 +48,7 @@ export class AlertaSemSinalComponent implements OnInit {
           });
           actualPackage.alertCode = this.alerta.current_state;
           actualPackage.tag = actualPackage.tag.code;
-          actualPackage.family_code = this.alerta.family.code; 
+          actualPackage.family_code = this.alerta.family.code;
 
           console.log(actualPackage);
 

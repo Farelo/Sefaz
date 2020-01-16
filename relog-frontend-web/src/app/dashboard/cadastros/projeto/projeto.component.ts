@@ -20,7 +20,10 @@ export class ProjetoComponent implements OnInit {
 
   constructor(public translate: TranslateService,
     private projectService: ProjectService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
 

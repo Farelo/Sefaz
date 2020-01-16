@@ -30,6 +30,8 @@ export class EmbalagemComponent implements OnInit {
     private familyService: FamiliesService, private modalService: NgbModal,
     private auth: AuthenticationService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
     //Session
     let user = this.auth.currentUser();
 
@@ -43,25 +45,25 @@ export class EmbalagemComponent implements OnInit {
     console.log(this.translate.getLangs())
     console.log('changeLanguage')
     console.log('this.translate.currentLang', this.translate.currentLang)
-    
-    switch(this.translate.currentLang){
+
+    switch (this.translate.currentLang) {
       case 'pt':
         console.log('pt');
-        this.translate.use('en'); 
+        this.translate.use('en');
         console.log('use en');
         console.log('this.translate.currentLang', this.translate.currentLang)
         break;
 
       case 'en':
         console.log('en');
-        this.translate.use('es'); 
+        this.translate.use('es');
         console.log('use es');
         console.log('this.translate.currentLang', this.translate.currentLang)
         break;
 
       case 'es':
         console.log('es');
-        this.translate.use('pt'); 
+        this.translate.use('pt');
         console.log('use pt');
         console.log('this.translate.currentLang', this.translate.currentLang)
         break;

@@ -13,9 +13,9 @@ declare var jsPDF: any;
   selector: 'app-inventario-quantidade',
   templateUrl: './inventario-quantidade.component.html',
   styleUrls: ['./inventario-quantidade.component.css'],
-  })
+})
 export class InventarioQuantidadeComponent implements OnInit {
-  
+
   //dados da tabela
   public listOfQuantity: any[] = [];
   public auxListOfQuantity: any[] = [];
@@ -29,12 +29,13 @@ export class InventarioQuantidadeComponent implements OnInit {
 
   public qtdTotal: number = 0;
 
-     
+
   constructor(public translate: TranslateService,
     private reportService: ReportsService,
     private familyService: FamiliesService,
     private auth: AuthenticationService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
@@ -51,7 +52,7 @@ export class InventarioQuantidadeComponent implements OnInit {
 
   loadQuantityInventory() {
     this.reportService.getQuantityInventory().subscribe(result => {
-      
+
       //atualizar dados
       this.listOfQuantity = result;
       this.auxListOfQuantity = result;
@@ -71,11 +72,11 @@ export class InventarioQuantidadeComponent implements OnInit {
     } else {
       this.listOfQuantity = this.auxListOfQuantity;
     }
-    
+
     this.updateResumeQuantity();
   }
 
-  updateResumeQuantity(){
+  updateResumeQuantity() {
     this.qtdTotal = this.listOfQuantity.map(elem => elem.total).reduce(function (accumulator, currentValue) { return accumulator + currentValue }, 0);
   }
 
@@ -92,7 +93,7 @@ export class InventarioQuantidadeComponent implements OnInit {
   /**
   * Click to download
   */
-  downloadCsv(){
+  downloadCsv() {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
@@ -125,15 +126,15 @@ export class InventarioQuantidadeComponent implements OnInit {
     // Or JavaScript:
     doc.autoTable({
       head: //[['Família', 'Empresa', 'Ponto de controle', 'Tipo', 'Local', 'Min', 'Quantidade', 'Max']],
-      [[
-        this.translate.instant('INVENTORY.QUANTITY.FAMILY'),
-        this.translate.instant('INVENTORY.QUANTITY.COMPANY'),
-        this.translate.instant('INVENTORY.QUANTITY.CONTROL_POINT'),
-        this.translate.instant('INVENTORY.QUANTITY.TYPE'), 
-        this.translate.instant('INVENTORY.QUANTITY.MIN'),
-        this.translate.instant('INVENTORY.QUANTITY.QUANTITY'),
-        this.translate.instant('INVENTORY.QUANTITY.MAX')
-      ]],
+        [[
+          this.translate.instant('INVENTORY.QUANTITY.FAMILY'),
+          this.translate.instant('INVENTORY.QUANTITY.COMPANY'),
+          this.translate.instant('INVENTORY.QUANTITY.CONTROL_POINT'),
+          this.translate.instant('INVENTORY.QUANTITY.TYPE'),
+          this.translate.instant('INVENTORY.QUANTITY.MIN'),
+          this.translate.instant('INVENTORY.QUANTITY.QUANTITY'),
+          this.translate.instant('INVENTORY.QUANTITY.MAX')
+        ]],
       body: flatObjectData
     });
 
@@ -141,27 +142,27 @@ export class InventarioQuantidadeComponent implements OnInit {
   }
 
   flatObject(mArray: any) {
-    
+
     //console.log(mArray);
 
-     let transformer = new CompanyType();
-     let plainArray = mArray.map(obj => {
-          return {
-            a1: obj.family_code,
-            a2: obj.company,
-            a3: obj.control_point_name,
-            a4: obj.control_point_type,
-            a5: obj.stock_min,
-            a6: obj.total,
-            a7: obj.stock_max,
-          };
-        });
-      
+    let transformer = new CompanyType();
+    let plainArray = mArray.map(obj => {
+      return {
+        a1: obj.family_code,
+        a2: obj.company,
+        a3: obj.control_point_name,
+        a4: obj.control_point_type,
+        a5: obj.stock_min,
+        a6: obj.total,
+        a7: obj.stock_max,
+      };
+    });
+
     // As my array is already flat, I'm just returning it.
     return plainArray;
   }
 
-  addHeader(mArray: any){
+  addHeader(mArray: any) {
     let cabecalho = {
       a1: this.translate.instant('INVENTORY.QUANTITY.FAMILY'),
       a2: this.translate.instant('INVENTORY.QUANTITY.COMPANY'),

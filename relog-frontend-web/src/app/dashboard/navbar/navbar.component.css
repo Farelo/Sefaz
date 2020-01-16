@@ -225,10 +225,14 @@ hr {
   }
 }
 
+.pointer{
+  cursor: pointer;
+}
+
 @media (min-width: 992px) {
   .navbar-expand-lg .navbar-nav .dropdown-menu {
     position: absolute;
-    left: -200px;
+    left: -130px;
   }
 }
 

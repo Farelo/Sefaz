@@ -29,7 +29,10 @@ export class InventarioPermanenciaComponent implements OnInit {
   constructor(public translate: TranslateService,
     private reportService: ReportsService,
     private familyService: FamiliesService,
-    private auth: AuthenticationService) { }
+    private auth: AuthenticationService) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
     //Loads the table headers

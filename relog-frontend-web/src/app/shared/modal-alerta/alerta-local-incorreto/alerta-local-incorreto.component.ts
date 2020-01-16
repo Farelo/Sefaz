@@ -14,7 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class AlertaLocalIncorretoComponent implements OnInit {
 
   @Input() alerta;
-  
+
   public listOfRoutes: any[] = [];
   public mConstants: any;
 
@@ -22,8 +22,10 @@ export class AlertaLocalIncorretoComponent implements OnInit {
     public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
     private routesService: RoutesService,
-    private modalService: NgbModal) { 
-    
+    private modalService: NgbModal) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
     this.mConstants = constants;
   }
 
@@ -35,7 +37,7 @@ export class AlertaLocalIncorretoComponent implements OnInit {
   }
 
   getHistoric() {
-    
+
   }
 
   visualizeOnMap() {

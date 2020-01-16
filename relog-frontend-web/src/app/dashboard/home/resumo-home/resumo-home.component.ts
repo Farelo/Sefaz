@@ -15,7 +15,10 @@ export class ResumoHomeComponent implements OnInit {
   public progressViagem: any = [];
   public progressSemSinal: any = [];
 
-  constructor(public translate: TranslateService) { }
+  constructor(public translate: TranslateService) { 
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
     console.log(this.translate.getBrowserLang());

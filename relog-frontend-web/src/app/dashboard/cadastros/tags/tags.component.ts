@@ -4,6 +4,7 @@ import { Tag } from '../../../shared/models/tag';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tags',
@@ -14,10 +15,12 @@ export class TagsComponent implements OnInit {
   public data: Pagination = new Pagination({meta: {page : 1}});
   public search  = "";
 
-  constructor(
+  constructor(public translate: TranslateService,
     private TagsService: TagsService,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   searchEvent(): void{
       this.loadTags();

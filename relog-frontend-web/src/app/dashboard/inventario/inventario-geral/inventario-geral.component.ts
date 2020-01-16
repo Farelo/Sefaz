@@ -38,6 +38,7 @@ export class InventarioGeralComponent implements OnInit {
     private familyService: FamiliesService,
     private auth: AuthenticationService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
     let user = this.auth.currentUser();
     let current_user = this.auth.currentUser();
   }
@@ -193,7 +194,7 @@ export class InventarioGeralComponent implements OnInit {
   */
   downloadPdf() {
     var doc = jsPDF('l', 'pt');
-    
+
     // You can use html:
     //doc.autoTable({ html: '#my-table' });
 
@@ -238,7 +239,7 @@ export class InventarioGeralComponent implements OnInit {
         fontSize: 5
       }
     });
-    
+
     //doc.setFontSize(3);
     doc.save('general_inventory.pdf');
   }

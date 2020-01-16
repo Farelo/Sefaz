@@ -20,7 +20,10 @@ export class FamiliaComponent implements OnInit {
   constructor(public translate: TranslateService,
     private familyService: FamiliesService,
     private modalService: NgbModal,
-    private auth: AuthenticationService) { }
+    private auth: AuthenticationService) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
 
   /**

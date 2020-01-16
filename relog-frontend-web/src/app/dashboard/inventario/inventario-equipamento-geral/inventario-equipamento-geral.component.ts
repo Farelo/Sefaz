@@ -34,6 +34,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     private modalService: NgbModal,
     private auth: AuthenticationService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
     let user = this.auth.currentUser();
     let current_user = this.auth.currentUser();
   }

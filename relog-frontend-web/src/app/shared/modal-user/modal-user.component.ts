@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'; 
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalSupplierRegisterComponent } from './modal-register-supplier/modal-register-supplier.component';
-import { ModalStaffRegisterComponent } from './modal-register-staff/modal-register-staff.component'; 
+import { ModalStaffRegisterComponent } from './modal-register-staff/modal-register-staff.component';
 import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
 import { Pagination } from '../../shared/models/pagination';
 import { ProfileService } from '../../servicos/index.service';
@@ -9,7 +9,7 @@ import { constants } from '../../../environments/constants';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { TranslateService } from '@ngx-translate/core';
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'app-modal-user',
@@ -17,34 +17,37 @@ declare var $:any;
   styleUrls: ['./modal-user.component.css']
 })
 export class ModalUserComponent implements OnInit {
-  
+
   @Input() view;
   public userData: any[] = [];
   public actualPage = -1;
 
   constructor(public translate: TranslateService,
     public activeModal: NgbActiveModal,
-    private profileService: ProfileService, 
-    private modalService: NgbModal) { }
+    private profileService: ProfileService,
+    private modalService: NgbModal) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
 
     this.getUsers();
   }
 
-  getUsers(){
-    
+  getUsers() {
+
     this.profileService.getUsers().subscribe(result => {
       this.userData = result;
     });
   }
 
-  createUser(){
-    const modalRef = this.modalService.open(CreateUserComponent, { backdrop: "static"});
+  createUser() {
+    const modalRef = this.modalService.open(CreateUserComponent, { backdrop: "static" });
     this.activeModal.close();
   }
 
-  editUser(user: any){
+  editUser(user: any) {
 
     const modalRef = this.modalService.open(EditUserComponent, { backdrop: "static" });
     modalRef.componentInstance.mUser = user;
@@ -52,27 +55,27 @@ export class ModalUserComponent implements OnInit {
     this.activeModal.close();
   }
 
-  addUsers(){
-    if(this.isAdmin){
-      const modalRef = this.modalService.open(ModalSupplierRegisterComponent, {backdrop: "static", size: "lg"});
-    }else{
-      const modalRef = this.modalService.open(ModalStaffRegisterComponent, {backdrop: "static", size: "lg"});
+  addUsers() {
+    if (this.isAdmin) {
+      const modalRef = this.modalService.open(ModalSupplierRegisterComponent, { backdrop: "static", size: "lg" });
+    } else {
+      const modalRef = this.modalService.open(ModalStaffRegisterComponent, { backdrop: "static", size: "lg" });
     }
     this.activeModal.close();
   }
 
-  removeProfile(profile):void{
+  removeProfile(profile): void {
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.mObject = profile;
     modalRef.componentInstance.mType = "USER";
-    
+
     modalRef.result.then((result) => {
       this.getUsers();
     });
   }
 
-  getTypeLabel(type: string): string{
-    return type=='admin' ? 'Administrador' : 'Usuário';
+  getTypeLabel(type: string): string {
+    return type == 'admin' ? 'Administrador' : 'Usuário';
   }
 
   // pageChanged(page: any): void{
@@ -81,8 +84,8 @@ export class ModalUserComponent implements OnInit {
   // }
 
   isAdmin() {
-    if(JSON.parse(localStorage.getItem('currentUser'))) {
-      if (JSON.parse(localStorage.getItem('currentUser')).role == constants.ADMIN){
+    if (JSON.parse(localStorage.getItem('currentUser'))) {
+      if (JSON.parse(localStorage.getItem('currentUser')).role == constants.ADMIN) {
         return true;
       }
     }

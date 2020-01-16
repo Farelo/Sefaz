@@ -21,8 +21,11 @@ export class RotasComponent implements OnInit {
   public search = "";
 
   constructor(public translate: TranslateService,
-    private routesService : RoutesService,
-    private modalService: NgbModal) { }
+    private routesService: RoutesService,
+    private modalService: NgbModal) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
 
   ngOnInit() {
@@ -30,19 +33,19 @@ export class RotasComponent implements OnInit {
     this.loadRoutes();
   }
 
-  loadRoutes(){
+  loadRoutes() {
 
     this.routesService
       .getAllRoutes()
       .subscribe(data => {
-        
+
         this.allRoutes = data;
         this.auxAllRoutes = data;
-      }, err => {console.log(err)});
+      }, err => { console.log(err) });
   }
 
-  removeRoutes(route):void{
-    
+  removeRoutes(route): void {
+
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.mObject = route;
     modalRef.componentInstance.mType = "ROUTE";
@@ -53,8 +56,8 @@ export class RotasComponent implements OnInit {
     });
   }
 
-  getFormatedDistance(value: number){
-    return (new MeterFormatter()).to(value/1000);
+  getFormatedDistance(value: number) {
+    return (new MeterFormatter()).to(value / 1000);
   }
 
 

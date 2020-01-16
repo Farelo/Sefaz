@@ -22,7 +22,10 @@ export class TipoPontoControleEditarComponent implements OnInit {
     private controlPointTypesService: ControlPointTypesService,
     private toastService: ToastService,
     private route: ActivatedRoute,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
 

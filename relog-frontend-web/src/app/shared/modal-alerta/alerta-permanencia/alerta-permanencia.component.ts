@@ -18,7 +18,9 @@ export class AlertaPermanenciaComponent implements OnInit {
   constructor(public translate: TranslateService,
     public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
-    private modalService: NgbModal){ 
+    private modalService: NgbModal) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
 
     this.mConstants = constants;
   }
@@ -27,8 +29,8 @@ export class AlertaPermanenciaComponent implements OnInit {
 
   }
 
-  visualizeOnMap() { 
-    
+  visualizeOnMap() {
+
     this.packingsService
       .getPacking(this.alerta._id)
       .subscribe(

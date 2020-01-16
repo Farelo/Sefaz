@@ -19,8 +19,10 @@ export class AlertaEmbalagemPerdidaComponent implements OnInit {
     public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
     private modalService: NgbModal) {
-  
-    this.mConstants = constants; 
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
+    this.mConstants = constants;
   }
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class AlertaEmbalagemPerdidaComponent implements OnInit {
           actualPackage.alertCode = this.alerta.current_state;
           actualPackage.tag = actualPackage.tag.code;
           actualPackage.family_code = this.alerta.family.code;
-          
+
           modalRef.componentInstance.packing = actualPackage;
         },
         err => {

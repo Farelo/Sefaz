@@ -20,7 +20,10 @@ export class PontoDeControleComponent implements OnInit {
 
   constructor(public translate: TranslateService,
     private controlPointsService: ControlPointsService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
 
   ngOnInit() {

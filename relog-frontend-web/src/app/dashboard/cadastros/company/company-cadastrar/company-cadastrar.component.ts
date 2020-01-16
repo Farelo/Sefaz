@@ -27,7 +27,10 @@ export class CompanyCadastrarComponent implements OnInit {
     protected companiesService: CompaniesService,
     protected toastService: ToastService,
     private fb: FormBuilder,
-    private router: Router) { }
+    private router: Router) { 
+      
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
     this.formProfile();

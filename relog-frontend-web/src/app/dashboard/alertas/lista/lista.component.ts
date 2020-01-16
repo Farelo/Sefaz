@@ -43,11 +43,7 @@ export class ListaComponent implements OnInit {
 
     this.mConstants = constants;
     
-    this.updateLanguage();
-  }
-
-  updateLanguage() {
-    if (this.translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) this.translate.use('pt');
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   currentSettings() {

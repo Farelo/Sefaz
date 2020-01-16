@@ -27,6 +27,7 @@ export class FamiliaCadastroComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder) {
 
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {

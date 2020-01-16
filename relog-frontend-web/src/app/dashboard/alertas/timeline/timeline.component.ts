@@ -30,6 +30,7 @@ export class TimelineComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private modalService: NgbModal ) {
 
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
   
   ngOnInit() {

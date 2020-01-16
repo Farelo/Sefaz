@@ -30,6 +30,7 @@ export class GeralComponent implements OnInit {
     private modalService: NgbModal,
     private auth: AuthenticationService) {
 
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {

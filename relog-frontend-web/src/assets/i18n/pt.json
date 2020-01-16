@@ -710,11 +710,6 @@
         "TOTAL_DAYS": "Total de dias",
         "TOTAL_BUILT": "Total construído"
     },
-    "MENU_CONFIG": {
-        "MANAGE_USER": "Gerenciar usuários",
-        "CONFIG": "Configurações",
-        "LOGOUT": "Sair"
-    },
     "USERS": {
         "MANAGE_USERS": "Gerenciar usuários",
         "MANAGE_USERS_DESC": "Usuários cadastrados no sistema",
@@ -753,7 +748,12 @@
         "INVENTARY": "Inventário",
         "IMPORT_DATA": "Importar Dados",
         "GEOLOCATION": "Geolocalização",
-        "BPLINE": "BPLine"
+        "BPLINE": "BPLine",
+        "USER_ADMIN": "Administrador",
+        "USER_EMPLOYEE": "Colaborador",
+        "MANAGE_USER": "Gerenciar usuários",
+        "CONFIG": "Configurações",
+        "LOGOUT": "Sair"
     },
     "SETTINGS": {
         "TITLE": "Editar configurações do sistema",

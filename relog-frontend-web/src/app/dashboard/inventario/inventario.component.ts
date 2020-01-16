@@ -1,23 +1,23 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Pagination } from '../../shared/models/pagination'; 
+import { Pagination } from '../../shared/models/pagination';
 import { ModalInvComponent } from '../../shared/modal-inv/modal-inv.component';
 import { LayerModalComponent } from '../../shared/modal-packing/layer.component';
 import { AbscenseModalComponent } from '../../shared/modal-packing-absence/abscense.component';
-import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service'; 
-import { Angular2Csv } from 'angular2-csv/Angular2-csv'; 
+import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { TranslateService } from '@ngx-translate/core';
 
 declare var $: any;
 
 //fazer uma refatoração esta muito grande e com o HTML gigantesco
 @Component({
-  selector: 'app-inventario', 
+  selector: 'app-inventario',
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.css']
 })
 
-export class InventarioComponent implements OnInit, OnDestroy  {
+export class InventarioComponent implements OnInit, OnDestroy {
   public logged_user: any;
   public suppliers: any;
   public name_supplier: any = '';
@@ -30,19 +30,19 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public escolhas: any[];
   public abserials: any[];
   public locals: any[];
-  public general:     Pagination = new Pagination({ meta: { page: 1 } });
-  public supplier:    Pagination = new Pagination({ meta: { page: 1 } });
-  
-  public absence:     Pagination = new Pagination({ meta: { page: 1 } });
-  
+  public general: Pagination = new Pagination({ meta: { page: 1 } });
+  public supplier: Pagination = new Pagination({ meta: { page: 1 } });
+
+  public absence: Pagination = new Pagination({ meta: { page: 1 } });
+
   public general_equipament: Pagination = new Pagination({ meta: { page: 1 } });
   public detailedGeneralInventory: Pagination = new Pagination({ meta: { page: 1 } });
   public detailedInventorySupplierSearch = null;
   public detailedInventoryEquipamentSearch = null;
   public detailedInventorySearchSerial = "";
   public supplierSearch = null;
-  
-  
+
+
   public absenceSearchEquipamento: any;
   public absenceSearchSerial: any;
   public absenceTime: any;
@@ -60,7 +60,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public permanenceSearchEquipamento: any;
 
   ngOnInit() {
- 
+
     // this.generalInventory();
     // this.tamanhoSelect();
     // this.loadPackings();
@@ -85,6 +85,8 @@ export class InventarioComponent implements OnInit, OnDestroy  {
     private ref: ChangeDetectorRef,
     private auth: AuthenticationService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
     let user = this.auth.currentUser();
     let current_user = this.auth.currentUser();
     this.logged_user = (user.supplier ? user.supplier._id : (
@@ -107,7 +109,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   changeSelect(event) {
     // if (event === "Bateria") {
-      
+
     // } else if (event === "Geral") {
     //   this.generalInventoryEquipament();
     // } else if (event === "Tempo de ausência") {
@@ -127,7 +129,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //   });
   // }
 
-  
+
 
 
   // generalInventoryEquipament() {
@@ -138,7 +140,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //   }
   // }
 
-  
+
 
   // generalInventory() {
   //   if (this.logged_user instanceof Array) {
@@ -147,7 +149,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //     this.inventoryService.getInventoryGeneral(10, this.general.meta.page, this.logged_user).subscribe(result => this.general = result, err => { console.log(err) });
   //   }
   // }
-  
+
   // choiced(event: any) {
   //   if (event === "FORNECEDOR") {
   //     //this.loadSuppliers();
@@ -182,7 +184,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //   this.serials = [];
 
   //   if (this.permanenceSearchEquipamento !== null){
-      
+
   //     console.log('this.permanenceSearchEquipamento.packing: ' + this.permanenceSearchEquipamento);
 
   //     this.packingService
@@ -198,7 +200,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
 
   // absenceInventory() {
   //   this.absence = new Pagination({ meta: { page: 1 } });
-  
+
   //   if (this.absenceSearchEquipamento) {
   //       this.packingService
   //         .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
@@ -207,9 +209,9 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //           this.inventoryService
   //             .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
   //             .subscribe(result => {
-               
+
   //               if (result.data){
-                 
+
   //                 this.absence = result
   //               }
   //             }, err => { console.log(err) });
@@ -232,9 +234,9 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   // }
 
   // absenceInventoryChangePage() {
-    
+
   //   if (this.absenceSearchEquipamento) {
-      
+
 
   //       this.packingService
   //         .getPackingsEquals(this.absenceSearchEquipamento.supplier._id, this.absenceSearchEquipamento.project._id, this.absenceSearchEquipamento.packing)
@@ -243,14 +245,14 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //           this.inventoryService
   //             .getAbsencePermanence(10, this.absence.meta.page, this.absenceSearchEquipamento.packing, this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
   //             .subscribe(result => {
-               
+
   //               if (result.data){
-                 
+
   //                 this.absence = result
   //               }
   //             }, err => { console.log(err) });
   //         }, err => { console.log(err) })
-      
+
   //   }else{
   //     this.inventoryService
   //       .getAbsencePermanence(10, this.absence.meta.page, "todos", this.absenceTime, this.absenceSearchSerial, this.escolhaLocal)
@@ -302,7 +304,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //     this.packingService.getPackingsDistinctsBySupplier(this.logged_user).subscribe(result => this.ab_packings = result.data, err => { console.log(err) });
   //   } else {
   //     this.packingService.getPackingsDistincts().subscribe(result =>  {
-        
+
   //       this.ab_packings = result.data;
   //       this.absenceTime = 10;
   //     }, err => { console.log(err) });
@@ -369,7 +371,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //     this.selectedSupplier = event;
   //     this.packingService.getPackingsDistinctsBySupplier(event._id).subscribe(result => {
   //       this.detailedGeneralpackings = result.data;
-        
+
   //       this.inventoryService.getDetailedGeneralInventoryBySupplier(10, this.detailedGeneralInventory.meta.page, event._id).subscribe(res => {
   //         this.detailedGeneralInventory = res;
   //         this.setInitialCollapse(true);
@@ -404,13 +406,13 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   // downloadExcel(): void {
   //   console.log('Download on excel');
 
-    
+
   //   let params = {};
   //   if (this.selectedSupplier) params['supplier_id'] = this.selectedSupplier._id;
   //   if (this.selectedEquipament) params['package_code'] = this.selectedEquipament._id.code;
-    
+
   //   this.inventoryService.getDataToCsv(params).subscribe(result => {
-      
+
   //     new Angular2Csv(this.shapeObject(result.data), 'InventarioGeral', this.csvOptions);
   //   }, err => { console.log(err) });
 
@@ -421,7 +423,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //  * @param array The array of objects to save in the csv. Each object represents a row in the file
   //  */
   // shapeObject(array: any){
-    
+
   //   let plain = array.map(obj => {
   //     return {
   //       supplierName: obj.supplier.name,
@@ -457,9 +459,9 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   //   }
 
   //   plain.unshift(cabecalho);
-    
+
   //   return plain;
-    
+
   // }
 
 }

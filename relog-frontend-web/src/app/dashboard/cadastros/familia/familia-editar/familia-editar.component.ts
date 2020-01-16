@@ -32,7 +32,10 @@ export class FamiliaEditarComponent implements OnInit {
     private controlPointsService: ControlPointsService,
     private toastService: ToastService,
     private fb: FormBuilder,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
 

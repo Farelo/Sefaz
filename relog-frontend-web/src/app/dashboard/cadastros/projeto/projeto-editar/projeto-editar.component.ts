@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { ToastService, ProjectService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projeto-editar',
@@ -17,19 +18,22 @@ export class ProjetoEditarComponent implements OnInit {
   public mId: string;
   public mActualProject: any;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private projectService: ProjectService,
     private toastService: ToastService,
     private route: ActivatedRoute,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
-    
+
     this.createFormGroup();
     this.retrieveUser();
   }
 
-  createFormGroup(){
+  createFormGroup() {
     this.mProject = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]]
     });
@@ -46,7 +50,7 @@ export class ProjetoEditarComponent implements OnInit {
         }, err => this.toastService.error(err));
     }
   }
-  
+
   retrieveUser() {
     this.inscricao = this.route.params.subscribe((params: any) => {
       this.mId = params['id'];

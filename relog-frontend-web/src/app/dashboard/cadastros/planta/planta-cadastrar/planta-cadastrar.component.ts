@@ -29,8 +29,8 @@ export class PlantaCadastrarComponent implements OnInit {
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
     private fb: FormBuilder,
-    private geocodingService: GeocodingService
-  ) {
+    private geocodingService: GeocodingService) {
+      
     this.plant = this.fb.group({
       plant_name: ['', [Validators.required]],
       lat: ['', [Validators.required]],

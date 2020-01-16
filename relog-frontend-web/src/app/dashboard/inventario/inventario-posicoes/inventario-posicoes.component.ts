@@ -49,6 +49,8 @@ export class InventarioPosicoesComponent implements OnInit {
     private deviceService: DevicesService,
     private localeService: BsLocaleService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
     this.configureDatePicker();
 
     // console.log(this.initialDate);
@@ -245,11 +247,11 @@ export class InventarioPosicoesComponent implements OnInit {
   }
 
   convertTimezone(timestamp) {
-    if(timestamp.toString().length == 10) timestamp *= 1000;
+    if (timestamp.toString().length == 10) timestamp *= 1000;
 
     return moment.utc(timestamp).tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss')
   }
-  
+
   /**
    * ================================================
    * Downlaod csv file
@@ -296,16 +298,16 @@ export class InventarioPosicoesComponent implements OnInit {
     // Or JavaScript:
     doc.autoTable({
       head: //[['Tag', 'Acurácia', 'Bateria', 'Latitude', 'Longitude', 'Data da mensagem', '# Sequência', 'Temperatura']],
-      [[
-        this.translate.instant('INVENTORY.POSITIONS.TAG'),
-        this.translate.instant('INVENTORY.POSITIONS.ACCURACY'),
-        this.translate.instant('INVENTORY.POSITIONS.BATTERY'),
-        this.translate.instant('INVENTORY.POSITIONS.LATITUDE'),
-        this.translate.instant('INVENTORY.POSITIONS.LONGITUDE'),
-        this.translate.instant('INVENTORY.POSITIONS.EVENT_DATE'),
-        this.translate.instant('INVENTORY.POSITIONS.SEQUENCE_NUMBER'),
-        this.translate.instant('INVENTORY.POSITIONS.TEMPERATURE')
-      ]],
+        [[
+          this.translate.instant('INVENTORY.POSITIONS.TAG'),
+          this.translate.instant('INVENTORY.POSITIONS.ACCURACY'),
+          this.translate.instant('INVENTORY.POSITIONS.BATTERY'),
+          this.translate.instant('INVENTORY.POSITIONS.LATITUDE'),
+          this.translate.instant('INVENTORY.POSITIONS.LONGITUDE'),
+          this.translate.instant('INVENTORY.POSITIONS.EVENT_DATE'),
+          this.translate.instant('INVENTORY.POSITIONS.SEQUENCE_NUMBER'),
+          this.translate.instant('INVENTORY.POSITIONS.TEMPERATURE')
+        ]],
       body: flatObjectData
     });
 

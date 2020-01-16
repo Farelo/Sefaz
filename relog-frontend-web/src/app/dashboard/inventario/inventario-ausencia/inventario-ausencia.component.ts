@@ -26,7 +26,7 @@ export class InventarioAusenciaComponent implements OnInit {
 
   public listOfAbsent: any[] = [];
   public auxListOfAbsent: any[] = [];
-  
+
   public timeInterval: number = null;
 
   public actualPage: number = -1;
@@ -35,7 +35,10 @@ export class InventarioAusenciaComponent implements OnInit {
     private familyService: FamiliesService,
     private reportService: ReportsService,
     private modalService: NgbModal,
-    private auth: AuthenticationService) { }
+    private auth: AuthenticationService) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
     //Loads the table headers
@@ -49,7 +52,7 @@ export class InventarioAusenciaComponent implements OnInit {
   /**
    * Loading the families
    */
-  loadFamilies(){
+  loadFamilies() {
     this.familyService.getAllFamilies().subscribe(result => {
 
       this.listOfFamilies = result;
@@ -84,9 +87,9 @@ export class InventarioAusenciaComponent implements OnInit {
   /**
    * Filtros
    */
-  familyFilter(event: any){
-    
-    if(!event) {
+  familyFilter(event: any) {
+
+    if (!event) {
       this.listOfSerials = [];
       this.selectedSerial = null;
       return;
@@ -118,9 +121,9 @@ export class InventarioAusenciaComponent implements OnInit {
     this.intervalFilter();
   }
 
-  intervalFilter(){
-    
-    if (this.timeInterval){
+  intervalFilter() {
+
+    if (this.timeInterval) {
       let aux = this.listOfAbsent.filter(elem => {
         return (elem.absent_time_in_hours == this.timeInterval);
       });
@@ -129,15 +132,15 @@ export class InventarioAusenciaComponent implements OnInit {
     }
   }
 
-  applyGeneralFilter(){
-    
+  applyGeneralFilter() {
+
     if (!this.selectedFamily) {
       this.listOfSerials = [];
       this.selectedSerial = null;
     }
 
     let aux = this.auxListOfAbsent.filter(elem => {
-      
+
       let bFamily = (this.selectedFamily == null ? true : (elem.family.code == this.selectedFamily.code));
       let bSerial = (this.selectedSerial == null ? true : (elem.serial == this.selectedSerial.serial));
       let bInterval = (this.timeInterval == null ? true : (elem.absent_time_in_hours <= this.timeInterval));
@@ -150,23 +153,23 @@ export class InventarioAusenciaComponent implements OnInit {
 
 
   openAbsence(packing) {
-    
+
     const modalRef = this.modalService.open(LayerModalComponent, {
       backdrop: 'static',
       size: 'lg',
       windowClass: 'modal-xl',
     });
-    
+
     packing.tag = packing.tag.code;
     packing.family_code = packing.family.code;
-    
+
     modalRef.componentInstance.packing = packing;
   }
 
- /**
-   * 
-   * Ordenação da tabela
-   */ 
+  /**
+    * 
+    * Ordenação da tabela
+    */
   public headers: any = [];
   public sortStatus: any = ['asc', 'desc'];
   public sort: any = {
@@ -179,7 +182,7 @@ export class InventarioAusenciaComponent implements OnInit {
     this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.SERIAL'), name: 'serial' });
     this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.TAG'), name: 'tag.code' });
 
-    this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.LAST_SITE'), name: 'last_event_record.control_point.name'});
+    this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.LAST_SITE'), name: 'last_event_record.control_point.name' });
     this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.ABSENT_TIME'), name: 'absent_time_in_hours' });
   }
 
@@ -187,7 +190,7 @@ export class InventarioAusenciaComponent implements OnInit {
     this.sort.name = item.name;
     this.sort.order = this.sortStatus[(this.sortStatus.indexOf(this.sort.order) + 1) % 2];
 
-    this.listOfAbsent  = this.customSort(this.listOfAbsent , item.name.split("."), this.sort.order);
+    this.listOfAbsent = this.customSort(this.listOfAbsent, item.name.split("."), this.sort.order);
   }
 
   /**
@@ -218,11 +221,11 @@ export class InventarioAusenciaComponent implements OnInit {
     showLabels: true,
     fieldSeparator: ';'
   };
-  
+
   /**
   * Click to download
   */
-  downloadCsv(){
+  downloadCsv() {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
@@ -254,7 +257,7 @@ export class InventarioAusenciaComponent implements OnInit {
 
     // Or JavaScript:
     doc.autoTable({
-      head:  [[
+      head: [[
         this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.FAMILY'),
         this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.SERIAL'),
         this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.TAG'),
@@ -268,23 +271,23 @@ export class InventarioAusenciaComponent implements OnInit {
   }
 
   flatObject(mArray: any) {
-    
-     const transformer = new FloatTimePipe();   
-     let plainArray = mArray.map(obj => {
-          return {
-            a1: obj.family.code,
-            a2: obj.serial,
-            a3: obj.tag.code,
-            a4: obj.last_event_record ? obj.last_event_record.control_point.name : this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.NO_HISTORY'),
-            a5: obj.absent_time_in_hours !== '-' ? transformer.transform(obj.absent_time_in_hours) : this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.NO_HISTORY'),
-          };
-        });
-      
+
+    const transformer = new FloatTimePipe();
+    let plainArray = mArray.map(obj => {
+      return {
+        a1: obj.family.code,
+        a2: obj.serial,
+        a3: obj.tag.code,
+        a4: obj.last_event_record ? obj.last_event_record.control_point.name : this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.NO_HISTORY'),
+        a5: obj.absent_time_in_hours !== '-' ? transformer.transform(obj.absent_time_in_hours) : this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.NO_HISTORY'),
+      };
+    });
+
     // As my array is already flat, I'm just returning it.
     return plainArray;
   }
   //this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.FAMILY')
-  addHeader(mArray: any){
+  addHeader(mArray: any) {
     let cabecalho = {
       a1: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.FAMILY'),
       a2: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.SERIAL'),

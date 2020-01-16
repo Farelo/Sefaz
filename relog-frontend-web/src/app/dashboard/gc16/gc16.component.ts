@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GC16Service, AuthenticationService, PackingService, InventoryLogisticService, InventoryService } from '../../servicos/index.service'; 
+import { GC16Service, AuthenticationService, PackingService, InventoryLogisticService, InventoryService } from '../../servicos/index.service';
 import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,11 +16,13 @@ export class Gc16Component implements OnInit {
   public mListOfGC16: any[] = [];
   public equipamentSearch = "";
   public packings: any[];
- 
-  constructor( public translate: TranslateService,
+
+  constructor(public translate: TranslateService,
     private GC16Service: GC16Service,
     private modalService: NgbModal,
-    private auth: AuthenticationService) { 
+    private auth: AuthenticationService) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
 
     let user = this.auth.currentUser();
     let current_user = this.auth.currentUser();
@@ -30,17 +32,17 @@ export class Gc16Component implements OnInit {
           user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.loadGC16();
   }
 
   loadGC16() {
     this.GC16Service.getAllGC16().subscribe(result => {
       this.mListOfGC16 = result;
-    },err => {  console.log(err)});
+    }, err => { console.log(err) });
   }
 
-  removeGC16(gc16: any):void{
+  removeGC16(gc16: any): void {
 
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.mObject = gc16;

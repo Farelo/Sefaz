@@ -9,31 +9,31 @@
       <ul class="navbar-nav ml-auto" style="margin-right: 90px;">
 
         <li>
-          <a class="nav-link" routerLinkActive="active" routerLink="/rc/home">Home</a>
+          <a translate="NAVBAR.HOME" class="nav-link" routerLinkActive="active" routerLink="/rc/home"></a>
         </li>
 
         <li *ngIf="currentUser?.role === 'admin'">
-          <a class="nav-link" routerLinkActive="active" routerLink="/rc/alertas">Alertas</a>
+          <a translate="NAVBAR.ALERTS" class="nav-link" routerLinkActive="active" routerLink="/rc/alertas"></a>
         </li>
 
         <li *ngIf="currentUser?.role === 'admin'">
-          <a class="nav-link" routerLinkActive="active" routerLink="/rc/cadastros">Cadastros</a>
+          <a translate="NAVBAR.REGISTERS" class="nav-link" routerLinkActive="active" routerLink="/rc/cadastros"></a>
         </li>
 
         <li>
-          <a class="nav-link" routerLinkActive="active" routerLink="/rc/inventario">Inventário</a>
+          <a translate="NAVBAR.INVENTARY" class="nav-link" routerLinkActive="active" routerLink="/rc/inventario"></a>
         </li>
 
         <li *ngIf="currentUser?.role === 'admin'">
-          <a class="nav-link" routerLinkActive="active" routerLink="/rc/importar">Importar Dados</a>
+          <a translate="NAVBAR.IMPORT_DATA" class="nav-link" routerLinkActive="active" routerLink="/rc/importar"></a>
         </li>
 
         <li>
-          <a class="nav-link" routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
+          <a translate="NAVBAR.GEOLOCATION" class="nav-link" routerLinkActive="active" routerLink="/rc/rastreamento"></a>
         </li>
 
         <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
-          <a class="nav-link" routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
+          <a translate="NAVBAR.BPLINE" class="nav-link" routerLinkActive="active" routerLink="/rc/bpline"></a>
         </li>
 
         <li class="nav-item dropdown">
@@ -49,16 +49,18 @@
               </div>
               <div>
                 <p id="username">{{ this.currentUser?.full_name || 'Sem Registro' }} </p>
-                <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa.</p>
-                <p class="user-type" *ngIf="currentUser?.role === 'user'">Funcionário da Empresa.</p>
+                <p translate="NAVBAR.USER_ADMIN" class="user-type" *ngIf="currentUser?.role === 'admin'"></p>
+                <p translate="NAVBAR.USER_EMPLOYEE" class="user-type" *ngIf="currentUser?.role === 'user'"></p>
               </div>
             </div>
-            <a class="dropdown-item" *ngIf="currentUser?.role === 'admin'" (click)="p.toggle(); openModal()"> Gerenciar
-              usuários </a>
-            <a class="dropdown-item" *ngIf="currentUser?.role === 'admin'"
-              (click)="p.close(); openSettings()">Configurações </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" (click)="logout()"> Sair </a>
+            
+            <a translate="NAVBAR.MANAGE_USER" class="dropdown-item pointer" *ngIf="currentUser?.role === 'admin'" (click)="openModal()"> </a>
+            
+            <a translate="NAVBAR.CONFIG" class="dropdown-item pointer" *ngIf="currentUser?.role === 'admin'" (click)="openSettings()"> </a>
+            
+              <div class="dropdown-divider"></div>
+
+            <a translate="NAVBAR.LOGOUT" class="dropdown-item pointer" (click)="logout()"></a>
           </div>
         </li>
       </ul>

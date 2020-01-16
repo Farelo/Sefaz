@@ -22,7 +22,10 @@ export class EmbalagemCadastroComponent implements OnInit {
     private projectService: ProjectService,
     private toastService: ToastService,
     private router: Router,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
     

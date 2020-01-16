@@ -16,7 +16,10 @@ export class TipoPontoControleCadastrarComponent implements OnInit {
   constructor(public translate: TranslateService,
     private controlPointTypesService: ControlPointTypesService,
     private toastService: ToastService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
     this.mType = this.fb.group({

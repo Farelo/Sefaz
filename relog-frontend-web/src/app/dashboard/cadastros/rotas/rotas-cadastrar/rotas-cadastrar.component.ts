@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';  
+import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DirectionsRenderer } from '@ngui/map';
 import { ToastService, RoutesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ['../../cadastros.component.css']
 })
 export class RotasCadastrarComponent implements OnInit {
-  
+
   @ViewChild(DirectionsRenderer) directionsRendererDirective: DirectionsRenderer;
   public time_min: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
   public time_max: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
@@ -50,6 +50,7 @@ export class RotasCadastrarComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
 
@@ -64,7 +65,7 @@ export class RotasCadastrarComponent implements OnInit {
   /**
    * initialize the directions
    */
-  resolveDirections(){
+  resolveDirections() {
     this.directionsRendererDirective['initialized$'].subscribe(directionsRenderer => {
       this.directionsRenderer = directionsRenderer;
     });
@@ -73,7 +74,7 @@ export class RotasCadastrarComponent implements OnInit {
   /**
    * instantiate the form group
    */
-  resolveFormGroup(){
+  resolveFormGroup() {
     this.mRoute = this.fb.group({
       family: [undefined, [Validators.required]],
       first_point: [undefined, [Validators.required]],
@@ -91,7 +92,7 @@ export class RotasCadastrarComponent implements OnInit {
   /**
    * Loads all families in the select
    */
-  loadFamilies(){
+  loadFamilies() {
     this.familyService.getAllFamilies().subscribe(result => {
       this.allFamilies = result;
     }, err => console.error(err));
@@ -112,7 +113,7 @@ export class RotasCadastrarComponent implements OnInit {
    * Select changes
    * @param param0 
    */
-  firstPointChange(event: any){
+  firstPointChange(event: any) {
     console.log(event);
     this.direction.origin = event.full_address;
     //this.direction.origin = new google.maps.LatLng(event.lat, event.lng);
@@ -148,7 +149,7 @@ export class RotasCadastrarComponent implements OnInit {
 
     console.log('value');
     console.log(value);
-    
+
     //Ajustando objeto
     value.family = value.family._id;
     value.first_point = value.first_point._id;
@@ -164,7 +165,7 @@ export class RotasCadastrarComponent implements OnInit {
     // console.log(this.mRoute);
 
     if (this.mRoute.valid) {
-      
+
       this.proceedToRegister(value);
 
     } else {
@@ -172,7 +173,7 @@ export class RotasCadastrarComponent implements OnInit {
     }
   }
 
-  proceedToRegister(value: any){
+  proceedToRegister(value: any) {
     this.routesService.createRoute(value)
       .subscribe(result => {
         this.toastService.success('/rc/cadastros/rotas', 'Rota');
@@ -185,7 +186,7 @@ export class RotasCadastrarComponent implements OnInit {
    */
 
   directionsChanged() {
-    
+
     // console.log('directionsChanged');
     // console.log(this.mRoute);
 
@@ -198,10 +199,10 @@ export class RotasCadastrarComponent implements OnInit {
     this.mRoute.controls.duration_time.setValue(this.directionsResult.routes[0].legs[0].duration.value);
 
     if (this.directionsResult)
-      this.directions = true;  
+      this.directions = true;
     else
       this.directions = false;
-    
+
     this.ref.detectChanges();
   }
 
@@ -214,7 +215,7 @@ export class RotasCadastrarComponent implements OnInit {
   }
 
   onChangeFactory(event: any) {
-    
+
     // console.log('directionsChanged');
     // console.log(this.mRoute);
 

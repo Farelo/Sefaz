@@ -16,7 +16,10 @@ export class ProjetoCadastrarComponent implements OnInit {
   constructor(public translate: TranslateService,
     private projectService: ProjectService,
     private toastService: ToastService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
     this.mProject = this.fb.group({
@@ -35,7 +38,7 @@ export class ProjetoCadastrarComponent implements OnInit {
         }, err => this.toastService.error(err));
     }
   }
-  
+
   public validateNotTakenLoading: boolean;
   validateName(event: any) {
 

@@ -27,7 +27,10 @@ export class EmbalagemEditarComponent implements OnInit {
     private toastService: ToastService,
     private router: Router,
     private route: ActivatedRoute,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
 

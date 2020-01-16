@@ -36,6 +36,7 @@ export class Gc16AdicionarComponent implements OnInit {
     private fb: FormBuilder,
     private toastService: ToastService) {
 
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {

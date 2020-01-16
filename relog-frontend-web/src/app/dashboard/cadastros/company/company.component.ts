@@ -21,7 +21,10 @@ export class CompanyComponent implements OnInit {
   constructor(public translate: TranslateService,
     private modalService: NgbModal,
     protected companiesService: CompaniesService,
-    protected toastService: ToastService ) { }
+    protected toastService: ToastService ) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
     this.loadCompanies();

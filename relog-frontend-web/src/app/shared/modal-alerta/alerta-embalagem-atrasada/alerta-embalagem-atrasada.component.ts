@@ -14,11 +14,13 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
 
   @Input() alerta;
   public mConstants: any;
-  
+
   constructor(public translate: TranslateService,
     public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
-    private modalService: NgbModal) { 
+    private modalService: NgbModal) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
 
     this.mConstants = constants;
   }
@@ -37,7 +39,7 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
       .getPacking(this.alerta._id)
       .subscribe(
         result => {
-          let actualPackage = result; 
+          let actualPackage = result;
 
           this.activeAlerta.dismiss('open map');
           const modalRef = this.modalService.open(LayerModalComponent, {
@@ -48,7 +50,7 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
           actualPackage.alertCode = this.alerta.current_state;
           actualPackage.tag = actualPackage.tag.code;
           actualPackage.family_code = this.alerta.family.code;
-          
+
           modalRef.componentInstance.packing = actualPackage;
         },
         err => {

@@ -49,7 +49,10 @@ export class CompanyEditarComponent implements OnInit {
     protected toastService: ToastService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   get street(){
     return this.mStreet;

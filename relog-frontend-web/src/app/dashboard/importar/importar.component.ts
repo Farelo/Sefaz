@@ -21,16 +21,19 @@ export class ImportarComponent implements OnInit {
   public send = false;
   public activeModal: any;
   public import: FormGroup;
- ;
+  ;
 
   constructor(public translate: TranslateService,
     private modalService: NgbModal,
     private importService: ImportService,
     private packingService: PackingService,
     private companyService: CompaniesService,
-    private controlPoints: ControlPointsService, 
+    private controlPoints: ControlPointsService,
     private toastService: ToastService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   public ngOnInit() {
     this.import = this.fb.group({
@@ -45,8 +48,8 @@ export class ImportarComponent implements OnInit {
     this.file.delete('packing_xlsx');
     this.file.delete('control_point_xlsx');
     this.file.delete('company_xlsx');
-    
-    this.uploader.pop(); 
+
+    this.uploader.pop();
     this.send = false;
   }
 
@@ -138,23 +141,23 @@ export class ImportarComponent implements OnInit {
 
     switch (this.import['controls'].type.value) {
       case 'Embalagens':
-        this.packingService.createPackingArray(this.importResult.to_register).subscribe(result => { 
-          this.send = false; 
-          this.toastService.successArray('', 'Embalagens') 
+        this.packingService.createPackingArray(this.importResult.to_register).subscribe(result => {
+          this.send = false;
+          this.toastService.successArray('', 'Embalagens')
         }, err => this.toastService.errorArray(err));
         break;
 
       case 'Pontos de Controle':
-        this.controlPoints.createControlPointArray(this.importResult.to_register).subscribe(result => { 
-          this.send = false; 
-          this.toastService.successArray('', 'Pontos de Controle') 
+        this.controlPoints.createControlPointArray(this.importResult.to_register).subscribe(result => {
+          this.send = false;
+          this.toastService.successArray('', 'Pontos de Controle')
         }, err => this.toastService.errorArray(err));
         break;
 
       case 'Empresas':
-        this.companyService.createCompanyArray(this.importResult.to_register).subscribe(result => { 
-          this.send = false; 
-          this.toastService.successArray('', 'Empresas') 
+        this.companyService.createCompanyArray(this.importResult.to_register).subscribe(result => {
+          this.send = false;
+          this.toastService.successArray('', 'Empresas')
         }, err => this.toastService.errorArray(err));
         break;
     }
@@ -179,5 +182,5 @@ export class ImportarComponent implements OnInit {
     });
     return result;
   }
-  
+
 }
