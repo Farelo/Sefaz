@@ -197,13 +197,13 @@ exports.control_point_geolocation = async (query) => {
         }
 
         if (query.company_id != null || query.company_type != null) {
-            let companyConditions = {}
+            let company_conditions = {}
             if (query.company_id != null) {
-                companyConditions = { _id: query.company_id }            
+                company_conditions = { _id: query.company_id }            
             } else if (query.company_type != null) {
-                companyConditions = { type: query.company_type }            
+                company_conditions = { type: query.company_type }            
             }
-            let companies_ids = await Company.find(companyConditions).distinct('_id')
+            let companies_ids = await Company.find(company_conditions).distinct('_id')
             
             let control_point_conditions = {}
             if (query.control_point_id != null) {
@@ -222,53 +222,48 @@ exports.control_point_geolocation = async (query) => {
         }
 
         let event_records = await EventRecord.aggregate([ 
-            { 
-                $match: event_record_conditions 
-            },
-            { 
-                $sort: { "created_at": -1 } 
-            }, 
+            { $match: event_record_conditions },
+            { $sort: { "created_at": -1 } }, 
             {
                 $lookup: {
                     from: "packings",
                     localField: "packing",
                     foreignField: "_id",
-                    as: "packings"
+                    as: "packing"
                 }
             },
             {
-                $unwind: '$packings'
+                $lookup: {
+                    from: "devicedatas",
+                    localField: "device_data_id",
+                    foreignField: "_id",
+                    as: "devicedata"
+                }
             },
-            { 
-                $group : { _id : "$packing", "doc": { "$first":"$$ROOT" } } 
-            },
-            {  
-                $replaceRoot : { newRoot: "$doc" }
-            }
+            { $unwind: '$packing' },
+            { $unwind: '$devicedata' },
+            { $group : { _id : "$packing", "doc": { "$first":"$$ROOT" } } },
+            { $replaceRoot : { newRoot: "$doc" } }
         ])
-        console.log('event_records_count');
-        console.log(event_records.length);
 
         if (query.family_id != null || query.serial != null) {
             event_records = event_records.filter(er => {
                 if (query.family_id != null && query.serial != null) {
-                    if (er.packings.family == query.family_id && er.packings.serial == query.serial) {
+                    if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
                         return true
                     }
                 } else if (query.family_id != null) {
-                    if (er.packings.family == query.family_id) {
+                    if (er.packing.family == query.family_id) {
                         return true
                     }
                 } else {
-                    if (er.packings.serial == query.serial) {
+                    if (er.packing.serial == query.serial) {
                         return true
                     }
                 }
                 return false
             })
         }
-        console.log('event_records_count_filtered');
-        console.log(event_records.length);
 
         return event_records
         
