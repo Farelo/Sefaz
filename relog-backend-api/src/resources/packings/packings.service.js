@@ -5,8 +5,7 @@ const { Packing } = require('./packings.model')
 const { Family } = require('../families/families.model')
 const { Company } = require('../companies/companies.model')
 const { ControlPoint } = require('../control_points/control_points.model')
-const { DeviceData } = require('../device_data/device_data.model')
-const { EventRecord } = require('../event_record/event_record.model')
+const event_record_service = require('../event_record/event_record.service')
 const rp = require('request-promise')
 const mongoose = require('mongoose')
 
@@ -221,30 +220,7 @@ exports.control_point_geolocation = async (query) => {
             event_record_conditions['created_at'] = date_conditions
         }
 
-        let event_records = await EventRecord.aggregate([ 
-            { $match: event_record_conditions },
-            { $sort: { "created_at": -1 } }, 
-            {
-                $lookup: {
-                    from: "packings",
-                    localField: "packing",
-                    foreignField: "_id",
-                    as: "packing"
-                }
-            },
-            {
-                $lookup: {
-                    from: "devicedatas",
-                    localField: "device_data_id",
-                    foreignField: "_id",
-                    as: "devicedata"
-                }
-            },
-            { $unwind: '$packing' },
-            { $unwind: '$devicedata' },
-            { $group : { _id : "$packing", "doc": { "$first":"$$ROOT" } } },
-            { $replaceRoot : { newRoot: "$doc" } }
-        ])
+        let event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions)
 
         if (query.family_id != null || query.serial != null) {
             event_records = event_records.filter(er => {
