@@ -2,7 +2,7 @@ const debug = require('debug')('model:users')
 const mongoose = require('mongoose')
 const Joi = require('joi')
 Joi.objectId = require('joi-objectid')(Joi)
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const config = require('config')
 const jwt = require('jsonwebtoken')
 

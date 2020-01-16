@@ -1,0 +1,396 @@
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is disconnected!!!"}
+{"level":"info","message":"db: mongodb error MongoNetworkError: failed to connect to server [mongo:27017] on first connect [MongoNetworkError: getaddrinfo ENOTFOUND mongo mongo:27017]"}
+{"level":"info","message":"db: mongodb is disconnected!!!"}
+{"level":"info","message":"db: mongodb error MongoNetworkError: failed to connect to server [mongo:27017] on first connect [MongoNetworkError: getaddrinfo ENOTFOUND mongo mongo:27017]"}
+{"level":"info","message":"db: mongodb is disconnected!!!"}
+{"level":"info","message":"db: mongodb error MongoNetworkError: failed to connect to server [mongo:27017] on first connect [MongoNetworkError: getaddrinfo ENOTFOUND mongo mongo:27017]"}
+{"level":"info","message":"db: mongodb is disconnected!!!"}
+{"level":"info","message":"db: mongodb error MongoNetworkError: failed to connect to server [mongo:27017] on first connect [MongoNetworkError: getaddrinfo ENOTFOUND mongo mongo:27017]"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
+{"message":"Server is running on port: 28050","level":"info"}
+{"level":"info","message":"db: mongodb is connected: mongodb://127.0.0.1:27017/cebrace"}
+{"message":"Connected to MongoDB","level":"info"}
