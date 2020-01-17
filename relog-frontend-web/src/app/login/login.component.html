@@ -8,49 +8,50 @@
       
       <div class="quadrado-content">
         <alert type="danger" *ngIf="erroAuth">
-          <strong>Atenção!</strong> Usuário ou senha invalidos!.
+          <div [innerHTML]="'REGISTER.ERRORS.INVALID_LOGIN' | translate"></div>
         </alert>
 
-        <h2 class="text-center">RECICLAPAC</h2> 
+        <h2 translate="LOGIN.TITLE" class="text-center"></h2> 
         <br/>
         <form novalidate (ngSubmit)="onSubmit(login)" [formGroup]="login" #formDir="ngForm">
           <div class="form-group"> 
-            <input class="inputMail" type="email" placeholder="email" aria-describedby="basic-addon2" name="email" id="email" required
+            <input class="inputMail" type="email" placeholder="{{ 'LOGIN.TITLE' | translate }}" aria-describedby="basic-addon2" name="email" id="email" required
               [(ngModel)]="email" formControlName="email" [ngClass]="{'required': (login.get('email').hasError('required') && login.get('email').touched)
                             || (login.get('email').hasError('required') && formDir.submitted)}">
             
-            <span class="requiredText" [ngClass]="{'help-block': (login.get('email').hasError('required') && login.get('email').touched)
+            <span class="requiredText" 
+              translate="REGISTER.ERRORS.REQUIRED"
+              [ngClass]="{'help-block': (login.get('email').hasError('required') && login.get('email').touched)
               || (login.get('email').hasError('required') && formDir.submitted)}"
               *ngIf="(login.get('email').hasError('required') && login.get('email').touched)
-                || (login.get('email').hasError('required') && formDir.submitted)">
-              Campo Obrigatório
-            </span> 
+                || (login.get('email').hasError('required') && formDir.submitted)"> </span> 
           </div>
 
           <br/>
 
           <div class="form-group">
-              <input class="inputSenha" type="password" placeholder="senha" aria-describedby="basic-addon2" name="senha" id="senha" required
+              <input class="inputSenha" type="password" placeholder="{{ 'LOGIN.PASSWORD' | translate }}" aria-describedby="basic-addon2" name="senha" id="senha" required
                 [(ngModel)]="password" formControlName="password" [ngClass]="{'required': (login.get('password').hasError('required') && login.get('password').touched)
-                          || (login.get('password').hasError('required') && formDir.submitted)}">
+                  || (login.get('password').hasError('required') && formDir.submitted)}">
 
-            <span class="requiredText" [ngClass]="{'help-block': (login.get('email').hasError('required') && login.get('email').touched)
+            <span class="requiredText" 
+              translate="REGISTER.ERRORS.REQUIRED"
+              [ngClass]="{'help-block': (login.get('email').hasError('required') && login.get('email').touched)
               || (login.get('email').hasError('required') && formDir.submitted)}" 
               *ngIf="(login.get('password').hasError('required') && login.get('password').touched) || (login.get('password').hasError('required')
-              && formDir.submitted)">
-              Campo Obrigatório
-            </span>
+              && formDir.submitted)"> </span>
           </div>
           
           <br/>
           
           <div class="form-group" style="display: flex;justify-content: center;">
-            <button type="submit">ENTRAR</button>
+            <button translate="LOGIN.CONFIRM" type="submit"></button>
           </div>
           
-          <div class="esqueci pagination-centered" style="display: flex;justify-content: center;" routerLink="/esqueciMinhaSenha">
-            Esqueci minha senha
-          </div>
+          <div translate="LOGIN.FORGOT" 
+            class="esqueci pagination-centered" 
+            style="display: flex;justify-content: center;" 
+            routerLink="/esqueciMinhaSenha"> </div>
           
         </form>
       </div>

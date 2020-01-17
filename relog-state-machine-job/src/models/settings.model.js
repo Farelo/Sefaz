@@ -2,6 +2,10 @@ const debug = require('debug')('model:settings')
 const mongoose = require('mongoose')
 
 const settingSchema = new mongoose.Schema({
+    language: {
+        type: String,
+        maxlength: 8
+    },
     enable_gc16: {
         type: Boolean,
         default: false

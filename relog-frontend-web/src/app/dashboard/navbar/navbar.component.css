@@ -3,6 +3,14 @@
   font-family: 'Raleway', sans-serif;
 }
 
+.menu-item {
+  font-size: 12px;
+}
+
+.dropdown-menu {
+  min-width: 13rem;
+}
+
 .lista-menu>li {
   float: left;
   margin-left: 20px;
@@ -225,7 +233,7 @@ hr {
   }
 }
 
-.pointer{
+.pointer {
   cursor: pointer;
 }
 

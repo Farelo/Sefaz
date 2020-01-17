@@ -77,9 +77,9 @@ export class ModalSettings implements OnInit {
     private toastService: ToastService) {
 
     this.languages = [
-      { label: 'Portuguese', name: 'pt' }, 
-      { label: 'English', name: 'en' }, 
-      { label: 'Spanish', name: 'es' }
+      { label: this.translate.instant('MISC.PORTUGUESE'), name: 'pt' },
+      { label: this.translate.instant('MISC.ENGLISH'), name: 'en' },
+      { label: this.translate.instant('MISC.SPANISH'), name: 'es' }
     ]
   }
 
@@ -88,10 +88,14 @@ export class ModalSettings implements OnInit {
     this.formProfile();
   }
 
-  changeLanguage(e){
+  changeLanguage(e) {
     console.log(e)
     this.translate.use(e.name);
     console.log('this.translate.currentLang', this.translate.currentLang)
+  }
+
+  translateExpression(key) {
+    return this.translate.instant(key);
   }
 
   formProfile() {
@@ -109,8 +113,18 @@ export class ModalSettings implements OnInit {
     //   __v: ['', [Validators.required]]
     // });
 
+    console.log('currentLang 1', this.translate.currentLang);
+    let actualLang = this.languages.find(elem => elem.name == this.translate.currentLang);
+    console.log('actualLang 1', actualLang);
+    if (actualLang == undefined) {
+      actualLang = this.languages.find(elem => elem.name == 'pt');
+      this.translate.use('pt');
+    }
+    console.log('actualLang 2', actualLang);
+    console.log('currentLang 2', this.translate.currentLang);
+
     this.settings = this.fb.group({
-      language: ['pt', [Validators.required]],
+      language: [actualLang, [Validators.required]],
       enable_gc16: [false, [Validators.required]],
       battery_level_limit: [0, [Validators.required]],
       accuracy_limit: [0, [Validators.required]],
@@ -131,6 +145,13 @@ export class ModalSettings implements OnInit {
     this.settingsService.getSettings().subscribe(result => {
       this.actualSettings = result;
       this.actualSettings.accuracy_limit = this.actualSettings.accuracy_limit / 1000;
+
+      let actualLang = this.languages.find(elem => elem.name == result.language);
+      if (actualLang == undefined) {
+        actualLang = this.languages.find(elem => elem.name == 'pt');
+        this.translate.use('pt');
+      }
+      this.actualSettings.language = actualLang;
 
       console.log(this.actualSettings);
 

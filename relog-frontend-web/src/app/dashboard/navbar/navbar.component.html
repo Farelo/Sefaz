@@ -54,13 +54,13 @@
               </div>
             </div>
             
-            <a translate="NAVBAR.MANAGE_USER" class="dropdown-item pointer" *ngIf="currentUser?.role === 'admin'" (click)="openModal()"> </a>
+            <a translate="NAVBAR.MANAGE_USER" class="dropdown-item pointer menu-item" *ngIf="currentUser?.role === 'admin'" (click)="openModal()"> </a>
             
-            <a translate="NAVBAR.CONFIG" class="dropdown-item pointer" *ngIf="currentUser?.role === 'admin'" (click)="openSettings()"> </a>
+            <a translate="NAVBAR.CONFIG" class="dropdown-item pointer menu-item" *ngIf="currentUser?.role === 'admin'" (click)="openSettings()"> </a>
             
-              <div class="dropdown-divider"></div>
+            <div class="dropdown-divider"></div>
 
-            <a translate="NAVBAR.LOGOUT" class="dropdown-item pointer" (click)="logout()"></a>
+            <a translate="NAVBAR.LOGOUT" class="dropdown-item pointer menu-item" (click)="logout()"></a>
           </div>
         </li>
       </ul>

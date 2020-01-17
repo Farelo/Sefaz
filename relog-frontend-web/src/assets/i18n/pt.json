@@ -1,16 +1,30 @@
 {
     "MISC": {
-        "YES": "Yes",
-        "YES_CAP": "YES",
-        "NO": "No",
-        "NO_CAP": "NO",
-        "CLOSE": "Close",
-        "CLOSE_CAP": "CLOSE",
-        "UPDATE_CAP": "UPDATE",
-        "update": "Update"
+        "YES": "Sim",
+        "YES_CAP": "SIM",
+        "NO": "Não",
+        "NO_CAP": "NÃO",
+        "CLOSE": "Fechar",
+        "CLOSE_CAP": "FECHAR",
+        "UPDATE_CAP": "ATUALIZAR",
+        "UPDATE": "Atualizar",
+        "ENGLISH": "Inglês",
+        "PORTUGUESE": "Português",
+        "SPANISH": "Espanhol"
     },
     "STATES": {
         "TRAVELING": "Em viagem"
+    },
+    "LOGIN": {
+        "EMAIL": "Email",
+        "PASSWORD": "Senha",
+        "CONFIRM": "Entrar",
+        "FORGOT": "Esqueci minha senha",
+        "TITLE": "Evoy",
+        "FORGOT_QUESTION": "Esqueceu sua senha?",
+        "FORGOT_DESCRIPTION": "Não se preocupe, enviaremos um link para que possa redefinir sua senha.",
+        "TYPE_EMAIL": "Digite seu email",
+        "SEND": "Enviar"
     },
     "HOME": {
         "TITLE": "Embalagens do Sistema",
@@ -136,10 +150,13 @@
         "ERRORS": {
             "REQUIRED": "Campo Obrigatório",
             "CHECKING": "Verificando disponibilidade ...",
+            "MIN_60_VALUE": "Valor menor que o mínimo: 60",
+            "MIN_1_VALUE": "Valor menor que o mínimo: 1",
             "MIN_6": "Mínimo de 6 caracteres",
             "MIN_5": "Mínimo de 5 caracteres",
             "MIN_4": "Mínimo de 4 caracteres",
             "MIN_2": "Mínimo de 2 caracteres",
+            "MIN_1": "Mínimo de 1 caractere",
             "MAX_50": "Máximo de 50 caracteres",
             "CONTROL_POINT_EXISTS": "Este Ponto de Controle já existe. O nome deve ser único.",
             "FAMILY_EXISTS": "Esta família já existe. O código deve ser único.",
@@ -148,7 +165,9 @@
             "PACK_EXISTS": "Esta Embalagem já existe. O código deve ser único.",
             "WHITE_SPACE": "Excesso de espaços em branco.",
             "INVALID_VALUE": "Valor inválido",
-            "INCORRECT_FORMAT_EMAIL": "Formato do email está incorreto"
+            "INCORRECT_FORMAT_EMAIL": "Formato do email está incorreto",
+            "INVALID_LOGIN": "<strong>Atenção!</strong> Usuário ou senha invalidos!.",
+            "EMAIL_NOT_REGISTERED": "Este e-mail não está cadastrado"
         },
         "DELETE": {
             "COMPANY_TITLE": "Deletar empresa",
@@ -757,7 +776,7 @@
     },
     "SETTINGS": {
         "TITLE": "Editar configurações do sistema",
-        "LANG": "Idioma",
+        "LANG": "IDIOMA",
         "BATTERY_LEVEL_ALERT": "NÍVEL DA BATERIA PARA GERAR ALERTA",
         "ACCURACY_LEVEL_ALERT": "LIMITE DE ACURÁCIA RELEVANTE",
         "ENABLE_ALERTS": "HABILITAR ALERTAS:",

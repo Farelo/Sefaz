@@ -1,16 +1,30 @@
 {
     "MISC": {
-        "YES": "[en] Yes",
-        "YES_CAP": "[en] YES",
-        "NO": "[en] No",
-        "NO_CAP": "[en] NO",
-        "CLOSE": "[en] Close",
-        "CLOSE_CAP": "[en] CLOSE",
-        "UPDATE_CAP": "[en] UPDATE",
-        "update": "[en] Update"
+        "YES": "[en] Sim",
+        "YES_CAP": "[en] SIM",
+        "NO": "[en] Não",
+        "NO_CAP": "[en] NÃO",
+        "CLOSE": "[en] Fechar",
+        "CLOSE_CAP": "[en] FECHAR",
+        "UPDATE_CAP": "[en] ATUALIZAR",
+        "UPDATE": "[en] Atualizar",
+        "ENGLISH": "[en] Inglês",
+        "PORTUGUESE": "[en] Português",
+        "SPANISH": "[en] Espanhol"
     },
     "STATES": {
         "TRAVELING": "[en] Em viagem"
+    },
+    "LOGIN": {
+        "EMAIL": "[en] Email",
+        "PASSWORD": "[en] Senha",
+        "CONFIRM": "[en] Entrar",
+        "FORGOT": "[en] Esqueci minha senha",
+        "TITLE": "[en] Evoy",
+        "FORGOT_QUESTION": "[en] Esqueceu sua senha?",
+        "FORGOT_DESCRIPTION": "[en] Não se preocupe, enviaremos um link para que possa redefinir sua senha.",
+        "TYPE_EMAIL": "[en] Digite seu email",
+        "SEND": "[en] Enviar"
     },
     "HOME": {
         "TITLE": "[en] Embalagens do Sistema",
@@ -136,10 +150,13 @@
         "ERRORS": {
             "REQUIRED": "[en] Campo Obrigatório",
             "CHECKING": "[en] Verificando disponibilidade ...",
+            "MIN_60_VALUE": "[en] Valor menor que o mínimo: 60",
+            "MIN_1_VALUE": "[en] Valor menor que o mínimo: 1",
             "MIN_6": "[en] Mínimo de 6 caracteres",
             "MIN_5": "[en] Mínimo de 5 caracteres",
             "MIN_4": "[en] Mínimo de 4 caracteres",
             "MIN_2": "[en] Mínimo de 2 caracteres",
+            "MIN_1": "[en] Mínimo de 1 caractere",
             "MAX_50": "[en] Máximo de 50 caracteres",
             "CONTROL_POINT_EXISTS": "[en] Este Ponto de Controle já existe. O nome deve ser único.",
             "FAMILY_EXISTS": "[en] Esta família já existe. O código deve ser único.",
@@ -148,7 +165,9 @@
             "PACK_EXISTS": "[en] Esta Embalagem já existe. O código deve ser único.",
             "WHITE_SPACE": "[en] Excesso de espaços em branco.",
             "INVALID_VALUE": "[en] Valor inválido",
-            "INCORRECT_FORMAT_EMAIL": "[en] Formato do email está incorreto"
+            "INCORRECT_FORMAT_EMAIL": "[en] Formato do email está incorreto",
+            "INVALID_LOGIN": "[en] <strong>Atenção!</strong> Usuário ou senha invalidos!.",
+            "EMAIL_NOT_REGISTERED": "[en] Este e-mail não está cadastrado"
         },
         "DELETE": {
             "COMPANY_TITLE": "[en] Deletar empresa",
@@ -710,11 +729,6 @@
         "TOTAL_DAYS": "[en] Total de dias",
         "TOTAL_BUILT": "[en] Total construído"
     },
-    "MENU_CONFIG": {
-        "MANAGE_USER": "[en] Gerenciar usuários",
-        "CONFIG": "[en] Configurações",
-        "LOGOUT": "[en] Sair"
-    },
     "USERS": {
         "MANAGE_USERS": "[en] Gerenciar usuários",
         "MANAGE_USERS_DESC": "[en] Usuários cadastrados no sistema",
@@ -746,9 +760,23 @@
         "EMAIL_EXISTS": "[en] Este Usuário já existe. O email deve ser único",
         "MATCH_PASSWORD": "[en] As senhas não coincidem"
     },
+    "NAVBAR":{
+        "HOME": "[en] Home",
+        "ALERTS": "[en] Alertas",
+        "REGISTERS": "[en] Cadastros",
+        "INVENTARY": "[en] Inventário",
+        "IMPORT_DATA": "[en] Importar Dados",
+        "GEOLOCATION": "[en] Geolocalização",
+        "BPLINE": "[en] BPLine",
+        "USER_ADMIN": "[en] Administrador",
+        "USER_EMPLOYEE": "[en] Colaborador",
+        "MANAGE_USER": "[en] Gerenciar usuários",
+        "CONFIG": "[en] Configurações",
+        "LOGOUT": "[en] Sair"
+    },
     "SETTINGS": {
         "TITLE": "[en] Editar configurações do sistema",
-        "LANG": "[en] Idioma",
+        "LANG": "[en] IDIOMA",
         "BATTERY_LEVEL_ALERT": "[en] NÍVEL DA BATERIA PARA GERAR ALERTA",
         "ACCURACY_LEVEL_ALERT": "[en] LIMITE DE ACURÁCIA RELEVANTE",
         "ENABLE_ALERTS": "[en] HABILITAR ALERTAS:",

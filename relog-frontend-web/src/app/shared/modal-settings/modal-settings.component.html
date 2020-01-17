@@ -14,34 +14,40 @@
         <div class="col-sm-12 col-md-8">
 
           <div class="col-sm-6">
-            <p translate="SETTINGS.LANG" class="descricao-slider" style="margin-bottom: 6px;"></p>
-            <ng-select bindLabel="name" placeholder="Escolha um idioma" [items]="languages" (change)="changeLanguage($event)" [clearable]='false' formControlName="language" style="margin-bottom: 12px;">
+            <p translate="SETTINGS.LANG" class="descricao" style="margin-bottom: 6px;"></p>
+            <ng-select bindLabel="label" 
+              placeholder="Escolha um idioma" 
+              [items]="languages" 
+              (change)="changeLanguage($event)" 
+              [clearable]='false' 
+              formControlName="language" 
+              style="margin-bottom: 12px;">
               <ng-template ng-option-tmp let-item="item">
                 <div> {{item.label}} </div>
               </ng-template>
             </ng-select>
           </div>
 
-          <div class="col-sm-12">
-            <p translate="SETTINGS.BATTERY_LEVEL_ALERT" class="descricao-slider"></p>
+          <div class="col-sm-12" style="padding-top: 10px;">
+            <p translate="SETTINGS.BATTERY_LEVEL_ALERT" class="descricao"></p>
             <nouislider [config]="batteryConfig" style="margin-top: 2em;"
               [formControl]="settings.controls.battery_level_limit"></nouislider>
           </div>
 
-          <div class="col-sm-12 campo">
-            <p translate="SETTINGS.ACCURACY_LEVEL_ALERT" class="descricao-slider"></p>
+          <div class="col-sm-12 campo" style="padding-top: 10px;">
+            <p translate="SETTINGS.ACCURACY_LEVEL_ALERT" class="descricao"></p>
             <nouislider [config]="accuracyConfig" style="margin-top: 2em;"
               [formControl]="settings.controls.accuracy_limit"></nouislider>
           </div>
 
           <!-- <div class="col-sm-12 campo">
-            <p class="descricao-slider">RAIO DA PLANTA </p>
+            <p class="descricao">RAIO DA PLANTA </p>
             <nouislider [config]="radiusConfig" style="margin-top: 2em;" [formControl]="settings.controls.range_radius"></nouislider>
           </div> -->
 
-          <div class="col-sm-12 col-md-8">
+          <div class="col-sm-12 col-md-8" style="padding-top: 10px;">
 
-            <p translate="SETTINGS.ENABLE_ALERTS" class="descricao-slider">HABILITAR ALERTAS:</p>
+            <p translate="SETTINGS.ENABLE_ALERTS" class="descricao">HABILITAR ALERTAS:</p>
 
             <div class="row">
               <!-- Embalagem Ausente -->
@@ -90,7 +96,7 @@
 
               <div class="col-sm-12">
                 <div class="form-group form-check checkbox">
-                  <label >
+                  <label style="font-size: 13px;">
                     <input type="checkbox" [formControl]="settings.controls.enable_perdida">
                     <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
                     {{ 'SETTINGS.LOST_PACKAGE_NAME' | translate }}
@@ -110,14 +116,14 @@
               <input type="number" class="form-control form-control-sm scroll-number" min="1" value="0" step="1"
                 (focusout)="validadeJob($event)" formControlName="job_schedule_time_in_sec" />
               <p class="requiredText"
+                translate="REGISTER.ERRORS.REQUIRED"
                 *ngIf="(settings.get('job_schedule_time_in_sec').hasError('required') && settings.get('job_schedule_time_in_sec').touched)
-                                || (settings.get('job_schedule_time_in_sec').hasError('required') && formDir.submitted)">
-                Campo Obrigatório</p>
+                                || (settings.get('job_schedule_time_in_sec').hasError('required') && formDir.submitted)"></p>
 
               <p class="requiredText"
+                translate="REGISTER.ERRORS.MIN_60"
                 *ngIf="(settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && settings.get('job_schedule_time_in_sec').touched)
-                                || (settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && formDir.submitted)">
-                Valor menor que o mínimo: 60</p>
+                                || (settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && formDir.submitted)"></p>
             </div>
           </div>
 
@@ -127,14 +133,14 @@
             <div class="placeholder" data-placeholder="MINUTOS">
               <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1"
                 (focusout)="validadeHistoric($event)" formControlName="clean_historic_moviments_time" />
-              <p class="requiredText" *ngIf="(settings.get('clean_historic_moviments_time').hasError('required') && settings.get('clean_historic_moviments_time').touched)
-                        || (settings.get('clean_historic_moviments_time').hasError('required') && formDir.submitted)">
-                Campo Obrigatório</p>
+              <p class="requiredText" translate="REGISTER.ERRORS.REQUIRED"
+                *ngIf="(settings.get('clean_historic_moviments_time').hasError('required') && settings.get('clean_historic_moviments_time').touched)
+                        || (settings.get('clean_historic_moviments_time').hasError('required') && formDir.submitted)"></p>
 
               <p class="requiredText"
+                translate="REGISTER.ERRORS.MIN_1_VALUE"
                 *ngIf="(settings.get('clean_historic_moviments_time').hasError('lessThanMinimum') && settings.get('clean_historic_moviments_time').touched)
-                        || (settings.get('clean_historic_moviments_time').hasError('lessThanMinimum') && formDir.submitted)">
-                Valor menor que o mínimo: 1</p>
+                        || (settings.get('clean_historic_moviments_time').hasError('lessThanMinimum') && formDir.submitted)"> </p>
             </div>
           </div>
 
@@ -144,32 +150,33 @@
             <div class="placeholder" data-placeholder="MINUTOS">
               <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1"
                 (focusout)="validadeNoSignal($event)" formControlName="no_signal_limit_in_days" />
-              <p class="requiredText" *ngIf="(settings.get('no_signal_limit_in_days').hasError('required') && settings.get('no_signal_limit_in_days').touched)
-                        || (settings.get('no_signal_limit_in_days').hasError('required') && formDir.submitted)">
-                Campo Obrigatório</p>
+              <p class="requiredText" 
+              translate="REGISTER.ERRORS.REQUIRED"
+              *ngIf="(settings.get('no_signal_limit_in_days').hasError('required') && settings.get('no_signal_limit_in_days').touched)
+                        || (settings.get('no_signal_limit_in_days').hasError('required') && formDir.submitted)"> </p>
 
-              <p class="requiredText" *ngIf="(settings.get('no_signal_limit_in_days').hasError('lessThanMinimum') && settings.get('no_signal_limit_in_days').touched)
-                        || (settings.get('no_signal_limit_in_days').hasError('lessThanMinimum') && formDir.submitted)">
-                Valor menor que o mínimo: 1</p>
+              <p class="requiredText" translate="REGISTER.ERRORS.MIN_1_VALUE"
+                 *ngIf="(settings.get('no_signal_limit_in_days').hasError('lessThanMinimum') && settings.get('no_signal_limit_in_days').touched)
+                        || (settings.get('no_signal_limit_in_days').hasError('lessThanMinimum') && formDir.submitted)"></p>
             </div>
           </div>
 
           <div class="col-sm-12 campo">
-            <div class="form-group form-check checkbox">
+            <div class="form-group checkbox">
               <p translate="SETTINGS.LOST_PACKAGE" class="descricao"></p>
               <p translate="SETTINGS.LOST_PACKAGE_DESCRIPTION" class="explicacao"></p>
               <div class="placeholder" data-placeholder="MINUTOS">
                 <input type="number" min="1" class="form-control form-control-sm scroll-number" value="0" step="1"
                   (focusout)="validadeMissing($event)" formControlName="missing_sinal_limit_in_days" />
                 <p class="requiredText"
+                  translate="REGISTER.ERRORS.REQUIRED"
                   *ngIf="(settings.get('missing_sinal_limit_in_days').hasError('required') && settings.get('missing_sinal_limit_in_days').touched)
-                                          || (settings.get('missing_sinal_limit_in_days').hasError('required') && formDir.submitted)">
-                  Campo Obrigatório</p>
+                                          || (settings.get('missing_sinal_limit_in_days').hasError('required') && formDir.submitted)"></p>
 
                 <p class="requiredText"
+                  translate="REGISTER.ERRORS.MIN_1_VALUE"
                   *ngIf="(settings.get('missing_sinal_limit_in_days').hasError('lessThanMinimum') && settings.get('missing_sinal_limit_in_days').touched)
-                                          || (settings.get('missing_sinal_limit_in_days').hasError('lessThanMinimum') && formDir.submitted)">
-                  Valor menor que o mínimo: 1</p>
+                                          || (settings.get('missing_sinal_limit_in_days').hasError('lessThanMinimum') && formDir.submitted)"></p>
               </div>
             </div>
           </div>
@@ -179,7 +186,7 @@
             <div class="row">
               <div class="col-sm-12">
                 <p translate="SETTINGS.ACTIVATE_BPLINE" class="descricao"></p>
-                <bSwitch [switch-off-text]="'Não'" [switch-on-text]="'Sim'" [switch-on-color]="'success'"
+                <bSwitch [switch-off-text]="translateExpression('MISC.NO')" [switch-on-text]="translateExpression('MISC.YES')" [switch-on-color]="'success'"
                   [switch-off-color]="'danger'" [switch-size]="'mini'" [switch-animate]="true"
                   [switch-base-class]="'bootstrap-switch'" formControlName="enable_gc16">
                 </bSwitch>
