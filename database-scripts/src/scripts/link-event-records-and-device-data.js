@@ -1,7 +1,7 @@
 const { DeviceData } = require("../models/device_data.model");
 const { EventRecord } = require("../models/event_record.model");
 var event_record_ids = [];
-const logger = require("./config/winston.config");
+const logger = require("../config/winston.config");
 
 let script = async () => {
   logger.info(
