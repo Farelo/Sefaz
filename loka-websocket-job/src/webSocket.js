@@ -156,27 +156,26 @@ async function unsubscribingDeviceIds(deviceDictList) {
 // Start and manage the WebSocket
 function initWebSocket() {
   client.on("connectFailed", function(error) {
-    //logger.info("WebSocket Connect Failed: " + error.toString());
+    logger.info("WebSocket Connect Failed: " + error.toString());
+    await restartAfterMinutes(15);
   });
 
   client.on("connect", function(connection) {
     logger.info("WebSocket Client Connected");
 
-    connection.on("error", function(error) {
+    connection.on("error", async function(error) {
       logger.info("WebSocket Connection Error: " + error.toString());
-      initWebSocket();
+      await restartAfterMinutes(15);
     });
 
-    connection.on("close", function() {
+    connection.on("close", async function() {
       connection.removeAllListeners();
       logger.info("WebSocket Echo-protocol Connection Closed");
-      initWebSocket();
+      await restartAfterMinutes(15);
     });
 
     connection.on("message", async function(message) {
       if (message.type === "utf8") {
-        //logger.info("WebSocket Received: '" + message.utf8Data + "'");
-
         let jsonMessage = JSON.parse(message.utf8Data);
 
         let deviceDict = deviceDictList.find(function(elem) {
@@ -208,6 +207,20 @@ const runWS = async () => {
   //await subscribingDeviceIds(deviceDictList)
   //await unsubscribingDeviceIds(deviceDictList)
   await initWebSocket();
+};
+
+const restartAfterMinutes = async minutes => {
+  logger.info("Waiting "+minutes+" minutes to restart the connection");
+  await promise_wait(minutes);
+  await initWebSocket();
+};
+
+const promise_wait = async minutes => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(`Aguardou ${minutes} minutos`);
+    }, minutes * 1000 * 60);
+  });
 };
 
 exports.runWS = runWS;
