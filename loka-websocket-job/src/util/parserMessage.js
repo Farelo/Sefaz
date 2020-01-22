@@ -35,9 +35,8 @@ const parserMessage = async (jsonMessage, deviceData) => {
           break;
       }
       break;
-    case "networkInformation":
-      deviceData.seq_number = jsonMessage.networkInformation.sequenceNumber;
-      break;
+    default:
+      deviceData = null;
   }
 
   //logger.info("DeviceData to update AFTER parser: " + deviceData);

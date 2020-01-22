@@ -61,7 +61,10 @@ const deviceDataSchema = new mongoose.Schema({
   }
 });
 
-//deviceDataSchema.index({ device_id: 1, message_date: -1, message_type: 1 }, { unique: true })
+deviceDataSchema.index(
+  { device_id: 1, message_date_timestamp: -1 },
+  { unique: true }
+);
 
 const update_packing = async (device_data, next) => {
   //logger.info("Update packing after save DeviceData");
@@ -143,35 +146,42 @@ const update_updated_at_middleware = function(next) {
 
 const device_data_save = async device_data => {
   //logger.info("Saving DeviceData: " + device_data.device_id);
-  try {
-    const new_device_data = new DeviceData({
-      device_id: device_data.device_id.toString(),
-      message_date: device_data.message_date,
-      message_date_timestamp: device_data.message_date_timestamp,
-      message_type: device_data.message_type,
-      last_communication: device_data.last_communication,
-      last_communication_timestamp: device_data.last_communication_timestamp,
-      latitude: device_data.latitude,
-      longitude: device_data.longitude,
-      accuracy: device_data.accuracy,
-      temperature: device_data.temperature,
-      seq_number: device_data.seq_number,
-      battery: {
-        percentage: device_data.battery.percentage,
-        voltage: device_data.battery.voltage
-      },
-      message: device_data.message
-    });
+  const new_device_data = new DeviceData({
+    device_id: device_data.device_id.toString(),
+    message_date: device_data.message_date,
+    message_date_timestamp: device_data.message_date_timestamp,
+    message_type: device_data.message_type,
+    last_communication: device_data.last_communication,
+    last_communication_timestamp: device_data.last_communication_timestamp,
+    latitude: device_data.latitude,
+    longitude: device_data.longitude,
+    accuracy: device_data.accuracy,
+    temperature: device_data.temperature,
+    seq_number: device_data.seq_number,
+    battery: {
+      percentage: device_data.battery.percentage,
+      voltage: device_data.battery.voltage
+    },
+    message: device_data.message
+  });
 
+  try {
     //salva no banco | observação: não salva mensagens iguais porque o model possui indice unico e composto por device_id e message_date,
     //e o erro de duplicidade nao interrompe o job
     await new_device_data.save();
+    logger.info("Saved:\t" + new_device_data);
     //.info("Save DeviceData with Sucess!");
 
     // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
   } catch (error) {
-    //logger.info("Error to save DeviceData!");
-    //logger.info(error);
+    try {
+      new_device_data.update();
+      logger.info("Updated: \t" + new_device_data);
+    } catch (error) {
+      logger.info("Error to save DeviceData!");
+      logger.info(new_device_data);
+      logger.info(error);
+    }
   }
 };
 

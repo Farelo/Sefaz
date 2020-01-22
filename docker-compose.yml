@@ -1,7 +1,6 @@
-version: '3'
+version: "3"
 
 services:
-
   ################ NGINX (ficar descomentado até necessitar mudar algo neste container) ################
 
   # nginx-production:
@@ -31,19 +30,19 @@ services:
   #   container_name: mongo-production
   #   image: mongo:4
   #   restart: always
-  #   ports: 
+  #   ports:
   #     - 27017
-  #   volumes: 
+  #   volumes:
   #     # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
   #     - /data/db:/data/db
   #   networks:
   #     # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
   #     - db
 
-  ################ CEBRACE ################
+  ################ QA ################
 
-  cebrace-frontend-web:
-    container_name: cebrace-frontend-web
+  qa-frontend-web:
+    container_name: qa-frontend-web
     build:
       context: relog-frontend-web
       dockerfile: Dockerfile
@@ -51,48 +50,48 @@ services:
         baseurl: "https://relogtechnology.com/api" # servico:porta/api que estará disponível a api do backend
         port: 80 # porta a ser passada ao node apra disponibilizar o front-end
     restart: always
-    ports: 
+    ports:
       - 80 # porta host:container que escutará (NGINX precisa dessa informação)
     networks:
       - front
     # depends_on:
     #   - nginx-production
-      # - mongo 
+    # - mongo
 
-  cebrace-backend-api:
-    container_name: cebrace-backend-api
+  qa-backend-api:
+    container_name: qa-backend-api
     build:
       context: relog-backend-api
       dockerfile: Dockerfile
     # command: npm run prod
-    # environment: 
+    # environment:
     restart: always
     ports:
       - 3000
-    networks: 
+    networks:
       - front
       - db
-    # depends_on: 
+    # depends_on:
     #   - mongo
     tty: true
 
-  cebrace-loka-api-job:
-    container_name: cebrace-loka-api-job
-    build:
-      context: loka-api-dm-job
-      dockerfile: Dockerfile
-    restart: always
-    # command: npm run start
-    ports:
-      - 8013
-    networks: 
-      - db
-    # depends_on: 
-    #   - mongo
-    tty: true
+  #qa-loka-api-job:
+  #  container_name: qa-loka-api-job
+  #  build:
+  #    context: loka-api-dm-job
+  #    dockerfile: Dockerfile
+  #  restart: always
+  #  # command: npm run start
+  #  ports:
+  #    - 8013
+  #  networks:
+  #    - db
+  #  # depends_on:
+  #  #   - mongo
+  #  tty: true
 
-  cebrace-state-machine-job:
-    container_name: cebrace-state-machine-job
+  qa-state-machine-job:
+    container_name: qa-state-machine-job
     build:
       context: relog-state-machine-job
       dockerfile: Dockerfile
@@ -100,13 +99,13 @@ services:
     # command: npm run start
     ports:
       - 8012
-    networks: 
+    networks:
       - db
-    # depends_on: 
+    # depends_on:
     #   - mongo
     tty: true
-    
-  cebrace-loka-websocket-job:
+
+  qa-loka-websocket-job:
     container_name: loka-websocket-job
     build:
       context: loka-websocket-job
@@ -115,12 +114,12 @@ services:
     # command: npm run start
     ports:
       - 8014
-    networks: 
+    networks:
       - db
-    # depends_on: 
+    # depends_on:
     #   - mongo
     tty: true
-    
+
 networks:
   front:
     external: true

@@ -1,13 +1,13 @@
-const express = require('express')
-const router = express.Router()
-const device_data_controller = require('./device_data.controller')
-const auth = require('../../security/auth.middleware')
-const authz = require('../../security/authz.middleware')
+const express = require("express");
+const router = express.Router();
+const device_data_controller = require("./device_data.controller");
+const auth = require("../../security/auth.middleware");
+const authz = require("../../security/authz.middleware");
 
 // router.get('/data', [auth, authz], device_data_controller.geolocation)
-router.get('/data/:device_id', [auth], device_data_controller.all)
+router.get("/data/:device_id", [auth], device_data_controller.all);
 
-module.exports = router
+module.exports = router;
 
 // GET '/'
 /**
@@ -46,6 +46,33 @@ module.exports = router
  *         description: list of all reports
  *       400:
  *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// POST '/'
+/**
+ * @swagger
+ * /device_data/data:
+ *   post:
+ *     summary: Create a DeviceData
+ *     description: Create a DeviceData
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - DeviceData
+ *     parameters:
+ *       - name: device_data
+ *         description: Device Data
+ *         in:  body
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: DeviceData is valid request
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
  *       404:
  *         description: Not Found
  */
