@@ -15,7 +15,7 @@
         <br/>
         <form novalidate (ngSubmit)="onSubmit(login)" [formGroup]="login" #formDir="ngForm">
           <div class="form-group"> 
-            <input class="inputMail" type="email" placeholder="{{ 'LOGIN.TITLE' | translate }}" aria-describedby="basic-addon2" name="email" id="email" required
+            <input class="inputMail" type="email" placeholder="{{ 'LOGIN.EMAIL' | translate }}" aria-describedby="basic-addon2" name="email" id="email" required
               [(ngModel)]="email" formControlName="email" [ngClass]="{'required': (login.get('email').hasError('required') && login.get('email').touched)
                             || (login.get('email').hasError('required') && formDir.submitted)}">
             
