@@ -198,6 +198,7 @@ function initWebSocket() {
     connection.on("message", async function(message) {
       if (message.type === "utf8") {
         //logger.info("WebSocket Received: '" + message.utf8Data + "'");
+
         let jsonMessage = JSON.parse(message.utf8Data);
 
         //Save message
