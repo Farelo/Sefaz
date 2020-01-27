@@ -176,7 +176,7 @@ function requestUnsubscribe(optionsget) {
 
 // Start and manage the WebSocket
 function initWebSocket() {
-  client.on("connectFailed", function(error) {
+  client.on("connectFailed", async function(error) {
     logger.info("WebSocket Connect Failed: " + error.toString());
     await restartAfterMinutes(15);
   });
@@ -243,7 +243,7 @@ const runWS = async () => {
 };
 
 const restartAfterMinutes = async minutes => {
-  logger.info("Waiting "+minutes+" minutes to restart the connection");
+  logger.info("Waiting " + minutes + " minutes to restart the connection");
   await promise_wait(minutes);
   await initWebSocket();
 };
