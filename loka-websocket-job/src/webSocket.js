@@ -14,7 +14,7 @@ const { parserMessage } = require("./util/parserMessage");
 
 //Authentication Token
 //Token of DM
-var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
+var token = "c8f16c13-f85c-48e9-bfc4-5fe54ae89429";
 
 // Getting Dict DevicesIds x last DeviceData
 let deviceDictList;
@@ -35,12 +35,11 @@ async function getDeviceDictList() {
         let lastDeviceData = await DeviceData.find({
           device_id: packMap.tag.code
         })
-          .sort({ _id: -1 })
+          .sort({ message_date_timestamp: -1 })
           .limit(1)
           .then(resultFind => {
             return resultFind[0];
           });
-
         //Get last deviceData from mock empty
         if (!lastDeviceData) {
           lastDeviceData = {
