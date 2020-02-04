@@ -12,6 +12,9 @@ const {
 } = require("./db/models/device_data.model");
 const { parserMessage } = require("./util/parserMessage");
 
+var lastMessageTime = new Date().getTime();
+var limitTimeWithoutMessageMinutes = 1;
+
 //Authentication Token
 //Token of DM
 var token = "c8f16c13-f85c-48e9-bfc4-5fe54ae89429";
@@ -185,39 +188,46 @@ function initWebSocket() {
 
     connection.on("error", async function(error) {
       logger.info("WebSocket Connection Error: " + error.toString());
-      await restartAfterMinutes(15);
+      await restartAfterMinutes(10);
     });
 
     connection.on("close", async function() {
       connection.removeAllListeners();
       logger.info("WebSocket Echo-protocol Connection Closed");
-      await restartAfterMinutes(15);
+      await restartAfterMinutes(10);
     });
 
     connection.on("message", async function(message) {
+      //console.log("message");
       if (message.type === "utf8") {
-        //logger.info("WebSocket Received: '" + message.utf8Data + "'");
+        if (
+          !message.utf8Data.includes("java") &&
+          !message.utf8Data.includes("exception")
+        ) {
+          //lastMessageTime = new Date().getTime();
+          //logger.info("WebSocket Received: '" + message.utf8Data + "'");
 
-        let jsonMessage = JSON.parse(message.utf8Data);
+          let jsonMessage = JSON.parse(message.utf8Data);
 
-        //Save message
-        messageCollection = {
-          message: JSON.stringify(jsonMessage),
-          message_date: new Date(jsonMessage.timestamp * 1000)
-        };
-        Message.create(messageCollection);
+          //Save message
+          messageCollection = {
+            message: JSON.stringify(jsonMessage),
+            message_date: new Date(jsonMessage.timestamp * 1000)
+          };
+          Message.create(messageCollection);
 
-        let deviceDict = deviceDictList.find(function(elem) {
-          return elem.deviceId == jsonMessage.src;
-        });
+          let deviceDict = deviceDictList.find(function(elem) {
+            return elem.deviceId == jsonMessage.src;
+          });
 
-        if (deviceDict) {
-          let deviceData = deviceDict.lastDeviceData;
+          if (deviceDict) {
+            let deviceData = deviceDict.lastDeviceData;
 
-          let deviceDataToSave = await parserMessage(jsonMessage, deviceData);
-          if (deviceDataToSave !== null) {
-            await device_data_save(deviceDataToSave);
-            deviceData = deviceDataToSave;
+            let deviceDataToSave = await parserMessage(jsonMessage, deviceData);
+            if (deviceDataToSave !== null) {
+              await device_data_save(deviceDataToSave);
+              deviceData = deviceDataToSave;
+            }
           }
         }
       }
@@ -234,8 +244,8 @@ function initWebSocket() {
 }
 
 const runWS = async () => {
+  logger.info("Starting WS");
   await getDeviceDictList();
-  logger.info(deviceDictList);
   await unsubscribingDeviceIds(deviceDictList);
   await subscribingDeviceIds(deviceDictList);
   await initWebSocket();
@@ -243,16 +253,41 @@ const runWS = async () => {
 
 const restartAfterMinutes = async minutes => {
   logger.info("Waiting " + minutes + " minutes to restart the connection");
+  client.abort();
+
+  //console.log("aborted");
+
   await promise_wait(minutes);
-  await initWebSocket();
+  //console.log("RUN");
+
+  await runWS();
 };
 
 const promise_wait = async minutes => {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(`Aguardou ${minutes} minutos`);
+      resolve("Aguardou ${minutes} minutos");
     }, minutes * 1000 * 60);
   });
 };
+
+//Check inactive time to restart
+setInterval(async function() {
+  //console.log("SET INTERVAL");
+  //console.log("lastMessageTime " + lastMessageTime);
+  var actualDate = new Date().getTime();
+  var diff = actualDate - lastMessageTime;
+  //console.log("diff " + diff);
+
+  var diffMs = diff; // milliseconds between now & Christmas
+  var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+  //console.log("diffMins " + diffMins);
+  if (diffMins >= limitTimeWithoutMessageMinutes) {
+    //console.log("RESTARTING");
+    lastMessageTime = actualDate;
+
+    await restartAfterMinutes(2);
+  }
+}, limitTimeWithoutMessageMinutes * 60000);
 
 exports.runWS = runWS;
