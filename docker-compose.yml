@@ -26,7 +26,7 @@ services:
 
   ################ MONGO (ficar descomentado até necessitar mudar algo neste container) ################
 
-  # mongo:
+  mongo:
     container_name: mongo-production
     image: mongo:4
     restart: always
