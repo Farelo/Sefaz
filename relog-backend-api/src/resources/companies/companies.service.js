@@ -11,6 +11,15 @@ exports.get_companies = async (code) => {
     }
 }
 
+exports.find_by_type = async (type) => {
+    try {
+        const companies = await Company.find({type})     
+        return companies
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 exports.get_company = async (id) => {
     try {
         const company = await Company

@@ -4,19 +4,25 @@ var https = require("https");
 var WebSocketClient = require("websocket").client;
 var client = new WebSocketClient();
 const { Packing } = require("./db/models/packings.model");
+const { Message } = require("./db/models/message.model");
+
 const {
   DeviceData,
   device_data_save
 } = require("./db/models/device_data.model");
 const { parserMessage } = require("./util/parserMessage");
 
+var lastMessageTime = new Date().getTime();
+var limitTimeWithoutMessageMinutes = 1;
+
 //Authentication Token
 //Token of DM
-var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
+var token = "c8f16c13-f85c-48e9-bfc4-5fe54ae89429";
 
 // Getting Dict DevicesIds x last DeviceData
 let deviceDictList;
 async function getDeviceDictList() {
+  logger.info("aqui");
   await require("./db/db")();
 
   //logger.info("Getting Dict DevicesIds x last DeviceData");
@@ -29,36 +35,35 @@ async function getDeviceDictList() {
       })
       .map(async packMap => {
         //Get last deviceData from DB
-        /*
         let lastDeviceData = await DeviceData.find({
           device_id: packMap.tag.code
         })
-          .sort({ _id: -1 })
+          .sort({ message_date_timestamp: -1 })
           .limit(1)
           .then(resultFind => {
             return resultFind[0];
           });
-        */
         //Get last deviceData from mock empty
-
-        let lastDeviceData = {
-          device_id: packMap.tag.code,
-          message_date: null,
-          message_date_timestamp: null,
-          message_type: null,
-          last_communication: null,
-          last_communication_timestamp: null,
-          latitude: null,
-          longitude: null,
-          accuracy: null,
-          temperature: null,
-          seq_number: null,
-          battery: {
-            percentage: null,
-            voltage: null
-          },
-          message: null
-        };
+        if (!lastDeviceData) {
+          lastDeviceData = {
+            device_id: packMap.tag.code,
+            message_date: null,
+            message_date_timestamp: null,
+            message_type: null,
+            last_communication: null,
+            last_communication_timestamp: null,
+            latitude: null,
+            longitude: null,
+            accuracy: null,
+            temperature: null,
+            seq_number: null,
+            battery: {
+              percentage: null,
+              voltage: null
+            },
+            message: null
+          };
+        }
 
         let dict = {
           deviceId: packMap.tag.code,
@@ -76,8 +81,9 @@ async function getDeviceDictList() {
 // Subscribing Devices in Websocket
 async function subscribingDeviceIds(deviceDictList) {
   //logger.info("Subscribing Devices in Websocket");
-
-  deviceDictList.forEach(async deviceDict => {
+  for (let index in deviceDictList) {
+    deviceDict = deviceDictList[index];
+    //deviceDictList.forEach(async deviceDict => {
     //logger.info("Subscribing device with id " + deviceDict.deviceId);
     var optionsget = {
       host: "core.loka.systems",
@@ -88,6 +94,14 @@ async function subscribingDeviceIds(deviceDictList) {
     };
 
     // do the GET request
+    logger.info("id: " + deviceDict.deviceId);
+    await requestSubscribe(optionsget);
+    //});
+  }
+}
+
+function requestSubscribe(optionsget) {
+  return new Promise((resolve, reject) => {
     var reqGet = https.request(optionsget, function(res) {
       /*logger.info(
         "Response code on subscribing of device with id " +
@@ -97,6 +111,7 @@ async function subscribingDeviceIds(deviceDictList) {
       );*/
       res.on("data", function(d) {
         logger.info("GET result:\n" + d);
+        resolve(d);
       });
     });
 
@@ -109,16 +124,15 @@ async function subscribingDeviceIds(deviceDictList) {
           e
       );*/
       logger.info(e);
+      reject(e);
     });
   });
 }
 
 // Unsubscribing Devices in Websocket
 async function unsubscribingDeviceIds(deviceDictList) {
-  //logger.info("Unsubscribing Devices in Websocket");
-
-  deviceDictList.forEach(async deviceDict => {
-    //logger.info("Unsubscribing device with id " + deviceDict.deviceId);
+  for (let index in deviceDictList) {
+    deviceDict = deviceDictList[index];
     var optionsget = {
       host: "core.loka.systems",
       port: 443,
@@ -126,7 +140,14 @@ async function unsubscribingDeviceIds(deviceDictList) {
       method: "GET",
       headers: { Authorization: "Bearer " + token }
     };
+    // do the GET request
+    logger.info("id: " + deviceDict.deviceId);
+    await requestUnsubscribe(optionsget);
+  }
+}
 
+function requestUnsubscribe(optionsget) {
+  return new Promise((resolve, reject) => {
     // do the GET request
     var reqGet = https.request(optionsget, function(res) {
       /*logger.info(
@@ -137,6 +158,7 @@ async function unsubscribingDeviceIds(deviceDictList) {
       );*/
       res.on("data", function(d) {
         logger.info("GET result:\n" + d);
+        resolve(d);
       });
     });
 
@@ -149,46 +171,64 @@ async function unsubscribingDeviceIds(deviceDictList) {
           e
       );*/
       logger.info(e);
+      reject(e);
     });
   });
 }
 
 // Start and manage the WebSocket
 function initWebSocket() {
-  client.on("connectFailed", function(error) {
-    //logger.info("WebSocket Connect Failed: " + error.toString());
+  client.on("connectFailed", async function(error) {
+    logger.info("WebSocket Connect Failed: " + error.toString());
+    await restartAfterMinutes(15);
   });
 
   client.on("connect", function(connection) {
     logger.info("WebSocket Client Connected");
 
-    connection.on("error", function(error) {
+    connection.on("error", async function(error) {
       logger.info("WebSocket Connection Error: " + error.toString());
-      initWebSocket();
+      await restartAfterMinutes(10);
     });
 
-    connection.on("close", function() {
+    connection.on("close", async function() {
       connection.removeAllListeners();
       logger.info("WebSocket Echo-protocol Connection Closed");
-      initWebSocket();
+      await restartAfterMinutes(10);
     });
 
     connection.on("message", async function(message) {
+      //console.log("message");
       if (message.type === "utf8") {
-        //logger.info("WebSocket Received: '" + message.utf8Data + "'");
+        if (
+          !message.utf8Data.includes("java") &&
+          !message.utf8Data.includes("exception")
+        ) {
+          //lastMessageTime = new Date().getTime();
+          //logger.info("WebSocket Received: '" + message.utf8Data + "'");
 
-        let jsonMessage = JSON.parse(message.utf8Data);
+          let jsonMessage = JSON.parse(message.utf8Data);
 
-        let deviceDict = deviceDictList.find(function(elem) {
-          return elem.deviceId == jsonMessage.src;
-        });
+          //Save message
+          messageCollection = {
+            message: JSON.stringify(jsonMessage),
+            message_date: new Date(jsonMessage.timestamp * 1000)
+          };
+          Message.create(messageCollection);
 
-        let deviceData = deviceDict.lastDeviceData;
+          let deviceDict = deviceDictList.find(function(elem) {
+            return elem.deviceId == jsonMessage.src;
+          });
 
-        let deviceDataToSave = await parserMessage(jsonMessage, deviceData);
-        if (deviceDataToSave !== null) {
-          await device_data_save(deviceDataToSave);
-          deviceData = deviceDataToSave;
+          if (deviceDict) {
+            let deviceData = deviceDict.lastDeviceData;
+
+            let deviceDataToSave = await parserMessage(jsonMessage, deviceData);
+            if (deviceDataToSave !== null) {
+              await device_data_save(deviceDataToSave);
+              deviceData = deviceDataToSave;
+            }
+          }
         }
       }
     });
@@ -204,10 +244,50 @@ function initWebSocket() {
 }
 
 const runWS = async () => {
+  logger.info("Starting WS");
   await getDeviceDictList();
-  //await subscribingDeviceIds(deviceDictList)
-  //await unsubscribingDeviceIds(deviceDictList)
+  await unsubscribingDeviceIds(deviceDictList);
+  await subscribingDeviceIds(deviceDictList);
   await initWebSocket();
 };
+
+const restartAfterMinutes = async minutes => {
+  logger.info("Waiting " + minutes + " minutes to restart the connection");
+  client.abort();
+
+  //console.log("aborted");
+
+  await promise_wait(minutes);
+  //console.log("RUN");
+
+  await runWS();
+};
+
+const promise_wait = async minutes => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve("Aguardou ${minutes} minutos");
+    }, minutes * 1000 * 60);
+  });
+};
+
+//Check inactive time to restart
+setInterval(async function() {
+  //console.log("SET INTERVAL");
+  //console.log("lastMessageTime " + lastMessageTime);
+  var actualDate = new Date().getTime();
+  var diff = actualDate - lastMessageTime;
+  //console.log("diff " + diff);
+
+  var diffMs = diff; // milliseconds between now & Christmas
+  var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+  //console.log("diffMins " + diffMins);
+  if (diffMins >= limitTimeWithoutMessageMinutes) {
+    //console.log("RESTARTING");
+    lastMessageTime = actualDate;
+
+    await restartAfterMinutes(2);
+  }
+}, limitTimeWithoutMessageMinutes * 60000);
 
 exports.runWS = runWS;

@@ -3,7 +3,11 @@ const _ = require('lodash')
 const config = require('config')
 const { Packing } = require('./packings.model')
 const { Family } = require('../families/families.model')
+const { Company } = require('../companies/companies.model')
+const { ControlPoint } = require('../control_points/control_points.model')
+const event_record_service = require('../event_record/event_record.service')
 const rp = require('request-promise')
+const mongoose = require('mongoose')
 
 exports.get_packings = async (tag, family) => {
     try {
@@ -57,6 +61,16 @@ exports.find_by_tag = async (tag) => {
                 .populate('project', ['_id', 'name'])
 
         return packing
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.find_by_serial = async (serial) => {
+    try {
+        const packings = await Packing.find({ serial })
+
+        return packings
     } catch (error) {
         throw new Error(error)
     }
@@ -122,65 +136,113 @@ exports.check_device = async (device_id) => {
 
 exports.geolocation = async (query = { company_id: null, family_id: null, packing_serial: null }) => {
     try {
-        let packings = []
-        let families = []
-        let data = []
+        let familiesIds = []
 
-        switch (true) {
-            case query.company_id != null && query.family_id != null && query.packing_serial != null:
-                families = await Family.find({ _id: query.family_id })
-                data = await Promise.all(
-                    families.map(async family => {
-                        return await Packing.find({ family: family._id, serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
-                    })
-                )
-                packings = _.flatMap(data)
-                break
-            case query.company_id != null && query.family_id != null:
-                families = await Family.find({ _id: query.family_id })
-                data = await Promise.all(
-                    families.map(async family => {
-                        return await Packing.find({ family: family._id }).populate('last_device_data').populate('last_device_data_battery').populate('family')
-                    })
-                )
-                packings = _.flatMap(data)
-                break
-            case query.company_id != null && query.packing_serial != null:
-                families = await Family.find({ company: query.company_id })
-                data = await Promise.all(
-                    families.map(async family => {
-                        return await Packing.find({ family: family._id, serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
-                    })
-                )
-                packings = _.flatMap(data)
-                break
-            case query.family_id != null && query.packing_serial != null:
-                packings = await Packing
-                    .find({ family: query.family_id, serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
-                break
-            case query.company_id != null:
-                families = await Family.find({ company: query.company_id })
-                data = await Promise.all(
-                    families.map(async family => {
-                        return await Packing.find({ family: family._id }).populate('last_device_data').populate('last_device_data_battery').populate('family')
-                    })
-                )
-                packings = _.flatMap(data)
-                break
-            case query.family_id != null:
-                packings = await Packing
-                    .find({ family: query.family_id }).populate('last_device_data').populate('last_device_data_battery').populate('family')
-                break
-            case query.packing_serial != null:
-                packings = await Packing
-                    .find({ serial: query.packing_serial }).populate('last_device_data').populate('last_device_data_battery').populate('family')
-                break
-            default:
-                packings = await Packing.find({}).populate('last_device_data').populate('last_device_data_battery').populate('family')
-                break
+        if (query.company_id != null) {
+            familiesIds = await (await Family.find({ company: query.company_id })).map(f => f._id)
+        } else if (query.family_id != null) {
+            familiesIds.push(new mongoose.Types.ObjectId(query.family_id))
         }
 
-        return packings
+        let conditions = {};
+
+        if (familiesIds.length) {
+            conditions['family'] = {
+                $in: familiesIds
+            }
+        }
+
+        if (query.packing_serial != null) {
+            conditions['serial'] = {
+                $eq: query.packing_serial
+            }
+        }
+        
+        return await Packing.find(conditions).populate('last_device_data').populate('last_device_data_battery').populate('family')
+        
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.control_point_geolocation = async (query) => {
+    try {
+        let date_conditions = {}
+        if ((query.start_date != null && query.end_date)) {
+
+            date_conditions = {
+                $gte: new Date(query.start_date),
+                $lte: new Date(query.end_date),
+            }
+
+        } else if (query.date != null) {
+
+            date_conditions = {
+                $gte: new Date(query.date),
+                $lt: new Date(date2.setDate(query.date + 1)),
+            }
+
+        } else if (query.last_hours) {
+            let date = new Date()
+            date.setHours(date.getHours() - query.last_hours)
+            
+            date_conditions = {
+                $gte: date
+            }
+        }
+        
+        let event_record_conditions = {
+            type: 'inbound'
+        }
+
+        if (query.company_id != null || query.company_type != null) {
+            let company_conditions = {}
+            if (query.company_id != null) {
+                company_conditions = { _id: query.company_id }            
+            } else if (query.company_type != null) {
+                company_conditions = { type: query.company_type }            
+            }
+            let companies_ids = await Company.find(company_conditions).distinct('_id')
+            
+            let control_point_conditions = {}
+            if (query.control_point_id != null) {
+                control_point_conditions = { _id: query.control_point_id }            
+            } else if (query.control_point_type != null) {
+                control_point_conditions = { type: query.control_point_type }            
+            }
+            control_point_conditions['company'] = { $in: companies_ids }
+            let control_points = await ControlPoint.find(control_point_conditions).distinct('_id')
+
+            event_record_conditions = { control_point: { $in: control_points } }
+        }
+
+        if (!_.isEmpty(date_conditions)) {
+            event_record_conditions['created_at'] = date_conditions
+        }
+
+        let event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions)
+
+        if (query.family_id != null || query.serial != null) {
+            event_records = event_records.filter(er => {
+                if (query.family_id != null && query.serial != null) {
+                    if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
+                        return true
+                    }
+                } else if (query.family_id != null) {
+                    if (er.packing.family == query.family_id) {
+                        return true
+                    }
+                } else {
+                    if (er.packing.serial == query.serial) {
+                        return true
+                    }
+                }
+                return false
+            })
+        }
+
+        return event_records
+        
     } catch (error) {
         throw new Error(error)
     }
