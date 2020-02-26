@@ -215,13 +215,13 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     let flatObjectData = this.flatObject(this.generalEquipament.slice());
     let packingStatus = new PackingStatus();
     flatObjectData = flatObjectData.map(elem => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4, packingStatus.transform(elem.a5), elem.a6, elem.a7, elem.a8, elem.a9, elem.a10];
+      return [elem.a1, elem.a2, elem.a3, elem.a4, packingStatus.transform(elem.a5), elem.a6, elem.a7, elem.a8, elem.a9, elem.a10, elem.a11, elem.a12];
     });
     // console.log(flatObjectData);
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Família', 'Serial', 'Tag', 'Vinculada', 'Status Atual', 'Planta Atual', 'Local', 'Bateria', 'Acurácia', 'Data do sinal']],
+      head: [['Família', 'Serial', 'Tag', 'Vinculada', 'Status Atual', 'Planta Atual', 'Local', 'Bateria', 'Acurácia', 'Data do sinal', 'Última acurácia', 'Último sinal']],
       body: flatObjectData
     });
 
@@ -244,7 +244,9 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
             a7: obj.current_control_point_type,
             a8: (obj.battery_percentage != undefined && obj.battery_percentage >= 0) ? transformer.transform(obj.battery_percentage):"Sem Registro",
             a9: obj.accuracy,
-            a10: obj.date
+            a10: obj.date,
+            a11: obj.accuracy,
+            a12: obj.date
           };
         });
       
@@ -263,7 +265,9 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       a7: 'Local',
       a8: 'Bateria',
       a9: 'Acurácia',
-      a10: 'Data do sinal'
+      a10: 'Data do sinal',
+      a11: 'Última Acurácia',
+      a12: 'Último sinal'
     }
 
     //adiciona o cabeçalho
