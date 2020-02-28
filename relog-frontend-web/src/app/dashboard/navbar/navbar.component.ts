@@ -16,32 +16,29 @@ export class NavbarComponent implements OnInit {
   public menuAparecer: boolean = false;
   public currentUser: any;
 
-  constructor(
-    private ngZone: NgZone,
+  constructor(private ngZone: NgZone,
     private modalService: NgbModal,
     private authenticationService: AuthenticationService,
-    private router: Router) {
-
-  }
+    private router: Router) { }
 
   ngOnInit() {
-    this.funcaoTop();
+    // this.funcaoTop(); 
     this.menuAparecer = false;
     this.currentUser = this.authenticationService.currentUser();
   }
 
-  funcaoTop() {
-    $('.scroll').click(function () {
-      // $('label').click();
-      return false;
-    });
-  }
+  // funcaoTop() {
+  //   $('.scroll').click(function () {
+  //     // $('label').click();
+  //     return false;
+  //   });
+  // }
 
-  posicionarPopOver() {
-    $('.arrow').css({
-      right: 12
-    });
-  }
+  // posicionarPopOver() {
+  //   $('.arrow').css({
+  //     right: 12
+  //   });
+  // }
 
   mudar() {
     this.menuAparecer = !this.menuAparecer;

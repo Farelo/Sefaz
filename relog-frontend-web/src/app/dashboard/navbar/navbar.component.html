@@ -53,11 +53,13 @@
               <p class="user-type" *ngIf="currentUser?.role === 'user'">Funcionário</p>
             </div>
           </div>
-          
-          <a class="dropdown-item pointer menu-item" *ngIf="currentUser?.role === 'admin'" (click)="openModal()">Usuários</a>
-          
-          <a class="dropdown-item pointer menu-item" *ngIf="currentUser?.role === 'admin'" (click)="openSettings()">Configurações</a>
-          
+
+          <a class="dropdown-item pointer menu-item" *ngIf="currentUser?.role === 'admin'"
+            (click)="openModal()">Usuários</a>
+
+          <a class="dropdown-item pointer menu-item" *ngIf="currentUser?.role === 'admin'"
+            (click)="openSettings()">Configurações</a>
+
           <div class="dropdown-divider"></div>
 
           <a class="dropdown-item pointer menu-item" (click)="logout()">Sair</a>
