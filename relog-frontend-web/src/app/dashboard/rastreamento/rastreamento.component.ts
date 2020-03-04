@@ -3,7 +3,10 @@ import { ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService, FamiliesService, DevicesService, ControlPointsService } from '../../servicos/index.service';
+import { AuthenticationService, PackingService, DepartmentService, FamiliesService, DevicesService, ControlPointsService } from '../../servicos/index.service';
+import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
 import './markercluster';
@@ -58,6 +61,14 @@ export class RastreamentoComponent implements OnInit {
   numero: 1;
   plants = [];
 
+  /*
+   * DataPicker
+   */
+  datePickerConfig = new BsDaterangepickerConfig(); //Configurations
+  public todayDate: Date;   // Today date
+  public initialDate: Date; // Initial date
+  public finalDate: Date;   // Initial date
+
   //selects
   public listOfSerials: any[];
   public codes: any[];
@@ -97,8 +108,20 @@ export class RastreamentoComponent implements OnInit {
     private packingService: PackingService,
     private mapsService: MapsService,
     private modalService: NgbModal,
-    private auth: AuthenticationService) {
+    private auth: AuthenticationService,
+    private localeService: BsLocaleService) {
 
+    defineLocale('pt-br', ptBrLocale);
+    this.localeService.use('pt-br');
+
+    //Initialize 7 days before now
+    let sub = new Date().getTime() - (7 * 24 * 60 * 60 * 1000);
+    this.initialDate = new Date(sub);
+    this.finalDate = new Date();
+
+    this.datePickerConfig.showWeekNumbers = false;
+    this.datePickerConfig.displayMonths = 1;
+    this.datePickerConfig.containerClass = 'theme-dark-blue';
   }
 
   ngOnInit() {
@@ -164,7 +187,7 @@ export class RastreamentoComponent implements OnInit {
   public listOfCircleControlPoints: any = [];
   public listOfPolygonControlPoints: any = [];
 
-  loadControlPoints(){
+  loadControlPoints() {
 
     this.controlPointsService.getAllControlPoint().subscribe(result => {
       // this.listOfControlPoints = result.map(elem => {
@@ -183,12 +206,12 @@ export class RastreamentoComponent implements OnInit {
         .filter(elem => elem.geofence.type == 'p')
         .map(elem => {
 
-          let lat = elem.geofence.coordinates.map(p =>  p.lat);
-          let lng = elem.geofence.coordinates.map(p =>  p.lng);
+          let lat = elem.geofence.coordinates.map(p => p.lat);
+          let lng = elem.geofence.coordinates.map(p => p.lng);
 
           elem.position = {
-            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
-            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
+            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2,
+            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2
           }
 
           return elem;
@@ -232,14 +255,14 @@ export class RastreamentoComponent implements OnInit {
     }
   }
 
-  companyChanged(event: any){
+  companyChanged(event: any) {
     // console.log(event);
 
-    if(event){
+    if (event) {
       this.listOfFamilies = this.auxListOfFamilies.filter(elem => {
         return elem.company._id == event._id;
       });
-    } else{
+    } else {
       this.listOfFamilies = this.auxListOfFamilies;
     }
 
@@ -283,8 +306,8 @@ export class RastreamentoComponent implements OnInit {
       });
 
       //Se só há um objeto selecionado, centralize o mapa nele
-      if (this.plotedPackings.length == 1){
-        if (this.plotedPackings[0].last_device_data){
+      if (this.plotedPackings.length == 1) {
+        if (this.plotedPackings[0].last_device_data) {
           this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
         }
       }
@@ -332,7 +355,7 @@ export class RastreamentoComponent implements OnInit {
   }
 
 
-  filterChanged(){
+  filterChanged() {
 
   }
 
@@ -380,7 +403,7 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Recupera o pino da embalagem de acordo com seu alerta
    */
-  getPinWithAlert(status: any, smallSize:boolean = false) {
+  getPinWithAlert(status: any, smallSize: boolean = false) {
     let pin = null;
 
     switch (status) {
@@ -405,7 +428,7 @@ export class RastreamentoComponent implements OnInit {
         break;
     }
 
-    if (smallSize){
+    if (smallSize) {
       pin.size = (new google.maps.Size(21, 31));
       pin.scaledSize = (new google.maps.Size(21, 31));
     }

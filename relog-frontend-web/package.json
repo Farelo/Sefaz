@@ -48,7 +48,6 @@
     "moment-timezone": "^0.5.27",
     "ng-sidebar": "^8.0.0",
     "ng-tether": "^0.1.0",
-    "ng2-bootstrap": "^1.6.3",
     "ng2-file-upload": "^1.2.1",
     "ng2-handsontable": "^2.0.0",
     "ng2-input-mask": "0.0.7",

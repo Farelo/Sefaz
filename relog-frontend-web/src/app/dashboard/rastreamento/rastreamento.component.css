@@ -1,5 +1,4 @@
 @import '~font-awesome/css/font-awesome.css';
-
 * {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
@@ -16,7 +15,7 @@
 }
 
 ngui-map {
-  height: calc(100vh - 56px); 
+  height: calc(100vh - 56px);
   width: 100%;
 }
 
@@ -34,7 +33,7 @@ p {
   border-color: transparent;
 }
 
-.legend-list > li > span {
+.legend-list>li>span {
   width: 12px;
   height: 12px;
   display: inline-block;
@@ -45,36 +44,17 @@ p {
   line-height: 30px;
 }
 
-/* .gm-style-iw {
-  top: 0px !important;
-  left: 0px !important;
-  background-color: #fff;
-  box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
-  border: 1px solid rgba(72, 181, 233, 0.6);
-  border-radius: 2px 2px 10px 10px;
-}
-
-.gm-style-iw > div{
-  display: block !important;
-} */
-
-/* #iw-container {
-  margin-bottom: 10px;
-} */
-
 .gm-style-iw {
   top: 0 !important;
-  left: 0 !important; 
+  left: 0 !important;
   right: 0 !important;
-  /* top: 20px !important; */
-  /* width: 100% !important; */
   padding: 6px;
 }
 
 .iw-title {
-  color: #3e4f5f; 
-  padding: 10px 6px; 
-  font-weight: 700; 
+  color: #3e4f5f;
+  padding: 10px 6px;
+  font-weight: 700;
   font-size: 16px;
 }
 
@@ -85,27 +65,6 @@ p {
 th {
   border-bottom: none !important;
 }
-
-/* .iw-title { */
-  /* font-family: 'Raleway', sans-serif; */
-  /* font-size: 16px; */
-  /* margin: 0px; */
-  /* border-radius: 2px 2px 0 0; */
-  /* text-align: center; */
-  /* background-color: #3e4f5f;
-  color: #fff;
-  padding: 10px 0px;
-  padding-left: 6px;
-} */
-
-/* .gm-style-iw {
-  max-width: 250px;
-  min-width: 220px;
-}
-
-.info-window-content {
-  padding: 6px;
-} */
 
 .table {
   font-size: 14px;
@@ -165,16 +124,21 @@ button:hover {
 
 button.close {
   padding: 0px 3px;
-  
 }
 
 .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
 
@@ -184,23 +148,6 @@ button.close {
   background-color: white;
 }
 
-/* .iw-subTitle {
-  font-size: 16px;
-  font-weight: 700;
-  padding: 5px 0;
-}
-
-.iw-bottom-gradient {
-  position: absolute;
-  height: 25px;
-  bottom: 10px;
-  right: 18px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-  background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-  background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-  background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-} */
-
 .cabecalho {
   background-color: #6382c9;
   color: white;
@@ -209,11 +156,10 @@ button.close {
 .classVazio {
   background-color: white;
   margin: 0px;
-  /* padding: 10px;
-  box-shadow: 0px 0px 7px #000; */
 }
 
 /* Emanoel */
+
 .legend-button {
   background: none rgb(255, 255, 255);
   border: 0px;
@@ -231,17 +177,18 @@ button.close {
   left: 180px;
   z-index: 1;
   display: flex;
-  justify-content: center; /* align horizontal */
-  align-items: center; 
+  justify-content: center;
+  /* align horizontal */
+  align-items: center;
 }
 
-.legend-button > img {
+.legend-button>img {
   background-color: unset;
   margin: 0;
 }
 
 .filter-button {
-background: none rgb(255, 255, 255);
+  background: none rgb(255, 255, 255);
   border: 0px;
   margin: 10px;
   padding: 0px 6px;
@@ -256,8 +203,9 @@ background: none rgb(255, 255, 255);
   left: 230px;
   z-index: 1;
   display: flex;
-  justify-content: center; /* align horizontal */
-  align-items: center; 
+  justify-content: center;
+  /* align horizontal */
+  align-items: center;
 }
 
 .m-navbar {
@@ -275,32 +223,37 @@ background: none rgb(255, 255, 255);
 
 .m-filtros {
   background-color: #fff;
-  padding: 15px; 
+  padding: 15px;
   height: 100%;
 }
 
-.ng-sidebar {
-  background-color: #fff !important;
+.input-label {
+  font-size: 0.85rem;
+  margin-bottom: 2px;
+  margin-top: 8px;
+}
+
+input, ng-select {
+  font-size: .9rem !important;
+}
+
+.checkbox > label {
+  font-size: .9rem !important;
 }
 
 @media (min-width: 540px) {
-  /* .m-container {
-    height: calc( 100vh - 42px );
-  } */
-
-  .m-filtros{
+  .m-filtros {
     overflow-y: overlay;
   }
-
   ngui-map {
     width: 100%;
   }
-
-} 
-
+}
 
 /*--------*/
+
 /*Checkboxes*/
+
 .checkbox label:after {
   content: '';
   display: table;
@@ -343,6 +296,19 @@ background: none rgb(255, 255, 255);
 }
 
 /* Relative to side-menu*/
+
 ng-sidebar-container {
-  height: calc( 100vh - 56px );
+  height: calc( 100vh - 56px);
+}
+
+bs-datepicker-container {
+  z-index: 99999999 !important;
+}
+
+bs-daterangepicker-container {
+  z-index: 99999999 !important;
+}
+
+.ui-datepicker-div {
+  z-index: 99999999 !important;
 }
