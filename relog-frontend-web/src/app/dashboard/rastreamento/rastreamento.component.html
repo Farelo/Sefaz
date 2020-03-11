@@ -8,7 +8,7 @@
         <button type="button" class="close noselect" aria-label="Close" (click)="_toggleSidebar()">
           <span aria-hidden="true">&times;</span>
         </button>
-        
+
         <!-- <h6>Filtros:</h6> -->
 
         <!-- Datas -->
@@ -18,14 +18,15 @@
           <input id="dateToday" type="text" placeholder="Data" class="form-control input-date-picker" bsDatepicker
             [(ngModel)]="todayDate" [bsConfig]="datePickerConfig" style="cursor: pointer;" autocomplete="off">
 
-            <label class="input-label">Período:</label>
+          <label class="input-label">Período:</label>
           <!-- (ngModelChange)="onFirstDateChange($event)" -->
           <input id="dateToday" type="text" placeholder="Data" class="form-control input-date-picker" bsDatepicker
             [(ngModel)]="todayDate" [bsConfig]="datePickerConfig" style="cursor: pointer;" autocomplete="off">
 
-            <label class="input-label">Últimas:</label>
-          <!-- (ngModelChange)="onFirstDateChange($event)" -->
-          <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
+          <div class="input-label" style="display: flex; align-items: center;">
+            <label style="margin: 0px;" class="mr-1">Últimas:</label>
+            <!-- (ngModelChange)="onFirstDateChange($event)" -->
+            <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
               bindLabel="company.name" style="width: 60px; display: inline-block;">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
@@ -34,13 +35,16 @@
                 <div> {{item.name}} </div>
               </ng-template>
             </ng-select>
-            <label class="input-label"> horas</label>
+            <label style="margin: 0px;" class="ml-1"> horas</label>
+          </div>
         </section>
 
-        <!-- Sessão de Filtros -->
+        <hr>
+
+        <!-- Sessão de filtros de pontos de controle -->
         <section>
-          <div class="form-group">
-            <label class="input-label">Empresas vinculadas:</label>
+          <div>
+            <label class="input-label mt-0">Empresas Vinculadas:</label>
             <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
               bindLabel="company.name" placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
@@ -52,8 +56,39 @@
             </ng-select>
           </div>
 
-          <div class="form-group">
-            <label class="input-label" for="selectCode">Família</label>
+          <div>
+            <label class="input-label">Tipo de Ponto de Controle:</label>
+            <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
+              bindLabel="company.name" placeholder="Escolha um ponto de controle">
+              <ng-template ng-label-tmp let-item="item">
+                {{item.name}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div> {{item.name}} </div>
+              </ng-template>
+            </ng-select>
+          </div>
+
+          <div>
+            <label class="input-label">Ponto de Controle:</label>
+            <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
+              bindLabel="company.name" placeholder="Escolha um ponto de controle">
+              <ng-template ng-label-tmp let-item="item">
+                {{item.name}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div> {{item.name}} </div>
+              </ng-template>
+            </ng-select>
+          </div>
+        </section>
+
+        <hr>
+
+        <!-- Sessão de Filtros de embalagem -->
+        <section>
+          <div>
+            <label class="input-label  mt-0" for="selectCode">Família</label>
             <ng-select id="selectCode" [(ngModel)]="selectedFamily" [items]="listOfFamilies"
               (clear)="onEquipmentSelectClear()" (change)="loadPackings(); loadSerialsOfSelectedEquipment()"
               bindLabel="code" placeholder="Selecione um Equipamento">
@@ -68,8 +103,22 @@
             </ng-select>
           </div>
 
-          <div class="form-group">
+          <div>
             <label class="input-label">Serial</label>
+            <ng-select [(ngModel)]="selectedSerial" (clear)="loadPackings()" (change)="loadPackings()"
+              [items]="listOfSerials" bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial"
+              [disabled]="!selectedFamily">
+              <ng-template ng-label-tmp let-item="item">
+                {{item.serial}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div>{{ item.serial }}</div>
+              </ng-template>
+            </ng-select>
+          </div>
+
+          <div>
+            <label class="input-label">Status</label>
             <ng-select [(ngModel)]="selectedSerial" (clear)="loadPackings()" (change)="loadPackings()"
               [items]="listOfSerials" bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial"
               [disabled]="!selectedFamily">
@@ -83,6 +132,7 @@
           </div>
         </section>
 
+        <hr>
 
         <!-- Sessão de exibição -->
         <section>
@@ -140,8 +190,8 @@
     </ng-sidebar>
 
     <!-- Mapa Geolocalização -->
-    <div ng-sidebar-content>
-      <div class="m-mapa">
+    <div ng-sidebar-content class="h-100">
+      <div class="m-mapa h-100">
 
         <!-- Botão da legenda dos ícones do mapa -->
         <button type="button" class="legend-button" [ngbPopover]="popContent" placement="bottom" triggers='hover'>
@@ -174,9 +224,9 @@
           <!-- <span class="lg6"></span><br /> -->
         </ng-template>
 
-        <div id="map">
+        <div id="map" class="h-100" style="overflow: hidden;">
 
-          <ngui-map [center]="center" [zoom]="4" [minZoom]="4" (mapReady$)="onInitMap($event)">
+          <ngui-map [center]="center" [zoom]="4" [minZoom]="4" (mapReady$)="onInitMap($event)" class="h-100">
 
             <marker *ngFor="let opt of options" [position]="opt.position" [title]="opt.name"
               (click)="clicked($event,opt)">
