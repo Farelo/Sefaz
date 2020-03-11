@@ -30,7 +30,7 @@ export class FornecedorComponent implements OnInit {
   ngOnInit() {
 
     this.loadCompanies();
-    this.loadReport();
+    //this.loadReport();
   }
 
   /**
@@ -45,11 +45,10 @@ export class FornecedorComponent implements OnInit {
   /**
    * Método para carregar a lista
    */
-  loadReport(){
+  loadReport(companyId: any){
 
-    this.reportsService.getClientsInventory().subscribe(result => {
+    this.reportsService.getClientsInventory(companyId).subscribe(result => {
       this.listOfQuantityInSuppliers = result;
-      this.auxListOfQuantityInSuppliers = result; 
     }, err => { console.log(err) });
   }
 
@@ -61,9 +60,7 @@ export class FornecedorComponent implements OnInit {
     // console.log(event);
 
     if(event){
-      this.listOfQuantityInSuppliers = this.auxListOfQuantityInSuppliers.filter(elem => {
-        return elem.company_id == event._id;
-      });
+      this.loadReport(event._id);
 
     }else{
       this.listOfQuantityInSuppliers = this.auxListOfQuantityInSuppliers;

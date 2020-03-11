@@ -54,9 +54,9 @@ export class ReportsService {
   /**
    * Fornecedor
    */
-  getClientsInventory() {
+  getClientsInventory(companyId: any) {
 
-    return this.http.get(`${environment.url}/reports/clients`).catch(this.handleError);
+    return this.http.get(`${environment.url}/reports/clients?company=${companyId}`).catch(this.handleError);
   }
 
   /**

@@ -57,8 +57,8 @@ exports.general_info_report = async (req, res) => {
 }
 
 exports.clients_report = async (req, res) => {
+    
     const company_id = req.query.company ? req.query.company : null
-
     const data = await reports_service.clients_report(company_id)
     res.json(data)
 }
