@@ -624,35 +624,35 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
     }
 }
 
-exports.permanence_time_report = async (query = { family: null, serial: null }) => {
+exports.permanence_time_report = async (query = { paramFamily: null, paramSerial: null }) => {
     try {
         let packings = []
-        let current_family = query.family ? await Family.findOne({ _id: query.family }) : null
+        //let current_family = query.paramFamily ? await Family.findOne({ _id: query.paramFamily }) : null
 
         switch (true) {
-            case query.family != null && query.serial != null:
-                packings = await Packing.find({ absent: true, active: true, family: current_family._id, serial: query.serial })
+            case query.paramFamily != null && query.paramSerial != null:
+                packings = await Packing.find({ permanence_time_exceeded: true, active: true, family: query.paramFamily, serial: query.paramSerial })
                     .populate('family')
                     .populate('last_device_data')
                     .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
-            case query.family != null:
-                packings = await Packing.find({ absent: true, active: true, family: current_family._id })
+            case query.paramFamily != null:
+                packings = await Packing.find({ permanence_time_exceeded: true, active: true, family: query.paramFamily })
                     .populate('family')
                     .populate('last_device_data')
                     .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
-            case query.serial != null:
-                packings = await Packing.find({ absent: true, active: true, serial: query.serial })
+            case query.paramSerial != null:
+                packings = await Packing.find({ permanence_time_exceeded: true, active: true, serial: query.paramSerial })
                     .populate('family')
                     .populate('last_device_data')
                     .populate('last_device_data_battery')
                     .populate('last_event_record')
                 break
             default:
-                packings = await Packing.find({ absent: true, active: true })
+                packings = await Packing.find({ permanence_time_exceeded: true, active: true })
                     .populate('family')
                     .populate('last_device_data')
                     .populate('last_device_data_battery')
@@ -661,7 +661,7 @@ exports.permanence_time_report = async (query = { family: null, serial: null }) 
         }
 
         let data = []
-        if (query.serial != null) {
+        if (query.paramSerial != null) {
             data = await Promise.all(
                 packings
                     .filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')

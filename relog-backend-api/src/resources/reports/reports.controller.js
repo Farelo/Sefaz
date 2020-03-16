@@ -27,10 +27,10 @@ exports.absent_report = async (req, res) => {
 
 exports.permanence_time_report = async (req, res) => {
     const query = {
-        family: req.query.family ? req.query.family : null,
-        serial: req.query.serial ? req.query.serial : null
+        paramFamily: req.query.family ? req.query.family : null,
+        paramSerial: req.query.serial ? req.query.serial : null
     }
-
+    
     const data = await reports_service.permanence_time_report(query)
     res.json(data)
 }

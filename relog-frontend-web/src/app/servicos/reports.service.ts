@@ -38,9 +38,11 @@ export class ReportsService {
   /**
    * Equipamento/Inventário geral
    */
-  getPermanenceInventory(){
-
-    return this.http.get(`${environment.url}/reports/permanence_time`).catch(this.handleError);
+  getPermanenceInventory(params: any = {}){
+    let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    if (queryString) queryString = '?' + queryString;
+    
+    return this.http.get(`${environment.url}/reports/permanence_time${queryString}`).catch(this.handleError);
   }
 
   /**

@@ -28,6 +28,7 @@ export class InventarioPermanenciaComponent implements OnInit {
   constructor(
     private reportService: ReportsService,
     private familyService: FamiliesService,
+    private packingService: PackingService,
     private auth: AuthenticationService) {
 
   }
@@ -91,13 +92,23 @@ export class InventarioPermanenciaComponent implements OnInit {
   loadSerials(event: any){
 
     this.selectedSerial = null;
-    
-    let aux = this.listOfPermanence.filter(elem =>{
-      return elem.family_code == event.code;
-    });
+    console.log(event);
+    this.packingService.getAllPackings({ family: event._id }).subscribe(result => {
 
-    // console.log(aux);
-    this.listOfSerials = aux;
+      this.listOfSerials = result; 
+    }, err => console.error(err));
+
+    this.reportService.getPermanenceInventory({ family: this.selectedFamily._id }).subscribe(result => {
+      this.listOfPermanence = result; 
+      this.auxListOfPermanence = result; 
+    }, err => { console.log(err) });
+
+    // let aux = this.listOfPermanence.filter(elem =>{
+    //   return elem.family_code == event.code;
+    // });
+
+    // // console.log(aux);
+    // this.listOfSerials = aux;
   }
 
   /**
@@ -105,18 +116,23 @@ export class InventarioPermanenciaComponent implements OnInit {
    */
   serialFilter(event: any) {
     
-    if (!event) {
-      this.selectedSerial = null;
-      this.familyFilter(this.selectedFamily);
-      return;
-    }
+    this.reportService.getPermanenceInventory({ family: this.selectedFamily._id, serial: this.selectedSerial }).subscribe(result => {
+      this.listOfPermanence = result; 
+      this.auxListOfPermanence = result; 
+    }, err => { console.log(err) });
 
-    let aux = this.auxListOfPermanence.filter(elem => {
-      return ((elem.family_code == event.family_code) && (elem.serial == event.serial));
-    });
+    // if (!event) {
+    //   this.selectedSerial = null;
+    //   this.familyFilter(this.selectedFamily);
+    //   return;
+    // }
+
+    // let aux = this.auxListOfPermanence.filter(elem => {
+    //   return ((elem.family_code == event.family_code) && (elem.serial == event.serial));
+    // });
 
     //console.log(aux);
-    this.listOfPermanence = aux;
+    // this.listOfPermanence = aux;
   }
 
    /**
