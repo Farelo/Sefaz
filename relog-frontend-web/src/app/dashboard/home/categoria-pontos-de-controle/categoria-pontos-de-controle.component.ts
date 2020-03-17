@@ -21,7 +21,8 @@ export class CategoriaPontosDeControleComponent implements OnInit {
   public localIncorretoCollapsed: boolean = false;
   
   public listIncorrectActualPage: number = -1;
-  public listPermanenceActualPage: number = -1;
+  public listPermanenceActualPage: number = 0;
+
   public settings: any = {};
 
   constructor(private homeService: HomeService,
@@ -85,7 +86,7 @@ export class CategoriaPontosDeControleComponent implements OnInit {
    * Get the list ofpermanence time exceeded
    */
   getListPermanenceTime() {
-    this.homeService.getHomeStatus('PERMANENCE_EXCEEDED').subscribe(result => {
+    this.homeService.getPermanenceTimeExceeded().subscribe(result => {
       this.listPermanenceTime = result;
       //console.log('PERMANENCE_EXCEEDED: ' + JSON.stringify(this.listPermanenceTime));
     }, err => { console.log(err) });
