@@ -23,6 +23,10 @@ loka-api-dm-job/src/tools/env-tmp.tools.js
 loka-api-dm-job/src/logs/
 loka-api-dm-job/package-lock.json
 
+loka-websocket-job/node_modules
+loka-websocket-job/src/logs/
+loka-websocket-job/package-lock.json
+
 database-scripts/node_modules
 database-scripts/package-lock.json
 
