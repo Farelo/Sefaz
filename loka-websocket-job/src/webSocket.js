@@ -33,7 +33,7 @@ async function getDeviceDictList() {
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
   //Getting all DeviceIds
-  let result = await Packing.find({'tag.code': '4071692'}, { _id: 0, tag: 1 })
+  let result = await Packing.find({}, { _id: 0, tag: 1 })
     .populate("last_device_data")
     .then(packFind => {
 
@@ -41,34 +41,6 @@ async function getDeviceDictList() {
         .filter(packFilter => {
           return packFilter.tag.code != undefined;
         })
-<<<<<<< HEAD
-          .sort({ message_date_timestamp: -1 })
-          .limit(1)
-          .then(resultFind => {
-            return resultFind[0];
-          });
-        //Get last deviceData from mock empty
-        if (!lastDeviceData) {
-          lastDeviceData = {
-            device_id: packMap.tag.code,
-            message_date: null,
-            message_date_timestamp: null,
-            message_type: null,
-            last_communication: null,
-            last_communication_timestamp: null,
-            latitude: null,
-            longitude: null,
-            accuracy: null,
-            temperature: null,
-            seq_number: null,
-            battery: {
-              percentage: null,
-              voltage: null
-            },
-            message: null
-          };
-        }
-=======
         .map(async packMap => {
           
           let lastDeviceData = packMap.last_device_data;
@@ -104,7 +76,6 @@ async function getDeviceDictList() {
               message: null
             };
           }
->>>>>>> feature/fix-ws
 
           let dict = {
             deviceId: packMap.tag.code,
@@ -219,44 +190,26 @@ function requestUnsubscribe(optionsget) {
 
 // Start and manage the WebSocket
 function initWebSocket() {
-<<<<<<< HEAD
   client.on("connectFailed", async function(error) {
     logger.info("WebSocket Connect Failed: " + error.toString());
     await restartAfterMinutes(15);
-=======
-  client.on("connectFailed", function (error) {
-    //logger.info("WebSocket Connect Failed: " + error.toString());
->>>>>>> feature/fix-ws
   });
 
   client.on("connect", function (connection) {
     logger.info("WebSocket Client Connected");
 
-<<<<<<< HEAD
     connection.on("error", async function(error) {
-=======
-    connection.on("error", function (error) {
->>>>>>> feature/fix-ws
       logger.info("WebSocket Connection Error: " + error.toString());
       await restartAfterMinutes(10);
     });
 
-<<<<<<< HEAD
     connection.on("close", async function() {
-=======
-    connection.on("close", function () {
->>>>>>> feature/fix-ws
       connection.removeAllListeners();
       logger.info("WebSocket Echo-protocol Connection Closed");
       await restartAfterMinutes(10);
     });
 
-<<<<<<< HEAD
-    connection.on("message", async function(message) {
-      //console.log("message");
-=======
     connection.on("message", async function (message) {
->>>>>>> feature/fix-ws
       if (message.type === "utf8") {
         if (
           !message.utf8Data.includes("java") &&
@@ -274,15 +227,9 @@ function initWebSocket() {
           };
           Message.create(messageCollection);
 
-<<<<<<< HEAD
-          let deviceDict = deviceDictList.find(function(elem) {
-            return elem.deviceId == jsonMessage.src;
-          });
-=======
         let deviceDict = deviceDictList.find(function (elem) {
           return elem.deviceId == jsonMessage.src;
         });
->>>>>>> feature/fix-ws
 
           if (deviceDict) {
             let deviceData = deviceDict.lastDeviceData;
@@ -310,16 +257,9 @@ function initWebSocket() {
 const runWS = async () => {
   logger.info("Starting WS");
   await getDeviceDictList();
-<<<<<<< HEAD
   await unsubscribingDeviceIds(deviceDictList);
   await subscribingDeviceIds(deviceDictList);
   await initWebSocket();
-=======
-  logger.info(deviceDictList);
-  // await unsubscribingDeviceIds(deviceDictList);
-  // await subscribingDeviceIds(deviceDictList);
-  // await initWebSocket();
->>>>>>> feature/fix-ws
 };
 
 const restartAfterMinutes = async minutes => {
