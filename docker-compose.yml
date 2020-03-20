@@ -75,20 +75,20 @@ services:
     #   - mongo
     tty: true
 
-  qa-loka-api-job:
-   container_name: qa-loka-api-job
-   build:
-     context: loka-api-dm-job
-     dockerfile: Dockerfile
-   restart: always
-   # command: npm run start
-   ports:
-     - 8013
-   networks:
-     - db
-   # depends_on:
-   #   - mongo
-   tty: true
+  # qa-loka-api-job:
+  #  container_name: qa-loka-api-job
+  #  build:
+  #    context: loka-api-dm-job
+  #    dockerfile: Dockerfile
+  #  restart: always
+  #  # command: npm run start
+  #  ports:
+  #    - 8013
+  #  networks:
+  #    - db
+  #  # depends_on:
+  #  #   - mongo
+  #  tty: true
 
   qa-state-machine-job:
     container_name: qa-state-machine-job
@@ -105,20 +105,20 @@ services:
     #   - mongo
     tty: true
 
-  # qa-loka-websocket-job:
-  #   container_name: loka-websocket-job
-  #   build:
-  #     context: loka-websocket-job
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   # command: npm run start
-  #   ports:
-  #     - 8014
-  #   networks:
-  #     - db
-  #   # depends_on:
-  #   #   - mongo
-  #   tty: true
+  qa-loka-websocket-job:
+    container_name: loka-websocket-job
+    build:
+      context: loka-websocket-job
+      dockerfile: Dockerfile
+    restart: always
+    # command: npm run start
+    ports:
+      - 8014
+    networks:
+      - db
+    # depends_on:
+    #   - mongo
+    tty: true
 
 networks:
   front:
