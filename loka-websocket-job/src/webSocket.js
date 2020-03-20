@@ -18,6 +18,11 @@ var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 
 // Getting Dict DevicesIds x last DeviceData
 let deviceDictList;
+
+/**
+ * Gets all the device list and create the dicionary of device data:
+ * [{deviceId, lastDeviceData}]
+ */
 async function getDeviceDictList() {
   logger.info("aqui");
   await require("./db/db")();
@@ -25,53 +30,59 @@ async function getDeviceDictList() {
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
   //Getting all DeviceIds
-  let result = await Packing.find({}, { _id: 0, tag: 1 }).then(packFind => {
-    let packMapped = packFind
-      .filter(packFilter => {
-        return packFilter.tag.code != undefined;
-      })
-      .map(async packMap => {
-        //Get last deviceData from DB
-        let lastDeviceData = await DeviceData.find({
-          device_id: packMap.tag.code
+  let result = await Packing.find({'tag.code': '4071692'}, { _id: 0, tag: 1 })
+    .populate("last_device_data")
+    .then(packFind => {
+
+      let packMapped = packFind
+        .filter(packFilter => {
+          return packFilter.tag.code != undefined;
         })
-          .sort({ _id: -1 })
-          .limit(1)
-          .then(resultFind => {
-            return resultFind[0];
-          });
+        .map(async packMap => {
+          
+          let lastDeviceData = packMap.last_device_data;
 
-        //Get last deviceData from mock empty
-        if (!lastDeviceData) {
-          lastDeviceData = {
-            device_id: packMap.tag.code,
-            message_date: null,
-            message_date_timestamp: null,
-            message_type: null,
-            last_communication: null,
-            last_communication_timestamp: null,
-            latitude: null,
-            longitude: null,
-            accuracy: null,
-            temperature: null,
-            seq_number: null,
-            battery: {
-              percentage: null,
-              voltage: null
-            },
-            message: null
+          //Get last deviceData from DB
+          // let lastDeviceData = await DeviceData.find({
+          //   device_id: packMap.tag.code
+          // })
+          //   .sort({ _id: -1 })
+          //   .limit(1)
+          //   .then(resultFind => {
+          //     return resultFind[0];
+          //   });
+
+          //Get last deviceData from mock empty
+          if (lastDeviceData == null || lastDeviceData == undefined) {
+            lastDeviceData = {
+              device_id: packMap.tag.code,
+              message_date: null,
+              message_date_timestamp: null,
+              message_type: null,
+              last_communication: null,
+              last_communication_timestamp: null,
+              latitude: null,
+              longitude: null,
+              accuracy: null,
+              temperature: null,
+              seq_number: null,
+              battery: {
+                percentage: null,
+                voltage: null
+              },
+              message: null
+            };
+          }
+
+          let dict = {
+            deviceId: packMap.tag.code,
+            lastDeviceData: lastDeviceData
           };
-        }
+          return dict;
+        });
 
-        let dict = {
-          deviceId: packMap.tag.code,
-          lastDeviceData: lastDeviceData
-        };
-        return dict;
-      });
-
-    return packMapped;
-  });
+      return packMapped;
+    });
   deviceDictList = await Promise.all(result);
   return deviceDictList;
 }
@@ -100,21 +111,21 @@ async function subscribingDeviceIds(deviceDictList) {
 
 function requestSubscribe(optionsget) {
   return new Promise((resolve, reject) => {
-    var reqGet = https.request(optionsget, function(res) {
+    var reqGet = https.request(optionsget, function (res) {
       /*logger.info(
         "Response code on subscribing of device with id " +
           deviceDict.deviceId +
           ": " +
           res.statusCode
       );*/
-      res.on("data", function(d) {
+      res.on("data", function (d) {
         logger.info("GET result:\n" + d);
         resolve(d);
       });
     });
 
     reqGet.end();
-    reqGet.on("error", function(e) {
+    reqGet.on("error", function (e) {
       /*logger.info(
         "Error on subscribing of device with id " +
           deviceDict.deviceId +
@@ -147,21 +158,21 @@ async function unsubscribingDeviceIds(deviceDictList) {
 function requestUnsubscribe(optionsget) {
   return new Promise((resolve, reject) => {
     // do the GET request
-    var reqGet = https.request(optionsget, function(res) {
+    var reqGet = https.request(optionsget, function (res) {
       /*logger.info(
         "Response code on Unsubscribing of device with id " +
           deviceDict.deviceId +
           ": " +
           res.statusCode
       );*/
-      res.on("data", function(d) {
+      res.on("data", function (d) {
         logger.info("GET result:\n" + d);
         resolve(d);
       });
     });
 
     reqGet.end();
-    reqGet.on("error", function(e) {
+    reqGet.on("error", function (e) {
       /*logger.info(
         "Error on Unsubscribing of device with id " +
           deviceDict.deviceId +
@@ -176,25 +187,25 @@ function requestUnsubscribe(optionsget) {
 
 // Start and manage the WebSocket
 function initWebSocket() {
-  client.on("connectFailed", function(error) {
+  client.on("connectFailed", function (error) {
     //logger.info("WebSocket Connect Failed: " + error.toString());
   });
 
-  client.on("connect", function(connection) {
+  client.on("connect", function (connection) {
     logger.info("WebSocket Client Connected");
 
-    connection.on("error", function(error) {
+    connection.on("error", function (error) {
       logger.info("WebSocket Connection Error: " + error.toString());
       initWebSocket();
     });
 
-    connection.on("close", function() {
+    connection.on("close", function () {
       connection.removeAllListeners();
       logger.info("WebSocket Echo-protocol Connection Closed");
       initWebSocket();
     });
 
-    connection.on("message", async function(message) {
+    connection.on("message", async function (message) {
       if (message.type === "utf8") {
         //logger.info("WebSocket Received: '" + message.utf8Data + "'");
         //console.log(message);
@@ -207,7 +218,7 @@ function initWebSocket() {
         };
         Message.create(messageCollection);
 
-        let deviceDict = deviceDictList.find(function(elem) {
+        let deviceDict = deviceDictList.find(function (elem) {
           return elem.deviceId == jsonMessage.src;
         });
 
@@ -236,9 +247,9 @@ function initWebSocket() {
 const runWS = async () => {
   await getDeviceDictList();
   logger.info(deviceDictList);
-  await unsubscribingDeviceIds(deviceDictList);
-  await subscribingDeviceIds(deviceDictList);
-  await initWebSocket();
+  // await unsubscribingDeviceIds(deviceDictList);
+  // await subscribingDeviceIds(deviceDictList);
+  // await initWebSocket();
 };
 
 exports.runWS = runWS;
