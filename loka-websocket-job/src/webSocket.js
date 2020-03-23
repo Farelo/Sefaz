@@ -30,7 +30,7 @@ async function getDeviceDictList() {
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
   //Getting all DeviceIds
-  let result = await Packing.find({'tag.code': '4071692'}, { _id: 0, tag: 1 })
+  let result = await Packing.find({}, { _id: 0, tag: 1 })
     .populate("last_device_data")
     .then(packFind => {
 
@@ -97,7 +97,7 @@ async function subscribingDeviceIds(deviceDictList) {
     var optionsget = {
       host: "core.loka.systems",
       port: 443,
-      path: "/subscribe_terminal/" + deviceDict.deviceId,
+      path: ("/subscribe_terminal/" + deviceDict.deviceId).trim(),
       method: "GET",
       headers: { Authorization: "Bearer " + token }
     };
@@ -140,12 +140,14 @@ function requestSubscribe(optionsget) {
 
 // Unsubscribing Devices in Websocket
 async function unsubscribingDeviceIds(deviceDictList) {
+
   for (let index in deviceDictList) {
     deviceDict = deviceDictList[index];
+
     var optionsget = {
       host: "core.loka.systems",
       port: 443,
-      path: "/unsubscribe_terminal/" + deviceDict.deviceId,
+      path: ("/unsubscribe_terminal/" + deviceDict.deviceId).trim(),
       method: "GET",
       headers: { Authorization: "Bearer " + token }
     };
@@ -247,9 +249,9 @@ function initWebSocket() {
 const runWS = async () => {
   await getDeviceDictList();
   logger.info(deviceDictList);
-  // await unsubscribingDeviceIds(deviceDictList);
-  // await subscribingDeviceIds(deviceDictList);
-  // await initWebSocket();
+  await unsubscribingDeviceIds(deviceDictList);
+  await subscribingDeviceIds(deviceDictList);
+  await initWebSocket();
 };
 
 exports.runWS = runWS;
