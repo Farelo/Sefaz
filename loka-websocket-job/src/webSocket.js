@@ -100,7 +100,7 @@ async function subscribingDeviceIds(deviceDictList) {
     var optionsget = {
       host: "core.loka.systems",
       port: 443,
-      path: "/subscribe_terminal/" + deviceDict.deviceId,
+      path: ("/subscribe_terminal/" + deviceDict.deviceId).trim(),
       method: "GET",
       headers: { Authorization: "Bearer " + token }
     };
@@ -143,12 +143,14 @@ function requestSubscribe(optionsget) {
 
 // Unsubscribing Devices in Websocket
 async function unsubscribingDeviceIds(deviceDictList) {
+
   for (let index in deviceDictList) {
     deviceDict = deviceDictList[index];
+
     var optionsget = {
       host: "core.loka.systems",
       port: 443,
-      path: "/unsubscribe_terminal/" + deviceDict.deviceId,
+      path: ("/unsubscribe_terminal/" + deviceDict.deviceId).trim(),
       method: "GET",
       headers: { Authorization: "Bearer " + token }
     };
