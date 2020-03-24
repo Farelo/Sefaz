@@ -4,7 +4,7 @@
   "description": "Serviço de busca de mensagens dos devices através do websocket da LOKA",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* nodemon src/index.js",
+    "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* nodemon --max_old_space_size=4096 src/index.js",
     "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* node --stack-size=3072 src/index.js"
   },
   "author": "Ricardo Robson",
