@@ -224,7 +224,7 @@ function initWebSocket() {
 
           var actualDate = (new Date()).getTime()
           // logger.info(`WebSocket: ${actualDate} ${lastMessageTime} ${actualDate - lastMessageTime}  ${restartFunctionEnabled}`);
-          // logger.info("WebSocket Received: '" + message.utf8Data + "'");
+          logger.info("WebSocket Received: '" + message.utf8Data + "'");
 
           let jsonMessage = JSON.parse(message.utf8Data);
 
