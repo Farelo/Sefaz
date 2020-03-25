@@ -275,7 +275,7 @@ const runWS = async () => {
   //logger.info("restartFunctionEnabled: false");
 
   await getDeviceDictList();
-  await unsubscribingDeviceIds(deviceDictList);
+  //await unsubscribingDeviceIds(deviceDictList);
   await subscribingDeviceIds(deviceDictList);
 
   lastMessageTime = (new Date()).getTime();
