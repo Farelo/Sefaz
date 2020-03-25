@@ -108,7 +108,8 @@ async function subscribingDeviceIds(deviceDictList) {
     };
 
     // do the GET request
-    logger.info("[Subscribe]: " + deviceDict.deviceId);
+    //logger.info("[Subscribe]: " + deviceDict.deviceId);
+    logger.info(`[Subscribe ${index}]: ${deviceDict.deviceId}`);
     await requestSubscribe(optionsget);
     //});
   }
@@ -157,7 +158,8 @@ async function unsubscribingDeviceIds(deviceDictList) {
       headers: { Authorization: "Bearer " + token }
     };
     // do the GET request
-    logger.info("[Unsubscribe]: " + deviceDict.deviceId);
+    logger.info(`[Unsubscribe ${index}]: ${deviceDict.deviceId}`);
+
     await requestUnsubscribe(optionsget);
   }
 }
@@ -275,7 +277,7 @@ const runWS = async () => {
   //logger.info("restartFunctionEnabled: false");
 
   await getDeviceDictList();
-  //await unsubscribingDeviceIds(deviceDictList);
+  await unsubscribingDeviceIds(deviceDictList);
   await subscribingDeviceIds(deviceDictList);
 
   lastMessageTime = (new Date()).getTime();
