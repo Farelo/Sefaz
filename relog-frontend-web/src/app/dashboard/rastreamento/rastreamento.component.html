@@ -42,8 +42,8 @@
         <section>
           <div>
             <label class="input-label mt-0">Empresas Vinculadas:</label>
-            <ng-select [(ngModel)]="selectedLinkedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
-              bindLabel="company.name" placeholder="Escolha um ponto de controle">
+            <ng-select [(ngModel)]="selectedLinkedCompany" [items]="listOfLinkedCompanies" (change)="companyChanged($event)"
+              bindLabel="company.name" bindValue="_id" placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
               </ng-template>
@@ -56,7 +56,7 @@
           <div>
             <label class="input-label">Tipo de Ponto de Controle:</label>
             <ng-select [(ngModel)]="selectedControlPointType" [items]="listOfControlPointType" (change)="companyChanged($event)"
-              bindLabel="company.name" placeholder="Escolha um ponto de controle">
+              bindLabel="company.name" bindValue="_id" placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
               </ng-template>
@@ -68,8 +68,8 @@
 
           <div>
             <label class="input-label">Ponto de Controle:</label>
-            <ng-select [(ngModel)]="selectedControlPoint" [items]="listOfControlPoint" (change)="companyChanged($event)"
-              bindLabel="company.name" placeholder="Escolha um ponto de controle">
+            <ng-select [(ngModel)]="selectedControlPoint" [items]="listOfControlPoints" (change)="companyChanged($event)"
+              bindLabel="name" bindValue="_id" placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
               </ng-template>
@@ -87,7 +87,7 @@
           <div>
             <label class="input-label  mt-0" for="selectCode">Família</label>
             <ng-select id="selectCode" [(ngModel)]="selectedFamily" [items]="listOfFamilies"
-              (clear)="onEquipmentSelectClear()" (change)="loadPackings(); loadSerialsOfSelectedEquipment()"
+              (clear)="onEquipmentSelectClear()" (change)="loadSerialsOfSelectedEquipment()"
               bindLabel="code" placeholder="Selecione um Equipamento">
               <ng-template ng-label-tmp let-item="item">
                 {{item.code}}
@@ -102,7 +102,7 @@
 
           <div>
             <label class="input-label">Serial</label>
-            <ng-select [(ngModel)]="selectedSerial" (clear)="loadPackings()" (change)="loadPackings()"
+            <ng-select [(ngModel)]="selectedSerial"
               [items]="listOfSerials" bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial"
               [disabled]="!selectedFamily">
               <ng-template ng-label-tmp let-item="item">
@@ -116,14 +116,13 @@
 
           <div>
             <label class="input-label">Status</label>
-            <ng-select [(ngModel)]="selectedSerial" (clear)="loadPackings()" (change)="loadPackings()"
-              [items]="listOfSerials" bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial"
-              [disabled]="!selectedFamily">
+            <ng-select [(ngModel)]="selectedStatus" 
+              [items]="statusOptions" bindLabel="label" bindValue="value" placeholder="Selecione um Serial">
               <ng-template ng-label-tmp let-item="item">
-                {{item.serial}}
+                {{item.label}}
               </ng-template>
               <ng-template ng-option-tmp let-item="item">
-                <div>{{ item.serial }}</div>
+                <div>{{ item.label }}</div>
               </ng-template>
             </ng-select>
           </div>

@@ -3,7 +3,7 @@ import { ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService, PackingService, DepartmentService, FamiliesService, DevicesService, ControlPointsService } from '../../servicos/index.service';
+import { AuthenticationService, PackingService, DepartmentService, FamiliesService, DevicesService, ControlPointsService, ControlPointTypesService } from '../../servicos/index.service';
 import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
@@ -65,35 +65,32 @@ export class RastreamentoComponent implements OnInit {
    * DataPicker
    */
   datePickerConfig = new BsDaterangepickerConfig(); //Configurations
-  public todayDate: Date;   // Today date
-  public rangeDate: any;
-  public lastHours: any;
+  public todayDate: Date = null;   // Today date
+  public rangeDate: any = null;
+  public lastHours: any = null;
   public lastHoursOptions: any[] = [];
-  // public initialDate: Date; // Initial date
-  // public finalDate: Date;   // Initial date
+  public statusOptions: any[] = [];
 
+  //Control point filters
   public selectedLinkedCompany: any = null;
-  public listOfCompanies: any = [];
+  public listOfLinkedCompanies: any = [];
 
+  public selectedControlPointType: any = null;
+  public listOfControlPointType: any = null;
 
+  public selectedControlPoint: any = null;
+  public listOfControlPoints: any = [];
   
-
+  //Packing filters
+  public selectedFamily: any = null;
   public listOfFamilies: any = [];
   public auxListOfFamilies: any = [];
 
-
-  //selects
-  public listOfSerials: any[];
-  public codes: any[];
-
-  //Bind dos selects
-  public selectedCompany: any = null;
-  public selectedFamily: any = null;
   public selectedSerial: any = null;
+  public listOfSerials: any[];
 
   //array de pinos
   public plotedPackings: any[] = [];
-  public listOfControlPoints: any = [];
 
   //show markers
   public showControlledPlants: boolean = false;
@@ -106,13 +103,12 @@ export class RastreamentoComponent implements OnInit {
   public permanence: Pagination = new Pagination({ meta: { page: 1 } });
 
   constructor(
-    private ref: ChangeDetectorRef,
     private controlPointsService: ControlPointsService,
-    private departmentService: DepartmentService,
     private familyService: FamiliesService,
     private authenticationService: AuthenticationService,
     private deviceService: DevicesService,
     private packingService: PackingService,
+    private controlPointTypesService: ControlPointTypesService,
     private mapsService: MapsService,
     private modalService: NgbModal,
     private auth: AuthenticationService,
@@ -135,8 +131,10 @@ export class RastreamentoComponent implements OnInit {
 
     this.getPlantRadius();
     this.fillHours();
-    this.loadCompanies();
+    this.loadLinkedCompanies();
+    this.loadControlPointTypes();
     this.loadControlPoints();
+    this.fillStates();
   }
 
   public mMap: any;
@@ -166,6 +164,23 @@ export class RastreamentoComponent implements OnInit {
       { label: '10h', value: '10' },
       { label: '11h', value: '11' },
       { label: '12h', value: '12' },
+    ]
+  }
+
+  fillStates() {
+    this.statusOptions = [
+      { label: 'Viagem Perdida', value: 'viagem_perdida' },
+      { label: 'Local Incorreto', value: 'local_incorreto' },
+      { label: 'Bateria Baixa', value: 'bateria_baixa' },
+      { label: 'Viagem Atrasada', value: 'viagem_atrasada' },
+      { label: 'Sem Sinal', value: 'sem_sinal' },
+      { label: 'Perdida', value: 'perdida' },
+      { label: 'Análise', value: 'analise' },
+      { label: 'Viagem em prazo', value: 'viagem_em_prazo' },
+      { label: 'Local Correto', value: 'local_correto' },
+      { label: 'Tempo de Permanência Excedido', value: 'tempo_de_permanencia_excedido' },
+      { label: 'Desabilitada com sinal', value: 'desabilitada_com_sinal' },
+      { label: 'Desabilitada sem sinal', value: 'desabilitada_sem_sinal' },
     ]
   }
 
@@ -222,7 +237,7 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Carrega as empresas no select de empresa
    */
-  loadCompanies() {
+  loadLinkedCompanies() {
 
     this.familyService.getAllFamilies().subscribe(result => {
 
@@ -231,22 +246,33 @@ export class RastreamentoComponent implements OnInit {
 
       // console.log('..');
       // console.log(result);
-      let auxListOfCompanies = [];
+      let auxListOfLinkedCompanies = [];
 
-      this.listOfCompanies = result.map(elem => {
-        if (auxListOfCompanies.length < 1) {
-          auxListOfCompanies.push(elem.company);
+      this.listOfLinkedCompanies = result.map(elem => {
+        if (auxListOfLinkedCompanies.length < 1) {
+          auxListOfLinkedCompanies.push(elem.company);
         } else {
-          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1)
-            auxListOfCompanies.push(elem.company);
+          if (auxListOfLinkedCompanies.map(e => e._id).indexOf(elem.company._id) === -1)
+            auxListOfLinkedCompanies.push(elem.company);
         }
       });
 
-      // console.log(auxListOfCompanies);
+      // console.log(auxListOfLinkedCompanies);
 
-      this.listOfCompanies = auxListOfCompanies;
+      this.listOfLinkedCompanies = auxListOfLinkedCompanies;
 
     }, err => console.error(err));
+  }
+
+  loadControlPointTypes() {
+
+    this.controlPointTypesService
+      .getAllTypes()
+      .subscribe(data => {
+
+        this.listOfControlPointType = data;
+      },
+        err => { console.log(err) });
   }
 
   public listOfCircleControlPoints: any = [];
@@ -255,10 +281,8 @@ export class RastreamentoComponent implements OnInit {
   loadControlPoints() {
 
     this.controlPointsService.getAllControlPoint().subscribe(result => {
-      // this.listOfControlPoints = result.map(elem => {
-      //   elem.position = (new google.maps.LatLng(elem.lat, elem.lng));
-      //   return elem;
-      // });
+      
+      this.listOfControlPoints = result
 
       this.listOfCircleControlPoints = result
         .filter(elem => elem.geofence.type == 'c')
@@ -340,21 +364,56 @@ export class RastreamentoComponent implements OnInit {
   requestFilteredResults() {
 
     // console.log('.');
+    let param = {
+      date: null,
+      start_date: null,
+      end_date: null,
+      last_hours: null,
+      company_type: null,
+      company_id: null,
+      control_point_type: null,
+      control_point_id: null,
+      family_id: null,
+      serial: null
+    };
 
-    let cp_id = this.selectedCompany !== null ? this.selectedCompany._id : null;
-    let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
-    let serial_id = this.selectedSerial !== null ? this.selectedSerial : null;
+    console.log(this.todayDate)
+    console.log(this.rangeDate)
+    console.log(this.lastHours)
+    console.log(this.selectedLinkedCompany)
+    console.log(this.selectedControlPointType)
+    console.log(this.selectedControlPoint)
+    console.log(this.selectedFamily)
+    console.log(this.selectedSerial)
 
-    // console.log('this.selectedCompany');
-    // console.log(this.selectedCompany);
 
-    // console.log('this.selectedCompany');
-    // console.log(this.selectedFamily);
+    // **********************
+    // Date section
+    if (this.todayDate !== null)
+      param.date = this.todayDate
 
-    // console.log('this.selectedSerial');
-    // console.log(this.selectedSerial);
+    if (this.rangeDate !== null) {
+      param.start_date = this.rangeDate[0]
+      param.end_date = this.rangeDate[1]
+    }
 
-    this.deviceService.getDeviceData(cp_id, family_id, serial_id).subscribe((result: any[]) => {
+    if (this.lastHours !== null)
+      param.last_hours = this.lastHours
+
+    // **********************
+    // company section
+    param.company_id = this.selectedLinkedCompany        // Linked company
+    param.control_point_type = this.selectedControlPointType        // Control point type
+    param.control_point_id = this.selectedControlPoint; // Control point
+
+    // **********************
+    // packing section
+    param.family_id = this.selectedFamily._id;     // Family
+    param.serial = this.selectedSerial;     // Serial
+
+    console.log(param);
+
+    this.deviceService.getHistoricalDeviceData(param).subscribe((result: any[]) => {
 
       this.plotedPackings = result.filter(elem => {
         if (elem.last_device_data)

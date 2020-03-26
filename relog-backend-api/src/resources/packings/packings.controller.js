@@ -235,7 +235,7 @@ exports.control_point_geolocation = async (req, res) => {
         company_id: req.query.company_id ? req.query.company_id : null,
         control_point_type: req.query.control_point_type ? req.query.control_point_type : null,
         control_point_id: req.query.control_point_id ? req.query.control_point_id : null,
-        family: req.query.family ? req.query.family : null,
+        family_id: req.query.family_id ? req.query.family_id : null,
         serial: req.query.serial ? req.query.serial : null,
     }
 
