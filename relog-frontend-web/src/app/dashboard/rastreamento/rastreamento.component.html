@@ -14,25 +14,21 @@
         <!-- Datas -->
         <section>
           <label class="input-label">Data:</label>
-          <!-- (ngModelChange)="onFirstDateChange($event)" -->
           <input id="dateToday" type="text" placeholder="Data" class="form-control input-date-picker" bsDatepicker
-            [(ngModel)]="todayDate" [bsConfig]="datePickerConfig" style="cursor: pointer;" autocomplete="off">
+            [(ngModel)]="todayDate" (ngModelChange)="dateChange('todayDate')" [bsConfig]="datePickerConfig"
+            style="cursor: pointer;" autocomplete="off">
 
           <label class="input-label">Período:</label>
-          <!-- (ngModelChange)="onFirstDateChange($event)" -->
-          <input id="dateToday" type="text" placeholder="Data" class="form-control input-date-picker" bsDatepicker
-            [(ngModel)]="todayDate" [bsConfig]="datePickerConfig" style="cursor: pointer;" autocomplete="off">
+          <input id="rangeDate" type="text" placeholder="Período de Datas" class="form-control input-date-picker" bsDaterangepicker
+            [(ngModel)]="rangeDate" (ngModelChange)="dateChange('rangeDate')" [bsConfig]="datePickerConfig"
+            style="cursor: pointer;" autocomplete="off">
 
           <div class="input-label" style="display: flex; align-items: center;">
             <label style="margin: 0px;" class="mr-1">Últimas:</label>
-            <!-- (ngModelChange)="onFirstDateChange($event)" -->
-            <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
-              bindLabel="company.name" style="width: 60px; display: inline-block;">
+            <ng-select [(ngModel)]="lastHours" [items]="lastHoursOptions" (ngModelChange)="dateChange('lastHours')"
+              bindLabel="label" bindValue="value" style="width: 80px; display: inline-block;">
               <ng-template ng-label-tmp let-item="item">
-                {{item.name}}
-              </ng-template>
-              <ng-template ng-option-tmp let-item="item">
-                <div> {{item.name}} </div>
+                {{item.label}}
               </ng-template>
             </ng-select>
             <label style="margin: 0px;" class="ml-1"> horas</label>
@@ -40,12 +36,13 @@
         </section>
 
         <hr>
-
+        
+        <!-- *************************************** -->
         <!-- Sessão de filtros de pontos de controle -->
         <section>
           <div>
             <label class="input-label mt-0">Empresas Vinculadas:</label>
-            <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
+            <ng-select [(ngModel)]="selectedLinkedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
               bindLabel="company.name" placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
@@ -58,7 +55,7 @@
 
           <div>
             <label class="input-label">Tipo de Ponto de Controle:</label>
-            <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
+            <ng-select [(ngModel)]="selectedControlPointType" [items]="listOfControlPointType" (change)="companyChanged($event)"
               bindLabel="company.name" placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
@@ -71,7 +68,7 @@
 
           <div>
             <label class="input-label">Ponto de Controle:</label>
-            <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)"
+            <ng-select [(ngModel)]="selectedControlPoint" [items]="listOfControlPoint" (change)="companyChanged($event)"
               bindLabel="company.name" placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
@@ -133,6 +130,10 @@
         </section>
 
         <hr>
+
+        <div>
+          <button (click)="requestFilteredResults()" class="botao-registrar">Filtrar</button>
+        </div>
 
         <!-- Sessão de exibição -->
         <section>

@@ -167,6 +167,7 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
 
 exports.control_point_geolocation = async (query) => {
     try {
+        
         let date_conditions = {}
         if ((query.start_date != null && query.end_date)) {
 
@@ -176,10 +177,10 @@ exports.control_point_geolocation = async (query) => {
             }
 
         } else if (query.date != null) {
-
+            let date = new Date()
             date_conditions = {
                 $gte: new Date(query.date),
-                $lt: new Date(date2.setDate(query.date + 1)),
+                $lt: new Date(date.setDate(query.date + 1)),
             }
 
         } else if (query.last_hours) {
@@ -191,6 +192,7 @@ exports.control_point_geolocation = async (query) => {
             }
         }
         
+
         let event_record_conditions = {
             type: 'inbound'
         }
@@ -216,10 +218,16 @@ exports.control_point_geolocation = async (query) => {
             event_record_conditions = { control_point: { $in: control_points } }
         }
 
+        
         if (!_.isEmpty(date_conditions)) {
             event_record_conditions['created_at'] = date_conditions
         }
 
+        console.log('*****************');
+        console.log(query);
+        console.log(date_conditions);
+        console.log(event_record_conditions);
+        
         let event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions)
 
         if (query.family_id != null || query.serial != null) {

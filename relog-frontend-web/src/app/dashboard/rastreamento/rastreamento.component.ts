@@ -66,8 +66,21 @@ export class RastreamentoComponent implements OnInit {
    */
   datePickerConfig = new BsDaterangepickerConfig(); //Configurations
   public todayDate: Date;   // Today date
-  public initialDate: Date; // Initial date
-  public finalDate: Date;   // Initial date
+  public rangeDate: any;
+  public lastHours: any;
+  public lastHoursOptions: any[] = [];
+  // public initialDate: Date; // Initial date
+  // public finalDate: Date;   // Initial date
+
+  public selectedLinkedCompany: any = null;
+  public listOfCompanies: any = [];
+
+
+  
+
+  public listOfFamilies: any = [];
+  public auxListOfFamilies: any = [];
+
 
   //selects
   public listOfSerials: any[];
@@ -92,12 +105,6 @@ export class RastreamentoComponent implements OnInit {
   public settings: any = {};
   public permanence: Pagination = new Pagination({ meta: { page: 1 } });
 
-  //...
-  public listOfFamilies: any = [];
-  public auxListOfFamilies: any = [];
-
-  public listOfCompanies: any = [];
-
   constructor(
     private ref: ChangeDetectorRef,
     private controlPointsService: ControlPointsService,
@@ -116,8 +123,8 @@ export class RastreamentoComponent implements OnInit {
 
     //Initialize 7 days before now
     let sub = new Date().getTime() - (7 * 24 * 60 * 60 * 1000);
-    this.initialDate = new Date(sub);
-    this.finalDate = new Date();
+    // this.initialDate = new Date(sub);
+    // this.finalDate = new Date();
 
     this.datePickerConfig.showWeekNumbers = false;
     this.datePickerConfig.displayMonths = 1;
@@ -127,6 +134,7 @@ export class RastreamentoComponent implements OnInit {
   ngOnInit() {
 
     this.getPlantRadius();
+    this.fillHours();
     this.loadCompanies();
     this.loadControlPoints();
   }
@@ -136,7 +144,6 @@ export class RastreamentoComponent implements OnInit {
 
     this.zoom = 14;
     this.mMap = map;
-    this.loadPackings();
   }
 
 
@@ -144,6 +151,64 @@ export class RastreamentoComponent implements OnInit {
     this.center = { lat: event.lat, lng: event.lng };
     this.zoom = 14;
   }
+
+  fillHours() {
+    this.lastHoursOptions = [
+      { label: '1h', value: '1' },
+      { label: '2h', value: '2' },
+      { label: '3h', value: '3' },
+      { label: '4h', value: '4' },
+      { label: '5h', value: '5' },
+      { label: '6h', value: '6' },
+      { label: '7h', value: '7' },
+      { label: '8h', value: '8' },
+      { label: '9h', value: '9' },
+      { label: '10h', value: '10' },
+      { label: '11h', value: '11' },
+      { label: '12h', value: '12' },
+    ]
+  }
+
+  dateChange(type) {
+    /**
+     * todayDate
+     * rangeDate
+     * lastHours
+     */
+
+    if (type == 'todayDate') {
+      this.rangeDate = null;
+      this.lastHours = null;
+    }
+
+    if (type == 'rangeDate') {
+      this.todayDate = null;
+      this.lastHours = null;
+    }
+
+    if (type == 'lastHours') {
+      this.todayDate = null;
+      this.rangeDate = null;
+    }
+
+    console.log(this.todayDate)
+    console.log(this.rangeDate)
+    console.log(this.lastHours)
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /**
    * Recupera o radius das plantas, configurado pelo usuário.
@@ -265,14 +330,14 @@ export class RastreamentoComponent implements OnInit {
     } else {
       this.listOfFamilies = this.auxListOfFamilies;
     }
-
-    this.loadPackings();
   }
+
 
   /**
    * The filter has changed
+   * Renamed from loadPackings()
    */
-  loadPackings() {
+  requestFilteredResults() {
 
     // console.log('.');
 
@@ -366,7 +431,7 @@ export class RastreamentoComponent implements OnInit {
   onEquipmentSelectClear() {
 
     this.selectedSerial = null;
-    this.loadPackings();
+    //this.loadPackings();
   }
 
   public packingsByPlant: any[] = [];
