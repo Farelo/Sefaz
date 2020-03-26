@@ -394,7 +394,7 @@ export class RastreamentoComponent implements OnInit {
 
     if (this.rangeDate !== null) {
       param.start_date = this.rangeDate[0]
-      param.end_date = this.rangeDate[1]
+      param.end_date = this.rangeDate[1] 
     }
 
     if (this.lastHours !== null)
