@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NguiMapModule } from '@ngui/map';
 import { RastreamentoComponent } from './rastreamento.component';
 import { RastreamentoRoutingModule } from './rastreamento.routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { constants } from './../../../environments/constants';
@@ -19,6 +19,7 @@ import { SidebarModule } from 'ng-sidebar';
     ApplicationPipes,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     NgSelectModule,
     RastreamentoRoutingModule,
     NgxPaginationModule,

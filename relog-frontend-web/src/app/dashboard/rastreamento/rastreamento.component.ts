@@ -11,6 +11,7 @@ import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
 import './markercluster';
 import { Spiralize } from './Spiralize';
+import * as moment from 'moment';
 
 declare var $: any;
 declare var google: any;
@@ -74,17 +75,19 @@ export class RastreamentoComponent implements OnInit {
   //Control point filters
   public selectedLinkedCompany: any = null;
   public listOfLinkedCompanies: any = [];
+  public listOfLinkedCompaniesOriginal: any = [];
 
   public selectedControlPointType: any = null;
+  public listOfControlPointsOriginal: any[] = [];
   public listOfControlPointType: any = null;
 
   public selectedControlPoint: any = null;
   public listOfControlPoints: any = [];
-  
+
   //Packing filters
   public selectedFamily: any = null;
   public listOfFamilies: any = [];
-  public auxListOfFamilies: any = [];
+  public listOfFamiliesOriginal: any = [];
 
   public selectedSerial: any = null;
   public listOfSerials: any[];
@@ -184,12 +187,12 @@ export class RastreamentoComponent implements OnInit {
     ]
   }
 
+  /**
+   * Some Date field was modified. 
+   * This methods keeps the fileds that was changed and clear the others
+   * @param type Date field changed
+   */
   dateChange(type) {
-    /**
-     * todayDate
-     * rangeDate
-     * lastHours
-     */
 
     if (type == 'todayDate') {
       this.rangeDate = null;
@@ -205,84 +208,17 @@ export class RastreamentoComponent implements OnInit {
       this.todayDate = null;
       this.rangeDate = null;
     }
-
-    console.log(this.todayDate)
-    console.log(this.rangeDate)
-    console.log(this.lastHours)
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /**
-   * Recupera o radius das plantas, configurado pelo usuário.
-   */
-  getPlantRadius() {
-
-    let currentSetting = this.authenticationService.currentSettings();
-    this.settings['range_radius'] = currentSetting.range_radius;
   }
 
   /**
-   * Carrega as empresas no select de empresa
+   * Loads all the control points in the select component and adds it's geofence on the map
    */
-  loadLinkedCompanies() {
-
-    this.familyService.getAllFamilies().subscribe(result => {
-
-      this.listOfFamilies = result;
-      this.auxListOfFamilies = result;
-
-      // console.log('..');
-      // console.log(result);
-      let auxListOfLinkedCompanies = [];
-
-      this.listOfLinkedCompanies = result.map(elem => {
-        if (auxListOfLinkedCompanies.length < 1) {
-          auxListOfLinkedCompanies.push(elem.company);
-        } else {
-          if (auxListOfLinkedCompanies.map(e => e._id).indexOf(elem.company._id) === -1)
-            auxListOfLinkedCompanies.push(elem.company);
-        }
-      });
-
-      // console.log(auxListOfLinkedCompanies);
-
-      this.listOfLinkedCompanies = auxListOfLinkedCompanies;
-
-    }, err => console.error(err));
-  }
-
-  loadControlPointTypes() {
-
-    this.controlPointTypesService
-      .getAllTypes()
-      .subscribe(data => {
-
-        this.listOfControlPointType = data;
-      },
-        err => { console.log(err) });
-  }
-
-  public listOfCircleControlPoints: any = [];
-  public listOfPolygonControlPoints: any = [];
-
   loadControlPoints() {
 
     this.controlPointsService.getAllControlPoint().subscribe(result => {
-      
-      this.listOfControlPoints = result
+
+      this.listOfControlPointsOriginal = result;
+      this.listOfControlPoints = this.listOfControlPointsOriginal;
 
       this.listOfCircleControlPoints = result
         .filter(elem => elem.geofence.type == 'c')
@@ -306,28 +242,105 @@ export class RastreamentoComponent implements OnInit {
           return elem;
         });
 
-      // console.log(this.listOfCircleControlPoints);
-      // console.log(this.listOfPolygonControlPoints);
-
     }, err => console.error(err));
   }
 
   /**
-   * Carrega todos os pacotes do mapa
+   * A control point type was selected.
+   * This method filter the control points available to select.
+   * @param event Control point type object
    */
-  public spiralPath: google.maps.Polyline = new google.maps.Polyline();
-  public spiralPoints: any = [];
-  public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
-  public mSpiralize: Spiralize;
+  controlPointTypeChanged(event: any) {
+    if (event) {
+      this.listOfControlPoints = this.listOfControlPointsOriginal.filter(elem => {
+        return elem.type._id == event._id;
+      });
+    } else {
+      this.listOfControlPoints = this.listOfControlPointsOriginal;
+    }
+  }
 
+  /**
+   * A Linked Company was select. 
+   * This method exibits only the families owned by this company
+   * @param event The Company object
+   */
+  linkedCompanyChanged(event: any) {
+
+    if (event) {
+      this.listOfFamilies = this.listOfFamiliesOriginal.filter(elem => {
+        return elem.company._id == event._id;
+      });
+    } else {
+      this.listOfFamilies = this.listOfFamiliesOriginal;
+    }
+  }
+
+  /**
+   * Carrega as famílias e carregas unicamente empresas no select de Empresa Vinculada
+   */
+  loadLinkedCompanies() {
+
+    this.familyService.getAllFamilies().subscribe(result => {
+
+      this.listOfFamilies = result;
+      this.listOfFamiliesOriginal = result;
+
+      this.listOfLinkedCompanies = result.map(elem => {
+        if (this.listOfLinkedCompaniesOriginal.length < 1) {
+          this.listOfLinkedCompaniesOriginal.push(elem.company);
+        } else {
+          if (this.listOfLinkedCompaniesOriginal.map(e => e._id).indexOf(elem.company._id) === -1)
+            this.listOfLinkedCompaniesOriginal.push(elem.company);
+        }
+      });
+
+      // console.log(listOfLinkedCompaniesOriginal);
+
+      this.listOfLinkedCompanies = this.listOfLinkedCompaniesOriginal;
+
+    }, err => console.error(err));
+  }
+
+  familyChanged(event: any) {
+
+    console.log(event)
+    console.log(this.selectedLinkedCompany)
+
+    if (event) {
+      this.selectedLinkedCompany = event.company;
+    } else {
+      this.listOfFamilies = this.listOfFamiliesOriginal;
+    }
+
+    // if(this.selectedLinkedCompany == null){
+
+    //   this.selectedLinkedCompany = this.listOfFamiliesOriginal.find(elem => {
+    //     return elem._id = event.company._id;
+    //   })
+    // } else{
+
+    // }
+
+    console.log(this.selectedLinkedCompany)
+
+    this.loadSerialsOfSelectedEquipment();
+  }
+
+
+  /**
+   * Equipment select was cleared.
+   * Clear e disable the Serial Select.
+   */
+  onEquipmentSelectClear() {
+
+    this.selectedSerial = null;
+  }
 
   /**
    * An equipment was selected. This method fill the Serial Select.
    */
   loadSerialsOfSelectedEquipment() {
-
-    // console.log('loadSerialsOfSelectedEquipment');
-    // console.log(this.selectedFamily);
 
     if (this.selectedFamily) {
       //this.loadPackings();
@@ -344,17 +357,41 @@ export class RastreamentoComponent implements OnInit {
     }
   }
 
-  companyChanged(event: any) {
-    // console.log(event);
 
-    if (event) {
-      this.listOfFamilies = this.auxListOfFamilies.filter(elem => {
-        return elem.company._id == event._id;
-      });
-    } else {
-      this.listOfFamilies = this.auxListOfFamilies;
-    }
+
+
+
+  /**
+   * Recupera o radius das plantas, configurado pelo usuário.
+   */
+  getPlantRadius() {
+
+    let currentSetting = this.authenticationService.currentSettings();
+    this.settings['range_radius'] = currentSetting.range_radius;
   }
+
+  loadControlPointTypes() {
+
+    this.controlPointTypesService
+      .getAllTypes()
+      .subscribe(data => {
+
+        this.listOfControlPointType = data;
+      },
+        err => { console.log(err) });
+  }
+
+  public listOfCircleControlPoints: any = [];
+  public listOfPolygonControlPoints: any = [];
+
+
+  /**
+   * Carrega todos os pacotes do mapa
+   */
+  public spiralPath: google.maps.Polyline = new google.maps.Polyline();
+  public spiralPoints: any = [];
+  public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
+  public mSpiralize: Spiralize;
 
 
   /**
@@ -365,16 +402,15 @@ export class RastreamentoComponent implements OnInit {
 
     // console.log('.');
     let param = {
-      date: null,
-      start_date: null,
-      end_date: null,
-      last_hours: null,
-      company_type: null,
-      company_id: null,
-      control_point_type: null,
-      control_point_id: null,
-      family_id: null,
-      serial: null
+      // date: null,
+      // start_date: null,
+      // end_date: null,
+      // last_hours: null,
+      // control_point_type: null,
+      // control_point_id: null,
+      // company_id: null,
+      // family_id: null,
+      // serial: null
     };
 
     console.log(this.todayDate)
@@ -390,26 +426,34 @@ export class RastreamentoComponent implements OnInit {
     // **********************
     // Date section
     if (this.todayDate !== null)
-      param.date = this.todayDate
+      param['date'] = moment(this.todayDate).format("YYYY-MM-DD-")
 
     if (this.rangeDate !== null) {
-      param.start_date = this.rangeDate[0]
-      param.end_date = this.rangeDate[1] 
+      param['start_date'] = moment(this.rangeDate[0]).format("YYYY-MM-DD")
+      param['end_date'] = moment(this.rangeDate[1]).format("YYYY-MM-DD")
     }
 
     if (this.lastHours !== null)
-      param.last_hours = this.lastHours
+      param['last_hours'] = this.lastHours
 
     // **********************
     // company section
-    param.company_id = this.selectedLinkedCompany        // Linked company
-    param.control_point_type = this.selectedControlPointType        // Control point type
-    param.control_point_id = this.selectedControlPoint; // Control point
+    if (this.selectedLinkedCompany !== null)
+      param['company_id'] = this.selectedLinkedCompany._id        // Linked company
+
+    if (this.selectedControlPointType !== null)
+      param['control_point_type'] = this.selectedControlPointType        // Control point type
+
+    if (this.selectedControlPoint !== null)
+      param['control_point_id'] = this.selectedControlPoint; // Control point
 
     // **********************
     // packing section
-    param.family_id = this.selectedFamily._id;     // Family
-    param.serial = this.selectedSerial;     // Serial
+    if (this.selectedFamily !== null)
+      param['family_id'] = this.selectedFamily ? this.selectedFamily._id : null;     // Family
+
+    if (this.selectedSerial !== null)
+      param['serial'] = this.selectedSerial;     // Serial
 
     console.log(param);
 
@@ -481,16 +525,6 @@ export class RastreamentoComponent implements OnInit {
 
   filterChanged() {
 
-  }
-
-  /**
-   * Equipment select was cleared.
-   * Clear e disable the Serial Select.
-   */
-  onEquipmentSelectClear() {
-
-    this.selectedSerial = null;
-    //this.loadPackings();
   }
 
   public packingsByPlant: any[] = [];

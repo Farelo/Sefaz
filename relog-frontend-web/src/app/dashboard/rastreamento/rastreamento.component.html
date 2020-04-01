@@ -41,21 +41,8 @@
         <!-- Sessão de filtros de pontos de controle -->
         <section>
           <div>
-            <label class="input-label mt-0">Empresas Vinculadas:</label>
-            <ng-select [(ngModel)]="selectedLinkedCompany" [items]="listOfLinkedCompanies" (change)="companyChanged($event)"
-              bindLabel="company.name" bindValue="_id" placeholder="Escolha um ponto de controle">
-              <ng-template ng-label-tmp let-item="item">
-                {{item.name}}
-              </ng-template>
-              <ng-template ng-option-tmp let-item="item">
-                <div> {{item.name}} </div>
-              </ng-template>
-            </ng-select>
-          </div>
-
-          <div>
-            <label class="input-label">Tipo de Ponto de Controle:</label>
-            <ng-select [(ngModel)]="selectedControlPointType" [items]="listOfControlPointType" (change)="companyChanged($event)"
+            <label class="input-label mt-0">Tipo de Ponto de Controle:</label>
+            <ng-select [(ngModel)]="selectedControlPointType" [items]="listOfControlPointType" (change)="controlPointTypeChanged($event)"
               bindLabel="company.name" bindValue="_id" placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
@@ -68,7 +55,7 @@
 
           <div>
             <label class="input-label">Ponto de Controle:</label>
-            <ng-select [(ngModel)]="selectedControlPoint" [items]="listOfControlPoints" (change)="companyChanged($event)"
+            <ng-select [(ngModel)]="selectedControlPoint" [items]="listOfControlPoints"
               bindLabel="name" bindValue="_id" placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
@@ -85,9 +72,22 @@
         <!-- Sessão de Filtros de embalagem -->
         <section>
           <div>
-            <label class="input-label  mt-0" for="selectCode">Família</label>
+            <label class="input-label mt-0">Empresas Vinculadas:</label>
+            <ng-select [(ngModel)]="selectedLinkedCompany" [items]="listOfLinkedCompanies" (change)="linkedCompanyChanged($event)"
+               [disabled]="selectedFamily" placeholder="Escolha um ponto de controle">
+              <ng-template ng-label-tmp let-item="item">
+                {{item.name}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div> {{item.name}} </div>
+              </ng-template>
+            </ng-select>
+          </div>
+
+          <div>
+            <label class="input-label" for="selectCode">Família</label>
             <ng-select id="selectCode" [(ngModel)]="selectedFamily" [items]="listOfFamilies"
-              (clear)="onEquipmentSelectClear()" (change)="loadSerialsOfSelectedEquipment()"
+              (clear)="onEquipmentSelectClear()" (change)="familyChanged($event)"
               bindLabel="code" placeholder="Selecione um Equipamento">
               <ng-template ng-label-tmp let-item="item">
                 {{item.code}}
@@ -136,9 +136,9 @@
 
         <!-- Sessão de exibição -->
         <section>
-          <p class="input-label" style="margin-top: 40px">Exibição:</p>
+          <p class="input-label" style="margin-top: 20px !important">Exibição:</p>
 
-          <div class="form-group form-check">
+          <div class="form-group form-check mb-0">
             <div class="checkbox">
               <label>
                 <input type="checkbox" value="" [ngModel]="showControlledPlants" (ngModelChange)="toggleShowPlants()">
@@ -149,30 +149,6 @@
               </label>
             </div>
           </div>
-
-          <!-- <div class="form-group form-check">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" value="" [ngModel]="showControlledSuppliers" (ngModelChange)="toggleShowSupplier()">
-                <span class="cr">
-                  <i class="cr-icon fa fa-check"> </i>
-                </span>
-                Mostrar Fornecedores
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group form-check">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" value="" [ngModel]="showControlledLogistics" (ngModelChange)="toggleShowLogistic()">
-                <span class="cr">
-                  <i class="cr-icon fa fa-check"> </i>
-                </span>
-                Mostrar Operadores Logísticos
-              </label>
-            </div>
-          </div> -->
 
           <div class="form-group form-check">
             <div class="checkbox">

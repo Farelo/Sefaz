@@ -239,6 +239,9 @@ exports.control_point_geolocation = async (req, res) => {
         serial: req.query.serial ? req.query.serial : null,
     }
 
+    console.log('\n**************')
+    console.log(query)
+
     if (query.start_date != null && !utils.is_valid_date(query.start_date)) {
         return res.status(HttpStatus.NOT_FOUND).send('Invalid date')
     }

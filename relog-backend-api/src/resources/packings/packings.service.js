@@ -15,19 +15,19 @@ exports.get_packings = async (tag, family) => {
             if (family) return await Packing.find({ family: family })
                 .populate('family', ['_id', 'code', 'company'])
                 .populate('project', ['_id', 'name'])
-                
+
             return await Packing.find()
                 .populate('family', ['_id', 'code', 'company'])
                 .populate('project', ['_id', 'name'])
         }
-        
+
         const data = await Packing.findByTag(tag)
-                            .populate('family', ['_id', 'code', 'company'])
-                            .populate('project', ['_id', 'name'])
-                            .populate('last_device_data')
-                            .populate('last_device_data_battery')
-                            .populate('last_event_record')
-                            .populate('last_alert_history')
+            .populate('family', ['_id', 'code', 'company'])
+            .populate('project', ['_id', 'name'])
+            .populate('last_device_data')
+            .populate('last_device_data_battery')
+            .populate('last_event_record')
+            .populate('last_alert_history')
 
         return data ? [data] : []
 
@@ -46,8 +46,8 @@ exports.get_packing = async (id) => {
             .populate('last_device_data_battery')
             .populate('last_event_record')
             .populate('last_alert_history')
-            
-        
+
+
         return packing
     } catch (error) {
         throw new Error(error)
@@ -57,8 +57,8 @@ exports.get_packing = async (id) => {
 exports.find_by_tag = async (tag) => {
     try {
         const packing = await Packing.findByTag(tag)
-                .populate('family', ['_id', 'code', 'company'])
-                .populate('project', ['_id', 'name'])
+            .populate('family', ['_id', 'code', 'company'])
+            .populate('project', ['_id', 'name'])
 
         return packing
     } catch (error) {
@@ -157,9 +157,9 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
                 $eq: query.packing_serial
             }
         }
-        
+
         return await Packing.find(conditions).populate('last_device_data').populate('last_device_data_battery').populate('family')
-        
+
     } catch (error) {
         throw new Error(error)
     }
@@ -167,7 +167,7 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
 
 exports.control_point_geolocation = async (query) => {
     try {
-        
+
         let date_conditions = {}
         if ((query.start_date != null && query.end_date)) {
 
@@ -186,71 +186,181 @@ exports.control_point_geolocation = async (query) => {
         } else if (query.last_hours) {
             let date = new Date()
             date.setHours(date.getHours() - query.last_hours)
-            
+
             date_conditions = {
                 $gte: date
             }
         }
-        
 
         let event_record_conditions = {
             type: 'inbound'
         }
 
-        if (query.company_id != null || query.company_type != null) {
-            let company_conditions = {}
-            if (query.company_id != null) {
-                company_conditions = { _id: query.company_id }            
-            } else if (query.company_type != null) {
-                company_conditions = { type: query.company_type }            
-            }
-            let companies_ids = await Company.find(company_conditions).distinct('_id')
-            
-            let control_point_conditions = {}
-            if (query.control_point_id != null) {
-                control_point_conditions = { _id: query.control_point_id }            
-            } else if (query.control_point_type != null) {
-                control_point_conditions = { type: query.control_point_type }            
-            }
-            control_point_conditions['company'] = { $in: companies_ids }
-            let control_points = await ControlPoint.find(control_point_conditions).distinct('_id')
-
-            event_record_conditions = { control_point: { $in: control_points } }
-        }
-
-        
         if (!_.isEmpty(date_conditions)) {
             event_record_conditions['created_at'] = date_conditions
         }
+
+        // if (query.company_id != null) {
+        // let company_conditions = {}
+        // if (query.company_id != null) {
+        //     company_conditions = { _id: query.company_id }            
+        // } 
+        // let companies_ids = await Company.find(company_conditions).distinct('_id')
+
+        // let control_point_conditions = {}
+
+        // Se informou os dois não importa, pois o front filtra os PC desse tipo.
+        // Basta apenas considerar o PC
+        if (query.control_point_id != null) {
+            // control_point_conditions = { _id: query.control_point_id }            
+            event_record_conditions = { control_point: query.control_point_id }
+        } else if (query.control_point_type != null) {
+            //control_point_conditions = { type: query.control_point_type }            
+            let control_points = await ControlPoint.find({ type: query.control_point_type })
+            event_record_conditions = { control_point: { $in: control_points } }
+        }
+        // control_point_conditions['company'] = { $in: companies_ids }
+        // let control_points = await ControlPoint.find(control_point_conditions).distinct('_id')
+        // event_record_conditions = { control_point: { $in: control_points } }
+        // }
 
         console.log('*****************');
         console.log(query);
         console.log(date_conditions);
         console.log(event_record_conditions);
-        
+
         let event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions)
 
-        if (query.family_id != null || query.serial != null) {
+        console.log('results');
+        console.log(event_records[0])
+        console.log(event_records[1])
+        console.log(event_records[2])
+
+        if (query.company_id !== null || query.family_id != null || query.serial != null) {
+
+            //let allFamilies = await Family.find({})
+            
             event_records = event_records.filter(er => {
-                if (query.family_id != null && query.serial != null) {
-                    if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
-                        return true
+
+                // Se a família foi informada, então a empresa vinculada foi 
+                // selecionada automaticamente pelo front ...
+                if (query.family_id != null) {
+                    if (query.family_id != null && query.serial != null) {
+                        if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
+                            return true
+                        }
+                    } else if (query.family_id != null) {
+                        if (er.packing.family == query.family_id) {
+                            return true
+                        }
+                    } else {
+                        if (er.packing.serial == query.serial) {
+                            return true
+                        }
                     }
-                } else if (query.family_id != null) {
-                    if (er.packing.family == query.family_id) {
-                        return true
-                    }
-                } else {
-                    if (er.packing.serial == query.serial) {
+
+                // Apenas a empresa vinculada foi selecionada
+                // considere todas as famílias vinculadas a ela
+                } else if (query.company_id !== null) {
+                    console.log('informou company')
+                    console.log(er.family.company, query.company_id)
+                    if (er.family.company == query.company_id) {
                         return true
                     }
                 }
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
+            let allFamilies = await Family.find({})
+
+            event_records = event_records.filter(er => {
+                if (query.company_id !== null) {
+
+                    let auxFamilies = allFamilies.filter(elem => elem.company == query.company_id)
+
+                    if (auxFamilies.includes(er.packing.family)) {
+                        if (query.family_id != null && query.serial != null) {
+                            if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
+                                return true
+                            }
+                        } else if (query.family_id != null) {
+                            if (er.packing.family == query.family_id) {
+                                return true
+                            }
+                        } else {
+                            if (er.packing.serial == query.serial) {
+                                return true
+                            }
+                        }
+                    }
+                } else {
+                    if (query.family_id != null && query.serial != null) {
+                        if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
+                            return true
+                        }
+                    } else if (query.family_id != null) {
+                        if (er.packing.family == query.family_id) {
+                            return true
+                        }
+                    } else {
+                        if (er.packing.serial == query.serial) {
+                            return true
+                        }
+                    }
+                }
+
                 return false
             })
+            */
+           
+            // event_records = event_records.filter(er => {
+            //     if(query.company_id !== null){
+            //         if (query.family_id != null && query.serial != null) {
+            //             if (er.family.company == query.company_id && er.packing.family == query.family_id && er.packing.serial == query.serial) {
+            //                 return true
+            //             }
+            //         } else if (query.family_id != null) {
+            //             if (er.family.company == query.company_id && er.packing.family == query.family_id) {
+            //                 return true
+            //             }
+            //         } else {
+            //             if (er.family.company == query.company_id && er.packing.serial == query.serial) {
+            //                 return true
+            //             }
+            //         }
+            //     } else {
+            //         if (query.family_id != null && query.serial != null) {
+            //             if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
+            //                 return true
+            //             }
+            //         } else if (query.family_id != null) {
+            //             if (er.packing.family == query.family_id) {
+            //                 return true
+            //             }
+            //         } else {
+            //             if (er.packing.serial == query.serial) {
+            //                 return true
+            //             }
+            //         }    
+            //     }
+
+            //     return false
+            // })
         }
 
         return event_records
-        
+
     } catch (error) {
         throw new Error(error)
     }
@@ -299,7 +409,7 @@ const deviceById = async (cookie, device_id) => {
         }
 
         const body = await rp(options)
-        return  body
+        return body
     } catch (error) {
         throw new Error(error)
     }

@@ -15,6 +15,14 @@ exports.find_by_control_point_and_date = async conditions => {
             }
         },
         {
+          $lookup: {
+              from: "families",
+              localField: "packing.family",
+              foreignField: "_id",
+              as: "family"
+          }
+      },
+        {
             $lookup: {
                 from: "devicedatas",
                 localField: "device_data_id",
@@ -24,6 +32,7 @@ exports.find_by_control_point_and_date = async conditions => {
         },
         { $unwind: '$packing' },
         { $unwind: '$devicedata' },
+        { $unwind: '$family' },
         { $group : { _id : "$packing", "doc": { "$first":"$$ROOT" } } },
         { $replaceRoot : { newRoot: "$doc" } }
     ])
