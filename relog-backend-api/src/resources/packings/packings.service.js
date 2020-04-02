@@ -4,6 +4,7 @@ const config = require('config')
 const { Packing } = require('./packings.model')
 const { Family } = require('../families/families.model')
 const { Company } = require('../companies/companies.model')
+const { EventRecord } = require("../event_record/event_record.model");
 const { ControlPoint } = require('../control_points/control_points.model')
 const event_record_service = require('../event_record/event_record.service')
 const rp = require('request-promise')
@@ -207,27 +208,31 @@ exports.control_point_geolocation = async (query) => {
         // } 
         // let companies_ids = await Company.find(company_conditions).distinct('_id')
 
-        // let control_point_conditions = {}
+        let control_point_conditions = {}
 
         // Se informou os dois não importa, pois o front filtra os PC desse tipo.
         // Basta apenas considerar o PC
-        if (query.control_point_id != null) {
+        if (query.control_point_id !== null) {
             // control_point_conditions = { _id: query.control_point_id }            
-            event_record_conditions = { control_point: query.control_point_id }
-        } else if (query.control_point_type != null) {
+            control_point_conditions = { control_point: query.control_point_id }
+        } else if (query.control_point_type !== null) {
+            await ControlPoint.find({ type: query.control_point_type }, { _id: 1 }, (err, typed_control_points) => {
+                let control_points = typed_control_points.map(elem => elem._id)
+                control_point_conditions = { control_point: { $in: control_points } }
+            })
             //control_point_conditions = { type: query.control_point_type }            
-            let control_points = await ControlPoint.find({ type: query.control_point_type })
-            event_record_conditions = { control_point: { $in: control_points } }
+            // let result = await EventRecord.find({ control_point: { $in: control_points } })
+            //event_record_conditions = { control_point: { $in: control_points } }
         }
         // control_point_conditions['company'] = { $in: companies_ids }
         // let control_points = await ControlPoint.find(control_point_conditions).distinct('_id')
-        // event_record_conditions = { control_point: { $in: control_points } }
         // }
+        event_record_conditions = { ...event_record_conditions, ...control_point_conditions }
 
         console.log('*****************');
         console.log(query);
         console.log(date_conditions);
-        console.log(event_record_conditions);
+        console.log(JSON.stringify(event_record_conditions));
 
         let event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions)
 
@@ -239,7 +244,7 @@ exports.control_point_geolocation = async (query) => {
         if (query.company_id !== null || query.family_id != null || query.serial != null) {
 
             //let allFamilies = await Family.find({})
-            
+
             event_records = event_records.filter(er => {
 
                 // Se a família foi informada, então a empresa vinculada foi 
@@ -259,8 +264,8 @@ exports.control_point_geolocation = async (query) => {
                         }
                     }
 
-                // Apenas a empresa vinculada foi selecionada
-                // considere todas as famílias vinculadas a ela
+                    // Apenas a empresa vinculada foi selecionada
+                    // considere todas as famílias vinculadas a ela
                 } else if (query.company_id !== null) {
                     console.log('informou company')
                     console.log(er.family.company, query.company_id)
@@ -323,7 +328,7 @@ exports.control_point_geolocation = async (query) => {
                 return false
             })
             */
-           
+
             // event_records = event_records.filter(er => {
             //     if(query.company_id !== null){
             //         if (query.family_id != null && query.serial != null) {
