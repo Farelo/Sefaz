@@ -1,6 +1,6 @@
 const debug = require('debug')('dm.service')
 const config = require('config')
-const request = require('request').defaults({baseUrl: config.get('loka.baseUrl')/* 'https://dm.loka.systems' */})
+const request = require('request').defaults({ baseUrl: config.get('loka.baseUrl')/* 'https://dm.loka.systems' */ })
 const qs = require('qs')
 
 // inejta o certificado SSL para poder fazer as requisições https
@@ -20,7 +20,7 @@ const qs = require('qs')
 
 //TODO: Deixar todas mensagens em português
 exports.loginLokaDmApi = () => {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
 
         let options = {
             url: `/auth/login`,
@@ -40,8 +40,8 @@ exports.loginLokaDmApi = () => {
                 console.log('Error on login request sent to loka: ', error)
             }
             try {
-                let cookie = response.headers['set-cookie'][0].split(';')[0] 
-                
+                let cookie = response.headers['set-cookie'][0].split(';')[0]
+
                 resolve(cookie);
             }
             catch (err) {
@@ -57,7 +57,7 @@ exports.logoutLokaDmApi = (cookie) => {
     return new Promise(function (resolve, reject) {
 
         let path = `/auth/logout`
-        
+
         let options = {
             url: path,
             method: 'GET',
@@ -69,15 +69,15 @@ exports.logoutLokaDmApi = (cookie) => {
 
         let callback = function (error, response, body) {
 
-            if (error){
-                reject('Error on logoutLokaDMApi request sent to loka: ' + error)    
+            if (error) {
+                reject('Error on logoutLokaDMApi request sent to loka: ' + error)
                 console.log('Error on logoutLokaDMApi request sent to loka: ', error)
             }
 
             try {
                 resolve([response.statusCode, response.headers.connection]);
             }
-            
+
             catch (err) {
                 reject("Erro ao tentar deslogar");
             }
@@ -88,11 +88,11 @@ exports.logoutLokaDmApi = (cookie) => {
 }
 
 //obtem conjunto de mensagens da sigfox de um device 
-exports.messagesFromSigfox = (cookie, deviceId, startDate, endDate, max) => { 
-    return new Promise (function (resolve, reject) {
+exports.messagesFromSigfox = (cookie, deviceId, startDate, endDate, max) => {
+    return new Promise(function (resolve, reject) {
 
-        let path = `/message/show/${deviceId}/sigfox` + qs.stringify( {startDate: startDate, endDate: endDate, max: max}, { addQueryPrefix: true });
-        
+        let path = `/message/show/${deviceId}/sigfox` + qs.stringify({ startDate: startDate, endDate: endDate, max: max }, { addQueryPrefix: true });
+
         let options = {
             url: path,
             method: 'GET',
@@ -105,15 +105,15 @@ exports.messagesFromSigfox = (cookie, deviceId, startDate, endDate, max) => {
 
         let callback = function (error, response, body) {
 
-            if (error){
-                reject('Error on messagesFromSigfox request sent to loka: ' + error)    
+            if (error) {
+                reject('Error on messagesFromSigfox request sent to loka: ' + error)
                 console.log('Error on messagesFromSigfox request sent to loka: ', error)
             }
 
             try {
                 resolve(JSON.parse(body).data);
             }
-            
+
             catch (err) {
                 reject("Erro ao tentar realizar o parse do JSON de mensagens da sigfox do device " + deviceId + ".\nRetorno da requisicao - header: " + response + "Retorno da requisicao - body: " + body + "\n" + err);
             }
@@ -121,13 +121,13 @@ exports.messagesFromSigfox = (cookie, deviceId, startDate, endDate, max) => {
         request(options, callback);
     });
 
- }
+}
 
 //obtem conjunto de posicoes (lat, long, acuracia) ja resolvidos pela LOKA para um dispositivo
 exports.positions = (cookie, deviceId, status, lowAccuracy, startDate, endDate, max) => {
-    return new Promise (function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
 
-        let path = `/position/get` + qs.stringify({terminal: deviceId, status: status, lowAccuracy: lowAccuracy, startDate: startDate, endDate: endDate, max: max}, {addQueryPrefix: true} );
+        let path = `/position/get` + qs.stringify({ terminal: deviceId, status: status, lowAccuracy: lowAccuracy, startDate: startDate, endDate: endDate, max: max }, { addQueryPrefix: true });
 
         let options = {
             url: path,
@@ -139,17 +139,17 @@ exports.positions = (cookie, deviceId, status, lowAccuracy, startDate, endDate, 
             }
         }
 
-        let callback = function (error, responde, body) {
+        let callback = function (error, response, body) {
 
             if (error) {
                 reject('Error on positions request sent to loka: ' + error)
                 console.log('Error on positions request sent to loka: ', error)
             }
 
-            try{
+            try {
                 resolve(JSON.parse(body).data);
             }
-            catch (err){
+            catch (err) {
                 reject("Erro ao tentar realizar o parse do JSON de mensagens de posição da LOKA do device " + deviceId + ".\nRetorno da requisicao - header: " + response + "Retorno da requisicao - body: " + body + "\n" + err);
             }
         }
@@ -159,7 +159,7 @@ exports.positions = (cookie, deviceId, status, lowAccuracy, startDate, endDate, 
 }
 
 exports.deviceById = (cookie, deviceId) => {
-    return new Promise(function(resolve, reject){
+    return new Promise(function (resolve, reject) {
 
         let path = `/terminal/get/${deviceId}`;
 
@@ -173,16 +173,16 @@ exports.deviceById = (cookie, deviceId) => {
             }
         }
 
-        let callback = function(error, response, body) {
+        let callback = function (error, response, body) {
 
-            if (error){
+            if (error) {
                 reject('Error on deviceById request sent to loka: ', error)
                 console.log('Error on deviceById request sent to loka: ', error)
             }
 
             try {
                 resolve(JSON.parse(body));
-            } 
+            }
             catch (err) {
                 reject("Erro ao tentar realizar o parse do JSON dos dados do device vindos da LOKA. ", err);
             }
@@ -193,9 +193,9 @@ exports.deviceById = (cookie, deviceId) => {
 }
 
 exports.devicesList = (cookie, client, profile, status) => {
-    return new Promise(function(resolve, reject){
+    return new Promise(function (resolve, reject) {
 
-        let path = `/terminal/list` + qs.stringify({client: client, profile: profile, status: status}, {addQueryPrefix: true});
+        let path = `/terminal/list` + qs.stringify({ client: client, profile: profile, status: status }, { addQueryPrefix: true });
 
         let options = {
             url: path,
@@ -208,15 +208,15 @@ exports.devicesList = (cookie, client, profile, status) => {
         }
 
         let callback = function (error, response, body) {
-            
-            if (error){
+
+            if (error) {
                 reject('Error on devicesList request sent to loka: ', error)
                 console.log('Error on devicesList request sent to loka: ', error)
             }
 
             try {
                 resolve(JSON.parse(body).data);
-            } 
+            }
             catch (err) {
                 console.log("Erro ao tentar realizar o parse do JSON da lista de devices vindos da LOKA. ", err);
             }

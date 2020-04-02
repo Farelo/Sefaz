@@ -471,8 +471,8 @@ const intersectionpoly = (packing, controlPoint) => {
       controlPointPolygonArray.forEach(mPolygon => {
         //criar polígono da embalagem
         let center = [
-          packing.last_device_data.latitude,
-          packing.last_device_data.longitude
+          packing.last_device_data.longitude,
+          packing.last_device_data.latitude
         ];
         let radius = packing.last_device_data.accuracy / 1000;
         let options = { steps: 64, units: "kilometers" };
@@ -502,8 +502,8 @@ const intersectionpoly = (packing, controlPoint) => {
 
       //criar polígono da embalagem
       let center = [
-        packing.last_device_data.latitude,
-        packing.last_device_data.longitude
+        packing.last_device_data.longitude,
+        packing.last_device_data.latitude
       ];
       let radius = packing.last_device_data.accuracy / 1000;
       let options = { steps: 64, units: "kilometers" };
