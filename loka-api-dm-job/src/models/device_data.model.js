@@ -59,21 +59,21 @@ const deviceDataSchema = new mongoose.Schema({
 deviceDataSchema.index({ device_id: 1, message_date: -1 }, { unique: true })
 
 const update_packing = async (device_data, next) => {
-    
+
     try {
         let update_attrs = {}
         let update = false
         const tag = { code: device_data.device_id }
         const packing = await Packing.findByTag(tag)
-    
+
         if (!packing) next()
 
-        let current_message_date_on_packing = await DeviceData.findById(packing.last_device_data, {_id: 0, message_date: 1})
+        let current_message_date_on_packing = await DeviceData.findById(packing.last_device_data, { _id: 0, message_date: 1 })
 
         current_message_date_on_packing = current_message_date_on_packing ? current_message_date_on_packing.message_date : null
 
         //se o novo device_data é mais recente que o que já esta salvo, então atualiza
-        if(device_data.message_date > current_message_date_on_packing) {
+        if (device_data.message_date > current_message_date_on_packing) {
 
             update_attrs.last_device_data = device_data._id
 
@@ -82,17 +82,17 @@ const update_packing = async (device_data, next) => {
 
         //se o novo device_data possui informação de bateria
         if (device_data.battery.percentage || device_data.battery.voltage) {
-        
-            let packing_date_battery_data = await DeviceData.findById(packing.last_device_data_battery, {_id: 0, message_date: 1})
+
+            let packing_date_battery_data = await DeviceData.findById(packing.last_device_data_battery, { _id: 0, message_date: 1 })
 
             packing_date_battery_data = packing_date_battery_data ? packing_date_battery_data.message_date : null
 
             // se essa informação de bateria é mais recente que a que ja existe no packing ou o packing não tem ainda nenhuma info de bateria
-            if (device_data.message_date > packing_date_battery_data){
+            if (device_data.message_date > packing_date_battery_data) {
 
-                update_attrs.last_device_data_battery =  device_data._id
+                update_attrs.last_device_data_battery = device_data._id
             }
-        
+
             update = true
         }
 
@@ -119,40 +119,98 @@ const update_updated_at_middleware = function (next) {
     next()
 }
 
-const device_data_save = async (devide_data_array) => {
-    for (device_data of devide_data_array) {
+const device_data_save = async (packing, device_data_array) => {
 
-            try {
-                const new_device_data = new DeviceData({
-                    device_id: device_data.deviceId.toString(),
-                    message_date: new Date(device_data.messageDate),
-                    message_date_timestamp: device_data.messageDateTimestamp,
-                    last_communication: new Date(device_data.lastCommunication),
-                    last_communication_timestamp: device_data.lastCommunicationTimestamp,
-                    latitude: device_data.latitude,
-                    longitude: device_data.longitude,
-                    accuracy: device_data.accuracy,
-                    temperature: device_data.temperature,
-                    seq_number: device_data.seqNumber,
-                    battery: {
-                        percentage: device_data.battery.percentage,
-                        voltage: device_data.battery.voltage
-                    }
-                })
+    for (const [idx, device_data] of device_data_array.entries()) {
 
-                //salva no banco | observação: não salva mensagens iguais porque o model possui indice unico e composto por device_id e message_date,
-                //e o erro de duplicidade nao interrompe o job
-                await new_device_data.save( )
-    
-                // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
-    
-            } catch (error) {
-                debug('Erro ao salvar o device_data do device  ', device_data.deviceId, ' para a data-hora ', device_data.messageDate, ' | System Error ', error.errmsg ? error.errmsg : error.errors)
+        try {
+            const new_device_data = new DeviceData({
+                device_id: device_data.deviceId.toString(),
+                message_date: new Date(device_data.messageDate),
+                message_date_timestamp: device_data.messageDateTimestamp,
+                last_communication: new Date(device_data.lastCommunication),
+                last_communication_timestamp: device_data.lastCommunicationTimestamp,
+                latitude: device_data.latitude,
+                longitude: device_data.longitude,
+                accuracy: device_data.accuracy,
+                temperature: device_data.temperature,
+                seq_number: device_data.seqNumber,
+                battery: {
+                    percentage: device_data.battery.percentage,
+                    voltage: device_data.battery.voltage
+                }
+            })
+
+            //salva no banco | observação: não salva mensagens iguais porque o model possui indice unico e composto por device_id e message_date,
+            //e o erro de duplicidade nao interrompe o job
+            if (idx == 0) {
+                await new_device_data.save()
+                    .then(doc => {
+                        update_link_to_last_devicedata(packing, doc)
+                    }).catch(err => debug(err));
+
+            } else {
+                await new_device_data.save()
             }
+
+            // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
+
+        } catch (error) {
+            debug('Erro ao salvar o device_data do device  ', device_data.deviceId, ' para a data-hora ', device_data.messageDate, ' | System Error ', error.errmsg ? error.errmsg : error.errors)
+        }
+    }
+
+    // if (device_data_array.length > 0)
+    //     update_link_to_last_devicedata(packing, device_data_array[0])
+}
+
+const update_link_to_last_devicedata = async (packing, device_data) => {
+    try {
+        let update_attrs = {}
+        let update = false
+
+        //momento da última mensagem
+        let current_message_date_on_packing = packing.last_device_data ? packing.last_device_data.message_date : null
+
+        //se o novo device_data é mais recente que o que já esta salvo, então atualiza
+        if (device_data.message_date > current_message_date_on_packing) {
+            update_attrs.last_device_data = device_data._id
+            update = true
+        }
+
+        //se o novo device_data possui informação de bateria
+        if (device_data.battery.percentage || device_data.battery.voltage) {
+            let packing_date_battery_data = packing.last_device_data_battery ? packing.last_device_data_battery.message_date : null
+
+            // se essa informação de bateria é mais recente que a que ja existe no packing ou o packing não tem ainda nenhuma info de bateria
+            if (device_data.message_date > packing_date_battery_data) {
+                update_attrs.last_device_data_battery = device_data._id
+            }
+            update = true
+        }
+
+        if (update) {
+            // debug(' ')
+            // debug(' ')
+            // debug(JSON.stringify(packing))
+            // debug('update packing')
+            // debug('last_device_data', packing.last_device_data)
+            // debug('update_attrs.last_device_data', update_attrs.last_device_data)
+
+            // debug('last_device_data_battery', packing.last_device_data_battery)
+            // debug('update_attrs.last_device_data_battery', update_attrs.last_device_data_battery)
+
+            await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true })
+        }
+
+    } catch (error) {
+        debug(error)
     }
 }
 
-deviceDataSchema.post('save', saveDeviceDataToPacking)
+
+
+//deviceDataSchema.post('save', saveDeviceDataToPacking)
 deviceDataSchema.pre('update', update_updated_at_middleware)
 deviceDataSchema.pre('findOneAndUpdate', update_updated_at_middleware)
 
