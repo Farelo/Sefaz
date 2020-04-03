@@ -16,7 +16,7 @@ module.exports = async () => {
             let concluded_devices = 0
             let error_devices = 0
             let timeInit = new Date().getTime();
-            let sleepTime = 5
+            let sleepTime = 120
 
             debug("***********************")
             debug("Novo loop no while")
