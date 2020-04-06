@@ -235,7 +235,7 @@ function initWebSocket() {
             message: JSON.stringify(jsonMessage),
             message_date: new Date(jsonMessage.timestamp * 1000)
           };
-          //Message.create(messageCollection);
+          Message.create(messageCollection);
 
           let deviceDict = deviceDictList.find(function (elem) {
             return elem.deviceId == jsonMessage.src;
@@ -246,7 +246,7 @@ function initWebSocket() {
 
             let deviceDataToSave = await parserMessage(jsonMessage, deviceData);
             if (deviceDataToSave !== null) {
-              //await device_data_save(deviceDataToSave);
+              await device_data_save(deviceDataToSave);
               deviceData = deviceDataToSave;
             }
           }
