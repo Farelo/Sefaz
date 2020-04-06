@@ -4,11 +4,7 @@ const { Packing } = require('../../models/packings.model')
 const { DeviceData, device_data_save } = require('../../models/device_data.model')
 
 module.exports = async () => {
-    //end_search_date = currente environment timezone datetime
-    const end_search_date = (new Date()).toLocaleString()
-
-    const results = {}
-
+    
     try {
 
         while (true) {
@@ -30,11 +26,9 @@ module.exports = async () => {
                 try {
                     const week_in_milliseconds = 604800000
 
-                    //debug(packing)
-                    debug(`Request ${i + 1}: ${packing.tag.code}`)
-
                     //recupera a última mensagem e
                     //cria janela de tempo de uma semana antes da última mensagem enviada
+                    let end_search_date = (new Date()).toLocaleString()
                     let start_search_date = packing.last_device_data ? add_seconds(packing.last_device_data.message_date, 1) : new Date(Date.parse(new Date()) - week_in_milliseconds)
 
                     //convete esse timestamp para string
@@ -44,6 +38,9 @@ module.exports = async () => {
                     //await dm_controller.confirmDevice(packing.tag.code, cookie)
 
                     const device_data_array = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, start_search_date, end_search_date, null, cookie)
+
+                    //debug(packing)
+                    debug(`Request ${i + 1}: ${packing.tag.code} \t ${start_search_date} \t ${end_search_date} \t ${device_data_array.length}`)
 
                     if (device_data_array) {
                         //debug(device_data_array)
