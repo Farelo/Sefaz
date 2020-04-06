@@ -91,6 +91,17 @@ async function getDeviceDataFromMiddleware(deviceId, startDate, endDate, max, co
         if (!cookie)
             dm_service.logoutLokaDmApi(cookie)
 
+        // await debug(' ')
+        // await debug(' ')
+        // await debug('deviceId: ', deviceId)
+        // await debug('[0]: ', JSON.stringify(data[0]).substr(0, 10))
+        // await debug('[1]: ', JSON.stringify(data[1]).substr(0, 10))
+        
+        // if (data[0].length == 0 && data[1].length == 0 ) await debug("_ _")
+        // if (data[0].length !== 0  && data[1].length == 0 ) await debug("1 _")
+        // if (data[0].length == 0  && data[1].length !== 0 ) await debug("_ 2")
+        // if (data[0].length !== 0  && data[1].length !== 0 ) await debug("1 2")
+
         let consolidatedMessages = await joinPartialMessages(data[0], data[1])
 
         // return consolidatedMessages

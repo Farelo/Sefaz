@@ -128,7 +128,7 @@ exports.positions = (cookie, deviceId, status, lowAccuracy, startDate, endDate, 
     return new Promise(function (resolve, reject) {
 
         let path = `/position/get` + qs.stringify({ terminal: deviceId, status: status, lowAccuracy: lowAccuracy, startDate: startDate, endDate: endDate, max: max }, { addQueryPrefix: true });
-
+        
         let options = {
             url: path,
             method: 'GET',
