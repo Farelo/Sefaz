@@ -167,6 +167,17 @@ export class RastreamentoComponent implements OnInit {
       { label: '10h', value: '10' },
       { label: '11h', value: '11' },
       { label: '12h', value: '12' },
+      { label: '13h', value: '13' },
+      { label: '14h', value: '14' },
+      { label: '15h', value: '15' },
+      { label: '16h', value: '16' },
+      { label: '17h', value: '17' },
+      { label: '18h', value: '18' },
+      { label: '19h', value: '19' },
+      { label: '20h', value: '20' },
+      { label: '21h', value: '21' },
+      { label: '22h', value: '22' },
+      { label: '23h', value: '23' }
     ]
   }
 
@@ -426,7 +437,7 @@ export class RastreamentoComponent implements OnInit {
     // **********************
     // Date section
     if (this.todayDate !== null)
-      param['date'] = moment(this.todayDate).format("YYYY-MM-DD-")
+      param['date'] = moment(this.todayDate).format("YYYY-MM-DD")
 
     if (this.rangeDate !== null) {
       param['start_date'] = moment(this.rangeDate[0]).format("YYYY-MM-DD")

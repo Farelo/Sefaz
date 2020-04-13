@@ -9,6 +9,7 @@ const { ControlPoint } = require('../control_points/control_points.model')
 const event_record_service = require('../event_record/event_record.service')
 const rp = require('request-promise')
 const mongoose = require('mongoose')
+const moment = require('moment')
 
 exports.get_packings = async (tag, family) => {
     try {
@@ -180,16 +181,16 @@ exports.control_point_geolocation = async (query) => {
         } else if (query.date != null) {
             let date = new Date()
             date_conditions = {
-                $gte: new Date(query.date),
-                $lt: new Date(date.setDate(query.date + 1)),
+                $gte: new Date(moment(query.date).utc().hour(0).minute(0).second(0)),
+                $lte: new Date(moment(query.date).utc().hour(23).minute(59).second(59)) //new Date(date.setDate(query.date + 1)),
             }
+            
 
         } else if (query.last_hours) {
-            let date = new Date()
-            date.setHours(date.getHours() - query.last_hours)
 
+            let last_hours = parseInt(query.last_hours, 10);
             date_conditions = {
-                $gte: date
+                $gte: new Date(moment().subtract(last_hours + 3, 'h'))
             }
         }
 
@@ -210,11 +211,12 @@ exports.control_point_geolocation = async (query) => {
 
         let control_point_conditions = {}
 
+        // Controlpoint ID e Controlpoint Type
         // Se informou os dois não importa, pois o front filtra os PC desse tipo.
         // Basta apenas considerar o PC
         if (query.control_point_id !== null) {
             // control_point_conditions = { _id: query.control_point_id }            
-            control_point_conditions = { control_point: query.control_point_id }
+            control_point_conditions = { control_point: new mongoose.Types.ObjectId(query.control_point_id) }
         } else if (query.control_point_type !== null) {
             await ControlPoint.find({ type: query.control_point_type }, { _id: 1 }, (err, typed_control_points) => {
                 let control_points = typed_control_points.map(elem => elem._id)
@@ -231,15 +233,23 @@ exports.control_point_geolocation = async (query) => {
 
         console.log('*****************');
         console.log(query);
-        console.log(date_conditions);
+        console.log(' ');
+        console.log(JSON.stringify(date_conditions));
+        console.log(' ');
         console.log(JSON.stringify(event_record_conditions));
+        console.log(event_record_conditions);
+        console.log(' ');
 
         let event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions)
 
-        console.log('results');
-        console.log(event_records[0])
-        console.log(event_records[1])
-        console.log(event_records[2])
+        // event_records.map(elem=>{
+        //     console.log(`ObjectId("${elem._id}")`)
+        // })
+
+        console.log('results: ' + event_records.length);
+        console.log(JSON.stringify(event_records[0]))
+        // console.log(JSON.stringify(event_records[1]))
+        // console.log(JSON.stringify(event_records[2]))
 
         if (query.company_id !== null || query.family_id != null || query.serial != null) {
 
