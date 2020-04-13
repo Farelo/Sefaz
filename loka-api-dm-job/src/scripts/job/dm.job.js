@@ -12,7 +12,7 @@ module.exports = async () => {
             let concluded_devices = 0
             let error_devices = 0
             let timeInit = new Date().getTime();
-            let sleepTime = 120
+            let sleepTime = 10*60
 
             debug("***********************")
             debug("Novo loop no while")
@@ -40,7 +40,7 @@ module.exports = async () => {
                     const device_data_array = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, start_search_date, end_search_date, null, cookie)
 
                     //debug(packing)
-                    debug(`Request ${i + 1}: ${packing.tag.code} \t ${start_search_date} \t ${end_search_date} \t ${device_data_array.length}`)
+                    debug(`Request ${i + 1}: ${packing.tag.code} | ${start_search_date} | ${end_search_date} | ${device_data_array.length}`)
 
                     if (device_data_array) {
                         //debug(device_data_array)
