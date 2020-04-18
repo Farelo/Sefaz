@@ -50,7 +50,7 @@
         <p class="explicacao">Ex. "v1"</p>
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Versão" aria-describedby="basic-addon2" formControlName="version"
-            maxlength="30" [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
+            maxlength="100" [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
               || (mPacking.get('tag.version').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.version').hasError('pattern'))
               || (mPacking.get('tag.version').hasError('pattern') && submitted) }">
@@ -138,7 +138,7 @@
             <p class="explicacao">Ex. "Acme Racks"</p>
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Nome do Fabricante" aria-describedby="basic-addon2"
-                formControlName="manufactorer" maxlength="30" [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
+                formControlName="manufactorer" maxlength="100" [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                   || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
                   || (mPacking.get('tag.manufactorer').hasError('minlength'))
                   || (mPacking.get('tag.manufactorer').hasError('minlength') && formDir.submitted)
@@ -164,7 +164,7 @@
             <p class="descricao">TIPO DA EMBALAGEM</p>
             <p class="explicacao">Ex. "Rack Metálico"</p>
             <input type="text" class="form-control" placeholder="Digite o tipo de embalagem" aria-describedby="basic-addon2"
-              formControlName="type" maxlength="60" [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
+              formControlName="type" maxlength="100" [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
                 || (mPacking.get('type').hasError('required') && formDir.submitted)
                 || (mPacking.get('type').hasError('pattern'))
                 || (mPacking.get('type').hasError('pattern') && submitted) }">
