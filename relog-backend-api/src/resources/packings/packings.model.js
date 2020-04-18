@@ -13,7 +13,7 @@ const packingSchema = new mongoose.Schema({
         version: {
             type: String,
             minlength: 1,
-            maxlength: 30,
+            maxlength: 100,
         },
         manufactorer: {
             type: String,
@@ -30,7 +30,7 @@ const packingSchema = new mongoose.Schema({
     type: {
         type: String,
         minlength: 0,
-        maxlength: 30,
+        maxlength: 100,
     },
     weigth: {
         type: Number,
@@ -173,11 +173,11 @@ const validate_packings = (packing) => {
     const schema = Joi.object().keys({
         tag: {
             code: Joi.string().min(4).max(25).required(),
-            version: Joi.string().min(1).max(30),
-            manufactorer: Joi.string().min(2).max(30)
+            version: Joi.string().min(1).max(100),
+            manufactorer: Joi.string().min(2).max(100)
         },
         serial: Joi.string().min(2).max(30).required(),
-        type: Joi.string().min(0).max(30),
+        type: Joi.string().min(0).max(100),
         weigth: Joi.number().max(10000),
         width: Joi.number().max(10000),
         heigth: Joi.number().max(10000),
