@@ -17,7 +17,7 @@ const packingSchema = new mongoose.Schema({
         manufactorer: {
             type: String,
             minlength: 2,
-            maxlength: 30,
+            maxlength: 100
         }
     },
     serial: {

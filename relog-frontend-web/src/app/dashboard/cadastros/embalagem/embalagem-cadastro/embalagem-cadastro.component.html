@@ -139,7 +139,7 @@
             <p class="explicacao">Ex. "Acme Racks"</p>
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Nome do Fabricante" aria-describedby="basic-addon2"
-                formControlName="manufactorer" maxlength="30" [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
+                formControlName="manufactorer" maxlength="100" [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                   || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
                   || (mPacking.get('tag.manufactorer').hasError('minlength'))
                   || (mPacking.get('tag.manufactorer').hasError('minlength') && formDir.submitted)
