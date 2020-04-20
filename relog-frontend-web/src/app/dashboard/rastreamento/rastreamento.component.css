@@ -19,6 +19,11 @@ ngui-map {
   width: 100%;
 }
 
+.fa-spin {
+  -webkit-animation: fa-spin 2s linear infinite;
+  animation: fa-spin 2s linear infinite;
+}
+
 .botao-registrar {
   background-color: #51a8db;
   color: white;

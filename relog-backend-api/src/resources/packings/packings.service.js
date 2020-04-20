@@ -7,6 +7,7 @@ const { Company } = require('../companies/companies.model')
 const { EventRecord } = require("../event_record/event_record.model");
 const { ControlPoint } = require('../control_points/control_points.model')
 const event_record_service = require('../event_record/event_record.service')
+const device_data_service = require('../device_data/device_data.service')
 const rp = require('request-promise')
 const mongoose = require('mongoose')
 const moment = require('moment')
@@ -184,7 +185,7 @@ exports.control_point_geolocation = async (query) => {
                 $gte: new Date(moment(query.date).utc().hour(0).minute(0).second(0)),
                 $lte: new Date(moment(query.date).utc().hour(23).minute(59).second(59)) //new Date(date.setDate(query.date + 1)),
             }
-            
+
 
         } else if (query.last_hours) {
 
@@ -194,9 +195,7 @@ exports.control_point_geolocation = async (query) => {
             }
         }
 
-        let event_record_conditions = {
-            type: 'inbound'
-        }
+        let event_record_conditions = {}
 
         if (!_.isEmpty(date_conditions)) {
             event_record_conditions['created_at'] = date_conditions
@@ -229,6 +228,9 @@ exports.control_point_geolocation = async (query) => {
         // control_point_conditions['company'] = { $in: companies_ids }
         // let control_points = await ControlPoint.find(control_point_conditions).distinct('_id')
         // }
+
+        // if (query.current_state !== null) event_record_conditions['current_state'] = query.current_state
+
         event_record_conditions = { ...event_record_conditions, ...control_point_conditions }
 
         console.log('*****************');
@@ -237,55 +239,92 @@ exports.control_point_geolocation = async (query) => {
         console.log(JSON.stringify(date_conditions));
         console.log(' ');
         console.log(JSON.stringify(event_record_conditions));
+        console.log(' ');
         console.log(event_record_conditions);
         console.log(' ');
 
-        let event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions)
+        let event_records = []
 
-        // event_records.map(elem=>{
-        //     console.log(`ObjectId("${elem._id}")`)
-        // })
+        if (query.control_point_id !== null || query.control_point_type !== null) {
+            event_record_conditions['type'] = 'inbound'
+            event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions, query.current_state)
+        } else {
+            event_records = await device_data_service.find_by_date(event_record_conditions, query.current_state)
+        }
 
         console.log('results: ' + event_records.length);
-        console.log(JSON.stringify(event_records[0]))
-        // console.log(JSON.stringify(event_records[1]))
-        // console.log(JSON.stringify(event_records[2]))
+
+        console.log(event_records[0])
 
         if (query.company_id !== null || query.family_id != null || query.serial != null) {
 
             //let allFamilies = await Family.find({})
 
-            event_records = event_records.filter(er => {
+            if (query.control_point_id !== null || query.control_point_type !== null) {
 
-                // Se a família foi informada, então a empresa vinculada foi 
-                // selecionada automaticamente pelo front ...
-                if (query.family_id != null) {
-                    if (query.family_id != null && query.serial != null) {
-                        if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
-                            return true
+                event_records = event_records.filter(er => {
+                    // Se a família foi informada, então a empresa vinculada foi 
+                    // selecionada automaticamente pelo front ...
+                    if (query.family_id != null) {
+                        if (query.family_id != null && query.serial != null) {
+                            if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
+                                return true
+                            }
+                        } else if (query.family_id != null) {
+                            if (er.packing.family == query.family_id) {
+                                return true
+                            }
+                        } else {
+                            if (er.packing.serial == query.serial) {
+                                return true
+                            }
                         }
-                    } else if (query.family_id != null) {
-                        if (er.packing.family == query.family_id) {
-                            return true
-                        }
-                    } else {
-                        if (er.packing.serial == query.serial) {
+
+                        // Apenas a empresa vinculada foi selecionada
+                        // considere todas as famílias vinculadas a ela
+                    } else if (query.company_id !== null) {
+                        if (er.family.company == query.company_id) {
                             return true
                         }
                     }
+                })
 
-                    // Apenas a empresa vinculada foi selecionada
-                    // considere todas as famílias vinculadas a ela
-                } else if (query.company_id !== null) {
-                    console.log('informou company')
-                    console.log(er.family.company, query.company_id)
-                    if (er.family.company == query.company_id) {
-                        return true
+            } else {
+
+                event_records = event_records.filter(er => {
+
+                    try {
+                        // Se a família foi informada, então a empresa vinculada foi 
+                        // selecionada automaticamente pelo front ...
+                        if (query.family_id != null) {
+                            if (query.family_id != null && query.serial != null) {
+                                if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
+                                    return true
+                                }
+                            } else if (query.family_id != null) {
+                                if (er.packing.family == query.family_id) {
+                                    return true
+                                }
+                            } else {
+                                if (er.packing.serial == query.serial) {
+                                    return true
+                                }
+                            }
+
+                            // Apenas a empresa vinculada foi selecionada
+                            // considere todas as famílias vinculadas a ela
+                        } else if (query.company_id !== null) {
+                            if (er.family.company == query.company_id) {
+                                return true
+                            }
+                        }
+
+                    } catch (error) {
+                        // console.log(error)
+                        // console.log('error', er)
                     }
-                }
-            })
-
-
+                })
+            }
 
 
 

@@ -1,6 +1,6 @@
 const { EventRecord } = require("./event_record.model");
 
-exports.find_by_control_point_and_date = async conditions => {
+exports.find_by_control_point_and_date = async (conditions, currentState) => {
   try {
 
     const event_records = await EventRecord.aggregate([

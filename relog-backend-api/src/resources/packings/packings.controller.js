@@ -237,6 +237,8 @@ exports.control_point_geolocation = async (req, res) => {
         control_point_id: req.query.control_point_id ? req.query.control_point_id : null,
         family_id: req.query.family_id ? req.query.family_id : null,
         serial: req.query.serial ? req.query.serial : null,
+        serial: req.query.serial ? req.query.serial : null,
+        current_state: req.query.selectedStatus ? req.query.selectedStatus : null,
     }
 
     if (query.start_date != null && !utils.is_valid_date(query.start_date)) {

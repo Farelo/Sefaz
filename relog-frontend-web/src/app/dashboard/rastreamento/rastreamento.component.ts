@@ -91,6 +91,8 @@ export class RastreamentoComponent implements OnInit {
 
   public selectedSerial: any = null;
   public listOfSerials: any[];
+  public selectedStatus: any = null;
+  
 
   //array de pinos
   public plotedPackings: any[] = [];
@@ -99,11 +101,13 @@ export class RastreamentoComponent implements OnInit {
   public showControlledPlants: boolean = false;
   public showControlledLogistics: boolean = false;
   public showControlledSuppliers: boolean = false;
-  public showPackings: boolean = false;
+  public showPackings: boolean = true;
 
   //misc
   public settings: any = {};
   public permanence: Pagination = new Pagination({ meta: { page: 1 } });
+
+  public loadingRequisition: boolean = false;
 
   constructor(
     private controlPointsService: ControlPointsService,
@@ -424,14 +428,14 @@ export class RastreamentoComponent implements OnInit {
       // serial: null
     };
 
-    console.log(this.todayDate)
-    console.log(this.rangeDate)
-    console.log(this.lastHours)
-    console.log(this.selectedLinkedCompany)
-    console.log(this.selectedControlPointType)
-    console.log(this.selectedControlPoint)
-    console.log(this.selectedFamily)
-    console.log(this.selectedSerial)
+    // console.log(this.todayDate)
+    // console.log(this.rangeDate)
+    // console.log(this.lastHours)
+    // console.log(this.selectedLinkedCompany)
+    // console.log(this.selectedControlPointType)
+    // console.log(this.selectedControlPoint)
+    // console.log(this.selectedFamily)
+    // console.log(this.selectedSerial)
 
 
     // **********************
@@ -466,9 +470,16 @@ export class RastreamentoComponent implements OnInit {
     if (this.selectedSerial !== null)
       param['serial'] = this.selectedSerial;     // Serial
 
-    console.log(param);
+    if (this.selectedStatus !== null)
+      param['selectedStatus'] = this.selectedStatus;     // Status
+      
+    //console.log(param);
+
+    this.loadingRequisition = true;
 
     this.deviceService.getHistoricalDeviceData(param).subscribe((result: any[]) => {
+
+      this.loadingRequisition = false;
 
       this.plotedPackings = result.filter(elem => {
         if (elem.devicedata)

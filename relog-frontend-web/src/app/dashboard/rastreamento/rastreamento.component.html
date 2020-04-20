@@ -118,12 +118,6 @@
             <label class="input-label">Status</label>
             <ng-select [(ngModel)]="selectedStatus" 
               [items]="statusOptions" bindLabel="label" bindValue="value" placeholder="Selecione um Serial">
-              <ng-template ng-label-tmp let-item="item">
-                {{item.label}}
-              </ng-template>
-              <ng-template ng-option-tmp let-item="item">
-                <div>{{ item.label }}</div>
-              </ng-template>
             </ng-select>
           </div>
         </section>
@@ -131,7 +125,10 @@
         <hr>
 
         <div>
-          <button (click)="requestFilteredResults()" class="botao-registrar">Filtrar</button>
+          <button [disabled]="loadingRequisition" (click)="requestFilteredResults()" class="botao-registrar">
+            <i *ngIf="loadingRequisition" class="fa fa-spinner" [ngClass]="{'fa-spin': loadingRequisition}"></i>
+            Filtrar
+          </button>
         </div>
 
         <!-- Sessão de exibição -->
