@@ -1,4 +1,5 @@
 const logger = require("../config/winston.config");
+const moment = require('moment')
 
 const parserMessage = async (jsonMessage, deviceData) => {
   //logger.info("DeviceData to update BEFORE parser: " + deviceData);
@@ -11,7 +12,7 @@ const parserMessage = async (jsonMessage, deviceData) => {
     deviceData.message_date_timestamp * 1000
   );
   deviceData.last_communication_timestamp = deviceData.message_date_timestamp;
-  deviceData.message_date = new Date(jsonMessage.timestamp * 1000);
+  deviceData.message_date = new Date(moment(jsonMessage.timestamp).subtract(3, 'h')) 
   deviceData.message_date_timestamp = jsonMessage.timestamp;
   deviceData.message = JSON.stringify(jsonMessage);
 

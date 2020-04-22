@@ -35,7 +35,7 @@ async function getDeviceDictList() {
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
   //Getting all DeviceIds
-  let result = await Packing.find({ }, { _id: 0, tag: 1 })
+  let result = await Packing.find({}, { _id: 0, tag: 1 })
     .populate("last_device_data")
     .then(packFind => {
 
@@ -233,6 +233,20 @@ function initWebSocket() {
           //Save message
           messageCollection = {
             message: JSON.stringify(jsonMessage),
+            message_date: new Date(jsonMessage.timestamp * 1000),
+            device_id: jsonMessage.src
+          };
+          Message.create(messageCollection);
+
+          let deviceDict = deviceDictList.find(function (elem) {
+            return elem.deviceId == jsonMessage.src;
+          });
+
+          let jsonMessage = JSON.parse(message.utf8Data);
+
+          //Save message
+          messageCollection = {
+            message: JSON.stringify(jsonMessage),
             message_date: new Date(jsonMessage.timestamp * 1000)
           };
           Message.create(messageCollection);
@@ -271,7 +285,7 @@ var restartFunctionEnabled = true;
 const runWS = async () => {
   logger.info("***************************");
   logger.info("Starting WS");
-  
+
   restartFunctionEnabled = false;
   lastMessageTime = (new Date()).getTime();
   //logger.info("restartFunctionEnabled: false");
