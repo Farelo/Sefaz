@@ -242,19 +242,6 @@ function initWebSocket() {
             return elem.deviceId == jsonMessage.src;
           });
 
-          let jsonMessage = JSON.parse(message.utf8Data);
-
-          //Save message
-          messageCollection = {
-            message: JSON.stringify(jsonMessage),
-            message_date: new Date(jsonMessage.timestamp * 1000)
-          };
-          Message.create(messageCollection);
-
-          let deviceDict = deviceDictList.find(function (elem) {
-            return elem.deviceId == jsonMessage.src;
-          });
-
           if (deviceDict) {
             let deviceData = deviceDict.lastDeviceData;
 
