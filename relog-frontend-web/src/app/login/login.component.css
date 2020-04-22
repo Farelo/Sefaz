@@ -1,13 +1,13 @@
 @import '~font-awesome/css/font-awesome.css';
 
-* { font-family: 'Roboto', sans-serif; }
+* { font-family: 'Fira sans', sans-serif; }
 
 .form-group {
     margin-bottom: 0rem;
 }
 
 .teste {
-  background-image: url("/assets/images/img-fundo.jpg");
+  background-image: url("../../assets/images/img-fundo1.png");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -28,12 +28,12 @@
   height: 400px; 
   overflow: hidden;
   position: absolute;
-  top: calc( 50% - 200px );
-  left: calc( 50% - 200px );
+  top: calc( 50% - 100px );
+  left: calc( 80% - 200px );
 }
 
-.quadrado-blur {
-  background: url("/assets/images/img-fundo.jpg") no-repeat center center fixed;
+.quadrado-blur { 
+  background: url("../../assets/images/img-fundo1.png") no-repeat center center fixed;
   background-size: cover;
   padding: 0px; 
 
@@ -46,8 +46,8 @@
   width: 400px;
 
   position: absolute;
-  top: calc( 50% - 200px );
-  left: calc( 50% - 200px );
+  top: calc( 50% - 100px );
+  left: calc( 80% - 200px );
 
   /* display: inline-block;
   position: absolute;
