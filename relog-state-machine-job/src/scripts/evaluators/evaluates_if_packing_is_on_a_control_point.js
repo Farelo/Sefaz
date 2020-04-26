@@ -424,7 +424,7 @@ const intersectionpoly = (packing, controlPoint) => {
     let templateTurfPolygon = [];
 
     coordinates.forEach(elem => {
-      path.push([elem.lat, elem.lng]);
+      path.push([elem.lng, elem.lat]);
     });
     path.push(path[0]);
     //mLog('> ', path)
@@ -471,11 +471,11 @@ const intersectionpoly = (packing, controlPoint) => {
       controlPointPolygonArray.forEach(mPolygon => {
         //criar polígono da embalagem
         let center = [
-          packing.last_device_data.latitude,
-          packing.last_device_data.longitude
+          packing.last_device_data.longitude,
+          packing.last_device_data.latitude
         ];
-        let radius = packing.last_device_data.accuracy / 1000;
-        let options = { steps: 64, units: "kilometers" };
+        let radius = packing.last_device_data.accuracy;
+        let options = { steps: 64, units: "meters" };
 
         //mLog(center, radius)
         let packingPolygon = turf.circle(center, radius, options);
@@ -491,7 +491,7 @@ const intersectionpoly = (packing, controlPoint) => {
         result = intersection;
       });
 
-      mLog(result);
+      //mLog(result);
 
       return result;
     } else {
@@ -502,11 +502,11 @@ const intersectionpoly = (packing, controlPoint) => {
 
       //criar polígono da embalagem
       let center = [
-        packing.last_device_data.latitude,
-        packing.last_device_data.longitude
+        packing.last_device_data.longitude,
+        packing.last_device_data.latitude
       ];
-      let radius = packing.last_device_data.accuracy / 1000;
-      let options = { steps: 64, units: "kilometers" };
+      let radius = packing.last_device_data.accuracy;
+      let options = { steps: 64, units: "meters" };
 
       //mLog(center, radius)
       let packingPolygon = turf.circle(center, radius, options);

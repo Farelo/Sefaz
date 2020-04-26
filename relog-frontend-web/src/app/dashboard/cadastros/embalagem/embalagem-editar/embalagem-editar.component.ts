@@ -58,6 +58,8 @@ export class EmbalagemEditarComponent implements OnInit {
       this.packingService.getPacking(this.mId).subscribe(result => {
 
         //console.log('result ...' + JSON.stringify(result));
+        if (result['observations'] == null) result['observations'] = '';
+
         this.mActualPacking = result;
         (<FormGroup>this.mPacking).patchValue(result, { onlySelf: true });
       });
@@ -66,18 +68,17 @@ export class EmbalagemEditarComponent implements OnInit {
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
-    value.family = value.family._id;
-    value.project = value.project._id;
-    //if (value.observations == '') delete value.observations;
-    //if (value.observations == '') delete value.observations;
-
     if (valid) {
-      this.finishUpdate(value);
+      let newValue = { ...value }
+      newValue.family = newValue.family._id;
+      newValue.project = newValue.project._id;
+
+      this.finishUpdate(newValue);
     }
   }
 
-  finishUpdate(value) {
-    this.packingService.editPacking(this.mId, value)
+  finishUpdate(newValue) {
+    this.packingService.editPacking(this.mId, newValue)
       .subscribe(result => {
         let message = {
           title: "Embalagem Atualizada",

@@ -8,6 +8,10 @@ const messageSchema = new mongoose.Schema({
   message: {
     type: String,
     required: true
+  },
+  device_id: {
+    type: String,
+    required: true
   }
 });
 

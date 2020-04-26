@@ -87,6 +87,16 @@ module.exports = async (setting, packing, controlPoints) => {
                         await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else {
+
+                        if (packing.permanence_time_exceeded == true) {
+                            await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+
+                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            if (current_state_history) {
+                                await current_state_history.remove()
+                            }
+                        }
+
                         /* Embalagem está em viagem */
                         //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
@@ -145,6 +155,16 @@ module.exports = async (setting, packing, controlPoints) => {
                         await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else {
+
+                        if (packing.permanence_time_exceeded == true) {
+                            await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+
+                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            if (current_state_history) {
+                                await current_state_history.remove()
+                            }
+                        }
+
                         /* Embalagem está em viagem */
                         //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
@@ -181,6 +201,16 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
+
+                        if (packing.permanence_time_exceeded == true) {
+                            await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+
+                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            if (current_state_history) {
+                                await current_state_history.remove()
+                            }
+                        }
+
                         //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
@@ -192,7 +222,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.VIAGEM_PRAZO.key:
                 /* ******************************VIAGEM_PRAZO***************************** */
-                mLog('VIAGEM_PRAZO')
+                console.log('VIAGEM_PRAZO')
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
@@ -214,6 +244,16 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
+
+                        if (packing.permanence_time_exceeded == true) {
+                            await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+
+                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            if (current_state_history) {
+                                await current_state_history.remove()
+                            }
+                        }
+
                         //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
@@ -247,6 +287,16 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
+
+                        if (packing.permanence_time_exceeded == true) {
+                            await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+
+                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            if (current_state_history) {
+                                await current_state_history.remove()
+                            }
+                        }
+
                         //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
@@ -280,6 +330,16 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     } else {
                         /* Embalagem está em viagem */
+
+                        if (packing.permanence_time_exceeded == true) {
+                            await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+
+                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            if (current_state_history) {
+                                await current_state_history.remove()
+                            }
+                        }
+
                         //mLog("EM VIAGEM")
                         await evaluatesIfPackingIsTraveling(packing, setting)
 
@@ -327,7 +387,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.SINAL.alert })
 
                         let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
-                        
+
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
@@ -350,7 +410,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.SINAL.alert })
 
                         let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
-                        
+
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
@@ -364,7 +424,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     }
 
                     let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
-                    
+
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null

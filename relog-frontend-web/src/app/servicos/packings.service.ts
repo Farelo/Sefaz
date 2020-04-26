@@ -23,7 +23,7 @@ export class PackingService {
 
     let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
     if (queryString) queryString = '?' + queryString;
-
+    
     return this.http.get(`${environment.url}/packings${queryString}`)
       .catch(this.handleError);
   }

@@ -1,7 +1,7 @@
 * { font-family: 'Roboto', sans-serif; }
 
 .teste {
-  background-image: url("../../assets/images/img-fundo.png");
+  background-image: url("../../assets/images/img-fundo1.png");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -15,7 +15,7 @@
 .quadrado {
   background-color: rgba(0,0,0,.8);
   display: inline-block;
-  padding: 20px;
+  padding: 90px;
   position: absolute;
   top: 50%;
   left: 50%;
