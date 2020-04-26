@@ -192,12 +192,20 @@ exports.find_by_date = async (conditions, currentState) => {
     console.log(device_data_records[0])
     console.log("***", device_data_records.length)
 
+    if (currentState !== null) 
+      console.log('YES, a currentstate has passed')
+    else
+      console.log('NO, no currentstate has passed')
+
     device_data_records = await Promise.all(device_data_records.map(async elem => {
       let result = null
       if (currentState !== null) {
+        if(elem.device_id == "4072399") console.log(JSON.stringify(query))
         result = await CurrentStateHistory.findOne({ type: currentState, packing: elem.packing._id, created_at: { $gte: elem.created_at } })
       } else {
-        result = await CurrentStateHistory.findOne({ packing: elem.packing._id, created_at: { $gte: elem.created_at } })
+        let query = { packing: elem.packing._id, created_at: { $gte: elem.created_at } }
+        if(elem.device_id == "4072399") console.log(JSON.stringify(query))
+        result = await CurrentStateHistory.findOne(query)
       }
 
       elem.current_state = result ? result.type : ''

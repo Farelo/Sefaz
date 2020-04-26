@@ -35,11 +35,21 @@ export class Spiralize {
     public duplicated: any = [];
     public iconsOfduplicated: any[] = [];
 
-    constructor(list: any[], map: any, clustered: boolean = false) {
+    constructor(list: any[], map: any, clustered: boolean = false, showIcons: boolean) {
         this.listOfObjects = list;
         this.mMap = map;
         this.clustered = clustered;
         this.resolveClustering();
+        
+        if (showIcons) {
+            this.markers.map(elem => {
+                elem.setMap(this.mMap);
+            });
+
+            this.iconsOfduplicated.map(elem => {
+                elem.setMap(this.mMap);
+            });
+        }
     }
 
     clearState() {
@@ -52,7 +62,7 @@ export class Spiralize {
         });
     }
 
-    repaint(list: any[], map: any, clustered: boolean = false, showIcons: boolean = true) {
+    repaint(list: any[], map: any, clustered: boolean = false, showIcons: boolean) {
         //Clearing previous state
         this.clearSpiral();
         this.iconsOfduplicated = [];

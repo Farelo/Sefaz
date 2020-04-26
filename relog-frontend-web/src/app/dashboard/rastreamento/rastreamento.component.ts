@@ -501,15 +501,16 @@ export class RastreamentoComponent implements OnInit {
           this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
         }
       }
+      
       console.log(JSON.stringify(this.plotedPackings));
 
       //this.resolveClustering();
       if (this.mSpiralize) {
         this.mSpiralize.clearState();
-        this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, true);
+        this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, this.showPackings);
 
       } else {
-        this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
+        this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false, this.showPackings);
       }
     });
   }

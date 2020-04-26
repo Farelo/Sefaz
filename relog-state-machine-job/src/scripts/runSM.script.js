@@ -42,7 +42,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.DESABILITADA_COM_SINAL.key }, { new: true })
 
                 if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.DESABILITADA_COM_SINAL.alert) return null
-                await CurrentStateHistory.create({ packing: packing._id, type: STATES.DESABILITADA_COM_SINAL.alert })
+                await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.DESABILITADA_COM_SINAL.alert })
 
                 return null
             } else {
@@ -51,12 +51,12 @@ module.exports = async (setting, packing, controlPoints) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.DESABILITADA_SEM_SINAL.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.DESABILITADA_SEM_SINAL.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.DESABILITADA_SEM_SINAL.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.DESABILITADA_SEM_SINAL.alert })
                 } else {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.PERDIDA.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERDIDA.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.PERDIDA.alert })
                 }
                 return null
             }
@@ -106,7 +106,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.ANALISE.alert })
                 }
                 break
             case STATES.DESABILITADA_SEM_SINAL.key:
@@ -118,7 +118,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.ANALISE.alert })
                     }
                 }
                 break
@@ -302,20 +302,20 @@ module.exports = async (setting, packing, controlPoints) => {
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
                         /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                         if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
-                            await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
+                            await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.SINAL.alert })
 
                             let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
 
                             await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                             if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                            await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                            await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.ANALISE.alert })
                         }
                     } else {
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.PERDIDA.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERDIDA.alert) return null
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.PERDIDA.alert })
                     }
 
                     //Executa apenas se o alerta de perdido está desabilitado
@@ -324,14 +324,14 @@ module.exports = async (setting, packing, controlPoints) => {
                     //mLog('PERDIDO NÃO HABILITADO')
                     /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.SINAL.alert })
 
                         let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
                         
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.ANALISE.alert })
                     }
                 }
 
@@ -347,20 +347,20 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.SINAL.alert })
 
                         let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
                         
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.ANALISE.alert })
                     }
 
                 } else {
                     //mLog('STATUS PERDIDA NÃO HABILITADO')
                     if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.missing_sinal_limit_in_days) {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.SINAL.alert })
                     }
 
                     let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
@@ -368,7 +368,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.ANALISE.alert })
                 }
 
                 break
