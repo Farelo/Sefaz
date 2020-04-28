@@ -5,6 +5,7 @@ const { Packing } = require('./packings.model')
 const { Family } = require('../families/families.model')
 const { Company } = require('../companies/companies.model')
 const { EventRecord } = require("../event_record/event_record.model");
+const { Setting } = require('../settings/settings.model')
 const { ControlPoint } = require('../control_points/control_points.model')
 const event_record_service = require('../event_record/event_record.service')
 const device_data_service = require('../device_data/device_data.service')
@@ -171,6 +172,8 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
 exports.control_point_geolocation = async (query) => {
     try {
 
+        const settings = await Setting.find({})
+
         let date_conditions = {}
         if ((query.start_date != null && query.end_date)) {
 
@@ -198,7 +201,10 @@ exports.control_point_geolocation = async (query) => {
         let event_record_conditions = {}
 
         if (!_.isEmpty(date_conditions)) {
-            event_record_conditions['created_at'] = date_conditions
+            if (query.control_point_id !== null || query.control_point_type !== null)
+                event_record_conditions['created_at'] = date_conditions
+            else
+                event_record_conditions['message_date'] = date_conditions
         }
 
         // if (query.company_id != null) {
@@ -230,31 +236,34 @@ exports.control_point_geolocation = async (query) => {
         // }
 
         // if (query.current_state !== null) event_record_conditions['current_state'] = query.current_state
+        
+        if(query.only_good_accuracy) event_record_conditions['accuracy'] = { $lte: settings[0].accuracy_limit }
 
         event_record_conditions = { ...event_record_conditions, ...control_point_conditions }
 
-        console.log('*****************');
-        console.log(query);
-        console.log(' ');
-        console.log(JSON.stringify(date_conditions));
-        console.log(' ');
-        console.log(JSON.stringify(event_record_conditions));
-        console.log(' ');
-        console.log(event_record_conditions);
-        console.log(' ');
+        // console.log('*****************');
+        // console.log(query);
+        // console.log(' ');
+        // console.log(JSON.stringify(date_conditions));
+        // console.log(' ');
+        // console.log(JSON.stringify(event_record_conditions));
+        // console.log(' ');
+        // console.log(JSON.stringify(event_record_conditions));
+        // console.log(' ');
 
         let event_records = []
 
         if (query.control_point_id !== null || query.control_point_type !== null) {
             event_record_conditions['type'] = 'inbound'
+            
             event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions, query.current_state)
         } else {
             event_records = await device_data_service.find_by_date(event_record_conditions, query.current_state)
         }
 
-        console.log('results: ' + event_records.length);
+        // console.log('results: ' + event_records.length);
 
-        console.log(event_records[0])
+        // console.log(event_records[0])
 
         if (query.company_id !== null || query.family_id != null || query.serial != null) {
 

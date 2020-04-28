@@ -31,7 +31,7 @@ module.exports = async () => {
                 setting = await getSettings()
 
                 // const device_data_array = await DeviceData.find({})
-                const controlPoints = await ControlPoint.find({ })
+                const controlPoints = await ControlPoint.find({})
                     .populate('company')
                     .populate('type')
                     

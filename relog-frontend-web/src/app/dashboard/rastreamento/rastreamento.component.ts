@@ -80,6 +80,7 @@ export class RastreamentoComponent implements OnInit {
   public selectedControlPointType: any = null;
   public listOfControlPointsOriginal: any[] = [];
   public listOfControlPointType: any = null;
+  public listOfControlPointTypeOriginal: any = [];
 
   public selectedControlPoint: any = null;
   public listOfControlPoints: any = [];
@@ -92,8 +93,8 @@ export class RastreamentoComponent implements OnInit {
   public selectedSerial: any = null;
   public listOfSerials: any[];
   public selectedStatus: any = null;
+  public onlyGoodAccuracy: boolean = false;
   
-
   //array de pinos
   public plotedPackings: any[] = [];
 
@@ -317,10 +318,21 @@ export class RastreamentoComponent implements OnInit {
     }, err => console.error(err));
   }
 
+  controlPointChanged(event: any){
+    // console.log(event)
+    // console.log(this.selectedControlPoint)
+
+    if (event) {
+      this.selectedControlPointType = event.type;
+    } else {
+      this.listOfControlPointType = this.listOfControlPointTypeOriginal;
+    }
+  }
+
   familyChanged(event: any) {
 
-    console.log(event)
-    console.log(this.selectedLinkedCompany)
+    // console.log(event)
+    // console.log(this.selectedLinkedCompany)
 
     if (event) {
       this.selectedLinkedCompany = event.company;
@@ -337,7 +349,7 @@ export class RastreamentoComponent implements OnInit {
 
     // }
 
-    console.log(this.selectedLinkedCompany)
+    // console.log(this.selectedLinkedCompany)
 
     this.loadSerialsOfSelectedEquipment();
   }
@@ -392,6 +404,7 @@ export class RastreamentoComponent implements OnInit {
       .subscribe(data => {
 
         this.listOfControlPointType = data;
+        this.listOfControlPointTypeOriginal = data;
       },
         err => { console.log(err) });
   }
@@ -472,6 +485,10 @@ export class RastreamentoComponent implements OnInit {
 
     if (this.selectedStatus !== null)
       param['selectedStatus'] = this.selectedStatus;     // Status
+    
+    if (this.onlyGoodAccuracy !== null){
+      param['onlyGoodAccuracy'] = true;     // onlyGoodAccuracy
+    }
       
     //console.log(param);
 
@@ -502,7 +519,7 @@ export class RastreamentoComponent implements OnInit {
         }
       }
       
-      console.log(JSON.stringify(this.plotedPackings));
+      // console.log(JSON.stringify(this.plotedPackings));
 
       //this.resolveClustering();
       if (this.mSpiralize) {
@@ -512,6 +529,9 @@ export class RastreamentoComponent implements OnInit {
       } else {
         this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false, this.showPackings);
       }
+    }, 
+    (err) => { 
+      this.loadingRequisition = false;
     });
   }
 

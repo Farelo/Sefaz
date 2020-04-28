@@ -347,7 +347,7 @@ export class Spiralize {
                      * Plotar os pontos na espiral
                      */
                     for (let sc = 1; sc <= array.length; sc++) {
-                        //console.log(`${array.length} array[sc-1].family_code: ${array[sc - 1].family_code}`);
+                        // console.log(array[sc - 1]);
 
                         let e = new google.maps.Marker({
                             family_code: array[sc - 1].family.code,
@@ -357,7 +357,7 @@ export class Spiralize {
                             battery: (array[sc - 1].devicedata && array[sc - 1].devicedata.battery.percentage) ? (array[sc - 1].devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
                             message_date : (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.message_date) : 'Sem registro',
                             accuracy: (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.accuracy + 'm') : 'Sem registro',
-                            icon: this.getPinWithAlert(array[sc - 1].status, true),
+                            icon: this.getPinWithAlert(array[sc - 1].current_state, true),
                             zIndex: 999,
                             map: this.mMap
                         });

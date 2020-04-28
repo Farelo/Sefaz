@@ -19,9 +19,9 @@
             style="cursor: pointer;" autocomplete="off">
 
           <label class="input-label">Período:</label>
-          <input id="rangeDate" type="text" placeholder="Período de Datas" class="form-control input-date-picker" bsDaterangepicker
-            [(ngModel)]="rangeDate" (ngModelChange)="dateChange('rangeDate')" [bsConfig]="datePickerConfig"
-            style="cursor: pointer;" autocomplete="off">
+          <input id="rangeDate" type="text" placeholder="Período de Datas" class="form-control input-date-picker"
+            bsDaterangepicker [(ngModel)]="rangeDate" (ngModelChange)="dateChange('rangeDate')"
+            [bsConfig]="datePickerConfig" style="cursor: pointer;" autocomplete="off">
 
           <div class="input-label" style="display: flex; align-items: center;">
             <label style="margin: 0px;" class="mr-1">Últimas:</label>
@@ -36,14 +36,15 @@
         </section>
 
         <hr>
-        
+
         <!-- *************************************** -->
         <!-- Sessão de filtros de pontos de controle -->
         <section>
           <div>
             <label class="input-label mt-0">Tipo de Ponto de Controle:</label>
-            <ng-select [(ngModel)]="selectedControlPointType" [items]="listOfControlPointType" (change)="controlPointTypeChanged($event)"
-              bindLabel="company.name" bindValue="_id" placeholder="Escolha um ponto de controle">
+            <ng-select [(ngModel)]="selectedControlPointType" [items]="listOfControlPointType"
+              (change)="controlPointTypeChanged($event)" 
+              placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
               </ng-template>
@@ -55,8 +56,8 @@
 
           <div>
             <label class="input-label">Ponto de Controle:</label>
-            <ng-select [(ngModel)]="selectedControlPoint" [items]="listOfControlPoints"
-              bindLabel="name" bindValue="_id" placeholder="Escolha um ponto de controle">
+            <ng-select [(ngModel)]="selectedControlPoint" [items]="listOfControlPoints" bindLabel="name" bindValue="_id"
+              placeholder="Escolha um ponto de controle" (change)="controlPointChanged($event)">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
               </ng-template>
@@ -73,8 +74,9 @@
         <section>
           <div>
             <label class="input-label mt-0">Empresas Vinculadas:</label>
-            <ng-select [(ngModel)]="selectedLinkedCompany" [items]="listOfLinkedCompanies" (change)="linkedCompanyChanged($event)"
-               [disabled]="selectedFamily" placeholder="Escolha um ponto de controle">
+            <ng-select [(ngModel)]="selectedLinkedCompany" [items]="listOfLinkedCompanies"
+              (change)="linkedCompanyChanged($event)" [disabled]="selectedFamily"
+              placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
               </ng-template>
@@ -87,8 +89,8 @@
           <div>
             <label class="input-label" for="selectCode">Família</label>
             <ng-select id="selectCode" [(ngModel)]="selectedFamily" [items]="listOfFamilies"
-              (clear)="onEquipmentSelectClear()" (change)="familyChanged($event)"
-              bindLabel="code" placeholder="Selecione um Equipamento">
+              (clear)="onEquipmentSelectClear()" (change)="familyChanged($event)" bindLabel="code"
+              placeholder="Selecione um Equipamento">
               <ng-template ng-label-tmp let-item="item">
                 {{item.code}}
               </ng-template>
@@ -102,9 +104,8 @@
 
           <div>
             <label class="input-label">Serial</label>
-            <ng-select [(ngModel)]="selectedSerial"
-              [items]="listOfSerials" bindLabel="serial" bindValue="serial" placeholder="Selecione um Serial"
-              [disabled]="!selectedFamily">
+            <ng-select [(ngModel)]="selectedSerial" [items]="listOfSerials" bindLabel="serial" bindValue="serial"
+              placeholder="Selecione um Serial" [disabled]="!selectedFamily">
               <ng-template ng-label-tmp let-item="item">
                 {{item.serial}}
               </ng-template>
@@ -116,9 +117,23 @@
 
           <div>
             <label class="input-label">Status</label>
-            <ng-select [(ngModel)]="selectedStatus" 
-              [items]="statusOptions" bindLabel="label" bindValue="value" placeholder="Selecione um Serial">
+            <ng-select [(ngModel)]="selectedStatus" [items]="statusOptions" bindLabel="label" bindValue="value"
+              placeholder="Selecione um Serial">
             </ng-select>
+          </div>
+
+          <div>
+            <label class="input-label">Acurácia</label>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="" [ngModel]="onlyGoodAccuracy">
+                <span class="cr">
+                  <i class="cr-icon fa fa-check"> </i>
+                </span>
+                Apenas boa acurácia
+              </label>
+            </div>
+
           </div>
         </section>
 

@@ -518,7 +518,7 @@ const intersectionpoly = (packing, controlPoint) => {
 
       // mLog(' ')
       // mLog('i: ', packing.tag.code)
-      // mLog(intersection)
+      // console.log('intersection: ', intersection)
 
       return intersection;
     }

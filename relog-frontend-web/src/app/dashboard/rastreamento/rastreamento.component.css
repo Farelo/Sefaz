@@ -283,10 +283,6 @@ input, ng-select {
   font-size: .89rem !important;
 }
 
-.checkbox > label {
-  font-size: .89rem !important;
-}
-
 @media (min-width: 540px) {
   .m-filtros {
     overflow-y: overlay;
@@ -303,6 +299,14 @@ input, ng-select {
 /*--------*/
 
 /*Checkboxes*/
+
+.checkbox {
+  color: rgb(102, 102, 102);
+}
+
+.checkbox > label {
+  font-size: .89rem !important;
+}
 
 .checkbox label:after {
   content: '';

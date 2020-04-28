@@ -138,7 +138,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
-
+                    // console.log('last_device_data ', packing.last_device_data._id)
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
 
@@ -147,6 +147,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
+                        // console.log('name ', currentControlPoint.name)
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
@@ -177,21 +178,21 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.LOCAL_CORRETO.key:
                 /* ******************************LOCAL_CORRETO***************************** */
-                mLog('LOCAL_CORRETO')
+                //mLog('LOCAL_CORRETO')
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
 
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting)
-                    //mLog(currentControlPoint.name)
-
+                    
                     /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
                     packing = await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint)
-
+                    
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
-
+                        mLog(currentControlPoint.name)
+                        
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
 
