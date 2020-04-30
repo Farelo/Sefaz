@@ -138,6 +138,7 @@ exports.general_inventory_report = async () => {
 
         return families_with_packings
     } catch (error) {
+        console.log(error)
         throw new Error(error)
     }
 }
@@ -155,7 +156,7 @@ const owner_general_inventory_report_detailed = async (family_id) => {
                 const control_point = await ControlPoint.findById(packing.last_event_record.control_point)
 
                 data_temp.packing = packing._id
-                data_temp.control_point_name = control_point.name
+                data_temp.control_point_name = control_point ? control_point.name : '-'
 
                 return data_temp
             })
@@ -1152,7 +1153,7 @@ const intersectionpoly = (packing, controlPoint) => {
         let templateTurfPolygon = []
 
         coordinates.forEach(elem => {
-            path.push([elem.lat, elem.lng])
+            path.push([elem.lng, elem.lat])
         })
         path.push(path[0])
         //mLog('> ', path)
@@ -1197,9 +1198,9 @@ const intersectionpoly = (packing, controlPoint) => {
 
             controlPointPolygonArray.forEach(mPolygon => {
                 //criar polígono da embalagem
-                let center = [packing.last_device_data.latitude, packing.last_device_data.longitude]
-                let radius = packing.last_device_data.accuracy / 1000
-                let options = { steps: 64, units: 'kilometers' }
+                let center = [packing.last_device_data.longitude, packing.last_device_data.latitude]
+                let radius = packing.last_device_data.accuracy
+                let options = { steps: 64, units: 'meters' }
 
                 //mLog(center, radius)
                 let packingPolygon = turf.circle(center, radius, options);
@@ -1225,9 +1226,9 @@ const intersectionpoly = (packing, controlPoint) => {
             // mLog(JSON.stringify(unkinkControlPointPolygon))
 
             //criar polígono da embalagem
-            let center = [packing.last_device_data.latitude, packing.last_device_data.longitude]
-            let radius = packing.last_device_data.accuracy / 1000
-            let options = { steps: 64, units: 'kilometers' }
+            let center = [packing.last_device_data.longitude, packing.last_device_data.latitude]
+            let radius = packing.last_device_data.accuracy
+            let options = { steps: 64, units: 'meters' }
 
             //mLog(center, radius)
             let packingPolygon = turf.circle(center, radius, options);

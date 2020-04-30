@@ -203,7 +203,8 @@ function initWebSocket() {
         //Save message
         messageCollection = {
           message: JSON.stringify(jsonMessage),
-          message_date: new Date(jsonMessage.timestamp * 1000)
+          message_date: new Date(jsonMessage.timestamp * 1000),
+          device_id: jsonMessage.timestamp
         };
         Message.create(messageCollection);
 

@@ -11,12 +11,12 @@ const packingSchema = new mongoose.Schema({
     version: {
       type: String,
       minlength: 1,
-      maxlength: 30
+      maxlength: 100
     },
     manufactorer: {
       type: String,
       minlength: 2,
-      maxlength: 30
+      maxlength: 100
     }
   },
   serial: {
@@ -28,7 +28,7 @@ const packingSchema = new mongoose.Schema({
   type: {
     type: String,
     minlength: 0,
-    maxlength: 30
+    maxlength: 100
   },
   weigth: {
     type: Number,
