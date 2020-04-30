@@ -7,7 +7,7 @@
 }
 
 .teste {
-  background-image: url("../../assets/images/img-fundo1.png");
+  background-image: url("../../assets/images/evoy-fundo1.png");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -33,7 +33,7 @@
 }
 
 .quadrado-blur { 
-  background: url("../../assets/images/img-fundo1.png") no-repeat center center fixed;
+  background: url("../../assets/images/evoy-fundo1.png") no-repeat center center fixed;
   background-size: cover;
   padding: 0px; 
 
