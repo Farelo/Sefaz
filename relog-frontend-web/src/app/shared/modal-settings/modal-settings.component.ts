@@ -89,9 +89,9 @@ export class ModalSettings implements OnInit {
   }
 
   changeLanguage(e) {
-    console.log(e)
-    this.translate.use(e.name);
-    console.log('this.translate.currentLang', this.translate.currentLang)
+    // console.log(e)
+    // this.translate.use(e.name);
+    // console.log('this.translate.currentLang', this.translate.currentLang)
   }
 
   translateExpression(key) {
@@ -193,6 +193,8 @@ export class ModalSettings implements OnInit {
     if (valid) {
       value.accuracy_limit = value.accuracy_limit * 1000;
       value.language = value.language.name;
+
+      this.translate.use(value.language.name);
 
       this.settingsService.editSetting(value, this.actualSettings._id).subscribe(result => {
         this.toastService.edit('', 'Configurações');

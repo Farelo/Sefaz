@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class CadastrosComponent implements OnInit {
 
   constructor(public translate: TranslateService) { 
+    console.log('this.translate.currentLang: ', this.translate.currentLang)
     if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 

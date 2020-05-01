@@ -21,7 +21,10 @@ export class PontoDeControleComponent implements OnInit {
   constructor(public translate: TranslateService,
     private controlPointsService: ControlPointsService,
     private modalService: NgbModal) {
-
+    
+      console.log('this.translate.currentLang: ', this.translate.currentLang)
+      // let browserLang = this.translate.getBrowserLang();
+      // this.translate.use(browserLang.match(/en|es|pt/) ? browserLang : 'pt');
     if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
@@ -79,7 +82,7 @@ export class PontoDeControleComponent implements OnInit {
   };
 
   loadTableHeaders() {
-    this.headers.push({ label: 'Ponto de controle', name: 'name' });
+    this.headers.push({ label: this.translate.instant('REGISTER.CONTROL_POINT.CONTROL_POINT'), name: 'name' });
   }
 
   headerClick(item: any) {

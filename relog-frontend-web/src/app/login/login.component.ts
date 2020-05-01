@@ -19,8 +19,10 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private toastService: ToastService) {
 
-    let browserLang = this.translate.getDefaultLang();
+    let browserLang = this.translate.getBrowserLang();
     if(browserLang == undefined) browserLang = 'pt';
+
+    console.log(browserLang);
 
     this.translate.use(browserLang.match(/en|es|pt/) ? browserLang : 'pt');
   }

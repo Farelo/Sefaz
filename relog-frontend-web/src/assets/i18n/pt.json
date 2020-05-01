@@ -295,7 +295,8 @@
             "INFOS": "Informações",
             "CONTROL_POINT": "Ponto de Controle",
             "SELECT_EDGES": "Selecione contorno círculo ou polígono",
-            "RADIUS": "Raio"
+            "RADIUS": "Raio",
+            "NO_INFORMATION": "Nenhuma informação sobre a localidade"
         },
         "PACKING": {
             "MENU": "Embalagens",
