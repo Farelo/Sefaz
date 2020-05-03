@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService, InventoryLogisticService, PackingService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
 import { constants } from 'environments/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-alerta-embalagem-perdida',
@@ -14,11 +15,14 @@ export class AlertaEmbalagemPerdidaComponent implements OnInit {
   @Input() alerta;
   public mConstants: any;
 
-  constructor(public activeAlerta: NgbActiveModal,
+  constructor(public translate: TranslateService,
+    public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
     private modalService: NgbModal) {
-  
-    this.mConstants = constants; 
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
+    this.mConstants = constants;
   }
 
   ngOnInit() {
@@ -42,7 +46,7 @@ export class AlertaEmbalagemPerdidaComponent implements OnInit {
           actualPackage.alertCode = this.alerta.current_state;
           actualPackage.tag = actualPackage.tag.code;
           actualPackage.family_code = this.alerta.family.code;
-          
+
           modalRef.componentInstance.packing = actualPackage;
         },
         err => {

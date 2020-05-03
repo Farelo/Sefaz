@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-categoria-sem-sinal',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoriaSemSinalComponent implements OnInit {
 
-  constructor() { }
+  constructor(public translate: TranslateService) { 
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
   }

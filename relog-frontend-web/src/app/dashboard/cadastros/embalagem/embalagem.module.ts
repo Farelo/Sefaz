@@ -16,6 +16,7 @@ import {EmbalagemComponent} from './embalagem.component';
 import {EmbalagemRoutingModule} from './embalagem.routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    ApplicationPipes
+    ApplicationPipes,
+    TranslateModule
   ],
   declarations: [
     EmbalagemCadastroComponent,

@@ -15,7 +15,8 @@ import {ToastyModule} from 'ng2-toasty';
 import { AuthGuard } from '../guard/auth.guard';
 import { NgSelectModule } from '@ng-select/ng-select'; 
 import { SidebarModule } from 'ng-sidebar'; 
- 
+import { TranslateModule } from '@ngx-translate/core';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -32,7 +33,8 @@ import { SidebarModule } from 'ng-sidebar';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     DashboardRoutingModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    TranslateModule
   ],
   declarations: [
     DashboardComponent,

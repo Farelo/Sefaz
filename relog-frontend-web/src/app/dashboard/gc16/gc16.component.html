@@ -3,9 +3,11 @@
     <div class="inicial">
 
       <div class="input-group mb-3 d-flex justify-content-between">
-        <input type="text" class="form-control mr-4" placeholder="Buscar por empresa ou família" aria-describedby="basic-addon1"
-          [(ngModel)]="search" (keyup)="searchEvent($event)">
-        <button routerLink="/rc/bpline/adicionar" class="btn btn-outline-secondary" type="button">Novo</button>
+        <input type="text" class="form-control mr-4" placeholder="{{ 'BPLINE.SEARCH_PLACEHOLDER' | translate }}"
+          aria-describedby="basic-addon1" [(ngModel)]="search" (keyup)="searchEvent($event)">
+
+        <button translate="BPLINE.NEW" routerLink="/rc/bpline/adicionar" class="btn btn-outline-secondary"
+          type="button"></button>
       </div>
 
       <div class="table-responsive">
@@ -13,12 +15,12 @@
         <table class="table">
           <thead>
             <tr class="cabecalho">
-              <th>Volume Anual</th>
-              <th>Capacidade</th>
-              <th>Dias Produtivos</th>
-              <!-- <th>Fornecedor</th> -->
-              <th>Ponto de Controle</th>
-              <th class="opcoes">Opções</th>
+              <th translate="BPLINE.ANUAL_VOLUME"></th>
+              <th translate="BPLINE.CAPACITY"></th>
+              <th translate="BPLINE.PRODUCTIVE_DAYS"></th>
+              <!-- <th translate="BPLINE.NEW">Fornecedor</th> -->
+              <th translate="BPLINE.CONTROL_POINT"></th>
+              <th translate="BPLINE.OPTIONS" class="opcoes"></th>
             </tr>
           </thead>
           <tbody>
@@ -31,13 +33,9 @@
               <td>{{ gc.productive_days }}</td>
               <!-- <td>{{gc.supplier.name}}</td> -->
               <td>{{ gc.control_point.name }}</td>
-              <td class="teste">                
-                <button class="editar" [routerLink]="['editar/', gc._id]">
-                  EDITAR
-                </button>
-                <button class="excluir" (click)="removeGC16(gc)">
-                  EXCLUIR
-                </button>
+              <td class="teste">
+                <button translate="BPLINE.EDIT_BUTTON" class="editar" [routerLink]="['editar/', gc._id]"></button>
+                <button translate="BPLINE.REMOVE_BUTTON" class="excluir" (click)="removeGC16(gc)"> </button>
               </td>
             </tr>
           </tbody>
@@ -45,13 +43,12 @@
       </div>
 
       <div class="has-text-centered">
-        <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
+        <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false"
+          autoHide="true">
         </pagination-controls>
       </div>
 
-      <div class="classVazio" *ngIf="mListOfGC16.length < 1">
-        Ainda não existem registros BPline cadastrados.
-      </div>
+      <div translate="BPLINE.NO_REGISTER" class="classVazio" *ngIf="mListOfGC16.length < 1"> </div>
 
     </div>
 

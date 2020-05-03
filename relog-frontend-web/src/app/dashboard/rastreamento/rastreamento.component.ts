@@ -8,6 +8,7 @@ import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
 import './markercluster';
 import { Spiralize } from './Spiralize';
+import { TranslateService } from '@ngx-translate/core';
 
 declare var $: any;
 declare var google: any;
@@ -87,7 +88,7 @@ export class RastreamentoComponent implements OnInit {
 
   public listOfCompanies: any = [];
 
-  constructor(
+  constructor(public translate: TranslateService,
     private ref: ChangeDetectorRef,
     private controlPointsService: ControlPointsService,
     private departmentService: DepartmentService,
@@ -99,6 +100,7 @@ export class RastreamentoComponent implements OnInit {
     private modalService: NgbModal,
     private auth: AuthenticationService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
@@ -164,7 +166,7 @@ export class RastreamentoComponent implements OnInit {
   public listOfCircleControlPoints: any = [];
   public listOfPolygonControlPoints: any = [];
 
-  loadControlPoints(){
+  loadControlPoints() {
 
     this.controlPointsService.getAllControlPoint().subscribe(result => {
       // this.listOfControlPoints = result.map(elem => {
@@ -183,12 +185,12 @@ export class RastreamentoComponent implements OnInit {
         .filter(elem => elem.geofence.type == 'p')
         .map(elem => {
 
-          let lat = elem.geofence.coordinates.map(p =>  p.lat);
-          let lng = elem.geofence.coordinates.map(p =>  p.lng);
+          let lat = elem.geofence.coordinates.map(p => p.lat);
+          let lng = elem.geofence.coordinates.map(p => p.lng);
 
           elem.position = {
-            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
-            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
+            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2,
+            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2
           }
 
           return elem;
@@ -232,14 +234,14 @@ export class RastreamentoComponent implements OnInit {
     }
   }
 
-  companyChanged(event: any){
+  companyChanged(event: any) {
     // console.log(event);
 
-    if(event){
+    if (event) {
       this.listOfFamilies = this.auxListOfFamilies.filter(elem => {
         return elem.company._id == event._id;
       });
-    } else{
+    } else {
       this.listOfFamilies = this.auxListOfFamilies;
     }
 
@@ -283,12 +285,12 @@ export class RastreamentoComponent implements OnInit {
       });
 
       //Se só há um objeto selecionado, centralize o mapa nele
-      if (this.plotedPackings.length == 1){
-        if (this.plotedPackings[0].last_device_data){
+      if (this.plotedPackings.length == 1) {
+        if (this.plotedPackings[0].last_device_data) {
           this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
         }
       }
-      console.log(JSON.stringify(this.plotedPackings));
+      //console.log(JSON.stringify(this.plotedPackings));
 
       //this.resolveClustering();
       if (this.mSpiralize) {
@@ -332,7 +334,7 @@ export class RastreamentoComponent implements OnInit {
   }
 
 
-  filterChanged(){
+  filterChanged() {
 
   }
 
@@ -380,7 +382,7 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Recupera o pino da embalagem de acordo com seu alerta
    */
-  getPinWithAlert(status: any, smallSize:boolean = false) {
+  getPinWithAlert(status: any, smallSize: boolean = false) {
     let pin = null;
 
     switch (status) {
@@ -405,7 +407,7 @@ export class RastreamentoComponent implements OnInit {
         break;
     }
 
-    if (smallSize){
+    if (smallSize) {
       pin.size = (new google.maps.Size(21, 31));
       pin.scaledSize = (new google.maps.Size(21, 31));
     }

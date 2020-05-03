@@ -16,7 +16,7 @@
 }
 
 ngui-map {
-  height: calc(100vh - 42px); 
+  height: calc(100vh - 56px); 
   width: 100%;
 }
 
@@ -264,9 +264,9 @@ background: none rgb(255, 255, 255);
   margin-bottom: 0px !important;
 }
 
-.m-container {
-  margin-top: -45px;
-}
+/* .m-container {
+  margin-top: -30px;
+} */
 
 .filter-wrapper {
   height: 100%;
@@ -284,9 +284,9 @@ background: none rgb(255, 255, 255);
 }
 
 @media (min-width: 540px) {
-  .m-container {
+  /* .m-container {
     height: calc( 100vh - 42px );
-  }
+  } */
 
   .m-filtros{
     overflow-y: overlay;
@@ -344,5 +344,5 @@ background: none rgb(255, 255, 255);
 
 /* Relative to side-menu*/
 ng-sidebar-container {
-  height: calc( 100vh - 42px );
+  height: calc( 100vh - 56px );
 }

@@ -6,6 +6,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Pagination } from '../../../shared/models/pagination';
 import { AuthenticationService, AlertsService } from '../../../servicos/index.service';
 import { constants } from 'environments/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 declare var $:any;
 
@@ -24,10 +25,12 @@ export class TimelineComponent implements OnInit {
   public activeModal : any;
   public settings;
 
-  constructor(private alertsService: AlertsService,
+  constructor(public translate: TranslateService,
+    private alertsService: AlertsService,
     private authenticationService: AuthenticationService,
     private modalService: NgbModal ) {
 
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
   
   ngOnInit() {
@@ -127,35 +130,35 @@ export class TimelineComponent implements OnInit {
     switch(code){
 
       case constants.ALERTS.ABSENT:
-        result = 'Embalagem ausente';
+        result = this.translate.instant('ALERTS.ABSENT_PACK');
         break;
 
       case constants.ALERTS.INCORRECT_LOCAL:
-        result = 'Embalagem em local incorreto';
+        result = this.translate.instant('ALERTS.INCORRECT_LOCAL_PACK_DESCRIPTION');
         break;
 
       case constants.ALERTS.LOW_BATTERY:
-        result = 'Embalagem com bateria baixa';
+        result = this.translate.instant('ALERTS.LOW_BATTERY_PACK_DESCRIPTION');
         break;
 
       case constants.ALERTS.LATE:
-        result = 'Embalagem em viagem';
+        result = this.translate.instant('ALERTS.LATE_PACK_PACK_DESCRIPTION');
         break;
 
       case constants.ALERTS.PERMANENCE_TIME:
-        result = 'Embalagem com tempo de permanência elevado';
+        result = this.translate.instant('ALERTS.PERMANENCE_PACK_DESCRIPTION');
         break;
 
       case constants.ALERTS.NO_SIGNAL:
-        result = 'Embalagem sem sinal';
+        result = this.translate.instant('ALERTS.NO_SIGNAL_PACK_DESCRIPTION');
         break;
 
       case constants.ALERTS.MISSING:
-        result = 'Embalagem perdida';
+        result = this.translate.instant('ALERTS.MISSING_PACK_DESCRIPTION');
         break;
       
       default:
-        result = "Não identificado";
+        result = this.translate.instant('ALERTS.DEFAULT_DESCRIPTION');
     }
 
     return result;

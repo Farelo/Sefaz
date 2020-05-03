@@ -1,37 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import { DepartmentService } from '../../../servicos/index.service'; 
+import { DepartmentService } from '../../../servicos/index.service';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-setor',
   templateUrl: './setor.component.html',
-    styleUrls: ['../cadastros.component.css']
+  styleUrls: ['../cadastros.component.css']
 })
 export class SetorComponent implements OnInit {
-  
+
   public allDepartments: any[] = [];
   public auxAllDepartments: any[] = [];
   public search = "";
   public actualPage = -1;
 
-  constructor(
-    private departmentService : DepartmentService,
-    private modalService: NgbModal) { }
+  constructor(public translate: TranslateService,
+    private departmentService: DepartmentService,
+    private modalService: NgbModal) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
 
     this.loadDepartments();
   }
 
-  loadDepartments(){
+  loadDepartments() {
 
     this.departmentService.getAllDepartment().subscribe(data => {
       this.allDepartments = data;
       this.auxAllDepartments = data;
-    }, err => {console.log(err)});
+    }, err => { console.log(err) });
   }
 
   searchEvent(event): void {

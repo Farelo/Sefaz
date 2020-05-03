@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
-import { HomeService } from '../../../servicos/home.service'; 
+import { HomeService } from '../../../servicos/home.service';
 import { AuthenticationService } from 'app/servicos/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-categoria-em-viagem',
@@ -16,14 +17,18 @@ export class CategoriaEmViagemComponent implements OnInit {
 
   public listLate: any[] = [];
   public listMissing: any[] = [];
-  
+
   public listLateActualPage: number = -1;
   public listMissingActualPage: number = -1;
 
   public settings: any = {};
 
-  constructor(private homeService: HomeService,
-    private authenticationService: AuthenticationService) { }
+  constructor(public translate: TranslateService,
+    private homeService: HomeService,
+    private authenticationService: AuthenticationService) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
 
@@ -34,8 +39,8 @@ export class CategoriaEmViagemComponent implements OnInit {
   }
 
   ngOnChanges() {
-    
-    
+
+
   }
 
   /**
@@ -47,7 +52,7 @@ export class CategoriaEmViagemComponent implements OnInit {
   }
 
   calculateProgress() {
-    
+
     let base = parseFloat(this.resume.qtd_traveling_late + this.resume.qtd_traveling_missing);
 
     if (base > 0) {

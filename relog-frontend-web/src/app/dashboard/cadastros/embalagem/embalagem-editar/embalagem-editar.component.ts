@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastService, PackingService, FamiliesService, ProjectService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-embalagem-editar',
@@ -19,14 +20,17 @@ export class EmbalagemEditarComponent implements OnInit {
   public mActualPacking: any;
   public activePacking: boolean = false;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private familyService: FamiliesService,
     private packingService: PackingService,
     private projectService: ProjectService,
     private toastService: ToastService,
     private router: Router,
     private route: ActivatedRoute,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
 

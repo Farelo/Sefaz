@@ -8,6 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 import { TextMaskModule } from 'angular2-text-mask';
 import { FormsModule } from '@angular/forms';
+import {  TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     TextMaskModule,
     NgSelectModule,
-    ApplicationPipes
+    ApplicationPipes,
+    TranslateModule
   ],
   declarations: [
     CadastrosComponent

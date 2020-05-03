@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { AlertModule } from 'ngx-bootstrap';
 import { ReactiveFormsModule} from '@angular/forms';
 import { ToastyModule } from 'ng2-toasty';
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   imports: [
     LoginRoutingModule,
@@ -18,7 +19,8 @@ import { ToastyModule } from 'ng2-toasty';
     RouterModule,
     AlertModule.forRoot(),
     ToastyModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule
   ],
   declarations: [
     LoginComponent

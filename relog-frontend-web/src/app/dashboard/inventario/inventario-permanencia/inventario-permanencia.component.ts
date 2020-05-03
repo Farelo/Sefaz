@@ -5,6 +5,7 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { FloatTimePipe } from '../../../shared/pipes/floatTime';
 import 'jspdf';
 import 'jspdf-autotable';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
 
 @Component({
@@ -25,12 +26,13 @@ export class InventarioPermanenciaComponent implements OnInit {
 
   public actualPage: number = -1;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private reportService: ReportsService,
     private familyService: FamiliesService,
     private packingService: PackingService,
     private auth: AuthenticationService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
@@ -126,13 +128,13 @@ export class InventarioPermanenciaComponent implements OnInit {
   };
 
   loadTableHeaders() {
-    this.headers.push({ label: 'Família', name: 'family_code' });
-    this.headers.push({ label: 'Serial', name: 'serial' });
-    this.headers.push({ label: 'Tag', name: 'tag.code' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.FAMILY'), name: 'family_code' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SERIAL'), name: 'serial' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TAG'), name: 'tag.code' });
 
-    this.headers.push({ label: 'Ponto de Controle Atual', name: 'current_control_point_name' });
-    this.headers.push({ label: 'Local', name: 'current_control_point_type' });
-    this.headers.push({ label: 'Tempo no Ponto de Controle', name: 'permanence_time_exceeded' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.ACTUAL_SITE'), name: 'current_control_point_name' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SITE_TYPE'), name: 'current_control_point_type' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TIME_AT_SITE'), name: 'permanence_time_exceeded' });
   }
 
   headerClick(item: any) {
@@ -184,7 +186,7 @@ export class InventarioPermanenciaComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Equipamento Tempo de permanência', this.csvOptions);
+    new Angular2Csv(flatObjectData, this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TITLE'), this.csvOptions);
   }
 
   /**
@@ -205,8 +207,16 @@ export class InventarioPermanenciaComponent implements OnInit {
     // console.log(flatObjectData);
 
     // Or JavaScript:
+    //head: [['Família', 'Serial', 'Tag', 'Planta Atual', 'Local', 'Tempo na Planta']],
     doc.autoTable({
-      head: [['Família', 'Serial', 'Tag', 'Planta Atual', 'Local', 'Tempo na Planta']],
+      head: [[
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.FAMILY'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SERIAL'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TAG'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.ACTUAL_SITE'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SITE_TYPE'),
+        this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TIME_AT_SITE')
+      ]],
       body: flatObjectData
     });
 
@@ -225,7 +235,7 @@ export class InventarioPermanenciaComponent implements OnInit {
         a3: obj.tag.code,
         a4: obj.current_control_point_name,
         a5: obj.current_control_point_type,
-        a6: obj.permanence_time_exceeded !== '-' ? transformer.transform(obj.permanence_time_exceeded) : 'Sem histórico',
+        a6: obj.permanence_time_exceeded !== '-' ? transformer.transform(obj.permanence_time_exceeded) : this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.NO_HISTORY')
       };
     });
 
@@ -235,12 +245,12 @@ export class InventarioPermanenciaComponent implements OnInit {
 
   addHeader(mArray: any) {
     let cabecalho = {
-      a1: 'Família',
-      a2: 'Serial',
-      a3: 'Tag',
-      a4: 'Planta Atual',
-      a5: 'Local',
-      a6: 'Tempo na Planta',
+      a1: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.FAMILY'),
+      a2: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SERIAL'),
+      a3: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TAG'),
+      a4: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.ACTUAL_SITE'),
+      a5: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.SITE_TYPE'),
+      a6: this.translate.instant('INVENTORY.PERMANENCE_TIME_INVENTORY.TIME_AT_SITE')
     }
 
     //adiciona o cabeçalho

@@ -1,8 +1,17 @@
 <div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" class="form-control mr-4" placeholder="Buscar tipo por nome" aria-describedby="basic-addon1"
-    [(ngModel)]="search" (keyup)="searchEvent($event)">
+  <input type="text" 
+    class="form-control mr-4" 
+    [attr.placeholder]="'REGISTER.CONTROL_POINT_TYPE.SEARCH_BAR_PLACEHOLDER' | translate"
+    placeholder="Buscar tipo por nome" 
+    aria-describedby="basic-addon1"
+    [(ngModel)]="search" 
+    (keyup)="searchEvent($event)">
 
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+  <button 
+    routerLink="cadastrar" 
+    class="btn btn-outline-secondary" 
+    type="button"
+    [translate]="'REGISTER.CREATE_BUTTON'"></button>
 </div>
 
 
@@ -10,7 +19,7 @@
   <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
-        <th>Tipo do Ponto de Controle</th>
+        <th translate="REGISTER.TABLE.NAME"></th>
         <th class="opcoes"></th>
       </tr>
     </thead>
@@ -22,11 +31,11 @@
         <td>{{ item.name | truncate : 20 }}</td>
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', item._id]">
-            EDITAR
+            {{ "REGISTER.EDIT_BUTTON" | translate }}
           </button>
 
           <button class="excluir" (click)="removeProject(item)">
-            EXCLUIR
+            {{ "REGISTER.REMOVE_BUTTON" | translate }}
           </button>
         </td>
       </tr>
@@ -35,7 +44,7 @@
 </div>
 
 <div class="classVazio" *ngIf="allTypes.length < 1">
-  Ainda não existem tipos cadastrados.
+  {{ "REGISTER.CONTROL_POINT_TYPE.NO_RESULT" | translate }}
 </div>
 
 <br />

@@ -15,6 +15,7 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule} from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   imports: [
     GC16RoutingModule,
@@ -27,8 +28,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
     FormsModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
+    TranslateModule
   ],
   declarations: [
     Gc16Component,

@@ -1,5 +1,5 @@
 <div class="">
-  <h2>Atualizar Ponto de Controle</h2>
+  <h2 translate="REGISTER.CONTROL_POINT.UPDATE_TITLE"></h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mControlPoint)" [formGroup]="mControlPoint" #formDir="ngForm">
@@ -7,11 +7,17 @@
 
       <!-- Input para o nome do ponto de controle -->
       <div class="campo col-md-12">
-        <p class="descricao">NOME</p>
-        <p class="explicacao">Ex. "Planta B1"</p>
+        <p translate="REGISTER.CONTROL_POINT.NAME" class="descricao"></p>
+        <p translate="REGISTER.CONTROL_POINT.NAME_DESC" class="explicacao"></p>
         <div class="input-group">
-          <input type="text" class="form-control" maxlength="50" placeholder="Digite o nome da planta" aria-describedby="basic-addon2"
-            formControlName="name" (focusout)="validateName($event)" [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
+          <input type="text" 
+          class="form-control" 
+          maxlength="50" 
+          placeholder="{{ 'REGISTER.CONTROL_POINT.NAME_PLACEHOLDER' | translate }}" 
+          aria-describedby="basic-addon2"
+            formControlName="name" 
+            (focusout)="validateName($event)" 
+            [ngClass]="{'required': (mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
               || (mControlPoint.get('name').hasError('required') && submitted)
               || (mControlPoint.get('name').hasError('pattern')) 
               || (mControlPoint.get('name').hasError('pattern') && submitted)
@@ -21,87 +27,92 @@
               || (mControlPoint.get('name').hasError('uniqueValidation') && submitted)}">
         </div>
 
-        <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
-                || (mControlPoint.get('name').hasError('required') && formDir.submitted)">
-          Campo Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mControlPoint.get('name').hasError('required') && mControlPoint.get('name').touched)
+                || (mControlPoint.get('name').hasError('required') && formDir.submitted)"> </p>
 
-        <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('minlength'))
-                || (mControlPoint.get('name').hasError('minlength') && formDir.submitted)">
-          Mínimo de 5 caracteres</p>
+        <p translate="REGISTER.ERRORS.MIN_5" class="requiredText" *ngIf="(mControlPoint.get('name').hasError('minlength'))
+                || (mControlPoint.get('name').hasError('minlength') && formDir.submitted)"> </p>
 
-        <p class="explicacao" *ngIf="validateNotTakenLoading">
-          Verificando disponibilidade ...</p>
+        <p translate="REGISTER.ERRORS.CHECKING" class="explicacao" *ngIf="validateNotTakenLoading"> </p>
 
-        <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('uniqueValidation')) 
-                || (mControlPoint.get('name').hasError('uniqueValidation') && submitted)">
-          Este Ponto de Controle já existe. O nome deve ser único.</p>
+        <p translate="REGISTER.ERRORS.CP_EXISTS" class="requiredText" *ngIf="(mControlPoint.get('name').hasError('uniqueValidation')) 
+                || (mControlPoint.get('name').hasError('uniqueValidation') && submitted)"> </p>
 
-        <p class="requiredText" *ngIf="(mControlPoint.get('name').hasError('pattern')) || (mControlPoint.get('name').hasError('pattern') && submitted)">
-          Excesso de espaços em branco</p>
+        <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" *ngIf="(mControlPoint.get('name').hasError('pattern')) || (mControlPoint.get('name').hasError('pattern') && submitted)"> </p>
       </div>
 
       <!-- Input para o duns do ponto de controle -->
       <div class="campo col-md-12 col-md-6">
-        <p class="descricao">CÓDIGO DE IDENTIFICAÇÃO DA EMPRESA/DUNS</p>
-        <p class="explicacao">Ex. "123456789"</p>
+        <p translate="REGISTER.CONTROL_POINT.DUNS" class="descricao"></p>
+        <p translate="REGISTER.CONTROL_POINT.DUNS_DESC" class="explicacao"></p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Digite o código de identificação da empresa" maxlength="30"
-            aria-describedby="basic-addon2" formControlName="duns" [ngClass]="{'required': (mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
+          <input type="text" 
+            class="form-control" 
+            placeholder="{{ 'REGISTER.CONTROL_POINT.DUNS_PLACEHOLDER' | translate }}" 
+            maxlength="30"
+            aria-describedby="basic-addon2" 
+            formControlName="duns" 
+            [ngClass]="{'required': (mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
               || (mControlPoint.get('duns').hasError('required') && submitted)}">
         </div>
-        <p class="requiredText" *ngIf="(mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
-                    || (mControlPoint.get('duns').hasError('required') && submitted)">Campo
-          Obrigatório</p>
+
+        <p translate="REGISTER.ERRORS.REQUIRED" 
+        class="requiredText" 
+        *ngIf="(mControlPoint.get('duns').hasError('required') && mControlPoint.get('duns').touched)
+                    || (mControlPoint.get('duns').hasError('required') && submitted)"></p>
       </div>
 
       <!-- Input para o tipo do ponto de controle -->
       <div class="campo col-sm-12 col-md-6">
-        <p class="descricao">TIPO</p>
-        <ng-select bindLabel="name" placeholder="Selecione o tipo" [items]="allTypes" [addTag]="true" (add)="onAddItem($event)"
+        <p translate="REGISTER.CONTROL_POINT.TYPE" class="descricao"></p>
+        <ng-select bindLabel="name" 
+          placeholder="{{ 'REGISTER.CONTROL_POINT.TYPE_PLACEHOLDER' | translate }}" 
+          [items]="allTypes" 
+          [addTag]="true" 
+          (add)="onAddItem($event)"
           formControlName="type">
           <ng-template ng-option-tmp let-item="item">
             {{item.name}}
           </ng-template>
         </ng-select>
 
-        <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('required') && mControlPoint.get('type').touched)
-                || (mControlPoint.get('type').hasError('required') && submitted)">
-          Campo Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mControlPoint.get('type').hasError('required') && mControlPoint.get('type').touched)
+                || (mControlPoint.get('type').hasError('required') && submitted)"> </p>
 
-        <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('minlength') && mControlPoint.get('type').touched)
-                || (mControlPoint.get('type').hasError('minlength') && submitted)">
-          Mínimo de 5 caracteres</p>
+        <p translate="REGISTER.ERRORS.MIN_5" class="requiredText" *ngIf="(mControlPoint.get('type').hasError('minlength') && mControlPoint.get('type').touched)
+                || (mControlPoint.get('type').hasError('minlength') && submitted)"> </p>
 
-        <p class="requiredText" *ngIf="(mControlPoint.get('type').hasError('maxlength') && mControlPoint.get('type').touched)
-                || (mControlPoint.get('type').hasError('maxlength') && submitted)">
-          Máximo de 50 caracteres</p>
+        <p translate="REGISTER.ERRORS.MAX_50" class="requiredText" *ngIf="(mControlPoint.get('type').hasError('maxlength') && mControlPoint.get('type').touched)
+                || (mControlPoint.get('type').hasError('maxlength') && submitted)"> </p>
       </div>
 
       <!-- Input para selecionar a empresa vinculada -->
       <div class="campo col-sm-12 col-md-6">
-        <p class="descricao">EMPRESA VINCULADA</p>
+        <p translate="REGISTER.CONTROL_POINT.LINK" class="descricao"></p>
         <ng-select bindLabel="name" placeholder="Associe uma empresa" [items]="allCompanies" formControlName="company">
           <ng-template ng-option-tmp let-item="item">
             <div> {{item.name}} </div>
           </ng-template>
         </ng-select>
-        <p class="requiredText" *ngIf="(mControlPoint.get('company').hasError('required') && mControlPoint.get('company').touched)
-            || (mControlPoint.get('company').hasError('required') && mControlPoint.invalid && submitted)">
-          Campo Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mControlPoint.get('company').hasError('required') && mControlPoint.get('company').touched)
+            || (mControlPoint.get('company').hasError('required') && mControlPoint.invalid && submitted)"> </p>
       </div>
 
 
       <!-- Input para digitar o endereço -->
       <div class="col-sm-12" style="margin-bottom: 10px;">
-        <p class=" descricao">LOCAL</p>
-        <input places-auto-complete class="form-control" (place_changed)="placeChanged($event)" [types]="['geocode']"
-          formControlName="full_address" placeholder="Digite o local da planta" [ngClass]="{'required': (mControlPoint.get('full_address').hasError('required') && mControlPoint.get('full_address').touched)
+        <p translate="REGISTER.CONTROL_POINT.SITE" class=" descricao"></p>
+        <input places-auto-complete 
+          class="form-control" 
+          (place_changed)="placeChanged($event)" 
+          [types]="['geocode']"
+          formControlName="full_address" 
+          placeholder="{{ 'REGISTER.CONTROL_POINT.SITE_PLACEHOLDER' | translate }}" 
+          [ngClass]="{'required': (mControlPoint.get('full_address').hasError('required') && mControlPoint.get('full_address').touched)
                   || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)}" />
 
-        <p class="requiredText" *ngIf="(mControlPoint.get('full_address').hasError('required') && mControlPoint.get('full_address').touched)
-                  || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)">
-          Campo Obrigatório
-        </p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mControlPoint.get('full_address').hasError('required') && mControlPoint.get('full_address').touched)
+                  || (mControlPoint.get('full_address').hasError('required') && mControlPoint.invalid && submitted)"> </p>
 
         <!-- (click)="onClick($event)" -->
         <ngui-map [zoom]="zoom" [center]="center" style="margin-top: 10px;" (mapReady$)="onMapReady()">
@@ -137,10 +148,10 @@
             <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
             [title]="posCP.name" (click)="clickedPlant($event, posCP)">
             <info-window id="pw">
-              <div class="iw-title">INFORMAÇÕES</div>
+              <div translate="REGISTER.CONTROL_POINT.INFO" class="iw-title"></div>
               <div *ngIf="plant.display" class="info-window-content">
                 <p>
-                  <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
+                  <span class="bold">{{ 'REGISTER.CONTROL_POINT.CONTROL_POINT' | translate }}:</span> {{ plant.name }}</p>
               </div>
             </info-window>
           </marker>
@@ -155,10 +166,10 @@
             [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }">
             <!-- <div class="custom-icon-map-plant"></div> -->
             <info-window id="lw">
-              <div class="iw-title">INFORMAÇÕES</div>
+              <div translate="REGISTER.CONTROL_POINT.INFO" class="iw-title"></div>
               <div *ngIf="plant.display" class="info-window-content">
                 <p>
-                  <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
+                  <span class="bold">{{ 'REGISTER.CONTROL_POINT.CONTROL_POINT' | translate }}:</span> {{ plant.name }}</p>
               </div>
             </info-window>
           </marker>
@@ -166,17 +177,15 @@
           
         </ngui-map>
 
-        <p class="requiredText">
-          Selecione contorno círculo ou polígono</p>
-        <div *ngIf="mGeofence?.radius">Raio: {{ mGeofence.radius }} </div>
+        <p translate="REGISTER.CONTROL_POINT.SELECT_EDGES"  class="requiredText"></p>
+        <div *ngIf="mGeofence?.radius">{{ 'REGISTER.CONTROL_POINT.RADIUS' | translate }}: {{ mGeofence.radius }} </div>
       </div>
 
       <div class="campo col-sm-12 informacoes">
         <div class="bigger2">
           <div class="fromSun"></div>
         </div>
-        <span class="forn">{{ this.mControlPoint.controls.full_address.value || 'Nenhuma informação sobre a localidade'
-          }}</span>
+        <span class="forn">{{ this.mControlPoint.controls.full_address.value || 'REGISTER.CONTROL_POINT.NO_INFORMATION' | translate }}</span>
       </div>
 
 
@@ -213,8 +222,8 @@
     <br />
 
     <div class="botoes">
-      <button routerLink="/rc/cadastros/ponto" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
+      <button translate="REGISTER.BACK_BUTTON" routerLink="/rc/cadastros/ponto" class="botaoVoltar"></button>
+      <button translate="REGISTER.UPDATE_BUTTON" type="submit" class="botaoRegistrar"></button>
     </div>
 
   </form>

@@ -1,9 +1,9 @@
 <div class="modalFilho">
   <section class="header">
-    <h2 style="color: #354052; margin-bottom: 0px;">Editar usuário</h2>
+    <h2 translate="USERS.UPDATE_USER" style="color: #354052; margin-bottom: 0px;"></h2>
 
     <div class="col-12 no-padding">
-      <p class="alerta-badges">Editar um usuário no sistema</p>
+      <p translate="USERS.UPDATE_USER_TITLE" class="alerta-badges"></p>
     </div>
 
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -15,15 +15,15 @@
     <form novalidate (ngSubmit)="onSubmit(newUser)" [formGroup]="newUser">
       <div class="row">
         <alert type="info" *ngIf="invalidEmail">
-          <strong>Atenção!</strong> O e-mail ja existe no sistema!
+          <div [innerHTML]="'USERS.EMAIL_EXISTS_DIV' | translate"></div>
         </alert>
       </div>
 
       <div class="row">
         <div class="form-group col-sm-6">
-          <p class="descricao">TIPO DE USUÁRIO</p>
+          <p translate="USERS.USER_TYPE" class="descricao"></p>
           <ng-select formControlName="role" [(ngModel)]="userType" [items]="rolesOnSelect" [searchable]="false"
-            placeholder="Selecione um Tipo">
+            placeholder="{{ 'USERS.USER_TYPE_PLACEHOLDER' | translate }}">
             <ng-template ng-label-tmp let-item="item">
               {{ item.label }}
             </ng-template>
@@ -31,44 +31,39 @@
               <div>{{ item.label }}</div>
             </ng-template>
           </ng-select>
-          <p class="requiredText" *ngIf="(newUser.get('role').hasError('required') && newUser.get('role').touched)
-                                  || (newUser.get('role').hasError('required') && submitted)">Campo
-            Obrigatório</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(newUser.get('role').hasError('required') && newUser.get('role').touched)
+              || (newUser.get('role').hasError('required') && submitted)"></p>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-sm-12">
-          <p class="descricao">EMPRESA VINCULADA</p>
+          <p translate="USERS.LINKED_COMPANY" class="descricao"></p>
           <ng-select formControlName="company" [(ngModel)]="userCompany" [items]="companiesOnSelect" bindLabel="name"
-            placeholder="Selecione um Fornecedor">
+            placeholder="{{ 'USERS.LINKED_COMPANY_PLACEHOLDER' | translate }}">
             <ng-template ng-label-tmp let-item="item">
               {{ item.name }}
             </ng-template>
             <ng-template ng-option-tmp let-item="item">
               <div>
-                <b>Nome:</b> {{item.name}}
+                <b>{{ 'USERS.NAME' | translate }}:</b> {{item.name}}
               </div>
               <small>
-                <b>Tipo:</b> {{item.type}}
+                <b>{{ 'USERS.TYPE' | translate }}:</b> {{item.type}}
               </small>
             </ng-template>
           </ng-select>
-          <p class="requiredText" *ngIf="(newUser.get('company').hasError('required') && newUser.get('company').touched)
-            || (newUser.get('company').hasError('required') && submitted)">Campo
-            Obrigatório</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(newUser.get('company').hasError('required') && newUser.get('company').touched)
+            || (newUser.get('company').hasError('required') && submitted)"> </p>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-sm-12 col-md-6">
-          <p class="descricao">NOME DO USUÁRIO</p>
-          <input type="text" class="form-control" 
-            maxlength="40"
-            placeholder="Digite o nome do usuário"
-            formControlName="full_name" 
-            [(ngModel)]="full_name" 
-            [ngClass]="{'required': ((newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
+          <p translate="USERS.USER_NAME" class="descricao"></p>
+          <input type="text" class="form-control" maxlength="40"
+            placeholder="{{ 'USERS.USER_NAME_PLACEHOLDER' | translate }}" formControlName="full_name"
+            [(ngModel)]="full_name" [ngClass]="{'required': ((newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
             || (newUser.get('full_name').hasError('required') && submitted))
             
             || ((newUser.get('full_name').hasError('minlength') && newUser.get('full_name').touched)
@@ -77,21 +72,21 @@
             || (newUser.get('full_name').hasError('pattern'))
             || (newUser.get('full_name').hasError('pattern') && submitted)}">
 
-          <p class="requiredText" *ngIf="(newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
-              || (newUser.get('full_name').hasError('required') && submitted)">Campo
-            Obrigatório</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
+              || (newUser.get('full_name').hasError('required') && submitted)"> </p>
 
-          <p class="requiredText" *ngIf="(newUser.get('full_name').hasError('minlength') && newUser.get('full_name').touched)
-                                                        || (newUser.get('full_name').hasError('minlength') && submitted)">Mínimo de 5 caracters</p>
+          <p translate="REGISTER.ERRORS.MIN_5" class="requiredText" *ngIf="(newUser.get('full_name').hasError('minlength') && newUser.get('full_name').touched)
+              || (newUser.get('full_name').hasError('minlength') && submitted)"></p>
 
-          <p class="requiredText" *ngIf="(newUser.get('full_name').hasError('pattern')) || (newUser.get('full_name').hasError('pattern') && submitted)">
-            Excesso de espaços em branco</p>
+          <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText"
+            *ngIf="(newUser.get('full_name').hasError('pattern')) || (newUser.get('full_name').hasError('pattern') && submitted)">
+          </p>
         </div>
 
         <div class="form-group col-sm-12 col-md-6">
-          <p class="descricao">E-MAIL</p>
-          <input type="text" class="form-control" placeholder="Digite o email" formControlName="email" maxlength="40"
-            (focusout)="validateEmail($event)" [(ngModel)]="email" [ngClass]="{'required': (newUser.get('email').hasError('required') && newUser.get('email').touched)
+          <p translate="USERS.EMAIL" class="descricao"></p>
+          <input type="text" class="form-control" placeholder="{{ 'USERS.EMAIL_PLACEHOLDER' | translate }}"
+            formControlName="email" maxlength="40" (focusout)="validateEmail($event)" [(ngModel)]="email" [ngClass]="{'required': (newUser.get('email').hasError('required') && newUser.get('email').touched)
             || (newUser.get('email').hasError('required') && submitted)
           
             || (newUser.get('email').hasError('email') && !newUser.get('email').hasError('required') )
@@ -99,80 +94,62 @@
 
             || (newUser.get('email').hasError('uniqueValidation'))
             || (newUser.get('email').hasError('uniqueValidation') && submitted)}">
-        
-          <p class="requiredText" *ngIf="(newUser.get('email').hasError('required') && newUser.get('email').touched)
-                      || (newUser.get('email').hasError('required') && submitted)">Campo
-            Obrigatório</p>
-        
-          <p class="requiredText" *ngIf="newUser.get('email').hasError('minlength')
-                    || (newUser.get('email').hasError('minlength') && submitted)">
-            Mínimo de 5 caracters</p>
-        
-          <p class="requiredText" *ngIf="(newUser.get('email').hasError('uniqueValidation')) 
-                              || (newUser.get('email').hasError('uniqueValidation') && submitted)">
-            Este Usuário já existe. O email deve ser único</p>
-        
-          <p class="explicacao" *ngIf="validateNotTakenLoading ">
-            Verificando disponibilidade ...</p>
-        
-          <p class="requiredText" *ngIf="(newUser.get('email').hasError('email') && newUser.get('email').touched)
-                      || (newUser.get('email').hasError('email') && submitted )">Formato
-            do email esta incorreto!</p>
-        
+
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(newUser.get('email').hasError('required') && newUser.get('email').touched)
+                      || (newUser.get('email').hasError('required') && submitted)"> </p>
+
+          <p translate="REGISTER.ERRORS.MIN_5" class="requiredText" *ngIf="newUser.get('email').hasError('minlength')
+                    || (newUser.get('email').hasError('minlength') && submitted)"> </p>
+
+          <p translate="REGISTER.ERRORS.EMAIL_EXISTS" class="requiredText" *ngIf="(newUser.get('email').hasError('uniqueValidation')) 
+                              || (newUser.get('email').hasError('uniqueValidation') && submitted)"> </p>
+
+          <p translate="REGISTER.ERRORS.CHECKING" class="explicacao" *ngIf="validateNotTakenLoading "> </p>
+
+          <p translate="REGISTER.ERRORS.INCORRECT_FORMAT_EMAIL" class="requiredText" *ngIf="(newUser.get('email').hasError('email') && newUser.get('email').touched)
+                      || (newUser.get('email').hasError('email') && submitted )"> </p>
+
         </div>
-        </div>
+      </div>
 
       <div class="row">
         <div class="form-group col-sm-12 col-md-6">
-          <p class="descricao">PASSWORD</p>
-          <input type="password" 
-            (keydown.space)="$event.preventDefault()"
-            formControlName="password" 
-            placeholder="Digite a senha"
-            class="form-control" 
-            [(ngModel)]="password" 
+          <p translate="USERS.PASSWORD" class="descricao"></p>
+          <input type="password" (keydown.space)="$event.preventDefault()" formControlName="password"
+            placeholder="{{ 'USERS.PASSWORD_PLACEHOLDER' | translate }}" class="form-control" [(ngModel)]="password"
             [ngClass]="{'required': (newUser.get('password').hasError('required') && newUser.get('password').touched)
                           || (newUser.get('password').hasError('required') && submitted)}">
 
-          <p class="requiredText" *ngIf="(newUser.get('password').hasError('required') && newUser.get('password').touched)
-                          || (newUser.get('password').hasError('required') && submitted)">Campo
-            Obrigatório</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(newUser.get('password').hasError('required') && newUser.get('password').touched)
+              || (newUser.get('password').hasError('required') && submitted)"></p>
 
-          <p class="requiredText" *ngIf="(newUser.get('password').hasError('minlength') && newUser.get('password').touched)
-                                    || (newUser.get('password').hasError('minlength') && submitted)">Mínimo
-            de 6 caracters</p>
+          <p translate="REGISTER.ERRORS.MIN_6" class="requiredText" *ngIf="(newUser.get('password').hasError('minlength') && newUser.get('password').touched)
+              || (newUser.get('password').hasError('minlength') && submitted)"></p>
 
         </div>
 
         <div class="form-group col-sm-12 col-md-6">
-          <p class="descricao">CONFIRMAR PASSWORD</p>
-          <input type="password" 
-            (keydown.space)="$event.preventDefault()"
-            [(ngModel)]="confirm_password" 
-            formControlName="confirm_password"
-            placeholder="Digite a senha" 
-            class="form-control" 
-            [ngClass]="{'required': (newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
+          <p translate="USERS.CONFIRM_PASSWORD" class="descricao"></p>
+          <input type="password" (keydown.space)="$event.preventDefault()" [(ngModel)]="confirm_password"
+            formControlName="confirm_password" placeholder="{{ 'USERS.PASSWORD_PLACEHOLDER' | translate }}"
+            class="form-control" [ngClass]="{'required': (newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
             || (newUser.get('confirm_password').hasError('required') && submitted)}">
 
-          <p class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
-            || (newUser.get('confirm_password').hasError('required') && submitted)">Campo
-            Obrigatório</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('required') && newUser.get('confirm_password').touched)
+            || (newUser.get('confirm_password').hasError('required') && submitted)"> </p>
 
-          <p class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('minlength') && newUser.get('confirm_password').touched)
-            || (newUser.get('confirm_password').hasError('minlength') && submitted)">Mínimo
-            de 6 caracters</p>
+          <p translate="REGISTER.ERRORS.MIN_6" class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('minlength') && newUser.get('confirm_password').touched)
+            || (newUser.get('confirm_password').hasError('minlength') && submitted)"> </p>
 
-          <p class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('MatchPassword'))
-            || (newUser.get('confirm_password').hasError('MatchPassword') && submitted)">As
-            senhas não coincidem</p>
+          <p translate="USERS.MATCH_PASSWORD" class="requiredText" *ngIf="(newUser.get('confirm_password').hasError('MatchPassword'))
+            || (newUser.get('confirm_password').hasError('MatchPassword') && submitted)"> </p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-sm-12 text-right">
-          <button class="botao-voltar" (click)="closeModal()">VOLTAR</button>
-          <button type="submit" class="botao-registrar">ATUALIZAR</button>
+          <button translate="REGISTER.BACK_BUTTON" class="botao-voltar" (click)="closeModal()"></button>
+          <button translate="REGISTER.UPDATE_BUTTON" type="submit" class="botao-registrar"></button>
         </div>
       </div>
 

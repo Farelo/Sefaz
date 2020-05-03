@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastService } from 'app/servicos/toast.service';
 import { ControlPointTypesService } from 'app/servicos/index.service';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tipo-editar',
@@ -17,11 +18,14 @@ export class TipoPontoControleEditarComponent implements OnInit {
   public mId: string;
   public mActualType: any;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private controlPointTypesService: ControlPointTypesService,
     private toastService: ToastService,
     private route: ActivatedRoute,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
 

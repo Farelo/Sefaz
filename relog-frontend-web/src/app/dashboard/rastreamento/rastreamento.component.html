@@ -1,4 +1,4 @@
-<div class="row no-gutters m-container">
+<div class="row no-gutters m-container" style="margin-top: -30px;">
 
   <ng-sidebar-container>
     <!-- Menu lateral -->
@@ -161,7 +161,7 @@
             <!-- Control Point -->
             <marker *ngFor="let posCP of listOfControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
               [visible]="showControlledPlants" [title]="posCP.name" (click)="clicked($event, posCP)">
-            </marker> -->
+          </marker>
 
             <!-- <circle *ngFor="let posCPRadius of listOfControlPoints" [center]="posCPRadius.position" [fillColor]="'#0044a8'"
               [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"

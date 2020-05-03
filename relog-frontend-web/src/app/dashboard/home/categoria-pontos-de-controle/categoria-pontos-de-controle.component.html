@@ -1,6 +1,6 @@
 <section class="grupo-categoria">
   <div style="display: flex;">
-    <h5>Nos Pontos de Controle</h5>
+    <h5 translate="HOME.IN_CONTROL_POINTS.TITLE"></h5>
     <div class="quantidade-total-categoria">{{ resume.qtd_in_cp }}</div>
   </div>
 
@@ -19,7 +19,7 @@
           {{ resume.qtd_in_incorrect_cp }}
         </div>
 
-        <span class="nome-categoria">Local Incorreto</span>
+        <span translate="HOME.IN_CONTROL_POINTS.INCORRECT_LOCAL" class="nome-categoria"></span>
 
         <button class="hamburger hamburger--squeeze" type="button"
           (click)="localIncorretoCollapsed = !localIncorretoCollapsed" [attr.aria-controls]="conteudoLocalIncorreto"
@@ -36,20 +36,19 @@
     <!-- Conteúdo Local Incorreto -->
     <div [attr.id]="conteudoLocalIncorreto" [ngbCollapse]="!localIncorretoCollapsed">
       <div class="">
-        <div *ngIf="listIncorrectLocal.length < 1">
-          Não há embalagens nesta situação.
+        <div translate="HOME.IN_CONTROL_POINTS.INCORRECT_LOCAL" *ngIf="listIncorrectLocal.length < 1">
         </div>
 
         <div *ngIf="listIncorrectLocal.length > 0" class="table-responsive meuInventario inner-table">
           <table class="table">
             <thead>
               <tr class="cabecalho">
-                <th>Code</th>
-                <th>Serial</th>
-                <th>Tag</th>
-                <th>Local Atual</th>
-                <th>Bateria</th>
-                <th>Último sinal</th>
+                <th translate="HOME.TABLE.CODE"></th>
+                <th translate="HOME.TABLE.SERIAL"></th>
+                <th translate="HOME.TABLE.TAG"></th>
+                <th translate="HOME.TABLE.ACTUAL_SITE"></th>
+                <th translate="HOME.TABLE.BATTERY"></th>
+                <th translate="HOME.TABLE.LAST_SIGNAL"></th>
               </tr>
             </thead>
 
@@ -89,7 +88,7 @@
           {{ resume.qtd_permanence_time_exceeded }}
         </div>
 
-        <span class="nome-categoria">Tempo de Permanência</span>
+        <span translate="HOME.IN_CONTROL_POINTS.PERMANENCE_TIME" class="nome-categoria">Tempo de Permanência</span>
 
         <button class="hamburger hamburger--squeeze" type="button"
           (click)="tempoDePermanenciaCollapsed = !tempoDePermanenciaCollapsed"
@@ -109,19 +108,17 @@
     <div [attr.id]="conteudoTempoDePermanencia" [ngbCollapse]="!tempoDePermanenciaCollapsed">
       <!-- <div [@animatePermanenciaCollapse]="tempoDePermanenciaCollapsed"> -->
       <div class="">
-        <div *ngIf="listPermanenceTime.length < 1">
-          Não há embalagens nesta situação.
-        </div>
+        <div translate="HOME.NO_RESULTS" *ngIf="listPermanenceTime.length < 1"> </div>
         <div *ngIf="listPermanenceTime.length > 0" class="table-responsive meuInventario inner-table">
           <table class="table">
             <thead>
               <tr class="cabecalho">
-                <th>Code</th>
-                <th>Serial</th>
-                <th>Tag</th>
-                <th>Local Atual</th>
-                <th>Bateria</th>
-                <th>Último sinal</th>
+                <th translate="HOME.TABLE.CODE">Code</th>
+                <th translate="HOME.TABLE.SERIAL">Serial</th>
+                <th translate="HOME.TABLE.TAG">Tag</th>
+                <th translate="HOME.TABLE.ACTUAL_SITE">Local Atual</th>
+                <th translate="HOME.TABLE.BATTERY">Bateria</th>
+                <th translate="HOME.TABLE.LAST_SIGNAL">Último sinal</th>
               </tr>
             </thead>
 

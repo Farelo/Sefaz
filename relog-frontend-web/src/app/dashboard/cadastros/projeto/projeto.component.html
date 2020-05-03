@@ -1,15 +1,19 @@
 <div class="input-group mb-3 d-flex justify-content-between">
   <input type="text" 
     class="form-control mr-4" 
-    placeholder="Buscar projeto por nome" 
+    [attr.placeholder]="'REGISTER.PROJECT.SEARCH_BAR_PLACEHOLDER' | translate"
     aria-describedby="basic-addon1" 
     [(ngModel)]="search" 
     (keyup)="searchEvent($event)">
+    <!-- placeholder="{{ 'REGISTER.PROJECT.SEARCH_BAR_PLACEHOLDER' | translate }}"  -->
 
   <button 
     routerLink="cadastrar" 
     class="btn btn-outline-secondary" 
-    type="button">Novo</button>
+    type="button">
+    <span [translate]="'REGISTER.CREATE_BUTTON'"></span>
+  </button>
+    <!-- translate="REGISTER.CREATE_BUTTON">Novo</button> -->
 </div>
 
 
@@ -17,7 +21,7 @@
   <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
-        <th>Nome</th>
+        <th translate="REGISTER.TABLE.NAME"></th>
         <th class="opcoes"></th>
       </tr>
     </thead> 
@@ -31,13 +35,13 @@
           <button 
             class="editar" 
             [routerLink]="['editar/', project._id]">
-            EDITAR
+            {{ "REGISTER.EDIT_BUTTON" | translate }}
           </button>
 
           <button 
             class="excluir" 
             (click)="removeProject(project)">
-            EXCLUIR
+            {{ "REGISTER.REMOVE_BUTTON" | translate }}
           </button>
         </td>
       </tr>
@@ -46,7 +50,7 @@
 </div>
 
 <div class="classVazio" *ngIf="allProjects.length < 1">
-  Ainda não existem projetos cadastrados.
+  {{ "REGISTER.PROJECT.NO_RESULT" | translate }}
 </div>
 
 <br />

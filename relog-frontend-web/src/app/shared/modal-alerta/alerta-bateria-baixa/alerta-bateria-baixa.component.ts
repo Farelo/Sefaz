@@ -4,6 +4,7 @@ import { Pagination } from '../../models/pagination';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService, InventoryLogisticService, PackingService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-alerta-bateria-baixa',
@@ -15,17 +16,17 @@ export class AlertaBateriaBaixaComponent implements OnInit {
   @Input() alerta;
   public mConstants: any;
 
-  constructor(
+  constructor(public translate: TranslateService,
     public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
     private modalService: NgbModal) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
     this.mConstants = constants;
   }
 
-  ngOnInit() {
-    console.log('bateria baixa');
-  }
+  ngOnInit() { }
 
   visualizeOnMap() {
 
@@ -35,7 +36,6 @@ export class AlertaBateriaBaixaComponent implements OnInit {
       .getPacking(this.alerta._id)
       .subscribe(result => {
         let actualPackage = result;
-        //console.log('actualPackage: ' + JSON.stringify(actualPackage));
 
         this.activeAlerta.dismiss('open map');
         const modalRef = this.modalService.open(LayerModalComponent, {
@@ -46,7 +46,7 @@ export class AlertaBateriaBaixaComponent implements OnInit {
         actualPackage.alertCode = this.alerta.current_state;
         actualPackage.tag = actualPackage.tag.code;
         actualPackage.family_code = this.alerta.family.code;
-        
+
         modalRef.componentInstance.packing = actualPackage;
       },
         err => {

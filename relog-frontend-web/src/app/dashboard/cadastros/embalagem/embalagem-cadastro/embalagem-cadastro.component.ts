@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastService, PackingService, FamiliesService, ProjectService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-embalagem-cadastro',
@@ -15,13 +16,16 @@ export class EmbalagemCadastroComponent implements OnInit {
   public listOfProjects: any[] = []; 
   public activePacking: boolean = false;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private familyService: FamiliesService,
     private packingService: PackingService,
     private projectService: ProjectService,
     private toastService: ToastService,
     private router: Router,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
     

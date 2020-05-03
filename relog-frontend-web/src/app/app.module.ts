@@ -62,6 +62,15 @@ import { EditUserComponent } from "./shared/modal-user/edit-user/edit-user.compo
 import { AlertaSemSinalComponent } from "./shared/modal-alerta/alerta-sem-sinal/alerta-sem-sinal.component";
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 
+import {HttpClient} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader'; 
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -118,6 +127,13 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     ApplicationPipes,
     NguiMapModule.forRoot({
       apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}`
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
     })
   ],
   providers: [

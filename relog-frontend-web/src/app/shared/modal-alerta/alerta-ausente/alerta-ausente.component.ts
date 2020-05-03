@@ -4,6 +4,7 @@ import { Pagination } from '../../models/pagination';
 import { InventoryService, InventoryLogisticService, PackingService } from '../../../servicos/index.service';
 import { LayerModalComponent } from '../../modal-packing/layer.component';
 import { constants } from '../../../../environments/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-alerta-ausente',
@@ -16,10 +17,12 @@ export class AlertaAusenteComponent implements OnInit {
 
   public mConstants: any;
 
-  constructor(
+  constructor(public translate: TranslateService,
     public activeAlerta: NgbActiveModal,
     private packingsService: PackingService,
     private modalService: NgbModal) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
 
     this.mConstants = constants;
   }
@@ -68,7 +71,7 @@ export class AlertaAusenteComponent implements OnInit {
           actualPackage.alertCode = this.alerta.current_state;
           actualPackage.tag = actualPackage.tag.code;
           actualPackage.family_code = this.alerta.family.code;
-          
+
           console.log(this.alerta);
           console.log(actualPackage);
           modalRef.componentInstance.packing = actualPackage;

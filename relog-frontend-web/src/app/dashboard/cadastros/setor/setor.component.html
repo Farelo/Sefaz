@@ -2,18 +2,23 @@
   <input 
     type="text" 
     class="form-control mr-4" 
-    placeholder="Buscar departamento por nome ou ponto de controle" 
+    [attr.placeholder]="'REGISTER.PROJECT.SEARCH_BAR_PLACEHOLDER' | translate"
     aria-describedby="basic-addon1"
     (keyup)="searchEvent($event)">
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+
+  <button 
+    routerLink="cadastrar" 
+    class="btn btn-outline-secondary" 
+    type="button"
+    [translate]="'REGISTER.CREATE_BUTTON'"></button>
 </div>
 
 <div class="table-responsive">
   <table class="table" (mouseleave)="hoveredIndex=null">
     <thead>
       <tr class="cabecalho">
-        <th>Name</th>
-        <th>Planta</th>
+        <th translate="REGISTER.TABLE.NAME">Name</th>
+        <th translate="REGISTER.TABLE.CONTROL_POINT">Planta</th>
         <th class="opcoes"></th>
       </tr>
     </thead>
@@ -26,10 +31,10 @@
         <td>{{ department.control_point.name | truncate : 20 }}</td>
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', department._id]">
-            EDITAR
+            {{ "REGISTER.EDIT_BUTTON" | translate }}
           </button>
           <button class="excluir" (click)="removeDepartment(department)">
-            EXCLUIR
+            {{ "REGISTER.REMOVE_BUTTON" | translate }}
           </button>
         </td>
       </tr>
@@ -38,7 +43,7 @@
 </div>
 
 <div class="classVazio" *ngIf="allDepartments.length < 1">
-  Ainda não existem departamentos cadastradas.
+  {{ "REGISTER.DEPARTMENT.NO_RESULT" | translate }}
 </div>
 
 <br />

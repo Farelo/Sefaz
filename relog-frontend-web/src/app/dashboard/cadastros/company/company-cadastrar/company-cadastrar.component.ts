@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/fo
 import { CompaniesService } from '../../../../servicos/companies.service';
 import { ToastService } from '../../../../servicos/index.service';
 import { Router } from "@angular/router";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-company-cadastrar',
@@ -22,11 +23,14 @@ export class CompanyCadastrarComponent implements OnInit {
   public maskCNPJ = [/[0-9]/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
   //public maskUF = [/[A-Z]/, /[A-Z]/];
   
-  constructor(
+  constructor(public translate: TranslateService,
     protected companiesService: CompaniesService,
     protected toastService: ToastService,
     private fb: FormBuilder,
-    private router: Router) { }
+    private router: Router) { 
+      
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
     this.formProfile();

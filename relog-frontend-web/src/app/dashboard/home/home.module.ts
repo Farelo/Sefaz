@@ -15,6 +15,7 @@ import { CategoriaPontosDeControleComponent } from './categoria-pontos-de-contro
 import { CategoriaEmViagemComponent } from './categoria-em-viagem/categoria-em-viagem.component';
 import { CategoriaSemSinalComponent } from './categoria-sem-sinal/categoria-sem-sinal.component';
 import { CategoriaBateriaBaixaComponent } from './categoria-bateria-baixa/categoria-bateria-baixa.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { CategoriaBateriaBaixaComponent } from './categoria-bateria-baixa/catego
     NgxChartsModule,
     NgbModule,
     TooltipModule, 
-    PopoverModule
+    PopoverModule,
+    TranslateModule
   ],
   declarations: [
     HomeComponent,

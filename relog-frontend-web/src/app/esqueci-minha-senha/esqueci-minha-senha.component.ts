@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule, Validator } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ValidatorsModule, EmailValidators} from 'ngx-validators'
 import {PasswordValidators} from 'ngx-validators'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-esqueci-minha-senha',
@@ -21,7 +22,7 @@ export class EsqueciMinhaSenhaComponent implements OnInit {
     {email: 'admin3@isi.com', senha: 'admin3'}
   ];
 
-  constructor(private router: Router) { }
+  constructor(public translate: TranslateService, private router: Router) { }
 
   testar(input){
     this.inputVazio = false;

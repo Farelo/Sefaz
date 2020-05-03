@@ -1,7 +1,16 @@
 <div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" class="form-control mr-4" placeholder="Buscar por nome" aria-describedby="basic-addon1" [(ngModel)]="search"
+  <input type="text" 
+    class="form-control mr-4" 
+    [attr.placeholder]="'REGISTER.CONTROL_POINT.SEARCH_BAR_PLACEHOLDER' | translate"
+    aria-describedby="basic-addon1" 
+    [(ngModel)]="search"
     (keyup)="searchEvent($event)">
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+
+  <button 
+    routerLink="cadastrar" 
+    class="btn btn-outline-secondary" 
+    type="button"
+    [translate]="'REGISTER.CREATE_BUTTON'"></button>
 </div>
 
 <div class="table-responsive">
@@ -30,10 +39,10 @@
 
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', point._id]">
-            EDITAR
+            {{ "REGISTER.EDIT_BUTTON" | translate }}
           </button>
           <button class="excluir" (click)="removeControlPoint(point)">
-            EXCLUIR
+            {{ "REGISTER.REMOVE_BUTTON" | translate }}
           </button>
         </td>
       </tr>
@@ -42,7 +51,7 @@
 </div>
 
 <div class="classVazio" *ngIf="listOfControlPoints.length < 1">
-  Ainda não existem plantas cadastradas.
+  {{ "REGISTER.CONTROL_POINT.NO_RESULT" | translate }}
 </div>
 
 <br />

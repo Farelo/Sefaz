@@ -5,6 +5,7 @@ import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/fo
 import { ToastService, CompaniesService, UsersService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
 import { PasswordValidation } from 'app/shared/validators/passwordValidator';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-edit-user',
@@ -21,9 +22,6 @@ export class EditUserComponent implements OnInit {
   public userType: any;
   public userCompany: any;
 
-
-
-
   public newUser: FormGroup;
   public autocomplete: google.maps.places.Autocomplete;
   public submitted = false;
@@ -34,13 +32,17 @@ export class EditUserComponent implements OnInit {
 
   public rolesOnSelect: any = [];
 
-  constructor(
+  constructor(public translate: TranslateService,
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private companiesService: CompaniesService,
     private usersService: UsersService,
     private toastService: ToastService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
+  }
 
   ngOnInit() {
     //console.log('mUser onInit: ' + JSON.stringify(this.mUser));
@@ -61,17 +63,17 @@ export class EditUserComponent implements OnInit {
       role: ['', [Validators.required]],
       full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
       email: ['',
-        [ Validators.required,
-          Validators.email,
-          Validators.minLength(5) ],
+        [Validators.required,
+        Validators.email,
+        Validators.minLength(5)],
         // this.validateNotTaken.bind(this) 
       ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm_password: ['', [Validators.required, Validators.minLength(6)]],
       company: ['', [Validators.required]]
     }, {
-        validator: PasswordValidation.MatchPassword // your validation method
-      });
+      validator: PasswordValidation.MatchPassword // your validation method
+    });
   }
 
   fillActualUser() {
@@ -142,12 +144,12 @@ export class EditUserComponent implements OnInit {
   public validateNotTakenLoading: boolean;
   // validateNotTaken(control: AbstractControl) {
   //   this.validateNotTakenLoading = true;
-    
+
   //   if (this.mUser.email == control.value) { 
   //     this.validateNotTakenLoading = false;
   //     return new Promise((resolve, reject) => resolve(null));
   //   }
-    
+
   //   return control
   //     .valueChanges
   //     .delay(800)

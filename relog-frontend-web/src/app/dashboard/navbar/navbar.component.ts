@@ -5,6 +5,7 @@ import { ModalCurrentEditarComponent } from '../../shared/modal-current-edit/mod
 import { ModalSettings } from '../../shared/modal-settings/modal-settings.component';
 import { AuthenticationService } from '../../servicos/index.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 declare var $: any;
 
 @Component({
@@ -16,32 +17,33 @@ export class NavbarComponent implements OnInit {
   public menuAparecer: boolean = false;
   public currentUser: any;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private ngZone: NgZone,
     private modalService: NgbModal,
     private authenticationService: AuthenticationService,
     private router: Router) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
-    this.funcaoTop();
+    // this.funcaoTop(); 
     this.menuAparecer = false;
     this.currentUser = this.authenticationService.currentUser();
   }
 
-  funcaoTop() {
-    $('.scroll').click(function () {
-      // $('label').click();
-      return false;
-    });
-  }
+  // funcaoTop() {
+  //   $('.scroll').click(function () {
+  //     // $('label').click();
+  //     return false;
+  //   });
+  // }
 
-  posicionarPopOver() {
-    $('.arrow').css({
-      right: 12
-    });
-  }
+  // posicionarPopOver() {
+  //   $('.arrow').css({
+  //     right: 12
+  //   });
+  // }
 
   mudar() {
     this.menuAparecer = !this.menuAparecer;

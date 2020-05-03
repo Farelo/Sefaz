@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ToastService, GC16Service, CompaniesService, ControlPointsService } from '../../../servicos/index.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-gc16-editar',
@@ -22,11 +23,11 @@ export class Gc16EditarComponent implements OnInit {
   public listOfControlPoints: any[] = [];
   public auxListOfControlPoints: any[] = [];
 
-  public gc16:  FormGroup;
+  public gc16: FormGroup;
   public mActualGC16: any;
   public inscricao: Subscription;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private GC16Service: GC16Service,
     private companiesService: CompaniesService,
     private controlPointService: ControlPointsService,
@@ -35,10 +36,11 @@ export class Gc16EditarComponent implements OnInit {
     private fb: FormBuilder,
     private toastService: ToastService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
-    
+
     this.configureFormGroup();
     this.loadCompanies();
     this.loadControlPoints();
@@ -67,16 +69,16 @@ export class Gc16EditarComponent implements OnInit {
 
   companySelected(event: any) {
     // console.log(event);
-    
-    this.gc16.patchValue({control_point: null});
+
+    this.gc16.patchValue({ control_point: null });
 
     this.listOfControlPoints = this.auxListOfControlPoints.filter(elem => {
       return elem.company._id == event._id;
     });
   }
 
-  configureFormGroup(){
-    
+  configureFormGroup() {
+
     this.gc16 = this.fb.group({
       annual_volume: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
       productive_days: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
@@ -122,7 +124,7 @@ export class Gc16EditarComponent implements OnInit {
     });
   }
 
-  retrieveGC16(){ 
+  retrieveGC16() {
     this.inscricao = this.route.params.subscribe(params => {
       let id = params['id'];
       this.GC16Service.getGC16(id).subscribe(result => {
@@ -133,10 +135,10 @@ export class Gc16EditarComponent implements OnInit {
     });
   }
 
-  resolveControlPoint(controlPoint: any){
+  resolveControlPoint(controlPoint: any) {
     this.companiesService.getCompany(controlPoint.company).subscribe(result => {
       this.selectedCompany = result;
-      (<FormGroup>this.gc16).patchValue({company: result});
+      (<FormGroup>this.gc16).patchValue({ company: result });
     }, error => console.error(error));
   }
 
@@ -144,7 +146,7 @@ export class Gc16EditarComponent implements OnInit {
 
     // console.log(valid)
 
-    if(valid){
+    if (valid) {
 
       value.control_point = this.gc16['controls'].control_point.value._id;
       delete value.company;
@@ -295,5 +297,5 @@ export class Gc16EditarComponent implements OnInit {
 
   }
 
-  
+
 }
