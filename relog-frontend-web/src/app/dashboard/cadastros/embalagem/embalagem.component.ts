@@ -41,37 +41,6 @@ export class EmbalagemComponent implements OnInit {
           user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
-  changeLanguage() {
-    console.log(this.translate.getLangs())
-    console.log('changeLanguage')
-    console.log('this.translate.currentLang', this.translate.currentLang)
-
-    switch (this.translate.currentLang) {
-      case 'pt':
-        console.log('pt');
-        this.translate.use('en');
-        console.log('use en');
-        console.log('this.translate.currentLang', this.translate.currentLang)
-        break;
-
-      case 'en':
-        console.log('en');
-        this.translate.use('es');
-        console.log('use es');
-        console.log('this.translate.currentLang', this.translate.currentLang)
-        break;
-
-      case 'es':
-        console.log('es');
-        this.translate.use('pt');
-        console.log('use pt');
-        console.log('this.translate.currentLang', this.translate.currentLang)
-        break;
-    }
-
-    console.log('\n\n\n')
-  }
-
   ngOnInit() {
     this.loadPackings();
   }
