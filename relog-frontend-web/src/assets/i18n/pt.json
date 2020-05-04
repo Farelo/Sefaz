@@ -12,6 +12,8 @@
         "PORTUGUESE": "Português",
         "SPANISH": "Espanhol",
         "TOAST": {
+            "AUTH_ERROR": "Erro na autenticação",
+            "AUTH_ERROR_DESC": "Login ou Senha estão invalidos",
             "PACK_REGISTERED_TITLE": "Embalagem cadastrada",
             "PACK_REGISTERED_BODY": "A embalagem foi cadastrada com sucesso",
             "PACK_UPDATED_TITLE": "Embalagem atualizada",
@@ -34,6 +36,9 @@
             "DEFAULT_FEMALE_REMOVED": "Removida com sucesso",
             "DEFAULT_FEMALE_REMOVED_DESC": "foi removida do sistema com sucesso!",
             "COMPANY_REGISTERED": "Empresa criada",
+            "REGISTER_ERROR": "Erro no cadastro",
+            "ALREADY_REGISTERED_ERROR": "Estes elementos ja foram registrados",
+            "REGISTER_ERROR_CHECK_DATA": "Avalie se as informações cadastradas estão corretas, pois existem inconsistências",
             "UPDATE_ERROR": "Erro na atualização",
             "UPDATE_ERROR_DESC": "Houve um problema na atualização",
             "COMPANY": "Empresa",

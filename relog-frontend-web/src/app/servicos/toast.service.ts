@@ -25,8 +25,8 @@ export class ToastService {
     // Add see all possible types in one shot
 
       var toastOptions: ToastOptions = {
-        title: "Erro na autenticação",
-        msg: "Login ou Senha estão invalidos",
+        title: this.translate.instant('MISC.TOAST.AUTH_ERROR'),
+        msg: this.translate.instant('MISC.TOAST.AUTH_ERROR_DESC'),
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -47,7 +47,7 @@ export class ToastService {
     
     console.log(status.error.error)
       var toastOptions: ToastOptions = {
-        title: "Erro no cadastro!",
+        title: this.translate.instant('MISC.TOAST.REGISTER_ERROR'),
         msg: status.error.error,
         showClose: true,
         timeout: 5000,
@@ -69,8 +69,8 @@ export class ToastService {
 
     if(status.status.errmsg){
       var toastOptions: ToastOptions = {
-        title: "Erro no cadastro",
-        msg: "Elementos ja foram registrados!",
+        title: this.translate.instant('MISC.TOAST.REGISTER_ERROR'),
+        msg: this.translate.instant('MISC.TOAST.ALREADY_REGISTERED_ERROR'),
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -83,8 +83,8 @@ export class ToastService {
       };
     }else{
       var toastOptions: ToastOptions = {
-        title: "Erro na criação",
-        msg: "Avalie se as informações cadastradas estão corretas, pois existem inconsistências!",
+        title: this.translate.instant('MISC.TOAST.REGISTER_ERROR'),
+        msg: this.translate.instant('MISC.TOAST.REGISTER_ERROR_CHECK_DATA'),
         showClose: true,
         timeout: 5000,
         theme: 'material',

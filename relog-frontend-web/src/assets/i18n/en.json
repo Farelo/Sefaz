@@ -12,6 +12,8 @@
     "PORTUGUESE": "Portuguese",
     "SPANISH": "Spanish",
     "TOAST": {
+      "AUTH_ERROR": "Authentication error",
+      "AUTH_ERROR_DESC": "Login or Password are invalid",
       "PACK_REGISTERED_TITLE": "Package was registered",
       "PACK_REGISTERED_BODY": "The package was successfully registered",
       "PACK_UPDATED_TITLE": "Packaging has been updated",
@@ -34,6 +36,9 @@
       "DEFAULT_FEMALE_REMOVED": "Successfully removed",
       "DEFAULT_FEMALE_REMOVED_DESC": "has been successfully removed from the system!",
       "COMPANY_REGISTERED": "Company was created",
+      "REGISTER_ERROR": "Registration error",
+      "ALREADY_REGISTERED_ERROR": "These elements have already been registered",
+      "REGISTER_ERROR_CHECK_DATA": "Evaluate whether the registered information is correct, as there are inconsistencies",
       "UPDATE_ERROR": "Error while updating",
       "UPDATE_ERROR_DESC": "There was a problem with the update",
       "COMPANY": "Company",
@@ -51,6 +56,7 @@
       "CONTROL_POINTS": "Control Points",
       "USER": "User",
       "SETTINGS": "Settings"
+    }
   },
   "STATES": {
     "TRAVELING": "On trip"

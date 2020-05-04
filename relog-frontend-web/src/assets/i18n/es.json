@@ -12,6 +12,8 @@
       "PORTUGUESE": "Portugués",
       "SPANISH": "Español",
       "TOAST": {
+        "AUTH_ERROR": "Error de autenticación",
+        "AUTH_ERROR_DESC": "Nombre de usuario o contraseña no son válidos",
         "PACK_REGISTERED_TITLE": "Embalaje registrado",
         "PACK_REGISTERED_BODY": "El embalaje se ha registrado correctamente",
         "PACK_UPDATED_TITLE": "El embalaje ha sido actualizado",
@@ -34,6 +36,9 @@
         "DEFAULT_FEMALE_REMOVED": "Eliminado exitosamente",
         "DEFAULT_FEMALE_REMOVED_DESC": "ha sido eliminado con éxito del sistema!",
         "COMPANY_REGISTERED": "Empresa creada",
+        "REGISTER_ERROR": "Error de registro",
+        "ALREADY_REGISTERED_ERROR": "Estos elementos ya han sido registrados",
+        "REGISTER_ERROR_CHECK_DATA": "Evaluar si la información registrada es correcta, ya que existen inconsistencias",
         "UPDATE_ERROR": "Error al actualizar",
         "UPDATE_ERROR_DESC": "Hubo un problema con la actualización",
         "COMPANY": "Empresa",
@@ -51,6 +56,7 @@
         "CONTROL_POINTS": "Puntos de control",
         "USER": "Usuario",
         "SETTINGS": "Configuración"
+      }
     },
     "STATES": {
       "TRAVELING": "de viaje"
