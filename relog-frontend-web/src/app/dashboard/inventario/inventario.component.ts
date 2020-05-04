@@ -21,13 +21,14 @@ export class InventarioComponent implements OnInit, OnDestroy {
   public logged_user: any;
   public suppliers: any;
   public name_supplier: any = '';
-  public escolhaGeral: any = 'GERAL';
+  public escolhaGeral: any = '';
   public escolhaEquipamento = "";
   public packings: any[];
   public detailedGeneralpackings: any[];
   public abpackings: any[];
   public ab_packings: any[];
   public escolhas: any[];
+  public optionsEquipment: any[];
   public abserials: any[];
   public locals: any[];
   public general: Pagination = new Pagination({ meta: { page: 1 } });
@@ -87,24 +88,37 @@ export class InventarioComponent implements OnInit, OnDestroy {
 
     if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
 
-    let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
+    this.prepareMenu();
 
-    if (this.logged_user) {
-      this.escolhas = [
-        { name: 'GERAL' },
-        { name: 'EQUIPAMENTO' },
-      ];
-    } else {
-      this.escolhas = [
-        { name: 'GERAL' },
-        { name: 'EQUIPAMENTO' },
-        { name: 'FORNECEDOR' }];
-    }
+    this.escolhaGeral = { name: this.translate.instant('INVENTORY.HEADER.GENERAL_INVENTORY'), value: 0 };
+    this.escolhaEquipamento = null;
+
+    this.translate.onLangChange.subscribe((event) => {
+      console.log(event);
+      this.prepareMenu();
+    });
+
+  }
+
+  prepareMenu() {
+    this.escolhas = [
+      { name: this.translate.instant('INVENTORY.HEADER.GENERAL_CAP'), value: 0 },
+      { name: this.translate.instant('INVENTORY.HEADER.EQUIPMENT'), value: 1 },
+      { name: this.translate.instant('INVENTORY.HEADER.SUPPLIER'), value: 2 }];
+
+    this.optionsEquipment = [
+      { name: this.translate.instant('INVENTORY.HEADER.GENERAL'), value: 0 },
+      { name: this.translate.instant('INVENTORY.HEADER.PERMANENCE_TIME'), value: 1 },
+      { name: this.translate.instant('INVENTORY.HEADER.ABSENT_TIME'), value: 2 },
+      { name: this.translate.instant('INVENTORY.HEADER.BATTERY'), value: 3 },
+      { name: this.translate.instant('INVENTORY.HEADER.QUANTITY'), value: 4 },
+      { name: this.translate.instant('INVENTORY.HEADER.EQUIPMENT_GENERAL'), value: 5 },
+      { name: this.translate.instant('INVENTORY.HEADER.POSITIONS'), value: 6 },
+    ];
+  }
+
+  changeGeneralOption(event) {
+    this.escolhaEquipamento = null;
   }
 
   changeSelect(event) {

@@ -383,6 +383,18 @@
         "SEARCH_BY": "Búsqueda por",
         "GENERAL": "General",
         "TYPE": "Tipo",
+        "CHOOSE": "Elejir",
+        "INVENTORY": "Inventario",
+        "GENERAL_CAP": "GENERAL",
+        "EQUIPMENT": "EQUIPO",
+        "SUPPLIER": "PROVEEDOR",
+        "GENERAL_INVENTORY": "Inventário Geral",
+        "PERMANENCE_TIME": "Tiempo de Permanencia",
+        "ABSENT_TIME": "Tiempo de Ausencia",
+        "BATTERY": "Batería",
+        "QUANTITY": "Cantidad",
+        "EQUIPMENT_GENERAL": "Equipos",
+        "POSITIONS": "Posiciones",
         "EXPORTO_TO_CSV": "Exportar datos para CSV",
         "EXPORTO_TO_PDF": "Exportar datos para PDF"
       },
@@ -433,6 +445,7 @@
         "ACTUAL_SITE": "Ubicación Actual",
         "SITE_TYPE": "Tipo",
         "TIME_AT_SITE": "Tiempo en el Punto de Control",
+        "SELECT_A_PACKING": "Seleccione un Equipo",
         "NO_HISTORY": "Sin histórico"
       },
       "ABSENT_TIME_INVENTORY": {
