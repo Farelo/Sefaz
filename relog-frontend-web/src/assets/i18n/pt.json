@@ -450,6 +450,18 @@
             "SEARCH_BY": "Busca por",
             "GENERAL": "Geral",
             "TYPE": "Tipo",
+            "INVENTORY": "Inventário",
+            "CHOOSE": "Escolha",
+            "GENERAL_CAP": "GERAL",
+            "EQUIPMENT": "EQUIPAMENTO",
+            "SUPPLIER": "FORNECEDOR",
+            "GENERAL_INVENTORY": "Inventário Geral",
+            "PERMANENCE_TIME": "Tempo de Permanência",
+            "ABSENT_TIME": "Tempo de ausência",
+            "BATTERY": "Bateria",
+            "QUANTITY": "Quantidade",
+            "EQUIPMENT_GENERAL": "Geral",
+            "POSITIONS": "Posições",
             "EXPORTO_TO_CSV": "Exportar dados para CSV",
             "EXPORTO_TO_PDF": "Exportar dados para PDF"
         },
@@ -500,6 +512,7 @@
             "ACTUAL_SITE": "Lugar Atual",
             "SITE_TYPE": "Tipo",
             "TIME_AT_SITE": "Tempo no Ponto de Controle",
+            "SELECT_A_PACKING": "Selecione um equipamento",
             "NO_HISTORY": "Sem histórico"
         },
         "ABSENT_TIME_INVENTORY": {
@@ -581,7 +594,7 @@
             "LONGITUDE": "Longitude",
             "EVENT_DATE": "Data da mensagem",
             "SEQUENCE_NUMBER": "# sequência",
-            "SELECT_EQUIPMENT": "Selecione um equipamento"
+            "SELECT_A_PACKING": "Selecione um equipamento"
         },
         "PROVIDER": {
             "TITLE": "Fornecedor",
