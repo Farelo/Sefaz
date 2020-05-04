@@ -88,24 +88,23 @@ export class InventarioComponent implements OnInit, OnDestroy {
 
     if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
 
-    let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
+    this.prepareMenu();
 
+    this.escolhaGeral = { name: this.translate.instant('INVENTORY.HEADER.GENERAL_INVENTORY'), value: 0 };
+    this.escolhaEquipamento = null;
 
-    if (this.logged_user) {
-      this.escolhas = [
-        { name: this.translate.instant('INVENTORY.HEADER.GENERAL_CAP'), value: 0 },
-        { name: this.translate.instant('INVENTORY.HEADER.EQUIPMENT'), value: 1 }];
-    } else {
-      this.escolhas = [
-        { name: this.translate.instant('INVENTORY.HEADER.GENERAL_CAP'), value: 0 },
-        { name: this.translate.instant('INVENTORY.HEADER.EQUIPMENT'), value: 1 },
-        { name: this.translate.instant('INVENTORY.HEADER.SUPPLIER'), value: 2 }];
-    }
+    this.translate.onLangChange.subscribe((event) => {
+      console.log(event);
+      this.prepareMenu();
+    });
+
+  }
+
+  prepareMenu() {
+    this.escolhas = [
+      { name: this.translate.instant('INVENTORY.HEADER.GENERAL_CAP'), value: 0 },
+      { name: this.translate.instant('INVENTORY.HEADER.EQUIPMENT'), value: 1 },
+      { name: this.translate.instant('INVENTORY.HEADER.SUPPLIER'), value: 2 }];
 
     this.optionsEquipment = [
       { name: this.translate.instant('INVENTORY.HEADER.GENERAL'), value: 0 },
@@ -116,13 +115,9 @@ export class InventarioComponent implements OnInit, OnDestroy {
       { name: this.translate.instant('INVENTORY.HEADER.EQUIPMENT_GENERAL'), value: 5 },
       { name: this.translate.instant('INVENTORY.HEADER.POSITIONS'), value: 6 },
     ];
-    
-    this.escolhaGeral = { name: this.translate.instant('INVENTORY.HEADER.GENERAL_INVENTORY'), value: 0 };
-
-    this.escolhaEquipamento = null;
   }
 
-  changeGeneralOption(event){
+  changeGeneralOption(event) {
     this.escolhaEquipamento = null;
   }
 
