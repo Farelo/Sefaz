@@ -26,18 +26,18 @@ services:
 
   ################ MONGO (ficar descomentado até necessitar mudar algo neste container) ################
 
-  mongo:
-    container_name: mongo-production
-    image: mongo:4
-    restart: always
-    ports: 
-      - 27017
-    volumes: 
-      # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
-      - /data/db:/data/db
-    networks:
-      # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
-      - db
+  # mongo:
+  #   container_name: mongo-production
+  #   image: mongo:4
+  #   restart: always
+  #   ports: 
+  #     - 27017
+  #   volumes: 
+  #     # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
+  #     - /data/db:/data/db
+  #   networks:
+  #     # mongo-net: rede para comunicar com os serviços que usam o banco mongoDb
+  #     - db
 
   ################ QA ################
 
