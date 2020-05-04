@@ -34,11 +34,13 @@ import {
     ReportsService,
     DevicesService
 } from './index.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
         CommonModule,
-        HttpModule
+        HttpModule,
+        TranslateModule
     ],
     providers: [
         HomeService,

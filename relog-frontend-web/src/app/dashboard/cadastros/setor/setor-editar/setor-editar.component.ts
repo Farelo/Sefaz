@@ -81,7 +81,7 @@ export class SetorEditarComponent implements OnInit {
 
     if (valid) {
       this.departmentService.editDepartment(this.mId, value).subscribe(result => {
-        this.toastService.edit('/rc/cadastros/setor', 'Departamento');
+        this.toastService.edit('/rc/cadastros/setor', this.translate.instant('MISC.TOAST.DEPARTMENT'));
       }, err => this.toastService.error(err));
     }
   }

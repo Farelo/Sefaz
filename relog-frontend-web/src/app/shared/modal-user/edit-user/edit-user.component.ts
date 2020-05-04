@@ -113,7 +113,7 @@ export class EditUserComponent implements OnInit {
       this.usersService.editUser(userId, value).subscribe(result => {
         //console.log("result: " + JSON.stringify(result));
         this.closeModal();
-        this.toastService.successUpdate('Usuário');
+        this.toastService.successUpdate(this.translate.instant('MISC.TOAST.USER'));
       });
     }
   }

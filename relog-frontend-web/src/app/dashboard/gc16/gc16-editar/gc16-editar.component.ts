@@ -152,7 +152,7 @@ export class Gc16EditarComponent implements OnInit {
       delete value.company;
 
       this.GC16Service.editGC16(this.mActualGC16._id, value).subscribe(result => {
-        this.toastService.edit('/rc/bpline', 'BPline');
+        this.toastService.edit('/rc/bpline', this.translate.instant('MISC.TOAST.BPLINE'));
       }, err => this.toastService.error(err));
     }
   }

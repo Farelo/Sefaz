@@ -47,7 +47,7 @@ export class SetorCadastrarComponent implements OnInit {
 
     if (valid) {
       this.departmentService.createDepartment(value).subscribe(result => {
-        this.toastService.success('/rc/cadastros/setor', 'Departamento');
+        this.toastService.success('/rc/cadastros/setor', this.translate.instant('MISC.TOAST.DEPARTMENT'));
       }, err => this.toastService.error(err));
     }
   }

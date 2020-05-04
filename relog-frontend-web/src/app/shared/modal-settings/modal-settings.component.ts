@@ -197,7 +197,7 @@ export class ModalSettings implements OnInit {
       this.translate.use(value.language.name);
 
       this.settingsService.editSetting(value, this.actualSettings._id).subscribe(result => {
-        this.toastService.edit('', 'Configurações');
+        this.toastService.edit('', this.translate.instant('MISC.TOAST.SETTINGS'));
         this.closeModal();
         this.authenticationService.updateCurrentSettings();
       }, err => this.toastService.error(err));

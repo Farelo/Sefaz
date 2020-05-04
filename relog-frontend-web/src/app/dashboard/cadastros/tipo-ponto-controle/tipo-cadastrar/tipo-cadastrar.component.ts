@@ -34,7 +34,7 @@ export class TipoPontoControleCadastrarComponent implements OnInit {
       this.controlPointTypesService
         .createType(value)
         .subscribe(result => {
-          this.toastService.success('/rc/cadastros/tipo-ponto-controle', 'Tipo')
+          this.toastService.success('/rc/cadastros/tipo-ponto-controle', this.translate.instant('MISC.TOAST.TYPE'))
         }, err => this.toastService.error(err));
     }
   }

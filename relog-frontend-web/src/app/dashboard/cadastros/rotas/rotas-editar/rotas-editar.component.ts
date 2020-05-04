@@ -286,7 +286,7 @@ export class RotasEditarComponent implements OnInit {
   proceedToRegister(value: any) {
     this.routesService.editRoute(this.mId, value)
       .subscribe(result => {
-        this.toastService.edit('/rc/cadastros/rotas', 'Rota');
+        this.toastService.edit('/rc/cadastros/rotas', this.translate.instant('MISC.TOAST.ROUTE'));
       }, err => this.toastService.error(err));
   }
 

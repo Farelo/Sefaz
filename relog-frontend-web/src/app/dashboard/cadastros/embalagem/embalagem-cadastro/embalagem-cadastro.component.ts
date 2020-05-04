@@ -79,8 +79,8 @@ export class EmbalagemCadastroComponent implements OnInit {
       .subscribe(result => { 
         
         let message = {
-          title: "Embalagem Cadastrada",
-          body: "A embalagem foi cadastrada com sucesso"
+          title: this.translate.instant('MISC.TOAST.PACK_REGISTERED_TITLE'),
+          body: this.translate.instant('MISC.TOAST.PACK_REGISTERED_BODY')
         }
         this.toastService.show('/rc/cadastros/embalagem', message); 
       });
