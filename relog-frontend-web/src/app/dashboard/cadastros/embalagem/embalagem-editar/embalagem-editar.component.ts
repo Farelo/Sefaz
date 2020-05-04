@@ -85,8 +85,8 @@ export class EmbalagemEditarComponent implements OnInit {
     this.packingService.editPacking(this.mId, newValue)
       .subscribe(result => {
         let message = {
-          title: "Embalagem Atualizada",
-          body: "A embalagem foi atualizada com sucesso"
+          title: this.translate.instant('MISC.TOAST.PACK_UPDATED_TITLE'),
+          body: this.translate.instant('MISC.TOAST.PACK_UPDATED_BODY')
         }
         this.toastService.show('/rc/cadastros/embalagem', message);
       });

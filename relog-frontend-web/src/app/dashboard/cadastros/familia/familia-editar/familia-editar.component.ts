@@ -120,7 +120,7 @@ export class FamiliaEditarComponent implements OnInit {
 
   finishUpdate(newFamily: any) {
     this.familiesService.editFamily(this.mId, newFamily).subscribe(result => {
-      this.toastService.success('/rc/cadastros/familia', 'Família');
+      this.toastService.success('/rc/cadastros/familia', this.translate.instant('MISC.TOAST.FAMILY'));
     }, err => this.toastService.error(err));
   }
 

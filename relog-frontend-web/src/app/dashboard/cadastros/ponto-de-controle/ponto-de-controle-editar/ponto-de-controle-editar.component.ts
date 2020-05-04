@@ -402,8 +402,8 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.controlPointsService.editControlPoint(this.mId, value).subscribe(result => {
 
       let message = {
-        title: "Ponto de controle atualizado",
-        body: "O ponto de controle foi atualizado com sucesso"
+        title: this.translate.instant('MISC.TOAST.CP_UPDATED_TITLE'),
+        body: this.translate.instant('MISC.TOAST.CP_UPDATED_BODY')
       };
       this.toastService.show('/rc/cadastros/ponto', message);
     }, err => this.toastService.error(err));

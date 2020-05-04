@@ -176,7 +176,7 @@ export class RotasCadastrarComponent implements OnInit {
   proceedToRegister(value: any) {
     this.routesService.createRoute(value)
       .subscribe(result => {
-        this.toastService.success('/rc/cadastros/rotas', 'Rota');
+        this.toastService.success('/rc/cadastros/rotas', this.translate.instant('MISC.TOAST.ROUTE'));
       }, err => this.toastService.error(err));
   }
 

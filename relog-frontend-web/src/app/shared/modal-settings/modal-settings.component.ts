@@ -113,15 +113,12 @@ export class ModalSettings implements OnInit {
     //   __v: ['', [Validators.required]]
     // });
 
-    console.log('currentLang 1', this.translate.currentLang);
     let actualLang = this.languages.find(elem => elem.name == this.translate.currentLang);
-    console.log('actualLang 1', actualLang);
+    
     if (actualLang == undefined) {
       actualLang = this.languages.find(elem => elem.name == 'pt');
       this.translate.use('pt');
     }
-    console.log('actualLang 2', actualLang);
-    console.log('currentLang 2', this.translate.currentLang);
 
     this.settings = this.fb.group({
       language: [actualLang, [Validators.required]],
@@ -153,7 +150,7 @@ export class ModalSettings implements OnInit {
       }
       this.actualSettings.language = actualLang;
 
-      console.log(this.actualSettings);
+      //console.log(this.actualSettings);
 
       (this.settings).patchValue(this.actualSettings, { onlySelf: true });
       (this.settings).patchValue(this.actualSettings, { onlySelf: true });
@@ -197,7 +194,7 @@ export class ModalSettings implements OnInit {
       this.translate.use(value.language.name);
 
       this.settingsService.editSetting(value, this.actualSettings._id).subscribe(result => {
-        this.toastService.edit('', 'Configurações');
+        this.toastService.edit('', this.translate.instant('MISC.TOAST.SETTINGS'));
         this.closeModal();
         this.authenticationService.updateCurrentSettings();
       }, err => this.toastService.error(err));

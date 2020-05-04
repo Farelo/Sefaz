@@ -92,7 +92,7 @@ export class FamiliaCadastroComponent implements OnInit {
 
   finishRegister(value) {
     this.familyService.createFamily(value).subscribe(result => {
-      this.toastService.success('/rc/cadastros/familia', 'Família');
+      this.toastService.success('/rc/cadastros/familia', this.translate.instant('MISC.TOAST.FAMILY'));
     }, err => this.toastService.error(err));
   }
 

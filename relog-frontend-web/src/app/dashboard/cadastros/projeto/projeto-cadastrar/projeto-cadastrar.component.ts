@@ -34,7 +34,7 @@ export class ProjetoCadastrarComponent implements OnInit {
       this.projectService
         .createProject(value)
         .subscribe(result => {
-          this.toastService.success('/rc/cadastros/projeto', 'Projeto')
+          this.toastService.success('/rc/cadastros/projeto', this.translate.instant('MISC.TOAST.PROJECT'))
         }, err => this.toastService.error(err));
     }
   }

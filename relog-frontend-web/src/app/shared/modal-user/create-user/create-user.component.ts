@@ -93,7 +93,7 @@ export class CreateUserComponent implements OnInit {
       this.usersService.createUser(value).subscribe(result => {
         //console.log("result: " + JSON.stringify(result));
         this.closeModal();
-        this.toastService.successModal('Usuário');
+        this.toastService.successModal(this.translate.instant('MISC.TOAST.USER'));
       });
     }
   }

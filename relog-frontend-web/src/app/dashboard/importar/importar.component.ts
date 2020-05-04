@@ -143,21 +143,21 @@ export class ImportarComponent implements OnInit {
       case 'Embalagens':
         this.packingService.createPackingArray(this.importResult.to_register).subscribe(result => {
           this.send = false;
-          this.toastService.successArray('', 'Embalagens')
+          this.toastService.successArray('', this.translate.instant('MISC.TOAST.PACKAGES'))
         }, err => this.toastService.errorArray(err));
         break;
 
       case 'Pontos de Controle':
         this.controlPoints.createControlPointArray(this.importResult.to_register).subscribe(result => {
           this.send = false;
-          this.toastService.successArray('', 'Pontos de Controle')
+          this.toastService.successArray('', this.translate.instant('MISC.TOAST.CONTROL_POINTS'))
         }, err => this.toastService.errorArray(err));
         break;
 
       case 'Empresas':
         this.companyService.createCompanyArray(this.importResult.to_register).subscribe(result => {
           this.send = false;
-          this.toastService.successArray('', 'Empresas')
+          this.toastService.successArray('', this.translate.instant('MISC.TOAST.COMPANIES'))
         }, err => this.toastService.errorArray(err));
         break;
     }

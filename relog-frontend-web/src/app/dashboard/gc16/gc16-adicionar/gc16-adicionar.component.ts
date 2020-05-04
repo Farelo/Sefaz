@@ -58,7 +58,7 @@ export class Gc16AdicionarComponent implements OnInit {
       delete value.company;
 
       this.gc16Service.createGC16(value).subscribe(result => {
-        this.toastService.success('/rc/bpline', 'BPline');
+        this.toastService.success('/rc/bpline', this.translate.instant('MISC.TOAST.BPLINE'));
       });
     }
   }

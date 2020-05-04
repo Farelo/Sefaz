@@ -137,10 +137,10 @@ export class CompanyEditarComponent implements OnInit {
         .editCompany(this.mId, value)
         .subscribe(result => { 
           this.router.navigate(['/rc/cadastros/company']); 
-          this.toastService.successModal('Empresa', true);
+          this.toastService.successModal(this.translate.instant('MISC.TOAST.COMPANY'), true);
         }, err => { 
           // console.log(err);
-            this.toastService.showError('', {title: "Erro na atualização", body: "Houve um problema na atualização da Empresa"});
+            this.toastService.showError('', {title: this.translate.instant('MISC.TOAST.UPDATE_ERROR'), body: this.translate.instant('MISC.TOAST.UPDATE_ERROR_DESC') });
         });
     }
   }

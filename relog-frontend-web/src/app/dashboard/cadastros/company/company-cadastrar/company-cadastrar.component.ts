@@ -71,11 +71,11 @@ export class CompanyCadastrarComponent implements OnInit {
       this.companiesService
         .createCompany(value)
         .subscribe(result => { 
-          this.router.navigate(['/rc/cadastros/company']); this.toastService.successModal('Empresa criada!') ;
+          this.router.navigate(['/rc/cadastros/company']); this.toastService.successModal(this.translate.instant('MISC.TOAST.COMPANY_REGISTERED')) ;
 
         }, err => {
           // console.log(err);
-          this.toastService.showError('', { title: "Erro na atualização", body: "Houve um problema na atualização da Empresa" });
+          this.toastService.showError('', { title: this.translate.instant('MISC.TOAST.UPDATE_ERROR'), body: this.translate.instant('MISC.TOAST.UPDATE_ERROR_DESC') });
         });
     }
   }

@@ -28,7 +28,7 @@ export class TagsCadastrarComponent implements OnInit {
       this.TagsService
         .createTag(value)
         .subscribe(result => {
-          this.ToastService.success('/rc/cadastros/tags', "Tag");
+          this.ToastService.success('/rc/cadastros/tags', this.translate.instant('MISC.TOAST.TAG'));
         }, err => this.ToastService.error(err));
     }
   }

@@ -276,8 +276,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.controlPointsService.createControlPoint(value).subscribe(result => {
 
       let message = {
-        title: "Ponto de controle cadastrado",
-        body: "O ponto de controle foi cadastrado com sucesso"
+        title: this.translate.instant('MISC.TOAST.CP_REGISTERED_TITLE'),
+        body: this.translate.instant('MISC.TOAST.CP_REGISTERED_BODY')
       };
       this.toastService.show('/rc/cadastros/ponto', message);
     }, err => this.toastService.error(err));
