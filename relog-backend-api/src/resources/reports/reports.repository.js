@@ -928,11 +928,11 @@ exports.clients_report = async (company_id = null) => {
                             let obj_temp = {}
                             //Preenche as informações do ponto de controle a qual fez inbound
                             const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type').populate('company')
-                            
-                            if(cp == null){
+
+                            if (cp == null) {
                                 console.log('packing.last_event_record.control_point null')
                                 console.log(packing.last_event_record.control_point)
-                            } 
+                            }
 
                             obj_temp.control_point_id = cp._id
                             obj_temp.control_point_name = cp.name
@@ -1194,7 +1194,7 @@ const intersectionpoly = (packing, controlPoint) => {
                 controlPointPolygonArray.push(auxPolygon)
             })
 
-            result = null
+            let result = false
 
             controlPointPolygonArray.forEach(mPolygon => {
                 //criar polígono da embalagem
@@ -1210,10 +1210,15 @@ const intersectionpoly = (packing, controlPoint) => {
                 //checar intersecção
                 let intersection = turf.intersect(mPolygon, packingPolygon);
 
+                //checar inclusão total
+                let contained = turf.booleanContains(mPolygon, packingPolygon);
+
                 // mLog(' ')
                 // mLog('i: ', packing.tag.code)
+                // mLog(intersection)
 
-                result = intersection
+                if (result == false)
+                    result = (intersection !== null || contained !== false) ? true : false;
             })
 
             //mLog(result)
@@ -1238,11 +1243,16 @@ const intersectionpoly = (packing, controlPoint) => {
             //checar intersecção
             let intersection = turf.intersect(controlPointPolygon, packingPolygon);
 
+            //checar inclusão total
+            let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
+
             // mLog(' ')
             // mLog('i: ', packing.tag.code)
             // mLog(intersection)
 
-            return intersection
+            let result = (intersection !== null || contained !== false) ? true : false;
+
+            return result;
         }
     } catch (error) {
         //mLog('erro: ', controlPointLine)

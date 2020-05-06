@@ -394,17 +394,17 @@ const pnpoly = (packing, controlPoint) => {
   for (i = 0, j = nvert - 1; i < nvert; j = i++) {
     if (
       controlPoint.geofence.coordinates[i].lng >
-        packing.last_device_data.longitude !=
-        controlPoint.geofence.coordinates[j].lng >
-          packing.last_device_data.longitude &&
+      packing.last_device_data.longitude !=
+      controlPoint.geofence.coordinates[j].lng >
+      packing.last_device_data.longitude &&
       packing.last_device_data.latitude <
-        ((controlPoint.geofence.coordinates[j].lat -
-          controlPoint.geofence.coordinates[i].lat) *
-          (packing.last_device_data.longitude -
-            controlPoint.geofence.coordinates[i].lng)) /
-          (controlPoint.geofence.coordinates[j].lng -
-            controlPoint.geofence.coordinates[i].lng) +
-          controlPoint.geofence.coordinates[i].lat
+      ((controlPoint.geofence.coordinates[j].lat -
+        controlPoint.geofence.coordinates[i].lat) *
+        (packing.last_device_data.longitude -
+          controlPoint.geofence.coordinates[i].lng)) /
+      (controlPoint.geofence.coordinates[j].lng -
+        controlPoint.geofence.coordinates[i].lng) +
+      controlPoint.geofence.coordinates[i].lat
     ) {
       c = !c;
     }
@@ -466,7 +466,7 @@ const intersectionpoly = (packing, controlPoint) => {
         controlPointPolygonArray.push(auxPolygon);
       });
 
-      result = null;
+      let result = null;
 
       controlPointPolygonArray.forEach(mPolygon => {
         //criar polígono da embalagem
@@ -485,15 +485,20 @@ const intersectionpoly = (packing, controlPoint) => {
         //checar intersecção
         let intersection = turf.intersect(mPolygon, packingPolygon);
 
+        //checar inclusão total
+        let contained = turf.booleanContains(mPolygon, packingPolygon);
+
         // mLog(' ')
         // mLog('i: ', packing.tag.code)
+        // mLog(intersection)
 
-        result = intersection;
+        if (result == false)
+          result = (intersection !== null || contained !== false) ? true : false;
       });
 
       //mLog(result);
-
       return result;
+
     } else {
       //Caso o polígono não tenha autointersecção
       // mLog('p sem auto intersecção')
@@ -516,11 +521,16 @@ const intersectionpoly = (packing, controlPoint) => {
       //checar intersecção
       let intersection = turf.intersect(controlPointPolygon, packingPolygon);
 
+      //checar inclusão total
+      let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
+
       // mLog(' ')
       // mLog('i: ', packing.tag.code)
       // mLog(intersection)
 
-      return intersection;
+      let result = (intersection !== null || contained !== false) ? true : false;
+
+      return result;
     }
   } catch (error) {
     //mLog('erro: ', controlPointLine)

@@ -61,7 +61,7 @@ export const constants = {
     staff: 'FUNCIONÁRIO',
     logistic: 'OPERADOR LOGÍSTICO',
   },
-  GOOGLE_API_KEY: 'AIzaSyDxZgf7T1S7LCVhXMPjDklRIcSqZfAE3WQ',
+  GOOGLE_API_KEY: 'AIzaSyBCcZtqy4ACckKMj7bbB2_NKkoEOMp8Fo0',
 
   INCONTIDA: 'Sem Rota e Fora da Planta', // Sem rota e sem planta
 
