@@ -111,7 +111,7 @@ exports.general_inventory_report = async () => {
                 qtd_in_clients = qtd_in_clients.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
                 qtd_in_cp = qtd_in_cp.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
 
-                family_obj.company = family.company.name
+                family_obj.company = (family.company) ? family.company.name : '-'
                 family_obj.family_id = family._id
                 family_obj.family_name = family.code
                 family_obj.qtd_total = qtd_total
@@ -862,7 +862,7 @@ exports.general_info_report = async (family_id = null) => {
                     object_temp.tag = packing.tag.code
                     object_temp.family_code = packing.family ? packing.family.code : '-'
                     object_temp.serial = packing.serial
-                    object_temp.company = company.name
+                    object_temp.company = company ? company.name : '-'
                     object_temp.current_state = packing.current_state
                     object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
                     object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
@@ -937,7 +937,7 @@ exports.clients_report = async (company_id = null) => {
                             obj_temp.control_point_id = cp._id
                             obj_temp.control_point_name = cp.name
                             obj_temp.control_point_type = cp.type.name
-                            obj_temp.company_control_point_name = cp.company.name
+                            obj_temp.company_control_point_name = (cp.company) ? cp.company.name : '-'
 
                             return obj_temp
                         })
@@ -950,7 +950,7 @@ exports.clients_report = async (company_id = null) => {
                     return {
                         family_code: family.code,
                         company_id: family.company._id,
-                        company: family.company.name,
+                        company: (family.company) ? family.company.name : '-',
                         packings_traveling: packings_outbound.length,
                         control_point_name: key,
                         control_point_type: packing_temp[0].control_point_type,
