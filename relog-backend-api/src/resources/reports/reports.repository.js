@@ -848,13 +848,27 @@ exports.general_info_report = async (family_id = null) => {
             packings
                 .map(async packing => {
                     let object_temp = {}
-
                     let current_control_point = null;
+
+                    object_temp.current_control_point_name = '-'
+                    object_temp.current_control_point_type = '-'
+
                     if (packing.last_event_record) {
-                        if (packing.last_event_record.type !== 'outbound') {
+                        if (packing.last_event_record.type == 'inbound') {
                             current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
+
+                            console.log(current_control_point)
+
+                            if (current_control_point) {
+                                object_temp.current_control_point_name = current_control_point.name
+                                object_temp.current_control_point_type = current_control_point.type ? current_control_point.type.name : "-"
+                            }
+                        } else {
+                            object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
+                            object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
                         }
                     }
+
                     //const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
                     const company = await Company.findById(packing.family.company)
 
@@ -864,9 +878,7 @@ exports.general_info_report = async (family_id = null) => {
                     object_temp.serial = packing.serial
                     object_temp.company = company ? company.name : '-'
                     object_temp.current_state = packing.current_state
-                    object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
-                    object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
-
+                    
                     //dados do último inbound/outbound
                     object_temp.in_out_accuracy = packing.last_event_record ? packing.last_event_record.accuracy : '-'
                     object_temp.in_out_date = packing.last_event_record ? packing.last_event_record.created_at : '-'
