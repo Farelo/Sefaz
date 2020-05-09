@@ -11,6 +11,7 @@ const { Packing } = require('../packings/packings.model')
 const { GC16 } = require('../gc16/gc16.model')
 const { Setting } = require('../settings/settings.model')
 const turf = require('@turf/turf')
+const martinez = require('martinez-polygon-clipping');
 
 exports.general_report = async () => {
     try {
@@ -1221,6 +1222,7 @@ const intersectionpoly = (packing, controlPoint) => {
 
                 //checar intersecção
                 let intersection = turf.intersect(mPolygon, packingPolygon);
+                let intersectionMartinez = martinez.intersection(controlPointPolygon.geometry.coordinates, packingPolygon.geometry.coordinates)
 
                 //checar inclusão total
                 let contained = turf.booleanContains(mPolygon, packingPolygon);
@@ -1230,7 +1232,7 @@ const intersectionpoly = (packing, controlPoint) => {
                 // mLog(intersection)
 
                 if (result == false)
-                    result = (intersection !== null || contained !== false) ? true : false;
+                    result = (intersection !== null || intersectionMartinez !== null || contained !== false) ? true : false;
             })
 
             //mLog(result)
@@ -1254,6 +1256,7 @@ const intersectionpoly = (packing, controlPoint) => {
 
             //checar intersecção
             let intersection = turf.intersect(controlPointPolygon, packingPolygon);
+            let intersectionMartinez = martinez.intersection(controlPointPolygon.geometry.coordinates, packingPolygon.geometry.coordinates)
 
             //checar inclusão total
             let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
@@ -1262,7 +1265,7 @@ const intersectionpoly = (packing, controlPoint) => {
             // mLog('i: ', packing.tag.code)
             // mLog(intersection)
 
-            let result = (intersection !== null || contained !== false) ? true : false;
+            let result = (intersection !== null || intersectionMartinez !== null || contained !== false) ? true : false;
 
             return result;
         }
