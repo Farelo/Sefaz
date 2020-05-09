@@ -44,7 +44,8 @@
     "swagger-stats": "^0.95.6",
     "swagger-ui-express": "^4.0.1",
     "winston": "^3.0.0",
-    "@turf/turf": "5.1.6"
+    "@turf/turf": "5.1.6",
+    "martinez-polygon-clipping": "0.7.0"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",

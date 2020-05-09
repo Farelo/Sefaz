@@ -11,6 +11,7 @@ const { Packing } = require('../packings/packings.model')
 const { GC16 } = require('../gc16/gc16.model')
 const { Setting } = require('../settings/settings.model')
 const turf = require('@turf/turf')
+const martinez = require('martinez-polygon-clipping');
 
 exports.general_report = async () => {
     try {
@@ -111,7 +112,7 @@ exports.general_inventory_report = async () => {
                 qtd_in_clients = qtd_in_clients.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
                 qtd_in_cp = qtd_in_cp.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
 
-                family_obj.company = family.company.name
+                family_obj.company = (family.company) ? family.company.name : '-'
                 family_obj.family_id = family._id
                 family_obj.family_name = family.code
                 family_obj.qtd_total = qtd_total
@@ -848,13 +849,27 @@ exports.general_info_report = async (family_id = null) => {
             packings
                 .map(async packing => {
                     let object_temp = {}
-
                     let current_control_point = null;
+
+                    object_temp.current_control_point_name = '-'
+                    object_temp.current_control_point_type = '-'
+
                     if (packing.last_event_record) {
-                        if (packing.last_event_record.type !== 'outbound') {
+                        if (packing.last_event_record.type == 'inbound') {
                             current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
+
+                            console.log(current_control_point)
+
+                            if (current_control_point) {
+                                object_temp.current_control_point_name = current_control_point.name
+                                object_temp.current_control_point_type = current_control_point.type ? current_control_point.type.name : "-"
+                            }
+                        } else {
+                            object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
+                            object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
                         }
                     }
+
                     //const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
                     const company = await Company.findById(packing.family.company)
 
@@ -862,11 +877,9 @@ exports.general_info_report = async (family_id = null) => {
                     object_temp.tag = packing.tag.code
                     object_temp.family_code = packing.family ? packing.family.code : '-'
                     object_temp.serial = packing.serial
-                    object_temp.company = company.name
+                    object_temp.company = company ? company.name : '-'
                     object_temp.current_state = packing.current_state
-                    object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
-                    object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
-
+                    
                     //dados do último inbound/outbound
                     object_temp.in_out_accuracy = packing.last_event_record ? packing.last_event_record.accuracy : '-'
                     object_temp.in_out_date = packing.last_event_record ? packing.last_event_record.created_at : '-'
@@ -937,7 +950,7 @@ exports.clients_report = async (company_id = null) => {
                             obj_temp.control_point_id = cp._id
                             obj_temp.control_point_name = cp.name
                             obj_temp.control_point_type = cp.type.name
-                            obj_temp.company_control_point_name = cp.company.name
+                            obj_temp.company_control_point_name = (cp.company) ? cp.company.name : '-'
 
                             return obj_temp
                         })
@@ -950,7 +963,7 @@ exports.clients_report = async (company_id = null) => {
                     return {
                         family_code: family.code,
                         company_id: family.company._id,
-                        company: family.company.name,
+                        company: (family.company) ? family.company.name : '-',
                         packings_traveling: packings_outbound.length,
                         control_point_name: key,
                         control_point_type: packing_temp[0].control_point_type,
@@ -1209,6 +1222,7 @@ const intersectionpoly = (packing, controlPoint) => {
 
                 //checar intersecção
                 let intersection = turf.intersect(mPolygon, packingPolygon);
+                let intersectionMartinez = martinez.intersection(controlPointPolygon.geometry.coordinates, packingPolygon.geometry.coordinates)
 
                 //checar inclusão total
                 let contained = turf.booleanContains(mPolygon, packingPolygon);
@@ -1218,7 +1232,7 @@ const intersectionpoly = (packing, controlPoint) => {
                 // mLog(intersection)
 
                 if (result == false)
-                    result = (intersection !== null || contained !== false) ? true : false;
+                    result = (intersection !== null || intersectionMartinez !== null || contained !== false) ? true : false;
             })
 
             //mLog(result)
@@ -1242,6 +1256,7 @@ const intersectionpoly = (packing, controlPoint) => {
 
             //checar intersecção
             let intersection = turf.intersect(controlPointPolygon, packingPolygon);
+            let intersectionMartinez = martinez.intersection(controlPointPolygon.geometry.coordinates, packingPolygon.geometry.coordinates)
 
             //checar inclusão total
             let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
@@ -1250,7 +1265,7 @@ const intersectionpoly = (packing, controlPoint) => {
             // mLog('i: ', packing.tag.code)
             // mLog(intersection)
 
-            let result = (intersection !== null || contained !== false) ? true : false;
+            let result = (intersection !== null || intersectionMartinez !== null || contained !== false) ? true : false;
 
             return result;
         }
