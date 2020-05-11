@@ -1,6 +1,7 @@
 const debug = require("debug")("service:device_data");
 const _ = require("lodash");
 const { DeviceData } = require("./device_data.model");
+const { CurrentStateHistory } = require("../current_state_history/current_state_history.model");
 const { Family } = require("../families/families.model");
 const { Packing } = require("../packings/packings.model");
 
@@ -155,6 +156,153 @@ exports.geolocation = async (
     }
 
     return packings;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+exports.find_by_date = async (conditions, currentState) => {
+
+  try {
+
+    let device_data_records = await DeviceData.aggregate([
+      { $match: conditions },
+      { $sort: { "created_at": -1 } },
+      {
+        $lookup: {
+          from: "packings",
+          localField: "device_id",
+          foreignField: "tag.code",
+          as: "packing"
+        }
+      },
+      {
+        $lookup: {
+          from: "families",
+          localField: "packing.family",
+          foreignField: "_id",
+          as: "family"
+        }
+      },
+      { $unwind: '$packing' },
+      { $unwind: '$family' },
+      { $group: { _id: "$packing", "doc": { "$first": "$$ROOT" } } },
+      { $replaceRoot: { newRoot: "$doc" } }
+    ])
+
+    // console.log(device_data_records[0])
+    // console.log("***", device_data_records.length)
+
+    let mPack = {};
+
+    device_data_records = await Promise.all(device_data_records.map(async elem => {
+      let result = null
+      if (currentState !== null) {
+        result = await CurrentStateHistory
+          .find({ type: currentState, device_data_id: elem.packing.last_device_data, packing: elem.packing._id, created_at: conditions.message_date  }) //{ $gte: elem.created_at }
+          .sort({ created_at: -1 })
+          .limit(1);
+
+      } else {
+
+        // if(elem.device_id == '4073239')
+        //   mPack = { packing: elem.packing._id, device_data_id: elem.packing.last_device_data, created_at: conditions.message_date };
+
+        result = await CurrentStateHistory
+          .find({ packing: elem.packing._id, device_data_id: elem.packing.last_device_data, created_at: conditions.message_date })
+          .sort({ created_at: -1 })
+          .limit(1);
+      }
+
+      elem.current_state = result.length > 0 ? result[0].type : 'none'
+
+      return elem
+    }))
+
+
+    // console.log('+++')
+    // console.log(JSON.stringify(mPack))
+
+    // console.log("$$$", device_data_records.length)
+    // console.log("$$$", currentState)
+
+    if (currentState == null) {
+      device_data_records = device_data_records.filter(elem => {
+        return elem.current_state !== 'none'
+      })
+    } else {
+      device_data_records = device_data_records.filter(elem => {
+        return elem.current_state == currentState
+      })
+    }
+
+    // console.log("###", device_data_records.length)
+    // console.log(device_data_records[0])
+
+    device_data_records = device_data_records.map(elem => {
+      let device_data = {
+        battery: elem.battery,
+        accuracy: elem.accuracy,
+        message_date: elem.message_date,
+        latitude: elem.latitude,
+        longitude: elem.longitude,
+        current_state: elem.current_state
+      }
+
+      elem.devicedata = device_data
+
+      return elem
+    })
+
+    // if (currentState !== null) 
+    //   console.log('YES, a currentstate has passed')
+    // else
+    //   console.log('NO, no currentstate has passed')
+
+    // device_data_records = await Promise.all(device_data_records.map(async elem => {
+    //   let result = null
+    //   if (currentState !== null) {
+    //     if(elem.device_id == "4072399") console.log(JSON.stringify(query))
+    //     result = await CurrentStateHistory.findOne({ type: currentState, packing: elem.packing._id, created_at: { $gte: elem.created_at } })
+    //   } else {
+    //     let query = { packing: elem.packing._id, created_at: { $gte: elem.created_at } }
+    //     if(elem.device_id == "4072399") console.log(JSON.stringify(query))
+    //     result = await CurrentStateHistory.findOne(query)
+    //   }
+
+    //   elem.current_state = result ? result.type : ''
+    //   return elem
+    // }))
+
+    // console.log("$$$", device_data_records.length)
+    // console.log("$$$", currentState)
+
+    // if (currentState !== null) {
+    //   device_data_records = device_data_records.filter(elem => {
+    //     return elem.current_state == currentState
+    //   })
+    // }
+
+    // console.log("###", device_data_records.length)
+    // console.log(device_data_records[0])
+
+    // device_data_records = device_data_records.map(elem => {
+    //   let device_data = {
+    //     battery: elem.battery,
+    //     accuracy: elem.accuracy,
+    //     message_date: elem.message_date,
+    //     latitude: elem.latitude,
+    //     longitude: elem.longitude,
+    //     current_state: elem.current_state
+    //   }
+
+    //   elem.devicedata = device_data
+
+    //   return elem
+    // })
+
+    return device_data_records
+
   } catch (error) {
     throw new Error(error);
   }

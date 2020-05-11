@@ -28,7 +28,7 @@ module.exports = async (packing, currentControlPoint) => {
                     if (current_state_history) {
                         //console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ CRIADO!")
                     } else {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     }
 
                 } else {
@@ -51,7 +51,7 @@ module.exports = async (packing, currentControlPoint) => {
                     if (current_state_history) {
                         //console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ CRIADO!")
                     } else {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     }
 
                 } else {

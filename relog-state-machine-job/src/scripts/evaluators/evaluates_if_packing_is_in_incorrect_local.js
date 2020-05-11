@@ -22,13 +22,13 @@ module.exports = async (packing, currentControlPoint) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.LOCAL_INCORRETO.alert })
                 } else {
                     //console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.LOCAL_CORRETO.alert })
                 }
 
             } else {
@@ -37,7 +37,7 @@ module.exports = async (packing, currentControlPoint) => {
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
 
                 if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return true
-                await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
+                await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.LOCAL_CORRETO.alert })
 
                 // if (packing.family && packing.family.control_points.length > 0) {
                 // /* Avalia se os pontos de controle da familia bate com o ponto de controle atual */
@@ -48,14 +48,14 @@ module.exports = async (packing, currentControlPoint) => {
                 //     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
 
                 //     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return true
-                //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert })
+                //     await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.LOCAL_INCORRETO.alert })
 
                 // } else {
                 ////     console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
                 //     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
 
                 //     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
-                //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
+                //     await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.LOCAL_CORRETO.alert })
                 // }
                 // } 
             }
@@ -64,7 +64,7 @@ module.exports = async (packing, currentControlPoint) => {
             await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
             if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return true
-            await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert })
+            await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.ANALISE.alert })
         }
 
     } catch (error) {

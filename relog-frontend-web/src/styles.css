@@ -6,6 +6,11 @@ body {
   overflow-y: scroll;
 }
 
+.ng-sidebar, ng-sidebar--opened, ng-sidebar--over {
+  background-color: #fff !important;
+  z-index: 999 !important;
+}
+
 /* g {
 
   transform: translate(50px, 50px)!important;

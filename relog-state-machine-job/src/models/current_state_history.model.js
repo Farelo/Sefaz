@@ -8,6 +8,10 @@ const currentStateHistorySchema = new mongoose.Schema({
         ref: 'Packing',
         required: true
     },
+    device_data_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "DeviceData"
+    },
     type: {
         type: String,
         enum: [

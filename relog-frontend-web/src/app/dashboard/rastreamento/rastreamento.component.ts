@@ -3,12 +3,16 @@ import { ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department';
 import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService, FamiliesService, DevicesService, ControlPointsService } from '../../servicos/index.service';
+import { AuthenticationService, PackingService, DepartmentService, FamiliesService, DevicesService, ControlPointsService, ControlPointTypesService } from '../../servicos/index.service';
+import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { Pagination } from '../../shared/models/pagination';
 import { MapsService } from '../../servicos/maps.service';
 import './markercluster';
 import { Spiralize } from './Spiralize';
 import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
 
 declare var $: any;
 declare var google: any;
@@ -59,55 +63,90 @@ export class RastreamentoComponent implements OnInit {
   numero: 1;
   plants = [];
 
-  //selects
-  public listOfSerials: any[];
-  public codes: any[];
+  /*
+   * DataPicker
+   */
+  datePickerConfig = new BsDaterangepickerConfig(); //Configurations
+  public todayDate: Date = null;   // Today date
+  public rangeDate: any = null;
+  public lastHours: any = null;
+  public lastHoursOptions: any[] = [];
+  public statusOptions: any[] = [];
 
-  //Bind dos selects
-  public selectedCompany: any = null;
+  //Control point filters
+  public selectedLinkedCompany: any = null;
+  public listOfLinkedCompanies: any = [];
+  public listOfLinkedCompaniesOriginal: any = [];
+
+  public selectedControlPointType: any = null;
+  public listOfControlPointsOriginal: any[] = [];
+  public listOfControlPointType: any = null;
+  public listOfControlPointTypeOriginal: any = [];
+
+  public selectedControlPoint: any = null;
+  public listOfControlPoints: any = [];
+
+  //Packing filters
   public selectedFamily: any = null;
-  public selectedSerial: any = null;
+  public listOfFamilies: any = [];
+  public listOfFamiliesOriginal: any = [];
 
+  public selectedSerial: any = null;
+  public listOfSerials: any[];
+  public selectedStatus: any = null;
+  public onlyGoodAccuracy: boolean = false;
+  
   //array de pinos
   public plotedPackings: any[] = [];
-  public listOfControlPoints: any = [];
 
   //show markers
   public showControlledPlants: boolean = false;
   public showControlledLogistics: boolean = false;
   public showControlledSuppliers: boolean = false;
-  public showPackings: boolean = false;
+  public showPackings: boolean = true;
 
   //misc
   public settings: any = {};
   public permanence: Pagination = new Pagination({ meta: { page: 1 } });
 
-  //...
-  public listOfFamilies: any = [];
-  public auxListOfFamilies: any = [];
-
-  public listOfCompanies: any = [];
+  public loadingRequisition: boolean = false;
 
   constructor(public translate: TranslateService,
     private ref: ChangeDetectorRef,
     private controlPointsService: ControlPointsService,
-    private departmentService: DepartmentService,
     private familyService: FamiliesService,
     private authenticationService: AuthenticationService,
     private deviceService: DevicesService,
     private packingService: PackingService,
+    private controlPointTypesService: ControlPointTypesService,
     private mapsService: MapsService,
     private modalService: NgbModal,
-    private auth: AuthenticationService) {
+    private auth: AuthenticationService,
+    private localeService: BsLocaleService) {
+
+    defineLocale('pt-br', ptBrLocale);
+    this.localeService.use('pt-br');
+
+    //Initialize 7 days before now
+    let sub = new Date().getTime() - (7 * 24 * 60 * 60 * 1000);
+    // this.initialDate = new Date(sub);
+    // this.finalDate = new Date();
 
     if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    
+    this.datePickerConfig.showWeekNumbers = false;
+    this.datePickerConfig.displayMonths = 1;
+    this.datePickerConfig.containerClass = 'theme-dark-blue';
   }
 
   ngOnInit() {
 
     this.getPlantRadius();
-    this.loadCompanies();
+    this.fillHours();
+    this.loadLinkedCompanies();
+    this.loadControlPointTypes();
     this.loadControlPoints();
+    this.fillStates();
   }
 
   public mMap: any;
@@ -115,7 +154,6 @@ export class RastreamentoComponent implements OnInit {
 
     this.zoom = 14;
     this.mMap = map;
-    this.loadPackings();
   }
 
 
@@ -124,55 +162,86 @@ export class RastreamentoComponent implements OnInit {
     this.zoom = 14;
   }
 
-  /**
-   * Recupera o radius das plantas, configurado pelo usuário.
-   */
-  getPlantRadius() {
+  fillHours() {
+    this.lastHoursOptions = [
+      { label: '1h', value: '1' },
+      { label: '2h', value: '2' },
+      { label: '3h', value: '3' },
+      { label: '4h', value: '4' },
+      { label: '5h', value: '5' },
+      { label: '6h', value: '6' },
+      { label: '7h', value: '7' },
+      { label: '8h', value: '8' },
+      { label: '9h', value: '9' },
+      { label: '10h', value: '10' },
+      { label: '11h', value: '11' },
+      { label: '12h', value: '12' },
+      { label: '13h', value: '13' },
+      { label: '14h', value: '14' },
+      { label: '15h', value: '15' },
+      { label: '16h', value: '16' },
+      { label: '17h', value: '17' },
+      { label: '18h', value: '18' },
+      { label: '19h', value: '19' },
+      { label: '20h', value: '20' },
+      { label: '21h', value: '21' },
+      { label: '22h', value: '22' },
+      { label: '23h', value: '23' }
+    ]
+  }
 
-    let currentSetting = this.authenticationService.currentSettings();
-    this.settings['range_radius'] = currentSetting.range_radius;
+  fillStates() {
+    this.statusOptions = [
+      { label: 'Viagem Perdida', value: 'viagem_perdida' },
+      { label: 'Local Incorreto', value: 'local_incorreto' },
+      { label: 'Bateria Baixa', value: 'bateria_baixa' },
+      { label: 'Viagem Atrasada', value: 'viagem_atrasada' },
+      { label: 'Sem Sinal', value: 'sem_sinal' },
+      { label: 'Perdida', value: 'perdida' },
+      { label: 'Análise', value: 'analise' },
+      { label: 'Viagem em prazo', value: 'viagem_em_prazo' },
+      { label: 'Local Correto', value: 'local_correto' },
+      { label: 'Tempo de Permanência Excedido', value: 'tempo_de_permanencia_excedido' },
+      { label: 'Desabilitada com sinal', value: 'desabilitada_com_sinal' },
+      { label: 'Desabilitada sem sinal', value: 'desabilitada_sem_sinal' },
+    ]
   }
 
   /**
-   * Carrega as empresas no select de empresa
+   * Some Date field was modified. 
+   * This methods keeps the fileds that was changed and clear the others
+   * @param type Date field changed
    */
-  loadCompanies() {
+  dateChange(type) {
 
-    this.familyService.getAllFamilies().subscribe(result => {
+    if (type == 'todayDate') {
+      this.rangeDate = null;
+      this.lastHours = null;
+    }
 
-      this.listOfFamilies = result;
-      this.auxListOfFamilies = result;
+    if (type == 'rangeDate') {
+      this.todayDate = null;
+      this.lastHours = null;
+    }
 
-      // console.log('..');
-      // console.log(result);
-      let auxListOfCompanies = [];
-
-      this.listOfCompanies = result.map(elem => {
-        if (auxListOfCompanies.length < 1) {
-          auxListOfCompanies.push(elem.company);
-        } else {
-          if (auxListOfCompanies.map(e => e._id).indexOf(elem.company._id) === -1)
-            auxListOfCompanies.push(elem.company);
-        }
-      });
-
-      // console.log(auxListOfCompanies);
-
-      this.listOfCompanies = auxListOfCompanies;
-
-    }, err => console.error(err));
+    if (type == 'lastHours') {
+      this.todayDate = null;
+      this.rangeDate = null;
+    }
   }
 
   public listOfCircleControlPoints: any = [];
   public listOfPolygonControlPoints: any = [];
 
+  /**
+   * Loads all the control points in the select component and adds it's geofence on the map
+   */
   loadControlPoints() {
 
     this.controlPointsService.getAllControlPoint().subscribe(result => {
-      // this.listOfControlPoints = result.map(elem => {
-      //   elem.position = (new google.maps.LatLng(elem.lat, elem.lng));
-      //   return elem;
-      // });
+
+      this.listOfControlPointsOriginal = result;
+      this.listOfControlPoints = this.listOfControlPointsOriginal;
 
       this.listOfCircleControlPoints = result
         .filter(elem => elem.geofence.type == 'c')
@@ -196,28 +265,116 @@ export class RastreamentoComponent implements OnInit {
           return elem;
         });
 
-      // console.log(this.listOfCircleControlPoints);
-      // console.log(this.listOfPolygonControlPoints);
-
     }, err => console.error(err));
   }
 
   /**
-   * Carrega todos os pacotes do mapa
+   * A control point type was selected.
+   * This method filter the control points available to select.
+   * @param event Control point type object
    */
-  public spiralPath: google.maps.Polyline = new google.maps.Polyline();
-  public spiralPoints: any = [];
-  public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
-  public mSpiralize: Spiralize;
+  controlPointTypeChanged(event: any) {
+    if (event) {
+      this.listOfControlPoints = this.listOfControlPointsOriginal.filter(elem => {
+        return elem.type._id == event._id;
+      });
+    } else {
+      this.listOfControlPoints = this.listOfControlPointsOriginal;
+    }
+  }
 
+  /**
+   * A Linked Company was select. 
+   * This method exibits only the families owned by this company
+   * @param event The Company object
+   */
+  linkedCompanyChanged(event: any) {
+
+    if (event) {
+      this.listOfFamilies = this.listOfFamiliesOriginal.filter(elem => {
+        return elem.company._id == event._id;
+      });
+    } else {
+      this.listOfFamilies = this.listOfFamiliesOriginal;
+    }
+  }
+
+  /**
+   * Carrega as famílias e carregas unicamente empresas no select de Empresa Vinculada
+   */
+  loadLinkedCompanies() {
+
+    this.familyService.getAllFamilies().subscribe(result => {
+
+      this.listOfFamilies = result;
+      this.listOfFamiliesOriginal = result;
+
+      this.listOfLinkedCompanies = result.map(elem => {
+        if (this.listOfLinkedCompaniesOriginal.length < 1) {
+          this.listOfLinkedCompaniesOriginal.push(elem.company);
+        } else {
+          if (this.listOfLinkedCompaniesOriginal.map(e => e._id).indexOf(elem.company._id) === -1)
+            this.listOfLinkedCompaniesOriginal.push(elem.company);
+        }
+      });
+
+      // console.log(listOfLinkedCompaniesOriginal);
+
+      this.listOfLinkedCompanies = this.listOfLinkedCompaniesOriginal;
+
+    }, err => console.error(err));
+  }
+
+  controlPointChanged(event: any){
+    // console.log(event)
+    // console.log(this.selectedControlPoint)
+
+    if (event) {
+      this.selectedControlPointType = event.type;
+    } else {
+      this.listOfControlPointType = this.listOfControlPointTypeOriginal;
+    }
+  }
+
+  familyChanged(event: any) {
+
+    // console.log(event)
+    // console.log(this.selectedLinkedCompany)
+
+    if (event) {
+      this.selectedLinkedCompany = event.company;
+    } else {
+      this.listOfFamilies = this.listOfFamiliesOriginal;
+    }
+
+    // if(this.selectedLinkedCompany == null){
+
+    //   this.selectedLinkedCompany = this.listOfFamiliesOriginal.find(elem => {
+    //     return elem._id = event.company._id;
+    //   })
+    // } else{
+
+    // }
+
+    // console.log(this.selectedLinkedCompany)
+
+    this.loadSerialsOfSelectedEquipment();
+  }
+
+
+  /**
+   * Equipment select was cleared.
+   * Clear e disable the Serial Select.
+   */
+  onEquipmentSelectClear() {
+
+    this.selectedSerial = null;
+  }
 
   /**
    * An equipment was selected. This method fill the Serial Select.
    */
   loadSerialsOfSelectedEquipment() {
-
-    // console.log('loadSerialsOfSelectedEquipment');
-    // console.log(this.selectedFamily);
 
     if (this.selectedFamily) {
       //this.loadPackings();
@@ -234,73 +391,170 @@ export class RastreamentoComponent implements OnInit {
     }
   }
 
-  companyChanged(event: any) {
-    // console.log(event);
+  // companyChanged(event: any) {
+  //   // console.log(event);
 
-    if (event) {
-      this.listOfFamilies = this.auxListOfFamilies.filter(elem => {
-        return elem.company._id == event._id;
-      });
-    } else {
-      this.listOfFamilies = this.auxListOfFamilies;
-    }
+  //   if (event) {
+  //     this.listOfFamilies = this.auxListOfFamilies.filter(elem => {
+  //       return elem.company._id == event._id;
+  //     });
+  //   } else {
+  //     this.listOfFamilies = this.auxListOfFamilies;
+  //   }
+  // }
 
-    this.loadPackings();
+  /**
+   * Recupera o radius das plantas, configurado pelo usuário.
+   */
+  getPlantRadius() {
+
+    let currentSetting = this.authenticationService.currentSettings();
+    this.settings['range_radius'] = currentSetting.range_radius;
   }
+
+  loadControlPointTypes() {
+
+    this.controlPointTypesService
+      .getAllTypes()
+      .subscribe(data => {
+
+        this.listOfControlPointType = data;
+        this.listOfControlPointTypeOriginal = data;
+      },
+        err => { console.log(err) });
+  }
+
+  // public listOfCircleControlPoints: any = [];
+  // public listOfPolygonControlPoints: any = [];
+
+
+  /**
+   * Carrega todos os pacotes do mapa
+   */
+  public spiralPath: google.maps.Polyline = new google.maps.Polyline();
+  public spiralPoints: any = [];
+  public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
+  public mSpiralize: Spiralize;
+
 
   /**
    * The filter has changed
+   * Renamed from loadPackings()
    */
-  loadPackings() {
+  requestFilteredResults() {
 
     // console.log('.');
+    let param = {
+      // date: null,
+      // start_date: null,
+      // end_date: null,
+      // last_hours: null,
+      // control_point_type: null,
+      // control_point_id: null,
+      // company_id: null,
+      // family_id: null,
+      // serial: null
+    };
 
-    let cp_id = this.selectedCompany !== null ? this.selectedCompany._id : null;
-    let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
-    let serial_id = this.selectedSerial !== null ? this.selectedSerial : null;
+    // console.log(this.todayDate)
+    // console.log(this.rangeDate)
+    // console.log(this.lastHours)
+    // console.log(this.selectedLinkedCompany)
+    // console.log(this.selectedControlPointType)
+    // console.log(this.selectedControlPoint)
+    // console.log(this.selectedFamily)
+    // console.log(this.selectedSerial)
 
-    // console.log('this.selectedCompany');
-    // console.log(this.selectedCompany);
 
-    // console.log('this.selectedCompany');
-    // console.log(this.selectedFamily);
+    // **********************
+    // Date section
+    if (this.todayDate !== null)
+      param['date'] = moment(this.todayDate).format("YYYY-MM-DD")
 
-    // console.log('this.selectedSerial');
-    // console.log(this.selectedSerial);
+    if (this.rangeDate !== null) {
+      param['start_date'] = moment(this.rangeDate[0]).format("YYYY-MM-DD")
+      param['end_date'] = moment(this.rangeDate[1]).format("YYYY-MM-DD")
+    }
 
-    this.deviceService.getDeviceData(cp_id, family_id, serial_id).subscribe((result: any[]) => {
+    if (this.lastHours !== null)
+      param['last_hours'] = this.lastHours
+
+    // **********************
+    // company section
+    if (this.selectedLinkedCompany !== null)
+      param['company_id'] = this.selectedLinkedCompany._id        // Linked company
+
+    if (this.selectedControlPointType !== null)
+      param['control_point_type'] = this.selectedControlPointType        // Control point type
+
+    if (this.selectedControlPoint !== null)
+      param['control_point_id'] = this.selectedControlPoint; // Control point
+
+    // **********************
+    // packing section
+    if (this.selectedFamily !== null)
+      param['family_id'] = this.selectedFamily ? this.selectedFamily._id : null;     // Family
+
+    if (this.selectedSerial !== null)
+      param['serial'] = this.selectedSerial;     // Serial
+
+    if (this.selectedStatus !== null)
+      param['selectedStatus'] = this.selectedStatus;     // Status
+    
+    if (this.onlyGoodAccuracy !== null){
+      param['onlyGoodAccuracy'] = this.onlyGoodAccuracy;     // onlyGoodAccuracy
+    }
+    
+    //console.log(param);
+
+    this.loadingRequisition = true;
+
+    this.deviceService.getHistoricalDeviceData(param).subscribe((result: any[]) => {
+
+      this.loadingRequisition = false;
 
       this.plotedPackings = result.filter(elem => {
-        if (elem.last_device_data)
+        if (elem.devicedata)
           return true;
         else
           return false;
       });
 
       this.plotedPackings.map(elem => {
-        elem.position = (new google.maps.LatLng(elem.last_device_data.latitude, elem.last_device_data.longitude));
-        elem.latitude = elem.last_device_data.latitude;
-        elem.longitude = elem.last_device_data.longitude;
+        elem.position = (new google.maps.LatLng(elem.devicedata.latitude, elem.devicedata.longitude));
+        elem.latitude = elem.devicedata.latitude;
+        elem.longitude = elem.devicedata.longitude;
         return elem;
       });
 
       //Se só há um objeto selecionado, centralize o mapa nele
       if (this.plotedPackings.length == 1) {
-        if (this.plotedPackings[0].last_device_data) {
+        if (this.plotedPackings[0].devicedata) {
           this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
         }
       }
-      //console.log(JSON.stringify(this.plotedPackings));
+      
+      // console.log(JSON.stringify(this.plotedPackings));
 
       //this.resolveClustering();
       if (this.mSpiralize) {
         this.mSpiralize.clearState();
-        this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, true);
+        this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, this.showPackings);
 
       } else {
-        this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
+        this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false, this.showPackings);
       }
+    }, 
+    (err) => { 
+      this.loadingRequisition = false;
     });
+  }
+
+  /**
+   * Exibir/Ocultar boa acurácia
+   */
+  toggleOnlyGoodAccuracy() {
+    this.onlyGoodAccuracy = !this.onlyGoodAccuracy;
   }
 
   /**
@@ -336,16 +590,6 @@ export class RastreamentoComponent implements OnInit {
 
   filterChanged() {
 
-  }
-
-  /**
-   * Equipment select was cleared.
-   * Clear e disable the Serial Select.
-   */
-  onEquipmentSelectClear() {
-
-    this.selectedSerial = null;
-    this.loadPackings();
   }
 
   public packingsByPlant: any[] = [];

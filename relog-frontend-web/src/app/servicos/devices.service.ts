@@ -52,4 +52,12 @@ export class DevicesService {
     return this.http.get(`${environment.url}/packings/data/geolocation${queryString}`).catch(this.handleError);
   }
 
+  getHistoricalDeviceData(param: any = {}): Observable<any> {
+
+    let queryString = Object.keys(param).map(key => key + '=' + param[key]).join('&');
+    if (queryString) queryString = '?' + queryString;
+
+    return this.http.get(`${environment.url}/packings/data/control_point/geolocation${queryString}`).catch(this.handleError);
+  }
+
 }
