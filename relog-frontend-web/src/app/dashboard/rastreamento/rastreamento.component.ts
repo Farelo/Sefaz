@@ -487,9 +487,9 @@ export class RastreamentoComponent implements OnInit {
       param['selectedStatus'] = this.selectedStatus;     // Status
     
     if (this.onlyGoodAccuracy !== null){
-      param['onlyGoodAccuracy'] = true;     // onlyGoodAccuracy
+      param['onlyGoodAccuracy'] = this.onlyGoodAccuracy;     // onlyGoodAccuracy
     }
-      
+    
     //console.log(param);
 
     this.loadingRequisition = true;
@@ -533,6 +533,13 @@ export class RastreamentoComponent implements OnInit {
     (err) => { 
       this.loadingRequisition = false;
     });
+  }
+
+  /**
+   * Exibir/Ocultar boa acurácia
+   */
+  toggleOnlyGoodAccuracy() {
+    this.onlyGoodAccuracy = !this.onlyGoodAccuracy;
   }
 
   /**
