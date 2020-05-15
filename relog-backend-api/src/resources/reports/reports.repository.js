@@ -858,7 +858,7 @@ exports.general_info_report = async (family_id = null) => {
                         if (packing.last_event_record.type == 'inbound') {
                             current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
 
-                            console.log(current_control_point)
+                            //console.log(current_control_point)
 
                             if (current_control_point) {
                                 object_temp.current_control_point_name = current_control_point.name
@@ -943,20 +943,22 @@ exports.clients_report = async (company_id = null) => {
                             const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type').populate('company')
 
                             if (cp == null) {
-                                console.log('packing.last_event_record.control_point null')
-                                console.log(packing.last_event_record.control_point)
+                                obj_temp.control_point_id = '-'
+                                obj_temp.control_point_name = '-'
+                                obj_temp.control_point_type = '-'
+                                obj_temp.company_control_point_name = '-'
+                            } else{
+                                obj_temp.control_point_id = cp._id
+                                obj_temp.control_point_name = cp.name
+                                obj_temp.control_point_type = cp.type.name
+                                obj_temp.company_control_point_name = (cp.company) ? cp.company.name : '-'
                             }
-
-                            obj_temp.control_point_id = cp._id
-                            obj_temp.control_point_name = cp.name
-                            obj_temp.control_point_type = cp.type.name
-                            obj_temp.company_control_point_name = (cp.company) ? cp.company.name : '-'
 
                             return obj_temp
                         })
                 )
 
-                console.log(packings_inbound);
+                // console.log(packings_inbound);
 
                 const output = Object.entries(_.countBy(packings_inbound, 'control_point_name')).map(([key, value]) => {
                     const packing_temp = packings_inbound.filter(p => p.control_point_name === key)
