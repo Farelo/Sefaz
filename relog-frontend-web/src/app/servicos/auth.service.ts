@@ -79,12 +79,12 @@ export class AuthenticationService {
     this.login(user.password, user.email);
   }
 
-  updateCurrentSettings() {
+  updateCurrentSettings(actualSettings) {
     //save user seetings
-    this.settingsService.getSettings().subscribe(result => {
-      localStorage.setItem("currentSettings", JSON.stringify(result));
-      this.updateLanguage(result.language);
-    });
+    // this.settingsService.getSettings().subscribe(result => {
+      localStorage.setItem("currentSettings", JSON.stringify(actualSettings));
+      this.updateLanguage(actualSettings.language);
+    // });
   }
 
   logout() {

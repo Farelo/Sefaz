@@ -3,6 +3,40 @@
   font-family: 'Raleway', sans-serif;
 }
 
+/* .ng-dropdown-panel {
+  width: max-content !important;
+} */
+
+/* ng-dropdown-panel .ng-dropdown-panel {
+  width: auto !important;
+  max-width: 550px;
+} */
+
+
+/* .ng-dropdown-panel.customFlag {
+  width: max-content !important;
+}
+
+.ng-dropdown-panel-items  {
+  width: max-content !important;
+}
+
+.ng-dropdown-panel .bottom {
+  width: max-content !important;
+}
+
+.ng-dropdown-panel{
+  width: max-content !important;
+}
+
+.ng-select.custom .ng-dropdown-panel.bottom {
+  width: max-content !important;
+}
+
+.ng-dropdown-panel .scroll-host {
+  width: max-content !important;
+} */
+
 .menu-item {
   font-size: 12px;
 }

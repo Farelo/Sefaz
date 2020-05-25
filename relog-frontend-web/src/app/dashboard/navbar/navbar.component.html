@@ -1,86 +1,195 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand brand" routerLink="/rc/home">Evoy</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <a class="navbar-brand brand" routerLink="/rc/home">Evoy</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto" style="margin-right: 90px;">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto" style="margin-right: 90px;">
+      <li>
+        <a
+          translate="NAVBAR.HOME"
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="/rc/home"
+        ></a>
+      </li>
 
-        <li>
-          <a translate="NAVBAR.HOME" class="nav-link" routerLinkActive="active" routerLink="/rc/home"></a>
-        </li>
+      <li *ngIf="currentUser?.role === 'admin'">
+        <a
+          translate="NAVBAR.ALERTS"
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="/rc/alertas"
+        ></a>
+      </li>
 
-        <li *ngIf="currentUser?.role === 'admin'">
-          <a translate="NAVBAR.ALERTS" class="nav-link" routerLinkActive="active" routerLink="/rc/alertas"></a>
-        </li>
+      <li *ngIf="currentUser?.role === 'admin'">
+        <a
+          translate="NAVBAR.REGISTERS"
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="/rc/cadastros"
+        ></a>
+      </li>
 
-        <li *ngIf="currentUser?.role === 'admin'">
-          <a translate="NAVBAR.REGISTERS" class="nav-link" routerLinkActive="active" routerLink="/rc/cadastros"></a>
-        </li>
+      <li>
+        <a
+          translate="NAVBAR.INVENTARY"
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="/rc/inventario"
+        ></a>
+      </li>
 
-        <li>
-          <a translate="NAVBAR.INVENTARY" class="nav-link" routerLinkActive="active" routerLink="/rc/inventario"></a>
-        </li>
+      <li *ngIf="currentUser?.role === 'admin'">
+        <a
+          translate="NAVBAR.IMPORT_DATA"
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="/rc/importar"
+        ></a>
+      </li>
 
-        <li *ngIf="currentUser?.role === 'admin'">
-          <a translate="NAVBAR.IMPORT_DATA" class="nav-link" routerLinkActive="active" routerLink="/rc/importar"></a>
-        </li>
+      <li>
+        <a
+          translate="NAVBAR.GEOLOCATION"
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="/rc/rastreamento"
+        ></a>
+      </li>
 
-        <li>
-          <a translate="NAVBAR.GEOLOCATION" class="nav-link" routerLinkActive="active" routerLink="/rc/rastreamento"></a>
-        </li>
+      <li
+        *ngIf="
+          currentUser?.role === 'admin' &&
+          this.authenticationService.currentSettings()?.enable_gc16 === true
+        "
+      >
+        <a
+          translate="NAVBAR.BPLINE"
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="/rc/bpline"
+        ></a>
+      </li>
 
-        <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
-          <a translate="NAVBAR.BPLINE" class="nav-link" routerLinkActive="active" routerLink="/rc/bpline"></a>
-        </li>
+      <!-- <form [formGroup]="langForm" novalidate> -->
+      <ng-select
+        appearance="outline"
+        [searchable]="false"
+        [clearable]="false" 
+        (change)="changeLanguage($event)"
+        [items]="languages"
+        [(ngModel)]="selectedLang" 
+        bindValue="name"   
+        class="auto-grow" 
+        style="width: max-content"
+      >
+        <ng-template ng-label-tmp let-item="item">
+          <img [src]="item.icon" width="20px" height="20px" />
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item">
+          <img [src]="item.icon" width="20px" height="20px" />
+          {{ item.label }}
+        </ng-template>
+      </ng-select>
+      <!-- </form> -->
+      <!-- Icon credits: https://www.flaticon.com/br/packs/international-flags -->
 
-        <li class="nav-item dropdown">
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle usuario"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        ></a>
 
-          <a class="nav-link dropdown-toggle usuario" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false"></a>
-
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <div class="lista-menu-escondido">
-              <div>
-                <img width="40" *ngIf="currentUser?.role === 'admin'" src="assets/images/icon_a.png">
-                <img width="40" *ngIf="currentUser?.role === 'user'" src="assets/images/icon_f.png">
-              </div>
-              <div>
-                <p id="username">{{ this.currentUser?.full_name || 'Sem Registro' }} </p>
-                <p translate="NAVBAR.USER_ADMIN" class="user-type" *ngIf="currentUser?.role === 'admin'"></p>
-                <p translate="NAVBAR.USER_EMPLOYEE" class="user-type" *ngIf="currentUser?.role === 'user'"></p>
-              </div>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div class="lista-menu-escondido">
+            <div>
+              <img
+                width="40"
+                *ngIf="currentUser?.role === 'admin'"
+                src="assets/images/icon_a.png"
+              />
+              <img
+                width="40"
+                *ngIf="currentUser?.role === 'user'"
+                src="assets/images/icon_f.png"
+              />
             </div>
-            
-            <a translate="NAVBAR.MANAGE_USER" class="dropdown-item pointer menu-item" *ngIf="currentUser?.role === 'admin'" (click)="openModal()"> </a>
-            
-            <a translate="NAVBAR.CONFIG" class="dropdown-item pointer menu-item" *ngIf="currentUser?.role === 'admin'" (click)="openSettings()"> </a>
-            
-            <div class="dropdown-divider"></div>
-
-            <a translate="NAVBAR.LOGOUT" class="dropdown-item pointer menu-item" (click)="logout()"></a>
+            <div>
+              <p id="username">
+                {{ this.currentUser?.full_name || "Sem Registro" }}
+              </p>
+              <p
+                translate="NAVBAR.USER_ADMIN"
+                class="user-type"
+                *ngIf="currentUser?.role === 'admin'"
+              ></p>
+              <p
+                translate="NAVBAR.USER_EMPLOYEE"
+                class="user-type"
+                *ngIf="currentUser?.role === 'user'"
+              ></p>
+            </div>
           </div>
-        </li>
-      </ul>
-    </div>
-  </nav>
 
-  <!-- <a class="navbar-brand brand">Evoy</a>
-  <button class="navbar-toggler" 
-    type="button" 
-    data-toggle="collapse" 
-    data-target="#navbarSupportedContent" 
-    aria-controls="navbarSupportedContent" 
-    aria-expanded="false" 
+          <a
+            translate="NAVBAR.MANAGE_USER"
+            class="dropdown-item pointer menu-item"
+            *ngIf="currentUser?.role === 'admin'"
+            (click)="openModal()"
+          >
+          </a>
+
+          <a
+            translate="NAVBAR.CONFIG"
+            class="dropdown-item pointer menu-item"
+            *ngIf="currentUser?.role === 'admin'"
+            (click)="openSettings()"
+          >
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <a
+            translate="NAVBAR.LOGOUT"
+            class="dropdown-item pointer menu-item"
+            (click)="logout()"
+          ></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- <a class="navbar-brand brand">Evoy</a>
+  <button class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
     aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse lista-menu" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      
+
       <li class="nav-item active">
         <a class="nav-link" routerLinkActive="active" routerLink="/rc/home">Home</a>
       </li>
@@ -136,11 +245,8 @@
   </div>
 </nav> -->
 
+<!-- <div class="m-navbar" (window:resize)="onResize($event)">
 
-
-
-  <!-- <div class="m-navbar" (window:resize)="onResize($event)">
-  
     <li *ngIf="currentUser?.role === 'admin'">
       <a routerLinkActive="active" routerLink="/rc/alertas">Alertas</a>
     </li>
@@ -159,7 +265,7 @@
     <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
       <a routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
     </li>
-    <li class="usuario" [ngbPopover]='popContent' placement="bottom-right" triggers="manual" #p="ngbPopover" (click)="p.toggle()" (shown)="posicionarPopOver()"> 
+    <li class="usuario" [ngbPopover]='popContent' placement="bottom-right" triggers="manual" #p="ngbPopover" (click)="p.toggle()" (shown)="posicionarPopOver()">
       <a class="botaoUsuario" routerLinkActive="active"></a>
     </li>
   </ul>
@@ -195,7 +301,7 @@
         <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
         </li>
-    
+
       </ul>
     </div>
 
@@ -226,15 +332,15 @@
           <a *ngIf="currentUser?.role === 'admin'" (click)="p.close();openSettings()"> Configurações </a>
         </li>
 
-        <li *ngIf="currentUser?.role !== 'user'" style="padding: 5px 0px;"> 
-          <hr> 
+        <li *ngIf="currentUser?.role !== 'user'" style="padding: 5px 0px;">
+          <hr>
         </li>
 
         <li>
           <a (click)="logout()"> Sair </a>
         </li>
       </ul>
-    </div> 
+    </div>
   </div>
 </div>
 
@@ -251,29 +357,29 @@
           <div style="float: left;">
 
             <p id="username">{{ this.currentUser.full_name }} </p>
-    
+
             <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa.</p>
             <p class="user-type" *ngIf="currentUser?.role === 'user'">Funcionário da Empresa.</p>
           </div>
         </div>
       </li>
-    
+
       <li style="clear: both; padding: 5px 0px;">
         <hr>
       </li>
-    
+
       <li>
         <a *ngIf="currentUser?.role === 'admin'" (click)="p.toggle(); openModal()"> Gerenciar usuários </a>
       </li>
-    
+
       <li>
         <a *ngIf="currentUser?.role === 'admin'" (click)="p.close(); openSettings()">Configurações </a>
       </li>
-    
+
       <li *ngIf="currentUser?.role !== 'user'" style="padding: 5px 0px;">
-        <hr> 
+        <hr>
       </li>
-      
+
       <li>
         <a (click)="logout()"> Sair </a>
       </li>
