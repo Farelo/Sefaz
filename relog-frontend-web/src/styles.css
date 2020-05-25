@@ -18,10 +18,14 @@ body {
   min-width: 100px;
   width: auto;
 } */
-.ng-select.auto-grow .ng-dropdown-panel {
+.ng-select .ng-dropdown-panel {
   width: max-content !important;
 }
 
+.auto-grow  .ng-control{
+  background-color: none !important;
+  border: none !important;
+}
 
 /* g {
 

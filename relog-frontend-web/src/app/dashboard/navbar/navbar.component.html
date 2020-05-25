@@ -83,25 +83,7 @@
       </li>
 
       <!-- <form [formGroup]="langForm" novalidate> -->
-      <ng-select
-        appearance="outline"
-        [searchable]="false"
-        [clearable]="false" 
-        (change)="changeLanguage($event)"
-        [items]="languages"
-        [(ngModel)]="selectedLang" 
-        bindValue="name"   
-        class="auto-grow" 
-        style="width: max-content"
-      >
-        <ng-template ng-label-tmp let-item="item">
-          <img [src]="item.icon" width="20px" height="20px" />
-        </ng-template>
-        <ng-template ng-option-tmp let-item="item">
-          <img [src]="item.icon" width="20px" height="20px" />
-          {{ item.label }}
-        </ng-template>
-      </ng-select>
+      
       <!-- </form> -->
       <!-- Icon credits: https://www.flaticon.com/br/packs/international-flags -->
 
@@ -172,6 +154,26 @@
           ></a>
         </div>
       </li>
+
+      <ng-select
+        appearance="outline"
+        [searchable]="false"
+        [clearable]="false" 
+        (change)="changeLanguage($event)"
+        [items]="languages"
+        [(ngModel)]="selectedLang" 
+        bindValue="name"   
+        class="auto-grow" 
+        style="width: max-content"
+      >
+        <ng-template ng-label-tmp let-item="item">
+          <img [src]="item.icon" width="20px" height="20px" />
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item">
+          <img [src]="item.icon" width="20px" height="20px" />
+          {{ item.label }}
+        </ng-template>
+      </ng-select>
     </ul>
   </div>
 </nav>
