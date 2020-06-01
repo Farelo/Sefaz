@@ -1,10 +1,11 @@
 const jsts = require("jsts");
 const turf = require("@turf/turf");
-const martinez = require('martinez-polygon-clipping');
+const martinez = require("martinez-polygon-clipping");
 const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_in_km");
 const { EventRecord } = require("../../models/event_record.model");
+const { generateNewFact } = require("../../models/fact_state_machine.model");
 
-module.exports = async (packing, controlPoints, setting) => {
+module.exports = async (packing, controlPoints, companies, setting) => {
   try {
     return findAndHandleIntersection(packing, controlPoints, setting);
   } catch (error) {
@@ -21,7 +22,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
   let isInsidePolygon = false;
 
   //Deve ser otimizado para sair do loop quando for encontrado dentro de um polígono
-  controlPoints.forEach(async controlPoint => {
+  controlPoints.forEach(async (controlPoint) => {
     //isInsidePolygon = false
     //mLog('controlPoints')
 
@@ -97,9 +98,11 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
               distance_km: packing.last_event_record.distance_km,
               accuracy: packing.last_device_data.accuracy,
               type: "outbound",
-              device_data_id: deviceDataId
+              device_data_id: deviceDataId,
             });
-            await outEventRecord.save();
+            await outEventRecord.save(); 
+
+            await generateNewFact(packing, outEventRecord, null, companies);
 
             //Faz IN no ponto de controle atual
             const inEventRecord = new EventRecord({
@@ -108,9 +111,11 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
               distance_km: distance,
               accuracy: packing.last_device_data.accuracy,
               type: "inbound",
-              device_data_id: deviceDataId
+              device_data_id: deviceDataId,
             });
             await inEventRecord.save();
+
+            await generateNewFact(packing, inEventRecord, null, companies);
 
             return currentControlPoint;
           } else {
@@ -137,9 +142,12 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
             distance_km: distance,
             accuracy: packing.last_device_data.accuracy,
             type: "inbound",
-            device_data_id: deviceDataId
+            device_data_id: deviceDataId,
           });
           await eventRecord.save();
+
+          await generateNewFact(packing, eventRecord, null, companies);
+
           return currentControlPoint;
         } else {
           mLog("SINAL RUIM");
@@ -159,9 +167,12 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
           distance_km: distance,
           accuracy: packing.last_device_data.accuracy,
           type: "inbound",
-          device_data_id: deviceDataId
+          device_data_id: deviceDataId,
         });
         await eventRecord.save();
+
+        await generateNewFact(packing, eventRecord, null, companies);
+
         return currentControlPoint;
       } else {
         mLog("SINAL RUIM");
@@ -185,9 +196,12 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
           distance_km: packing.last_event_record.distance_km,
           accuracy: packing.last_device_data.accuracy,
           type: "outbound",
-          device_data_id: deviceDataId
+          device_data_id: deviceDataId,
         });
         await eventRecord.save();
+
+        await generateNewFact(packing, eventRecord, null, companies);
+
         return null;
       } else {
         mLog("ULTIMO EVENTO FOI OUT");
@@ -200,7 +214,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
 };
 
 let idAbleToLog = false;
-const mLog = mText => {
+const mLog = (mText) => {
   if (idAbleToLog) console.log(mText);
 };
 
@@ -251,10 +265,12 @@ const newcheckOut = async (
         distance_km: distance,
         accuracy: packing.last_device_data.accuracy,
         type: "outbound",
-        device_data_id: deviceDataId
+        device_data_id: deviceDataId,
       });
 
       await eventRecord.save();
+
+      await generateNewFact(packing, eventRecord, null, companies);
     }
   }
 };
@@ -294,10 +310,12 @@ const checkIn = async (
           distance_km: distance,
           accuracy: packing.last_device_data.accuracy,
           type: "inbound",
-          device_data_id: deviceDataId
+          device_data_id: deviceDataId,
         });
 
         await eventRecord.save();
+
+        await generateNewFact(packing, eventRecord, null, companies);
       }
     } else {
       //mLog('EMBALAGEM JÁ TEM O EVENT RECORD')
@@ -322,10 +340,12 @@ const checkIn = async (
               distance_km: packing.last_event_record.distance_km,
               accuracy: packing.last_device_data.accuracy,
               type: "outbound",
-              device_data_id: deviceDataId
+              device_data_id: deviceDataId,
             });
 
             await eventRecord.save();
+
+            await generateNewFact(packing, eventRecord, null, companies);
           }
 
           const eventRecord = new EventRecord({
@@ -334,10 +354,13 @@ const checkIn = async (
             distance_km: distance,
             accuracy: packing.last_device_data.accuracy,
             type: "inbound",
-            device_data_id: deviceDataId
+            device_data_id: deviceDataId,
           });
 
           await eventRecord.save();
+
+          await generateNewFact(packing, eventRecord, null, companies);
+
         } else {
           //mLog('TENTAR OUTBOUND')
           if (packing.last_event_record.type === "outbound") {
@@ -349,10 +372,12 @@ const checkIn = async (
               distance_km: distance,
               accuracy: packing.last_device_data.accuracy,
               type: "inbound",
-              device_data_id: deviceDataId
+              device_data_id: deviceDataId,
             });
 
             await eventRecord.save();
+
+            await generateNewFact(packing, eventRecord, null, companies);
           }
         }
       } else {
@@ -368,10 +393,12 @@ const checkIn = async (
             distance_km: distance,
             accuracy: packing.last_device_data.accuracy,
             type: "outbound",
-            device_data_id: deviceDataId
+            device_data_id: deviceDataId,
           });
 
           await eventRecord.save();
+
+          await generateNewFact(packing, eventRecord, null, companies);
         }
       }
     }
@@ -395,17 +422,17 @@ const pnpoly = (packing, controlPoint) => {
   for (i = 0, j = nvert - 1; i < nvert; j = i++) {
     if (
       controlPoint.geofence.coordinates[i].lng >
-      packing.last_device_data.longitude !=
-      controlPoint.geofence.coordinates[j].lng >
-      packing.last_device_data.longitude &&
+        packing.last_device_data.longitude !=
+        controlPoint.geofence.coordinates[j].lng >
+          packing.last_device_data.longitude &&
       packing.last_device_data.latitude <
-      ((controlPoint.geofence.coordinates[j].lat -
-        controlPoint.geofence.coordinates[i].lat) *
-        (packing.last_device_data.longitude -
-          controlPoint.geofence.coordinates[i].lng)) /
-      (controlPoint.geofence.coordinates[j].lng -
-        controlPoint.geofence.coordinates[i].lng) +
-      controlPoint.geofence.coordinates[i].lat
+        ((controlPoint.geofence.coordinates[j].lat -
+          controlPoint.geofence.coordinates[i].lat) *
+          (packing.last_device_data.longitude -
+            controlPoint.geofence.coordinates[i].lng)) /
+          (controlPoint.geofence.coordinates[j].lng -
+            controlPoint.geofence.coordinates[i].lng) +
+          controlPoint.geofence.coordinates[i].lat
     ) {
       c = !c;
     }
@@ -415,7 +442,6 @@ const pnpoly = (packing, controlPoint) => {
 };
 
 const intersectionpoly = (packing, controlPoint) => {
-
   try {
     //criar polígono da planta
     let coordinates = controlPoint.geofence.coordinates;
@@ -423,7 +449,7 @@ const intersectionpoly = (packing, controlPoint) => {
     let path = [];
     let templateTurfPolygon = [];
 
-    coordinates.forEach(elem => {
+    coordinates.forEach((elem) => {
       path.push([elem.lng, elem.lat]);
     });
     path.push(path[0]);
@@ -461,18 +487,18 @@ const intersectionpoly = (packing, controlPoint) => {
 
       let controlPointPolygonArray = [];
 
-      unkinkControlPointPolygon.features.forEach(feature => {
+      unkinkControlPointPolygon.features.forEach((feature) => {
         let auxPolygon = turf.polygon(feature.geometry.coordinates);
         controlPointPolygonArray.push(auxPolygon);
       });
 
       let result = null;
 
-      controlPointPolygonArray.forEach(mPolygon => {
+      controlPointPolygonArray.forEach((mPolygon) => {
         //criar polígono da embalagem
         let center = [
           packing.last_device_data.longitude,
-          packing.last_device_data.latitude
+          packing.last_device_data.latitude,
         ];
         let radius = packing.last_device_data.accuracy;
         let options = { steps: 64, units: "meters" };
@@ -484,7 +510,10 @@ const intersectionpoly = (packing, controlPoint) => {
 
         //checar intersecção
         let intersection = turf.intersect(mPolygon, packingPolygon);
-        let intersectionMartinez = martinez.intersection(controlPointPolygon.geometry.coordinates, packingPolygon.geometry.coordinates)
+        let intersectionMartinez = martinez.intersection(
+          controlPointPolygon.geometry.coordinates,
+          packingPolygon.geometry.coordinates
+        );
 
         //checar inclusão total
         let contained = turf.booleanContains(mPolygon, packingPolygon);
@@ -494,12 +523,16 @@ const intersectionpoly = (packing, controlPoint) => {
         // mLog(intersection)
 
         if (result == false)
-          result = (intersection !== null || intersectionMartinez !== null || contained !== false) ? true : false;
+          result =
+            intersection !== null ||
+            intersectionMartinez !== null ||
+            contained !== false
+              ? true
+              : false;
       });
 
       //mLog(result);
       return result;
-
     } else {
       //Caso o polígono não tenha autointersecção
       // mLog('p sem auto intersecção')
@@ -509,7 +542,7 @@ const intersectionpoly = (packing, controlPoint) => {
       //criar polígono da embalagem
       let center = [
         packing.last_device_data.longitude,
-        packing.last_device_data.latitude
+        packing.last_device_data.latitude,
       ];
       let radius = packing.last_device_data.accuracy;
       let options = { steps: 64, units: "meters" };
@@ -521,7 +554,10 @@ const intersectionpoly = (packing, controlPoint) => {
 
       //checar intersecção
       let intersection = turf.intersect(controlPointPolygon, packingPolygon);
-      let intersectionMartinez = martinez.intersection(controlPointPolygon.geometry.coordinates, packingPolygon.geometry.coordinates)
+      let intersectionMartinez = martinez.intersection(
+        controlPointPolygon.geometry.coordinates,
+        packingPolygon.geometry.coordinates
+      );
 
       //checar inclusão total
       let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
@@ -530,7 +566,12 @@ const intersectionpoly = (packing, controlPoint) => {
       // mLog('i: ', packing.tag.code)
       // mLog(intersection)
 
-      let result = (intersection !== null || intersectionMartinez !== null || contained !== false) ? true : false;
+      let result =
+        intersection !== null ||
+        intersectionMartinez !== null ||
+        contained !== false
+          ? true
+          : false;
 
       return result;
     }

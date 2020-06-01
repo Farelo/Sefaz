@@ -7,14 +7,16 @@ const STATES = require('../common/states')
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
 const { Packing } = require('../../models/packings.model')
 
-module.exports = async (packing) => {
+module.exports = async (packing, companies) => {
     try {
         //console.log(`EMBALAGEM ESTÁ SEM SINAL`)
         //if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.SEM_SINAL.alert) return null
         if (packing.current_state && packing.current_state === STATES.SEM_SINAL.alert) return null
 
-        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SEM_SINAL.alert })
-        // await currentStateHistory.save()
+        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert });
+        await newCurrentStateHistory.save();
+        
+        await generateNewFact(packing, null, newCurrentStateHistory, companies);
 
         console.log('packing.absent')
         console.log(packing.absent)
