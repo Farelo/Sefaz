@@ -6,6 +6,7 @@ const STATES = require('../common/states')
 // MODELS
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
 const { Packing } = require('../../models/packings.model')
+const factStateMachine = require('../../models/fact_state_machine.model')
 
 module.exports = async (packing, companies) => {
     try {
@@ -16,7 +17,8 @@ module.exports = async (packing, companies) => {
         const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert });
         await newCurrentStateHistory.save();
         
-        await generateNewFact(packing, null, newCurrentStateHistory, companies);
+        console.log("[generateNewFact] SEM_SINAL 20");
+        await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
 
         console.log('packing.absent')
         console.log(packing.absent)

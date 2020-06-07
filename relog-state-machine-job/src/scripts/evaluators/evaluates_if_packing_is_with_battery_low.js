@@ -4,6 +4,7 @@ const STATES = require('../common/states')
 // MODELS
 const { Packing } = require('../../models/packings.model')
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
+const factStateMachine = require('../../models/fact_state_machine.model')
 
 module.exports = async (packing, setting, companies) => {
   let current_state_history = {}
@@ -27,7 +28,8 @@ module.exports = async (packing, setting, companies) => {
         const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert });
         await newCurrentStateHistory.save();
         
-        await generateNewFact(packing, null, newCurrentStateHistory, companies);
+        console.log("[generateNewFact] BATERIA_BAIXA @31");
+        await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
       }
 
     } else {

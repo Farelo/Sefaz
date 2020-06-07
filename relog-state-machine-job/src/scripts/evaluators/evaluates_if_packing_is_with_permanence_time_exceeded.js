@@ -10,6 +10,7 @@ const {
 const { Family } = require("../../models/families.model");
 const { GC16 } = require("../../models/gc16.model");
 const { Packing } = require("../../models/packings.model");
+const factStateMachine = require('../../models/fact_state_machine.model')
 
 module.exports = async (packing, currentControlPoint, companies) => {
   let current_state_history = {};
@@ -42,7 +43,8 @@ module.exports = async (packing, currentControlPoint, companies) => {
             });
             await newCurrentStateHistory.save();
 
-            await generateNewFact(
+            console.log("[generateNewFact] PERMANENCIA_EXCEDIDA @46");
+            await factStateMachine.generateNewFact(
               packing,
               null,
               newCurrentStateHistory,
@@ -88,7 +90,8 @@ module.exports = async (packing, currentControlPoint, companies) => {
             });
             await newCurrentStateHistory.save();
 
-            await generateNewFact(
+            console.log("[generateNewFact] PERMANENCIA_EXCEDIDA @93");
+            await factStateMachine.generateNewFact(
               packing,
               null,
               newCurrentStateHistory,

@@ -3,18 +3,18 @@ const turf = require("@turf/turf");
 const martinez = require("martinez-polygon-clipping");
 const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_in_km");
 const { EventRecord } = require("../../models/event_record.model");
-const { generateNewFact } = require("../../models/fact_state_machine.model");
+const factStateMachine = require("../../models/fact_state_machine.model");
 
 module.exports = async (packing, controlPoints, companies, setting) => {
   try {
-    return findAndHandleIntersection(packing, controlPoints, setting);
+    return findAndHandleIntersection(packing, controlPoints, setting, companies);
   } catch (error) {
     console.error(error);
     throw new Error(error);
   }
 };
 
-const findAndHandleIntersection = async (packing, controlPoints, setting) => {
+const findAndHandleIntersection = async (packing, controlPoints, setting, companies) => {
   let deviceDataId = packing.last_device_data._id;
   let distance = Infinity;
   let currentControlPoint = null;
@@ -75,10 +75,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
         mLog("ULTIMO EVENTO FOI INBOUND");
 
         //Se é a mesma planta
-        if (
-          packing.last_event_record.control_point.toString() ==
-          currentControlPoint._id.toString()
-        ) {
+        if (packing.last_event_record.control_point.toString() == currentControlPoint._id.toString()) {
           mLog("MESMO CP");
           return currentControlPoint;
         } else {
@@ -100,9 +97,10 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
               type: "outbound",
               device_data_id: deviceDataId,
             });
-            await outEventRecord.save(); 
+            await outEventRecord.save();
 
-            await generateNewFact(packing, outEventRecord, null, companies);
+            console.log("[generateNewFact] outbound 105");
+            await factStateMachine.generateNewFact(packing, outEventRecord, null, companies);
 
             //Faz IN no ponto de controle atual
             const inEventRecord = new EventRecord({
@@ -115,7 +113,8 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
             });
             await inEventRecord.save();
 
-            await generateNewFact(packing, inEventRecord, null, companies);
+            console.log("[generateNewFact] inbound 119");
+            await factStateMachine.generateNewFact(packing, inEventRecord, null, companies);
 
             return currentControlPoint;
           } else {
@@ -146,7 +145,8 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
           });
           await eventRecord.save();
 
-          await generateNewFact(packing, eventRecord, null, companies);
+          console.log("[generateNewFact] inbound 151");
+          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
 
           return currentControlPoint;
         } else {
@@ -171,7 +171,8 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
         });
         await eventRecord.save();
 
-        await generateNewFact(packing, eventRecord, null, companies);
+        console.log("[generateNewFact] inbound 177");
+        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
 
         return currentControlPoint;
       } else {
@@ -200,7 +201,8 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
         });
         await eventRecord.save();
 
-        await generateNewFact(packing, eventRecord, null, companies);
+        console.log("[generateNewFact] outbound 207");
+        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
 
         return null;
       } else {
@@ -218,13 +220,7 @@ const mLog = (mText) => {
   if (idAbleToLog) console.log(mText);
 };
 
-const thereIsIntersection = (
-  isInsidePolygon,
-  distance,
-  range_radius,
-  accuracy,
-  accuracy_limit
-) => {
+const thereIsIntersection = (isInsidePolygon, distance, range_radius, accuracy, accuracy_limit) => {
   // mLog('isInsidePolygon ', isInsidePolygon)
   // mLog('distance ', distance)
   // mLog('range_radius ', range_radius)
@@ -244,14 +240,7 @@ const thereIsIntersection = (
   return result;
 };
 
-const newcheckOut = async (
-  packing,
-  setting,
-  range_radius,
-  distance,
-  currentControlPoint,
-  isInsidePolygon
-) => {
+const newcheckOut = async (packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon) => {
   //mLog('EMBALAGEM NÃO ESTÁ EM UM PONTO DE CONTROLE')
   // Não estou em um ponto de controle próximo!
   // Checa se o último poncheckInto de controle é um INBOUND
@@ -270,7 +259,8 @@ const newcheckOut = async (
 
       await eventRecord.save();
 
-      await generateNewFact(packing, eventRecord, null, companies);
+      console.log("[generateNewFact] outbound 278");
+      await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
     }
   }
 };
@@ -284,13 +274,7 @@ const newcheckOut = async (
  * @param {*} distance
  * @param {*} currentControlPoint
  */
-const checkIn = async (
-  packing,
-  setting,
-  range_radius,
-  distance,
-  currentControlPoint
-) => {
+const checkIn = async (packing, setting, range_radius, distance, currentControlPoint) => {
   //// mLog('range_radius: ' + range_radius)
   //// mLog('distance: ' + distance)
   //// mLog('packing.last_device_data.accuracy: ' + packing.last_device_data.accuracy)
@@ -299,10 +283,7 @@ const checkIn = async (
   try {
     if (!packing.last_event_record) {
       //mLog('EMBALAGEM SEM EVENT RECORD')
-      if (
-        distance < range_radius &&
-        packing.last_device_data.accuracy <= setting.accuracy_limit
-      ) {
+      if (distance < range_radius && packing.last_device_data.accuracy <= setting.accuracy_limit) {
         //mLog('EMBALAGEM ESTÀ EM UM PONTO DE CONTROLE')
         const eventRecord = new EventRecord({
           packing: packing._id,
@@ -315,21 +296,16 @@ const checkIn = async (
 
         await eventRecord.save();
 
-        await generateNewFact(packing, eventRecord, null, companies);
+        console.log("[generateNewFact] inbound 324");
+        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
       }
     } else {
       //mLog('EMBALAGEM JÁ TEM O EVENT RECORD')
-      if (
-        distance < range_radius &&
-        packing.last_device_data.accuracy <= setting.accuracy_limit
-      ) {
+      if (distance < range_radius && packing.last_device_data.accuracy <= setting.accuracy_limit) {
         //mLog('EMBALAGEM ESTÀ EM UM PONTO DE CONTROLE')
         // Estou em um ponto de controle!
         // Checa se o ponto de controle onde a embalagem está é novo
-        if (
-          packing.last_event_record.control_point.toString() !==
-          currentControlPoint._id.toString()
-        ) {
+        if (packing.last_event_record.control_point.toString() !== currentControlPoint._id.toString()) {
           //mLog('TENTAR INBOUND')
 
           if (packing.last_event_record.type === "inbound") {
@@ -345,7 +321,8 @@ const checkIn = async (
 
             await eventRecord.save();
 
-            await generateNewFact(packing, eventRecord, null, companies);
+            console.log("[generateNewFact] outbound @349");
+            await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
           }
 
           const eventRecord = new EventRecord({
@@ -359,8 +336,8 @@ const checkIn = async (
 
           await eventRecord.save();
 
-          await generateNewFact(packing, eventRecord, null, companies);
-
+          console.log("[generateNewFact] inbound @370");
+          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
         } else {
           //mLog('TENTAR OUTBOUND')
           if (packing.last_event_record.type === "outbound") {
@@ -377,7 +354,8 @@ const checkIn = async (
 
             await eventRecord.save();
 
-            await generateNewFact(packing, eventRecord, null, companies);
+            console.log("[generateNewFact] inbound @389");
+            await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
           }
         }
       } else {
@@ -398,7 +376,8 @@ const checkIn = async (
 
           await eventRecord.save();
 
-          await generateNewFact(packing, eventRecord, null, companies);
+          console.log("[generateNewFact] outbound @411");
+          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
         }
       }
     }
@@ -421,17 +400,12 @@ const pnpoly = (packing, controlPoint) => {
 
   for (i = 0, j = nvert - 1; i < nvert; j = i++) {
     if (
-      controlPoint.geofence.coordinates[i].lng >
-        packing.last_device_data.longitude !=
-        controlPoint.geofence.coordinates[j].lng >
-          packing.last_device_data.longitude &&
+      controlPoint.geofence.coordinates[i].lng > packing.last_device_data.longitude !=
+        controlPoint.geofence.coordinates[j].lng > packing.last_device_data.longitude &&
       packing.last_device_data.latitude <
-        ((controlPoint.geofence.coordinates[j].lat -
-          controlPoint.geofence.coordinates[i].lat) *
-          (packing.last_device_data.longitude -
-            controlPoint.geofence.coordinates[i].lng)) /
-          (controlPoint.geofence.coordinates[j].lng -
-            controlPoint.geofence.coordinates[i].lng) +
+        ((controlPoint.geofence.coordinates[j].lat - controlPoint.geofence.coordinates[i].lat) *
+          (packing.last_device_data.longitude - controlPoint.geofence.coordinates[i].lng)) /
+          (controlPoint.geofence.coordinates[j].lng - controlPoint.geofence.coordinates[i].lng) +
           controlPoint.geofence.coordinates[i].lat
     ) {
       c = !c;
@@ -496,10 +470,7 @@ const intersectionpoly = (packing, controlPoint) => {
 
       controlPointPolygonArray.forEach((mPolygon) => {
         //criar polígono da embalagem
-        let center = [
-          packing.last_device_data.longitude,
-          packing.last_device_data.latitude,
-        ];
+        let center = [packing.last_device_data.longitude, packing.last_device_data.latitude];
         let radius = packing.last_device_data.accuracy;
         let options = { steps: 64, units: "meters" };
 
@@ -523,12 +494,7 @@ const intersectionpoly = (packing, controlPoint) => {
         // mLog(intersection)
 
         if (result == false)
-          result =
-            intersection !== null ||
-            intersectionMartinez !== null ||
-            contained !== false
-              ? true
-              : false;
+          result = intersection !== null || intersectionMartinez !== null || contained !== false ? true : false;
       });
 
       //mLog(result);
@@ -540,10 +506,7 @@ const intersectionpoly = (packing, controlPoint) => {
       // mLog(JSON.stringify(unkinkControlPointPolygon))
 
       //criar polígono da embalagem
-      let center = [
-        packing.last_device_data.longitude,
-        packing.last_device_data.latitude,
-      ];
+      let center = [packing.last_device_data.longitude, packing.last_device_data.latitude];
       let radius = packing.last_device_data.accuracy;
       let options = { steps: 64, units: "meters" };
 
@@ -566,12 +529,7 @@ const intersectionpoly = (packing, controlPoint) => {
       // mLog('i: ', packing.tag.code)
       // mLog(intersection)
 
-      let result =
-        intersection !== null ||
-        intersectionMartinez !== null ||
-        contained !== false
-          ? true
-          : false;
+      let result = intersection !== null || intersectionMartinez !== null || contained !== false ? true : false;
 
       return result;
     }

@@ -7,7 +7,7 @@ const {
 } = require("../../models/current_state_history.model");
 const { Packing } = require("../../models/packings.model");
 const { Family } = require("../../models/families.model");
-const { generateNewFact } = require("../../models/fact_state_machine.model");
+const factStateMachine = require("../../models/fact_state_machine.model");
 
 module.exports = async (packing, currentControlPoint, companies) => {
   try {
@@ -42,7 +42,8 @@ module.exports = async (packing, currentControlPoint, companies) => {
           });
           await newCurrentStateHistory.save();
 
-          await generateNewFact(
+          console.log("[generateNewFact] LOCAL_INCORRETO");
+          await factStateMachine.generateNewFact(
             packing,
             null,
             newCurrentStateHistory,
@@ -69,7 +70,8 @@ module.exports = async (packing, currentControlPoint, companies) => {
           });
           await newCurrentStateHistory.save();
 
-          await generateNewFact(
+          console.log("[generateNewFact] LOCAL_CORRETO 73");
+          await factStateMachine.generateNewFact(
             packing,
             null,
             newCurrentStateHistory,
@@ -97,7 +99,8 @@ module.exports = async (packing, currentControlPoint, companies) => {
         });
         await newCurrentStateHistory.save();
 
-        await generateNewFact(packing, null, newCurrentStateHistory, companies);
+        console.log("[generateNewFact] LOCAL_CORRETO 102");
+        await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
 
         // if (packing.family && packing.family.control_points.length > 0) {
         // /* Avalia se os pontos de controle da familia bate com o ponto de controle atual */
@@ -139,7 +142,8 @@ module.exports = async (packing, currentControlPoint, companies) => {
       });
       await newCurrentStateHistory.save();
 
-      await generateNewFact(packing, null, newCurrentStateHistory, companies);
+      console.log("[generateNewFact] ANALISE 145");
+      await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
     }
   } catch (error) {
     console.error(error);

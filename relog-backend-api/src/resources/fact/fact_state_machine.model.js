@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const STATES = require("../scripts/common/states");
+const mongoose = require("mongoose"); 
 
 const factStateMachineSchema = new mongoose.Schema({
   packing: {
@@ -104,11 +103,7 @@ const factStateMachineSchema = new mongoose.Schema({
  * @param {*} currentstatehistory A new CurrentStateHistory object or null if wnats to reapeat the Packing.last_current_state_history
  * @param {*} companies The list of all Companies
  */
-exports.generateNewFact = async (packing, eventrecord, currentStateHistory, companies) => {
-  console.log("[generateNewFact] model");
-  console.log("params packing", JSON.stringify(packing));
-  console.log("params eventrecord", JSON.stringify(eventrecord));
-  console.log("params currentStateHistory", JSON.stringify(currentStateHistory));
+exports.generateNewFact = async (packing, eventrecord, currentStateHistory, companies) => { 
 
   try {
     if (eventrecord == null) eventrecord = packing.last_event_record;
@@ -176,37 +171,6 @@ const getEventRecords = (eventRecords, key) => {
   if (eventRecords) result = eventRecords[key];
   return result;
 };
-
-// const update_packing = async (current_state_history, next) => {
-//     try {
-//         if (current_state_history.type !== STATES.BATERIA_BAIXA.alert && current_state_history.type !== STATES.PERMANENCIA_EXCEDIDA.alert && current_state_history.type !== STATES.AUSENTE.alert ) {
-//             await Packing.findByIdAndUpdate(current_state_history.packing, { last_current_state_history: current_state_history._id }, { new: true })
-//         }
-//         next()
-//     } catch (error) {
-//         next(error)
-//     }
-// }
-
-// factStateMachineSchema.statics.findByPacking = function (packing_id, projection = '') {
-//     return this
-//         .find({ packing: packing_id }, projection)
-//         .sort({ created_at: -1 })
-// }
-
-// const saveCurrentStateHistoryToPacking = function (doc, next) {
-//     update_packing(doc, next)
-// }
-
-// const update_updated_at_middleware = function (next) {
-//     let update = this.getUpdate()
-//     update.update_at = new Date()
-//     next()
-// }
-
-// factStateMachineSchema.post('save', saveCurrentStateHistoryToPacking)
-// factStateMachineSchema.pre('update', update_updated_at_middleware)
-// factStateMachineSchema.pre('findOneAndUpdate', update_updated_at_middleware)
 
 const FactStateMachine = mongoose.model("FactStateMachine", factStateMachineSchema);
 

@@ -5,7 +5,7 @@ const STATES = require('../common/states')
 const { Family } = require('../../models/families.model')
 const { Packing } = require('../../models/packings.model')
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
-const { generateNewFact } = require('../../models/fact_state_machine.model')
+const factStateMachine = require('../../models/fact_state_machine.model')
 
 module.exports = async (packing, setting, companies) => {
     let routeMax
@@ -39,7 +39,8 @@ module.exports = async (packing, setting, companies) => {
                         const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_em_prazo' });
                         await newCurrentStateHistory.save();
                         
-                        await generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        console.log("[generateNewFact] viagem_em_prazo @42");
+                        await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                     }
                 } else {
                     if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
@@ -52,7 +53,8 @@ module.exports = async (packing, setting, companies) => {
                             const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_perdida' });
                             await newCurrentStateHistory.save();
                             
-                            await generateNewFact(packing, null, newCurrentStateHistory, companies);
+                            console.log("[generateNewFact] viagem_perdida @56");
+                            await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                         }
 
                     } else {
@@ -65,7 +67,8 @@ module.exports = async (packing, setting, companies) => {
                             const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_atrasada' });
                             await newCurrentStateHistory.save();
                             
-                            await generateNewFact(packing, null, newCurrentStateHistory, companies);
+                            console.log("[generateNewFact] viagem_atrasada @70");
+                            await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                         }
 
                     }
@@ -82,7 +85,8 @@ module.exports = async (packing, setting, companies) => {
                 const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert });
                 await newCurrentStateHistory.save();
                 
-                await generateNewFact(packing, null, newCurrentStateHistory, companies);
+                console.log("[generateNewFact] ANALISE @88");
+                await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
             }
             
         //Emanoel
@@ -97,7 +101,8 @@ module.exports = async (packing, setting, companies) => {
                 const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_em_prazo' });
                 await newCurrentStateHistory.save();
                 
-                await generateNewFact(packing, null, newCurrentStateHistory, companies);
+                console.log("[generateNewFact] viagem_em_prazo @104");
+                await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
             }
         }
     } catch (error) {
