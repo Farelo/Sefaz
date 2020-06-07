@@ -20,7 +20,7 @@ const factStateMachineSchema = new mongoose.Schema({
       type: String,
     },
   },
-  devicedatas: {
+  devicedata: {
     _id: {
       type: mongoose.Schema.ObjectId,
       ref: "DeviceData",
@@ -59,7 +59,7 @@ const factStateMachineSchema = new mongoose.Schema({
       default: Date.now,
     },
   },
-  eventrecords: {
+  eventrecord: {
     _id: {
       type: mongoose.Schema.ObjectId,
       ref: "EventRecord",
@@ -151,8 +151,8 @@ exports.generateNewFact = async (packing, eventrecord, currentStateHistory, comp
         serial: packing.serial,
         tag: packing.tag.code,
       },
-      devicedatas: auxDeviceData,
-      eventrecords: auxEventRecords,
+      devicedata: auxDeviceData,
+      eventrecord: auxEventRecords,
       currentstatehistory: auxCurrentStateHistory,
     };
 

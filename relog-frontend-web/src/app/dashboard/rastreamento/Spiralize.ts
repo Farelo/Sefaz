@@ -37,6 +37,7 @@ export class Spiralize {
 
     constructor(list: any[], map: any, clustered: boolean = false, showIcons: boolean) {
         this.listOfObjects = list;
+        console.log(this.listOfObjects)
         this.mMap = map;
         this.clustered = clustered;
         this.resolveClustering();
@@ -167,14 +168,14 @@ export class Spiralize {
             let datePipe = new DatePipe('en');
 
             let m = new google.maps.Marker({
-                family_code: location.family.code,
+                family_code: location.packing.family.code,
                 serial: location.packing.serial,
-                tag: location.packing.tag.code,
+                tag: location.packing.tag,
                 battery: (location.devicedata && location.devicedata.battery.percentage) ? (location.devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
                 accuracy: (location.devicedata !== null) ? (location.devicedata.accuracy + 'm') : 'Sem registro',
                 message_date : (location.devicedata !== null) ? (location.devicedata.message_date) : 'Sem registro',
                 position: location.position,
-                icon: this.getPinWithAlert(location.current_state)
+                icon: this.getPinWithAlert(location.currentstatehistory ? location.currentstatehistory.type : '')
             })
 
             google.maps.event.addListener(m, 'click', (evt) => {
@@ -236,7 +237,7 @@ export class Spiralize {
                 // position: location.position,
                 // icon: this.getPinWithAlert(location.current_state)
 
-                packing_code: array[0].family.code,
+                packing_code: array[0].packing.family.code,
                 serial: array[0].packing.serial,
                 position: { lat: array[0].latitude, lng: array[0].longitude },
                 icon: { url: 'assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) },
@@ -350,14 +351,14 @@ export class Spiralize {
                         // console.log(array[sc - 1]);
 
                         let e = new google.maps.Marker({
-                            family_code: array[sc - 1].family.code,
+                            family_code: array[sc - 1].packing.family.code,
                             serial: array[sc - 1].packing.serial,
-                            tag: array[sc - 1].packing.tag.code,
+                            tag: array[sc - 1].packing.tag,
                             position: spiralCoordinates[sc],
                             battery: (array[sc - 1].devicedata && array[sc - 1].devicedata.battery.percentage) ? (array[sc - 1].devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
                             message_date : (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.message_date) : 'Sem registro',
                             accuracy: (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.accuracy + 'm') : 'Sem registro',
-                            icon: this.getPinWithAlert(array[sc - 1].current_state, true),
+                            icon: this.getPinWithAlert(array[sc - 1].currentstatehistory ? array[sc - 1].currentstatehistory.type : '', true),
                             zIndex: 999,
                             map: this.mMap
                         });

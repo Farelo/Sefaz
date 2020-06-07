@@ -195,22 +195,22 @@ exports.control_point_geolocation = async (query) => {
     // let event_record_conditions = {};
     let search_conditions = {};
 
-    search_conditions["devicedatas.message_date"] = date_conditions;
+    search_conditions["devicedata.message_date"] = date_conditions;
 
-    //if(query.control_point_type) search_conditions.eventrecords.control_point.type = query.control_point_type,
-    if (query.control_point_id) search_conditions["eventrecords.control_point"] = query.control_point_id;
-    //if(query.company_id) search_conditions.eventrecords.control_point.company = query.company_id
+    //if(query.control_point_type) search_conditions.eventrecord.control_point.type = query.control_point_type,
+    if (query.control_point_id) search_conditions["eventrecord.control_point"] = query.control_point_id;
+    //if(query.company_id) search_conditions.eventrecord.control_point.company = query.company_id
     if (query.family_id) search_conditions["packing.family"] = query.family_id;
     if (query.serial) search_conditions["packing.serial"] = query.serial;
     if (query.current_state) search_conditions["currentstatehistory.type"] = query.current_state;
     if (query.onlyGoodAccuracy)
-      if (query.onlyGoodAccuracy) search_conditions["devicedatas.accuracy"] = { $lte: settings[0].accuracy_limit };
+      if (query.onlyGoodAccuracy) search_conditions["devicedata.accuracy"] = { $lte: settings[0].accuracy_limit };
 
     console.log(search_conditions);
 
     let factResults = await FactStateMachine.find(search_conditions)
       .populate("packing.family")
-      .populate("eventrecords.control_point");
+      .populate("eventrecord.control_point");
     
     console.log(factResults.length);
 
@@ -218,7 +218,7 @@ exports.control_point_geolocation = async (query) => {
     if (query.control_point_type) {
       console.log(">>>>>>>>>>>>>>>>> control_point_type");
       factResults = factResults.filter(
-        (elem) => elem.eventrecords.control_point !== null && elem.eventrecords.control_point.type == query.control_point_type
+        (elem) => elem.eventrecord.control_point !== null && elem.eventrecord.control_point.type == query.control_point_type
       );
     }
     console.log(factResults.length);
