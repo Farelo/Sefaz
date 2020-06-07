@@ -5,6 +5,7 @@
   "scripts": {
     "update-last-battery-to-packing": "cross-env NODE_CONFIG_DIR=src/config SCRIPT=without-battery DEBUG=* node src/server.js",
     "update-battery-zero": "cross-env NODE_CONFIG_DIR=src/config SCRIPT=battery-zero DEBUG=* node src/server.js",
+    "link-event-records-and-device-data": "cross-env NODE_CONFIG_DIR=src/config SCRIPT=link-device-data DEBUG=* node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -22,7 +23,7 @@
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.14",
     "morgan": "^1.9.1",
-    "winston": "^3.1.0"
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "chalk": "^2.4.1",

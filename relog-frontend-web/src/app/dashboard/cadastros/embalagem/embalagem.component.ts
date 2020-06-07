@@ -4,6 +4,7 @@ import { Packing } from '../../../shared/models/packing';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-embalagem',
@@ -11,37 +12,36 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['../cadastros.component.css']
 })
 export class EmbalagemComponent implements OnInit {
-  
+
   //list
   private _listOfPackings: any[] = [];
   public listOfPackings: any[] = [];
-  
+
   //ng select
   public listOfFamilies: any[] = [];
   public selectedFamily: any;
-  
+
   //pagination
   public actualPage = -1;
 
   public logged_user: any;
-  
-  constructor(
-    private packingService: PackingService,
-    private familyService: FamiliesService,
-    private modalService: NgbModal,
+
+  constructor(public translate: TranslateService, private packingService: PackingService,
+    private familyService: FamiliesService, private modalService: NgbModal,
     private auth: AuthenticationService) {
 
-    let user = this.auth.currentUser(); 
-    
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+
+    //Session
+    let user = this.auth.currentUser();
+
     this.logged_user = (user.supplier ? user.supplier._id : (
       user.official_supplier ? user.official_supplier : (
         user.logistic ? user.logistic.suppliers : (
           user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
   }
 
-
   ngOnInit() {
-    //this.loadFamilies();
     this.loadPackings();
   }
 
@@ -49,26 +49,26 @@ export class EmbalagemComponent implements OnInit {
   /**
    * Carregar todos os pacotes com paginação e sem filtro
    */
-  loadPackings(): void{
+  loadPackings(): void {
 
     this.packingService.getAllPackings().subscribe(result => {
 
       this._listOfPackings = result;
       this.listOfPackings = result;
-      }, err => {console.log(err)});
+    }, err => { console.log(err) });
   }
 
-  loadFamilies(){
+  loadFamilies() {
     this.familyService.getAllFamilies().subscribe(result => {
       this.listOfFamilies = result;
     }, err => console.error(err));
   }
-  
+
   /**
    * Proceed to remove a packing
    * @param packing 
    */
-  removePacking(packing):void{
+  removePacking(packing): void {
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.mObject = packing;
     modalRef.componentInstance.mType = "PACKING";
@@ -85,8 +85,8 @@ export class EmbalagemComponent implements OnInit {
     // filter our data
     const temp = this._listOfPackings.filter(function (item) {
       return ((item.family.code.toLowerCase().indexOf(val) !== -1 || !val)
-              || (item.serial.toLowerCase().indexOf(val) !== -1 || !val)
-              || (item.tag.code.toLowerCase().indexOf(val) !== -1 || !val));
+        || (item.serial.toLowerCase().indexOf(val) !== -1 || !val)
+        || (item.tag.code.toLowerCase().indexOf(val) !== -1 || !val));
     });
 
     // update the rows

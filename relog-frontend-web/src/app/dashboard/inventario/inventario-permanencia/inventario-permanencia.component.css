@@ -22,6 +22,13 @@ span {
   cursor: pointer;
 }
 
+.descricao {
+  display: inline;
+  font-weight: 600;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+}
+
 h2,
 h3 {
   display: inline-flex;

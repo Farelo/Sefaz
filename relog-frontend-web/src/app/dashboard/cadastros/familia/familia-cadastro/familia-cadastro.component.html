@@ -1,18 +1,18 @@
 <div class="">
-  <h2>Registrar Família de Embalagem</h2>
+  <h2 translate="REGISTER.FAMILY.REGISTER_TITLE"></h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mFamily)" [formGroup]="mFamily">
 
     <!-- Input para o código da família -->
     <div class="campo col-sm-12 col-md-6">
-      <p class="descricao">CÓDIGO DA FAMÍLIA</p>
-      <p class="explicacao">Ex: "AAA1"</p>
+      <p translate="REGISTER.FAMILY.CODE" class="descricao"></p>
+      <p translate="REGISTER.FAMILY.CODE_DESC" class="explicacao"></p>
 
       <div class="input-group">
         <input type="text" 
           class="form-control required" 
-          placeholder="Digite o código"  
+          placeholder="{{ 'REGISTER.FAMILY.CODE_PLACEHOLDER' | translate }}"  
           formControlName="code"
           maxlength="25"
           (focusout)="validateCode($event)"
@@ -24,57 +24,50 @@
           || (mFamily.get('code').hasError('uniqueValidation') && submitted)}">
       </div>
 
-      <p class="requiredText" 
+      <p translate="REGISTER.ERROR.REQUIRED" class="requiredText" 
         *ngIf="(mFamily.get('code').hasError('required') && mFamily.get('code').touched)
-          || (mFamily.get('code').hasError('required') && submited)">
-          Campo Obrigatório
-      </p>
+          || (mFamily.get('code').hasError('required') && submited)"></p>
 
-      <p class="requiredText" 
+      <p translate="REGISTER.ERROR.FAMILY_EXISTS" class="requiredText" 
         *ngIf="(mFamily.get('code').hasError('uniqueValidation')) 
           || (mFamily.get('code').hasError('uniqueValidation') && submitted)">
-          Esta família já existe. O código deve ser único.</p>
+          </p>
 
-      <p class="requiredText" 
+      <p translate="REGISTER.ERROR.WHITE_SPACE" class="requiredText" 
         *ngIf="(mFamily.get('code').hasError('pattern')) 
-          || (mFamily.get('code').hasError('pattern') && submitted)">
-          Excesso de espaços em branco</p>
+          || (mFamily.get('code').hasError('pattern') && submitted)"></p>
       
-      <p class="requiredText" *ngIf="(mFamily.get('code').hasError('minlength')) 
-        || (mFamily.get('code').hasError('minlength') && submitted)">
-        Mínimo de 2 caracteres</p>
+      <p translate="REGISTER.ERROR.MIN_2" class="requiredText" *ngIf="(mFamily.get('code').hasError('minlength')) 
+        || (mFamily.get('code').hasError('minlength') && submitted)"></p>
 
-      <p class="explicacao" *ngIf="validateNotTakenLoading">
-        Verificando disponibilidade ...</p>
+      <p translate="REGISTER.ERROR.WHITE_SPACE" class="explicacao" *ngIf="validateNotTakenLoading"></p>
     </div>
 
 
     <!-- Input para selecionar a empresa vinculada -->
     <div class="campo col-sm-12">
-      <p class="descricao">EMPRESA VINCULADA</p>
+      <p translate="REGISTER.FAMILY.LINK" class="descricao"></p>
       <ng-select 
         bindLabel="name" 
-        placeholder="Associe uma empresa" 
+        placeholder="{{ 'REGISTER.FAMILY.LINK_PLACEHOLDER' | translate }}" 
         [items]="allCompanies"
         formControlName="company">
         <ng-template ng-option-tmp let-item="item">
           <div> {{item.name}} </div>
         </ng-template>
       </ng-select>
-      <p class="requiredText" *ngIf="(mFamily.get('company').hasError('required') && mFamily.get('company').touched)
-        || (mFamily.get('company').hasError('required') && mFamily.invalid && submited)">
-        Campo Obrigatório
-      </p>
+      <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mFamily.get('company').hasError('required') && mFamily.get('company').touched)
+        || (mFamily.get('company').hasError('required') && mFamily.invalid && submited)"></p>
     </div>
 
 
     <!-- Input para selecionar o pontos de control -->
     <div class="campo col-sm-12">
-      <p class="descricao">PONTOS DE CONTROLE</p> 
+      <p translate="REGISTER.FAMILY.CONTROL_POINTS" class="descricao"></p> 
       <ng-select 
         #select 
         bindLabel="name" 
-        placeholder="Associe pontos de controle"
+        placeholder="{{ 'REGISTER.FAMILY.CONTROL_POINT_PLACEHOLDER' | translate }}"
         [items]="allControlPoints"
         [multiple]="true" 
         formControlName="selectedControlPoints">
@@ -83,15 +76,15 @@
             <div>{{ item.name }} </div>
           </ng-template>
       </ng-select>
-      <p class="explicacao select-link" (click)="selectAll()">Habilitar todos</p>
-      <p class="explicacao select-link" style="margin-left: 10px;" (click)="unselectAll()">Desabilitar todos</p>
+      <p translate="REGISTER.FAMILY.ALL_CONTROL_POINT" class="explicacao select-link" (click)="selectAll()"></p>
+      <p translate="REGISTER.FAMILY.DISABLE_CONTROL_POINT" class="explicacao select-link" style="margin-left: 10px;" (click)="unselectAll()"></p>
     </div>
 
     <br />
 
     <div class="botoes">
-      <button routerLink="/rc/cadastros/familia" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+      <button translate="REGISTER.BACK_BUTTON" routerLink="/rc/cadastros/familia" class="botaoVoltar"></button>
+      <button translate="REGISTER.REGISTER_BUTTON" type="submit" class="botaoRegistrar"></button>
     </div>
 
   </form>

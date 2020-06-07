@@ -3,6 +3,7 @@ import { ToastService, PackingService, CompaniesService, ControlPointsService } 
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { Family } from 'app/shared/models/family';
 import { FamiliesService } from 'app/servicos/families.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-familia-cadastro',
@@ -18,7 +19,7 @@ export class FamiliaCadastroComponent implements OnInit {
   public validForm: boolean = true;
   public submited = false;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private companyService: CompaniesService,
     private familyService: FamiliesService,
     private controlPointsService: ControlPointsService,
@@ -26,6 +27,7 @@ export class FamiliaCadastroComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder) {
 
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
@@ -90,7 +92,7 @@ export class FamiliaCadastroComponent implements OnInit {
 
   finishRegister(value) {
     this.familyService.createFamily(value).subscribe(result => {
-      this.toastService.success('/rc/cadastros/familia', 'Família');
+      this.toastService.success('/rc/cadastros/familia', this.translate.instant('MISC.TOAST.FAMILY'));
     }, err => this.toastService.error(err));
   }
 

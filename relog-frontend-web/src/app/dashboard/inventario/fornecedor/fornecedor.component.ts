@@ -5,6 +5,7 @@ import { SuppliersService, InventoryService, ReportsService, CompaniesService } 
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import 'jspdf';
 import 'jspdf-autotable';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
 
 @Component({
@@ -20,12 +21,14 @@ export class FornecedorComponent implements OnInit {
   public listOfQuantityInSuppliers: any[] = [];
   public auxListOfQuantityInSuppliers: any[] = [];
   public listOfQuantityInSuppliersActualPage: number = -1;
-  
-  constructor(private reportsService: ReportsService,
-    protected companiesService: CompaniesService,
-    private auth: AuthenticationService) {
 
-  }
+  constructor(public translate: TranslateService,
+    private reportsService: ReportsService,
+    protected companiesService: CompaniesService,
+    private auth: AuthenticationService) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
 
@@ -56,21 +59,21 @@ export class FornecedorComponent implements OnInit {
    * Um item do select foi selecionado
    */
   companySelected(event: any): void {
-    
+
     // console.log(event);
 
     if(event){
       this.loadReport(event._id);
 
-    }else{
+    } else {
       this.listOfQuantityInSuppliers = this.auxListOfQuantityInSuppliers;
     }
   }
 
-   /**
-   * ================================================
-   * Downlaod csv file
-   */
+  /**
+  * ================================================
+  * Downlaod csv file
+  */
 
   private csvOptions = {
     showLabels: true,
@@ -80,7 +83,7 @@ export class FornecedorComponent implements OnInit {
   /**
   * Click to download
   */
-  downloadCsv(){
+  downloadCsv() {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
@@ -90,13 +93,13 @@ export class FornecedorComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Fornecedor', this.csvOptions);
+    new Angular2Csv(flatObjectData, this.translate.instant('INVENTORY.PROVIDER.TITLE'), this.csvOptions);
   }
 
   /**
    * Click to download pdf file
    */
-  downloadPdf(){
+  downloadPdf() {
     var doc = jsPDF('l', 'pt');
 
     // You can use html:
@@ -111,8 +114,16 @@ export class FornecedorComponent implements OnInit {
     console.log(flatObjectData);
 
     // Or JavaScript:
+    //[['Equipamento', 'Empresa Vinculada', 'Planta Atual', 'Local', 'Quantidade']],
     doc.autoTable({
-      head: [['Equipamento', 'Empresa Vinculada', 'Planta Atual', 'Local', 'Quantidade']],
+      head: 
+      [[
+        this.translate.instant('INVENTORY.PROVIDER.PACKING'),
+        this.translate.instant('INVENTORY.PROVIDER.LINK'),
+        this.translate.instant('INVENTORY.PROVIDER.ACTUAL_SITE'),
+        this.translate.instant('INVENTORY.PROVIDER.SITE'),
+        this.translate.instant('INVENTORY.PROVIDER.QUANTITY')
+      ]],
       body: flatObjectData
     });
 
@@ -120,30 +131,30 @@ export class FornecedorComponent implements OnInit {
   }
 
   flatObject(mArray: any) {
-    
+
     //console.log(mArray);
 
-     let plainArray = mArray.map(obj => {
-          return {
-            a1: obj.family_code,
-            a2: obj.company,
-            a3: obj.control_point_name,
-            a4: obj.control_point_type,
-            a5: obj.qtd
-          };
-        });
-      
+    let plainArray = mArray.map(obj => {
+      return {
+        a1: obj.family_code,
+        a2: obj.company,
+        a3: obj.control_point_name,
+        a4: obj.control_point_type,
+        a5: obj.qtd
+      };
+    });
+
     // As my array is already flat, I'm just returning it.
     return plainArray;
   }
 
-  addHeader(mArray: any){
+  addHeader(mArray: any) {
     let cabecalho = {
-      a1: 'Equipamento',
-      a2: 'Empresa Vinculada',
-      a3: 'Planta Atual',
-      a4: 'Local',
-      a5: 'Quantidade',
+      a1: this.translate.instant('INVENTORY.PROVIDER.PACKING'),
+      a2: this.translate.instant('INVENTORY.PROVIDER.LINK'),
+      a3: this.translate.instant('INVENTORY.PROVIDER.ACTUAL_SITE'),
+      a4: this.translate.instant('INVENTORY.PROVIDER.SITE'),
+      a5: this.translate.instant('INVENTORY.PROVIDER.QUANTITY')
     }
 
     //adiciona o cabeçalho

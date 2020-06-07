@@ -6,6 +6,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { calculateViewDimensions } from '@swimlane/ngx-charts';
+import { TranslateService } from '@ngx-translate/core';
 
 declare var $: any;
 @Component({
@@ -50,7 +51,7 @@ export class RotasEditarComponent implements OnInit {
   public firstControlPoint: any;
   public secondControlPoint: any;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private routesService: RoutesService,
     private familyService: FamiliesService,
     private controlPointsService: ControlPointsService,
@@ -59,6 +60,7 @@ export class RotasEditarComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
 
@@ -135,7 +137,7 @@ export class RotasEditarComponent implements OnInit {
         // console.log('recuperado');
         // console.log(result);
         // console.log(this.mRoute);
-  
+
         this.calculateTime(result);
         //console.log(this.controlPointType);
 
@@ -146,8 +148,8 @@ export class RotasEditarComponent implements OnInit {
     });
   }
 
-  calculateTime(result: any){
-    
+  calculateTime(result: any) {
+
     // console.log(result);
 
     let time = 0;
@@ -160,7 +162,7 @@ export class RotasEditarComponent implements OnInit {
     };
 
 
-    time = parseInt((result.traveling_time.max).toString()); 
+    time = parseInt((result.traveling_time.max).toString());
     this.time_max = {
       hour: (parseInt((time / (1000 * 60 * 60 * 24)).toString())),
       minute: (parseInt((time / (1000 * 60 * 60)).toString()) % 24),
@@ -181,7 +183,7 @@ export class RotasEditarComponent implements OnInit {
    * Retrieve the first control point
    * @param controlId 
    */
-  retrieveFirstControlPoint(controlId){
+  retrieveFirstControlPoint(controlId) {
 
     this.controlPointsService.getControlPoint(controlId)
       .subscribe(result => {
@@ -203,7 +205,7 @@ export class RotasEditarComponent implements OnInit {
    * @param controlId 
    */
   retrieveSecondControlPoint(controlId) {
-    
+
     this.controlPointsService.getControlPoint(controlId)
       .subscribe(result => {
 
@@ -284,7 +286,7 @@ export class RotasEditarComponent implements OnInit {
   proceedToRegister(value: any) {
     this.routesService.editRoute(this.mId, value)
       .subscribe(result => {
-        this.toastService.edit('/rc/cadastros/rotas', 'Rota');
+        this.toastService.edit('/rc/cadastros/rotas', this.translate.instant('MISC.TOAST.ROUTE'));
       }, err => this.toastService.error(err));
   }
 

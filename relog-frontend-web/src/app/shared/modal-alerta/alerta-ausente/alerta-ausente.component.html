@@ -1,20 +1,29 @@
 <div class="modalFilho">
   <div class="header">
 
-    <h2 style="color: #354052; margin-bottom: 0px;">Embalagem Ausente</h2>
+    <h2 translate="ALERTS.ABSENT_PACK" 
+      style="color: #354052; margin-bottom: 0px;"></h2>
 
     <div class="col-xs-12 no-padding">
       <p class="alerta-badges">
-        <span class="badge badge-secondary">Código: {{ alerta.family.code }}</span>
-        <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{ alerta.serial }}</span>
-        <span class="badge badge-secondary" style="margin-left:5px;">Tag: {{ alerta.tag.code }}</span>
+        <span class="badge badge-secondary">{{ "ALERTS.FAMILY" | translate }}: {{ alerta.family.code }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">{{ "ALERTS.SERIAL" | translate }}: {{ alerta.serial }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">{{ "ALERTS.TAG" | translate }}: {{ alerta.tag.code }}</span>
       </p>
 
-      <img id="ver-no-mapa" (click)="visualizeOnMap()" tooltip="Visualizar no mapa" placement="left" src="assets/images/distancia.png"
+      <img 
+        id="ver-no-mapa" 
+        (click)="visualizeOnMap()" 
+        ngbTooltip="{{ 'ALERTS.GO_TO_MAP' | translate }}"
+        placement="left" src="assets/images/distancia.png"
         height="25" style="float: right;">
     </div>
 
-    <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
+    <button 
+      type="button" 
+      class="close" 
+      aria-label="Close" 
+      (click)="activeAlerta.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -33,64 +42,20 @@
 
     <div class="row">
       <div class="col-12 col-md-6">
-        <p class="titulo-modal">ÚLTIMA PLANTA:</p>
+        <p translate="ALERTS.LAST_SITE"  class="titulo-modal"></p>
         <br>
         <p> {{ alerta.last_event_record?.control_point?.name ? alerta.last_event_record.control_point.name : mConstants.NO_REGISTER }} </p>
-        <p *ngIf="alerta?.last_event_record?.type == 'inbound'"> Tipo: {{ mConstants.INBOUND }} </p>
-        <p *ngIf="alerta?.last_event_record?.type == 'outbound'"> Tipo: {{ mConstants.OUTBOUND }} </p>
+        <p *ngIf="alerta?.last_event_record?.type == 'inbound'"> {{ "ALERTS.TYPE" | translate }}: {{ mConstants.INBOUND }} </p>
+        <p *ngIf="alerta?.last_event_record?.type == 'outbound'"> {{ "ALERTS.TYPE" | translate }}: {{ mConstants.OUTBOUND }} </p>
       </div>
 
       <div class="col-12 col-md-6">
-        <p class="titulo-modal">TEMPO DE AUSÊNCIA EM:</p>
+        <p class="titulo-modal">{{ "ALERTS.MISSING_TIME" | translate }}:</p>
         <p> {{ alerta?.last_event_record?.created_at | date: 'dd/MM/yy HH:mm:ss' : '+00:00' }} </p>
       </div>
     </div>
 
     <br>
-
-    <!-- 
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <p class="titulo-modal">HISTÓRICO:</p>
-      </div>
-
-      <div class="col-12">
-        <div class="table-responsive tabela">
-          <table class="table"> 
-            <thead>
-              <tr class="cabecalho">
-                <th>Data</th>
-                <th>Hora</th>
-                <th>Fornecedor</th>
-                <th>Local</th>
-                <th>Tempo no status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let packing of historic.data | paginate: {
-                                                                id: 'historic',
-                                                                itemsPerPage: 10,
-                                                                currentPage: historic.meta.page,
-                                                                totalItems: historic.meta.total_docs}">
-                <td>{{ packing.date | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ packing.date | date: 'HH:MM:ss' }}</td>
-                <td>{{ packing.supplier?.name || '-' }}</td>
-                <td>{{ packing.status }}</td>
-                <td>{{ packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro' }}</td>
-              </tr>
-
-            </tbody>
-          </table>
-
-          <div class="has-text-centered">
-            <pagination-controls id='historic' class="my-pagination" (pageChange)="historic.meta.page = $event;getHistoric()" directionLinks="false"
-              autoHide="true">
-            </pagination-controls>
-          </div>
-
-        </div>
-      </div>
-    </div> -->
 
   </div>
 </div>

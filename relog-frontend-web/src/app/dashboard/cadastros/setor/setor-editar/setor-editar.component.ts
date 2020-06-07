@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { GeocodingService, ToastService, DepartmentService, ControlPointsService } from '../../../../servicos/index.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-setor-editar',
@@ -27,7 +28,7 @@ export class SetorEditarComponent implements OnInit {
   public mId: string = '';
   public mActualDepartment: any = {};
 
-  constructor(
+  constructor(public translate: TranslateService,
     private controlPointsService: ControlPointsService,
     private departmentService: DepartmentService,
     private route: ActivatedRoute,
@@ -35,6 +36,7 @@ export class SetorEditarComponent implements OnInit {
     private fb: FormBuilder,
     private geocodingService: GeocodingService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
@@ -79,7 +81,7 @@ export class SetorEditarComponent implements OnInit {
 
     if (valid) {
       this.departmentService.editDepartment(this.mId, value).subscribe(result => {
-        this.toastService.edit('/rc/cadastros/setor', 'Departamento');
+        this.toastService.edit('/rc/cadastros/setor', this.translate.instant('MISC.TOAST.DEPARTMENT'));
       }, err => this.toastService.error(err));
     }
   }

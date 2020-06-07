@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { HomeService } from '../../../servicos/home.service';
 import { Pagination } from '../../../shared/models/pagination';
 import { InventoryService } from '../../../servicos/index.service'; 
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-categoria-bateria-baixa',
@@ -15,8 +16,9 @@ export class CategoriaBateriaBaixaComponent implements OnInit {
   public listBattery: any[] = [];
   public progressBateria: any = [];
 
-  constructor(private homeService: HomeService) { 
-
+  constructor(public translate: TranslateService, private homeService: HomeService) { 
+    
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {

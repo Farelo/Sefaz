@@ -4,6 +4,7 @@ import { ToastService, GeocodingService, CompaniesService, ControlPointsService,
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/first'
 import { NguiMap, NguiMapComponent, DrawingManager } from '@ngui/map';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ponto-de-controle-cadastrar',
@@ -31,7 +32,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   selectedOverlay: any;
   @ViewChild(DrawingManager) drawingManager: DrawingManager;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private companyService: CompaniesService,
     private controlPointsService: ControlPointsService,
     private controlPointsTypeService: ControlPointTypesService,
@@ -40,6 +41,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder,
     private geocodingService: GeocodingService) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
 
     this.mControlPoint = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
@@ -273,8 +276,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
     this.controlPointsService.createControlPoint(value).subscribe(result => {
 
       let message = {
-        title: "Ponto de controle cadastrado",
-        body: "O ponto de controle foi cadastrado com sucesso"
+        title: this.translate.instant('MISC.TOAST.CP_REGISTERED_TITLE'),
+        body: this.translate.instant('MISC.TOAST.CP_REGISTERED_BODY')
       };
       this.toastService.show('/rc/cadastros/ponto', message);
     }, err => this.toastService.error(err));

@@ -3,6 +3,10 @@ const mongoose = require('mongoose')
 const Joi = require('joi')
 
 const settingSchema = new mongoose.Schema({
+    language: {
+        type: String,
+        maxlength: 8
+    },
     enable_gc16: {
         type: Boolean,
         default: false
@@ -68,6 +72,7 @@ const settingSchema = new mongoose.Schema({
 
 const validate_settings = (setting) => {
     const schema = Joi.object().keys({
+        language: Joi.string().max(8),
         enable_gc16: Joi.boolean(),
         battery_level_limit: Joi.number().min(0),
         accuracy_limit: Joi.number().min(0),

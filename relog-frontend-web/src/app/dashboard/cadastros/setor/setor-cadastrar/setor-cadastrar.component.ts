@@ -1,8 +1,9 @@
-import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Department } from '../../../../shared/models/department';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { GeocodingService, ToastService, DepartmentService, ControlPointsService} from '../../../../servicos/index.service';
+import { GeocodingService, ToastService, DepartmentService, ControlPointsService } from '../../../../servicos/index.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-setor-cadastrar',
@@ -23,14 +24,15 @@ export class SetorCadastrarComponent implements OnInit {
   }
   public geocoder = new google.maps.Geocoder;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private controlPointsService: ControlPointsService,
     private departmentService: DepartmentService,
-    private router: Router, 
+    private router: Router,
     private toastService: ToastService,
     private fb: FormBuilder,
     private geocodingService: GeocodingService) {
-  
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
@@ -42,16 +44,16 @@ export class SetorCadastrarComponent implements OnInit {
 
     value.control_point = value.control_point._id;
     // console.log(value);
-    
-    if(valid){
+
+    if (valid) {
       this.departmentService.createDepartment(value).subscribe(result => {
-        this.toastService.success('/rc/cadastros/setor', 'Departamento');
+        this.toastService.success('/rc/cadastros/setor', this.translate.instant('MISC.TOAST.DEPARTMENT'));
       }, err => this.toastService.error(err));
     }
   }
 
   onMapReady(map) {
-  
+
     this.mDepartment.controls.lat.setValue(map.center ? map.center.lat() : this.default.lat);
     this.mDepartment.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
   }
@@ -70,15 +72,15 @@ export class SetorCadastrarComponent implements OnInit {
     event.target.panTo(event.latLng);
   }
 
-  onChange(event){
+  onChange(event) {
     console.log(event);
 
-    if(event){
+    if (event) {
       //this.pos = new google.maps.LatLng(event.lat,event.lng);
 
-      if(event.geofence.type == 'c'){
+      if (event.geofence.type == 'c') {
         this.calculateCircleCenter(event);
-      } else{
+      } else {
         this.calculatePolygonCenter(event);
       }
 
@@ -94,33 +96,33 @@ export class SetorCadastrarComponent implements OnInit {
     }
   }
 
-   calculatePolygonCenter(event: any){
+  calculatePolygonCenter(event: any) {
 
-    let lat = event.geofence.coordinates.map(p =>  p.lat);
-    let lng = event.geofence.coordinates.map(p =>  p.lng);
+    let lat = event.geofence.coordinates.map(p => p.lat);
+    let lng = event.geofence.coordinates.map(p => p.lng);
 
     //new google.maps.LatLng();
     this.center = {
-      lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
-      lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
+      lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2,
+      lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2
     }
     console.log('center: ' + JSON.stringify(this.center));
   }
 
-  calculateCircleCenter(event: any){
+  calculateCircleCenter(event: any) {
     this.center = event.geofence.coordinates[0];
   }
 
 
 
-  loadControlPoints():void {
+  loadControlPoints(): void {
 
     this.controlPointsService.getAllControlPoint().subscribe(result => {
-        this.allControlPoints = result;
-      }, err => { console.log(err) });
+      this.allControlPoints = result;
+    }, err => { console.log(err) });
   }
 
-  configureFormGroup(){
+  configureFormGroup() {
 
     this.mDepartment = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],

@@ -5,18 +5,30 @@
       <!-- Cabeçalho -->
       <div class="headerInventario">
 
-        <h4 id="titulo-busca">BUSCA POR </h4>
+        <p class="titulo-busca" translate="INVENTORY.HEADER.SEARCH_BY"></p>
 
         <!-- <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal" (ngModelChange)="choiced($event)"> -->
+        <!-- 
         <select [(ngModel)]="escolhaGeral" data-style="btn-primary" class="selectPrincipal">
-          <option *ngFor="let obj of escolhas" [ngValue]="obj.name">{{obj.name}}</option>
-        </select>
+          <option *ngFor="let obj of escolhas" [ngValue]="obj.value">{{obj.name}}</option>
+        </select> -->
+        <ng-select 
+          [(ngModel)]="escolhaGeral" 
+          [items]="escolhas" 
+          placeholder="{{ 'INVENTORY.HEADER.CHOOSE' | translate }}"
+          (change)="changeGeneralOption(event)"
+          bindLabel="name" 
+          bindValue="value" 
+          clearable="false" 
+          style="margin-top: 2px; max-width: 250px">
+
+        </ng-select>
 
         <!-- Modal de informações -->
-        <ng-template #content>
+        <!-- <ng-template #content>
           <div class="modalFilho">
             <div class="header">
-              <p>INVENTÁRIO</p>
+              <p translate="INVENTORY.HEADER.INVENTORY"></p>
             </div>
             <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
               <span aria-hidden="true">&times;</span>
@@ -25,74 +37,75 @@
               <p>Informações que o cliente deseja colocar.</p>
             </div>
           </div>
-        </ng-template>
+        </ng-template> -->
 
-        <button class="help" (click)="openHelp(content)">
+        <!-- <button class="help" (click)="openHelp(content)">
           <div class="bigger">
             <div class="det2"></div>
           </div>
-        </button>
+        </button> -->
       </div>
 
       <!-- Linha divisória -->
-      <hr *ngIf="(escolhaGeral == 'EQUIPAMENTO')">
+      <!-- <hr *ngIf="(escolhaGeral == 1)"> -->
 
       <!-- Filtros de EQUIPAMENTO -->
-      <div *ngIf="(escolhaGeral == 'EQUIPAMENTO')" class="row escolhaEquipamento">
+      <div *ngIf="(escolhaGeral == 1)" class="row escolhaEquipamento">
         <div class="col-sm-4">
 
-          <p>TIPO</p>
+          <p translate="INVENTORY.HEADER.TYPE" class="titulo-busca" style="margin-bottom: 0px; margin-top: 20px;"></p>
           <!-- <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" (ngModelChange)="changeSelect($event)"
             class="selectEq"> -->
-          <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" class="selectEq">
-            <option value="">Escolha</option>
-            <option>Inventário Geral</option>
-            <option>Tempo de Permanência</option>
-            <option>Tempo de Ausência</option>
-            <option>Bateria</option>
-            <option>Quantidade</option>
-            <option>Geral</option>
-            <option>Posições</option>
-          </select>
-        </div>
+            <ng-select 
+              [(ngModel)]="escolhaEquipamento" 
+              [items]="optionsEquipment" 
+              placeholder="{{ 'INVENTORY.HEADER.CHOOSE' | translate }}"
+              bindLabel="name" 
+              bindValue="value" 
+              (clear)="onClear()"
+              clearable="false" 
+              style="margin-top: 2px; max-width: 250px">
+            </ng-select>
 
       </div>
 
     </div>
   </div>
 
-  <br/>
-
+  <br *ngIf="((escolhaGeral == 0) || ((escolhaGeral == 1) && (escolhaEquipamento !== null)) || (escolhaGeral == 2))" />
+  
   <!-- Componentes -->
   <div>
-
+    
     <!-- Relatório Geral -->
-    <app-geral *ngIf="(escolhaGeral == 'GERAL')"></app-geral>
+    <app-geral *ngIf="(escolhaGeral == 0)"></app-geral>
 
     <!-- Relatório Inventário Geral -->
-    <app-inventario-geral *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Inventário Geral')"></app-inventario-geral>
+    <app-inventario-geral *ngIf="(escolhaGeral == 1) && (escolhaEquipamento == 0)"></app-inventario-geral>
 
     <!-- Relatório de Tempo de Permanência -->
-    <app-inventario-permanencia *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Tempo de Permanência')"></app-inventario-permanencia>
+    <app-inventario-permanencia *ngIf="(escolhaGeral == 1) && (escolhaEquipamento == 1)"></app-inventario-permanencia>
 
     <!-- Relatório de Ausência -->
-    <app-inventario-ausencia *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Tempo de Ausência')"></app-inventario-ausencia>
+    <app-inventario-ausencia *ngIf="(escolhaGeral == 1) && (escolhaEquipamento == 2)"></app-inventario-ausencia>
 
     <!-- Relatório de Bateria -->
-    <app-inventario-bateria *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Bateria')"></app-inventario-bateria>
+    <app-inventario-bateria *ngIf="(escolhaGeral == 1) && (escolhaEquipamento == 3)"></app-inventario-bateria>
 
     <!-- Relatório de Quantidade -->
-    <app-inventario-quantidade *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Quantidade')"></app-inventario-quantidade>
+    <app-inventario-quantidade *ngIf="(escolhaGeral == 1) && (escolhaEquipamento == 4)"></app-inventario-quantidade>
 
     <!-- Relatório Equipamento Geral -->
-    <app-inventario-equipamento-geral *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Geral')"></app-inventario-equipamento-geral>
+    <app-inventario-equipamento-geral *ngIf="(escolhaGeral == 1) && (escolhaEquipamento == 5)"></app-inventario-equipamento-geral>
 
     <!-- Relatório Equipamento Posições -->
-    <app-inventario-posicoes *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Posições')"></app-inventario-posicoes>
+    <app-inventario-posicoes *ngIf="(escolhaGeral == 1) && (escolhaEquipamento == 6)"></app-inventario-posicoes>
 
     <!-- Relatório Fornecedor -->
-    <app-fornecedor *ngIf="(escolhaGeral == 'FORNECEDOR')"></app-fornecedor>
+    <app-fornecedor *ngIf="(escolhaGeral == 2)"></app-fornecedor>
 
   </div>
 
 </div>
+
+<br/>

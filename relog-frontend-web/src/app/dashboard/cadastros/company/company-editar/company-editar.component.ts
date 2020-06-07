@@ -4,6 +4,7 @@ import { CompaniesService } from '../../../../servicos/companies.service';
 import { ToastService } from '../../../../servicos/index.service';
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-company-editar',
@@ -45,11 +46,15 @@ export class CompanyEditarComponent implements OnInit {
   public inscricao: Subscription;
   public submitted: boolean = false;
   
-  constructor(protected companiesService: CompaniesService,
+  constructor(public translate: TranslateService,
+    protected companiesService: CompaniesService,
     protected toastService: ToastService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   get street(){
     return this.mStreet;
@@ -132,10 +137,10 @@ export class CompanyEditarComponent implements OnInit {
         .editCompany(this.mId, value)
         .subscribe(result => { 
           this.router.navigate(['/rc/cadastros/company']); 
-          this.toastService.successModal('Empresa', true);
+          this.toastService.successModal(this.translate.instant('MISC.TOAST.COMPANY'), true);
         }, err => { 
           // console.log(err);
-            this.toastService.showError('', {title: "Erro na atualização", body: "Houve um problema na atualização da Empresa"});
+            this.toastService.showError('', {title: this.translate.instant('MISC.TOAST.UPDATE_ERROR'), body: this.translate.instant('MISC.TOAST.UPDATE_ERROR_DESC') });
         });
     }
   }

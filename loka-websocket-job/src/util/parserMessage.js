@@ -12,7 +12,7 @@ const parserMessage = async (jsonMessage, deviceData) => {
     deviceData.message_date_timestamp * 1000
   );
   deviceData.last_communication_timestamp = deviceData.message_date_timestamp;
-  deviceData.message_date = new Date(moment(jsonMessage.timestamp).subtract(3, 'h')) 
+  deviceData.message_date = new Date(moment(jsonMessage.timestamp * 1000).subtract(3, 'h'))
   deviceData.message_date_timestamp = jsonMessage.timestamp;
   deviceData.message = JSON.stringify(jsonMessage);
 

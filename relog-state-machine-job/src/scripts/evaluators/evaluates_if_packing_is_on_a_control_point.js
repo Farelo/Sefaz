@@ -527,7 +527,7 @@ const intersectionpoly = (packing, controlPoint) => {
 
       // mLog(' ')
       // mLog('i: ', packing.tag.code)
-      // mLog(intersection)
+      // console.log('intersection: ', intersection)
 
       let result = intersection !== null || intersectionMartinez !== null || contained !== false ? true : false;
 

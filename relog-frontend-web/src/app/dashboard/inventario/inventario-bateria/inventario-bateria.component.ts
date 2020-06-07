@@ -9,6 +9,7 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { RoundPipe } from '../../../shared/pipes/round';
 import 'jspdf';
 import 'jspdf-autotable';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
 
 @Component({
@@ -17,7 +18,7 @@ declare var jsPDF: any;
   styleUrls: ['./inventario-bateria.component.css'],
 })
 export class InventarioBateriaComponent implements OnInit {
-  
+
   //dados da tabela
   public listOfBattery: any[] = [];
   public auxListOfBattery: any[] = [];
@@ -29,10 +30,12 @@ export class InventarioBateriaComponent implements OnInit {
   public listOfFamily: any[] = [];
   public selectedFamily = null;
 
-  constructor(private reportService: ReportsService,
+  constructor(public translate: TranslateService,
+    private reportService: ReportsService,
     private familyService: FamiliesService,
     private auth: AuthenticationService) {
-    
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
@@ -42,7 +45,7 @@ export class InventarioBateriaComponent implements OnInit {
   }
 
   batteryInventory() {
-    
+
     this.reportService.getBatteryInventory().subscribe(result => {
       this.listOfBattery = result;
       this.auxListOfBattery = result;
@@ -51,31 +54,31 @@ export class InventarioBateriaComponent implements OnInit {
 
   loadPackings() {
     this.familyService.getAllFamilies().subscribe(result => {
-      this.listOfFamily = result; 
+      this.listOfFamily = result;
     }, err => console.error(err));
   }
 
-  familySelected(event: any){
-    
-    if(event){
+  familySelected(event: any) {
+
+    if (event) {
       this.listOfBattery = this.auxListOfBattery.filter(elem => {
         return elem.family_code == event.code
       });
 
-    } else{
+    } else {
       this.listOfBattery = this.auxListOfBattery;
     }
   }
-   
+
   /**
   * Click to download
   */
   private csvOptions = {
-   showLabels: true,
-   fieldSeparator: ';'
+    showLabels: true,
+    fieldSeparator: ';'
   };
 
-  downloadCsv(){
+  downloadCsv() {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
@@ -85,13 +88,13 @@ export class InventarioBateriaComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Equipamento Bateria', this.csvOptions);
+    new Angular2Csv(flatObjectData, this.translate.instant('INVENTORY.BATTERY_INVENTORY.TITLE'), this.csvOptions);
   }
 
   /**
    * Click to download pdf file
    */
-  downloadPdf(){
+  downloadPdf() {
     var doc = jsPDF('l', 'pt');
 
     // You can use html:
@@ -107,7 +110,14 @@ export class InventarioBateriaComponent implements OnInit {
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Família', 'Serial', 'Planta Atual', 'Local', 'Bateria', 'Nível']],
+      head: [[
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.FAMILY'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.SERIAL'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.ACTUAL_SITE'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.SITE_TYPE'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.BATTERY'),
+        this.translate.instant('INVENTORY.BATTERY_INVENTORY.LEVEL')
+      ]],
       body: flatObjectData
     });
 
@@ -116,33 +126,32 @@ export class InventarioBateriaComponent implements OnInit {
 
 
   flatObject(mArray: any) {
-    
-    //console.log(mArray);
 
-     let transformer= new RoundPipe();
-     let plainArray = mArray.map(obj => {
-          return {
-            a1: obj.family_code,
-            a2: obj.serial,
-            a3: obj.current_control_point_name,
-            a4: obj.current_control_point_type,
-            a5: (obj.battery_percentage !== null) ? transformer.transform(obj.battery_percentage):"Sem Registro",
-            a6: obj.battery_level,
-          };
-        });
-      
+    let transformer = new RoundPipe();
+    let plainArray = mArray.map(obj => {
+      return {
+        a1: obj.family_code,
+        a2: obj.serial,
+        a3: obj.current_control_point_name,
+        a4: obj.current_control_point_type,
+        a5: (obj.battery_percentage !== null) ? transformer.transform(obj.battery_percentage) : this.translate.instant('INVENTORY.BATTERY_INVENTORY.NO_HISTORY'),
+        a6: obj.battery_level,
+      };
+    });
+
     // As my array is already flat, I'm just returning it.
     return plainArray;
   }
 
-  addHeader(mArray: any){
+  addHeader(mArray: any) {
+
     let cabecalho = {
-      a1: 'Família',
-      a2: 'Serial',
-      a3: 'Planta Atual',
-      a4: 'Local',
-      a5: 'Bateria',
-      a6: 'Nível',
+      a1: this.translate.instant('INVENTORY.BATTERY_INVENTORY.FAMILY'),
+      a2: this.translate.instant('INVENTORY.BATTERY_INVENTORY.SERIAL'),
+      a3: this.translate.instant('INVENTORY.BATTERY_INVENTORY.ACTUAL_SITE'),
+      a4: this.translate.instant('INVENTORY.BATTERY_INVENTORY.SITE_TYPE'),
+      a5: this.translate.instant('INVENTORY.BATTERY_INVENTORY.BATTERY'),
+      a6: this.translate.instant('INVENTORY.BATTERY_INVENTORY.LEVEL')
     }
 
     //adiciona o cabeçalho

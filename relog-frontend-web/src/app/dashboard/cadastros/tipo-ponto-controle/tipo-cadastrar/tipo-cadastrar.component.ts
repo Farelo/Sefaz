@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastService } from 'app/servicos/toast.service'; 
 import { ControlPointTypesService } from 'app/servicos/index.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tipo-cadastrar',
@@ -12,10 +13,13 @@ export class TipoPontoControleCadastrarComponent implements OnInit {
 
   public mType: FormGroup;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private controlPointTypesService: ControlPointTypesService,
     private toastService: ToastService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
     this.mType = this.fb.group({
@@ -30,7 +34,7 @@ export class TipoPontoControleCadastrarComponent implements OnInit {
       this.controlPointTypesService
         .createType(value)
         .subscribe(result => {
-          this.toastService.success('/rc/cadastros/tipo-ponto-controle', 'Tipo')
+          this.toastService.success('/rc/cadastros/tipo-ponto-controle', this.translate.instant('MISC.TOAST.TYPE'))
         }, err => this.toastService.error(err));
     }
   }

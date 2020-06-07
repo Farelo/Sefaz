@@ -4,6 +4,7 @@ import { ToastService, FamiliesService, GC16Service, CompaniesService, ControlPo
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import * as $ from 'jquery'
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class Gc16AdicionarComponent implements OnInit {
   public gc16: FormGroup;
   public submitted: boolean = false;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private gc16Service: GC16Service,
     private companiesService: CompaniesService,
     private controlPointService: ControlPointsService,
@@ -35,6 +36,7 @@ export class Gc16AdicionarComponent implements OnInit {
     private fb: FormBuilder,
     private toastService: ToastService) {
 
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
@@ -56,7 +58,7 @@ export class Gc16AdicionarComponent implements OnInit {
       delete value.company;
 
       this.gc16Service.createGC16(value).subscribe(result => {
-        this.toastService.success('/rc/bpline', 'BPline');
+        this.toastService.success('/rc/bpline', this.translate.instant('MISC.TOAST.BPLINE'));
       });
     }
   }

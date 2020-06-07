@@ -1,13 +1,13 @@
 <div class="">
-  <h2>Atualizar Projeto</h2>
+  <h2 translate="REGISTER.PROJECT.UPDATE_TITLE"></h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mProject)" [formGroup]="mProject" #formDir="ngForm">
     <div class="campo">
-      <p class="descricao">NOME</p>
-      <p class="explicacao">Ex. "Projeto do Produto A1"</p>
+      <p translate="REGISTER.PROJECT.NAME" class="descricao"></p>
+      <p translate="REGISTER.PROJECT.NAME_DESC" class="explicacao"></p>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Digite o nome do projeto" aria-describedby="basic-addon2"
+        <input type="text" class="form-control" placeholder="{{ 'REGISTER.PROJECT.NAME_PLACEHOLDER' | translate }}" aria-describedby="basic-addon2"
           maxlength="50" (focusout)="validateName($event)" [(ngModel)]="name" formControlName="name" [ngClass]="{'required': 
             (mProject.get('name').hasError('required') && mProject.get('name').touched)
             || (mProject.get('name').hasError('required') && formDir.submitted)
@@ -19,31 +19,26 @@
             || (mProject.get('name').hasError('pattern') && submitted)}">
       </div>
 
-      <p class="requiredText" *ngIf="(mProject.get('name').hasError('required') && mProject.get('name').touched)
-        || (mProject.get('name').hasError('required') && formDir.submitted)">
-        Campo Obrigatório</p>
+      <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mProject.get('name').hasError('required') && mProject.get('name').touched)
+        || (mProject.get('name').hasError('required') && formDir.submitted)"></p>
 
-      <p class="explicacao" *ngIf="validateNotTakenLoading">
-        Verificando disponibilidade ...</p>
+      <p translate="REGISTER.ERRORS.CHECKING" class="explicacao" *ngIf="validateNotTakenLoading"></p>
 
-      <p class="requiredText" *ngIf="(mProject.get('name').hasError('minlength')) 
-        || (mProject.get('name').hasError('minlength') && submitted)">
-        Mínimo de 5 caracteres.</p>
+      <p translate="REGISTER.ERRORS.MIN_5" class="requiredText" *ngIf="(mProject.get('name').hasError('minlength')) 
+        || (mProject.get('name').hasError('minlength') && submitted)"></p>
 
-      <p class="requiredText" *ngIf="(mProject.get('name').hasError('uniqueValidation')) 
-        || (mProject.get('name').hasError('uniqueValidation') && submitted)">
-        Este Ponto de Controle já existe. O nome deve ser único.</p>
+      <p translate="REGISTER.ERRORS.CONTROL_POINT_EXISTS" class="requiredText" *ngIf="(mProject.get('name').hasError('uniqueValidation')) 
+        || (mProject.get('name').hasError('uniqueValidation') && submitted)"></p>
 
-      <p class="requiredText" *ngIf="(mProject.get('name').hasError('pattern')) 
-        || (mProject.get('name').hasError('pattern') && submitted)">
-        Excesso de espaços em branco.</p>
+      <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" *ngIf="(mProject.get('name').hasError('pattern')) 
+        || (mProject.get('name').hasError('pattern') && submitted)"></p>
     </div>
 
     <br />
 
     <div class="botoes">
-      <button routerLink="/rc/cadastros/projeto" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
+      <button translate="REGISTER.BACK_BUTTON" routerLink="/rc/cadastros/projeto" class="botaoVoltar"></button>
+      <button translate="REGISTER.UPDATE_BUTTON" type="submit" class="botaoRegistrar"></button>
     </div>
     <br />
   </form>

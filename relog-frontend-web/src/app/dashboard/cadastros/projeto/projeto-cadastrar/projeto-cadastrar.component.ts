@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Project } from '../../../../shared/models/project';
 import { ToastService, ProjectService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projeto-cadastrar',
@@ -12,10 +13,13 @@ export class ProjetoCadastrarComponent implements OnInit {
 
   public mProject: FormGroup;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private projectService: ProjectService,
     private toastService: ToastService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
   ngOnInit() {
     this.mProject = this.fb.group({
@@ -30,11 +34,11 @@ export class ProjetoCadastrarComponent implements OnInit {
       this.projectService
         .createProject(value)
         .subscribe(result => {
-          this.toastService.success('/rc/cadastros/projeto', 'Projeto')
+          this.toastService.success('/rc/cadastros/projeto', this.translate.instant('MISC.TOAST.PROJECT'))
         }, err => this.toastService.error(err));
     }
   }
-  
+
   public validateNotTakenLoading: boolean;
   validateName(event: any) {
 

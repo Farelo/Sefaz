@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/fo
 import { CompaniesService } from '../../../../servicos/companies.service';
 import { ToastService } from '../../../../servicos/index.service';
 import { Router } from "@angular/router";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-company-cadastrar',
@@ -22,11 +23,14 @@ export class CompanyCadastrarComponent implements OnInit {
   public maskCNPJ = [/[0-9]/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
   //public maskUF = [/[A-Z]/, /[A-Z]/];
   
-  constructor(
+  constructor(public translate: TranslateService,
     protected companiesService: CompaniesService,
     protected toastService: ToastService,
     private fb: FormBuilder,
-    private router: Router) { }
+    private router: Router) { 
+      
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
     this.formProfile();
@@ -67,11 +71,11 @@ export class CompanyCadastrarComponent implements OnInit {
       this.companiesService
         .createCompany(value)
         .subscribe(result => { 
-          this.router.navigate(['/rc/cadastros/company']); this.toastService.successModal('Empresa criada!') ;
+          this.router.navigate(['/rc/cadastros/company']); this.toastService.successModal(this.translate.instant('MISC.TOAST.COMPANY_REGISTERED')) ;
 
         }, err => {
           // console.log(err);
-          this.toastService.showError('', { title: "Erro na atualização", body: "Houve um problema na atualização da Empresa" });
+          this.toastService.showError('', { title: this.translate.instant('MISC.TOAST.UPDATE_ERROR'), body: this.translate.instant('MISC.TOAST.UPDATE_ERROR_DESC') });
         });
     }
   }

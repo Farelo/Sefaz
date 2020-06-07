@@ -35,11 +35,21 @@ export class Spiralize {
     public duplicated: any = [];
     public iconsOfduplicated: any[] = [];
 
-    constructor(list: any[], map: any, clustered: boolean = false) {
+    constructor(list: any[], map: any, clustered: boolean = false, showIcons: boolean) {
         this.listOfObjects = list;
         this.mMap = map;
         this.clustered = clustered;
         this.resolveClustering();
+        
+        if (showIcons) {
+            this.markers.map(elem => {
+                elem.setMap(this.mMap);
+            });
+
+            this.iconsOfduplicated.map(elem => {
+                elem.setMap(this.mMap);
+            });
+        }
     }
 
     clearState() {
@@ -52,7 +62,7 @@ export class Spiralize {
         });
     }
 
-    repaint(list: any[], map: any, clustered: boolean = false, showIcons: boolean = true) {
+    repaint(list: any[], map: any, clustered: boolean = false, showIcons: boolean) {
         //Clearing previous state
         this.clearSpiral();
         this.iconsOfduplicated = [];
@@ -153,16 +163,16 @@ export class Spiralize {
 
         //console.log('listener this.listOfObjects: ' + this.listOfObjects);
         this.markers = this.listOfObjects.map((location, i) => {
-            //console.log(location.last_device_data_battery);
+            //console.log(location.devicedata);
             let datePipe = new DatePipe('en');
 
             let m = new google.maps.Marker({
                 family_code: location.family.code,
-                serial: location.serial,
-                tag: location.tag.code,
-                battery: (location.last_device_data_battery) ? (location.last_device_data_battery.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
-                message_date : (location.last_device_data !== null) ? (location.last_device_data.message_date) : 'Sem registro',
+                serial: location.packing.serial,
+                tag: location.packing.tag.code,
+                battery: (location.devicedata && location.devicedata.battery.percentage) ? (location.devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                accuracy: (location.devicedata !== null) ? (location.devicedata.accuracy + 'm') : 'Sem registro',
+                message_date : (location.devicedata !== null) ? (location.devicedata.message_date) : 'Sem registro',
                 position: location.position,
                 icon: this.getPinWithAlert(location.current_state)
             })
@@ -222,12 +232,12 @@ export class Spiralize {
                 // family_code: location.family.code,
                 // serial: location.serial,
                 // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                // accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
+                // accuracy: (location.devicedata !== null) ? (location.devicedata.accuracy + 'm') : 'Sem registro',
                 // position: location.position,
                 // icon: this.getPinWithAlert(location.current_state)
 
                 packing_code: array[0].family.code,
-                serial: array[0].serial,
+                serial: array[0].packing.serial,
                 position: { lat: array[0].latitude, lng: array[0].longitude },
                 icon: { url: 'assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) },
                 // label: `${array.length}`
@@ -337,17 +347,17 @@ export class Spiralize {
                      * Plotar os pontos na espiral
                      */
                     for (let sc = 1; sc <= array.length; sc++) {
-                        //console.log(`${array.length} array[sc-1].family_code: ${array[sc - 1].family_code}`);
+                        // console.log(array[sc - 1]);
 
                         let e = new google.maps.Marker({
                             family_code: array[sc - 1].family.code,
-                            serial: array[sc - 1].serial,
-                            tag: array[sc - 1].tag.code,
+                            serial: array[sc - 1].packing.serial,
+                            tag: array[sc - 1].packing.tag.code,
                             position: spiralCoordinates[sc],
-                            battery: (array[sc - 1].last_device_data_battery) ? (array[sc - 1].last_device_data_battery.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                            message_date : (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.message_date) : 'Sem registro',
-                            accuracy: (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.accuracy + 'm') : 'Sem registro',
-                            icon: this.getPinWithAlert(array[sc - 1].status, true),
+                            battery: (array[sc - 1].devicedata && array[sc - 1].devicedata.battery.percentage) ? (array[sc - 1].devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                            message_date : (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.message_date) : 'Sem registro',
+                            accuracy: (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.accuracy + 'm') : 'Sem registro',
+                            icon: this.getPinWithAlert(array[sc - 1].current_state, true),
                             zIndex: 999,
                             map: this.mMap
                         });
@@ -371,7 +381,7 @@ export class Spiralize {
                             //     // family_code: location.family.code,
                             //     // serial: location.serial,
                             //     // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                            //     // accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
+                            //     // accuracy: (location.devicedata !== null) ? (location.devicedata.accuracy + 'm') : 'Sem registro',
                             //     // position: location.position,
                             //     // icon: this.getPinWithAlert(location.current_state)
 

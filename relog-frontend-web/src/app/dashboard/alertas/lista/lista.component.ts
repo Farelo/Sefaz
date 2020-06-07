@@ -15,6 +15,7 @@ import { AlertaPermanenciaComponent } from '../../../shared/modal-alerta/alerta-
 import { AlertaEmbalagemPerdidaComponent } from '../../../shared/modal-alerta/alerta-embalagem-perdida/alerta-embalagem-perdida.component';
 import { constants } from 'environments/constants';
 import { AlertaSemSinalComponent } from 'app/shared/modal-alerta/alerta-sem-sinal/alerta-sem-sinal.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'lista',
@@ -36,12 +37,17 @@ export class ListaComponent implements OnInit {
   alert: Alert;
   inscricao: Subscription;
 
-  constructor(private alertsService: AlertsService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private modalService: NgbModal) { 
+  constructor(public translate: TranslateService,
+    private alertsService: AlertsService, private router: Router,
+    private route: ActivatedRoute, private modalService: NgbModal) {
 
     this.mConstants = constants;
+    
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
+
+  currentSettings() {
+    return JSON.parse(localStorage.getItem("currentSettings"));
   }
 
   ngOnInit() {
@@ -56,7 +62,7 @@ export class ListaComponent implements OnInit {
 
       // this.currentState = constants.ALERTS.PERMANENCE_TIME;
       // this.alertCode = constants.ALERTS_CODE.PERMANENCE_TIME;
-      
+
       // console.log(this.currentState);
       // console.log(this.alertCode);
     });
@@ -69,7 +75,7 @@ export class ListaComponent implements OnInit {
   getAlerts() {
     this.alertsService.getAlertsByFamily(this.familyId, this.currentState).subscribe((alerts: any[]) => {
       this.listOfAlerts = alerts;
-      
+
       // this.listOfAlerts = alerts.filter(elem => {
       //   return ((elem.current_state != constants.ALERTS.UNABLE_WITH_SIGNAL) &&
       //     (elem.current_state != constants.ALERTS.UNABLE_NO_SIGNAL) &&
@@ -186,37 +192,40 @@ export class ListaComponent implements OnInit {
     return result;
   }
 
-  getAlertText(code: number): string {
+  getAlertText(code: string): string {
     let result: string = '';
 
     switch (code) {
-      case 1:
-        result = 'Embalagem Ausente';
+      case constants.ALERTS.ABSENT:
+        result = this.translate.instant('ALERTS.ABSENT_PACK');
         break;
 
-      case 2:
-        result = 'Embalagem em local incorreto';
+      case constants.ALERTS.INCORRECT_LOCAL:
+        result = this.translate.instant('ALERTS.INCORRECT_LOCAL_PACK_DESCRIPTION');
         break;
 
-      case 3:
-        result = 'Embalagem com bateria baixa';
+      case constants.ALERTS.LOW_BATTERY:
+        result = this.translate.instant('ALERTS.LOW_BATTERY_PACK_DESCRIPTION');
         break;
 
-      case 4:
-        result = 'Embalagem em viagem';
+      case constants.ALERTS.LATE:
+        result = this.translate.instant('ALERTS.LATE_PACK_PACK_DESCRIPTION');
         break;
 
-      case 5:
-        result = 'Embalagem com tempo de permanência elevado';
+      case constants.ALERTS.PERMANENCE_TIME:
+        result = this.translate.instant('ALERTS.PERMANENCE_PACK_DESCRIPTION');
         break;
 
-      case 6:
-        result = 'Embalagem sem sinal';
+      case constants.ALERTS.NO_SIGNAL:
+        result = this.translate.instant('ALERTS.NO_SIGNAL_PACK_DESCRIPTION');
         break;
 
-      case 7:
-        result = 'Embalagem perdida';
+      case constants.ALERTS.MISSING:
+        result = this.translate.instant('ALERTS.MISSING_PACK_DESCRIPTION');
         break;
+
+      default:
+        result = this.translate.instant('ALERTS.DEFAULT_DESCRIPTION');
     }
 
     return result;

@@ -6,22 +6,27 @@ import { Tag } from '../shared/models/tag';
 import { environment } from '../../environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class ToastService {
 
   constructor(
+    public translate: TranslateService,
     private router: Router,
     private toastyService: ToastyService,
     private toastyConfig: ToastyConfig,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   warningunathorized() {
     // Add see all possible types in one shot
 
       var toastOptions: ToastOptions = {
-        title: "Erro na autenticação",
-        msg: "Login ou Senha estão invalidos",
+        title: this.translate.instant('MISC.TOAST.AUTH_ERROR'),
+        msg: this.translate.instant('MISC.TOAST.AUTH_ERROR_DESC'),
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -42,7 +47,7 @@ export class ToastService {
     
     console.log(status.error.error)
       var toastOptions: ToastOptions = {
-        title: "Erro no cadastro!",
+        title: this.translate.instant('MISC.TOAST.REGISTER_ERROR'),
         msg: status.error.error,
         showClose: true,
         timeout: 5000,
@@ -64,8 +69,8 @@ export class ToastService {
 
     if(status.status.errmsg){
       var toastOptions: ToastOptions = {
-        title: "Erro no cadastro",
-        msg: "Elementos ja foram registrados!",
+        title: this.translate.instant('MISC.TOAST.REGISTER_ERROR'),
+        msg: this.translate.instant('MISC.TOAST.ALREADY_REGISTERED_ERROR'),
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -78,8 +83,8 @@ export class ToastService {
       };
     }else{
       var toastOptions: ToastOptions = {
-        title: "Erro na criação",
-        msg: "Avalie se as informações cadastradas estão corretas, pois existem inconsistências!",
+        title: this.translate.instant('MISC.TOAST.REGISTER_ERROR'),
+        msg: this.translate.instant('MISC.TOAST.REGISTER_ERROR_CHECK_DATA'),
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -99,8 +104,8 @@ export class ToastService {
 
   success(route:string, type: string){
     var toastOptions:ToastOptions = {
-        title: "Cadastrado com successo",
-        msg: type + " Cadastrado no sistema com sucesso!",
+        title: this.translate.instant('MISC.TOAST.DEFAULT_REGISTERED'),
+        msg: type + " " + this.translate.instant('MISC.TOAST.DEFAULT_REGISTERED_DESC'),
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -117,8 +122,8 @@ export class ToastService {
 
   successArray(route:string, type: string){
     var toastOptions:ToastOptions = {
-        title: "Cadastradas com sucesso ",
-        msg: "Todas as "+ type + " foram cadastradas/os com sucesso no sistema!",
+        title: this.translate.instant('MISC.TOAST.DEFAULT_PLURAL_FEMALE_REGISTERED'),
+        msg: this.translate.instant('MISC.TOAST.ALL_PLURAL_FEMALE') + " " + type + " " + this.translate.instant('MISC.TOAST.DEFAULT_PLURAL_FEMALE_REGISTERED_DESC'),
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -137,8 +142,8 @@ export class ToastService {
 
   remove(route:string, type: string, female:boolean = false){
     var toastOptions:ToastOptions = {
-        title: "Removido com sucesso",
-        msg: type + " foi removido com sucesso do sistema!",
+        title: this.translate.instant('MISC.TOAST.DEFAULT_REMOVED'),
+        msg: type + " " + this.translate.instant('MISC.TOAST.DEFAULT_REMOVED_DESC'),
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -151,8 +156,8 @@ export class ToastService {
     };
 
     if(female){
-      toastOptions.title = "Removida com sucesso";
-      toastOptions.msg = type + " foi removida com sucesso!";
+      toastOptions.title = this.translate.instant('MISC.TOAST.DEFAULT_FEMALE_REMOVED');
+      toastOptions.msg = type + " " + this.translate.instant('MISC.TOAST.DEFAULT_FEMALE_REMOVED_DESC');
     }
 
     this.toastyService.success(toastOptions);
@@ -163,8 +168,8 @@ export class ToastService {
 
   successModal(type: string, female: boolean = false){
     var toastOptions:ToastOptions = {
-        title: "Cadastrado com sucesso ",
-        msg: type + " cadastrado com sucesso no sistema!",
+        title: this.translate.instant('MISC.TOAST.DEFAULT_REGISTERED'),
+        msg: type + " " + this.translate.instant('MISC.TOAST.DEFAULT_REGISTERED_DESC'),
         showClose: true,
         timeout: 5000,
         theme: 'material',
@@ -177,8 +182,8 @@ export class ToastService {
     };
 
     if (female) {
-      toastOptions.title = "Cadastrada com sucesso";
-      toastOptions.msg = type + " foi cadastrada com sucesso!";
+      toastOptions.title = this.translate.instant('MISC.TOAST.DEFAULT_FEMALE_REGISTERED');
+      toastOptions.msg = type + " " + this.translate.instant('MISC.TOAST.DEFAULT_FEMALE_REGISTERED_DESC');
     }
 
     this.toastyService.success(toastOptions);
@@ -188,8 +193,8 @@ export class ToastService {
 
   successUpdate(type: string) {
     var toastOptions: ToastOptions = {
-      title: "Atualizado com sucesso ",
-      msg: type + " atualizado com sucesso no sistema!",
+      title: this.translate.instant('MISC.TOAST.DEFAULT_UPDATED_TITLE'),
+      msg: type + " " + this.translate.instant('MISC.TOAST.DEFAULT_UPDATED_DESC'),
       showClose: true,
       timeout: 5000,
       theme: 'material',
@@ -205,8 +210,8 @@ export class ToastService {
 
   edit(route:string, type: string){
     var toastOptions:ToastOptions = {
-        title: "Atualização com sucesso ",
-        msg: type + " foi autilizado com sucesso no sistema!",
+        title: this.translate.instant('MISC.TOAST.DEFAULT_UPDATED_TITLE'),
+        msg: type + " " + this.translate.instant('MISC.TOAST.DEFAULT_UPDATED_DESC'),
         showClose: true,
         timeout: 5000,
         theme: 'material',

@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { ToastService, ProjectService, SuppliersService, TagsService, PackingService, CompaniesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-familia-editar',
@@ -25,13 +26,16 @@ export class FamiliaEditarComponent implements OnInit {
   public mId: string;
   public mActualFamily: any;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private familiesService: FamiliesService,
     private companyService: CompaniesService,
     private controlPointsService: ControlPointsService,
     private toastService: ToastService,
     private fb: FormBuilder,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
 
@@ -116,7 +120,7 @@ export class FamiliaEditarComponent implements OnInit {
 
   finishUpdate(newFamily: any) {
     this.familiesService.editFamily(this.mId, newFamily).subscribe(result => {
-      this.toastService.success('/rc/cadastros/familia', 'Família');
+      this.toastService.success('/rc/cadastros/familia', this.translate.instant('MISC.TOAST.FAMILY'));
     }, err => this.toastService.error(err));
   }
 

@@ -16,6 +16,7 @@ import { FamiliaEditarComponent } from './familia-editar/familia-editar.componen
 import { FamiliaComponent } from './familia.component';
 import { FamiliaRoutingModule } from './familia.routing.module';
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
     ApplicationPipes,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    TranslateModule
   ],
   declarations: [
     FamiliaCadastroComponent,

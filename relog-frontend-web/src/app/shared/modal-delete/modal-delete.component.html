@@ -3,19 +3,19 @@
   <!-- ========================== -->
   <!-- Template for deleting COMPANY -->
   <div class="detalhes" *ngIf="mType == 'COMPANY'">
-    <h2> Deletar Empresa </h2>
+    <h2 translate="REGISTER.DELETE.COMPANY_TITLE"></h2>
     <hr>
-    <p>Tipo: {{ mObject.type == 'client' ? 'Cliente' : '' }} {{ mObject.type == 'owner' ? 'Owner' : ''}} </p>
-    <p>Nome: {{ mObject.name }}</p>
-    <p>Rua: {{ mObject?.address?.street || '-' }} </p>
-    <p>Cidade: {{ mObject?.address?.city || '-' }} </p>
-    <p>UF: {{ mObject?.address?.uf || '-' }} </p>
+    <p>{{ 'REGISTER.DELETE.TYPE' | translate }}: {{ mObject.type == 'client' ? 'Cliente' : '' }}
+      {{ mObject.type == 'owner' ? 'Owner' : ''}} </p>
+    <p>{{ 'REGISTER.DELETE.NAME' | translate }}: {{ mObject.name }}</p>
+    <p>{{ 'REGISTER.DELETE.STREET' | translate }}: {{ mObject?.address?.street || '-' }} </p>
+    <p>{{ 'REGISTER.DELETE.CITY' | translate }}: {{ mObject?.address?.city || '-' }} </p>
+    <p>{{ 'REGISTER.DELETE.UF' | translate }}: {{ mObject?.address?.uf || '-' }} </p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.COMPANY_DESCRIPTION"></p>
     </div>
   </div>
 
@@ -23,17 +23,16 @@
   <!-- ========================== -->
   <!-- Template for deleting USER -->
   <div class="detalhes" *ngIf="mType == 'USER'">
-    <h2> Deletar Usuário </h2>
+    <h2 translate="REGISTER.DELETE.USER_TITLE"></h2>
     <hr>
-    <p>Tipo: {{ mObject.role }}</p>
-    <p>Nome: {{ mObject.full_name }}</p>
-    <p>E-mail: {{ mObject.email }}</p>
+    <p>{{ 'REGISTER.DELETE.TYPE' | translate }}: {{ mObject.role }}</p>
+    <p>{{ 'REGISTER.DELETE.NAME' | translate }}: {{ mObject.full_name }}</p>
+    <p>{{ 'REGISTER.DELETE.EMAIL' | translate }}: {{ mObject.email }}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.USER_DESCRIPTION"></p>
     </div>
   </div>
 
@@ -41,16 +40,15 @@
   <!-- ========================== -->
   <!-- Template for deleting FAMILY -->
   <div class="detalhes" *ngIf="mType == 'FAMILY'">
-    <h2> Deletar Família </h2>
+    <h2 translate="REGISTER.DELETE.FAMILY_TITLE"></h2>
     <hr>
-    <p>Código: {{ mObject.code }}</p>
-    <p>Empresa: {{ mObject.company?.name || '-'}}</p>
+    <p>{{ 'REGISTER.DELETE.FAMILY' | translate }}: {{ mObject.code }}</p>
+    <p>{{ 'REGISTER.DELETE.COMPANY' | translate }}: {{ mObject.company?.name || '-'}}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Perfil poderá desassociar Embalagens, Rotas e registros do BPline.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.FAMILY_DESCRIPTION"></p>
     </div>
   </div>
 
@@ -58,17 +56,16 @@
   <!-- ========================== -->
   <!-- Template for deleting PACKING -->
   <div class="detalhes" *ngIf="mType == 'PACKING'">
-    <h2> Deletar Embalagem </h2>
+    <h2 translate="REGISTER.DELETE.PACKAGE_TITLE"></h2>
     <hr>
-    <p>Tag: {{ mObject.tag.code }}</p>
-    <p>Serial: {{ mObject.serial }}</p>
-    <p>Versão: {{ mObject.tag.version }}</p>
+    <p>{{ 'REGISTER.DELETE.TAG' | translate }}: {{ mObject.tag.code }}</p>
+    <p>{{ 'REGISTER.DELETE.SERIAL' | translate }}: {{ mObject.serial }}</p>
+    <p>{{ 'REGISTER.DELETE.VERSION' | translate }}: {{ mObject.tag.version }}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção dessa Embalagem poderá desassociar Rotas e registros do BPline.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.PACKAGE_DESCRIPTION"></p>
     </div>
   </div>
 
@@ -76,17 +73,17 @@
   <!-- ========================== -->
   <!-- Template for deleting CONTROL POINT -->
   <div class="detalhes" *ngIf="mType == 'CONTROL_POINT'">
-    <h2> Deletar Ponto de Controle </h2>
+    <h2 translate="REGISTER.DELETE.CONTROL_POINT_TITLE"></h2>
     <hr>
-    <p>Nome: {{ mObject.name }}</p>
-    <p>DUNS: {{ mObject?.duns || '-' }}</p>
-    <p>Empresa Vinculada: {{ mObject.company.name }}</p>
+    <p>{{ 'REGISTER.DELETE.NAME' | translate }}: {{ mObject.name }}</p>
+    <p>{{ 'REGISTER.DELETE.DUNS' | translate }}: {{ mObject?.duns || '-' }}</p>
+    <p>{{ 'REGISTER.DELETE.LINKED_COMPANY' | translate }}: {{ mObject.company.name }}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Ponto de Controle poderá desassociar Rotas e registros do BPline.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.CONTROL_POINT_DESCRIPTION"></p>
+      <p></p>
     </div>
   </div>
 
@@ -94,18 +91,17 @@
   <!-- ========================== -->
   <!-- Template for deleting ROUTE -->
   <div class="detalhes" *ngIf="mType == 'ROUTE'">
-    <h2> Deletar Rota </h2>
+    <h2 translate="REGISTER.DELETE.ROUTE_TITLE"></h2>
     <hr>
-    <p>Família: {{ mObject.family.code }}</p>
-    <p>Ponto 1: {{ mObject.first_point.name }}</p>
-    <p>Ponto 2: {{ mObject.second_point.name }}</p>
-    <p>Distância: {{ getFormatedDistance(mObject.distance) }}</p>
+    <p>{{ 'REGISTER.DELETE.FAMILY' | translate }}: {{ mObject.family.code }}</p>
+    <p>{{ 'REGISTER.DELETE.SITE_A' | translate }}: {{ mObject.first_point.name }}</p>
+    <p>{{ 'REGISTER.DELETE.SITE_B' | translate }}: {{ mObject.second_point.name }}</p>
+    <p>{{ 'REGISTER.DELETE.DISTANCE' | translate }}: {{ getFormatedDistance(mObject.distance) }}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção dessa Rota poderá desassociar Embalagens, Plantas e registros do BPline.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.ROUTE_DESCRIPTION"></p>
     </div>
   </div>
 
@@ -113,15 +109,14 @@
   <!-- ========================== -->
   <!-- Template for deleting PROJECT -->
   <div class="detalhes" *ngIf="mType == 'PROJECT'">
-    <h2> Deletar Projeto </h2>
+    <h2 translate="REGISTER.DELETE.PROJECT_TITLE"></h2>
     <hr>
-    <p>Nome: {{ mObject.name }}</p>
+    <p>{{ 'REGISTER.DELETE.NAME' | translate }}: {{ mObject.name }}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Projeto desassociará Embalagens, Plantas e registros do BPline.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.PROJECT_DESCRIPTION"></p>
     </div>
   </div>
 
@@ -129,16 +124,15 @@
   <!-- ========================== -->
   <!-- Template for deleting DEPARTMENT -->
   <div class="detalhes" *ngIf="mType == 'DEPARTMENT'">
-    <h2> Deletar Departamento </h2>
+    <h2 translate="REGISTER.DELETE.DEPARTMENT_TITLE"></h2>
     <hr>
-    <p>Nome: {{ mObject.name }}</p>
-    <p>Ponto de Controle: {{ mObject.control_point.name }}</p>
+    <p>{{ 'REGISTER.DELETE.NAME' | translate }}: {{ mObject.name }}</p>
+    <p>{{ 'REGISTER.DELETE.CONTROL_POINT' | translate }}: {{ mObject.control_point.name }}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Departamento desassociará Embalagens, Plantas e registros do BPline.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.DEPARTMENT_DESCRIPTION"></p>
     </div>
   </div>
 
@@ -146,29 +140,30 @@
   <!-- ========================== -->
   <!-- Template for deleting GC16 -->
   <div class="detalhes" *ngIf="mType == 'BPLINE'">
-    <h2> Deletar BPLine </h2>
+    <h2 translate="REGISTER.DELETE.BPLINE_TITLE"></h2>
     <hr>
-    <p>Ponto de Controle: {{ mObject.control_point.name }}</p>
-    <p>Volume anual: {{ mObject.annual_volume }}</p>
+    <p>{{ 'REGISTER.DELETE.CONTROL_POINT' | translate }}: {{ mObject.control_point.name }}</p>
+    <p>{{ 'REGISTER.DELETE.ANNUAL_VOLUME' | translate }}: {{ mObject.annual_volume }}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse BPline desassociará Embalagens, Plantas e registros do BPline.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.BPLINE_DESCRIPTION"></p>
     </div>
   </div>
 
+
+  <!-- ========================== -->
+  <!-- Template for deleting control point type -->
   <div class="detalhes" *ngIf="mType == 'CONTROL_POINT_TYPE'">
-    <h2> Deletar Tipo de Ponto de Controle </h2>
+    <h2 translate="REGISTER.DELETE.CONTROL_POINT_TYPE_TITLE"></h2>
     <hr>
-    <p>Nome: {{ mObject.name }}</p>
+    <p>{{ 'REGISTER.DELETE.NAME' | translate }}: {{ mObject.name }}</p>
 
     <hr>
     <div class="alerta">
       <span class="alert" aria-hidden="true"></span>
-      <p>A remoção desse Tipo desassociará Pontos de Controle.
-        As informações serão perdidas, você tem certeza?</p>
+      <p translate="REGISTER.DELETE.BPLINE_DESCRIPTION"></p>
     </div>
   </div>
 
@@ -176,7 +171,7 @@
   <!-- ========================== -->
   <!-- Template default -->
   <div class="botoes">
-    <button class="botaoVoltar" (click)="activeModal.close('cancelar')">CANCELAR</button>
-    <button class="botaoDeletar" (click)="delete()">DELETAR</button>
+    <button translate="REGISTER.CANCEL_BUTTON" class="botaoVoltar" (click)="activeModal.close('cancelar')"></button>
+    <button translate="REGISTER.DELETE_BUTTON" class="botaoDeletar" (click)="delete()"></button>
   </div>
 </div>

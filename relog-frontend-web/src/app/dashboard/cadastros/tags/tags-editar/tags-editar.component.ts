@@ -4,6 +4,7 @@ import { Tag } from '../../../../shared/models/tag';
 import { Router,ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tags-cadastrar',
@@ -14,13 +15,15 @@ export class TagsEditarComponent implements OnInit {
   public inscricao: Subscription;
   public tag: FormGroup;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private tagsService: TagsService,
     private router: Router,
     private toastyService:ToastService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
 
   onSubmit({ value, valid }: { value: Tag, valid: boolean }):void {

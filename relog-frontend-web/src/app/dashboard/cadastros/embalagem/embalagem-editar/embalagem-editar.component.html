@@ -1,5 +1,5 @@
 <div class="">
-  <h2>Editar Embalagem</h2>
+  <h2 translate="REGISTER.PACKING.UPDATE_TITLE">Registrar Embalagem</h2>
   <hr>
 
   <form novalidate (ngSubmit)="onSubmit(mPacking)" [formGroup]="mPacking" #formDir="ngForm">
@@ -9,8 +9,9 @@
 
       <!-- Codigo -->
       <div class="col-sm-12 col-md-4 campo" formGroupName="tag">
-        <p class="descricao">TAG</p>
-        <p class="explicacao">Ex. "994475545"</p>
+        <p translate="REGISTER.PACKING.TAG" class="descricao"></p>
+        <p translate="REGISTER.PACKING.TAG_DESC" class="explicacao">{{ 'REGISTER.PACKING.TAG_PLACEHOLDER' | translate }}
+        </p>
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Código da tag" aria-describedby="basic-addon2"
             formControlName="code" maxlength="25" (focusout)="validateTag($event)" [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
@@ -23,62 +24,54 @@
               || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted) }">
         </div>
 
-        <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
-            || (mPacking.get('tag.code').hasError('required') && formDir.submitted)">
-          Campo Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
+            || (mPacking.get('tag.code').hasError('required') && formDir.submitted)"> </p>
 
-        <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('uniqueValidation')) 
-            || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted)">
-          Esta Embalagem já existe. O código deve ser único.</p>
+        <p translate="REGISTER.ERRORS.PACK_EXISTS" class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('uniqueValidation')) 
+            || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted)"> </p>
 
-        <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('minlength')) 
-            || (mPacking.get('tag.code').hasError('minlength') && submitted)">
-          Mínimo de 4 caracteres</p>
+        <p translate="REGISTER.ERRORS.MIN_4" class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('minlength')) 
+            || (mPacking.get('tag.code').hasError('minlength') && submitted)"> </p>
 
-        <p class="explicacao" *ngIf="validateNotTakenLoading">
-          Verificando disponibilidade ...</p>
+        <p translate="REGISTER.ERRORS.CHECKING" class="explicacao" *ngIf="validateNotTakenLoading"> </p>
 
-        <p class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('pattern')) 
-                        || (mPacking.get('tag.code').hasError('pattern') && submitted)">
-          Excesso de espaços em branco</p>
+        <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('pattern')) 
+                        || (mPacking.get('tag.code').hasError('pattern') && submitted)"> </p>
       </div>
-
 
       <!-- Version -->
       <div class="col-sm-12 col-md-4" formGroupName="tag">
-        <p class="descricao">VERSÃO</p>
-        <p class="explicacao">Ex. "v1"</p>
+        <p translate="REGISTER.PACKING.VERSION" class="descricao"></p>
+        <p translate="REGISTER.PACKING.VERSION_DESC" class="explicacao"></p>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Versão" aria-describedby="basic-addon2" formControlName="version"
-            maxlength="100" [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
+          <input type="text" class="form-control" placeholder="{{ 'REGISTER.PACKING.VERSION_PLACEHOLDER' | translate }}"
+            aria-describedby="basic-addon2" formControlName="version" maxlength="100" [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
               || (mPacking.get('tag.version').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.version').hasError('pattern'))
               || (mPacking.get('tag.version').hasError('pattern') && submitted) }">
         </div>
 
-        <p class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
-                      || (mPacking.get('tag.version').hasError('required') && formDir.submitted)">
-          Campo Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
+                      || (mPacking.get('tag.version').hasError('required') && formDir.submitted)"> </p>
 
-        <p class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('pattern')) 
-          || (mPacking.get('tag.version').hasError('pattern') && submitted)">
-          Excesso de espaços em branco</p>
+        <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('pattern')) 
+          || (mPacking.get('tag.version').hasError('pattern') && submitted)"> </p>
       </div>
 
 
       <!-- Projeto -->
       <div class="col-sm-12 col-md-4">
-        <p class="descricao">PROJETO</p>
-        <p class="explicacao">Projeto da Embalagem</p>
-        <ng-select bindLabel="name" placeholder="Associe um projeto" [items]="listOfProjects" formControlName="project">
+        <p translate="REGISTER.PACKING.PROJECT" class="descricao"></p>
+        <p translate="REGISTER.PACKING.PROJECT_DESC" class="explicacao"></p>
+        <ng-select bindLabel="name" placeholder="{{ 'REGISTER.PACKING.PROJECT_PLACEHOLDER' | translate }}"
+          [items]="listOfProjects" formControlName="project">
 
           <ng-template ng-option-tmp let-item="item">
             <div> {{item.name}} </div>
           </ng-template>
         </ng-select>
-        <p class="requiredText" *ngIf="(mPacking.get('project').hasError('required') && mPacking.get('project').touched)
-                              || (mPacking.get('project').hasError('required') && formDir.submitted)">
-          Campo Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('project').hasError('required') && mPacking.get('project').touched)
+                              || (mPacking.get('project').hasError('required') && formDir.submitted)"> </p>
       </div>
 
     </div>
@@ -90,27 +83,29 @@
       <!-- Coluna 1 -->
       <div class="col-md-6">
         <div class="row">
+
           <!-- Família -->
           <div class="col-sm-12 campo">
-            <p class="descricao">FAMÍLIA</p>
-            <p class="explicacao">Ex. "AAB-01"</p>
-            <ng-select bindLabel="code" placeholder="Associe uma família" [items]="listOfFamilies" formControlName="family">
+            <p translate="REGISTER.PACKING.FAMILY" class="descricao"></p>
+            <p translate="REGISTER.PACKING.FAMILY_DESC" class="explicacao"></p>
+            <ng-select bindLabel="code" placeholder="{{ 'REGISTER.PACKING.FAMILY_PLACEHOLDER' | translate }}"
+              [items]="listOfFamilies" formControlName="family">
 
               <ng-template ng-option-tmp let-item="item">
                 <div> {{item.code}} </div>
               </ng-template>
             </ng-select>
-            <p class="requiredText" *ngIf="(mPacking.get('family').hasError('required') && mPacking.get('family').touched)
-                || (mPacking.get('family').hasError('required') && formDir.submitted)">
-              Campo Obrigatório</p>
+            <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('family').hasError('required') && mPacking.get('family').touched)
+                          || (mPacking.get('family').hasError('required') && formDir.submitted)"> </p>
           </div>
 
           <!-- Serial -->
           <div class="col-sm-12 campo">
-            <p class="descricao">SERIAL</p>
-            <p class="explicacao">Ex. "001"</p>
+            <p translate="REGISTER.PACKING.SERIAL" class="descricao"></p>
+            <p translate="REGISTER.PACKING.SERIAL_DESC" class="explicacao"></p>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Serial" aria-describedby="basic-addon2"
+              <input type="text" class="form-control"
+                placeholder="{{ 'REGISTER.PACKING.SERIAL_PLACEHOLDER' | translate }}" aria-describedby="basic-addon2"
                 formControlName="serial" maxlength="30" [ngClass]="{'required': (mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
                 || (mPacking.get('serial').hasError('required') && formDir.submitted)
                 || (mPacking.get('tag.version').hasError('minlength'))
@@ -119,90 +114,81 @@
                 || (mPacking.get('serial').hasError('pattern') && submitted) }">
             </div>
 
-            <p class="requiredText" *ngIf="(mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
-              || (mPacking.get('serial').hasError('required') && formDir.submitted)">
-              Campo Obrigatório</p>
+            <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
+              || (mPacking.get('serial').hasError('required') && formDir.submitted)"> </p>
 
-            <p class="requiredText" *ngIf="(mPacking.get('serial').hasError('minlength')) 
-                    || (mPacking.get('serial').hasError('minlength') && submitted)">
-              Mínimo de 2 caracteres</p>
+            <p translate="REGISTER.ERRORS.MIN_2" class="requiredText" *ngIf="(mPacking.get('serial').hasError('minlength')) 
+                    || (mPacking.get('serial').hasError('minlength') && submitted)"> </p>
 
-            <p class="requiredText" *ngIf="(mPacking.get('serial').hasError('pattern')) 
-              || (mPacking.get('serial').hasError('pattern') && submitted)">
-              Excesso de espaços em branco</p>
+            <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" *ngIf="(mPacking.get('serial').hasError('pattern')) 
+              || (mPacking.get('serial').hasError('pattern') && submitted)"> </p>
           </div>
 
           <!-- Fabricante -->
           <div class="col-sm-12 campo" formGroupName="tag">
-            <p class="descricao">FABRICANTE DA EMBALAGEM</p>
-            <p class="explicacao">Ex. "Acme Racks"</p>
+            <p translate="REGISTER.PACKING.MANUFACTORER" class="descricao"></p>
+            <p translate="REGISTER.PACKING.MANUFACTORER_DESC" class="explicacao"></p>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Nome do Fabricante" aria-describedby="basic-addon2"
-                formControlName="manufactorer" maxlength="100" [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
+              <input type="text" class="form-control"
+                placeholder="{{ 'REGISTER.PACKING.MANUFACTORER_PLACEHOLDER' | translate }}"
+                aria-describedby="basic-addon2" formControlName="manufactorer" maxlength="100" [ngClass]="{'required': (mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                   || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)
                   || (mPacking.get('tag.manufactorer').hasError('minlength'))
                   || (mPacking.get('tag.manufactorer').hasError('minlength') && formDir.submitted)
                   || (mPacking.get('tag.manufactorer').hasError('pattern'))
                   || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted) }">
             </div>
-            <p class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
-                || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)">
-              Campo Obrigatório</p>
+            <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
+                || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)"> </p>
 
-            <p class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('minlength'))
-                || (mPacking.get('tag.manufactorer').hasError('minlength') && formDir.submitted)">
-              Mínimo de 2 caracteres</p>
+            <p translate="REGISTER.ERRORS.MIN_2" class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('minlength'))
+                || (mPacking.get('tag.manufactorer').hasError('minlength') && formDir.submitted)"> </p>
 
-            <p class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('pattern')) 
-                || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)">
-              Excesso de espaços em branco</p>
+            <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('pattern')) 
+                || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted)"> </p>
           </div>
 
 
           <!-- Tipo da embalagem -->
           <div class="col-sm-12 campo">
-            <p class="descricao">TIPO DA EMBALAGEM</p>
-            <p class="explicacao">Ex. "Rack Metálico"</p>
-            <input type="text" class="form-control" placeholder="Digite o tipo de embalagem" aria-describedby="basic-addon2"
-              formControlName="type" maxlength="100" [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
+            <p translate="REGISTER.PACKING.TYPE" class="descricao"></p>
+            <p translate="REGISTER.PACKING.TYPE_DESC" class="explicacao"></p>
+            <input type="text" class="form-control" placeholder="{{ 'REGISTER.PACKING.TYPE_PLACEHOLDER' | translate }}"
+              aria-describedby="basic-addon2" formControlName="type" maxlength="100" [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
                 || (mPacking.get('type').hasError('required') && formDir.submitted)
                 || (mPacking.get('type').hasError('pattern'))
                 || (mPacking.get('type').hasError('pattern') && submitted) }">
 
-            <p class="requiredText" *ngIf="(mPacking.get('type').hasError('required') && mPacking.get('type').touched)
-              || (mPacking.get('type').hasError('required') && formDir.submitted)">
-              Campo Obrigatório</p>
+            <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('type').hasError('required') && mPacking.get('type').touched)
+              || (mPacking.get('type').hasError('required') && formDir.submitted)"> </p>
 
-            <p class="requiredText" *ngIf="(mPacking.get('type').hasError('pattern')) 
-                            || (mPacking.get('type').hasError('pattern') && submitted)">
-              Excesso de espaços em branco</p>
+            <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" *ngIf="(mPacking.get('type').hasError('pattern')) 
+                            || (mPacking.get('type').hasError('pattern') && submitted)"> </p>
           </div>
 
 
           <!-- Capacidade da embalagem -->
           <div class="col-sm-12 campo">
-            <p class="descricao">CAPACIDADE DA EMBALAGEM</p>
-            <p class="explicacao">Ex. "57 PEÇAS"</p>
-            <div class="placeholder" data-placeholder="PEÇAS">
-              <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" formControlName="capacity"
-                [ngClass]="{'required': (mPacking.get('capacity').hasError('required') && mPacking.get('capacity').touched)
+            <p translate="REGISTER.PACKING.CAPACITY" class="descricao"></p>
+            <p translate="REGISTER.PACKING.CAPACITY_DESC" class="explicacao"></p>
+            <div class="placeholder">
+              <input placeholder="{{ 'REGISTER.PACKING.CAPACITY_PLACEHOLDER' | translate }}" type="number" min="0"
+                class="form-control form-control-sm scroll-number" value="0" formControlName="capacity" [ngClass]="{'required': (mPacking.get('capacity').hasError('required') && mPacking.get('capacity').touched)
                   || (mPacking.get('capacity').hasError('required') && formDir.submitted)}" />
             </div>
-            <p class="requiredText" *ngIf="(mPacking.get('capacity').hasError('required') && mPacking.get('capacity').touched)
-              || (mPacking.get('capacity').hasError('required') && formDir.submitted)">
-              Campo Obrigatório</p>
-            <p class="requiredText" *ngIf="(mPacking.get('capacity').hasError('pattern'))
-                          || (mPacking.get('capacity').hasError('pattern') && formDir.submitted)">
-              Valor inválido</p>
+            <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('capacity').hasError('required') && mPacking.get('capacity').touched)
+              || (mPacking.get('capacity').hasError('required') && formDir.submitted)"> </p>
+            <p translate="REGISTER.ERRORS.INVALID_VALUE" class="requiredText" *ngIf="(mPacking.get('capacity').hasError('pattern'))
+                          || (mPacking.get('capacity').hasError('pattern') && formDir.submitted)"> </p>
           </div>
 
-
+          <!-- Embalagem ativa -->
           <div class="col-sm-12 campo">
             <div class="checkbox">
               <label>
                 <input type="checkbox" value="active" formControlName="active">
                 <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
-                Embalagem ativa
+                {{ 'REGISTER.PACKING.ACTIVE' | translate }}
               </label>
             </div>
           </div>
@@ -215,75 +201,76 @@
       <!-- Coluna 2 -->
       <div class="col-md-6">
 
+        <!-- Tara -->
         <div class="campo">
-          <p class="descricao">TARA (KG)</p>
-          <p class="explicacao">Ex. "86,7 kg"</p>
-          <div class="placeholder" data-placeholder="KG">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="0.2"
-              formControlName="weigth" [ngClass]="{'required': (mPacking.get('weigth').hasError('required') && mPacking.get('weigth').touched)
+          <p translate="REGISTER.PACKING.TARE" class="descricao"></p>
+          <p translate="REGISTER.PACKING.TARE_DESC" class="explicacao"></p>
+          <div class="placeholder">
+            <input placeholder="{{ 'REGISTER.PACKING.TARE_PLACEHOLDER' | translate }}" type="number" min="0"
+              class="form-control form-control-sm scroll-number" value="0" step="0.2" formControlName="weigth"
+              [ngClass]="{'required': (mPacking.get('weigth').hasError('required') && mPacking.get('weigth').touched)
               || (mPacking.get('weigth').hasError('required') && formDir.submitted)}" />
           </div>
-          <p class="requiredText" *ngIf="(mPacking.get('weigth').hasError('required') && mPacking.get('weigth').touched)
-            || (mPacking.get('weigth').hasError('required') && formDir.submitted)">
-            Campo Obrigatório</p>
-          <p class="requiredText" *ngIf="(mPacking.get('weigth').hasError('pattern'))
-            || (mPacking.get('weigth').hasError('pattern') && formDir.submitted)">
-            Valor inválido</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('weigth').hasError('required') && mPacking.get('weigth').touched)
+            || (mPacking.get('weigth').hasError('required') && formDir.submitted)"> </p>
+          <p translate="REGISTER.ERRORS.INVALID_VALUE" class="requiredText" *ngIf="(mPacking.get('weigth').hasError('pattern'))
+            || (mPacking.get('weigth').hasError('pattern') && formDir.submitted)"> </p>
         </div>
 
+        <!-- Comprimento -->
         <div class="campo">
-          <p class="descricao">COMPRIMENTO (M)</p>
-          <p class="explicacao">Ex. "7,1 m"</p>
-          <div class="placeholder" data-placeholder="METROS">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="0.2"
-              formControlName="length" [ngClass]="{'required': (mPacking.get('length').hasError('required') && mPacking.get('length').touched)
+          <p translate="REGISTER.PACKING.LENGTH" class="descricao"></p>
+          <p translate="REGISTER.PACKING.LENGTH_DESC" class="explicacao"></p>
+          <div class="placeholder">
+            <input placeholder="{{ 'REGISTER.PACKING.LENGTH_PLACEHOLDER' | translate }}" type="number" min="0"
+              class="form-control form-control-sm scroll-number" value="0" step="0.2" formControlName="length"
+              [ngClass]="{'required': (mPacking.get('length').hasError('required') && mPacking.get('length').touched)
                 || (mPacking.get('length').hasError('required') && formDir.submitted)}" />
           </div>
-          <p class="requiredText" *ngIf="(mPacking.get('length').hasError('required') && mPacking.get('length').touched)
-            || (mPacking.get('length').hasError('required') && formDir.submitted)">
-            Campo Obrigatório</p>
-          <p class="requiredText" *ngIf="mPacking.get('length').hasError('pattern')
-            || (mPacking.get('length').hasError('pattern') && formDir.submitted)">
-            Valor inválido</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('length').hasError('required') && mPacking.get('length').touched)
+            || (mPacking.get('length').hasError('required') && formDir.submitted)"> </p>
+          <p translate="REGISTER.ERRORS.INVALID_VALUE" class="requiredText" *ngIf="mPacking.get('length').hasError('pattern')
+            || (mPacking.get('length').hasError('pattern') && formDir.submitted)"> </p>
         </div>
 
+        <!-- Largura -->
         <div class="campo">
-          <p class="descricao">LARGURA (M)</p>
-          <p class="explicacao">Ex. "9,5 m"</p>
-          <div class="placeholder" data-placeholder="METROS">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="0.2"
-              formControlName="width" [ngClass]="{'required': (mPacking.get('width').hasError('required') && mPacking.get('width').touched)
+          <p translate="REGISTER.PACKING.WIDTH" class="descricao"></p>
+          <p translate="REGISTER.PACKING.WIDTH_DESC" class="explicacao"></p>
+          <div class="placeholder">
+            <input placeholder="{{ 'REGISTER.PACKING.WIDTH_PLACEHOLDER' | translate }}" type="number" min="0"
+              class="form-control form-control-sm scroll-number" value="0" step="0.2" formControlName="width" [ngClass]="{'required': (mPacking.get('width').hasError('required') && mPacking.get('width').touched)
                 || (mPacking.get('width').hasError('required') && formDir.submitted)}" />
           </div>
-          <p class="requiredText" *ngIf="(mPacking.get('width').hasError('required') && mPacking.get('width').touched)
-              || (mPacking.get('width').hasError('required') && formDir.submitted)">
-            Campo Obrigatório</p>
-          <p class="requiredText" *ngIf="(mPacking.get('width').hasError('pattern'))
-            || (mPacking.get('width').hasError('pattern') && formDir.submitted)">
-            Valor inválido</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('width').hasError('required') && mPacking.get('width').touched)
+              || (mPacking.get('width').hasError('required') && formDir.submitted)"> </p>
+          <p translate="REGISTER.ERRORS.INVALID_VALUE" class="requiredText" *ngIf="(mPacking.get('width').hasError('pattern'))
+            || (mPacking.get('width').hasError('pattern') && formDir.submitted)"> </p>
         </div>
 
+        <!-- Altura -->
         <div class="campo">
-          <p class="descricao">ALTURA (M)</p>
-          <p class="explicacao">Ex. "57,2 m"</p>
-          <div class="placeholder" min="0" data-placeholder="METROS">
-            <input type="number" min="0" class="form-control form-control-sm scroll-number" value="0" step="0.2"
-              formControlName="heigth" [ngClass]="{'required': (mPacking.get('heigth').hasError('required') && mPacking.get('heigth').touched)
+          <p translate="REGISTER.PACKING.HEIGHT" class="descricao"></p>
+          <p translate="REGISTER.PACKING.HEIGHT_DESC" class="explicacao"></p>
+          <div class="placeholder" min="0">
+            <input placeholder="{{ 'REGISTER.PACKING.HEIGHT_PLACEHOLDER' | translate }}" type="number" min="0"
+              class="form-control form-control-sm scroll-number" value="0" step="0.2" formControlName="heigth"
+              [ngClass]="{'required': (mPacking.get('heigth').hasError('required') && mPacking.get('heigth').touched)
               || (mPacking.get('heigth').hasError('required') && formDir.submitted)}" />
           </div>
-          <p class="requiredText" *ngIf="(mPacking.get('heigth').hasError('required') && mPacking.get('heigth').touched)
-              || (mPacking.get('heigth').hasError('required') && formDir.submitted)">
-            Campo Obrigatório</p>
-          <p class="requiredText" *ngIf="(mPacking.get('heigth').hasError('pattern') )
-            || (mPacking.get('heigth').hasError('pattern') && formDir.submitted)">
-            Valor inválido</p>
+          <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('heigth').hasError('required') && mPacking.get('heigth').touched)
+              || (mPacking.get('heigth').hasError('required') && formDir.submitted)"> </p>
+          <p translate="REGISTER.ERRORS.INVALID_VALUE" class="requiredText" *ngIf="(mPacking.get('heigth').hasError('pattern') )
+            || (mPacking.get('heigth').hasError('pattern') && formDir.submitted)"> </p>
         </div>
 
+        <!-- Observações -->
         <div class="campo">
           <div class="campo">
-            <p class="descricao">OBSERVAÇÕES</p>
-            <p class="explicacao">Ex. "Embalagem nova"</p>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" maxlength="140" formControlName="observations">
+            <p translate="REGISTER.PACKING.OBSERVATION" class="descricao"></p>
+            <p translate="REGISTER.PACKING.OBSERVATION_DESC" class="explicacao"></p>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" maxlength="140"
+              formControlName="observations">
                   </textarea>
             <p class="explicacao"> {{ mPacking.get('observations').value.length }}/140 </p>
           </div>
@@ -295,8 +282,8 @@
     <br />
 
     <div class="botoes">
-      <button routerLink="/rc/cadastros/embalagem" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
+      <button translate="REGISTER.BACK_BUTTON" routerLink="/rc/cadastros/embalagem" class="botaoVoltar"></button>
+      <button translate="REGISTER.UPDATE_BUTTON" type="submit" class="botaoRegistrar"></button>
     </div>
 
     <br />

@@ -68,7 +68,7 @@ const factStateMachineSchema = new mongoose.Schema({
       type: Number,
       default: 0,
     },
-    controlpoint: {
+    control_point: {
       type: mongoose.Schema.ObjectId,
       ref: "ControlPoint",
       required: true,
@@ -109,6 +109,7 @@ exports.generateNewFact = async (packing, eventrecord, currentStateHistory, comp
   console.log("params packing", JSON.stringify(packing));
   console.log("params eventrecord", JSON.stringify(eventrecord));
   console.log("params currentStateHistory", JSON.stringify(currentStateHistory));
+  console.log("params companies", companies.length);
 
   try {
     if (eventrecord == null) eventrecord = packing.last_event_record;
@@ -133,7 +134,7 @@ exports.generateNewFact = async (packing, eventrecord, currentStateHistory, comp
     let auxEventRecords = {
       _id: getEventRecords(eventrecord, "_id"),
       accuracy: getEventRecords(eventrecord, "accuracy"),
-      controlpoint: getEventRecords(eventrecord, "control_point"),
+      control_point: getEventRecords(eventrecord, "control_point"),
       type: getEventRecords(eventrecord, "type"),
       created_at: getEventRecords(eventrecord, "created_at"),
     };

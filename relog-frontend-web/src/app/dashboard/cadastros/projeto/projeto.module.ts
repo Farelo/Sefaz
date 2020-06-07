@@ -15,6 +15,7 @@ import { ProjetoCadastrarComponent } from './projeto-cadastrar/projeto-cadastrar
 import { ProjetoEditarComponent } from './projeto-editar/projeto-editar.component';
 import { ProjetoComponent } from './projeto.component';
 import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { ApplicationPipes } from 'app/shared/pipes/application.pipes';
     ToastyModule.forRoot(),
     ApplicationPipes,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule 
   ],
   declarations: [
     ProjetoCadastrarComponent,

@@ -154,7 +154,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
         } else {
           /* Embalagem sem sinal */
           //mLog('Avaliar sem sinal')
-          await evaluatesIfPackingIsNoSignal(packing, setting, companies);
+          await evaluatesIfPackingIsNoSignal(packing, companies);
         }
 
         break;
@@ -240,7 +240,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
           }
         } else {
           /* Embalagem sem sinal */
-          await evaluatesIfPackingIsNoSignal(packing, setting, companies);
+          await evaluatesIfPackingIsNoSignal(packing, companies);
         }
         break;
       case STATES.LOCAL_CORRETO.key:
@@ -281,7 +281,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
           }
         } else {
           /* Embalagem sem sinal */
-          await evaluatesIfPackingIsNoSignal(packing, setting, companies);
+          await evaluatesIfPackingIsNoSignal(packing, companies);
         }
         break;
       case STATES.VIAGEM_PRAZO.key:
@@ -321,7 +321,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
           }
         } else {
           /* Embalagem sem sinal */
-          await evaluatesIfPackingIsNoSignal(packing, setting, companies);
+          await evaluatesIfPackingIsNoSignal(packing, companies);
         }
         break;
       case STATES.VIAGEM_ATRASADA.key:
@@ -361,7 +361,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
           }
         } else {
           /* Embalagem sem sinal */
-          await evaluatesIfPackingIsNoSignal(packing, setting, companies);
+          await evaluatesIfPackingIsNoSignal(packing, companies);
         }
         break;
       case STATES.VIAGEM_PERDIDA.key:
@@ -401,7 +401,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
           }
         } else {
           /* Embalagem sem sinal */
-          await evaluatesIfPackingIsNoSignal(packing, setting, companies);
+          await evaluatesIfPackingIsNoSignal(packing, companies);
         }
         break;
       case STATES.SEM_SINAL.key:

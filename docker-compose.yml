@@ -30,9 +30,9 @@ services:
   #   container_name: mongo-production
   #   image: mongo:4
   #   restart: always
-  #   ports:
+  #   ports: 
   #     - 27017
-  #   volumes:
+  #   volumes: 
   #     # o /data/db da instância está linkado com o /adata/db do container, para poder acessar os arquivos do banco de fora do container e fazer backups
   #     - /data/db:/data/db
   #   networks:
@@ -75,7 +75,7 @@ services:
     #   - mongo
     tty: true
 
-  #qa-loka-api-job:
+  # qa-loka-api-job:
   #  container_name: qa-loka-api-job
   #  build:
   #    context: loka-api-dm-job

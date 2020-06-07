@@ -3,6 +3,7 @@ import { CompaniesService } from '../../../servicos/companies.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../../servicos/index.service';
 import { ModalDeleteComponent } from 'app/shared/modal-delete/modal-delete.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-company',
@@ -17,10 +18,13 @@ export class CompanyComponent implements OnInit {
   public search = "";
   public actualPage = -1;
   
-  constructor( 
+  constructor(public translate: TranslateService,
     private modalService: NgbModal,
     protected companiesService: CompaniesService,
-    protected toastService: ToastService ) { }
+    protected toastService: ToastService ) { 
+
+      if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+    }
 
   ngOnInit() {
     this.loadCompanies();

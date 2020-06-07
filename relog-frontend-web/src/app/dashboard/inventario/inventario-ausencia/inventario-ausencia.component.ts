@@ -8,8 +8,8 @@ import { FloatTimePipe } from '../../../shared/pipes/floatTime';
 import { LayerModalComponent } from 'app/shared/modal-packing/layer.component';
 import 'jspdf';
 import 'jspdf-autotable';
+import { TranslateService } from '@ngx-translate/core';
 declare var jsPDF: any;
-
 
 @Component({
   selector: 'app-inventario-ausencia',
@@ -26,20 +26,18 @@ export class InventarioAusenciaComponent implements OnInit {
 
   public listOfAbsent: any[] = [];
   public auxListOfAbsent: any[] = [];
-  
-  // public allTypes: any[] = [];
-  // public selectedType: any = null;
-  
+
   public timeInterval: number = null;
 
   public actualPage: number = -1;
 
-  constructor( 
+  constructor(public translate: TranslateService,
     private familyService: FamiliesService,
     private reportService: ReportsService,
     private modalService: NgbModal,
     private auth: AuthenticationService) {
 
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
   ngOnInit() {
@@ -54,7 +52,7 @@ export class InventarioAusenciaComponent implements OnInit {
   /**
    * Loading the families
    */
-  loadFamilies(){
+  loadFamilies() {
     this.familyService.getAllFamilies().subscribe(result => {
 
       this.listOfFamilies = result;
@@ -89,10 +87,9 @@ export class InventarioAusenciaComponent implements OnInit {
   /**
    * Filtros
    */
-  familyFilter(event: any){
-    //console.log(event);
-    
-    if(!event) {
+  familyFilter(event: any) {
+
+    if (!event) {
       this.listOfSerials = [];
       this.selectedSerial = null;
       return;
@@ -105,7 +102,6 @@ export class InventarioAusenciaComponent implements OnInit {
     this.listOfAbsent = aux;
 
     this.loadSerials(event);
-    //this.intervalFilter();
   }
 
   serialFilter(event: any) {
@@ -120,17 +116,14 @@ export class InventarioAusenciaComponent implements OnInit {
       return ((elem.family.code == event.family.code) && (elem.serial == event.serial));
     });
 
-    //console.log(aux);
     this.listOfAbsent = aux;
 
     this.intervalFilter();
   }
 
-  intervalFilter(){
+  intervalFilter() {
 
-    //console.log(this.timeInterval);
-    
-    if (this.timeInterval){
+    if (this.timeInterval) {
       let aux = this.listOfAbsent.filter(elem => {
         return (elem.absent_time_in_hours == this.timeInterval);
       });
@@ -139,60 +132,44 @@ export class InventarioAusenciaComponent implements OnInit {
     }
   }
 
-  applyGeneralFilter(){
+  applyGeneralFilter() {
 
-    // console.log('apply filter');
-    // console.log(this.selectedFamily);
-    // console.log(this.selectedSerial);
-    // console.log(this.timeInterval);
-    // console.log(this.selectedType);
-    
     if (!this.selectedFamily) {
       this.listOfSerials = [];
       this.selectedSerial = null;
-      //return;
     }
 
     let aux = this.auxListOfAbsent.filter(elem => {
-      
+
       let bFamily = (this.selectedFamily == null ? true : (elem.family.code == this.selectedFamily.code));
       let bSerial = (this.selectedSerial == null ? true : (elem.serial == this.selectedSerial.serial));
       let bInterval = (this.timeInterval == null ? true : (elem.absent_time_in_hours <= this.timeInterval));
-      // let bLocal = (this.selectedType == null ? true : (elem.last_event_record.control_point.type == this.selectedType._id));
-
-      //console.log(`${bFamily}, ${bSerial}, ${bInterval}` )
 
       return (bFamily && bSerial && bInterval);
     });
-
-    //console.log('aux.length: ' + aux.length);
 
     this.listOfAbsent = aux;
   }
 
 
   openAbsence(packing) {
-    // const modalRef = this.modalService.open(AbscenseModalComponent, { backdrop: "static", size: "lg" });
-    // modalRef.componentInstance.packing = packing;
+
     const modalRef = this.modalService.open(LayerModalComponent, {
       backdrop: 'static',
       size: 'lg',
       windowClass: 'modal-xl',
     });
-    
-    console.log(packing);
 
     packing.tag = packing.tag.code;
     packing.family_code = packing.family.code;
-    
-    //packing.current_control_point_name = packing.last_event_record.control_point.name ? packing.last_event_record.control_point.name : '';
-    
+
     modalRef.componentInstance.packing = packing;
   }
- /**
-   * 
-   * Ordenação da tabela
-   */ 
+
+  /**
+    * 
+    * Ordenação da tabela
+    */
   public headers: any = [];
   public sortStatus: any = ['asc', 'desc'];
   public sort: any = {
@@ -201,24 +178,19 @@ export class InventarioAusenciaComponent implements OnInit {
   };
 
   loadTableHeaders() {
-    this.headers.push({ label: 'Família', name: 'family.code' });
-    this.headers.push({ label: 'Serial', name: 'serial' });
-    this.headers.push({ label: 'Tag', name: 'tag.code' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.FAMILY'), name: 'family.code' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.SERIAL'), name: 'serial' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.TAG'), name: 'tag.code' });
 
-    this.headers.push({ label: 'Última Planta Conhecida', name: 'last_event_record.control_point.name'});
-    this.headers.push({ label: 'Tempo de Ausência', name: 'absent_time_in_hours' });
-
-    //console.log('this.headers: ' + JSON.stringify(this.headers));
+    this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.LAST_SITE'), name: 'last_event_record.control_point.name' });
+    this.headers.push({ label: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.ABSENT_TIME'), name: 'absent_time_in_hours' });
   }
 
   headerClick(item: any) {
     this.sort.name = item.name;
     this.sort.order = this.sortStatus[(this.sortStatus.indexOf(this.sort.order) + 1) % 2];
 
-    // console.log('---');
-    // console.log('this.sort: ' + JSON.stringify(this.sort));
-
-    this.listOfAbsent  = this.customSort(this.listOfAbsent , item.name.split("."), this.sort.order);
+    this.listOfAbsent = this.customSort(this.listOfAbsent, item.name.split("."), this.sort.order);
   }
 
   /**
@@ -230,10 +202,6 @@ export class InventarioAusenciaComponent implements OnInit {
   customSort(array: any[], keyArr: any[], reverse = 'asc') {
     var sortOrder = 1;
     if (reverse == 'desc') sortOrder = -1;
-
-    // console.log('array.length: ' + array.length);
-    // console.log('keyArr: ' + keyArr);
-    // console.log('sortOrder: ' + sortOrder);
 
     return array.sort(function (a, b) {
       var x = a, y = b;
@@ -249,16 +217,15 @@ export class InventarioAusenciaComponent implements OnInit {
    * ================================================
    * Downlaod csv file
    */
-
   private csvOptions = {
     showLabels: true,
     fieldSeparator: ';'
   };
-  
+
   /**
   * Click to download
   */
-  downloadCsv(){
+  downloadCsv() {
 
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
@@ -268,7 +235,7 @@ export class InventarioAusenciaComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Equipamento Tempo de Ausência', this.csvOptions);
+    new Angular2Csv(flatObjectData, this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.ABSENT_REPORT_NAME'), this.csvOptions);
   }
 
   /**
@@ -290,7 +257,13 @@ export class InventarioAusenciaComponent implements OnInit {
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Família', 'Serial', 'Tag', 'Última Planta Conhecida', 'Tempo de Ausência']],
+      head: [[
+        this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.FAMILY'),
+        this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.SERIAL'),
+        this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.TAG'),
+        this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.LAST_SITE'),
+        this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.ABSENT_TIME')
+      ]],
       body: flatObjectData
     });
 
@@ -298,31 +271,29 @@ export class InventarioAusenciaComponent implements OnInit {
   }
 
   flatObject(mArray: any) {
-    
-    //console.log(mArray);
 
-     const transformer = new FloatTimePipe();   
-     let plainArray = mArray.map(obj => {
-          return {
-            a1: obj.family.code,
-            a2: obj.serial,
-            a3: obj.tag.code,
-            a4: obj.last_event_record ? obj.last_event_record.control_point.name : 'Sem histórico',
-            a5: obj.absent_time_in_hours !== '-' ? transformer.transform(obj.absent_time_in_hours) : 'Sem histórico',
-          };
-        });
-      
+    const transformer = new FloatTimePipe();
+    let plainArray = mArray.map(obj => {
+      return {
+        a1: obj.family.code,
+        a2: obj.serial,
+        a3: obj.tag.code,
+        a4: obj.last_event_record ? obj.last_event_record.control_point.name : this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.NO_HISTORY'),
+        a5: obj.absent_time_in_hours !== '-' ? transformer.transform(obj.absent_time_in_hours) : this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.NO_HISTORY'),
+      };
+    });
+
     // As my array is already flat, I'm just returning it.
     return plainArray;
   }
-
-  addHeader(mArray: any){
+  //this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.FAMILY')
+  addHeader(mArray: any) {
     let cabecalho = {
-      a1: 'Família',
-      a2: 'Serial',
-      a3: 'Tag',
-      a4: 'Última Planta Conhecida',
-      a5: 'Tempo de Ausência',
+      a1: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.FAMILY'),
+      a2: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.SERIAL'),
+      a3: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.TAG'),
+      a4: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.LAST_SITE'),
+      a5: this.translate.instant('INVENTORY.ABSENT_TIME_INVENTORY.ABSENT_TIME')
     }
 
     //adiciona o cabeçalho

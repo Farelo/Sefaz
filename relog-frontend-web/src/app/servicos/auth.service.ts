@@ -5,14 +5,15 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import { environment } from '../../environments/environment';
 import { SettingsService } from './settings.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class AuthenticationService {
 
   constructor(
+    public translate: TranslateService,
     private http: HttpClient,
-    private settingsService: SettingsService
-  ) {}
+    private settingsService: SettingsService) { }
 
   login(password: string, username: string): Observable<any> {
     //return this.http.get(`${environment.url}profile/auth/${password}/${username}`)
@@ -42,16 +43,33 @@ export class AuthenticationService {
       //save user seetings
       this.settingsService.getSettings().subscribe(result => {
         localStorage.setItem("currentSettings", JSON.stringify(result));
+        this.updateLanguage(result.language);
       });
     }
     return user;
+  }
+
+  updateLanguage(lang = 'pt') {
+    console.log(lang);
+    //resolve the language
+    //i18n
+    //this.translate.addLangs(['en', 'es', 'pt']);
+
+    //Use the saved user language if exists, or 'en' if doesn't
+    //const browserLang = this.translate.getBrowserLang();
+    console.log(this.translate.getLangs());
+
+    let result = this.translate.getLangs().find(elem => elem == lang);
+    console.log(result);
+
+    this.translate.use(lang.match(/en|es|pt/) ? lang : 'en');
   }
 
   currentUser() {
     return JSON.parse(localStorage.getItem("currentUser"));
   }
 
-  
+
   currentSettings() {
     return JSON.parse(localStorage.getItem("currentSettings"));
   }
@@ -61,11 +79,12 @@ export class AuthenticationService {
     this.login(user.password, user.email);
   }
 
-  updateCurrentSettings() {
+  updateCurrentSettings(actualSettings) {
     //save user seetings
-    this.settingsService.getSettings().subscribe(result => {
-      localStorage.setItem("currentSettings", JSON.stringify(result));
-    });
+    // this.settingsService.getSettings().subscribe(result => {
+      localStorage.setItem("currentSettings", JSON.stringify(actualSettings));
+      this.updateLanguage(actualSettings.language);
+    // });
   }
 
   logout() {

@@ -6,6 +6,7 @@ import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DirectionsRenderer } from '@ngui/map';
 import { MeterFormatter } from 'app/shared/pipes/meter_formatter';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-rotas',
@@ -19,9 +20,12 @@ export class RotasComponent implements OnInit {
   public actualPage = -1;
   public search = "";
 
-  constructor(
-    private routesService : RoutesService,
-    private modalService: NgbModal) { }
+  constructor(public translate: TranslateService,
+    private routesService: RoutesService,
+    private modalService: NgbModal) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
+  }
 
 
   ngOnInit() {
@@ -29,19 +33,19 @@ export class RotasComponent implements OnInit {
     this.loadRoutes();
   }
 
-  loadRoutes(){
+  loadRoutes() {
 
     this.routesService
       .getAllRoutes()
       .subscribe(data => {
-        
+
         this.allRoutes = data;
         this.auxAllRoutes = data;
-      }, err => {console.log(err)});
+      }, err => { console.log(err) });
   }
 
-  removeRoutes(route):void{
-    
+  removeRoutes(route): void {
+
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.mObject = route;
     modalRef.componentInstance.mType = "ROUTE";
@@ -52,8 +56,8 @@ export class RotasComponent implements OnInit {
     });
   }
 
-  getFormatedDistance(value: number){
-    return (new MeterFormatter()).to(value/1000);
+  getFormatedDistance(value: number) {
+    return (new MeterFormatter()).to(value / 1000);
   }
 
 

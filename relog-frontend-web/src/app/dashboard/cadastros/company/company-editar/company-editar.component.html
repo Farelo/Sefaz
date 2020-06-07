@@ -1,18 +1,17 @@
 <div class="">
-  <h2>Editar Empresa</h2>
+  <h2 translate="REGISTER.COMPANY.UPDATE_TITLE"></h2>
   <hr>
 
-  <form (ngSubmit)="onSubmit(newCompany)" [formGroup]="newCompany">
+  <form novalidate (ngSubmit)="onSubmit(newCompany)" [formGroup]="newCompany">
 
     <div class="row">
       <div class="form-group col-sm-6">
-        <p class="descricao">TIPO DA EMPRESA</p>
-        <ng-select 
-          formControlName="type" 
-          [(ngModel)]="companyType" 
+        <p translate="REGISTER.COMPANY.TYPE" class="descricao"></p>
+        <ng-select formControlName="type" 
+          [(ngModel)]="companyType"
           [items]="typesOnSelect" 
-          [searchable]="false"
-          placeholder="Selecione um Tipo">
+          [searchable]="false" 
+          placeholder="{{ 'REGISTER.COMPANY.TYPE_PLACEHOLDER' | translate }}">
           <ng-template ng-label-tmp let-item="item">
             {{ item.label }}
           </ng-template>
@@ -21,183 +20,143 @@
           </ng-template>
         </ng-select>
 
-        <p class="requiredText" *ngIf="(newCompany.get('type').hasError('required') && newCompany.get('type').touched) 
-                  || (newCompany.get('type').hasError('required') && submitted)">Campo
-          Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(newCompany.get('type').hasError('required') && newCompany.get('type').touched) 
+          || (newCompany.get('type').hasError('required') && submitted)"></p>
       </div>
     </div>
 
     <div class="row">
-      <!-- <div class="form-group col-sm-12 col-md-8"> -->
-        <div class="col-sm-12 col-md-8 form-group">
-        <p class="descricao">NOME DA EMPRESA</p>
-        <input type="text" 
-          formControlName="name"
-          class="form-control" 
-          placeholder="Digite o nome da empresa"
+      <div class="form-group col-sm-12 col-md-8">
+        <p translate="REGISTER.COMPANY.NAME" class="descricao"></p>
+        <input type="text" class="form-control" 
+          [(ngModel)]="name" 
+          placeholder="{{ 'REGISTER.COMPANY.NAME_PLACEHOLDER' | translate }}" 
           maxlength="50"
+          formControlName="name"  
           [ngClass]="{'required': (newCompany.get('name').hasError('required') && newCompany.get('name').touched)
             || (newCompany.get('name').hasError('required') && submitted)
             || (newCompany.get('name').hasError('pattern'))
             || (newCompany.get('name').hasError('pattern') && submitted)}">
-          
-          <p class="requiredText" *ngIf="(newCompany.get('name').hasError('required') && newCompany.get('name').touched)
-                      || (newCompany.get('name').hasError('required') && submitted)
-                      || (newCompany.get('name').value.length == 1 && newCompany.get('name').value == ' ')">
-            Campo Obrigatório</p>
-          
-          <p class="requiredText" *ngIf="(newCompany.get('name').hasError('minlength') && newCompany.get('name').touched)
-            || (newCompany.get('name').hasError('minlength') && submitted)">
-            Mínimo de 5 caracteres</p>
 
-          <p class="requiredText" 
-            *ngIf="(newCompany.get('name').hasError('pattern')) || (newCompany.get('name').hasError('pattern') && submitted)">
-            Excesso de espaços em branco</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" 
+          *ngIf="(newCompany.get('name').hasError('required') && newCompany.get('name').touched)
+            || (newCompany.get('name').hasError('required') && submitted)"> </p>
+
+        <p translate="REGISTER.ERRORS.MIN_5" class="requiredText" *ngIf="(newCompany.get('name').hasError('minlength') && newCompany.get('name').touched)
+          || (newCompany.get('name').hasError('minlength') && submitted)"> </p>
+          
+        <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" 
+          *ngIf="(newCompany.get('name').hasError('pattern')) || (newCompany.get('name').hasError('pattern') && submitted)"> </p>
       </div>
-
-      <div class="col-sm-12 col-md-4 form-group">
-        <p class="descricao">TELEFONE</p>
-        <input [textMask]="{mask: maskTel}" class="form-control" type="text" formControlName="phone"
-          placeholder="Número de telefone" 
+    
+      <div class="form-group col-sm-12 col-md-4">
+        <p translate="REGISTER.COMPANY.PHONE" class="descricao"></p>
+        <!-- <input type="text" class="form-control" [(ngModel)]="phone" placeholder="Digite o telefone" formControlName="phone"> -->
+        <input [textMask]="{mask: maskTel}" class="form-control" [(ngModel)]="phone" type="text" formControlName="phone" placeholder="{{ 'REGISTER.COMPANY.PHONE' | translate }}"
           [ngClass]="{'required': (newCompany.get('phone').hasError('required') && newCompany.get('phone').touched)
           || (newCompany.get('phone').hasError('required') && submitted)}"/>
 
-          <p class="requiredText" *ngIf="(newCompany.get('phone').hasError('required') && newCompany.get('phone').touched)
-                      || (newCompany.get('phone').hasError('required') && submitted)">
-            Campo Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" 
+          *ngIf="(newCompany.get('phone').hasError('required') && newCompany.get('phone').touched)
+            || (newCompany.get('phone').hasError('required') && submitted)"> </p>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-12 col-md-6 form-group">
-        <p class="descricao">CNPJ</p>
-        <input [textMask]="{mask: maskCNPJ}" class="form-control" [(ngModel)]="cnpj" type="text" formControlName="cnpj" placeholder="__.___.___/____-__" maxlength="20"
+      <div class="form-group col-sm-12 col-md-6">
+        <p translate="REGISTER.COMPANY.CNPJ" class="descricao"></p>
+        <!-- <input type="text" class="form-control" [(ngModel)]="phone" placeholder="Digite o telefone" formControlName="phone"> -->
+        <input [textMask]="{mask: maskCNPJ}" class="form-control" [(ngModel)]="cnpj" type="text" formControlName="cnpj" placeholder="{{ 'REGISTER.COMPANY.CNPJ_PLACEHOLDER' | translate }}" maxlength="20"
           [ngClass]="{'required': (newCompany.get('cnpj').hasError('required') && newCompany.get('cnpj').touched)
-                  || (newCompany.get('cnpj').hasError('required') && submitted)}" />
-        
-        <p class="requiredText" 
+          || (newCompany.get('cnpj').hasError('required') && submitted)}"/>
+
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" 
           *ngIf="(newCompany.get('cnpj').hasError('required') && newCompany.get('cnpj').touched)
-            || (newCompany.get('cnpj').hasError('required') && submitted)">
-          Campo Obrigatório</p>
+                  || (newCompany.get('cnpj').hasError('required') && submitted)"> </p>
       </div>
     </div>
 
+
     <div class="row" formGroupName="address">
-      <div class="col-sm-12 col-md-8 form-group">
-        <p class="descricao">RUA</p>
-        <input 
-          type="text" 
-          class="form-control" 
-          [(ngModel)]="mStreet" 
-          placeholder="Digite o nome da rua" 
-          formControlName="street"
-          maxlength="120"
-          [ngClass]="{'required': (newCompany.get('address.street').hasError('required') &&
-          newCompany.get('address.street').touched)
+      <div class="form-group col-sm-12 col-md-8">
+        <p translate="REGISTER.COMPANY.STREET" class="descricao"></p>
+        <input type="text" class="form-control" placeholder="{{ 'REGISTER.COMPANY.STREET_PLACEHOLDER' | translate }}" formControlName="street" maxlength="120"
+          [ngClass]="{'required': (newCompany.get('address.street').hasError('required') && newCompany.get('address.street').touched)
           || (newCompany.get('address.street').hasError('required') && submitted)
           || (newCompany.get('address.street').hasError('pattern'))
           || (newCompany.get('address.street').hasError('pattern') && submitted)}">
 
-        <p class="requiredText" 
-        *ngIf="(newCompany.get('address.street').hasError('required') && newCompany.get('address.street').touched)
-          || (newCompany.get('address.street').hasError('required') && submitted)">
-          Campo Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" 
+          *ngIf="(newCompany.get('address.street').hasError('required') && newCompany.get('address.street').touched)
+          || (newCompany.get('address.street').hasError('required') && submitted)"> </p>
 
-        <p class="requiredText" *ngIf="(newCompany.get('address.street').hasError('minlength') && newCompany.get('address.street').touched)
-                          || (newCompany.get('address.street').hasError('minlength') && submitted)">
-          Mínimo de 5 caracteres</p>
+        <p translate="REGISTER.ERRORS.MIN_5" class="requiredText" *ngIf="(newCompany.get('address.street').hasError('minlength') && newCompany.get('address.street').touched)
+            || (newCompany.get('address.street').hasError('minlength') && submitted)"> </p>
 
-        <p class="requiredText" *ngIf="(newCompany.get('address.street').hasError('pattern')) || (newCompany.get('address.street').hasError('pattern') && submitted)">
-          Excesso de espaços em branco</p>
+        <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" 
+          *ngIf="(newCompany.get('address.street').hasError('pattern')) || (newCompany.get('address.street').hasError('pattern') && submitted)"> </p>
       </div>
-
-      <div class="col-sm-12 col-md-4 form-group">
-        <p class="descricao">CEP</p>
-        <input 
-          [textMask]="{mask: maskCep}" 
-          type="text" 
-          class="form-control" 
-          [(ngModel)]="mCep" 
-          placeholder="Digite o CEP"
-          formControlName="cep"
+    
+      <div class="form-group col-sm-12 col-md-4">
+        <p translate="REGISTER.COMPANY.CEP" class="descricao"></p>
+        <input [textMask]="{mask: maskCep}" type="text" class="form-control" [(ngModel)]="cep" placeholder="{{ 'REGISTER.COMPANY.CEP_PLACEHOLDER' | translate }}" formControlName="cep"
           [ngClass]="{'required': (newCompany.get('address.cep').hasError('required') &&
           newCompany.get('address.cep').touched)
           || (newCompany.get('address.cep').hasError('required') && submitted)}">
 
-          <p class="requiredText" 
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" 
           *ngIf="(newCompany.get('address.cep').hasError('required') && newCompany.get('address.cep').touched)
-            || (newCompany.get('address.cep').hasError('required') && submitted)">
-            Campo Obrigatório</p>
+            || (newCompany.get('address.cep').hasError('required') && submitted)"> </p>
       </div>
 
     </div>
 
     <div class="row" formGroupName="address">
       <div class="form-group col-sm-6 col-md-6">
-        <p class="descricao">CIDADE</p>
-        <input 
-          type="text" 
-          class="form-control" 
-          [(ngModel)]="mCity" 
-          placeholder="Digite o cidade" 
-          formControlName="city"
-          maxlength="60"
+        <p translate="REGISTER.COMPANY.CITY" class="descricao"></p>
+        <input type="text" class="form-control" [(ngModel)]="city" placeholder="{{ 'REGISTER.COMPANY.CITY_PLACEHOLDER' | translate }}" formControlName="city" maxlength="60"
           [ngClass]="{'required': (newCompany.get('address.city').hasError('required') &&
           newCompany.get('address.city').touched)
           || (newCompany.get('address.city').hasError('required') && submitted)
           || (newCompany.get('address.city').hasError('pattern'))
           || (newCompany.get('address.city').hasError('pattern') && submitted)}">
 
-          <p class="requiredText" 
-            *ngIf="(newCompany.get('address.city').hasError('required') && newCompany.get('address.city').touched)
-              || (newCompany.get('address.city').hasError('required') && submitted)">
-              Campo Obrigatório</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" 
+          *ngIf="(newCompany.get('address.city').hasError('required') && newCompany.get('address.city').touched)
+            || (newCompany.get('address.city').hasError('required') && submitted)"> </p>
 
-          <p class="requiredText" *ngIf="(newCompany.get('address.city').hasError('minlength') && newCompany.get('address.city').touched)
-              || (newCompany.get('address.city').hasError('minlength') && submitted)">
-            Mínimo de 5 caracteres</p>
+        <p translate="REGISTER.ERRORS.MIN_5" class="requiredText" *ngIf="(newCompany.get('address.city').hasError('minlength') && newCompany.get('address.city').touched)
+          || (newCompany.get('address.city').hasError('minlength') && submitted)"> </p>
 
-          <p class="requiredText" *ngIf="(newCompany.get('address.city').hasError('pattern')) || (newCompany.get('address.city').hasError('pattern') && submitted)">
-            Excesso de espaços em branco</p>
+        <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" *ngIf="(newCompany.get('address.city').hasError('pattern')) || (newCompany.get('address.city').hasError('pattern') && submitted)"> </p>
       </div>
-
+    
       <div class="form-group col-sm-6 col-md-2">
-        <p class="descricao">UF</p>
+        <p translate="REGISTER.COMPANY.UF" class="descricao"></p>
         <!-- <input [textMask]="{mask: maskUF}" type="text" class="form-control" [(ngModel)]="uf" formControlName="uf"> -->
-        <input 
-          type="text" 
-          class="form-control" 
-          [(ngModel)]="mUf" 
-          formControlName="uf" 
-          placeholder="UF"
-          maxlength="2"
+        <input type="text" class="form-control" [(ngModel)]="uf" formControlName="uf" placeholder="{{ 'REGISTER.COMPANY.UF_PLACEHOLDER' | translate }}" maxlength="2"
           [ngClass]="{'required': (newCompany.get('address.uf').hasError('required') &&
           newCompany.get('address.uf').touched)
           || (newCompany.get('address.uf').hasError('required') && submitted)}">
-          
-          <p class="requiredText" 
-            *ngIf="(newCompany.get('address.uf').hasError('required') && newCompany.get('address.uf').touched) 
-            || (newCompany.get('address.uf').hasError('required') && submitted)">Campo Obrigatório</p>
 
-          <p class="requiredText" 
-            *ngIf="(newCompany.get('address.uf').hasError('pattern')) 
-            || (newCompany.get('address.uf').hasError('pattern') && submitted)">
-            Excesso de espaços em branco</p>
+        <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" 
+          *ngIf="(newCompany.get('address.uf').hasError('required') && newCompany.get('address.uf').touched)
+            || (newCompany.get('address.uf').hasError('required') && submitted)"> </p>
+        
+        <p translate="REGISTER.ERRORS.WHITE_SPACE" class="requiredText" 
+          *ngIf="(newCompany.get('address.uf').hasError('pattern')) 
+          || (newCompany.get('address.uf').hasError('pattern') && submitted)"> </p>
 
-          <p class="requiredText" *ngIf="(newCompany.get('address.uf').hasError('minlength') && newCompany.get('address.uf').touched)
-                    || (newCompany.get('address.uf').hasError('minlength') && submitted)">
-            Mínimo de 2 caracters</p>
+        <p translate="REGISTER.ERRORS.MIN_2" class="requiredText" *ngIf="(newCompany.get('address.uf').hasError('minlength') && newCompany.get('address.uf').touched)
+          || (newCompany.get('address.uf').hasError('minlength') && submitted)"> </p>
       </div>
     </div>
 
     <br />
-    
     <div class="botoes">
-      <button routerLink="/rc/cadastros/company" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
+      <button translate="REGISTER.BACK_BUTTON" routerLink="/rc/cadastros/company" class="botaoVoltar"></button>
+      <button translate="REGISTER.UPDATE_BUTTON" type="submit" class="botaoRegistrar"></button>
     </div>
-    
     <br />
-
   </form>
 </div>

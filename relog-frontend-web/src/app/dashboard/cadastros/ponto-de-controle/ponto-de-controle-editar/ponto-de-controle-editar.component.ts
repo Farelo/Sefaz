@@ -1,9 +1,10 @@
 import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ToastService, GeocodingService, CompaniesService, ControlPointsService, ControlPointTypesService } from 'app/servicos/index.service';
-import { Router, ActivatedRoute } from '@angular/router'; 
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DrawingManager } from '@ngui/map';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ponto-de-controle-editar',
@@ -39,7 +40,7 @@ export class PontoDeControleEditarComponent implements OnInit {
   selectedOverlay: any;
   @ViewChild(DrawingManager) drawingManager: google.maps.drawing.DrawingManager;
 
-  constructor(
+  constructor(public translate: TranslateService,
     private companyService: CompaniesService,
     private controlPointsService: ControlPointsService,
     private controlPointsTypeService: ControlPointTypesService,
@@ -48,6 +49,8 @@ export class PontoDeControleEditarComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder,
     private geocodingService: GeocodingService) {
+
+    if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
 
     this.mControlPoint = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
@@ -66,12 +69,12 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.fillCompanySelect();
     this.getOthersControlPoints();
     this.fillTypesSelect();
-    
+
   }
 
-  onMapReady(){
+  onMapReady() {
     //console.log('onMapReady'); 
-    this.initializeDrawingManager(); 
+    this.initializeDrawingManager();
   }
 
   /**
@@ -117,10 +120,10 @@ export class PontoDeControleEditarComponent implements OnInit {
     });
   }
 
-  printGeofence(){
+  printGeofence() {
     //console.log('printGeofence');
 
-    if (this.mGeofence.type == 'p'){
+    if (this.mGeofence.type == 'p') {
       this.calculatePolygonCenter();
 
     } else {
@@ -128,20 +131,20 @@ export class PontoDeControleEditarComponent implements OnInit {
     }
   }
 
-  calculatePolygonCenter(){
+  calculatePolygonCenter() {
 
-    let lat = this.mGeofence.coordinates.map(p =>  p.lat);
-    let lng = this.mGeofence.coordinates.map(p =>  p.lng);
+    let lat = this.mGeofence.coordinates.map(p => p.lat);
+    let lng = this.mGeofence.coordinates.map(p => p.lng);
 
     //new google.maps.LatLng();
     this.center = {
-      lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
-      lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
+      lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2,
+      lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2
     }
     //console.log('center: ' + JSON.stringify(this.center));
   }
 
-  calculateCircleCenter(){
+  calculateCircleCenter() {
     this.center = this.mGeofence.coordinates[0];
   }
 
@@ -152,7 +155,7 @@ export class PontoDeControleEditarComponent implements OnInit {
   public controlPointCircle: google.maps.Circle = null;
   public controlPointPolygon: google.maps.Polygon = null;
   public mGeofence: any = { coordinates: [] };
-  
+
   generateCircleGeofence(circle: any) {
 
     this.controlPointCircle = circle;
@@ -178,7 +181,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     //console.log(JSON.stringify(this.mGeofence));
   }
 
-  dragPolygon(event: any){
+  dragPolygon(event: any) {
     // console.log(JSON.stringify('aquiiii...'));
   }
 
@@ -264,7 +267,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.drawingManager['initialized$'].subscribe((dm: google.maps.drawing.DrawingManager) => {
 
       this.retrieveControlPoint(dm);
-      
+
     });
   }
 
@@ -308,7 +311,7 @@ export class PontoDeControleEditarComponent implements OnInit {
     });
   }
 
-  createPolygon(dm: google.maps.drawing.DrawingManager, polygon: any){
+  createPolygon(dm: google.maps.drawing.DrawingManager, polygon: any) {
 
     //console.log('createPolygon');
 
@@ -346,7 +349,7 @@ export class PontoDeControleEditarComponent implements OnInit {
   onAddItem(event: any) {
 
     //console.log(event);
-    
+
     if (!event._id) {
 
       if (event.name.length < 5) {
@@ -354,13 +357,13 @@ export class PontoDeControleEditarComponent implements OnInit {
         this.mControlPoint.controls.type.setErrors({ minlength: true });
         return false;
       }
-  
+
       if (event.name.length > 50) {
         this.fillTypesSelect();
         this.mControlPoint.controls.type.setErrors({ maxlength: true });
         return false;
       }
-  
+
       this.controlPointsTypeService.createType({ name: event.name }).subscribe(result => {
         this.controlPointsTypeService.getAllTypes().toPromise().then(() => {
           this.mControlPoint.controls.type.setValue(result);
@@ -383,7 +386,7 @@ export class PontoDeControleEditarComponent implements OnInit {
 
     this.submitted = true;
 
-    if (valid && this.mGeofence.coordinates.length > 0) {  
+    if (valid && this.mGeofence.coordinates.length > 0) {
 
       value.type = this.mControlPoint.controls.type.value._id;
       value.company = this.mControlPoint.controls.company.value._id;
@@ -399,8 +402,8 @@ export class PontoDeControleEditarComponent implements OnInit {
     this.controlPointsService.editControlPoint(this.mId, value).subscribe(result => {
 
       let message = {
-        title: "Ponto de controle atualizado",
-        body: "O ponto de controle foi atualizado com sucesso"
+        title: this.translate.instant('MISC.TOAST.CP_UPDATED_TITLE'),
+        body: this.translate.instant('MISC.TOAST.CP_UPDATED_BODY')
       };
       this.toastService.show('/rc/cadastros/ponto', message);
     }, err => this.toastService.error(err));
@@ -449,8 +452,8 @@ export class PontoDeControleEditarComponent implements OnInit {
   //   event.target.panTo(event.latLng);
   // }
 
-  validateName(event: any){
-    
+  validateName(event: any) {
+
     if (!this.mControlPoint.get('name').errors && (this.mActualControlPoint.name !== this.mControlPoint.get('name').value)) {
 
       this.validateNotTakenLoading = true;

@@ -6,6 +6,27 @@ body {
   overflow-y: scroll;
 }
 
+.ng-sidebar, ng-sidebar--opened, ng-sidebar--over {
+  background-color: #fff !important;
+  z-index: 999 !important;
+}
+
+/* .ng-select.auto-grow {
+  display: flex;
+}
+.ng-select.auto-grow .ng-select-container {
+  min-width: 100px;
+  width: auto;
+} */
+.ng-select .ng-dropdown-panel {
+  width: max-content !important;
+}
+
+.auto-grow  .ng-control{
+  background-color: none !important;
+  border: none !important;
+}
+
 /* g {
 
   transform: translate(50px, 50px)!important;
@@ -62,6 +83,10 @@ body {
   }
 
 } */
+
+.base-container{
+  margin-top: 30px;
+}
 
 /* Slider */
 .noUi-tooltip {

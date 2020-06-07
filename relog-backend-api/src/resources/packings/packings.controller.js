@@ -9,6 +9,7 @@ const projects_service = require("../projects/projects.service");
 const control_points_service = require("../control_points/control_points.service");
 const companies_service = require("../companies/companies.service");
 var https = require("https");
+const utils = require('../../common/utils')
 
 var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 
@@ -203,24 +204,77 @@ exports.check_device = async (req, res) => {
 };
 
 exports.geolocation = async (req, res) => {
-  const query = {
-    company_id: req.query.company_id ? req.query.company_id : null,
-    family_id: req.query.family_id ? req.query.family_id : null,
-    packing_serial: req.query.packing_serial ? req.query.packing_serial : null
-  };
+    const query = {
+        company_id: req.query.company_id ? req.query.company_id : null,
+        family_id: req.query.family_id ? req.query.family_id : null,
+        packing_serial: req.query.packing_serial ? req.query.packing_serial : null
+    }
 
-  if (req.query.family_id) {
-    const family = await families_service.get_family(req.query.family_id);
-    if (!family) return res.status(HttpStatus.NOT_FOUND).send("Invalid family");
-  }
+    if (req.query.family_id) {
+        const family = await families_service.get_family(req.query.family_id)
+        if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
+    }
 
-  if (req.query.company_id) {
-    const company = await companies_service.get_company(req.query.company_id);
-    if (!company)
-      return res.status(HttpStatus.NOT_FOUND).send("Invalid company");
-  }
+    if (req.query.company_id) {
+        const company = await companies_service.get_company(req.query.company_id)
+        if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+    }
 
-  const packings = await packings_service.geolocation(query);
+    const packings = await packings_service.geolocation(query)
 
-  res.json(packings);
-};
+    res.json(packings)
+}
+
+exports.control_point_geolocation = async (req, res) => {
+    const query = {
+        start_date: req.query.start_date ? req.query.start_date : null,
+        end_date: req.query.end_date ? req.query.end_date : null,
+        date: req.query.date ? req.query.date : null,
+        last_hours: req.query.last_hours ? req.query.last_hours : null,
+        company_type: req.query.company_type ? req.query.company_type : null,
+        company_id: req.query.company_id ? req.query.company_id : null,
+        control_point_type: req.query.control_point_type ? req.query.control_point_type : null,
+        control_point_id: req.query.control_point_id ? req.query.control_point_id : null,
+        family_id: req.query.family_id ? req.query.family_id : null,
+        serial: req.query.serial ? req.query.serial : null,
+        serial: req.query.serial ? req.query.serial : null,
+        current_state: req.query.selectedStatus ? req.query.selectedStatus : null,
+        only_good_accuracy: req.query.onlyGoodAccuracy ? req.query.onlyGoodAccuracy : null
+    }
+
+    if (query.start_date != null && !utils.is_valid_date(query.start_date)) {
+        return res.status(HttpStatus.NOT_FOUND).send('Invalid date')
+    }
+
+    if (query.end_date != null && !utils.is_valid_date(query.end_date)) {
+        return res.status(HttpStatus.NOT_FOUND).send('Invalid date')
+    }
+
+    if (query.date != null && !utils.is_valid_date(query.date)) {
+        return res.status(HttpStatus.NOT_FOUND).send('Invalid date')
+    }
+
+    if (req.query.company_type) {
+        const companies = await companies_service.find_by_type(req.query.company_type)
+        if (!companies.length) return res.status(HttpStatus.NOT_FOUND).send('Invalid company type')
+    }
+
+    if (req.query.company_id) {
+        const company = await companies_service.get_company(req.query.company_id)
+        if (!company) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+    }
+
+    if (req.query.family_id) {
+        const family = await families_service.get_family(req.query.family_id)
+        if (!family) return res.status(HttpStatus.NOT_FOUND).send('Invalid family')
+    }
+
+    if (req.query.serial) {
+        const packings = await packings_service.find_by_serial(req.query.serial)
+        if (!packings.length) return res.status(HttpStatus.NOT_FOUND).send('Invalid packings')
+    }
+
+    const packings = await packings_service.control_point_geolocation(query)
+
+    res.json(packings)
+}
