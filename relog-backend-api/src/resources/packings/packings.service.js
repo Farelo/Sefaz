@@ -207,17 +207,11 @@ exports.control_point_geolocation = async (query) => {
     if (query.only_good_accuracy == "true")
       search_conditions["devicedata.accuracy"] = { $lte: settings[0].accuracy_limit };
 
-    console.log(search_conditions);
-
     let factResults = await FactStateMachine.find(search_conditions)
       .populate("packing.family")
       .populate("eventrecord.control_point");
 
-    console.log(factResults.length);
-
-    console.log("query.control_point_type", query.control_point_type);
     if (query.control_point_type) {
-      console.log(">>>>>>>>>>>>>>>>> control_point_type");
       factResults = factResults.filter(
         (elem) =>
           elem.eventrecord.control_point !== null &&
@@ -225,17 +219,13 @@ exports.control_point_geolocation = async (query) => {
           elem.eventrecord.type == 'inbound'
       );
     }
-    console.log(factResults.length);
 
-    console.log("query.company_id", query.company_id);
     if (query.company_id) {
-      console.log(">>>>>>>>>>>>>>>>> company_id");
       factResults = factResults.filter(
         (elem) => elem.packing.family.company == query.company_id // CONFIRMAR
       );
     }
     console.log(factResults.length);
-    console.log("factResults");
     // console.log(JSON.stringify(factResults));
 
     // let control_point_conditions = {}
