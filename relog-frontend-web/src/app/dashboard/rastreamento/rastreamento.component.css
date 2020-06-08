@@ -34,6 +34,7 @@ ngui-map {
   border: none;
   min-width: 100px;
   font-size: 13px;
+  width: 100%;
 }
 
 .botao-registrar:hover {
@@ -269,6 +270,7 @@ button.close {
   background-color: #fff;
   padding: 15px;
   height: 100%;
+  width: 250px;
 }
 
 .input-label {
