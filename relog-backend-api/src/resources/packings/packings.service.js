@@ -207,16 +207,51 @@ exports.control_point_geolocation = async (query) => {
     if (query.only_good_accuracy == "true")
       search_conditions["devicedata.accuracy"] = { $lte: settings[0].accuracy_limit };
 
-    let factResults = await FactStateMachine.find(search_conditions)
-      .populate("packing.family")
-      .populate("eventrecord.control_point");
+    console.log(search_conditions);
+
+    let factResults = await FactStateMachine.aggregate([
+      {
+        $match: search_conditions
+      },
+      {
+        $group: {
+          _id: "$packing.tag",
+          devicedata: { $last: "$devicedata" },
+          eventrecord: { $last: "$eventrecord" },
+          packing: { $last: "$packing" },
+          currentstatehistory: { $last: "$currentstatehistory" },
+        },
+      },
+      {
+        $lookup: {
+          from: "families",
+          localField: "packing.family",
+          foreignField: "_id",
+          as: "packing.family",
+        },
+      },
+      {
+        $lookup: {
+          from: "controlpoints",
+          localField: "eventrecord.control_point",
+          foreignField: "_id",
+          as: "eventrecord.control_point",
+        },
+      },
+      { $unwind: "$packing.family" },
+      { $unwind: "$eventrecord.control_point" },
+    ])
+
+      // .find(search_conditions)
+      // .populate("packing.family")
+      // .populate("eventrecord.control_point");
 
     if (query.control_point_type) {
       factResults = factResults.filter(
         (elem) =>
           elem.eventrecord.control_point !== null &&
           elem.eventrecord.control_point.type == query.control_point_type &&
-          elem.eventrecord.type == 'inbound'
+          elem.eventrecord.type == "inbound"
       );
     }
 

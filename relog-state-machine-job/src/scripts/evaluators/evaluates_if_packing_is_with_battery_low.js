@@ -28,12 +28,20 @@ module.exports = async (packing, setting, companies) => {
         const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert });
         await newCurrentStateHistory.save();
         
-        console.log("[generateNewFact] BATERIA_BAIXA @31");
+        // console.log("[generateNewFact] BATERIA_BAIXA @31");
         await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
       }
 
     } else {
-      if (packing.low_battery) await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true })
+      if (packing.low_battery){ 
+        await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true })
+      
+        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.BATERIA_NORMAL.alert });
+        await newCurrentStateHistory.save();
+        
+        // console.log("[generateNewFact] BATERIA_BAIXA @31");
+        await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+      }
 
       // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
       // if (current_state_history) {

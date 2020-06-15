@@ -17,11 +17,8 @@ module.exports = async (packing, companies) => {
         const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert });
         await newCurrentStateHistory.save();
         
-        console.log("[generateNewFact] SEM_SINAL 20");
+        // console.log("[generateNewFact] SEM_SINAL 20");
         await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
-
-        console.log('packing.absent')
-        console.log(packing.absent)
 
         if(packing.absent == true){
             let actualOfflineWhileAbsentRegister = createOfflineWhileAbsentRegister(packing)

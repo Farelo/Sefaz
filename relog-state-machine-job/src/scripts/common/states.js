@@ -3,6 +3,10 @@ module.exports = {
     key: 'bateria_baixa',
     alert: 'bateria_baixa'
   },
+  BATERIA_NORMAL: {
+    key: 'bateria_normal',
+    alert: 'bateria_normal'
+  },
   DESABILITADA_COM_SINAL: {
     key: 'desabilitada_com_sinal',
     alert: 'desabilitada_com_sinal'

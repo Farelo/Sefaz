@@ -99,7 +99,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
             });
             await outEventRecord.save();
 
-            console.log("[generateNewFact] outbound 105");
+            // console.log("[generateNewFact] outbound 105");
             await factStateMachine.generateNewFact(packing, outEventRecord, null, companies);
 
             //Faz IN no ponto de controle atual
@@ -113,7 +113,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
             });
             await inEventRecord.save();
 
-            console.log("[generateNewFact] inbound 119");
+            // console.log("[generateNewFact] inbound 119");
             await factStateMachine.generateNewFact(packing, inEventRecord, null, companies);
 
             return currentControlPoint;
@@ -145,7 +145,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
           });
           await eventRecord.save();
 
-          console.log("[generateNewFact] inbound 151");
+          // console.log("[generateNewFact] inbound 151");
           await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
 
           return currentControlPoint;
@@ -171,7 +171,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
         });
         await eventRecord.save();
 
-        console.log("[generateNewFact] inbound 177");
+        // console.log("[generateNewFact] inbound 177");
         await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
 
         return currentControlPoint;
@@ -201,7 +201,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
         });
         await eventRecord.save();
 
-        console.log("[generateNewFact] outbound 207");
+        // console.log("[generateNewFact] outbound 207");
         await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
 
         return null;
@@ -259,7 +259,7 @@ const newcheckOut = async (packing, setting, range_radius, distance, currentCont
 
       await eventRecord.save();
 
-      console.log("[generateNewFact] outbound 278");
+      // console.log("[generateNewFact] outbound 278");
       await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
     }
   }
@@ -296,7 +296,7 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
 
         await eventRecord.save();
 
-        console.log("[generateNewFact] inbound 324");
+        // console.log("[generateNewFact] inbound 324");
         await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
       }
     } else {
@@ -321,7 +321,7 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
 
             await eventRecord.save();
 
-            console.log("[generateNewFact] outbound @349");
+            // console.log("[generateNewFact] outbound @349");
             await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
           }
 
@@ -336,7 +336,7 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
 
           await eventRecord.save();
 
-          console.log("[generateNewFact] inbound @370");
+          // console.log("[generateNewFact] inbound @370");
           await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
         } else {
           //mLog('TENTAR OUTBOUND')
@@ -354,7 +354,7 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
 
             await eventRecord.save();
 
-            console.log("[generateNewFact] inbound @389");
+            // console.log("[generateNewFact] inbound @389");
             await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
           }
         }
@@ -376,7 +376,7 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
 
           await eventRecord.save();
 
-          console.log("[generateNewFact] outbound @411");
+          // console.log("[generateNewFact] outbound @411");
           await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
         }
       }

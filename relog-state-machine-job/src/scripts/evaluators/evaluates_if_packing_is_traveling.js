@@ -39,7 +39,7 @@ module.exports = async (packing, setting, companies) => {
                         const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_em_prazo' });
                         await newCurrentStateHistory.save();
                         
-                        console.log("[generateNewFact] viagem_em_prazo @42");
+                        // console.log("[generateNewFact] viagem_em_prazo @42");
                         await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                     }
                 } else {
@@ -53,7 +53,7 @@ module.exports = async (packing, setting, companies) => {
                             const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_perdida' });
                             await newCurrentStateHistory.save();
                             
-                            console.log("[generateNewFact] viagem_perdida @56");
+                            // console.log("[generateNewFact] viagem_perdida @56");
                             await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                         }
 
@@ -67,7 +67,7 @@ module.exports = async (packing, setting, companies) => {
                             const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_atrasada' });
                             await newCurrentStateHistory.save();
                             
-                            console.log("[generateNewFact] viagem_atrasada @70");
+                            // console.log("[generateNewFact] viagem_atrasada @70");
                             await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                         }
 
@@ -85,7 +85,7 @@ module.exports = async (packing, setting, companies) => {
                 const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert });
                 await newCurrentStateHistory.save();
                 
-                console.log("[generateNewFact] ANALISE @88");
+                // console.log("[generateNewFact] ANALISE @88");
                 await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
             }
             
@@ -101,7 +101,7 @@ module.exports = async (packing, setting, companies) => {
                 const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_em_prazo' });
                 await newCurrentStateHistory.save();
                 
-                console.log("[generateNewFact] viagem_em_prazo @104");
+                // console.log("[generateNewFact] viagem_em_prazo @104");
                 await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
             }
         }

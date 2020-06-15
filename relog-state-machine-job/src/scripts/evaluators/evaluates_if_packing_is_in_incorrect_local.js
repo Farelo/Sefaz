@@ -2,9 +2,7 @@
 const STATES = require("../common/states");
 
 // MODELS
-const {
-  CurrentStateHistory,
-} = require("../../models/current_state_history.model");
+const { CurrentStateHistory } = require("../../models/current_state_history.model");
 const { Packing } = require("../../models/packings.model");
 const { Family } = require("../../models/families.model");
 const factStateMachine = require("../../models/fact_state_machine.model");
@@ -18,21 +16,14 @@ module.exports = async (packing, currentControlPoint, companies) => {
 
         const family = await Family.findById(packing.family).populate("routes");
 
-        const packingIsOk = family.routes.filter((route) =>
-          isIncorrectLocalWithRoutes(route, currentControlPoint)
-        );
+        const packingIsOk = family.routes.filter((route) => isIncorrectLocalWithRoutes(route, currentControlPoint));
         if (!packingIsOk.length > 0) {
           //console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
-          await Packing.findByIdAndUpdate(
-            packing._id,
-            { current_state: STATES.LOCAL_INCORRETO.key },
-            { new: true }
-          );
+          await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true });
 
           if (
             packing.last_current_state_history &&
-            packing.last_current_state_history.type ===
-              STATES.LOCAL_INCORRETO.alert
+            packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert
           )
             return null;
 
@@ -42,25 +33,15 @@ module.exports = async (packing, currentControlPoint, companies) => {
           });
           await newCurrentStateHistory.save();
 
-          console.log("[generateNewFact] LOCAL_INCORRETO");
-          await factStateMachine.generateNewFact(
-            packing,
-            null,
-            newCurrentStateHistory,
-            companies
-          );
+          // console.log("[generateNewFact] LOCAL_INCORRETO");
+          await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
         } else {
           //console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
-          await Packing.findByIdAndUpdate(
-            packing._id,
-            { current_state: STATES.LOCAL_CORRETO.key },
-            { new: true }
-          );
+          await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true });
 
           if (
             packing.last_current_state_history &&
-            packing.last_current_state_history.type ===
-              STATES.LOCAL_CORRETO.alert
+            packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert
           )
             return null;
 
@@ -70,22 +51,13 @@ module.exports = async (packing, currentControlPoint, companies) => {
           });
           await newCurrentStateHistory.save();
 
-          console.log("[generateNewFact] LOCAL_CORRETO 73");
-          await factStateMachine.generateNewFact(
-            packing,
-            null,
-            newCurrentStateHistory,
-            companies
-          );
+          // console.log("[generateNewFact] LOCAL_CORRETO 73");
+          await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
         }
       } else {
         /* Checa se a familia tem pontos de controle relacionada a ela */
         //console.log('FAMILIA TEM PONTOS DE CONTROLE RELACIONADAS')
-        await Packing.findByIdAndUpdate(
-          packing._id,
-          { current_state: STATES.LOCAL_CORRETO.key },
-          { new: true }
-        );
+        await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true });
 
         if (
           packing.last_current_state_history &&
@@ -99,7 +71,7 @@ module.exports = async (packing, currentControlPoint, companies) => {
         });
         await newCurrentStateHistory.save();
 
-        console.log("[generateNewFact] LOCAL_CORRETO 102");
+        // console.log("[generateNewFact] LOCAL_CORRETO 102");
         await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
 
         // if (packing.family && packing.family.control_points.length > 0) {
@@ -124,16 +96,9 @@ module.exports = async (packing, currentControlPoint, companies) => {
       }
     } else {
       /* Checa se a familia tem pontos de controle relacionada a ela */
-      await Packing.findByIdAndUpdate(
-        packing._id,
-        { current_state: STATES.ANALISE.key },
-        { new: true }
-      );
+      await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true });
 
-      if (
-        packing.last_current_state_history &&
-        packing.last_current_state_history.type === STATES.ANALISE.alert
-      )
+      if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert)
         return true;
 
       const newCurrentStateHistory = new CurrentStateHistory({
@@ -142,7 +107,7 @@ module.exports = async (packing, currentControlPoint, companies) => {
       });
       await newCurrentStateHistory.save();
 
-      console.log("[generateNewFact] ANALISE 145");
+      // console.log("[generateNewFact] ANALISE 145");
       await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
     }
   } catch (error) {
@@ -156,9 +121,7 @@ const isIncorrectLocal = (value, currentControlPoint) => {
 };
 
 const isIncorrectLocalWithRoutes = (route, currentControlPoint) => {
-  if (route.first_point.toString() === currentControlPoint._id.toString())
-    return route;
-  if (route.second_point.toString() === currentControlPoint._id.toString())
-    return route;
+  if (route.first_point.toString() === currentControlPoint._id.toString()) return route;
+  if (route.second_point.toString() === currentControlPoint._id.toString()) return route;
   return null;
 };
