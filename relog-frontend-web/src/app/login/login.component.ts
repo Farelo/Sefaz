@@ -20,28 +20,45 @@ export class LoginComponent implements OnInit {
     private toastService: ToastService) {
 
     let browserLang = this.translate.getBrowserLang();
-    if(browserLang == undefined) browserLang = 'pt';
+    if (browserLang == undefined) browserLang = 'pt';
 
     console.log(browserLang);
 
     this.translate.use(browserLang.match(/en|es|pt/) ? browserLang : 'pt');
   }
 
-  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
+  async onSubmit({ value, valid }: { value: any, valid: boolean }) {
 
     if (valid) {
-      this.authenticationService.login(value.password, value.email).subscribe(result => {
+      let asyncResult = await this.authenticationService
+        .login(value.password, value.email)
+        .toPromise() 
+        .catch(err => this.toastService.warningunathorized())
+       
+        if(asyncResult){ 
+          if (asyncResult) {
+            this.erroAuth = false;
+            await this.authenticationService.auth(asyncResult); 
+            this.router.navigate(['/rc/home'])
 
-        // console.log('result: ' + JSON.stringify(result));
-
-        if (result) {
-          this.erroAuth = false;
-          this.router.navigate(['/rc/home'])
-
-        } else {
-          this.erroAuth = true;
+          } else {
+            this.erroAuth = true;
+          }  
         }
-      }, err => this.toastService.warningunathorized())
+        // .then(result => {
+        //   console.log('authenticationService result: ' + JSON.stringify(result));
+        //   console.log('A')
+        //   if (result) {
+        //     this.erroAuth = false;
+        //     this.authenticationService.auth(result);
+        //     console.log('D')
+        //     this.router.navigate(['/rc/home'])
+
+        //   } else {
+        //     this.erroAuth = true;
+        //   }
+        // }) //err => 
+        // .catch(err => this.toastService.warningunathorized())
     }
   }
 

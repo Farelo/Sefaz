@@ -22,7 +22,7 @@ export class AuthenticationService {
         email: username,
         password: password
       })
-      .map(response => this.auth(response))
+      // .map(response => this.auth(response))
       .catch(this.handleError);
   }
 
@@ -30,7 +30,7 @@ export class AuthenticationService {
     return Observable.throw(error);
   }
 
-  auth(response) {
+  async auth(response) {
     // login successful if there's a jwt token in the response
     let user = response;
 
@@ -38,13 +38,23 @@ export class AuthenticationService {
       user.token = response.token;
 
       // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem("currentUser", JSON.stringify(user));
+      localStorage.setItem("currentUser", JSON.stringify(user)); 
+      let asyncResult = await this.settingsService.getSettings().toPromise().catch(err=>console.log(err)) 
 
-      //save user seetings
-      this.settingsService.getSettings().subscribe(result => {
-        localStorage.setItem("currentSettings", JSON.stringify(result));
-        this.updateLanguage(result.language);
-      });
+      if(asyncResult){ 
+          localStorage.setItem("currentSettings", JSON.stringify(asyncResult));
+          this.updateLanguage(asyncResult.language);        
+      }
+        // .then((result) => {
+        //   console.log('C')
+        //   localStorage.setItem("currentSettings", JSON.stringify(result));
+        //   this.updateLanguage(result.language);
+        // });
+
+      // this.settingsService.getSettings().subscribe(result => {
+      //   localStorage.setItem("currentSettings", JSON.stringify(result));
+      //   this.updateLanguage(result.language);
+      // });
     }
     return user;
   }
