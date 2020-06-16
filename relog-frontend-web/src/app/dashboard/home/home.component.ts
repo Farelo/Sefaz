@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
     qtd_with_low_battery: 0
   };
 
-  constructor(public translate: TranslateService, private homeService: HomeService) {
+  constructor(public translate: TranslateService, private homeService: HomeService) { 
     if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 
