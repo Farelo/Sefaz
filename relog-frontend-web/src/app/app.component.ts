@@ -13,8 +13,7 @@ export class AppComponent {
   title = 'app works!';
 
   constructor(public translate: TranslateService, private authenticationService: AuthenticationService) {
-    console.log('this.translate.currentLang: ', this.translate.currentLang)
-
+    
     if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) {
 
       translate.addLangs(['en', 'es', 'pt']);

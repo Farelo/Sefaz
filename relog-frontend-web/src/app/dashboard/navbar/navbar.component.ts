@@ -63,7 +63,7 @@ export class NavbarComponent implements OnInit {
       this.selectedLang = actualLang.name;
 
       // this.langForm.controls.lang.setValue(actualLang);
-      console.log(this.actualSettings);
+      // console.log(this.actualSettings);
     })
   }
 
