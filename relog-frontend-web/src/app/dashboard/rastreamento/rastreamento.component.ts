@@ -274,6 +274,8 @@ export class RastreamentoComponent implements OnInit {
    * @param event Control point type object
    */
   controlPointTypeChanged(event: any) {
+    console.log(event)
+    console.log(this.selectedControlPointType)
     if (event) {
       this.listOfControlPoints = this.listOfControlPointsOriginal.filter(elem => {
         return elem.type._id == event._id;
@@ -330,7 +332,7 @@ export class RastreamentoComponent implements OnInit {
     // console.log(this.selectedControlPoint)
 
     if (event) {
-      this.selectedControlPointType = event.type;
+      this.selectedControlPointType = event.type._id;
     } else {
       this.listOfControlPointType = this.listOfControlPointTypeOriginal;
     }

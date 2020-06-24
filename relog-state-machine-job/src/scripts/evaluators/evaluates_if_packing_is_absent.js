@@ -6,7 +6,7 @@ const moment = require('moment')
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
 const { Packing } = require('../../models/packings.model')
 
-module.exports = async (packing, controlPoints, currentControlPoint) => {
+module.exports = async (packing, controlPoints, currentControlPoint, companies) => {
     try {
         if (currentControlPoint) {
             /* Recupera os pontos de controle que são owner */
@@ -22,13 +22,11 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             // Se não iniciou, inicia o giro
             if (!(packingIsOk.length > 0)) {
                 console.log('NÃO ESTÁ NUMA PLANTA DONA')
-                if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
-
-                const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
-                if (current_state_history) {
-                    //console.log("ESTADO DE AUSENTE JÁ CRIADO!") 
-                } else {
-                    await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.AUSENTE.alert })
+                if (!packing.absent_time) {
+                    await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
+                    
+                    // const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.AUSENTE.alert })
+                    // await newCurrentStateHistory.save();
                 }
 
                 packing.absent = true
@@ -44,12 +42,12 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 } 
                 //console.log('ESTÁ NUMA PLANTA DONA')
 
-                current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
-                if (current_state_history) {
-                    await current_state_history.remove()
-                } else {
-                    //console.log("ESTADO DE AUSENTE JÁ REMOVIDO!")
-                }
+                // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
+                // if (current_state_history) {
+                //     await current_state_history.remove()
+                // } else {
+                //     //console.log("ESTADO DE AUSENTE JÁ REMOVIDO!")
+                // }
 
                 packing.absent = false
                 return packing
@@ -64,12 +62,12 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
             }
             
-            const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
-            if (current_state_history) {
-                //console.log("ESTADO DE AUSENTE JÁ CRIADO!")
-            } else {
-                await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.AUSENTE.alert })
-            }
+            // const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
+            // if (current_state_history) {
+            //     //console.log("ESTADO DE AUSENTE JÁ CRIADO!")
+            // } else {
+            //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
+            // }
 
             packing.absent = true
             return packing

@@ -42,7 +42,7 @@
         <section>
           <div>
             <label class="input-label mt-0">Tipo de Ponto de Controle:</label>
-            <ng-select [(ngModel)]="selectedControlPointType" [items]="listOfControlPointType"
+            <ng-select [(ngModel)]="selectedControlPointType" [items]="listOfControlPointType" bindLabel="name" bindValue="_id"
               (change)="controlPointTypeChanged($event)" 
               placeholder="Escolha um ponto de controle">
               <ng-template ng-label-tmp let-item="item">
