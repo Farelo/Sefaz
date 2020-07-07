@@ -75,7 +75,7 @@ module.exports = async (packing, currentControlPoint) => {
                 //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert })
                 // }
                 // } 
-            }
+            // }
         // } else {
         //     /* Checa se a familia tem pontos de controle relacionada a ela */
         //     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
