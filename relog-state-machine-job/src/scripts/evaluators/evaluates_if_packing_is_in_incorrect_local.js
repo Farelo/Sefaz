@@ -94,6 +94,11 @@ const isIncorrectLocal = (value, currentControlPoint) => {
     return value.toString() === currentControlPoint._id.toString()
 }
 
+const isIncorrectLocalWithControlPoints = (cp, currentControlPoint) => {
+    if (cp.toString() === currentControlPoint._id.toString()) return true
+    else return false
+}
+
 const isIncorrectLocalWithRoutes = (route, currentControlPoint) => {
     if (route.first_point.toString() === currentControlPoint._id.toString()) return route
     if (route.second_point.toString() === currentControlPoint._id.toString()) return route
