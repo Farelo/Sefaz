@@ -2,6 +2,7 @@ const debug = require('debug')('job:loka')
 const dm_controller = require('../loka-integration/dm.controller')
 const { Packing } = require('../../models/packings.model')
 const { DeviceData, device_data_save } = require('../../models/device_data.model')
+const moment = require('moment')
 
 module.exports = async () => {
     
@@ -26,21 +27,23 @@ module.exports = async () => {
                 try {
                     const week_in_milliseconds = 604800000
 
-                    //recupera a última mensagem e
-                    //cria janela de tempo de uma semana antes da última mensagem enviada
-                    let end_search_date = (new Date()).toLocaleString()
-                    let start_search_date = packing.last_device_data ? add_seconds(packing.last_device_data.message_date, 1) : new Date(Date.parse(new Date()) - week_in_milliseconds)
+                    //recupera a última mensagem e cria janela de tempo. Se não houver, inicia 1 semana atrás
+                    let start_search_date = packing.last_device_data ?
+                        moment(packing.last_device_data.message_date).add(1, 'seconds').format('YYYY-MM-DD HH:mm:ss').toString() :
+                        moment().subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss').toString();
 
-                    //convete esse timestamp para string
-                    start_search_date = start_search_date.toLocaleString()
+                    let end_search_date = moment().utc().format('YYYY-MM-DD HH:mm:ss').toString()
+                    
+                    // console.log('original: ', packing.last_device_data.message_date)
+                    // console.log('start_search_date: ', start_search_date)
+                    // console.log('end_search_date: ', end_search_date)
 
-                    //verifica na loka se o device existe
-                    //await dm_controller.confirmDevice(packing.tag.code, cookie)
+                    // console.log(' ')
 
                     const device_data_array = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, start_search_date, end_search_date, null, cookie)
 
                     //debug(packing)
-                    debug(`Request ${i + 1}: ${packing.tag.code} | ${start_search_date} | ${end_search_date} | ${device_data_array.length}`)
+                    debug(`Request ${i + 1}: ${packing.tag.code} | ${start_search_date} | ${end_search_date} | ${device_data_array.length} \n`)
 
                     if (device_data_array) {
                         //debug(device_data_array)

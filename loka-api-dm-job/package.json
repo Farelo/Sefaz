@@ -29,7 +29,8 @@
     "node-cron": "^2.0.3",
     "pm2": "^3.2.2",
     "qs": "^6.6.0",
-    "winston": "^3.1.0"
+    "winston": "^3.1.0",
+    "moment": "2.27.0"
   },
   "devDependencies": {
     "chalk": "^2.4.1",
