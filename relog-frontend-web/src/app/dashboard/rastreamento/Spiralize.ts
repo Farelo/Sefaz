@@ -52,6 +52,13 @@ export class Spiralize {
         });
     }
 
+    /**
+     * 
+     * @param list 
+     * @param map 
+     * @param clustered 
+     * @param showIcons 
+     */
     repaint(list: any[], map: any, clustered: boolean = false, showIcons: boolean = true) {
         //Clearing previous state
         this.clearSpiral();

@@ -14,9 +14,9 @@
 
           <h6>Filtros:</h6>
           <div class="form-group">
-            <label>Empresas vinculadas:</label>
+            <label>Empresa vinculada:</label>
             <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)" bindLabel="company.name"
-              placeholder="Escolha um ponto de controle">
+              placeholder="Escolha uma empresa">
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
               </ng-template>

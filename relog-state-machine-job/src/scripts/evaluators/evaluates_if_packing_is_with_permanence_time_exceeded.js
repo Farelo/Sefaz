@@ -19,7 +19,7 @@ module.exports = async (packing, currentControlPoint) => {
 
             const family = await Family.findById(packing.family).populate('company')
 
-            if (family.company.type === 'owner') {
+            if (family.company.type === 'owner' || family.company.type === 'supplier') {
                 if (timeIntervalInDays > gc16.owner_stock.days) {
                     //console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
                     await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })

@@ -125,9 +125,11 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
     try {
         let familiesIds = []
 
-        if (query.company_id != null) {
+        console.log(query)
+        
+        if (query.company_id !== null) {
             familiesIds = await (await Family.find({ company: query.company_id })).map(f => f._id)
-        } else if (query.family_id != null) {
+        } else if (query.family_id !== null) {
             familiesIds.push(new mongoose.Types.ObjectId(query.family_id))
         }
 
@@ -139,12 +141,13 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
             }
         }
 
-        if (query.packing_serial != null) {
+        if (query.packing_serial !== null) {
             conditions['serial'] = {
                 '$eq': query.packing_serial
             }
         }
         
+        console.log(conditions)
         return await Packing.find(conditions).populate('last_device_data').populate('last_device_data_battery').populate('family')
         
     } catch (error) {

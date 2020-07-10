@@ -251,20 +251,21 @@ export class RastreamentoComponent implements OnInit {
    */
   loadPackings() {
 
-    // console.log('.');
+    // console.log('.'); 
 
-    let cp_id = this.selectedCompany !== null ? this.selectedCompany._id : null;
+    // let cp_id = this.selectedCompany !== null ? this.selectedCompany._id : null;
+    let cp_id = null;
     let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
     let serial_id = this.selectedSerial !== null ? this.selectedSerial : null;
 
-    // console.log('this.selectedCompany');
-    // console.log(this.selectedCompany);
+    console.log('\nthis.selectedCompany');
+    console.log(this.selectedCompany);
 
-    // console.log('this.selectedCompany');
-    // console.log(this.selectedFamily);
+    console.log('this.selectedCompany');
+    console.log(this.selectedFamily);
 
-    // console.log('this.selectedSerial');
-    // console.log(this.selectedSerial);
+    console.log('this.selectedSerial');
+    console.log(this.selectedSerial);
 
     this.deviceService.getDeviceData(cp_id, family_id, serial_id).subscribe((result: any[]) => {
 
@@ -288,12 +289,12 @@ export class RastreamentoComponent implements OnInit {
           this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
         }
       }
-      console.log(JSON.stringify(this.plotedPackings));
+      // console.log(JSON.stringify(this.plotedPackings));
 
       //this.resolveClustering();
       if (this.mSpiralize) {
         this.mSpiralize.clearState();
-        this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, true);
+        this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, this.showPackings);
 
       } else {
         this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
