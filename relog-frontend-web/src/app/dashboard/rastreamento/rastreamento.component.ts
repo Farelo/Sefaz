@@ -258,14 +258,14 @@ export class RastreamentoComponent implements OnInit {
     let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
     let serial_id = this.selectedSerial !== null ? this.selectedSerial : null;
 
-    console.log('\nthis.selectedCompany');
-    console.log(this.selectedCompany);
+    // console.log('\nthis.selectedCompany');
+    // console.log(this.selectedCompany);
 
-    console.log('this.selectedCompany');
-    console.log(this.selectedFamily);
+    // console.log('this.selectedCompany');
+    // console.log(this.selectedFamily);
 
-    console.log('this.selectedSerial');
-    console.log(this.selectedSerial);
+    // console.log('this.selectedSerial');
+    // console.log(this.selectedSerial);
 
     this.deviceService.getDeviceData(cp_id, family_id, serial_id).subscribe((result: any[]) => {
 
