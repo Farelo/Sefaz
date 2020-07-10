@@ -139,7 +139,7 @@ function joinPartialMessages(lokaPositions, sigfoxMessages) {
                 longitude: lokaPosition.longitude,
                 accuracy: lokaPosition.accuracy,
                 battery: {
-                    percentage: searchProperty('Battery', sigfoxMatch.messageDecoded),
+                    percentage: searchProperty('Battery', sigfoxMatch.messageDecoded) || searchProperty('Battery Status', sigfoxMatch.messageDecoded),
                     voltage: searchProperty('Battery Voltage', sigfoxMatch.messageDecoded)
                 },
                 temperature: searchProperty('Temperature', sigfoxMatch.messageDecoded),
@@ -152,6 +152,22 @@ function joinPartialMessages(lokaPositions, sigfoxMessages) {
 
     return consolidatedMessages;
 }
+
+
+function translateALPSBattery(value) {
+
+    let result = null;
+
+    if(value !== null){
+        if(value == "Excellent" || value == 3) result = 100;
+        if(value == "Good" || value == 2) result = 70;
+        if(value == "Almost empty" || value == 1) result = 40;
+        if(value == "Empty" || value == 0) result = 10;
+    }
+
+    return result;
+}
+
 
 /**
  * Função para varrer o array messageDecoded retornado pela LOKA que contem subarrays com informações dos sensores.
@@ -169,19 +185,29 @@ let searchProperty = function (propToFind, messageDecoded) {
     if (propertySet) {
         try {
             if (propToFind === 'Temperature') {
+                //Schema: propertySet[1] == "18&deg;C" or propertySet[1] == "23.5"
                 //return propertySet[1].substr(0, propertySet[1].indexOf('&'));
-                return propertySet[1].toString().substr(0, propertySet[1].toString().concat('&').indexOf('&'))
+                //return propertySet[1].toString().substr(0, propertySet[1].toString().concat('&').indexOf('&'))
+                return propertySet[1].split('&')[0]
             }
 
-            else if (propToFind === 'Battery') {
+            if (propToFind === 'Battery') {
                 //return propertySet[1].substr(0, propertySet[1].indexOf('%'));
-                return propertySet[1].toString().substr(0, propertySet[1].toString().concat('%').indexOf('%'))
+                //return propertySet[1].toString().substr(0, propertySet[1].toString().concat('%').indexOf('%'))
+                return propertySet[1].split('%')[0]
             }
 
-            else if (propToFind === 'Battery Voltage') {
+            if (propToFind === 'Battery Voltage') {
+                //Schema: propertySet[1] == "2.72V"
                 //return propertySet[1].substr(0, propertySet[1].indexOf('V'));
-                return propertySet[1].toString().substr(0, propertySet[1].toString().concat('V').indexOf('V'))
+                //return propertySet[1].toString().substr(0, propertySet[1].toString().concat('V').indexOf('V'))
+                return propertySet[1].split('V')[0]
             }
+
+            if (propToFind === 'Battery Status') {
+                return translateALPSBattery(propertySet[1])
+            }
+
         } catch (error) {
             console.log(error);
         }
