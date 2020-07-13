@@ -9,7 +9,7 @@ module.exports = async (packing, setting) => {
   let current_state_history = {}
   
   const battery_level = packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
-
+  
   // if(packing.last_device_data.battery.percentage !== null)
   //   battery_level = packing.last_device_data.battery.percentage
   // else

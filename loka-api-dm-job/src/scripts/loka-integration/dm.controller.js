@@ -162,7 +162,7 @@ function translateALPSBattery(value) {
         if(value == "Excellent" || value == 3) result = 100;
         if(value == "Good" || value == 2) result = 70;
         if(value == "Almost empty" || value == 1) result = 40;
-        if(value == "Empty" || value == 0) result = 10;
+        if(value == "Empty" || value == 0) result = 0;
     }
 
     return result;
