@@ -124,12 +124,12 @@ const device_data_save = async (packing, device_data_array) => {
   // SE batch.length > 1: limpa o batch de mensagens que tem acurácia > 32km, exceto a primeira mensagem;
   // SE batch.length > 0:
   //   SE batch[0] não é elegível:
-  //     vincula batch[0] a last_signal_message em packing;
+  //     vincula batch[0] a last_message_signal em packing;
   //     remove batch[0] de batch;
   //     flag isLastSignalAlreadySaved = true;
   //   salva o batch de mensagens em device data;
   //   vincula batch[0] a last_device_data em packing;
-  //   if(!isLastSignalAlreadySaved) vincula batch[0] a last_signal_message em packing;
+  //   if(!isLastSignalAlreadySaved) vincula batch[0] a last_message_signal em packing;
 
   //Limpa do array todas as mensagens (exceto a primeira) que não tenham
   //acurácia, ou tenham acurácia com mais de 32km
@@ -154,7 +154,7 @@ const device_data_save = async (packing, device_data_array) => {
     let isLastSignalAlreadySaved = false;
     if (newBatchOfMessages[0].accuracy > 32000) {
       let update_attrs = {};
-      update_attrs.last_signal_message = new Date(newBatchOfMessages[0].messageDate);
+      update_attrs.last_message_signal = new Date(newBatchOfMessages[0].messageDate);
       await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
       newBatchOfMessages.slice(1);
       isLastSignalAlreadySaved = true;
@@ -185,7 +185,7 @@ const device_data_save = async (packing, device_data_array) => {
         if (idx == 0) {
           if (!isLastSignalAlreadySaved) {
             let update_attrs = {};
-            update_attrs.last_signal_message = new_device_data.message_date;
+            update_attrs.last_message_signal = new_device_data.message_date;
             await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
           }
 
