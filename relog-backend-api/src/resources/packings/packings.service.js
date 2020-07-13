@@ -125,7 +125,7 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
     try {
         let familiesIds = []
 
-        console.log(query)
+        // console.log(query)
         
         if (query.company_id !== null) {
             familiesIds = await (await Family.find({ company: query.company_id })).map(f => f._id)
@@ -147,8 +147,8 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
             }
         }
         
-        console.log(conditions)
-        return await Packing.find(conditions).populate('last_device_data').populate('last_device_data_battery').populate('family')
+        // console.log(conditions)
+        return await Packing.find(conditions).populate('last_device_data').populate('last_device_data_battery').populate('family', ['_id', 'code'])
         
     } catch (error) {
         throw new Error(error)
