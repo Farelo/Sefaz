@@ -289,7 +289,7 @@ export class RastreamentoComponent implements OnInit {
           this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
         }
       }
-      // console.log(JSON.stringify(this.plotedPackings));
+      console.log(JSON.stringify(this.plotedPackings));
 
       //this.resolveClustering();
       if (this.mSpiralize) {
@@ -332,9 +332,10 @@ export class RastreamentoComponent implements OnInit {
     this.mSpiralize.toggleShowPackings(this.showPackings);
   }
 
-
-  filterChanged(){
-
+  familyChanged(){
+    this.selectedSerial = null; 
+    this.loadPackings(); 
+    this.loadSerialsOfSelectedEquipment();
   }
 
   /**

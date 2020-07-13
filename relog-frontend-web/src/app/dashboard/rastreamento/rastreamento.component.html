@@ -29,7 +29,7 @@
           <div class="form-group">
             <label for="selectCode">Família</label>
             <ng-select id="selectCode" [(ngModel)]="selectedFamily" [items]="listOfFamilies" (clear)="onEquipmentSelectClear()"
-              (change)="loadPackings(); loadSerialsOfSelectedEquipment()" bindLabel="code" placeholder="Selecione um Equipamento">
+              (change)="familyChanged()" bindLabel="code" placeholder="Selecione um Equipamento">
               <ng-template ng-label-tmp let-item="item">
                 {{item.code}}
               </ng-template>
