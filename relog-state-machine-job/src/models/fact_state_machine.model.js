@@ -105,19 +105,20 @@ const factStateMachineSchema = new mongoose.Schema({
  * @param {*} companies The list of all Companies
  */
 exports.generateNewFact = async (packing, eventrecord, currentStateHistory, companies) => {
-  console.log("[generateNewFact] model");
-  console.log("params packing", JSON.stringify(packing));
-  console.log("params eventrecord", JSON.stringify(eventrecord));
-  console.log("params currentStateHistory", JSON.stringify(currentStateHistory));
-  console.log("params companies", companies.length);
-
+  // console.log("[generateNewFact] model");
+  // console.log("params packing", JSON.stringify(packing));
+  // console.log("params eventrecord", JSON.stringify(eventrecord));
+  // console.log("params currentStateHistory", JSON.stringify(currentStateHistory));
+  // console.log("params companies", companies.length);
+  // console.log(' ')
+  
   try {
     if (eventrecord == null) eventrecord = packing.last_event_record;
     if (currentStateHistory == null) currentStateHistory = packing.last_current_state_history;
 
-    let myCompany = null;
-    if (packing.last_event_record)
-      myCompany = companies.find((elem) => elem._id == packing.last_event_record.control_point.company);
+    // let myCompany = null;
+    // if (packing.last_event_record)
+    //   myCompany = companies.find((elem) => elem._id == packing.last_event_record.control_point.company);
 
     let auxDeviceData = {
       _id: getDeviceData(packing, "_id"),
