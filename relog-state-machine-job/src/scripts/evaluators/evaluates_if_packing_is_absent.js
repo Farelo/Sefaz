@@ -21,7 +21,7 @@ module.exports = async (packing, controlPoints, currentControlPoint, companies) 
             /* Se não estiver no ponto de controle OWNER atualiza a embalagem com o status ABSENT */
             // Se não iniciou, inicia o giro
             if (!(packingIsOk.length > 0)) {
-                console.log('NÃO ESTÁ NUMA PLANTA DONA')
+                // console.log('NÃO ESTÁ NUMA PLANTA DONA')
                 if (!packing.absent_time) {
                     await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
                     
@@ -34,7 +34,7 @@ module.exports = async (packing, controlPoints, currentControlPoint, companies) 
 
             } else {
                 // Finaliza o giro
-                console.log('ESTÁ NUMA PLANTA DONA')
+                // console.log('ESTÁ NUMA PLANTA DONA')
                 if (packing.absent_time){
                     let calculate = 0
                     if(packing.cicle_start) calculate = getDiffDateTodayInHours(packing.cicle_start)
@@ -54,10 +54,10 @@ module.exports = async (packing, controlPoints, currentControlPoint, companies) 
             }
 
         } else {
-            console.log('ABSENT. FORA DE PLANTA')
+            // console.log('ABSENT. FORA DE PLANTA')
 
             if (!packing.absent_time) {
-                console.log('NÃO ESTÁ NUMA PLANTA DONA.')
+                // console.log('NÃO ESTÁ NUMA PLANTA DONA.')
                 // Inicia o giro
                 await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
             }

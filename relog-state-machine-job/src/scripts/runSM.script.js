@@ -30,7 +30,6 @@ module.exports = async (setting, packing, controlPoints, companies) => {
   //mLog(packing.tag.code)
 
   try {
-    console.log("runSM");
     /* Se a embalagem está sem registro da loka eu não faço nada */
     if (!packing.last_device_data) return null;
 
@@ -212,6 +211,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
         if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
           /* Retorna o ponto de controle que a embalagem se encontra atualmente */
           currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, companies, setting);
+          // console.log("new aaaaaaa", packing.last_event_record);
 
           /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
           packing = await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint);
@@ -251,6 +251,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
         if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
           /* Retorna o ponto de controle que a embalagem se encontra atualmente */
           currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, companies, setting);
+          // console.log("new aaaaaaa", packing.last_event_record);
           //mLog(currentControlPoint.name)
 
           /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
@@ -292,6 +293,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
         if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
           /* Retorna o ponto de controle que a embalagem se encontra atualmente */
           currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, companies, setting);
+          // console.log("new aaaaaaa", packing.last_event_record);
 
           /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
           packing = await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint);
@@ -332,6 +334,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
         if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
           /* Retorna o ponto de controle que a embalagem se encontra atualmente */
           currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, companies, setting);
+          // console.log("new aaaaaaa", packing.last_event_record);
 
           /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
           packing = await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint);
@@ -372,6 +375,7 @@ module.exports = async (setting, packing, controlPoints, companies) => {
         if (getDiffDateTodayInDays(packing.last_device_data.message_date) < setting.no_signal_limit_in_days) {
           /* Retorna o ponto de controle que a embalagem se encontra atualmente */
           currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, companies, setting);
+          // console.log("new aaaaaaa", packing.last_event_record);
 
           /* Checa se a embalagem está ausente. se estiver atualiza a embalagem */
           packing = await evaluatesIfPackingIsAbsent(packing, controlPoints, currentControlPoint);

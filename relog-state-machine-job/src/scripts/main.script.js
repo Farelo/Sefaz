@@ -7,7 +7,7 @@ const { ControlPoint } = require("../models/control_points.model");
 const { Company } = require("../models/companies.model");
 
 const runSM = require("./runSM.script");
-const spinner = ora("State Machine working...");
+// const spinner = ora("State Machine working...");
 
 module.exports = async () => {
   let setting = await getSettings();
@@ -20,10 +20,7 @@ module.exports = async () => {
       nextSemaphor = false;
 
       setTimeout(async () => {
-        spinner.start();
-
-        console.log("START");
-        console.log(new Date().toISOString());
+        // spinner.start();
 
         setting = await getSettings();
 
@@ -35,7 +32,7 @@ module.exports = async () => {
         const companies = await Company.find({});
         
         //const packings = await Packing.find({ })
-        const packings = await Packing.find({})
+        const packings = await Packing.find({ })
           .populate("family")
           .populate("last_device_data")
           .populate("last_device_data_battery")
@@ -49,7 +46,7 @@ module.exports = async () => {
         //     runSM(setting, packing, controlPoints)
         // })
 
-        spinner.succeed("Finished!");
+        // spinner.succeed("Finished!");
 
         //open the semmaphor
         nextSemaphor = true;
@@ -65,9 +62,14 @@ module.exports = async () => {
 // }
 
 const iteratePackings = async (setting, packings, controlPoints, companies) => {
+  console.log("\nstart state machine . . .");
+  let timeStart = new Date();
+  
   for await (let packing of packings) {
     runSM(setting, packing, controlPoints, companies);
   }
+
+  console.log(`Job encerrado. Inicio em  ${timeStart} e finalizado em  ${new Date()}`)
 };
 
 const getSettings = async () => {
