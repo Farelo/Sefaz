@@ -26,7 +26,7 @@ module.exports = async (packing, setting) => {
       if (current_state_history) {
         //console.log("ESTADO DE BATERIA BAIXA JÁ CRIADO!")
       } else {
-        await CurrentStateHistory.create({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
+        await CurrentStateHistory.create({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
       }
 
     } else {

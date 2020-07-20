@@ -188,23 +188,27 @@ let searchProperty = function (propToFind, messageDecoded) {
                 //Schema: propertySet[1] == "18&deg;C" or propertySet[1] == "23.5"
                 //return propertySet[1].substr(0, propertySet[1].indexOf('&'));
                 //return propertySet[1].toString().substr(0, propertySet[1].toString().concat('&').indexOf('&'))
-                return propertySet[1].split('&')[0]
+                console.log(propertySet)
+                return propertySet[1].toString().split('&')[0]
             }
 
             if (propToFind === 'Battery') {
                 //return propertySet[1].substr(0, propertySet[1].indexOf('%'));
                 //return propertySet[1].toString().substr(0, propertySet[1].toString().concat('%').indexOf('%'))
-                return propertySet[1].split('%')[0]
+                console.log(propertySet)
+                return propertySet[1].toString().split('%')[0]
             }
 
             if (propToFind === 'Battery Voltage') {
                 //Schema: propertySet[1] == "2.72V"
                 //return propertySet[1].substr(0, propertySet[1].indexOf('V'));
                 //return propertySet[1].toString().substr(0, propertySet[1].toString().concat('V').indexOf('V'))
-                return propertySet[1].split('V')[0]
+                console.log(propertySet)
+                return propertySet[1].toString().split('V')[0]
             }
 
             if (propToFind === 'Battery Status') {
+                console.log(propertySet)
                 return translateALPSBattery(propertySet[1])
             }
 

@@ -29,6 +29,10 @@ const currentStateHistorySchema = new mongoose.Schema({
         trim: true,
         required: true
     },
+    device_data_id: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'DeviceData',
+    },
     created_at: {
         type: Date,
         default: Date.now
