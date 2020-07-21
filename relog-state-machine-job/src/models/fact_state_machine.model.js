@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const STATES = require("../scripts/common/states");
 
 const factStateMachineSchema = new mongoose.Schema({
+  type:{
+    type: String,
+  },
   packing: {
     _id: {
       type: mongoose.Schema.ObjectId,
@@ -54,6 +57,9 @@ const factStateMachineSchema = new mongoose.Schema({
         type: Number,
       },
     },
+    seq_number:{
+      type: Number,
+    },
     created_at: {
       type: Date,
       default: Date.now,
@@ -104,7 +110,7 @@ const factStateMachineSchema = new mongoose.Schema({
  * @param {*} currentstatehistory A new CurrentStateHistory object or null if wnats to reapeat the Packing.last_current_state_history
  * @param {*} companies The list of all Companies
  */
-exports.generateNewFact = async (packing, eventrecord, currentStateHistory, companies) => {
+exports.generateNewFact = async (factType, packing, eventrecord, currentStateHistory, companies) => {
   // console.log("[generateNewFact] model");
   // console.log("params packing", JSON.stringify(packing));
   // console.log("params eventrecord", JSON.stringify(eventrecord));
@@ -129,6 +135,7 @@ exports.generateNewFact = async (packing, eventrecord, currentStateHistory, comp
       accuracy: getDeviceData(packing, "accuracy"),
       temperature: getDeviceData(packing, "temperature"),
       battery: getDeviceData(packing, "battery"),
+      seq_number: getDeviceData(packing, "seq_number"),
       created_at: getDeviceData(packing, "created_at"),
     };
 
@@ -146,6 +153,7 @@ exports.generateNewFact = async (packing, eventrecord, currentStateHistory, comp
     };
 
     let newFact = {
+      type: factType,
       packing: {
         _id: packing._id,
         family: packing.family._id,
@@ -159,7 +167,7 @@ exports.generateNewFact = async (packing, eventrecord, currentStateHistory, comp
 
     let newFactStateMachineObject = new FactStateMachine(newFact);
 
-    console.log("newFactStateMachineObject", JSON.stringify(newFactStateMachineObject));
+    // console.log("newFactStateMachineObject", JSON.stringify(newFactStateMachineObject));
 
     await newFactStateMachineObject.save();
   } catch (error) {

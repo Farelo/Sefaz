@@ -14,6 +14,7 @@ const currentStateHistorySchema = new mongoose.Schema({
             'viagem_perdida',
             'local_incorreto',
             'bateria_baixa',
+            'bateria_normal',
             'viagem_atrasada',
             'tempo_de_permanencia_excedido',
             'sem_sinal',

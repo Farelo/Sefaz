@@ -1,6 +1,7 @@
 const debug = require("debug")("model:device_data");
 const mongoose = require("mongoose");
 const { Packing } = require("./packings.model");
+const factStateMachine = require("../models/fact_state_machine.model");
 
 const deviceDataSchema = new mongoose.Schema({
   device_id: {
@@ -245,7 +246,15 @@ const update_link_to_last_devicedata = async (packing, device_data) => {
       // debug('last_device_data_battery', packing.last_device_data_battery)
       // debug('update_attrs.last_device_data_battery', update_attrs.last_device_data_battery)
 
-      await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+      await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true }, function (err, result) {
+        if (result) {
+          try {
+            factStateMachine.generateNewFact("message", result, null, null, companies);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
     }
   } catch (error) {
     debug(error);

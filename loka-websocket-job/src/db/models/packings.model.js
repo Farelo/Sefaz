@@ -6,144 +6,148 @@ const packingSchema = new mongoose.Schema({
       type: String,
       minlength: 4,
       maxlength: 25,
-      required: true
+      required: true,
     },
     version: {
       type: String,
       minlength: 1,
-      maxlength: 100
+      maxlength: 100,
     },
     manufactorer: {
       type: String,
       minlength: 2,
-      maxlength: 100
-    }
+      maxlength: 100,
+    },
   },
   serial: {
     type: String,
     minlength: 2,
     maxlength: 30,
-    required: true
+    required: true,
   },
   type: {
     type: String,
     minlength: 0,
-    maxlength: 100
+    maxlength: 100,
   },
   weigth: {
     type: Number,
     max: 10000,
-    default: 0
+    default: 0,
   },
   width: {
     type: Number,
     max: 10000,
-    default: 0
+    default: 0,
   },
   heigth: {
     type: Number,
     max: 10000,
-    default: 0
+    default: 0,
   },
   length: {
     type: Number,
     max: 10000,
-    default: 0
+    default: 0,
   },
   capacity: {
     type: Number,
     max: 10000,
-    default: 0
+    default: 0,
   },
   temperature: {
     type: Number,
     max: 1000,
-    default: 0
+    default: 0,
   },
   observations: {
     type: String,
     minlength: 0,
-    maxlength: 250
+    maxlength: 250,
   },
   active: {
     type: Boolean,
-    default: false
+    default: false,
   },
   absent: {
     type: Boolean,
-    default: false
+    default: false,
   },
   low_battery: {
     type: Boolean,
-    default: false
+    default: false,
   },
   permanence_time_exceeded: {
     type: Boolean,
-    default: false
+    default: false,
   },
   family: {
     type: mongoose.Schema.ObjectId,
     ref: "Family",
-    required: true
+    required: true,
   },
   last_device_data: {
     type: mongoose.Schema.ObjectId,
-    ref: "DeviceData"
+    ref: "DeviceData",
   },
   last_device_data_battery: {
     type: mongoose.Schema.ObjectId,
-    ref: "DeviceData"
+    ref: "DeviceData",
   },
   last_current_state_history: {
     type: mongoose.Schema.ObjectId,
-    ref: "CurrentStateHistory"
+    ref: "CurrentStateHistory",
   },
   last_department: {
     type: mongoose.Schema.ObjectId,
-    ref: "Department"
+    ref: "Department",
   },
   last_event_record: {
     type: mongoose.Schema.ObjectId,
-    ref: "EventRecord"
+    ref: "EventRecord",
   },
   project: {
     type: mongoose.Schema.ObjectId,
-    ref: "Project"
+    ref: "Project",
   },
   current_state: {
     type: String,
     required: true,
     enum: [
+      "viagem_perdida",
+      "local_incorreto",
+      "bateria_baixa",
+      "bateria_normal",
+      "viagem_atrasada",
+      "tempo_de_permanencia_excedido",
+      "sem_sinal",
+      "perdida",
       "desabilitada_com_sinal",
       "desabilitada_sem_sinal",
       "analise",
+      "ausente",
       "viagem_em_prazo",
-      "viagem_atrasada",
-      "viagem_perdida",
-      "sem_sinal",
-      "perdida",
       "local_correto",
-      "local_incorreto"
     ],
     lowercase: true,
     default: "analise",
-    trim: true
+    trim: true,
   },
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   update_at: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-packingSchema.statics.findByTag = function(tag, projection = "") {
+packingSchema.statics.findByTag = function (tag, projection = "") {
   return this.findOne({ "tag.code": tag.code }, projection);
 };
 
-const update_updated_at_middleware = function(next) {
+const update_updated_at_middleware = function (next) {
   let update = this.getUpdate();
   update.update_at = new Date();
   next();

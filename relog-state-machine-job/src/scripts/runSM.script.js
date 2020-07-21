@@ -15,6 +15,7 @@ const evaluatesIfPackingIsWithBatteryLow = require('./evaluators/evaluates_if_pa
 const evaluatesIfPackingIsInIncorrectLocal = require('./evaluators/evaluates_if_packing_is_in_incorrect_local')
 const evaluatesIfPackingIsWithPermanenceTimeExceeded = require('./evaluators/evaluates_if_packing_is_with_permanence_time_exceeded')
 const evaluatesIfPackingIsTraveling = require('./evaluators/evaluates_if_packing_is_traveling')
+const factStateMachine = require("../models/fact_state_machine.model");
 
 module.exports = async (setting, packing, controlPoints) => {
     let next_state
@@ -48,7 +49,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 await newCurrentStateHistory.save();
 
                 try {
-                    factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                    factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                 } catch (error) { console.log(error); }
                   
                 return null
@@ -63,7 +64,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     await newCurrentStateHistory.save();
 
                     try {
-                        factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                     } catch (error) {
                         console.log(error);
                     }
@@ -76,7 +77,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     await newCurrentStateHistory.save();
 
                     try { 
-                        factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                     } catch (error) {
                         console.log(error);
                     }
@@ -143,7 +144,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     await newCurrentStateHistory.save();
 
                     try { 
-                        factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                     } catch (error) {
                         console.log(error);
                     }          
@@ -163,7 +164,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await newCurrentStateHistory.save();
 
                         try {
-                            factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                            factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                         } catch (error) {
                             console.log(error);
                         }
@@ -403,9 +404,8 @@ module.exports = async (setting, packing, controlPoints) => {
                             const newCurrentStateHistory = new  CurrentStateHistory({ packing: packing._id, type: STATES.SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                             await newCurrentStateHistory.save();
 
-                            try {
-                                console.log("[generateNewFact] SEM_SINAL SINAL");
-                                factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                            try { 
+                                factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                             } catch (error) {
                                 console.log(error);
                             }
@@ -419,9 +419,8 @@ module.exports = async (setting, packing, controlPoints) => {
                             const newCurrentStateHistory2 = new  CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                             await newCurrentStateHistory2.save();
 
-                            try {
-                                console.log("[generateNewFact] SEM_SINAL ANALISE");
-                                factStateMachine.generateNewFact(packing, null, newCurrentStateHistory2, companies);
+                            try { 
+                                factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory2, companies);
                             } catch (error) {
                                 console.log(error);
                             }
@@ -435,7 +434,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await newCurrentStateHistory.save();
 
                         try {
-                            factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                            factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                         } catch (error) {
                             console.log(error);
                         }
@@ -451,7 +450,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await newCurrentStateHistory.save();
 
                         try {
-                          factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                          factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                         } catch (error) {
                           console.log(error);
                         }
@@ -465,7 +464,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await newCurrentStateHistory2.save();
 
                         try { 
-                          factStateMachine.generateNewFact(packing, null, newCurrentStateHistory2, companies);
+                          factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory2, companies);
                         } catch (error) {
                           console.log(error);
                         }
@@ -489,7 +488,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await newCurrentStateHistory.save();
 
                         try { 
-                          factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                          factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                         } catch (error) {
                           console.log(error);
                         }
@@ -500,11 +499,11 @@ module.exports = async (setting, packing, controlPoints) => {
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
                         
-                        let newCurrentStateHistory2 = new CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        const newCurrentStateHistory2 = new CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                         await newCurrentStateHistory2.save();
 
                         try { 
-                            factStateMachine.generateNewFact(packing, null, newCurrentStateHistory2, companies);
+                            factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory2, companies);
                         } catch (error) {
                             console.log(error);
                         }
@@ -517,7 +516,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await newCurrentStateHistory.save();
 
                         try {
-                            factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                            factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                         } catch (error) {
                             console.log(error);
                         }
@@ -532,7 +531,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     await newCurrentStateHistory.save();
 
                     try { 
-                        factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
                     } catch (error) {
                         console.log(error);
                     }

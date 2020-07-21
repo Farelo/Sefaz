@@ -102,7 +102,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
             });
             await outEventRecord.save();
 
-            await factStateMachine.generateNewFact(packing, outEventRecord, null, companies);
+            await factStateMachine.generateNewFact('event', packing, outEventRecord, null, companies);
 
             //Faz IN no ponto de controle atual
             const inEventRecord = new EventRecord({
@@ -117,7 +117,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
 
             packing.last_event_record = inEventRecord;
 
-            await factStateMachine.generateNewFact(packing, inEventRecord, null, companies);
+            await factStateMachine.generateNewFact('event', packing, inEventRecord, null, companies);
 
             return currentControlPoint;
           } else {
@@ -150,7 +150,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
           
           packing.last_event_record = eventRecord;
 
-          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+          await factStateMachine.generateNewFact('event', packing, eventRecord, null, companies);
 
           return currentControlPoint;
         } else {
@@ -178,7 +178,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
         packing.last_event_record = eventRecord;
         packing.new_last_event_record = eventRecord;
         
-        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+        await factStateMachine.generateNewFact('event', packing, eventRecord, null, companies);
 
         return currentControlPoint;
       } else {
@@ -209,7 +209,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
 
         packing.last_event_record = eventRecord;
         
-        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+        await factStateMachine.generateNewFact('event', packing, eventRecord, null, companies);
 
         return null;
       } else {
@@ -281,7 +281,7 @@ const newcheckOut = async (
 
       packing.last_event_record = eventRecord;
       
-      await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+      await factStateMachine.generateNewFact('event', packing, eventRecord, null, companies);
     }
   }
 };
@@ -328,7 +328,7 @@ const checkIn = async (
 
         packing.last_event_record = eventRecord;
         
-        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+        await factStateMachine.generateNewFact('event', packing, eventRecord, null, companies);
       }
 
     } else {
@@ -359,7 +359,7 @@ const checkIn = async (
 
             await eventRecord.save();
 
-            await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+            await factStateMachine.generateNewFact('event', packing, eventRecord, null, companies);
           }
 
           const eventRecord = new EventRecord({
@@ -375,7 +375,7 @@ const checkIn = async (
 
           packing.last_event_record = eventRecord;
           
-          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+          await factStateMachine.generateNewFact('event', packing, eventRecord, null, companies);
 
         } else {
           //mLog('TENTAR OUTBOUND')
@@ -395,7 +395,7 @@ const checkIn = async (
 
             packing.last_event_record = eventRecord;
             
-            await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+            await factStateMachine.generateNewFact('event', packing, eventRecord, null, companies);
           }
         }
       } else {
@@ -418,7 +418,7 @@ const checkIn = async (
 
           packing.last_event_record = eventRecord;
           
-          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+          await factStateMachine.generateNewFact('event', packing, eventRecord, null, companies);
         }
       }
     }

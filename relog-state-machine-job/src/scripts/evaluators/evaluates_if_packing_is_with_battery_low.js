@@ -34,7 +34,7 @@ module.exports = async (packing, setting) => {
         await newCurrentStateHistory.save();
         
         // console.log("[generateNewFact] BATERIA_BAIXA @31");
-        await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+        await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
       }
 
     } else {
@@ -44,7 +44,7 @@ module.exports = async (packing, setting) => {
         await newCurrentStateHistory.save();
         
         // console.log("[generateNewFact] BATERIA_BAIXA @31");
-        await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+        await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
     }
   } catch (error) {
     console.error(error);
