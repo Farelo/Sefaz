@@ -116,6 +116,10 @@ const packingSchema = new mongoose.Schema({
         ref: 'Family',
         required: true
     },
+    last_message_signal:{
+        type: Date,
+        default: null
+    },
     last_device_data: {
         type: mongoose.Schema.ObjectId,
         ref: 'DeviceData'

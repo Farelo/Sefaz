@@ -13,7 +13,7 @@ module.exports = async (packing) => {
         //if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.SEM_SINAL.alert) return null
         if (packing.current_state && packing.current_state === STATES.SEM_SINAL.alert) return null
 
-        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SEM_SINAL.alert })
+        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SEM_SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
         // await currentStateHistory.save()
 
         console.log('packing.absent')

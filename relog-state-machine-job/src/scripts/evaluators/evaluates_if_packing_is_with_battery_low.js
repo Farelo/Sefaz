@@ -9,7 +9,7 @@ module.exports = async (packing, setting) => {
   let current_state_history = {}
   
   const battery_level = packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
-
+  
   // if(packing.last_device_data.battery.percentage !== null)
   //   battery_level = packing.last_device_data.battery.percentage
   // else
@@ -26,7 +26,7 @@ module.exports = async (packing, setting) => {
       if (current_state_history) {
         //console.log("ESTADO DE BATERIA BAIXA JÁ CRIADO!")
       } else {
-        await CurrentStateHistory.create({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
+        await CurrentStateHistory.create({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
       }
 
     } else {

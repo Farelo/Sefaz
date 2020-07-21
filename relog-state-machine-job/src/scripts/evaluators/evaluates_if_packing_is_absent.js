@@ -28,7 +28,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                 if (current_state_history) {
                     //console.log("ESTADO DE AUSENTE JÁ CRIADO!") 
                 } else {
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
+                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                 }
 
                 packing.absent = true
@@ -68,7 +68,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             if (current_state_history) {
                 //console.log("ESTADO DE AUSENTE JÁ CRIADO!")
             } else {
-                await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert })
+                await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
             }
 
             packing.absent = true
