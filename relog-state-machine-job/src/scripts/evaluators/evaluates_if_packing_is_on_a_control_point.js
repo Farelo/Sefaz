@@ -3,6 +3,7 @@ const turf = require("@turf/turf");
 const martinez = require('martinez-polygon-clipping');
 const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_in_km");
 const { EventRecord } = require("../../models/event_record.model");
+const factStateMachine = require("../../models/fact_state_machine.model");
 
 module.exports = async (packing, controlPoints, setting) => {
   try {
@@ -101,6 +102,8 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
             });
             await outEventRecord.save();
 
+            await factStateMachine.generateNewFact(packing, outEventRecord, null, companies);
+
             //Faz IN no ponto de controle atual
             const inEventRecord = new EventRecord({
               packing: packing._id,
@@ -111,6 +114,10 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
               device_data_id: deviceDataId
             });
             await inEventRecord.save();
+
+            packing.last_event_record = inEventRecord;
+
+            await factStateMachine.generateNewFact(packing, inEventRecord, null, companies);
 
             return currentControlPoint;
           } else {
@@ -140,6 +147,11 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
             device_data_id: deviceDataId
           });
           await eventRecord.save();
+          
+          packing.last_event_record = eventRecord;
+
+          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+
           return currentControlPoint;
         } else {
           mLog("SINAL RUIM");
@@ -162,6 +174,12 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
           device_data_id: deviceDataId
         });
         await eventRecord.save();
+
+        packing.last_event_record = eventRecord;
+        packing.new_last_event_record = eventRecord;
+        
+        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+
         return currentControlPoint;
       } else {
         mLog("SINAL RUIM");
@@ -188,6 +206,11 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
           device_data_id: deviceDataId
         });
         await eventRecord.save();
+
+        packing.last_event_record = eventRecord;
+        
+        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+
         return null;
       } else {
         mLog("ULTIMO EVENTO FOI OUT");
@@ -255,6 +278,10 @@ const newcheckOut = async (
       });
 
       await eventRecord.save();
+
+      packing.last_event_record = eventRecord;
+      
+      await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
     }
   }
 };
@@ -298,7 +325,12 @@ const checkIn = async (
         });
 
         await eventRecord.save();
+
+        packing.last_event_record = eventRecord;
+        
+        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
       }
+
     } else {
       //mLog('EMBALAGEM JÁ TEM O EVENT RECORD')
       if (
@@ -326,6 +358,8 @@ const checkIn = async (
             });
 
             await eventRecord.save();
+
+            await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
           }
 
           const eventRecord = new EventRecord({
@@ -338,6 +372,11 @@ const checkIn = async (
           });
 
           await eventRecord.save();
+
+          packing.last_event_record = eventRecord;
+          
+          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+
         } else {
           //mLog('TENTAR OUTBOUND')
           if (packing.last_event_record.type === "outbound") {
@@ -353,6 +392,10 @@ const checkIn = async (
             });
 
             await eventRecord.save();
+
+            packing.last_event_record = eventRecord;
+            
+            await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
           }
         }
       } else {
@@ -372,6 +415,10 @@ const checkIn = async (
           });
 
           await eventRecord.save();
+
+          packing.last_event_record = eventRecord;
+          
+          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
         }
       }
     }

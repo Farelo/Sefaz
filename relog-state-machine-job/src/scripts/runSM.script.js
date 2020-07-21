@@ -44,8 +44,13 @@ module.exports = async (setting, packing, controlPoints) => {
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.DESABILITADA_COM_SINAL.key }, { new: true })
 
                 if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.DESABILITADA_COM_SINAL.alert) return null
-                await CurrentStateHistory.create({ packing: packing._id, type: STATES.DESABILITADA_COM_SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.DESABILITADA_COM_SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                await newCurrentStateHistory.save();
 
+                try {
+                    factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                } catch (error) { console.log(error); }
+                  
                 return null
             } else {
                 /* Embalagem sem sinal */
@@ -53,12 +58,28 @@ module.exports = async (setting, packing, controlPoints) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.DESABILITADA_SEM_SINAL.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.DESABILITADA_SEM_SINAL.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.DESABILITADA_SEM_SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+
+                    const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.DESABILITADA_SEM_SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                    await newCurrentStateHistory.save();
+
+                    try {
+                        factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                    } catch (error) {
+                        console.log(error);
+                    }
                 } else {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.PERDIDA.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERDIDA.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+
+                    const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.PERDIDA.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                    await newCurrentStateHistory.save();
+
+                    try { 
+                        factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
                 return null
             }
@@ -93,10 +114,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         /* Embalagem está em viagem */
@@ -118,7 +139,14 @@ module.exports = async (setting, packing, controlPoints) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null })
+                    const newCurrentStateHistory = new  CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null })
+                    await newCurrentStateHistory.save();
+
+                    try { 
+                        factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                    } catch (error) {
+                        console.log(error);
+                    }          
                 }
                 break
             case STATES.DESABILITADA_SEM_SINAL.key:
@@ -130,7 +158,15 @@ module.exports = async (setting, packing, controlPoints) => {
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+
+                        await newCurrentStateHistory.save();
+
+                        try {
+                            factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        } catch (error) {
+                            console.log(error);
+                        }
                     }
                 }
                 break
@@ -161,10 +197,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         /* Embalagem está em viagem */
@@ -207,10 +243,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         //mLog("EM VIAGEM")
@@ -250,10 +286,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         //mLog("EM VIAGEM")
@@ -293,10 +329,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         //mLog("EM VIAGEM")
@@ -336,10 +372,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         //mLog("EM VIAGEM")
@@ -364,20 +400,45 @@ module.exports = async (setting, packing, controlPoints) => {
                     if (getDiffDateTodayInDays(lastMessageDate) < setting.missing_sinal_limit_in_days) {
                         /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                         if (getDiffDateTodayInDays(lastMessageDate) < setting.no_signal_limit_in_days) {
-                            await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                            const newCurrentStateHistory = new  CurrentStateHistory({ packing: packing._id, type: STATES.SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                            await newCurrentStateHistory.save();
+
+                            try {
+                                console.log("[generateNewFact] SEM_SINAL SINAL");
+                                factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                            } catch (error) {
+                                console.log(error);
+                            }
 
                             let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
 
                             await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                             if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                            await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+
+                            const newCurrentStateHistory2 = new  CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                            await newCurrentStateHistory2.save();
+
+                            try {
+                                console.log("[generateNewFact] SEM_SINAL ANALISE");
+                                factStateMachine.generateNewFact(packing, null, newCurrentStateHistory2, companies);
+                            } catch (error) {
+                                console.log(error);
+                            }
+                            
                         }
                     } else {
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.PERDIDA.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.PERDIDA.alert) return null
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERDIDA.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.PERDIDA.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        await newCurrentStateHistory.save();
+
+                        try {
+                            factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        } catch (error) {
+                            console.log(error);
+                        }
                     }
 
                     //Executa apenas se o alerta de perdido está desabilitado
@@ -386,14 +447,29 @@ module.exports = async (setting, packing, controlPoints) => {
                     //mLog('PERDIDO NÃO HABILITADO')
                     /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                     if (getDiffDateTodayInDays(lastMessageDate) < setting.no_signal_limit_in_days) {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        await newCurrentStateHistory.save();
+
+                        try {
+                          factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        } catch (error) {
+                          console.log(error);
+                        }
 
                         let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
 
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        const newCurrentStateHistory2 = new  CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        await newCurrentStateHistory2.save();
+
+                        try { 
+                          factStateMachine.generateNewFact(packing, null, newCurrentStateHistory2, companies);
+                        } catch (error) {
+                          console.log(error);
+                        }
+
                     }
                 }
 
@@ -409,20 +485,42 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                     if (getDiffDateTodayInDays(lastMessageDate) < setting.missing_sinal_limit_in_days) {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        await newCurrentStateHistory.save();
+
+                        try { 
+                          factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        } catch (error) {
+                          console.log(error);
+                        }
 
                         let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
 
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        
+                        let newCurrentStateHistory2 = new CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        await newCurrentStateHistory2.save();
+
+                        try { 
+                            factStateMachine.generateNewFact(packing, null, newCurrentStateHistory2, companies);
+                        } catch (error) {
+                            console.log(error);
+                        }
                     }
 
                 } else {
                     //mLog('STATUS PERDIDA NÃO HABILITADO')
                     if (getDiffDateTodayInDays(lastMessageDate) < setting.missing_sinal_limit_in_days) {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        await newCurrentStateHistory.save();
+
+                        try {
+                            factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                        } catch (error) {
+                            console.log(error);
+                        }
                     }
 
                     let actualOfflineWhileAbsentRegister = updateOfflineWhileAbsentRegister(packing)
@@ -430,7 +528,14 @@ module.exports = async (setting, packing, controlPoints) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                    const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                    await newCurrentStateHistory.save();
+
+                    try { 
+                        factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
 
                 break

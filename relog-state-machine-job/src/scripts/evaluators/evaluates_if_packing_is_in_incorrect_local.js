@@ -5,6 +5,7 @@ const STATES = require('../common/states')
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
 const { Packing } = require('../../models/packings.model')
 const { Family } = require('../../models/families.model')
+const factStateMachine = require("../../models/fact_state_machine.model");
 
 module.exports = async (packing, currentControlPoint) => {
     try {
@@ -21,13 +22,20 @@ module.exports = async (packing, currentControlPoint) => {
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                    const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                    await newCurrentStateHistory.save();
+
+                    // console.log("[generateNewFact] LOCAL_INCORRETO");
+                    await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                 } else {
                     //console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                    const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                    await newCurrentStateHistory.save();
+
+                    await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                 }
                 
                 // const family = await Family.findById(packing.family)

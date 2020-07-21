@@ -5,6 +5,7 @@ const STATES = require('../common/states')
 const { Family } = require('../../models/families.model')
 const { Packing } = require('../../models/packings.model')
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
+const factStateMachine = require('../../models/fact_state_machine.model')
 
 module.exports = async (packing, setting) => {
     let routeMax
@@ -35,7 +36,10 @@ module.exports = async (packing, setting) => {
                     if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_em_prazo') {
                         //console.log("-")
                     } else {
-                        await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        await newCurrentStateHistory.save();
+                        
+                        await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                     }
                 } else {
                     if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
@@ -45,7 +49,10 @@ module.exports = async (packing, setting) => {
                         if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_perdida') {
                             //console.log("-")
                         } else {
-                            await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_perdida', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                            const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_perdida', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                            await newCurrentStateHistory.save();
+                            
+                            await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                         }
 
                     } else {
@@ -55,7 +62,10 @@ module.exports = async (packing, setting) => {
                         if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_atrasada'.alert) {
                             //console.log("-")
                         } else {
-                            await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_atrasada', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                            const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_atrasada', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                            await newCurrentStateHistory.save();
+                             
+                            await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
                         }
 
                     }
@@ -68,7 +78,11 @@ module.exports = async (packing, setting) => {
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                 if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return true
-                await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                
+                const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                await newCurrentStateHistory.save();
+                 
+                await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
             }
             
         //Emanoel
@@ -80,7 +94,10 @@ module.exports = async (packing, setting) => {
                 //console.log("-")
             } else {
                 //console.log("STATE HISTORY CRIADO")
-                await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                await newCurrentStateHistory.save();
+                 
+                await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
             }
         }
     } catch (error) {
