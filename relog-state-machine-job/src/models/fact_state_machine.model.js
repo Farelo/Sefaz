@@ -14,7 +14,6 @@ const factStateMachineSchema = new mongoose.Schema({
     family: {
       type: mongoose.Schema.ObjectId,
       ref: "Family",
-      required: true,
     },
     serial: {
       type: String,
@@ -72,23 +71,16 @@ const factStateMachineSchema = new mongoose.Schema({
     },
     accuracy: {
       type: Number,
-      default: 0,
     },
     control_point: {
       type: mongoose.Schema.ObjectId,
       ref: "ControlPoint",
-      required: true,
     },
     type: {
       type: String,
-      required: true,
-      enum: ["inbound", "outbound"],
-      lowercase: true,
-      trim: true,
     },
     created_at: {
       type: Date,
-      default: Date.now,
     },
   },
   currentstatehistory: {
@@ -98,19 +90,18 @@ const factStateMachineSchema = new mongoose.Schema({
     },
     created_at: {
       type: Date,
-      default: Date.now,
     },
   },
 });
 
 /**
- *
+ * 
+ * @param {*} factType Type of fact
  * @param {*} packing The Packing object
- * @param {*} eventrecords A new EventRecord object or null if want to repeat the packing.last_event_record
- * @param {*} currentstatehistory A new CurrentStateHistory object or null if wnats to reapeat the Packing.last_current_state_history
- * @param {*} companies The list of all Companies
+ * @param {*} eventrecord A new EventRecord object or null if want to repeat the packing.last_event_record
+ * @param {*} currentStateHistory A new CurrentStateHistory object or null if wnats to reapeat the Packing.last_current_state_history
  */
-exports.generateNewFact = async (factType, packing, eventrecord, currentStateHistory, companies) => {
+exports.generateNewFact = async (factType, packing, eventrecord, currentStateHistory) => {
   // console.log("[generateNewFact] model");
   // console.log("params packing", JSON.stringify(packing));
   // console.log("params eventrecord", JSON.stringify(eventrecord));
@@ -126,6 +117,10 @@ exports.generateNewFact = async (factType, packing, eventrecord, currentStateHis
     // if (packing.last_event_record)
     //   myCompany = companies.find((elem) => elem._id == packing.last_event_record.control_point.company);
 
+    console.log('-----------');
+    console.log('\n packing');
+    console.log(JSON.stringify(packing));
+
     let auxDeviceData = {
       _id: getDeviceData(packing, "_id"),
       message_date: getDeviceData(packing, "message_date"),
@@ -139,6 +134,9 @@ exports.generateNewFact = async (factType, packing, eventrecord, currentStateHis
       created_at: getDeviceData(packing, "created_at"),
     };
 
+    console.log('\n eventrecord');
+    console.log(JSON.stringify(eventrecord));
+
     let auxEventRecords = {
       _id: getEventRecords(eventrecord, "_id"),
       accuracy: getEventRecords(eventrecord, "accuracy"),
@@ -146,6 +144,9 @@ exports.generateNewFact = async (factType, packing, eventrecord, currentStateHis
       type: getEventRecords(eventrecord, "type"),
       created_at: getEventRecords(eventrecord, "created_at"),
     };
+
+    console.log('\n currentStateHistory');
+    console.log(JSON.stringify(currentStateHistory));
 
     let auxCurrentStateHistory = {
       _id: new mongoose.Types.ObjectId(currentStateHistory._id),

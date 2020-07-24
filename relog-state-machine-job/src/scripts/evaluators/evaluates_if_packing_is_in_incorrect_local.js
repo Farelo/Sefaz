@@ -26,7 +26,7 @@ module.exports = async (packing, currentControlPoint) => {
                     await newCurrentStateHistory.save();
 
                     // console.log("[generateNewFact] LOCAL_INCORRETO");
-                    await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+                    await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
                 } else {
                     //console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
@@ -35,7 +35,7 @@ module.exports = async (packing, currentControlPoint) => {
                     const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                     await newCurrentStateHistory.save();
 
-                    await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+                    await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
                 }
                 
                 // const family = await Family.findById(packing.family)

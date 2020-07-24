@@ -125,6 +125,7 @@ const device_data_save = async (packing, device_data_array) => {
   //Limpa do array todas as mensagens (exceto a primeira) que não tenham
   //acurácia, ou tenham acurácia com mais de 32km
   let newBatchOfMessages = [];
+
   if (device_data_array.length > 1) {
     newBatchOfMessages = device_data_array.filter((elem, index) => {
       let result = false;
@@ -139,6 +140,8 @@ const device_data_save = async (packing, device_data_array) => {
 
       return result;
     });
+  } else {
+    newBatchOfMessages = device_data_array;
   }
 
   if (newBatchOfMessages.length > 0) {
@@ -181,13 +184,51 @@ const device_data_save = async (packing, device_data_array) => {
           }
 
           await new_device_data
-            .save()
+            .save(function (err, newMsg) {
+              if (newMsg) {
+                try {
+                  let newPackage = packing;
+                  newPackage["last_device_data"] = newMsg;
+                  // console.log("newMsg ..................");
+                  // console.log(newMsg);
+
+                  // console.log("newMsg ..................");
+                  // console.log(packing);
+
+                  // console.log("newPackage ..................");
+                  // console.log(newPackage);
+
+                  factStateMachine.generateNewFact("message", newPackage, null, null);
+                } catch (error) {
+                  console.log(error);
+                }
+              }
+            })
             .then((doc) => {
               update_link_to_last_devicedata(packing, doc);
             })
             .catch((err) => debug(err));
         } else {
-          await new_device_data.save();
+          await new_device_data.save(function (err, newMsg) {
+            if (newMsg) {
+              try {
+                let newPackage = packing;
+                newPackage["last_device_data"] = newMsg;
+                // console.log("newMsg ============");
+                // console.log(newMsg);
+
+                // console.log("packing ============");
+                // console.log(packing);
+
+                // console.log("newPackage ============");
+                // console.log(newPackage);
+
+                factStateMachine.generateNewFact("message", newPackage, null, null);
+              } catch (error) {
+                console.log(error);
+              }
+            }
+          });
         }
 
         // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
@@ -246,22 +287,14 @@ const update_link_to_last_devicedata = async (packing, device_data) => {
       // debug('last_device_data_battery', packing.last_device_data_battery)
       // debug('update_attrs.last_device_data_battery', update_attrs.last_device_data_battery)
 
-      await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true }, function (err, result) {
-        if (result) {
-          try {
-            factStateMachine.generateNewFact("message", result, null, null, companies);
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      });
+      await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
     }
   } catch (error) {
     debug(error);
   }
 };
 
-//deviceDataSchema.post('save', saveDeviceDataToPacking)
+// deviceDataSchema.post('save', saveDeviceDataToPacking)
 deviceDataSchema.pre("update", update_updated_at_middleware);
 deviceDataSchema.pre("findOneAndUpdate", update_updated_at_middleware);
 

@@ -1,19 +1,17 @@
-const mongoose = require("mongoose"); 
+const mongoose = require("mongoose");
 
 const factStateMachineSchema = new mongoose.Schema({
-  type:{
+  type: {
     type: String,
   },
   packing: {
     _id: {
       type: mongoose.Schema.ObjectId,
       ref: "Packing",
-      required: true,
     },
     family: {
       type: mongoose.Schema.ObjectId,
       ref: "Family",
-      required: true,
     },
     serial: {
       type: String,
@@ -26,15 +24,12 @@ const factStateMachineSchema = new mongoose.Schema({
     _id: {
       type: mongoose.Schema.ObjectId,
       ref: "DeviceData",
-      required: true,
     },
     message_date: {
       type: Date,
-      required: true,
     },
     message_date_timestamp: {
       type: Number,
-      required: true,
     },
     latitude: {
       type: Number,
@@ -56,12 +51,11 @@ const factStateMachineSchema = new mongoose.Schema({
         type: Number,
       },
     },
-    seq_number:{
+    seq_number: {
       type: Number,
     },
     created_at: {
       type: Date,
-      default: Date.now,
     },
   },
   eventrecord: {
@@ -71,23 +65,16 @@ const factStateMachineSchema = new mongoose.Schema({
     },
     accuracy: {
       type: Number,
-      default: 0,
     },
     control_point: {
       type: mongoose.Schema.ObjectId,
       ref: "ControlPoint",
-      required: true,
     },
     type: {
       type: String,
-      required: true,
-      enum: ["inbound", "outbound"],
-      lowercase: true,
-      trim: true,
     },
     created_at: {
       type: Date,
-      default: Date.now,
     },
   },
   currentstatehistory: {
@@ -97,59 +84,73 @@ const factStateMachineSchema = new mongoose.Schema({
     },
     created_at: {
       type: Date,
-      default: Date.now,
     },
   },
 });
 
 /**
  *
+ * @param {*} factType Type of fact
  * @param {*} packing The Packing object
- * @param {*} eventrecords A new EventRecord object or null if want to repeat the packing.last_event_record
- * @param {*} currentstatehistory A new CurrentStateHistory object or null if wnats to reapeat the Packing.last_current_state_history
- * @param {*} companies The list of all Companies
+ * @param {*} eventrecord A new EventRecord object or null if want to repeat the packing.last_event_record
+ * @param {*} currentStateHistory A new CurrentStateHistory object or null if wants to repeat the Packing.last_current_state_history
  */
-exports.generateNewFact = async (factType, packing, eventrecord, currentStateHistory, companies) => { 
-
+exports.generateNewFact = async (factType, packing, eventrecord, currentStateHistory) => {
   try {
-    if (eventrecord == null) eventrecord = packing.last_event_record;
-    if (currentStateHistory == null) currentStateHistory = packing.last_current_state_history;
+    if (eventrecord == null) eventrecord = packing.last_event_record ? packing.last_event_record : null;
+    if (currentStateHistory == null)
+      currentStateHistory = packing.last_current_state_history ? packing.last_current_state_history : null;
 
-    let myCompany = null;
-    if (packing.last_event_record)
-      myCompany = companies.find((elem) => elem._id == packing.last_event_record.control_point.company);
+    console.log(" ");
+    console.log(factType);
+    console.log("packing:");
+    console.log(JSON.stringify(packing));
+    console.log("eventrecord");
+    console.log(eventrecord);
+    console.log("currentstatehistory");
+    console.log(currentStateHistory);
 
-    let auxDeviceData = {
-      _id: getDeviceData(packing, "_id"),
-      message_date: getDeviceData(packing, "message_date"),
-      message_date_timestamp: getDeviceData(packing, "message_date_timestamp"),
-      latitude: getDeviceData(packing, "latitude"),
-      longitude: getDeviceData(packing, "longitude"),
-      accuracy: getDeviceData(packing, "accuracy"),
-      temperature: getDeviceData(packing, "temperature"),
-      battery: getDeviceData(packing, "battery"),
-      seq_number: getDeviceData(packing, "seq_number"),
-      created_at: getDeviceData(packing, "created_at"),
-    };
+    // let myCompany = null;
+    // if (packing.last_event_record)
+    //   myCompany = companies.find((elem) => elem._id == packing.last_event_record.control_point.company);
 
-    let auxEventRecords = {
-      _id: getEventRecords(eventrecord, "_id"),
-      accuracy: getEventRecords(eventrecord, "accuracy"),
-      control_point: getEventRecords(eventrecord, "control_point"),
-      type: getEventRecords(eventrecord, "type"),
-      created_at: getEventRecords(eventrecord, "created_at"),
-    };
+    let auxDeviceData = packing.last_device_data
+      ? {
+          _id: getDeviceData(packing, "_id"),
+          message_date: getDeviceData(packing, "message_date"),
+          message_date_timestamp: getDeviceData(packing, "message_date_timestamp"),
+          latitude: getDeviceData(packing, "latitude"),
+          longitude: getDeviceData(packing, "longitude"),
+          accuracy: getDeviceData(packing, "accuracy"),
+          temperature: getDeviceData(packing, "temperature"),
+          battery: getDeviceData(packing, "battery"),
+          seq_number: getDeviceData(packing, "seq_number"),
+          created_at: getDeviceData(packing, "created_at"),
+        }
+      : null;
 
-    let auxCurrentStateHistory = {
-      _id: new mongoose.Types.ObjectId(currentStateHistory._id),
-      type: currentStateHistory.type,
-    };
+    let auxEventRecords = eventrecord
+      ? {
+          _id: getEventRecords(eventrecord, "_id"),
+          accuracy: getEventRecords(eventrecord, "accuracy"),
+          control_point: getEventRecords(eventrecord, "control_point"),
+          type: getEventRecords(eventrecord, "type"),
+          created_at: getEventRecords(eventrecord, "created_at"),
+        }
+      : null;
+
+    let auxCurrentStateHistory = currentStateHistory
+      ? {
+          _id: new mongoose.Types.ObjectId(currentStateHistory._id),
+          type: currentStateHistory.type,
+        }
+      : null;
 
     let newFact = {
       type: factType,
       packing: {
         _id: packing._id,
-        family: packing.family._id,
+        family: packing.family ? packing.family._id : null,
         serial: packing.serial,
         tag: packing.tag.code,
       },
@@ -158,6 +159,9 @@ exports.generateNewFact = async (factType, packing, eventrecord, currentStateHis
       currentstatehistory: auxCurrentStateHistory,
     };
 
+    console.log("JSON.stringify(newFact):")
+    console.log(JSON.stringify(newFact))
+    
     let newFactStateMachineObject = new FactStateMachine(newFact);
 
     // console.log("newFactStateMachineObject", JSON.stringify(newFactStateMachineObject));

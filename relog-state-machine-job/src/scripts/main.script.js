@@ -36,7 +36,7 @@ module.exports = async () => {
                     .populate('type')
                     
                 //const packings = await Packing.find({ })
-                const packings = await Packing.find({})
+                const packings = await Packing.find({'tag.code': '4081384'})
                     .populate('family')
                     .populate('last_device_data')
                     .populate('last_device_data_battery')

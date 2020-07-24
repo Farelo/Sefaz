@@ -33,7 +33,7 @@ module.exports = async (packing, currentControlPoint) => {
             });
             await newCurrentStateHistory.save();
 
-            await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+            await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
           }
           
         } else {
@@ -54,7 +54,7 @@ module.exports = async (packing, currentControlPoint) => {
             await newCurrentStateHistory.save();
 
             // console.log("[generateNewFact] PERMANENCIA_EXCEDIDA @93");
-            await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+            await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
           }
 
         } else { 

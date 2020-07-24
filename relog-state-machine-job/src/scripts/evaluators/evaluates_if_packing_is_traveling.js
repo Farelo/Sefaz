@@ -39,7 +39,7 @@ module.exports = async (packing, setting) => {
                         const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                         await newCurrentStateHistory.save();
                         
-                        await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+                        await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
                     }
                 } else {
                     if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
@@ -52,7 +52,7 @@ module.exports = async (packing, setting) => {
                             const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_perdida', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                             await newCurrentStateHistory.save();
                             
-                            await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+                            await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
                         }
 
                     } else {
@@ -65,7 +65,7 @@ module.exports = async (packing, setting) => {
                             const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_atrasada', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                             await newCurrentStateHistory.save();
                              
-                            await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+                            await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
                         }
 
                     }
@@ -82,7 +82,7 @@ module.exports = async (packing, setting) => {
                 const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                 await newCurrentStateHistory.save();
                  
-                await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+                await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
             }
             
         //Emanoel
@@ -97,7 +97,7 @@ module.exports = async (packing, setting) => {
                 const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
                 await newCurrentStateHistory.save();
                  
-                await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+                await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
             }
         }
     } catch (error) {

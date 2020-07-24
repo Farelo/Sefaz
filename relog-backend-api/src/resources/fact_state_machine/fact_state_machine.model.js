@@ -109,15 +109,15 @@ const factStateMachineSchema = new mongoose.Schema({
  * @param {*} currentstatehistory A new CurrentStateHistory object or null if wnats to reapeat the Packing.last_current_state_history
  * @param {*} companies The list of all Companies
  */
-exports.generateNewFact = async (factType, packing, eventrecord, currentStateHistory, companies) => { 
+exports.generateNewFact = async (factType, packing, eventrecord, currentStateHistory) => { 
 
   try {
     if (eventrecord == null) eventrecord = packing.last_event_record;
     if (currentStateHistory == null) currentStateHistory = packing.last_current_state_history;
 
-    let myCompany = null;
-    if (packing.last_event_record)
-      myCompany = companies.find((elem) => elem._id == packing.last_event_record.control_point.company);
+    // let myCompany = null;
+    // if (packing.last_event_record)
+    //   myCompany = companies.find((elem) => elem._id == packing.last_event_record.control_point.company);
 
     let auxDeviceData = {
       _id: getDeviceData(packing, "_id"),

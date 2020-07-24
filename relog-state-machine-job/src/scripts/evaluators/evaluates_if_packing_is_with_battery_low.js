@@ -26,25 +26,41 @@ module.exports = async (packing, setting) => {
 
   try {
     if (battery_level !== null && battery_level < setting.battery_level_limit) {
-
       if (packing.low_battery == false) {
         await Packing.findByIdAndUpdate(packing._id, { low_battery: true }, { new: true });
 
-        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert });
+        const newCurrentStateHistory = new CurrentStateHistory({
+          packing: packing._id,
+          type: STATES.BATERIA_BAIXA.alert,
+        });
         await newCurrentStateHistory.save();
-        
+
         // console.log("[generateNewFact] BATERIA_BAIXA @31");
-        await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+        await factStateMachine.generateNewFact("state", packing, null, newCurrentStateHistory);
+      }
+    } else {
+      if (packing.low_battery) {
+        if (packing.low_battery == true) {
+          await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true });
+
+          const newCurrentStateHistory = new CurrentStateHistory({
+            packing: packing._id,
+            type: STATES.BATERIA_NORMAL.alert,
+          });
+          await newCurrentStateHistory.save();
+
+          // console.log("[generateNewFact] BATERIA_BAIXA @31");
+          await factStateMachine.generateNewFact("state", packing, null, newCurrentStateHistory);
+        }
       }
 
-    } else {
-      if (packing.low_battery) await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true });
+      // if (packing.low_battery) await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true });
 
-      const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.BATERIA_NORMAL.alert });
-        await newCurrentStateHistory.save();
-        
-        // console.log("[generateNewFact] BATERIA_BAIXA @31");
-        await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory, companies);
+      // const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.BATERIA_NORMAL.alert });
+      //   await newCurrentStateHistory.save();
+
+      //   // console.log("[generateNewFact] BATERIA_BAIXA @31");
+      //   await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
     }
   } catch (error) {
     console.error(error);
