@@ -35,6 +35,8 @@ module.exports = async () => {
                     let end_search_date = moment().utc().format('YYYY-MM-DD HH:mm:ss').toString()
                     
                     // console.log('original: ', packing.last_device_data.message_date)
+                    // console.log('original moment: ', moment(packing.last_device_data.message_date).format('YYYY-MM-DD HH:mm:ss').toString())
+                    // console.log('original antigo: ', add_seconds(packing.last_device_data.message_date, 1))
                     // console.log('start_search_date: ', start_search_date)
                     // console.log('end_search_date: ', end_search_date)
 
