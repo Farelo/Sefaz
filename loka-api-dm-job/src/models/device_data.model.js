@@ -124,6 +124,11 @@ const device_data_save = async (packing, device_data_array) => {
   //Limpa do array todas as mensagens (exceto a primeira) que não tenham
   //acurácia, ou tenham acurácia com mais de 32km
   let newBatchOfMessages = [];
+  
+
+  console.log('\ndevice_data_array');
+  console.log(device_data_array);
+
   if (device_data_array.length > 1) {
     newBatchOfMessages = device_data_array.filter((elem, index) => {
       let result = false;
@@ -140,6 +145,9 @@ const device_data_save = async (packing, device_data_array) => {
     });
   }
 
+  console.log('\newBatchOfMessages 1');
+  console.log(newBatchOfMessages);
+
   if (newBatchOfMessages.length > 0) {
     let isLastSignalAlreadySaved = false;
     if (newBatchOfMessages[0].accuracy > 32000) {
@@ -149,6 +157,9 @@ const device_data_save = async (packing, device_data_array) => {
       newBatchOfMessages = newBatchOfMessages.slice(1);
       isLastSignalAlreadySaved = true;
     }
+
+    console.log('\nnewBatchOfMessages 2');
+    console.log(newBatchOfMessages);
 
     for (const [idx, device_data] of newBatchOfMessages.entries()) {
       try {
@@ -173,20 +184,32 @@ const device_data_save = async (packing, device_data_array) => {
         // índice unico e composto por device_id e message_date,
         // e o erro de duplicidade nao interrompe o job
         if (idx == 0) {
+          console.log('is 0');
           if (!isLastSignalAlreadySaved) {
+            console.log('isLastSignalAlreadySaved false');
             let update_attrs = {};
             update_attrs.last_message_signal = new_device_data.message_date;
-            await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+            let aux = await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+            console.log('aux');
+            console.log(aux);
           }
 
-          await new_device_data
+          let aux2 = await new_device_data
             .save()
             .then((doc) => {
+              console.log('salvou aux2');
+              console.log(doc);
               update_link_to_last_devicedata(packing, doc);
             })
             .catch((err) => debug(err));
+            console.log('aux 2');
+            console.log(aux2);
+
         } else {
-          await new_device_data.save();
+          console.log('is not 0');
+          let aux3 = await new_device_data.save();
+          console.log('aux 3');
+          console.log(aux3);
         }
 
         // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
