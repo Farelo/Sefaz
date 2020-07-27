@@ -29,15 +29,15 @@ module.exports = async (packing, setting) => {
         await CurrentStateHistory.create({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
       }
 
-    } else {
+    } else { 
       if (packing.low_battery) await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true })
 
-      current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
-      if (current_state_history) {
-        await current_state_history.remove()
-      } else {
-        //console.log("ESTADO DE BATERIA BAIXA JÁ REMOVIDO!")
-      }
+      // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
+      // if (current_state_history) {
+      //   await current_state_history.remove()
+      // } else {
+      //   //console.log("ESTADO DE BATERIA BAIXA JÁ REMOVIDO!")
+      // }
     }
   } catch (error) {
     console.error(error)

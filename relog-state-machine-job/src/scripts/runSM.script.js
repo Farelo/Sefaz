@@ -93,10 +93,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         /* Embalagem está em viagem */
@@ -161,10 +161,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         /* Embalagem está em viagem */
@@ -207,10 +207,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         //mLog("EM VIAGEM")
@@ -250,10 +250,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         //mLog("EM VIAGEM")
@@ -293,10 +293,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         //mLog("EM VIAGEM")
@@ -336,10 +336,10 @@ module.exports = async (setting, packing, controlPoints) => {
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
-                            current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
-                            if (current_state_history) {
-                                await current_state_history.remove()
-                            }
+                            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                            // if (current_state_history) {
+                            //     await current_state_history.remove()
+                            // }
                         }
 
                         //mLog("EM VIAGEM")
