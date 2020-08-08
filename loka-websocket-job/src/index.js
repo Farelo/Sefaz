@@ -3,6 +3,7 @@ const logger = require("./config/winston.config");
 const { runWS } = require("./webSocket");
 
 async function main() {
+  await require("./db/db")();
   //logger.info("Starting websocket job");
   await runWS();
   //logger.info("Stopping websocket job");

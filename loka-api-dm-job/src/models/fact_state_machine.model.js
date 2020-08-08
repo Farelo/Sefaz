@@ -86,6 +86,10 @@ const factStateMachineSchema = new mongoose.Schema({
       type: Date,
     },
   },
+  created_at: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 /**

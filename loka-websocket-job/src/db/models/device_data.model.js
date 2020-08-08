@@ -1,70 +1,68 @@
 const mongoose = require("mongoose");
 const { Packing } = require("./packings.model");
+const factStateMachine = require("./fact_state_machine.model");
 const logger = require("../../config/winston.config");
 
 const deviceDataSchema = new mongoose.Schema({
   device_id: {
     type: String,
-    required: true
+    required: true,
   },
   message_date: {
     type: Date,
-    required: true
+    required: true,
   },
   message_type: {
     type: String,
-    required: true
+    required: true,
   },
   message_date_timestamp: {
     type: Number,
-    required: true
+    required: true,
   },
   last_communication: {
-    type: Date
+    type: Date,
   },
   last_communication_timestamp: {
-    type: Number
+    type: Number,
   },
   latitude: {
-    type: Number
+    type: Number,
   },
   longitude: {
-    type: Number
+    type: Number,
   },
   accuracy: {
-    type: Number
+    type: Number,
   },
   temperature: {
-    type: Number
+    type: Number,
   },
   seq_number: {
-    type: Number
+    type: Number,
   },
   battery: {
     percentage: {
-      type: Number
+      type: Number,
     },
     voltage: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   update_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   message: {
-    type: String
-  }
+    type: String,
+  },
 });
 
-deviceDataSchema.index(
-  { device_id: 1, message_date_timestamp: -1 },
-  { unique: true }
-);
+deviceDataSchema.index({ device_id: 1, message_date_timestamp: -1 }, { unique: true });
 
 const update_packing = async (device_data, next) => {
   //logger.info("Update packing after save DeviceData");
@@ -72,14 +70,24 @@ const update_packing = async (device_data, next) => {
     let update_attrs = {};
     let update = false;
     const tag = { code: device_data.device_id };
-    const packing = await Packing.findByTag(tag);
+    const packing = await Packing.findByTag(tag)
+      .populate("last_device_data")
+      .populate("last_device_data_battery")
+      .populate("last_event_record")
+      .populate("last_current_state_history");
 
     if (!packing) next();
 
-    let current_message_date_on_packing = await DeviceData.findById(
-      packing.last_device_data,
-      { _id: 0, message_date: 1 }
-    );
+    //Creating a new fact
+    console.log("\n >>>packing");
+    console.log(packing);
+
+    factStateMachine.generateNewFact("message", packing, null, null);
+
+    let current_message_date_on_packing = await DeviceData.findById(packing.last_device_data, {
+      _id: 0,
+      message_date: 1,
+    });
 
     current_message_date_on_packing = current_message_date_on_packing
       ? current_message_date_on_packing.message_date
@@ -94,14 +102,12 @@ const update_packing = async (device_data, next) => {
 
     //se o novo device_data possui informação de bateria
     if (device_data.battery.percentage || device_data.battery.voltage) {
-      let packing_date_battery_data = await DeviceData.findById(
-        packing.last_device_data_battery,
-        { _id: 0, message_date: 1 }
-      );
+      let packing_date_battery_data = await DeviceData.findById(packing.last_device_data_battery, {
+        _id: 0,
+        message_date: 1,
+      });
 
-      packing_date_battery_data = packing_date_battery_data
-        ? packing_date_battery_data.message_date
-        : null;
+      packing_date_battery_data = packing_date_battery_data ? packing_date_battery_data.message_date : null;
 
       // se essa informação de bateria é mais recente que a que ja existe no packing ou o packing não tem ainda nenhuma info de bateria
       if (device_data.message_date > packing_date_battery_data) {
@@ -111,8 +117,7 @@ const update_packing = async (device_data, next) => {
       update = true;
     }
 
-    if (update)
-      await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+    if (update) await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
 
     next();
     //logger.info("Update packing after save DeviceData SUCESS!");
@@ -124,27 +129,25 @@ const update_packing = async (device_data, next) => {
   }
 };
 
-deviceDataSchema.statics.findByDeviceId = function(device_id, projection = "") {
+deviceDataSchema.statics.findByDeviceId = function (device_id, projection = "") {
   return this.findOne({ device_id }, projection);
 };
 
-deviceDataSchema.statics.findMosRecentById = function(id) {
-  return this.find({ device_id: id })
-    .sort({ _id: -1 })
-    .limit(1);
+deviceDataSchema.statics.findMosRecentById = function (id) {
+  return this.find({ device_id: id }).sort({ _id: -1 }).limit(1);
 };
 
-const saveDeviceDataToPacking = function(doc, next) {
+const saveDeviceDataToPacking = function (doc, next) {
   update_packing(doc, next);
 };
 
-const update_updated_at_middleware = function(next) {
+const update_updated_at_middleware = function (next) {
   let update = this.getUpdate();
   update.update_at = new Date();
   next();
 };
 
-const device_data_save = async device_data => {
+const device_data_save = async (device_data) => {
   //logger.info("Saving DeviceData: " + device_data.device_id);
   const new_device_data = new DeviceData({
     device_id: device_data.device_id.toString(),
@@ -160,9 +163,9 @@ const device_data_save = async device_data => {
     seq_number: device_data.seq_number,
     battery: {
       percentage: device_data.battery.percentage,
-      voltage: device_data.battery.voltage
+      voltage: device_data.battery.voltage,
     },
-    message: device_data.message
+    message: device_data.message,
   });
 
   try {
@@ -175,6 +178,7 @@ const device_data_save = async device_data => {
     // debug('Saved device_data ', device_data.deviceId, ' and message_date ', device_data.messageDate)
   } catch (error) {
     try {
+      logger.info(error);
       new_device_data.update();
       logger.info("Updated: \t" + new_device_data);
     } catch (error) {
