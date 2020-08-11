@@ -5,7 +5,12 @@ var WebSocketClient = require("websocket").client;
 var client = new WebSocketClient();
 const { Packing } = require("./db/models/packings.model");
 const { Message } = require("./db/models/message.model");
+<<<<<<< HEAD
 const moment = require('moment')
+=======
+const { CurrentStateHistory } = require("./db/models/current_state_history.model");
+const { EventRecord } = require("./db/models/event_record.model");
+>>>>>>> feat/factTable
 
 const {
   DeviceData,
@@ -29,9 +34,14 @@ let deviceDictList;
  * [{deviceId, lastDeviceData}]
  */
 async function getDeviceDictList() {
+<<<<<<< HEAD
   logger.info("getDeviceDictList");
 
   await require("./db/db")();
+=======
+  logger.info("aqui");
+  // await require("./db/db")();
+>>>>>>> feat/factTable
 
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
@@ -279,6 +289,7 @@ const runWS = async () => {
   //logger.info("restartFunctionEnabled: false");
 
   await getDeviceDictList();
+<<<<<<< HEAD
   await unsubscribingDeviceIds(deviceDictList);
   await subscribingDeviceIds(deviceDictList);
 
@@ -287,6 +298,11 @@ const runWS = async () => {
 
   //logger.info("restartFunctionEnabled: true");
 
+=======
+  // logger.info(deviceDictList);
+  // await unsubscribingDeviceIds(deviceDictList);
+  // await subscribingDeviceIds(deviceDictList);
+>>>>>>> feat/factTable
   await initWebSocket();
 };
 

@@ -99,6 +99,10 @@ const packingSchema = new mongoose.Schema({
         ref: 'Family',
         required: true
     },
+    last_message_signal:{
+        type: Date,
+        default: null
+    },
     last_device_data: {
         type: mongoose.Schema.ObjectId,
         ref: 'DeviceData'
@@ -127,16 +131,20 @@ const packingSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: [
+            'viagem_perdida',
+            'local_incorreto',
+            'bateria_baixa',
+            'bateria_normal',
+            'viagem_atrasada',
+            'tempo_de_permanencia_excedido',
+            'sem_sinal',
+            'perdida',
             'desabilitada_com_sinal',
             'desabilitada_sem_sinal',
             'analise',
+            'ausente',
             'viagem_em_prazo',
-            'viagem_atrasada',
-            'viagem_perdida',
-            'sem_sinal',
-            'perdida',
-            'local_correto',
-            'local_incorreto'
+            'local_correto'
         ],
         lowercase: true,
         default: 'analise',
@@ -145,7 +153,6 @@ const packingSchema = new mongoose.Schema({
     created_at: {
         type: Date,
         default: Date.now
-
     },
     update_at: {
         type: Date,

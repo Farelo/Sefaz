@@ -14,11 +14,10 @@ module.exports = async (packing, companies) => {
         //if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.SEM_SINAL.alert) return null
         if (packing.current_state && packing.current_state === STATES.SEM_SINAL.alert) return null
 
-        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert });
+        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
         await newCurrentStateHistory.save();
         
-        // console.log("[generateNewFact] SEM_SINAL 20");
-        await factStateMachine.generateNewFact(packing, null, newCurrentStateHistory, companies);
+        await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
 
         if(packing.absent == true){
             let actualOfflineWhileAbsentRegister = createOfflineWhileAbsentRegister(packing)

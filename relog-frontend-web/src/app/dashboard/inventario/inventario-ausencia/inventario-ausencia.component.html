@@ -113,8 +113,14 @@
           <td>{{ packing.serial || '-'}}</td>
           <td>{{ packing.tag.code || '-'}}</td>
           
+<<<<<<< HEAD
           <td>{{ packing.last_event_record ? packing.last_event_record.control_point.name : 'Sem histórico'}}</td>
           <td>{{ packing.absent_time_in_hours !== '-' ? (packing.absent_time_in_hours | float_time) : 'Sem histórico' }}</td> 
+=======
+          <td>{{ packing.control_point_name }}</td>
+          <td>{{ packing.absent_time_in_hours !== '-' ? (packing.absent_time_in_hours | float_time) : 'Sem histórico' }}</td>
+          <!--td>{{packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro'}}</td-->
+>>>>>>> feat/factTable
           <td style="text-align: center;">
             <div class="bigger" (click)="openAbsence(packing)">
               <div class="det"></div>

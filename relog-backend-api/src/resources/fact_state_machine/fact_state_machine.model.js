@@ -1,6 +1,12 @@
 const mongoose = require("mongoose"); 
 
 const factStateMachineSchema = new mongoose.Schema({
+<<<<<<< HEAD
+=======
+  type:{
+    type: String,
+  },
+>>>>>>> feat/factTable
   packing: {
     _id: {
       type: mongoose.Schema.ObjectId,
@@ -53,6 +59,12 @@ const factStateMachineSchema = new mongoose.Schema({
         type: Number,
       },
     },
+<<<<<<< HEAD
+=======
+    seq_number:{
+      type: Number,
+    },
+>>>>>>> feat/factTable
     created_at: {
       type: Date,
       default: Date.now,
@@ -103,15 +115,25 @@ const factStateMachineSchema = new mongoose.Schema({
  * @param {*} currentstatehistory A new CurrentStateHistory object or null if wnats to reapeat the Packing.last_current_state_history
  * @param {*} companies The list of all Companies
  */
+<<<<<<< HEAD
 exports.generateNewFact = async (packing, eventrecord, currentStateHistory, companies) => { 
+=======
+exports.generateNewFact = async (factType, packing, eventrecord, currentStateHistory) => { 
+>>>>>>> feat/factTable
 
   try {
     if (eventrecord == null) eventrecord = packing.last_event_record;
     if (currentStateHistory == null) currentStateHistory = packing.last_current_state_history;
 
+<<<<<<< HEAD
     let myCompany = null;
     if (packing.last_event_record)
       myCompany = companies.find((elem) => elem._id == packing.last_event_record.control_point.company);
+=======
+    // let myCompany = null;
+    // if (packing.last_event_record)
+    //   myCompany = companies.find((elem) => elem._id == packing.last_event_record.control_point.company);
+>>>>>>> feat/factTable
 
     let auxDeviceData = {
       _id: getDeviceData(packing, "_id"),
@@ -122,6 +144,10 @@ exports.generateNewFact = async (packing, eventrecord, currentStateHistory, comp
       accuracy: getDeviceData(packing, "accuracy"),
       temperature: getDeviceData(packing, "temperature"),
       battery: getDeviceData(packing, "battery"),
+<<<<<<< HEAD
+=======
+      seq_number: getDeviceData(packing, "seq_number"),
+>>>>>>> feat/factTable
       created_at: getDeviceData(packing, "created_at"),
     };
 
@@ -139,6 +165,10 @@ exports.generateNewFact = async (packing, eventrecord, currentStateHistory, comp
     };
 
     let newFact = {
+<<<<<<< HEAD
+=======
+      type: factType,
+>>>>>>> feat/factTable
       packing: {
         _id: packing._id,
         family: packing.family._id,
@@ -152,7 +182,11 @@ exports.generateNewFact = async (packing, eventrecord, currentStateHistory, comp
 
     let newFactStateMachineObject = new FactStateMachine(newFact);
 
+<<<<<<< HEAD
     console.log("newFactStateMachineObject", JSON.stringify(newFactStateMachineObject));
+=======
+    // console.log("newFactStateMachineObject", JSON.stringify(newFactStateMachineObject));
+>>>>>>> feat/factTable
 
     await newFactStateMachineObject.save();
   } catch (error) {

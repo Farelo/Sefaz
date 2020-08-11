@@ -445,6 +445,7 @@ export class RastreamentoComponent implements OnInit {
    */
   requestFilteredResults() {
 
+<<<<<<< HEAD
     // console.log('.');
     let param = {
       // date: null,
@@ -488,6 +489,17 @@ export class RastreamentoComponent implements OnInit {
 
     if (this.selectedControlPointType !== null)
       param['control_point_type'] = this.selectedControlPointType        // Control point type
+=======
+    // console.log('.'); 
+
+    // let cp_id = this.selectedCompany !== null ? this.selectedCompany._id : null;
+    let cp_id = null;
+    let family_id = this.selectedFamily !== null ? this.selectedFamily._id : null;
+    let serial_id = this.selectedSerial !== null ? this.selectedSerial : null;
+
+    // console.log('\nthis.selectedCompany');
+    // console.log(this.selectedCompany);
+>>>>>>> feat/factTable
 
     if (this.selectedControlPoint !== null)
       param['control_point_id'] = this.selectedControlPoint; // Control point
@@ -535,7 +547,10 @@ export class RastreamentoComponent implements OnInit {
           this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
         }
       }
+<<<<<<< HEAD
       
+=======
+>>>>>>> feat/factTable
       // console.log(JSON.stringify(this.plotedPackings));
 
       //this.resolveClustering();
@@ -589,8 +604,22 @@ export class RastreamentoComponent implements OnInit {
     this.mSpiralize.toggleShowPackings(this.showPackings);
   }
 
+<<<<<<< HEAD
 
   filterChanged() {
+=======
+  familyChanged(){
+    this.selectedSerial = null; 
+    this.loadPackings(); 
+    this.loadSerialsOfSelectedEquipment();
+  }
+
+  /**
+   * Equipment select was cleared.
+   * Clear e disable the Serial Select.
+   */
+  onEquipmentSelectClear() {
+>>>>>>> feat/factTable
 
   }
 

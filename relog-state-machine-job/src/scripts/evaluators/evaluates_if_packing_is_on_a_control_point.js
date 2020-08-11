@@ -99,8 +99,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
             });
             await outEventRecord.save();
 
-            // console.log("[generateNewFact] outbound 105");
-            await factStateMachine.generateNewFact(packing, outEventRecord, null, companies);
+            await factStateMachine.generateNewFact('event', packing, outEventRecord, null);
 
             //Faz IN no ponto de controle atual
             const inEventRecord = new EventRecord({
@@ -114,10 +113,8 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
             await inEventRecord.save();
 
             packing.last_event_record = inEventRecord;
-            // console.log("new_last_event_record: ", eventRecord)
 
-            // console.log("[generateNewFact] inbound 119");
-            await factStateMachine.generateNewFact(packing, inEventRecord, null, companies);
+            await factStateMachine.generateNewFact('event', packing, inEventRecord, null);
 
             return currentControlPoint;
           } else {
@@ -147,12 +144,10 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
             device_data_id: deviceDataId,
           });
           await eventRecord.save();
-
+          
           packing.last_event_record = eventRecord;
-          // console.log("new_last_event_record: ", eventRecord)
 
-          // console.log("[generateNewFact] inbound 151");
-          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+          await factStateMachine.generateNewFact('event', packing, eventRecord, null);
 
           return currentControlPoint;
         } else {
@@ -179,10 +174,8 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
 
         packing.last_event_record = eventRecord;
         packing.new_last_event_record = eventRecord;
-        // console.log("new_last_event_record: ", eventRecord)
-
-        // console.log("[generateNewFact] inbound 177");
-        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+        
+        await factStateMachine.generateNewFact('event', packing, eventRecord, null);
 
         return currentControlPoint;
       } else {
@@ -212,10 +205,8 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
         await eventRecord.save();
 
         packing.last_event_record = eventRecord;
-        // console.log("new_last_event_record: ", eventRecord)
-
-        // console.log("[generateNewFact] outbound 207");
-        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+        
+        await factStateMachine.generateNewFact('event', packing, eventRecord, null);
 
         return null;
       } else {
@@ -273,10 +264,8 @@ const newcheckOut = async (packing, setting, range_radius, distance, currentCont
       await eventRecord.save();
 
       packing.last_event_record = eventRecord;
-      // console.log("new_last_event_record: ", eventRecord)
-
-      // console.log("[generateNewFact] outbound 278");
-      await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+      
+      await factStateMachine.generateNewFact('event', packing, eventRecord, null);
     }
   }
 };
@@ -313,11 +302,10 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
         await eventRecord.save();
 
         packing.last_event_record = eventRecord;
-        // console.log("new_last_event_record: ", eventRecord)
-
-        // console.log("[generateNewFact] inbound 324");
-        await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+        
+        await factStateMachine.generateNewFact('event', packing, eventRecord, null);
       }
+
     } else {
       //mLog('EMBALAGEM JÁ TEM O EVENT RECORD')
       if (distance < range_radius && packing.last_device_data.accuracy <= setting.accuracy_limit) {
@@ -340,8 +328,7 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
 
             await eventRecord.save();
 
-            // console.log("[generateNewFact] outbound @349");
-            await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+            await factStateMachine.generateNewFact('event', packing, eventRecord, null);
           }
 
           const eventRecord = new EventRecord({
@@ -356,10 +343,9 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
           await eventRecord.save();
 
           packing.last_event_record = eventRecord;
-          // console.log("new_last_event_record: ", eventRecord)
+          
+          await factStateMachine.generateNewFact('event', packing, eventRecord, null);
 
-          // console.log("[generateNewFact] inbound @370");
-          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
         } else {
           //mLog('TENTAR OUTBOUND')
           if (packing.last_event_record.type === "outbound") {
@@ -377,10 +363,8 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
             await eventRecord.save();
 
             packing.last_event_record = eventRecord;
-            // console.log("new_last_event_record: ", eventRecord)
-
-            // console.log("[generateNewFact] inbound @389");
-            await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+            
+            await factStateMachine.generateNewFact('event', packing, eventRecord, null);
           }
         }
       } else {
@@ -402,10 +386,8 @@ const checkIn = async (packing, setting, range_radius, distance, currentControlP
           await eventRecord.save();
 
           packing.last_event_record = eventRecord;
-          // console.log("new_last_event_record: ", eventRecord)
-
-          // console.log("[generateNewFact] outbound @411");
-          await factStateMachine.generateNewFact(packing, eventRecord, null, companies);
+          
+          await factStateMachine.generateNewFact('event', packing, eventRecord, null);
         }
       }
     }

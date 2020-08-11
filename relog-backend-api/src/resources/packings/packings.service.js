@@ -136,6 +136,7 @@ exports.check_device = async (device_id) => {
 };
 
 exports.geolocation = async (query = { company_id: null, family_id: null, packing_serial: null }) => {
+<<<<<<< HEAD
   try {
     let familiesIds = [];
 
@@ -143,6 +144,38 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
       familiesIds = await (await Family.find({ company: query.company_id })).map((f) => f._id);
     } else if (query.family_id != null) {
       familiesIds.push(new mongoose.Types.ObjectId(query.family_id));
+=======
+    try {
+        let familiesIds = []
+
+        // console.log(query)
+        
+        if (query.company_id !== null) {
+            familiesIds = await (await Family.find({ company: query.company_id })).map(f => f._id)
+        } else if (query.family_id !== null) {
+            familiesIds.push(new mongoose.Types.ObjectId(query.family_id))
+        }
+
+        let conditions = {};
+
+        if (familiesIds.length) {
+            conditions['family'] = {
+                '$in': familiesIds
+            }
+        }
+
+        if (query.packing_serial !== null) {
+            conditions['serial'] = {
+                '$eq': query.packing_serial
+            }
+        }
+        
+        // console.log(conditions)
+        return await Packing.find(conditions).populate('last_device_data').populate('last_device_data_battery').populate('family', ['_id', 'code'])
+        
+    } catch (error) {
+        throw new Error(error)
+>>>>>>> feat/factTable
     }
 
     let conditions = {};

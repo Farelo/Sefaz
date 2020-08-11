@@ -92,7 +92,8 @@ exports.messagesFromSigfox = (cookie, deviceId, startDate, endDate, max) => {
     return new Promise(function (resolve, reject) {
 
         let path = `/message/show/${deviceId}/sigfox` + qs.stringify({ startDate: startDate, endDate: endDate, max: max }, { addQueryPrefix: true });
-
+        // console.log(path);
+        
         let options = {
             url: path,
             method: 'GET',
@@ -128,6 +129,7 @@ exports.positions = (cookie, deviceId, status, lowAccuracy, startDate, endDate, 
     return new Promise(function (resolve, reject) {
 
         let path = `/position/get` + qs.stringify({ terminal: deviceId, status: status, lowAccuracy: lowAccuracy, startDate: startDate, endDate: endDate, max: max }, { addQueryPrefix: true });
+        // console.log(path);
         
         let options = {
             url: path,

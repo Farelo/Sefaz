@@ -601,9 +601,16 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                 object_temp.created_at = packing.created_at
                 object_temp.update_at = packing.update_at
                 packing.last_device_data ? object_temp.last_device_data = packing.last_device_data : null
-                packing.last_event_record ? object_temp.last_event_record = await EventRecord.findById(packing.last_event_record).populate('control_point') : null
-                packing.last_current_state_history ? object_temp.last_current_state_history = packing.last_current_state_history : null
-                object_temp.absent_time_in_hours = packing.absent_time ? await getDiffDateTodayInHours(packing.absent_time) : '-'
+
+                // packing.last_event_record ? object_temp.last_event_record = await EventRecord.findById(packing.last_event_record).populate('control_point') : null
+                if(packing.last_event_record){
+                    let aux_last_event_record = await EventRecord.findById(packing.last_event_record).populate('control_point')
+                    object_temp.control_point_name = aux_last_event_record.control_point !== null ? aux_last_event_record.control_point.name : 'Não encontrado'
+                }else{
+                    object_temp.control_point_name = 'Sem registro'
+                }
+
+                object_temp.absent_time_in_hours = packing.absent_time ? await getDiffDateTodayInHours(packing.absent_time) : '0'
 
                 // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
                 //     object_temp.absent_time_in_hours = getDiffDateTodayInHours(packing.last_event_record.created_at)
