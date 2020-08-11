@@ -63,18 +63,7 @@ export class Spiralize {
         });
     }
 
-<<<<<<< HEAD
     repaint(list: any[], map: any, clustered: boolean = false, showIcons: boolean) {
-=======
-    /**
-     * 
-     * @param list 
-     * @param map 
-     * @param clustered 
-     * @param showIcons 
-     */
-    repaint(list: any[], map: any, clustered: boolean = false, showIcons: boolean = true) {
->>>>>>> feat/factTable
         //Clearing previous state
         this.clearSpiral();
         this.iconsOfduplicated = [];

@@ -68,7 +68,6 @@
           </div>
         </section>
 
-<<<<<<< HEAD
         <hr>
 
         <!-- Sessão de Filtros de embalagem -->
@@ -78,13 +77,6 @@
             <ng-select [(ngModel)]="selectedLinkedCompany" [items]="listOfLinkedCompanies"
               (change)="linkedCompanyChanged($event)" [disabled]="selectedFamily"
               placeholder="Escolha um ponto de controle">
-=======
-          <h6>Filtros:</h6>
-          <div class="form-group">
-            <label>Empresa vinculada:</label>
-            <ng-select [(ngModel)]="selectedCompany" [items]="listOfCompanies" (change)="companyChanged($event)" bindLabel="company.name"
-              placeholder="Escolha uma empresa">
->>>>>>> feat/factTable
               <ng-template ng-label-tmp let-item="item">
                 {{item.name}}
               </ng-template>
@@ -94,18 +86,11 @@
             </ng-select>
           </div>
 
-<<<<<<< HEAD
           <div>
             <label class="input-label" for="selectCode">Família</label>
             <ng-select id="selectCode" [(ngModel)]="selectedFamily" [items]="listOfFamilies"
               (clear)="onEquipmentSelectClear()" (change)="familyChanged($event)" bindLabel="code"
               placeholder="Selecione um Equipamento">
-=======
-          <div class="form-group">
-            <label for="selectCode">Família</label>
-            <ng-select id="selectCode" [(ngModel)]="selectedFamily" [items]="listOfFamilies" (clear)="onEquipmentSelectClear()"
-              (change)="familyChanged()" bindLabel="code" placeholder="Selecione um Equipamento">
->>>>>>> feat/factTable
               <ng-template ng-label-tmp let-item="item">
                 {{item.code}}
               </ng-template>
