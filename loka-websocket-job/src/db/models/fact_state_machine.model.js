@@ -105,14 +105,14 @@ exports.generateNewFact = async (factType, packing, eventrecord, currentStateHis
       if (currentStateHistory == null)
          currentStateHistory = packing.last_current_state_history ? packing.last_current_state_history : null;
 
-      console.log(" ");
-      console.log(factType);
-      console.log("packing:");
-      console.log(JSON.stringify(packing));
-      console.log("eventrecord");
-      console.log(eventrecord);
-      console.log("currentstatehistory");
-      console.log(currentStateHistory);
+      // console.log(" ");
+      // console.log(factType);
+      // console.log("packing:");
+      // console.log(JSON.stringify(packing));
+      // console.log("eventrecord");
+      // console.log(eventrecord);
+      // console.log("currentstatehistory");
+      // console.log(currentStateHistory);
 
       // let myCompany = null;
       // if (packing.last_event_record)
@@ -158,13 +158,13 @@ exports.generateNewFact = async (factType, packing, eventrecord, currentStateHis
          currentstatehistory: auxCurrentStateHistory,
       };
 
-      console.log("JSON.stringify(newFact):");
-      console.log(JSON.stringify(newFact));
+      // console.log("JSON.stringify(newFact):");
+      // console.log(JSON.stringify(newFact));
 
       let newFactStateMachineObject = new FactStateMachine(newFact);
 
-      console.log("newFactStateMachineObject");
-      console.log(JSON.stringify(newFactStateMachineObject));
+      // console.log("newFactStateMachineObject");
+      // console.log(JSON.stringify(newFactStateMachineObject));
 
       await newFactStateMachineObject.save();
    } catch (error) {

@@ -79,8 +79,8 @@ const update_packing = async (device_data, next) => {
     if (!packing) next();
 
     //Creating a new fact
-    console.log("\n >>>packing");
-    console.log(packing);
+    // console.log("\n >>>packing");
+    // console.log(packing);
 
     factStateMachine.generateNewFact("message", packing, null, null);
 
