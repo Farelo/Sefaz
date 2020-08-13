@@ -11,6 +11,7 @@ const { Packing } = require('../packings/packings.model')
 const { GC16 } = require('../gc16/gc16.model')
 const { Setting } = require('../settings/settings.model')
 const turf = require('@turf/turf')
+const martinez = require('martinez-polygon-clipping');
 
 exports.general_report = async () => {
     try {
@@ -111,7 +112,7 @@ exports.general_inventory_report = async () => {
                 qtd_in_clients = qtd_in_clients.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
                 qtd_in_cp = qtd_in_cp.filter(packing => packing.last_event_record && packing.last_event_record.type === 'inbound')
 
-                family_obj.company = family.company.name
+                family_obj.company = (family.company) ? family.company.name : '-'
                 family_obj.family_id = family._id
                 family_obj.family_name = family.code
                 family_obj.qtd_total = qtd_total
@@ -600,9 +601,16 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                 object_temp.created_at = packing.created_at
                 object_temp.update_at = packing.update_at
                 packing.last_device_data ? object_temp.last_device_data = packing.last_device_data : null
-                packing.last_event_record ? object_temp.last_event_record = await EventRecord.findById(packing.last_event_record).populate('control_point') : null
-                packing.last_current_state_history ? object_temp.last_current_state_history = packing.last_current_state_history : null
-                object_temp.absent_time_in_hours = packing.absent_time ? await getDiffDateTodayInHours(packing.absent_time) : '-'
+
+                // packing.last_event_record ? object_temp.last_event_record = await EventRecord.findById(packing.last_event_record).populate('control_point') : null
+                if(packing.last_event_record){
+                    let aux_last_event_record = await EventRecord.findById(packing.last_event_record).populate('control_point')
+                    object_temp.control_point_name = aux_last_event_record.control_point !== null ? aux_last_event_record.control_point.name : 'Não encontrado'
+                }else{
+                    object_temp.control_point_name = 'Sem registro'
+                }
+
+                object_temp.absent_time_in_hours = packing.absent_time ? await getDiffDateTodayInHours(packing.absent_time) : '0'
 
                 // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
                 //     object_temp.absent_time_in_hours = getDiffDateTodayInHours(packing.last_event_record.created_at)
@@ -848,13 +856,27 @@ exports.general_info_report = async (family_id = null) => {
             packings
                 .map(async packing => {
                     let object_temp = {}
-
                     let current_control_point = null;
+
+                    object_temp.current_control_point_name = '-'
+                    object_temp.current_control_point_type = '-'
+
                     if (packing.last_event_record) {
-                        if (packing.last_event_record.type !== 'outbound') {
+                        if (packing.last_event_record.type == 'inbound') {
                             current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate('type')
+
+                            //console.log(current_control_point)
+
+                            if (current_control_point) {
+                                object_temp.current_control_point_name = current_control_point.name
+                                object_temp.current_control_point_type = current_control_point.type ? current_control_point.type.name : "-"
+                            }
+                        } else {
+                            object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
+                            object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
                         }
                     }
+
                     //const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
                     const company = await Company.findById(packing.family.company)
 
@@ -862,11 +884,9 @@ exports.general_info_report = async (family_id = null) => {
                     object_temp.tag = packing.tag.code
                     object_temp.family_code = packing.family ? packing.family.code : '-'
                     object_temp.serial = packing.serial
-                    object_temp.company = company.name
+                    object_temp.company = company ? company.name : '-'
                     object_temp.current_state = packing.current_state
-                    object_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
-                    object_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
-
+                    
                     //dados do último inbound/outbound
                     object_temp.in_out_accuracy = packing.last_event_record ? packing.last_event_record.accuracy : '-'
                     object_temp.in_out_date = packing.last_event_record ? packing.last_event_record.created_at : '-'
@@ -928,29 +948,31 @@ exports.clients_report = async (company_id = null) => {
                             let obj_temp = {}
                             //Preenche as informações do ponto de controle a qual fez inbound
                             const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate('type').populate('company')
-                            
-                            if(cp == null){
-                                console.log('packing.last_event_record.control_point null')
-                                console.log(packing.last_event_record.control_point)
-                            } 
 
-                            obj_temp.control_point_id = cp._id
-                            obj_temp.control_point_name = cp.name
-                            obj_temp.control_point_type = cp.type.name
-                            obj_temp.company_control_point_name = cp.company.name
+                            if (cp == null) {
+                                obj_temp.control_point_id = '-'
+                                obj_temp.control_point_name = '-'
+                                obj_temp.control_point_type = '-'
+                                obj_temp.company_control_point_name = '-'
+                            } else{
+                                obj_temp.control_point_id = cp._id
+                                obj_temp.control_point_name = cp.name
+                                obj_temp.control_point_type = cp.type.name
+                                obj_temp.company_control_point_name = (cp.company) ? cp.company.name : '-'
+                            }
 
                             return obj_temp
                         })
                 )
 
-                console.log(packings_inbound);
+                // console.log(packings_inbound);
 
                 const output = Object.entries(_.countBy(packings_inbound, 'control_point_name')).map(([key, value]) => {
                     const packing_temp = packings_inbound.filter(p => p.control_point_name === key)
                     return {
                         family_code: family.code,
                         company_id: family.company._id,
-                        company: family.company.name,
+                        company: (family.company) ? family.company.name : '-',
                         packings_traveling: packings_outbound.length,
                         control_point_name: key,
                         control_point_type: packing_temp[0].control_point_type,
@@ -1194,7 +1216,7 @@ const intersectionpoly = (packing, controlPoint) => {
                 controlPointPolygonArray.push(auxPolygon)
             })
 
-            result = null
+            let result = false
 
             controlPointPolygonArray.forEach(mPolygon => {
                 //criar polígono da embalagem
@@ -1209,11 +1231,17 @@ const intersectionpoly = (packing, controlPoint) => {
 
                 //checar intersecção
                 let intersection = turf.intersect(mPolygon, packingPolygon);
+                let intersectionMartinez = martinez.intersection(controlPointPolygon.geometry.coordinates, packingPolygon.geometry.coordinates)
+
+                //checar inclusão total
+                let contained = turf.booleanContains(mPolygon, packingPolygon);
 
                 // mLog(' ')
                 // mLog('i: ', packing.tag.code)
+                // mLog(intersection)
 
-                result = intersection
+                if (result == false)
+                    result = (intersection !== null || intersectionMartinez !== null || contained !== false) ? true : false;
             })
 
             //mLog(result)
@@ -1237,12 +1265,18 @@ const intersectionpoly = (packing, controlPoint) => {
 
             //checar intersecção
             let intersection = turf.intersect(controlPointPolygon, packingPolygon);
+            let intersectionMartinez = martinez.intersection(controlPointPolygon.geometry.coordinates, packingPolygon.geometry.coordinates)
+
+            //checar inclusão total
+            let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
 
             // mLog(' ')
             // mLog('i: ', packing.tag.code)
             // mLog(intersection)
 
-            return intersection
+            let result = (intersection !== null || intersectionMartinez !== null || contained !== false) ? true : false;
+
+            return result;
         }
     } catch (error) {
         //mLog('erro: ', controlPointLine)

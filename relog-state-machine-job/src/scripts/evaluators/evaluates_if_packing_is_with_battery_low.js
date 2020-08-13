@@ -1,14 +1,20 @@
 // COMMON
-const STATES = require('../common/states')
+const STATES = require("../common/states");
 
 // MODELS
-const { Packing } = require('../../models/packings.model')
-const { CurrentStateHistory } = require('../../models/current_state_history.model')
+const { Packing } = require("../../models/packings.model");
+const { CurrentStateHistory } = require("../../models/current_state_history.model");
+const factStateMachine = require("../../models/fact_state_machine.model");
 
 module.exports = async (packing, setting) => {
-  let current_state_history = {}
-  
-  const battery_level = packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
+  let current_state_history = {};
+
+  const battery_level =
+    packing.last_device_data.battery.percentage !== null
+      ? packing.last_device_data.battery.percentage
+      : packing.last_device_data_battery
+      ? packing.last_device_data_battery.battery.percentage
+      : null;
 
   // if(packing.last_device_data.battery.percentage !== null)
   //   battery_level = packing.last_device_data.battery.percentage
@@ -19,28 +25,45 @@ module.exports = async (packing, setting) => {
   //     null
 
   try {
-    if ((battery_level !== null) && (battery_level < setting.battery_level_limit)) {
-      await Packing.findByIdAndUpdate(packing._id, { low_battery: true }, { new: true })
+    if (battery_level !== null && battery_level < setting.battery_level_limit) {
+      if (packing.low_battery == false) {
+        await Packing.findByIdAndUpdate(packing._id, { low_battery: true }, { new: true });
 
-      current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
-      if (current_state_history) {
-        //console.log("ESTADO DE BATERIA BAIXA JÁ CRIADO!")
-      } else {
-        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.BATERIA_BAIXA.alert })
+        const newCurrentStateHistory = new CurrentStateHistory({
+          packing: packing._id,
+          type: STATES.BATERIA_BAIXA.alert,
+        });
+        await newCurrentStateHistory.save();
+
+        // console.log("[generateNewFact] BATERIA_BAIXA @31");
+        await factStateMachine.generateNewFact("state", packing, null, newCurrentStateHistory);
       }
-
     } else {
-      if (packing.low_battery) await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true })
+      if (packing.low_battery) {
+        if (packing.low_battery == true) {
+          await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true });
 
-      current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
-      if (current_state_history) {
-        await current_state_history.remove()
-      } else {
-        //console.log("ESTADO DE BATERIA BAIXA JÁ REMOVIDO!")
+          const newCurrentStateHistory = new CurrentStateHistory({
+            packing: packing._id,
+            type: STATES.BATERIA_NORMAL.alert,
+          });
+          await newCurrentStateHistory.save();
+
+          // console.log("[generateNewFact] BATERIA_BAIXA @31");
+          await factStateMachine.generateNewFact("state", packing, null, newCurrentStateHistory);
+        }
       }
+
+      // if (packing.low_battery) await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true });
+
+      // const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.BATERIA_NORMAL.alert });
+      //   await newCurrentStateHistory.save();
+
+      //   // console.log("[generateNewFact] BATERIA_BAIXA @31");
+      //   await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
     }
   } catch (error) {
-    console.error(error)
-    throw new Error(error)
+    console.error(error);
+    throw new Error(error);
   }
-}
+};

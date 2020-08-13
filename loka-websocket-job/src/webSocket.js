@@ -5,6 +5,8 @@ var WebSocketClient = require("websocket").client;
 var client = new WebSocketClient();
 const { Packing } = require("./db/models/packings.model");
 const { Message } = require("./db/models/message.model");
+const { CurrentStateHistory } = require("./db/models/current_state_history.model");
+const { EventRecord } = require("./db/models/event_record.model");
 
 const {
   DeviceData,
@@ -20,7 +22,7 @@ var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 let deviceDictList;
 async function getDeviceDictList() {
   logger.info("aqui");
-  await require("./db/db")();
+  // await require("./db/db")();
 
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
@@ -236,9 +238,9 @@ function initWebSocket() {
 
 const runWS = async () => {
   await getDeviceDictList();
-  logger.info(deviceDictList);
-  await unsubscribingDeviceIds(deviceDictList);
-  await subscribingDeviceIds(deviceDictList);
+  // logger.info(deviceDictList);
+  // await unsubscribingDeviceIds(deviceDictList);
+  // await subscribingDeviceIds(deviceDictList);
   await initWebSocket();
 };
 

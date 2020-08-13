@@ -14,6 +14,7 @@ const currentStateHistorySchema = new mongoose.Schema({
             'viagem_perdida',
             'local_incorreto',
             'bateria_baixa',
+            'bateria_normal',
             'viagem_atrasada',
             'tempo_de_permanencia_excedido',
             'sem_sinal',
@@ -28,6 +29,10 @@ const currentStateHistorySchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
         required: true
+    },
+    device_data_id: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'DeviceData',
     },
     created_at: {
         type: Date,

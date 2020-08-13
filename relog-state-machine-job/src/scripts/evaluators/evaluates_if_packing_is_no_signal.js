@@ -6,6 +6,7 @@ const STATES = require('../common/states')
 // MODELS
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
 const { Packing } = require('../../models/packings.model')
+const factStateMachine = require('../../models/fact_state_machine.model')
 
 module.exports = async (packing) => {
     try {
@@ -13,11 +14,10 @@ module.exports = async (packing) => {
         //if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.SEM_SINAL.alert) return null
         if (packing.current_state && packing.current_state === STATES.SEM_SINAL.alert) return null
 
-        await CurrentStateHistory.create({ packing: packing._id, device_data_id: packing.last_device_data, type: STATES.SEM_SINAL.alert })
-        // await currentStateHistory.save()
-
-        console.log('packing.absent')
-        console.log(packing.absent)
+        const newCurrentStateHistory = new CurrentStateHistory({ packing: packing._id, type: STATES.SEM_SINAL.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+        await newCurrentStateHistory.save();
+        
+        await factStateMachine.generateNewFact('state', packing, null, newCurrentStateHistory);
 
         if(packing.absent == true){
             let actualOfflineWhileAbsentRegister = createOfflineWhileAbsentRegister(packing)
