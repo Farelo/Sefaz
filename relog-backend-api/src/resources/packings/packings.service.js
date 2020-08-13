@@ -7,7 +7,7 @@ const { Company } = require("../companies/companies.model");
 const { EventRecord } = require("../event_record/event_record.model");
 const { Setting } = require("../settings/settings.model");
 const { ControlPoint } = require("../control_points/control_points.model");
-const { ControlPoint } = require("../control_points/control_points.model");
+const { FactStateMachine } = require("../fact_state_machine/fact_state_machine.model");
 const rp = require("request-promise");
 const mongoose = require("mongoose");
 const moment = require("moment");
@@ -203,26 +203,25 @@ exports.control_point_geolocation = async (query) => {
          else finalQuery["devicedata.message_date"] = date_conditions;
       }
 
-      
       // Controlpoint ID e Controlpoint Type
       // Se informou os dois não importa, pois o front filtra os PC desse tipo. Basta apenas considerar o PC
-      
+
       // control_point_id: req.query.control_point_id ? req.query.control_point_id : null,
       // control_point_type: req.query.control_point_type ? req.query.control_point_type : null,
       if (query.control_point_id !== null) {
-        finalQuery["eventrecord.control_point"] = new mongoose.Types.ObjectId(query.control_point_id);
-        } else if (query.control_point_type !== null) {
-            await ControlPoint.find({ type: query.control_point_type }, { _id: 1 }, (err, typed_control_points) => {
-                let control_points = typed_control_points.map((elem) => elem._id);
-                finalQuery["eventrecord.control_point"] = { control_point: { $in: control_points } };
-            });
-        }
-        
+         finalQuery["eventrecord.control_point"] = new mongoose.Types.ObjectId(query.control_point_id);
+      } else if (query.control_point_type !== null) {
+         await ControlPoint.find({ type: query.control_point_type }, { _id: 1 }, (err, typed_control_points) => {
+            let control_points = typed_control_points.map((elem) => elem._id);
+            finalQuery["eventrecord.control_point"] = { control_point: { $in: control_points } };
+         });
+      }
+
       // company_id: req.query.company_id ? req.query.company_id : null,
-      if(query.company_id){
-        await Family.find({ company: query.company_id }, { _id: 1 }, (err, families) => {
+      if (query.company_id) {
+         await Family.find({ company: query.company_id }, { _id: 1 }, (err, families) => {
             let allFamilies = families.map((elem) => elem._id);
-            finalQuery["packing.family"] = { "$in": allFamilies };
+            finalQuery["packing.family"] = { $in: allFamilies };
          });
       }
 
@@ -231,184 +230,27 @@ exports.control_point_geolocation = async (query) => {
 
       // serial: req.query.serial ? req.query.serial : null,
       if (query.serial) finalQuery["packing.serial"] = query.serial;
-     
+
       // current_state: req.query.selectedStatus ? req.query.selectedStatus : null,
       if (query.current_state) finalQuery["currentstatehistory.type"] = query.current_state;
 
       // only_good_accuracy: req.query.onlyGoodAccuracy ? req.query.onlyGoodAccuracy : null
       if (query.only_good_accuracy == "true") finalQuery["devicedata.accuracy"] = { $lte: settings[0].accuracy_limit };
-      
-      console.log('\nfinalQuery');
+
+      console.log("\nfinalQuery");
       console.log(JSON.stringify(finalQuery));
 
+    //   let result = await FactStateMachine.find(finalQuery);
+      let result = await FactStateMachine.aggregate([
+         { $match: finalQuery },
+         { $group: { _id: "$packing.tag", doc: { $last: "$$ROOT" } } },
+         { $replaceRoot: { newRoot: "$doc" } }
+      ]);
 
+      console.log("result");
+      console.log(result);
 
-
-
-
-
-
-
-
-
-    //   if (query.control_point_id !== null || query.control_point_type !== null) {
-    //      event_record_conditions["type"] = "inbound";
-
-    //      event_records = await event_record_service.find_by_control_point_and_date(
-    //         event_record_conditions,
-    //         query.current_state
-    //      );
-    //   } else {
-    //      event_records = await device_data_service.find_by_date(event_record_conditions, query.current_state);
-    //   }
-
-    //   // console.log('results: ' + event_records.length);
-
-    //   // console.log(event_records[0])
-
-    //   if (query.company_id !== null || query.family_id != null || query.serial != null) {
-    //      //let allFamilies = await Family.find({})
-
-    //      if (query.control_point_id !== null || query.control_point_type !== null) {
-    //         event_records = event_records.filter((er) => {
-    //            // Se a família foi informada, então a empresa vinculada foi
-    //            // selecionada automaticamente pelo front ...
-    //            if (query.family_id != null) {
-    //               if (query.family_id != null && query.serial != null) {
-    //                  if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
-    //                     return true;
-    //                  }
-    //               } else if (query.family_id != null) {
-    //                  if (er.packing.family == query.family_id) {
-    //                     return true;
-    //                  }
-    //               } else {
-    //                  if (er.packing.serial == query.serial) {
-    //                     return true;
-    //                  }
-    //               }
-
-    //               // Apenas a empresa vinculada foi selecionada
-    //               // considere todas as famílias vinculadas a ela
-    //            } else if (query.company_id !== null) {
-    //               if (er.family.company == query.company_id) {
-    //                  return true;
-    //               }
-    //            }
-    //         });
-    //      } else {
-    //         event_records = event_records.filter((er) => {
-    //            try {
-    //               // Se a família foi informada, então a empresa vinculada foi
-    //               // selecionada automaticamente pelo front ...
-    //               if (query.family_id != null) {
-    //                  if (query.family_id != null && query.serial != null) {
-    //                     if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
-    //                        return true;
-    //                     }
-    //                  } else if (query.family_id != null) {
-    //                     if (er.packing.family == query.family_id) {
-    //                        return true;
-    //                     }
-    //                  } else {
-    //                     if (er.packing.serial == query.serial) {
-    //                        return true;
-    //                     }
-    //                  }
-
-    //                  // Apenas a empresa vinculada foi selecionada
-    //                  // considere todas as famílias vinculadas a ela
-    //               } else if (query.company_id !== null) {
-    //                  if (er.family.company == query.company_id) {
-    //                     return true;
-    //                  }
-    //               }
-    //            } catch (error) {
-    //               // console.log(error)
-    //               // console.log('error', er)
-    //            }
-    //         });
-    //      }
-
-         /*
-            let allFamilies = await Family.find({})
-
-            event_records = event_records.filter(er => {
-                if (query.company_id !== null) {
-
-                    let auxFamilies = allFamilies.filter(elem => elem.company == query.company_id)
-
-                    if (auxFamilies.includes(er.packing.family)) {
-                        if (query.family_id != null && query.serial != null) {
-                            if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
-                                return true
-                            }
-                        } else if (query.family_id != null) {
-                            if (er.packing.family == query.family_id) {
-                                return true
-                            }
-                        } else {
-                            if (er.packing.serial == query.serial) {
-                                return true
-                            }
-                        }
-                    }
-                } else {
-                    if (query.family_id != null && query.serial != null) {
-                        if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
-                            return true
-                        }
-                    } else if (query.family_id != null) {
-                        if (er.packing.family == query.family_id) {
-                            return true
-                        }
-                    } else {
-                        if (er.packing.serial == query.serial) {
-                            return true
-                        }
-                    }
-                }
-
-                return false
-            })
-            */
-
-         // event_records = event_records.filter(er => {
-         //     if(query.company_id !== null){
-         //         if (query.family_id != null && query.serial != null) {
-         //             if (er.family.company == query.company_id && er.packing.family == query.family_id && er.packing.serial == query.serial) {
-         //                 return true
-         //             }
-         //         } else if (query.family_id != null) {
-         //             if (er.family.company == query.company_id && er.packing.family == query.family_id) {
-         //                 return true
-         //             }
-         //         } else {
-         //             if (er.family.company == query.company_id && er.packing.serial == query.serial) {
-         //                 return true
-         //             }
-         //         }
-         //     } else {
-         //         if (query.family_id != null && query.serial != null) {
-         //             if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
-         //                 return true
-         //             }
-         //         } else if (query.family_id != null) {
-         //             if (er.packing.family == query.family_id) {
-         //                 return true
-         //             }
-         //         } else {
-         //             if (er.packing.serial == query.serial) {
-         //                 return true
-         //             }
-         //         }
-         //     }
-
-         //     return false
-         // })
-    //   }
-
-    //   return event_records;
+      return result;
    } catch (error) {
       throw new Error(error);
    }
