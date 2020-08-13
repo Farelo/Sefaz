@@ -470,7 +470,7 @@ export class RastreamentoComponent implements OnInit {
       param['company_id'] = this.selectedLinkedCompany._id        // Linked company
 
     if (this.selectedControlPointType !== null)
-      param['control_point_type'] = this.selectedControlPointType        // Control point type
+      param['control_point_type'] = this.selectedControlPointType._id        // Control point type
 
     if (this.selectedControlPoint !== null)
       param['control_point_id'] = this.selectedControlPoint; // Control point
