@@ -318,9 +318,9 @@ export class Spiralize {
                         // console.log(array[sc - 1]);
 
                         let e = new google.maps.Marker({
-                            family_code: array[sc - 1].family,
+                            family_code: array[sc - 1].packing.family,
                             serial: array[sc - 1].packing.serial,
-                            tag: array[sc - 1].packing.tag.code,
+                            tag: array[sc - 1].packing.tag,
                             position: spiralCoordinates[sc],
                             battery: (array[sc - 1].devicedata && array[sc - 1].devicedata.battery.percentage) ? (array[sc - 1].devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
                             message_date : (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.message_date) : 'Sem registro',
