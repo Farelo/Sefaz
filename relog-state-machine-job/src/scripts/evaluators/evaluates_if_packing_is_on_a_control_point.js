@@ -5,66 +5,52 @@ const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_i
 const { EventRecord } = require("../../models/event_record.model");
 const factStateMachine = require("../../models/fact_state_machine.model");
 
-module.exports = async (packing, controlPoints, companies, setting) => {
+module.exports = async (packing, controlPoints, setting) => {
   try {
-    return findAndHandleIntersection(packing, controlPoints, setting, companies);
+     return findAndHandleIntersection(packing, controlPoints, setting);
   } catch (error) {
-    console.error(error);
-    throw new Error(error);
+     console.error(error);
+     throw new Error(error);
   }
 };
 
-const findAndHandleIntersection = async (packing, controlPoints, setting, companies) => {
+const findAndHandleIntersection = async (packing, controlPoints, setting) => {
   let deviceDataId = packing.last_device_data._id;
   let distance = Infinity;
   let currentControlPoint = null;
-  let range_radius = 0;
-  let isInsidePolygon = false;
 
   //Deve ser otimizado para sair do loop quando for encontrado dentro de um polígono
-  controlPoints.forEach(async (controlPoint) => {
-    //isInsidePolygon = false
-    //mLog('controlPoints')
+  controlPoints.some((controlPoint) => {
+     let isInsideControlePoint = false;
 
-    if (controlPoint.geofence.type === "p") {
-      if (!isInsidePolygon) {
-        //if (pnpoly(packing, controlPoint)) {
+     if (controlPoint.geofence.type === "p") {
         if (intersectionpoly(packing, controlPoint)) {
-          //mLog(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
-          distance = 0;
-          currentControlPoint = controlPoint;
-          isInsidePolygon = true;
+           //mLog(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
+           distance = 0;
+           currentControlPoint = controlPoint;
+           isInsideControlePoint = true;
         }
-      }
-    } else {
-      if (!isInsidePolygon) {
+     } else {
         //mLog(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
         const calculate = getDistanceFromLatLonInKm(
-          packing.last_device_data.latitude,
-          packing.last_device_data.longitude,
-          controlPoint.geofence.coordinates[0].lat,
-          controlPoint.geofence.coordinates[0].lng
+           packing.last_device_data.latitude,
+           packing.last_device_data.longitude,
+           controlPoint.geofence.coordinates[0].lat,
+           controlPoint.geofence.coordinates[0].lng
         );
 
-        if (calculate < distance) {
-          distance = calculate;
-          currentControlPoint = controlPoint;
-          range_radius = controlPoint.geofence.radius;
+        if (calculate <= controlPoint.geofence.radius + packing.last_device_data.accuracy) {
+           distance = calculate;
+           currentControlPoint = controlPoint;
+           isInsideControlePoint = true;
         }
-      }
-    }
+     }
+
+     return isInsideControlePoint;
   });
 
   //TEM INTERSECÇÃO
-  if (
-    thereIsIntersection(
-      isInsidePolygon,
-      distance,
-      range_radius,
-      packing.last_device_data.accuracy,
-      setting.accuracy_limit
-    ) == true
-  ) {
+  if (currentControlPoint !== null) {
     mLog("INTERSECÇÃO");
     mLog(currentControlPoint.name);
 
@@ -85,7 +71,6 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
           //Se tem bom sinal
           if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
             mLog("BOM SINAL");
-            mLog("OUT");
             mLog("IN");
 
             // Faz OUT do ponto de controle anterior
@@ -117,7 +102,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
             await factStateMachine.generateNewFact('event', packing, inEventRecord, null);
 
             return currentControlPoint;
-          } else {
+         } else {
             mLog("SINAL RUIM");
 
             //Se está longe o suficiente:
@@ -210,13 +195,9 @@ const findAndHandleIntersection = async (packing, controlPoints, setting, compan
 
         return null;
       } else {
-        mLog("ULTIMO EVENTO FOI OUT");
-        return null;
+         //TODO
       }
-    } else {
-      //TODO
-    }
-  }
+   }
 };
 
 let idAbleToLog = false;

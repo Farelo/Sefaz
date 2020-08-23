@@ -137,7 +137,7 @@ const device_data_save = async (packing, device_data_array) => {
           if (elem.accuracy <= 32000) result = true;
         }
       }
-
+    
       return result;
     });
   } else {
@@ -174,8 +174,8 @@ const device_data_save = async (packing, device_data_array) => {
         });
 
         // salva no banco | observação: não salva mensagens iguais porque o model possui
-        // índice unico e composto por device_id e message_date,
-        // e o erro de duplicidade nao interrompe o job
+        // índice unico e composto por device_id e message_date, e o erro de duplicidade nao interrompe o job
+        // Também atualiza o atributo 'last_message_signal'
         if (idx == 0) {
           if (!isLastSignalAlreadySaved) {
             let update_attrs = {};

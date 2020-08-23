@@ -1,31 +1,45 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PackingService, PlantsService, LogisticService, SuppliersService, SettingsService, AlertsService, AuthenticationService, DevicesService, ControlPointsService } from '../../servicos/index.service';
-import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
-import { MeterFormatter } from '../pipes/meter_formatter';
-import { NouiFormatter } from 'ng2-nouislider';
-import { defineLocale } from 'ngx-bootstrap/chronos';
-import { ptBrLocale } from 'ngx-bootstrap/locale';
-import { constants } from 'environments/constants';
-defineLocale('pt-br', ptBrLocale);
+import { Component, OnInit, Input } from "@angular/core";
+import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import {
+  PackingService,
+  PlantsService,
+  LogisticService,
+  SuppliersService,
+  SettingsService,
+  AlertsService,
+  AuthenticationService,
+  DevicesService,
+  ControlPointsService,
+} from "../../servicos/index.service";
+import {
+  DatepickerModule,
+  BsDatepickerModule,
+  BsDaterangepickerConfig,
+  BsLocaleService,
+} from "ngx-bootstrap/datepicker";
+import { MeterFormatter } from "../pipes/meter_formatter";
+import { NouiFormatter } from "ng2-nouislider";
+import { defineLocale } from "ngx-bootstrap/chronos";
+import { ptBrLocale } from "ngx-bootstrap/locale";
+import { constants } from "environments/constants";
+defineLocale("pt-br", ptBrLocale);
 
 @Component({
-  selector: 'app-alerta',
-  templateUrl: './layer.component.html',
-  styleUrls: ['./layer.component.css']
+  selector: "app-alerta",
+  templateUrl: "./layer.component.html",
+  styleUrls: ["./layer.component.css"],
 })
 export class LayerModalComponent implements OnInit {
-
   //Show package details
   public detailsIsCollapsed = true;
-  public message = '';
+  public message = "";
 
   /*
    * DataPicker
    */
   datePickerConfig = new BsDaterangepickerConfig(); //Configurations
-  public initialDate: Date;  //Initial date
-  public finalDate: Date;    //Initial date
+  public initialDate: Date; //Initial date
+  public finalDate: Date; //Initial date
 
   @Input() packing;
   public mPacking: any;
@@ -40,7 +54,7 @@ export class LayerModalComponent implements OnInit {
     messageDate: null,
     end: null,
     battery: null,
-    accuracy: null
+    accuracy: null,
   };
   public lastPosition: any;
 
@@ -50,14 +64,14 @@ export class LayerModalComponent implements OnInit {
     lat: null,
     lng: null,
     name: null,
-    location: null
+    location: null,
   };
 
   public logistics = [];
   public logistic = {
     display: true,
-    name: null
-  }
+    name: null,
+  };
 
   public suppliers = [];
   supplier = {
@@ -83,56 +97,77 @@ export class LayerModalComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private settingsService: SettingsService,
     private alertService: AlertsService,
-    private localeService: BsLocaleService) {
-
-    defineLocale('pt-br', ptBrLocale);
-    this.localeService.use('pt-br');
+    private localeService: BsLocaleService
+  ) {
+    defineLocale("pt-br", ptBrLocale);
+    this.localeService.use("pt-br");
 
     //Initialize 7 days before now
-    let sub = new Date().getTime() - (7 * 24 * 60 * 60 * 1000);
+    let sub = new Date().getTime() - 7 * 24 * 60 * 60 * 1000;
     this.initialDate = new Date(sub);
     this.finalDate = new Date();
 
     this.datePickerConfig.showWeekNumbers = false;
     this.datePickerConfig.displayMonths = 1;
-    this.datePickerConfig.containerClass = 'theme-dark-blue';
+    this.datePickerConfig.containerClass = "theme-dark-blue";
   }
 
   ngOnInit() {
-
-    console.log('[layer.component] this.packing: ' + JSON.stringify(this.packing));
+    console.log("[layer.component] this.packing: " + JSON.stringify(this.packing));
 
     this.getPacking();
 
-    //Get the plant radius in the settings
-    this.getPlantRadius();
+    // //Get the plant radius in the settings
+    // this.getPlantRadius();
 
-    //get all point according the given filter
-    let initialD = this.formatDate(this.initialDate);
-    let finalD = this.formatDate(this.finalDate, true);
+    // //get all point according the given filter
+    // let initialD = this.formatDate(this.initialDate);
+    // let finalD = this.formatDate(this.finalDate, true);
 
-    // console.log(this.initialDate);
-    // console.log(this.finalDate);
-    // console.log(initialD);
-    // console.log(finalD);
-
-    this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
+    // this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
 
     this.getPlants();
-    // this.getSuppliers();
-    // this.getLogisticOperators();
-    //this.getAlert();
   }
 
   getPacking() {
-    this.packingService.getPacking(this.packing._id).subscribe(response => {
+    this.packingService.getPacking(this.packing._id).subscribe((response) => {
       this.mPacking = response;
-      //console.log(this.mPacking);
+      // console.log(this.mPacking);
+
+      // console.log(this.mPacking.last_device_data.message_date_timestamp * 1000);
+      // console.log(
+      //   new Date(this.mPacking.last_device_data.message_date_timestamp * 1000)
+      // );
+
+      // console.log(this.initialDate.getTime());
+      // console.log(this.initialDate);
+
+      if (
+        this.mPacking.last_device_data &&
+        this.mPacking.last_device_data.message_date_timestamp * 1000 <
+          this.initialDate.getTime()
+      ) {
+        // console.log("caso 1");
+
+        this.initialDate = new Date(
+          this.mPacking.last_device_data.message_date_timestamp * 1000
+        );
+
+        let initialD = this.formatDate(this.initialDate);
+        let finalD = this.formatDate(this.finalDate, true);
+
+        this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
+      } else {
+        // console.log("caso 2");
+        let initialD = this.formatDate(this.initialDate);
+        let finalD = this.formatDate(this.finalDate, true);
+
+        this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
+      }
     });
   }
 
   getPlantRadius() {
-
     let currentSetting = this.authenticationService.currentSettings();
     this.settings.range_radius = currentSetting.range_radius;
   }
@@ -142,7 +177,6 @@ export class LayerModalComponent implements OnInit {
    * If not, trye to retrieve an existing alert status code.
    */
   getAlertCode() {
-
     let result: number = 0;
 
     switch (this.packing.current_state) {
@@ -186,10 +220,7 @@ export class LayerModalComponent implements OnInit {
   }
 
   onFirstDateChange(newDate: Date) {
-
-
     if (newDate !== null && this.finalDate !== null) {
-
       this.isLoading = true;
       let initialD = this.formatDate(newDate);
       let finalD = this.formatDate(this.finalDate, true);
@@ -198,9 +229,7 @@ export class LayerModalComponent implements OnInit {
   }
 
   onFinalDateChange(newDate: Date) {
-
     if (this.initialDate !== null && newDate !== null) {
-
       this.isLoading = true;
       let initialD = this.formatDate(this.initialDate);
       let finalD = this.formatDate(newDate, true);
@@ -215,45 +244,51 @@ export class LayerModalComponent implements OnInit {
    * @param finalDate Date on format yyyy--mm-dd
    * @param accuracy Integer value in meters (m)
    */
-  getFilteredPositions(codeTag: string, startDate: any = null, finalDate: any = null, accuracy: any = null) {
+  getFilteredPositions(
+    codeTag: string,
+    startDate: any = null,
+    finalDate: any = null,
+    accuracy: any = null
+  ) {
+    this.deviceService
+      .getFilteredPositions(codeTag, startDate, finalDate, accuracy)
+      .subscribe((result: any[]) => {
+        if (result.length > 1) {
+          //centraliza o mapa
+          this.center = new google.maps.LatLng(
+            result[result.length - 1].latitude,
+            result[result.length - 1].longitude
+          );
 
-    this.deviceService.getFilteredPositions(codeTag, startDate, finalDate, accuracy).subscribe((result: any[]) => {
+          //guarda todas as posições
+          this.markers = result;
 
-      if (result.length > 1) {
-        //centraliza o mapa
-        this.center = new google.maps.LatLng(result[result.length - 1].latitude, result[result.length - 1].longitude);
+          //add um atributo latLng
+          this.markers.map((elem, index) => {
+            elem.latLng = new google.maps.LatLng(elem.latitude, elem.longitude);
+            return elem;
+          });
 
-        //guarda todas as posições
-        this.markers = result;
+          this.markers = this.markers.reverse();
 
-        //add um atributo latLng
-        this.markers.map((elem, index) => {
-          elem.latLng = new google.maps.LatLng(elem.latitude, elem.longitude);
-          return elem;
-        });
+          //atualiza o path
+          this.updatePaths();
+        } else {
+          this.isLoading = false;
+        }
 
-        this.markers = this.markers.reverse();
+        this.getResultQuantity();
 
-        //atualiza o path
-        this.updatePaths();
-
-      } else {
-
-        this.isLoading = false;
-      }
-
-      this.getResultQuantity();
-
-      // console.log('[getFilteredPositions] result: ' + JSON.stringify(result));
-      // console.log('[getFilteredPositions] path: ' + JSON.stringify(this.path));
-      // console.log('[getFilteredPositions] markers: ' + JSON.stringify(this.markers));
-      // console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
-    });
+        // console.log('[getFilteredPositions] result: ' + JSON.stringify(result));
+        // console.log('[getFilteredPositions] path: ' + JSON.stringify(this.path));
+        // console.log('[getFilteredPositions] markers: ' + JSON.stringify(this.markers));
+        // console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
+      });
   }
 
   /*
-  * Accuracy
-  */
+   * Accuracy
+   */
   public accuracyRange: any = 1000;
   incrementRange() {
     this.accuracyRange = parseInt(this.accuracyRange) + 10;
@@ -272,7 +307,6 @@ export class LayerModalComponent implements OnInit {
     // this.getLastPostition();
   }
 
-
   /*
    * Plants
    */
@@ -280,7 +314,7 @@ export class LayerModalComponent implements OnInit {
   public listOfPolygonControlPoints: any;
 
   getPlants() {
-    this.controlPointsService.getAllControlPoint().subscribe(result => {
+    this.controlPointsService.getAllControlPoint().subscribe((result) => {
       this.controlPoints = result;
 
       // this.controlPoints.map(e => {
@@ -289,30 +323,30 @@ export class LayerModalComponent implements OnInit {
       // });
 
       this.listOfCircleControlPoints = result
-        .filter(elem => elem.geofence.type == 'c')
-        .map(elem => {
-          elem.position = (new google.maps.LatLng(elem.geofence.coordinates[0].lat, elem.geofence.coordinates[0].lng));
+        .filter((elem) => elem.geofence.type == "c")
+        .map((elem) => {
+          elem.position = new google.maps.LatLng(
+            elem.geofence.coordinates[0].lat,
+            elem.geofence.coordinates[0].lng
+          );
           return elem;
         });
 
       this.listOfPolygonControlPoints = result
-        .filter(elem => elem.geofence.type == 'p')
-        .map(elem => {
-
-          let lat = elem.geofence.coordinates.map(p =>  p.lat);
-          let lng = elem.geofence.coordinates.map(p =>  p.lng);
+        .filter((elem) => elem.geofence.type == "p")
+        .map((elem) => {
+          let lat = elem.geofence.coordinates.map((p) => p.lat);
+          let lng = elem.geofence.coordinates.map((p) => p.lng);
 
           elem.position = {
-            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat))/2,
-            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng))/2
-          }
+            lat: (Math.min.apply(null, lat) + Math.max.apply(null, lat)) / 2,
+            lng: (Math.min.apply(null, lng) + Math.max.apply(null, lng)) / 2,
+          };
 
           return elem;
         });
-
     });
   }
-
 
   clicked(_a, opt) {
     var marker = _a.target;
@@ -357,10 +391,10 @@ export class LayerModalComponent implements OnInit {
   }
 
   /*
-   * Info window 
+   * Info window
    */
   clickedPlantDetail(plant) {
-    plant.nguiMapComponent.openInfoWindow('pw', plant);
+    plant.nguiMapComponent.openInfoWindow("pw", plant);
     // var iwOuter = $('.gm-style-iw');
     // iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
     // var iwCloseBtn = iwOuter.next();
@@ -375,42 +409,36 @@ export class LayerModalComponent implements OnInit {
   }
 
   clickedSupplierDetail(supply) {
-    supply.nguiMapComponent.openInfoWindow('sw', supply);
-
+    supply.nguiMapComponent.openInfoWindow("sw", supply);
   }
 
   clickedLogisticDetail(supply) {
-    supply.nguiMapComponent.openInfoWindow('lw', supply);
-
+    supply.nguiMapComponent.openInfoWindow("lw", supply);
   }
 
   startWindow(marker) {
-    marker.nguiMapComponent.openInfoWindow('iw', marker);
-
+    marker.nguiMapComponent.openInfoWindow("iw", marker);
   }
 
-  getPosition(event: any) {
-  }
-
-
+  getPosition(event: any) {}
 
   /**
    * ///////////////////////////////////////
    * Util
    */
   getResultQuantity(): string {
-    let result = '';
+    let result = "";
 
     //console.log('this.path.length: ' + this.path.length);
 
     if (this.path.length == 0)
-      result = "Sem resultados";
+      result = `0 posições de ${this.markers.length} disponíveis`;
 
     if (this.path.length == 1)
-      result = "1 resultado encontrado";
+      result = `1 posição de ${this.markers.length} disponíveis`;
 
     if (this.path.length > 1)
-      result = `${this.path.length} resultados encontrados`;
+      result = `${this.path.length} posições de ${this.markers.length} disponíveis`;
 
     return result;
   }
@@ -434,14 +462,14 @@ export class LayerModalComponent implements OnInit {
   updatePaths() {
     this.path = [];
 
-    // 
-    this.rangedMarkers = this.markers.filter(elem => {
+    //
+    this.rangedMarkers = this.markers.filter((elem) => {
       return elem.accuracy <= this.accuracyRange;
     });
 
-    this.rangedMarkers.forEach(elem => {
+    this.rangedMarkers.forEach((elem) => {
       if (elem.accuracy <= this.accuracyRange) {
-        this.path.push({ "lat": elem.latitude, "lng": elem.longitude });
+        this.path.push({ lat: elem.latitude, lng: elem.longitude });
       }
     });
 
@@ -454,21 +482,21 @@ export class LayerModalComponent implements OnInit {
     // console.log('-');
   }
 
-  lastPositionClicked(event: any){
+  lastPositionClicked(event: any) {
     // console.log('event');
     // console.log(event);
 
     // console.log('lastPositionClicked');
     // console.log(this.showLastPosition);
 
-    if (!this.showLastPosition){
+    if (!this.showLastPosition) {
       this.center = null;
       this.getLastPostition();
     }
   }
 
   /**
-   * This method updates the array 'path' with markers that satisfies the given accuracy. 
+   * This method updates the array 'path' with markers that satisfies the given accuracy.
    */
   getLastPostition() {
     //console.log('getLastPostition');
@@ -478,8 +506,10 @@ export class LayerModalComponent implements OnInit {
       // console.log(this.lastPosition);
 
       //this.center = this.lastPosition.latLng;
-      this.center = (new google.maps.LatLng(this.lastPosition.latitude, this.lastPosition.longitude));
-
+      this.center = new google.maps.LatLng(
+        this.lastPosition.latitude,
+        this.lastPosition.longitude
+      );
     } else {
       this.lastPosition = null;
     }
@@ -490,9 +520,8 @@ export class LayerModalComponent implements OnInit {
   }
 
   formatDate(date: any, endDate: boolean = false) {
-    
     // console.log(endDate);
-    // console.log(date);
+    console.log(date);
 
     let d = date;
     let result = 0;
@@ -501,11 +530,10 @@ export class LayerModalComponent implements OnInit {
       d.setHours(0, 0, 0, 0);
       //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
       result = d.getTime() / 1000;
-
     } else {
       d.setHours(23, 59, 59, 0);
       //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
-      result = d.getTime()/1000;
+      result = d.getTime() / 1000;
     }
 
     // console.log(d);
@@ -515,13 +543,13 @@ export class LayerModalComponent implements OnInit {
   }
 
   // formatDate(date: any, endDate: boolean = false) {
-    
+
   //   console.log(endDate);
   //   console.log(date);
 
   //   let d = new Date(date.getTime() + date.getTimezoneOffset() * 60000); //offset to user timezone
   //   console.log(d);
-    
+
   //   let result = 0;
 
   //   if (!endDate) {
@@ -546,118 +574,280 @@ export class LayerModalComponent implements OnInit {
 
     switch (current_state) {
       case constants.ALERTS.ANALISYS:
-        pin = { url: 'assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_analise.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         break;
 
       case constants.ALERTS.ABSENT:
-        pin = { url: 'assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_ausente.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         break;
 
       case constants.ALERTS.INCORRECT_LOCAL:
-        pin = { url: 'assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_incorreto.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         break;
 
       case constants.ALERTS.LOW_BATTERY:
-        pin = { url: 'assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_bateria.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         break;
 
       case constants.ALERTS.LATE:
-        pin = { url: 'assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_atrasado.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         break;
 
       case constants.ALERTS.PERMANENCE_TIME:
-        pin = { url: 'assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_permanencia.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         break;
 
       case constants.ALERTS.NO_SIGNAL:
-        pin = { url: 'assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_sem_sinal.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         break;
 
       case constants.ALERTS.MISSING:
-        pin = { url: 'assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_perdido.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         break;
 
       default:
-        pin = { url: 'assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_normal.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         break;
     }
     return pin;
   }
 
-  getPinWithAlert(i: number) { 
-    let pin = null; 
+  getPinWithAlert(i: number) {
+    let pin = null;
     let current_state = this.packing.current_state;
 
     switch (current_state) {
       case constants.ALERTS.ANALISYS:
-        pin = { url: 'assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_analise.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: 'assets/images/pin_analise_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_analise_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0)
+            pin = {
+              url: "assets/images/pin_analise_first.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
+          if (i == this.rangedMarkers.length - 1)
+            pin = {
+              url: "assets/images/pin_analise_final.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
         }
         break;
 
       case constants.ALERTS.ABSENT:
-        pin = { url: 'assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_ausente.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: 'assets/images/pin_ausente_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_ausente_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0)
+            pin = {
+              url: "assets/images/pin_ausente_first.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
+          if (i == this.rangedMarkers.length - 1)
+            pin = {
+              url: "assets/images/pin_ausente_final.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
         }
         break;
 
       case constants.ALERTS.INCORRECT_LOCAL:
-        pin = { url: 'assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_incorreto.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: 'assets/images/pin_incorreto_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_incorreto_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0)
+            pin = {
+              url: "assets/images/pin_incorreto_first.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
+          if (i == this.rangedMarkers.length - 1)
+            pin = {
+              url: "assets/images/pin_incorreto_final.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
         }
         break;
 
       case constants.ALERTS.LOW_BATTERY:
-        pin = { url: 'assets/images/pin_bateria.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_bateria.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: 'assets/images/pin_bateria_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_bateria_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0)
+            pin = {
+              url: "assets/images/pin_bateria_first.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
+          if (i == this.rangedMarkers.length - 1)
+            pin = {
+              url: "assets/images/pin_bateria_final.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
         }
         break;
 
       case constants.ALERTS.LATE:
-        pin = { url: 'assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_atrasado.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: 'assets/images/pin_atrasado_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_atrasado_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0)
+            pin = {
+              url: "assets/images/pin_atrasado_first.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
+          if (i == this.rangedMarkers.length - 1)
+            pin = {
+              url: "assets/images/pin_atrasado_final.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
         }
         break;
 
       case constants.ALERTS.PERMANENCE_TIME:
-        pin = { url: 'assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_permanencia.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: 'assets/images/pin_permanencia_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_permanencia_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0)
+            pin = {
+              url: "assets/images/pin_permanencia_first.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
+          if (i == this.rangedMarkers.length - 1)
+            pin = {
+              url: "assets/images/pin_permanencia_final.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
         }
         break;
 
       case constants.ALERTS.NO_SIGNAL:
-        pin = { url: 'assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_sem_sinal.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: 'assets/images/pin_sem_sinal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_sem_sinal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0)
+            pin = {
+              url: "assets/images/pin_sem_sinal_first.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
+          if (i == this.rangedMarkers.length - 1)
+            pin = {
+              url: "assets/images/pin_sem_sinal_final.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
         }
         break;
 
       case constants.ALERTS.MISSING:
-        pin = { url: 'assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_perdido.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: 'assets/images/pin_perdido_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_perdido_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0)
+            pin = {
+              url: "assets/images/pin_perdido_first.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
+          if (i == this.rangedMarkers.length - 1)
+            pin = {
+              url: "assets/images/pin_perdido_final.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
         }
         break;
 
       default:
-        pin = { url: 'assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+        pin = {
+          url: "assets/images/pin_normal.png",
+          size: new google.maps.Size(28, 43),
+          scaledSize: new google.maps.Size(28, 43),
+        };
         if (this.rangedMarkers.length > 1) {
-          if (i == 0) pin = { url: 'assets/images/pin_normal_first.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-          if (i == (this.rangedMarkers.length - 1)) pin = { url: 'assets/images/pin_normal_final.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+          if (i == 0)
+            pin = {
+              url: "assets/images/pin_normal_first.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
+          if (i == this.rangedMarkers.length - 1)
+            pin = {
+              url: "assets/images/pin_normal_final.png",
+              size: new google.maps.Size(28, 43),
+              scaledSize: new google.maps.Size(28, 43),
+            };
         }
         break;
     }
@@ -670,7 +860,6 @@ export class LayerModalComponent implements OnInit {
     let current_state = this.packing.current_state;
 
     switch (current_state) {
-
       case constants.ALERTS.ANALISYS:
         pin = "#b3b3b3";
         break;
