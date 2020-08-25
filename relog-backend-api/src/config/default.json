@@ -8,8 +8,8 @@
     "port": 3000
   },
   "db": {
-    "url": "mongodb://127.0.0.1:27017/cebrace", 
-    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/cebrace" 
+    "url": "mongodb://127.0.0.1:27017/qa", 
+    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/qa" 
   },
   "security": {
     "jwtPrivateKey": "secr3t",

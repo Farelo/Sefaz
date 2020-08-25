@@ -25,6 +25,7 @@ import { MapsService } from "../../servicos/maps.service";
 import "./markercluster";
 import { Spiralize } from "./Spiralize";
 import * as moment from "moment";
+import { TranslateService } from "@ngx-translate/core";
 
 declare var $: any;
 declare var google: any;

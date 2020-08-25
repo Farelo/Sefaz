@@ -236,8 +236,8 @@ exports.control_point_geolocation = async (query) => {
       // only_good_accuracy: req.query.onlyGoodAccuracy ? req.query.onlyGoodAccuracy : null
       if (query.only_good_accuracy == "true") finalQuery["devicedata.accuracy"] = { $lte: settings[0].accuracy_limit };
 
-      console.log("\nfinalQuery");
-      console.log(JSON.stringify(finalQuery));
+      // console.log("\nfinalQuery");
+      // console.log(JSON.stringify(finalQuery));
 
     //   let result = await FactStateMachine.find(finalQuery);
       let result = await FactStateMachine.aggregate([
@@ -246,8 +246,8 @@ exports.control_point_geolocation = async (query) => {
          { $replaceRoot: { newRoot: "$doc" } }
       ]);
 
-      console.log("result");
-      console.log(result);
+      // console.log("result");
+      // console.log(result);
 
       return result;
    } catch (error) {
