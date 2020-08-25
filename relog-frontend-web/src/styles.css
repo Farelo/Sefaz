@@ -9,6 +9,9 @@ body {
 .ng-sidebar, ng-sidebar--opened, ng-sidebar--over {
   background-color: #fff !important;
   z-index: 999 !important;
+  overflow-y: scroll !important;
+  width: 300px !important;
+  display: inline-block;
 }
 
 /* .ng-select.auto-grow {

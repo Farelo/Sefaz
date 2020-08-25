@@ -13,18 +13,7 @@ export class Spiralize {
     public spiralPath: google.maps.Polyline = new google.maps.Polyline();
     public spiralPoints: any = [];
     public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
-    public mMap: any;
-    // public packMarker = {
-    //     display: true,
-    //     position: null,
-    //     lat: null,
-    //     lng: null,
-    //     start: null,
-    //     family_code: null,
-    //     serial: null,
-    //     battery: null,
-    //     accuracy: null
-    // };
+    public mMap: any; 
     public clustered: boolean;
 
     /**
@@ -88,23 +77,17 @@ export class Spiralize {
     }
 
     resolveClustering() {
-
         this.normalizeDuplicatedPackages();
-
         this.configureListeners();
-
         this.configureSpiral();
     }
-
-
 
     normalizeDuplicatedPackages() {
         let auxDuplicated = [];
 
         let i = 0;
         let j = 0;
-        let l = this.listOfObjects.length;
-        // console.log(`plotedPackings: ${JSON.stringify(this.listOfObjects)}`);
+        let l = this.listOfObjects.length; 
         let removeI = false;
 
         while (i < l) {
@@ -113,13 +96,10 @@ export class Spiralize {
 
             removeI = false;
 
-            while (j < l) {
-                // console.log(`i: ${i}, j: ${j}, l: ${l}`);
+            while (j < l) { 
 
                 if ((this.listOfObjects[i].latitude == this.listOfObjects[j].latitude) &&
-                    (this.listOfObjects[i].longitude == this.listOfObjects[j].longitude)) {
-                    // console.log(`[i] ${this.listOfObjects[i]},  [j] ${this.listOfObjects[j]}`)
-                    // console.log('this.duplicated.length: ' + auxDuplicated.length);
+                    (this.listOfObjects[i].longitude == this.listOfObjects[j].longitude)) { 
 
                     removeI = true;
 
@@ -151,31 +131,26 @@ export class Spiralize {
 
             i++;
         }
-
-        // console.log('2. listOfObjects: ' + JSON.stringify(this.listOfObjects));
-        // console.log('3. duplicated: ' + JSON.stringify(this.duplicated));
-        // console.log('4. auxDuplicated: ' + JSON.stringify(auxDuplicated));
+ 
     }
 
     /**
      * Plot all points, clusterize and set the listeners of click and zoom change
      */
     configureListeners() {
-
-        //console.log('listener this.listOfObjects: ' + this.listOfObjects);
-        this.markers = this.listOfObjects.map((location, i) => {
-            //console.log(location.devicedata);
+ 
+        this.markers = this.listOfObjects.map((location, i) => { 
             let datePipe = new DatePipe('en');
 
             let m = new google.maps.Marker({
-                family_code: location.packing.family.code,
+                family_code: location.packing.family,
                 serial: location.packing.serial,
                 tag: location.packing.tag,
                 battery: (location.devicedata && location.devicedata.battery.percentage) ? (location.devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
                 accuracy: (location.devicedata !== null) ? (location.devicedata.accuracy + 'm') : 'Sem registro',
                 message_date : (location.devicedata !== null) ? (location.devicedata.message_date) : 'Sem registro',
                 position: location.position,
-                icon: this.getPinWithAlert(location.currentstatehistory ? location.currentstatehistory.type : '')
+                icon: this.getPinWithAlert(location.currentstatehistory.type)
             })
 
             google.maps.event.addListener(m, 'click', (evt) => {
@@ -229,15 +204,8 @@ export class Spiralize {
             /**
              * Plota UM pino das embalagens duplicadas
              */
-            let m = new google.maps.Marker({
-                // family_code: location.family.code,
-                // serial: location.serial,
-                // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                // accuracy: (location.devicedata !== null) ? (location.devicedata.accuracy + 'm') : 'Sem registro',
-                // position: location.position,
-                // icon: this.getPinWithAlert(location.current_state)
-
-                packing_code: array[0].packing.family.code,
+            let m = new google.maps.Marker({ 
+                packing_code: array[0].family,
                 serial: array[0].packing.serial,
                 position: { lat: array[0].latitude, lng: array[0].longitude },
                 icon: { url: 'assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) },
@@ -351,14 +319,14 @@ export class Spiralize {
                         // console.log(array[sc - 1]);
 
                         let e = new google.maps.Marker({
-                            family_code: array[sc - 1].packing.family.code,
+                            family_code: array[sc - 1].packing.family,
                             serial: array[sc - 1].packing.serial,
                             tag: array[sc - 1].packing.tag,
                             position: spiralCoordinates[sc],
                             battery: (array[sc - 1].devicedata && array[sc - 1].devicedata.battery.percentage) ? (array[sc - 1].devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
                             message_date : (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.message_date) : 'Sem registro',
                             accuracy: (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.accuracy + 'm') : 'Sem registro',
-                            icon: this.getPinWithAlert(array[sc - 1].currentstatehistory ? array[sc - 1].currentstatehistory.type : '', true),
+                            icon: this.getPinWithAlert(array[sc - 1].currentstatehistory.type, true),
                             zIndex: 999,
                             map: this.mMap
                         });
@@ -370,34 +338,6 @@ export class Spiralize {
                         * Trata o clique do pino duplicado
                         */
                         e.addListener('click', () => {
-
-                            // console.log('Clique no pino interno');
-                            // console.log(JSON.stringify(e.family_code));
-                            // console.log(JSON.stringify(e.serial));
-                            // console.log(JSON.stringify(e.battery));
-                            // console.log(JSON.stringify(e.accuracy));
-                            // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
-                            
-                            // this.packMarker = {
-                            //     // family_code: location.family.code,
-                            //     // serial: location.serial,
-                            //     // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                            //     // accuracy: (location.devicedata !== null) ? (location.devicedata.accuracy + 'm') : 'Sem registro',
-                            //     // position: location.position,
-                            //     // icon: this.getPinWithAlert(location.current_state)
-
-                            //     display: true,
-                            //     family_code: e.family_code,
-                            //     serial: e.serial,
-                            //     tag: e.tag,
-                            //     accuracy: `${e.accuracy}`
-                            //     battery: `${e.battery}`,
-                            //     position: spiralCoordinates[sc],
-                            //     lat: spiralCoordinates[sc].lat,
-                            //     lng: spiralCoordinates[sc].lng,
-                            //     start: null,
-                            // };
-
                             let datePipe = new DatePipe('en');
 
                             this.infoWin
@@ -444,12 +384,8 @@ export class Spiralize {
         while (this.spiralPoints.length > 0) {
             this.spiralPoints[0].setMap(null);
             this.spiralPoints.shift();
-            // if (this.spiralPoints[0] == undefined) console.log('[0] undefined');
-            // else console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].packing_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
         }
 
-        //console.log('.this.spiralPoints.length: ' + this.spiralPoints.length);
-        // console.log('.flightPath path: ' + JSON.stringify(this.spiralPath.getPath()));
     }
 
     /**
@@ -493,7 +429,6 @@ export class Spiralize {
         }
 
         if (smallSize) {
-            // console.log('small');
             pin.size = (new google.maps.Size(21, 31));
             pin.scaledSize = (new google.maps.Size(21, 31));
         }
@@ -529,9 +464,7 @@ export class Spiralize {
                 });
             }
 
-        } else {
-            // console.log('..');
-
+        } else { 
             //Esconder embalagens
             this.markers.map(elem => {
                 elem.setMap(null);

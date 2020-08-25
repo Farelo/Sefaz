@@ -8,8 +8,6 @@ const { EventRecord } = require("../event_record/event_record.model");
 const { Setting } = require("../settings/settings.model");
 const { ControlPoint } = require("../control_points/control_points.model");
 const { FactStateMachine } = require("../fact_state_machine/fact_state_machine.model");
-const event_record_service = require("../event_record/event_record.service");
-const device_data_service = require("../device_data/device_data.service");
 const rp = require("request-promise");
 const mongoose = require("mongoose");
 const moment = require("moment");
@@ -141,11 +139,9 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
    try {
       let familiesIds = [];
 
-      // console.log(query)
-
-      if (query.company_id !== null) {
+      if (query.company_id != null) {
          familiesIds = await (await Family.find({ company: query.company_id })).map((f) => f._id);
-      } else if (query.family_id !== null) {
+      } else if (query.family_id != null) {
          familiesIds.push(new mongoose.Types.ObjectId(query.family_id));
       }
 
@@ -163,7 +159,6 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
          };
       }
 
-      // console.log(conditions)
       return await Packing.find(conditions)
          .populate("last_device_data")
          .populate("last_device_data_battery")
@@ -175,11 +170,11 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
 
 exports.control_point_geolocation = async (query) => {
    try {
-      console.log(query);
-
       const settings = await Setting.find({});
 
       let date_conditions = {};
+      let finalQuery = {};
+
       if (query.start_date != null && query.end_date) {
          date_conditions = {
             $gte: new Date(query.start_date),
@@ -197,178 +192,64 @@ exports.control_point_geolocation = async (query) => {
          };
       }
 
-      // let event_record_conditions = {};
-      let search_conditions = {};
+      // start_date: req.query.start_date ? req.query.start_date : null,
+      // end_date: req.query.end_date ? req.query.end_date : null,
+      // date: req.query.date ? req.query.date : null,
+      // last_hours: req.query.last_hours ? req.query.last_hours : null,
+      if (!_.isEmpty(date_conditions)) {
+         if (query.control_point_id !== null || query.control_point_type !== null)
+            finalQuery["eventrecord.created_at"] = date_conditions;
+         else finalQuery["devicedata.message_date"] = date_conditions;
+      }
 
-      search_conditions["devicedata.message_date"] = date_conditions;
+      // Controlpoint ID e Controlpoint Type
+      // Se informou os dois não importa, pois o front filtra os PC desse tipo. Basta apenas considerar o PC
 
-      //if(query.control_point_type) search_conditions.eventrecord.control_point.type = query.control_point_type,
-      if (query.control_point_id) search_conditions["eventrecord.control_point"] = query.control_point_id;
-      if (query.control_point_id) search_conditions["eventrecord.type"] = "inbound";
-      //if(query.company_id) search_conditions.eventrecord.control_point.company = query.company_id
-      if (query.family_id) search_conditions["packing.family"] = query.family_id;
-      if (query.serial) search_conditions["packing.serial"] = query.serial;
-      if (query.current_state) search_conditions["currentstatehistory.type"] = query.current_state;
-      if (query.only_good_accuracy == "true")
-         search_conditions["devicedata.accuracy"] = { $lte: settings[0].accuracy_limit };
+      // control_point_id: req.query.control_point_id ? req.query.control_point_id : null,
+      // control_point_type: req.query.control_point_type ? req.query.control_point_type : null,
+      if (query.control_point_id !== null) {
+         finalQuery["eventrecord.control_point"] = new mongoose.Types.ObjectId(query.control_point_id);
+      } else if (query.control_point_type !== null) {
+         await ControlPoint.find({ type: query.control_point_type }, { _id: 1 }, (err, typed_control_points) => {
+            let control_points = typed_control_points.map((elem) => elem._id);
+            finalQuery["eventrecord.control_point"] = { control_point: { $in: control_points } };
+         });
+      }
 
-      console.log(search_conditions);
+      // company_id: req.query.company_id ? req.query.company_id : null,
+      if (query.company_id) {
+         await Family.find({ company: query.company_id }, { _id: 1 }, (err, families) => {
+            let allFamilies = families.map((elem) => elem._id);
+            finalQuery["packing.family"] = { $in: allFamilies };
+         });
+      }
 
-      let factResults = await FactStateMachine.aggregate([
-         {
-            $match: search_conditions,
-         },
-         {
-            $group: {
-               _id: "$packing.tag",
-               devicedata: { $last: "$devicedata" },
-               eventrecord: { $last: "$eventrecord" },
-               packing: { $last: "$packing" },
-               currentstatehistory: { $last: "$currentstatehistory" },
-            },
-         },
-         {
-            $lookup: {
-               from: "families",
-               localField: "packing.family",
-               foreignField: "_id",
-               as: "packing.family",
-            },
-         },
-         {
-            $lookup: {
-               from: "controlpoints",
-               localField: "eventrecord.control_point",
-               foreignField: "_id",
-               as: "eventrecord.control_point",
-            },
-         },
-         { $unwind: "$packing.family" },
-         { $unwind: "$eventrecord.control_point" },
+      // family_id: req.query.family_id ? req.query.family_id : null,
+      if (query.family_id) finalQuery["packing.family"] = query.family_id;
+
+      // serial: req.query.serial ? req.query.serial : null,
+      if (query.serial) finalQuery["packing.serial"] = query.serial;
+
+      // current_state: req.query.selectedStatus ? req.query.selectedStatus : null,
+      if (query.current_state) finalQuery["currentstatehistory.type"] = query.current_state;
+
+      // only_good_accuracy: req.query.onlyGoodAccuracy ? req.query.onlyGoodAccuracy : null
+      if (query.only_good_accuracy == "true") finalQuery["devicedata.accuracy"] = { $lte: settings[0].accuracy_limit };
+
+      console.log("\nfinalQuery");
+      console.log(JSON.stringify(finalQuery));
+
+    //   let result = await FactStateMachine.find(finalQuery);
+      let result = await FactStateMachine.aggregate([
+         { $match: finalQuery },
+         { $group: { _id: "$packing.tag", doc: { $last: "$$ROOT" } } },
+         { $replaceRoot: { newRoot: "$doc" } }
       ]);
 
-      // .find(search_conditions)
-      // .populate("packing.family")
-      // .populate("eventrecord.control_point");
+      console.log("result");
+      console.log(result);
 
-      if (query.control_point_type) {
-         factResults = factResults.filter(
-            (elem) =>
-               elem.eventrecord.control_point !== null &&
-               elem.eventrecord.control_point.type == query.control_point_type &&
-               elem.eventrecord.type == "inbound"
-         );
-      }
-
-      if (query.company_id) {
-         factResults = factResults.filter(
-            (elem) => elem.packing.family.company == query.company_id // CONFIRMAR
-         );
-      }
-      console.log(factResults.length);
-      // console.log(JSON.stringify(factResults));
-
-      // let control_point_conditions = {}
-
-      // // Controlpoint ID e Controlpoint Type
-      // // Se informou os dois não importa, pois o front filtra os PC desse tipo.
-      // // Basta apenas considerar o PC
-      // if (query.control_point_id !== null) {
-
-      //     control_point_conditions = { control_point: new mongoose.Types.ObjectId(query.control_point_id) }
-      // } else if (query.control_point_type !== null) {
-      //     await ControlPoint.find({ type: query.control_point_type }, { _id: 1 }, (err, typed_control_points) => {
-      //         let control_points = typed_control_points.map(elem => elem._id)
-      //         control_point_conditions = { control_point: { $in: control_points } }
-      //     })
-
-      // }
-
-      // if(query.only_good_accuracy) event_record_conditions['accuracy'] = { $lte: settings[0].accuracy_limit }
-
-      // event_record_conditions = { ...event_record_conditions, ...control_point_conditions }
-
-      // let event_records = []
-
-      // if (query.control_point_id !== null || query.control_point_type !== null) {
-      //     event_record_conditions['type'] = 'inbound'
-
-      //     event_records = await event_record_service.find_by_control_point_and_date(event_record_conditions, query.current_state)
-      // } else {
-      //     event_records = await device_data_service.find_by_date(event_record_conditions, query.current_state)
-      // }
-
-      // if (query.company_id !== null || query.family_id != null || query.serial != null) {
-
-      //     if (query.control_point_id !== null || query.control_point_type !== null) {
-
-      //         event_records = event_records.filter(er => {
-      //             // Se a família foi informada, então a empresa vinculada foi
-      //             // selecionada automaticamente pelo front ...
-      //             if (query.family_id != null) {
-      //                 if (query.family_id != null && query.serial != null) {
-      //                     if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
-      //                         return true
-      //                     }
-      //                 } else if (query.family_id != null) {
-      //                     if (er.packing.family == query.family_id) {
-      //                         return true
-      //                     }
-      //                 } else {
-      //                     if (er.packing.serial == query.serial) {
-      //                         return true
-      //                     }
-      //                 }
-
-      //                 // Apenas a empresa vinculada foi selecionada
-      //                 // considere todas as famílias vinculadas a ela
-      //             } else if (query.company_id !== null) {
-      //                 if (er.family.company == query.company_id) {
-      //                     return true
-      //                 }
-      //             }
-      //         })
-
-      //     } else {
-
-      //         event_records = event_records.filter(er => {
-
-      //             try {
-      //                 // Se a família foi informada, então a empresa vinculada foi
-      //                 // selecionada automaticamente pelo front ...
-      //                 if (query.family_id != null) {
-      //                     if (query.family_id != null && query.serial != null) {
-      //                         if (er.packing.family == query.family_id && er.packing.serial == query.serial) {
-      //                             return true
-      //                         }
-      //                     } else if (query.family_id != null) {
-      //                         if (er.packing.family == query.family_id) {
-      //                             return true
-      //                         }
-      //                     } else {
-      //                         if (er.packing.serial == query.serial) {
-      //                             return true
-      //                         }
-      //                     }
-
-      //                     // Apenas a empresa vinculada foi selecionada
-      //                     // considere todas as famílias vinculadas a ela
-      //                 } else if (query.company_id !== null) {
-      //                     if (er.family.company == query.company_id) {
-      //                         return true
-      //                     }
-      //                 }
-
-      //             } catch (error) {
-      //                 // console.log(error)
-      //                 // console.log('error', er)
-      //             }
-      //         })
-      //     }
-
-      // }
-
-      return factResults;
+      return result;
    } catch (error) {
       throw new Error(error);
    }
