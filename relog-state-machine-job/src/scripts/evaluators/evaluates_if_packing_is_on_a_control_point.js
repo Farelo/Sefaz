@@ -23,26 +23,28 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
    controlPoints.some((controlPoint) => {
       let isInsideControlePoint = false;
 
-      if (controlPoint.geofence.type === "p") {
-         if (intersectionpoly(packing, controlPoint)) {
-            //mLog(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
-            distance = 0;
-            currentControlPoint = controlPoint;
-            isInsideControlePoint = true;
-         }
-      } else {
-         //mLog(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
-         const calculate = getDistanceFromLatLonInKm(
-            packing.last_device_data.latitude,
-            packing.last_device_data.longitude,
-            controlPoint.geofence.coordinates[0].lat,
-            controlPoint.geofence.coordinates[0].lng
-         );
+      if (packing.last_device_data) {
+         if (controlPoint.geofence.type === "p") {
+            if (intersectionpoly(packing, controlPoint)) {
+               //mLog(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
+               distance = 0;
+               currentControlPoint = controlPoint;
+               isInsideControlePoint = true;
+            }
+         } else {
+            //mLog(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
+            const calculate = getDistanceFromLatLonInKm(
+               packing.last_device_data.latitude,
+               packing.last_device_data.longitude,
+               controlPoint.geofence.coordinates[0].lat,
+               controlPoint.geofence.coordinates[0].lng
+            );
 
-         if (calculate <= controlPoint.geofence.radius + packing.last_device_data.accuracy) {
-            distance = calculate;
-            currentControlPoint = controlPoint;
-            isInsideControlePoint = true;
+            if (calculate <= controlPoint.geofence.radius + packing.last_device_data.accuracy) {
+               distance = calculate;
+               currentControlPoint = controlPoint;
+               isInsideControlePoint = true;
+            }
          }
       }
 
