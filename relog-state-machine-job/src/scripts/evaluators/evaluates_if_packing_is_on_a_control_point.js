@@ -25,6 +25,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
   controlPoints.forEach(async controlPoint => {
     //isInsidePolygon = false
     //mLog('controlPoints')
+    console.log(packing.tag.code)
 
     if (controlPoint.geofence.type === "p") {
       if (!isInsidePolygon) {

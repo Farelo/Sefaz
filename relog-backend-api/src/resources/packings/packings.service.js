@@ -153,7 +153,7 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
          };
       }
 
-      if (query.packing_serial != null) {
+      if (query.packing_serial !== null) {
          conditions["serial"] = {
             $eq: query.packing_serial,
          };
@@ -205,15 +205,16 @@ exports.control_point_geolocation = async (query) => {
 
       // Controlpoint ID e Controlpoint Type
       // Se informou os dois não importa, pois o front filtra os PC desse tipo. Basta apenas considerar o PC
-
       // control_point_id: req.query.control_point_id ? req.query.control_point_id : null,
       // control_point_type: req.query.control_point_type ? req.query.control_point_type : null,
       if (query.control_point_id !== null) {
          finalQuery["eventrecord.control_point"] = new mongoose.Types.ObjectId(query.control_point_id);
+         finalQuery["eventrecord.type"] = 'inbound'
       } else if (query.control_point_type !== null) {
          await ControlPoint.find({ type: query.control_point_type }, { _id: 1 }, (err, typed_control_points) => {
             let control_points = typed_control_points.map((elem) => elem._id);
             finalQuery["eventrecord.control_point"] = { control_point: { $in: control_points } };
+            finalQuery["eventrecord.type"] = 'inbound'
          });
       }
 
