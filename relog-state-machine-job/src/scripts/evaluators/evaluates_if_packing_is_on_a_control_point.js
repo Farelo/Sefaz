@@ -15,6 +15,7 @@ module.exports = async (packing, controlPoints, setting) => {
 };
 
 const findAndHandleIntersection = async (packing, controlPoints, setting) => {
+   console.log(packing.tag.code)
    let deviceDataId = packing.last_device_data._id;
    let distance = Infinity;
    let currentControlPoint = null;
