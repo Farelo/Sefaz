@@ -171,6 +171,7 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
 exports.control_point_geolocation = async (query) => {
    try {
       const settings = await Setting.find({});
+      const allFamilies = await Family.find({}, {_id: 1, code: 1});
 
       let date_conditions = {};
       let finalQuery = {};
@@ -209,11 +210,14 @@ exports.control_point_geolocation = async (query) => {
       if (query.control_point_id !== null) {
          finalQuery["eventrecord.control_point"] = new mongoose.Types.ObjectId(query.control_point_id);
          finalQuery["eventrecord.type"] = 'inbound'
+         finalQuery["type"] = 'event'
       } else if (query.control_point_type !== null) {
+         console.log('control_point_type');
          await ControlPoint.find({ type: query.control_point_type }, { _id: 1 }, (err, typed_control_points) => {
             let control_points = typed_control_points.map((elem) => elem._id);
-            finalQuery["eventrecord.control_point"] = { control_point: { $in: control_points } };
+            finalQuery["eventrecord.control_point"] = { $in: control_points };
             finalQuery["eventrecord.type"] = 'inbound'
+            finalQuery["type"] = 'event'
          });
       }
 
@@ -226,7 +230,7 @@ exports.control_point_geolocation = async (query) => {
       }
 
       // family_id: req.query.family_id ? req.query.family_id : null,
-      if (query.family_id) finalQuery["packing.family"] = query.family_id;
+      if (query.family_id) finalQuery["packing.family"] = new mongoose.Types.ObjectId(query.family_id);
 
       // serial: req.query.serial ? req.query.serial : null,
       if (query.serial) finalQuery["packing.serial"] = query.serial;
@@ -243,12 +247,17 @@ exports.control_point_geolocation = async (query) => {
     //   let result = await FactStateMachine.find(finalQuery);
       let result = await FactStateMachine.aggregate([
          { $match: finalQuery },
-         { $group: { _id: "$packing.tag", doc: { $last: "$$ROOT" } } },
+         { $group: { _id: "$packing.tag", doc: { $first: "$$ROOT" } } },
          { $replaceRoot: { newRoot: "$doc" } }
       ]);
 
       // console.log("result");
       // console.log(result);
+
+      result.map(elem=>{
+         let aux = allFamilies.find(familyItem=>familyItem._id.toString() == elem.packing.family.toString())
+         elem.packing.family = aux ? aux.code : '-'
+      }) 
 
       return result;
    } catch (error) {
