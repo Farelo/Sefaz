@@ -31,7 +31,7 @@ exports.import_packing = async (req, res) => {
 
                 const tag = { code: packing[2] }
                 const current_packing = await Packing.findByTag(tag)
-                const family = await Family.findByCode(packing[0])
+                const family = await Family.findByCode(packing[0], {_id: 1, code: 1})
                 const project = packing[12] !== undefined ? await Project.findOne({ name: packing[12].toString() }) : null
                 
                 if (!project && packing[12] !== undefined) errors.push({ line: index + 1, description: `Project with this name ${packing[12]} do not exists` })
