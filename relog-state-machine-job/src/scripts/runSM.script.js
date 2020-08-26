@@ -224,7 +224,7 @@ module.exports = async (setting, packing, controlPoints) => {
                 break
             case STATES.VIAGEM_PRAZO.key:
                 /* ******************************VIAGEM_PRAZO***************************** */
-                console.log('VIAGEM_PRAZO')
+                // console.log('VIAGEM_PRAZO')
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(lastMessageDate) < setting.no_signal_limit_in_days) {

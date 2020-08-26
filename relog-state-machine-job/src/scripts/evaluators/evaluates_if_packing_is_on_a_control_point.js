@@ -14,15 +14,17 @@ module.exports = async (packing, controlPoints, setting) => {
 };
 
 const findAndHandleIntersection = async (packing, controlPoints, setting) => {
-   let deviceDataId = packing.last_device_data._id;
+   let deviceDataId = '';
    let distance = Infinity;
    let currentControlPoint = null;
 
-   //Deve ser otimizado para sair do loop quando for encontrado dentro de um polígono
-   controlPoints.some((controlPoint) => {
-      let isInsideControlePoint = false;
+   if (packing.last_device_data) {
+      deviceDataId = packing.last_device_data._id;
+      
+      //Deve ser otimizado para sair do loop quando for encontrado dentro de um polígono
+      controlPoints.some((controlPoint) => {
+         let isInsideControlePoint = false;
 
-      if (packing.last_device_data) {
          if (controlPoint.geofence.type === "p") {
             if (intersectionpoly(packing, controlPoint)) {
                //mLog(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
@@ -45,10 +47,10 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
                isInsideControlePoint = true;
             }
          }
-      }
 
-      return isInsideControlePoint;
-   });
+         return isInsideControlePoint;
+      });
+   }
 
    //TEM INTERSECÇÃO
    if (currentControlPoint !== null) {
@@ -187,48 +189,6 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
 let idAbleToLog = false;
 const mLog = (mText) => {
    if (idAbleToLog) console.log(mText);
-};
-
-const thereIsIntersection = (isInsidePolygon, distance, range_radius, accuracy, accuracy_limit) => {
-   // mLog('isInsidePolygon ', isInsidePolygon)
-   // mLog('distance ', distance)
-   // mLog('range_radius ', range_radius)
-   // mLog('accuracy ', accuracy)
-   // mLog('accuracy_limit ', accuracy_limit)
-
-   let result = false;
-
-   if (isInsidePolygon) {
-      result = true;
-   } else {
-      if (distance <= range_radius + accuracy) {
-         result = true;
-      }
-   }
-   mLog("result " + result);
-   return result;
-};
-
-const newcheckOut = async (packing, setting, range_radius, distance, currentControlPoint, isInsidePolygon) => {
-   //mLog('EMBALAGEM NÃO ESTÁ EM UM PONTO DE CONTROLE')
-   // Não estou em um ponto de controle próximo!
-   // Checa se o último poncheckInto de controle é um INBOUND
-   if (packing.last_event_record) {
-      if (packing.last_event_record.type === "inbound") {
-         //mLog('CRIAR OUTBOUND!')
-         // Se sim
-         const eventRecord = new EventRecord({
-            packing: packing._id,
-            control_point: packing.last_event_record.control_point._id,
-            distance_km: distance,
-            accuracy: packing.last_device_data.accuracy,
-            type: "outbound",
-            device_data_id: deviceDataId,
-         });
-
-         await eventRecord.save();
-      }
-   }
 };
 
 const intersectionpoly = (packing, controlPoint) => {
