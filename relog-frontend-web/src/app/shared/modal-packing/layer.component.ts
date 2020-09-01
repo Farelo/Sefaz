@@ -2,9 +2,6 @@ import { Component, OnInit, Input } from "@angular/core";
 import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import {
   PackingService,
-  PlantsService,
-  LogisticService,
-  SuppliersService,
   SettingsService,
   AlertsService,
   AuthenticationService,
@@ -12,16 +9,16 @@ import {
   ControlPointsService,
 } from "../../servicos/index.service";
 import {
-  DatepickerModule,
-  BsDatepickerModule,
   BsDaterangepickerConfig,
   BsLocaleService,
 } from "ngx-bootstrap/datepicker";
-import { MeterFormatter } from "../pipes/meter_formatter";
-import { NouiFormatter } from "ng2-nouislider";
+import { DatePipe } from "@angular/common";
 import { defineLocale } from "ngx-bootstrap/chronos";
 import { ptBrLocale } from "ngx-bootstrap/locale";
 import { constants } from "environments/constants";
+import { element } from "protractor";
+declare var google: any;
+
 defineLocale("pt-br", ptBrLocale);
 
 @Component({
@@ -112,35 +109,18 @@ export class LayerModalComponent implements OnInit {
     this.datePickerConfig.containerClass = "theme-dark-blue";
   }
 
-  ngOnInit() {
-    console.log("[layer.component] this.packing: " + JSON.stringify(this.packing));
-
+  public mMap: any;
+  onInitMap(map) {
+    this.mMap = map;
     this.getPacking();
-
-    // //Get the plant radius in the settings
-    // this.getPlantRadius();
-
-    // //get all point according the given filter
-    // let initialD = this.formatDate(this.initialDate);
-    // let finalD = this.formatDate(this.finalDate, true);
-
-    // this.getFilteredPositions(this.packing.tag, initialD, finalD, 32000);
-
     this.getPlants();
   }
 
+  ngOnInit() {}
+
   getPacking() {
     this.packingService.getPacking(this.packing._id).subscribe((response) => {
-      this.mPacking = response;
-      // console.log(this.mPacking);
-
-      // console.log(this.mPacking.last_device_data.message_date_timestamp * 1000);
-      // console.log(
-      //   new Date(this.mPacking.last_device_data.message_date_timestamp * 1000)
-      // );
-
-      // console.log(this.initialDate.getTime());
-      // console.log(this.initialDate);
+      this.mPacking = response; 
 
       if (
         this.mPacking.last_device_data &&
@@ -237,6 +217,10 @@ export class LayerModalComponent implements OnInit {
     }
   }
 
+  public allPackingMarkers: any = [];
+  public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
+  public mCircle: google.maps.Circle = new google.maps.Circle();
+
   /**
    * Get the package positions with the filter applied
    * @param codeTag Device tag code
@@ -254,22 +238,76 @@ export class LayerModalComponent implements OnInit {
       .getFilteredPositions(codeTag, startDate, finalDate, accuracy)
       .subscribe((result: any[]) => {
         if (result.length > 1) {
-          //centraliza o mapa
-          this.center = new google.maps.LatLng(
-            result[result.length - 1].latitude,
-            result[result.length - 1].longitude
-          );
+          this.markers = result.reverse(); 
 
-          //guarda todas as posições
-          this.markers = result;
+          let datePipe = new DatePipe("en");
 
-          //add um atributo latLng
-          this.markers.map((elem, index) => {
-            elem.latLng = new google.maps.LatLng(elem.latitude, elem.longitude);
-            return elem;
+          this.allPackingMarkers = result.map((elem, idx) => {
+            let m = new google.maps.Marker({
+              message_date: elem.message_date,
+              battery: elem.battery.percentage
+                ? elem.battery.percentage.toFixed(2) + "%"
+                : "Sem registro",
+              accuracy: elem.accuracy,
+              position: new google.maps.LatLng(elem.latitude, elem.longitude),
+              // icon: this.getPinWithAlert(idx)
+            });
+
+            //Hover para mostrar o círculo da acurácia
+            google.maps.event.addListener(m, "mouseover", (evt) => {
+              console.log("overrr");
+              
+              this.mCircle = new google.maps.Circle({ 
+                strokeColor: this.getRadiusWithAlert(),
+                strokeOpacity: 0.7,
+                strokeWeight: 1,
+                fillColor: this.getRadiusWithAlert(),
+                fillOpacity: 0.2,
+                center: m.position,
+                radius: m.accuracy
+              });
+              
+              this.mCircle.setMap(this.mMap);
+            });
+
+            //Saída do Hover para ocultar o círculo da acurácia
+            google.maps.event.addListener(m, "mouseout", (evt) => {
+              console.log("mouseout");
+              this.mCircle.setMap(null);
+            });
+            
+
+            google.maps.event.addListener(m, "click", (evt) => {
+
+              // <div class="iw-title">INFORMAÇÕES</div>
+              // <div *ngIf="marker.display" class="info-window-content">
+              //   <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss' : '+00:00' }}</p>
+              //   <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
+              //   <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
+              // </div>
+
+              this.infoWin.setContent(
+                `<div style="padding: 0px 6px;">
+                      <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Data:</span> ${datePipe.transform(
+                        m.message_date,
+                        "dd/MM/yy HH:mm:ss",
+                        "+00:00"
+                      )}</p>
+                      <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${
+                        m.battery
+                      }</p>
+                      <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${
+                        m.accuracy
+                      } m</p>
+                  </div>`
+              );
+
+              this.infoWin.setOptions({ maxWidth: 250 });
+              this.infoWin.open(this.mMap, m);
+            });
+
+            return m;
           });
-
-          this.markers = this.markers.reverse();
 
           //atualiza o path
           this.updatePaths();
@@ -278,11 +316,6 @@ export class LayerModalComponent implements OnInit {
         }
 
         this.getResultQuantity();
-
-        // console.log('[getFilteredPositions] result: ' + JSON.stringify(result));
-        // console.log('[getFilteredPositions] path: ' + JSON.stringify(this.path));
-        // console.log('[getFilteredPositions] markers: ' + JSON.stringify(this.markers));
-        // console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
       });
   }
 
@@ -316,11 +349,6 @@ export class LayerModalComponent implements OnInit {
   getPlants() {
     this.controlPointsService.getAllControlPoint().subscribe((result) => {
       this.controlPoints = result;
-
-      // this.controlPoints.map(e => {
-      //   e.latLng = new google.maps.LatLng(e.lat, e.lng);
-      //   return e;
-      // });
 
       this.listOfCircleControlPoints = result
         .filter((elem) => elem.geofence.type == "c")
@@ -366,14 +394,12 @@ export class LayerModalComponent implements OnInit {
     this.plant.lat = p.lat;
     this.plant.lng = p.lng;
     this.plant.name = opt.name;
-    // this.plant.location = opt.location;
 
     this.clickedPlantDetail(p);
   }
 
   clickedSupplier(_a, opt) {
     var s = _a.target;
-    //console.log('opt: ' + JSON.stringify(opt));
 
     this.supplier.lat = opt.plant.lat;
     this.supplier.lng = opt.plant.lng;
@@ -384,7 +410,6 @@ export class LayerModalComponent implements OnInit {
 
   clickedLogistic(_a, opt) {
     var l = _a.target;
-    //console.log('opt: ' + JSON.stringify(opt));
 
     this.logistic.name = opt.plant.plant_name;
     this.clickedLogisticDetail(l);
@@ -395,17 +420,6 @@ export class LayerModalComponent implements OnInit {
    */
   clickedPlantDetail(plant) {
     plant.nguiMapComponent.openInfoWindow("pw", plant);
-    // var iwOuter = $('.gm-style-iw');
-    // iwOuter.children(':nth-child(1)').css({ 'width': '100%' });
-    // var iwCloseBtn = iwOuter.next();
-    // iwCloseBtn.css({
-    //   'right': '11px',
-    //   'top': '17px',
-    //   'background-repeat': 'no-repeat',
-    //   'background-position': 'center',
-    //   'background-image': 'url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K)'
-    // });
-    // iwCloseBtn.children(':nth-child(1)').css({ 'display': 'none' });
   }
 
   clickedSupplierDetail(supply) {
@@ -429,16 +443,14 @@ export class LayerModalComponent implements OnInit {
   getResultQuantity(): string {
     let result = "";
 
-    //console.log('this.path.length: ' + this.path.length);
-
     if (this.path.length == 0)
-      result = `0 posições de ${this.markers.length} disponíveis`;
+      result = `0 posições de ${this.allPackingMarkers.length} disponíveis`;
 
     if (this.path.length == 1)
-      result = `1 posição de ${this.markers.length} disponíveis`;
+      result = `1 posição de ${this.allPackingMarkers.length} disponíveis`;
 
     if (this.path.length > 1)
-      result = `${this.path.length} posições de ${this.markers.length} disponíveis`;
+      result = `${this.path.length} posições de ${this.allPackingMarkers.length} disponíveis`;
 
     return result;
   }
@@ -462,33 +474,33 @@ export class LayerModalComponent implements OnInit {
   updatePaths() {
     this.path = [];
 
-    //
-    this.rangedMarkers = this.markers.filter((elem) => {
-      return elem.accuracy <= this.accuracyRange;
-    });
-
-    this.rangedMarkers.forEach((elem) => {
-      if (elem.accuracy <= this.accuracyRange) {
-        this.path.push({ lat: elem.latitude, lng: elem.longitude });
-      }
-    });
-
     this.getLastPostition();
 
-    // console.log('-');
-    // console.log('rangedMarkers: ' + JSON.stringify(this.rangedMarkers));
-    // console.log('rangedMarkers: ' + JSON.stringify(this.path));
-    // console.log('this.markers: ' + JSON.stringify(this.markers));
-    // console.log('-');
+    this.rangedMarkers.map(elem => {
+      elem.setMap(null);
+      return elem;
+    });
+
+    this.rangedMarkers = this.allPackingMarkers.filter((elem) => {
+      let result = false;
+      if (elem.accuracy <= this.accuracyRange) {
+        this.path.push(elem.position);
+        result = true;
+      }
+      return result;
+    });
+
+    this.rangedMarkers.map((elem, idx) => {
+      elem.setIcon(this.getPinWithAlert(idx));
+      elem.setMap(this.mMap);
+      return elem;
+    });
+
+    //centraliza o mapa
+    this.center = this.rangedMarkers[this.rangedMarkers.length - 1].position;
   }
 
   lastPositionClicked(event: any) {
-    // console.log('event');
-    // console.log(event);
-
-    // console.log('lastPositionClicked');
-    // console.log(this.showLastPosition);
-
     if (!this.showLastPosition) {
       this.center = null;
       this.getLastPostition();
@@ -499,13 +511,9 @@ export class LayerModalComponent implements OnInit {
    * This method updates the array 'path' with markers that satisfies the given accuracy.
    */
   getLastPostition() {
-    //console.log('getLastPostition');
-
     if (this.rangedMarkers.length > 0) {
       this.lastPosition = this.rangedMarkers[this.rangedMarkers.length - 1];
-      // console.log(this.lastPosition);
 
-      //this.center = this.lastPosition.latLng;
       this.center = new google.maps.LatLng(
         this.lastPosition.latitude,
         this.lastPosition.longitude
@@ -515,58 +523,25 @@ export class LayerModalComponent implements OnInit {
     }
 
     this.isLoading = false;
-    //console.log('lastPosition: ' + JSON.stringify(this.lastPosition));
-    // console.log('center: ' + JSON.stringify(this.center));
   }
 
-  formatDate(date: any, endDate: boolean = false) {
-    // console.log(endDate);
-    console.log(date);
+  formatDate(date: any, endDate: boolean = false) { 
 
     let d = date;
     let result = 0;
 
     if (!endDate) {
       d.setHours(0, 0, 0, 0);
-      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
       result = d.getTime() / 1000;
     } else {
       d.setHours(23, 59, 59, 0);
-      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
       result = d.getTime() / 1000;
     }
 
-    // console.log(d);
-    // console.log(result);
 
     return result;
   }
 
-  // formatDate(date: any, endDate: boolean = false) {
-
-  //   console.log(endDate);
-  //   console.log(date);
-
-  //   let d = new Date(date.getTime() + date.getTimezoneOffset() * 60000); //offset to user timezone
-  //   console.log(d);
-
-  //   let result = 0;
-
-  //   if (!endDate) {
-  //     //d.setHours(0, 0, 0, 0);
-  //     console.log(d);
-  //     result = d.getTime() / 1000;
-
-  //   } else {
-  //     //d.setHours(23, 59, 59, 0);
-  //     console.log(d);
-  //     result = d.getTime()/1000;
-  //   }
-
-  //   console.log(result);
-
-  //   return result;
-  // }
 
   getPin() {
     let pin = null;
@@ -648,7 +623,8 @@ export class LayerModalComponent implements OnInit {
     return pin;
   }
 
-  getPinWithAlert(i: number) {
+  getPinWithAlert(i: number) { 
+
     let pin = null;
     let current_state = this.packing.current_state;
 
@@ -859,6 +835,8 @@ export class LayerModalComponent implements OnInit {
     let pin = "#027f01";
     let current_state = this.packing.current_state;
 
+    console.log(current_state);
+    
     switch (current_state) {
       case constants.ALERTS.ANALISYS:
         pin = "#b3b3b3";
@@ -893,6 +871,7 @@ export class LayerModalComponent implements OnInit {
         break;
     }
 
+    console.log(pin);
     return pin;
   }
 }

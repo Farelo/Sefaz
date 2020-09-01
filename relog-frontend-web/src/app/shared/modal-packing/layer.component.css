@@ -23,9 +23,9 @@ h2 {
 
 .header {
   display: inline-grid;
-  border-bottom-style: solid;
+  /* border-bottom-style: solid;
   border-bottom-color: grey;
-  border-bottom-width: thin;
+  border-bottom-width: thin; */
   margin-bottom: 15px;
 }
 
@@ -224,7 +224,7 @@ div#collapseExample > p{
 }
 
 ngui-map {
-  height: calc( 50vh ) !important;
+  height: calc( 60vh ) !important;
 }
 
 .custom-icon-map-plant{

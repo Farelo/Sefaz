@@ -8,14 +8,12 @@
       <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.tag}}</span>
     </p>
 
-    <div id="collapseExample" *ngIf="packing.current_control_point_name" [ngbCollapse]="detailsIsCollapsed">
-      <!-- <p>Projeto: {{ packing.project.name }}</p> -->
-      <!-- <p>Fornecedor: {{ packing.actual_plant?.plant?.plant_name ? packing.actual_plant?.plant?.plant_name : "Sem informação" }}</p> -->
+    <!-- <div id="collapseExample" *ngIf="packing.current_control_point_name" [ngbCollapse]="detailsIsCollapsed">
       <p>Ponto de controle atual: {{ packing.current_control_point_name }}</p>
     </div>
 
     <span id="showDetails" *ngIf="packing.current_control_point_name" (click)="detailsIsCollapsed = !detailsIsCollapsed" [attr.aria-expanded]="!detailsIsCollapsed" aria-controls="collapseExample"
-      style="cursor: pointer;">{{ detailsIsCollapsed == true ? 'Mostrar detalhes' : 'Esconder detalhes' }}</span>
+      style="cursor: pointer;">{{ detailsIsCollapsed == true ? 'Mostrar detalhes' : 'Esconder detalhes' }}</span> -->
   </div>
 
   <button type="button" class="close" aria-label="Close" (click)="activeLayer.dismiss('Cross click')">
@@ -24,7 +22,7 @@
 
   <div class="row">
     <div class="col-md-6">
-      <p>FILTRAR POR:</p>
+      <p style="margin-bottom: 4px;">FILTRAR POR:</p>
     </div>
     <div class="col-md-6">
       <p *ngIf="!isLoading" class="text-right"> {{ getResultQuantity() }} </p>
@@ -95,7 +93,7 @@
   </div>
 
   <div class="modalBody">
-    <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false" [scrollwheel]="true">
+    <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false" [scrollwheel]="true" (mapReady$)="onInitMap($event)">
       <polyline *ngIf="!showLastPosition" [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3" [icons]="icons"></polyline>
       
 
@@ -143,35 +141,8 @@
 
 
       <!-- ///////////// -->
-      <!-- Supplier -->
-      <!-- <marker *ngFor="let posSuppliers of suppliers" 
-        [position]="[posSuppliers.plant.lat, posSuppliers.plant.lng]" 
-        (click)="clickedSupplier($event, posSuppliers)"
-        [icon]="{ url: 'assets/images/pin_supplier.png', size: [28, 43], scaledSize: [28, 43] }" 
-        [visible]="showControlledPlants">
-        <info-window id="sw">
-          <div class="iw-title">INFORMAÇÕES</div>
-          <div *ngIf="supplier.display" class="info-window-content">
-            <p>
-              <span class="bold">Fornecedor:</span> {{ supplier.name }}</p>
-          </div>
-        </info-window>
-      </marker>
-      
-      <circle *ngFor="let posSuppliersRadius of suppliers" 
-        [center]="posSuppliersRadius.latLng" 
-        [fillColor]="'#4d4d4d'" 
-        [fillOpacity]="0.2"
-        [strokeColor]="'#4d4d4d'" 
-        [strokeOpacity]="0.4" 
-        [strokeWeight]="1" 
-        [visible]="showControlledPlants"
-        radius="{{ settings.range_radius }}"></circle> -->
-
-
-      <!-- ///////////// -->
       <!-- rack markers -->
-      <ng-container *ngFor="let pos of rangedMarkers; let i = index">
+      <!-- <ng-container *ngFor="let pos of rangedMarkers; let i = index">
         <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)"  
           [position]="pos.latLng" 
           (click)="clicked($event,pos)"
@@ -185,9 +156,9 @@
             </div>
           </info-window>
         </marker>
-      </ng-container>
+      </ng-container> -->
       
-      <ng-container *ngFor="let posRadius of rangedMarkers">
+      <!-- <ng-container *ngFor="let posRadius of rangedMarkers">
         <circle *ngIf="(posRadius.accuracy <= accuracyRange) && (!showLastPosition)"
               [center]="posRadius.latLng" 
               [fillColor]="getRadiusWithAlert()" 
@@ -196,7 +167,7 @@
               [strokeOpacity]="0.7" 
               [strokeWeight]="1" 
               radius="{{ posRadius.accuracy || 0 }}"></circle>
-      </ng-container> 
+      </ng-container>  -->
 
       <!-- ///////////// -->
       <!-- rack last marker -->
