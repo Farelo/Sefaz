@@ -6,14 +6,17 @@ const parserMessage = async (jsonMessage, deviceData) => {
 
   let key = Object.keys(jsonMessage)[0];
   //logger.info("Message type: " + key);
+  let messageTimestamp = jsonMessage.timestamp;
+
+  if(messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp/1000;
 
   deviceData.message_type = key;
   deviceData.last_communication = new Date(
     deviceData.message_date_timestamp * 1000
   );
   deviceData.last_communication_timestamp = deviceData.message_date_timestamp;
-  deviceData.message_date = new Date(moment(jsonMessage.timestamp).subtract(3, 'h')) 
-  deviceData.message_date_timestamp = jsonMessage.timestamp;
+  deviceData.message_date = new Date(moment(messageTimestamp).subtract(3, 'h')) 
+  deviceData.message_date_timestamp = messageTimestamp;
   deviceData.message = JSON.stringify(jsonMessage);
 
   switch (key) {
