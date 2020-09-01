@@ -97,7 +97,6 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
   openLayer(packing) {
     const modalRef = this.modalService.open(LayerModalComponent, {
-      backdrop: 'static',
       size: 'lg',
       windowClass: 'modal-xl',
     });
