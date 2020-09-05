@@ -4,23 +4,241 @@ const martinez = require("martinez-polygon-clipping");
 const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_in_km");
 const { EventRecord } = require("../../models/event_record.model");
 
-module.exports = async (packing, controlPoints, setting) => {
+module.exports = async (packing, controlPoints, settings) => {
    try {
-      return findAndHandleIntersection(packing, controlPoints, setting);
+      // return findAndHandleIntersection(packing, controlPoints, settings);
+
+      let center = [packing.last_device_data.longitude, packing.last_device_data.latitude];
+      let radius = packing.last_device_data.accuracy;
+      let options = { steps: 64, units: "meters" };
+
+      console.log(JSON.stringify(turf.circle(center, radius, options)));
+
+      let _result = null;
+
+      // Se já teve event_record
+      if (packing.last_event_record) {
+         //Se o último evento foi INBOUND
+         if (packing.last_event_record.type == "inbound") {
+            console.log("tem inbound");
+            //recupera o ponto de controle em que estava e testa se o device continua incluído nele
+            let controlPointToTest = controlPoints.find(
+               (elem) => elem._id.toString() == packing.last_event_record.control_point.toString()
+            );
+
+            console.log("controlPointToTest", controlPointToTest.name);
+
+            let controlPointToTestFound = await findActualControlPoint(packing, [controlPointToTest], settings);
+            console.log("controlPointToTestFound", controlPointToTestFound.cp.name);
+
+            // se CONTINUA no mesmo ponto de controle
+            if (controlPointToTestFound) {
+               console.log("continua no mesmo PC");
+               _result = controlPointToTestFound.cp;
+            } else {
+               console.log("saiu do PC");
+               // se NÃO CONTINUA no mesmo ponto de controle
+               // Procura algum PC
+               let actualControlPointFound = findActualControlPoint(packing, controlPoints, settings);
+
+               if (actualControlPointFound) {
+                  console.log("achou novo PC");
+                  console.log("actualControlPointFound", actualControlPointFound.name);
+
+                  // Se encontrou um novo PC e o sinal é elegível para entrada
+                  //sai do PC anterior e entra no novo
+                  if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
+                     console.log("é elegível");
+                     createOutbound(packing);
+                     createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
+                     _result = actualControlPointFound.cp;
+                  } else {
+                     console.log("não é elegível");
+                  }
+               } else {
+                  console.log("não achou novo PC");
+                  // Se não encontrou um novo PC então sai do que estava
+                  createOutbound(packing); //Não se encontra em nenhum ponto de controle
+               }
+            }
+         }
+
+         //Se o último evento foi OUTBOUND
+         if (packing.last_event_record.type === "outbound") {
+            console.log("tem outbound");
+            //Procura algum PC
+            let actualControlPointFound = findActualControlPoint(packing, controlPoints, settings);
+            console.log("actualControlPointFound", actualControlPointFound.name);
+
+            if (actualControlPointFound) {
+               console.log("achou novo PC");
+               // Se encontrou um novo PC e o sinal é elegível para entrada
+               //sai do PC anterior e entra no novo
+               if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
+                  console.log("é elegível");
+                  createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
+                  _result = actualControlPointFound.cp;
+               } else {
+                  console.log("não é elegível");
+               }
+            } else {
+               console.log("não achoou novo PC");
+               // Se não encontrou um novo PC então sai do que estava
+               createOutbound(packing); //Não se encontra em nenhum ponto de controle
+            }
+         }
+      } else {
+         // Se nunca teve event_record
+         //Procura algum PC
+         if (packing.last_device_data) {
+            let actualControlPointFound = findActualControlPoint(packing, controlPoints, settings);
+            console.log("actualControlPointFound", actualControlPointFound.name);
+
+            console.log("não achou novo PC");
+            if (actualControlPointFound) {
+               console.log("actualControlPointFound", actualControlPointFound);
+               // Se encontrou um novo PC e o sinal é elegível para entrada
+               //sai do PC anterior e entra no novo
+               if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
+                  console.log("é elegível");
+                  createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
+                  _result = actualControlPointFound.cp;
+               } else {
+                  console.log("não é elegível");
+               }
+            }
+         }
+      }
    } catch (error) {
       console.error(error);
       throw new Error(error);
    }
 };
 
-const findAndHandleIntersection = async (packing, controlPoints, setting) => {
-   let deviceDataId = '';
+const findActualControlPoint = async (packing, allControlPoints, settings) => {
+   /**
+    * Ao encontrar intersecção poligonal, já assume o dispositivo como incluso.
+    * Ponto de controle circular tem que buscar aquele que possui a menor distância.
+    */
+
+   if (packing.last_device_data) {
+      let myActualControlPoint = null;
+
+      let polygonalControlPoints = allControlPoints.filter((elem) => elem.geofence.type == "p");
+      myActualControlPoint = await findPolygonalIntersection(packing, polygonalControlPoints, settings);
+      console.log("myActualControlPointPolygonal", myActualControlPoint);
+
+      if (myActualControlPoint) {
+         // Polygonal control point found
+         return ;
+      } else {
+         //Try circular controlPoints
+         let circularControlPoints = allControlPoints.filter((elem) => elem.geofence.type == "c");
+
+         myActualControlPoint = await findCircularIntersection(packing, circularControlPoints, settings);
+         console.log("myActualControlPointCircular", myActualControlPoint.cp.name);
+
+         if (myActualControlPoint) {
+            return myActualControlPoint;
+         } else {
+            return null;
+         }
+      }
+   }
+};
+
+/**
+ * Return the control point object with intersection if exists or null if no intersection was found.
+ * @param {*} packing
+ * @param {*} allControlPoints
+ */
+const findPolygonalIntersection = async (packing, allControlPoints) => {
+   let myActualControlPoint = null;
+
+   allControlPoints.some((controlPointToTest) => {
+      let isInsideControlePoint = false;
+
+      if (intersectionpoly(packing, controlPointToTest)) {
+         myActualControlPoint = controlPointToTest;
+         isInsideControlePoint = true;
+      }
+
+      return isInsideControlePoint;
+   });
+
+   if(myActualControlPoint) return { cp: myActualControlPoint, distance: 0 };
+   else return null
+};
+
+/**
+ * Return the { cp: controlPointFoundObject, distance: smallerDistanceFound } object if a intersection exists or null if no intersection was found.
+ * @param {*} packing
+ * @param {*} allControlPoints
+ */
+const findCircularIntersection = async (packing, allControlPoints) => {
+   let myActualControlPoint = null;
+   let smallerDistance = Infinity;
+
+   allControlPoints.forEach((controlPointToTest) => {
+      const calculatedDistance = getDistanceFromLatLonInKm(
+         packing.last_device_data.latitude,
+         packing.last_device_data.longitude,
+         controlPointToTest.geofence.coordinates[0].lat,
+         controlPointToTest.geofence.coordinates[0].lng
+      );
+
+      if (calculatedDistance <= controlPointToTest.geofence.radius + packing.last_device_data.accuracy) {
+         if (calculatedDistance < smallerDistance) {
+            smallerDistance = calculatedDistance;
+            myActualControlPoint = controlPointToTest;
+         }
+      }
+   });
+
+   if(myActualControlPoint) return { cp: myActualControlPoint, distance: smallerDistance };
+   else return null
+};
+
+/**
+ * Creates a new EventRecord register in the database
+ * @param {*} packing  The avaluated packing.
+ * @param {*} currentControlPoint The control point that the packing are located in.
+ * @param {*} distance The distance to the controlpoint in case it has a circular geofence.
+ */
+const createInbound = async (packing, currentControlPoint, distance) => {
+   console.log("criou inbound");
+   const eventRecord = new EventRecord({
+      packing: packing._id,
+      control_point: currentControlPoint._id,
+      distance_km: distance,
+      accuracy: packing.last_device_data.accuracy,
+      type: "inbound",
+      device_data_id: packing.last_device_data._id,
+   });
+   await eventRecord.save();
+};
+
+const createOutbound = async (packing) => {
+   console.log("criou outbound");
+   const eventRecord = new EventRecord({
+      packing: packing._id,
+      control_point: packing.last_event_record.control_point._id,
+      distance_km: packing.last_event_record.distance_km,
+      accuracy: packing.last_device_data.accuracy,
+      type: "outbound",
+      device_data_id: deviceDataId,
+   });
+   await eventRecord.save();
+};
+
+const findAndHandleIntersection = async (packing, controlPoints, settings) => {
+   let deviceDataId = "";
    let distance = Infinity;
    let currentControlPoint = null;
 
    if (packing.last_device_data) {
       deviceDataId = packing.last_device_data._id;
-      
+
       //Deve ser otimizado para sair do loop quando for encontrado dentro de um polígono
       controlPoints.some((controlPoint) => {
          let isInsideControlePoint = false;
@@ -72,7 +290,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
                mLog("CP DIFERENTE");
 
                //Se tem bom sinal
-               if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
+               if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
                   mLog("BOM SINAL");
                   mLog("OUT");
                   mLog("IN");
@@ -114,7 +332,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
          if (packing.last_event_record.type == "outbound") {
             mLog("ULTIMO EVENTO FOI OUTBOUND");
             //Se tem bom sinal
-            if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
+            if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
                mLog("BOM SINAL");
                mLog("IN");
                //Faz IN
@@ -136,7 +354,7 @@ const findAndHandleIntersection = async (packing, controlPoints, setting) => {
       } else {
          mLog("NUNCA TEVE EVENTO");
          //Se tem bom sinal
-         if (packing.last_device_data.accuracy <= setting.accuracy_limit) {
+         if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
             mLog("BOM SINAL");
             mLog("IN");
             //Faz IN

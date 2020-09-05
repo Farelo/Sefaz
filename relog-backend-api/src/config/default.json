@@ -8,8 +8,8 @@
     "port": 3000
   },
   "db": {
-    "url": "mongodb://127.0.0.1:27017/login", 
-    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/login" 
+    "url": "mongodb://127.0.0.1:27017/gm", 
+    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/gm" 
   },
   "security": {
     "jwtPrivateKey": "secr3t",
