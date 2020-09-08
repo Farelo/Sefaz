@@ -154,7 +154,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
                         // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
-                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
+                        await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint) 
 
                     } else {
 
@@ -480,7 +480,7 @@ const updateOfflineWhileAbsentRegister = (packing) => {
         // console.log(packing.offlineWhileAbsent.length)
         // console.log(packing.offlineWhileAbsent)
         // console.log(packing.offlineWhileAbsent[packing.offlineWhileAbsent.length-1])
-        console.log(packing.offlineWhileAbsent[packing.offlineWhileAbsent.length - 1].end)
+        // console.log(packing.offlineWhileAbsent[packing.offlineWhileAbsent.length - 1].end)
         if (packing.offlineWhileAbsent[packing.offlineWhileAbsent.length - 1].end == null) {
             packing.offlineWhileAbsent[packing.offlineWhileAbsent.length - 1].end = new Date()
             return packing.offlineWhileAbsent
