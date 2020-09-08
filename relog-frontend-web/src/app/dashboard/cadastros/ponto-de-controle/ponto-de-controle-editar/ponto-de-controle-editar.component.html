@@ -104,7 +104,7 @@
         </p>
 
         <!-- (click)="onClick($event)" -->
-        <ngui-map [zoom]="zoom" [center]="center" style="margin-top: 10px;" (mapReady$)="onMapReady()">
+        <ngui-map [zoom]="zoom" [center]="center" style="height: 600px; margin-top: 10px;" (mapReady$)="onMapReady()">
           <!-- <marker [position]="pos"></marker> -->
           <drawing-manager [drawingControl]="true" 
             [drawingControlOptions]="{
