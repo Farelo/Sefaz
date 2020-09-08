@@ -6,12 +6,7 @@ const { EventRecord } = require("../../models/event_record.model");
 
 module.exports = async (packing, controlPoints, settings) => {
    try {
-      let _result = null;
-      // return findAndHandleIntersection(packing, controlPoints, settings);
-
-      let center = [packing.last_device_data.longitude, packing.last_device_data.latitude];
-      let radius = packing.last_device_data.accuracy;
-      let options = { steps: 64, units: "meters" };
+      let _result = null; 
 
       // Se já teve event_record
       if (packing.last_event_record) {
