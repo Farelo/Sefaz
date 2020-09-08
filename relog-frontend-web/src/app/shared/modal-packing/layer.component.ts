@@ -120,7 +120,7 @@ export class LayerModalComponent implements OnInit {
 
   getPacking() {
     this.packingService.getPacking(this.packing._id).subscribe((response) => {
-      this.mPacking = response; 
+      this.mPacking = response;
 
       if (
         this.mPacking.last_device_data &&
@@ -238,7 +238,7 @@ export class LayerModalComponent implements OnInit {
       .getFilteredPositions(codeTag, startDate, finalDate, accuracy)
       .subscribe((result: any[]) => {
         if (result.length > 1) {
-          this.markers = result.reverse(); 
+          this.markers = result.reverse();
 
           let datePipe = new DatePipe("en");
 
@@ -255,30 +255,26 @@ export class LayerModalComponent implements OnInit {
 
             //Hover para mostrar o círculo da acurácia
             google.maps.event.addListener(m, "mouseover", (evt) => {
-              console.log("overrr");
-              
-              this.mCircle = new google.maps.Circle({ 
+              this.mCircle = new google.maps.Circle({
                 strokeColor: this.getRadiusWithAlert(),
                 strokeOpacity: 0.7,
                 strokeWeight: 1,
                 fillColor: this.getRadiusWithAlert(),
                 fillOpacity: 0.2,
                 center: m.position,
-                radius: m.accuracy
+                radius: m.accuracy,
               });
-              
+
               this.mCircle.setMap(this.mMap);
             });
 
             //Saída do Hover para ocultar o círculo da acurácia
             google.maps.event.addListener(m, "mouseout", (evt) => {
-              console.log("mouseout");
               this.mCircle.setMap(null);
             });
-            
 
+            //Evento de click
             google.maps.event.addListener(m, "click", (evt) => {
-
               // <div class="iw-title">INFORMAÇÕES</div>
               // <div *ngIf="marker.display" class="info-window-content">
               //   <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss' : '+00:00' }}</p>
@@ -315,7 +311,7 @@ export class LayerModalComponent implements OnInit {
           this.isLoading = false;
         }
 
-        this.getResultQuantity();
+        // this.getResultQuantity();
       });
   }
 
@@ -335,7 +331,7 @@ export class LayerModalComponent implements OnInit {
 
   rangechanged() {
     // console.log('rangechanged');
-
+    if(this.showLastPosition) this.showLastPosition = !this.showLastPosition;
     this.updatePaths();
     // this.getLastPostition();
   }
@@ -443,14 +439,14 @@ export class LayerModalComponent implements OnInit {
   getResultQuantity(): string {
     let result = "";
 
-    if (this.path.length == 0)
+    if (this.rangedMarkers.length == 0)
       result = `0 posições de ${this.allPackingMarkers.length} disponíveis`;
 
-    if (this.path.length == 1)
+    if (this.rangedMarkers.length == 1)
       result = `1 posição de ${this.allPackingMarkers.length} disponíveis`;
 
-    if (this.path.length > 1)
-      result = `${this.path.length} posições de ${this.allPackingMarkers.length} disponíveis`;
+    if (this.rangedMarkers.length > 1)
+      result = `${this.rangedMarkers.length} posições de ${this.allPackingMarkers.length} disponíveis`;
 
     return result;
   }
@@ -472,11 +468,12 @@ export class LayerModalComponent implements OnInit {
    */
   rangedMarkers = [];
   updatePaths() {
+    // console.log("updatePaths");
     this.path = [];
 
-    this.getLastPostition();
+    // this.getLastPostition();
 
-    this.rangedMarkers.map(elem => {
+    this.rangedMarkers.map((elem) => {
       elem.setMap(null);
       return elem;
     });
@@ -496,14 +493,25 @@ export class LayerModalComponent implements OnInit {
       return elem;
     });
 
+    // console.log(this.rangedMarkers);
+
     //centraliza o mapa
-    this.center = this.rangedMarkers[this.rangedMarkers.length - 1].position;
+    if (this.rangedMarkers.length > 0)
+      this.center = this.rangedMarkers[this.rangedMarkers.length - 1].position;
+    else
+      this.center = this.allPackingMarkers[this.allPackingMarkers.length - 1].position;
+
+    this.isLoading = false;
   }
 
   lastPositionClicked(event: any) {
     if (!this.showLastPosition) {
-      this.center = null;
+      //show only last position
       this.getLastPostition();
+    } else {
+      //show all positions
+      console.log("show all positions");
+      this.updatePaths();
     }
   }
 
@@ -511,22 +519,40 @@ export class LayerModalComponent implements OnInit {
    * This method updates the array 'path' with markers that satisfies the given accuracy.
    */
   getLastPostition() {
+    // if (this.rangedMarkers.length > 0) {
+    //   this.lastPosition = this.rangedMarkers[this.rangedMarkers.length - 1];
+
+    //   this.center = new google.maps.LatLng(
+    //     this.lastPosition.latitude,
+    //     this.lastPosition.longitude
+    //   );
+    // } else {
+    //   this.lastPosition = null;
+    // }
+
     if (this.rangedMarkers.length > 0) {
+      this.path = [];
+
+      this.rangedMarkers.map((elem) => {
+        elem.setMap(null);
+        return elem;
+      });
+
       this.lastPosition = this.rangedMarkers[this.rangedMarkers.length - 1];
 
-      this.center = new google.maps.LatLng(
-        this.lastPosition.latitude,
-        this.lastPosition.longitude
-      );
-    } else {
-      this.lastPosition = null;
+      this.center = {
+        lat: this.lastPosition.position.lat(),
+        lng: this.lastPosition.position.lng(),
+      };
+
+      this.lastPosition.setIcon(this.getPinWithAlert(1));
+      this.lastPosition.setMap(this.mMap);
     }
 
     this.isLoading = false;
   }
 
-  formatDate(date: any, endDate: boolean = false) { 
-
+  formatDate(date: any, endDate: boolean = false) {
     let d = date;
     let result = 0;
 
@@ -538,10 +564,8 @@ export class LayerModalComponent implements OnInit {
       result = d.getTime() / 1000;
     }
 
-
     return result;
   }
-
 
   getPin() {
     let pin = null;
@@ -623,8 +647,7 @@ export class LayerModalComponent implements OnInit {
     return pin;
   }
 
-  getPinWithAlert(i: number) { 
-
+  getPinWithAlert(i: number) {
     let pin = null;
     let current_state = this.packing.current_state;
 
@@ -835,8 +858,6 @@ export class LayerModalComponent implements OnInit {
     let pin = "#027f01";
     let current_state = this.packing.current_state;
 
-    console.log(current_state);
-    
     switch (current_state) {
       case constants.ALERTS.ANALISYS:
         pin = "#b3b3b3";
@@ -871,7 +892,6 @@ export class LayerModalComponent implements OnInit {
         break;
     }
 
-    console.log(pin);
     return pin;
   }
 }

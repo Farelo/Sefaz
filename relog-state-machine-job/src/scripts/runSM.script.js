@@ -748,7 +748,7 @@ const updateOfflineWhileAbsentRegister = (packing) => {
       // console.log(packing.offlineWhileAbsent.length)
       // console.log(packing.offlineWhileAbsent)
       // console.log(packing.offlineWhileAbsent[packing.offlineWhileAbsent.length-1])
-      // console.log("runSM 587", packing.offlineWhileAbsent[packing.offlineWhileAbsent.length - 1].end)
+      // console.log(packing.offlineWhileAbsent[packing.offlineWhileAbsent.length - 1].end)
       if (packing.offlineWhileAbsent[packing.offlineWhileAbsent.length - 1].end == null) {
          packing.offlineWhileAbsent[packing.offlineWhileAbsent.length - 1].end = new Date();
          return packing.offlineWhileAbsent;
