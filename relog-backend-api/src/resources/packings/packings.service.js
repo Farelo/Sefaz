@@ -135,6 +135,8 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
 
         let conditions = {};
 
+        conditions['active'] = true;
+
         if (familiesIds.length) {
             conditions['family'] = {
                 '$in': familiesIds
