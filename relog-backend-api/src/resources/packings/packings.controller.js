@@ -8,6 +8,7 @@ const families_service = require("../families/families.service");
 const projects_service = require("../projects/projects.service");
 const control_points_service = require("../control_points/control_points.service");
 const companies_service = require("../companies/companies.service");
+const _ = require('lodash')
 var https = require("https");
 
 var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
@@ -220,7 +221,15 @@ exports.geolocation = async (req, res) => {
       return res.status(HttpStatus.NOT_FOUND).send("Invalid company");
   }
 
-  const packings = await packings_service.geolocation(query);
+  let packings = await packings_service.geolocation(query);
+  packings = packings.map(elem=>{
+    let newObj =  _.pick(elem, ["family", "serial", "tag", "last_device_data_battery", "last_device_data", "position", "current_state"])
+    
+    if(newObj.last_device_data) newObj.last_device_data = _.pick(newObj.last_device_data, ["accuracy", "battery", "latitude", "longitude", "message_date"])
+    if(newObj.last_device_data_battery) newObj.last_device_data_battery = _.pick(newObj.last_device_data_battery, ["accuracy", "battery", "latitude", "longitude", "message_date"])
+    newObj.tag = _.pick(newObj.tag, ["code"])
+    return newObj
+  })
 
   res.json(packings);
 };

@@ -13,6 +13,7 @@ export class Spiralize {
     public spiralPath: google.maps.Polyline = new google.maps.Polyline();
     public spiralPoints: any = [];
     public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
+    public mCircle: google.maps.Circle = new google.maps.Circle();
     public mMap: any;
     // public packMarker = {
     //     display: true,
@@ -191,6 +192,28 @@ export class Spiralize {
                 this.infoWin.open(this.mMap, m);
             });
 
+            //Hover para mostrar o círculo da acurácia
+            google.maps.event.addListener(m, "mouseover", (evt) => { 
+                 
+                this.mCircle = new google.maps.Circle({
+                  strokeColor: this.getRadiusWithAlert(location.current_state),
+                  strokeOpacity: 0.7,
+                  strokeWeight: 1,
+                  fillColor: this.getRadiusWithAlert(location.current_state),
+                  fillOpacity: 0.2,
+                  center: m.position,
+                  radius: location.last_device_data ? location.last_device_data.accuracy : 0,
+                });
+  
+                this.mCircle.setMap(this.mMap);
+              });
+  
+              //Saída do Hover para ocultar o círculo da acurácia
+              google.maps.event.addListener(m, "mouseout", (evt) => {
+                this.mCircle.setMap(null);
+              });
+
+              
             google.maps.event.addListener(this.mMap, 'zoom_changed', () => {
                 //console.log('zoom changed:' + JSON.stringify(this.mMap.getZoom()));
                 this.clearSpiral();
@@ -366,34 +389,6 @@ export class Spiralize {
                         * Trata o clique do pino duplicado
                         */
                         e.addListener('click', () => {
-
-                            // console.log('Clique no pino interno');
-                            // console.log(JSON.stringify(e.family_code));
-                            // console.log(JSON.stringify(e.serial));
-                            // console.log(JSON.stringify(e.battery));
-                            // console.log(JSON.stringify(e.accuracy));
-                            // console.log('e.position: ' + JSON.stringify(spiralCoordinates[sc].lng));
-                            
-                            // this.packMarker = {
-                            //     // family_code: location.family.code,
-                            //     // serial: location.serial,
-                            //     // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                            //     // accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
-                            //     // position: location.position,
-                            //     // icon: this.getPinWithAlert(location.current_state)
-
-                            //     display: true,
-                            //     family_code: e.family_code,
-                            //     serial: e.serial,
-                            //     tag: e.tag,
-                            //     accuracy: `${e.accuracy}`
-                            //     battery: `${e.battery}`,
-                            //     position: spiralCoordinates[sc],
-                            //     lat: spiralCoordinates[sc].lat,
-                            //     lng: spiralCoordinates[sc].lng,
-                            //     start: null,
-                            // };
-
                             let datePipe = new DatePipe('en');
 
                             this.infoWin
@@ -410,10 +405,28 @@ export class Spiralize {
                             this.infoWin.open(this.mMap, e);
                         });
 
-                    }
+                        //Hover para mostrar o círculo da acurácia
+                        google.maps.event.addListener(e, "mouseover", (evt) => { 
+                            
+                            this.mCircle = new google.maps.Circle({
+                            strokeColor: this.getRadiusWithAlert(array[sc - 1].status),
+                            strokeOpacity: 0.7,
+                            strokeWeight: 1,
+                            fillColor: this.getRadiusWithAlert(array[sc - 1].status),
+                            fillOpacity: 0.2,
+                            center: e.position,
+                            radius: array[sc - 1].last_device_data ? array[sc - 1].last_device_data.accuracy : 0,
+                            });
+            
+                            this.mCircle.setMap(this.mMap);
+                        });
+            
+                        //Saída do Hover para ocultar o círculo da acurácia
+                        google.maps.event.addListener(e, "mouseout", (evt) => {
+                            this.mCircle.setMap(null);
+                        });
 
-                    //console.log('array: ' + JSON.stringify(array));
-                    //console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
+                    }
                 }
             });
 
@@ -496,6 +509,46 @@ export class Spiralize {
 
         return pin;
     }
+
+    getRadiusWithAlert(current_state) {
+        let pin = "#027f01"; ;
+    
+        switch (current_state) {
+          case constants.ALERTS.ANALISYS:
+            pin = "#b3b3b3";
+            break;
+    
+          case constants.ALERTS.ABSENT:
+            pin = "#ef5562";
+            break;
+    
+          case constants.ALERTS.INCORRECT_LOCAL:
+            pin = "#f77737";
+            break;
+    
+          case constants.ALERTS.LOW_BATTERY:
+            pin = "#f8bd37";
+            break;
+    
+          case constants.ALERTS.LATE:
+            pin = "#4dc9ff";
+            break;
+    
+          case constants.ALERTS.PERMANENCE_TIME:
+            pin = "#4c7bff";
+            break;
+    
+          case constants.ALERTS.NO_SIGNAL:
+            pin = "#9ecf99";
+            break;
+    
+          case constants.ALERTS.MISSING:
+            pin = "#3a9ca6";
+            break;
+        }
+    
+        return pin;
+      }
 
     toggleShowPackings(status: any) {
 
