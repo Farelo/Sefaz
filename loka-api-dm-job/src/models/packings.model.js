@@ -103,6 +103,10 @@ const packingSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    last_position:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Position'
+    },
     last_device_data: {
         type: mongoose.Schema.ObjectId,
         ref: 'DeviceData'
@@ -114,10 +118,6 @@ const packingSchema = new mongoose.Schema({
     last_current_state_history: {
         type: mongoose.Schema.ObjectId,
         ref: 'CurrentStateHistory'
-    },
-    last_department: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Department'
     },
     last_event_record: {
         type: mongoose.Schema.ObjectId,

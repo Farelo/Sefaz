@@ -1,7 +1,6 @@
 const debug = require('debug')('job:loka')
 const dm_controller = require('../loka-integration/dm.controller')
 const { Packing } = require('../../models/packings.model')
-const { DeviceData, device_data_save } = require('../../models/device_data.model')
 const moment = require('moment')
 
 module.exports = async () => {
@@ -16,47 +15,35 @@ module.exports = async () => {
             let sleepTime = 10*60
 
             debug("***********************")
-            debug("Novo loop no while")
-            debug("Login")
 
             const cookie = await dm_controller.loginDM()
 
-            let devices = await Packing.find({}, { _id: 1, tag: 1, last_device_data: 1 }).populate('last_device_data').populate('last_device_data_battery')
+            let devices = await Packing.find({ 'tag.code': '4073138' }, { _id: 1, tag: 1, last_position: 1 }).populate('last_device_data').populate('last_device_data_battery')
 
             for (const [i, packing] of devices.entries()) {
                 try {
                     const week_in_milliseconds = 604800000
 
                     //recupera a última mensagem e cria janela de tempo. Se não houver, inicia 1 semana atrás
-                    let start_search_date = packing.last_device_data ?
-                        moment(packing.last_device_data.message_date).add(1, 'seconds').format('YYYY-MM-DD HH:mm:ss').toString() :
+                    let startDate = packing.last_position ?
+                        moment(packing.last_position.timestamp).add(1, 'seconds').format('YYYY-MM-DD HH:mm:ss').toString() :
                         moment().subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss').toString();
 
-                    let end_search_date = moment().utc().format('YYYY-MM-DD HH:mm:ss').toString()
+                    let endDate = moment().utc().format('YYYY-MM-DD HH:mm:ss').toString()
                     
-                    // console.log('original: ', packing.last_device_data.message_date)
                     // console.log('original moment: ', moment(packing.last_device_data.message_date).format('YYYY-MM-DD HH:mm:ss').toString())
                     // console.log('original antigo: ', add_seconds(packing.last_device_data.message_date, 1))
-                    // console.log('start_search_date: ', start_search_date)
-                    // console.log('end_search_date: ', end_search_date)
+                    // console.log('startDate: ', startDate)
+                    // console.log('endDate: ', endDate)
 
                     // console.log(' ')
 
-                    const device_data_array = await dm_controller.getDeviceDataFromMiddleware(packing.tag.code, start_search_date, end_search_date, null, cookie)
+                    const newPositionsArray = await dm_controller.fetchAndSavePositions(packing, startDate, endDate, cookie);
+
+                    // const newSensorsArray = await dm_controller.fetchAndSaveSensors(packing, startDate, endDate, cookie);
 
                     //debug(packing)
-                    debug(`Request ${i + 1}: ${packing.tag.code} | ${start_search_date} | ${end_search_date} | ${device_data_array.length} \n`)
-
-                    if (device_data_array) {
-                        //debug(device_data_array)
-                        await device_data_save(packing, device_data_array)
-
-                        concluded_devices++
-
-                        //nao precisa realizar o return device_data_array, a nao ser que queira debugar o loop for-await-for abaixo
-                        // return device_data_array
-                    }
-
+                    // debug(`Request ${i + 1}: ${packing.tag.code} | ${startDate} | ${endDate} | ${newPositionsArray.length} | ${newSensorsArray.length}\n`)
 
                 } catch (error) {
 
