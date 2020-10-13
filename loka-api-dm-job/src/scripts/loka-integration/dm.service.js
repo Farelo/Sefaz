@@ -2,7 +2,9 @@ const debug = require("debug")("dm.service");
 const config = require("config");
 const request = require("request").defaults({ baseUrl: config.get("loka.baseUrl") /* 'https://dm.loka.systems' */ });
 const { axios } = require("../../tools/axios");
-const Position = require('../../models/position.model')
+const Position = require("../../models/position.model");
+const Temperature = require("../../models/temperature.model");
+const Battery = require("../../models/battery.model");
 
 // const axios = require("axios");
 const qs = require("qs");
@@ -14,16 +16,11 @@ const qs = require("qs");
 
 /*
     Este arquivo contem as chamadas disponibilizadas pela Loka em sua api DM-api.
-
     Para mais detalhes entrar em https://dm.loka.systems/api
-
-    Toda requisição feitas à api do DM da loka precisa de um cookie a ser enviado no header da requisição.
-
-    Este cookie é capturado na requisição de login em dm-cookie.js
+    Toda requisição feita à api do DM da loka precisa de um cookie enviado no header da requisição. 
 */
 
-//TODO: Deixar todas mensagens em português
-exports.loginLokaDmApi = () => {
+exports.loginLokaDmApi = async () => {
    return new Promise(function (resolve, reject) {
       let options = {
          url: `/auth/login`,
@@ -40,7 +37,6 @@ exports.loginLokaDmApi = () => {
       let callback = function (error, response, body) {
          if (error) {
             reject("Error on login request sent to loka: " + error);
-            console.log("Error on login request sent to loka: ", error);
          }
          try {
             let cookie = response.headers["set-cookie"][0].split(";")[0];
@@ -71,7 +67,7 @@ exports.logoutLokaDmApi = (cookie) => {
       let callback = function (error, response, body) {
          if (error) {
             reject("Error on logoutLokaDMApi request sent to loka: " + error);
-            console.log("Error on logoutLokaDMApi request sent to loka: ", error);
+            debug("Error on logoutLokaDMApi request sent to loka: ", error);
          }
 
          try {
@@ -103,179 +99,43 @@ exports.fetchPositions = async (deviceId, startDate, endDate, cookie) => {
       const result = await axios.get(path, options);
       return result.data.data;
    } catch (error) {
-      console.error(error);
+      debug(error);
       return [];
    }
 };
 
 exports.createManyPositionMessages = async (packing, messages) => {
-   console.log("createManyPositionMessages", packing.tag.code, messages);
    await Position.createMany(packing, messages);
 };
 
 exports.fetchSensors = async (deviceId, startDate, endDate, cookie) => {
-   return [];
+   let path = `${config.get("loka.baseUrl")}/message/show/${deviceId}/sigfox`;
+
+   let options = {
+      params: {
+         startDate: startDate,
+         endDate: endDate,
+      },
+      headers: {
+         "content-type": "application/json",
+         Cookie: `${cookie}`,
+         Connection: "close",
+      },
+   };
+
+   try {
+      const result = await axios.get(path, options);
+      return result.data.data;
+   } catch (error) {
+      debug(error);
+      return [];
+   }
 };
 
-exports.createManySensorMessages = async () => {};
-
-//obtem conjunto de mensagens da sigfox de um device
-exports.messagesFromSigfox = (cookie, deviceId, startDate, endDate, max) => {
-   return new Promise(function (resolve, reject) {
-      let path =
-         `/message/show/${deviceId}/sigfox` +
-         qs.stringify({ startDate: startDate, endDate: endDate, max: max }, { addQueryPrefix: true });
-      // console.log(path);
-
-      let options = {
-         url: path,
-         method: "GET",
-         headers: {
-            "content-type": "application/json",
-            Cookie: `${cookie}`,
-            Connection: "close",
-         },
-      };
-
-      let callback = function (error, response, body) {
-         if (error) {
-            reject("Error on messagesFromSigfox request sent to loka: " + error);
-            console.log("Error on messagesFromSigfox request sent to loka: ", error);
-         }
-
-         try {
-            resolve(JSON.parse(body).data);
-         } catch (err) {
-            reject(
-               "Erro ao tentar realizar o parse do JSON de mensagens da sigfox do device " +
-                  deviceId +
-                  ".\nRetorno da requisicao - header: " +
-                  response +
-                  "Retorno da requisicao - body: " +
-                  body +
-                  "\n" +
-                  err
-            );
-         }
-      };
-      request(options, callback);
-   });
+exports.createManyTemperatureMessages = async (packing, messages) => {
+   await Temperature.createMany(packing, messages);
 };
 
-//obtem conjunto de posicoes (lat, long, acuracia) ja resolvidos pela LOKA para um dispositivo
-exports.positions = (cookie, deviceId, status, lowAccuracy, startDate, endDate, max) => {
-   return new Promise(function (resolve, reject) {
-      let path =
-         `/position/get` +
-         qs.stringify(
-            {
-               terminal: deviceId,
-               status: status,
-               lowAccuracy: lowAccuracy,
-               startDate: startDate,
-               endDate: endDate,
-               max: max,
-            },
-            { addQueryPrefix: true }
-         );
-      // console.log(path);
-
-      let options = {
-         url: path,
-         method: "GET",
-         headers: {
-            "content-type": "application/json",
-            Cookie: `${cookie}`,
-            Connection: "close",
-         },
-      };
-
-      let callback = function (error, response, body) {
-         if (error) {
-            reject("Error on positions request sent to loka: " + error);
-            console.log("Error on positions request sent to loka: ", error);
-         }
-
-         try {
-            resolve(JSON.parse(body).data);
-         } catch (err) {
-            reject(
-               "Erro ao tentar realizar o parse do JSON de mensagens de posição da LOKA do device " +
-                  deviceId +
-                  ".\nRetorno da requisicao - header: " +
-                  response +
-                  "Retorno da requisicao - body: " +
-                  body +
-                  "\n" +
-                  err
-            );
-         }
-      };
-
-      request(options, callback);
-   });
-};
-
-exports.deviceById = (cookie, deviceId) => {
-   return new Promise(function (resolve, reject) {
-      let path = `/terminal/get/${deviceId}`;
-
-      let options = {
-         url: path,
-         method: "GET",
-         headers: {
-            "content-type": "application/json",
-            Cookie: `${cookie}`,
-            Connection: "close",
-         },
-      };
-
-      let callback = function (error, response, body) {
-         if (error) {
-            reject("Error on deviceById request sent to loka: ", error);
-            console.log("Error on deviceById request sent to loka: ", error);
-         }
-
-         try {
-            resolve(JSON.parse(body));
-         } catch (err) {
-            reject("Erro ao tentar realizar o parse do JSON dos dados do device vindos da LOKA. ", err);
-         }
-      };
-
-      request(options, callback);
-   });
-};
-
-exports.devicesList = (cookie, client, profile, status) => {
-   return new Promise(function (resolve, reject) {
-      let path =
-         `/terminal/list` +
-         qs.stringify({ client: client, profile: profile, status: status }, { addQueryPrefix: true });
-
-      let options = {
-         url: path,
-         method: "GET",
-         headers: {
-            "content-type": "application/json",
-            Cookie: `${cookie}`,
-            Connection: "close",
-         },
-      };
-
-      let callback = function (error, response, body) {
-         if (error) {
-            reject("Error on devicesList request sent to loka: ", error);
-            console.log("Error on devicesList request sent to loka: ", error);
-         }
-
-         try {
-            resolve(JSON.parse(body).data);
-         } catch (err) {
-            console.log("Erro ao tentar realizar o parse do JSON da lista de devices vindos da LOKA. ", err);
-         }
-      };
-
-      request(options, callback);
-   });
+exports.createManyBatteryMessages = async (packing, messages) => {
+   await Battery.createMany(packing, messages);
 };

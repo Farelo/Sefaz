@@ -1,91 +1,180 @@
-const debug = require('debug')('job:loka')
-const dm_controller = require('../loka-integration/dm.controller')
-const { Packing } = require('../../models/packings.model')
-const moment = require('moment')
+const debug = require("debug")("job:loka");
+const dm_controller = require("../loka-integration/dm.controller");
+const { Packing } = require("../../models/packings.model");
+const moment = require("moment");
+const _ = require("lodash");
+
+// TODO: ajustar a questão de timezone.
+// A loka já nos fornece todos os tempos em UTC-3, que é a configuração no dm.
+// Mas o moment assume que o timestamp passado no constructor é sempre localtime. Se usar utc() ele entende como GMT-0.
+// Como consequencia, os tempos UTF-3 que vem da loka são salvos convertidos em UTF-0.
+// Na hora de consumir pegamos a data como se fosse UTF-0 aí temos que realizar offset.
+// A rota position/get recebe startDate e endDate como localtime.
+const generatePositionQuery = (packing) => {
+   let positionStartDate = 0;
+   if (packing.last_position)
+      positionStartDate = moment(packing.last_position.timestamp * 1000)
+         .utc()
+         .add(1, "seconds")
+         .format("YYYY-MM-DD HH:mm:ss")
+         .toString();
+   else positionStartDate = moment().subtract(7, "days").format("YYYY-MM-DD HH:mm:ss").toString();
+
+   let positionEndDate = moment().format("YYYY-MM-DD HH:mm:ss").toString();
+
+   console.log(":::::::position", positionStartDate, positionEndDate);
+
+   return [positionStartDate, positionEndDate];
+};
+
+const generateSensorQuery = (packing) => {
+   let lastTemperatureTimestamp = 0;
+   let lastBatteryTimestamp = 0;
+
+   let sensorStartDate = 0;
+   let sensorEndDate = 0;
+
+   //Get the last temperature and battery
+   if (packing.last_temperature) lastTemperatureTimestamp = packing.last_temperature.timestamp;
+   if (packing.last_battery) lastBatteryTimestamp = packing.last_battery.timestamp;
+
+   //Which one is the most recent?
+   let lastSensorTimestamp = _.max([lastTemperatureTimestamp, lastBatteryTimestamp]);
+
+   //If there is a most recent value, then calculate the time window
+   //If there isn't a most recent value, then calculate the last 7 days
+   if (lastSensorTimestamp > 0)
+      sensorStartDate = moment(lastSensorTimestamp * 1000)
+         .add(1, "seconds")
+         .format("YYYY-MM-DD HH:mm:ss")
+         .toString();
+   else sensorStartDate = moment().subtract(7, "days").format("YYYY-MM-DD HH:mm:ss").toString();
+
+   sensorEndDate = moment().format("YYYY-MM-DD HH:mm:ss").toString();
+
+   console.log("::::::sensors", lastTemperatureTimestamp, lastBatteryTimestamp, sensorStartDate, sensorEndDate);
+
+   return [sensorStartDate, sensorEndDate];
+};
 
 module.exports = async () => {
-    
-    try {
+   try {
+      while (true) {
+         let concluded_devices = 0;
+         let error_devices = 0;
+         let timeInit = new Date().getTime();
+         let sleepTime = 10 * 60;
 
-        while (true) {
+         debug("***********************");
 
-            let concluded_devices = 0
-            let error_devices = 0
-            let timeInit = new Date().getTime();
-            let sleepTime = 10*60
+         const cookie = await dm_controller.loginDM();
 
-            debug("***********************")
+         // "tag.code": "28423339"
+         // "tag.code": "4081800"
+         let devices = await Packing.find({ "tag.code": "4081800" }, { _id: 1, tag: 1, last_position: 1 })
+            .populate("last_device_data")
+            .populate("last_device_data_battery")
+            .populate("last_position")
+            .populate("last_battery")
+            .populate("last_temperature");
 
-            const cookie = await dm_controller.loginDM()
+         for (const [i, packing] of devices.entries()) {
+            try {
+               // TODO: calcular janelas de tempo específicas para posições e sensores
 
-            let devices = await Packing.find({ 'tag.code': '4073138' }, { _id: 1, tag: 1, last_position: 1 }).populate('last_device_data').populate('last_device_data_battery')
+               //recupera a última mensagem de posição e cria janela de tempo. Se não houver, inicia 1 semana atrás
+               const [positionStartDate, positionEndDate] = generatePositionQuery(packing);
 
-            for (const [i, packing] of devices.entries()) {
-                try {
-                    const week_in_milliseconds = 604800000
+               //Coleta novas posições na loka
+               const newPositionsArray = await dm_controller.fetchAndSavePositions(
+                  packing,
+                  positionStartDate,
+                  positionEndDate,
+                  cookie
+               );
 
-                    //recupera a última mensagem e cria janela de tempo. Se não houver, inicia 1 semana atrás
-                    let startDate = packing.last_position ?
-                        moment(packing.last_position.timestamp).add(1, 'seconds').format('YYYY-MM-DD HH:mm:ss').toString() :
-                        moment().subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss').toString();
+               // console.log(newPositionsArray);
 
-                    let endDate = moment().utc().format('YYYY-MM-DD HH:mm:ss').toString()
-                    
-                    // console.log('original moment: ', moment(packing.last_device_data.message_date).format('YYYY-MM-DD HH:mm:ss').toString())
-                    // console.log('original antigo: ', add_seconds(packing.last_device_data.message_date, 1))
-                    // console.log('startDate: ', startDate)
-                    // console.log('endDate: ', endDate)
+               //recupera a última mensagem de sensor e cria janela de tempo. Se não houver, inicia 1 semana atrás
+               const [sensorStartDate, sensorEndDate] = generateSensorQuery(packing);
 
-                    // console.log(' ')
+               //Coleta novas mensagens de sensores na loka
+               const newSensorsArray = await dm_controller.fetchAndSaveSensors(
+                  packing,
+                  sensorStartDate,
+                  sensorEndDate,
+                  cookie
+               );
 
-                    const newPositionsArray = await dm_controller.fetchAndSavePositions(packing, startDate, endDate, cookie);
+               // console.log(newSensorsArray);
 
-                    // const newSensorsArray = await dm_controller.fetchAndSaveSensors(packing, startDate, endDate, cookie);
+               //Packing reference
+               if (newPositionsArray.length > 0 && newSensorsArray.length > 0) {
+                  let lastMessage =
+                     newPositionsArray[0].timestamp >= newSensorsArray[0].timestamp
+                        ? newPositionsArray[0].timestamp
+                        : newSensorsArray[0].timestamp;
+                  await Packing.findByIdAndUpdate(packing._id, { last_message_signal: lastMessage }, { new: true });
+               } else {
+                  if (newPositionsArray.length > 0) {
+                     await Packing.findByIdAndUpdate(
+                        packing._id,
+                        { last_message_signal: newPositionsArray[0].timestamp },
+                        { new: true }
+                     );
+                  }
 
-                    //debug(packing)
-                    // debug(`Request ${i + 1}: ${packing.tag.code} | ${startDate} | ${endDate} | ${newPositionsArray.length} | ${newSensorsArray.length}\n`)
+                  if (newSensorsArray.length > 0) {
+                     await Packing.findByIdAndUpdate(
+                        packing._id,
+                        { last_message_signal: newSensorsArray[0].timestamp },
+                        { new: true }
+                     );
+                  }
+               }
 
-                } catch (error) {
+               concluded_devices++;
 
-                    debug(`${i}: Erro ocorrido no device: ' + ${packing.tag.code} + ' | ' + ${error}`)
-
-                    error_devices++
-                }
-
+               debug(
+                  `Request ${i + 1}: ${packing.tag.code} | ${positionStartDate} | ${sensorStartDate} | ${
+                     newPositionsArray.length
+                  } | ${newSensorsArray.length}\n`
+               );
+            } catch (error) {
+               error_devices++;
+               debug(`${i}: Erro ocorrido no device: ' + ${packing.tag.code} + ' | ' + ${error}`);
             }
+         }
 
-            let timeFinish = new Date().getTime();
-            let timeTotal = timeFinish - timeInit
+         let timeFinish = new Date().getTime();
+         let timeTotal = timeFinish - timeInit;
 
-            debug(`Devices que deram certo:  ${concluded_devices}`)
-            debug(`Devices que deram errado:  ${error_devices}`)
-            debug(`Job LOKA encerrado em ${new Date().toISOString()} com sucesso!`)
-            debug('Tempo total de execução (sec): ' + timeTotal / 1000)
+         debug(`Devices que deram certo:  ${concluded_devices}`);
+         debug(`Devices que deram errado:  ${error_devices}`);
+         debug(`Job LOKA encerrado em ${new Date().toISOString()} com sucesso!`);
+         debug("Tempo total de execução (sec): " + timeTotal / 1000);
 
-            debug("Logout")
+         
+         await dm_controller.logoutDM(cookie);
+         debug("Logout");
+         
+         debug(`Dormir por ${sleepTime} segundos`);
+         await promise_wait_seconds(sleepTime);
+         debug("Acordado");
+      }
+   } catch (error) {
+      return Promise.reject(`Job LOKA encerrado em ${new Date().toISOString()} com erro | ` + error);
+   }
+};
 
-            await dm_controller.logoutDM(cookie)
+const add_seconds = (date_time, seconds_to_add) => {
+   return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add));
+};
 
-            debug(`Dormir por ${sleepTime} segundos`)
-            await promise_wait_seconds(sleepTime)
-            debug("Acordado")
-        }
-
-    } catch (error) {
-        return Promise.reject(`Job LOKA encerrado em ${new Date().toISOString()} com erro | ` + error)
-    }
-}
-
-const add_seconds = (date_time, seconds_to_add) => { return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add)) }
-
-const promise_wait_seconds = async seconds => {
-
-    return new Promise((resolve) => {
-
-        setTimeout(() => {
-            resolve(`SLEEP: Aguardou ${seconds} segundos`)
-        }, seconds * 1000);
-
-    })
-
-}
+const promise_wait_seconds = async (seconds) => {
+   return new Promise((resolve) => {
+      setTimeout(() => {
+         resolve(`SLEEP: Aguardou ${seconds} segundos`);
+      }, seconds * 1000);
+   });
+};
