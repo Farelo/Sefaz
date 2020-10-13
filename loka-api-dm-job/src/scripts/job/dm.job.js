@@ -71,7 +71,7 @@ module.exports = async () => {
 
          // "tag.code": "28423339"
          // "tag.code": "4081800"
-         let devices = await Packing.find({ "tag.code": "4081800" }, { _id: 1, tag: 1, last_position: 1 })
+         let devices = await Packing.find({}, { _id: 1, tag: 1, last_position: 1 })
             .populate("last_device_data")
             .populate("last_device_data_battery")
             .populate("last_position")
