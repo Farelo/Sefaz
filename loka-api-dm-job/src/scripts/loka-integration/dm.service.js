@@ -80,7 +80,7 @@ exports.logoutLokaDmApi = (cookie) => {
    });
 };
 
-exports.fetchPositions = async (deviceId, startDate, endDate, cookie) => {
+exports.fetchPositions = async (deviceId, startDate, endDate, lowAccuracy, cookie) => {
    let path = config.get("loka.baseUrl") + "/position/get";
 
    let options = {
@@ -88,6 +88,7 @@ exports.fetchPositions = async (deviceId, startDate, endDate, cookie) => {
          terminal: deviceId,
          startDate: startDate,
          endDate: endDate,
+         lowAccuracy: lowAccuracy
       },
       headers: {
          "content-type": "application/json",

@@ -5,7 +5,7 @@ const moment = require("moment");
 const _ = require("lodash");
 
 // TODO: ajustar a questão de timezone.
-// A loka já nos fornece todos os tempos em UTC-3, que é a configuração no dm.
+// A loka já nos fornece todos os tempos em UTC-3, que é a atual configuração no dm.
 // Mas o moment assume que o timestamp passado no constructor é sempre localtime. Se usar utc() ele entende como GMT-0.
 // Como consequencia, os tempos UTF-3 que vem da loka são salvos convertidos em UTF-0.
 // Na hora de consumir pegamos a data como se fosse UTF-0 aí temos que realizar offset.
@@ -71,7 +71,7 @@ module.exports = async () => {
 
          // "tag.code": "28423339"
          // "tag.code": "4081800"
-         let devices = await Packing.find({}, { _id: 1, tag: 1, last_position: 1 })
+         let devices = await Packing.find({"tag.code": "4081800"}, { _id: 1, tag: 1, last_position: 1 })
             .populate("last_device_data")
             .populate("last_device_data_battery")
             .populate("last_position")
@@ -80,8 +80,6 @@ module.exports = async () => {
 
          for (const [i, packing] of devices.entries()) {
             try {
-               // TODO: calcular janelas de tempo específicas para posições e sensores
-
                //recupera a última mensagem de posição e cria janela de tempo. Se não houver, inicia 1 semana atrás
                const [positionStartDate, positionEndDate] = generatePositionQuery(packing);
 
@@ -108,7 +106,7 @@ module.exports = async () => {
 
                // console.log(newSensorsArray);
 
-               //Packing reference
+               // Update the last_message_signal Packing's attribute
                if (newPositionsArray.length > 0 && newSensorsArray.length > 0) {
                   let lastMessage =
                      newPositionsArray[0].timestamp >= newSensorsArray[0].timestamp
@@ -136,9 +134,7 @@ module.exports = async () => {
                concluded_devices++;
 
                debug(
-                  `Request ${i + 1}: ${packing.tag.code} | ${positionStartDate} | ${sensorStartDate} | ${
-                     newPositionsArray.length
-                  } | ${newSensorsArray.length}\n`
+                  `Request ${i + 1}: ${packing.tag.code} | ${positionStartDate} | ${sensorStartDate} | ${ newPositionsArray.length } |  ${newSensorsArray.length}\n`
                );
             } catch (error) {
                error_devices++;

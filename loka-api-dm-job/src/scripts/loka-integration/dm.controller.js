@@ -22,10 +22,10 @@ async function logoutDM(cookie) {
 const fetchAndSavePositions = async (packing, startDate, endDate, cookie) => {
    try {
       if (!cookie) cookie = await dm_service.loginLokaDmApi(); 
-      let result = await dm_service.fetchPositions(packing.tag.code, startDate, endDate, cookie); 
+      let result = await dm_service.fetchPositions(packing.tag.code, startDate, endDate, true, cookie); 
 
       if (result.length > 0) await dm_service.createManyPositionMessages(packing, result);
-      return result.length;
+      return result;
    } catch (error) {
       return [];
    }

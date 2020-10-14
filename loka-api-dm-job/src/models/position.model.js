@@ -41,6 +41,7 @@ positionSchema.index({ tag: 1, timestamp: -1 }, { unique: true });
 const createMany = async (packing, positionArray) => {
    let firstSaved = true;
    for (const [index, position] of positionArray.entries()) {
+      
       if (position.accuracy <= 32000) {
          try {
             const newPosition = new Position({
