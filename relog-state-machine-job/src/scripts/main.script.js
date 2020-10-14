@@ -42,6 +42,9 @@ module.exports = async () => {
                     .populate('last_device_data_battery')
                     .populate('last_current_state_history')
                     .populate('last_event_record')
+                    .populate("last_position")
+                    .populate("last_battery")
+                    .populate("last_temperature");
 
                 await iteratePackings(setting, packings, controlPoints)
             
