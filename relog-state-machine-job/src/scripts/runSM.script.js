@@ -45,6 +45,8 @@ module.exports = async (setting, packing, controlPoints) => {
         if (!packing.last_device_data && !packing.last_position) return null
 
         let lastMessageDate = getLastMessage(packing);
+        console.log("getDiffDateTodayInDays(lastMessageDate)"); 
+        console.log(getDiffDateTodayInDays(lastMessageDate)); 
 
         /* Avalia se a bateria está baixa */
         await evaluatesIfPackingIsWithBatteryLow(packing, setting)
@@ -458,14 +460,14 @@ module.exports = async (setting, packing, controlPoints) => {
  * @param {*} timestampInMilliseconds The initial date we want to calculate de duration that has passed until now
  */
 const getDiffDateTodayInDays = (timestampInMilliseconds) => {
-    // const today = moment()
-    // date = moment(date)
+    const today = moment()
+    date = moment(timestampInMilliseconds)
 
-    // const duration = moment.duration(today.diff(date))
-    // return duration.asDays()
+    const duration = moment.duration(today.diff(timestampInMilliseconds))
+    return duration.asDays()
 
-    let duration = moment(timestampInMilliseconds).fromNow();
-    return duration;
+    // let duration = moment(timestampInMilliseconds).fromNow();
+    // return duration;
 }
 
 let idAbleToLog = false
