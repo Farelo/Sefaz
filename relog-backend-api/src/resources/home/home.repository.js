@@ -9,6 +9,12 @@ const { Packing } = require('../packings/packings.model')
 const { GC16 } = require('../gc16/gc16.model')
 const { Setting } = require('../settings/settings.model')
 
+const getLastBattery = (packing) => {
+    if(packing.last_battery) return packing.last_battery.battery;
+    if(packing.last_device_data_battery) return packing.last_device_data_battery.battery.percentage
+    return null;
+}
+
 exports.home_report = async (current_state = null) => {
     try {
 
@@ -18,12 +24,18 @@ exports.home_report = async (current_state = null) => {
                 .populate('last_device_data')
                 .populate('last_device_data_battery')
                 .populate('last_event_record')
+                .populate('last_position')
+                .populate('last_battery')
+                .populate('last_temperature')
             :
             await Packing.find({ active: true })
                 .populate('family')
                 .populate('last_device_data')
                 .populate('last_device_data_battery')
                 .populate('last_event_record')
+                .populate('last_position')
+                .populate('last_battery')
+                .populate('last_temperature')
 
         if (current_state) {
             return Promise.all(
