@@ -5,8 +5,7 @@ const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_i
 const { EventRecord } = require("../../models/event_record.model");
 
 const lastPositionOrDeviceData = (packing) => {
-   if(packing.last_position) return packing.last_position
-   if(packing.last_device_data) return packing.last_device_data
+   if(packing.last_position) return packing.last_position 
    return null
 }
 

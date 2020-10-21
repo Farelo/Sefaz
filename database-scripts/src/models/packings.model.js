@@ -143,7 +143,7 @@ const packingSchema = new mongoose.Schema({
 
 
 packingSchema.statics.findByTag = function (tag, projection = '') {
-    return this.findOne({ 'tag.code': tag.code }, projection)
+    return this.findOne({ 'tag.code': tag }, projection)
 }
 
 const update_updated_at_middleware = function (next) {

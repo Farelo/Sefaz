@@ -20,21 +20,16 @@ const evaluatesIfPackingIsTraveling = require('./evaluators/evaluates_if_packing
 const getLastMessage = (package) => {
     if(package.last_message_signal) return new Date(package.last_message_signal).valueOf()
     
-    let lastDeviceData = package.last_device_data ? package.last_device_data.message_date_timestamp : 0;
     let lastPosition = package.last_position ? package.last_position.timestamp : 0;
     let lastBattery = package.last_battery ? package.last_battery.timestamp : 0;
     let lastTemperature = package.last_temperature ? package.last_temperature.timestamp : 0;
 
-    return _.max(lastDeviceData, lastPosition, lastBattery, lastTemperature) * 1000;
+    return _.max(lastPosition, lastBattery, lastTemperature) * 1000;
 }
 
 module.exports = async (setting, packing, controlPoints) => {
-    let next_state
-    let isNoSignal
-    let isAbsent
+
     let currentControlPoint
-    let isIncorrectLocal
-    let isPermanenceTimeExceeded
 
     //mLog(' ')
     //mLog('==============================')
@@ -42,7 +37,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
     try {
         /* Se a embalagem está sem registro da loka eu não faço nada */
-        if (!packing.last_device_data && !packing.last_position) return null
+        if (!packing.last_position) return null
 
         let lastMessageDate = getLastMessage(packing);
         console.log("getDiffDateTodayInDays(lastMessageDate)"); 

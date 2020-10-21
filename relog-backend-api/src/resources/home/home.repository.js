@@ -15,6 +15,12 @@ const getLastBattery = (packing) => {
     return null;
 }
 
+const getLastPosition = (packing) => {
+    if(packing.last_position) return packing.last_position
+    if(packing.last_device_data) return packing.last_device_data
+    return null
+}
+
 exports.home_report = async (current_state = null) => {
     try {
 
@@ -43,7 +49,7 @@ exports.home_report = async (current_state = null) => {
                     let obj_temp = {}
 
                     const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
-                    const battery_level = packing.last_device_data && packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
+                    const battery_level = getLastBattery(packing)
 
                     obj_temp.family_code = packing.family ? packing.family.code : '-'
                     obj_temp.serial = packing.serial
@@ -51,8 +57,8 @@ exports.home_report = async (current_state = null) => {
                     obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
                     obj_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
                     obj_temp.battery_percentage = battery_level
-                    obj_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : 'Sem registro'
-                    obj_temp.date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : 'Sem registro'
+                    obj_temp.accuracy = getLastPosition(packing).accuracy || 'Sem registro'
+                    obj_temp.date = packing.last_message_signal ? `${moment(packing.last_message_signal).locale('pt-br').format('L')} ${moment(packing.last_message_signal).locale('pt-br').format('LT')}` : 'Sem registro'
 
                     return obj_temp
                 })
@@ -100,15 +106,10 @@ exports.home_low_battery_report = async () => {
                 let obj_temp = {}
 
                 const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
+                const lastBattery = getLastBattery(packing) 
 
-                const battery_level = packing.last_device_data && packing.last_device_data.battery.percentage !== null ?
-                    packing.last_device_data.battery.percentage : packing.last_device_data_battery ?
-                    packing.last_device_data_battery.battery.percentage : null
-
-                const date = packing.last_device_data && packing.last_device_data.battery.percentage !== null ? 
-                    `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` :
-                    packing.last_device_data_battery ? 
-                        `${moment(packing.last_device_data_battery.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data_battery.message_date).locale('pt-br').format('LT')}` : 'Sem registro'
+                const date = lastBattery ? 
+                    `${moment(lastBattery.date || lastBattery.message_date).locale('pt-br').format('L')} ${moment(lastBattery.date || lastBattery.message_date).locale('pt-br').format('LT')}` : 'Sem registro'
 
                 obj_temp.id = packing._id
                 obj_temp.family_code = packing.family ? packing.family.code : '-'
@@ -116,11 +117,9 @@ exports.home_low_battery_report = async () => {
                 obj_temp.tag = packing.tag.code
                 obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
                 obj_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
-                obj_temp.battery_percentage = battery_level
-
-                obj_temp.last_device_data_battery = packing.last_device_data_battery ? packing.last_device_data_battery : '-'
-                
-                obj_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : '-'
+                obj_temp.battery_percentage = lastBattery ? lastBattery.accuracy : 'Sem Registro'
+                obj_temp.lastBattery = lastBattery ? lastBattery : '-'
+                obj_temp.accuracy = lastBattery ? lastBattery.accuracy : '-'
                 obj_temp.date = date
 
                 return obj_temp

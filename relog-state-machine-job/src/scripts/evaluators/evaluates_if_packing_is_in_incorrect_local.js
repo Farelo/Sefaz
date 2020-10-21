@@ -7,8 +7,7 @@ const { Packing } = require('../../models/packings.model')
 const { Family } = require('../../models/families.model')
 
 const lastPositionOrDeviceData = (packing) => {
-    if(packing.last_position) return packing.last_position
-    if(packing.last_device_data) return packing.last_device_data
+    if(packing.last_position) return packing.last_position 
     return null
 }
 
