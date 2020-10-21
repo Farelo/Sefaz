@@ -1,6 +1,6 @@
-const debug = require("debug")("controller:positions");
+const debug = require("debug")("controller:temperatures");
 const HttpStatus = require("http-status-codes");
-const positionsService = require("./positions.service");
+const temperaturesService = require("./temperatures.service");
 const packingsService = require("../packings/packings.service");
 const familiesService = require("../families/families.service");
 const companiesService = require("../companies/companies.service");
@@ -10,7 +10,6 @@ exports.get = async (req, res) => {
       tag: req.query.tag ? req.query.tag : null,
       start_date: req.query.start_date ? req.query.start_date : null,
       end_date: req.query.end_date ? req.query.end_date : null,
-      accuracy: req.query.accuracy ? req.query.accuracy : 32000,
       max: 10,
    };
 
@@ -19,12 +18,12 @@ exports.get = async (req, res) => {
       if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
    }
       
-   const result = await positionsService.getPosition(query); 
+   const result = await temperaturesService.get(query); 
 
    res.json(result);
 };
 
-exports.getGeolocation = async (req, res) => {
+exports.getLast = async (req, res) => {
    if (req.query.family_id) { 
       const family = await familiesService.get_family(req.query.family_id);
       if (!family) return res.status(HttpStatus.NOT_FOUND).send("Invalid family");
@@ -41,7 +40,7 @@ exports.getGeolocation = async (req, res) => {
       serial: req.query.serial ? req.query.serial : null,
    };
 
-   const result = await positionsService.geolocation(query);
+   const result = await temperaturesService.getLast(query);
 
    res.status(HttpStatus.OK).json(result);
 };

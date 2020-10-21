@@ -1,17 +1,16 @@
-const debug = require("debug")("service:positions");
-const mongoose = require('mongoose')
+const debug = require("debug")("service:temperatures");
+const mongoose = require("mongoose");
 const _ = require("lodash");
-const { Position } = require("./positions.model");
+const { Temperature } = require("./temperatures.model");
 const { Family } = require("../families/families.model");
 const { Packing } = require("../packings/packings.model");
 
-exports.getPosition = async ({ tag = null, start_date = null, end_date = null, accuracy = null, max = null }) => {
-   let device_data = [];
+exports.get = async ({ tag = null, start_date = null, end_date = null, max = null }) => {
    let conditions = {};
    let projection = {};
    let options = {};
 
-   if(tag) conditions.tag = tag;
+   if (tag) conditions.tag = tag;
    // options.sort = { message_date: -1 };
 
    try {
@@ -27,28 +26,27 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
                $gte: start_date,
                $lte: end_date,
             };
-      else if (start_date)
+      else if (start_date){
          if (isNaN(start_date)) conditions.date = { $gte: new Date(start_date) };
          else conditions.timestamp = { $gte: start_date };
-      else if (end_date)
+      }
+      else if (end_date){
+         console.log("end_date", end_date);
          if (isNaN(end_date)) conditions.date = { $lte: new Date(end_date) };
          else conditions.timestamp = { $lte: end_date };
-
-      if (accuracy) conditions.accuracy = { $lte: accuracy };
-
+      }
+      
       if (!start_date && !end_date) options.limit = parseInt(max);
 
-      device_data = await Position.find(conditions, projection, options);
-
-      return device_data;
+      return await Temperature.find(conditions, projection, options);
    } catch (error) {
       throw new Error(error);
    }
 };
 
-exports.geolocation = async ({ companyId = null, familyId = null, serial = null }) => {
+exports.getLast = async ({ companyId = null, familyId = null, serial = null }) => {
    try {
-      let packings = []; 
+      let packings = [];
 
       switch (true) {
          // company, family and serial
@@ -60,8 +58,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      tag: 1,
                      family: 1,
                      serial: 1,
-                     current_state: 1,
-                     last_position: 1,
+                     last_temperature: 1,
                   },
                },
                {
@@ -80,15 +77,15 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                },
                {
                   $lookup: {
-                     from: "positions",
-                     localField: "last_position",
+                     from: "temperatures",
+                     localField: "last_temperature",
                      foreignField: "_id",
-                     as: "last_position",
+                     as: "last_temperature",
                   },
                },
                {
                   $unwind: {
-                     path: "$last_position",
+                     path: "$last_temperature",
                      preserveNullAndEmptyArrays: true,
                   },
                },
@@ -103,15 +100,12 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                   $project: {
                      "tag.code": 1,
                      serial: 1,
-                     current_state: 1,
                      "family._id": 1,
                      "family.code": 1,
                      "family.company": 1,
-                     "last_position.date": 1,
-                     "last_position.timestamp": 1,
-                     "last_position.latitude": 1,
-                     "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_temperature.date": 1,
+                     "last_temperature.timestamp": 1,
+                     "last_temperature.value": 1,
                   },
                },
             ]);
@@ -126,8 +120,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      tag: 1,
                      family: 1,
                      serial: 1,
-                     current_state: 1,
-                     last_position: 1,
+                     last_temperature: 1,
                   },
                },
                {
@@ -152,15 +145,15 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                },
                {
                   $lookup: {
-                     from: "positions",
-                     localField: "last_position",
+                     from: "temperatures",
+                     localField: "last_temperature",
                      foreignField: "_id",
-                     as: "last_position",
+                     as: "last_temperature",
                   },
                },
                {
                   $unwind: {
-                     path: "$last_position",
+                     path: "$last_temperature",
                      preserveNullAndEmptyArrays: true,
                   },
                },
@@ -168,15 +161,12 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                   $project: {
                      "tag.code": 1,
                      serial: 1,
-                     current_state: 1,
                      "family._id": 1,
                      "family.code": 1,
                      "family.company": 1,
-                     "last_position.date": 1,
-                     "last_position.timestamp": 1,
-                     "last_position.latitude": 1,
-                     "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_temperature.date": 1,
+                     "last_temperature.timestamp": 1,
+                     "last_temperature.value": 1,
                   },
                },
             ]);
@@ -191,8 +181,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      tag: 1,
                      family: 1,
                      serial: 1,
-                     current_state: 1,
-                     last_position: 1,
+                     last_temperature: 1,
                   },
                },
                {
@@ -217,15 +206,15 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                },
                {
                   $lookup: {
-                     from: "positions",
-                     localField: "last_position",
+                     from: "temperatures",
+                     localField: "last_temperature",
                      foreignField: "_id",
-                     as: "last_position",
+                     as: "last_temperature",
                   },
                },
                {
                   $unwind: {
-                     path: "$last_position",
+                     path: "$last_temperature",
                      preserveNullAndEmptyArrays: true,
                   },
                },
@@ -233,15 +222,12 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                   $project: {
                      "tag.code": 1,
                      serial: 1,
-                     current_state: 1,
                      "family._id": 1,
                      "family.code": 1,
                      "family.company": 1,
-                     "last_position.date": 1,
-                     "last_position.timestamp": 1,
-                     "last_position.latitude": 1,
-                     "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_temperature.date": 1,
+                     "last_temperature.timestamp": 1,
+                     "last_temperature.value": 1,
                   },
                },
             ]);
@@ -256,8 +242,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      tag: 1,
                      family: 1,
                      serial: 1,
-                     current_state: 1,
-                     last_position: 1,
+                     last_temperature: 1,
                   },
                },
                {
@@ -282,15 +267,15 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                },
                {
                   $lookup: {
-                     from: "positions",
-                     localField: "last_position",
+                     from: "temperatures",
+                     localField: "last_temperature",
                      foreignField: "_id",
-                     as: "last_position",
+                     as: "last_temperature",
                   },
                },
                {
                   $unwind: {
-                     path: "$last_position",
+                     path: "$last_temperature",
                      preserveNullAndEmptyArrays: true,
                   },
                },
@@ -298,15 +283,12 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                   $project: {
                      "tag.code": 1,
                      serial: 1,
-                     current_state: 1,
                      "family._id": 1,
                      "family.code": 1,
                      "family.company": 1,
-                     "last_position.date": 1,
-                     "last_position.timestamp": 1,
-                     "last_position.latitude": 1,
-                     "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_temperature.date": 1,
+                     "last_temperature.timestamp": 1,
+                     "last_temperature.value": 1,
                   },
                },
             ]);
@@ -321,8 +303,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      tag: 1,
                      family: 1,
                      serial: 1,
-                     current_state: 1,
-                     last_position: 1,
+                     last_temperature: 1,
                   },
                },
                {
@@ -341,15 +322,15 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                },
                {
                   $lookup: {
-                     from: "positions",
-                     localField: "last_position",
+                     from: "temperatures",
+                     localField: "last_temperature",
                      foreignField: "_id",
-                     as: "last_position",
+                     as: "last_temperature",
                   },
                },
                {
                   $unwind: {
-                     path: "$last_position",
+                     path: "$last_temperature",
                      preserveNullAndEmptyArrays: true,
                   },
                },
@@ -362,15 +343,12 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                   $project: {
                      "tag.code": 1,
                      serial: 1,
-                     current_state: 1,
                      "family._id": 1,
                      "family.code": 1,
                      "family.company": 1,
-                     "last_position.date": 1,
-                     "last_position.timestamp": 1,
-                     "last_position.latitude": 1,
-                     "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_temperature.date": 1,
+                     "last_temperature.timestamp": 1,
+                     "last_temperature.value": 1,
                   },
                },
             ]);
@@ -384,45 +362,42 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                {
                   "tag.code": 1,
                   serial: 1,
-                  current_state: 1,
-                  last_position: 1,
+                  last_temperature: 1,
                }
             )
-               .populate("last_position", "date timestamp latitude longitude accuracy")
+            .populate("last_temperature", "date timestamp value")
                .populate("family", "code company");
             break;
 
          //Only serial
-         case serial != null: 
-         console.log("s");
+         case serial != null:
+            console.log("s");
             packings = await Packing.find(
                { serial: serial },
                {
                   "tag.code": 1,
                   serial: 1,
-                  current_state: 1,
-                  last_position: 1,
+                  last_temperature: 1,
                }
             )
-               .populate("last_position", "date timestamp latitude longitude accuracy")
+               .populate("last_temperature", "date timestamp value")
                .populate("family", "code company");
             break;
 
-         default: 
-         console.log("default");
+         default:
+            console.log("default");
             packings = await Packing.find(
                {},
                {
                   "tag.code": 1,
                   serial: 1,
-                  current_state: 1,
-                  last_position: 1,
+                  last_temperature: 1,
                }
             )
-               .populate("last_position", "date timestamp latitude longitude accuracy")
+            .populate("last_temperature", "date timestamp value")
                .populate("family", "code company");
             break;
-      } 
+      }
       return packings;
    } catch (error) {
       throw new Error(error);

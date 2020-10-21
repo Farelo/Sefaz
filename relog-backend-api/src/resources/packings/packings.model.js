@@ -120,6 +120,18 @@ const packingSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    last_position:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Position'
+    },
+    last_temperature:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Temperature'
+    },
+    last_battery:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Battery'
+    },
     last_device_data: {
         type: mongoose.Schema.ObjectId,
         ref: 'DeviceData'

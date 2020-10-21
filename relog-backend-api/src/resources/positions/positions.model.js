@@ -1,4 +1,4 @@
-const debug = require("debug")("model:position");
+const debug = require("debug")("model:positions");
 const mongoose = require("mongoose");
 const { Packing } = require("../packings/packings.model");
 
