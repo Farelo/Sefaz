@@ -71,9 +71,7 @@ module.exports = async () => {
 
          // "tag.code": "28423339"
          // "tag.code": "4081800"
-         let devices = await Packing.find({"tag.code": "4081800"}, { _id: 1, tag: 1, last_position: 1 })
-            .populate("last_device_data")
-            .populate("last_device_data_battery")
+         let devices = await Packing.find({}, { _id: 1, tag: 1, last_position: 1 }) 
             .populate("last_position")
             .populate("last_battery")
             .populate("last_temperature");
@@ -106,13 +104,14 @@ module.exports = async () => {
 
                // console.log(newSensorsArray);
 
-               // Update the last_message_signal Packing's attribute
+               // What is the last signal timestamp? Update the last_message_signal Packing's attribute
                if (newPositionsArray.length > 0 && newSensorsArray.length > 0) {
                   let lastMessage =
                      newPositionsArray[0].timestamp >= newSensorsArray[0].timestamp
                         ? newPositionsArray[0].date
                         : newSensorsArray[0].date;
                   await Packing.findByIdAndUpdate(packing._id, { last_message_signal: lastMessage }, { new: true });
+
                } else {
                   if (newPositionsArray.length > 0) {
                      await Packing.findByIdAndUpdate(

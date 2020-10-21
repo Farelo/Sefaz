@@ -60,8 +60,7 @@ const update_packing = async (device_data, next) => {
   try {
     let update_attrs = {};
     let update = false;
-    const tag = { code: device_data.device_id };
-    const packing = await Packing.findByTag(tag);
+    const packing = await Packing.findByTag(device_data.device_id);
 
     if (!packing) next();
 

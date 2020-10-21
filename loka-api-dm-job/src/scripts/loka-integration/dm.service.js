@@ -50,7 +50,7 @@ exports.loginLokaDmApi = async () => {
    });
 };
 
-//desloga a sessao aberta no login: precisa passar o cookie retornado do login
+//desloga a sessao aberta no login: precisa passar o cookie retornado do login 
 exports.logoutLokaDmApi = (cookie) => {
    return new Promise(function (resolve, reject) {
       let path = `/auth/logout`;
