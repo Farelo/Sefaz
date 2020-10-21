@@ -19,6 +19,7 @@ const alerts = require("../resources/alerts/alerts.routing");
 const device_data = require("../resources/device_data/device_data.routing");
 const positions = require("../resources/positions/positions.routing");
 const temperatures = require("../resources/temperatures/temperatures.routing");
+const batteries = require("../resources/batteries/batteries.routing");
 const current_state_history = require("../resources/current_state_history/current_state_history.routing");
 const imports = require("../resources/imports/imports.routing");
 const error = require("../middlewares/error_handler.middleware");
@@ -57,6 +58,7 @@ module.exports = (app) => {
    app.use("/api/device_data", device_data);
    app.use("/api/positions", positions);
    app.use("/api/temperatures", temperatures);
+   app.use("/api/batteries", batteries);
    app.use("/api/current_state_history", current_state_history);
    app.use("/api/alerts", alerts);
    app.use("/api/imports", imports);

@@ -1,24 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const temperaturesController = require("./temperatures.controller");
+const batteriesController = require("./batteries.controller");
 const auth = require("../../security/auth.middleware");
 
-router.get("/", [auth], temperaturesController.get);
-router.get("/last", [auth], temperaturesController.getLast);
+router.get("/", [], batteriesController.get);
+router.get("/last", [], batteriesController.getLast);
 
 module.exports = router;
 
 // GET '/'
 /**
  * @swagger
- * /temperatures:
+ * /batteries:
  *   get:
- *     summary: Retrieve the temperatures of all devices with temperature messages in the specified period of time
- *     description: All temperatures in the period of time. If a period is not specified, then it returns the last 10 results.
+ *     summary: Retrieve the batteries of all devices with batteries messages in the specified period of time
+ *     description: All batteries in the period of time. If a period is not specified, then it returns the last 10 results.
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Temperatures
+ *       - Batteries
  *     parameters:
  *       - name: tag
  *         description: Return position filtered by tag code
@@ -47,14 +47,14 @@ module.exports = router;
 // GET '/status'
 /**
  * @swagger
- * /temperatures/last:
+ * /batteries/last:
  *   get:
  *     summary: Retrieve the last temperature of all devices
  *     description: The last position of all devices that attend to a criteria set
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Temperatures
+ *       - Batteries
  *     parameters:
  *       - name: company_id
  *         description: Return temperature filtered by tag code
