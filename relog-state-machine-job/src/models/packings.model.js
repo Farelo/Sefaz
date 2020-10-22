@@ -161,6 +161,10 @@ const packingSchema = new mongoose.Schema({
         default: 'analise',
         trim: true
     },
+    first_attempt_incorrect_local:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'DeviceData'
+    },
     created_at: {
         type: Date,
         default: Date.now

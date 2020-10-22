@@ -30,6 +30,8 @@ module.exports = async (packing, setting) => {
 
                 if (getDiffDateTodayInDays(packing.last_event_record.created_at) <= routeMax.traveling_time.max) {
                     //console.log('VIAGEM_PRAZO')
+                    clearIncorrectLocalAttemptFlag(packing)
+                    
                     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true })
 
                     if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_em_prazo') {
@@ -40,6 +42,8 @@ module.exports = async (packing, setting) => {
                 } else {
                     if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
                         //console.log('VIAGEM_VIAGEM_PERDIDA')
+                        clearIncorrectLocalAttemptFlag(packing)
+
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PERDIDA.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_perdida') {
@@ -50,6 +54,8 @@ module.exports = async (packing, setting) => {
 
                     } else {
                         //console.log('VIAGEM_ATRASADA')
+                        clearIncorrectLocalAttemptFlag(packing)
+
                         await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_ATRASADA.key }, { new: true })
 
                         if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_atrasada'.alert) {
@@ -74,6 +80,8 @@ module.exports = async (packing, setting) => {
         //Emanoel
         } else{
             //console.log('VIAGEM_PRAZO')
+            clearIncorrectLocalAttemptFlag(packing)
+            
             await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true })
 
             if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_em_prazo') {
@@ -88,6 +96,11 @@ module.exports = async (packing, setting) => {
         throw new Error(error)
     }
 }
+const clearIncorrectLocalAttemptFlag = async (packing) => { 
+    if (packing.first_attempt_incorrect_local)
+    await Packing.findByIdAndUpdate(packing._id, { first_attempt_incorrect_local: null }, { new: true });
+}
+
 // const getTravelingTimeMin = (count, route) => route.traveling_time.min > count.traveling_time.min ? count.traveling_time.min = route.traveling_time.min : count.traveling_time.min
 const getTravelingTimeMax = (count, route) => route.traveling_time.max > count.traveling_time.max ? count = route : count
 const getTravelingTimeOvertime = (count, route) => route.traveling_time.overtime > count.traveling_time.overtime ? count = route : count

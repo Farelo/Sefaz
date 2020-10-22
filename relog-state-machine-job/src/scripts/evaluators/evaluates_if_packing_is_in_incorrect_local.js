@@ -6,8 +6,8 @@ const { CurrentStateHistory } = require("../../models/current_state_history.mode
 const { Packing } = require("../../models/packings.model");
 const { Family } = require("../../models/families.model");
 
-module.exports = async (packing, currentControlPoint, doubleCheck) => {
-   try {
+module.exports = async (packing, currentControlPoint, settings) => { 
+   try {      
       const family = await Family.findById(packing.family);
 
       const itsOnFamilyControlPoint = family.control_points.find((cp) =>
@@ -16,20 +16,24 @@ module.exports = async (packing, currentControlPoint, doubleCheck) => {
       if (itsOnFamilyControlPoint !== undefined) {
          //console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
          //não é indicado verificar o doubleCheck, pq o usuário pode desabilitar a opção depois de já ter feito a primeira tentativa
-         if (packing.current_state !== STATES.LOCAL_CORRETO.key)
-            proceedCorrectLocal(packing)
-
+         if (packing.current_state !== STATES.LOCAL_CORRETO.key) proceedCorrectLocal(packing);
       } else {
          //console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
-         if (doubleCheck) {
-            if (
-               packing.first_attempt_incorrect_local &&
-               packing.first_attempt_incorrect_local !== packing.last_device_data._id
-            ) {
-               proceedIncorrectLocal(packing);
+         if (settings.double_check_incorrect_local) {
+
+            if (packing.first_attempt_incorrect_local == null) {
+
+               await Packing.findByIdAndUpdate(
+                  packing._id,
+                  { first_attempt_incorrect_local: packing.last_device_data._id },
+                  { new: true }
+               );
+
             } else {
-               await Packing.findByIdAndUpdate(packing._id, { first_attempt_incorrect_local: true }, { new: true });
-            }
+               if (packing.first_attempt_incorrect_local.toString() !== packing.last_device_data._id.toString()) { 
+                  proceedIncorrectLocal(packing);
+               }
+            } 
          } else {
             if (packing.current_state !== STATES.LOCAL_INCORRETO.key) proceedIncorrectLocal(packing);
          }
@@ -73,3 +77,4 @@ const isIncorrectLocalWithControlPoints = (cp, currentControlPoint) => {
    if (cp.toString() === currentControlPoint._id.toString()) return true;
    else return false;
 };
+ 

@@ -14,14 +14,14 @@ module.exports = async () => {
 
     let nextSemaphor = true
     
-    cron.schedule(`*/1 * * * *`, async () => { 
+    // cron.schedule(`*/1 * * * *`, async () => { 
 
-        if (nextSemaphor){
+    //     if (nextSemaphor){
 
-            //close the semaphor
-            nextSemaphor = false
+    //         //close the semaphor
+    //         nextSemaphor = false
 
-            setTimeout(async () => {
+    //         setTimeout(async () => {
                 
                 spinner.start()
                 
@@ -35,8 +35,8 @@ module.exports = async () => {
                     .populate('company')
                     .populate('type')
                     
-                //const packings = await Packing.find({ })
-                const packings = await Packing.find({})
+                //const packings = await Packing.find({ }) 
+                const packings = await Packing.find({'tag.code': '4071928'})
                     .populate('family')
                     .populate('last_device_data')
                     .populate('last_device_data_battery')
@@ -54,9 +54,9 @@ module.exports = async () => {
                 //open the semmaphor
                 nextSemaphor = true
 
-            }, setting.job_schedule_time_in_sec * 1000)
-        }
-    })
+    //         }, setting.job_schedule_time_in_sec * 1000)
+    //     }
+    // })
 }
 
 // const iteratePackings = (setting, packings, controlPoints) => {
