@@ -3,8 +3,8 @@ const router = express.Router();
 const batteriesController = require("./batteries.controller");
 const auth = require("../../security/auth.middleware");
 
-router.get("/", [], batteriesController.get);
-router.get("/last", [], batteriesController.getLast);
+router.get("/", [auth], batteriesController.get);
+router.get("/last", [auth], batteriesController.getLast);
 
 module.exports = router;
 

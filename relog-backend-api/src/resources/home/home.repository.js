@@ -1,167 +1,197 @@
-const debug = require('debug')('repository:home')
-const _ = require('lodash')
-const moment = require('moment')
-const { Company } = require('../companies/companies.model')
-const { ControlPoint } = require('../control_points/control_points.model')
-const { EventRecord } = require('../event_record/event_record.model')
-const { Family } = require('../families/families.model')
-const { Packing } = require('../packings/packings.model')
-const { GC16 } = require('../gc16/gc16.model')
-const { Setting } = require('../settings/settings.model')
+const debug = require("debug")("repository:home");
+const _ = require("lodash");
+const moment = require("moment");
+const { Company } = require("../companies/companies.model");
+const { ControlPoint } = require("../control_points/control_points.model");
+const { EventRecord } = require("../event_record/event_record.model");
+const { Family } = require("../families/families.model");
+const { Packing } = require("../packings/packings.model");
+const { GC16 } = require("../gc16/gc16.model");
+const { Setting } = require("../settings/settings.model");
 
 const getLastBattery = (packing) => {
-    if(packing.last_battery) return packing.last_battery.battery;
-    if(packing.last_device_data_battery) return packing.last_device_data_battery.battery.percentage
-    return null;
-}
+   return packing.last_battery ? packing.last_battery.battery : null;
+};
 
 const getLastPosition = (packing) => {
-    if(packing.last_position) return packing.last_position
-    if(packing.last_device_data) return packing.last_device_data
-    return null
-}
+   return packing.last_position ? packing.last_position : null;
+};
 
 exports.home_report = async (current_state = null) => {
-    try {
+   try {
+      const packings = current_state
+         ? await Packing.find({ active: true, current_state: current_state })
+              .populate("family")
+              .populate("last_event_record")
+              .populate("last_position")
+              .populate("last_battery")
+              .populate("last_temperature")
+         : await Packing.find({ active: true })
+              .populate("family")
+              .populate("last_event_record")
+              .populate("last_position")
+              .populate("last_battery")
+              .populate("last_temperature");
 
-        const packings = current_state ?
-            await Packing.find({ active: true, current_state: current_state })
-                .populate('family')
-                .populate('last_device_data')
-                .populate('last_device_data_battery')
-                .populate('last_event_record')
-                .populate('last_position')
-                .populate('last_battery')
-                .populate('last_temperature')
-            :
-            await Packing.find({ active: true })
-                .populate('family')
-                .populate('last_device_data')
-                .populate('last_device_data_battery')
-                .populate('last_event_record')
-                .populate('last_position')
-                .populate('last_battery')
-                .populate('last_temperature')
+      if (current_state) {
+         return Promise.all(
+            packings.map(async (packing) => {
+               let obj_temp = {};
 
-        if (current_state) {
-            return Promise.all(
-                packings.map(async packing => {
-                    let obj_temp = {}
+               const current_control_point = packing.last_event_record
+                  ? await ControlPoint.findById(packing.last_event_record.control_point).populate("type")
+                  : null;
+               const battery_level = getLastBattery(packing);
 
-                    const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
-                    const battery_level = getLastBattery(packing)
+               obj_temp.family_code = packing.family ? packing.family.code : null;
+               obj_temp.serial = packing.serial;
+               obj_temp.tag = packing.tag.code;
+               
+               obj_temp.current_control_point_name = current_control_point
+                  ? current_control_point.name
+                  : "Fora de um ponto de controle";
 
-                    obj_temp.family_code = packing.family ? packing.family.code : '-'
-                    obj_temp.serial = packing.serial
-                    obj_temp.tag = packing.tag.code
-                    obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
-                    obj_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
-                    obj_temp.battery_percentage = battery_level
-                    obj_temp.accuracy = getLastPosition(packing).accuracy || 'Sem registro'
-                    obj_temp.date = packing.last_message_signal ? `${moment(packing.last_message_signal).locale('pt-br').format('L')} ${moment(packing.last_message_signal).locale('pt-br').format('LT')}` : 'Sem registro'
+               obj_temp.current_control_point_type = current_control_point
+                  ? current_control_point.type.name
+                  : "Fora de um ponto de controle";
 
-                    return obj_temp
-                })
-            )
-        } else {
-            let data = {}
-            const qtd_in_traveling = await Packing.find({ current_state: 'viagem_em_prazo', active: true }).count()
-            const qtd_in_traveling_late = await Packing.find({ current_state: 'viagem_atrasada', active: true }).count()
-            const qtd_in_traveling_missing = await Packing.find({ current_state: 'viagem_perdida', active: true }).count()
-            const qtd_in_correct_cp = await Packing.find({ current_state: 'local_correto', active: true }).count()
-            const qtd_in_incorrect_cp = await Packing.find({ current_state: 'local_incorreto', active: true }).count()
+               obj_temp.battery_percentage = battery_level;
+               obj_temp.accuracy = getLastPosition(packing) ? getLastPosition(packing).accuracy : "Sem registro";
+               
+               obj_temp.date = packing.last_message_signal
+                  ? `${moment(packing.last_message_signal).locale("pt-br").format("L")} ${moment(
+                       packing.last_message_signal
+                    )
+                       .locale("pt-br")
+                       .format("LT")}`
+                  : "Sem registro";
 
-            const packings_low_battery = await Packing.find({ active: true, low_battery: true }).select(['_id', 'current_state']).count()
-            const packings_permanence_time_exceeded = await Packing.find({ active: true, permanence_time_exceeded: true }).select(['_id', 'current_state']).count()
+               return obj_temp;
+            })
+         );
+      } else {
+         let data = {};
+         const qtd_in_traveling = await Packing.find({ current_state: "viagem_em_prazo", active: true }).count();
+         const qtd_in_traveling_late = await Packing.find({ current_state: "viagem_atrasada", active: true }).count();
+         const qtd_in_traveling_missing = await Packing.find({ current_state: "viagem_perdida", active: true }).count();
+         const qtd_in_correct_cp = await Packing.find({ current_state: "local_correto", active: true }).count();
+         const qtd_in_incorrect_cp = await Packing.find({ current_state: "local_incorreto", active: true }).count();
 
-            data.qtd_total = packings.length
-            data.qtd_in_cp = qtd_in_correct_cp + qtd_in_incorrect_cp
-            data.qtd_in_traveling = qtd_in_traveling + qtd_in_traveling_late + qtd_in_traveling_missing
-            data.qtd_in_incorrect_cp = qtd_in_incorrect_cp
-            data.qtd_permanence_time_exceeded = packings_permanence_time_exceeded
-            data.qtd_traveling_late = qtd_in_traveling_late
-            data.qtd_traveling_missing = qtd_in_traveling_missing
-            data.qtd_with_low_battery = packings_low_battery
+         const packings_low_battery = await Packing.find({ active: true, low_battery: true })
+            .select(["_id", "current_state"])
+            .count();
+         const packings_permanence_time_exceeded = await Packing.find({ active: true, permanence_time_exceeded: true })
+            .select(["_id", "current_state"])
+            .count();
 
-            return data
-        }
+         data.qtd_total = packings.length;
+         data.qtd_in_cp = qtd_in_correct_cp + qtd_in_incorrect_cp;
+         data.qtd_in_traveling = qtd_in_traveling + qtd_in_traveling_late + qtd_in_traveling_missing;
+         data.qtd_in_incorrect_cp = qtd_in_incorrect_cp;
+         data.qtd_permanence_time_exceeded = packings_permanence_time_exceeded;
+         data.qtd_traveling_late = qtd_in_traveling_late;
+         data.qtd_traveling_missing = qtd_in_traveling_missing;
+         data.qtd_with_low_battery = packings_low_battery;
 
-
-
-    } catch (error) {
-        throw new Error(error)
-    }
-}
+         return data;
+      }
+   } catch (error) {
+      throw new Error(error);
+   }
+};
 
 exports.home_low_battery_report = async () => {
-    try {
-        const packings = await Packing.find({ active: true, low_battery: true })
-            .populate('family')
-            .populate('last_device_data')
-            .populate('last_device_data_battery')
-            .populate('last_event_record')
+   try {
+      const packings = await Packing.find({ active: true, low_battery: true })
+         .populate("family") 
+         .populate("last_event_record");
 
-        return Promise.all(
-            packings.map(async packing => {
-                let obj_temp = {}
+      return Promise.all(
+         packings.map(async (packing) => {
+            let obj_temp = {};
 
-                const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
-                const lastBattery = getLastBattery(packing) 
+            const current_control_point = packing.last_event_record
+               ? await ControlPoint.findById(packing.last_event_record.control_point).populate("type")
+               : null;
+            const lastBattery = getLastBattery(packing);
 
-                const date = lastBattery ? 
-                    `${moment(lastBattery.date || lastBattery.message_date).locale('pt-br').format('L')} ${moment(lastBattery.date || lastBattery.message_date).locale('pt-br').format('LT')}` : 'Sem registro'
+            const date = lastBattery
+               ? `${moment(lastBattery.date || lastBattery.message_date)
+                    .locale("pt-br")
+                    .format("L")} ${moment(lastBattery.date || lastBattery.message_date)
+                    .locale("pt-br")
+                    .format("LT")}`
+               : "Sem registro";
 
-                obj_temp.id = packing._id
-                obj_temp.family_code = packing.family ? packing.family.code : '-'
-                obj_temp.serial = packing.serial
-                obj_temp.tag = packing.tag.code
-                obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
-                obj_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
-                obj_temp.battery_percentage = lastBattery ? lastBattery.accuracy : 'Sem Registro'
-                obj_temp.lastBattery = lastBattery ? lastBattery : '-'
-                obj_temp.accuracy = lastBattery ? lastBattery.accuracy : '-'
-                obj_temp.date = date
+            obj_temp.id = packing._id;
+            obj_temp.family_code = packing.family ? packing.family.code : null;
+            obj_temp.serial = packing.serial;
+            obj_temp.tag = packing.tag.code;
+            obj_temp.current_control_point_name = current_control_point
+               ? current_control_point.name
+               : "Fora de um ponto de controle";
+            obj_temp.current_control_point_type = current_control_point
+               ? current_control_point.type.name
+               : "Fora de um ponto de controle";
+            obj_temp.battery_percentage = lastBattery ? lastBattery.accuracy : "Sem Registro";
+            obj_temp.lastBattery = lastBattery ? lastBattery : null;
+            obj_temp.accuracy = getLastPosition(packing) ? getLastPosition(packing).accuracy : null;
+            obj_temp.date = date;
 
-                return obj_temp
-            })
-        )
-
-    } catch (error) {
-        throw new Error(error)
-    }
-}
+            return obj_temp;
+         })
+      );
+   } catch (error) {
+      throw new Error(error);
+   }
+};
 
 exports.home_permanence_time_exceeded_report = async () => {
-    try {
+   try {
+      const packings = await Packing.find({ active: true, permanence_time_exceeded: true })
+         .populate("family")
+         .populate("last_device_data")
+         .populate("last_device_data_battery")
+         .populate("last_event_record");
 
-        const packings = await Packing.find({ active: true, permanence_time_exceeded: true })
-            .populate('family')
-            .populate('last_device_data')
-            .populate('last_device_data_battery')
-            .populate('last_event_record')
+      return Promise.all(
+         packings.map(async (packing) => {
+            let obj_temp = {};
 
-        return Promise.all(
-            packings.map(async packing => {
-                let obj_temp = {}
+            const current_control_point = packing.last_event_record
+               ? await ControlPoint.findById(packing.last_event_record.control_point).populate("type")
+               : null;
+            const battery_level =
+               packing.last_device_data && packing.last_device_data.battery.percentage !== null
+                  ? packing.last_device_data.battery.percentage
+                  : packing.last_device_data_battery
+                  ? packing.last_device_data_battery.battery.percentage
+                  : null;
 
-                const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
-                const battery_level = packing.last_device_data && packing.last_device_data.battery.percentage !== null ? packing.last_device_data.battery.percentage : packing.last_device_data_battery ? packing.last_device_data_battery.battery.percentage : null
+            obj_temp.id = packing._id;
+            obj_temp.family_code = packing.family ? packing.family.code : null;
+            obj_temp.serial = packing.serial;
+            obj_temp.tag = packing.tag.code;
+            obj_temp.current_control_point_name = current_control_point
+               ? current_control_point.name
+               : "Fora de um ponto de controle";
+            obj_temp.current_control_point_type = current_control_point
+               ? current_control_point.type.name
+               : "Fora de um ponto de controle";
+            obj_temp.battery_percentage = battery_level;
+            obj_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : "Sem registro";
+            obj_temp.date = packing.last_device_data
+               ? `${moment(packing.last_device_data.message_date).locale("pt-br").format("L")} ${moment(
+                    packing.last_device_data.message_date
+                 )
+                    .locale("pt-br")
+                    .format("LT")}`
+               : "Sem registro";
 
-                obj_temp.id = packing._id
-                obj_temp.family_code = packing.family ? packing.family.code : '-'
-                obj_temp.serial = packing.serial
-                obj_temp.tag = packing.tag.code
-                obj_temp.current_control_point_name = current_control_point ? current_control_point.name : 'Fora de um ponto de controle'
-                obj_temp.current_control_point_type = current_control_point ? current_control_point.type.name : 'Fora de um ponto de controle'
-                obj_temp.battery_percentage = battery_level
-                obj_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : 'Sem registro'
-                obj_temp.date = packing.last_device_data ? `${moment(packing.last_device_data.message_date).locale('pt-br').format('L')} ${moment(packing.last_device_data.message_date).locale('pt-br').format('LT')}` : 'Sem registro'
-
-                return obj_temp
-            })
-        )
-
-    } catch (error) {
-        throw new Error(error)
-    }
-}
+            return obj_temp;
+         })
+      );
+   } catch (error) {
+      throw new Error(error);
+   }
+};
