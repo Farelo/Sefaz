@@ -55,6 +55,10 @@ const settingSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    double_check_incorrect_local:{
+        type: Boolean,
+        default: false
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -80,7 +84,8 @@ const validate_settings = (setting) => {
         enable_local_incorreto: Joi.boolean(),
         enable_viagem_atrasada: Joi.boolean(),
         enable_sem_sinal: Joi.boolean(),
-        enable_perdida: Joi.boolean()
+        enable_perdida: Joi.boolean(),
+        double_check_incorrect_local: Joi.boolean()
     })
 
     return Joi.validate(setting, schema, { abortEarly: false })

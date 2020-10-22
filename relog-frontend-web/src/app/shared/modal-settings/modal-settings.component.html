@@ -85,13 +85,23 @@
                   </label>
                 </div>
               </div>
+
+              <div class="col-sm-12">
+                <div class="form-group form-check checkbox">
+                  <label>
+                    <input type="checkbox" [formControl]="settings.controls.double_check_incorrect_local">
+                    <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
+                    Dupla verificação de Local Incorreto
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="col-md-4">
 
-          <div class="col-sm-12 campo">
+          <!-- <div class="col-sm-12 campo">
             <p class="descricao">CICLO DO JOB (SEG)</p>
             <p class="explicacao">Ex. "120 segundos"</p>
             <div class="placeholder" data-placeholder="MINUTOS">
@@ -105,7 +115,7 @@
                                 || (settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && formDir.submitted)">
                 Valor menor que o mínimo: 60</p>
             </div>
-          </div>
+          </div> -->
 
           <div class="col-sm-12 campo">
             <p class="descricao">VIDA ÚTIL DO HISTÓRICO (DIAS)</p>
