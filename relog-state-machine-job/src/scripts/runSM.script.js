@@ -82,7 +82,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
-                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
+                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint, setting, setting)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
                         // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
@@ -150,7 +150,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
-                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
+                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint, setting)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
                         // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
@@ -195,7 +195,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     if (currentControlPoint) {
 
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
-                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
+                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint, setting)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
                         // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
@@ -238,7 +238,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
-                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
+                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint, setting)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
                         // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
@@ -281,7 +281,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
-                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
+                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint, setting)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
                         // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
@@ -324,7 +324,7 @@ module.exports = async (setting, packing, controlPoints) => {
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) {
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
-                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint)
+                        await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint, setting)
 
                         /* Checa o tempo de permanência da embalagem no ponto de controle */
                         // if (setting.enable_gc16) await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)

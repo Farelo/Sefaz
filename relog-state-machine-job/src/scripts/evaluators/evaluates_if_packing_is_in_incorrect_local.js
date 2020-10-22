@@ -1,106 +1,75 @@
 // COMMON
-const STATES = require('../common/states')
+const STATES = require("../common/states");
 
 // MODELS
-const { CurrentStateHistory } = require('../../models/current_state_history.model')
-const { Packing } = require('../../models/packings.model')
-const { Family } = require('../../models/families.model')
+const { CurrentStateHistory } = require("../../models/current_state_history.model");
+const { Packing } = require("../../models/packings.model");
+const { Family } = require("../../models/families.model");
 
-module.exports = async (packing, currentControlPoint) => {
-    try {
-        // if (packing.last_event_record) {
-            /* Checa se a embalagem tem rota */
-            // if (packing.family && packing.family.routes.length > 0) {
-                //console.log('TEM ROTA')
+module.exports = async (packing, currentControlPoint, doubleCheck) => {
+   try {
+      const family = await Family.findById(packing.family);
 
-                const family = await Family.findById(packing.family)
+      const itsOnFamilyControlPoint = family.control_points.find((cp) =>
+         isIncorrectLocalWithControlPoints(cp, currentControlPoint)
+      );
+      if (itsOnFamilyControlPoint !== undefined) {
+         //console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
+         //não é indicado verificar o doubleCheck, pq o usuário pode desabilitar a opção depois de já ter feito a primeira tentativa
+         if (packing.current_state !== STATES.LOCAL_CORRETO.key)
+            proceedCorrectLocal(packing)
 
-                const itsOnFamilyControlPoint = family.control_points.find(cp => isIncorrectLocalWithControlPoints(cp, currentControlPoint))
-                if (itsOnFamilyControlPoint !== undefined) {
-                    //console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
-                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
+      } else {
+         //console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
+         if (doubleCheck) {
+            if (
+               packing.first_attempt_incorrect_local &&
+               packing.first_attempt_incorrect_local !== packing.last_device_data._id
+            ) {
+               proceedIncorrectLocal(packing);
+            } else {
+               await Packing.findByIdAndUpdate(packing._id, { first_attempt_incorrect_local: true }, { new: true });
+            }
+         } else {
+            if (packing.current_state !== STATES.LOCAL_INCORRETO.key) proceedIncorrectLocal(packing);
+         }
+      }
+   } catch (error) {
+      console.error(error);
+      throw new Error(error);
+   }
+};
 
-                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
-                } else {
-                    //console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
-                    await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
+const proceedCorrectLocal = async (packing) => {
+   if (packing.first_attempt_incorrect_local)
+      await Packing.findByIdAndUpdate(packing._id, { first_attempt_incorrect_local: null }, { new: true });
 
-                    if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return null
-                    await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
-                }
-                
-                // const family = await Family.findById(packing.family)
-                //     .populate('routes')
+   await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true });
 
-                // const packingIsOk = family.routes.filter(route => isIncorrectLocalWithRoutes(route, currentControlPoint))
-                // if (!packingIsOk.length > 0) {
-                //     //console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
-                //     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
+   if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert)
+      return null;
 
-                //     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return null
-                //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
-                // } else {
-                //     //console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
-                //     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
+   await CurrentStateHistory.create({
+      packing: packing._id,
+      type: STATES.LOCAL_CORRETO.alert,
+      device_data_id: packing.last_device_data ? packing.last_device_data._id : null,
+   });
+};
 
-                //     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
-                //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
-                // }
+const proceedIncorrectLocal = async (packing) => {
+   await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true });
 
-            // } else {
-                /* Checa se a familia tem pontos de controle relacionada a ela */
-                //console.log('FAMILIA TEM PONTOS DE CONTROLE RELACIONADAS')
-                // await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
+   if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert)
+      return null;
 
-                // if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return true
-                // await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
-
-                // if (packing.family && packing.family.control_points.length > 0) {
-                // /* Avalia se os pontos de controle da familia bate com o ponto de controle atual */
-                // const packingIsOk = packing.family.control_points.filter(cp => isIncorrectLocal(cp, currentControlPoint))
-                // /* Se não foi encontrado nenhum ponto de controle */
-                // if (!packingIsOk.length > 0) {
-                ////     console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
-                //     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
-
-                //     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return true
-                //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
-
-                // } else {
-                ////     console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
-                //     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
-
-                //     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
-                //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
-                // }
-                // } 
-            // }
-        // } else {
-        //     /* Checa se a familia tem pontos de controle relacionada a ela */
-        //     await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
-
-        //     if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return true
-        //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
-        // }
-
-    } catch (error) {
-        console.error(error)
-        throw new Error(error)
-    }
-}
-
-const isIncorrectLocal = (value, currentControlPoint) => {
-    return value.toString() === currentControlPoint._id.toString()
-}
+   await CurrentStateHistory.create({
+      packing: packing._id,
+      type: STATES.LOCAL_INCORRETO.alert,
+      device_data_id: packing.last_device_data ? packing.last_device_data._id : null,
+   });
+};
 
 const isIncorrectLocalWithControlPoints = (cp, currentControlPoint) => {
-    if (cp.toString() === currentControlPoint._id.toString()) return true
-    else return false
-}
-
-const isIncorrectLocalWithRoutes = (route, currentControlPoint) => {
-    if (route.first_point.toString() === currentControlPoint._id.toString()) return route
-    if (route.second_point.toString() === currentControlPoint._id.toString()) return route
-    return null
-}
+   if (cp.toString() === currentControlPoint._id.toString()) return true;
+   else return false;
+};
