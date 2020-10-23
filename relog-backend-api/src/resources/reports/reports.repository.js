@@ -751,31 +751,27 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                active: true,
                family: current_family._id,
                serial: query.serial,
-            })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+            }, {serial: 1, absent_time: 1, current_state: 1, 'tag.code': 1, })
+               .populate("family", "code")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
          case query.family != null:
-            packings = await Packing.find({ absent: true, active: true, family: current_family._id })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+            packings = await Packing.find({ absent: true, active: true, family: current_family._id }, {serial: 1, absent_time: 1, current_state: 1, 'tag.code': 1})
+               .populate("family", "code")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
          case query.serial != null:
-            packings = await Packing.find({ absent: true, active: true, serial: query.serial })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+            packings = await Packing.find({ absent: true, active: true, serial: query.serial }, {serial: 1, absent_time: 1, current_state: 1, 'tag.code': 1})
+               .populate("family", "code")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
          default:
-            packings = await Packing.find({ absent: true, active: true })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+            packings = await Packing.find({ absent: true, active: true }, {serial: 1, absent_time: 1, current_state: 1, 'tag.code': 1})
+               .populate("family", "code")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
       }
@@ -785,29 +781,13 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
             let object_temp = {};
 
             object_temp._id = packing._id;
-            object_temp.tag = packing.tag;
-            object_temp.weigth = packing.weigth;
-            object_temp.width = packing.width;
-            object_temp.heigth = packing.heigth;
-            object_temp.length = packing.length;
-            object_temp.capacity = packing.capacity;
-            object_temp.temperature = packing.temperature;
-            object_temp.active = packing.active;
-            object_temp.absent = packing.absent;
-            object_temp.low_battery = packing.low_battery;
-            object_temp.permanence_time_exceeded = packing.permanence_time_exceeded;
+            object_temp.tag = packing.tag.code;
             object_temp.current_state = packing.current_state;
             object_temp.family = packing.family;
-            object_temp.serial = packing.serial;
-            object_temp.created_at = packing.created_at;
-            object_temp.update_at = packing.update_at;
-            packing.last_device_data ? (object_temp.last_device_data = packing.last_device_data) : null;
+            object_temp.serial = packing.serial; 
 
-            // packing.last_event_record ? object_temp.last_event_record = await EventRecord.findById(packing.last_event_record).populate('control_point') : null
             if (packing.last_event_record) {
-               let aux_last_event_record = await EventRecord.findById(packing.last_event_record).populate(
-                  "control_point"
-               );
+               let aux_last_event_record = await EventRecord.findById(packing.last_event_record).populate("control_point");
                object_temp.control_point_name =
                   aux_last_event_record.control_point !== null
                      ? aux_last_event_record.control_point.name
@@ -819,12 +799,6 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
             object_temp.absent_time_in_hours = packing.absent_time
                ? await getDiffDateTodayInHours(packing.absent_time)
                : "0";
-
-            // if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
-            //     object_temp.absent_time_in_hours = getDiffDateTodayInHours(packing.last_event_record.created_at)
-            // } else {
-            //     object_temp.absent_time_in_hours = await getAbsentTimeCountDown(packing)
-            // }
 
             return object_temp;
          })
