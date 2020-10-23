@@ -828,30 +828,33 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
                family: query.paramFamily,
                serial: query.paramSerial,
             })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+               .populate("family", "_id code company")
+               .populate("last_postition")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
+
          case query.paramFamily != null:
             packings = await Packing.find({ permanence_time_exceeded: true, active: true, family: query.paramFamily })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+               .populate("family", "_id code company")
+               .populate("last_postition")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
+
          case query.paramSerial != null:
             packings = await Packing.find({ permanence_time_exceeded: true, active: true, serial: query.paramSerial })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+               .populate("family", "_id code company")
+               .populate("last_postition")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
+            
          default:
             packings = await Packing.find({ permanence_time_exceeded: true, active: true })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+               .populate("family", "_id code company")
+               .populate("last_postition")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
       }
@@ -865,22 +868,18 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
                   let object_temp = {};
                   let stock_in_days = null;
 
-                  const current_control_point = await ControlPoint.findById(
-                     packing.last_event_record.control_point
-                  ).populate("type");
+                  const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate("type");
                   const current_company = await Company.findById(packing.family.company);
                   const gc16 = packing.family.gc16 ? await GC16.findById(packing.family.gc16) : null;
                   if (gc16) stock_in_days = current_company.type === "owner" ? gc16.owner_stock : gc16.client_stock;
 
                   object_temp._id = packing._id;
-                  object_temp.tag = packing.tag;
+                  object_temp.tag = packing.tag.code;
                   object_temp.family_id = packing.family._id;
                   object_temp.family_code = packing.family ? packing.family.code : "-";
                   object_temp.serial = packing.serial;
-                  object_temp.current_control_point_name =
-                     current_control_point !== null ? current_control_point.name : "-";
-                  object_temp.current_control_point_type =
-                     current_control_point !== null ? current_control_point.type.name : "-";
+                  object_temp.current_control_point_name = current_control_point !== null ? current_control_point.name : "-";
+                  object_temp.current_control_point_type = current_control_point !== null ? current_control_point.type.name : "-";
                   object_temp.date = packing.last_event_record.created_at;
                   object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at);
                   if (gc16) object_temp.stock_in_days = stock_in_days.days;
@@ -901,14 +900,12 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
                   const current_company = await Company.findById(packing.family.company);
 
                   object_temp._id = packing._id;
-                  object_temp.tag = packing.tag;
+                  object_temp.tag = packing.tag.code;
                   object_temp.family_id = packing.family._id;
                   object_temp.family_code = packing.family ? packing.family.code : "-";
                   object_temp.serial = packing.serial;
-                  object_temp.current_control_point_name =
-                     current_control_point !== null ? current_control_point.name : "-";
-                  object_temp.current_control_point_type =
-                     current_control_point !== null ? current_control_point.type.name : "-";
+                  object_temp.current_control_point_name = current_control_point !== null ? current_control_point.name : "-";
+                  object_temp.current_control_point_type = current_control_point !== null ? current_control_point.type.name : "-";
                   object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at);
                   object_temp.company = current_company !== null ? current_company.name : "-";
 
