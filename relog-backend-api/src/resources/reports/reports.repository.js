@@ -849,7 +849,7 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
                .populate("last_battery")
                .populate("last_event_record");
             break;
-            
+
          default:
             packings = await Packing.find({ permanence_time_exceeded: true, active: true })
                .populate("family", "_id code company")
@@ -928,28 +928,24 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
 exports.battery_report = async (family_id = null) => {
    try {
       let packings = [];
-      let current_family = family_id ? await Family.findOne({ _id: family_id }) : null;
-
+      
       switch (true) {
-         case family_id != null:
-            packings = await Packing.find({ active: true, family: current_family._id })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+          case family_id != null:
+            packings = await Packing.find({ active: true, family: family_id })
+               .populate("family", "_id code")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
          default:
             packings = await Packing.find({ active: true })
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+               .populate("family", "_id code")
+               .populate("last_battery")
                .populate("last_event_record");
             break;
       }
 
       const data = await Promise.all(
-         packings
-            .filter((packing) => packing.last_device_data)
+         packings 
             .map(async (packing) => {
                let object_temp = {};
 
@@ -958,27 +954,24 @@ exports.battery_report = async (family_id = null) => {
                   : null;
 
                object_temp._id = packing._id;
-               object_temp.tag = packing.tag;
+               object_temp.tag = packing.tag.code;
                object_temp.family_id = packing.family._id;
                object_temp.family_code = packing.family ? packing.family.code : "-";
                object_temp.serial = packing.serial;
                object_temp.current_control_point_name = current_control_point
                   ? current_control_point.name
                   : "Fora de um ponto de controle";
+
                object_temp.current_control_point_type = current_control_point
                   ? current_control_point.type.name
                   : "Fora de um ponto de controle";
-               object_temp.battery_percentage = packing.last_device_data_battery
-                  ? packing.last_device_data_battery.battery.percentage
+
+               object_temp.battery_percentage = packing.last_battery
+                  ? packing.last_battery.battery
                   : "-";
-               object_temp.battery_level =
-                  packing.last_device_data_battery && packing.last_device_data_battery.battery.percentage < 20
-                     ? "Baixa"
-                     : packing.last_device_data_battery && packing.last_device_data_battery.battery.percentage < 80
-                     ? "Média"
-                     : "Alta";
-               object_temp.battery_date = packing.last_device_data_battery
-                  ? packing.last_device_data_battery.message_date
+
+               object_temp.battery_date = packing.last_battery
+                  ? packing.last_battery.date
                   : "-";
 
                return object_temp;
