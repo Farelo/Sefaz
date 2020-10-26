@@ -6,6 +6,8 @@ const { Company } = require("../companies/companies.model");
 const { ControlPoint } = require("../control_points/control_points.model");
 const { EventRecord } = require("../event_record/event_record.model");
 const { DeviceData } = require("../device_data/device_data.model");
+const { Position } = require("../positions/positions.model");
+const { Battery } = require("../batteries/batteries.model");
 const { Family } = require("../families/families.model");
 const { Packing } = require("../packings/packings.model");
 const { GC16 } = require("../gc16/gc16.model");
@@ -369,27 +371,23 @@ exports.snapshot_report = async () => {
    try {
       //console.log('snapshot_report')
       const packings = await Packing.find({})
-         .populate("family")
-         .populate("last_device_data")
-         .populate("last_device_data_battery")
+         .populate("family", "code")
+         .populate("last_position")
+         .populate("last_battery")
          .populate("last_event_record");
       const settings = await Setting.find({});
 
+      console.log(packings[0]);
       const data = await Promise.all(
          packings.map(async (packing) => {
             let obj = {};
-            const battery_level =
-               packing.last_device_data && packing.last_device_data.battery.percentage !== null
-                  ? packing.last_device_data.battery.percentage
-                  : packing.last_device_data_battery
-                  ? packing.last_device_data_battery.battery.percentage
-                  : null;
+            const battery_level = packing.last_battery  ? packing.last_battery.battery : null;
             const lastAccurateMessage = await getLastAccurateMessage(packing, settings[0]);
 
             obj.id = packing._id;
-            obj.message_date = packing.last_device_data
-               ? `${moment(packing.last_device_data.message_date).locale("pt-br").format("L")} ${moment(
-                    packing.last_device_data.message_date
+            obj.message_date = packing.last_position
+               ? `${moment(packing.last_position.date).locale("pt-br").format("L")} ${moment(
+                    packing.last_position.date
                  )
                     .locale("pt-br")
                     .format("LTS")}`
@@ -399,7 +397,7 @@ exports.snapshot_report = async () => {
             obj.tag = packing.tag.code;
             obj.current_state = packing.current_state;
             obj.collect_date = `${moment().locale("pt-br").format("L")} ${moment().locale("pt-br").format("LT")}`;
-            obj.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : "-";
+            obj.accuracy = packing.last_position ? packing.last_position.accuracy : "-";
             obj.lat_lng_device = await getLatLngOfPacking(packing);
             obj.cicle_start = packing.cicle_start ? packing.cicle_start : "-";
             obj.cicle_end = packing.cicle_end ? packing.cicle_end : "-";
@@ -415,39 +413,25 @@ exports.snapshot_report = async () => {
             if (packing.last_event_record) {
                if (packing.last_event_record.type) {
                   if (packing.last_event_record.type == "inbound") {
-                     // console.log('_: ', packing.tag.code)
-                     // console.log("IF 2")
-
                      obj.lat_lng_cp = await getLatLngOfControlPoint(packing);
-                     // console.log(obj.lat_lng_cp)
 
                      let tempActualControlPoint = await getActualControlPoint(packing);
-                     // console.log(tempActualControlPoint)
 
                      obj.cp_type = tempActualControlPoint.type.name;
                      obj.cp_name = tempActualControlPoint.name;
                      obj.geo = tempActualControlPoint.geofence.type;
 
                      obj.area = await getAreaControlPoint(packing);
-                     // console.log(obj.area)
 
                      if (["analise", "perdida", "sem_sinal"].includes(packing.current_state)) {
                         obj.permanence_time = "-";
                      } else {
                         obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at);
-                        // console.log("ELSE")
-                        // console.log(obj.area)
                      }
                   }
                }
             }
 
-            //obj.lat_lng_cp = packing.last_event_record && packing.last_event_record.type === 'inbound' ? await getLatLngOfControlPoint(packing) : '-'
-            //obj.cp_type = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).type.name : '-'
-            //obj.cp_name = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).name : '-'
-            //obj.geo = packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getActualControlPoint(packing)).geofence.type : '-'
-            //obj.area =packing.last_event_record && packing.last_event_record.type === 'inbound' ? (await getAreaControlPoint(packing)) : '-'
-            //obj.permanence_time = packing.last_event_record && packing.last_event_record.type === 'inbound' ? getDiffDateTodayInHours(packing.last_event_record.created_at) : '-'
             obj.signal =
                packing.current_state === "sem_sinal"
                   ? "FALSE"
@@ -457,15 +441,13 @@ exports.snapshot_report = async () => {
                   ? "FALSE"
                   : "TRUE";
             obj.battery = battery_level ? battery_level : "-";
-            obj.battery_alert = battery_level > settings[0].battery_level_limit ? "FALSE" : "TRUE";
+            obj.battery_alert = battery_level ? (battery_level > settings[0].battery_level_limit ? "FALSE" : "TRUE") : "FALSE";
 
             obj.travel_time = "-";
             if (packing.last_event_record) {
                if (packing.last_event_record.type) {
                   if (packing.last_event_record.type === "outbound") {
-                     obj.travel_time = getDiffDateTodayInHours(packing.last_event_record.created_at);
-                     // console.log("IF 3")
-                     // console.log(obj.travel_time)
+                     obj.travel_time = getDiffDateTodayInHours(packing.last_event_record.created_at); 
                   }
                }
             }
@@ -505,8 +487,7 @@ exports.snapshot_report = async () => {
             return obj;
          })
       );
-      // console.log('....................')
-      // console.log(new Date())
+      
       return data;
    } catch (error) {
       throw new Error(error);
@@ -524,29 +505,25 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
        * 4. Montar objeto do snapshot
        */
 
-      const packings = await Packing.find({}).populate("family");
+      const packings = await Packing.find({}).populate("family", "code");
       const controlPoints = await ControlPoint.find({}).populate("type");
       const settings = await Setting.find({});
 
       // 1. Recuperar lista de packings. Para cada um:
       const data = await Promise.all(
          packings.map(async (packing) => {
-            // 2. Recuperar próximo devicedata a partir da data especificada.
-            const deviceData = await DeviceData.findOne({
+            // 2. Recuperar próximo position a partir da data especificada.
+            const position = await Position.findOne({
                device_id: packing.tag.code,
-               message_date: { $lte: new Date(snapshot_date) },
+               date: { $lte: new Date(snapshot_date) },
             });
-            //console.log('deviceData')
-            //console.log(deviceData)
-
-            const deviceDataWithBattery = await DeviceData.findOne({
-               "battery.percentage": { $ne: null },
-               device_id: packing.tag.code,
-               message_date: { $lte: new Date(snapshot_date) },
+            
+            const battery = await Battery.findOne({
+               "battery": { $ne: null },
+               tag: packing.tag.code,
+               date: { $lte: new Date(snapshot_date) },
             });
-            // console.log('deviceDataWithBattery')
-            // console.log(deviceDataWithBattery)
-
+            
             let obj = {
                id: "",
                message_date: "",
@@ -565,8 +542,6 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                battery_alert: "",
             };
 
-            //if (deviceData == null) console.log('tag null:' + packing.tag.code)
-
             obj.id = packing._id;
             obj.family = packing.family ? packing.family.code : "-";
             obj.serial = packing.serial;
@@ -580,8 +555,8 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
             obj.cicle_end = packing.cicle_end ? packing.cicle_end : "-";
             obj.last_cicle_duration = packing.last_cicle_duration ? packing.last_cicle_duration : "-";
 
-            if (deviceData !== null) {
-               packing.last_device_data = deviceData;
+            if (position !== null) {
+               packing.last_position = position;
 
                // 3. calcular intersecção
                const current_control_point = await findControlPointIntersection(packing, controlPoints, settings);
@@ -589,19 +564,19 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                // console.log('current_control_point')
                // console.log(current_control_point)
 
-               //obj.message_date = deviceData.message_date
-               obj.message_date = deviceData
-                  ? `${moment(deviceData.message_date).locale("pt-br").format("L")} ${moment(deviceData.message_date)
+               //obj.message_date = position.message_date
+               obj.message_date = position
+                  ? `${moment(position.message_date).locale("pt-br").format("L")} ${moment(position.message_date)
                        .locale("pt-br")
                        .format("LTS")}`
                   : "-";
-               obj.accuracy = deviceData.accuracy;
+               obj.accuracy = position.accuracy;
                obj.lat_lng_device = await getLatLngOfPacking(packing);
 
-               if (deviceDataWithBattery !== null) {
-                  obj.battery = deviceDataWithBattery.battery.percentage;
+               if (battery !== null) {
+                  obj.battery = battery.battery;
                   obj.battery_alert =
-                     deviceDataWithBattery.battery.percentage < settings[0].battery_level_limit ? "TRUE" : "FALSE";
+                     battery.battery < settings[0].battery_level_limit ? "TRUE" : "FALSE";
                }
 
                if (current_control_point) {
@@ -1200,9 +1175,8 @@ exports.clients_report = async (company_id = null) => {
 };
 
 const getLatLngOfPacking = async (packing) => {
-   // const current_device_data = await DeviceData.findById(packing.last_device_data._id)
-   if (!packing.last_device_data) return "-";
-   return `${packing.last_device_data.latitude} ${packing.last_device_data.longitude}`;
+   if (!packing.last_position) return "-";
+   return `${packing.last_position.latitude} ${packing.last_position.longitude}`;
 };
 
 const getActualControlPoint = async (packing) => {
@@ -1355,8 +1329,8 @@ const findControlPointIntersection = async (packing, controlPoints, setting) => 
             //mLog(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
 
             const calculate = getDistanceFromLatLonInKm(
-               packing.last_device_data.latitude,
-               packing.last_device_data.longitude,
+               packing.last_position.latitude,
+               packing.last_position.longitude,
                controlPoint.geofence.coordinates[0].lat,
                controlPoint.geofence.coordinates[0].lng
             );
@@ -1430,8 +1404,8 @@ const intersectionpoly = (packing, controlPoint) => {
 
          controlPointPolygonArray.forEach((mPolygon) => {
             //criar polígono da embalagem
-            let center = [packing.last_device_data.longitude, packing.last_device_data.latitude];
-            let radius = packing.last_device_data.accuracy;
+            let center = [packing.last_position.longitude, packing.last_position.latitude];
+            let radius = packing.last_position.accuracy;
             let options = { steps: 64, units: "meters" };
 
             //mLog(center, radius)
@@ -1467,8 +1441,8 @@ const intersectionpoly = (packing, controlPoint) => {
          // mLog(JSON.stringify(unkinkControlPointPolygon))
 
          //criar polígono da embalagem
-         let center = [packing.last_device_data.longitude, packing.last_device_data.latitude];
-         let radius = packing.last_device_data.accuracy;
+         let center = [packing.last_position.longitude, packing.last_position.latitude];
+         let radius = packing.last_position.accuracy;
          let options = { steps: 64, units: "meters" };
 
          //mLog(center, radius)
