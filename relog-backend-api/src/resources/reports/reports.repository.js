@@ -988,7 +988,7 @@ exports.quantity_report = async (family_id = null) => {
    try {
       let data = [];
       const families = family_id
-         ? await Family.find({ _id: family_id })
+         ? await Family.find({ _id: family_id }, { controlPoints: 0 })
               .populate("company")
               .populate("gc16")
               .populate("routes")
@@ -1049,14 +1049,14 @@ exports.general_info_report = async (family_id = null) => {
       let packings =
          family_id != null
             ? await Packing.find({ active: true, family: current_family._id })
-                 .populate("family")
-                 .populate("last_device_data")
-                 .populate("last_device_data_battery")
+                 .populate("family", { routes: 0, control_points: 0 })
+                 .populate("last_position")
+                 .populate("last_battery")
                  .populate("last_event_record")
             : await Packing.find({ active: true })
-                 .populate("family")
-                 .populate("last_device_data")
-                 .populate("last_device_data_battery")
+                 .populate("family", { routes: 0, control_points: 0 })
+                 .populate("last_position")
+                 .populate("last_battery")
                  .populate("last_event_record")
                  .populate("last_current_state_history");
 
@@ -1109,15 +1109,11 @@ exports.general_info_report = async (family_id = null) => {
             // object_temp.in_out_date = packing.last_current_state_history ? packing.last_current_state_history.created_at : '-'
 
             //dados atuais
-            object_temp.accuracy = packing.last_device_data ? packing.last_device_data.accuracy : "Sem registro";
-            object_temp.date = packing.last_device_data ? packing.last_device_data.message_date : "Sem registro";
+            object_temp.accuracy = packing.last_position ? packing.last_position.accuracy : "Sem registro";
+            object_temp.date = packing.last_position ? packing.last_position.date : "Sem registro";
 
-            object_temp.battery_percentage = packing.last_device_data_battery
-               ? packing.last_device_data_battery.battery.percentage
-               : "Sem registro";
-            object_temp.battery_date = packing.last_device_data_battery
-               ? packing.last_device_data_battery.message_date
-               : "-";
+            object_temp.battery_percentage = packing.last_battery ? packing.last_battery.battery : "Sem registro";
+            object_temp.battery_date = packing.last_battery ? packing.last_battery.date : "-";
 
             return object_temp;
          })
@@ -1136,10 +1132,8 @@ exports.clients_report = async (company_id = null) => {
       const families = company_id
          ? await Family.find({ company: company_id })
               .populate("company")
-              .populate("gc16")
-              .populate("routes")
-              .populate("control_points")
-         : await Family.find({}).populate("company").populate("gc16").populate("routes").populate("control_points");
+              .populate("gc16") 
+         : await Family.find({}).populate("company").populate("gc16") 
 
       //Para cada família, faça:
       for (let family of families) {
