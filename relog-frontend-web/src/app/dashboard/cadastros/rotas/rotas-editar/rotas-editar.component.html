@@ -20,7 +20,7 @@
         <!-- Select de familia -->
         <div class="campo">
           <p class="descricao">ASSOCIE UMA FAMÍLIA</p>
-          <ng-select bindLabel="code" placeholder="Associe uma Família" formControlName="family" (clear)="onClear()"
+          <ng-select bindLabel="code" placeholder="Associe uma Família" formControlName="family"
             [items]="allFamilies" [ngClass]="{'required': (mRoute.get('family').hasError('required') && mRoute.get('family').touched) 
               || (mRoute.get('family').hasError('required') && formDir.submitted)}">
 
@@ -46,7 +46,7 @@
         <!-- Select do ponto 1 -->
         <div class="campo">
           <p class="descricao">ASSOCIE O PRIMEIRO PONTO DE CONTROLE</p>
-          <ng-select bindLabel="name" placeholder="Associe um Ponto de Controle" formControlName="first_point" (clear)="onClear()"
+          <ng-select bindLabel="name" placeholder="Associe um Ponto de Controle" formControlName="first_point"
             (change)="firstPointChange($event); showDirection()" [items]="allControlPoints" [ngClass]="{'required': (mRoute.get('first_point').hasError('required') && mRoute.get('first_point').touched) 
               || (mRoute.get('first_point').hasError('required') && formDir.submitted)}">
 
@@ -72,7 +72,7 @@
         <!-- Select do Ponto 2 -->
         <div class="campo">
           <p class="descricao">ASSOCIE O SEGUNDO PONTO DE CONTROLE</p>
-          <ng-select bindLabel="name" placeholder="Associe um Ponto de Controle" formControlName="second_point" (clear)="onClear()"
+          <ng-select bindLabel="name" placeholder="Associe um Ponto de Controle" formControlName="second_point"
             (change)="secondPointChange($event); showDirection()" [items]="allControlPoints" [ngClass]="{'required': (mRoute.get('second_point').hasError('required') && mRoute.get('second_point').touched) 
               || (mRoute.get('second_point').hasError('required') && formDir.submitted)}">
 

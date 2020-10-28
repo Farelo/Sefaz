@@ -21,13 +21,7 @@ import * as $ from "jquery";
 import { AppComponent } from "./app.component";
 import { ModalRastComponent } from "./shared/modal-rast/modal-rast.component";
 import { ModalUserComponent } from "./shared/modal-user/modal-user.component";
-import { ModalSupplierRegisterComponent } from "./shared/modal-user/modal-register-supplier/modal-register-supplier.component";
 import { ModalLogisticRegisterComponent } from "./shared/modal-user/modal-register-logistic/modal-register-logistic.component";
-import { ModalStaffRegisterComponent } from "./shared/modal-user/modal-register-staff/modal-register-staff.component";
-import { ModalSupplierEditarComponent } from "./shared/modal-user/modal-editar-supplier/modal-editar-supplier.component";
-import { ModalLogisticEditarComponent } from "./shared/modal-user/modal-editar-logistic/modal-editar-logistic.component";
-import { ModalCurrentEditarComponent } from "./shared/modal-current-edit/modal-editar-current.component";
-import { ModalStaffEditarComponent } from "./shared/modal-user/modal-editar-staff/modal-editar-staff.component";
 import { AbscenseModalComponent } from "./shared/modal-packing-absence/abscense.component";
 import { ModalSettings } from "./shared/modal-settings/modal-settings.component";
 import { ModalInvComponent } from "./shared/modal-inv/modal-inv.component";
@@ -75,17 +69,11 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     AlertaSemSinalComponent,
     ModalRastComponent,
     ModalUserComponent,
-    ModalSupplierEditarComponent,
     ModalInvComponent,
     ModalDeleteComponent,
     ModalSettings,
     LayerModalComponent,
-    ModalSupplierRegisterComponent,
     ModalLogisticRegisterComponent,
-    ModalLogisticEditarComponent,
-    ModalStaffRegisterComponent,
-    ModalStaffEditarComponent,
-    ModalCurrentEditarComponent,
     AbscenseModalComponent,
 
     CreateUserComponent,
@@ -148,17 +136,11 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     ModalRastComponent,
     AbscenseModalComponent,
     ModalSettings,
-    ModalCurrentEditarComponent,
     LayerModalComponent,
-    ModalStaffEditarComponent,
     ModalUserComponent,
-    ModalStaffRegisterComponent,
-    ModalLogisticEditarComponent,
     ModalInvComponent,
     ModalLogisticRegisterComponent,
     ModalDeleteComponent,
-    ModalSupplierRegisterComponent,
-    ModalSupplierEditarComponent,
 
     CreateUserComponent,
     EditUserComponent

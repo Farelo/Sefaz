@@ -14,6 +14,8 @@ import { ToastService, GC16Service, CompaniesService, ControlPointsService } fro
 
 export class Gc16EditarComponent implements OnInit {
 
+  public submitted: boolean = false;
+
   public listOfCompanies: any[] = [];
   public auxListOfCompanies: any[] = [];
 
@@ -143,6 +145,7 @@ export class Gc16EditarComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
     // console.log(valid)
+    this.submitted = true;
 
     if(valid){
 

@@ -13,7 +13,7 @@ declare var $: any;
 })
 export class ImportarComponent implements OnInit {
 
-  private importResult: any = {};
+  public importResult: any = {};
   public file: FormData;
   public fileName: string;
   public uploader = [];   //usado para imprimir metadados do arquivo no front

@@ -24,20 +24,21 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
             };
          else
             conditions.timestamp = {
-               $gte: start_date,
-               $lte: end_date,
+               $gte: parseInt(start_date),
+               $lte: parseInt(end_date),
             };
       else if (start_date)
          if (isNaN(start_date)) conditions.date = { $gte: new Date(start_date) };
-         else conditions.timestamp = { $gte: start_date };
+         else conditions.timestamp = { $gte: parseInt(start_date) };
       else if (end_date)
          if (isNaN(end_date)) conditions.date = { $lte: new Date(end_date) };
-         else conditions.timestamp = { $lte: end_date };
+         else conditions.timestamp = { $lte: parseInt(end_date) };
 
-      if (accuracy) conditions.accuracy = { $lte: accuracy };
+      if (accuracy) conditions.accuracy = { $lte: parseInt(accuracy) };
 
       if (!start_date && !end_date) options.limit = parseInt(max);
 
+      console.log(conditions);
       device_data = await Position.find(conditions, projection, options);
 
       return device_data;

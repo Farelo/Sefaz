@@ -8,7 +8,6 @@
       <div class="form-group col-sm-6">
         <p class="descricao">TIPO DA EMPRESA</p>
         <ng-select formControlName="type" 
-          [(ngModel)]="companyType"
           [items]="typesOnSelect" 
           [searchable]="false" 
           placeholder="Selecione um Tipo">
@@ -29,7 +28,6 @@
       <div class="form-group col-sm-12 col-md-8">
         <p class="descricao">NOME DA EMPRESA</p>
         <input type="text" class="form-control" 
-          [(ngModel)]="name" 
           placeholder="Digite o nome da empresa" 
           maxlength="50"
           formControlName="name"  
@@ -54,8 +52,8 @@
     
       <div class="form-group col-sm-12 col-md-4">
         <p class="descricao">TELEFONE</p>
-        <!-- <input type="text" class="form-control" [(ngModel)]="phone" placeholder="Digite o telefone" formControlName="phone"> -->
-        <input [textMask]="{mask: maskTel}" class="form-control" [(ngModel)]="phone" type="text" formControlName="phone" placeholder="Telefone"
+        <!-- <input type="text" class="form-control" placeholder="Digite o telefone" formControlName="phone"> -->
+        <input [textMask]="{mask: maskTel}" class="form-control" type="text" formControlName="phone" placeholder="Telefone"
           [ngClass]="{'required': (newCompany.get('phone').hasError('required') && newCompany.get('phone').touched)
           || (newCompany.get('phone').hasError('required') && submitted)}"/>
 
@@ -70,7 +68,7 @@
       <div class="form-group col-sm-12 col-md-6">
         <p class="descricao">CNPJ</p>
         <!-- <input type="text" class="form-control" [(ngModel)]="phone" placeholder="Digite o telefone" formControlName="phone"> -->
-        <input [textMask]="{mask: maskCNPJ}" class="form-control" [(ngModel)]="cnpj" type="text" formControlName="cnpj" placeholder="__.___.___/____-__" maxlength="20"
+        <input [textMask]="{mask: maskCNPJ}" class="form-control" type="text" formControlName="cnpj" placeholder="__.___.___/____-__" maxlength="20"
           [ngClass]="{'required': (newCompany.get('cnpj').hasError('required') && newCompany.get('cnpj').touched)
           || (newCompany.get('cnpj').hasError('required') && submitted)}"/>
 
@@ -107,7 +105,7 @@
     
       <div class="form-group col-sm-12 col-md-4">
         <p class="descricao">CEP</p>
-        <input [textMask]="{mask: maskCep}" type="text" class="form-control" [(ngModel)]="cep" placeholder="Digite o CEP" formControlName="cep"
+        <input [textMask]="{mask: maskCep}" type="text" class="form-control"  placeholder="Digite o CEP" formControlName="cep"
           [ngClass]="{'required': (newCompany.get('address.cep').hasError('required') &&
           newCompany.get('address.cep').touched)
           || (newCompany.get('address.cep').hasError('required') && submitted)}">
@@ -123,7 +121,7 @@
     <div class="row" formGroupName="address">
       <div class="form-group col-sm-6 col-md-6">
         <p class="descricao">CIDADE</p>
-        <input type="text" class="form-control" [(ngModel)]="city" placeholder="Digite o cidade" formControlName="city" maxlength="60"
+        <input type="text" class="form-control" placeholder="Digite o cidade" formControlName="city" maxlength="60"
           [ngClass]="{'required': (newCompany.get('address.city').hasError('required') &&
           newCompany.get('address.city').touched)
           || (newCompany.get('address.city').hasError('required') && submitted)
@@ -146,7 +144,7 @@
       <div class="form-group col-sm-6 col-md-2">
         <p class="descricao">UF</p>
         <!-- <input [textMask]="{mask: maskUF}" type="text" class="form-control" [(ngModel)]="uf" formControlName="uf"> -->
-        <input type="text" class="form-control" [(ngModel)]="uf" formControlName="uf" placeholder="UF" maxlength="2"
+        <input type="text" class="form-control" formControlName="uf" placeholder="UF" maxlength="2"
           [ngClass]="{'required': (newCompany.get('address.uf').hasError('required') &&
           newCompany.get('address.uf').touched)
           || (newCompany.get('address.uf').hasError('required') && submitted)}">

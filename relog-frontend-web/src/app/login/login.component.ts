@@ -12,6 +12,9 @@ export class LoginComponent implements OnInit {
   public login: FormGroup;
   public erroAuth = false;
   
+  public email: string;
+  public password: string;
+  
   constructor(
     private router: Router,
     private fb: FormBuilder,

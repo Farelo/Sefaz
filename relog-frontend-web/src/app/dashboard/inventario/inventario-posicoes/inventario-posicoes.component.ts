@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FamiliesService, DevicesService, PackingService } from 'app/servicos/index.service';
+import { FamiliesService, PositionsService, PackingService } from 'app/servicos/index.service';
 import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NouiFormatter } from 'ng2-nouislider';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -44,7 +44,7 @@ export class InventarioPosicoesComponent implements OnInit {
 
   constructor(private familyService: FamiliesService,
     private packingService: PackingService,
-    private deviceService: DevicesService,
+    private positionService: PositionsService,
     private localeService: BsLocaleService) {
 
     this.configureDatePicker();
@@ -157,7 +157,7 @@ export class InventarioPosicoesComponent implements OnInit {
    */
   getFilteredPositions(codeTag: string, startDate: any = null, finalDate: any = null, accuracy: any = null) {
 
-    this.deviceService.getFilteredPositions(codeTag, startDate, finalDate, accuracy).subscribe((result: any[]) => {
+    this.positionService.getFilteredPositions(codeTag, startDate, finalDate, accuracy).subscribe((result: any[]) => {
       //console.log(result);
       this.originalListOfPositions = result;
       this.actualListOfPositions = this.originalListOfPositions
@@ -232,15 +232,6 @@ export class InventarioPosicoesComponent implements OnInit {
     return result;
   }
 
-  withTemperatureClicked() {
-    if (!this.withTemperature) {
-      this.actualListOfPositions = this.originalListOfPositions.filter(elem => {
-        return elem.temperature !== null
-      })
-    } else {
-      this.actualListOfPositions = this.originalListOfPositions
-    }
-  }
 
   convertTimezone(timestamp) {
     if(timestamp.toString().length == 10) timestamp *= 1000;
@@ -287,13 +278,13 @@ export class InventarioPosicoesComponent implements OnInit {
     //I'm using the method slice() just to copy the array as value.
     let flatObjectData = this.flatObject(this.actualListOfPositions.slice());
     flatObjectData = flatObjectData.map(elem => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5, elem.a6, elem.a7, elem.a8];
+      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5];
     });
     // console.log(flatObjectData);
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Tag', 'Acurácia', 'Bateria', 'Latitude', 'Longitude', 'Data da mensagem', '# Sequência', 'Temperatura']],
+      head: [['Tag', 'Acurácia', 'Latitude', 'Longitude', 'Data da mensagem']],
       body: flatObjectData
     });
 
@@ -306,14 +297,11 @@ export class InventarioPosicoesComponent implements OnInit {
     let plainArray = mArray.map(obj => {
 
       return {
-        a1: obj.device_id,
-        a2: obj.accuracy,
-        a3: (obj.battery.percentage == null) ? '-' : obj.battery.percentage,
-        a4: obj.latitude,
-        a5: obj.longitude,
-        a6: this.convertTimezone(obj.message_date_timestamp),
-        a7: obj.seq_number,
-        a8: (obj.temperature == null) ? '-' : obj.temperature
+        a1: obj.tag,
+        a2: obj.accuracy, 
+        a3: obj.latitude,
+        a4: obj.longitude,
+        a5: this.convertTimezone(obj.timestamp)
       };
     });
 
@@ -324,13 +312,10 @@ export class InventarioPosicoesComponent implements OnInit {
   addHeader(mArray: any) {
     let cabecalho = {
       a1: 'Tag',
-      a2: 'Acurácia',
-      a3: 'Bateria',
-      a4: 'Latitude',
-      a5: 'Longitude',
-      a6: 'Data da mensagem',
-      a7: '# Sequência',
-      a8: 'Temperatura',
+      a2: 'Acurácia', 
+      a3: 'Latitude',
+      a4: 'Longitude',
+      a5: 'Data da mensagem'
     }
 
     //adiciona o cabeçalho

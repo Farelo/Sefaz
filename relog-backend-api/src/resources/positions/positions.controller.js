@@ -10,15 +10,14 @@ exports.get = async (req, res) => {
       tag: req.query.tag ? req.query.tag : null,
       start_date: req.query.start_date ? req.query.start_date : null,
       end_date: req.query.end_date ? req.query.end_date : null,
-      accuracy: req.query.accuracy ? req.query.accuracy : 32000,
-      max: 10,
+      accuracy: req.query.accuracy ? req.query.accuracy : 32000, 
    };
 
    if (query.tag){
       const packing = await packingsService.find_by_tag(query.tag); 
       if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
    }
-      
+   
    const result = await positionsService.getPosition(query); 
 
    res.json(result);

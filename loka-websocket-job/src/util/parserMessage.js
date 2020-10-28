@@ -1,8 +1,7 @@
 const logger = require("../config/winston.config");
 const moment = require('moment')
 
-const parserMessage = async (jsonMessage, deviceData) => {
-  //logger.info("DeviceData to update BEFORE parser: " + deviceData);
+const parserMessage = async (jsonMessage, deviceData) => { 
 
   let key = Object.keys(jsonMessage)[0];
   //logger.info("Message type: " + key);
@@ -42,9 +41,7 @@ const parserMessage = async (jsonMessage, deviceData) => {
     default:
       deviceData = null;
   }
-
-  //logger.info("DeviceData to update AFTER parser: " + deviceData);
-
+ 
   return deviceData;
 };
 

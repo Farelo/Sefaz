@@ -6,10 +6,6 @@
       <button type="button" class="interrogacao1" (click)="openHelp(content)">
       </button>
 
-      <button type="button" class="interrogacao2" [ngbPopover]='popContent' placement="bottom" *ngIf="telaGrande == true"
-        triggers='hover' (click)="openHelp(content)">
-      </button>
-
       <ng-template #popContent>
         <p class="tit1">Alertas e seus significados</p>
         <span class="lg1">EMBALAGEM AUSENTE</span> <br />

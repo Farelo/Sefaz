@@ -4,7 +4,7 @@ const martinez = require("martinez-polygon-clipping");
 const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_in_km");
 const { EventRecord } = require("../../models/event_record.model");
 
-const lastPositionOrDeviceData = (packing) => {
+const getLastPosition = (packing) => {
    if(packing.last_position) return packing.last_position 
    return null
 }
@@ -35,7 +35,7 @@ module.exports = async (packing, controlPoints, settings) => {
                if (actualControlPointFound) {
                   // Se encontrou um novo PC e o sinal é elegível para entrada
                   //sai do PC anterior e entra no novo
-                  if (lastPositionOrDeviceData(packing).accuracy <= settings.accuracy_limit) {
+                  if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
                      createOutbound(packing);
                      createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
                      _result = actualControlPointFound.cp;
@@ -56,7 +56,7 @@ module.exports = async (packing, controlPoints, settings) => {
             if (actualControlPointFound) {
                // Se encontrou um novo PC e o sinal é elegível para entrada
                //sai do PC anterior e entra no novo
-               if (lastPositionOrDeviceData(packing).accuracy <= settings.accuracy_limit) {
+               if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
                   // É elegível
                   createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
                   _result = actualControlPointFound.cp;
@@ -66,12 +66,12 @@ module.exports = async (packing, controlPoints, settings) => {
       } else {
          // Se nunca teve event_record
          //Procura algum PC
-         if (lastPositionOrDeviceData(packing)) {
+         if (getLastPosition(packing)) {
             let actualControlPointFound = await findActualControlPoint(packing, controlPoints, settings);
             if (actualControlPointFound) {
                // Se encontrou um novo PC e o sinal é elegível para entrada
                //sai do PC anterior e entra no novo
-               if (lastPositionOrDeviceData(packing).accuracy <= settings.accuracy_limit) {
+               if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
                   createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
                   _result = actualControlPointFound.cp;
                }
@@ -92,7 +92,7 @@ const findActualControlPoint = async (packing, allControlPoints, settings) => {
     * Ponto de controle circular tem que buscar aquele que possui a menor distância.
     */
 
-   if (lastPositionOrDeviceData(packing)) {
+   if (getLastPosition(packing)) {
       let myActualControlPoint = null;
 
       let polygonalControlPoints = allControlPoints.filter((elem) => elem.geofence.type == "p");
@@ -150,13 +150,13 @@ const findCircularIntersection = async (packing, allControlPoints) => {
 
    allControlPoints.forEach((controlPointToTest) => {
       const calculatedDistance = getDistanceFromLatLonInKm(
-         lastPositionOrDeviceData(packing).latitude,
-         lastPositionOrDeviceData(packing).longitude,
+         getLastPosition(packing).latitude,
+         getLastPosition(packing).longitude,
          controlPointToTest.geofence.coordinates[0].lat,
          controlPointToTest.geofence.coordinates[0].lng
       );
 
-      if (calculatedDistance <= controlPointToTest.geofence.radius + lastPositionOrDeviceData(packing).accuracy) {
+      if (calculatedDistance <= controlPointToTest.geofence.radius + getLastPosition(packing).accuracy) {
          if (calculatedDistance < smallerDistance) {
             smallerDistance = calculatedDistance;
             myActualControlPoint = controlPointToTest;
@@ -179,9 +179,9 @@ const createInbound = async (packing, currentControlPoint, distance) => {
       packing: packing._id,
       control_point: currentControlPoint._id,
       distance_km: distance,
-      accuracy: lastPositionOrDeviceData(packing).accuracy,
+      accuracy: getLastPosition(packing).accuracy,
       type: "inbound",
-      device_data_id: lastPositionOrDeviceData(packing)._id,
+      device_data_id: getLastPosition(packing)._id,
    });
    await eventRecord.save();
 };
@@ -191,9 +191,9 @@ const createOutbound = async (packing) => {
       packing: packing._id,
       control_point: packing.last_event_record.control_point._id,
       distance_km: packing.last_event_record.distance_km,
-      accuracy: lastPositionOrDeviceData(packing).accuracy,
+      accuracy: getLastPosition(packing).accuracy,
       type: "outbound",
-      device_data_id: lastPositionOrDeviceData(packing)._id,
+      device_data_id: getLastPosition(packing)._id,
    });
    await eventRecord.save();
 };
@@ -259,8 +259,8 @@ const intersectionpoly = (packing, controlPoint) => {
 
          controlPointPolygonArray.forEach((mPolygon) => {
             //criar polígono da embalagem
-            let center = [lastPositionOrDeviceData(packing).longitude, lastPositionOrDeviceData(packing).latitude];
-            let radius = lastPositionOrDeviceData(packing).accuracy;
+            let center = [getLastPosition(packing).longitude, getLastPosition(packing).latitude];
+            let radius = getLastPosition(packing).accuracy;
             let options = { steps: 64, units: "meters" };
 
             //mLog(center, radius)
@@ -295,8 +295,8 @@ const intersectionpoly = (packing, controlPoint) => {
          // mLog(JSON.stringify(unkinkControlPointPolygon))
 
          //criar polígono da embalagem
-         let center = [lastPositionOrDeviceData(packing).longitude, lastPositionOrDeviceData(packing).latitude];
-         let radius = lastPositionOrDeviceData(packing).accuracy;
+         let center = [getLastPosition(packing).longitude, getLastPosition(packing).latitude];
+         let radius = getLastPosition(packing).accuracy;
          let options = { steps: 64, units: "meters" };
 
          //mLog(center, radius)

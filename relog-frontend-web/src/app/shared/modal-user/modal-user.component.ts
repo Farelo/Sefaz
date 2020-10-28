@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'; 
-import { ModalSupplierRegisterComponent } from './modal-register-supplier/modal-register-supplier.component';
-import { ModalStaffRegisterComponent } from './modal-register-staff/modal-register-staff.component'; 
 import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
 import { Pagination } from '../../shared/models/pagination';
 import { ProfileService } from '../../servicos/index.service';
@@ -51,15 +49,6 @@ export class ModalUserComponent implements OnInit {
     this.activeModal.close();
   }
 
-  addUsers(){
-    if(this.isAdmin){
-      const modalRef = this.modalService.open(ModalSupplierRegisterComponent, {backdrop: "static", size: "lg"});
-    }else{
-      const modalRef = this.modalService.open(ModalStaffRegisterComponent, {backdrop: "static", size: "lg"});
-    }
-    this.activeModal.close();
-  }
-
   removeProfile(profile):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
     modalRef.componentInstance.mObject = profile;
@@ -73,11 +62,6 @@ export class ModalUserComponent implements OnInit {
   getTypeLabel(type: string): string{
     return type=='admin' ? 'Administrador' : 'Usuário';
   }
-
-  // pageChanged(page: any): void{
-  //   this.userData.meta.page = page;
-  //   this.getUsers();
-  // }
 
   isAdmin() {
     if(JSON.parse(localStorage.getItem('currentUser'))) {

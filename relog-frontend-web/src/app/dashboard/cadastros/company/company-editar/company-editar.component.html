@@ -71,7 +71,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-6 form-group">
         <p class="descricao">CNPJ</p>
-        <input [textMask]="{mask: maskCNPJ}" class="form-control" [(ngModel)]="cnpj" type="text" formControlName="cnpj" placeholder="__.___.___/____-__" maxlength="20"
+        <input [textMask]="{mask: maskCNPJ}" class="form-control" type="text" formControlName="cnpj" placeholder="__.___.___/____-__" maxlength="20"
           [ngClass]="{'required': (newCompany.get('cnpj').hasError('required') && newCompany.get('cnpj').touched)
                   || (newCompany.get('cnpj').hasError('required') && submitted)}" />
         

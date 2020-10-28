@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoriaSemSinalComponent implements OnInit {
 
+  public semSinalCollapsed: boolean = false;
+  public conteudoSemSinalCollapsed: boolean = false;
+
   constructor() { }
 
   ngOnInit() {

@@ -5,7 +5,7 @@ import {
   SettingsService,
   AlertsService,
   AuthenticationService,
-  DevicesService,
+  PositionsService,
   ControlPointsService,
 } from "../../servicos/index.service";
 import {
@@ -90,10 +90,8 @@ export class LayerModalComponent implements OnInit {
     public activeLayer: NgbActiveModal,
     private controlPointsService: ControlPointsService,
     private packingService: PackingService,
-    private deviceService: DevicesService,
-    private authenticationService: AuthenticationService,
-    private settingsService: SettingsService,
-    private alertService: AlertsService,
+    private positionService: PositionsService,
+    private authenticationService: AuthenticationService, 
     private localeService: BsLocaleService
   ) {
     defineLocale("pt-br", ptBrLocale);
@@ -234,20 +232,22 @@ export class LayerModalComponent implements OnInit {
     finalDate: any = null,
     accuracy: any = null
   ) {
-    this.deviceService
+    this.positionService
       .getFilteredPositions(codeTag, startDate, finalDate, accuracy)
       .subscribe((result: any[]) => {
+        console.log(result.length);
+        
         if (result.length > 1) {
-          this.markers = result.reverse();
+          // this.markers = result.reverse();
 
           let datePipe = new DatePipe("en");
 
           this.allPackingMarkers = result.map((elem, idx) => {
             let m = new google.maps.Marker({
-              message_date: elem.message_date,
-              battery: elem.battery.percentage
-                ? elem.battery.percentage.toFixed(2) + "%"
-                : "Sem registro",
+              message_date: elem.date,
+              // battery: elem.battery.percentage
+              //   ? elem.battery.percentage.toFixed(2) + "%"
+              //   : "Sem registro",
               accuracy: elem.accuracy,
               position: new google.maps.LatLng(elem.latitude, elem.longitude),
               // icon: this.getPinWithAlert(idx)
@@ -289,9 +289,6 @@ export class LayerModalComponent implements OnInit {
                         "dd/MM/yy HH:mm:ss",
                         "+00:00"
                       )}</p>
-                      <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${
-                        m.battery
-                      }</p>
                       <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${
                         m.accuracy
                       } m</p>
