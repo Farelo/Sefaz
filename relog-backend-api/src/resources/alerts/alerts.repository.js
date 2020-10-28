@@ -77,22 +77,25 @@ exports.get_alerts_by_family = async (family_id, current_state) => {
    try {
       const packings =
          current_state === "bateria_baixa"
-            ? await Packing.find({ active: true, family: family_id, low_battery: true })
+            ? await Packing.find({ active: true, family: family_id, low_battery: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
                  .populate("family", "code")
-                 .populate("last_position")
-                 .populate("last_event_record")
-                 .populate("last_current_state_history")
+                 .populate("last_position", "date timestamp latitude longitude accuracy")
+                 .populate("last_battery", "date timestamp battery batteryVoltage")
+                 .populate("last_event_record", "control_point type created_at")
+                 .populate("last_current_state_history", "type created_at")
             : current_state === "tempo_de_permanencia_excedido"
-            ? await Packing.find({ active: true, family: family_id, permanence_time_exceeded: true })
+            ? await Packing.find({ active: true, family: family_id, permanence_time_exceeded: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
                  .populate("family", "code")
-                 .populate("last_position")
-                 .populate("last_event_record")
-                 .populate("last_current_state_history")
-            : await Packing.find({ active: true, family: family_id, current_state: current_state })
+                 .populate("last_position", "date timestamp latitude longitude accuracy")
+                 .populate("last_battery", "date timestamp battery batteryVoltage")
+                 .populate("last_event_record", "control_point type created_at")
+                 .populate("last_current_state_history", "type created_at")
+            : await Packing.find({ active: true, family: family_id, current_state: current_state }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
                  .populate("family", "code")
-                 .populate("last_position")
-                 .populate("last_event_record")
-                 .populate("last_current_state_history");
+                 .populate("last_position", "date timestamp latitude longitude accuracy")
+                 .populate("last_battery", "date timestamp battery batteryVoltage")
+                 .populate("last_event_record", "control_point type created_at")
+                 .populate("last_current_state_history", "type created_at");
 
       const data = await Promise.all(packings.map(map_last_event_record));
 
@@ -107,7 +110,7 @@ const map_last_event_record = async (packing) => {
 
    let temp_obj = {};
 
-   const control_point = await ControlPoint.findById(packing.last_event_record.control_point);
+   const control_point = await ControlPoint.findById(packing.last_event_record.control_point, { name: 1 });
 
    temp_obj = packing;
    temp_obj.last_event_record.control_point = control_point;
