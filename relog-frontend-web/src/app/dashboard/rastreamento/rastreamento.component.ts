@@ -270,22 +270,22 @@ export class RastreamentoComponent implements OnInit {
     this.deviceService.getDeviceData(cp_id, family_id, serial_id).subscribe((result: any[]) => {
 
       this.plotedPackings = result.filter(elem => {
-        if (elem.last_device_data)
+        if (elem.last_position)
           return true;
         else
           return false;
       });
 
       this.plotedPackings.map(elem => {
-        elem.position = (new google.maps.LatLng(elem.last_device_data.latitude, elem.last_device_data.longitude));
-        elem.latitude = elem.last_device_data.latitude;
-        elem.longitude = elem.last_device_data.longitude;
+        elem.position = (new google.maps.LatLng(elem.last_position.latitude, elem.last_position.longitude));
+        elem.latitude = elem.last_position.latitude;
+        elem.longitude = elem.last_position.longitude;
         return elem;
       });
 
       //Se só há um objeto selecionado, centralize o mapa nele
       if (this.plotedPackings.length == 1){
-        if (this.plotedPackings[0].last_device_data){
+        if (this.plotedPackings[0].last_position){
           this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
         }
       }

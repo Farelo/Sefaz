@@ -204,10 +204,11 @@ exports.geolocation = async (req, res) => {
             "battery",
             "latitude",
             "longitude",
-            "message_date",
+            "date",
+            "timestamp"
          ]);
       if (newObj.last_battery)
-         newObj.last_battery = _.pick(newObj.last_battery, ["date", "tiemstamp", "battery", "batteryVoltage"]);
+         newObj.last_battery = _.pick(newObj.last_battery, ["date", "timestamp", "battery", "batteryVoltage"]);
          
       newObj.tag = _.pick(newObj.tag, ["code"]);
       return newObj;
