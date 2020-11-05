@@ -15,7 +15,7 @@ const buttonSchema = new mongoose.Schema({
       type: Number,
       required: true,
    },
-   event: {
+   detectorSwitch: {
       type: String,
       required: true,
    },
@@ -34,7 +34,7 @@ const createMany = async (packing, buttonArray) => {
             tag: packing.tag.code,
             date: new Date(button.date),
             timestamp: button.timestamp,
-            event: button.event
+            detectorSwitch: button.detectorSwitch
          });
 
          await newButton.save().catch((err) => debug(err));
@@ -48,7 +48,7 @@ const createMany = async (packing, buttonArray) => {
             await newButton.save();
          }
       } catch (error) {
-         debug(`Erro ao salvar a eventos do device ${packing.tag.code} | ${error}`);
+         debug(`Erro ao salvar a Detector Switch do device ${packing.tag.code} | ${error}`);
       }
    }
 };
