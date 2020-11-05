@@ -16,7 +16,7 @@ const buttonSchema = new mongoose.Schema({
       required: true,
    },
    detectorSwitch: {
-      type: String,
+      type: Boolean,
       required: true,
    },
    created_at: {
