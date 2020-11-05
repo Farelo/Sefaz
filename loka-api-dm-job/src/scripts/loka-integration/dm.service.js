@@ -143,5 +143,5 @@ exports.createManyBatteryMessages = async (packing, messages) => {
 };
 
 exports.createManyButtonMessages = async (packing, messages) => {
-   await Battery.createMany(packing, messages);
+   await Button.createMany(packing, messages);
 };
