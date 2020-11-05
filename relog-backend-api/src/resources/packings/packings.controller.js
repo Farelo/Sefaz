@@ -30,7 +30,7 @@ exports.show = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-   let packing = await packings_service.find_by_tag(req.body.tag);
+   let packing = await packings_service.find_by_tag(req.body.tag.code);
    if (packing) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Packing already exists with this code." });
 
    const family = await families_service.find_by_id(req.body.family);
@@ -114,7 +114,7 @@ exports.create_many = async (req, res) => {
       let current_packing = await packings_service.find_by_tag(packing.data.tag);
       if (current_packing)
          return res.status(HttpStatus.BAD_REQUEST).send({
-            message: `Packing already exists with this code ${packing.data.tag.code}.`,
+            message: `Packing already exists with this code ${packing.data.tag}.`,
          });
 
       const family = await families_service.find_by_id(packing.data.family._id);
@@ -129,7 +129,7 @@ exports.create_many = async (req, res) => {
       packing.data.active = true;
 
       current_packing = await packings_service.create_packing(packing.data);
-      await subPacking(current_packing.tag.code);
+      await subPacking(current_packing.tag);
       packings.push(current_packing);
    }
 
