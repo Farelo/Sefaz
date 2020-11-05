@@ -100,7 +100,7 @@ exports.fetchPositions = async (deviceId, startDate, endDate, lowAccuracy, cooki
       const result = await axios.get(path, options);
       return result.data.data;
    } catch (error) {
-      debug(error);
+      debug("error", error);
       return [];
    }
 };
@@ -128,7 +128,7 @@ exports.fetchSensors = async (deviceId, startDate, endDate, cookie) => {
       const result = await axios.get(path, options);
       return result.data.data;
    } catch (error) {
-      debug(error);
+      debug("error", error);
       return [];
    }
 };

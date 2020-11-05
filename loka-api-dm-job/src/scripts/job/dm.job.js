@@ -22,7 +22,7 @@ const generatePositionQuery = (packing) => {
 
    let positionEndDate = moment().format("YYYY-MM-DD HH:mm:ss").toString();
 
-   console.log(":::::::position", positionStartDate, positionEndDate);
+   // console.log(":::::::position", positionStartDate, positionEndDate);
 
    return [positionStartDate, positionEndDate];
 };
@@ -52,7 +52,7 @@ const generateSensorQuery = (packing) => {
 
    sensorEndDate = moment().format("YYYY-MM-DD HH:mm:ss").toString();
 
-   console.log("::::::sensors", lastTemperatureTimestamp, lastBatteryTimestamp, sensorStartDate, sensorEndDate);
+   // console.log("::::::sensors", lastTemperatureTimestamp, lastBatteryTimestamp, sensorStartDate, sensorEndDate);
 
    return [sensorStartDate, sensorEndDate];
 };
