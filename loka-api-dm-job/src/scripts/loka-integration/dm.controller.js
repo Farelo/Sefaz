@@ -45,6 +45,10 @@ const fetchAndSaveSensors = async (packing, startDate, endDate, cookie) => {
       //BATTERY
       let allBattery = retrieveBattery(result);
       if (allBattery.length > 0) await dm_service.createManyBatteryMessages(packing, allBattery);
+
+      //BOTAO ALPS
+
+
       return result;
    } catch (error) {
       debug(error);
@@ -116,6 +120,10 @@ const searchProperty = (propToFind, messageDecoded) => {
 
          if (propToFind === "Battery Status") {
             return translateALPSBattery(propertySet[1]);
+         }
+
+         if (propToFind === "Event") {
+//            return translateALPSBattery(propertySet[1]);
          }
       } catch (error) {
          debug(error);
