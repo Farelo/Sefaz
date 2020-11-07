@@ -544,8 +544,12 @@ export class Spiralize {
     
           case constants.ALERTS.MISSING:
             pin = "#3a9ca6";
+            break;  
+
+        case constants.ALERTS.DEVICE_REMOVED:
+            pin = "#A349A4";
             break;
-        }
+    }
     
         return pin;
       }

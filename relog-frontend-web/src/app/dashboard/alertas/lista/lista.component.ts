@@ -13,6 +13,7 @@ import { Pagination } from "../../../shared/models/pagination";
 import { AlertaAusenteComponent } from "../../../shared/modal-alerta/alerta-ausente/alerta-ausente.component";
 import { AlertaLocalIncorretoComponent } from "../../../shared/modal-alerta/alerta-local-incorreto/alerta-local-incorreto.component";
 import { AlertaBateriaBaixaComponent } from "../../../shared/modal-alerta/alerta-bateria-baixa/alerta-bateria-baixa.component";
+import { AlertaDispositivoRemovidoComponent } from "../../../shared/modal-alerta/alerta-dispositivo-removido/alerta-dispositivo-removido.component";
 import { AlertaEmbalagemAtrasadaComponent } from "../../../shared/modal-alerta/alerta-embalagem-atrasada/alerta-embalagem-atrasada.component";
 import { AlertaPermanenciaComponent } from "../../../shared/modal-alerta/alerta-permanencia/alerta-permanencia.component";
 import { AlertaEmbalagemPerdidaComponent } from "../../../shared/modal-alerta/alerta-embalagem-perdida/alerta-embalagem-perdida.component";
@@ -160,6 +161,14 @@ export class ListaComponent implements OnInit {
         backdrop: "static",
       });
       modalRef.componentInstance.alerta = embalagem;
+
+      //Removido
+    } else if (this.alertCode == constants.ALERTS_CODE.DEVICE_REMOVED) {
+      console.log("open 8");
+      const modalRef = this.modalService.open(AlertaDispositivoRemovidoComponent, {
+        backdrop: "static",
+      });
+      modalRef.componentInstance.alerta = embalagem;
     }
 
     // }, err => console.log(err));
@@ -200,6 +209,10 @@ export class ListaComponent implements OnInit {
       case constants.ALERTS.MISSING:
         result = 7;
         break;
+        
+      case constants.ALERTS.DEVICE_REMOVED:
+        result = 8;
+        break;
 
       default:
         result = 0;
@@ -238,6 +251,10 @@ export class ListaComponent implements OnInit {
 
       case 7:
         result = "Embalagem perdida";
+        break;
+
+      case 8:
+        result = 'Dispositivo removido';
         break;
     }
 

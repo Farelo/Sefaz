@@ -114,6 +114,10 @@ export class TimelineComponent implements OnInit {
         result = 7;
         break;
 
+      case constants.ALERTS.DEVICE_REMOVED:
+        result = 8;
+        break;
+
       default:
         result = 0;
     }
@@ -153,7 +157,11 @@ export class TimelineComponent implements OnInit {
       case constants.ALERTS.MISSING:
         result = 'Embalagem perdida';
         break;
-      
+
+      case constants.ALERTS.MISSING:
+        result = 'Dispositivo removido';
+        break;      
+
       default:
         result = "Não identificado";
     }

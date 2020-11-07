@@ -45,6 +45,7 @@ import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import { TooltipModule } from "ngx-bootstrap";
 import { AlertaAusenteComponent } from "./shared/modal-alerta/alerta-ausente/alerta-ausente.component";
 import { AlertaBateriaBaixaComponent } from "./shared/modal-alerta/alerta-bateria-baixa/alerta-bateria-baixa.component";
+import { AlertaDispositivoRemovidoComponent } from "./shared/modal-alerta/alerta-dispositivo-removido/alerta-dispositivo-removido.component";
 import { AlertaEmbalagemAtrasadaComponent } from "./shared/modal-alerta/alerta-embalagem-atrasada/alerta-embalagem-atrasada.component";
 import { AlertaLocalIncorretoComponent } from "./shared/modal-alerta/alerta-local-incorreto/alerta-local-incorreto.component";
 import { AlertaPermanenciaComponent } from "./shared/modal-alerta/alerta-permanencia/alerta-permanencia.component";
@@ -62,6 +63,7 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     AlertaModalComponent,
     AlertaAusenteComponent,
     AlertaBateriaBaixaComponent,
+    AlertaDispositivoRemovidoComponent,
     AlertaEmbalagemAtrasadaComponent,
     AlertaLocalIncorretoComponent,
     AlertaPermanenciaComponent,
@@ -128,6 +130,7 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     AlertaModalComponent,
     AlertaAusenteComponent,
     AlertaBateriaBaixaComponent,
+    AlertaDispositivoRemovidoComponent,
     AlertaEmbalagemAtrasadaComponent,
     AlertaLocalIncorretoComponent,
     AlertaPermanenciaComponent,
