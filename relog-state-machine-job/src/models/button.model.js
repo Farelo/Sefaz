@@ -1,4 +1,4 @@
-const debug = require("debug")("model:button");
+const debug = require("debug")("model:buttons");
 const mongoose = require("mongoose");
 const { Packing } = require("./packings.model");
 
@@ -34,7 +34,7 @@ const createMany = async (packing, buttonArray) => {
             tag: packing.tag.code,
             date: new Date(button.date),
             timestamp: button.timestamp,
-            detector_switch: button.detector_switch
+            detector_switch: button.detector_switch // ***** review *****
          });
 
          await newButton.save().catch((err) => debug(err));
@@ -48,7 +48,7 @@ const createMany = async (packing, buttonArray) => {
             await newButton.save();
          }
       } catch (error) {
-         debug(`Erro ao salvar a Detector Switch do device ${packing.tag.code} | ${error}`);
+         debug(`Erro ao salvar 8 status do botão do device ${packing.tag.code} | ${error}`);
       }
    }
 };

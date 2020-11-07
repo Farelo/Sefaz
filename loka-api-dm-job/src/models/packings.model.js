@@ -99,6 +99,10 @@ const packingSchema = new mongoose.Schema({
         ref: 'Family',
         required: true
     },
+    detector_switch: {
+      type: Boolean,
+      default: true
+    },
     last_message_signal:{
         type: Date,
         default: null
@@ -131,6 +135,10 @@ const packingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'EventRecord'
     },
+    last_detector_switch:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'detector_switch'
+    },
     project: {
         type: mongoose.Schema.ObjectId,
         ref: 'Project'
@@ -148,7 +156,8 @@ const packingSchema = new mongoose.Schema({
             'sem_sinal',
             'perdida',
             'local_correto',
-            'local_incorreto'
+            'local_incorreto',
+            'dispositivo_removido'
         ],
         lowercase: true,
         default: 'analise',

@@ -108,7 +108,7 @@ const retrieveButton = (sensorsArray) => {
          result.push({
             timestamp: sigfoxMessage.timestamp,
             date: sigfoxMessage.date,
-            detectorSwitch: existentButton
+            detector_switch: existentButton
          });
       }
    });
