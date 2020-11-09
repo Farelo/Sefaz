@@ -36,15 +36,13 @@ const createMany = async (packing, temperatureArray) => {
             value: temperature.value,
          });
 
-         await newTemperature.save().catch((err) => debug(err));
-
          if (index == 0) {
             await newTemperature
                .save()
                .then((doc) => referenceFromPackage(packing, doc))
                .catch((err) => debug(err));
          } else {
-            await newTemperature.save();
+            await newTemperature.save().catch((err) => debug(err));
          }
       } catch (error) {
          debug(`Erro ao salvar a temperatura do device ${packing.tag.code} | ${error}`);
@@ -53,6 +51,7 @@ const createMany = async (packing, temperatureArray) => {
 };
 
 const referenceFromPackage = async (packing, doc) => {
+   console.log(referenceFromPackage, doc);
    try {
       await Packing.findByIdAndUpdate(packing._id, { last_temperature: doc._id }, { new: true });
    } catch (error) {

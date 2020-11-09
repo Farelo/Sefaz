@@ -40,6 +40,7 @@ const generateSensorQuery = (packing) => {
 
    //Which one is the most recent?
    let lastSensorTimestamp = _.max([lastTemperatureTimestamp, lastBatteryTimestamp]);
+   
 
    //If there is a most recent value, then calculate the time window
    //If there isn't a most recent value, then calculate the last 7 days
@@ -51,6 +52,8 @@ const generateSensorQuery = (packing) => {
    else sensorStartDate = moment().subtract(7, "days").format("YYYY-MM-DD HH:mm:ss").toString();
 
    sensorEndDate = moment().format("YYYY-MM-DD HH:mm:ss").toString();
+
+   console.log(lastTemperatureTimestamp, lastBatteryTimestamp, lastSensorTimestamp, sensorStartDate, sensorEndDate);
 
    // console.log("::::::sensors", lastTemperatureTimestamp, lastBatteryTimestamp, sensorStartDate, sensorEndDate);
 
@@ -71,7 +74,7 @@ module.exports = async () => {
 
          // "tag.code": "28423339"
          // "tag.code": "4081800"
-         let devices = await Packing.find({}, { _id: 1, tag: 1, last_position: 1 }) 
+         let devices = await Packing.find({ "tag.code": "4083565" }, { _id: 1, tag: 1, last_position: 1 })
             .populate("last_position")
             .populate("last_battery")
             .populate("last_temperature");
@@ -111,7 +114,6 @@ module.exports = async () => {
                         ? newPositionsArray[0].date
                         : newSensorsArray[0].date;
                   await Packing.findByIdAndUpdate(packing._id, { last_message_signal: lastMessage }, { new: true });
-
                } else {
                   if (newPositionsArray.length > 0) {
                      await Packing.findByIdAndUpdate(
@@ -133,7 +135,9 @@ module.exports = async () => {
                concluded_devices++;
 
                debug(
-                  `Request ${i + 1}: ${packing.tag.code} | ${positionStartDate} | ${sensorStartDate} | ${ newPositionsArray.length } |  ${newSensorsArray.length}\n`
+                  `Request ${i + 1}: ${packing.tag.code} | ${positionStartDate} | ${sensorStartDate} | ${
+                     newPositionsArray.length
+                  } |  ${newSensorsArray.length}\n`
                );
             } catch (error) {
                error_devices++;
@@ -149,10 +153,9 @@ module.exports = async () => {
          debug(`Job LOKA encerrado em ${new Date().toISOString()} com sucesso!`);
          debug("Tempo total de execução (sec): " + timeTotal / 1000);
 
-         
          await dm_controller.logoutDM(cookie);
          debug("Logout");
-         
+
          debug(`Dormir por ${sleepTime} segundos`);
          await promise_wait_seconds(sleepTime);
          debug("Acordado");

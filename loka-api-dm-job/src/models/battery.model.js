@@ -40,15 +40,13 @@ const createMany = async (packing, batteryArray) => {
             batteryVoltage: battery.batteryVoltage,
          });
 
-         await newBattery.save().catch((err) => debug(err));
-
          if (index == 0) {
             await newBattery
                .save()
                .then((doc) => referenceFromPackage(packing, doc))
                .catch((err) => debug(err));
          } else {
-            await newBattery.save();
+            await newBattery.save().catch((err) => debug(err));
          }
       } catch (error) {
          debug(`Erro ao salvar a bateria do device ${packing.tag.code} | ${error}`);
