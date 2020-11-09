@@ -8,17 +8,18 @@ const { CurrentStateHistory } = require("../../models/current_state_history.mode
 module.exports = async (packing) => {
    let current_state_history = {};
 
-   // TEM ERRO NESTA LINHA, ESTA PUXANDO ERRADO
+  
    const detector_switch = packing.last_detector_switch ? packing.last_detector_switch : null;
-
+  console.log(detector_switch);
    try {
       if (detector_switch) {
-         if (detector_switch == true) {
-            await Packing.findByIdAndUpdate(packing._id, { detector_switch: true }, { new: true });
+         if (detector_switch.detector_switch == false) {
+            await Packing.findByIdAndUpdate(packing._id, { detector_switch: false }, { new: true });
 
             current_state_history = await CurrentStateHistory.findOne({
                packing: packing._id,
                type: STATES.DISPOSITIVO_REMOVIDO.alert,
+               device_data_id: packing.last_detector_switch ? packing.last_detector_switch._id : null,
             });
             
             if (current_state_history) {
@@ -32,7 +33,7 @@ module.exports = async (packing) => {
             }
          } else {
             if (packing.detector_switch)
-               await Packing.findByIdAndUpdate(packing._id, { detector_switch: false }, { new: true });
+               await Packing.findByIdAndUpdate(packing._id, { detector_switch: true }, { new: true });
          }
       }
    } catch (error) {

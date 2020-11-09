@@ -24,7 +24,8 @@ const currentStateHistorySchema = new mongoose.Schema({
             'analise',
             'ausente',
             'viagem_em_prazo',
-            'local_correto'
+            'local_correto',
+            'dispositivo_removido'
         ],
         lowercase: true,
         required: true

@@ -22,6 +22,13 @@ exports.get_alerts = async () => {
                family: family._id,
                low_battery: true,
             }).populate("last_current_state_history");
+
+
+            const packings_with_button_false = await Packing.find({
+               active: true,
+               family: family._id,
+               detector_switch: false,
+            }).populate("last_current_state_history");
             
             const packings_with_permanence_time_exceeded = await Packing.find({
                active: true,
@@ -61,6 +68,18 @@ exports.get_alerts = async () => {
                };
 
                data_temp.push(permanence_time_exceeded);
+            }
+
+            if (packings_with_button_false.length > 0) {
+               const buttonFalse = {
+                  family_id: family._id,
+                  family_code: family.code,
+                  company: family.company,
+                  current_state: "dispositivo_removido",
+                  qtd: packings_with_button_false.length,
+               };
+
+               data_temp.push(buttonFalse);
             }
 
             return data_temp;

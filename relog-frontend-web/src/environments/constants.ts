@@ -77,6 +77,7 @@ export const constants = {
     LATE: 'LATE',
     INCONTIDA: 'INCONTIDA',
     NO_SIGNAL: 'NO_SIGNAL',
+    DEVICE_REMOVED: 'DEVICE_REMOVED',
   },
 
   PLANT_TYPE: {

@@ -7,6 +7,7 @@ const { Battery } = require("../models/battery.model");
 const { Temperature } = require("../models/temperature.model");
 const { Packing } = require("../models/packings.model");
 const { ControlPoint } = require("../models/control_points.model");
+const { Buttons } = require("../models/button.model");
 
 const runSM = require("./runSM.script");
 const spinner = ora("State Machine working...");
@@ -38,7 +39,8 @@ module.exports = async () => {
                .populate("last_event_record")
                .populate("last_position")
                .populate("last_battery")
-               .populate("last_temperature");
+               .populate("last_temperature")
+               .populate("last_detector_switch");
 
             await iteratePackings(setting, packings, controlPoints);
 

@@ -160,7 +160,7 @@ const packingSchema = new mongoose.Schema({
     },
     last_detector_switch:{
         type: mongoose.Schema.ObjectId,
-        ref: 'detector_switch'
+        ref: 'Button'
     },
     current_state: {
         type: String,
