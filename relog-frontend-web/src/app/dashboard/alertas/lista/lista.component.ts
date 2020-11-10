@@ -18,6 +18,7 @@ import { AlertaPermanenciaComponent } from "../../../shared/modal-alerta/alerta-
 import { AlertaEmbalagemPerdidaComponent } from "../../../shared/modal-alerta/alerta-embalagem-perdida/alerta-embalagem-perdida.component";
 import { constants } from "environments/constants";
 import { AlertaSemSinalComponent } from "app/shared/modal-alerta/alerta-sem-sinal/alerta-sem-sinal.component";
+import { AlertaDispositivoRemovidoComponent } from "../../../shared/modal-alerta/alerta-dispositivo-removido/alerta-dispositivo-removido.component";
 
 @Component({
   selector: "lista",
@@ -92,8 +93,8 @@ export class ListaComponent implements OnInit {
     //   .subscribe(result => {
 
     // console.log(embalagem);
-    // console.log(this.alertCode);
-
+    console.log(this.alertCode);
+    console.log(constants.ALERTS_CODE.DEVICE_REMOVED);
     // Análise
     if (this.alertCode == constants.ALERTS_CODE.ANALISYS) {
       console.log("open 0");
@@ -160,6 +161,14 @@ export class ListaComponent implements OnInit {
         backdrop: "static",
       });
       modalRef.componentInstance.alerta = embalagem;
+
+      //Removido
+    } else if (this.alertCode == constants.ALERTS_CODE.DEVICE_REMOVED) {
+      console.log("open 13");
+      const modalRef = this.modalService.open(AlertaDispositivoRemovidoComponent, {
+        backdrop: "static",
+      });
+      modalRef.componentInstance.alerta = embalagem;
     }
 
     // }, err => console.log(err));
@@ -201,6 +210,10 @@ export class ListaComponent implements OnInit {
         result = 7;
         break;
 
+      case constants.ALERTS.DEVICE_REMOVED:
+        result = 13;
+        break;
+
       default:
         result = 0;
     }
@@ -239,13 +252,17 @@ export class ListaComponent implements OnInit {
       case 7:
         result = "Embalagem perdida";
         break;
+
+      case 8:
+        result = "Dispositivo removido";
+        break;
     }
 
     return result;
   }
 
   truncateText(str, length): string {
-    console.log(str);
+    // console.log(str);
     if(!str) str = "-";
     if (str.length > length) return str.substring(0, length) + "...";
     else return str;

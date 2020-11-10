@@ -15,6 +15,7 @@
         <span class="lg5">TEMPO DE PERMANÊNCIA</span> <br />
         <span class="lg6">SEM SINAL</span> <br />
         <span class="lg7">PERDIDA</span> <br />
+        <span class="lg13">DISPOSITIVO REMOVIDO</span> <br />
         <!-- <span class="lg6"></span><br /> -->
       </ng-template>
 
@@ -34,6 +35,7 @@
             <span class="lg5">TEMPO DE PERMANÊNCIA</span> <br />
             <span class="lg6">SEM SINAL</span> <br />
             <span class="lg7">PERDIDA</span> <br />
+            <span class="lg13">DISPOSITIVO REMOVIDO</span> <br />
           </div>
         </div>
       </ng-template>
@@ -54,7 +56,8 @@
           'status4': getAlertCode(alert.current_state) == 4,
           'status5': getAlertCode(alert.current_state) == 5,
           'status6': getAlertCode(alert.current_state) == 6,
-          'status7': getAlertCode(alert.current_state) == 7 }"
+          'status7': getAlertCode(alert.current_state) == 7,
+          'status13': getAlertCode(alert.current_state) == 13 }"
         *ngFor="let alert of listOfAlerts | paginate: { id:'alerts',
                                                       itemsPerPage: 16,
                                                       currentPage: listOfAlertsActualPage,
@@ -76,7 +79,8 @@
               'f4': getAlertCode(alert.current_state) == 4,
               'f5': getAlertCode(alert.current_state) == 5,
               'f6': getAlertCode(alert.current_state) == 6,
-              'f7': getAlertCode(alert.current_state) == 7 }">
+              'f7': getAlertCode(alert.current_state) == 7,
+              'f13': getAlertCode(alert.current_state) == 13 }">
             </div>
           </div>
           <span tooltip="Fornecedor da Embalagem" class="forn">{{alert?.company?.name || '-'}}</span>
@@ -89,7 +93,8 @@
               'quantidade4': getAlertCode(alert.current_state) == 4,
               'quantidade5': getAlertCode(alert.current_state) == 5,
               'quantidade6': getAlertCode(alert.current_state) == 6,
-              'quantidade7': getAlertCode(alert.current_state) == 7 }">{{alert.qtd
+              'quantidade7': getAlertCode(alert.current_state) == 7,
+              'quantidade13': getAlertCode(alert.current_state) == 13 }">{{alert.qtd
             }}</span>
         </div>
       </div>

@@ -24,7 +24,7 @@ export class AlertaDispositivoRemovidoComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('bateria baixa');
+    console.log('Dispositivo Removido');
   }
 
   visualizeOnMap() {

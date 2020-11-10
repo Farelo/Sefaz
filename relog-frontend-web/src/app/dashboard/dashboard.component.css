@@ -31,7 +31,8 @@ label {
 .tit1,
 .lgperdido,
 .lgincorreto,
-.lgatrasado {
+.lgatrasado,
+.lgremovido {
   font-size: 12px;
   display: inline-block;
   text-align: center;
@@ -39,7 +40,8 @@ label {
 
 .lgperdido,
 .lgincorreto,
-.lgatrasado {
+.lgatrasado,
+.lgremovido {
   color: white;
   padding: 5px;
   margin-bottom: 5px;
@@ -57,6 +59,10 @@ label {
 
 .lgatrasado {
   background-color: #5d8dd7;
+}
+
+.lgremovido {
+  background-color: #a349a4;
 }
 
 .wrapper {
