@@ -395,10 +395,6 @@ export class RastreamentoComponent implements OnInit {
         pin = { url: 'assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;
 
-      case 'DEVICE_REMOVED':
-        pin = { url: 'assets/images/pin_removido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
-        break;
-
       default:
         pin = { url: 'assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
         break;

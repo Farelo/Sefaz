@@ -159,14 +159,6 @@
           </td>
         </tr>
 
-        <!-- Alerta: dispositivo removido -->
-        <td class="text-center" *ngIf="settings.enable_dispositivo_removido">
-          <a routerLinkActive="active" [routerLink]="['/rc/alertas/', item.family_id, 'dispositivo_removido']">
-            <span class="badge badge-pill badge-dispositivo_removido">{{item.qtd_missing || '0'}}</span>
-          </a>
-        </td>
-      </tr>
-
 
         <!-- ##################### -->
         <!-- Linha collapse -->

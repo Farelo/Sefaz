@@ -93,10 +93,6 @@ td {
   background: radial-gradient(#a08dc2 5%, #a08dc2 45%, #fff 45%, #fff 62%, #a08dc2 62%);
 }
 
-.removido{
-  background: radial-gradient(#a349a4 5%, #a349a4 45%, #fff 45%, #fff 62%, #a349a4 62%);
-}
-
 span {
   cursor: pointer;
 }

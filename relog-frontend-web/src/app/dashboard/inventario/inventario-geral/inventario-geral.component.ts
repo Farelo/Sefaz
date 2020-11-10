@@ -218,8 +218,7 @@ export class InventarioGeralComponent implements OnInit {
         'Atraso de Rota',
         'Local Incorreto',
         'Tempo de Permanência',
-        'Embalagem Ausente',
-        'Dispositivo Removido'
+        'Embalagem Ausente'
       ]],
       body: flatObjectData
     });
@@ -245,7 +244,6 @@ export class InventarioGeralComponent implements OnInit {
         a10: (obj.qtd_in_incorrect_cp == undefined) ? 0 : obj.qtd_in_incorrect_cp,
         a11: (obj.qtd_with_permanence_time_exceeded == undefined) ? 0 : obj.qtd_with_permanence_time_exceeded,
         a12: (obj.qtd_in_traveling_missing == undefined) ? 0 : obj.qtd_in_traveling_missing,
-        a13: (obj.qtd_in_device_removed == undefined) ? 0 : obj.qtd_in_device_removed,
       };
     });
     // As my array is already flat, I'm just returning it.
@@ -265,9 +263,9 @@ export class InventarioGeralComponent implements OnInit {
       a9: 'Atraso de Rota',
       a10: 'Local Incorreto',
       a11: 'Tempo de Permanência',
-      a12: 'Embalagem Ausente',
-      a13: 'Dispositivo Removido'
+      a12: 'Embalagem Ausente'
     }
+
     //adiciona o cabeçalho
     mArray.unshift(cabecalho);
 

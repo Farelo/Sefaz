@@ -110,8 +110,7 @@ export class ModalSettings implements OnInit {
       enable_local_incorreto: [true, [Validators.required]],
       enable_viagem_atrasada: [false, [Validators.required]],
       enable_sem_sinal: [false, [Validators.required]],
-      enable_perdida: [false, [Validators.required]],
-      enable_disposivo_removido: [false, [Validators.required]]
+      enable_perdida: [false, [Validators.required]]
     });
 
     this.settingsService.getSettings().subscribe(result => {

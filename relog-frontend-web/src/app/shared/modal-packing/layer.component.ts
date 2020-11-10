@@ -190,10 +190,6 @@ export class LayerModalComponent implements OnInit {
         result = 7;
         break;
 
-      case constants.ALERTS.DEVICE_REMOVED:
-        result = 8;
-        break;
-
       default:
         result = 0;
     }
@@ -636,14 +632,6 @@ export class LayerModalComponent implements OnInit {
           scaledSize: new google.maps.Size(28, 43),
         };
         break;
-        
-      case constants.ALERTS.DEVICE_REMOVED:
-        pin = {
-          url: "assets/images/pin_removido.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
-        };
-        break;
 
       default:
         pin = {
@@ -837,28 +825,6 @@ export class LayerModalComponent implements OnInit {
         }
         break;
 
-      case constants.ALERTS.DEVICE_REMOVED:
-      pin = {
-        url: "assets/images/pin_removido.png",
-        size: new google.maps.Size(28, 43),
-        scaledSize: new google.maps.Size(28, 43),
-      };
-      if (this.rangedMarkers.length > 1) {
-        if (i == 0)
-          pin = {
-            url: "assets/images/pin_removido_first.png",
-            size: new google.maps.Size(28, 43),
-            scaledSize: new google.maps.Size(28, 43),
-          };
-        if (i == this.rangedMarkers.length - 1)
-          pin = {
-            url: "assets/images/pin_removido_final.png",
-            size: new google.maps.Size(28, 43),
-            scaledSize: new google.maps.Size(28, 43),
-          };
-      }
-      break;
-
       default:
         pin = {
           url: "assets/images/pin_normal.png",
@@ -920,10 +886,6 @@ export class LayerModalComponent implements OnInit {
 
       case constants.ALERTS.MISSING:
         pin = "#3a9ca6";
-        break;
-
-      case constants.ALERTS.DEVICE_REMOVED:
-        pin = "#a349a4";
         break;
     }
 

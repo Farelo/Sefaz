@@ -233,15 +233,15 @@
      inkscape:guide-bbox="true"
      showguides="true"
      inkscape:window-maximized="1"
-     inkscape:window-y="240"
-     inkscape:window-x="1272"
-     inkscape:window-height="705"
-     inkscape:window-width="1366"
+     inkscape:window-y="-8"
+     inkscape:window-x="-8"
+     inkscape:window-height="961"
+     inkscape:window-width="1280"
      showgrid="false"
      inkscape:current-layer="layer2"
      inkscape:document-units="mm"
-     inkscape:cy="-554.24558"
-     inkscape:cx="1608.1298"
+     inkscape:cy="-420.45981"
+     inkscape:cx="1656.5788"
      inkscape:zoom="0.66024169"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -269,109 +269,55 @@
     <path
        inkscape:export-ydpi="31.666849"
        inkscape:export-xdpi="31.666849"
-       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\reciclapac\relog-frontend-web\src\assets\images\pin_removido.png"
-       d="m 379.43888,401.23635 c -10.73847,0 -19.41874,8.68027 -19.41874,19.41876 0,3.40051 0.89488,6.62206 2.50566,9.48564 0.26846,0.44742 0.53692,0.89485 0.80538,1.3423 l 16.1077,27.92004 16.01822,-27.92004 c 0.26846,-0.35795 0.44743,-0.71589 0.71589,-1.16334 l 0.17899,-0.26844 c 1.61076,-2.7741 2.50564,-5.99565 2.50564,-9.48567 0,-10.64898 -8.68026,-19.32925 -19.41874,-19.32925 z m 0,9.66463 c 5.36923,0 9.66462,4.38489 9.66462,9.66462 0,5.36925 -4.29539,9.75411 -9.66462,9.75411 -5.36923,0 -9.66462,-4.38486 -9.66462,-9.6646 0,-5.36924 4.29539,-9.75413 9.66462,-9.75413 z"
+       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\retirado.png"
+       d="m 379.43888,401.23702 c -10.73847,0 -19.41874,8.68027 -19.41874,19.41876 0,3.40051 0.89488,6.62206 2.50566,9.48564 0.26846,0.44742 0.53692,0.89485 0.80538,1.3423 l 16.1077,27.92004 16.01823,-27.92004 c 0.26845,-0.35795 0.44742,-0.71589 0.71588,-1.16334 l 0.17899,-0.26844 c 1.61076,-2.7741 2.50565,-5.99565 2.50565,-9.48567 0,-10.64898 -8.68026,-19.32925 -19.41875,-19.32925 z m 0,9.66463 c 5.36923,0 9.66462,4.38489 9.66462,9.66462 0,5.36925 -4.29539,9.75411 -9.66462,9.75411 -5.36923,0 -9.66462,-4.38486 -9.66462,-9.6646 0,-5.36924 4.29539,-9.75413 9.66462,-9.75413 z"
        class="st0"
-       id="path4574-7"
+       id="path4574-1"
        inkscape:connector-curvature="0"
-       style="display:inline;fill:#a349a4;fill-opacity:1;stroke-width:0.89487308" />
+       style="display:inline;fill:#a349a4;fill-opacity:0.78894472;stroke-width:0.89487308" />
     <path
        inkscape:export-ydpi="31.666849"
        inkscape:export-xdpi="31.666849"
-       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\reciclapac\relog-frontend-web\src\assets\images\pin_removido.png"
-       d="m 379.43887,408.48485 c -6.71154,0 -12.08077,5.45869 -12.08077,12.08075 0,6.71157 5.45871,12.08079 12.08077,12.08079 6.71154,0 12.08079,-5.45873 12.08079,-12.08079 0,-6.62206 -5.36925,-12.08075 -12.08079,-12.08075 z m 0,4.83228 c 4.02693,0 7.24848,3.22155 7.24848,7.24847 0,4.02692 -3.22155,7.24847 -7.24848,7.24847 -4.02693,0 -7.24846,-3.22155 -7.24846,-7.24847 0,-4.02692 3.22153,-7.24847 7.24846,-7.24847 z"
+       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\retirado.png"
+       d="m 379.43887,408.48552 c -6.71154,0 -12.08077,5.45869 -12.08077,12.08075 0,6.71157 5.45871,12.08079 12.08077,12.08079 6.71154,0 12.0808,-5.45873 12.0808,-12.08079 0,-6.62206 -5.36926,-12.08075 -12.0808,-12.08075 z m 0,4.83228 c 4.02693,0 7.24849,3.22155 7.24849,7.24847 0,4.02692 -3.22156,7.24847 -7.24849,7.24847 -4.02693,0 -7.24846,-3.22155 -7.24846,-7.24847 0,-4.02692 3.22153,-7.24847 7.24846,-7.24847 z"
        class="st1"
-       id="path4576-9"
+       id="path4576-8"
        inkscape:connector-curvature="0"
-       style="display:inline;fill:#d049a4;fill-opacity:1;stroke-width:0.89487308" />
-    <path
-       d="m 379.43888,575.73654 c -10.73847,0 -19.41873,8.68025 -19.41873,19.41874 0,3.40051 0.89486,6.62206 2.50564,9.48566 0.26846,0.44743 0.53692,0.89487 0.80539,1.3423 l 16.1077,27.92002 16.01822,-27.92002 c 0.26846,-0.35797 0.44743,-0.71589 0.71591,-1.16334 l 0.17896,-0.26846 c 1.61076,-2.7741 2.50564,-5.99565 2.50564,-9.48567 0,-10.64898 -8.68026,-19.32923 -19.41874,-19.32923 z m 0,9.66463 c 5.36923,0 9.66462,4.38486 9.66462,9.6646 0,5.36927 -4.29539,9.75413 -9.66462,9.75413 -5.36924,0 -9.66463,-4.38486 -9.66463,-9.66462 0,-5.36925 4.29539,-9.75411 9.66463,-9.75411 z"
-       class="st0"
-       id="path4615-9"
-       inkscape:connector-curvature="0"
-       style="display:inline;fill:#000000;fill-opacity:1;stroke-width:0.89487308"
-       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\icon_logistic.png"
-       inkscape:export-xdpi="31.666851"
-       inkscape:export-ydpi="31.666851" />
-    <path
-       d="m 379.43887,582.98499 c -6.71154,0 -12.08077,5.45874 -12.08077,12.08078 0,6.71157 5.45873,12.08081 12.08077,12.08081 6.71156,0 12.08079,-5.45875 12.08079,-12.08081 0,-6.62204 -5.36923,-12.08078 -12.08079,-12.08078 z m 0,4.83234 c 4.02693,0 7.24848,3.22155 7.24848,7.24844 0,4.02694 -3.22155,7.24849 -7.24848,7.24849 -4.02691,0 -7.24846,-3.22155 -7.24846,-7.24849 0,-4.02689 3.22155,-7.24844 7.24846,-7.24844 z"
-       class="st1"
-       id="path4617-4"
-       inkscape:connector-curvature="0"
-       style="display:inline;fill:#545454;fill-opacity:1;stroke-width:0.89487308"
-       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\icon_logistic.png"
-       inkscape:export-xdpi="31.666851"
-       inkscape:export-ydpi="31.666851" />
-    <path
-       style="display:inline;fill:#0044a8;fill-opacity:1;stroke-width:0.89487308"
-       inkscape:connector-curvature="0"
-       id="path4619-0"
-       class="st0"
-       d="m 379.43888,459.40309 c -10.73847,0 -19.41874,8.68027 -19.41874,19.41873 0,3.40051 0.89488,6.62206 2.50566,9.48567 0.26846,0.44742 0.53692,0.89487 0.80538,1.34229 l 16.1077,27.92002 16.01822,-27.92002 c 0.26846,-0.35794 0.44743,-0.71589 0.71589,-1.16333 l 0.17899,-0.26847 c 1.61076,-2.7741 2.50564,-5.99565 2.50564,-9.48564 0,-10.64898 -8.68026,-19.32925 -19.41874,-19.32925 z m 0,9.66462 c 5.36923,0 9.66462,4.38489 9.66462,9.66463 0,5.36924 -4.29539,9.75411 -9.66462,9.75411 -5.36923,0 -9.66462,-4.38487 -9.66462,-9.66463 0,-5.36922 4.29539,-9.75411 9.66462,-9.75411 z"
-       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\pin_plant.png"
-       inkscape:export-xdpi="37.554123"
-       inkscape:export-ydpi="37.554123" />
-    <path
-       style="display:inline;fill:#5b7fb5;fill-opacity:1;stroke-width:0.89487308"
-       inkscape:connector-curvature="0"
-       id="path4621-2"
-       class="st1"
-       d="m 379.43887,466.65156 c -6.71154,0 -12.08077,5.45872 -12.08077,12.08078 0,6.71154 5.45871,12.08078 12.08077,12.08078 6.71154,0 12.08079,-5.45872 12.08079,-12.08078 0,-6.62206 -5.36925,-12.08078 -12.08079,-12.08078 z m 0,4.83231 c 4.02693,0 7.24848,3.22155 7.24848,7.24847 0,4.02692 -3.22155,7.24847 -7.24848,7.24847 -4.02693,0 -7.24846,-3.22155 -7.24846,-7.24847 0,-4.02692 3.22153,-7.24847 7.24846,-7.24847 z"
-       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\pin_plant.png"
-       inkscape:export-xdpi="37.554123"
-       inkscape:export-ydpi="37.554123" />
-    <path
-       d="m 379.43889,517.5698 c -10.73848,0 -19.41874,8.68028 -19.41874,19.41876 0,3.40051 0.89486,6.62206 2.50564,9.48564 0.26846,0.44743 0.53692,0.89487 0.80539,1.3423 l 16.10771,27.92004 16.01821,-27.92004 c 0.26846,-0.35795 0.44745,-0.71589 0.71591,-1.16334 l 0.17896,-0.26844 c 1.61076,-2.7741 2.50564,-5.99565 2.50564,-9.48566 0,-10.64898 -8.68026,-19.32926 -19.41872,-19.32926 z m 0,9.66463 c 5.36922,0 9.66463,4.38489 9.66463,9.66463 0,5.36924 -4.29541,9.7541 -9.66463,9.7541 -5.36925,0 -9.66464,-4.38486 -9.66464,-9.6646 0,-5.36924 4.29539,-9.75413 9.66464,-9.75413 z"
-       class="st0"
-       id="path4623-4"
-       inkscape:connector-curvature="0"
-       style="display:inline;fill:#4d4d4d;fill-opacity:1;stroke-width:0.89487308"
-       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\pin_supplier.png"
-       inkscape:export-xdpi="31.666851"
-       inkscape:export-ydpi="31.666851" />
-    <path
-       d="m 379.43889,524.8183 c -6.71156,0 -12.08079,5.45872 -12.08079,12.08076 0,6.71156 5.45873,12.08078 12.08079,12.08078 6.71154,0 12.08077,-5.45872 12.08077,-12.08078 0,-6.62204 -5.36923,-12.08076 -12.08077,-12.08076 z m 0,4.83231 c 4.02691,0 7.24846,3.22153 7.24846,7.24845 0,4.02691 -3.22155,7.24846 -7.24846,7.24846 -4.02695,0 -7.24848,-3.22155 -7.24848,-7.24846 0,-4.02692 3.22153,-7.24845 7.24848,-7.24845 z"
-       class="st1"
-       id="path4625-2"
-       inkscape:connector-curvature="0"
-       style="display:inline;fill:#ababab;fill-opacity:1;stroke-width:0.89487308"
-       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\pin_supplier.png"
-       inkscape:export-xdpi="31.666851"
-       inkscape:export-ydpi="31.666851" />
-    <path
-       inkscape:export-ydpi="37.553677"
-       inkscape:export-xdpi="37.553677"
-       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\reciclapac\relog-frontend-web\src\assets\images\pin_removido_first.png"
-       inkscape:connector-curvature="0"
-       id="path4571-1"
-       d="m 432.41263,401.23621 c -10.7385,0 -19.4185,8.67991 -19.4185,19.4184 0,3.40051 0.8942,6.62307 2.5049,9.48665 0.2685,0.44743 0.5377,0.89401 0.8061,1.34146 l 16.1075,27.9209 16.0183,-27.9209 c 0.2685,-0.35795 0.4474,-0.71598 0.7159,-1.16342 l 0.1793,-0.26829 c 1.6107,-2.77411 2.5049,-5.99541 2.5049,-9.48542 0,-10.64898 -8.68,-19.32938 -19.4184,-19.32938 z m 0,7.24883 c 6.7115,0 12.0805,5.45849 12.0805,12.08055 0,6.62206 -5.369,12.08055 -12.0805,12.08055 -6.6221,0 -12.0806,-5.36899 -12.0806,-12.08055 0,-6.62206 5.369,-12.08055 12.0806,-12.08055 z"
        style="display:inline;fill:#a349a4;fill-opacity:1;stroke-width:0.89487308" />
     <path
        inkscape:export-ydpi="37.553677"
        inkscape:export-xdpi="37.553677"
-       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\reciclapac\relog-frontend-web\src\assets\images\pin_removido_final.png"
+       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\retirado-first.png"
        inkscape:connector-curvature="0"
-       id="path4575-1"
-       d="m 485.00893,401.23621 c -10.7385,0 -19.4184,8.67991 -19.4184,19.4184 0,3.40051 0.8953,6.62307 2.5061,9.48665 0.2685,0.44743 0.5364,0.89401 0.8049,1.34146 l 16.1074,27.9209 16.0184,-27.9209 c 0.2684,-0.35795 0.4474,-0.71598 0.7158,-1.16342 l 0.1793,-0.26829 c 1.6108,-2.77411 2.5061,-5.99541 2.5061,-9.48542 0,-10.64898 -8.6811,-19.32938 -19.4196,-19.32938 z m 0,7.24883 c 6.7115,0 12.0818,5.45849 12.0818,12.08055 0,6.62206 -5.3703,12.08055 -12.0818,12.08055 -6.6221,0 -12.0806,-5.36899 -12.0806,-12.08055 0,-6.62206 5.369,-12.08055 12.0806,-12.08055 z"
-       style="display:inline;fill:#a349a4;fill-opacity:1;stroke-width:0.89487308" />
+       id="path4571-4"
+       d="m 432.41263,401.23688 c -10.73849,0 -19.41849,8.67991 -19.41849,19.4184 0,3.40051 0.89419,6.62307 2.5049,9.48665 0.2685,0.44743 0.5377,0.89401 0.80609,1.34146 l 16.1075,27.9209 16.01831,-27.9209 c 0.26849,-0.35795 0.4474,-0.71598 0.71589,-1.16342 l 0.1793,-0.26829 c 1.61071,-2.77411 2.5049,-5.99541 2.5049,-9.48542 0,-10.64898 -8.68,-19.32938 -19.4184,-19.32938 z m 0,7.24883 c 6.7115,0 12.08051,5.45849 12.08051,12.08055 0,6.62206 -5.36901,12.08055 -12.08051,12.08055 -6.6221,0 -12.0806,-5.36899 -12.0806,-12.08055 0,-6.62206 5.36901,-12.08055 12.0806,-12.08055 z"
+       style="display:inline;fill:#a349a4;fill-opacity:0.78894472;stroke-width:0.89487308" />
+    <path
+       inkscape:export-ydpi="37.553677"
+       inkscape:export-xdpi="37.553677"
+       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\pin_retirado_final.png"
+       inkscape:connector-curvature="0"
+       id="path4575-9"
+       d="m 485.00893,401.23688 c -10.7385,0 -19.4184,8.67991 -19.4184,19.4184 0,3.40051 0.8953,6.62307 2.5061,9.48665 0.2685,0.44743 0.5364,0.89401 0.8049,1.34146 l 16.1074,27.9209 16.0184,-27.9209 c 0.2684,-0.35795 0.4474,-0.71598 0.7158,-1.16342 l 0.1793,-0.26829 c 1.6108,-2.77411 2.5061,-5.99541 2.5061,-9.48542 0,-10.64898 -8.6811,-19.32938 -19.4196,-19.32938 z m 0,7.24883 c 6.7115,0 12.0818,5.45849 12.0818,12.08055 0,6.62206 -5.3703,12.08055 -12.0818,12.08055 -6.6221,0 -12.0806,-5.36899 -12.0806,-12.08055 0,-6.62206 5.369,-12.08055 12.0806,-12.08055 z"
+       style="display:inline;fill:#a349a4;fill-opacity:0.78894472;stroke-width:0.89487308" />
     <rect
        inkscape:export-ydpi="37.553677"
        inkscape:export-xdpi="37.553677"
-       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\reciclapac\relog-frontend-web\src\assets\images\pin_removido_final.png"
+       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\pin_retirado_final.png"
        ry="0.34075838"
-       y="412.78174"
-       x="476.88214"
+       y="412.78238"
+       x="476.88217"
        height="16.254808"
        width="16.254808"
-       id="rect4644-4"
-       style="display:inline;opacity:1;fill:#d049a4;fill-opacity:1;stroke:none;stroke-width:0.71114802;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       id="rect4644-0"
+       style="display:inline;opacity:1;fill:#a349a4;fill-opacity:1;stroke:none;stroke-width:0.71114802;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
        sodipodi:type="star"
-       style="display:inline;opacity:1;fill:#d049a4;fill-opacity:1;stroke:none;stroke-width:0.39239001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path4646-8"
+       style="display:inline;opacity:1;fill:#a349a4;fill-opacity:1;stroke:none;stroke-width:0.39239001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4646-3"
        sodipodi:sides="3"
-       sodipodi:cx="432.32428"
-       sodipodi:cy="420.90911"
+       sodipodi:cx="432.3243"
+       sodipodi:cy="420.90976"
        sodipodi:r1="11.06224"
        sodipodi:r2="5.5311203"
        sodipodi:arg1="2.0943951"
@@ -379,10 +325,10 @@
        inkscape:flatsided="false"
        inkscape:rounded="0"
        inkscape:randomized="0"
-       d="m 426.79316,430.4893 0,-9.58018 0,-9.58018 8.29668,4.79009 8.29668,4.79009 -8.29668,4.79009 z"
+       d="m 426.79319,430.48994 0,-9.58018 0,-9.58018 8.29668,4.79009 8.29668,4.79009 -8.29668,4.79009 z"
        inkscape:transform-center-x="-2.7655538"
        inkscape:transform-center-y="9.0887601e-006"
-       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\reciclapac\relog-frontend-web\src\assets\images\pin_removido_first.png"
+       inkscape:export-filename="C:\Users\Guilherme Novaes\Desktop\retirado-first.png"
        inkscape:export-xdpi="37.553677"
        inkscape:export-ydpi="37.553677" />
   </g>
@@ -613,6 +559,60 @@
          x="584.53912"
          y="73.822739"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';fill:#ffffff;stroke-width:0.857406">normal</tspan></text>
+    <path
+       d="m 379.43888,575.73721 c -10.73847,0 -19.41873,8.68025 -19.41873,19.41874 0,3.40051 0.89486,6.62206 2.50564,9.48566 0.26846,0.44743 0.53692,0.89487 0.80539,1.3423 l 16.1077,27.92002 16.01822,-27.92002 c 0.26846,-0.35797 0.44743,-0.71589 0.71591,-1.16334 l 0.17896,-0.26846 c 1.61076,-2.7741 2.50564,-5.99565 2.50564,-9.48567 0,-10.64898 -8.68026,-19.32923 -19.41874,-19.32923 z m 0,9.66463 c 5.36923,0 9.66462,4.38486 9.66462,9.6646 0,5.36927 -4.29539,9.75413 -9.66462,9.75413 -5.36924,0 -9.66463,-4.38486 -9.66463,-9.66462 0,-5.36925 4.29539,-9.75411 9.66463,-9.75411 z"
+       class="st0"
+       id="path4615"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:1;stroke-width:0.89487302"
+       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\icon_logistic.png"
+       inkscape:export-xdpi="31.666851"
+       inkscape:export-ydpi="31.666851" />
+    <path
+       d="m 379.43887,582.98566 c -6.71154,0 -12.08077,5.45874 -12.08077,12.08078 0,6.71157 5.45873,12.08081 12.08077,12.08081 6.71156,0 12.08079,-5.45875 12.08079,-12.08081 0,-6.62204 -5.36923,-12.08078 -12.08079,-12.08078 z m 0,4.83234 c 4.02693,0 7.24848,3.22155 7.24848,7.24844 0,4.02694 -3.22155,7.24849 -7.24848,7.24849 -4.02691,0 -7.24846,-3.22155 -7.24846,-7.24849 0,-4.02689 3.22155,-7.24844 7.24846,-7.24844 z"
+       class="st1"
+       id="path4617"
+       inkscape:connector-curvature="0"
+       style="fill:#545454;fill-opacity:1;stroke-width:0.89487302"
+       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\icon_logistic.png"
+       inkscape:export-xdpi="31.666851"
+       inkscape:export-ydpi="31.666851" />
+    <path
+       style="fill:#0044a8;fill-opacity:1;stroke-width:0.89487302"
+       inkscape:connector-curvature="0"
+       id="path4619"
+       class="st0"
+       d="m 379.43888,459.40376 c -10.73847,0 -19.41874,8.68027 -19.41874,19.41873 0,3.40051 0.89488,6.62206 2.50566,9.48567 0.26846,0.44742 0.53692,0.89487 0.80538,1.34229 l 16.1077,27.92002 16.01822,-27.92002 c 0.26846,-0.35794 0.44743,-0.71589 0.71589,-1.16333 l 0.17899,-0.26847 c 1.61076,-2.7741 2.50564,-5.99565 2.50564,-9.48564 0,-10.64898 -8.68026,-19.32925 -19.41874,-19.32925 z m 0,9.66462 c 5.36923,0 9.66462,4.38489 9.66462,9.66463 0,5.36924 -4.29539,9.75411 -9.66462,9.75411 -5.36923,0 -9.66462,-4.38487 -9.66462,-9.66463 0,-5.36922 4.29539,-9.75411 9.66462,-9.75411 z"
+       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\pin_plant.png"
+       inkscape:export-xdpi="37.554123"
+       inkscape:export-ydpi="37.554123" />
+    <path
+       style="fill:#5b7fb5;fill-opacity:1;stroke-width:0.89487302"
+       inkscape:connector-curvature="0"
+       id="path4621"
+       class="st1"
+       d="m 379.43887,466.65223 c -6.71154,0 -12.08077,5.45872 -12.08077,12.08078 0,6.71154 5.45871,12.08078 12.08077,12.08078 6.71154,0 12.08079,-5.45872 12.08079,-12.08078 0,-6.62206 -5.36925,-12.08078 -12.08079,-12.08078 z m 0,4.83231 c 4.02693,0 7.24848,3.22155 7.24848,7.24847 0,4.02692 -3.22155,7.24847 -7.24848,7.24847 -4.02693,0 -7.24846,-3.22155 -7.24846,-7.24847 0,-4.02692 3.22153,-7.24847 7.24846,-7.24847 z"
+       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\pin_plant.png"
+       inkscape:export-xdpi="37.554123"
+       inkscape:export-ydpi="37.554123" />
+    <path
+       d="m 379.43889,517.57047 c -10.73848,0 -19.41874,8.68028 -19.41874,19.41876 0,3.40051 0.89486,6.62206 2.50564,9.48564 0.26846,0.44743 0.53692,0.89487 0.80539,1.3423 l 16.10771,27.92004 16.01821,-27.92004 c 0.26846,-0.35795 0.44745,-0.71589 0.71591,-1.16334 l 0.17896,-0.26844 c 1.61076,-2.7741 2.50564,-5.99565 2.50564,-9.48566 0,-10.64898 -8.68026,-19.32926 -19.41872,-19.32926 z m 0,9.66463 c 5.36922,0 9.66463,4.38489 9.66463,9.66463 0,5.36924 -4.29541,9.7541 -9.66463,9.7541 -5.36925,0 -9.66464,-4.38486 -9.66464,-9.6646 0,-5.36924 4.29539,-9.75413 9.66464,-9.75413 z"
+       class="st0"
+       id="path4623"
+       inkscape:connector-curvature="0"
+       style="fill:#4d4d4d;fill-opacity:1;stroke-width:0.89487302"
+       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\pin_supplier.png"
+       inkscape:export-xdpi="31.666851"
+       inkscape:export-ydpi="31.666851" />
+    <path
+       d="m 379.43889,524.81897 c -6.71156,0 -12.08079,5.45872 -12.08079,12.08076 0,6.71156 5.45873,12.08078 12.08079,12.08078 6.71154,0 12.08077,-5.45872 12.08077,-12.08078 0,-6.62204 -5.36923,-12.08076 -12.08077,-12.08076 z m 0,4.83231 c 4.02691,0 7.24846,3.22153 7.24846,7.24845 0,4.02691 -3.22155,7.24846 -7.24846,7.24846 -4.02695,0 -7.24848,-3.22155 -7.24848,-7.24846 0,-4.02692 3.22153,-7.24845 7.24848,-7.24845 z"
+       class="st1"
+       id="path4625"
+       inkscape:connector-curvature="0"
+       style="fill:#ababab;fill-opacity:1;stroke-width:0.89487302"
+       inkscape:export-filename="C:\Users\emanoel.silva\Desktop\Recicla\icon maps\pin_supplier.png"
+       inkscape:export-xdpi="31.666851"
+       inkscape:export-ydpi="31.666851" />
     <path
        inkscape:connector-curvature="0"
        inkscape:export-ydpi="31.666782"
