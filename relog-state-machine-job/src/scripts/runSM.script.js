@@ -40,8 +40,8 @@ module.exports = async (setting, packing, controlPoints) => {
         if (!packing.last_position) return null
 
         let lastMessageDate = getLastMessage(packing);
-        console.log("getDiffDateTodayInDays(lastMessageDate)"); 
-        console.log(getDiffDateTodayInDays(lastMessageDate)); 
+        // console.log("getDiffDateTodayInDays(lastMessageDate)"); 
+        // console.log(getDiffDateTodayInDays(lastMessageDate)); 
 
         /* Avalia se a bateria está baixa */
         await evaluatesIfPackingIsWithBatteryLow(packing, setting)

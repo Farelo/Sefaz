@@ -1,9 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import {
-  PackingService,
-  SettingsService,
-  AlertsService,
+  PackingService, 
   AuthenticationService,
   PositionsService,
   ControlPointsService,
@@ -238,7 +236,7 @@ export class LayerModalComponent implements OnInit {
         console.log(result.length);
         
         if (result.length > 1) {
-          // this.markers = result.reverse();
+          this.markers = result.reverse();
 
           let datePipe = new DatePipe("en");
 

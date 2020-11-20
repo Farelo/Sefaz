@@ -51,7 +51,7 @@ const createMany = async (packing, temperatureArray) => {
 };
 
 const referenceFromPackage = async (packing, doc) => {
-   console.log(referenceFromPackage, doc);
+   // console.log(referenceFromPackage, doc);
    try {
       await Packing.findByIdAndUpdate(packing._id, { last_temperature: doc._id }, { new: true });
    } catch (error) {
