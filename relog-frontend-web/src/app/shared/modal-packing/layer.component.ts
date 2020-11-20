@@ -119,14 +119,14 @@ export class LayerModalComponent implements OnInit {
       this.mPacking = response;
 
       if (
-        this.mPacking.last_device_data &&
-        this.mPacking.last_device_data.message_date_timestamp * 1000 <
+        this.mPacking.last_position &&
+        this.mPacking.last_position.timestamp * 1000 <
           this.initialDate.getTime()
       ) {
         // console.log("caso 1");
 
         this.initialDate = new Date(
-          this.mPacking.last_device_data.message_date_timestamp * 1000
+          this.mPacking.last_position.timestamp * 1000
         );
 
         let initialD = this.formatDate(this.initialDate);

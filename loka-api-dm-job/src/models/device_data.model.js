@@ -56,62 +56,10 @@ const deviceDataSchema = new mongoose.Schema({
 
 deviceDataSchema.index({ device_id: 1, message_date: -1 }, { unique: true });
 
-const update_packing = async (device_data, next) => {
-  try {
-    let update_attrs = {};
-    let update = false;
-    const packing = await Packing.findByTag(device_data.device_id);
-
-    if (!packing) next();
-
-    let current_message_date_on_packing = await DeviceData.findById(packing.last_device_data, {
-      _id: 0,
-      message_date: 1,
-    });
-
-    current_message_date_on_packing = current_message_date_on_packing
-      ? current_message_date_on_packing.message_date
-      : null;
-
-    //se o novo device_data é mais recente que o que já esta salvo, então atualiza
-    if (device_data.message_date > current_message_date_on_packing) {
-      update_attrs.last_device_data = device_data._id;
-
-      update = true;
-    }
-
-    //se o novo device_data possui informação de bateria
-    if (device_data.battery.percentage || device_data.battery.voltage) {
-      let packing_date_battery_data = await DeviceData.findById(packing.last_device_data_battery, {
-        _id: 0,
-        message_date: 1,
-      });
-
-      packing_date_battery_data = packing_date_battery_data ? packing_date_battery_data.message_date : null;
-
-      // se essa informação de bateria é mais recente que a que ja existe no packing ou o packing não tem ainda nenhuma info de bateria
-      if (device_data.message_date > packing_date_battery_data) {
-        update_attrs.last_device_data_battery = device_data._id;
-      }
-
-      update = true;
-    }
-
-    if (update) await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
-
-    next();
-  } catch (error) {
-    next(error);
-  }
-};
-
 deviceDataSchema.statics.findByDeviceId = function (device_id, projection = "") {
   return this.findOne({ device_id }, projection);
 };
 
-const saveDeviceDataToPacking = function (doc, next) {
-  update_packing(doc, next);
-};
 
 const update_updated_at_middleware = function (next) {
   let update = this.getUpdate();
