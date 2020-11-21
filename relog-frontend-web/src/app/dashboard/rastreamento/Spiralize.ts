@@ -185,7 +185,7 @@ export class Spiralize {
                         <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Tag:</span> ${ m.tag }</p>
                         <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acu:</span> ${ m.accuracy }</p>
                         <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bat:</span> ${ m.battery }</p>
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(m.message_date, 'dd/MM/yy HH:mm:ss', '+00:00') } </p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(m.message_date, 'dd/MM/yy HH:mm:ss') } </p>
                     </div>`);
 
                 this.infoWin.setOptions({maxWidth: 250});
@@ -398,7 +398,7 @@ export class Spiralize {
                                                 <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Tag:</span> ${ e.tag }</p>
                                                 <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acu:</span> ${ e.accuracy }</p>
                                                 <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bat:</span> ${ e.battery }</p>
-                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(e.message_date, 'dd/MM/yy HH:mm:ss', '+00:00') } </p>
+                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(e.message_date, 'dd/MM/yy HH:mm:ss') } </p>
                                             </div>`);
 
                             this.infoWin.setOptions({ maxWidth: 250 });

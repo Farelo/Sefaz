@@ -275,7 +275,7 @@ export class LayerModalComponent implements OnInit {
             google.maps.event.addListener(m, "click", (evt) => {
               // <div class="iw-title">INFORMAÇÕES</div>
               // <div *ngIf="marker.display" class="info-window-content">
-              //   <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss' : '+00:00' }}</p>
+              //   <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss'}}</p>
               //   <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
               //   <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
               // </div>
@@ -284,8 +284,7 @@ export class LayerModalComponent implements OnInit {
                 `<div style="padding: 0px 6px;">
                       <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Data:</span> ${datePipe.transform(
                         m.message_date,
-                        "dd/MM/yy HH:mm:ss",
-                        "+00:00"
+                        "dd/MM/yy HH:mm:ss" 
                       )}</p>
                       <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${
                         m.accuracy

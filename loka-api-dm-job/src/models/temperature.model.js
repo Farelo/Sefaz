@@ -26,12 +26,12 @@ const temperatureSchema = new mongoose.Schema({
 
 temperatureSchema.index({ tag: 1, timestamp: -1 }, { unique: true });
 
-const createMany = async (packing, temperatureArray) => { 
+const createMany = async (packing, temperatureArray) => {
    for (const [index, temperature] of temperatureArray.entries()) {
       try {
          const newTemperature = new Temperature({
             tag: packing.tag.code,
-            date: new Date(temperature.date),
+            date: new Date(temperature.timestamp * 1000),
             timestamp: temperature.timestamp,
             value: temperature.value,
          });

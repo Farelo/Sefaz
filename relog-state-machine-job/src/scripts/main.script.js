@@ -42,10 +42,6 @@ module.exports = async () => {
 
             await iteratePackings(setting, packings, controlPoints);
 
-            // packings.forEach(packing => {
-            //     runSM(setting, packing, controlPoints)
-            // })
-
             spinner.succeed("Finished!");
 
             //open the semmaphor
@@ -54,12 +50,6 @@ module.exports = async () => {
       }
    });
 };
-
-// const iteratePackings = (setting, packings, controlPoints) => {
-//     for(let packing of packings) {
-//         runSM(setting, packing, controlPoints)
-//     }
-// }
 
 const iteratePackings = async (setting, packings, controlPoints) => {
    for await (let packing of packings) {

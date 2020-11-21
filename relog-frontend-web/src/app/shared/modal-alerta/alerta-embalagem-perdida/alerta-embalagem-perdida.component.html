@@ -26,7 +26,7 @@
         <p class="titulo-modal">ÚLTIMO SINAL:</p>
         <br>
         <p> {{ alerta?.last_position ?
-                (alerta.last_position.date | date: 'dd/MM/yy HH:mm:ss' : '+00:00')
+                (alerta.last_position.date | date: 'dd/MM/yy HH:mm:ss')
                 : "Sem Registro" }}</p>
       </div>
     </div>

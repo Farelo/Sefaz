@@ -77,13 +77,13 @@
           <td style="cursor: default;">{{packing?.current_control_point_name ? packing.current_control_point_name : "-" }}</td>
 
           <td>{{ packing.current_control_point_type }} </td>
-          <td class="text-center" [ngbTooltip]="packing.battery_date !== '-' ? (packing.battery_date | date: 'dd/MM/yy HH:mm:ss' : '+00:00') : 'Sem data da bateria'" placement="top" container="body">{{ (packing.battery_percentage != undefined && packing.battery_percentage >= 0) ? ((packing.battery_percentage | round) + '%') : 'Sem Registro' }} </td>
+          <td class="text-center" [ngbTooltip]="packing.battery_date !== '-' ? (packing.battery_date | date: 'dd/MM/yy HH:mm:ss') : 'Sem data da bateria'" placement="top" container="body">{{ (packing.battery_percentage != undefined && packing.battery_percentage >= 0) ? ((packing.battery_percentage | round) + '%') : 'Sem Registro' }} </td>
           
           <td class="text-center">{{ packing.in_out_accuracy !== '-' ? packing.in_out_accuracy + 'm' : '-'}}</td>
-          <td class="text-center">{{ (packing.in_out_date !== "-") ? ((packing.in_out_date | date: 'dd/MM/yy HH:mm:ss' : '+00:00')) : '-' }}</td>
+          <td class="text-center">{{ (packing.in_out_date !== "-") ? ((packing.in_out_date | date: 'dd/MM/yy HH:mm:ss')) : '-' }}</td>
 
           <td class="text-center">{{ packing.accuracy || '-' }} m</td>
-          <td class="text-center">{{ (packing.date !== "Sem registro") ? ((packing.date | date: 'dd/MM/yy HH:mm:ss' : '+00:00')) : packing.date }}</td>
+          <td class="text-center">{{ (packing.date !== "Sem registro") ? ((packing.date | date: 'dd/MM/yy HH:mm:ss')) : packing.date }}</td>
           <td style="text-align: center;">
             <div class="bigger" (click)="openLayer(packing)">
               <div class="det"> </div>

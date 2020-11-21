@@ -34,7 +34,7 @@ const createMany = async (packing, batteryArray) => {
       try {
          const newBattery = new Battery({
             tag: packing.tag.code,
-            date: new Date(battery.date),
+            date: new Date(battery.timestamp * 1000),
             timestamp: battery.timestamp,
             battery: battery.battery,
             batteryVoltage: battery.batteryVoltage,

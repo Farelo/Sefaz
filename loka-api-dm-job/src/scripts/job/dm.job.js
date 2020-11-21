@@ -15,6 +15,7 @@ const generatePositionQuery = (packing) => {
    if (packing.last_position)
       positionStartDate = moment(packing.last_position.timestamp * 1000)
          .utc()
+         .subtract(3, "h")
          .add(1, "seconds")
          .format("YYYY-MM-DD HH:mm:ss")
          .toString();
@@ -41,11 +42,12 @@ const generateSensorQuery = (packing) => {
    //Which one is the most recent?
    let lastSensorTimestamp = _.max([lastTemperatureTimestamp, lastBatteryTimestamp]);
    
-
    //If there is a most recent value, then calculate the time window
    //If there isn't a most recent value, then calculate the last 7 days
    if (lastSensorTimestamp > 0)
       sensorStartDate = moment(lastSensorTimestamp * 1000)
+         .utc()
+         .subtract(3, "h")
          .add(1, "seconds")
          .format("YYYY-MM-DD HH:mm:ss")
          .toString();
