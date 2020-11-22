@@ -113,14 +113,14 @@ module.exports = async () => {
                if (newPositionsArray.length > 0 && newSensorsArray.length > 0) {
                   let lastMessage =
                      newPositionsArray[0].timestamp >= newSensorsArray[0].timestamp
-                        ? newPositionsArray[0].date
-                        : newSensorsArray[0].date;
+                        ? new Date(newPositionsArray[0].timestamp * 1000)
+                        : new Date(newSensorsArray[0].timestamp * 1000)
                   await Packing.findByIdAndUpdate(packing._id, { last_message_signal: lastMessage }, { new: true });
                } else {
                   if (newPositionsArray.length > 0) {
                      await Packing.findByIdAndUpdate(
                         packing._id,
-                        { last_message_signal: newPositionsArray[0].date },
+                        { last_message_signal: new Date(newPositionsArray[0].timestamp * 1000) },
                         { new: true }
                      );
                   }
@@ -128,7 +128,7 @@ module.exports = async () => {
                   if (newSensorsArray.length > 0) {
                      await Packing.findByIdAndUpdate(
                         packing._id,
-                        { last_message_signal: newSensorsArray[0].date },
+                        { last_message_signal: new Date(newSensorsArray[0].timestamp * 1000) },
                         { new: true }
                      );
                   }
