@@ -7,7 +7,7 @@
     "generate-env": "cross-env NODE_ENV=production node src/tools/generate_env.tools.js",
     "start-initial-load": "cross-env NODE_CONFIG_DIR=src/config INITIAL_LOAD=true node src/server.js",
     "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=job:loka nodemon src/server.js",
-    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* nodemon src/server.js",
+    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=job:loka nodemon src/server.js",
     "prod-pm2": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production pm2 start src/server.js --name loka-api-job",
     "prod-pm2-cluster": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production pm2 start src/server.js --name loka-api-job -i 0",
     "test": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=test jest --watchAll --verbose --runInBand --no-cache"
