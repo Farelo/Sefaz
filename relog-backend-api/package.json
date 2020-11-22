@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "postinstall": "node src/tools/generate_env.tools.js",
-    "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* nodemon src/server.js",
+    "start": "cross-env NODE_CONFIG_DIR=src/config nodemon src/server.js",
     "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production nodemon src/server.js",
     "prod-pm2-cluster": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production pm2 start src/server.js --name recicla-job -i 0",
     "test": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=test jest --watchAll --verbose --runInBand --no-cache"

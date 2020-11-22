@@ -12,8 +12,11 @@ export class CategoriaBateriaBaixaComponent implements OnInit {
 
   @Input() resume: any;
 
+  public bateriaBaixaCollapsed: boolean = false;
+  public bateriaCollapsed: boolean = false;
   public listBattery: any[] = [];
   public progressBateria: any = [];
+  public listBatteryActualPage: number = -1;
 
   constructor(private homeService: HomeService) { 
 

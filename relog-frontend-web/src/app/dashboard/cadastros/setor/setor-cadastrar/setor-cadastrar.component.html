@@ -15,7 +15,7 @@
               maxlength="50"
               placeholder="Digite o nome do departamento"
               aria-describedby="basic-addon2"
-              [(ngModel)]="name" formControlName="name"
+              formControlName="name"
               [ngClass]="{'required': (mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
                 || (mDepartment.get('name').hasError('required') && formDir.submitted)
                 || (mDepartment.get('name').hasError('minlength'))
@@ -95,7 +95,7 @@
         <p class="descricao">LATITUDE</p>
         <div class="input-group">
           <input type="text" class="form-control" readonly placeholder="Digite a latitude" aria-describedby="basic-addon2"
-            [(ngModel)]="lat" formControlName="lat" [ngClass]="{'required': (mDepartment.get('lat').hasError('required') && mDepartment.get('lat').touched)
+            formControlName="lat" [ngClass]="{'required': (mDepartment.get('lat').hasError('required') && mDepartment.get('lat').touched)
           || (mDepartment.get('lat').hasError('required') && formDir.submitted)}">
         </div>
 
@@ -108,7 +108,7 @@
         <p class="descricao">LONGITUDE</p>
         <div class="input-group">
           <input type="text" class="form-control" readonly placeholder="Digite a longitude" aria-describedby="basic-addon2"
-            [(ngModel)]="lng" formControlName="lng" [ngClass]="{'required': (mDepartment.get('lng').hasError('required') && mDepartment.get('lng').touched)
+            formControlName="lng" [ngClass]="{'required': (mDepartment.get('lng').hasError('required') && mDepartment.get('lng').touched)
           || (mDepartment.get('lng').hasError('required') && formDir.submitted)}">
         </div>
 

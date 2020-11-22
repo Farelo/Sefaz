@@ -14,15 +14,15 @@ declare var $:any;
   styleUrls: ['./redefinir-senha.component.css']
 })
 export class RedefinirSenhaComponent implements OnInit {
-  private entrada2: any;
-  private senhaFraca: boolean = false;
-  private senhaModerada: boolean = false;
-  private senhaForte: boolean = false;
-  private preCaracteres: boolean = false;
-  private preNumeros: boolean = false;
-  private preLetras: boolean = false;
-  private senhasIguais: boolean = false;
-  private senhasDiferentes: boolean = false;
+  public entrada2: any;
+  public senhaFraca: boolean = false;
+  public senhaModerada: boolean = false;
+  public senhaForte: boolean = false;
+  public preCaracteres: boolean = false;
+  public preNumeros: boolean = false;
+  public preLetras: boolean = false;
+  public senhasIguais: boolean = false;
+  public senhasDiferentes: boolean = false;
 
   password: FormControl = new FormControl('', Validators.compose([
     UniversalValidators.minLength(6),

@@ -18,6 +18,7 @@ export class CategoriaPontosDeControleComponent implements OnInit {
   public listPermanenceTime: any[] = [];
   
   public tempoDePermanenciaCollapsed: boolean = false;
+  public conteudoTempoDePermanencia: any;
   public localIncorretoCollapsed: boolean = false;
   
   public listIncorrectActualPage: number = -1;

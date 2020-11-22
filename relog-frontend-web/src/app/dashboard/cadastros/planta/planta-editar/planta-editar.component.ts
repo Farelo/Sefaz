@@ -65,7 +65,7 @@ export class PlantaEditarComponent implements OnInit {
     this.ref.detectChanges();
   }
 
-  onClick(event, str) {
+  onClick(event) {
       if (event instanceof MouseEvent){
         return;
       }

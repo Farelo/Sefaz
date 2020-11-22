@@ -1,11 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Department } from '../../shared/models/department';
-import { ModalRastComponent } from '../../shared/modal-rast/modal-rast.component';
-import { AuthenticationService, PackingService, PlantsService, DepartmentService, SettingsService, InventoryService, FamiliesService, DevicesService, ControlPointsService } from '../../servicos/index.service';
-import { Pagination } from '../../shared/models/pagination';
-import { MapsService } from '../../servicos/maps.service';
+import { Department } from '../../shared/models/department'; 
+import { AuthenticationService, PackingService, FamiliesService, ControlPointsService } from '../../servicos/index.service';
+import { Pagination } from '../../shared/models/pagination'; 
 import './markercluster';
 import { Spiralize } from './Spiralize';
 
@@ -87,16 +85,11 @@ export class RastreamentoComponent implements OnInit {
 
   public listOfCompanies: any = [];
 
-  constructor(
-    private ref: ChangeDetectorRef,
-    private controlPointsService: ControlPointsService,
-    private departmentService: DepartmentService,
+  constructor( 
+    private controlPointsService: ControlPointsService, 
     private familyService: FamiliesService,
     private authenticationService: AuthenticationService,
-    private deviceService: DevicesService,
-    private packingService: PackingService,
-    private mapsService: MapsService,
-    private modalService: NgbModal,
+    private packingService: PackingService,  
     private auth: AuthenticationService) {
 
   }
@@ -267,25 +260,25 @@ export class RastreamentoComponent implements OnInit {
     // console.log('this.selectedSerial');
     // console.log(this.selectedSerial);
 
-    this.deviceService.getDeviceData(cp_id, family_id, serial_id).subscribe((result: any[]) => {
+    this.packingService.getGeolocation(cp_id, family_id, serial_id).subscribe((result: any[]) => {
 
       this.plotedPackings = result.filter(elem => {
-        if (elem.last_device_data)
+        if (elem.last_position)
           return true;
         else
           return false;
       });
 
       this.plotedPackings.map(elem => {
-        elem.position = (new google.maps.LatLng(elem.last_device_data.latitude, elem.last_device_data.longitude));
-        elem.latitude = elem.last_device_data.latitude;
-        elem.longitude = elem.last_device_data.longitude;
+        elem.position = (new google.maps.LatLng(elem.last_position.latitude, elem.last_position.longitude));
+        elem.latitude = elem.last_position.latitude;
+        elem.longitude = elem.last_position.longitude;
         return elem;
       });
 
       //Se só há um objeto selecionado, centralize o mapa nele
       if (this.plotedPackings.length == 1){
-        if (this.plotedPackings[0].last_device_data){
+        if (this.plotedPackings[0].last_position){
           this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
         }
       }
@@ -369,10 +362,10 @@ export class RastreamentoComponent implements OnInit {
   }
 
 
-  open(id) {
-    const modalRef = this.modalService.open(ModalRastComponent);
-    modalRef.componentInstance.department = id;
-  }
+  // open(id) {
+  //   const modalRef = this.modalService.open(ModalRastComponent);
+  //   modalRef.componentInstance.department = id;
+  // }
 
   startWindow(marker) {
     marker.nguiMapComponent.openInfoWindow('iw', marker);
@@ -419,9 +412,9 @@ export class RastreamentoComponent implements OnInit {
    * Misc ...
    * Relative to side-menu
    */
-  private _opened: boolean = true;
+  public _opened: boolean = true;
 
-  private _toggleSidebar() {
+  public _toggleSidebar() {
     this._opened = !this._opened;
   }
 }

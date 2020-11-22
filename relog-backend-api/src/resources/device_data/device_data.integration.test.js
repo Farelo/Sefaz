@@ -432,9 +432,7 @@ describe('api/device_data', () => {
             const new_device_data = new DeviceData(device_data_body)
             await new_device_data.save()
         
-            const tag = {code: device_data_body.device_id}
-
-            const packing = await Packing.findByTag(tag)
+            const packing = await Packing.findByTag(device_data_body.device_id)
 
             const last_device_data = packing.last_device_data
 
@@ -463,9 +461,7 @@ describe('api/device_data', () => {
             })
             await second_device_data.save()
 
-            const tag = {code: deviceId}
-
-            const packing = await Packing.findByTag(tag)
+            const packing = await Packing.findByTag(deviceId)
 
             const last_device_data = packing.last_device_data
 
@@ -493,9 +489,7 @@ describe('api/device_data', () => {
             })
             await second_device_data.save()
 
-            const tag = {code: deviceId}
-
-            const packing = await Packing.findByTag(tag)
+            const packing = await Packing.findByTag(deviceId)
 
             const last_device_data = packing.last_device_data
 

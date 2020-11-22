@@ -2,6 +2,9 @@ const ora = require("ora");
 const cron = require("node-cron");
 
 const { Setting } = require("../models/settings.model");
+const { Position } = require("../models/position.model");
+const { Battery } = require("../models/battery.model");
+const { Temperature } = require("../models/temperature.model");
 const { Packing } = require("../models/packings.model");
 const { ControlPoint } = require("../models/control_points.model");
 
@@ -26,22 +29,18 @@ module.exports = async () => {
 
             setting = await getSettings();
 
-            // const device_data_array = await DeviceData.find({})
             const controlPoints = await ControlPoint.find({}).populate("company").populate("type");
 
             //const packings = await Packing.find({ })
             const packings = await Packing.find({})
-               .populate("family")
-               .populate("last_device_data")
-               .populate("last_device_data_battery")
+               .populate("family") 
                .populate("last_current_state_history")
-               .populate("last_event_record");
+               .populate("last_event_record")
+               .populate("last_position")
+               .populate("last_battery")
+               .populate("last_temperature");
 
             await iteratePackings(setting, packings, controlPoints);
-
-            // packings.forEach(packing => {
-            //     runSM(setting, packing, controlPoints)
-            // })
 
             spinner.succeed("Finished!");
 
@@ -51,12 +50,6 @@ module.exports = async () => {
       }
    });
 };
-
-// const iteratePackings = (setting, packings, controlPoints) => {
-//     for(let packing of packings) {
-//         runSM(setting, packing, controlPoints)
-//     }
-// }
 
 const iteratePackings = async (setting, packings, controlPoints) => {
    for await (let packing of packings) {

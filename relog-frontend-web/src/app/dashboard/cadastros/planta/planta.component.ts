@@ -13,7 +13,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class PlantaComponent implements OnInit {
   
   public temp: any[] = [];
-  public data: any[] = [];
+  public listOfPlants: any[] = [];
   public search  = "";
 
   public actualPage: number = 1; //página atual
@@ -25,11 +25,11 @@ export class PlantaComponent implements OnInit {
 
   loadPlants(){
     this.PlantsService
-    // .getPlantsPagination(10,this.data.meta.page,this.search)
+    // .getPlantsPagination(10,this.listOfPlants.meta.page,this.search)
     .getPlantsPagination(99999999, 1, this.search)
       .subscribe( result => {
         this.temp = result.data;
-        this.data = this.customSort(result.data, ['code']);
+        this.listOfPlants = this.customSort(result.data, ['code']);
 
       }, err => {console.log(err)});
   }
@@ -69,7 +69,7 @@ export class PlantaComponent implements OnInit {
     // console.log('---');
     // console.log('this.sort: ' + JSON.stringify(this.sort));
 
-    this.data = this.customSort(this.data, item.name.split("."), this.sort.order);
+    this.listOfPlants = this.customSort(this.listOfPlants, item.name.split("."), this.sort.order);
   }
 
 
@@ -82,7 +82,7 @@ export class PlantaComponent implements OnInit {
     });
 
     // update the rows
-    this.data = temp;
+    this.listOfPlants = temp;
     // Whenever the filter changes, always go back to the first page
     this.actualPage = 0;
   }

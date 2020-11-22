@@ -16,7 +16,7 @@ export class FamiliaCadastroComponent implements OnInit {
   public allControlPoints: any[] = []; 
 
   public validForm: boolean = true;
-  public submited = false;
+  public submitted = false;
 
   constructor(
     private companyService: CompaniesService,
@@ -71,7 +71,7 @@ export class FamiliaCadastroComponent implements OnInit {
 
   onSubmit(): void {
 
-    this.submited = true;
+    this.submitted = true;
 
     if (this.mFamily.valid) {
 

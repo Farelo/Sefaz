@@ -22,7 +22,7 @@ module.exports = router
  *       - Home
  *     parameters:
  *       - name: current_state
- *         description: local_incorreto, viagem_atrasada, viagem_perdida
+ *         description: local_incorreto, viagem_atrasada or viagem_perdida
  *         in: query
  *         required: false
  *         type: string

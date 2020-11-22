@@ -26,7 +26,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   }
   public pos: any;
   public geocoder = new google.maps.Geocoder;
-  // public pointWasSelected: boolean = false;
+  public pointWasSelected: boolean = false;
 
   selectedOverlay: any;
   @ViewChild(DrawingManager) drawingManager: DrawingManager;
@@ -102,6 +102,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
        */
       google.maps.event.addListener(drawingManager, 'circlecomplete', event => {
 
+        this.pointWasSelected = true;
+
         // Get circle center and radius
         let center = event.getCenter();
         let radius = event.getRadius();
@@ -131,6 +133,8 @@ export class PontoDeControleCadastrarComponent implements OnInit {
        */
       google.maps.event.addListener(drawingManager, 'polygoncomplete', polygon => {
 
+        this.pointWasSelected = true;
+        
         //listener when a vertice is dragged
         google.maps.event.addListener(polygon.getPath(), 'insert_at', () => {
           this.generatePolygonGeofence(polygon);
@@ -251,11 +255,6 @@ export class PontoDeControleCadastrarComponent implements OnInit {
    */
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
 
-    //  console.log(value);
-    // console.log(valid);
-    // console.log('submit');
-    //  console.log(this.mControlPoint);
-
     this.submitted = true;
 
     if (valid && this.mGeofence.coordinates.length > 0) {
@@ -287,61 +286,13 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   placeChanged(place: any) {
     this.center = place.geometry.location;
 
-    // for (let i = 0; i < place.address_components.length; i++) {
-    //   let addressType = place.address_components[i].types[0];
-    //   this.address = place.address_components[i].long_name;
-    //   console.log(place.address_components[i]);
-    // }
-
     this.address = place.formatted_address;
     this.mControlPoint.controls.full_address.setValue(this.address);
-
-    // console.log(this.address);
-
-    // this.mControlPoint.controls.lat.setValue(0);
-    // this.mControlPoint.controls.lng.setValue(0);
-
-    // this.pointWasSelected = false;
-
+    
     this.zoom = 16;
     this.ref.detectChanges();
-
-    //
-
-    //this.drawingManager.drawingControl.setOptions({ drawingControl: true}); 
-    //this.drawingManager.setMap(map);
   }
 
-  // onMapReady(map) {
-
-  //   let origin = new google.maps.LatLng(map.center ? map.center.lat() : this.default.lat, map.center ? map.center.lng() : this.default.lng);
-
-  //   if (map.center) {
-  //     this.geocodingService.geocode(origin).subscribe(results => {
-  //       this.mControlPoint.controls.full_address.setValue(results[1].formatted_address), err => console.log(err)
-  //     });
-  //   }
-
-  //   this.mControlPoint.controls.lat.setValue(map.center ? map.center.lat() : this.default.lat);
-  //   this.mControlPoint.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
-  // }
-
-  // onClick(event, str) {
-
-  //   this.pointWasSelected = true;
-
-  //   if (event instanceof MouseEvent) {
-  //     return;
-  //   }
-
-  //   this.pos = event.latLng;
-  //   this.geocodingService.geocode(event.latLng).subscribe(results => {
-  //     this.mControlPoint.controls.full_address.setValue(results[1].formatted_address);
-  //   });
-  //   this.mControlPoint.controls.lat.setValue(event.latLng.lat());
-  //   this.mControlPoint.controls.lng.setValue(event.latLng.lng());
-  //   event.target.panTo(event.latLng);
-  // }
 
   validateName(event: any) {
     if (!this.mControlPoint.get('name').errors) {
@@ -360,27 +311,7 @@ export class PontoDeControleCadastrarComponent implements OnInit {
   }
 
   public validateNotTakenLoading: boolean;
-  // validateNotTaken(control: AbstractControl) {
-  //   this.validateNotTakenLoading = true;
-  //   return control
-  //     .valueChanges
-  //     .delay(800)
-  //     .debounceTime(800)
-  //     .distinctUntilChanged()
-  //     .switchMap(value => this.controlPointsService.getAllControlPoint({ name: control.value }))
-  //     .map(res => {
-  //       this.validateNotTakenLoading = false;
-
-  //       if (res.length == 0) {
-  //         console.log('empty')
-  //         return control.setErrors(null);
-  //       } else {
-  //         console.log('not empty')
-  //         return control.setErrors({ uniqueValidation: 'code already exist' })
-  //       }
-  //     })
-  // }
-
+  
 
   /**
    * Methods relative to all others control points

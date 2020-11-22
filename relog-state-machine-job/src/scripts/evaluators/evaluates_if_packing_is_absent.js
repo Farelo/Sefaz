@@ -23,7 +23,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             if (!(packingIsOk.length > 0)) {
                 if (!packing.absent_time) {
                     await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
-                }
+                } 
 
                 // const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 // if (current_state_history) {

@@ -94,7 +94,7 @@
                                                       totalItems: listOfPermanence.length}">
             <td>{{ item.family_code || '-' }}</td>
             <td>{{ item.serial || '-' }}</td>
-            <td>{{ item.tag.code || '-' }}</td>
+            <td>{{ item.tag || '-' }}</td>
 
             <td>{{ item.current_control_point_name }}</td>
             <td>{{ item.current_control_point_type }}</td>
@@ -143,8 +143,8 @@
                                                             itemsPerPage: 10,
                                                             currentPage: permanence.meta.page,
                                                             totalItems: permanence.meta.total_docs}">
-            <td>{{ packing.date | date: 'dd/MM/yy HH:mm:ss' : '+00:00' }}</td>
-            <td>{{ packing.date | date:'dd/MM/yy HH:mm:ss' : '+00:00' }}</td>
+            <td>{{ packing.date | date: 'dd/MM/yy HH:mm:ss'}}</td>
+            <td>{{ packing.date | date:'dd/MM/yy HH:mm:ss'}}</td>
             <td>{{ packing.supplier?.duns || '-' }}</td>
 
             <td>{{ packing.supplier?.name || '-' }}</td>

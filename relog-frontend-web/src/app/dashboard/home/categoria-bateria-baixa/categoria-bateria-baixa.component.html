@@ -54,13 +54,13 @@
                                                           itemsPerPage: 10, 
                                                           currentPage: listBatteryActualPage, 
                                                           totalItems: listBattery.length }">
-                <td>{{ item.family_code }}</td>
+                <td>{{ item.familyCode }}</td>
                 <td>{{ item.serial }}</td>
                 <td>{{ item.tag }}</td>
-                <td>{{ item.current_control_point_name }}</td>
-                <td>{{ item.current_control_point_type }}</td>
-                <td>{{ item.last_device_data_battery !== '-' ? ((item.last_device_data_battery.battery.percentage | round) + '%') : "Sem registro" }}</td> 
-                <td>{{ item.last_device_data_battery !== '-' ? ((item.last_device_data_battery.last_communication | date: 'dd/MM/yy HH:mm:ss' : '+00:00') ) : "Sem registro" }}</td> 
+                <td>{{ item.currentControlPointName ? item.currentControlPointName : "Sem Registro"}}</td>
+                <td>{{ item.currentControlPointType ? item.currentControlPointType : "Sem Registro" }}</td>
+                <td>{{ item.lastBattery ? ((item.lastBattery.battery | round) + '%') : "Sem registro" }}</td> 
+                <td>{{ item.lastBattery ? ((item.lastBattery.date | date: 'dd/MM/yy HH:mm:ss') ) : "Sem registro" }}</td> 
               </tr>
             </tbody>
           </table>

@@ -1,8 +1,6 @@
 import { Component, OnInit, Input ,ChangeDetectorRef} from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalUserComponent } from '../modal-user.component';
-import { ModalSupplierRegisterComponent } from '../modal-register-supplier/modal-register-supplier.component';
-import { ModalStaffRegisterComponent } from '../modal-register-staff/modal-register-staff.component';
 import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 import { ToastService, LogisticService, GeocodingService, CEPService, PlantsService, ProfileService, SuppliersService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
@@ -103,10 +101,8 @@ export class ModalLogisticRegisterComponent implements OnInit {
   onChange(event){
 
     if(event == constants.profile.supplier){
-      const modalRef = this.modalService.open(ModalSupplierRegisterComponent,{backdrop: "static", size: "lg"});
       this.activeModal.close();
     }else if(event === constants.profile.staff){
-      const modalRef = this.modalService.open(ModalStaffRegisterComponent,{backdrop: "static", size: "lg"});
       this.activeModal.close();
     }
   }

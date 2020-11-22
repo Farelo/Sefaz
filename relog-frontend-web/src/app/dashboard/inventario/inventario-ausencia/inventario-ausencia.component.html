@@ -121,7 +121,7 @@
                                                     totalItems: listOfAbsent.length }">
           <td>{{packing.family.code || '-'}}</td>
           <td>{{packing.serial || '-'}}</td>
-          <td>{{packing.tag.code || '-'}}</td>
+          <td>{{packing.tag || '-'}}</td>
           
           <td>{{ packing.control_point_name }}</td>
           <td>{{ packing.absent_time_in_hours !== '-' ? (packing.absent_time_in_hours | float_time) : 'Sem histórico' }}</td>

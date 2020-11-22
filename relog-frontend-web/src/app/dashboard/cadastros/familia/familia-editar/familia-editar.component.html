@@ -16,7 +16,7 @@
           maxlength="30"
           (focusout)="validateCode($event)"
           [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
-          || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)
+          || (mFamily.get('code').hasError('required') && mFamily.invalid && submitted)
           || (mFamily.get('code').hasError('minlength'))
           || (mFamily.get('code').hasError('minlength') && submitted)
           || (mFamily.get('code').hasError('uniqueValidation'))
@@ -24,7 +24,7 @@
       </div>
 
       <p class="requiredText" *ngIf="(mFamily.get('code').hasError('required') && mFamily.get('code').touched)
-        || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)">
+        || (mFamily.get('code').hasError('required') && mFamily.invalid && submitted)">
         Campo Obrigatório</p>
 
       <p class="requiredText" *ngIf="(mFamily.get('code').hasError('uniqueValidation')) 
@@ -53,7 +53,7 @@
         </ng-template>
       </ng-select>
       <p class="requiredText" *ngIf="(mFamily.get('company').hasError('required') && mFamily.get('company').touched)
-        || (mFamily.get('company').hasError('required') && mFamily.invalid && submited)">
+        || (mFamily.get('company').hasError('required') && mFamily.invalid && submitted)">
         Campo Obrigatório
       </p>
     </div>

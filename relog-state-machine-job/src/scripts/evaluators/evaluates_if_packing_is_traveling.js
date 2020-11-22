@@ -37,7 +37,7 @@ module.exports = async (packing, setting) => {
                     if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_em_prazo') {
                         //console.log("-")
                     } else {
-                        await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                        await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_position ? packing.last_position._id : null  })
                     }
                 } else {
                     if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
@@ -49,7 +49,7 @@ module.exports = async (packing, setting) => {
                         if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_perdida') {
                             //console.log("-")
                         } else {
-                            await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_perdida', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                            await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_perdida', device_data_id: packing.last_position ? packing.last_position._id : null  })
                         }
 
                     } else {
@@ -61,7 +61,7 @@ module.exports = async (packing, setting) => {
                         if (packing.last_current_state_history && packing.last_current_state_history.type === 'viagem_atrasada'.alert) {
                             //console.log("-")
                         } else {
-                            await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_atrasada', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                            await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_atrasada', device_data_id: packing.last_position ? packing.last_position._id : null  })
                         }
 
                     }
@@ -74,7 +74,7 @@ module.exports = async (packing, setting) => {
                 await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.ANALISE.key }, { new: true })
 
                 if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.ANALISE.alert) return true
-                await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                await CurrentStateHistory.create({ packing: packing._id, type: STATES.ANALISE.alert, device_data_id: packing.last_position ? packing.last_position._id : null  })
             }
             
         //Emanoel
@@ -88,7 +88,7 @@ module.exports = async (packing, setting) => {
                 //console.log("-")
             } else {
                 //console.log("STATE HISTORY CRIADO")
-                await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+                await CurrentStateHistory.create({ packing: packing._id, type: 'viagem_em_prazo', device_data_id: packing.last_position ? packing.last_position._id : null  })
             }
         }
     } catch (error) {

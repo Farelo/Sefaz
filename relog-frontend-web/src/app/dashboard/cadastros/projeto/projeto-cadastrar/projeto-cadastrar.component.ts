@@ -11,6 +11,7 @@ import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from
 export class ProjetoCadastrarComponent implements OnInit {
 
   public mProject: FormGroup;
+  public submitted :boolean = false;
 
   constructor(
     private projectService: ProjectService,
@@ -25,8 +26,9 @@ export class ProjetoCadastrarComponent implements OnInit {
 
   onSubmit({ value, valid }: { value: Project, valid: boolean }): void {
 
-    if (valid) {
+    this.submitted = true;
 
+    if (valid) {
       this.projectService
         .createProject(value)
         .subscribe(result => {

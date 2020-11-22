@@ -161,16 +161,16 @@ export class Spiralize {
 
         //console.log('listener this.listOfObjects: ' + this.listOfObjects);
         this.markers = this.listOfObjects.map((location, i) => {
-            //console.log(location.last_device_data_battery);
+            //console.log(location.last_battery);
             let datePipe = new DatePipe('en');
 
             let m = new google.maps.Marker({
                 family_code: location.family.code,
                 serial: location.serial,
                 tag: location.tag.code,
-                battery: (location.last_device_data_battery) ? (location.last_device_data_battery.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
-                message_date : (location.last_device_data !== null) ? (location.last_device_data.message_date) : 'Sem registro',
+                battery: (location.last_battery) ? (location.last_battery.battery.toFixed(2) + '%') : 'Sem registro',
+                accuracy: (location.last_position !== null) ? (location.last_position.accuracy + 'm') : 'Sem registro',
+                message_date : (location.last_position !== null) ? (location.last_position.date) : 'Sem registro',
                 position: location.position,
                 icon: this.getPinWithAlert(location.current_state)
             })
@@ -185,7 +185,7 @@ export class Spiralize {
                         <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Tag:</span> ${ m.tag }</p>
                         <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acu:</span> ${ m.accuracy }</p>
                         <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bat:</span> ${ m.battery }</p>
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(m.message_date, 'dd/MM/yy HH:mm:ss', '+00:00') } </p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(m.message_date, 'dd/MM/yy HH:mm:ss') } </p>
                     </div>`);
 
                 this.infoWin.setOptions({maxWidth: 250});
@@ -202,7 +202,7 @@ export class Spiralize {
                   fillColor: this.getRadiusWithAlert(location.current_state),
                   fillOpacity: 0.2,
                   center: m.position,
-                  radius: location.last_device_data ? location.last_device_data.accuracy : 0,
+                  radius: location.last_position ? location.last_position.accuracy : 0,
                 });
   
                 this.mCircle.setMap(this.mMap);
@@ -252,7 +252,7 @@ export class Spiralize {
                 // family_code: location.family.code,
                 // serial: location.serial,
                 // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                // accuracy: (location.last_device_data !== null) ? (location.last_device_data.accuracy + 'm') : 'Sem registro',
+                // accuracy: (location.last_position !== null) ? (location.last_position.accuracy + 'm') : 'Sem registro',
                 // position: location.position,
                 // icon: this.getPinWithAlert(location.current_state)
 
@@ -374,9 +374,9 @@ export class Spiralize {
                             serial: array[sc - 1].serial,
                             tag: array[sc - 1].tag.code,
                             position: spiralCoordinates[sc],
-                            battery: (array[sc - 1].last_device_data_battery) ? (array[sc - 1].last_device_data_battery.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                            message_date : (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.message_date) : 'Sem registro',
-                            accuracy: (array[sc - 1].last_device_data !== null) ? (array[sc - 1].last_device_data.accuracy + 'm') : 'Sem registro',
+                            battery: (array[sc - 1].last_battery) ? (array[sc - 1].last_battery.battery.toFixed(2) + '%') : 'Sem registro',
+                            message_date : (array[sc - 1].last_position !== null) ? (array[sc - 1].last_position.date) : 'Sem registro',
+                            accuracy: (array[sc - 1].last_position !== null) ? (array[sc - 1].last_position.accuracy + 'm') : 'Sem registro',
                             icon: this.getPinWithAlert(array[sc - 1].status, true),
                             zIndex: 999,
                             map: this.mMap
@@ -398,7 +398,7 @@ export class Spiralize {
                                                 <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Tag:</span> ${ e.tag }</p>
                                                 <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acu:</span> ${ e.accuracy }</p>
                                                 <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bat:</span> ${ e.battery }</p>
-                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(e.message_date, 'dd/MM/yy HH:mm:ss', '+00:00') } </p>
+                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(e.message_date, 'dd/MM/yy HH:mm:ss') } </p>
                                             </div>`);
 
                             this.infoWin.setOptions({ maxWidth: 250 });
@@ -415,7 +415,7 @@ export class Spiralize {
                             fillColor: this.getRadiusWithAlert(array[sc - 1].status),
                             fillOpacity: 0.2,
                             center: e.position,
-                            radius: array[sc - 1].last_device_data ? array[sc - 1].last_device_data.accuracy : 0,
+                            radius: array[sc - 1].last_position ? array[sc - 1].last_position.accuracy : 0,
                             });
             
                             this.mCircle.setMap(this.mMap);

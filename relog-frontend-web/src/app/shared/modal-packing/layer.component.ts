@@ -1,11 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import {
-  PackingService,
-  SettingsService,
-  AlertsService,
+  PackingService, 
   AuthenticationService,
-  DevicesService,
+  PositionsService,
   ControlPointsService,
 } from "../../servicos/index.service";
 import {
@@ -90,10 +88,8 @@ export class LayerModalComponent implements OnInit {
     public activeLayer: NgbActiveModal,
     private controlPointsService: ControlPointsService,
     private packingService: PackingService,
-    private deviceService: DevicesService,
-    private authenticationService: AuthenticationService,
-    private settingsService: SettingsService,
-    private alertService: AlertsService,
+    private positionService: PositionsService,
+    private authenticationService: AuthenticationService, 
     private localeService: BsLocaleService
   ) {
     defineLocale("pt-br", ptBrLocale);
@@ -123,14 +119,14 @@ export class LayerModalComponent implements OnInit {
       this.mPacking = response;
 
       if (
-        this.mPacking.last_device_data &&
-        this.mPacking.last_device_data.message_date_timestamp * 1000 <
+        this.mPacking.last_position &&
+        this.mPacking.last_position.timestamp * 1000 <
           this.initialDate.getTime()
       ) {
         // console.log("caso 1");
 
         this.initialDate = new Date(
-          this.mPacking.last_device_data.message_date_timestamp * 1000
+          this.mPacking.last_position.timestamp * 1000
         );
 
         let initialD = this.formatDate(this.initialDate);
@@ -234,9 +230,11 @@ export class LayerModalComponent implements OnInit {
     finalDate: any = null,
     accuracy: any = null
   ) {
-    this.deviceService
+    this.positionService
       .getFilteredPositions(codeTag, startDate, finalDate, accuracy)
       .subscribe((result: any[]) => {
+        console.log(result.length);
+        
         if (result.length > 1) {
           this.markers = result.reverse();
 
@@ -244,10 +242,10 @@ export class LayerModalComponent implements OnInit {
 
           this.allPackingMarkers = result.map((elem, idx) => {
             let m = new google.maps.Marker({
-              message_date: elem.message_date,
-              battery: elem.battery.percentage
-                ? elem.battery.percentage.toFixed(2) + "%"
-                : "Sem registro",
+              message_date: elem.date,
+              // battery: elem.battery.percentage
+              //   ? elem.battery.percentage.toFixed(2) + "%"
+              //   : "Sem registro",
               accuracy: elem.accuracy,
               position: new google.maps.LatLng(elem.latitude, elem.longitude),
               // icon: this.getPinWithAlert(idx)
@@ -277,7 +275,7 @@ export class LayerModalComponent implements OnInit {
             google.maps.event.addListener(m, "click", (evt) => {
               // <div class="iw-title">INFORMAÇÕES</div>
               // <div *ngIf="marker.display" class="info-window-content">
-              //   <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss' : '+00:00' }}</p>
+              //   <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss'}}</p>
               //   <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
               //   <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
               // </div>
@@ -286,12 +284,8 @@ export class LayerModalComponent implements OnInit {
                 `<div style="padding: 0px 6px;">
                       <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Data:</span> ${datePipe.transform(
                         m.message_date,
-                        "dd/MM/yy HH:mm:ss",
-                        "+00:00"
+                        "dd/MM/yy HH:mm:ss" 
                       )}</p>
-                      <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bateria:</span> ${
-                        m.battery
-                      }</p>
                       <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${
                         m.accuracy
                       } m</p>
