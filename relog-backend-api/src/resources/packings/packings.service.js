@@ -17,7 +17,7 @@ exports.get_packings = async (tag, family) => {
          return await Packing.find()
             .populate("family", ["_id", "code", "company"])
             .populate("project", ["_id", "name"]);
-      }
+      } 
 
       const data = await Packing.findByTag(tag)
          .populate("family", ["_id", "code", "company"])

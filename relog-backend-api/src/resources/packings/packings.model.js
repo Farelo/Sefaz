@@ -19,6 +19,9 @@ const packingSchema = new mongoose.Schema({
             type: String,
             minlength: 2,
             maxlength: 100
+        },
+        deviceModel: {
+            type: String
         }
     },
     serial: {
@@ -194,7 +197,8 @@ const validate_packings = (packing) => {
         tag: {
             code: Joi.string().min(4).max(25).required(),
             version: Joi.string().min(1).max(100),
-            manufactorer: Joi.string().min(2).max(100)
+            manufactorer: Joi.string().min(2).max(100),
+            deviceModel: Joi.string()
         },
         serial: Joi.string().min(2).max(30).required(),
         type: Joi.string().min(0).max(100),
