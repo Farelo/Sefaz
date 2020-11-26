@@ -1,9 +1,20 @@
 const debug = require("debug")("service:temperatures");
 const mongoose = require("mongoose");
 const _ = require("lodash");
-const { Temperature } = require("./temperatures.model");
-const { Family } = require("../families/families.model");
+const { Temperature } = require("./temperatures.model"); 
 const { Packing } = require("../packings/packings.model");
+
+exports.create = async (data) => {
+   try {
+      console.log('data', data);
+      const newTemperature = new Temperature(data);
+      //await newTemperature.save();
+      console.log(newTemperature);
+      return newTemperature;
+   } catch (error) {
+      throw new Error(error);
+   }
+};
 
 exports.get = async ({ tag = null, start_date = null, end_date = null, max = null }) => {
    let conditions = {};

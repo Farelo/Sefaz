@@ -44,3 +44,16 @@ exports.getLast = async (req, res) => {
 
    res.status(HttpStatus.OK).json(result);
 };
+
+exports.createMany = async (data) => {
+   try {
+      for (let position of data) {
+         let currentPacking = await packingsService.find_by_tag(position.tag);
+         if (!currentPacking) throw new Error(`The tag ${position.tag} doesn't exists`);
+
+         await temperaturesService.create(position);
+      }
+   } catch (error) {
+      throw new Error(error);
+   }
+};

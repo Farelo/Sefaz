@@ -12,9 +12,10 @@ exports.dots = async (req, res) => {
          for (let signal of action.signals) {
             switch (signal.UUID) {
                case "position":
-                  await resolvePosition(action.deviceUUID, signal.logs);
+                //   await resolvePosition(action.deviceUUID, signal.logs);
                   break;
                case "temperature":
+                  await resolveTemperature(action.deviceUUID, signal.logs);
                   break;
                case "batteryTX":
                   break;
@@ -25,8 +26,7 @@ exports.dots = async (req, res) => {
       console.log("res");
       res.status(HttpStatus.CREATED).send({});
    } catch (error) {
-      console.log("res error ..", error);
-      return res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid action" });
+      return res.status(HttpStatus.BAD_REQUEST).send({ message: error.message });
    }
 };
 
@@ -40,6 +40,20 @@ const resolvePosition = async (tag, data) => {
             latitude: element.value.lat,
             longitude: element.value.lng,
             accuracy: element.value.radius,
+         };
+      })
+   );
+};
+
+const resolveTemperature = async (tag, data) => {
+    console.log(tag, data);
+   await temperaturesController.createMany(
+      data.map((element) => {
+         return {
+            tag: tag,
+            date: element.date,
+            timestamp: new Date(element.date).getTime(),
+            value: element.value,
          };
       })
    );
