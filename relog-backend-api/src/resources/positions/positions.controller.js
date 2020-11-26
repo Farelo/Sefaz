@@ -23,17 +23,14 @@ exports.get = async (req, res) => {
    res.json(result);
 };
 
-exports.createMany = async (deviceId, data) => {
-   let currentPacking = await packingsService.find_by_tag(deviceId);
-   if (!currentPacking)
-      return res.status(HttpStatus.BAD_REQUEST).send({
-         message: "The tag doesn't exists",
-      });
-
+exports.createMany = async (data) => {
    try {
-      for (let position of data) { 
+      for (let position of data) {
+         let currentPacking = await packingsService.find_by_tag(position.tag);
+         if (!currentPacking) throw new Error(`The tag ${position.tag} doesn't exists`);
+
          await positionsService.create(position);
-      } 
+      }
    } catch (error) {
       throw new Error(error);
    }

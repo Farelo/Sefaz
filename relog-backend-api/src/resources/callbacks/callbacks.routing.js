@@ -11,7 +11,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /dots:
+ * /callbacks/dots:
  *   post:
  *     summary: Receive a dots action
  *     description: Receive a list of messages from dots actions

@@ -6,6 +6,7 @@ const { Packing } = require("../packings/packings.model");
 
 exports.create = async (data) => {
    try {
+      console.log('data', data);
       const newPosition = new Position(data);
       //await newPosition.save();
       console.log(newPosition);

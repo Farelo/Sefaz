@@ -6,27 +6,38 @@ const batteriesController = require("../batteries/batteries.controller");
 
 exports.dots = async (req, res) => {
    let actionsData = req.body;
-   console.log('controller');
-   console.log(actionsData);
 
-   actionsData.forEach((action) => {
-    action.signals.forEach(async signal=>{
-        switch(signal.UUID){
-            case "position":
-                await positionsController.createMany(signal.logs.map( element=>{ 
-                    return {
-                        tag: action.deviceUUID,
-                        ...element
-                    } 
-                }))
-                break;
-            case "temperature":
-                break;
-            case "batteryTX":
-                break;
-        }
-    });
-   });
+   try {
+    for (let action of actionsData) {
+         for (let signal of action.signals) {
+            
+               switch (signal.UUID) {
+                  case "position":
+                     await positionsController.createMany(
+                        signal.logs.map((element) => {
+                           return {
+                              tag: action.deviceUUID,
+                              date: element.date,
+                              timestamp: new Date(element.date).getTime(), 
+                              latitude: element.value.lat,
+                              longitude: element.value.log,
+                              accuracy: element.value.radius
+                           };
+                        })
+                     );
+                     break;
+                  case "temperature":
+                     break;
+                  case "batteryTX":
+                     break;
+               }
+         };
+      };
 
-   res.status(HttpStatus.CREATED).send(company);
+      console.log("res");
+      res.status(HttpStatus.CREATED).send({});
+   } catch (error) {
+      console.log("res error ..");
+      return res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid action" });
+   }
 };
