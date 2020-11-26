@@ -8,36 +8,39 @@ exports.dots = async (req, res) => {
    let actionsData = req.body;
 
    try {
-    for (let action of actionsData) {
+      for (let action of actionsData) {
          for (let signal of action.signals) {
-            
-               switch (signal.UUID) {
-                  case "position":
-                     await positionsController.createMany(
-                        signal.logs.map((element) => {
-                           return {
-                              tag: action.deviceUUID,
-                              date: element.date,
-                              timestamp: new Date(element.date).getTime(), 
-                              latitude: element.value.lat,
-                              longitude: element.value.log,
-                              accuracy: element.value.radius
-                           };
-                        })
-                     );
-                     break;
-                  case "temperature":
-                     break;
-                  case "batteryTX":
-                     break;
-               }
-         };
-      };
+            switch (signal.UUID) {
+               case "position":
+                  await resolvePosition(action.deviceUUID, signal.logs);
+                  break;
+               case "temperature":
+                  break;
+               case "batteryTX":
+                  break;
+            }
+         }
+      }
 
       console.log("res");
       res.status(HttpStatus.CREATED).send({});
    } catch (error) {
-      console.log("res error ..");
+      console.log("res error ..", error);
       return res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid action" });
    }
+};
+
+const resolvePosition = async (tag, data) => {
+   await positionsController.createMany(
+      data.map((element) => {
+         return {
+            tag: tag,
+            date: element.date,
+            timestamp: new Date(element.date).getTime(),
+            latitude: element.value.lat,
+            longitude: element.value.lng,
+            accuracy: element.value.radius,
+         };
+      })
+   );
 };

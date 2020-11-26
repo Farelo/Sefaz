@@ -26,8 +26,8 @@ exports.get = async (req, res) => {
 exports.createMany = async (data) => {
    try {
       for (let position of data) {
-         let currentPacking = await packingsService.find_by_tag(position.tag);
-         if (!currentPacking) throw new Error(`The tag ${position.tag} doesn't exists`);
+         // let currentPacking = await packingsService.find_by_tag(position.tag);
+         // if (!currentPacking) throw new Error(`The tag ${position.tag} doesn't exists`);
 
          await positionsService.create(position);
       }
