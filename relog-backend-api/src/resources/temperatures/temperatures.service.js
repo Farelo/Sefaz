@@ -5,11 +5,9 @@ const { Temperature } = require("./temperatures.model");
 const { Packing } = require("../packings/packings.model");
 
 exports.create = async (data) => {
-   try {
-      console.log('data', data);
+   try { 
       const newTemperature = new Temperature(data);
-      //await newTemperature.save();
-      console.log(newTemperature);
+      await newTemperature.save(); 
       return newTemperature;
    } catch (error) {
       throw new Error(error);

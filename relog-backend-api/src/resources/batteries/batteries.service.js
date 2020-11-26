@@ -6,11 +6,9 @@ const { Packing } = require("../packings/packings.model");
 
 
 exports.create = async (data) => {
-   try {
-      console.log('data', data);
+   try { 
       const newBattery = new Battery(data);
-      //await newBattery.save();
-      console.log(newBattery);
+      await newBattery.save();
       return newBattery;
    } catch (error) {
       throw new Error(error);
