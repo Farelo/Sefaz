@@ -15,9 +15,10 @@ exports.dots = async (req, res) => {
                 //   await resolvePosition(action.deviceUUID, signal.logs);
                   break;
                case "temperature":
-                  await resolveTemperature(action.deviceUUID, signal.logs);
+                //   await resolveTemperature(action.deviceUUID, signal.logs);
                   break;
                case "batteryTX":
+                await resolveBattery(action.deviceUUID, signal.logs);
                   break;
             }
          }
@@ -58,3 +59,22 @@ const resolveTemperature = async (tag, data) => {
       })
    );
 };
+
+const resolveBattery = async (tag, data) => {
+    console.log(tag, data);
+   await batteriesController.createMany(
+      data.map((element) => {
+         return {
+            tag: tag,
+            date: element.date,
+            timestamp: new Date(element.date).getTime(),
+            batteryVoltage: element.value,
+            battery: parseVoltage(element.value)
+         };
+      })
+   );
+};
+
+const parseVoltage = (value) => {
+    return value
+}

@@ -1,9 +1,21 @@
 const debug = require("debug")("service:batteries");
 const mongoose = require("mongoose");
 const _ = require("lodash");
-const { Battery } = require("./batteries.model");
-const { Family } = require("../families/families.model");
+const { Battery } = require("./batteries.model"); 
 const { Packing } = require("../packings/packings.model");
+
+
+exports.create = async (data) => {
+   try {
+      console.log('data', data);
+      const newBattery = new Battery(data);
+      //await newBattery.save();
+      console.log(newBattery);
+      return newBattery;
+   } catch (error) {
+      throw new Error(error);
+   }
+};
 
 exports.get = async ({ tag = null, start_date = null, end_date = null, max = null }) => {
    let conditions = {};
