@@ -4,6 +4,8 @@ const HttpStatus = require('http-status-codes')
 const { User } = require('./users.model')
 const { Company } = require('../companies/companies.model')
 const users_service = require('./users.service')
+const logs_controller = require('../logs/logs.controller')
+
 // const tokenList = {}
 
 exports.sign_in = async (req, res) => {
@@ -11,7 +13,10 @@ exports.sign_in = async (req, res) => {
     if (!user) return res.status(HttpStatus.BAD_REQUEST).send({message:'Invalid email'})
 
     const valid_password = await user.passwordMatches(req.body.password)
+
     if (!valid_password) return res.status(HttpStatus.BAD_REQUEST).send({message:'Invalid password'})
+
+    logs_controller.create({id:user._id, log:'login'});
 
     const token = user.generateUserToken()
     // const refreshToken = user.generateUserRefreshToken()
