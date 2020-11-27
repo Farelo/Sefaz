@@ -20,7 +20,7 @@ exports.sign_in = async (req, res) => {
 
     const token = user.generateUserToken()
     // const refreshToken = user.generateUserRefreshToken()
-
+    
     const response = { _id: user._id, full_name: user.full_name, email: user.email, role: user.role, company: user.company, accessToken: token }
 
     // tokenList[refreshToken] = response
@@ -49,6 +49,7 @@ exports.create = async (req, res) => {
     if (!company) return res.status(HttpStatus.BAD_REQUEST).send({message:'Invalid company'})
 
     user = await users_service.create_user(req.body)
+    logs_controller.create({token:req.headers.authorization, log:'create_user' , newData:user});
 
     res.status(HttpStatus.CREATED).json(_.pick(user, ['_id', 'full_name', 'email', 'role', 'company']))
 }
@@ -58,6 +59,7 @@ exports.update = async (req, res) => {
     if (!user) return res.status(HttpStatus.NOT_FOUND).send({message:'Invalid user'})
 
     user = await users_service.update_user(req.params.id, req.body)
+    logs_controller.create({token:req.headers.authorization, log:'update_user' , newData:user});
 
     res.json(_.pick(user, ['_id', 'full_name', 'email', 'role', 'company']))
 }
@@ -66,6 +68,7 @@ exports.delete = async (req, res) => {
     const user = await users_service.find_by_id(req.params.id)
     if (!user) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid user' })
 
+    logs_controller.create({token:req.headers.authorization, log:'delete_user' , newData:user});
     await user.remove()
 
     res.json({ message: 'Delete successfully' })

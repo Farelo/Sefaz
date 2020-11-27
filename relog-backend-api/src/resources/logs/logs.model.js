@@ -13,6 +13,10 @@ const logSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    newData: {
+        type: Object,
+        required: false
+    },
     created_at: {
         type: Date,
         default: Date.now

@@ -12,42 +12,15 @@ exports.get_all = async () => {
     }
 }
 
-exports.create_log = async (userId, log) => {
-    try {
 
-        const new_log = new Log({"user": (userId), "action": log})
-        await new_log.save()
+exports.create_log = async (entry) => {
+    try {
         
-    } catch (error) {
-        throw new Error(error)
-    }
-}
+        const new_log = new Log({"user": entry.userId, "action": entry.log, "newData": entry.newData})
+        
+        await new_log.save()
 
-/*
-exports.find_by_id = async ( id ) => {
-    try {
-        const log = await Log.find(id)
-        return log
     } catch (error) {
         throw new Error(error)
     }
 }
-
-exports.find_by_action = async (action) => {
-    try {
-        const log = await Log.findByAction(action)
-        return log
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-
-exports.find_by_date = async (id) => {
-    try {
-        const log = await Log.findByDateRange()
-        return log
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-*/

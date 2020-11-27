@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
     try {
         const decoded_payload = jwt.verify(token, config.get('security.jwtPrivateKey'))
         req.authenticated = decoded_payload
+
         next()
     } catch (error) {
         res.status(401).send({message:"Invalid token."})
@@ -30,7 +31,6 @@ const extractToken = (req) => {
             token = authorization
         }
     }
-
     return token
 }
 

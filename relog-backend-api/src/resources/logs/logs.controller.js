@@ -2,6 +2,8 @@ const debug = require('debug')('controller:logs')
 const mongoose = require("mongoose");
 const HttpStatus = require('http-status-codes')
 const logs_service = require('./logs.service')
+const jwt = require('jsonwebtoken')
+const config = require('config');
 
 exports.find = async (req, res) => {
     const logs = await projects_service.get_projects(name)
@@ -10,11 +12,17 @@ exports.find = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    
+
     let userId = req.id;
     let log = req.log;
-    
-    await logs_service.create_log(userId,log)
+    let token = req.token;
+    let newData = req.newData;   
+
+    token = token.split(' '); 
+
+    const decoded_payload = jwt.verify(token[1], config.get('security.jwtPrivateKey'))
+
+    await logs_service.create_log({userId:decoded_payload._id,log,newData})
 }
 
 
