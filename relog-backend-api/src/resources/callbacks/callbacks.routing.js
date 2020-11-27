@@ -1,11 +1,35 @@
-const express = require('express')
-const router = express.Router()
-const callbackController = require('./callbacks.controller')
-const auth = require('../../security/auth.middleware')
+const express = require("express");
+const router = express.Router();
+const callbackController = require("./callbacks.controller");
 
-router.post('/dots', [], callbackController.dots)
+const authApiKey = async (req, res, next) => {
+   let clientApiKey = req.get("APIKEY");
+   if (!clientApiKey) {
+      return res.status(401).send({
+         message: "Missing Api Key",
+      });
+   }
 
-module.exports = router
+   try {
+      let isValid = await verifyApiKey(clientApiKey);
+      if (isValid) {
+         next();
+      }
+   } catch (e) { 
+      return res.status(400).send({
+         status: false,
+         response: "Invalid Api Key"
+      });
+   }
+};
+
+const verifyApiKey = (apiKey) => {
+   return true;
+}
+
+router.post("/dots", [authApiKey], callbackController.dots);
+
+module.exports = router;
 
 // POST '/'
 /**
