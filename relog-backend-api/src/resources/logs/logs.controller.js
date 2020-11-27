@@ -17,12 +17,17 @@ exports.create = async (req, res) => {
     let log = req.log;
     let token = req.token;
     let newData = req.newData;   
+    let decoded_payload;
 
-    token = token.split(' '); 
-
-    const decoded_payload = jwt.verify(token[1], config.get('security.jwtPrivateKey'))
-
-    await logs_service.create_log({userId:decoded_payload._id,log,newData})
+    if( log != 'login'){
+        token = token.split(' '); 
+        decoded_payload = jwt.verify(token[1], config.get('security.jwtPrivateKey'))
+        await logs_service.create_log({userId:decoded_payload._id,log,newData})
+    }else{
+        await logs_service.create_log({userId:userId,log})
+    }
+    
+    
 }
 
 
