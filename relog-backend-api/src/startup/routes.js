@@ -22,6 +22,8 @@ const temperatures = require("../resources/temperatures/temperatures.routing");
 const batteries = require("../resources/batteries/batteries.routing");
 const current_state_history = require("../resources/current_state_history/current_state_history.routing");
 const imports = require("../resources/imports/imports.routing");
+const logs = require("../resources/logs/logs.routing");
+
 const error = require("../middlewares/error_handler.middleware");
 
 module.exports = (app) => {
@@ -62,6 +64,7 @@ module.exports = (app) => {
    app.use("/api/current_state_history", current_state_history);
    app.use("/api/alerts", alerts);
    app.use("/api/imports", imports);
+   app.use("/api/logs", logs);
 
    // Middlewares functions
    app.use(error);

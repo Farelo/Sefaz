@@ -70,6 +70,13 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
+    console.log('Passando no logout() - auth.service.ts');
+    let user = this.currentUser();
+    let ans = this.http.post(`${environment.url}/api/logs`, {
+      userId: user._id,
+      log: 'logout'
+    })
+    .catch(this.handleError);
     localStorage.removeItem("currentUser");
   }
 }
