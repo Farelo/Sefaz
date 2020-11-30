@@ -15,7 +15,7 @@ export class NavbarComponent implements OnInit {
   public menuAparecer: boolean = false;
   public currentUser: any;
 
-  constructor(C:\Users\Guilherme Novaes\Desktop\reciclapac\relog-frontend-web\src\app\dashboard\navbar\navbar.component.ts
+  constructor(
     private ngZone: NgZone,
     private modalService: NgbModal,
     public authenticationService: AuthenticationService,
