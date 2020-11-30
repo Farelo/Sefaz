@@ -2,13 +2,13 @@ const debug = require("debug")("service:apiKeys");
 const _ = require("lodash");
 const { ApiKey } = require("./api_keys.model");
 
-exports.getApiKeys = async (code) => {
+exports.getApiKeys = async (id) => {
    try {
       let apiKeys = {};
-      if (code) {
+      if (id) {
          apiKeys = await ApiKey.findById(id).populate("users", ["_id", "email", "role", "active"]);
       } else {
-         apiKeys = await ApiKey.find().populate("users", ["_id", "email", "role", "active"]);
+         apiKeys = await ApiKey.find({}).populate("users", ["_id", "email", "role", "active"]);
       }
       return apiKeys;
    } catch (error) {
@@ -16,10 +16,19 @@ exports.getApiKeys = async (code) => {
    }
 };
 
-exports.createApiKeys = async (company) => {
+exports.createApiKeys = async (apiKey) => {
    try {
-      const apiKeys = new ApiKey(company);
+      const apiKeys = new ApiKey(apiKey);
       await apiKeys.save();
+      return apiKeys;
+   } catch (error) {
+      throw new Error(error);
+   }
+};
+
+exports.findById = async (id) => {
+   try {
+      const apiKeys = await ApiKey.findById(id);
       return apiKeys;
    } catch (error) {
       throw new Error(error);

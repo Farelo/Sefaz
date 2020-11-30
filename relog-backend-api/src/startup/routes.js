@@ -23,6 +23,7 @@ const batteries = require("../resources/batteries/batteries.routing");
 const callbacks = require("../resources/callbacks/callbacks.routing");
 const current_state_history = require("../resources/current_state_history/current_state_history.routing");
 const imports = require("../resources/imports/imports.routing");
+const apiKeys = require("../resources/api_keys/api_keys.routing");
 const error = require("../middlewares/error_handler.middleware");
 
 module.exports = (app) => {
@@ -64,6 +65,7 @@ module.exports = (app) => {
    app.use("/api/current_state_history", current_state_history);
    app.use("/api/alerts", alerts);
    app.use("/api/imports", imports);
+   app.use("/api/api_keys", apiKeys);
 
    // Middlewares functions
    app.use(error);

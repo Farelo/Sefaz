@@ -3,14 +3,14 @@ const HttpStatus = require('http-status-codes')
 const apiKeysService = require('./api_keys.service')
 
 exports.all = async (req, res) => {
+    console.log("controller: all");
     const apiKeys = await apiKeysService.getApiKeys()
-
     res.json(apiKeys)
 }
 
 exports.show = async (req, res) => {
     const apiKeys = await apiKeysService.getApiKeys(req.params.id)
-    if (!apiKeys) return res.status(HttpStatus.NOT_FOUND).send('Invalid company')
+    if (!apiKeys) return res.status(HttpStatus.NOT_FOUND).send('Invalid api key')
 
     res.json(apiKeys)
 }
@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
 }
 
 exports.update = async(req, res) => {
-    let apiKeys = await apiKeysService.findByKey(req.params.id)
+    let apiKeys = await apiKeysService.findById(req.params.id)
     if (!apiKeys) return res.status(HttpStatus.NOT_FOUND).send('Invalid api key')
 
     apiKeys = await apiKeysService.updateApiKey(req.params.id, req.body)
@@ -35,5 +35,5 @@ exports.delete = async (req, res) => {
 
     await apiKeys.remove()
 
-    res.send({ message: 'Delete successfully'})
+    res.send({ message: 'Deleted successfully'})
 }

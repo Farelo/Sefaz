@@ -1,19 +1,19 @@
-const express = require('express')
-const router = express.Router()
-const apiKeysController = require('./api_keys.controller')
-const auth = require('../../security/auth.middleware')
-const authz = require('../../security/authz.middleware')
-const validate_object_id = require('../../middlewares/validate_object_id.middleware')
-const validate_joi = require('../../middlewares/validate_joi.middleware')
-const { validate_api_keys } = require('./api_key.model')
+const express = require("express");
+const router = express.Router();
+const apiKeysController = require("./api_keys.controller");
+const auth = require("../../security/auth.middleware");
+const authz = require("../../security/authz.middleware");
+const validate_object_id = require("../../middlewares/validate_object_id.middleware");
+const validate_joi = require("../../middlewares/validate_joi.middleware");
+const { validate_api_keys } = require("./api_keys.model");
 
-router.get('/', [auth],apiKeysController.all)
-router.get('/:id', [auth, validate_object_id], apiKeysController.show)
-router.post('/', [auth, authz, validate_joi(validate_api_keys)], apiKeysController.create)
-router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_api_keys)], apiKeysController.update)
-router.delete('/:id', [auth, authz, validate_object_id], apiKeysController.delete)
+router.get("/", [], apiKeysController.all);
+router.get("/:id", [], apiKeysController.show);
+router.post("/", [], apiKeysController.create);
+router.patch("/:id", [], apiKeysController.update);
+router.delete("/:id", [], apiKeysController.delete);
 
-module.exports = router
+module.exports = router;
 
 // GET '/'
 /**
@@ -25,7 +25,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - api_keys
+ *       - API Keys
  *     responses:
  *       200:
  *         description: list of all api_keys
@@ -103,17 +103,17 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /companies/{id}:
+ * /api_keys/{id}:
  *   patch:
- *     summary: Update a company
- *     description: Update a company by id
+ *     summary: Update a api key
+ *     description: Update a api key by id
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Companies
+ *       - API Keys
  *     parameters:
  *       - name: id
- *         description: Company id
+ *         description: Api key id
  *         in: path
  *         required: true
  *         type: string
@@ -158,7 +158,7 @@ module.exports = router
  *         description: Not Found
  */
 
- /**
+/**
  * @swagger
  *
  * definitions:
