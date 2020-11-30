@@ -3,6 +3,7 @@ const HttpStatus = require('http-status-codes')
 const control_points_service = require('./control_points.service')
 const types_service = require('../types/types.service')
 const companies_service = require('../companies/companies.service')
+const logs_controller = require('../logs/logs.controller')
 
 exports.all = async (req, res) => {
     const name = req.query.name ? req.query.name : null
@@ -29,7 +30,8 @@ exports.create = async (req, res) => {
     if (!company) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid company.' })
 
     control_point = await control_points_service.create_control_point(req.body)
-
+    logs_controller.create({token:req.headers.authorization, log:'create_control_points', newData:req.body});
+   
     res.status(HttpStatus.CREATED).send(control_point)
 }
 
@@ -48,6 +50,8 @@ exports.create_many = async (req, res) => {
 
         current_control_point = await control_points_service.create_control_point(control_point.data)
         control_points.push(current_control_point)
+        
+        logs_controller.create({token:req.headers.authorization, log:'create_many_control_points', newData:control_point.data});
     }
 
     res.status(HttpStatus.CREATED).send(control_points)
@@ -65,6 +69,8 @@ exports.update = async (req, res) => {
     
     control_point = await control_points_service.update_control_point(req.params.id, req.body)
 
+    logs_controller.create({token:req.headers.authorization, log:'delete_control_points', newData:req.body});
+
     res.json(control_point)
 }
 
@@ -72,6 +78,8 @@ exports.delete = async (req, res) => {
     const control_point = await control_points_service.find_by_id(req.params.id)
     if (!control_point) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid control_point.' })
 
+    
+    logs_controller.create({token:req.headers.authorization, log:'delete_control_point', newData:req.params.id});
     await control_point.remove()
 
     res.send({ message: 'Delete successfully' })

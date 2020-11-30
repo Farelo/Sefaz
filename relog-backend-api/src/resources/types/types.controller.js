@@ -1,6 +1,7 @@
 const debug = require('debug')('controller:types')
 const HttpStatus = require('http-status-codes')
 const types_service = require('./types.service')
+const logs_controller = require('../logs/logs.controller')
 
 exports.all = async (req, res) => {
     const name = req.query.name ? req.query.name : null
@@ -22,6 +23,7 @@ exports.create = async (req, res) => {
 
     type = await types_service.create_type(req.body)
 
+    logs_controller.create({token:req.headers.authorization, log:'create_control_point_type', newData:req.body});
     res.status(HttpStatus.CREATED).send(type)
 }
 
@@ -30,7 +32,8 @@ exports.update = async (req, res) => {
     if (!type) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid type' })
 
     type = await types_service.update_type(req.params.id, req.body)
-
+    logs_controller.create({token:req.headers.authorization, log:'update_control_point_type', newData:req.body});
+    
     res.json(type)
 }
 
@@ -38,6 +41,7 @@ exports.delete = async (req, res) => {
     const type = await types_service.find_by_id(req.params.id)
     if (!type) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid type' })
 
+    logs_controller.create({token:req.headers.authorization, log:'create_control_point_type', newData:req.params.id});
     await type.remove()
 
     res.send({ message: 'Delete successfully' })
