@@ -1,6 +1,7 @@
 const debug = require('debug')('controller:control_points')
 const HttpStatus = require('http-status-codes')
 const settings_service = require('./settings.service')
+const logs_controller = require('../logs/logs.controller')
 
 exports.show = async (req, res) => {
     const setting = await settings_service.get_setting(req.params.id)
@@ -15,5 +16,6 @@ exports.update = async (req, res) => {
 
     setting = await settings_service.update_setting(req.params.id, req.body)
 
+    logs_controller.create({token:req.headers.authorization, log:'settings_update' , newData:setting});
     res.json(setting)
 }
