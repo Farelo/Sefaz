@@ -42,7 +42,7 @@ exports.delete = async (req, res) => {
     if (!family) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid family' })
 
     
-    logs_controller.create({token:req.headers.authorization, log:'remove_family' , newData:req.params.id});
+    logs_controller.create({token:req.headers.authorization, log:'remove_family' , newData:family});
     await family.remove()
 
     res.send({ message: 'Delete successfully' })

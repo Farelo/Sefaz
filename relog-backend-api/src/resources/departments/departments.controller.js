@@ -39,9 +39,10 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     const department = await departments_service.find_by_id(req.params.id)
+ 
     if (!department) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid department' })
 
-    logs_controller.create({token:req.headers.authorization, log:'create_departments', newData:req.params.id});
+    logs_controller.create({token:req.headers.authorization, log:'create_departments', newData:department});
     await department.remove()
 
     res.send({ message: 'Delete successfully' })

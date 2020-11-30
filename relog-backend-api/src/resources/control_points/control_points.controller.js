@@ -79,7 +79,7 @@ exports.delete = async (req, res) => {
     if (!control_point) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid control_point.' })
 
     
-    logs_controller.create({token:req.headers.authorization, log:'delete_control_point', newData:req.params.id});
+    logs_controller.create({token:req.headers.authorization, log:'delete_control_point', newData:control_point});
     await control_point.remove()
 
     res.send({ message: 'Delete successfully' })

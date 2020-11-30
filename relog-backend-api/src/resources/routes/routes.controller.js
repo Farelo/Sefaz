@@ -49,7 +49,7 @@ exports.delete = async (req, res) => {
     if (!route) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid route' })
 
     
-    logs_controller.create({token:req.headers.authorization, log:'create_routes', newData:req.params.id});
+    logs_controller.create({token:req.headers.authorization, log:'create_routes', newData:route});
     await route.remove()
 
     res.send({ message: 'Delete successfully' })

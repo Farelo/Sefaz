@@ -158,7 +158,7 @@ exports.delete = async (req, res) => {
    let code = packing.tag.code;
 
    
-   logs_controller.create({token:req.headers.authorization, log:'delete_packing' , newData:{tag:req.params.id}});
+   logs_controller.create({token:req.headers.authorization, log:'delete_packing' , newData:packing});
    await packing.remove();
 
    await unsubPacking(packing.tag.code);

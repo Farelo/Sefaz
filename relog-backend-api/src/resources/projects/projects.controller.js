@@ -42,7 +42,7 @@ exports.delete = async (req, res) => {
     if (!project) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid project' })
 
     
-    logs_controller.create({token:req.headers.authorization, log:'delete_project' , newData:req.params.id});
+    logs_controller.create({token:req.headers.authorization, log:'delete_project' , newData:project});
     await project.remove()
 
     res.send({ message: 'Delete successfully' })

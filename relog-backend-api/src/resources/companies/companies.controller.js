@@ -48,7 +48,7 @@ exports.delete = async (req, res) => {
     const company = await companies_service.find_by_id(req.params.id)
     if (!company) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid company' })
 
-    logs_controller.create({token:req.headers.authorization, log:'delete_company', newData:req.params.id});
+    logs_controller.create({token:req.headers.authorization, log:'delete_company', newData:company});
     await company.remove()
 
     res.send({ message: 'Delete successfully'})
