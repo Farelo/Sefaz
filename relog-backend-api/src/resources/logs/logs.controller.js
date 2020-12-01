@@ -29,7 +29,7 @@ exports.create = async (req, res) => {
     if(userId == undefined){userId = user}
 
 
-    if( log == 'login' || log == 'logout'){
+    if( log == 'login' || log == 'logout' || log == 'invalid_password' ){
         logs = await logs_service.create_log({userId:userId,log})
     }else{
 
@@ -39,5 +39,5 @@ exports.create = async (req, res) => {
 
     }
     
-    res.json('Data Saved')
+    //res.json({"code" : "200"})
 }

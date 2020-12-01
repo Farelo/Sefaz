@@ -14,8 +14,12 @@ exports.sign_in = async (req, res) => {
 
     const valid_password = await user.passwordMatches(req.body.password)
 
-    if (!valid_password) return res.status(HttpStatus.BAD_REQUEST).send({message:'Invalid password'})
-
+    if (!valid_password){ 
+        
+        logs_controller.create({id:user._id, log:'invalid_password'});
+        return res.status(HttpStatus.BAD_REQUEST).send({message:'Invalid password'})
+    }
+    
     logs_controller.create({id:user._id, log:'login'});
 
     const token = user.generateUserToken()
