@@ -16,12 +16,12 @@ module.exports = async () => {
 
    let nextSemaphor = true;
 
-   // cron.schedule(`*/1 * * * *`, async () => {
-   //    if (nextSemaphor) {
-   //       //close the semaphor
-   //       nextSemaphor = false;
+   cron.schedule(`*/1 * * * *`, async () => {
+      if (nextSemaphor) {
+         //close the semaphor
+         nextSemaphor = false;
 
-   //       setTimeout(async () => {
+         setTimeout(async () => {
             spinner.start();
 
             console.log("START");
@@ -32,7 +32,7 @@ module.exports = async () => {
             const controlPoints = await ControlPoint.find({}).populate("company").populate("type");
 
             //const packings = await Packing.find({ })
-            const packings = await Packing.find({'tag.code': '4081367'})
+            const packings = await Packing.find({})
                .populate("family")
                .populate("last_current_state_history")
                .populate("last_event_record")
@@ -46,9 +46,9 @@ module.exports = async () => {
 
             //open the semmaphor
             nextSemaphor = true;
-   //       }, setting.job_schedule_time_in_sec * 1000);
-   //    }
-   // });
+         }, setting.job_schedule_time_in_sec * 1000);
+      }
+   });
 };
 
 const iteratePackings = async (setting, packings, controlPoints) => {
