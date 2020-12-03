@@ -5,22 +5,20 @@ const temperaturesController = require("../temperatures/temperatures.controller"
 const batteriesController = require("../batteries/batteries.controller");
 
 exports.dots = async (req, res) => {
-   let actionsData = req.body;
+   let actionData = req.body;
 
    try {
-      for (let action of actionsData) {
-         for (let signal of action.signals) {
-            switch (signal.UUID) {
-               case "position":
-                //   await resolvePosition(action.deviceUUID, signal.logs);
-                  break;
-               case "temperature":
-                //   await resolveTemperature(action.deviceUUID, signal.logs);
-                  break;
-               case "batteryTX":
-                await resolveBattery(action.deviceUUID, signal.logs);
-                  break;
-            }
+      for (let signal of actionData.signals) {
+         switch (signal.UUID) {
+            case "position":
+                 await resolvePosition(action.deviceUUID, signal.logs);
+               break;
+            case "temperature":
+                 await resolveTemperature(action.deviceUUID, signal.logs);
+               break;
+            case "batteryTX":
+               await resolveBattery(action.deviceUUID, signal.logs);
+               break;
          }
       }
 
@@ -47,7 +45,7 @@ const resolvePosition = async (tag, data) => {
 };
 
 const resolveTemperature = async (tag, data) => {
-    console.log(tag, data);
+   console.log(tag, data);
    await temperaturesController.createMany(
       data.map((element) => {
          return {
@@ -61,7 +59,7 @@ const resolveTemperature = async (tag, data) => {
 };
 
 const resolveBattery = async (tag, data) => {
-    console.log(tag, data);
+   console.log(tag, data);
    await batteriesController.createMany(
       data.map((element) => {
          return {
@@ -69,12 +67,12 @@ const resolveBattery = async (tag, data) => {
             date: element.date,
             timestamp: new Date(element.date).getTime(),
             batteryVoltage: element.value,
-            battery: parseVoltage(element.value)
+            battery: parseVoltage(element.value),
          };
       })
    );
 };
 
 const parseVoltage = (value) => {
-    return value
-}
+   return value;
+};
