@@ -12,11 +12,9 @@ module.exports = async (packing, setting) => {
    let routeOvertime;
    let traveling_time_overtime;
 
-   try {
-      console.log("AVALIANDO VIAGEM");
+   try { 
 
-      if (packing.family && packing.family.routes.length > 0) {
-         console.log("TEM ROTA");
+      if (packing.family && packing.family.routes.length > 0) { 
          if (!packing.last_event_record) return null;
 
          const family = await Family.findById(packing.family).populate("routes");
@@ -98,7 +96,7 @@ module.exports = async (packing, setting) => {
             /* Checa se a familia tem pontos de controle relacionada a ela */
             //console.log('FAMILIA TEM PONTOS DE CONTROLE RELACIONADAS')
             //console.log('IR PARA ANÁLISE')
-            console.log("cria outbound");
+            console.log("cria outbound", packing.tag.code);
             createOutbound(packing); //Não se encontra em nenhum ponto de controle
 
             clearIncorrectLocalAttemptFlag(packing);
