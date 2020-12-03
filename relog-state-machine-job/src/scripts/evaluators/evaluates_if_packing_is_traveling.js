@@ -12,10 +12,8 @@ module.exports = async (packing, setting) => {
    let routeOvertime;
    let traveling_time_overtime;
 
-   try { 
-
-      if (packing.family && packing.family.routes.length > 0) { 
-         if (!packing.last_event_record) return null;
+   try {
+      if (packing.family && packing.family.routes.length > 0) {  
 
          const family = await Family.findById(packing.family).populate("routes");
 
@@ -23,20 +21,14 @@ module.exports = async (packing, setting) => {
          routeOvertime = family.routes.reduce(getTravelingTimeOvertime);
          traveling_time_overtime = routeOvertime.traveling_time.overtime + routeMax.traveling_time.max;
 
-         if (packing.last_event_record.type === "outbound") {
-            //console.log('FEZ OUTBOUNT')
-
+         if (packing.last_event_record && packing.last_event_record.type === "outbound") {
             if (getDiffDateTodayInDays(packing.last_event_record.created_at) <= routeMax.traveling_time.max) {
-               //console.log('VIAGEM_PRAZO')
                clearIncorrectLocalAttemptFlag(packing);
-
                await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true });
 
                if (
                   packing.last_current_state_history &&
-                  packing.last_current_state_history.type === "viagem_em_prazo"
-               ) {
-                  //console.log("-")
+                  packing.last_current_state_history.type === "viagem_em_prazo") { 
                } else {
                   await CurrentStateHistory.create({
                      packing: packing._id,
@@ -45,8 +37,7 @@ module.exports = async (packing, setting) => {
                   });
                }
             } else {
-               if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) {
-                  //console.log('VIAGEM_VIAGEM_PERDIDA')
+               if (getDiffDateTodayInDays(packing.last_event_record.created_at) > traveling_time_overtime) { 
                   clearIncorrectLocalAttemptFlag(packing);
 
                   await Packing.findByIdAndUpdate(
@@ -57,8 +48,7 @@ module.exports = async (packing, setting) => {
 
                   if (
                      packing.last_current_state_history &&
-                     packing.last_current_state_history.type === "viagem_perdida"
-                  ) {
+                     packing.last_current_state_history.type === "viagem_perdida") {
                      //console.log("-")
                   } else {
                      await CurrentStateHistory.create({
@@ -67,8 +57,7 @@ module.exports = async (packing, setting) => {
                         device_data_id: packing.last_position ? packing.last_position._id : null,
                      });
                   }
-               } else {
-                  //console.log('VIAGEM_ATRASADA')
+               } else { 
                   clearIncorrectLocalAttemptFlag(packing);
 
                   await Packing.findByIdAndUpdate(
@@ -91,14 +80,10 @@ module.exports = async (packing, setting) => {
                   }
                }
             }
-         } else {
-            //console.log('NÃO FEZ OUTBOUNT')
-            /* Checa se a familia tem pontos de controle relacionada a ela */
-            //console.log('FAMILIA TEM PONTOS DE CONTROLE RELACIONADAS')
-            //console.log('IR PARA ANÁLISE')
-            console.log("cria outbound", packing.tag.code);
+         } 
+          
+         if (packing.last_event_record && packing.last_event_record.type === "inbound") { 
             createOutbound(packing); //Não se encontra em nenhum ponto de controle
-
             clearIncorrectLocalAttemptFlag(packing);
 
             await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true });
@@ -115,11 +100,25 @@ module.exports = async (packing, setting) => {
             }
          }
 
-         //Emanoel
-      } else {
-         //console.log('VIAGEM_PRAZO')
-         clearIncorrectLocalAttemptFlag(packing);
+         if (!packing.last_event_record) {
+            clearIncorrectLocalAttemptFlag(packing);
 
+            await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true });
+
+            if (packing.last_current_state_history && packing.last_current_state_history.type === "viagem_em_prazo") {
+               //console.log("-")
+            } else {
+               //console.log("STATE HISTORY CRIADO")
+               await CurrentStateHistory.create({
+                  packing: packing._id,
+                  type: "viagem_em_prazo",
+                  device_data_id: packing.last_position ? packing.last_position._id : null,
+               });
+            }
+         }
+
+      } else {
+         clearIncorrectLocalAttemptFlag(packing);
          await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.VIAGEM_PRAZO.key }, { new: true });
 
          if (packing.last_current_state_history && packing.last_current_state_history.type === "viagem_em_prazo") {
