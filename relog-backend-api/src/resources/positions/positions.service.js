@@ -1,20 +1,20 @@
 const debug = require("debug")("service:positions");
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const _ = require("lodash");
 const { Position } = require("./positions.model");
 const { Family } = require("../families/families.model");
 const { Packing } = require("../packings/packings.model");
 
-exports.getPosition = async ({ tag = null, start_date = null, end_date = null, accuracy = null, max = null }) => {
-   let device_data = [];
-   let conditions = {};
-   let projection = {};
-   let options = {};
-
-   if(tag) conditions.tag = tag;
-   // options.sort = { message_date: -1 };
-
+exports.getPosition = async ({ tag = null, start_date = null, end_date = null, accuracy = null, max = 100 }) => {
    try {
+      let device_data = [];
+      let conditions = {};
+      let projection = {};
+      let options = {};
+
+      if (tag) conditions.tag = tag;
+      // options.sort = { message_date: -1 };
+
       // Periodo of time
       if (start_date && end_date)
          if (isNaN(start_date) && isNaN(end_date))
@@ -37,8 +37,7 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
       if (accuracy) conditions.accuracy = { $lte: parseInt(accuracy) };
 
       if (!start_date && !end_date) options.limit = parseInt(max);
-
-      console.log(conditions);
+      console.log(conditions);   
       device_data = await Position.find(conditions, projection, options);
 
       return device_data;
@@ -49,7 +48,7 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
 
 exports.geolocation = async ({ companyId = null, familyId = null, serial = null }) => {
    try {
-      let packings = []; 
+      let packings = [];
 
       switch (true) {
          // company, family and serial
@@ -112,7 +111,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -177,7 +176,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -242,7 +241,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -307,7 +306,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -371,7 +370,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -394,8 +393,8 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
             break;
 
          //Only serial
-         case serial != null: 
-         console.log("s");
+         case serial != null:
+            console.log("s");
             packings = await Packing.find(
                { serial: serial },
                {
@@ -409,8 +408,8 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                .populate("family", "code company");
             break;
 
-         default: 
-         console.log("default");
+         default:
+            console.log("default");
             packings = await Packing.find(
                {},
                {
@@ -423,7 +422,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                .populate("last_position", "date timestamp latitude longitude accuracy")
                .populate("family", "code company");
             break;
-      } 
+      }
       return packings;
    } catch (error) {
       throw new Error(error);
