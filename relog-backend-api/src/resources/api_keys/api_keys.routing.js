@@ -122,7 +122,7 @@ module.exports = router;
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/CompanyObject'
+ *           $ref: '#/definitions/APIKeyObject'
  *     responses:
  *       200:
  *         description: OK

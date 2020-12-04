@@ -6,9 +6,9 @@ exports.getApiKeys = async (id) => {
    try {
       let apiKeys = {};
       if (id) {
-         apiKeys = await ApiKey.findById(id).populate("users", ["_id", "email", "role", "active"]);
+         apiKeys = await ApiKey.findById(id)
       } else {
-         apiKeys = await ApiKey.find({}).populate("users", ["_id", "email", "role", "active"]);
+         apiKeys = await ApiKey.find({})
       }
       return apiKeys;
    } catch (error) {
@@ -35,10 +35,9 @@ exports.findById = async (id) => {
    }
 };
 
-exports.findByKey = async (id) => {
+exports.findByKey = async (key) => {
    try {
-      const apiKeys = await ApiKey.findByKey(id);
-      return apiKeys;
+      return await ApiKey.find({key: key}); 
    } catch (error) {
       throw new Error(error);
    }

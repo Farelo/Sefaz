@@ -6,23 +6,23 @@ const batteriesController = require("../batteries/batteries.controller");
 
 exports.dots = async (req, res) => {
    let actionData = req.body;
-
+   console.log(actionData);
    try {
       for (let signal of actionData.signals) {
          switch (signal.UUID) {
             case "position":
-                 await resolvePosition(action.deviceUUID, signal.logs);
+                 await resolvePosition(actionData.deviceUUID, signal.logs);
                break;
             case "temperature":
-                 await resolveTemperature(action.deviceUUID, signal.logs);
+                 await resolveTemperature(actionData.deviceUUID, signal.logs);
                break;
             case "batteryTX":
-               await resolveBattery(action.deviceUUID, signal.logs);
+               await resolveBattery(actionData.deviceUUID, signal.logs);
                break;
          }
       }
 
-      console.log("res");
+      console.log("done");
       res.status(HttpStatus.CREATED).send({});
    } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).send({ message: error.message });

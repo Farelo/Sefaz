@@ -1,33 +1,33 @@
 const express = require("express");
 const router = express.Router();
+const HttpStatus = require("http-status-codes");
 const callbackController = require("./callbacks.controller");
+const apiKeyService = require("../api_keys/api_keys.service");
 
 const authApiKey = async (req, res, next) => {
-   let clientApiKey = req.get("APIKEY");
-   if (!clientApiKey) {
-      return res.status(401).send({
-         message: "Missing Api Key",
-      });
-   }
-
+   let clientApiKey = req.header("APIKEY");
    try {
-      let isValid = await verifyApiKey(clientApiKey);
-      if (isValid) {
-         next();
+      if (!clientApiKey) {
+         return res.status(HttpStatus.UNAUTHORIZED).send({ message: "Missing Api Key" });
       }
-   } catch (e) { 
-      return res.status(400).send({
-         status: false,
-         response: "Invalid Api Key"
-      });
+
+      let isValid = await verifyApiKey(clientApiKey);
+      console.log('isValid', clientApiKey, isValid);
+      if (isValid) next();
+      else {
+         return res.status(HttpStatus.UNAUTHORIZED).send({ message: "Missing Api Key" });
+      }
+   } catch (e) {
+      return res.status(HttpStatus.UNAUTHORIZED).send({ message: "Missing Api Key" });
    }
 };
 
-const verifyApiKey = (apiKey) => {
-   return true;
-}
+const verifyApiKey = async (apiKey) => {
+   let result = await apiKeyService.findByKey(apiKey);
+   return result.length > 0;
+};
 
-router.post("/dots", [authApiKey], callbackController.dots);
+router.post("/dots", authApiKey, callbackController.dots);
 
 module.exports = router;
 
