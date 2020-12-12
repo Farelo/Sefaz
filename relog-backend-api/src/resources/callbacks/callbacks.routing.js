@@ -15,10 +15,10 @@ const authApiKey = async (req, res, next) => {
       console.log('isValid', clientApiKey, isValid);
       if (isValid) next();
       else {
-         return res.status(HttpStatus.UNAUTHORIZED).send({ message: "Missing Api Key" });
+         return res.status(HttpStatus.UNAUTHORIZED).send({ message: "Invalid Api Key" });
       }
    } catch (e) {
-      return res.status(HttpStatus.UNAUTHORIZED).send({ message: "Missing Api Key" });
+      return res.status(HttpStatus.UNAUTHORIZED).send({ message: "Invalid Api Key" });
    }
 };
 
@@ -38,7 +38,7 @@ module.exports = router;
  * /callbacks/dots:
  *   post:
  *     summary: Receive a dots action
- *     description: Receive a list of messages from dots actions
+ *     description: Receive a action message from dots actions
  *     security:
  *       - Bearer: []
  *     tags:
@@ -47,13 +47,16 @@ module.exports = router;
  *       - application/json
  *     parameters:
  *       - name: messages
- *         description: Messages array
+ *         description: Action message
  *         in: body
  *         required: true
  *         schema:
- *           type: array
- *           items:
- *             type: string
+ *           $ref: '#/definitions/AygaActionObject'
+ *       - in: header
+ *         name: APIKEY
+ *         schema:
+ *           type: string
+ *         required: false
  *     responses:
  *       200:
  *         description: It is valid request
@@ -63,4 +66,45 @@ module.exports = router;
  *         description: Unauthorized
  *       404:
  *         description: Not Found
+ */
+
+
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   AygaActionObject:
+ *     type: object
+ *     properties: 
+ *       deviceUUID:
+ *         type: string
+ *       signals:
+ *         type: array
+ *         items:  
+ *           type: object
+ *           properties:
+ *             UUID:
+ *               type: string
+ *             recovered:
+ *               type: boolean 
+ *             logs:
+ *               type: array
+ *               items:
+ *                 type: object
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   GeofenceCoordinatesObject:
+ *     type: array
+ *     items:
+ *       type: object
+ *       properties:
+ *         lat:
+ *           type: number
+ *         lng:
+ *           type: number
  */
