@@ -33,10 +33,12 @@ exports.dots = async (req, res) => {
 const resolvePosition = async (tag, data) => {
    await positionsController.createMany(
       data.map((element) => {
+         let newTimestamp = parseInt(new Date(element.date).getTime());
+         newTimestamp = newTimestamp.toString().length == 10 ? newTimestamp : newTimestamp / 1000;
          return {
             tag: tag,
             date: element.date,
-            timestamp: new Date(element.date).getTime(),
+            timestamp: newTimestamp,
             latitude: element.value.lat,
             longitude: element.value.lng,
             accuracy: element.value.radius,
@@ -48,10 +50,12 @@ const resolvePosition = async (tag, data) => {
 const resolveTemperature = async (tag, data) => {
    await temperaturesController.createMany(
       data.map((element) => {
+         let newTimestamp = parseInt(new Date(element.date).getTime());
+         newTimestamp = newTimestamp.toString().length == 10 ? newTimestamp : newTimestamp / 1000;
          return {
             tag: tag,
             date: element.date,
-            timestamp: new Date(element.date).getTime(),
+            timestamp: newTimestamp,
             value: element.value,
          };
       })
@@ -61,10 +65,12 @@ const resolveTemperature = async (tag, data) => {
 const resolveBattery = async (tag, data) => {
    await batteriesController.createMany(
       data.map((element) => {
+         let newTimestamp = parseInt(new Date(element.date).getTime());
+         newTimestamp = newTimestamp.toString().length == 10 ? newTimestamp : newTimestamp / 1000;
          return {
             tag: tag,
             date: element.date,
-            timestamp: new Date(element.date).getTime(),
+            timestamp: newTimestamp,
             batteryVoltage: element.value,
             battery: parseVoltage(element.value),
          };
