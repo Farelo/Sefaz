@@ -48,8 +48,8 @@ exports.create = async (req, res) => {
    packing = await packings_service.create_packing(req.body);
 
    //Create on callback proxy
-   let proxyApiKey = await apiKeysService.findByName("proxy-ayga");
-   if (proxyApiKey.length) await createOnProxy(packing, proxyApiKey[0]);
+   // let proxyApiKey = await apiKeysService.findByName("proxy-ayga");
+   // if (proxyApiKey.length) await createOnProxy(packing, proxyApiKey[0]);
 
    //Sub packing in websocket
    await subPacking(packing.tag.code);
