@@ -39,17 +39,13 @@ const positionSchema = new mongoose.Schema({
 positionSchema.index({ tag: 1, timestamp: -1 }, { unique: true });
 
 const createMany = async (packing, positionArray) => {
-   let firstSaved = true;
    for (const [index, position] of positionArray.entries()) {
-      
       if (position.accuracy <= 32000) {
          try {
             const newPosition = new Position({
                tag: packing.tag.code,
                date: new Date(position.date),
                timestamp: position.timestamp,
-               last_communication: new Date(position.terminal.lastCommunicationString),
-               last_communication_timestamp: position.terminal.lastCommunication,
                latitude: position.latitude,
                longitude: position.longitude,
                accuracy: position.accuracy,
@@ -57,8 +53,8 @@ const createMany = async (packing, positionArray) => {
 
             // salva no banco | observação: não salva mensagens iguais porque o model possui
             // índice unico e composto por tag e timestamp, e o erro de duplicidade nao interrompe o job
-            if (firstSaved) {
-               firstSaved = false;
+            console.log(index, positionArray.length-1, index == positionArray.length - 1);
+            if (index == positionArray.length - 1) {
                await newPosition
                   .save()
                   .then((newDoc) => referenceFromPackage(packing, newDoc))

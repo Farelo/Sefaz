@@ -1,8 +1,17 @@
 const debug = require("debug")("service:positions");
 const mongoose = require("mongoose");
 const _ = require("lodash");
-const { Position } = require("./positions.model"); 
+const Position = require("./positions.model");
 const { Packing } = require("../packings/packings.model");
+
+exports.createMany = async (currentPacking, allPositions) => {
+   try {
+      console.log("create many service");
+      await Position.createMany(currentPacking, allPositions);
+   } catch (error) {
+      throw new Error(error);
+   }
+};
 
 exports.getPosition = async ({ tag = null, start_date = null, end_date = null, accuracy = null, max = 100 }) => {
    try {
@@ -36,7 +45,7 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
       if (accuracy) conditions.accuracy = { $lte: parseInt(accuracy) };
 
       if (!start_date && !end_date) options.limit = parseInt(max);
-      console.log(conditions);   
+      console.log(conditions);
       device_data = await Position.find(conditions, projection, options);
 
       return device_data;

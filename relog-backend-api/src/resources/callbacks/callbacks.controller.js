@@ -20,8 +20,6 @@ exports.dots = async (req, res) => {
                break;
          }
       }
-
-      console.log("done");
       res.status(HttpStatus.CREATED).send({});
    } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).send({ message: error.message });
@@ -43,7 +41,7 @@ const resolvePosition = async (tag, data) => {
    );
 };
 
-const resolveTemperature = async (tag, data) => { 
+const resolveTemperature = async (tag, data) => {
    await temperaturesController.createMany(
       data.map((element) => {
          return {

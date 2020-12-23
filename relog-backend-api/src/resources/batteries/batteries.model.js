@@ -42,7 +42,7 @@ const createMany = async (packing, batteryArray) => {
 
          await newBattery.save().catch((err) => debug(err));
 
-         if (index == 0) {
+         if (index == batteryArray.length - 1) {
             await newBattery
                .save()
                .then((doc) => referenceFromPackage(packing, doc))
