@@ -5,8 +5,7 @@ const temperaturesController = require("../temperatures/temperatures.controller"
 const batteriesController = require("../batteries/batteries.controller");
 
 exports.dots = async (req, res) => {
-   let actionData = req.body;
-   console.log(actionData);
+   let actionData = req.body; 
    try {
       for (let signal of actionData.signals) {
          switch (signal.UUID) {
@@ -44,8 +43,7 @@ const resolvePosition = async (tag, data) => {
    );
 };
 
-const resolveTemperature = async (tag, data) => {
-   console.log(tag, data);
+const resolveTemperature = async (tag, data) => { 
    await temperaturesController.createMany(
       data.map((element) => {
          return {
@@ -58,8 +56,7 @@ const resolveTemperature = async (tag, data) => {
    );
 };
 
-const resolveBattery = async (tag, data) => {
-   console.log(tag, data);
+const resolveBattery = async (tag, data) => { 
    await batteriesController.createMany(
       data.map((element) => {
          return {
@@ -74,5 +71,9 @@ const resolveBattery = async (tag, data) => {
 };
 
 const parseVoltage = (value) => {
-   return value;
+   if(value >= 3.15) return 100;
+   if(value >= 3) return 75;
+   if(value >= 2.9) return 50;
+   if(value >= 2.8) return 25;
+   return 0;
 };
