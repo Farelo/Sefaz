@@ -35,44 +35,12 @@ module.exports = router;
  *         description: Return control point filtered by tag code
  *         in: query
  *         required: false
- *         type: string
- *       - name: accuracy
- *         description: Return control point filtered by tag code
- *         in: query
- *         required: false
- *         type: string
+ *         type: string 
  *     responses:
  *       200:
  *         description: list of all reports
  *       400:
  *         description: Bad Request
- *       404:
- *         description: Not Found
- */
-
-// POST '/'
-/**
- * @swagger
- * /device_data/data:
- *   post:
- *     summary: Create a DeviceData
- *     description: Create a DeviceData
- *     security:
- *       - Bearer: []
- *     tags:
- *       - DeviceData
- *     parameters:
- *       - name: device_data
- *         description: Device Data
- *         in:  body
- *         required: true
- *     responses:
- *       200:
- *         description: DeviceData is valid request
- *       400:
- *         description: Bad Request
- *       401:
- *         description: Unauthorized
  *       404:
  *         description: Not Found
  */

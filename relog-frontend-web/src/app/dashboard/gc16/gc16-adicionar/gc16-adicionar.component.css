@@ -158,23 +158,7 @@ select {
 @media (min-width: 1200px) {
   .conteudoTop {
     width: inherit;
-    margin-left: 130px;
-    margin-right: 130px;
-  }
-}
-
-@media (min-width: 1400px) {
-  .conteudoTop {
-    width: inherit;
-    margin-left: 270px;
-    margin-right: 270px;
-  }
-}
-
-@media (min-width: 1700px) {
-  .conteudoTop {
-    width: inherit;
-    margin-left: 450px;
-    margin-right: 450px;
+    margin-left: 120px;
+    margin-right: 120px;
   }
 }

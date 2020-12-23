@@ -4,26 +4,16 @@ const _ = require("lodash");
 const { Position } = require("./positions.model"); 
 const { Packing } = require("../packings/packings.model");
 
-exports.create = async (data) => {
+exports.getPosition = async ({ tag = null, start_date = null, end_date = null, accuracy = null, max = 100 }) => {
    try {
-      const newPosition = new Position(data);
-      await newPosition.save();
-      return newPosition;
-   } catch (error) {
-      throw new Error(error);
-   }
-};
+      let device_data = [];
+      let conditions = {};
+      let projection = {};
+      let options = {};
 
-exports.getPosition = async ({ tag = null, start_date = null, end_date = null, accuracy = null, max = null }) => {
-   let device_data = [];
-   let conditions = {};
-   let projection = {};
-   let options = {};
+      if (tag) conditions.tag = tag;
+      // options.sort = { message_date: -1 };
 
-   if (tag) conditions.tag = tag;
-   // options.sort = { message_date: -1 };
-
-   try {
       // Periodo of time
       if (start_date && end_date)
          if (isNaN(start_date) && isNaN(end_date))
@@ -46,8 +36,7 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
       if (accuracy) conditions.accuracy = { $lte: parseInt(accuracy) };
 
       if (!start_date && !end_date) options.limit = parseInt(max);
-
-      console.log(conditions);
+      console.log(conditions);   
       device_data = await Position.find(conditions, projection, options);
 
       return device_data;
