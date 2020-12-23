@@ -18,6 +18,7 @@ exports.get = async (req, res) => {
       if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
    }
 
+   console.log(query);
    const result = await positionsService.getPosition(query);
 
    res.json(result);
