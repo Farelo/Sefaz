@@ -7,11 +7,11 @@ const validate_object_id = require("../../middlewares/validate_object_id.middlew
 const validate_joi = require("../../middlewares/validate_joi.middleware");
 const { validate_api_keys } = require("./api_keys.model");
 
-router.get("/", [], apiKeysController.all);
-router.get("/:id", [], apiKeysController.show);
-router.post("/", [], apiKeysController.create);
-router.patch("/:id", [], apiKeysController.update);
-router.delete("/:id", [], apiKeysController.delete);
+router.get("/", [auth], apiKeysController.all);
+router.get("/:id", [auth], apiKeysController.show);
+router.post("/", [auth], apiKeysController.create);
+router.patch("/:id", [auth], apiKeysController.update);
+router.delete("/:id", [auth], apiKeysController.delete);
 
 module.exports = router;
 
