@@ -1,15 +1,45 @@
 const debug = require("debug")("service:positions");
 const mongoose = require("mongoose");
 const _ = require("lodash");
-const Position = require("./positions.model");
+const { Position } = require("./positions.model");
 const { Packing } = require("../packings/packings.model");
 
 exports.createMany = async (currentPacking, allPositions) => {
+   for (const [index, position] of positionArray.entries()) {
+      if (position.accuracy <= 32000) {
+         try {
+            const newPosition = new Position({
+               tag: packing.tag.code,
+               date: new Date(position.date),
+               timestamp: position.timestamp,
+               latitude: position.latitude,
+               longitude: position.longitude,
+               accuracy: position.accuracy,
+            });
+
+            // salva no banco | observação: não salva mensagens iguais porque o model possui
+            // índice unico e composto por tag e timestamp, e o erro de duplicidade nao interrompe o job
+            console.log(index, positionArray.length - 1, index == positionArray.length - 1);
+            if (index == positionArray.length - 1) {
+               await newPosition
+                  .save()
+                  .then((newDoc) => referenceFromPackage(packing, newDoc))
+                  .catch((err) => debug(err));
+            } else {
+               await newPosition.save();
+            }
+         } catch (error) {
+            debug(`Erro ao salvar a posição do device ${packing.tag.code} | ${error}`);
+         }
+      }
+   }
+};
+
+const referenceFromPackage = async (packing, position) => {
    try {
-      console.log("create many service");
-      await Position.createMany(currentPacking, allPositions);
+      await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
    } catch (error) {
-      throw new Error(error);
+      debug(error);
    }
 };
 

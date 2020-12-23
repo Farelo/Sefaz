@@ -1,12 +1,11 @@
 const debug = require("debug")("service:batteries");
 const mongoose = require("mongoose");
 const _ = require("lodash");
-const Battery = require("./batteries.model"); 
+const { Battery } = require("./batteries.model");
 const { Packing } = require("../packings/packings.model");
 
-
 exports.create = async (data) => {
-   try { 
+   try {
       const newBattery = new Battery(data);
       await newBattery.save();
       return newBattery;
@@ -15,12 +14,38 @@ exports.create = async (data) => {
    }
 };
 
-exports.createMany = async (currentPacking, allBatteries) => {
-   try { 
-      console.log('create many service');
-      await Battery.createMany(currentPacking, allBatteries);
+exports.createMany = async (packing, batteryArray) => {
+   for (const [index, battery] of batteryArray.entries()) {
+      try {
+         const newBattery = new Battery({
+            tag: packing.tag.code,
+            date: new Date(battery.date),
+            timestamp: battery.timestamp,
+            battery: battery.battery,
+            batteryVoltage: battery.batteryVoltage,
+         });
+
+         await newBattery.save().catch((err) => debug(err));
+
+         if (index == batteryArray.length - 1) {
+            await newBattery
+               .save()
+               .then((doc) => referenceFromPackage(packing, doc))
+               .catch((err) => debug(err));
+         } else {
+            await newBattery.save();
+         }
+      } catch (error) {
+         debug(`Erro ao salvar a bateria do device ${packing.tag.code} | ${error}`);
+      }
+   }
+};
+
+const referenceFromPackage = async (packing, doc) => {
+   try {
+      await Packing.findByIdAndUpdate(packing._id, { last_battery: doc._id }, { new: true });
    } catch (error) {
-      throw new Error(error);
+      debug(error);
    }
 };
 
@@ -45,16 +70,15 @@ exports.get = async ({ tag = null, start_date = null, end_date = null, max = nul
                $gte: start_date,
                $lte: end_date,
             };
-      else if (start_date){
+      else if (start_date) {
          if (isNaN(start_date)) conditions.date = { $gte: new Date(start_date) };
          else conditions.timestamp = { $gte: start_date };
-      }
-      else if (end_date){
+      } else if (end_date) {
          console.log("end_date", end_date);
          if (isNaN(end_date)) conditions.date = { $lte: new Date(end_date) };
          else conditions.timestamp = { $lte: end_date };
       }
-      
+
       if (!start_date && !end_date) options.limit = parseInt(max);
 
       return await Battery.find(conditions, projection, options);
@@ -389,7 +413,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
                   last_battery: 1,
                }
             )
-            .populate("last_battery", "date timestamp battery batteryVoltage")
+               .populate("last_battery", "date timestamp battery batteryVoltage")
                .populate("family", "code company");
             break;
 
@@ -418,7 +442,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
                   last_battery: 1,
                }
             )
-            .populate("last_battery", "date timestamp battery batteryVoltage")
+               .populate("last_battery", "date timestamp battery batteryVoltage")
                .populate("family", "code company");
             break;
       }
