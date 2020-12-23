@@ -9,7 +9,7 @@ exports.dots = async (req, res) => {
    try {
       for (let signal of actionData.signals) {
          switch (signal.UUID) {
-            case "position":
+            case "positionDOTS":
                await resolvePosition(actionData.deviceUUID, signal.logs);
                break;
             case "temperature":
