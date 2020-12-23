@@ -4,7 +4,7 @@ const _ = require("lodash");
 const { Position } = require("./positions.model");
 const { Packing } = require("../packings/packings.model");
 
-exports.createMany = async (currentPacking, allPositions) => {
+exports.createMany = async (packing, positionArray) => {
    for (const [index, position] of positionArray.entries()) {
       if (position.accuracy <= 32000) {
          try {
