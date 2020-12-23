@@ -26,7 +26,13 @@ const temperatureSchema = new mongoose.Schema({
 
 temperatureSchema.index({ tag: 1, timestamp: -1 }, { unique: true });
 
-const createMany = async (packing, temperatureArray) => { 
+/**
+ * Cria várias temperaturas a partir de um array de mensagens.
+ * As mensagens devem estar em ordem cronológica crescente. Ou seja, da mais antiga para a mais recente.
+ * @param {*} packing
+ * @param {*} temperatureArray
+ */
+const createMany = async (packing, temperatureArray) => {
    for (const [index, temperature] of temperatureArray.entries()) {
       try {
          const newTemperature = new Temperature({
@@ -38,7 +44,7 @@ const createMany = async (packing, temperatureArray) => {
 
          await newTemperature.save().catch((err) => debug(err));
 
-         if (index == 0) {
+         if (index == temperatureArray.length - 1) {
             await newTemperature
                .save()
                .then((doc) => referenceFromPackage(packing, doc))
@@ -59,6 +65,7 @@ const referenceFromPackage = async (packing, doc) => {
       debug(error);
    }
 };
+
 const Temperature = mongoose.model("Temperature", temperatureSchema);
 
 exports.Temperature = Temperature;

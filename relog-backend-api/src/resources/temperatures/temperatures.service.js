@@ -1,7 +1,7 @@
 const debug = require("debug")("service:temperatures");
 const mongoose = require("mongoose");
 const _ = require("lodash");
-const { Temperature } = require("./temperatures.model"); 
+const Temperature = require("./temperatures.model"); 
 const { Packing } = require("../packings/packings.model");
 
 exports.create = async (data) => {
@@ -9,6 +9,15 @@ exports.create = async (data) => {
       const newTemperature = new Temperature(data);
       await newTemperature.save(); 
       return newTemperature;
+   } catch (error) {
+      throw new Error(error);
+   }
+};
+
+exports.createMany = async (currentPacking, allTemperatures) => {
+   try { 
+      console.log('create many service');
+      await Temperature.createMany(currentPacking, allTemperatures);
    } catch (error) {
       throw new Error(error);
    }

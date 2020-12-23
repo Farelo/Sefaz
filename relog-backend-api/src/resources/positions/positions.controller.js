@@ -23,13 +23,17 @@ exports.get = async (req, res) => {
    res.json(result);
 };
 
-exports.createMany = async (data) => {
+exports.createMany = async (allPositions) => {
    try {
-      for (let position of data) {
-         let currentPacking = await packingsService.find_by_tag(position.tag);
-         if (!currentPacking) throw new Error(`The tag ${position.tag} doesn't exists`);
-
-         await positionsService.create(position);
+      let currentPosition = null; 
+      if (allPositions.length) { 
+         currentPosition = await packingsService.find_by_tag(allPositions[0].tag);
+         console.log(allPositions[0], currentPosition);
+         if (currentPosition) {
+            await positionsService.createMany(currentPosition, allPositions);
+         } else {
+            throw new Error(`The tag ${allPositions[0].tag} doesn't exists`);
+         }
       }
    } catch (error) {
       throw new Error(error);
