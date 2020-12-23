@@ -28,7 +28,6 @@ exports.createMany = async (allPositions) => {
       let currentPosition = null; 
       if (allPositions.length) { 
          currentPosition = await packingsService.find_by_tag(allPositions[0].tag);
-         console.log(allPositions[0], currentPosition);
          if (currentPosition) {
             await positionsService.createMany(currentPosition, allPositions);
          } else {
