@@ -122,7 +122,7 @@
               let item of actualListOfTemperatures
                 | paginate
                   : {
-                      id: 'temepratures',
+                      id: 'temperatures',
                       itemsPerPage: 10,
                       currentPage: actualPage,
                       totalItems: actualListOfTemperatures.length
@@ -146,7 +146,7 @@
     <div class="has-text-centered">
       <pagination-controls
         class="my-pagination"
-        id="positions"
+        id="temperatures"
         (pageChange)="actualPage = $event"
         directionLinks="false"
         autoHide="true"
