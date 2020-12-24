@@ -15,6 +15,10 @@ exports.create = async (data) => {
 };
 
 exports.createMany = async (packing, batteryArray) => {
+   if (batteryArray.length) {
+      updatePackageLastMessage(packing, batteryArray[0]);
+   }
+
    for (const [index, battery] of batteryArray.entries()) {
       try {
          const newBattery = new Battery({
@@ -39,6 +43,12 @@ exports.createMany = async (packing, batteryArray) => {
          debug(`Erro ao salvar a bateria do device ${packing.tag.code} | ${error}`);
       }
    }
+};
+
+const updatePackageLastMessage = async (packing, lastMessage) => {
+   let update_attrs = {};
+   update_attrs.last_message_signal = lastMessage.date;
+   await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
 };
 
 const referenceFromPackage = async (packing, doc) => {

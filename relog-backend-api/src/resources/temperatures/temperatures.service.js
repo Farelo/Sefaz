@@ -21,6 +21,10 @@ exports.create = async (data) => {
  * @param {*} temperatureArray
  */
 exports.createMany = async (packing, temperatureArray) => {
+   if (temperatureArray.length) {
+      updatePackageLastMessage(packing, temperatureArray[0]);
+   }
+
    for (const [index, temperature] of temperatureArray.entries()) {
       try {
          const newTemperature = new Temperature({
@@ -44,6 +48,12 @@ exports.createMany = async (packing, temperatureArray) => {
          debug(`Erro ao salvar a temperatura do device ${packing.tag.code} | ${error}`);
       }
    }
+};
+
+const updatePackageLastMessage = async (packing, lastMessage) => {
+   let update_attrs = {};
+   update_attrs.last_message_signal = lastMessage.date;
+   await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
 };
 
 const referenceFromPackage = async (packing, doc) => {
