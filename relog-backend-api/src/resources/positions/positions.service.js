@@ -5,6 +5,10 @@ const { Position } = require("./positions.model");
 const { Packing } = require("../packings/packings.model");
 
 exports.createMany = async (packing, positionArray) => {
+   if (positionArray.length) {
+      updatePackageLastMessage(packing, positionArray[0]);
+   }
+
    for (const [index, position] of positionArray.entries()) {
       if (position.accuracy <= 32000) {
          try {
@@ -19,7 +23,6 @@ exports.createMany = async (packing, positionArray) => {
 
             // salva no banco | observação: não salva mensagens iguais porque o model possui
             // índice unico e composto por tag e timestamp, e o erro de duplicidade nao interrompe o job
-            console.log(index, positionArray.length - 1, index == positionArray.length - 1);
             if (index == positionArray.length - 1) {
                await newPosition
                   .save()
@@ -33,6 +36,12 @@ exports.createMany = async (packing, positionArray) => {
          }
       }
    }
+};
+
+const updatePackageLastMessage = async (packing, lastMessage) => {
+   let update_attrs = {};
+   update_attrs.last_message_signal = lastMessage.date;
+   await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
 };
 
 const referenceFromPackage = async (packing, position) => {
