@@ -130,7 +130,7 @@
             "
           >
             <td>{{ item.tag }}</td>
-            <td>{{ item.value + "ºC" || "-" }}</td>
+            <td>{{ item.value.toFixed(2) + "ºC" || "-" }}</td>
             <td>{{ convertTimezone(item.timestamp) }}</td>
           </tr>
         </tbody>

@@ -262,7 +262,7 @@ export class InventarioTemperaturasComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario Posições', this.csvOptions);
+    new Angular2Csv(flatObjectData, 'Inventario temperaturas', this.csvOptions);
   }
 
   /**
@@ -278,13 +278,13 @@ export class InventarioTemperaturasComponent implements OnInit {
     //I'm using the method slice() just to copy the array as value.
     let flatObjectData = this.flatObject(this.actualListOfTemperatures.slice());
     flatObjectData = flatObjectData.map(elem => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5];
+      return [elem.a1, elem.a2, elem.a3];
     });
     // console.log(flatObjectData);
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Tag', 'Acurácia', 'Latitude', 'Longitude', 'Data da mensagem']],
+      head: [['Tag', 'Valor', 'Data da mensagem']],
       body: flatObjectData
     });
 
@@ -298,10 +298,8 @@ export class InventarioTemperaturasComponent implements OnInit {
 
       return {
         a1: obj.tag,
-        a2: obj.accuracy, 
-        a3: obj.latitude,
-        a4: obj.longitude,
-        a5: this.convertTimezone(obj.timestamp)
+        a2: obj.value,  
+        a3: this.convertTimezone(obj.timestamp)
       };
     });
 
@@ -312,10 +310,8 @@ export class InventarioTemperaturasComponent implements OnInit {
   addHeader(mArray: any) {
     let cabecalho = {
       a1: 'Tag',
-      a2: 'Acurácia', 
-      a3: 'Latitude',
-      a4: 'Longitude',
-      a5: 'Data da mensagem'
+      a2: 'Valor',  
+      a3: 'Data da mensagem'
     }
 
     //adiciona o cabeçalho
