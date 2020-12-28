@@ -41,7 +41,7 @@ const generateSensorQuery = (packing) => {
 
    //Which one is the most recent?
    let lastSensorTimestamp = _.max([lastTemperatureTimestamp, lastBatteryTimestamp]);
-   
+
    //If there is a most recent value, then calculate the time window
    //If there isn't a most recent value, then calculate the last 7 days
    if (lastSensorTimestamp > 0)
@@ -76,7 +76,10 @@ module.exports = async () => {
 
          // "tag.code": "28423339"
          // "tag.code": "4081800"
-         let devices = await Packing.find({'tag.deviceModel': { $in: ['loka', 'alps'] } }, { _id: 1, tag: 1, last_position: 1 })
+         let devices = await Packing.find(
+            { $or: [{ "tag.deviceModel": { $in: ["loka", "alps"] } }, { "tag.deviceModel": { $exists: false } }] },
+            { _id: 1, tag: 1, last_position: 1 }
+         )
             .populate("last_position")
             .populate("last_battery")
             .populate("last_temperature");
@@ -114,7 +117,7 @@ module.exports = async () => {
                   let lastMessage =
                      newPositionsArray[0].timestamp >= newSensorsArray[0].timestamp
                         ? new Date(newPositionsArray[0].timestamp * 1000)
-                        : new Date(newSensorsArray[0].timestamp * 1000)
+                        : new Date(newSensorsArray[0].timestamp * 1000);
                   await Packing.findByIdAndUpdate(packing._id, { last_message_signal: lastMessage }, { new: true });
                } else {
                   if (newPositionsArray.length > 0) {
