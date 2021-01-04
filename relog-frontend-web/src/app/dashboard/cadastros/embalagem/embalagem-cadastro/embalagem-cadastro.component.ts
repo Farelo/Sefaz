@@ -43,9 +43,9 @@ export class EmbalagemCadastroComponent implements OnInit {
 
   fillSelectType() {
     this.deviceModel = [
-      { label: "Loka Mind", name: "loka" },
-      { label: "ALPS", name: "alps" },
-      { label: "Ayga", name: "ayga" },
+      { label: "Loka V2", name: "loka" },
+      { label: "ALPS Lykaner", name: "alps" },
+      { label: "Ayga WACS", name: "ayga" },
     ];
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FamiliesService, PositionsService, PackingService, TemperaturesService } from 'app/servicos/index.service';
 import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NouiFormatter } from 'ng2-nouislider';
@@ -10,12 +10,16 @@ import 'jspdf';
 import 'jspdf-autotable';
 import { DatePipe } from '@angular/common';
 declare var jsPDF: any;
+declare var Plotly: any;
 
 @Component({
   selector: 'app-inventario-temperaturas',
   templateUrl: './inventario-temperaturas.component.html',
   styleUrls: ['./inventario-temperaturas.component.css']
 })
+
+
+
 export class InventarioTemperaturasComponent implements OnInit {
 
   public actualListOfTemperatures: any[] = [];
@@ -35,12 +39,16 @@ export class InventarioTemperaturasComponent implements OnInit {
 
   public withTemperature = false;
 
+  @ViewChild("Graph")
+  private Graph: ElementRef; 
+
   /*
    * DataPicker
    */
   datePickerConfig = new BsDaterangepickerConfig(); //Configurations
   public initialDate: Date;  //Initial date
   public finalDate: Date;    //Initial date
+
 
   constructor(private familyService: FamiliesService,
     private packingService: PackingService,
@@ -158,8 +166,9 @@ export class InventarioTemperaturasComponent implements OnInit {
   getFilteredTemperatures(codeTag: string, startDate: any = null, finalDate: any = null) {
 
     this.temperatureService.getFilteredTemperatures(codeTag, startDate, finalDate).subscribe((result: any[]) => {
-      //console.log(result);
+      // console.log(result);
       this.originalListOfTemperatures = result;
+      this.createGraph(result);
       this.actualListOfTemperatures = this.originalListOfTemperatures
     });
   }
@@ -320,4 +329,59 @@ export class InventarioTemperaturasComponent implements OnInit {
     return mArray;
   }
 
+  createGraph(mArray: any){
+
+    let flatted = this.flatObject(mArray);
+
+    let trace = {
+      'x': [],
+      'y': [], 
+      'mode':'lines+markers', 
+      'connectgaps': true
+    };
+    // console.log(flatted);
+    flatted.forEach(element => {
+      trace.x.unshift(element.a3);
+      trace.y.unshift(element.a2);
+    })
+
+    var data = [trace];
+    
+    this.Graph = Plotly.newPlot( 
+    this.Graph.nativeElement, //our viewchild element
+    data, //data provided
+    { //here starts the layout definition (keep in mind the commas)
+    autoexpand: "true",
+    autosize: "true",
+    width: window.innerWidth - 200, //we give initial width, so if the
+                                    //graph is rendered while hidden, it   
+                                    //takes the right shape
+    margin: {
+    // autoexpand: "true",
+    margin: 0
+    },
+    offset: 0,
+    type: "scattergl",
+    title: name, //Title of the graph
+    hovermode: "closest",
+    xaxis: {
+    linecolor: "black",
+    linewidth: 1,
+    mirror: true,
+    title: "Hora da Aferição",
+    automargin: true
+    },
+    yaxis: {
+    linecolor: "black",
+    linewidth: 1,
+    mirror: true,
+    automargin: true,
+    title: 'Temperatura (°C)'
+        }
+    },
+    { //this is where the configuration is defined
+    responsive: true, //important to keep graph responsive
+    scrollZoom: true
+    });
+  }
 }

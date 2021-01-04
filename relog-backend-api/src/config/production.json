@@ -8,8 +8,8 @@
     "port": 8011
   },
   "db": {
-    "url": "mongodb://mongo:27017/cebrace",
-    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/cebrace"
+    "url": "mongodb://mongo:27017/ee-2020-12-24",
+    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/ee-2020-12-24"
   },
   "security": {
     "jwtPrivateKey": "secr3t",

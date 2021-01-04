@@ -9,7 +9,7 @@
   },
   "db": {
     "url": "mongodb://127.0.0.1:27017/ee-2020-12-24", 
-    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/login" 
+    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/ee-2020-12-24" 
   },
   "security": {
     "jwtPrivateKey": "secr3t",
