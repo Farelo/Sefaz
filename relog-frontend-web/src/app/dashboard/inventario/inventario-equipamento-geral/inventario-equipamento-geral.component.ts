@@ -66,6 +66,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
    * Default list
    */
   generalInventoryEquipament() {
+    
     this.reportsService.getGeneralInventory().subscribe(
       (result) => {
         this.generalEquipament = result;
@@ -215,7 +216,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
     //Add a header in the flat json data
     flatObjectData = this.addHeader(flatObjectData);
-
+    console.log(flatObjectData);
     //Instantiate a new csv object and initiate the download
     new Angular2Csv(
       flatObjectData,
