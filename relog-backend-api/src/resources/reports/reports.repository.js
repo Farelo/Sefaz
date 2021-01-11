@@ -1069,7 +1069,7 @@ exports.general_info_report = async (family_id = null) => {
 
             //const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
             const company = await Company.findById(packing.family.company);
-            console.log(packing)
+            // console.log(packing)
             object_temp._id = packing._id;
             object_temp.tag = packing.tag.code;
             object_temp.family_code = packing.family ? packing.family.code : "-";
