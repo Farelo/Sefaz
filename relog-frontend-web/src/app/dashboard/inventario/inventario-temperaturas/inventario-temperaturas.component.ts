@@ -1,27 +1,33 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FamiliesService, PositionsService, PackingService, TemperaturesService } from 'app/servicos/index.service';
-import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
-import { NouiFormatter } from 'ng2-nouislider';
-import { defineLocale } from 'ngx-bootstrap/chronos';
-import { ptBrLocale } from 'ngx-bootstrap/locale';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
-import * as moment from 'moment-timezone';
-import 'jspdf';
-import 'jspdf-autotable';
-import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  FamiliesService,
+  PositionsService,
+  PackingService,
+  TemperaturesService,
+} from "app/servicos/index.service";
+import {
+  DatepickerModule,
+  BsDatepickerModule,
+  BsDaterangepickerConfig,
+  BsLocaleService,
+} from "ngx-bootstrap/datepicker";
+import { NouiFormatter } from "ng2-nouislider";
+import { defineLocale } from "ngx-bootstrap/chronos";
+import { ptBrLocale } from "ngx-bootstrap/locale";
+import { Angular2Csv } from "angular2-csv/Angular2-csv";
+import * as moment from "moment-timezone";
+import "jspdf";
+import "jspdf-autotable";
+import { DatePipe } from "@angular/common";
 declare var jsPDF: any;
 declare var Plotly: any;
 
 @Component({
-  selector: 'app-inventario-temperaturas',
-  templateUrl: './inventario-temperaturas.component.html',
-  styleUrls: ['./inventario-temperaturas.component.css']
+  selector: "app-inventario-temperaturas",
+  templateUrl: "./inventario-temperaturas.component.html",
+  styleUrls: ["./inventario-temperaturas.component.css"],
 })
-
-
-
 export class InventarioTemperaturasComponent implements OnInit {
-
   public actualListOfTemperatures: any[] = [];
   public originalListOfTemperatures: any[] = [];
 
@@ -40,21 +46,21 @@ export class InventarioTemperaturasComponent implements OnInit {
   public withTemperature = false;
 
   @ViewChild("Graph")
-  private Graph: ElementRef; 
+  private Graph: ElementRef;
 
   /*
    * DataPicker
    */
   datePickerConfig = new BsDaterangepickerConfig(); //Configurations
-  public initialDate: Date;  //Initial date
-  public finalDate: Date;    //Initial date
+  public initialDate: Date; //Initial date
+  public finalDate: Date; //Initial date
 
-
-  constructor(private familyService: FamiliesService,
+  constructor(
+    private familyService: FamiliesService,
     private packingService: PackingService,
     private temperatureService: TemperaturesService,
-    private localeService: BsLocaleService) {
-
+    private localeService: BsLocaleService
+  ) {
     this.configureDatePicker();
 
     // console.log(this.initialDate);
@@ -62,20 +68,19 @@ export class InventarioTemperaturasComponent implements OnInit {
   }
 
   configureDatePicker() {
-    defineLocale('pt-br', ptBrLocale);
-    this.localeService.use('pt-br');
+    defineLocale("pt-br", ptBrLocale);
+    this.localeService.use("pt-br");
 
     //Initialize 7 days before now
-    let sub = new Date().getTime() - (7 * 24 * 60 * 60 * 1000);
+    let sub = new Date().getTime() - 7 * 24 * 60 * 60 * 1000;
     this.initialDate = new Date(sub);
     this.finalDate = new Date();
 
     this.datePickerConfig.showWeekNumbers = false;
     this.datePickerConfig.displayMonths = 1;
-    this.datePickerConfig.containerClass = 'theme-dark-blue';
+    this.datePickerConfig.containerClass = "theme-dark-blue";
   }
   ngOnInit() {
-
     //Loading the families
     this.loadFamilies();
 
@@ -83,27 +88,33 @@ export class InventarioTemperaturasComponent implements OnInit {
     this.loadSerials();
   }
 
+  ngAfterViewInit() {}
+
   /**
    * Loading the families
    */
   loadFamilies() {
-    this.familyService.getAllFamilies().subscribe(result => {
-
-      this.listOfFamilies = result;
-    }, err => console.error(err));
+    this.familyService.getAllFamilies().subscribe(
+      (result) => {
+        this.listOfFamilies = result;
+      },
+      (err) => console.error(err)
+    );
   }
 
   /**
    * Carregar todos os pacotes com paginação e sem filtro
    */
   loadSerials(): void {
-
-    this.packingService.getAllPackings().subscribe(result => {
-
-      this.listOfSerials = result;
-      this._listOfSerials = result;
-
-    }, err => { console.log(err) });
+    this.packingService.getAllPackings().subscribe(
+      (result) => {
+        this.listOfSerials = result;
+        this._listOfSerials = result;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   /**
@@ -123,12 +134,10 @@ export class InventarioTemperaturasComponent implements OnInit {
     this.serialFilter(this.selectedFamily);
   }
 
-
   /**
    * A serial was selected
    */
   serialFilter(family: any) {
-
     //console.log(this.selectedSerial);
 
     if (!family) {
@@ -138,12 +147,11 @@ export class InventarioTemperaturasComponent implements OnInit {
       return;
     }
 
-    this.listOfSerials = this._listOfSerials.filter(elem => {
+    this.listOfSerials = this._listOfSerials.filter((elem) => {
       return elem.family.code == family.code;
     });
 
     if (this.initialDate !== null && this.finalDate !== null) {
-
       this.isLoading = true;
       let initialD = this.formatDate(this.initialDate);
       let finalD = this.formatDate(this.finalDate, true);
@@ -152,7 +160,11 @@ export class InventarioTemperaturasComponent implements OnInit {
       // console.log(finalD);
 
       if (this.selectedSerial)
-        this.getFilteredTemperatures(this.selectedSerial.tag.code, initialD, finalD);
+        this.getFilteredTemperatures(
+          this.selectedSerial.tag.code,
+          initialD,
+          finalD
+        );
     }
   }
 
@@ -163,27 +175,30 @@ export class InventarioTemperaturasComponent implements OnInit {
    * @param finalDate Date on format yyyy--mm-dd
    * @param accuracy Integer value in meters (m)
    */
-  getFilteredTemperatures(codeTag: string, startDate: any = null, finalDate: any = null) {
-
-    this.temperatureService.getFilteredTemperatures(codeTag, startDate, finalDate).subscribe((result: any[]) => {
-      // console.log(result);
-      this.originalListOfTemperatures = result;
-      this.createGraph(result);
-      this.actualListOfTemperatures = this.originalListOfTemperatures
-    });
+  getFilteredTemperatures(
+    codeTag: string,
+    startDate: any = null,
+    finalDate: any = null
+  ) {
+    this.temperatureService
+      .getFilteredTemperatures(codeTag, startDate, finalDate)
+      .subscribe((result: any[]) => {
+        // console.log(result);
+        this.originalListOfTemperatures = result;
+        this.createGraph(result);
+        this.actualListOfTemperatures = this.originalListOfTemperatures;
+      });
   }
 
   /**
    * Util date selector
    */
   onFirstDateChange(newDate: Date) {
-
     // console.log(newDate);
     // console.log(newDate.getTime());
     // console.log(this.initialDate);
 
     if (newDate !== null && this.finalDate !== null) {
-
       this.isLoading = true;
       let initialD = this.formatDate(newDate);
       let finalD = this.formatDate(this.finalDate, true);
@@ -192,18 +207,20 @@ export class InventarioTemperaturasComponent implements OnInit {
       // console.log(finalD);
 
       if (this.selectedSerial)
-        this.getFilteredTemperatures(this.selectedSerial.tag.code, initialD, finalD);
+        this.getFilteredTemperatures(
+          this.selectedSerial.tag.code,
+          initialD,
+          finalD
+        );
     }
   }
 
   onFinalDateChange(newDate: Date) {
-
     // console.log(newDate);
     // console.log(newDate.getTime());
     // console.log(this.initialDate);
 
     if (this.initialDate !== null && newDate !== null) {
-
       this.isLoading = true;
       let initialD = this.formatDate(this.initialDate);
       let finalD = this.formatDate(newDate, true);
@@ -212,12 +229,15 @@ export class InventarioTemperaturasComponent implements OnInit {
       // console.log(finalD);
 
       if (this.selectedSerial)
-        this.getFilteredTemperatures(this.selectedSerial.tag.code, initialD, finalD);
+        this.getFilteredTemperatures(
+          this.selectedSerial.tag.code,
+          initialD,
+          finalD
+        );
     }
   }
 
   formatDate(date: any, endDate: boolean = false) {
-
     // console.log(endDate);
     // console.log(date);
 
@@ -228,7 +248,6 @@ export class InventarioTemperaturasComponent implements OnInit {
       d.setHours(0, 0, 0, 0);
       //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
       result = d.getTime() / 1000;
-
     } else {
       d.setHours(23, 59, 59, 0);
       //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
@@ -241,13 +260,15 @@ export class InventarioTemperaturasComponent implements OnInit {
     return result;
   }
 
-
   convertTimezone(timestamp) {
-    if(timestamp.toString().length == 10) timestamp *= 1000;
+    if (timestamp.toString().length == 10) timestamp *= 1000;
 
-    return moment.utc(timestamp).tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss')
+    return moment
+      .utc(timestamp)
+      .tz("America/Sao_Paulo")
+      .format("DD/MM/YYYY HH:mm:ss");
   }
-  
+
   /**
    * ================================================
    * Downlaod csv file
@@ -255,14 +276,13 @@ export class InventarioTemperaturasComponent implements OnInit {
 
   private csvOptions = {
     showLabels: true,
-    fieldSeparator: ';'
+    fieldSeparator: ";",
   };
 
   /**
-  * Click to download
-  */
+   * Click to download
+   */
   downloadCsv() {
-
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
     let flatObjectData = this.flatObject(this.actualListOfTemperatures.slice());
@@ -271,14 +291,14 @@ export class InventarioTemperaturasComponent implements OnInit {
     flatObjectData = this.addHeader(flatObjectData);
 
     //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, 'Inventario temperaturas', this.csvOptions);
+    new Angular2Csv(flatObjectData, "Inventario temperaturas", this.csvOptions);
   }
 
   /**
    * Click to download pdf file
    */
   downloadPdf() {
-    var doc = jsPDF('l', 'pt');
+    var doc = jsPDF("l", "pt");
 
     // You can use html:
     //doc.autoTable({ html: '#my-table' });
@@ -286,29 +306,27 @@ export class InventarioTemperaturasComponent implements OnInit {
     //Flat the json object to print
     //I'm using the method slice() just to copy the array as value.
     let flatObjectData = this.flatObject(this.actualListOfTemperatures.slice());
-    flatObjectData = flatObjectData.map(elem => {
+    flatObjectData = flatObjectData.map((elem) => {
       return [elem.a1, elem.a2, elem.a3];
     });
     // console.log(flatObjectData);
 
     // Or JavaScript:
     doc.autoTable({
-      head: [['Tag', 'Valor', 'Data da mensagem']],
-      body: flatObjectData
+      head: [["Tag", "Valor", "Data da mensagem"]],
+      body: flatObjectData,
     });
 
-    doc.save('general.pdf');
+    doc.save("general.pdf");
   }
 
   flatObject(mArray: any) {
-
-    //console.log(mArray);    
-    let plainArray = mArray.map(obj => {
-
+    //console.log(mArray);
+    let plainArray = mArray.map((obj) => {
       return {
         a1: obj.tag,
-        a2: obj.value,  
-        a3: this.convertTimezone(obj.timestamp)
+        a2: obj.value,
+        a3: this.convertTimezone(obj.timestamp),
       };
     });
 
@@ -318,10 +336,10 @@ export class InventarioTemperaturasComponent implements OnInit {
 
   addHeader(mArray: any) {
     let cabecalho = {
-      a1: 'Tag',
-      a2: 'Valor',  
-      a3: 'Data da mensagem'
-    }
+      a1: "Tag",
+      a2: "Valor",
+      a3: "Data da mensagem",
+    };
 
     //adiciona o cabeçalho
     mArray.unshift(cabecalho);
@@ -329,59 +347,61 @@ export class InventarioTemperaturasComponent implements OnInit {
     return mArray;
   }
 
-  createGraph(mArray: any){
-
+  createGraph(mArray: any) {
     let flatted = this.flatObject(mArray);
 
     let trace = {
-      'x': [],
-      'y': [], 
-      'mode':'lines+markers', 
-      'connectgaps': true
+      x: [],
+      y: [],
+      mode: "lines+markers",
+      connectgaps: true,
     };
     // console.log(flatted);
-    flatted.forEach(element => {
+    flatted.forEach((element) => {
       trace.x.unshift(element.a3);
       trace.y.unshift(element.a2);
-    })
+    });
 
     var data = [trace];
-    
-    this.Graph = Plotly.newPlot( 
-    this.Graph.nativeElement, //our viewchild element
-    data, //data provided
-    { //here starts the layout definition (keep in mind the commas)
-    autoexpand: "true",
-    autosize: "true",
-    width: window.innerWidth - 200, //we give initial width, so if the
-                                    //graph is rendered while hidden, it   
-                                    //takes the right shape
-    margin: {
-    // autoexpand: "true",
-    margin: 0
-    },
-    offset: 0,
-    type: "scattergl",
-    title: name, //Title of the graph
-    hovermode: "closest",
-    xaxis: {
-    linecolor: "black",
-    linewidth: 1,
-    mirror: true,
-    title: "Hora da Aferição",
-    automargin: true
-    },
-    yaxis: {
-    linecolor: "black",
-    linewidth: 1,
-    mirror: true,
-    automargin: true,
-    title: 'Temperatura (°C)'
-        }
-    },
-    { //this is where the configuration is defined
-    responsive: true, //important to keep graph responsive
-    scrollZoom: true
-    });
+
+    Plotly.newPlot(
+      this.Graph.nativeElement, //our viewchild element
+      data, //data provided
+      {
+        //here starts the layout definition (keep in mind the commas)
+        autoexpand: "true",
+        autosize: "true",
+        //width: "100%", //window.innerWidth - 200, //we give initial width, so if the
+        //graph is rendered while hidden, it
+        //takes the right shape
+        margin: {
+          // autoexpand: "true",
+          margin: 0,
+        },
+        offset: 0,
+        type: "scattergl", 
+        hovermode: "closest",
+        title: "Histórico de temperaturas",
+        xaxis: {
+          linecolor: "black",
+          linewidth: 1,
+          mirror: true,
+          title: "Hora da Aferição",
+          automargin: true,
+        },
+        yaxis: {
+          linecolor: "black",
+          linewidth: 1,
+          mirror: true,
+          automargin: true,
+          title: "Temperatura (°C)",
+        },
+      },
+      {
+        //this is where the configuration is defined
+        responsive: true, //important to keep graph responsive
+        scrollZoom: true,
+      }
+    );
   }
 }

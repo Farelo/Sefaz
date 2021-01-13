@@ -108,6 +108,7 @@
   <!-- Tabela SEM serial selecionado -->
   <div>
     <div class="table-responsive">
+            
       <table class="table">
         <thead>
           <tr class="cabecalho">
@@ -136,8 +137,6 @@
         </tbody>
       </table>
 
-      <div id="Graph" #Graph></div>
-
       <div class="classVazio" *ngIf="actualListOfTemperatures.length < 1">
         Selecione um equipamento.
       </div>
@@ -154,6 +153,9 @@
         autoHide="true"
       >
       </pagination-controls>
+
+      <div id="Graph" #Graph></div>
+
     </div>
   </div>
 </div>
