@@ -1,6 +1,6 @@
 {
   "db": {
-    "url": "mongodb://localhost:27017/ee-2020-12-24"
+    "url": "mongodb://localhost:27017/cebrace"
   },
   "database_options": {
     "reconnectTries": 100000,

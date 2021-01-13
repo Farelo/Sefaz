@@ -4,7 +4,7 @@
     "enabled": true
   },
   "db": {
-    "url": "mongodb://mongo:27017/ee-2020-12-24"
+    "url": "mongodb://mongo:27017/cebrace"
   },
   "server": {
     "url": "localhost",
