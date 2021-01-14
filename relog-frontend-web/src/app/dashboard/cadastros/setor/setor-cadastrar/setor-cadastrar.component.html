@@ -15,7 +15,7 @@
               maxlength="50"
               placeholder="{{ 'REGISTER.DEPARTMENT.NAME_PLACEHOLDER' | translate }}"
               aria-describedby="basic-addon2"
-              [(ngModel)]="name" formControlName="name"
+              formControlName="name"
               [ngClass]="{'required': (mDepartment.get('name').hasError('required') && mDepartment.get('name').touched)
                 || (mDepartment.get('name').hasError('required') && formDir.submitted)
                 || (mDepartment.get('name').hasError('minlength'))

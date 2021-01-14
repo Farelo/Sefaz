@@ -27,11 +27,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let packing of data.data | paginate: {
-                                                          id:'component',
-                                                          itemsPerPage: 10,
-                                                          currentPage: data.meta.page,
-                                                          totalItems: data.meta.total_docs}">
+          <tr *ngFor="let packing of data.data">
             <td>{{packing.status}}</td>
             <td>{{packing.quantity}}</td>
             <td>{{packing.project?.name}}</td>

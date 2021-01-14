@@ -56,10 +56,10 @@
                                                               itemsPerPage: 10, 
                                                               currentPage: listLateActualPage, 
                                                               totalItems: listLate.length}">
-                <td>{{ itemLate.family_code }}</td>
+                <td>{{ itemLate.familyCode }}</td>
                 <td>{{ itemLate.serial }}</td>
                 <td>{{ itemLate.tag }}</td>
-                <td>{{ itemLate.current_control_point_name }}</td> 
+                <td>{{ itemLate.currentControlPointName ? itemLate.currentControlPointName : null }}</td>
                 <td>{{ itemLate.date }}</td>
               </tr>
             </tbody>
@@ -120,10 +120,10 @@
                                                             itemsPerPage: 10, 
                                                             currentPage: listMissingActualPage, 
                                                             totalItems: listMissing.length}">
-                <td>{{ item.family_code }}</td>
+                <td>{{ item.familyCode }}</td>
                 <td>{{ item.serial }}</td>
                 <td>{{ item.tag }}</td>
-                <td>{{ item.current_control_point_name }}</td>
+                <td>{{ item.currentControlPointName }}</td>
                 <td>{{ item.date }}</td>
               </tr>
             </tbody>

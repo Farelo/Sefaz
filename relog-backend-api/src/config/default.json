@@ -8,7 +8,7 @@
     "port": 3000
   },
   "db": {
-    "url": "mongodb://127.0.0.1:27017/qa", 
+    "url": "mongodb://127.0.0.1:27017/ee-2020-12-24", 
     "mongodb_container": "mongodb://<user>:<password>@<host>:27017/qa" 
   },
   "security": {
@@ -40,5 +40,9 @@
     "baseUrl": "https://dm.loka.systems",
     "username": "sys.dm@reciclapac.com",
     "password": "Rsysadmin2242"
+  },
+  "proxyAyga": {
+    "clientName": "login",
+    "url": "http://localhost:3001/api/devices"
   }
 }

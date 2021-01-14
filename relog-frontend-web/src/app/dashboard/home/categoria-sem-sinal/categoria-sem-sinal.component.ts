@@ -8,8 +8,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class CategoriaSemSinalComponent implements OnInit {
 
-  constructor(public translate: TranslateService) { 
+  public semSinalCollapsed: boolean = false;
+  public conteudoSemSinalCollapsed: boolean = false;
 
+  constructor(public translate: TranslateService) { 
     if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
   }
 

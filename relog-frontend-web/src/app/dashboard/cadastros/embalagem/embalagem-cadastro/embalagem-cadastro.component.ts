@@ -5,16 +5,16 @@ import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/fo
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-embalagem-cadastro',
-  templateUrl: './embalagem-cadastro.component.html',
-  styleUrls: ['../../cadastros.component.css']
+  selector: "app-embalagem-cadastro",
+  templateUrl: "./embalagem-cadastro.component.html",
+  styleUrls: ["../../cadastros.component.css"],
 })
 export class EmbalagemCadastroComponent implements OnInit {
-
-  public mPacking : FormGroup;
-  public listOfFamilies: any[] = []; 
-  public listOfProjects: any[] = []; 
+  public mPacking: FormGroup;
+  public listOfFamilies: any[] = [];
+  public listOfProjects: any[] = [];
   public activePacking: boolean = false;
+  public deviceModel: any[] = [];
 
   constructor(public translate: TranslateService,
     private familyService: FamiliesService,
@@ -28,50 +28,61 @@ export class EmbalagemCadastroComponent implements OnInit {
     }
 
   ngOnInit() {
-    
     this.configureForm();
     this.loadFamilies();
     this.loadProjects();
+    this.fillSelectType();
+  }
+
+  fillSelectType() {
+    this.deviceModel = [
+      { label: "Loka V2", name: "loka" },
+      { label: "ALPS Lykaner", name: "alps" },
+      { label: "Ayga WACS", name: "ayga" },
+    ];
   }
 
   /**
    * Load the families in the select
    */
-  loadFamilies(){
-    this.familyService.getAllFamilies().subscribe(result => {
-      this.listOfFamilies = result;
-    }, err => console.error(err));
+  loadFamilies() {
+    this.familyService.getAllFamilies().subscribe(
+      (result) => {
+        this.listOfFamilies = result;
+      },
+      (err) => console.error(err)
+    );
   }
-  
+
   /**
    * Load the projects in the select
    */
-  loadProjects(){
-    this.projectService.getAllProjects().subscribe(result => {
-      this.listOfProjects = result;
-    }, err => console.error(err));
+  loadProjects() {
+    this.projectService.getAllProjects().subscribe(
+      (result) => {
+        this.listOfProjects = result;
+      },
+      (err) => console.error(err)
+    );
   }
 
   /**
    * The form was submited
    * @param the form filled
    */
-  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
-    
-    // console.log(value);
-
-    value.family = value.family._id;
-    value.project = value.project._id;
-    if (value.observations == '') delete value.observations;
-
+  onSubmit({ value, valid }: { value: any; valid: boolean }): void {
     if (valid) {
+      value.family = value.family._id;
+      value.project = value.project._id;
+      if (value.observations == "") delete value.observations;
+
       this.finishRegister(value);
     }
   }
 
   /**
    * Complete the registration process
-   * @param value 
+   * @param value
    */
   finishRegister(value){
     this.packingService
@@ -89,45 +100,81 @@ export class EmbalagemCadastroComponent implements OnInit {
   /**
    * Configure the form group
    */
-  configureForm(){
+  configureForm() {
     this.mPacking = this.fb.group({
       tag: this.fb.group({
-        code: ['', 
-          [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
-        version: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
-        manufactorer: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]]
+        code: [
+          "",
+          [
+            Validators.required,
+            Validators.minLength(4),
+            Validators.pattern(/^((?!\s{2}).)*$/),
+          ],
+        ],
+        version: [
+          "",
+          [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)],
+        ],
+        manufactorer: [
+          "",
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.pattern(/^((?!\s{2}).)*$/),
+          ],
+        ],
+        deviceModel: [null, [Validators.required]],
       }),
-      serial: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]],
-      type: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
-      weigth: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
-      width: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
-      heigth: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
-      length: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
-      capacity: ['', [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)]],
+      serial: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.pattern(/^((?!\s{2}).)*$/),
+        ],
+      ],
+      type: ["", [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
+      weigth: [
+        "",
+        [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)],
+      ],
+      width: [
+        "",
+        [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)],
+      ],
+      heigth: [
+        "",
+        [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)],
+      ],
+      length: [
+        "",
+        [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)],
+      ],
+      capacity: [
+        "",
+        [Validators.required, Validators.pattern(/^(?![0.]+$)\d+(\.\d{1,})?$/)],
+      ],
       family: [null, [Validators.required]],
       project: [null, [Validators.required]],
-      observations: ['', [Validators.maxLength(140)]],
-      active: false
+      observations: ["", [Validators.maxLength(140)]],
+      active: false,
     });
   }
 
-
-  validateTag(event: any){
-
+  validateTag(event: any) {
     //console.log(this.mPacking.get('tag.code').value);
 
-    if (!this.mPacking.get('tag.code').errors) {
-
+    if (!this.mPacking.get("tag.code").errors) {
       this.validateNotTakenLoading = true;
-      this.packingService.getAllPackings({ tag_code: this.mPacking.get('tag.code').value }).subscribe(result => {
+      this.packingService
+        .getAllPackings({ tag_code: this.mPacking.get("tag.code").value })
+        .subscribe((result) => {
+          if (result.length == 0) this.mPacking.get("tag.code").setErrors(null);
+          else
+            this.mPacking.get("tag.code").setErrors({ uniqueValidation: true });
 
-        if (result.length == 0)
-          this.mPacking.get('tag.code').setErrors(null);
-        else
-          this.mPacking.get('tag.code').setErrors({ uniqueValidation: true });
-        
-        this.validateNotTakenLoading = false;
-      });
+          this.validateNotTakenLoading = false;
+        });
     }
   }
 
@@ -155,5 +202,4 @@ export class EmbalagemCadastroComponent implements OnInit {
   //       }
   //     })
   // }
-
 }

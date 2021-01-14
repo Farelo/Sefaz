@@ -160,7 +160,7 @@ export class InventarioAusenciaComponent implements OnInit {
       windowClass: 'modal-xl',
     });
 
-    packing.tag = packing.tag.code;
+    packing.tag = packing.tag;
     packing.family_code = packing.family.code;
 
     modalRef.componentInstance.packing = packing;

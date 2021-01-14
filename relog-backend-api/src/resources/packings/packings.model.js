@@ -19,6 +19,9 @@ const packingSchema = new mongoose.Schema({
             type: String,
             minlength: 2,
             maxlength: 100
+        },
+        deviceModel: {
+            type: String
         }
     },
     serial: {
@@ -120,6 +123,18 @@ const packingSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    last_position:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Position'
+    },
+    last_temperature:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Temperature'
+    },
+    last_battery:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Battery'
+    },
     last_device_data: {
         type: mongoose.Schema.ObjectId,
         ref: 'DeviceData'
@@ -167,6 +182,10 @@ const packingSchema = new mongoose.Schema({
         default: 'analise',
         trim: true
     },
+    first_attempt_incorrect_local:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'DeviceData'
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -182,7 +201,8 @@ const validate_packings = (packing) => {
         tag: {
             code: Joi.string().min(4).max(25).required(),
             version: Joi.string().min(1).max(100),
-            manufactorer: Joi.string().min(2).max(100)
+            manufactorer: Joi.string().min(2).max(100),
+            deviceModel: Joi.string()
         },
         serial: Joi.string().min(2).max(30).required(),
         type: Joi.string().min(0).max(100),
@@ -201,7 +221,7 @@ const validate_packings = (packing) => {
 }
 
 packingSchema.statics.findByTag = function (tag, projection = '') {
-    return this.findOne({ 'tag.code': tag.code }, projection)
+    return this.findOne({ 'tag.code': tag }, projection)
 }
 
 const update_updated_at_middleware = function (next) {

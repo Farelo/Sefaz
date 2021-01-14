@@ -32,7 +32,9 @@ import {
     ControlPointsService,
     ControlPointTypesService,
     ReportsService,
-    DevicesService
+    DevicesService,
+    PositionsService,
+    TemperaturesService
 } from './index.service';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -72,7 +74,9 @@ import { TranslateModule } from '@ngx-translate/core';
         ControlPointsService,
         ControlPointTypesService,
         ReportsService,
-        DevicesService
+        DevicesService,
+        PositionsService,
+        TemperaturesService
     ]
 })
 export class ServicesModule { }

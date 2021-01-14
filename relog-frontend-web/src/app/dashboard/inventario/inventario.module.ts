@@ -23,6 +23,7 @@ import { FornecedorComponent } from './fornecedor/fornecedor.component';
 import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-ausencia.component';
 import { InventarioPosicoesComponent } from './inventario-posicoes/inventario-posicoes.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { InventarioTemperaturasComponent } from './inventario-temperaturas/inventario-temperaturas.component';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import { TranslateModule } from '@ngx-translate/core';
     InventarioEquipamentoGeralComponent,
     FornecedorComponent,
     InventarioAusenciaComponent,
-    InventarioPosicoesComponent
+    InventarioPosicoesComponent,
+    InventarioTemperaturasComponent
   ],
   providers: [],
 })

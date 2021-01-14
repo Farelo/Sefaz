@@ -142,6 +142,18 @@ const packingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Project'
     },
+    last_position:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Position'
+    },
+    last_temperature:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Temperature'
+    },
+    last_battery:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Battery'
+    },
     current_state: {
         type: String,
         required: true,
@@ -165,6 +177,10 @@ const packingSchema = new mongoose.Schema({
         default: 'analise',
         trim: true
     },
+    first_attempt_incorrect_local:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'DeviceData'
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -177,7 +193,7 @@ const packingSchema = new mongoose.Schema({
 })
 
 packingSchema.statics.findByTag = function (tag, projection = '') {
-    return this.findOne({ 'tag.code': tag.code }, projection)
+    return this.findOne({ 'tag.code': tag }, projection)
 }
 
 const update_updated_at_middleware = function (next) {

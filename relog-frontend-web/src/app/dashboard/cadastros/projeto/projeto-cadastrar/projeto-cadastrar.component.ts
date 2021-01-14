@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class ProjetoCadastrarComponent implements OnInit {
 
   public mProject: FormGroup;
+  public submitted :boolean = false;
 
   constructor(public translate: TranslateService,
     private projectService: ProjectService,
@@ -29,8 +30,9 @@ export class ProjetoCadastrarComponent implements OnInit {
 
   onSubmit({ value, valid }: { value: Project, valid: boolean }): void {
 
-    if (valid) {
+    this.submitted = true;
 
+    if (valid) {
       this.projectService
         .createProject(value)
         .subscribe(result => {

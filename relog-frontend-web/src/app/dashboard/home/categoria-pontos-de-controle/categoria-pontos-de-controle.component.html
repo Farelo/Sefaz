@@ -58,11 +58,10 @@
                                                                       itemsPerPage: 10, 
                                                                       currentPage: listIncorrectActualPage, 
                                                                       totalItems: listIncorrectLocal.length }">
-                <td>{{ itemIncorrect.family_code }}</td>
+                <td>{{ itemIncorrect.familyCode }}</td>
                 <td>{{ itemIncorrect.serial }}</td>
                 <td>{{ itemIncorrect.tag }}</td>
-                <td>{{ itemIncorrect.current_control_point_name }}</td>
-                <td>{{ ((itemIncorrect.battery_percentage | round) + '%') }}</td>
+                <td>{{ itemIncorrect.currentControlPointName }}</td>
                 <td>{{ itemIncorrect.date }}</td>
               </tr>
             </tbody>
@@ -127,12 +126,12 @@
                                                             itemsPerPage: 10, 
                                                             currentPage: listPermanenceActualPage, 
                                                             totalItems: listPermanenceTime.length }">
-                <td>{{ item.family_code }}</td>
+                <td>{{ item.familyCode }}</td>
                 <td>{{ item.serial }}</td>
                 <td>{{ item.tag }}</td>
-                <td>{{ item.current_control_point_name }}</td>
-                <td>{{ ((item.battery_percentage | round) + '%') }}</td>
-                <td>{{ item.date }}</td>
+                <td>{{ item.currentControlPointName ? item.currentControlPointName : "Sem Registro" }}</td>
+                <td>{{ item.currentControlPointType ? item.currentControlPointType : "Sem Registro" }}</td>
+                <td>{{ item.date ? item.date : "-" }}</td>
               </tr>
             </tbody>
           </table>

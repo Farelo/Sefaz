@@ -16,7 +16,7 @@ router.delete('/:id', [auth, authz, validate_object_id], packings_controller.del
 router.get('/on_control_point/:control_point_id', [auth], packings_controller.show_packings_on_control_point)
 router.get('/check_device/:device_id', [auth], packings_controller.check_device)
 router.get('/data/geolocation', [auth], packings_controller.geolocation)
-router.get('/data/control_point/geolocation', [auth], packings_controller.control_point_geolocation)
+// router.get('/data/control_point/geolocation', [auth], packings_controller.control_point_geolocation)
 
 module.exports = router
 

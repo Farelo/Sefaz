@@ -29,8 +29,7 @@ exports.import_packing = async (req, res) => {
             for (const [index, packing] of packings.entries()) {
                 let temp_obj = {}
 
-                const tag = { code: packing[2] }
-                const current_packing = await Packing.findByTag(tag)
+                const current_packing = await Packing.findByTag(packing[2])
                 const family = await Family.findByCode(packing[0], {_id: 1, code: 1})
                 const project = packing[12] !== undefined ? await Project.findOne({ name: packing[12].toString() }) : null
                 

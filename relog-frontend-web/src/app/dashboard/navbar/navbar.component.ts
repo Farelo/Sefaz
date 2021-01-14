@@ -1,7 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
-import { ModalCurrentEditarComponent } from '../../shared/modal-current-edit/modal-editar-current.component';
 import { ModalSettings } from '../../shared/modal-settings/modal-settings.component';
 import { AuthenticationService, SettingsService, ToastService } from '../../servicos/index.service';
 import { Router } from '@angular/router';
@@ -27,7 +26,7 @@ export class NavbarComponent implements OnInit {
     private ngZone: NgZone,
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private authenticationService: AuthenticationService,
+    public authenticationService: AuthenticationService,
     private router: Router) {
 
     if (translate.getBrowserLang() == undefined || this.translate.currentLang == undefined) translate.use('pt');
@@ -98,7 +97,6 @@ export class NavbarComponent implements OnInit {
 
   openModalEditar() {
     //this.mudar();
-    const modalRef = this.modalService.open(ModalCurrentEditarComponent, { backdrop: "static", size: "lg" });
   }
 
   openSettings() {

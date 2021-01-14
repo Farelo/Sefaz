@@ -5,9 +5,14 @@ const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_i
 const { EventRecord } = require("../../models/event_record.model");
 const factStateMachine = require("../../models/fact_state_machine.model");
 
+const getLastPosition = (packing) => {
+   if(packing.last_position) return packing.last_position 
+   return null
+}
+
 module.exports = async (packing, controlPoints, settings) => {
    try {
-      let _result = null;
+      let _result = null; 
 
       // Se já teve event_record
       if (packing.last_event_record) {
@@ -31,7 +36,7 @@ module.exports = async (packing, controlPoints, settings) => {
                if (actualControlPointFound) {
                   // Se encontrou um novo PC e o sinal é elegível para entrada
                   //sai do PC anterior e entra no novo
-                  if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
+                  if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
                      createOutbound(packing);
                      createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
                      _result = actualControlPointFound.cp;
@@ -52,7 +57,7 @@ module.exports = async (packing, controlPoints, settings) => {
             if (actualControlPointFound) {
                // Se encontrou um novo PC e o sinal é elegível para entrada
                //sai do PC anterior e entra no novo
-               if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
+               if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
                   // É elegível
                   createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
                   _result = actualControlPointFound.cp;
@@ -62,12 +67,12 @@ module.exports = async (packing, controlPoints, settings) => {
       } else {
          // Se nunca teve event_record
          //Procura algum PC
-         if (packing.last_device_data) {
+         if (getLastPosition(packing)) {
             let actualControlPointFound = await findActualControlPoint(packing, controlPoints, settings);
             if (actualControlPointFound) {
                // Se encontrou um novo PC e o sinal é elegível para entrada
                //sai do PC anterior e entra no novo
-               if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
+               if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
                   createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
                   _result = actualControlPointFound.cp;
                }
@@ -88,7 +93,7 @@ const findActualControlPoint = async (packing, allControlPoints, settings) => {
     * Ponto de controle circular tem que buscar aquele que possui a menor distância.
     */
 
-   if (packing.last_device_data) {
+   if (getLastPosition(packing)) {
       let myActualControlPoint = null;
 
       let polygonalControlPoints = allControlPoints.filter((elem) => elem.geofence.type == "p");
@@ -146,13 +151,13 @@ const findCircularIntersection = async (packing, allControlPoints) => {
 
    allControlPoints.forEach((controlPointToTest) => {
       const calculatedDistance = getDistanceFromLatLonInKm(
-         packing.last_device_data.latitude,
-         packing.last_device_data.longitude,
+         getLastPosition(packing).latitude,
+         getLastPosition(packing).longitude,
          controlPointToTest.geofence.coordinates[0].lat,
          controlPointToTest.geofence.coordinates[0].lng
       );
 
-      if (calculatedDistance <= controlPointToTest.geofence.radius + packing.last_device_data.accuracy) {
+      if (calculatedDistance <= controlPointToTest.geofence.radius + getLastPosition(packing).accuracy) {
          if (calculatedDistance < smallerDistance) {
             smallerDistance = calculatedDistance;
             myActualControlPoint = controlPointToTest;
@@ -175,9 +180,9 @@ const createInbound = async (packing, currentControlPoint, distance) => {
       packing: packing._id,
       control_point: currentControlPoint._id,
       distance_km: distance,
-      accuracy: packing.last_device_data.accuracy,
+      accuracy: getLastPosition(packing).accuracy,
       type: "inbound",
-      device_data_id: packing.last_device_data._id,
+      device_data_id: getLastPosition(packing)._id,
    });
    await eventRecord.save();
 
@@ -190,9 +195,9 @@ const createOutbound = async (packing) => {
       packing: packing._id,
       control_point: packing.last_event_record.control_point._id,
       distance_km: packing.last_event_record.distance_km,
-      accuracy: packing.last_device_data.accuracy,
+      accuracy: getLastPosition(packing).accuracy,
       type: "outbound",
-      device_data_id: packing.last_device_data._id,
+      device_data_id: getLastPosition(packing)._id,
    });
    await eventRecord.save();
 
@@ -200,196 +205,6 @@ const createOutbound = async (packing) => {
    await factStateMachine.generateNewFact("event", packing, eventRecord, null);
 };
 
-const findAndHandleIntersection = async (packing, controlPoints, settings) => {
-   let deviceDataId = "";
-   let distance = Infinity;
-   let currentControlPoint = null;
-
-   if (packing.last_device_data) {
-      deviceDataId = packing.last_device_data._id;
-
-      //Deve ser otimizado para sair do loop quando for encontrado dentro de um polígono
-      controlPoints.some((controlPoint) => {
-         let isInsideControlePoint = false;
-
-         if (controlPoint.geofence.type === "p") {
-            if (intersectionpoly(packing, controlPoint)) {
-               //mLog(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
-               distance = 0;
-               currentControlPoint = controlPoint;
-               isInsideControlePoint = true;
-            }
-         } else {
-            //mLog(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
-            const calculate = getDistanceFromLatLonInKm(
-               packing.last_device_data.latitude,
-               packing.last_device_data.longitude,
-               controlPoint.geofence.coordinates[0].lat,
-               controlPoint.geofence.coordinates[0].lng
-            );
-
-            if (calculate <= controlPoint.geofence.radius + packing.last_device_data.accuracy) {
-               distance = calculate;
-               currentControlPoint = controlPoint;
-               isInsideControlePoint = true;
-            }
-         }
-
-         return isInsideControlePoint;
-      });
-   }
-
-   //TEM INTERSECÇÃO
-   if (currentControlPoint !== null) {
-      mLog("INTERSECÇÃO");
-      mLog(currentControlPoint.name);
-
-      if (packing.last_event_record) {
-         //============================
-         //SE ÚLTIMO EVENTO FOI INBOUND
-         if (packing.last_event_record.type === "inbound") {
-            mLog("ULTIMO EVENTO FOI INBOUND");
-
-            //Se é a mesma planta
-            if (packing.last_event_record.control_point.toString() == currentControlPoint._id.toString()) {
-               mLog("MESMO CP");
-               return currentControlPoint;
-            } else {
-               //Se é planta diferente:
-               mLog("CP DIFERENTE");
-
-               //Se tem bom sinal
-               if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
-                  mLog("BOM SINAL");
-                  mLog("IN");
-
-                  // Faz OUT do ponto de controle anterior
-                  const outEventRecord = new EventRecord({
-                     packing: packing._id,
-                     control_point: packing.last_event_record.control_point._id,
-                     distance_km: packing.last_event_record.distance_km,
-                     accuracy: packing.last_device_data.accuracy,
-                     type: "outbound",
-                     device_data_id: deviceDataId,
-                  });
-                  await outEventRecord.save();
-
-                  await factStateMachine.generateNewFact("event", packing, outEventRecord, null);
-
-                  //Faz IN no ponto de controle atual
-                  const inEventRecord = new EventRecord({
-                     packing: packing._id,
-                     control_point: currentControlPoint._id,
-                     distance_km: distance,
-                     accuracy: packing.last_device_data.accuracy,
-                     type: "inbound",
-                     device_data_id: deviceDataId,
-                  });
-                  await inEventRecord.save();
-
-                  packing.last_event_record = inEventRecord;
-
-                  await factStateMachine.generateNewFact("event", packing, inEventRecord, null);
-
-                  return currentControlPoint;
-               } else {
-                  mLog("SINAL RUIM");
-
-                  //Se está longe o suficiente:
-                  return currentControlPoint;
-               }
-            }
-         }
-
-         //=============================
-         //SE ÚLTIMO EVENTO FOI OUTBOUND
-         if (packing.last_event_record.type == "outbound") {
-            mLog("ULTIMO EVENTO FOI OUTBOUND");
-            //Se tem bom sinal
-            if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
-               mLog("BOM SINAL");
-               mLog("IN");
-               //Faz IN
-               const eventRecord = new EventRecord({
-                  packing: packing._id,
-                  control_point: currentControlPoint._id,
-                  distance_km: distance,
-                  accuracy: packing.last_device_data.accuracy,
-                  type: "inbound",
-                  device_data_id: deviceDataId,
-               });
-               await eventRecord.save();
-
-               packing.last_event_record = eventRecord;
-
-               await factStateMachine.generateNewFact("event", packing, eventRecord, null);
-
-               return currentControlPoint;
-            } else {
-               mLog("SINAL RUIM");
-               return null;
-            }
-         }
-      } else {
-         mLog("NUNCA TEVE EVENTO");
-         //Se tem bom sinal
-         if (packing.last_device_data.accuracy <= settings.accuracy_limit) {
-            mLog("BOM SINAL");
-            mLog("IN");
-            //Faz IN
-            const eventRecord = new EventRecord({
-               packing: packing._id,
-               control_point: currentControlPoint._id,
-               distance_km: distance,
-               accuracy: packing.last_device_data.accuracy,
-               type: "inbound",
-               device_data_id: deviceDataId,
-            });
-            await eventRecord.save();
-
-            packing.last_event_record = eventRecord;
-            packing.new_last_event_record = eventRecord;
-
-            await factStateMachine.generateNewFact("event", packing, eventRecord, null);
-
-            return currentControlPoint;
-         } else {
-            mLog("SINAL RUIM");
-            return null;
-         }
-      }
-   } else {
-      //NÃO TEM INTERSECÇÃO
-
-      if (packing.last_event_record) {
-         mLog("SEM INTERSECÇÃO");
-         //SE ÚLTIMO EVENTO FOI INBOUND
-         if (packing.last_event_record.type === "inbound") {
-            mLog("ULTIMO EVENTO FOI IN");
-            mLog("OUT");
-
-            // Faz OUT
-            const eventRecord = new EventRecord({
-               packing: packing._id,
-               control_point: packing.last_event_record.control_point._id,
-               distance_km: packing.last_event_record.distance_km,
-               accuracy: packing.last_device_data.accuracy,
-               type: "outbound",
-               device_data_id: deviceDataId,
-            });
-            await eventRecord.save();
-
-            packing.last_event_record = eventRecord;
-
-            await factStateMachine.generateNewFact("event", packing, eventRecord, null);
-
-            return null;
-         } else {
-            //TODO
-         }
-      }
-   }
-};
 
 let idAbleToLog = false;
 const mLog = (mText) => {
@@ -451,8 +266,8 @@ const intersectionpoly = (packing, controlPoint) => {
 
          controlPointPolygonArray.forEach((mPolygon) => {
             //criar polígono da embalagem
-            let center = [packing.last_device_data.longitude, packing.last_device_data.latitude];
-            let radius = packing.last_device_data.accuracy;
+            let center = [getLastPosition(packing).longitude, getLastPosition(packing).latitude];
+            let radius = getLastPosition(packing).accuracy;
             let options = { steps: 64, units: "meters" };
 
             //mLog(center, radius)
@@ -487,8 +302,8 @@ const intersectionpoly = (packing, controlPoint) => {
          // mLog(JSON.stringify(unkinkControlPointPolygon))
 
          //criar polígono da embalagem
-         let center = [packing.last_device_data.longitude, packing.last_device_data.latitude];
-         let radius = packing.last_device_data.accuracy;
+         let center = [getLastPosition(packing).longitude, getLastPosition(packing).latitude];
+         let radius = getLastPosition(packing).accuracy;
          let options = { steps: 64, units: "meters" };
 
          //mLog(center, radius)

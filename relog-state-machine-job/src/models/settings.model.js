@@ -58,6 +58,10 @@ const settingSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    double_check_incorrect_local:{
+        type: Boolean,
+        default: false
+    },
     created_at: {
         type: Date,
         default: Date.now

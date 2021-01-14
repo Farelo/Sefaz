@@ -12,7 +12,10 @@ import { TranslateService } from '@ngx-translate/core';
 export class LoginComponent implements OnInit {
   public login: FormGroup;
   public erroAuth = false;
-
+  
+  public email: string;
+  public password: string;
+  
   constructor(public translate: TranslateService,
     private router: Router,
     private fb: FormBuilder,

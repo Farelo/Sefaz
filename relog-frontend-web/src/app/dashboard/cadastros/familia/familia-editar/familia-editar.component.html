@@ -16,7 +16,7 @@
           maxlength="30"
           (focusout)="validateCode($event)"
           [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
-          || (mFamily.get('code').hasError('required') && mFamily.invalid && submited)
+          || (mFamily.get('code').hasError('required') && mFamily.invalid && submitted)
           || (mFamily.get('code').hasError('minlength'))
           || (mFamily.get('code').hasError('minlength') && submitted)
           || (mFamily.get('code').hasError('uniqueValidation'))

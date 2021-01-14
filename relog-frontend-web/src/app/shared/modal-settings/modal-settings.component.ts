@@ -136,7 +136,9 @@ export class ModalSettings implements OnInit {
       enable_local_incorreto: [true, [Validators.required]],
       enable_viagem_atrasada: [false, [Validators.required]],
       enable_sem_sinal: [false, [Validators.required]],
-      enable_perdida: [false, [Validators.required]]
+      enable_perdida: [false, [Validators.required]],
+      
+      double_check_incorrect_local: [false, [Validators.required]]
     });
 
     this.settingsService.getSettings().subscribe(result => {
@@ -149,11 +151,12 @@ export class ModalSettings implements OnInit {
         this.translate.use('pt');
       }
       this.actualSettings.language = actualLang;
-
-      //console.log(this.actualSettings);
-
+      
       (this.settings).patchValue(this.actualSettings, { onlySelf: true });
       (this.settings).patchValue(this.actualSettings, { onlySelf: true });
+      
+      // console.log(this.actualSettings);
+      // console.log(this.settings);
     })
   }
 

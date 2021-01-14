@@ -18,11 +18,7 @@
           </tr>
         </thead>
         <tbody >
-          <tr *ngFor="let packing of data.data | paginate: {
-                                                          id:'tranking',
-                                                          itemsPerPage: data.meta.limit,
-                                                          currentPage: data.meta.page,
-                                                          totalItems: data.meta.total_docs}">
+          <tr *ngFor="let packing of data.data">
             <td>{{packing.code}}</td>
             <td>{{packing.serial}}</td>
             <td>{{packing.supplier.name}}</td>

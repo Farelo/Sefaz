@@ -7,7 +7,7 @@
       <p class="descricao">CÓDIGO DA TAG</p>
       <p class="explicacao">Ex: "1881160"</p>
       <div class="input-group">
-        <input type="text" class="form-control required" placeholder="Digite o código" aria-describedby="basic-addon2" [(ngModel)]="code"
+        <input type="text" class="form-control required" placeholder="Digite o código" aria-describedby="basic-addon2" 
           formControlName="code" [ngClass]="{'required': (tag.get('code').hasError('required') && tag.get('code').touched)
         || (tag.get('code').hasError('required') && formDir.submitted)
         || (tag.get('code').hasError('minlength') && formDir.submitted)

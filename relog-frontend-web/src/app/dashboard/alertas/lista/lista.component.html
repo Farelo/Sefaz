@@ -20,7 +20,7 @@
           'status6': alertCode == 6,
           'status7': alertCode == 7 }"
         *ngFor="let alert of listOfAlerts | paginate: { id:'list',
-          itemsPerPage: 16,
+          itemsPerPage: 15,
           currentPage: listOfAlertsActualPage,
           totalItems: listOfAlerts.length}">
 
@@ -41,7 +41,7 @@
               'fornecedor5': alertCode == 5,
               'fornecedor6': alertCode == 6,
               'fornecedor7': alertCode == 7 }">
-            {{ alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.' }}
+              {{ truncateText(alert.last_event_record !== null ? alert.last_event_record?.control_point?.name : 'Inf. Indesponível', 20) }}
           </span>
 
           <span class="fornecedor" ngbTooltip="{{ 'ALERTS.ACTUAL_SITE' | translate }}" *ngIf="alertCode != 1 && alertCode != 4" [ngClass]="{
@@ -53,7 +53,8 @@
               'fornecedor5': alertCode == 5,
               'fornecedor6': alertCode == 6,
               'fornecedor7': alertCode == 7 }">
-            {{ alert.plant != null ? alert.plant?.plant_name : 'Inf. Indespo.' }}</span> <br />
+            {{ truncateText(alert.last_event_record !== null ? alert.last_event_record?.control_point?.name : 'Inf. Indesponível', 20) }}
+          </span> <br />
 
           <span class="quantidade" ngbTooltip="{{ 'ALERTS.PACK_CODE' | translate }}" [ngClass]="{
               'quantidade0': alertCode == 0,

@@ -25,9 +25,9 @@
       <div class="col-12">
         <p class="titulo-modal">{{ "ALERTS.LAST_SIGNAL_CAP" | translate }}:</p>
         <br>
-        <p> {{ alerta.last_device_data ?
-              (alerta.last_device_data.message_date | date: 'dd/MM/yy HH:mm:ss' : '+00:00')
-              : "Sem Registro" }} </p>
+        <p> {{ alerta.last_position ?
+              (alerta.last_position.date | date: 'dd/MM/yy HH:mm:ss')
+              : mConstants.NO_REGISTER }} </p>
       </div>
     </div>
 
@@ -45,14 +45,14 @@
         <p class="titulo-modal">{{ "ALERTS.ALERT_AT_CAP" | translate }}:</p>
         <br>
         <p> {{ alerta?.last_current_state_history ?
-                (alerta.last_current_state_history.created_at | date: 'dd/MM/yy HH:mm:ss' : '+00:00')
-                : "Sem Registro" }} </p>
+                (alerta.last_current_state_history.created_at | date: 'dd/MM/yy HH:mm:ss')
+                : mConstants.NO_REGISTER }} </p>
       </div>
     </div>
 
     <br>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-12 col-md-6">
         <p class="titulo-modal">{{ "ALERTS.PACK_ROUTES" | translate }}:</p>
       </div>
@@ -69,18 +69,18 @@
               </tr>
             </thead>
             <tbody>
-              <!-- <tr *ngFor="let route of alerta.data.routes">
+               <tr *ngFor="let route of alerta.data.routes">
         
                 <td>{{route.plant_factory.plant_name}}</td>
                 <td>{{route.plant_supplier.plant_name}}</td>
                 <td>{{route.time.max | time}}</td>
                 <td>{{alerta.data.packing?.trip.time_countdown | time }}</td>
-              </tr> -->
+              </tr> 
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </div>

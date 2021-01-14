@@ -1,7 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService, ReportsService } from '../../../servicos/index.service';
-import { Pagination } from '../../../shared/models/pagination';
-import { ModalInvComponent } from '../../../shared/modal-inv/modal-inv.component';
+import { Component, OnInit } from '@angular/core';
+import { AuthenticationService, ReportsService } from '../../../servicos/index.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import 'jspdf';
@@ -47,10 +45,6 @@ export class GeralComponent implements OnInit {
     },err => console.log(err)); 
   }
 
-  open(packing) {
-    const modalRef = this.modalService.open(ModalInvComponent);
-    modalRef.componentInstance.packing = packing;
-  }
 
   /**
    * ================================================

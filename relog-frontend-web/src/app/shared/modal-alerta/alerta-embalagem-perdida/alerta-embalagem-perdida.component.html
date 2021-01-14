@@ -31,8 +31,8 @@
       <div class="col-12">
         <p class="titulo-modal">{{ "ALERTS.LAST_SIGNAL_CAP" | translate }}:</p>
         <br>
-        <p> {{ alerta?.last_device_data ?
-                (alerta.last_device_data.message_date | date: 'dd/MM/yy HH:mm:ss' : '+00:00')
+        <p> {{ alerta?.last_position ?
+                (alerta.last_position.date | date: 'dd/MM/yy HH:mm:ss')
                 : "Sem Registro" }}</p>
       </div>
     </div>
@@ -49,9 +49,8 @@
       <div class="col-12 col-md-6">
         <p class="titulo-modal">{{ "ALERTS.LAST_BATTERY_LEVEL_CAP" | translate }}:</p>
         <br>
-        <p style="font-weight: bold;"> {{ alerta?.last_device_data_battery?.battery?.percentage ?
-          (alerta.last_device_data_battery.battery.percentage >= 0 ? ((alerta.last_device_data_battery.battery.percentage | round) + '%') : mConstants.NO_REGISTER )
-          : mConstants.NO_REGISTER }} </p>
+        <p style="font-weight: bold;"> {{ alerta.last_battery ? ((alerta.last_battery.battery | round) + '%') : mConstants.NO_REGISTER }}
+        </p>
       </div>
     </div>
 

@@ -21,8 +21,9 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
             /* Se não estiver no ponto de controle OWNER atualiza a embalagem com o status ABSENT */
             // Se não iniciou, inicia o giro
             if (!(packingIsOk.length > 0)) {
-                // console.log('NÃO ESTÁ NUMA PLANTA DONA')
-                if (!packing.absent_time) await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
+                if (!packing.absent_time) {
+                    await Packing.findByIdAndUpdate(packing._id, { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null }, { new: true })
+                } 
 
                 // const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
                 // if (current_state_history) {

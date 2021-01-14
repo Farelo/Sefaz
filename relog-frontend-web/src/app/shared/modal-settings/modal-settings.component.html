@@ -103,6 +103,16 @@
                   </label>
                 </div>
               </div>
+
+              <div class="col-sm-12">
+                <div class="form-group form-check checkbox">
+                  <label>
+                    <input type="checkbox" [formControl]="settings.controls.double_check_incorrect_local">
+                    <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
+                    Dupla verificação de Local Incorreto
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -125,7 +135,7 @@
                 *ngIf="(settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && settings.get('job_schedule_time_in_sec').touched)
                                 || (settings.get('job_schedule_time_in_sec').hasError('lessThanMinimum') && formDir.submitted)"></p>
             </div>
-          </div>
+          </div> -->
 
           <div class="col-sm-12 campo">
             <p translate="SETTINGS.HISTORIC_LIFE" class="descricao"></p>

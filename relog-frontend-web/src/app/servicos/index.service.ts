@@ -27,5 +27,7 @@ export { MapsService } from './maps.service';
 export { ControlPointsService } from './controlPoints.service'; 
 export { ReportsService } from './reports.service';
 export { DevicesService } from './devices.service';
+export { PositionsService } from './positions.service';
+export { TemperaturesService } from './temperatures.service';
 export { ControlPointTypesService } from './controlPointTypes.service';
 

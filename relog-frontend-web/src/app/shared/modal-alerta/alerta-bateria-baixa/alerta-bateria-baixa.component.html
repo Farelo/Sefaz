@@ -30,8 +30,8 @@
       <div class="col-12">
         <p class="titulo-modal">{{ "ALERTS.LAST_SIGNAL_CAP" | translate }}:</p>
         <br>
-        <p> {{ alerta.last_device_data ?
-                (alerta.last_device_data.message_date | date: 'dd/MM/yy HH:mm:ss' : '+00:00')
+        <p> {{ alerta.last_position ?
+                (alerta.last_position.date | date: 'dd/MM/yy HH:mm:ss') 
                 : "Sem Registro" }} </p>
       </div>
     </div>

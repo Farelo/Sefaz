@@ -79,7 +79,7 @@ export class PlantaCadastrarComponent implements OnInit {
     this.plant.controls.lng.setValue(map.center ? map.center.lng() : this.default.lng);
   }
 
-  onClick(event, str) {
+  onClick(event) {
     if (event instanceof MouseEvent) {
       return;
     }

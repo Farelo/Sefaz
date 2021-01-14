@@ -13,6 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['../../cadastros.component.css']
 })
 export class ProjetoEditarComponent implements OnInit {
+
+  public submitted: boolean = true;
   public inscricao: Subscription;
   public mProject: FormGroup;
   public mId: string;
@@ -41,8 +43,9 @@ export class ProjetoEditarComponent implements OnInit {
 
   onSubmit({ value, valid }: { value: Project, valid: boolean }): void {
 
-    if (valid) {
+    this.submitted = true;
 
+    if (valid) {
       this.projectService
         .editProject(this.mId, value)
         .subscribe(result => {

@@ -86,7 +86,7 @@ export class SetorEditarComponent implements OnInit {
     }
   }
 
-  onClick(event, str) {
+  onClick(event) {
 
     if (event instanceof MouseEvent) return;
 

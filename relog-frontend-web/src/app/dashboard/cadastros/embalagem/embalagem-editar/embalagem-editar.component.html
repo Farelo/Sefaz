@@ -17,11 +17,11 @@
             formControlName="code" maxlength="25" (focusout)="validateTag($event)" [ngClass]="{'required': (mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
               || (mPacking.get('tag.code').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.code').hasError('pattern'))
-              || (mPacking.get('tag.code').hasError('pattern') && submitted)
+              || (mPacking.get('tag.code').hasError('pattern') && formDir.submitted)
               || (mPacking.get('tag.code').hasError('minlength'))
-              || (mPacking.get('tag.code').hasError('minlength') && submitted)
+              || (mPacking.get('tag.code').hasError('minlength') && formDir.submitted)
               || (mPacking.get('tag.code').hasError('uniqueValidation'))
-              || (mPacking.get('tag.code').hasError('uniqueValidation') && submitted) }">
+              || (mPacking.get('tag.code').hasError('uniqueValidation') && formDir.submitted) }">
         </div>
 
         <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('tag.code').hasError('required') && mPacking.get('tag.code').touched)
@@ -48,7 +48,7 @@
             aria-describedby="basic-addon2" formControlName="version" maxlength="100" [ngClass]="{'required': (mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
               || (mPacking.get('tag.version').hasError('required') && formDir.submitted)
               || (mPacking.get('tag.version').hasError('pattern'))
-              || (mPacking.get('tag.version').hasError('pattern') && submitted) }">
+              || (mPacking.get('tag.version').hasError('pattern') && formDir.submitted) }">
         </div>
 
         <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('tag.version').hasError('required') && mPacking.get('tag.version').touched)
@@ -72,6 +72,21 @@
         </ng-select>
         <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('project').hasError('required') && mPacking.get('project').touched)
                               || (mPacking.get('project').hasError('required') && formDir.submitted)"> </p>
+      </div>
+
+      <!-- Modelo -->
+      <div class="col-sm-12 col-md-3" formGroupName="tag">
+        <p class="descricao">MODELO</p>
+        <p class="explicacao">Modelo do dispositivo</p>
+        <ng-select bindLabel="label" bindValue="name" placeholder="Associe um modelo" [items]="deviceModel" formControlName="deviceModel">
+
+          <ng-template ng-option-tmp let-item="item">
+            <div> {{item.label}} </div>
+          </ng-template>
+        </ng-select>
+        <p class="requiredText" *ngIf="(mPacking.get('tag.deviceModel').hasError('required') && mPacking.get('tag.deviceModel').touched)
+                              || (mPacking.get('tag.deviceModel').hasError('required') && formDir.submitted)">
+          Campo Obrigatório</p>  
       </div>
 
     </div>
@@ -109,9 +124,9 @@
                 formControlName="serial" maxlength="30" [ngClass]="{'required': (mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
                 || (mPacking.get('serial').hasError('required') && formDir.submitted)
                 || (mPacking.get('tag.version').hasError('minlength'))
-                || (mPacking.get('tag.version').hasError('minlength') && submitted)
+                || (mPacking.get('tag.version').hasError('minlength') && formDir.submitted)
                 || (mPacking.get('serial').hasError('pattern'))
-                || (mPacking.get('serial').hasError('pattern') && submitted) }">
+                || (mPacking.get('serial').hasError('pattern') && formDir.submitted) }">
             </div>
 
             <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('serial').hasError('required') && mPacking.get('serial').touched)
@@ -136,7 +151,7 @@
                   || (mPacking.get('tag.manufactorer').hasError('minlength'))
                   || (mPacking.get('tag.manufactorer').hasError('minlength') && formDir.submitted)
                   || (mPacking.get('tag.manufactorer').hasError('pattern'))
-                  || (mPacking.get('tag.manufactorer').hasError('pattern') && submitted) }">
+                  || (mPacking.get('tag.manufactorer').hasError('pattern') && formDir.submitted) }">
             </div>
             <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('tag.manufactorer').hasError('required') && mPacking.get('tag.manufactorer').touched)
                 || (mPacking.get('tag.manufactorer').hasError('required') && formDir.submitted)"> </p>
@@ -157,7 +172,7 @@
               aria-describedby="basic-addon2" formControlName="type" maxlength="100" [ngClass]="{'required': (mPacking.get('type').hasError('required') && mPacking.get('type').touched)
                 || (mPacking.get('type').hasError('required') && formDir.submitted)
                 || (mPacking.get('type').hasError('pattern'))
-                || (mPacking.get('type').hasError('pattern') && submitted) }">
+                || (mPacking.get('type').hasError('pattern') && formDir.submitted) }">
 
             <p translate="REGISTER.ERRORS.REQUIRED" class="requiredText" *ngIf="(mPacking.get('type').hasError('required') && mPacking.get('type').touched)
               || (mPacking.get('type').hasError('required') && formDir.submitted)"> </p>

@@ -13,6 +13,7 @@ export class Spiralize {
     public spiralPath: google.maps.Polyline = new google.maps.Polyline();
     public spiralPoints: any = [];
     public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
+    public mCircle: google.maps.Circle = new google.maps.Circle();
     public mMap: any; 
     public clustered: boolean;
 
@@ -138,17 +139,19 @@ export class Spiralize {
      * Plot all points, clusterize and set the listeners of click and zoom change
      */
     configureListeners() {
- 
-        this.markers = this.listOfObjects.map((location, i) => { 
+
+        //console.log('listener this.listOfObjects: ' + this.listOfObjects);
+        this.markers = this.listOfObjects.map((location, i) => {
+            //console.log(location.last_battery);
             let datePipe = new DatePipe('en');
 
             let m = new google.maps.Marker({
-                family_code: location.packing.family,
-                serial: location.packing.serial,
-                tag: location.packing.tag,
-                battery: (location.devicedata && location.devicedata.battery.percentage) ? (location.devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                accuracy: (location.devicedata !== null) ? (location.devicedata.accuracy + 'm') : 'Sem registro',
-                message_date : (location.devicedata !== null) ? (location.devicedata.message_date) : 'Sem registro',
+                family_code: location.family.code,
+                serial: location.serial,
+                tag: location.tag.code,
+                battery: (location.last_battery) ? (location.last_battery.battery.toFixed(2) + '%') : 'Sem registro',
+                accuracy: (location.last_position !== null) ? (location.last_position.accuracy + 'm') : 'Sem registro',
+                message_date : (location.last_position !== null) ? (location.last_position.date) : 'Sem registro',
                 position: location.position,
                 icon: this.getPinWithAlert(location.currentstatehistory.type)
             })
@@ -163,13 +166,35 @@ export class Spiralize {
                         <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Tag:</span> ${ m.tag }</p>
                         <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acu:</span> ${ m.accuracy }</p>
                         <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bat:</span> ${ m.battery }</p>
-                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(m.message_date, 'dd/MM/yy HH:mm:ss', '+00:00') } </p>
+                        <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(m.message_date, 'dd/MM/yy HH:mm:ss') } </p>
                     </div>`);
 
                 this.infoWin.setOptions({maxWidth: 250});
                 this.infoWin.open(this.mMap, m);
             });
 
+            //Hover para mostrar o círculo da acurácia
+            google.maps.event.addListener(m, "mouseover", (evt) => { 
+                 
+                this.mCircle = new google.maps.Circle({
+                  strokeColor: this.getRadiusWithAlert(location.current_state),
+                  strokeOpacity: 0.7,
+                  strokeWeight: 1,
+                  fillColor: this.getRadiusWithAlert(location.current_state),
+                  fillOpacity: 0.2,
+                  center: m.position,
+                  radius: location.last_position ? location.last_position.accuracy : 0,
+                });
+  
+                this.mCircle.setMap(this.mMap);
+              });
+  
+              //Saída do Hover para ocultar o círculo da acurácia
+              google.maps.event.addListener(m, "mouseout", (evt) => {
+                this.mCircle.setMap(null);
+              });
+
+              
             google.maps.event.addListener(this.mMap, 'zoom_changed', () => {
                 //console.log('zoom changed:' + JSON.stringify(this.mMap.getZoom()));
                 this.clearSpiral();
@@ -204,9 +229,16 @@ export class Spiralize {
             /**
              * Plota UM pino das embalagens duplicadas
              */
-            let m = new google.maps.Marker({ 
-                packing_code: array[0].family,
-                serial: array[0].packing.serial,
+            let m = new google.maps.Marker({
+                // family_code: location.family.code,
+                // serial: location.serial,
+                // battery: location.battery ? (location.battery.percentage.toFixed(2) + '%') : 'Sem registro',
+                // accuracy: (location.last_position !== null) ? (location.last_position.accuracy + 'm') : 'Sem registro',
+                // position: location.position,
+                // icon: this.getPinWithAlert(location.current_state)
+
+                packing_code: array[0].family.code,
+                serial: array[0].serial,
                 position: { lat: array[0].latitude, lng: array[0].longitude },
                 icon: { url: 'assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) },
                 // label: `${array.length}`
@@ -323,10 +355,10 @@ export class Spiralize {
                             serial: array[sc - 1].packing.serial,
                             tag: array[sc - 1].packing.tag,
                             position: spiralCoordinates[sc],
-                            battery: (array[sc - 1].devicedata && array[sc - 1].devicedata.battery.percentage) ? (array[sc - 1].devicedata.battery.percentage.toFixed(2) + '%') : 'Sem registro',
-                            message_date : (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.message_date) : 'Sem registro',
-                            accuracy: (array[sc - 1].devicedata !== null) ? (array[sc - 1].devicedata.accuracy + 'm') : 'Sem registro',
-                            icon: this.getPinWithAlert(array[sc - 1].currentstatehistory.type, true),
+                            battery: (array[sc - 1].last_battery) ? (array[sc - 1].last_battery.battery.toFixed(2) + '%') : 'Sem registro',
+                            message_date : (array[sc - 1].last_position !== null) ? (array[sc - 1].last_position.date) : 'Sem registro',
+                            accuracy: (array[sc - 1].last_position !== null) ? (array[sc - 1].last_position.accuracy + 'm') : 'Sem registro',
+                            icon: this.getPinWithAlert(array[sc - 1].status, true),
                             zIndex: 999,
                             map: this.mMap
                         });
@@ -347,17 +379,35 @@ export class Spiralize {
                                                 <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Tag:</span> ${ e.tag }</p>
                                                 <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acu:</span> ${ e.accuracy }</p>
                                                 <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Bat:</span> ${ e.battery }</p>
-                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(e.message_date, 'dd/MM/yy HH:mm:ss', '+00:00') } </p>
+                                                <p style="margin-bottom: 2px;"> <span style="font-weight: 700">D/H:</span> ${ datePipe.transform(e.message_date, 'dd/MM/yy HH:mm:ss') } </p>
                                             </div>`);
 
                             this.infoWin.setOptions({ maxWidth: 250 });
                             this.infoWin.open(this.mMap, e);
                         });
 
-                    }
+                        //Hover para mostrar o círculo da acurácia
+                        google.maps.event.addListener(e, "mouseover", (evt) => { 
+                            
+                            this.mCircle = new google.maps.Circle({
+                            strokeColor: this.getRadiusWithAlert(array[sc - 1].status),
+                            strokeOpacity: 0.7,
+                            strokeWeight: 1,
+                            fillColor: this.getRadiusWithAlert(array[sc - 1].status),
+                            fillOpacity: 0.2,
+                            center: e.position,
+                            radius: array[sc - 1].last_position ? array[sc - 1].last_position.accuracy : 0,
+                            });
+            
+                            this.mCircle.setMap(this.mMap);
+                        });
+            
+                        //Saída do Hover para ocultar o círculo da acurácia
+                        google.maps.event.addListener(e, "mouseout", (evt) => {
+                            this.mCircle.setMap(null);
+                        });
 
-                    //console.log('array: ' + JSON.stringify(array));
-                    //console.log('spiralCoordinates: ' + JSON.stringify(spiralCoordinates));
+                    }
                 }
             });
 
@@ -435,6 +485,46 @@ export class Spiralize {
 
         return pin;
     }
+
+    getRadiusWithAlert(current_state) {
+        let pin = "#027f01"; ;
+    
+        switch (current_state) {
+          case constants.ALERTS.ANALISYS:
+            pin = "#b3b3b3";
+            break;
+    
+          case constants.ALERTS.ABSENT:
+            pin = "#ef5562";
+            break;
+    
+          case constants.ALERTS.INCORRECT_LOCAL:
+            pin = "#f77737";
+            break;
+    
+          case constants.ALERTS.LOW_BATTERY:
+            pin = "#f8bd37";
+            break;
+    
+          case constants.ALERTS.LATE:
+            pin = "#4dc9ff";
+            break;
+    
+          case constants.ALERTS.PERMANENCE_TIME:
+            pin = "#4c7bff";
+            break;
+    
+          case constants.ALERTS.NO_SIGNAL:
+            pin = "#9ecf99";
+            break;
+    
+          case constants.ALERTS.MISSING:
+            pin = "#3a9ca6";
+            break;
+        }
+    
+        return pin;
+      }
 
     toggleShowPackings(status: any) {
 

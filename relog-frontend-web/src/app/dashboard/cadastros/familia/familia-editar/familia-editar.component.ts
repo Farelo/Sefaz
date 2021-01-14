@@ -22,7 +22,7 @@ export class FamiliaEditarComponent implements OnInit {
   //  { id: '5a15b13c728cd3f43cc0fe8a', name: 'XTZ Control Point' }];
 
   public validForm: boolean = true;
-  public submited = false;
+  public submitted = false;
   public mId: string;
   public mActualFamily: any;
 
@@ -100,7 +100,7 @@ export class FamiliaEditarComponent implements OnInit {
   }
 
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
-    this.submited = true;
+    this.submitted = true;
 
     if (this.mFamily.valid) {
 

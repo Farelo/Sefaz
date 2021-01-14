@@ -13,8 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class CompanyCadastrarComponent implements OnInit {
 
   public newCompany: FormGroup;
-  public typesOnSelect: any;
-  public companyType: any;
+  public typesOnSelect: any; 
   public submitted: boolean = false;
 
   //Mask

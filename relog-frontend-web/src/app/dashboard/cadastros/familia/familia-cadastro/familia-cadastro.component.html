@@ -2,7 +2,7 @@
   <h2 translate="REGISTER.FAMILY.REGISTER_TITLE"></h2>
   <hr>
 
-  <form novalidate (ngSubmit)="onSubmit(mFamily)" [formGroup]="mFamily">
+  <form novalidate (ngSubmit)="onSubmit()" [formGroup]="mFamily">
 
     <!-- Input para o código da família -->
     <div class="campo col-sm-12 col-md-6">
@@ -17,7 +17,7 @@
           maxlength="25"
           (focusout)="validateCode($event)"
           [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
-          || (mFamily.get('code').hasError('required') && submited)
+          || (mFamily.get('code').hasError('required') && submitted)
           || (mFamily.get('code').hasError('minlength'))
           || (mFamily.get('code').hasError('minlength') && submitted)
           || (mFamily.get('code').hasError('uniqueValidation') && mFamily.get('code').touched)

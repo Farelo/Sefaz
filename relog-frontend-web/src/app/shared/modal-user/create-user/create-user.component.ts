@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalUserComponent } from '../modal-user.component';
-import { ModalLogisticRegisterComponent } from '../modal-register-logistic/modal-register-logistic.component';
-import { ModalStaffRegisterComponent } from '../modal-register-staff/modal-register-staff.component';
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { ToastService, LogisticService, GeocodingService, CEPService, PlantsService, ProfileService, SuppliersService, CompaniesService, UsersService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
@@ -16,6 +14,13 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class CreateUserComponent implements OnInit {
 
+  public full_name: string;
+  public email: string;
+  public password: string;
+  public confirm_password: string;
+  public userType: any;
+  public userCompany: any;
+
   public newUser: FormGroup;
   public autocomplete: google.maps.places.Autocomplete;
   public submitted = false;
@@ -25,8 +30,6 @@ export class CreateUserComponent implements OnInit {
   public companySearch: any = {};
 
   public rolesOnSelect: any = [];
-  public userType: any;
-  public userCompany: any;
 
   constructor(public translate: TranslateService,
     public activeModal: NgbActiveModal,

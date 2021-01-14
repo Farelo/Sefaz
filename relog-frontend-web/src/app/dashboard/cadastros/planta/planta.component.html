@@ -4,7 +4,7 @@
 </div>
 
 <div class="table-responsive">
-  <table class="table" (mouseleave)="hoveredIndex=null">
+  <table class="table">
     <thead>
       <tr class="cabecalho">
         <th *ngFor="let header of headers">
@@ -21,14 +21,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let plant of listOfCompanies | paginate: { 
+      <tr *ngFor="let plant of listOfPlants | paginate: { 
                                                   itemsPerPage: 10,
                                                   currentPage: actualPage,
-                                                  totalItems: data.length}; index as index" (mouseover)='hoveredIndex = index'>
+                                                  totalItems: listOfPlants.length}; index as index" >
         <td>{{ plant.plant_name | truncate : 20 }}</td>
 
         <td class="teste">
-          <div *ngIf="index==hoveredIndex">
+          <div >
             <button class="editar" [routerLink]="['editar/', plant._id]">
               EDITAR
             </button>
@@ -41,7 +41,7 @@
     </tbody>
   </table>
 </div>
-<div class="classVazio" *ngIf="data.length < 1">
+<div class="classVazio" *ngIf="listOfPlants.length < 1">
   Ainda não existem plantas cadastradas.
 </div>
 <br />

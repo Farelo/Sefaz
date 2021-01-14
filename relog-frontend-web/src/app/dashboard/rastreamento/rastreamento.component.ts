@@ -1,12 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
-import { ViewChild } from "@angular/core";
-import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core"; 
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Department } from "../../shared/models/department";
 import { ModalRastComponent } from "../../shared/modal-rast/modal-rast.component";
 import {
   AuthenticationService,
-  PackingService,
-  DepartmentService,
+  PackingService, 
   FamiliesService,
   DevicesService,
   ControlPointsService,
@@ -602,10 +600,11 @@ export class RastreamentoComponent implements OnInit {
     });
   }
 
-  open(id) {
-    const modalRef = this.modalService.open(ModalRastComponent);
-    modalRef.componentInstance.department = id;
-  }
+
+  // open(id) {
+  //   const modalRef = this.modalService.open(ModalRastComponent);
+  //   modalRef.componentInstance.department = id;
+  // }
 
   startWindow(marker) {
     marker.nguiMapComponent.openInfoWindow("iw", marker);
@@ -671,9 +670,9 @@ export class RastreamentoComponent implements OnInit {
    * Misc ...
    * Relative to side-menu
    */
-  private _opened: boolean = true;
+  public _opened: boolean = true;
 
-  private _toggleSidebar() {
+  public _toggleSidebar() {
     this._opened = !this._opened;
   }
 }

@@ -16,7 +16,8 @@ export class Gc16Component implements OnInit {
   public mListOfGC16: any[] = [];
   public equipamentSearch = "";
   public packings: any[];
-
+  public search: string;
+  
   constructor(public translate: TranslateService,
     private GC16Service: GC16Service,
     private modalService: NgbModal,
@@ -54,4 +55,7 @@ export class Gc16Component implements OnInit {
   }
 
 
+  searchEvent(event): void{
+
+  }
 }

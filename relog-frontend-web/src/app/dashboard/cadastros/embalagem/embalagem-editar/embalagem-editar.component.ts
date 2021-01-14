@@ -19,6 +19,7 @@ export class EmbalagemEditarComponent implements OnInit {
   public mId: string;
   public mActualPacking: any;
   public activePacking: boolean = false;
+  public deviceModel: any[] = [];
 
   constructor(public translate: TranslateService,
     private familyService: FamiliesService,
@@ -37,9 +38,18 @@ export class EmbalagemEditarComponent implements OnInit {
     this.configureForm();
     this.loadFamilies();
     this.loadProjects();
+    this.fillSelectType();
     this.retrieveUser();
   }
 
+
+  fillSelectType() {
+    this.deviceModel = [
+      { label: "Loka Mind", name: "loka" },
+      { label: "ALPS", name: "alps" },
+      { label: "Ayga", name: "ayga" },
+    ];
+  }
 
   loadFamilies() {
     this.familyService.getAllFamilies().subscribe(result => {
@@ -99,7 +109,8 @@ export class EmbalagemEditarComponent implements OnInit {
         code: ['',
           [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
         version: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],
-        manufactorer: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]]
+        manufactorer: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]],
+        deviceModel: [null, [Validators.required]]
       }),
       serial: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^((?!\s{2}).)*$/)]],
       type: ['', [Validators.required, Validators.pattern(/^((?!\s{2}).)*$/)]],

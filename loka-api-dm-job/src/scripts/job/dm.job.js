@@ -1,122 +1,183 @@
 const debug = require("debug")("job:loka");
 const dm_controller = require("../loka-integration/dm.controller");
 const { Packing } = require("../../models/packings.model");
-const { DeviceData, device_data_save } = require("../../models/device_data.model");
-const { EventRecord } = require("../../models/event_record.model"); 
-const { CurrentStateHistory } = require("../../models/current_state_history.model"); 
 const moment = require("moment");
+const _ = require("lodash");
+
+// TODO: ajustar a questão de timezone.
+// A loka já nos fornece todos os tempos em UTC-3, que é a atual configuração no dm.
+// Mas o moment assume que o timestamp passado no constructor é sempre localtime. Se usar utc() ele entende como GMT-0.
+// Como consequencia, os tempos UTF-3 que vem da loka são salvos convertidos em UTF-0.
+// Na hora de consumir pegamos a data como se fosse UTF-0 aí temos que realizar offset.
+// A rota position/get recebe startDate e endDate como localtime.
+const generatePositionQuery = (packing) => {
+   let positionStartDate = 0;
+   if (packing.last_position)
+      positionStartDate = moment(packing.last_position.timestamp * 1000)
+         .utc()
+         .subtract(3, "h")
+         .add(1, "seconds")
+         .format("YYYY-MM-DD HH:mm:ss")
+         .toString();
+   else positionStartDate = moment().subtract(7, "days").format("YYYY-MM-DD HH:mm:ss").toString();
+
+   let positionEndDate = moment().format("YYYY-MM-DD HH:mm:ss").toString();
+
+   // console.log(":::::::position", positionStartDate, positionEndDate);
+
+   return [positionStartDate, positionEndDate];
+};
+
+const generateSensorQuery = (packing) => {
+   let lastTemperatureTimestamp = 0;
+   let lastBatteryTimestamp = 0;
+
+   let sensorStartDate = 0;
+   let sensorEndDate = 0;
+
+   //Get the last temperature and battery
+   if (packing.last_temperature) lastTemperatureTimestamp = packing.last_temperature.timestamp;
+   if (packing.last_battery) lastBatteryTimestamp = packing.last_battery.timestamp;
+
+   //Which one is the most recent?
+   let lastSensorTimestamp = _.max([lastTemperatureTimestamp, lastBatteryTimestamp]);
+
+   //If there is a most recent value, then calculate the time window
+   //If there isn't a most recent value, then calculate the last 7 days
+   if (lastSensorTimestamp > 0)
+      sensorStartDate = moment(lastSensorTimestamp * 1000)
+         .utc()
+         .subtract(3, "h")
+         .add(1, "seconds")
+         .format("YYYY-MM-DD HH:mm:ss")
+         .toString();
+   else sensorStartDate = moment().subtract(7, "days").format("YYYY-MM-DD HH:mm:ss").toString();
+
+   sensorEndDate = moment().format("YYYY-MM-DD HH:mm:ss").toString();
+
+   console.log(lastTemperatureTimestamp, lastBatteryTimestamp, lastSensorTimestamp, sensorStartDate, sensorEndDate);
+
+   // console.log("::::::sensors", lastTemperatureTimestamp, lastBatteryTimestamp, sensorStartDate, sensorEndDate);
+
+   return [sensorStartDate, sensorEndDate];
+};
 
 module.exports = async () => {
-  try {
-    while (true) {
-      let concluded_devices = 0;
-      let error_devices = 0;
-      let timeInit = new Date().getTime();
-      let sleepTime = 10 * 60;
+   try {
+      while (true) {
+         let concluded_devices = 0;
+         let error_devices = 0;
+         let timeInit = new Date().getTime();
+         let sleepTime = 10 * 60;
 
-      debug("***********************");
-      debug("Novo loop no while");
-      debug("Login");
+         debug("***********************");
 
-      const cookie = await dm_controller.loginDM();
+         const cookie = await dm_controller.loginDM();
 
-      //'tag.code': '28423340'
-      // let devices = await Packing.find({}, { _id: 1, family: 1, serial: 1, tag: 1, last_device_data: 1, last_event_record: 1, last_current_state_history: 1  }).populate('last_device_data').populate('last_device_data_battery')
-      let devices = await Packing.find(
-        {},
-        {
-          _id: 1,
-          family: 1,
-          serial: 1,
-          tag: 1,
-          last_device_data: 1,
-          last_device_data_battery: 1,
-          last_event_record: 1,
-          last_current_state_history: 1,
-        }
-      )
-        .populate("last_device_data") 
-        .populate("last_device_data_battery")
-        .populate("last_event_record")
-        .populate("last_current_state_history");
+         // "tag.code": "28423339"
+         // "tag.code": "4081800"
+         let devices = await Packing.find(
+            { $or: [{ "tag.deviceModel": { $in: ["loka", "alps"] } }, { "tag.deviceModel": { $exists: false } }] },
+            { _id: 1, tag: 1, last_position: 1 }
+         )
+            .populate("last_position")
+            .populate("last_battery")
+            .populate("last_temperature");
 
-      for (const [i, packing] of devices.entries()) {
-        try {
-          const week_in_milliseconds = 604800000;
+         for (const [i, packing] of devices.entries()) {
+            try {
+               //recupera a última mensagem de posição e cria janela de tempo. Se não houver, inicia 1 semana atrás
+               const [positionStartDate, positionEndDate] = generatePositionQuery(packing);
 
-          //recupera a última mensagem e cria janela de tempo. Se não houver, inicia 1 semana atrás
-          let start_search_date = packing.last_device_data
-            ? moment(packing.last_device_data.message_date).add(1, "seconds").add(3, 'hours').format("YYYY-MM-DD HH:mm:ss").toString()
-            : moment().subtract(7, "days").format("YYYY-MM-DD HH:mm:ss").toString();
+               //Coleta novas posições na loka
+               const newPositionsArray = await dm_controller.fetchAndSavePositions(
+                  packing,
+                  positionStartDate,
+                  positionEndDate,
+                  cookie
+               );
 
-          let end_search_date = moment().utc().format("YYYY-MM-DD HH:mm:ss").toString();
+               // console.log(newPositionsArray);
 
-          // console.log('original: ', packing.last_device_data.message_date)
-          // console.log('start_search_date: ', start_search_date)
-          // console.log('end_search_date: ', end_search_date)
+               //recupera a última mensagem de sensor e cria janela de tempo. Se não houver, inicia 1 semana atrás
+               const [sensorStartDate, sensorEndDate] = generateSensorQuery(packing);
 
-          // console.log(' ')
+               //Coleta novas mensagens de sensores na loka
+               const newSensorsArray = await dm_controller.fetchAndSaveSensors(
+                  packing,
+                  sensorStartDate,
+                  sensorEndDate,
+                  cookie
+               );
 
-          const device_data_array = await dm_controller.getDeviceDataFromMiddleware(
-            packing.tag.code,
-            start_search_date,
-            end_search_date,
-            null,
-            cookie
-          );
+               // console.log(newSensorsArray);
 
-          //debug(packing)
-          debug(
-            `Request ${i + 1}: ${packing.tag.code} | ${start_search_date} | ${end_search_date} | ${
-              device_data_array.length
-            } \n`
-          );
+               // What is the last signal timestamp? Update the last_message_signal Packing's attribute
+               if (newPositionsArray.length > 0 && newSensorsArray.length > 0) {
+                  let lastMessage =
+                     newPositionsArray[0].timestamp >= newSensorsArray[0].timestamp
+                        ? new Date(newPositionsArray[0].timestamp * 1000)
+                        : new Date(newSensorsArray[0].timestamp * 1000);
+                  await Packing.findByIdAndUpdate(packing._id, { last_message_signal: lastMessage }, { new: true });
+               } else {
+                  if (newPositionsArray.length > 0) {
+                     await Packing.findByIdAndUpdate(
+                        packing._id,
+                        { last_message_signal: new Date(newPositionsArray[0].timestamp * 1000) },
+                        { new: true }
+                     );
+                  }
 
-          if (device_data_array) {
-            // debug(device_data_array)
-            await device_data_save(packing, device_data_array);
+                  if (newSensorsArray.length > 0) {
+                     await Packing.findByIdAndUpdate(
+                        packing._id,
+                        { last_message_signal: new Date(newSensorsArray[0].timestamp * 1000) },
+                        { new: true }
+                     );
+                  }
+               }
 
-            concluded_devices++;
+               concluded_devices++;
 
-            //nao precisa realizar o return device_data_array, a nao ser que queira debugar o loop for-await-for abaixo
-            // return device_data_array
-          }
-        } catch (error) {
-          debug(`${i}: Erro ocorrido no device: ' + ${packing.tag.code} + ' | ' + ${error}`);
+               debug(
+                  `Request ${i + 1}: ${packing.tag.code} | ${positionStartDate} | ${sensorStartDate} | ${
+                     newPositionsArray.length
+                  } |  ${newSensorsArray.length}\n`
+               );
+            } catch (error) {
+               error_devices++;
+               debug(`${i}: Erro ocorrido no device: ' + ${packing.tag.code} + ' | ' + ${error}`);
+            }
+         }
 
-          error_devices++;
-        }
+         let timeFinish = new Date().getTime();
+         let timeTotal = timeFinish - timeInit;
+
+         debug(`Devices que deram certo:  ${concluded_devices}`);
+         debug(`Devices que deram errado:  ${error_devices}`);
+         debug(`Job LOKA encerrado em ${new Date().toISOString()} com sucesso!`);
+         debug("Tempo total de execução (sec): " + timeTotal / 1000);
+
+         await dm_controller.logoutDM(cookie);
+         debug("Logout");
+
+         debug(`Dormir por ${sleepTime} segundos`);
+         await promise_wait_seconds(sleepTime);
+         debug("Acordado");
       }
-
-      let timeFinish = new Date().getTime();
-      let timeTotal = timeFinish - timeInit;
-
-      debug(`Devices que deram certo:  ${concluded_devices}`);
-      debug(`Devices que deram errado:  ${error_devices}`);
-      debug(`Job LOKA encerrado em ${new Date().toISOString()} com sucesso!`);
-      debug("Tempo total de execução (sec): " + timeTotal / 1000);
-
-      debug("Logout");
-
-      await dm_controller.logoutDM(cookie);
-
-      debug(`Dormir por ${sleepTime} segundos`);
-      await promise_wait_seconds(sleepTime);
-      debug("Acordado");
-    }
-  } catch (error) {
-    return Promise.reject(`Job LOKA encerrado em ${new Date().toISOString()} com erro | ` + error);
-  }
+   } catch (error) {
+      return Promise.reject(`Job LOKA encerrado em ${new Date().toISOString()} com erro | ` + error);
+   }
 };
 
 const add_seconds = (date_time, seconds_to_add) => {
-  return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add));
+   return new Date(date_time.setSeconds(date_time.getSeconds() + seconds_to_add));
 };
 
 const promise_wait_seconds = async (seconds) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(`SLEEP: Aguardou ${seconds} segundos`);
-    }, seconds * 1000);
-  });
+   return new Promise((resolve) => {
+      setTimeout(() => {
+         resolve(`SLEEP: Aguardou ${seconds} segundos`);
+      }, seconds * 1000);
+   });
 };
