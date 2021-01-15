@@ -131,8 +131,8 @@
   <div class="detalhes" *ngIf="mType == 'DEPARTMENT'">
     <h2> Deletar Departamento </h2>
     <hr>
-    <p>Nome: {{ mObject.name }}</p>
-    <p>Ponto de Controle: {{ mObject.control_point.name }}</p>
+    <p>Nome: {{ mObject.name || '-' }}</p>
+    <p>Ponto de Controle: {{ mObject?.control_point?.name || '-' }}</p>
 
     <hr>
     <div class="alerta">

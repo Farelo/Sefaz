@@ -23,7 +23,7 @@
                                                       currentPage: actualPage,
                                                       totalItems: allDepartments.length};">
         <td>{{ department.name | truncate : 20 }}</td>
-        <td>{{ department.control_point.name | truncate : 20 }}</td>
+        <td>{{ (department?.control_point?.name || '-') | truncate : 20 }}</td>
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', department._id]">
             EDITAR
