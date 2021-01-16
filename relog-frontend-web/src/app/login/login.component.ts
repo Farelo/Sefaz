@@ -22,21 +22,23 @@ export class LoginComponent implements OnInit {
     private toastService: ToastService
   ) { }
 
-  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
-  
-    if(valid){
-      this.authenticationService.login(value.password, value.email).subscribe(result =>  {
+  async onSubmit({ value, valid }: { value: any; valid: boolean }) {
+    if (valid) {
+      try {
+        let result = await this.authenticationService.login(
+          value.password,
+          value.email
+        );
 
-        // console.log('result: ' + JSON.stringify(result));
-
-        if(result){
+        if (result) {
           this.erroAuth = false;
-          this.router.navigate(['/rc/home'])
-
-        }else{
+          this.router.navigate(["/rc/home"]);
+        } else {
           this.erroAuth = true;
         }
-      }, err => this.toastService.warningunathorized())
+      } catch (error) {
+        this.toastService.warningunathorized();
+      }
     }
   }
 
