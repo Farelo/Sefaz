@@ -325,7 +325,7 @@ export class InventarioTemperaturasComponent implements OnInit {
     let plainArray = mArray.map((obj) => {
       return {
         a1: obj.tag,
-        a2: obj.value,
+        a2: obj.value.toFixed(2),
         a3: this.convertTimezone(obj.timestamp),
       };
     });
@@ -401,6 +401,11 @@ export class InventarioTemperaturasComponent implements OnInit {
         //this is where the configuration is defined
         responsive: true, //important to keep graph responsive
         scrollZoom: true,
+        toImageButtonOptions: {
+          format: 'png', // one of png, svg, jpeg, webp
+          filename: 'temperature_chart', 
+          scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
+        }
       }
     );
   }
