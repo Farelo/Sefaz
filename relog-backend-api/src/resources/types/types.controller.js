@@ -41,7 +41,7 @@ exports.delete = async (req, res) => {
     const type = await types_service.find_by_id(req.params.id)
     if (!type) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid type' })
 
-    logs_controller.create({token:req.headers.authorization, log:'create_control_point_type', newData:type});
+    logs_controller.create({token:req.headers.authorization, log:'delete_control_point_type', newData:type});
     await type.remove()
 
     res.send({ message: 'Delete successfully' })

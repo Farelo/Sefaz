@@ -42,7 +42,7 @@ exports.delete = async (req, res) => {
  
     if (!department) res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid department' })
 
-    logs_controller.create({token:req.headers.authorization, log:'create_departments', newData:department});
+    logs_controller.create({token:req.headers.authorization, log:'delete_department', newData:department});
     await department.remove()
 
     res.send({ message: 'Delete successfully' })

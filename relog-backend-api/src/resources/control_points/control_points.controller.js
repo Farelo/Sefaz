@@ -69,7 +69,7 @@ exports.update = async (req, res) => {
     
     control_point = await control_points_service.update_control_point(req.params.id, req.body)
 
-    logs_controller.create({token:req.headers.authorization, log:'delete_control_points', newData:req.body});
+    logs_controller.create({token:req.headers.authorization, log:'update_control_point', newData:req.body});
 
     res.json(control_point)
 }
