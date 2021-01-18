@@ -91,8 +91,12 @@
           </td>
         </tr>
         <tr *ngIf="generalEquipament.length < 1">
-          <td colspan="13">
+          <td *ngIf="requestCompleted" colspan="13" style="padding-top: 1rem;">
             Ainda não foram cadastradas embalagens no sistema.
+          </td>
+          
+          <td *ngIf="!requestCompleted" colspan="13" style="padding-top: 1rem;">
+            Coletando informações
           </td>
         </tr>
       </tbody>
