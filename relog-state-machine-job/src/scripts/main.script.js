@@ -33,7 +33,7 @@ module.exports = async () => {
 
             //const packings = await Packing.find({ })
             const packings = await Packing.find({})
-               .populate("family") 
+               .populate("family")
                .populate("last_current_state_history")
                .populate("last_event_record")
                .populate("last_position")

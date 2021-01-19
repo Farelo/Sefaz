@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ModalUserComponent } from '../../shared/modal-user/modal-user.component';
 import { ModalSettings } from '../../shared/modal-settings/modal-settings.component';
@@ -16,7 +16,6 @@ export class NavbarComponent implements OnInit {
   public currentUser: any;
 
   constructor(
-    private ngZone: NgZone,
     private modalService: NgbModal,
     public authenticationService: AuthenticationService,
     private router: Router) {

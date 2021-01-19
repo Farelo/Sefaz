@@ -28,6 +28,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
   public auxGeneralEquipament: any[] = [];
   public actualPage: number = -1; //página atual
   public temp: any[] = [];
+  public requestCompleted = false;
 
   constructor(
     private reportsService: ReportsService,
@@ -70,6 +71,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
       (result) => {
         this.generalEquipament = result;
         this.auxGeneralEquipament = result;
+        this.requestCompleted = true;
       },
       (err) => console.error(err)
     );

@@ -1,20 +1,67 @@
 const debug = require("debug")("service:positions");
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const _ = require("lodash");
 const { Position } = require("./positions.model");
-const { Family } = require("../families/families.model");
 const { Packing } = require("../packings/packings.model");
 
-exports.getPosition = async ({ tag = null, start_date = null, end_date = null, accuracy = null, max = null }) => {
-   let device_data = [];
-   let conditions = {};
-   let projection = {};
-   let options = {};
+exports.createMany = async (packing, positionArray) => {
+   if (positionArray.length) {
+      updatePackageLastMessage(packing, positionArray[0]);
+   }
 
-   if(tag) conditions.tag = tag;
-   // options.sort = { message_date: -1 };
+   for (const [index, position] of positionArray.entries()) {
+      if (position.accuracy <= 32000) {
+         try {
+            const newPosition = new Position({
+               tag: packing.tag.code,
+               date: new Date(position.date),
+               timestamp: position.timestamp,
+               latitude: position.latitude,
+               longitude: position.longitude,
+               accuracy: position.accuracy,
+            });
 
+            // salva no banco | observação: não salva mensagens iguais porque o model possui
+            // índice unico e composto por tag e timestamp, e o erro de duplicidade nao interrompe o job
+            if (index == positionArray.length - 1) {
+               await newPosition
+                  .save()
+                  .then((newDoc) => referenceFromPackage(packing, newDoc))
+                  .catch((err) => debug(err));
+            } else {
+               await newPosition.save();
+            }
+         } catch (error) {
+            debug(`Erro ao salvar a posição do device ${packing.tag.code} | ${error}`);
+         }
+      }
+   }
+};
+
+const updatePackageLastMessage = async (packing, lastMessage) => {
+   let update_attrs = {};
+   update_attrs.last_message_signal = lastMessage.date;
+   await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+};
+
+const referenceFromPackage = async (packing, position) => {
    try {
+      await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
+   } catch (error) {
+      debug(error);
+   }
+};
+
+exports.getPosition = async ({ tag = null, start_date = null, end_date = null, accuracy = null, max = 100 }) => {
+   try {
+      let device_data = [];
+      let conditions = {};
+      let projection = {};
+      let options = {};
+
+      if (tag) conditions.tag = tag;
+      // options.sort = { message_date: -1 };
+
       // Periodo of time
       if (start_date && end_date)
          if (isNaN(start_date) && isNaN(end_date))
@@ -37,7 +84,6 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
       if (accuracy) conditions.accuracy = { $lte: parseInt(accuracy) };
 
       if (!start_date && !end_date) options.limit = parseInt(max);
-
       console.log(conditions);
       device_data = await Position.find(conditions, projection, options);
 
@@ -49,7 +95,7 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
 
 exports.geolocation = async ({ companyId = null, familyId = null, serial = null }) => {
    try {
-      let packings = []; 
+      let packings = [];
 
       switch (true) {
          // company, family and serial
@@ -112,7 +158,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -177,7 +223,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -242,7 +288,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -307,7 +353,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -371,7 +417,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                      "last_position.timestamp": 1,
                      "last_position.latitude": 1,
                      "last_position.longitude": 1,
-                     "last_position.accuracy": 1
+                     "last_position.accuracy": 1,
                   },
                },
             ]);
@@ -394,8 +440,8 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
             break;
 
          //Only serial
-         case serial != null: 
-         console.log("s");
+         case serial != null:
+            console.log("s");
             packings = await Packing.find(
                { serial: serial },
                {
@@ -409,8 +455,8 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                .populate("family", "code company");
             break;
 
-         default: 
-         console.log("default");
+         default:
+            console.log("default");
             packings = await Packing.find(
                {},
                {
@@ -423,7 +469,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                .populate("last_position", "date timestamp latitude longitude accuracy")
                .populate("family", "code company");
             break;
-      } 
+      }
       return packings;
    } catch (error) {
       throw new Error(error);

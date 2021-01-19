@@ -8,7 +8,7 @@
     <div class="row">
 
       <!-- Codigo -->
-      <div class="col-sm-12 col-md-4 campo" formGroupName="tag">
+      <div class="col-sm-12 col-md-3 campo" formGroupName="tag" style="padding-right: 0px;">
         <p class="descricao">TAG</p>
         <p class="explicacao">Ex. "994475545"</p>
         <div class="input-group">
@@ -45,7 +45,7 @@
 
 
       <!-- Version -->
-      <div class="col-sm-12 col-md-4" formGroupName="tag">
+      <div class="col-sm-12 col-md-3" formGroupName="tag">
         <p class="descricao">VERSÃO</p>
         <p class="explicacao">Ex. "v1"</p>
         <div class="input-group">
@@ -67,7 +67,7 @@
 
 
       <!-- Projeto -->
-      <div class="col-sm-12 col-md-4">
+      <div class="col-sm-12 col-md-3" style="padding-right: 0px;">
         <p class="descricao">PROJETO</p>
         <p class="explicacao">Projeto da Embalagem</p>
         <ng-select bindLabel="name" placeholder="Associe um projeto" [items]="listOfProjects" formControlName="project">
@@ -79,6 +79,21 @@
         <p class="requiredText" *ngIf="(mPacking.get('project').hasError('required') && mPacking.get('project').touched)
                               || (mPacking.get('project').hasError('required') && formDir.submitted)">
           Campo Obrigatório</p>
+      </div>
+
+      <!-- Modelo -->
+      <div class="col-sm-12 col-md-3" formGroupName="tag">
+        <p class="descricao">MODELO</p>
+        <p class="explicacao">Modelo do dispositivo</p>
+        <ng-select bindLabel="label" bindValue="name" placeholder="Associe um modelo" [items]="deviceModel" formControlName="deviceModel">
+
+          <ng-template ng-option-tmp let-item="item">
+            <div> {{item.label}} </div>
+          </ng-template>
+        </ng-select>
+        <p class="requiredText" *ngIf="(mPacking.get('tag.deviceModel').hasError('required') && mPacking.get('tag.deviceModel').touched)
+                              || (mPacking.get('tag.deviceModel').hasError('required') && formDir.submitted)">
+          Campo Obrigatório</p>  
       </div>
 
     </div>

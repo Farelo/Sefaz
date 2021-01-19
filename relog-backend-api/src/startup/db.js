@@ -9,6 +9,7 @@ const config = require('config')
 const tryReconect = (url) => {
     setTimeout(
         () => {
+            console.log('setTimeout conenct');
             mongoose.connect(
                 url,
                 config.get('database_options'),

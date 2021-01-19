@@ -1,18 +1,23 @@
 const jwt = require('jsonwebtoken')
 const config = require('config');
-const { User } = require('../resources/users/users.model')
+const { User } = require('../resources/users/users.model');
+const { Company } = require('../resources/companies/companies.model');
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
     // Authorization: Bearer TOKEN
     const token = extractToken(req)
     if (!token) return res.status(401).send({message:"Access denied. No token provided."})
 
     try {
         const decoded_payload = jwt.verify(token, config.get('security.jwtPrivateKey'))
+        
+        let actualUser = await User.findById(decoded_payload._id, ["email"])
+        if(!actualUser) res.status(401).send({message:"Invalid token."})
+        
         req.authenticated = decoded_payload
 
         next()
-    } catch (error) {
+    } catch (error) { 
         res.status(401).send({message:"Invalid token."})
     }
 }

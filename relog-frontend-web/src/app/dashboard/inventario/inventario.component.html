@@ -53,6 +53,7 @@
             <option>Quantidade</option>
             <option>Geral</option>
             <option>Posições</option>
+            <option>Temperaturas</option>
           </select>
         </div>
 
@@ -89,6 +90,9 @@
 
     <!-- Relatório Equipamento Posições -->
     <app-inventario-posicoes *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Posições')"></app-inventario-posicoes>
+
+    <!-- Relatório Equipamento Temperaturas -->
+    <app-inventario-temperaturas *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Temperaturas')"></app-inventario-temperaturas>
 
     <!-- Relatório Fornecedor -->
     <app-fornecedor *ngIf="(escolhaGeral == 'FORNECEDOR')"></app-fornecedor>

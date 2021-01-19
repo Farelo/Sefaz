@@ -33,7 +33,8 @@ import {
     ControlPointTypesService,
     ReportsService,
     DevicesService,
-    PositionsService
+    PositionsService,
+    TemperaturesService
 } from './index.service';
 
 @NgModule({
@@ -72,7 +73,8 @@ import {
         ControlPointTypesService,
         ReportsService,
         DevicesService,
-        PositionsService
+        PositionsService,
+        TemperaturesService
     ]
 })
 export class ServicesModule { }

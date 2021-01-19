@@ -70,14 +70,7 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   }
 
   /////////////
-  constructor(
-    private inventoryLogisticService: InventoryLogisticService,
-    private inventoryService: InventoryService,
-    private suppliersService: SuppliersService,
-    private packingService: PackingService,
-    private modalService: NgbModal,
-    private modalActive: NgbActiveModal,
-    private ref: ChangeDetectorRef,
+  constructor( 
     private auth: AuthenticationService) {
 
     let user = this.auth.currentUser();

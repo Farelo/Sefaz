@@ -5,6 +5,22 @@ const packingsService = require("../packings/packings.service");
 const familiesService = require("../families/families.service");
 const companiesService = require("../companies/companies.service");
 
+exports.createMany = async (allBatteries) => {
+   try {
+      let currentPacking = null; 
+      if (allBatteries.length) { 
+         currentPacking = await packingsService.find_by_tag(allBatteries[0].tag); 
+         if (currentPacking) {
+            await batteriesService.createMany(currentPacking, allBatteries);
+         } else {
+            throw new Error(`The tag ${allBatteries[0].tag} doesn't exists`);
+         }
+      }
+   } catch (error) {
+      throw new Error(error);
+   }
+};
+
 exports.get = async (req, res) => {
    const query = {
       tag: req.query.tag ? req.query.tag : null,

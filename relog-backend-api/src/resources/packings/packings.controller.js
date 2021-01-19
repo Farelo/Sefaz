@@ -9,13 +9,17 @@ const projects_service = require("../projects/projects.service");
 const control_points_service = require("../control_points/control_points.service");
 const companies_service = require("../companies/companies.service");
 const logs_controller = require('../logs/logs.controller')
+const apiKeysService = require("../api_keys/api_keys.service");
+
+const config = require("config");
 const _ = require("lodash");
 var https = require("https");
+const axios = require("axios");
 
 var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 
 exports.all = async (req, res) => {
-   const tag = req.query.tag_code ? { code: req.query.tag_code } : null;
+   const tag = req.query.tag_code ? req.query.tag_code : null;
    const family = req.query.family ? req.query.family : null;
    const packings = await packings_service.get_packings(tag, family);
 
@@ -45,10 +49,32 @@ exports.create = async (req, res) => {
    packing = await packings_service.create_packing(req.body);
 
    logs_controller.create({token:req.headers.authorization, log:'create_packing' , newData:req.body});
+   //Create on callback proxy
+   // let proxyApiKey = await apiKeysService.findByName("proxy-ayga");
+   // if (proxyApiKey.length) await createOnProxy(packing, proxyApiKey[0]);
 
    //Sub packing in websocket
    await subPacking(packing.tag.code);
+
    res.status(HttpStatus.CREATED).send(packing);
+};
+ 
+const createOnProxy = async (packing, proxyApiKey) => {
+   console.log(' ');
+   console.log('createOnProxy');
+   console.log(packing);
+   console.log(proxyApiKey);
+
+   let response = await axios.post(
+      config.get("proxyAyga.url"),
+      { tag: packing.tag.code, client: config.get("proxyAyga.clientName") },
+      {
+         headers: {
+            APIKEY: proxyApiKey.key,
+         },
+      }
+   );
+   console.log(response);
 };
 
 async function subPacking(id) {
@@ -213,11 +239,11 @@ exports.geolocation = async (req, res) => {
             "latitude",
             "longitude",
             "date",
-            "timestamp"
+            "timestamp",
          ]);
       if (newObj.last_battery)
          newObj.last_battery = _.pick(newObj.last_battery, ["date", "timestamp", "battery", "batteryVoltage"]);
-         
+
       newObj.tag = _.pick(newObj.tag, ["code"]);
       return newObj;
    });

@@ -40,5 +40,9 @@
     "baseUrl": "https://dm.loka.systems",
     "username": "sys.dm@reciclapac.com",
     "password": "Rsysadmin2242"
+  },
+  "proxyAyga": {
+    "clientName": "login",
+    "url": "http://localhost:3001/api/devices"
   }
 }
