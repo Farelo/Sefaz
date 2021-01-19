@@ -67,19 +67,21 @@ export class AuthenticationService {
     localStorage.setItem("currentSettings", JSON.stringify(actualSettings.data));
   }
 
-
-  loglogout(): Observable<any> {
-    let user = this.currentUser()
-    return this.http.post(`${environment.url}/logs`, {
-      user: user._id,
-      log: 'logout'
-    }).catch(this.handleError);
-  }
-
   logout(){
+    this.loglogout();
     // remove user from local storage to log user out
-    this.loglogout().subscribe(result => {console.log('done')}, err => { console.log(err) });
     localStorage.removeItem("currentUser");
     localStorage.removeItem("currentSettings");
   }
+
+  loglogout(){
+    let user = this.currentUser()
+    axios.post(`${environment.url}/logs`, {
+      user: user._id,
+      log: 'logout'
+    })
+  }
+  
 }
+
+
