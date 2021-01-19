@@ -129,6 +129,18 @@
           </drawing-manager>
 
           <!-- ///////////// -->
+          <!-- New Ponto de Controle -->
+          <marker *ngIf="center !== undefined" [position]="center" [title]="address.name" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }">
+            <!-- <info-window id="pw">
+              <div class="iw-title">INFORMAÇÕES</div>
+              <div *ngIf="plant.display" class="info-window-content">
+                <p>
+                  <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
+              </div>
+            </info-window> -->
+          </marker>
+
+          <!-- ///////////// -->
           <!-- Ponto de Controle -->
           <circle *ngFor="let posCPCircle of listOfCircleControlPoints" [center]="posCPCircle.geofence.coordinates[0]" [radius]="posCPCircle.geofence.radius"
             [editable]="false" [fillColor]="'#455A64'" [fillOpacity]="0.2" [strokeColor]="'#263238'" [strokeOpacity]="0.4"

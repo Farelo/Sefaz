@@ -30,7 +30,7 @@ exports.create = async (req, res) => {
     if (!company) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid company.' })
 
     control_point = await control_points_service.create_control_point(req.body)
-    logs_controller.create({token:req.headers.authorization, log:'create_control_points', newData:req.body});
+    logs_controller.create({token:req.headers.authorization, log:'create_control_point', newData:req.body});
    
     res.status(HttpStatus.CREATED).send(control_point)
 }

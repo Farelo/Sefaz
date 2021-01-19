@@ -152,6 +152,19 @@
                 zIndex: 1}"></drawing-manager>
 
                 <!-- ///////////// -->
+                <!-- New Ponto de Controle -->
+                <marker *ngIf="center !== undefined" [position]="center" [title]="address.name" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }">
+                  <!-- <info-window id="pw">
+                    <div class="iw-title">INFORMAÇÕES</div>
+                    <div *ngIf="plant.display" class="info-window-content">
+                      <p>
+                        <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
+                    </div>
+                  </info-window> -->
+                </marker>
+
+
+                <!-- ///////////// -->
                 <!-- Ponto de Controle -->
                 <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
                   [title]="posCP.name" (click)="clickedPlant($event, posCP)">

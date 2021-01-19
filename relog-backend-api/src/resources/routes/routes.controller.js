@@ -29,7 +29,7 @@ exports.create = async (req, res) => {
     if (!second_point) return res.status(HttpStatus.BAD_REQUEST).send({ message: 'Control Point do not exists.' })
 
     const route = await routes_service.create_route(req.body)
-    logs_controller.create({token:req.headers.authorization, log:'create_routes', newData:req.body});
+    logs_controller.create({token:req.headers.authorization, log:'create_route', newData:req.body});
     
     res.status(HttpStatus.CREATED).send(route)
 }
@@ -39,7 +39,7 @@ exports.update = async (req, res) => {
     if (!route) return res.status(HttpStatus.NOT_FOUND).send({ message: 'Invalid route.' })
 
     route = await routes_service.update_route(req.params.id, req.body)
-    logs_controller.create({token:req.headers.authorization, log:'update_routes', newData:req.body});
+    logs_controller.create({token:req.headers.authorization, log:'update_route', newData:req.body});
 
     res.json(route)
 }
