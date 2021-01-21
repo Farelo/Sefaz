@@ -123,8 +123,9 @@ export class ModalSettings implements OnInit {
     });
 
     let result = await this.settingsService.getSettings();
-
-    this.actualSettings = result;
+    console.log(result);
+     
+    this.actualSettings = result.data;
     this.actualSettings.accuracy_limit =
       this.actualSettings.accuracy_limit / 1000;
 
