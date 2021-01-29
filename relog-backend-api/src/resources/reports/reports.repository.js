@@ -365,30 +365,138 @@ const general_inventory_report_detailed = async (family_id) => {
 };
 
 exports.snapshot_report = async () => {
-   // console.log('....................')
-   // console.log(new Date())
-
    try {
       //console.log('snapshot_report')
-      const packings = await Packing.find({})
-         .populate("family", "code")
-         .populate("last_position")
-         .populate("last_battery")
-         .populate("last_event_record");
+      const packings = await Packing.aggregate([
+         {
+            $lookup: {
+               from: "families",
+               localField: "family",
+               foreignField: "_id",
+               as: "family",
+            },
+         },
+         {
+            $unwind: {
+               path: "$family",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "positions",
+               localField: "last_position",
+               foreignField: "_id",
+               as: "last_position",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_position",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "temperatures",
+               localField: "last_temperature",
+               foreignField: "_id",
+               as: "last_temperature",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_temperature",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "batteries",
+               localField: "last_battery",
+               foreignField: "_id",
+               as: "last_battery",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_battery",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "eventrecords",
+               localField: "last_event_record",
+               foreignField: "_id",
+               as: "last_event_record",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_event_record",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "controlpoints",
+               localField: "last_event_record.control_point",
+               foreignField: "_id",
+               as: "last_event_record.control_point",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_event_record.control_point",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "types",
+               localField: "last_event_record.control_point.type",
+               foreignField: "_id",
+               as: "last_event_record.control_point.type",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_event_record.control_point.type",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $project: {
+               _id: 1,
+               serial: 1,
+               "tag.code": 1,
+               current_state: 1,
+               cicle_start: 1,
+               cicle_end: 1,
+               last_cicle_duration: 1,
+               "family.code": 1,
+               last_position: 1,
+               last_temperature: 1,
+               last_battery: 1,
+               last_event_record: 1,
+               absent: 1,
+               absent_time: 1,
+            },
+         },
+      ]);
+
       const settings = await Setting.find({});
 
-      console.log(packings[0]);
       const data = await Promise.all(
          packings.map(async (packing) => {
             let obj = {};
-            const battery_level = packing.last_battery  ? packing.last_battery.battery : null;
-            const lastAccurateMessage = await getLastAccurateMessage(packing, settings[0]);
+            const battery_level = packing.last_battery ? packing.last_battery.battery : null;
+            const lastAccurateMessage = packing.last_position;
 
             obj.id = packing._id;
             obj.message_date = packing.last_position
-               ? `${moment(packing.last_position.date).locale("pt-br").format("L")} ${moment(
-                    packing.last_position.date
-                 )
+               ? `${moment(packing.last_position.date).locale("pt-br").format("L")} ${moment(packing.last_position.date)
                     .locale("pt-br")
                     .format("LTS")}`
                : "-";
@@ -441,19 +549,26 @@ exports.snapshot_report = async () => {
                   ? "FALSE"
                   : "TRUE";
             obj.battery = battery_level ? battery_level : "-";
-            obj.battery_alert = battery_level ? (battery_level > settings[0].battery_level_limit ? "FALSE" : "TRUE") : "FALSE";
+            obj.battery_alert = battery_level
+               ? battery_level > settings[0].battery_level_limit
+                  ? "FALSE"
+                  : "TRUE"
+               : "FALSE";
+
+            obj.temperature = packing.last_temperature ? packing.last_temperature.value : "-";
 
             obj.travel_time = "-";
             if (packing.last_event_record) {
                if (packing.last_event_record.type) {
                   if (packing.last_event_record.type === "outbound") {
-                     obj.travel_time = getDiffDateTodayInHours(packing.last_event_record.created_at); 
+                     obj.travel_time = getDiffDateTodayInHours(packing.last_event_record.created_at);
                   }
                }
             }
 
             //--------------------------------------------------
             //Begin: Calculate no signal while absent, if absent
+            obj.absent_time = "-";
             if (packing.absent == true) {
                let noSignalTimeSinceAbsent = 0;
                noSignalTimeSinceAbsent = calculateAbsentIntervalsOfflineTime(packing);
@@ -487,7 +602,7 @@ exports.snapshot_report = async () => {
             return obj;
          })
       );
-      
+
       return data;
    } catch (error) {
       throw new Error(error);
@@ -517,13 +632,13 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                device_id: packing.tag.code,
                date: { $lte: new Date(snapshot_date) },
             });
-            
+
             const battery = await Battery.findOne({
-               "battery": { $ne: null },
+               battery: { $ne: null },
                tag: packing.tag.code,
                date: { $lte: new Date(snapshot_date) },
             });
-            
+
             let obj = {
                id: "",
                message_date: "",
@@ -575,8 +690,7 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
 
                if (battery !== null) {
                   obj.battery = battery.battery;
-                  obj.battery_alert =
-                     battery.battery < settings[0].battery_level_limit ? "TRUE" : "FALSE";
+                  obj.battery_alert = battery.battery < settings[0].battery_level_limit ? "TRUE" : "FALSE";
                }
 
                if (current_control_point) {
@@ -721,30 +835,42 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
 
       switch (true) {
          case query.family != null && query.serial != null:
-            packings = await Packing.find({
-               absent: true,
-               active: true,
-               family: current_family._id,
-               serial: query.serial,
-            }, {serial: 1, absent_time: 1, current_state: 1, 'tag.code': 1, })
+            packings = await Packing.find(
+               {
+                  absent: true,
+                  active: true,
+                  family: current_family._id,
+                  serial: query.serial,
+               },
+               { serial: 1, absent_time: 1, current_state: 1, "tag.code": 1 }
+            )
                .populate("family", "code")
                .populate("last_battery")
                .populate("last_event_record");
             break;
          case query.family != null:
-            packings = await Packing.find({ absent: true, active: true, family: current_family._id }, {serial: 1, absent_time: 1, current_state: 1, 'tag.code': 1})
+            packings = await Packing.find(
+               { absent: true, active: true, family: current_family._id },
+               { serial: 1, absent_time: 1, current_state: 1, "tag.code": 1 }
+            )
                .populate("family", "code")
                .populate("last_battery")
                .populate("last_event_record");
             break;
          case query.serial != null:
-            packings = await Packing.find({ absent: true, active: true, serial: query.serial }, {serial: 1, absent_time: 1, current_state: 1, 'tag.code': 1})
+            packings = await Packing.find(
+               { absent: true, active: true, serial: query.serial },
+               { serial: 1, absent_time: 1, current_state: 1, "tag.code": 1 }
+            )
                .populate("family", "code")
                .populate("last_battery")
                .populate("last_event_record");
             break;
          default:
-            packings = await Packing.find({ absent: true, active: true }, {serial: 1, absent_time: 1, current_state: 1, 'tag.code': 1})
+            packings = await Packing.find(
+               { absent: true, active: true },
+               { serial: 1, absent_time: 1, current_state: 1, "tag.code": 1 }
+            )
                .populate("family", "code")
                .populate("last_battery")
                .populate("last_event_record");
@@ -759,10 +885,12 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
             object_temp.tag = packing.tag.code;
             object_temp.current_state = packing.current_state;
             object_temp.family = packing.family;
-            object_temp.serial = packing.serial; 
+            object_temp.serial = packing.serial;
 
             if (packing.last_event_record) {
-               let aux_last_event_record = await EventRecord.findById(packing.last_event_record).populate("control_point");
+               let aux_last_event_record = await EventRecord.findById(packing.last_event_record).populate(
+                  "control_point"
+               );
                object_temp.control_point_name =
                   aux_last_event_record.control_point !== null
                      ? aux_last_event_record.control_point.name
@@ -843,7 +971,9 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
                   let object_temp = {};
                   let stock_in_days = null;
 
-                  const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate("type");
+                  const current_control_point = await ControlPoint.findById(
+                     packing.last_event_record.control_point
+                  ).populate("type");
                   const current_company = await Company.findById(packing.family.company);
                   const gc16 = packing.family.gc16 ? await GC16.findById(packing.family.gc16) : null;
                   if (gc16) stock_in_days = current_company.type === "owner" ? gc16.owner_stock : gc16.client_stock;
@@ -853,8 +983,10 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
                   object_temp.family_id = packing.family._id;
                   object_temp.family_code = packing.family ? packing.family.code : "-";
                   object_temp.serial = packing.serial;
-                  object_temp.current_control_point_name = current_control_point !== null ? current_control_point.name : "-";
-                  object_temp.current_control_point_type = current_control_point !== null ? current_control_point.type.name : "-";
+                  object_temp.current_control_point_name =
+                     current_control_point !== null ? current_control_point.name : "-";
+                  object_temp.current_control_point_type =
+                     current_control_point !== null ? current_control_point.type.name : "-";
                   object_temp.date = packing.last_event_record.created_at;
                   object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at);
                   if (gc16) object_temp.stock_in_days = stock_in_days.days;
@@ -879,8 +1011,10 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
                   object_temp.family_id = packing.family._id;
                   object_temp.family_code = packing.family ? packing.family.code : "-";
                   object_temp.serial = packing.serial;
-                  object_temp.current_control_point_name = current_control_point !== null ? current_control_point.name : "-";
-                  object_temp.current_control_point_type = current_control_point !== null ? current_control_point.type.name : "-";
+                  object_temp.current_control_point_name =
+                     current_control_point !== null ? current_control_point.name : "-";
+                  object_temp.current_control_point_type =
+                     current_control_point !== null ? current_control_point.type.name : "-";
                   object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at);
                   object_temp.company = current_company !== null ? current_company.name : "-";
 
@@ -903,9 +1037,9 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
 exports.battery_report = async (family_id = null) => {
    try {
       let packings = [];
-      
+
       switch (true) {
-          case family_id != null:
+         case family_id != null:
             packings = await Packing.find({ active: true, family: family_id })
                .populate("family", "_id code")
                .populate("last_battery")
@@ -920,37 +1054,32 @@ exports.battery_report = async (family_id = null) => {
       }
 
       const data = await Promise.all(
-         packings 
-            .map(async (packing) => {
-               let object_temp = {};
+         packings.map(async (packing) => {
+            let object_temp = {};
 
-               const current_control_point = packing.last_event_record
-                  ? await ControlPoint.findById(packing.last_event_record.control_point).populate("type")
-                  : null;
+            const current_control_point = packing.last_event_record
+               ? await ControlPoint.findById(packing.last_event_record.control_point).populate("type")
+               : null;
 
-               object_temp._id = packing._id;
-               object_temp.tag = packing.tag.code;
-               object_temp.family_id = packing.family._id;
-               object_temp.family_code = packing.family ? packing.family.code : "-";
-               object_temp.serial = packing.serial;
-               object_temp.current_control_point_name = current_control_point
-                  ? current_control_point.name
-                  : "Fora de um ponto de controle";
+            object_temp._id = packing._id;
+            object_temp.tag = packing.tag.code;
+            object_temp.family_id = packing.family._id;
+            object_temp.family_code = packing.family ? packing.family.code : "-";
+            object_temp.serial = packing.serial;
+            object_temp.current_control_point_name = current_control_point
+               ? current_control_point.name
+               : "Fora de um ponto de controle";
 
-               object_temp.current_control_point_type = current_control_point
-                  ? current_control_point.type.name
-                  : "Fora de um ponto de controle";
+            object_temp.current_control_point_type = current_control_point
+               ? current_control_point.type.name
+               : "Fora de um ponto de controle";
 
-               object_temp.battery_percentage = packing.last_battery
-                  ? packing.last_battery.battery
-                  : "-";
+            object_temp.battery_percentage = packing.last_battery ? packing.last_battery.battery : "-";
 
-               object_temp.battery_date = packing.last_battery
-                  ? packing.last_battery.date
-                  : "-";
+            object_temp.battery_date = packing.last_battery ? packing.last_battery.date : "-";
 
-               return object_temp;
-            })
+            return object_temp;
+         })
       );
 
       return data;
@@ -1105,10 +1234,8 @@ exports.clients_report = async (company_id = null) => {
       let data = [];
       //Busca todas as familias vinculadas a esta empresa
       const families = company_id
-         ? await Family.find({ company: company_id })
-              .populate("company")
-              .populate("gc16") 
-         : await Family.find({}).populate("company").populate("gc16") 
+         ? await Family.find({ company: company_id }).populate("company").populate("gc16")
+         : await Family.find({}).populate("company").populate("gc16");
 
       //Para cada família, faça:
       for (let family of families) {
@@ -1180,10 +1307,10 @@ const getLatLngOfPacking = async (packing) => {
 };
 
 const getActualControlPoint = async (packing) => {
-   const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate("type");
+   // const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate("type");
+   const current_control_point = packing.last_event_record.control_point;
 
-   if (current_control_point == null || current_control_point == undefined) {
-      // console.log('.TYPE NULO getActualControlPoint ', packing.tag.code)
+   if (current_control_point == null || current_control_point == undefined) { 
       let result = {
          name: "-",
          full_address: "-",
@@ -1198,11 +1325,7 @@ const getActualControlPoint = async (packing) => {
          duns: "",
       };
       return result;
-   } else {
-      // console.log('getActualControlPoint ', packing.tag.code)
-      // console.log(current_control_point.name)
-      // console.log(current_control_point.type)
-      // console.log(current_control_point.geofence.type)
+   } else {  
       return current_control_point;
    }
 };
@@ -1246,16 +1369,6 @@ const getAreaControlPoint = async (packing) => {
    } else {
       return "-";
    }
-};
-
-const getLastAccurateMessage = async (packing, settings) => {
-   const last_accurate_message = await DeviceData.find({
-      device_id: packing.tag.code,
-      accuracy: { $lte: settings.accuracy_limit },
-   })
-      .sort({ message_date_timestamp: -1 })
-      .limit(1);
-   return last_accurate_message;
 };
 
 const getTypeOfControlPoint = async (packing) => {

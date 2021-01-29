@@ -26,7 +26,8 @@
                                                       itemsPerPage: 10,
                                                       currentPage: actualPage,
                                                       totalItems: listOfControlPoints.length};">
-        <td>{{ point.name | truncate : 20 }}</td>
+        <td>{{ point.name | truncate : 30 }}</td>
+        <td>{{ point.company.name | truncate : 20 }}</td>
 
         <td class="teste">
           <button class="editar" [routerLink]="['editar/', point._id]">

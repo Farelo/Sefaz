@@ -76,6 +76,7 @@ export class PontoDeControleComponent implements OnInit {
 
   loadTableHeaders() {
     this.headers.push({ label: 'Ponto de controle', name: 'name' });
+    this.headers.push({ label: 'Empresa vinculada', name: 'company.name' });
   }
 
   headerClick(item: any) {
