@@ -1,17 +1,35 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalUserComponent } from '../modal-user.component';
-import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import { ToastService, LogisticService, GeocodingService, CEPService, PlantsService, ProfileService, SuppliersService, CompaniesService, UsersService } from '../../../servicos/index.service';
-import { constants } from '../../../../environments/constants';
-import { PasswordValidation } from 'app/shared/validators/passwordValidator';
+import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
+import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { ModalUserComponent } from "../modal-user.component";
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormBuilder,
+  AbstractControl,
+} from "@angular/forms";
+import {
+  ToastService,
+  LogisticService,
+  GeocodingService,
+  CEPService,
+  PlantsService,
+  ProfileService,
+  SuppliersService,
+  CompaniesService,
+  UsersService,
+  AuthenticationService,
+} from "../../../servicos/index.service";
+import { constants } from "../../../../environments/constants";
+import { PasswordValidation } from "app/shared/validators/passwordValidator";
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.css']
+  selector: "app-create-user",
+  templateUrl: "./create-user.component.html",
+  styleUrls: ["./create-user.component.css"],
 })
 export class CreateUserComponent implements OnInit {
+  public currentUser: any;
 
   public full_name: string;
   public email: string;
@@ -34,11 +52,15 @@ export class CreateUserComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private companiesService: CompaniesService,
+    private authenticationService: AuthenticationService,
     private usersService: UsersService,
     private toastService: ToastService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
+    this.currentUser = this.authenticationService.currentUser();
+
     this.formProfile();
     this.fillSelectType();
     this.getCompaniesOnSelect();
@@ -46,81 +68,91 @@ export class CreateUserComponent implements OnInit {
 
   fillSelectType() {
     this.rolesOnSelect = [
+      { label: "Usuário", name: "user" },
       { label: "Administrador", name: "admin" },
-      { label: "Usuário", name: "user" }];
+    ];
+
+    if (this.currentUser.role === "masterAdmin") {
+      this.rolesOnSelect.push({
+        label: "Super Administrador",
+        name: "masterAdmin",
+      });
+    }
   }
 
   formProfile() {
-    this.newUser = this.fb.group({
-      role: ['', [Validators.required]],
-      full_name: ['',
-        [Validators.required,
-         Validators.minLength(5),
-          Validators.pattern(/^((?!\s{2}).)*$/)]],
-      email: ['',
-        [Validators.required, 
-         Validators.email,
-         Validators.minLength(5)],
-        // this.validateNotTaken.bind(this)
-      ],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirm_password: ['', [Validators.required, Validators.minLength(6)]],
-      company: ['', [Validators.required]]
-    }, {
-        validator: PasswordValidation.MatchPassword // your validation method
-      });
+    this.newUser = this.fb.group(
+      {
+        role: ["", [Validators.required]],
+        full_name: [
+          "",
+          [
+            Validators.required,
+            Validators.minLength(5),
+            Validators.pattern(/^((?!\s{2}).)*$/),
+          ],
+        ],
+        email: [
+          "",
+          [Validators.required, Validators.email, Validators.minLength(5)],
+          // this.validateNotTaken.bind(this)
+        ],
+        password: ["", [Validators.required, Validators.minLength(6)]],
+        confirm_password: ["", [Validators.required, Validators.minLength(6)]],
+        company: ["", [Validators.required]],
+      },
+      {
+        validator: PasswordValidation.MatchPassword, // your validation method
+      }
+    );
   }
 
   getCompaniesOnSelect() {
-
-    this.companiesService.getAllCompanies().subscribe(result => {
+    this.companiesService.getAllCompanies().subscribe((result) => {
       //console.log("result: " + JSON.stringify(result));
       this.companiesOnSelect = result;
     });
   }
 
-  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
-
+  onSubmit({ value, valid }: { value: any; valid: boolean }): void {
     this.submitted = true;
 
-    console.log('value', value);
-    
-
     if (valid) {
-
       delete value.confirm_password;
       value.role = value.role.name;
       value.company = value.company._id;
 
-      this.usersService.createUser(value).subscribe(result => {
+      this.usersService.createUser(value).subscribe((result) => {
         //console.log("result: " + JSON.stringify(result));
         this.closeModal();
-        this.toastService.successModal('Usuário');
+        this.toastService.successModal("Usuário");
       });
     }
   }
 
   closeModal() {
-    const modalRef = this.modalService.open(ModalUserComponent, { backdrop: "static", size: "lg" });
-    modalRef.componentInstance.view = 'GERENCIAR';
+    const modalRef = this.modalService.open(ModalUserComponent, {
+      backdrop: "static",
+      size: "lg",
+    });
+    modalRef.componentInstance.view = "GERENCIAR";
     this.activeModal.close();
   }
 
-  validateEmail(event: any){
-
-    if (!this.newUser.get('email').errors) {
-
+  validateEmail(event: any) {
+    if (!this.newUser.get("email").errors) {
       this.validateNotTakenLoading = true;
-      this.usersService.getAllUsers({ email: this.newUser.controls.email.value }).subscribe(result => {
+      this.usersService
+        .getAllUsers({ email: this.newUser.controls.email.value })
+        .subscribe((result) => {
+          if (result.length == 0)
+            //this.newUser.controls.email.setErrors({ uniqueValidation: false });
+            this.newUser.controls.email.setErrors(null);
+          else
+            this.newUser.controls.email.setErrors({ uniqueValidation: true });
 
-        if (result.length == 0)
-          //this.newUser.controls.email.setErrors({ uniqueValidation: false });
-          this.newUser.controls.email.setErrors(null);
-        else
-          this.newUser.controls.email.setErrors({ uniqueValidation: true });
-        
-        this.validateNotTakenLoading = false;
-      });
+          this.validateNotTakenLoading = false;
+        });
     }
   }
 

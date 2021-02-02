@@ -1,19 +1,30 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalUserComponent } from '../modal-user.component';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import { ToastService, CompaniesService, UsersService } from '../../../servicos/index.service';
-import { constants } from '../../../../environments/constants';
-import { PasswordValidation } from 'app/shared/validators/passwordValidator';
+import { Component, OnInit, Input } from "@angular/core";
+import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { ModalUserComponent } from "../modal-user.component";
+import {
+  FormGroup,
+  Validators,
+  FormBuilder,
+  AbstractControl,
+} from "@angular/forms";
+import {
+  ToastService,
+  CompaniesService,
+  UsersService,
+  AuthenticationService,
+} from "../../../servicos/index.service";
+import { constants } from "../../../../environments/constants";
+import { PasswordValidation } from "app/shared/validators/passwordValidator";
 
 @Component({
-  selector: 'app-edit-user',
-  templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.css']
+  selector: "app-edit-user",
+  templateUrl: "./edit-user.component.html",
+  styleUrls: ["./edit-user.component.css"],
 })
 export class EditUserComponent implements OnInit {
-
   @Input() mUser: any;
+
+  public currentUser: any;
 
   public full_name: string;
   public email: string;
@@ -21,9 +32,6 @@ export class EditUserComponent implements OnInit {
   public confirm_password: string;
   public userType: any;
   public userCompany: any;
-
-
-
 
   public newUser: FormGroup;
   public autocomplete: google.maps.places.Autocomplete;
@@ -39,40 +47,60 @@ export class EditUserComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private companiesService: CompaniesService,
+    private authenticationService: AuthenticationService,
     private usersService: UsersService,
     private toastService: ToastService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
-    //console.log('mUser onInit: ' + JSON.stringify(this.mUser));
+    this.currentUser = this.authenticationService.currentUser();
+
     this.formProfile();
     this.fillSelectType();
     this.getCompaniesOnSelect();
     this.fillActualUser();
-  }
+  } 
 
   fillSelectType() {
     this.rolesOnSelect = [
+      { label: "Usuário", name: "user" },
       { label: "Administrador", name: "admin" },
-      { label: "Usuário", name: "user" }];
+    ];
+
+    if (this.currentUser.role === "masterAdmin") {
+      this.rolesOnSelect.push({
+        label: "Super Administrador",
+        name: "masterAdmin",
+      });
+    }
   }
 
   formProfile() {
-    this.newUser = this.fb.group({
-      role: ['', [Validators.required]],
-      full_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^((?!\s{2}).)*$/)]],
-      email: ['',
-        [ Validators.required,
-          Validators.email,
-          Validators.minLength(5) ],
-        // this.validateNotTaken.bind(this) 
-      ],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirm_password: ['', [Validators.required, Validators.minLength(6)]],
-      company: ['', [Validators.required]]
-    }, {
-        validator: PasswordValidation.MatchPassword // your validation method
-      });
+    this.newUser = this.fb.group(
+      {
+        role: ["", [Validators.required]],
+        full_name: [
+          "",
+          [
+            Validators.required,
+            Validators.minLength(5),
+            Validators.pattern(/^((?!\s{2}).)*$/),
+          ],
+        ],
+        email: [
+          "",
+          [Validators.required, Validators.email, Validators.minLength(5)],
+          // this.validateNotTaken.bind(this)
+        ],
+        password: ["", [Validators.required, Validators.minLength(6)]],
+        confirm_password: ["", [Validators.required, Validators.minLength(6)]],
+        company: ["", [Validators.required]],
+      },
+      {
+        validator: PasswordValidation.MatchPassword, // your validation method
+      }
+    );
   }
 
   fillActualUser() {
@@ -81,24 +109,16 @@ export class EditUserComponent implements OnInit {
     this.password = this.mUser.password;
     this.userCompany = this.mUser.company;
 
-    if (this.mUser.role == this.rolesOnSelect[0].name)
-      this.userType = this.rolesOnSelect[0];
-    if (this.mUser.role == this.rolesOnSelect[1].name)
-      this.userType = this.rolesOnSelect[1];
-    //console.log("userType.: " + JSON.stringify(this.userType));
+    this.userType = this.rolesOnSelect.find(elem=>elem.name == this.mUser.role)
   }
 
   getCompaniesOnSelect() {
-
-    this.companiesService.getAllCompanies().subscribe(result => {
-      //console.log("result.: " + JSON.stringify(result));
+    this.companiesService.getAllCompanies().subscribe((result) => { 
       this.companiesOnSelect = result;
-
     });
   }
 
-  onSubmit({ value, valid }: { value: any, valid: boolean }): void {
-
+  onSubmit({ value, valid }: { value: any; valid: boolean }): void {
     this.submitted = true;
 
     if (valid) {
@@ -106,49 +126,53 @@ export class EditUserComponent implements OnInit {
       value.role = value.role.name;
       value.company = value.company._id;
 
-      let userId = this.mUser._id
+      let userId = this.mUser._id;
       //console.log('userId: ' + userId);
 
-      this.usersService.editUser(userId, value).subscribe(result => {
+      this.usersService.editUser(userId, value).subscribe((result) => {
         //console.log("result: " + JSON.stringify(result));
         this.closeModal();
-        this.toastService.successUpdate('Usuário');
+        this.toastService.successUpdate("Usuário");
       });
     }
   }
 
   closeModal() {
-    const modalRef = this.modalService.open(ModalUserComponent, { backdrop: "static", size: "lg" });
-    modalRef.componentInstance.view = 'GERENCIAR';
+    const modalRef = this.modalService.open(ModalUserComponent, {
+      backdrop: "static",
+      size: "lg",
+    });
+    modalRef.componentInstance.view = "GERENCIAR";
     this.activeModal.close();
   }
 
   validateEmail(event: any) {
-
-    if (!this.newUser.get('email').errors && this.newUser.controls.email.value !== this.mUser.email) {
-
+    if (
+      !this.newUser.get("email").errors &&
+      this.newUser.controls.email.value !== this.mUser.email
+    ) {
       this.validateNotTakenLoading = true;
-      this.usersService.getAllUsers({ email: this.newUser.controls.email.value }).subscribe(result => {
+      this.usersService
+        .getAllUsers({ email: this.newUser.controls.email.value })
+        .subscribe((result) => {
+          if (result.length == 0) this.newUser.controls.email.setErrors(null);
+          else
+            this.newUser.controls.email.setErrors({ uniqueValidation: true });
 
-        if (result.length == 0)
-          this.newUser.controls.email.setErrors(null);
-        else
-          this.newUser.controls.email.setErrors({ uniqueValidation: true });
-
-        this.validateNotTakenLoading = false;
-      });
+          this.validateNotTakenLoading = false;
+        });
     }
   }
 
   public validateNotTakenLoading: boolean;
   // validateNotTaken(control: AbstractControl) {
   //   this.validateNotTakenLoading = true;
-    
-  //   if (this.mUser.email == control.value) { 
+
+  //   if (this.mUser.email == control.value) {
   //     this.validateNotTakenLoading = false;
   //     return new Promise((resolve, reject) => resolve(null));
   //   }
-    
+
   //   return control
   //     .valueChanges
   //     .delay(800)
@@ -162,10 +186,9 @@ export class EditUserComponent implements OnInit {
   //         //console.log('[]');
   //         return control.setErrors(null);
   //       } else {
-  //         //console.log('[...]'); 
+  //         //console.log('[...]');
   //         return control.setErrors({ uniqueValidation: 'code already exist' })
   //       }
   //     })
   // }
-
 }

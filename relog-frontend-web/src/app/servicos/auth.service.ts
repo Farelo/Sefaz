@@ -16,19 +16,19 @@ export class AuthenticationService {
    * - 200 - OK
    * - 400 - Incorrect email or password
    * - 402 - Expired contract
-   * @param password 
-   * @param username 
+   * @param password
+   * @param username
    */
   async login(password: string, username: string) {
     try {
       let result = await axios.post(`${environment.url}/users/sign_in`, {
         email: username,
         password: password,
-      });
+      }); 
 
-      console.log("auth: result post", result);
-
-      if (result.status == 200) this.auth(result.data);
+      if (result.status == 200) { 
+        await this.auth(result.data);
+      }
 
       return result.status;
     } catch (error) {

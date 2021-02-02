@@ -24,11 +24,12 @@ exports.sign_in = async (req, res) => {
 
    //Check if the contract is expired
    if (["admin", "user"].includes(user.role)) {
-      let setting = await settings_service.get_setting(); 
-      if (setting.expiration_date < new Date()) { 
+      let setting = await settings_service.get_setting();
+      if (setting.expiration_date < new Date()) {
          return res.status(HttpStatus.PAYMENT_REQUIRED).send({ message: "Expired contract" });
       }
    }
+
    logs_controller.create({ id: user._id, log: "login" });
 
    const token = user.generateUserToken();
@@ -50,15 +51,25 @@ exports.sign_in = async (req, res) => {
 
 exports.all = async (req, res) => {
    const email = req.query.email ? req.query.email : null;
-   const users = await users_service.get_users(email);
-   res.json(users);
+   let users = await users_service.get_users(email);
+
+   let token = extractToken(req);
+   const decoded_payload = jwt.verify(token, config.get("security.jwtPrivateKey"));
+   if (decoded_payload.role !== "masterAdmin") { 
+      console.log('não é master');
+      users = users.filter((elem) => elem.role.toString() !== "masterAdmin");
+   }
+   
+   console.log(users);
+
+   res.status(HttpStatus.OK).json(users);
 };
 
 exports.show = async (req, res) => {
    const user = await users_service.get_user(req.params.id);
    if (!user) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid user" });
 
-   res.json(user);
+   res.status(HttpStatus.OK).json(user);
 };
 
 exports.create = async (req, res) => {
@@ -90,13 +101,13 @@ exports.update = async (req, res) => {
       console.log("if masterAdmin");
       let token = extractToken(req);
       const decoded_payload = jwt.verify(token, config.get("security.jwtPrivateKey"));
-      if (decoded_payload.role !== "masterAdmin") return res.status(401).send({ message: "Unauthorized" });
+      if (decoded_payload.role !== "masterAdmin") return res.status(HttpStatus.UNAUTHORIZED).send({ message: "Unauthorized" });
    }
 
    user = await users_service.update_user(req.params.id, req.body);
    logs_controller.create({ token: req.headers.authorization, log: "update_user", newData: user });
 
-   res.json(_.pick(user, ["_id", "full_name", "email", "role", "company"]));
+   res.status(HttpStatus.CREATED).json(_.pick(user, ["_id", "full_name", "email", "role", "company"]));
 };
 
 exports.delete = async (req, res) => {
@@ -106,7 +117,7 @@ exports.delete = async (req, res) => {
    logs_controller.create({ token: req.headers.authorization, log: "delete_user", newData: user });
    await user.remove();
 
-   res.json({ message: "Delete successfully" });
+   res.status(HttpStatus.OK).json({ message: "Delete successfully" });
 };
 
 const extractToken = (req) => {

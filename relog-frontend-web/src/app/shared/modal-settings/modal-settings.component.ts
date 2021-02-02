@@ -145,8 +145,7 @@ export class ModalSettings implements OnInit {
       double_check_incorrect_local: [false, [Validators.required]],
     });
 
-    let result = await this.settingsService.getSettings();
-    console.log(result);
+    let result = await this.settingsService.getSettings(); 
      
     this.actualSettings = result.data;
     this.actualSettings.expiration_date = new Date(this.actualSettings.expiration_date);
@@ -155,9 +154,6 @@ export class ModalSettings implements OnInit {
 
     this.settings.patchValue(this.actualSettings, { onlySelf: true });
     this.settings.patchValue(this.actualSettings, { onlySelf: true });
-
-    console.log(this.actualSettings);
-    console.log(this.settings);
   }
 
   validadeJob(event: any) {

@@ -19,6 +19,7 @@ const startupUser = async () => {
             const has_settings = await Setting.find()
             if (!has_settings.length > 0){
                 const setting = new Setting({
+                    "expiration_date": new Date(new Date().getTime()+365*24*60*60*1000),
                     "enable_gc16" : true,
                     "battery_level_limit" : 70,
                     "accuracy_limit" : 100,

@@ -33,8 +33,7 @@ export class LoginComponent implements OnInit {
         let result = await this.authenticationService.login(
           value.password,
           value.email
-        );
-        console.log("login: result", result);
+        ); 
 
         if (result == 200) {
           this.erroAuth = false;
