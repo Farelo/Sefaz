@@ -3,6 +3,10 @@ const mongoose = require('mongoose')
 const Joi = require('joi')
 
 const settingSchema = new mongoose.Schema({
+    expiration_date:{
+        type: Date,
+        default: Date.now
+    },
     enable_gc16: {
         type: Boolean,
         default: false
@@ -62,7 +66,6 @@ const settingSchema = new mongoose.Schema({
     created_at: {
         type: Date,
         default: Date.now
-
     },
     update_at: {
         type: Date,
@@ -72,6 +75,7 @@ const settingSchema = new mongoose.Schema({
 
 const validate_settings = (setting) => {
     const schema = Joi.object().keys({
+        expiration_date: Joi.date(),
         enable_gc16: Joi.boolean(),
         battery_level_limit: Joi.number().min(0),
         accuracy_limit: Joi.number().min(0),

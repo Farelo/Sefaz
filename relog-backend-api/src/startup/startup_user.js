@@ -10,17 +10,17 @@ const startupUser = async () => {
         const users = await User.find()
         if (!users.length) {
             // const newCompany = await Company.findOne({ type: 'owner' })
-            const newCompany = await Company.create({ name: 'CEBRACE TESTE' })
+            const newCompany = await Company.create({ name: 'Evoy' })
             await newCompany.save()
             
-            const newUser = new User({ full_name: 'Admin', email: 'admin@admin.smart', password: 'admin', role: 'admin', company: newCompany._id })
+            const newUser = new User({ full_name: 'Master Admin', email: 'admin@admin.smart', password: 'Admin20', role: 'masterAdmin', company: newCompany._id })
             await newUser.save()
 
             const has_settings = await Setting.find()
             if (!has_settings.length > 0){
                 const setting = new Setting({
                     "enable_gc16" : true,
-                    "battery_level_limit" : 29,
+                    "battery_level_limit" : 70,
                     "accuracy_limit" : 100,
                     "job_schedule_time_in_sec" : 10,
                     "range_radius" : 493,

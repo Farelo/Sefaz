@@ -83,6 +83,9 @@ export class CreateUserComponent implements OnInit {
 
     this.submitted = true;
 
+    console.log('value', value);
+    
+
     if (valid) {
 
       delete value.confirm_password;

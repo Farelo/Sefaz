@@ -7,22 +7,22 @@
     <li>
       <a routerLinkActive="active" routerLink="/rc/home">Home</a>
     </li>
-    <li *ngIf="currentUser?.role === 'admin'">
+    <li *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false">
       <a routerLinkActive="active" routerLink="/rc/alertas">Alertas</a>
     </li>
-    <li *ngIf="currentUser?.role === 'admin'">
+    <li *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false">
       <a routerLinkActive="active" routerLink="/rc/cadastros">Cadastros</a>
     </li>
     <li>
       <a routerLinkActive="active" routerLink="/rc/inventario">Inventário</a>
     </li>
-    <li *ngIf="currentUser?.role === 'admin'">
+    <li *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false">
       <a routerLinkActive="active" routerLink="/rc/importar">Importar Dados</a>
     </li>
     <li>
       <a routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
     </li>
-    <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
+    <li *ngIf="(currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false) && this.authenticationService.currentSettings()?.enable_gc16 === true">
       <a routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
     </li>
     <li class="usuario" [ngbPopover]='popContent' placement="bottom-right" triggers="manual" #p="ngbPopover" (click)="p.toggle()" (shown)="posicionarPopOver()"> 
@@ -47,11 +47,11 @@
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/home">Home</a>
         </li>
 
-        <li *ngIf="currentUser?.role === 'admin'">
+        <li *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false">
           <a routerLinkActive="active" routerLink="/rc/alertas">Alertas</a>
         </li>
 
-        <li *ngIf="currentUser?.role === 'admin'">
+        <li *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false">
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/cadastros">Cadastros</a>
         </li>
 
@@ -67,7 +67,7 @@
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/rastreamento">Geolocalização</a>
         </li>
 
-        <li *ngIf="currentUser?.role === 'admin' && this.authenticationService.currentSettings()?.enable_gc16 === true">
+        <li *ngIf="(currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false) && this.authenticationService.currentSettings()?.enable_gc16 === true">
           <!-- <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/gc16">BPline</a> -->
           <a (click)="mudar()" routerLinkActive="active" routerLink="/rc/bpline">BPline</a>
         </li>
@@ -80,13 +80,14 @@
         <li>
           <div>
             <div style="float: left;">
-              <img width="50" *ngIf="currentUser?.role === 'admin'" src="assets/images/icon_a.png">
+              <img width="50" *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false" src="assets/images/icon_a.png">
               <img width="50" *ngIf="currentUser?.role === 'user'" src="assets/images/icon_f.png">
             </div>
             <div style="float: left;">
               <p id="username">{{this.currentUser.full_name}} </p>
 
               <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa</p>
+              <p class="user-type" *ngIf="currentUser?.role === 'masterAdmin'">Administrador Evoy</p>
               <p class="user-type" *ngIf="currentUser?.role === 'user'">Funcionário da Empresa</p>
             </div>
           </div>
@@ -97,12 +98,12 @@
         </li>
 
         <li>
-          <a *ngIf="currentUser?.role === 'admin'" (click)="p.close(); openModal()">
+          <a *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false" (click)="p.close(); openModal()">
             Gerenciar usuários </a>
         </li>
 
         <li>
-          <a *ngIf="currentUser?.role === 'admin'" (click)="p.close();openSettings()"> Configurações </a>
+          <a *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false" (click)="p.close();openSettings()"> Configurações </a>
         </li>
 
         <!-- <li>
@@ -127,7 +128,7 @@
       <li>
         <div>
           <div style="float: left;">
-            <img width="50" *ngIf="currentUser?.role === 'admin'" src="assets/images/icon_a.png">
+            <img width="50" *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false" src="assets/images/icon_a.png">
             <img width="50" *ngIf="currentUser?.role === 'user'" src="assets/images/icon_f.png">
           </div>
 
@@ -136,6 +137,7 @@
             <p id="username">{{ this.currentUser.full_name }} </p>
     
             <p class="user-type" *ngIf="currentUser?.role === 'admin'">Administrador da Empresa.</p>
+            <p class="user-type" *ngIf="currentUser?.role === 'masterAdmin'">Administrador Evoy</p>
             <p class="user-type" *ngIf="currentUser?.role === 'user'">Funcionário da Empresa.</p>
           </div>
         </div>
@@ -146,11 +148,11 @@
       </li>
     
       <li>
-        <a *ngIf="currentUser?.role === 'admin'" (click)="p.toggle(); openModal()"> Gerenciar usuários </a>
+        <a *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false" (click)="p.toggle(); openModal()"> Gerenciar usuários </a>
       </li>
     
       <li>
-        <a *ngIf="currentUser?.role === 'admin'" (click)="p.close(); openSettings()">Configurações </a>
+        <a *ngIf="currentUser?.role ? ['masterAdmin', 'admin'].includes(currentUser.role) : false" (click)="p.close(); openSettings()">Configurações </a>
       </li>
     
       <!-- <li>

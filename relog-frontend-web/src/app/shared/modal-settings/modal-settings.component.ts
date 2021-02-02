@@ -9,15 +9,20 @@ import {
 import {
   SettingsService,
   AuthenticationService,
-  ToastService,
-  CEPService,
-  ProfileService,
+  ToastService
 } from "../../servicos/index.service";
+import {
+  BsDaterangepickerConfig,
+  BsLocaleService,
+} from "ngx-bootstrap/datepicker";
+import { defineLocale } from "ngx-bootstrap/chronos";
+import { ptBrLocale } from "ngx-bootstrap/locale";
 import { MeterFormatter } from "../pipes/meter_formatter";
 import { WeekFormatter } from "../pipes/week_formatter";
 import { ChargeFormatter } from "../pipes/charge_formatter";
 import { MeterFormatterInM } from "../pipes/meter_formatter_in_m";
 
+defineLocale("pt-br", ptBrLocale);
 declare var $: any;
 
 @Component({
@@ -30,6 +35,10 @@ export class ModalSettings implements OnInit {
   public settings: FormGroup;
 
   private actualSettings: any;
+  public currentUser: any;
+
+  datePickerConfig = new BsDaterangepickerConfig(); //Configurations
+  public initialDate: Date; //Initial date
 
   //Bateria
   public batteryConfig: any = {
@@ -77,15 +86,28 @@ export class ModalSettings implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private settingsService: SettingsService,
-    private authenticationService: AuthenticationService,
-    private modalService: NgbModal,
+    private authenticationService: AuthenticationService, 
     private ref: ChangeDetectorRef,
     private fb: FormBuilder,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    private localeService: BsLocaleService) {
+
+    defineLocale("pt-br", ptBrLocale);
+    this.localeService.use("pt-br");
+
+    //Initialize 7 days before now
+    let sub = new Date().getTime() - 7 * 24 * 60 * 60 * 1000;
+    this.initialDate = new Date(sub); 
+
+    this.datePickerConfig.showWeekNumbers = false;
+    this.datePickerConfig.displayMonths = 1;
+    this.datePickerConfig.containerClass = "theme-dark-blue";
+    
+  }
 
   ngOnInit() {
     this.formProfile();
+    this.currentUser = this.authenticationService.currentUser();
   }
 
   async formProfile() {
@@ -103,6 +125,7 @@ export class ModalSettings implements OnInit {
     // });
 
     this.settings = this.fb.group({
+      expiration_date: [null, []],
       enable_gc16: [false, [Validators.required]],
       battery_level_limit: [0, [Validators.required]],
       accuracy_limit: [0, [Validators.required]],
@@ -126,14 +149,15 @@ export class ModalSettings implements OnInit {
     console.log(result);
      
     this.actualSettings = result.data;
+    this.actualSettings.expiration_date = new Date(this.actualSettings.expiration_date);
     this.actualSettings.accuracy_limit =
       this.actualSettings.accuracy_limit / 1000;
 
     this.settings.patchValue(this.actualSettings, { onlySelf: true });
     this.settings.patchValue(this.actualSettings, { onlySelf: true });
 
-    // console.log(this.actualSettings);
-    // console.log(this.settings);
+    console.log(this.actualSettings);
+    console.log(this.settings);
   }
 
   validadeJob(event: any) {
@@ -166,6 +190,10 @@ export class ModalSettings implements OnInit {
         .get("missing_sinal_limit_in_days")
         .setErrors({ lessThanMinimum: true });
     else this.settings.get("missing_sinal_limit_in_days").setErrors(null);
+  }
+
+  onDateChange(event: any){
+
   }
 
   onSubmit({ value, valid }: { value: any; valid: boolean }): void {

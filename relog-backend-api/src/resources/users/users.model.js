@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['admin', 'user'],
+        enum: ['masterAdmin', 'admin', 'user'],
         lowercase: true,
         default: 'user',
         trim: true
@@ -59,7 +59,7 @@ const validate_user = (user) => {
             .regex(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
             .error(() => "Invalid email format."),
         password: Joi.string().min(4).max(1024).required(),
-        role: Joi.string().valid(['admin', 'user']),
+        role: Joi.string().valid(['masterAdmin', 'admin', 'user']),
         company: Joi.objectId()
     })
 
