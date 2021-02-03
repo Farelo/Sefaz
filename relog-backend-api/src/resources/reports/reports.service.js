@@ -91,3 +91,13 @@ exports.snapshot_recovery_report = async ({ snapshot_date = null }) => {
         throw new Error(error)
     }
 }
+
+exports.owner_supplier_absent = async () => {
+    try {
+        console.log("owner_supplier_absent service");
+        const data = await reports_repository.owner_supplier_absent()
+        return data
+    } catch (error) {
+        throw new Error(error)
+    }
+}

@@ -12,6 +12,7 @@ const { Family } = require("../families/families.model");
 const { Packing } = require("../packings/packings.model");
 const { GC16 } = require("../gc16/gc16.model");
 const { Setting } = require("../settings/settings.model");
+const owner_supplier_absent = require("./scripts/owner_supplier_absent");
 const turf = require("@turf/turf");
 const martinez = require("martinez-polygon-clipping");
 
@@ -1301,6 +1302,11 @@ exports.clients_report = async (company_id = null) => {
    }
 };
 
+exports.owner_supplier_absent = async () => {
+   console.log("owner_supplier_absent repository");
+   return owner_supplier_absent();
+};
+
 const getLatLngOfPacking = async (packing) => {
    if (!packing.last_position) return "-";
    return `${packing.last_position.latitude} ${packing.last_position.longitude}`;
@@ -1310,7 +1316,7 @@ const getActualControlPoint = async (packing) => {
    // const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate("type");
    const current_control_point = packing.last_event_record.control_point;
 
-   if (current_control_point == null || current_control_point == undefined) { 
+   if (current_control_point == null || current_control_point == undefined) {
       let result = {
          name: "-",
          full_address: "-",
@@ -1325,7 +1331,7 @@ const getActualControlPoint = async (packing) => {
          duns: "",
       };
       return result;
-   } else {  
+   } else {
       return current_control_point;
    }
 };

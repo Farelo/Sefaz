@@ -13,6 +13,7 @@ router.get('/general_info', auth, reports_controller.general_info_report)
 router.get('/clients', auth, reports_controller.clients_report)
 router.get('/snapshot', auth, reports_controller.snapshot_report)
 router.get('/snapshot_recovery', auth, reports_controller.snapshot_recovery_report)
+router.get('/owner_supplier_absent', [], reports_controller.owner_supplier_absent)
 
 module.exports = router
 
@@ -267,6 +268,27 @@ module.exports = router
  *     responses:
  *       200:
  *         description: historical snapshot
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+
+// GET '/owner_supplier_absent'
+/**
+ * @swagger
+ * /reports/owner_supplier_absent:
+ *   get:
+ *     summary: Retrieve reports on database
+ *     description: Retrieve informations abount packings out owner or supplier at least 30 days
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Reports
+ *     responses:
+ *       200:
+ *         description: list of all packings
  *       400:
  *         description: Bad Request
  *       404:
