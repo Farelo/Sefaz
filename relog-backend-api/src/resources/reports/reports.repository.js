@@ -1302,8 +1302,7 @@ exports.clients_report = async (company_id = null) => {
    }
 };
 
-exports.owner_supplier_absent = async () => {
-   console.log("owner_supplier_absent repository");
+exports.owner_supplier_absent = async () => { 
    return owner_supplier_absent();
 };
 

@@ -49,6 +49,7 @@
             <option>Inventário Geral</option>
             <option>Tempo de Permanência</option>
             <option>Tempo de Ausência</option>
+            <option>Relatório Crítico de Ausência</option>
             <option>Bateria</option>
             <option>Quantidade</option>
             <option>Geral</option>
@@ -93,6 +94,9 @@
 
     <!-- Relatório Equipamento Temperaturas -->
     <app-inventario-temperaturas *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Temperaturas')"></app-inventario-temperaturas>
+    
+    <!-- Relatório Relatório Crítico de Ausência -->
+    <app-inventario-critico-ausencia *ngIf="(escolhaGeral == 'EQUIPAMENTO') && (escolhaEquipamento == 'Relatório Crítico de Ausência')"></app-inventario-critico-ausencia>
 
     <!-- Relatório Fornecedor -->
     <app-fornecedor *ngIf="(escolhaGeral == 'FORNECEDOR')"></app-fornecedor>

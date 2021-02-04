@@ -12,7 +12,7 @@ import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 //import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TooltipModule, PopoverModule, BsDatepickerModule } from 'ngx-bootstrap'
+import { TooltipModule, PopoverModule, BsDatepickerModule, TabsModule } from 'ngx-bootstrap'
 import { GeralComponent } from './geral/geral.component';
 import { InventarioGeralComponent } from './inventario-geral/inventario-geral.component';
 import { InventarioPermanenciaComponent } from './inventario-permanencia/inventario-permanencia.component';
@@ -23,6 +23,7 @@ import { FornecedorComponent } from './fornecedor/fornecedor.component';
 import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-ausencia.component';
 import { InventarioPosicoesComponent } from './inventario-posicoes/inventario-posicoes.component';
 import { InventarioTemperaturasComponent } from './inventario-temperaturas/inventario-temperaturas.component';
+import { InventarioCriticoAusencia } from './inventario-critico-ausencia/inventario-critico-ausencia.component';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { InventarioTemperaturasComponent } from './inventario-temperaturas/inven
     NgxPaginationModule,
     PopoverModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    TabsModule.forRoot(),
     ApplicationPipes,
     NgbModule,
     TooltipModule,
@@ -50,7 +52,8 @@ import { InventarioTemperaturasComponent } from './inventario-temperaturas/inven
     FornecedorComponent,
     InventarioAusenciaComponent,
     InventarioPosicoesComponent,
-    InventarioTemperaturasComponent
+    InventarioTemperaturasComponent,
+    InventarioCriticoAusencia
   ],
   providers: [],
 })

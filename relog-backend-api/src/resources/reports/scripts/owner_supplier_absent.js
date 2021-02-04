@@ -8,65 +8,124 @@ const { Position } = require("../../positions/positions.model");
  * TODO: criar índices na coleção eventrecords
  */
 module.exports = async () => {
-   console.log("procurando packings");
-
    try {
       let startDate = new Date();
 
-      const packings = await Packing.aggregate(
-         [
-            {
-               $match: {
-                  last_owner_outbound: {
-                     $exists: true,
-                     $ne: null,
-                  },
+      const packings = await Packing.aggregate([
+         {
+            $match: {
+               last_owner_outbound: {
+                  $exists: true,
+                  $ne: null,
                },
             },
-            {
-               $lookup: {
-                  from: "eventrecords",
-                  localField: "last_owner_outbound",
-                  foreignField: "_id",
-                  as: "last_owner_outbound",
-               },
+         },
+         {
+            $lookup: {
+               from: "families",
+               localField: "family",
+               foreignField: "_id",
+               as: "family",
             },
-            {
-               $unwind: {
-                  path: "$last_owner_outbound",
-                  preserveNullAndEmptyArrays: true,
-               },
+         },
+         {
+            $unwind: {
+               path: "$family",
+               preserveNullAndEmptyArrays: true,
             },
-            {
-               $lookup: {
-                  from: "controlpoints",
-                  localField: "last_owner_outbound.control_point",
-                  foreignField: "_id",
-                  as: "last_owner_outbound.control_point",
-               },
+         },
+         {
+            $lookup: {
+               from: "eventrecords",
+               localField: "last_event_record",
+               foreignField: "_id",
+               as: "last_event_record",
             },
-            {
-               $unwind: {
-                  path: "$last_owner_outbound.control_point",
-                  preserveNullAndEmptyArrays: true,
-               },
+         },
+         {
+            $unwind: {
+               path: "$last_event_record",
+               preserveNullAndEmptyArrays: true,
             },
-            {
-               $project: {
-                  tag: 1,
-                  serial: 1,
-                  family: 1,
-                  last_device_data: 1,
-                  "last_owner_outbound.type": 1,
-                  "last_owner_outbound.accuracy": 1,
-                  "last_owner_outbound.created_at": 1,
-                  "last_owner_outbound.control_point._id": 1,
-                  "last_owner_outbound.control_point.name": 1,
-               },
+         },
+         {
+            $lookup: {
+               from: "controlpoints",
+               localField: "last_event_record.control_point",
+               foreignField: "_id",
+               as: "last_event_record.control_point",
             },
-         ]
-      )
-      .allowDiskUse(true) 
+         },
+         {
+            $unwind: {
+               path: "$last_event_record.control_point",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "eventrecords",
+               localField: "last_owner_outbound",
+               foreignField: "_id",
+               as: "last_owner_outbound",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_owner_outbound",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "controlpoints",
+               localField: "last_owner_outbound.control_point",
+               foreignField: "_id",
+               as: "last_owner_outbound.control_point",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_owner_outbound.control_point",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "types",
+               localField: "last_owner_outbound.control_point.type",
+               foreignField: "_id",
+               as: "last_owner_outbound.control_point.type",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_owner_outbound.control_point.type",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $project: {
+               tag: 1,
+               serial: 1,
+               "family.code": 1,
+               current_state: 1,
+               last_message_signal: 1,
+               "last_event_record.type": 1,
+               "last_event_record.accuracy": 1,
+               "last_event_record.control_point._id": 1,
+               "last_event_record.control_point.name": 1,
+               "last_event_record.control_point.type": 1,
+               "last_event_record.created_at": 1,
+               "last_owner_outbound.type.name": 1,
+               "last_owner_outbound.accuracy": 1,
+               "last_owner_outbound.control_point._id": 1,
+               "last_owner_outbound.control_point.name": 1,
+               "last_owner_outbound.control_point.type": 1,
+               "last_owner_outbound.created_at": 1,
+            },
+         },
+      ]).allowDiskUse(true);
 
       console.log(packings[0]);
       console.log(packings[1]);
@@ -97,7 +156,7 @@ module.exports = async () => {
           */
          //Seleciona os eventos que ocorreram após a saída do owner
          let eventsList = [];
-         let results = await EventRecord.find(query, { control_point: 1, created_at: 1, type: 1, device_data_id: 1 });
+         let results = await EventRecord.find(query, { control_point: 1, created_at: 1, type: 1, device_data_id: 1 }).populate("control_point", "name");
 
          //Extrai dados dos eventos
          for (const [i, actualEventRecord] of results.entries()) {
@@ -144,13 +203,23 @@ module.exports = async () => {
          // }
 
          resultList.push({
-            tag: actualPacking.tag.code,
-            family: actualPacking.family.code,
+            family: actualPacking.family ? actualPacking.family.code : "-",
             serial: actualPacking.serial,
-            ultimoOwnerOuSupplier: actualPacking.last_owner_outbound.control_point.name,
-            dataUltimoOwnerOuSupplier: actualPacking.last_owner_outbound.created_at,
-            listaDeEventosEmCliente: eventsList,
-            // resultsPositions: positionsList,
+            tag: actualPacking.tag.code,
+            lastOwnerOrSupplier: actualPacking.last_owner_outbound.control_point
+               ? actualPacking.last_owner_outbound.control_point.name
+               : "-",
+            lastOwnerOrSupplierType: actualPacking.last_owner_outbound.control_point
+            ? actualPacking.last_owner_outbound.control_point.type.name
+            : "-",
+            dateLastOwnerOrSupplier: actualPacking.last_owner_outbound.created_at,
+            actualCP: actualPacking.last_event_record.control_point
+               ? actualPacking.last_event_record.control_point.name
+               : "-",
+            dateActualCP: actualPacking.last_event_record.created_at,
+            status: actualPacking.current_state,
+            lastMessage: actualPacking.last_message_signal,
+            eventList: eventsList,
          });
       }
 

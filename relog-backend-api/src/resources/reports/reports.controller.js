@@ -93,8 +93,7 @@ exports.snapshot_recovery_report = async (req, res) => {
 }
 
 exports.owner_supplier_absent = async (req, res) => {
-    req.setTimeout(5000000)
-    console.log("owner_supplier_absent controller");
+    req.setTimeout(5000000) 
     const data = await reports_service.owner_supplier_absent()
     res.json(data)
 }
