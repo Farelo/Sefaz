@@ -33,14 +33,29 @@ export class InventarioCriticoAusencia implements OnInit {
   public actualPage: number = -1;
   public isLoading = true;
 
+  public eventType = {
+    inbound: "Entrada",
+    outbound: "Saída"
+  }
+
   constructor(private reportService: ReportsService) {}
 
   ngOnInit() {
     this.reportService.getCriticalAbsent().subscribe((result: any[]) => {
       this.originalListOfEvents = result;
       this.actualListOfEvents = this.originalListOfEvents;
+
+      this.setInitialCollapse(true);
     });
   }
+
+  /**
+  * Initial configuration of all collapses
+  * @param  Initial state: true(collapsed) or false(expanded)
+  */
+ setInitialCollapse(state: boolean) {
+  this.actualListOfEvents.map(element => element.isCollapsed = state)
+}
 
   convertTimezone(timestamp) {
     if (timestamp.toString().length == 10) timestamp *= 1000;

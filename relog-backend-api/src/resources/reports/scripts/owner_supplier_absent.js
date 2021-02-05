@@ -14,10 +14,30 @@ module.exports = async () => {
       const packings = await Packing.aggregate([
          {
             $match: {
-               last_owner_outbound: {
+               last_owner_supplier: {
                   $exists: true,
                   $ne: null,
                },
+               absent: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "eventrecords",
+               localField: "last_owner_supplier",
+               foreignField: "_id",
+               as: "last_owner_supplier",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_owner_supplier",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $match: {
+               "last_owner_supplier.type": "outbound",
             },
          },
          {
@@ -62,45 +82,32 @@ module.exports = async () => {
                preserveNullAndEmptyArrays: true,
             },
          },
-         {
-            $lookup: {
-               from: "eventrecords",
-               localField: "last_owner_outbound",
-               foreignField: "_id",
-               as: "last_owner_outbound",
-            },
-         },
-         {
-            $unwind: {
-               path: "$last_owner_outbound",
-               preserveNullAndEmptyArrays: true,
-            },
-         },
+
          {
             $lookup: {
                from: "controlpoints",
-               localField: "last_owner_outbound.control_point",
+               localField: "last_owner_supplier.control_point",
                foreignField: "_id",
-               as: "last_owner_outbound.control_point",
+               as: "last_owner_supplier.control_point",
             },
          },
          {
             $unwind: {
-               path: "$last_owner_outbound.control_point",
+               path: "$last_owner_supplier.control_point",
                preserveNullAndEmptyArrays: true,
             },
          },
          {
             $lookup: {
                from: "types",
-               localField: "last_owner_outbound.control_point.type",
+               localField: "last_owner_supplier.control_point.type",
                foreignField: "_id",
-               as: "last_owner_outbound.control_point.type",
+               as: "last_owner_supplier.control_point.type",
             },
          },
          {
             $unwind: {
-               path: "$last_owner_outbound.control_point.type",
+               path: "$last_owner_supplier.control_point.type",
                preserveNullAndEmptyArrays: true,
             },
          },
@@ -117,12 +124,12 @@ module.exports = async () => {
                "last_event_record.control_point.name": 1,
                "last_event_record.control_point.type": 1,
                "last_event_record.created_at": 1,
-               "last_owner_outbound.type.name": 1,
-               "last_owner_outbound.accuracy": 1,
-               "last_owner_outbound.control_point._id": 1,
-               "last_owner_outbound.control_point.name": 1,
-               "last_owner_outbound.control_point.type": 1,
-               "last_owner_outbound.created_at": 1,
+               "last_owner_supplier.type.name": 1,
+               "last_owner_supplier.accuracy": 1,
+               "last_owner_supplier.control_point._id": 1,
+               "last_owner_supplier.control_point.name": 1,
+               "last_owner_supplier.control_point.type": 1,
+               "last_owner_supplier.created_at": 1,
             },
          },
       ]).allowDiskUse(true);
@@ -132,10 +139,8 @@ module.exports = async () => {
 
       //Filtra as embalagens com 30 dias+
       let resultPackings = packings.filter((element) => {
-         if (element.last_owner_outbound !== null) {
-            if (element._id.toString() == "5c17c512ebad931c8c6d736f")
-               console.log(element.last_owner_outbound.created_at);
-            return new Date(element.last_owner_outbound.created_at) < moment().subtract(30, "days").toDate();
+         if (element.last_owner_supplier !== null) {
+            return new Date(element.last_owner_supplier.created_at) < moment().subtract(30, "days").toDate();
          } else return false;
       });
 
@@ -146,9 +151,13 @@ module.exports = async () => {
       for (const [i, actualPacking] of resultPackings.entries()) {
          if (i % 500 == 0) console.log(i);
          let query = {};
-         if (actualPacking.last_owner_outbound)
-            query = { packing: actualPacking._id, created_at: { $gt: actualPacking.last_owner_outbound.created_at } };
-         else query = { packing: actualPacking._id };
+         if (actualPacking.last_owner_supplier) {
+            query = { packing: actualPacking._id, created_at: { $gt: actualPacking.last_owner_supplier.created_at } };
+            if (actualPacking.tag.code == "4086010") {
+               console.log("4086010");
+               console.log(query);
+            }
+         } else query = { packing: actualPacking._id };
 
          /**
           * TODO:
@@ -156,7 +165,12 @@ module.exports = async () => {
           */
          //Seleciona os eventos que ocorreram após a saída do owner
          let eventsList = [];
-         let results = await EventRecord.find(query, { control_point: 1, created_at: 1, type: 1, device_data_id: 1 }).populate("control_point", "name");
+         let results = await EventRecord.find(query, {
+            control_point: 1,
+            created_at: 1,
+            type: 1,
+            device_data_id: 1,
+         }).populate("control_point", "name");
 
          //Extrai dados dos eventos
          for (const [i, actualEventRecord] of results.entries()) {
@@ -169,14 +183,14 @@ module.exports = async () => {
          }
 
          //Seleciona as posições que ocorreram após a saída do owner
-         let positionsList = [];
-         let queryPosition = {};
-         if (actualPacking.last_owner_outbound)
-            queryPosition = {
-               tag: actualPacking.tag.code,
-               date: { $gt: actualPacking.last_owner_outbound.created_at },
-            };
-         else queryPosition = { tag: actualPacking._id };
+         // let positionsList = [];
+         // let queryPosition = {};
+         // if (actualPacking.last_owner_supplier)
+         //    queryPosition = {
+         //       tag: actualPacking.tag.code,
+         //       date: { $gt: actualPacking.last_owner_supplier.created_at },
+         //    };
+         // else queryPosition = { tag: actualPacking._id };
 
          // let resultsPositions = await Position.aggregate([
          //    {
@@ -206,17 +220,21 @@ module.exports = async () => {
             family: actualPacking.family ? actualPacking.family.code : "-",
             serial: actualPacking.serial,
             tag: actualPacking.tag.code,
-            lastOwnerOrSupplier: actualPacking.last_owner_outbound.control_point
-               ? actualPacking.last_owner_outbound.control_point.name
+            lastOwnerOrSupplier: actualPacking.last_owner_supplier.control_point
+               ? actualPacking.last_owner_supplier.control_point.name
                : "-",
-            lastOwnerOrSupplierType: actualPacking.last_owner_outbound.control_point
-            ? actualPacking.last_owner_outbound.control_point.type.name
-            : "-",
-            dateLastOwnerOrSupplier: actualPacking.last_owner_outbound.created_at,
-            actualCP: actualPacking.last_event_record.control_point
-               ? actualPacking.last_event_record.control_point.name
+            lastOwnerOrSupplierType: actualPacking.last_owner_supplier.control_point
+               ? actualPacking.last_owner_supplier.control_point.type.name
                : "-",
-            dateActualCP: actualPacking.last_event_record.created_at,
+            dateLastOwnerOrSupplier: actualPacking.last_owner_supplier.created_at,
+            actualCP:
+               actualPacking.last_event_record.type == "inbound"
+                  ? actualPacking.last_event_record.control_point
+                     ? actualPacking.last_event_record.control_point.name
+                     : "-"
+                  : "-",
+            dateActualCP:
+               actualPacking.last_event_record.type == "inbound" ? actualPacking.last_event_record.created_at : "",
             status: actualPacking.current_state,
             lastMessage: actualPacking.last_message_signal,
             eventList: eventsList,

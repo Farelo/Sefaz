@@ -155,7 +155,7 @@ const packingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'EventRecord'
     },
-    last_owner_outbound: {
+    last_owner_supplier: {
         type: mongoose.Schema.ObjectId,
         ref: 'EventRecord'
     },

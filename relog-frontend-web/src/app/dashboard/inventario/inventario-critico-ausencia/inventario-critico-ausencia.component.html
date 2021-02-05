@@ -43,18 +43,22 @@
                 <th>Posições</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody
+              *ngFor="
+                let item of actualListOfEvents
+                  | paginate
+                    : {
+                        id: 'events',
+                        itemsPerPage: 10,
+                        currentPage: actualPage,
+                        totalItems: actualListOfEvents.length
+                      }
+              "
+            >
               <tr
-                *ngFor="
-                  let item of actualListOfEvents
-                    | paginate
-                      : {
-                          id: 'events',
-                          itemsPerPage: 10,
-                          currentPage: actualPage,
-                          totalItems: actualListOfEvents.length
-                        }
-                "
+                [attr.aria-controls]="item.tag"
+                (click)="item.isCollapsed = !item.isCollapsed"
+                [attr.aria-expanded]="!item.isCollapsed"
               >
                 <td>{{ item.family }}</td>
                 <td>{{ item.serial }}</td>
@@ -65,10 +69,45 @@
                   {{ item.dateLastOwnerOrSupplier | date: "dd/MM/yy HH:mm:ss" }}
                 </td>
                 <td>{{ item.actualCP }}</td>
-                <td>{{ item.dateActualCP  | date: "dd/MM/yy HH:mm:ss"}}</td>
+                <td>{{ item.dateActualCP | date: "dd/MM/yy HH:mm:ss" }}</td>
                 <td>{{ item.status }}</td>
                 <td>{{ item.lastMessage | date: "dd/MM/yy HH:mm:ss" }}</td>
                 <td>-</td>
+              </tr>
+              <tr *ngIf="!item.isCollapsed">
+                <td colspan="11">
+                  <div [attr.id]="item.tag" [ngbCollapse]="item.isCollapsed" style="width: 100%;">
+
+                    <!-- Mensagem Sem registros -->
+                    <div *ngIf="!item.eventList.length">
+                      Não há registros a serem exibidos
+                      {{item.eventList}}
+                    </div>
+
+                    <!-- Tabela interna -->
+                    <div *ngIf="item.eventList.length" class="table-responsive meuInventario div-inner-table">
+                      <table class="table inner-table" style="margin: 0 auto;width: 60%;">
+                        <thead>
+                          <tr class="cabecalho">
+                            <th>Ponto de Controle</th>
+                            <th>Evento</th>
+                            <th>Data</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr *ngFor="let event of item.eventList">
+                            <td>{{ event.control_point.name }}</td>
+                            <td style="text-align: center">
+                              {{ eventType[event.type] }}
+                            </td>
+                            <td>{{ event.created_at | date: "dd/MM/yy HH:mm:ss" }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
