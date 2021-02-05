@@ -23,7 +23,10 @@ import { FornecedorComponent } from './fornecedor/fornecedor.component';
 import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-ausencia.component';
 import { InventarioPosicoesComponent } from './inventario-posicoes/inventario-posicoes.component';
 import { InventarioTemperaturasComponent } from './inventario-temperaturas/inventario-temperaturas.component';
-import { InventarioCriticoAusencia } from './inventario-critico-ausencia/inventario-critico-ausencia.component';
+import { InventarioCriticoAusencia } from './inventario-critico-ausencia/inventario-critico-ausencia.component'; 
+import { CriticalAbsentModalComponent } from './inventario-critico-ausencia/modal-position/layer.component';
+import { constants } from "./../../../environments/constants";
+import { NguiMapModule } from '@ngui/map';
 
 @NgModule({
   imports: [
@@ -38,8 +41,11 @@ import { InventarioCriticoAusencia } from './inventario-critico-ausencia/inventa
     TabsModule.forRoot(),
     ApplicationPipes,
     NgbModule,
-    TooltipModule,
-    //Angular2Csv
+    TooltipModule, 
+    //Angular2Csv,
+    NguiMapModule.forRoot({
+      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}&libraries=visualization,places,drawing`
+    })
   ],
   declarations: [
     InventarioComponent,
@@ -53,8 +59,10 @@ import { InventarioCriticoAusencia } from './inventario-critico-ausencia/inventa
     InventarioAusenciaComponent,
     InventarioPosicoesComponent,
     InventarioTemperaturasComponent,
-    InventarioCriticoAusencia
+    InventarioCriticoAusencia,
+    CriticalAbsentModalComponent
   ],
   providers: [],
+  entryComponents:[CriticalAbsentModalComponent]
 })
 export class InventarioModule { }

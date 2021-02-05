@@ -75,7 +75,7 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     LayerModalComponent,
     ModalLogisticRegisterComponent,
     AbscenseModalComponent,
-
+    
     CreateUserComponent,
     EditUserComponent
   ],

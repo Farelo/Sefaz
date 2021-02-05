@@ -76,17 +76,26 @@
               </tr>
               <tr *ngIf="!item.isCollapsed">
                 <td colspan="11">
-                  <div [attr.id]="item.tag" [ngbCollapse]="item.isCollapsed" style="width: 100%;">
-
+                  <div
+                    [attr.id]="item.tag"
+                    [ngbCollapse]="item.isCollapsed"
+                    style="width: 100%"
+                  >
                     <!-- Mensagem Sem registros -->
                     <div *ngIf="!item.eventList.length">
                       Não há registros a serem exibidos
-                      {{item.eventList}}
+                      {{ item.eventList }}
                     </div>
 
                     <!-- Tabela interna -->
-                    <div *ngIf="item.eventList.length" class="table-responsive meuInventario div-inner-table">
-                      <table class="table inner-table" style="margin: 0 auto;width: 60%;">
+                    <div
+                      *ngIf="item.eventList.length"
+                      class="table-responsive meuInventario div-inner-table"
+                    >
+                      <table
+                        class="table inner-table"
+                        style="margin: 0 auto; width: 60%"
+                      >
                         <thead>
                           <tr class="cabecalho">
                             <th>Ponto de Controle</th>
@@ -101,10 +110,29 @@
                             <td style="text-align: center">
                               {{ eventType[event.type] }}
                             </td>
-                            <td>{{ event.created_at | date: "dd/MM/yy HH:mm:ss" }}</td>
+                            <td>
+                              {{ event.created_at | date: "dd/MM/yy HH:mm:ss" }}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end">
+                      <div
+                        (click)="visualizeOnMap(item)"
+                        style="flex-direction: row; cursor: pointer"
+                      >
+                        Visualizar posições no mapa
+                        <img
+                          id="ver-no-mapa"
+                          tooltip="Visualizar no mapa"
+                          placement="top"
+                          src="assets/images/distancia.png"
+                          height="25"
+                          style="margin-right: 25px; margin-left: 12px"
+                        />
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -132,7 +160,32 @@
       </div>
     </tab>
 
-    <tab heading="Frequência de eventos">Basic content 2</tab>
+    <tab heading="Frequência de eventos">
+      <div style="margin-top: 1rem">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr class="cabecalho">
+                <th>Ponto de Controle</th>
+                <th>Frequência</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of frequencyResult">
+              <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.qtt }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="classVazio" *ngIf="frequencyResult.length < 1">
+            Selecione um equipamento.
+          </div>
+        </div>
+
+        <br />
+      </div>
+    </tab>
   </tabset>
 </div>
 
