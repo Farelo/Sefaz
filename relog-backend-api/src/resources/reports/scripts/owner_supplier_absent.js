@@ -82,7 +82,20 @@ module.exports = async () => {
                preserveNullAndEmptyArrays: true,
             },
          },
-
+         {
+            $lookup: {
+               from: "positions",
+               localField: "last_owner_supplier.device_data_id",
+               foreignField: "_id",
+               as: "last_owner_supplier.device_data_id",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_owner_supplier.device_data_id",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
          {
             $lookup: {
                from: "controlpoints",
@@ -129,13 +142,11 @@ module.exports = async () => {
                "last_owner_supplier.control_point._id": 1,
                "last_owner_supplier.control_point.name": 1,
                "last_owner_supplier.control_point.type": 1,
-               "last_owner_supplier.created_at": 1,
+               "last_owner_supplier.created_at": 1, 
+               "last_owner_supplier.device_data_id.date": 1,
             },
          },
       ]).allowDiskUse(true);
-
-      console.log(packings[0]);
-      console.log(packings[1]);
 
       //Filtra as embalagens com 30 dias+
       let resultPackings = packings.filter((element) => {
@@ -153,10 +164,6 @@ module.exports = async () => {
          let query = {};
          if (actualPacking.last_owner_supplier) {
             query = { packing: actualPacking._id, created_at: { $gt: actualPacking.last_owner_supplier.created_at } };
-            if (actualPacking.tag.code == "4086010") {
-               console.log("4086010");
-               console.log(query);
-            }
          } else query = { packing: actualPacking._id };
 
          /**
@@ -182,40 +189,6 @@ module.exports = async () => {
             });
          }
 
-         //Seleciona as posições que ocorreram após a saída do owner
-         // let positionsList = [];
-         // let queryPosition = {};
-         // if (actualPacking.last_owner_supplier)
-         //    queryPosition = {
-         //       tag: actualPacking.tag.code,
-         //       date: { $gt: actualPacking.last_owner_supplier.created_at },
-         //    };
-         // else queryPosition = { tag: actualPacking._id };
-
-         // let resultsPositions = await Position.aggregate([
-         //    {
-         //       $match: queryPosition,
-         //    },
-         //    {
-         //       $project: {
-         //          latitude: 1,
-         //          longitude: 1,
-         //          accuracy: 1,
-         //          timestamp: 1,
-         //       },
-         //    },
-         // ]).allowDiskUse(true);
-
-         // // console.log("percorrendo positions após owner");
-         // for (const [i, actualPosition] of resultsPositions.entries()) {
-         //    positionsList.push({
-         //       latitude: actualPosition.latitude,
-         //       longitude: actualPosition.longitude,
-         //       accuracy: actualPosition.accuracy,
-         //       timestamp: actualPosition.timestamp,
-         //    });
-         // }
-
          resultList.push({
             family: actualPacking.family ? actualPacking.family.code : "-",
             serial: actualPacking.serial,
@@ -227,6 +200,9 @@ module.exports = async () => {
                ? actualPacking.last_owner_supplier.control_point.type.name
                : "-",
             dateLastOwnerOrSupplier: actualPacking.last_owner_supplier.created_at,
+            leaveMessage: actualPacking.last_owner_supplier.device_data_id
+               ? actualPacking.last_owner_supplier.device_data_id.date
+               : "-",
             actualCP:
                actualPacking.last_event_record.type == "inbound"
                   ? actualPacking.last_event_record.control_point

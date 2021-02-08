@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import {
-  PackingService, 
+  PackingService,
   AuthenticationService,
   PositionsService,
   ControlPointsService,
@@ -13,7 +13,7 @@ import {
 import { DatePipe } from "@angular/common";
 import { defineLocale } from "ngx-bootstrap/chronos";
 import { ptBrLocale } from "ngx-bootstrap/locale";
-import { constants } from "environments/constants"; 
+import { constants } from "environments/constants";
 declare var google: any;
 
 defineLocale("pt-br", ptBrLocale);
@@ -81,15 +81,23 @@ export class CriticalAbsentModalComponent implements OnInit {
     private controlPointsService: ControlPointsService,
     private packingService: PackingService,
     private positionService: PositionsService,
-    private authenticationService: AuthenticationService, 
+    private authenticationService: AuthenticationService,
     private localeService: BsLocaleService
-  ) {
-  }
+  ) {}
 
   public mMap: any;
   onInitMap(map) {
     this.mMap = map;
-    this.getFilteredPositions(this.packing.tag, new Date(this.packing.dateLastOwnerOrSupplier), new Date(), 32000);
+    this.getFilteredPositions(
+      this.packing.tag,
+      new Date(
+        this.packing.leaveMessage
+          ? this.packing.leaveMessage
+          : this.packing.dateLastOwnerOrSupplier
+      ),
+      new Date(),
+      32000
+    );
     this.getPlants();
   }
 
@@ -168,7 +176,7 @@ export class CriticalAbsentModalComponent implements OnInit {
       .getFilteredPositions(codeTag, startDate, finalDate, accuracy)
       .subscribe((result: any[]) => {
         console.log(result.length);
-        
+
         if (result.length > 1) {
           this.markers = result.reverse();
 
@@ -218,7 +226,7 @@ export class CriticalAbsentModalComponent implements OnInit {
                 `<div style="padding: 0px 6px;">
                       <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Data:</span> ${datePipe.transform(
                         m.message_date,
-                        "dd/MM/yy HH:mm:ss" 
+                        "dd/MM/yy HH:mm:ss"
                       )}</p>
                       <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${
                         m.accuracy
@@ -259,7 +267,7 @@ export class CriticalAbsentModalComponent implements OnInit {
 
   rangechanged() {
     // console.log('rangechanged');
-    if(this.showLastPosition) this.showLastPosition = !this.showLastPosition;
+    if (this.showLastPosition) this.showLastPosition = !this.showLastPosition;
     this.updatePaths();
     // this.getLastPostition();
   }
@@ -427,7 +435,9 @@ export class CriticalAbsentModalComponent implements OnInit {
     if (this.rangedMarkers.length > 0)
       this.center = this.rangedMarkers[this.rangedMarkers.length - 1].position;
     else
-      this.center = this.allPackingMarkers[this.allPackingMarkers.length - 1].position;
+      this.center = this.allPackingMarkers[
+        this.allPackingMarkers.length - 1
+      ].position;
 
     this.isLoading = false;
   }

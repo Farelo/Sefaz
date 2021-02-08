@@ -70,7 +70,7 @@
                 </td>
                 <td>{{ item.actualCP }}</td>
                 <td>{{ item.dateActualCP | date: "dd/MM/yy HH:mm:ss" }}</td>
-                <td>{{ item.status }}</td>
+                <td>{{ item.status | packingStatus }}</td>
                 <td>{{ item.lastMessage | date: "dd/MM/yy HH:mm:ss" }}</td>
                 <td>-</td>
               </tr>
@@ -123,7 +123,7 @@
                         (click)="visualizeOnMap(item)"
                         style="flex-direction: row; cursor: pointer"
                       >
-                        Visualizar posições no mapa
+                      <a>Visualizar posições no mapa</a>
                         <img
                           id="ver-no-mapa"
                           tooltip="Visualizar no mapa"

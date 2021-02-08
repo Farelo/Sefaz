@@ -31,11 +31,15 @@
 
   <div class="row">
     <div class="col-md-6">
-      <p style="margin: 0;">FILTRAR POR:</p>
+      <p style="margin: 0">FILTRAR POR:</p>
     </div>
     <div class="col-md-6">
-      <p style="margin: 0;" *ngIf="!isLoading" class="text-right">{{ getResultQuantity() }}</p>
-      <p style="margin: 0;" *ngIf="isLoading" class="text-right">Carregando resultados</p>
+      <p style="margin: 0" *ngIf="!isLoading" class="text-right">
+        {{ getResultQuantity() }}
+      </p>
+      <p style="margin: 0" *ngIf="isLoading" class="text-right">
+        Carregando resultados
+      </p>
     </div>
   </div>
   <div class="map-filters form-row">
@@ -52,9 +56,10 @@
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <button
+          (click)="decrementRange()"
           class="btn btn-outline-secondary"
           type="button"
-          (click)="decrementRange()"
+          style="padding: 0px 10px"
         >
           -
         </button>
@@ -68,9 +73,10 @@
       />
       <div class="input-group-append">
         <button
+          (click)="incrementRange()"
           class="btn btn-outline-secondary"
           type="button"
-          (click)="incrementRange()"
+          style="padding: 0px 10px"
         >
           +
         </button>
