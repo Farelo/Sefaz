@@ -26,6 +26,11 @@ export class InventarioCriticoAusencia implements OnInit {
     outbound: "Saída",
   };
 
+  public csvReportAvailable: boolean = false;
+  public pdfReportAvailable: boolean = false;
+
+  public packingStatus = new PackingStatus();
+
   constructor(
     private reportService: ReportsService,
     private modalService: NgbModal
@@ -40,6 +45,9 @@ export class InventarioCriticoAusencia implements OnInit {
       this.setInitialCollapse(true);
 
       this.calculateFrequencyReport(this.actualListOfEvents);
+
+      this.csvReportAvailable = true;
+      this.pdfReportAvailable = true;
     });
   }
 
@@ -48,7 +56,7 @@ export class InventarioCriticoAusencia implements OnInit {
     let auxFrequencyResult = {};
 
     actualListOfEvents.forEach((actualPacking) => {
-      actualPacking.eventList.forEach((element) => { 
+      actualPacking.eventList.forEach((element) => {
         if (!!element.control_point) {
           if (auxFrequencyResult[element.control_point.name] == undefined)
             auxFrequencyResult[element.control_point.name] = 1;
@@ -64,7 +72,7 @@ export class InventarioCriticoAusencia implements OnInit {
       });
     });
 
-    this.frequencyResult = this.frequencyResult.sort((a, b)=>{
+    this.frequencyResult = this.frequencyResult.sort((a, b) => {
       if (a.qtt < b.qtt) {
         return 1;
       }
@@ -73,7 +81,7 @@ export class InventarioCriticoAusencia implements OnInit {
       }
       // a must be equal to b
       return 0;
-    })
+    });
   }
 
   visualizeOnMap(item: any): void {
@@ -100,8 +108,6 @@ export class InventarioCriticoAusencia implements OnInit {
   }
 
   convertTimezone(timestamp) {
-    if (timestamp.toString().length == 10) timestamp *= 1000;
-
     return moment
       .utc(timestamp)
       .tz("America/Sao_Paulo")
@@ -122,66 +128,119 @@ export class InventarioCriticoAusencia implements OnInit {
    * Click to download
    */
   downloadCsv() {
-    //Flat the json object to print
-    //I'm using the method slice() just to copy the array as value.
-    let flatObjectData = this.flatObject(this.actualListOfEvents.slice());
+    if (this.csvReportAvailable) {
+      //Flat the json object to print
+      //I'm using the method slice() just to copy the array as value.
+      let flatObjectData = this.flatObject(this.actualListOfEvents.slice());
 
-    //Add a header in the flat json data
-    flatObjectData = this.addHeader(flatObjectData);
+      //Add a header in the flat json data
+      flatObjectData = this.addHeader(flatObjectData);
 
-    //Instantiate a new csv object and initiate the download
-    new Angular2Csv(flatObjectData, "Inventario Posições", this.csvOptions);
+      //Instantiate a new csv object and initiate the download
+      new Angular2Csv(
+        flatObjectData,
+        "relatorio-critico-de-ausencia",
+        this.csvOptions
+      );
+    }
   }
 
   /**
    * Click to download pdf file
    */
   downloadPdf() {
-    var doc = jsPDF("l", "pt");
+    if (this.pdfReportAvailable) {
+      var doc = jsPDF("l", "pt");
 
-    // You can use html:
-    //doc.autoTable({ html: '#my-table' });
+      // You can use html:
+      //doc.autoTable({ html: '#my-table' });
 
-    //Flat the json object to print
-    //I'm using the method slice() just to copy the array as value.
-    let flatObjectData = this.flatObject(this.actualListOfEvents.slice());
-    flatObjectData = flatObjectData.map((elem) => {
-      return [elem.a1, elem.a2, elem.a3, elem.a4, elem.a5];
-    });
-    // console.log(flatObjectData);
+      //Flat the json object to print
+      //I'm using the method slice() just to copy the array as value.
+      let flatObjectData = this.flatObject(this.actualListOfEvents.slice());
 
-    // Or JavaScript:
-    doc.autoTable({
-      head: [["Tag", "Acurácia", "Latitude", "Longitude", "Data da mensagem"]],
-      body: flatObjectData,
-    });
+      var columns = [
+        { title: "Família", dataKey: "family" },
+        { title: "Serial", dataKey: "serial" },
+        { title: "Tag", dataKey: "tag" },
+        { title: "Tipo", dataKey: "lastOwnerOrSupplier" },
+        {
+          title: "Último Ponto de Controle Próprio",
+          dataKey: "lastOwnerOrSupplierType",
+        },
+        { title: "Data de Saída", dataKey: "leaveMessage" },
+        { title: "Status Atual", dataKey: "status" },
+        { title: "Última mensagem", dataKey: "lastMessage" },
+        { title: "Evento", dataKey: "event" },
+        { title: "Tipo de Evento", dataKey: "eventType" },
+        { title: "Data do Evento", dataKey: "eventDate" },
+      ];
 
-    doc.save("general.pdf");
+      // Or JavaScript:
+      doc.autoTable(columns, flatObjectData, {
+        styles: {
+          fontSize: 6,
+        },
+      });
+      doc.save("critical_absent.pdf");
+    }
   }
 
   flatObject(mArray: any) {
     //console.log(mArray);
-    let plainArray = mArray.map((obj) => {
-      return {
-        a1: obj.tag,
-        a2: obj.accuracy,
-        a3: obj.latitude,
-        a4: obj.longitude,
-        a5: this.convertTimezone(obj.timestamp),
-      };
+    let result = [];
+
+    let plainArray = mArray.map((element) => {
+      if (element.eventList.length) {
+        element.eventList.forEach((event) => {
+          result.push({
+            family: element.family,
+            serial: element.serial,
+            tag: element.tag,
+            lastOwnerOrSupplier: element.lastOwnerOrSupplier,
+            lastOwnerOrSupplierType: element.lastOwnerOrSupplierType,
+            leaveMessage: this.convertTimezone(element.leaveMessage),
+            status: this.packingStatus.transform(element.status),
+            lastMessage: this.convertTimezone(element.lastMessage),
+            event: event.control_point ? event.control_point.name : "-",
+            eventType: event.type,
+            eventDate: this.convertTimezone(event.created_at), 
+          });
+        });
+      } else {
+        result.push({
+          family: element.family,
+          serial: element.serial,
+          tag: element.tag,
+          lastOwnerOrSupplier: element.lastOwnerOrSupplier,
+          lastOwnerOrSupplierType: element.lastOwnerOrSupplierType,
+          leaveMessage: this.convertTimezone(element.leaveMessage),
+          status: this.packingStatus.transform(element.status),
+          lastMessage: this.convertTimezone(element.lastMessage),
+          event: "-",
+          eventType: "-",
+          eventDate: "-", 
+        });
+      }
     });
 
     // As my array is already flat, I'm just returning it.
-    return plainArray;
+    return result;
   }
 
   addHeader(mArray: any) {
     let cabecalho = {
-      a1: "Tag",
-      a2: "Acurácia",
-      a3: "Latitude",
-      a4: "Longitude",
-      a5: "Data da mensagem",
+      family: "Família",
+      serial: "Serial",
+      tag: "Tag",
+      lastOwnerOrSupplier: "Tipo",
+      lastOwnerOrSupplierType: "Último Ponto de Controle",
+      leaveMessage: "Data de Saída",
+      status: "Status Atual",
+      lastMessage: "Última mensagem",
+      event: "Evento",
+      eventType: "Tipo do Evento",
+      eventDate: "Data do Evento",
     };
 
     //adiciona o cabeçalho
