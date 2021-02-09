@@ -1198,7 +1198,7 @@ exports.general_info_report = async (family_id = null) => {
 
             //const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
             const company = await Company.findById(packing.family.company);
-
+            // console.log(packing)
             object_temp._id = packing._id;
             object_temp.tag = packing.tag.code;
             object_temp.family_code = packing.family ? packing.family.code : "-";
@@ -1214,7 +1214,7 @@ exports.general_info_report = async (family_id = null) => {
 
             //dados atuais
             object_temp.accuracy = packing.last_position ? packing.last_position.accuracy : "Sem registro";
-            object_temp.date = packing.last_position ? packing.last_position.date : "Sem registro";
+            object_temp.date = packing.last_message_signal ? packing.last_message_signal : "Sem registro";
 
             object_temp.battery_percentage = packing.last_battery ? packing.last_battery.battery : "Sem registro";
             object_temp.battery_date = packing.last_battery ? packing.last_battery.date : "-";
