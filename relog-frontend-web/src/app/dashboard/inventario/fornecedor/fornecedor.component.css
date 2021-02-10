@@ -46,7 +46,7 @@ select {
 
 hr {
   margin: 20px 0px 20px 0px;
-  border-color: #6382c9;
+  border-color: #3E4F60;
   border-width: thin;
 }
 
@@ -115,7 +115,7 @@ hr {
 }
 
 .empty-super-th{
-  border-bottom: 1px solid #6382c9;
+  border-bottom: 1px solid #3E4F60;
 }
 
 .inner-table{

@@ -60,19 +60,19 @@ h2 {
 
 button {
   padding: 5px 40px;
-  background-color: #6382c9;
+  background-color: #3E4F60;
   border-radius: 20px;
   border-style: solid;
   border-width: medium;
   color: white;
-  border-color: #6382c9;
+  border-color: #3E4F60;
   font-size: 20px;
   font-weight: 300;
 }
 
 button:hover {
   background-color: white;
-  color: #6382c9;
+  color: #3E4F60;
   border-color: white;
   -webkit-transition: background-color 0.2s;
   transition: background-color 0.2s;
@@ -93,7 +93,7 @@ button:focus {
 }
 
 .azul {
-  color: #6382c9;
+  color: #3E4F60;
   font-weight: 400;
 }
 

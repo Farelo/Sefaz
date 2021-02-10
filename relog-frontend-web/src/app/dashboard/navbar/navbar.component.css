@@ -48,7 +48,7 @@ a {
 
 li > a:hover { 
   cursor: pointer; 
-  color: #6382c9; 
+  color: #3E4F60; 
 }
 
 hr {
@@ -56,7 +56,7 @@ hr {
 }
 
 .active {
-  color: #6382c9 !important;
+  color: #3E4F60 !important;
 }
 
 .usuario {
@@ -351,7 +351,7 @@ img {
 .gerenciar:hover,
 .medio:hover,
 .medio2:hover {
-  background-color: #6382c9;
+  background-color: #3E4F60;
 }
 
 .gerenciar div:hover,
@@ -448,7 +448,7 @@ li:hover {
 }
 
 @media (min-width: 769px) {
-  li:hover { border-bottom: solid 2px #6382c9; }
+  li:hover { border-bottom: solid 2px #3E4F60; }
 }
 
 @media (min-width: 769px) and (max-width: 850px) {
@@ -459,7 +459,7 @@ li:hover {
   li { font-size: 12px; }
 }
 
-li:hover > a { color: #6382c9; }
+li:hover > a { color: #3E4F60; }
 
 .listaEscondida {
   list-style-type: none;

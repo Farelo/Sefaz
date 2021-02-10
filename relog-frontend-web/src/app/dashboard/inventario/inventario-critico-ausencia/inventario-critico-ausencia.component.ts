@@ -21,13 +21,14 @@ export class InventarioCriticoAusencia implements OnInit {
   public actualPage: number = -1;
   public isLoading = true;
 
+  public absentDays: number = 30;
+
   public eventType = {
     inbound: "Entrada",
     outbound: "Saída",
   };
 
-  public csvReportAvailable: boolean = false;
-  public pdfReportAvailable: boolean = false;
+  public reportAvailable: boolean = false;
 
   public packingStatus = new PackingStatus();
 
@@ -37,18 +38,39 @@ export class InventarioCriticoAusencia implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.reportService.getCriticalAbsent().subscribe((result: any[]) => {
-      this.originalListOfEvents = result;
+    this.reportService
+      .getCriticalAbsent(this.absentDays)
+      .subscribe((result: any[]) => {
+        this.originalListOfEvents = result;
 
-      this.actualListOfEvents = this.originalListOfEvents;
+        this.actualListOfEvents = this.originalListOfEvents;
 
-      this.setInitialCollapse(true);
+        this.setInitialCollapse(true);
 
-      this.calculateFrequencyReport(this.actualListOfEvents);
+        this.calculateFrequencyReport(this.actualListOfEvents);
 
-      this.csvReportAvailable = true;
-      this.pdfReportAvailable = true;
-    });
+        this.reportAvailable = true;
+      });
+  }
+
+  applyFilter() {
+    this.reportAvailable = false;
+    this.originalListOfEvents = [];
+    this.actualListOfEvents = [];
+
+    this.reportService
+      .getCriticalAbsent(this.absentDays)
+      .subscribe((result: any[]) => {
+        this.originalListOfEvents = result;
+
+        this.actualListOfEvents = this.originalListOfEvents;
+
+        this.setInitialCollapse(true);
+
+        this.calculateFrequencyReport(this.actualListOfEvents);
+
+        this.reportAvailable = true;
+      });
   }
 
   public frequencyResult = [];
@@ -128,7 +150,7 @@ export class InventarioCriticoAusencia implements OnInit {
    * Click to download
    */
   downloadCsv() {
-    if (this.csvReportAvailable) {
+    if (this.reportAvailable) {
       //Flat the json object to print
       //I'm using the method slice() just to copy the array as value.
       let flatObjectData = this.flatObject(this.actualListOfEvents.slice());
@@ -149,7 +171,7 @@ export class InventarioCriticoAusencia implements OnInit {
    * Click to download pdf file
    */
   downloadPdf() {
-    if (this.pdfReportAvailable) {
+    if (this.reportAvailable) {
       var doc = jsPDF("l", "pt");
 
       // You can use html:
@@ -204,7 +226,7 @@ export class InventarioCriticoAusencia implements OnInit {
             lastMessage: this.convertTimezone(element.lastMessage),
             event: event.control_point ? event.control_point.name : "-",
             eventType: event.type,
-            eventDate: this.convertTimezone(event.created_at), 
+            eventDate: this.convertTimezone(event.created_at),
           });
         });
       } else {
@@ -219,7 +241,7 @@ export class InventarioCriticoAusencia implements OnInit {
           lastMessage: this.convertTimezone(element.lastMessage),
           event: "-",
           eventType: "-",
-          eventDate: "-", 
+          eventDate: "-",
         });
       }
     });

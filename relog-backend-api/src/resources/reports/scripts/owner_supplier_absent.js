@@ -142,7 +142,7 @@ module.exports = async () => {
                "last_owner_supplier.control_point._id": 1,
                "last_owner_supplier.control_point.name": 1,
                "last_owner_supplier.control_point.type": 1,
-               "last_owner_supplier.created_at": 1, 
+               "last_owner_supplier.created_at": 1,
                "last_owner_supplier.device_data_id.date": 1,
             },
          },
@@ -150,7 +150,7 @@ module.exports = async () => {
 
       //Filtra as embalagens com 30 dias+
       let resultPackings = packings.filter((element) => {
-         if (element.last_owner_supplier !== null) {
+         if (element.last_owner_supplier !== null) { 
             return new Date(element.last_owner_supplier.created_at) < moment().subtract(30, "days").toDate();
          } else return false;
       });

@@ -71,7 +71,7 @@ td {
 }
 
 .cabecalho {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
 }
 
@@ -127,7 +127,7 @@ select {
 }
 
 .definicao {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
   padding: 10px;
 }
@@ -140,7 +140,7 @@ select {
 
 hr {
   margin: 20px 0px 20px 0px;
-  border-color: #6382c9;
+  border-color: #3E4F60;
   border-width: thin;
 }
 
@@ -176,7 +176,7 @@ hr {
 
 .mais {
   width: 100%;
-  background-color: #6382c9;
+  background-color: #3E4F60;
   padding: 5px;
   color: white;
   border: none;
@@ -294,7 +294,7 @@ hr {
 }
 .botao-opcao{
   width: 100%;
-  background-color: #6382c9;
+  background-color: #3E4F60;
   padding: 5px;
   color: white;
   border: none;
@@ -339,7 +339,7 @@ hr {
   border-left: 2px solid #ef5562;
 }
 .empty-super-th{
-  border-bottom: 1px solid #6382c9;
+  border-bottom: 1px solid #3E4F60;
 }
 .inner-table{
   width: fit-content;

@@ -36,13 +36,13 @@
   text-align: center;
   border-style: solid;
   border-width: 2px;
-  border-color: #6382c9;
+  border-color: #3E4F60;
   background-color: white;
-  color: #6382c9;
+  color: #3E4F60;
 }
 
 .botaoVisualizar:hover {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;

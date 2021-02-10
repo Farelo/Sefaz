@@ -99,9 +99,9 @@ export class ReportsService {
   /**
    * Relatório crítico de ausência
    */
-  getCriticalAbsent() {
+  getCriticalAbsent(days: number) {
     return this.http
-      .get(`${environment.url}/reports/owner_supplier_absent`)
+      .get(`${environment.url}/reports/owner_supplier_absent?days=${days}`)
       .catch(this.handleError);
   }
 }

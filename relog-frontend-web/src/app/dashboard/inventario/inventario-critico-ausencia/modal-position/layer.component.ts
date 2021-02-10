@@ -90,12 +90,14 @@ export class CriticalAbsentModalComponent implements OnInit {
     this.mMap = map;
     this.getFilteredPositions(
       this.packing.tag,
-      new Date(
-        this.packing.leaveMessage
-          ? this.packing.leaveMessage
-          : this.packing.dateLastOwnerOrSupplier
+      Math.floor(
+        new Date(
+          this.packing.leaveMessage
+            ? this.packing.leaveMessage
+            : this.packing.dateLastOwnerOrSupplier
+        ).getTime() / 1000
       ),
-      new Date(),
+      Math.floor(new Date().getTime() / 1000),
       32000
     );
     this.getPlants();
