@@ -248,10 +248,12 @@ body {
   margin-top: 40px;
 } */
 
+/* ngx-bootstrap tabs */
 .nav-item .nav-link {
   color: #777;
 }
 
+/* ngx-bootstrap tabs */
 .nav-link.active {
   color: #212529;
 }
