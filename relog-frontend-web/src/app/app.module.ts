@@ -7,12 +7,12 @@ import {
   NgbModule,
   NgbModal,
   NgbActiveModal,
-  NgbModalOptions
+  NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap";
 import {
   NgProgressBrowserXhr,
   NgProgressModule,
-  NgProgressInterceptor
+  NgProgressInterceptor,
 } from "ngx-progressbar";
 import { NgxPaginationModule } from "ngx-pagination";
 import { JWBootstrapSwitchModule } from "jw-bootstrap-switch-ng2";
@@ -55,6 +55,10 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { EditUserComponent } from "./shared/modal-user/edit-user/edit-user.component";
 import { AlertaSemSinalComponent } from "./shared/modal-alerta/alerta-sem-sinal/alerta-sem-sinal.component";
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCalendar, faClock } from "@fortawesome/free-regular-svg-icons";
+import { DateTimePickerComponent } from "./shared/date-time-picker/date-time-picker.component";
 
 @NgModule({
   declarations: [
@@ -77,7 +81,8 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     AbscenseModalComponent,
 
     CreateUserComponent,
-    EditUserComponent
+    EditUserComponent,
+    // DateTimePickerComponent
   ],
   imports: [
     BrowserModule,
@@ -105,22 +110,23 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     NgxPaginationModule,
     ApplicationPipes,
     NguiMapModule.forRoot({
-      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}`
-    })
+      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}`,
+    }),
+    FontAwesomeModule,
   ],
   providers: [
     ChatService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: NgProgressInterceptor,
-      multi: true
+      multi: true,
     },
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],
   exports: [ReactiveFormsModule],
@@ -143,7 +149,11 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
     ModalDeleteComponent,
 
     CreateUserComponent,
-    EditUserComponent
-  ]
+    EditUserComponent,
+  ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    library.add(faCalendar, faClock);
+  }
+}

@@ -23,6 +23,8 @@ import { FornecedorComponent } from './fornecedor/fornecedor.component';
 import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-ausencia.component';
 import { InventarioPosicoesComponent } from './inventario-posicoes/inventario-posicoes.component';
 import { InventarioTemperaturasComponent } from './inventario-temperaturas/inventario-temperaturas.component';
+import { DateTimePickerComponent } from "../../shared/date-time-picker/date-time-picker.component";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   imports: [
@@ -38,6 +40,7 @@ import { InventarioTemperaturasComponent } from './inventario-temperaturas/inven
     NgbModule,
     TooltipModule,
     //Angular2Csv
+    FontAwesomeModule
   ],
   declarations: [
     InventarioComponent,
@@ -50,7 +53,8 @@ import { InventarioTemperaturasComponent } from './inventario-temperaturas/inven
     FornecedorComponent,
     InventarioAusenciaComponent,
     InventarioPosicoesComponent,
-    InventarioTemperaturasComponent
+    InventarioTemperaturasComponent,
+    DateTimePickerComponent
   ],
   providers: [],
 })

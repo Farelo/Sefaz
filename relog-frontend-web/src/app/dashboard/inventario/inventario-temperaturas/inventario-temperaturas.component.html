@@ -65,7 +65,7 @@
       </ng-select>
     </div>
 
-    <div class="col-2">
+    <!-- <div class="col-2">
       <label class="input-label">DATA INICIAL</label>
       <input
         id="dateBegin"
@@ -91,6 +91,16 @@
         (ngModelChange)="onFinalDateChange($event)"
         [bsConfig]="datePickerConfig"
       />
+    </div> -->
+
+    <div class="col-2">
+      <label class="input-label">DATA INICIAL</label>
+      <app-date-time-picker [(ngModel)]="initialDate" [disabled]="!selectedSerial" (onChangeEmitter)="onFirstDateChange($event)"></app-date-time-picker>
+    </div>
+
+    <div class="col-2">
+      <label class="input-label">DATA FINAL</label>
+      <app-date-time-picker [(ngModel)]="finalDate" [disabled]="!selectedSerial" (onChangeEmitter)="onFinalDateChange($event)"></app-date-time-picker>
     </div>
 
     <!-- <div class="col-2">

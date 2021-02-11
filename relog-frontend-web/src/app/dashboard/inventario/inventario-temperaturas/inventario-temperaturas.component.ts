@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import {
   FamiliesService,
   PositionsService,
@@ -51,9 +52,11 @@ export class InventarioTemperaturasComponent implements OnInit {
   /*
    * DataPicker
    */
-  datePickerConfig = new BsDaterangepickerConfig(); //Configurations
+  // datePickerConfig = new BsDaterangepickerConfig(); //Configurations
   public initialDate: Date; //Initial date
   public finalDate: Date; //Initial date
+
+  dateModel: Date = new Date(); 
 
   constructor(
     private familyService: FamiliesService,
@@ -76,9 +79,9 @@ export class InventarioTemperaturasComponent implements OnInit {
     this.initialDate = new Date(sub);
     this.finalDate = new Date();
 
-    this.datePickerConfig.showWeekNumbers = false;
-    this.datePickerConfig.displayMonths = 1;
-    this.datePickerConfig.containerClass = "theme-dark-blue";
+    // this.datePickerConfig.showWeekNumbers = false;
+    // this.datePickerConfig.displayMonths = 1;
+    // this.datePickerConfig.containerClass = "theme-dark-blue";
   }
   ngOnInit() {
     //Loading the families
@@ -190,13 +193,20 @@ export class InventarioTemperaturasComponent implements OnInit {
       });
   }
 
+  startChanged(value){
+    console.log("value", value);
+  }
+
   /**
    * Util date selector
    */
-  onFirstDateChange(newDate: Date) {
-    // console.log(newDate);
+  onFirstDateChange(_newDate: string) {
+    console.log(_newDate);
     // console.log(newDate.getTime());
     // console.log(this.initialDate);
+
+    let newDate = new Date(_newDate);
+    console.log(newDate);
 
     if (newDate !== null && this.finalDate !== null) {
       this.isLoading = true;
@@ -215,10 +225,13 @@ export class InventarioTemperaturasComponent implements OnInit {
     }
   }
 
-  onFinalDateChange(newDate: Date) {
-    // console.log(newDate);
+  onFinalDateChange(_newDate: string) {
+    console.log(_newDate);
     // console.log(newDate.getTime());
     // console.log(this.initialDate);
+
+    let newDate = new Date(_newDate);
+    console.log(newDate);
 
     if (this.initialDate !== null && newDate !== null) {
       this.isLoading = true;
@@ -241,23 +254,23 @@ export class InventarioTemperaturasComponent implements OnInit {
     // console.log(endDate);
     // console.log(date);
 
-    let d = date;
-    let result = 0;
+    // let d = date;
+    // let result = 0;
 
-    if (!endDate) {
-      d.setHours(0, 0, 0, 0);
-      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
-      result = d.getTime() / 1000;
-    } else {
-      d.setHours(23, 59, 59, 0);
-      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
-      result = d.getTime() / 1000;
-    }
+    // if (!endDate) {
+    //   d.setHours(0, 0, 0, 0);
+    //   //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
+    //   result = d.getTime() / 1000;
+    // } else {
+    //   d.setHours(23, 59, 59, 0);
+    //   //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
+    //   result = d.getTime() / 1000;
+    // }
 
     // console.log(d);
     // console.log(result);
 
-    return result;
+    return new Date(date).getTime()/1000;
   }
 
   convertTimezone(timestamp) {
