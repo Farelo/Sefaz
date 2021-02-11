@@ -76,6 +76,7 @@ export class InventarioCriticoAusencia implements OnInit {
   public frequencyResult = [];
   calculateFrequencyReport(actualListOfEvents: any) {
     let auxFrequencyResult = {};
+    this.frequencyResult = [];
 
     actualListOfEvents.forEach((actualPacking) => {
       actualPacking.eventList.forEach((element) => {
