@@ -8,7 +8,7 @@ const families_service = require("../families/families.service");
 const projects_service = require("../projects/projects.service");
 const control_points_service = require("../control_points/control_points.service");
 const companies_service = require("../companies/companies.service");
-const logs_controller = require('../logs/logs.controller')
+const logs_controller = require("../logs/logs.controller");
 const apiKeysService = require("../api_keys/api_keys.service");
 
 const config = require("config");
@@ -48,20 +48,20 @@ exports.create = async (req, res) => {
 
    packing = await packings_service.create_packing(req.body);
 
-   logs_controller.create({token:req.headers.authorization, log:'create_packing' , newData:req.body});
+   logs_controller.create({ token: req.headers.authorization, log: "create_packing", newData: req.body });
    //Create on callback proxy
    // let proxyApiKey = await apiKeysService.findByName("proxy-ayga");
    // if (proxyApiKey.length) await createOnProxy(packing, proxyApiKey[0]);
 
    //Sub packing in websocket
-   await subPacking(packing.tag.code);
+   // await subPacking(packing.tag.code);
 
    res.status(HttpStatus.CREATED).send(packing);
 };
- 
+
 const createOnProxy = async (packing, proxyApiKey) => {
-   console.log(' ');
-   console.log('createOnProxy');
+   console.log(" ");
+   console.log("createOnProxy");
    console.log(packing);
    console.log(proxyApiKey);
 
@@ -158,8 +158,12 @@ exports.create_many = async (req, res) => {
       packing.data.active = true;
 
       current_packing = await packings_service.create_packing(packing.data);
-      
-      logs_controller.create({token:req.headers.authorization, log:'create_packing_many' , newData:current_packing});
+
+      logs_controller.create({
+         token: req.headers.authorization,
+         log: "create_packing_many",
+         newData: current_packing,
+      });
       await subPacking(current_packing.tag.code);
       packings.push(current_packing);
    }
@@ -172,24 +176,21 @@ exports.update = async (req, res) => {
    if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid packing" });
 
    packing = await packings_service.update_packing(req.params.id, req.body);
-   logs_controller.create({token:req.headers.authorization, log:'update_packing' , newData:req.body});
-   
+   logs_controller.create({ token: req.headers.authorization, log: "update_packing", newData: req.body });
+
    res.json(packing);
 };
 
 exports.delete = async (req, res) => {
    const packing = await packings_service.find_by_id(req.params.id);
-   if (!packing) res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid packing" });
+   if (!packing) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid packing" });
 
-   let code = packing.tag.code;
-
-   
-   logs_controller.create({token:req.headers.authorization, log:'delete_packing' , newData:packing});
    await packing.remove();
+   await logs_controller.create({ token: req.headers.authorization, log: "delete_packing", newData: packing });
 
-   await unsubPacking(packing.tag.code);
+   // await unsubPacking(packing.tag.code);
 
-   res.send({ message: "Delete successfully" });
+   return res.send({ message: "Delete successfully" });
 };
 
 exports.show_packings_on_control_point = async (req, res) => {

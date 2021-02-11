@@ -12,13 +12,13 @@ module.exports = async (req, res, next) => {
         const decoded_payload = jwt.verify(token, config.get('security.jwtPrivateKey'))
         
         let actualUser = await User.findById(decoded_payload._id, ["email"])
-        if(!actualUser) res.status(401).send({message:"Invalid token."})
+        if(!actualUser) return res.status(401).send({message:"Invalid token."})
         
-        req.authenticated = decoded_payload
+        req.authenticated = decoded_payload 
 
         next()
     } catch (error) { 
-        res.status(401).send({message:"Invalid token."})
+        return res.status(401).send({message:"Invalid token."})
     }
 }
 
