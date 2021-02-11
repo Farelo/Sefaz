@@ -7,7 +7,7 @@ const { Position } = require("../../positions/positions.model");
 /**
  * TODO: criar índices na coleção eventrecords
  */
-module.exports = async () => {
+module.exports = async (days) => {
    try {
       let startDate = new Date();
 
@@ -148,10 +148,12 @@ module.exports = async () => {
          },
       ]).allowDiskUse(true);
 
-      //Filtra as embalagens com 30 dias+
+      //Filtra as embalagens com mais de x dias (default = 30 dias)
+      console.log("days", days);
+
       let resultPackings = packings.filter((element) => {
          if (element.last_owner_supplier !== null) { 
-            return new Date(element.last_owner_supplier.created_at) < moment().subtract(30, "days").toDate();
+            return new Date(element.last_owner_supplier.created_at) < moment().subtract(days, "days").toDate();
          } else return false;
       });
 
