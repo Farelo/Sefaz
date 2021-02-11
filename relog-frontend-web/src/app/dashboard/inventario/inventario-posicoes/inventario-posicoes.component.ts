@@ -167,11 +167,13 @@ export class InventarioPosicoesComponent implements OnInit {
   /**
    * Util date selector
    */
-  onFirstDateChange(newDate: Date) {
+  onFirstDateChange(_newDate: Date) {
 
     // console.log(newDate);
     // console.log(newDate.getTime());
     // console.log(this.initialDate);
+
+    let newDate = new Date(_newDate); 
 
     if (newDate !== null && this.finalDate !== null) {
 
@@ -187,11 +189,13 @@ export class InventarioPosicoesComponent implements OnInit {
     }
   }
 
-  onFinalDateChange(newDate: Date) {
+  onFinalDateChange(_newDate: Date) {
 
     // console.log(newDate);
     // console.log(newDate.getTime());
     // console.log(this.initialDate);
+
+    let newDate = new Date(_newDate); 
 
     if (this.initialDate !== null && newDate !== null) {
 
@@ -212,24 +216,25 @@ export class InventarioPosicoesComponent implements OnInit {
     // console.log(endDate);
     // console.log(date);
 
-    let d = date;
-    let result = 0;
+    // let d = date;
+    // let result = 0;
 
-    if (!endDate) {
-      d.setHours(0, 0, 0, 0);
-      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
-      result = d.getTime() / 1000;
+    // if (!endDate) {
+    //   d.setHours(0, 0, 0, 0);
+    //   //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
+    //   result = d.getTime() / 1000;
 
-    } else {
-      d.setHours(23, 59, 59, 0);
-      //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
-      result = d.getTime() / 1000;
-    }
+    // } else {
+    //   d.setHours(23, 59, 59, 0);
+    //   //d = new Date(d.getTime() + d.getTimezoneOffset() * 60000); //offset to user timezone
+    //   result = d.getTime() / 1000;
+    // }
 
-    // console.log(d);
-    // console.log(result);
+    // // console.log(d);
+    // // console.log(result);
 
-    return result;
+    // return result;
+    return new Date(date).getTime()/1000;
   }
 
 

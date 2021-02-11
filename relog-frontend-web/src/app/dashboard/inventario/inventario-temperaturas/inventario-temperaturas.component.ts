@@ -192,21 +192,16 @@ export class InventarioTemperaturasComponent implements OnInit {
         this.actualListOfTemperatures = this.originalListOfTemperatures;
       });
   }
-
-  startChanged(value){
-    console.log("value", value);
-  }
-
+ 
   /**
    * Util date selector
    */
   onFirstDateChange(_newDate: string) {
-    console.log(_newDate);
+    // console.log(_newDate);
     // console.log(newDate.getTime());
     // console.log(this.initialDate);
 
-    let newDate = new Date(_newDate);
-    console.log(newDate);
+    let newDate = new Date(_newDate); 
 
     if (newDate !== null && this.finalDate !== null) {
       this.isLoading = true;
@@ -226,12 +221,11 @@ export class InventarioTemperaturasComponent implements OnInit {
   }
 
   onFinalDateChange(_newDate: string) {
-    console.log(_newDate);
+    // console.log(_newDate);
     // console.log(newDate.getTime());
     // console.log(this.initialDate);
 
-    let newDate = new Date(_newDate);
-    console.log(newDate);
+    let newDate = new Date(_newDate); 
 
     if (this.initialDate !== null && newDate !== null) {
       this.isLoading = true;
