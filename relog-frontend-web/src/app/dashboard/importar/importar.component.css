@@ -95,13 +95,13 @@ label {
 }
 
 label:hover {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   border-color: white;
   color: white;
 }
 
 .botaoImport:hover {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   border-color: #6482c9;
   color: white;
 }
@@ -119,7 +119,7 @@ label:hover {
 h1 {
   font-family: 'Montserrat', sans-serif;
   padding-bottom: 15px;
-  border-bottom-color: #6382c9;
+  border-bottom-color: #3E4F60;
   border-width: thin;
   border-bottom-style: solid;
   font-weight: 500;
@@ -141,7 +141,7 @@ h1 {
 /* #import-table > thead > tr,
 #import-table > tbody > td {
   border-style: solid;
-  border-color: #6382c9;
+  border-color: #3E4F60;
   border-width: 2px;
 }
 
@@ -169,7 +169,7 @@ h1 {
 .excluir { background-color: #1d416b; }
 
 .editar:hover {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
@@ -213,7 +213,7 @@ h1 {
 
 .none {
   border-style: solid;
-  border-color: #6382c9;
+  border-color: #3E4F60;
   border-width: 2px;
   text-align: center;
   padding: 15px;

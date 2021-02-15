@@ -44,12 +44,12 @@ p {
 
 .botaoRegistrar {
   background-color: white;
-  color: #6382c9;
-  border-color: #6382c9;
+  color: #3E4F60;
+  border-color: #3E4F60;
 }
 
 .botaoRegistrar:hover {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
 }
 

@@ -22,11 +22,7 @@ h2 {
 }
 
 .header {
-  display: inline-grid;
-  /* border-bottom-style: solid;
-  border-bottom-color: grey;
-  border-bottom-width: thin; */
-  margin-bottom: 15px;
+  display: inline-grid; 
 }
 
 #showDetails {

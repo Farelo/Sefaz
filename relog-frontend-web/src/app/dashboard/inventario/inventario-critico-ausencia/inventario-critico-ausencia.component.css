@@ -4,8 +4,7 @@
   font-family: 'Roboto', sans-serif;
 }
 
-.meuInventario {
-  box-shadow: 0px 0px 5px #000;
+.meuInventario { 
   margin-bottom: 25px;
 }
 
@@ -46,6 +45,45 @@ hr {
   border-width: thin;
 }
 
+.descricao {
+  display: inline;
+  font-weight: 600;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+}
+
+.explicacao {
+  color: #777;
+  font-size: 10px;
+  margin-bottom: 0px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.botao-registrar {
+  background-color: transparent;
+  border: 1px solid #e6e6e6;
+  color: #444444;
+  border-radius: 5px;
+  width: 80px;
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  height: 2rem;
+}
+
+.botao-registrar:hover {
+  background-color: #3E4F60;
+  border: 1px solid #3E4F60;
+  color: #fff;
+
+  transition: background-color 0.3s;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
+
+  transition: border-color 0.3s;
+  -webkit-transition: border-color 0.3s;
+  -moz-transition: border-color 0.3s;
+}
+
 .tituloClaro {
   color: white;
 }
@@ -67,9 +105,14 @@ hr {
   padding: 0px;
 }
 
-/* td {
-  background-color: white;
-} */
+.div-inner-table{
+  margin-top: 10px; 
+}
+
+.inner-table > thead > tr > th, 
+.inner-table > tbody > tr > td {
+  padding: .45rem;
+}
 
 .input-label {
   margin-bottom: 0px;

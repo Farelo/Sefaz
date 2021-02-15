@@ -68,7 +68,7 @@ body {
 }
 
 .noUi-target {
-  background: #6382c9 !important;
+  background: #3E4F60 !important;
   border-radius: 12px !important;
   border: 1px solid #868e96 !important;
 }
@@ -100,7 +100,7 @@ body {
 }
 
 .noUi-connect {
-  background: #6382c9 !important;
+  background: #3E4F60 !important;
 }
 
 .carregando {
@@ -264,6 +264,16 @@ body {
   margin-top: 40px;
 } */
 
+/* ngx-bootstrap tabs */
+.nav-item .nav-link {
+  color: #777;
+}
+
+/* ngx-bootstrap tabs */
+.nav-link.active {
+  color: #212529;
+}
+
 .modal-content {
   padding: 5px;
 }
@@ -335,10 +345,10 @@ body {
 }
 
 .ngx-pagination .current {
-  /* border-color: #6382c9; */
-  color: white !important;
-  border-color: white;
-  padding: 2px !important;
+  /* border-color: #3E4F60; */
+   color: white !important;
+   border-color: white;
+   padding: 2px !important;
 }
 
 .ngx-pagination .current div {
@@ -359,7 +369,7 @@ body {
 
 .ngx-pagination li:hover {
   width: 30px;
-  /* background-color: #6382c9 !important;  */
+  /* background-color: #3E4F60 !important;  */
   padding: 2px !important;
   border-style: solid;
   border-width: thin;
@@ -399,7 +409,7 @@ body {
   outline: none !important;
   border-bottom-style: solid !important;
   border-bottom-width: thin !important;
-  border-bottom-color: #6382c9 !important;
+  border-bottom-color: #3E4F60 !important;
 }
 
 .select2-container--open .select2-dropdown--below {
@@ -421,7 +431,7 @@ body {
 
 .select2-container--default .select2-results__option .select2-results__option {
   padding-left: 1.7em;
-  color: #6382c9 !important;
+  color: #3E4F60 !important;
 }
 
 .select2-dropdown--below {
@@ -436,7 +446,7 @@ body {
 .select2-container--default
   .select2-results__option--highlighted[aria-selected] {
   background-color: #f0f0f0 !important;
-  color: #6382c9 !important;
+  color: #3E4F60 !important;
 }
 
 .select2-container--default .select2-results__option[aria-selected="true"] {
@@ -460,7 +470,7 @@ hotTable {
 }
 
 .handsontable thead th .relative {
-  background-color: #6382c9;
+  background-color: #3E4F60;
 }
 
 .ht_master:not(.innerBorderTop) thead tr:last-child th,
@@ -469,29 +479,25 @@ hotTable {
 .ht_master:not(.innerBorderTop) ~ .handsontable thead tr.lastChild th {
   border: none;
   padding: 10px;
-  background-color: #6382c9;
+  background-color: #3E4F60;
 }
 
 .handsontable tr:first-child th,
 .handsontable tr:first-child td {
-  border-top: 1px solid #6382c9 !important;
+  border-top: 1px solid #3E4F60 !important;
 }
 
 .handsontable tr:first-child th {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   border-left: none;
   border-right: none;
 }
 
 .ht_master:not(.innerBorderLeft):not(.emptyColumns) ~ .handsontable tbody tr th,
-.ht_master:not(.innerBorderLeft):not(.emptyColumns)
-  ~ .handsontable:not(.ht_clone_top)
-  thead
-  tr
-  th:first-child {
-  background-color: #6382c9;
+.ht_master:not(.innerBorderLeft):not(.emptyColumns) ~ .handsontable:not(.ht_clone_top) thead tr th:first-child {
+  background-color: #3E4F60;
   color: white;
-  border-left: 1px solid #6382c9;
+  border-left: 1px solid #3E4F60;
 }
 
 .required {

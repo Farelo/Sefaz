@@ -12,7 +12,7 @@ import { ApplicationPipes } from '../../shared/pipes/application.pipes';
 //import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TooltipModule, PopoverModule, BsDatepickerModule } from 'ngx-bootstrap'
+import { TooltipModule, PopoverModule, BsDatepickerModule, TabsModule } from 'ngx-bootstrap'
 import { GeralComponent } from './geral/geral.component';
 import { InventarioGeralComponent } from './inventario-geral/inventario-geral.component';
 import { InventarioPermanenciaComponent } from './inventario-permanencia/inventario-permanencia.component';
@@ -24,7 +24,10 @@ import { InventarioAusenciaComponent } from './inventario-ausencia/inventario-au
 import { InventarioPosicoesComponent } from './inventario-posicoes/inventario-posicoes.component';
 import { InventarioTemperaturasComponent } from './inventario-temperaturas/inventario-temperaturas.component';
 import { DateTimePickerComponent } from "../../shared/date-time-picker/date-time-picker.component";
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; 
+import { CriticalAbsentModalComponent } from './inventario-critico-ausencia/modal-position/layer.component'; 
+import { InventarioCriticoAusencia } from './inventario-critico-ausencia/inventario-critico-ausencia.component';
+import { NguiMapModule } from '@ngui/map';
 
 @NgModule({
   imports: [
@@ -36,11 +39,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     NgxPaginationModule,
     PopoverModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    TabsModule.forRoot(),
     ApplicationPipes,
     NgbModule,
     TooltipModule,
     //Angular2Csv
-    FontAwesomeModule
+    FontAwesomeModule,
+    //Angular2Csv,
+    NguiMapModule.forRoot({
+      apiUrl: `https://maps.google.com/maps/api/js?key=${constants.GOOGLE_API_KEY}&libraries=visualization,places,drawing`
+    })
   ],
   declarations: [
     InventarioComponent,
@@ -54,8 +62,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     InventarioAusenciaComponent,
     InventarioPosicoesComponent,
     InventarioTemperaturasComponent,
-    DateTimePickerComponent
+    DateTimePickerComponent,
+    InventarioCriticoAusencia,
+    CriticalAbsentModalComponent
   ],
   providers: [],
+  entryComponents:[CriticalAbsentModalComponent]
 })
 export class InventarioModule { }

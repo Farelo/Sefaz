@@ -36,13 +36,13 @@
 }
 
 .cabecalho {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
 }
 
 .tabela {
   border-style: solid;
-  border-color: #6382c9;
+  border-color: #3E4F60;
   border-width: 2px;
 }
 
@@ -101,12 +101,12 @@ td {
 
 .botaoRegistrar {
   background-color: white;
-  color: #6382c9;
-  border-color: #6382c9;
+  color: #3E4F60;
+  border-color: #3E4F60;
 }
 
 .botaoRegistrar:hover {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   color: white;
 }
 
@@ -157,8 +157,8 @@ td {
 }
 
 .divisoria {
-  color: #6382c9;
-  border-color: #6382c9;
+  color: #3E4F60;
+  border-color: #3E4F60;
   border-width: thin;
   margin-bottom: 25px;
 }
@@ -190,7 +190,7 @@ td {
 .editar { background-color: #3b5d93; }
 
 .editar:hover {
-  background-color: #6382c9;
+  background-color: #3E4F60;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
