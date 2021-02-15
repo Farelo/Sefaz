@@ -28,6 +28,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CriticalAbsentModalComponent } from './inventario-critico-ausencia/modal-position/layer.component'; 
 import { InventarioCriticoAusencia } from './inventario-critico-ausencia/inventario-critico-ausencia.component';
 import { NguiMapModule } from '@ngui/map';
+import { constants } from 'environments/constants';
 
 @NgModule({
   imports: [
