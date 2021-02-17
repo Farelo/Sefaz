@@ -29,7 +29,7 @@ module.exports = async () => {
 
             setting = await getSettings();
 
-            const controlPoints = await ControlPoint.find({}).populate("company").populate("type");
+            const controlPoints = await ControlPoint.find({}).sort({company: 1}).populate("company").populate("type");
 
             //const packings = await Packing.find({ })
             const packings = await Packing.find({})
