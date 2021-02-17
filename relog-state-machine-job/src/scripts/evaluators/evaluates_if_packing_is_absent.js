@@ -57,7 +57,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                );
             }
 
-            let newPacking = await Packing.findOne(packing._id);
+            let newPacking = await Packing.findOne({_id: packing._id});
             await Packing.findByIdAndUpdate(newPacking._id, { last_owner_supplier: newPacking.last_event_record });
 
             //console.log('ESTÁ NUMA PLANTA DONA')

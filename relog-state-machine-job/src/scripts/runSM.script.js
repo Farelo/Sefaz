@@ -78,7 +78,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                 // /* Checa se a embalagem está sem sinal, se estiver sai do switch */
                 if (getDiffDateTodayInDays(lastMessageDate) < setting.no_signal_limit_in_days) { 
-                    console.log('com sinal');
+                    // console.log('com sinal');
                     /* Retorna o ponto de controle que a embalagem se encontra atualmente */
                     currentControlPoint = await evaluatesIfPackingIsOnAControlPoint(packing, controlPoints, setting) 
 
@@ -87,7 +87,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     /* Caso ela esteja localizada em um ponto de controle */
                     if (currentControlPoint) { 
-                        console.log('dentro de PC');
+                        // console.log('dentro de PC');
                         /* Checa se a embalagem está em um local correto. se não estiver cria um alerta e atualiza a embalagem */
                         await evaluatesIfPackingIsInIncorrectLocal(packing, currentControlPoint, setting, setting)
 
@@ -96,7 +96,7 @@ module.exports = async (setting, packing, controlPoints) => {
                         await evaluatesIfPackingIsWithPermanenceTimeExceeded(packing, currentControlPoint)
 
                     } else { 
-                        console.log('fora de PC');
+                        // console.log('fora de PC');
                         if (packing.permanence_time_exceeded == true) {
                             await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
 
@@ -112,7 +112,6 @@ module.exports = async (setting, packing, controlPoints) => {
 
                     }
                 } else { 
-                    console.log('sem sinal');
                     /* Embalagem sem sinal */
                     //mLog('Avaliar sem sinal')
                     await evaluatesIfPackingIsNoSignal(packing, setting)
