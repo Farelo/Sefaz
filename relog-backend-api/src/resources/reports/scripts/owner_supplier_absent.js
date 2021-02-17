@@ -137,6 +137,7 @@ module.exports = async (days) => {
                "last_event_record.control_point.name": 1,
                "last_event_record.control_point.type": 1,
                "last_event_record.created_at": 1,
+               "last_owner_supplier._id": 1,
                "last_owner_supplier.type.name": 1,
                "last_owner_supplier.accuracy": 1,
                "last_owner_supplier.control_point._id": 1,
@@ -165,9 +166,10 @@ module.exports = async (days) => {
          if (i % 500 == 0) console.log(i);
          let query = {};
          if (actualPacking.last_owner_supplier) {
-            query = { packing: actualPacking._id, created_at: { $gt: actualPacking.last_owner_supplier.created_at } };
+            query = { packing: actualPacking._id, created_at: { $gte: actualPacking.last_owner_supplier.created_at}, _id: { $ne: actualPacking.last_owner_supplier._id } };
          } else query = { packing: actualPacking._id };
 
+         if(actualPacking.tag.code == '4102462') console.log(query, actualPacking.last_owner_supplier)
          /**
           * TODO:
           * E se juntar os dois finds abaixo em um só aggregate ordenado pela data do position?

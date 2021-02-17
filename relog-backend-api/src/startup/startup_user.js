@@ -10,7 +10,7 @@ const startupUser = async () => {
         const users = await User.find()
         if (!users.length) {
             // const newCompany = await Company.findOne({ type: 'owner' })
-            const newCompany = await Company.create({ name: 'Evoy' })
+            const newCompany = await Company.create({ name: 'Evoy Embalagens inteligentes' })
             await newCompany.save()
             
             const newUser = new User({ full_name: 'Master Admin', email: 'admin@admin.smart', password: 'Admin20', role: 'masterAdmin', company: newCompany._id })

@@ -308,7 +308,7 @@ const intersectionpoly = (packing, controlPoint) => {
             controlPointPolygonArray.push(auxPolygon);
          });
 
-         let result = null;
+         let result = false;
 
          controlPointPolygonArray.forEach((mPolygon) => {
             //criar polígono da embalagem
@@ -335,8 +335,15 @@ const intersectionpoly = (packing, controlPoint) => {
             // mLog('i: ', packing.tag.code)
             // mLog(intersection)
 
-            if (result == false)
-               result = intersection !== null || intersectionMartinez !== null || contained !== false ? true : false;
+            if (result == false){
+               // result = intersection !== null || intersectionMartinez !== null || contained !== false ? true : false;
+
+               if (intersectionMartinez) { 
+                  if (intersectionMartinez.length) {  
+                     result = true; 
+                  }
+               }
+            }
          });
 
          //mLog(result);
@@ -372,7 +379,12 @@ const intersectionpoly = (packing, controlPoint) => {
          // if(intersection !== null || intersectionMartinez !== null || contained !== false) {
          // }
 
-         let result = intersection !== null || intersectionMartinez !== null || contained !== false ? true : false;
+         let result = false;
+         if (intersectionMartinez) { 
+            if (intersectionMartinez.length) {  
+               result = true; 
+            }
+         }
 
          return result;
       }
