@@ -13,7 +13,7 @@ router.get('/general_info', auth, reports_controller.general_info_report)
 router.get('/clients', auth, reports_controller.clients_report)
 router.get('/snapshot', auth, reports_controller.snapshot_report)
 router.get('/snapshot_recovery', auth, reports_controller.snapshot_recovery_report)
-router.get('/owner_supplier_absent', [], reports_controller.owner_supplier_absent)
+router.get('/owner_supplier_absent', auth, reports_controller.owner_supplier_absent)
 
 module.exports = router
 
