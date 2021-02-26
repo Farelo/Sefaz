@@ -20,7 +20,7 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
 
          /* Se não estiver no ponto de controle OWNER atualiza a embalagem com o status ABSENT */
          // Se não iniciou, inicia o giro
-         if (!(packingIsOk.length > 0)) {
+         if (!packingIsOk.length) {
             if (!packing.absent_time) {
                await Packing.findByIdAndUpdate(
                   packing._id,
