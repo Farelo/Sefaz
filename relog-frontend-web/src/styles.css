@@ -6,6 +6,10 @@ body {
   overflow-y: scroll;
 }
 
+.table td, .table th {
+  font-size: 0.9rem;
+}
+
 /* g {
 
   transform: translate(50px, 50px)!important;

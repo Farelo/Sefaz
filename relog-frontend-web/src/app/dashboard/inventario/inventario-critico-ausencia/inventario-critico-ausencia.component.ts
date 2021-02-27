@@ -73,6 +73,28 @@ export class InventarioCriticoAusencia implements OnInit {
       });
   }
 
+  searchEvent(event): void {
+    const val = event.target.value.toLowerCase();
+    
+    // filter our data
+    const temp = this.originalListOfEvents.filter(item => {
+      return (
+        item.family.toLowerCase().indexOf(val) !== -1 ||
+        item.serial.toLowerCase().indexOf(val) !== -1 ||
+        item.tag.toLowerCase().indexOf(val) !== -1 ||
+        item.lastOwnerOrSupplier.toLowerCase().indexOf(val) !== -1 ||
+        item.lastOwnerOrSupplierType.toLowerCase().indexOf(val) !== -1 ||
+        item.actualCP.toLowerCase().indexOf(val) !== -1 ||
+        !val
+      );
+    });
+
+    // update the rows
+    this.actualListOfEvents = temp;
+    // Whenever the filter changes, always go back to the first page
+    this.actualPage = 0;
+  }
+
   public frequencyResult = [];
   calculateFrequencyReport(actualListOfEvents: any) {
     let auxFrequencyResult = {};

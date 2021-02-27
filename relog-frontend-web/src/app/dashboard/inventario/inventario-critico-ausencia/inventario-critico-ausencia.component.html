@@ -26,34 +26,62 @@
   <!-- Linha divisória -->
   <hr style="margin-top: 10px" />
 
-  <div
-    style="
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      margin-bottom: 2rem;
-    "
-  >
-    <div style="margin-right: 12px">
-      <p class="descricao">TEMPO DE AUSÊNCIA</p>
-      <p class="explicacao">Tempo minímo em dias</p>
-      <input
-        [(ngModel)]="absentDays"
-        placeholder="Tempo de ausência"
-        aria-describedby="basic-addon1"
-        class="form-control"
-        style="width: 150px; line-height: 1.2; height: 2rem; font-size: 0.9rem"
-        type="number"
-      />
+  <div class="row">
+    <div class="col-sm-6 col-md-3">
+      <div
+        style="
+          display: flex;
+          flex-wrap: wrap;
+          align-items: flex-end;
+          margin-bottom: 2rem;
+          padding: 1rem;
+          border-radius: 5px;
+          border: solid 2px #e9ecef;
+        "
+      >
+        <div style="margin-right: 12px">
+          <p class="descricao">TEMPO DE AUSÊNCIA</p>
+          <p class="explicacao">Tempo minímo em dias</p>
+          <input
+            [(ngModel)]="absentDays"
+            placeholder="Tempo de ausência"
+            aria-describedby="basic-addon1"
+            class="form-control"
+            style="
+              width: 150px;
+              line-height: 1.2;
+              height: 2rem;
+              font-size: 0.9rem;
+            "
+            type="number"
+          />
+        </div>
+
+        <button
+          (click)="applyFilter()"
+          [ngStyle]="{ cursor: reportAvailable ? 'pointer' : 'not-allowed' }"
+          class="botao-registrar"
+        >
+          Filtrar
+        </button>
+      </div>
     </div>
 
-    <button
-      (click)="applyFilter()"
-      [ngStyle]="{ cursor: reportAvailable ? 'pointer' : 'not-allowed' }"
-      class="botao-registrar"
-    >
-      Filtrar
-    </button>
+    <div class="col-sm-6 col-md-9">
+      <div style="padding: 1rem; border-radius: 5px; border: solid 2px #e9ecef">
+        <p class="descricao">BUSCAR EMBALAGEM</p>
+        <p class="explicacao">Buscar por atributos</p>
+
+        <input
+          type="text"
+          class="form-control mr-4"
+          placeholder="Buscar embalagem por família, serial, tag, tipo ou ponto de controle"
+          aria-describedby="basic-addon1"
+          (keyup)="searchEvent($event)"
+          style="line-height: 1.2; height: 2rem; font-size: 0.9rem"
+        />
+      </div>
+    </div>
   </div>
 
   <tabset>
