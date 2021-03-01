@@ -38,6 +38,10 @@ export class InventarioCriticoAusencia implements OnInit {
   ) {}
 
   ngOnInit() {
+    //Loads the table headers
+    this.loadTableHeaders();
+
+    //Loads the data in the table
     this.reportService
       .getCriticalAbsent(this.absentDays)
       .subscribe((result: any[]) => {
@@ -75,9 +79,9 @@ export class InventarioCriticoAusencia implements OnInit {
 
   searchEvent(event): void {
     const val = event.target.value.toLowerCase();
-    
+
     // filter our data
-    const temp = this.originalListOfEvents.filter(item => {
+    const temp = this.originalListOfEvents.filter((item) => {
       return (
         item.family.toLowerCase().indexOf(val) !== -1 ||
         item.serial.toLowerCase().indexOf(val) !== -1 ||
@@ -157,6 +161,90 @@ export class InventarioCriticoAusencia implements OnInit {
       .utc(timestamp)
       .tz("America/Sao_Paulo")
       .format("DD/MM/YYYY HH:mm:ss");
+  }
+
+  /**
+   *
+   * Ordenação da tabela
+   */
+  public headers: any = [];
+  public sortStatus: any = ["asc", "desc"];
+  public sort: any = {
+    name: "",
+    order: "",
+  };
+
+  loadTableHeaders() {
+    this.headers.push({ label: "Família", name: "family" });
+    this.headers.push({ label: "Serial", name: "serial" });
+    this.headers.push({ label: "Tag", name: "tag" });
+
+
+    this.headers.push({ label: "Tipo", name: "lastOwnerOrSupplierType" });
+    this.headers.push({
+      label: "Último Ponto de Controle",
+      name: "lastOwnerOrSupplier",
+    });
+    this.headers.push({
+      label: "Data da saída",
+      name: "dateLastOwnerOrSupplier",
+    });
+
+
+    this.headers.push({
+      label: "Local Atual",
+      name: "actualCP",
+    });
+    this.headers.push({ label: "Data da entrada", name: "dateActualCP" });
+    this.headers.push({
+      label: "Status Atual",
+      name: "status",
+    });
+
+    this.headers.push({ label: "Última mensagem", name: "lastMessage" });
+
+    //console.log('this.headers: ' + JSON.stringify(this.headers));
+  }
+
+  headerClick(item: any) {
+    this.sort.name = item.name;
+    this.sort.order = this.sortStatus[
+      (this.sortStatus.indexOf(this.sort.order) + 1) % 2
+    ];
+
+    // console.log('---');
+    // console.log('this.sort: ' + JSON.stringify(this.sort));
+
+    this.actualListOfEvents = this.customSort(
+      this.actualListOfEvents,
+      item.name.split("."),
+      this.sort.order
+    );
+  }
+
+  /**
+   *
+   * @param array     All items.
+   * @param keyArr    Array with attribute path, if exists.
+   * @param reverse   optional. 1 if ascendent, -1 else.
+   */
+  customSort(array: any[], keyArr: any[], reverse = "asc") {
+    var sortOrder = 1;
+    if (reverse == "desc") sortOrder = -1;
+
+    // console.log('array.length: ' + array.length);
+    // console.log('keyArr: ' + keyArr);
+    // console.log('sortOrder: ' + sortOrder);
+
+    return array.sort(function (a, b) {
+      var x = a,
+        y = b;
+      for (var i = 0; i < keyArr.length; i++) {
+        x = x[keyArr[i]];
+        y = y[keyArr[i]];
+      }
+      return sortOrder * (x < y ? -1 : x > y ? 1 : 0);
+    });
   }
 
   /**

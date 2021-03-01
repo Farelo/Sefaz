@@ -47,20 +47,20 @@ module.exports = async (packing, controlPoints, settings) => {
                   //sai do PC anterior e entra no novo
                   if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
                      // console.log("creation 1. last type:", packing.last_event_record ? packing.last_event_record.type : "nulo");
-                     await createOutbound(packing);
+                     await createOutbound(packing, controlPoints);
                      await createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
 
                      _result = actualControlPointFound.cp;
-                  } else{
-                     //saiu do PC, achou outro, mas não tem sinal bom o suficiente 
-                     await createOutbound(packing);
+                  } else {
+                     //saiu do PC, achou outro, mas não tem sinal bom o suficiente
+                     await createOutbound(packing, controlPoints);
                   }
                   // else não é elegível
                } else {
                   // console.log("não achou. está fora de PC");
                   // Se não encontrou um novo PC então sai do que estava
                   // console.log("creation 2. last type:", packing.last_event_record ? packing.last_event_record.type : "nulo");
-                  await createOutbound(packing); //Não se encontra em nenhum ponto de controle
+                  await createOutbound(packing, controlPoints); //Não se encontra em nenhum ponto de controle
                }
             }
          }
@@ -236,7 +236,7 @@ const createInbound = async (packing, currentControlPoint, distance) => {
    await Packing.findOneAndUpdate({ _id: packing._id }, { last_event_record: eventRecord._id });
 };
 
-const createOutbound = async (packing) => {
+const createOutbound = async (packing, allControlPoints) => {
    const eventRecord = new EventRecord({
       packing: packing._id,
       control_point: packing.last_event_record.control_point._id,
@@ -250,6 +250,14 @@ const createOutbound = async (packing) => {
    // console.log("outbound", packing.last_event_record.control_point._id, getLastPosition(packing)._id);
    await eventRecord.save();
    await Packing.findOneAndUpdate({ _id: packing._id }, { last_event_record: eventRecord._id });
+
+   //Updating last_owner_supplier attribute
+   const CPOwnerSupplier = allControlPoints.filter(isOwnerOrSupplier);
+   const packingIsOk = CPOwnerSupplier.filter((cp) => isAbsent(cp, packing.last_event_record.control_point));
+
+   if (packingIsOk.length) {
+      await Packing.findOneAndUpdate({ _id: packing._id }, { last_owner_supplier: eventRecord._id });
+   }
 };
 
 let idAbleToLog = false;
@@ -335,12 +343,12 @@ const intersectionpoly = (packing, controlPoint) => {
             // mLog('i: ', packing.tag.code)
             // mLog(intersection)
 
-            if (result == false){
+            if (result == false) {
                // result = intersection !== null || intersectionMartinez !== null || contained !== false ? true : false;
 
-               if (intersectionMartinez) { 
-                  if (intersectionMartinez.length) {  
-                     result = true; 
+               if (intersectionMartinez) {
+                  if (intersectionMartinez.length) {
+                     result = true;
                   }
                }
             }
@@ -380,9 +388,9 @@ const intersectionpoly = (packing, controlPoint) => {
          // }
 
          let result = false;
-         if (intersectionMartinez) { 
-            if (intersectionMartinez.length) {  
-               result = true; 
+         if (intersectionMartinez) {
+            if (intersectionMartinez.length) {
+               result = true;
             }
          }
 
@@ -395,4 +403,22 @@ const intersectionpoly = (packing, controlPoint) => {
       console.log(packing._id, packing.last_position._id, controlPoint._id);
       throw new Error(error);
    }
+};
+
+////////////////////////////////////////////////////////////////
+
+const isOwnerOrSupplier = (value) => {
+   return isOwner(value) || isSupplier(value);
+};
+
+const isOwner = (value) => {
+   return value.company.type == "owner";
+};
+
+const isSupplier = (value) => {
+   return value.company.type == "supplier";
+};
+
+const isAbsent = (value, cpId) => {
+   return value._id.toString() == cpId.toString();
 };

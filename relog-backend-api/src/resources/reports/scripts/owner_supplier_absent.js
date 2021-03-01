@@ -150,7 +150,6 @@ module.exports = async (days) => {
       ]).allowDiskUse(true);
 
       //Filtra as embalagens com mais de x dias (default = 30 dias)
-      console.log("days", days);
 
       let resultPackings = packings.filter((element) => {
          if (element.last_owner_supplier !== null) { 
@@ -158,18 +157,14 @@ module.exports = async (days) => {
          } else return false;
       });
 
-      console.log(resultPackings.length);
       let resultList = [];
 
-      console.log("percorrendo embalagens");
-      for (const [i, actualPacking] of resultPackings.entries()) {
-         if (i % 500 == 0) console.log(i);
+      for (const [i, actualPacking] of resultPackings.entries()) { 
          let query = {};
          if (actualPacking.last_owner_supplier) {
             query = { packing: actualPacking._id, created_at: { $gte: actualPacking.last_owner_supplier.created_at}, _id: { $ne: actualPacking.last_owner_supplier._id } };
          } else query = { packing: actualPacking._id };
 
-         if(actualPacking.tag.code == '4102462') console.log(query, actualPacking.last_owner_supplier)
          /**
           * TODO:
           * E se juntar os dois finds abaixo em um só aggregate ordenado pela data do position?
