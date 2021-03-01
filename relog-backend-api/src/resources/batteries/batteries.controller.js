@@ -25,8 +25,7 @@ exports.get = async (req, res) => {
    const query = {
       tag: req.query.tag ? req.query.tag : null,
       start_date: req.query.start_date ? req.query.start_date : null,
-      end_date: req.query.end_date ? req.query.end_date : null,
-      max: 10,
+      end_date: req.query.end_date ? req.query.end_date : null, 
    };
 
    if (query.tag){

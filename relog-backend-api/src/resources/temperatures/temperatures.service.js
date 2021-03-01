@@ -64,7 +64,7 @@ const referenceFromPackage = async (packing, doc) => {
    }
 };
 
-exports.get = async ({ tag = null, start_date = null, end_date = null, max = null }) => {
+exports.get = async ({ tag = null, start_date = null, end_date = null, max = 100 }) => {
    let conditions = {};
    let projection = {};
    let options = {};
