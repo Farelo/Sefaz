@@ -79,18 +79,38 @@ export class InventarioCriticoAusencia implements OnInit {
 
   searchEvent(event): void {
     const val = event.target.value.toLowerCase();
+    const values = val.split(",").map((elem) => elem.trim());
+    //["40823451", " LJ", " CEBRACE JACAREÍ"]
 
     // filter our data
+    // const temp = this.originalListOfEvents.filter((item) => {
+    //   return (
+    //     item.family.toLowerCase().indexOf(val) !== -1 ||
+    //     item.serial.toLowerCase().indexOf(val) !== -1 ||
+    //     item.tag.toLowerCase().indexOf(val) !== -1 ||
+    //     item.lastOwnerOrSupplier.toLowerCase().indexOf(val) !== -1 ||
+    //     item.lastOwnerOrSupplierType.toLowerCase().indexOf(val) !== -1 ||
+    //     item.actualCP.toLowerCase().indexOf(val) !== -1 ||
+    //     !val
+    //   );
+    // });
+
+    //Filtrando os resultados através de um array de palavras chave
     const temp = this.originalListOfEvents.filter((item) => {
-      return (
-        item.family.toLowerCase().indexOf(val) !== -1 ||
-        item.serial.toLowerCase().indexOf(val) !== -1 ||
-        item.tag.toLowerCase().indexOf(val) !== -1 ||
-        item.lastOwnerOrSupplier.toLowerCase().indexOf(val) !== -1 ||
-        item.lastOwnerOrSupplierType.toLowerCase().indexOf(val) !== -1 ||
-        item.actualCP.toLowerCase().indexOf(val) !== -1 ||
-        !val
-      );
+      let result = true;
+      values.forEach((elem) => {
+        result =
+          result &&
+          (item.family.toLowerCase().indexOf(elem) !== -1 ||
+            item.serial.toLowerCase().indexOf(elem) !== -1 ||
+            item.tag.toLowerCase().indexOf(elem) !== -1 ||
+            item.lastOwnerOrSupplier.toLowerCase().indexOf(elem) !== -1 ||
+            item.lastOwnerOrSupplierType.toLowerCase().indexOf(elem) !== -1 ||
+            item.actualCP.toLowerCase().indexOf(elem) !== -1 ||
+            !elem);
+      });
+
+      return result;
     });
 
     // update the rows
@@ -179,7 +199,6 @@ export class InventarioCriticoAusencia implements OnInit {
     this.headers.push({ label: "Serial", name: "serial" });
     this.headers.push({ label: "Tag", name: "tag" });
 
-
     this.headers.push({ label: "Tipo", name: "lastOwnerOrSupplierType" });
     this.headers.push({
       label: "Último Ponto de Controle",
@@ -189,7 +208,6 @@ export class InventarioCriticoAusencia implements OnInit {
       label: "Data da saída",
       name: "dateLastOwnerOrSupplier",
     });
-
 
     this.headers.push({
       label: "Local Atual",
