@@ -152,17 +152,21 @@ module.exports = async (days) => {
       //Filtra as embalagens com mais de x dias (default = 30 dias)
 
       let resultPackings = packings.filter((element) => {
-         if (element.last_owner_supplier !== null) { 
+         if (element.last_owner_supplier !== null) {
             return new Date(element.last_owner_supplier.created_at) < moment().subtract(days, "days").toDate();
          } else return false;
       });
 
       let resultList = [];
 
-      for (const [i, actualPacking] of resultPackings.entries()) { 
+      for (const [i, actualPacking] of resultPackings.entries()) {
          let query = {};
          if (actualPacking.last_owner_supplier) {
-            query = { packing: actualPacking._id, created_at: { $gte: actualPacking.last_owner_supplier.created_at}, _id: { $ne: actualPacking.last_owner_supplier._id } };
+            query = {
+               packing: actualPacking._id,
+               created_at: { $gte: actualPacking.last_owner_supplier.created_at },
+               _id: { $ne: actualPacking.last_owner_supplier._id },
+            };
          } else query = { packing: actualPacking._id };
 
          /**
@@ -176,7 +180,9 @@ module.exports = async (days) => {
             created_at: 1,
             type: 1,
             device_data_id: 1,
-         }).populate("control_point", "name");
+         })
+            .sort({ _id: -1 })
+            .populate("control_point", "name");
 
          //Extrai dados dos eventos
          for (const [i, actualEventRecord] of results.entries()) {
