@@ -9,22 +9,21 @@ const { Packing } = require("../models/packings.model");
 const { ControlPoint } = require("../models/control_points.model");
 
 const runSM = require("./runSM.script");
-const spinner = ora("State Machine working...");
+const spinner = ora("State Machine working...\n");
 
 module.exports = async () => {
    let setting = await getSettings();
 
    let nextSemaphor = true;
 
-   cron.schedule(`*/1 * * * *`, async () => {
-      if (nextSemaphor) {
-         //close the semaphor
-         nextSemaphor = false;
+   // cron.schedule(`*/1 * * * *`, async () => {
+   //    if (nextSemaphor) {
+   //       //close the semaphor
+   //       nextSemaphor = false;
 
-         setTimeout(async () => {
+   //       setTimeout(async () => {
             spinner.start();
 
-            console.log("START");
             console.log(new Date().toISOString());
 
             setting = await getSettings();
@@ -45,10 +44,10 @@ module.exports = async () => {
             spinner.succeed("Finished!");
 
             //open the semmaphor
-            nextSemaphor = true;
-         }, setting.job_schedule_time_in_sec * 1000);
-      }
-   });
+   //          nextSemaphor = true;
+   //       }, setting.job_schedule_time_in_sec * 1000);
+   //    }
+   // });
 };
 
 const iteratePackings = async (setting, packings, controlPoints) => {
