@@ -85,7 +85,7 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
 
       if (!start_date && !end_date) options.limit = parseInt(max);
       console.log(conditions);
-      device_data = await Position.find(conditions, projection, options);
+      device_data = await Position.find(conditions, projection, options).select(["-created_at", "-__v"]);;
 
       return device_data;
    } catch (error) {

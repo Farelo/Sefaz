@@ -34,6 +34,10 @@ const settingSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
+    report_critical_absent:{
+        type: Boolean,
+        default: false
+    },
     enable_viagem_perdida: {
         type: Boolean,
         default: true

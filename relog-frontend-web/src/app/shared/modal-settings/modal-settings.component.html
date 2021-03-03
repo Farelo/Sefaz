@@ -43,7 +43,7 @@
             <nouislider [config]="radiusConfig" style="margin-top: 2em;" [formControl]="settings.controls.range_radius"></nouislider>
           </div> -->
 
-          <div class="col-sm-12 col-md-8">
+          <div class="col-sm-12 col-md-8" style="margin-bottom: 6px">
             <p class="descricao">HABILITAR ALERTAS:</p>
 
             <div class="row">
@@ -122,6 +122,34 @@
                       <i class="cr-icon fa fa-check"> </i>
                     </span>
                     Dupla verificação de Local Incorreto
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="currentUser?.role === 'masterAdmin'"
+            class="col-sm-12 col-md-8"
+            style="margin-bottom: 6px"
+          >
+            <p class="descricao">HABILITAR RELATÓRIOS:</p>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div
+                  class="form-group form-check checkbox"
+                  style="margin-bottom: 0rem"
+                >
+                  <label>
+                    <input
+                      type="checkbox"
+                      [formControl]="settings.controls.report_critical_absent"
+                    />
+                    <span class="cr">
+                      <i class="cr-icon fa fa-check"> </i>
+                    </span>
+                    Relatório Crítico de Ausência
                   </label>
                 </div>
               </div>

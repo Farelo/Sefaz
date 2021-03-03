@@ -10,7 +10,6 @@ exports.createMany = async (allTemperatures) => {
       let currentPacking = null; 
       if (allTemperatures.length) { 
          currentPacking = await packingsService.find_by_tag(allTemperatures[0].tag);
-         console.log(allTemperatures[0], currentPacking);
          if (currentPacking) {
             await temperaturesService.createMany(currentPacking, allTemperatures);
          } else {

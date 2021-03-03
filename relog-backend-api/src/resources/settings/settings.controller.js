@@ -28,14 +28,11 @@ exports.update = async (req, res) => {
    if (!setting) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid setting." });
 
    if (req.body.expiration_date) {
-      console.log('has expiration_date', req.body.expiration_date);
       let token = extractToken(req);
       const decoded_payload = jwt.verify(token, config.get("security.jwtPrivateKey"));
       if (decoded_payload.role !== "masterAdmin") delete req.body.expiration_date;
    }
 
-   console.log('salvando:');
-   console.log(req.body);
    setting = await settings_service.update_setting(req.params.id, req.body);
 
    logs_controller.create({ token: req.headers.authorization, log: "settings_update", newData: setting });

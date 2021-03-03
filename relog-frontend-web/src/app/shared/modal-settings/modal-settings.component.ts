@@ -56,7 +56,7 @@ export class ModalSettings implements OnInit {
     connect: [true, false],
     range: {
       min: 0,
-      max: 32,
+      max: 10,
     },
     tooltips: new MeterFormatter(),
     step: 0.1,
@@ -135,6 +135,9 @@ export class ModalSettings implements OnInit {
       no_signal_limit_in_days: [0, [Validators.required]],
       missing_sinal_limit_in_days: [0, [Validators.required]],
 
+      //reports
+      report_critical_absent: [false, []],
+
       //alerts
       enable_viagem_perdida: [true, [Validators.required]],
       enable_local_incorreto: [true, [Validators.required]],
@@ -148,7 +151,7 @@ export class ModalSettings implements OnInit {
     let result = await this.settingsService.getSettings(); 
      
     this.actualSettings = result.data;
-    this.actualSettings.expiration_date = new Date(this.actualSettings.expiration_date);
+    if(this.actualSettings.expiration_date) this.actualSettings.expiration_date = new Date(this.actualSettings.expiration_date);
     this.actualSettings.accuracy_limit =
       this.actualSettings.accuracy_limit / 1000;
 
@@ -194,6 +197,11 @@ export class ModalSettings implements OnInit {
 
   onSubmit({ value, valid }: { value: any; valid: boolean }): void {
     //console.log(value);
+    console.log(value.expiration_date);
+    
+    if(!value.expiration_date) delete value.expiration_date;
+    console.log(value.expiration_date);
+    
 
     if (valid) {
       value.accuracy_limit = value.accuracy_limit * 1000;

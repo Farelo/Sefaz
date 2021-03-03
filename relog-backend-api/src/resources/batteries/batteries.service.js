@@ -91,7 +91,7 @@ exports.get = async ({ tag = null, start_date = null, end_date = null, max = 100
 
       if (!start_date && !end_date) options.limit = parseInt(max);
 
-      return await Battery.find(conditions, projection, options);
+      return await Battery.find(conditions, projection, options).select(["-created_at", "-__v"]);;
    } catch (error) {
       throw new Error(error);
    }

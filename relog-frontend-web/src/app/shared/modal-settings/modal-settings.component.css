@@ -222,6 +222,10 @@ td {
   clear: both;
 }
 
+.checkbox label {
+  margin-bottom: 0.3rem;
+}
+
 .checkbox .cr {
   position: relative;
   display: inline-block;

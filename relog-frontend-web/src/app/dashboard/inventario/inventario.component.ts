@@ -1,23 +1,19 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Pagination } from '../../shared/models/pagination'; 
-import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService } from '../../servicos/index.service'; 
-import { Angular2Csv } from 'angular2-csv/Angular2-csv'; 
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Pagination } from "../../shared/models/pagination";
+import { AuthenticationService } from "../../servicos/index.service";
 
 declare var $: any;
 
-//fazer uma refatoração esta muito grande e com o HTML gigantesco
 @Component({
-  selector: 'app-inventario', 
-  templateUrl: './inventario.component.html',
-  styleUrls: ['./inventario.component.css']
+  selector: "app-inventario",
+  templateUrl: "./inventario.component.html",
+  styleUrls: ["./inventario.component.css"],
 })
-
-export class InventarioComponent implements OnInit, OnDestroy  {
+export class InventarioComponent implements OnInit, OnDestroy {
   public logged_user: any;
   public suppliers: any;
-  public name_supplier: any = '';
-  public escolhaGeral: any = 'GERAL';
+  public name_supplier: any = "";
+  public escolhaGeral: any = "GERAL";
   public escolhaEquipamento = "";
   public packings: any[];
   public detailedGeneralpackings: any[];
@@ -26,19 +22,20 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public escolhas: any[];
   public abserials: any[];
   public locals: any[];
-  public general:     Pagination = new Pagination({ meta: { page: 1 } });
-  public supplier:    Pagination = new Pagination({ meta: { page: 1 } });
-  
-  public absence:     Pagination = new Pagination({ meta: { page: 1 } });
-  
+  public general: Pagination = new Pagination({ meta: { page: 1 } });
+  public supplier: Pagination = new Pagination({ meta: { page: 1 } });
+
+  public absence: Pagination = new Pagination({ meta: { page: 1 } });
+
   public general_equipament: Pagination = new Pagination({ meta: { page: 1 } });
-  public detailedGeneralInventory: Pagination = new Pagination({ meta: { page: 1 } });
+  public detailedGeneralInventory: Pagination = new Pagination({
+    meta: { page: 1 },
+  });
   public detailedInventorySupplierSearch = null;
   public detailedInventoryEquipamentSearch = null;
   public detailedInventorySearchSerial = "";
   public supplierSearch = null;
-  
-  
+
   public absenceSearchEquipamento: any;
   public absenceSearchSerial: any;
   public absenceTime: any;
@@ -56,7 +53,6 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   public permanenceSearchEquipamento: any;
 
   ngOnInit() {
- 
     // this.generalInventory();
     // this.tamanhoSelect();
     // this.loadPackings();
@@ -65,36 +61,21 @@ export class InventarioComponent implements OnInit, OnDestroy  {
   }
 
   ngOnDestroy() {
-
     // this.connection.unsubscribe();
   }
 
+  public currentUser: any = {};
+
   /////////////
-  constructor( 
-    private auth: AuthenticationService) {
+  constructor(private auth: AuthenticationService) {
+    this.currentUser = this.auth.currentUser();
 
-    let user = this.auth.currentUser();
-    let current_user = this.auth.currentUser();
-    this.logged_user = (user.supplier ? user.supplier._id : (
-      user.official_supplier ? user.official_supplier : (
-        user.logistic ? user.logistic.suppliers : (
-          user.official_logistic ? user.official_logistic.suppliers : undefined)))); //works fine
-
-    if (this.logged_user) {
-      this.escolhas = [
-        { name: 'GERAL' },
-        { name: 'EQUIPAMENTO' },
-      ];
-    } else {
-      this.escolhas = [
-        { name: 'GERAL' },
-        { name: 'EQUIPAMENTO' },
-        { name: 'FORNECEDOR' }];
-    }
+    this.escolhas = [
+      { name: "GERAL" },
+      { name: "EQUIPAMENTO" },
+      { name: "FORNECEDOR" },
+    ];
   }
 
-  changeSelect(event) {
-    
-  }
-
+  changeSelect(event) {}
 }

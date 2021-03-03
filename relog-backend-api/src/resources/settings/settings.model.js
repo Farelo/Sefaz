@@ -39,6 +39,10 @@ const settingSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
+    report_critical_absent:{
+        type: Boolean,
+        default: false
+    },
     enable_viagem_perdida: {
         type: Boolean,
         default: true
@@ -84,6 +88,7 @@ const validate_settings = (setting) => {
         clean_historic_moviments_time: Joi.number().min(0),
         no_signal_limit_in_days: Joi.number().min(0),
         missing_sinal_limit_in_days: Joi.number().min(0),
+        report_critical_absent: Joi.boolean(),
         enable_viagem_perdida: Joi.boolean(),
         enable_local_incorreto: Joi.boolean(),
         enable_viagem_atrasada: Joi.boolean(),

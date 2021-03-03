@@ -43,13 +43,13 @@
 
           <p>TIPO</p>
           <!-- <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" (ngModelChange)="changeSelect($event)"
-            class="selectEq"> -->
+            class="selectEq"> -->  
           <select [(ngModel)]="escolhaEquipamento" (clear)="onClear()" data-style="btn-primary" class="selectEq">
             <option value="">Escolha</option>
             <option>Inventário Geral</option>
             <option>Tempo de Permanência</option>
             <option>Tempo de Ausência</option>
-            <option>Relatório Crítico de Ausência</option>
+            <option *ngIf="currentUser?.role === 'masterAdmin'">Relatório Crítico de Ausência</option>
             <option>Bateria</option>
             <option>Quantidade</option>
             <option>Geral</option>
