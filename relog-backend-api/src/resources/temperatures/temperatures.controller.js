@@ -9,7 +9,7 @@ exports.createMany = async (allTemperatures) => {
    try {
       let currentPacking = null; 
       if (allTemperatures.length) { 
-         currentPacking = await packingsService.find_by_tag(allTemperatures[0].tag);
+         currentPacking = await packingsService.populatedFindByTag(allTemperatures[0].tag);
          if (currentPacking) {
             await temperaturesService.createMany(currentPacking, allTemperatures);
          } else {

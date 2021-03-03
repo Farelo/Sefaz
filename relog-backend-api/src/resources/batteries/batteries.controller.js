@@ -9,7 +9,7 @@ exports.createMany = async (allBatteries) => {
    try {
       let currentPacking = null; 
       if (allBatteries.length) { 
-         currentPacking = await packingsService.find_by_tag(allBatteries[0].tag); 
+         currentPacking = await packingsService.populatedFindByTag(allBatteries[0].tag); 
          if (currentPacking) {
             await batteriesService.createMany(currentPacking, allBatteries);
          } else {

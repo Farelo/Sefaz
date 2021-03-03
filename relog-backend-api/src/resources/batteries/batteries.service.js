@@ -15,32 +15,37 @@ exports.create = async (data) => {
 };
 
 exports.createMany = async (packing, batteryArray) => {
+   let maxTimestampIndex = -1;
    if (batteryArray.length) {
-      updatePackageLastMessage(packing, batteryArray[0]);
-   }
+      // procura o índice do elemento com timestamp mais atual: primeiro elemento ou o último
+      if (positionArray[0].timestamp >= positionArray[positionArray.length - 1].timestamp) maxTimestampIndex = 0;
+      else maxTimestampIndex = positionArray.length - 1;
 
-   for (const [index, battery] of batteryArray.entries()) {
-      try {
-         const newBattery = new Battery({
-            tag: packing.tag.code,
-            date: new Date(battery.date),
-            timestamp: battery.timestamp,
-            battery: battery.battery,
-            batteryVoltage: battery.batteryVoltage,
-         });
+      updatePackageLastMessage(packing, batteryArray[maxTimestampIndex]);
 
-         await newBattery.save().catch((err) => debug(err));
+      for (const [index, battery] of batteryArray.entries()) {
+         try {
+            const newBattery = new Battery({
+               tag: packing.tag.code,
+               date: new Date(battery.date),
+               timestamp: battery.timestamp,
+               battery: battery.battery,
+               batteryVoltage: battery.batteryVoltage,
+            });
 
-         if (index == batteryArray.length - 1) {
-            await newBattery
-               .save()
-               .then((doc) => referenceFromPackage(packing, doc))
-               .catch((err) => debug(err));
-         } else {
-            await newBattery.save();
+            await newBattery.save().catch((err) => debug(err));
+
+            if (index == maxTimestampIndex) {
+               await newBattery
+                  .save()
+                  .then((doc) => referenceFromPackage(packing, doc))
+                  .catch((err) => debug(err));
+            } else {
+               await newBattery.save();
+            }
+         } catch (error) {
+            debug(`Erro ao salvar a bateria do device ${packing.tag.code} | ${error}`);
          }
-      } catch (error) {
-         debug(`Erro ao salvar a bateria do device ${packing.tag.code} | ${error}`);
       }
    }
 };
@@ -91,7 +96,7 @@ exports.get = async ({ tag = null, start_date = null, end_date = null, max = 100
 
       if (!start_date && !end_date) options.limit = parseInt(max);
 
-      return await Battery.find(conditions, projection, options).select(["-created_at", "-__v"]);;
+      return await Battery.find(conditions, projection, options).select(["-created_at", "-__v"]);
    } catch (error) {
       throw new Error(error);
    }

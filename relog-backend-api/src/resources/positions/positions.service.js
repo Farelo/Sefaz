@@ -5,34 +5,39 @@ const { Position } = require("./positions.model");
 const { Packing } = require("../packings/packings.model");
 
 exports.createMany = async (packing, positionArray) => {
+   let maxTimestampIndex = -1;
    if (positionArray.length) {
-      updatePackageLastMessage(packing, positionArray[0]);
-   }
+      // procura o índice do elemento com timestamp mais atual: primeiro elemento ou o último
+      if (positionArray[0].timestamp >= positionArray[positionArray.length - 1].timestamp) maxTimestampIndex = 0;
+      else maxTimestampIndex = positionArray.length - 1;
 
-   for (const [index, position] of positionArray.entries()) {
-      if (position.accuracy <= 32000) {
-         try {
-            const newPosition = new Position({
-               tag: packing.tag.code,
-               date: new Date(position.date),
-               timestamp: position.timestamp,
-               latitude: position.latitude,
-               longitude: position.longitude,
-               accuracy: position.accuracy,
-            });
+      updatePackageLastMessage(packing, positionArray[maxTimestampIndex]);
 
-            // salva no banco | observação: não salva mensagens iguais porque o model possui
-            // índice unico e composto por tag e timestamp, e o erro de duplicidade nao interrompe o job
-            if (index == positionArray.length - 1) {
-               await newPosition
-                  .save()
-                  .then((newDoc) => referenceFromPackage(packing, newDoc))
-                  .catch((err) => debug(err));
-            } else {
-               await newPosition.save();
+      for (const [index, position] of positionArray.entries()) {
+         if (position.accuracy <= 32000) {
+            try {
+               const newPosition = new Position({
+                  tag: packing.tag.code,
+                  date: new Date(position.date),
+                  timestamp: position.timestamp,
+                  latitude: position.latitude,
+                  longitude: position.longitude,
+                  accuracy: position.accuracy,
+               });
+
+               // salva no banco | observação: não salva mensagens iguais porque o model possui
+               // índice unico e composto por tag e timestamp, e o erro de duplicidade nao interrompe o job
+               if (index == maxTimestampIndex) {
+                  await newPosition
+                     .save()
+                     .then((newDoc) => referenceFromPackage(packing, newDoc))
+                     .catch((err) => debug(err));
+               } else {
+                  await newPosition.save();
+               }
+            } catch (error) {
+               debug(`Erro ao salvar a posição do device ${packing.tag.code} | ${error}`);
             }
-         } catch (error) {
-            debug(`Erro ao salvar a posição do device ${packing.tag.code} | ${error}`);
          }
       }
    }
@@ -47,13 +52,13 @@ const updatePackageLastMessage = async (packing, lastMessage) => {
 const referenceFromPackage = async (packing, position) => {
    try {
       console.log(packing.tag.code);
-      console.log(position, packing.last_position);
-      console.log(position.timestamp, position.last_position.timestamp);
-      console.log(position.timestamp > position.last_position.timestamp);
+      console.log(packing.last_position, position);
+      console.log(packing.last_position.timestamp, position.timestamp);
+      console.log(packing.last_position.timestamp > position.timestamp);
 
       if (position.timestamp > packing.last_position.timestamp) {
-         console.log("eh maior", position.date, position.last_position.date);
-         console.log("eh maior", position.timestamp, position.last_position.timestamp);
+         console.log("eh maior", position.date, packing.last_position.date);
+         console.log("eh maior", position.timestamp, packing.last_position.timestamp);
          await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
       }
    } catch (error) {

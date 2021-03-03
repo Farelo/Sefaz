@@ -21,31 +21,36 @@ exports.create = async (data) => {
  * @param {*} temperatureArray
  */
 exports.createMany = async (packing, temperatureArray) => {
+   let maxTimestampIndex = -1;
    if (temperatureArray.length) {
-      updatePackageLastMessage(packing, temperatureArray[0]);
-   }
+      // procura o índice do elemento com timestamp mais atual: primeiro elemento ou o último
+      if (positionArray[0].timestamp >= positionArray[positionArray.length - 1].timestamp) maxTimestampIndex = 0;
+      else maxTimestampIndex = positionArray.length - 1;
 
-   for (const [index, temperature] of temperatureArray.entries()) {
-      try {
-         const newTemperature = new Temperature({
-            tag: packing.tag.code,
-            date: new Date(temperature.date),
-            timestamp: temperature.timestamp,
-            value: temperature.value,
-         });
+      updatePackageLastMessage(packing, temperatureArray[maxTimestampIndex]);
 
-         await newTemperature.save().catch((err) => debug(err));
+      for (const [index, temperature] of temperatureArray.entries()) {
+         try {
+            const newTemperature = new Temperature({
+               tag: packing.tag.code,
+               date: new Date(temperature.date),
+               timestamp: temperature.timestamp,
+               value: temperature.value,
+            });
 
-         if (index == temperatureArray.length - 1) {
-            await newTemperature
-               .save()
-               .then((doc) => referenceFromPackage(packing, doc))
-               .catch((err) => debug(err));
-         } else {
-            await newTemperature.save();
+            await newTemperature.save().catch((err) => debug(err));
+
+            if (index == maxTimestampIndex) {
+               await newTemperature
+                  .save()
+                  .then((doc) => referenceFromPackage(packing, doc))
+                  .catch((err) => debug(err));
+            } else {
+               await newTemperature.save();
+            }
+         } catch (error) {
+            debug(`Erro ao salvar a temperatura do device ${packing.tag.code} | ${error}`);
          }
-      } catch (error) {
-         debug(`Erro ao salvar a temperatura do device ${packing.tag.code} | ${error}`);
       }
    }
 };

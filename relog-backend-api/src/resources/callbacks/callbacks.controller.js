@@ -27,6 +27,7 @@ exports.dots = async (req, res) => {
       }
       res.status(HttpStatus.CREATED).send({});
    } catch (error) {
+      console.log(error);
       return res.status(HttpStatus.BAD_REQUEST).send({ message: error.message });
    }
 };
@@ -34,8 +35,14 @@ exports.dots = async (req, res) => {
 const resolvePosition = async (tag, data) => {
    await positionsController.createMany(
       data.map((element) => {
-         let newTimestamp = parseInt(new Date(element.date).getTime());
-         newTimestamp = newTimestamp.toString().length == 10 ? newTimestamp : newTimestamp / 1000;
+         let newTimestamp = 0
+         if(element.timestamp){
+            newTimestamp = element.timestamp.toString().length == 10 ? element.timestamp : element.timestamp / 1000;
+         } else{
+            newTimestamp = parseInt(new Date(element.date).getTime());
+            newTimestamp = newTimestamp.toString().length == 10 ? newTimestamp : newTimestamp / 1000;
+         }
+         
          return {
             tag: tag,
             date: element.date,
@@ -51,8 +58,14 @@ const resolvePosition = async (tag, data) => {
 const resolveTemperature = async (tag, data) => {
    await temperaturesController.createMany(
       data.map((element) => {
-         let newTimestamp = parseInt(new Date(element.date).getTime());
-         newTimestamp = newTimestamp.toString().length == 10 ? newTimestamp : newTimestamp / 1000;
+         let newTimestamp = 0
+         if(element.timestamp){
+            newTimestamp = element.timestamp.toString().length == 10 ? element.timestamp : element.timestamp / 1000;
+         } else{
+            newTimestamp = parseInt(new Date(element.date).getTime());
+            newTimestamp = newTimestamp.toString().length == 10 ? newTimestamp : newTimestamp / 1000;
+         }
+         
          return {
             tag: tag,
             date: element.date,
@@ -66,8 +79,13 @@ const resolveTemperature = async (tag, data) => {
 const resolveBattery = async (tag, data) => {
    await batteriesController.createMany(
       data.map((element) => {
-         let newTimestamp = parseInt(new Date(element.date).getTime());
-         newTimestamp = newTimestamp.toString().length == 10 ? newTimestamp : newTimestamp / 1000;
+         let newTimestamp = 0
+         if(element.timestamp){
+            newTimestamp = element.timestamp.toString().length == 10 ? element.timestamp : element.timestamp / 1000;
+         } else{
+            newTimestamp = parseInt(new Date(element.date).getTime());
+            newTimestamp = newTimestamp.toString().length == 10 ? newTimestamp : newTimestamp / 1000;
+         }
          return {
             tag: tag,
             date: element.date,
