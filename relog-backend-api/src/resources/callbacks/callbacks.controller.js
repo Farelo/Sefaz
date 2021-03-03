@@ -6,6 +6,7 @@ const batteriesController = require("../batteries/batteries.controller");
 
 exports.dots = async (req, res) => {
    let actionData = req.body;
+   console.log(actionData);
    try {
       for (let signal of actionData.signals) {
          switch (signal.UUID) {

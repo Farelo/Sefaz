@@ -26,11 +26,11 @@ exports.get = async (req, res) => {
 
 exports.createMany = async (allPositions) => {
    try {
-      let currentPosition = null; 
+      let currentPacking = null; 
       if (allPositions.length) { 
-         currentPosition = await packingsService.find_by_tag(allPositions[0].tag);
-         if (currentPosition) {
-            await positionsService.createMany(currentPosition, allPositions);
+         currentPacking = await packingsService.populatedFindByTag(allPositions[0].tag);
+         if (currentPacking) {
+            await positionsService.createMany(currentPacking, allPositions);
          } else {
             throw new Error(`The tag ${allPositions[0].tag} doesn't exists`);
          }

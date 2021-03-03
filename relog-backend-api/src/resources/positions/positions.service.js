@@ -46,7 +46,16 @@ const updatePackageLastMessage = async (packing, lastMessage) => {
 
 const referenceFromPackage = async (packing, position) => {
    try {
-      await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
+      console.log(packing.tag.code);
+      console.log(position, packing.last_position);
+      console.log(position.timestamp, position.last_position.timestamp);
+      console.log(position.timestamp > position.last_position.timestamp);
+
+      if (position.timestamp > packing.last_position.timestamp) {
+         console.log("eh maior", position.date, position.last_position.date);
+         console.log("eh maior", position.timestamp, position.last_position.timestamp);
+         await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
+      }
    } catch (error) {
       debug(error);
    }
@@ -85,7 +94,7 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
 
       if (!start_date && !end_date) options.limit = parseInt(max);
       console.log(conditions);
-      device_data = await Position.find(conditions, projection, options).select(["-created_at", "-__v"]);;
+      device_data = await Position.find(conditions, projection, options).select(["-created_at", "-__v"]);
 
       return device_data;
    } catch (error) {

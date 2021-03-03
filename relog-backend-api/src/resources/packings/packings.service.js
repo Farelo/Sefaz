@@ -51,11 +51,22 @@ exports.get_packing = async (id) => {
 
 exports.find_by_tag = async (tag) => {
    try {
-      const packing = await Packing.findByTag(tag)
+      return await Packing.findByTag(tag)
          .populate("family", ["_id", "code", "company"])
          .populate("project", ["_id", "name"]);
+   } catch (error) {
+      throw new Error(error);
+   }
+};
 
-      return packing;
+exports.populatedFindByTag = async (tag) => {
+   try {
+      return await Packing.findByTag(tag)
+         .populate("family", ["_id", "code", "company"])
+         .populate("project", ["_id", "name"])
+         .populate("last_position")
+         .populate("last_battery")
+         .populate("last_temperature")
    } catch (error) {
       throw new Error(error);
    }
