@@ -18,8 +18,8 @@ exports.createMany = async (packing, batteryArray) => {
    let maxTimestampIndex = -1;
    if (batteryArray.length) {
       // procura o índice do elemento com timestamp mais atual: primeiro elemento ou o último
-      if (positionArray[0].timestamp >= positionArray[positionArray.length - 1].timestamp) maxTimestampIndex = 0;
-      else maxTimestampIndex = positionArray.length - 1;
+      if (batteryArray[0].timestamp >= batteryArray[batteryArray.length - 1].timestamp) maxTimestampIndex = 0;
+      else maxTimestampIndex = batteryArray.length - 1;
 
       updatePackageLastMessage(packing, batteryArray[maxTimestampIndex]);
 
