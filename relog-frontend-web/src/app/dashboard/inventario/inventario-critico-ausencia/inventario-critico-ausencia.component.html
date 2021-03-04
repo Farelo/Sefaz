@@ -35,7 +35,7 @@
         <input
           type="text"
           class="form-control mr-4"
-          placeholder="Buscar embalagem por família, serial, tag, tipo ou ponto de controle"
+          placeholder="Buscar embalagem por família, serial, tag, tipo, nome de ponto de controle e status"
           aria-describedby="basic-addon1"
           (keyup)="searchEvent($event)"
           style="line-height: 1.2; height: 2rem; font-size: 0.9rem"
@@ -153,7 +153,7 @@
                 </td>
                 <td>{{ item.actualCP }}</td>
                 <td>{{ item.dateActualCP | date: "dd/MM/yy HH:mm:ss" }}</td>
-                <td>{{ item.status | packingStatus }}</td>
+                <td>{{ item.status }}</td>
                 <td>{{ item.lastMessage | date: "dd/MM/yy HH:mm:ss" }}</td>
               </tr>
               <tr *ngIf="!item.isCollapsed">

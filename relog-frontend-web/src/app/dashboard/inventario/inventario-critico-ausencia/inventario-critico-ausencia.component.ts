@@ -42,19 +42,7 @@ export class InventarioCriticoAusencia implements OnInit {
     this.loadTableHeaders();
 
     //Loads the data in the table
-    this.reportService
-      .getCriticalAbsent(this.absentDays)
-      .subscribe((result: any[]) => {
-        this.originalListOfEvents = result;
-
-        this.actualListOfEvents = this.originalListOfEvents;
-
-        this.setInitialCollapse(true);
-
-        this.calculateFrequencyReport(this.actualListOfEvents);
-
-        this.reportAvailable = true;
-      });
+    this.applyFilter();
   }
 
   applyFilter() {
@@ -66,6 +54,11 @@ export class InventarioCriticoAusencia implements OnInit {
       .getCriticalAbsent(this.absentDays)
       .subscribe((result: any[]) => {
         this.originalListOfEvents = result;
+
+        this.originalListOfEvents.map(elem=>{
+          elem.status = this.packingStatus.transform(elem.status)
+          return elem;
+        })
 
         this.actualListOfEvents = this.originalListOfEvents;
 
@@ -107,6 +100,7 @@ export class InventarioCriticoAusencia implements OnInit {
             item.lastOwnerOrSupplier.toLowerCase().indexOf(elem) !== -1 ||
             item.lastOwnerOrSupplierType.toLowerCase().indexOf(elem) !== -1 ||
             item.actualCP.toLowerCase().indexOf(elem) !== -1 ||
+            item.status.toLowerCase().indexOf(elem) !== -1 ||
             !elem);
       });
 
