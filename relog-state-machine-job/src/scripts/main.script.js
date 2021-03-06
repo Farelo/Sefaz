@@ -1,4 +1,3 @@
-const ora = require("ora");
 const cron = require("node-cron");
 
 const { Setting } = require("../models/settings.model");
@@ -8,8 +7,7 @@ const { Temperature } = require("../models/temperature.model");
 const { Packing } = require("../models/packings.model");
 const { ControlPoint } = require("../models/control_points.model");
 
-const runSM = require("./runSM.script");
-const spinner = ora("State Machine working...");
+const runSM = require("./runSM.script"); 
 
 module.exports = async () => {
    let setting = await getSettings();
@@ -22,10 +20,10 @@ module.exports = async () => {
          nextSemaphor = false;
 
          setTimeout(async () => {
-            spinner.start();
+            // spinner.start();
 
-            console.log("START");
-            console.log(new Date().toISOString());
+            console.log("Job running ...");
+            console.log("Started at", new Date().toISOString());
 
             setting = await getSettings();
 
@@ -42,9 +40,9 @@ module.exports = async () => {
 
             await iteratePackings(setting, packings, controlPoints);
 
-            spinner.succeed("Finished!");
+            console.log("Finished at", new Date().toISOString());
 
-            //open the semmaphor
+            //open the semaphore
             nextSemaphor = true;
          }, setting.job_schedule_time_in_sec * 1000);
       }
