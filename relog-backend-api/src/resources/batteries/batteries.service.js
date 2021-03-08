@@ -50,15 +50,26 @@ exports.createMany = async (packing, batteryArray) => {
    }
 };
 
-const updatePackageLastMessage = async (packing, lastMessage) => {
-   let update_attrs = {};
-   update_attrs.last_message_signal = lastMessage.date;
-   await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+const updatePackageLastMessage = async (packing, newMessage) => {
+   if (packing.last_message_signal) {
+      if (new Date(newMessage.date).getTime() > new Date(packing.last_message_signal).getTime()) {
+         await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+      }
+   } else {
+      await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+   }
 };
 
-const referenceFromPackage = async (packing, doc) => {
+const referenceFromPackage = async (packing, newBattery) => {
    try {
-      await Packing.findByIdAndUpdate(packing._id, { last_battery: doc._id }, { new: true });
+      if (packing.last_battery) {
+         if (newBattery.timestamp > packing.last_battery.timestamp) {
+            await Packing.findByIdAndUpdate(packing._id, { last_battery: newBattery._id }, { new: true });
+         }
+      } else {
+         await Packing.findByIdAndUpdate(packing._id, { last_battery: newBattery._id }, { new: true });
+      }
+      // await Packing.findByIdAndUpdate(packing._id, { last_battery: doc._id }, { new: true });
    } catch (error) {
       debug(error);
    }

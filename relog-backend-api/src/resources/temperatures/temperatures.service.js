@@ -24,7 +24,8 @@ exports.createMany = async (packing, temperatureArray) => {
    let maxTimestampIndex = -1;
    if (temperatureArray.length) {
       // procura o índice do elemento com timestamp mais atual: primeiro elemento ou o último
-      if (temperatureArray[0].timestamp >= temperatureArray[temperatureArray.length - 1].timestamp) maxTimestampIndex = 0;
+      if (temperatureArray[0].timestamp >= temperatureArray[temperatureArray.length - 1].timestamp)
+         maxTimestampIndex = 0;
       else maxTimestampIndex = temperatureArray.length - 1;
 
       updatePackageLastMessage(packing, temperatureArray[maxTimestampIndex]);
@@ -55,15 +56,25 @@ exports.createMany = async (packing, temperatureArray) => {
    }
 };
 
-const updatePackageLastMessage = async (packing, lastMessage) => {
-   let update_attrs = {};
-   update_attrs.last_message_signal = lastMessage.date;
-   await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+const updatePackageLastMessage = async (packing, newMessage) => {
+   if (packing.last_message_signal) {
+      if (new Date(newMessage.date).getTime() > new Date(packing.last_message_signal).getTime()) {
+         await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+      }
+   } else {
+      await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+   }
 };
 
-const referenceFromPackage = async (packing, doc) => {
+const referenceFromPackage = async (packing, newTemperature) => {
    try {
-      await Packing.findByIdAndUpdate(packing._id, { last_temperature: doc._id }, { new: true });
+      if (packing.last_temperature) {
+         if (newTemperature.timestamp > packing.last_temperature.timestamp) {
+            await Packing.findByIdAndUpdate(packing._id, { last_temperature: newTemperature._id }, { new: true });
+         }
+      } else {
+         await Packing.findByIdAndUpdate(packing._id, { last_temperature: newTemperature._id }, { new: true });
+      }
    } catch (error) {
       debug(error);
    }

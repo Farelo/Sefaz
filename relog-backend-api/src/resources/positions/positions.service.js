@@ -43,24 +43,25 @@ exports.createMany = async (packing, positionArray) => {
    }
 };
 
-const updatePackageLastMessage = async (packing, lastMessage) => {
-   let update_attrs = {};
-   update_attrs.last_message_signal = lastMessage.date;
-   await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+const updatePackageLastMessage = async (packing, newMessage) => {
+   if (packing.last_message_signal) {
+      if (new Date(newMessage.date).getTime() > new Date(packing.last_message_signal).getTime()) {
+         await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+      }
+   } else {
+      await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+   }
 };
 
-const referenceFromPackage = async (packing, position) => {
+const referenceFromPackage = async (packing, newPosition) => {
    try {
-      console.log(packing.tag.code);
-      console.log(packing.last_position, position);
-      console.log(packing.last_position.timestamp, position.timestamp);
-      console.log(packing.last_position.timestamp > position.timestamp);
-
-      if (position.timestamp > packing.last_position.timestamp) {
-         console.log("eh maior", position.date, packing.last_position.date);
-         console.log("eh maior", position.timestamp, packing.last_position.timestamp);
-         await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
-      }
+      if (packing.last_position) {
+         if (newPosition.timestamp > packing.last_position.timestamp) {
+            await Packing.findByIdAndUpdate(packing._id, { last_position: newPosition._id }, { new: true });
+         }
+      } else {
+         await Packing.findByIdAndUpdate(packing._id, { last_position: newPosition._id }, { new: true });
+      } 
    } catch (error) {
       debug(error);
    }
