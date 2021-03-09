@@ -1,0 +1,52 @@
+<div class="modalFilho">
+  <div class="header">
+
+    <h2 style="color: #354052; margin-bottom: 0px;">Dispositivo Removido</h2>
+
+    <div class="col-12 no-padding">
+      <p class="alerta-badges">
+        <span class="badge badge-secondary">Código: {{ alerta.family.code }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{ alerta.serial }}</span>
+        <span class="badge badge-secondary" style="margin-left:5px;">Tag: {{ alerta.tag.code }}</span>
+      </p>
+
+      <img id="ver-no-mapa" (click)="visualizeOnMap()" tooltip="Visualizar no mapa" placement="left" src="assets/images/distancia.png"
+        height="25" style="float: right;">
+    </div>
+
+    <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modalBody">
+
+    <div class="row">
+      <div class="col-12">
+        <p class="titulo-modal">ÚLTIMO SINAL:</p>
+        <br>
+        <p> {{ alerta.last_position ?
+                (alerta.last_position.date | date: 'dd/MM/yy HH:mm:ss' : '+00:00') 
+                : "Sem Registro" }} </p>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <p class="titulo-modal">ÚLTIMO LOCAL:</p>
+        <br>
+        <p> {{ alerta?.last_event_record?.control_point?.name || mConstants.NO_REGISTER }} </p>
+        <p *ngIf="alerta?.last_event_record?.type == 'inbound'"> Tipo: {{ mConstants.INBOUND }} </p>
+        <p *ngIf="alerta?.last_event_record?.type == 'outbound'"> Tipo: {{ mConstants.OUTBOUND }} </p>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <p class="titulo-modal">NÍVEL DA BATERIA:</p><br>
+        <p style="font-weight: bold;"> {{ alerta.last_battery ? ((alerta.last_battery.battery | round) + '%') : mConstants.NO_REGISTER }} </p>
+      </div>
+    </div>
+
+  </div>
+</div>

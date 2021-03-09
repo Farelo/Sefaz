@@ -5,6 +5,7 @@ const { axios } = require("../../tools/axios");
 const Position = require("../../models/position.model");
 const Temperature = require("../../models/temperature.model");
 const Battery = require("../../models/battery.model");
+const Button = require("../../models/button.model");
 
 // const axios = require("axios");
 const qs = require("qs");
@@ -139,4 +140,8 @@ exports.createManyTemperatureMessages = async (packing, messages) => {
 
 exports.createManyBatteryMessages = async (packing, messages) => {
    await Battery.createMany(packing, messages);
+};
+
+exports.createManyButtonMessages = async (packing, messages) => {
+   await Button.createMany(packing, messages);
 };

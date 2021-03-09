@@ -54,5 +54,9 @@ module.exports = {
   PERMANENCIA_EXCEDIDA: {
     key: 'tempo_de_permanencia_excedido',
     alert: 'tempo_de_permanencia_excedido'
+  },
+  DISPOSITIVO_REMOVIDO: {
+    key: 'dispositivo_removido',
+    alert: 'dispositivo_removido'
   }
 }

@@ -22,6 +22,13 @@ exports.get_alerts = async () => {
                family: family._id,
                low_battery: true,
             }).populate("last_current_state_history");
+
+
+            const packings_with_button_false = await Packing.find({
+               active: true,
+               family: family._id,
+               detector_switch: false,
+            }).populate("last_current_state_history");
             
             const packings_with_permanence_time_exceeded = await Packing.find({
                active: true,
@@ -63,6 +70,18 @@ exports.get_alerts = async () => {
                data_temp.push(permanence_time_exceeded);
             }
 
+            if (packings_with_button_false.length > 0) {
+               const buttonFalse = {
+                  family_id: family._id,
+                  family_code: family.code,
+                  company: family.company,
+                  current_state: "dispositivo_removido",
+                  qtd: packings_with_button_false.length,
+               };
+
+               data_temp.push(buttonFalse);
+            }
+
             return data_temp;
          })
       );
@@ -75,27 +94,37 @@ exports.get_alerts = async () => {
 
 exports.get_alerts_by_family = async (family_id, current_state) => {
    try {
-      const packings =
-         current_state === "bateria_baixa"
-            ? await Packing.find({ active: true, family: family_id, low_battery: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
-                 .populate("family", "code")
-                 .populate("last_position", "date timestamp latitude longitude accuracy")
-                 .populate("last_battery", "date timestamp battery batteryVoltage")
-                 .populate("last_event_record", "control_point type created_at")
-                 .populate("last_current_state_history", "type created_at")
-            : current_state === "tempo_de_permanencia_excedido"
-            ? await Packing.find({ active: true, family: family_id, permanence_time_exceeded: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
-                 .populate("family", "code")
-                 .populate("last_position", "date timestamp latitude longitude accuracy")
-                 .populate("last_battery", "date timestamp battery batteryVoltage")
-                 .populate("last_event_record", "control_point type created_at")
-                 .populate("last_current_state_history", "type created_at")
-            : await Packing.find({ active: true, family: family_id, current_state: current_state }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
-                 .populate("family", "code")
-                 .populate("last_position", "date timestamp latitude longitude accuracy")
-                 .populate("last_battery", "date timestamp battery batteryVoltage")
-                 .populate("last_event_record", "control_point type created_at")
-                 .populate("last_current_state_history", "type created_at");
+
+      let packings = [];
+      if(current_state === "bateria_baixa"){
+         packings = await Packing.find({ active: true, family: family_id, low_battery: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
+         .populate("family", "code")
+         .populate("last_position", "date timestamp latitude longitude accuracy")
+         .populate("last_battery", "date timestamp battery batteryVoltage")
+         .populate("last_event_record", "control_point type created_at")
+         .populate("last_current_state_history", "type created_at")
+      }else if(current_state === "tempo_de_permanencia_excedido"){
+         packings = await Packing.find({ active: true, family: family_id, permanence_time_exceeded: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
+         .populate("family", "code")
+         .populate("last_position", "date timestamp latitude longitude accuracy")
+         .populate("last_battery", "date timestamp battery batteryVoltage")
+         .populate("last_event_record", "control_point type created_at")
+         .populate("last_current_state_history", "type created_at")
+      }else if(current_state === "dispositivo_removido"){
+         packings = await Packing.find({ active: true, family: family_id, detector_switch: false }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
+         .populate("family", "code")
+         .populate("last_position", "date timestamp latitude longitude accuracy")
+         .populate("last_battery", "date timestamp battery batteryVoltage")
+         .populate("last_event_record", "control_point type created_at")
+         .populate("last_current_state_history", "type created_at")
+      }else{
+         packings = await Packing.find({ active: true, family: family_id, current_state: current_state }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
+         .populate("family", "code")
+         .populate("last_position", "date timestamp latitude longitude accuracy")
+         .populate("last_battery", "date timestamp battery batteryVoltage")
+         .populate("last_event_record", "control_point type created_at")
+         .populate("last_current_state_history", "type created_at");
+      }
 
       const data = await Promise.all(packings.map(map_last_event_record));
 

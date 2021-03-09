@@ -496,6 +496,10 @@ export class Spiralize {
                 pin = { url: 'assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
                 break;
 
+            case constants.ALERTS.DEVICE_REMOVED:
+                pin = { url: 'assets/images/pin_removido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                break;
+            
             default:
                 pin = { url: 'assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
                 break;
@@ -544,6 +548,10 @@ export class Spiralize {
     
           case constants.ALERTS.MISSING:
             pin = "#3a9ca6";
+            break;
+    
+          case constants.ALERTS.DEVICE_REMOVED:
+            pin = "#a349a4";
             break;
         }
     

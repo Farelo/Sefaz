@@ -51,4 +51,7 @@ export class Packing {
     time: number;
     isIncotida: boolean;
   };
+  detector_switch: boolean;
+  last_detectir_switch: boolean;
+
 }

@@ -14,6 +14,7 @@ export const constants = {
   MISSING: 'Embalagem Ausente',
   NORMAL: 'Embalagem Controlada',
   PERMANENCE_EXCEEDED: 'Tempo de Permanência excedido',
+  DEVICE_REMOVED: 'Dispositivo removido',
 
   //Alerts from api
   ALERTS: {
@@ -28,7 +29,8 @@ export const constants = {
     UNABLE_NO_SIGNAL: 'desabilitada_sem_sinal',
     ANALISYS: 'analise',
     TRAVELING: 'viagem_em_prazo',
-    CORRECT_LOCAL: 'local_correto'
+    CORRECT_LOCAL: 'local_correto',
+    DEVICE_REMOVED: 'dispositivo_removido'
   },
 
   ALERTS_CODE: {
@@ -43,7 +45,8 @@ export const constants = {
     UNABLE_NO_SIGNAL: 9,
     ANALISYS: 10,
     TRAVELING: 11,
-    CORRECT_LOCAL: 12
+    CORRECT_LOCAL: 12,
+    DEVICE_REMOVED: 13
   },
 
   NO_REGISTER: "Sem Registro",

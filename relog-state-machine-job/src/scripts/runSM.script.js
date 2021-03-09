@@ -16,6 +16,7 @@ const evaluatesIfPackingIsWithBatteryLow = require('./evaluators/evaluates_if_pa
 const evaluatesIfPackingIsInIncorrectLocal = require('./evaluators/evaluates_if_packing_is_in_incorrect_local')
 const evaluatesIfPackingIsWithPermanenceTimeExceeded = require('./evaluators/evaluates_if_packing_is_with_permanence_time_exceeded')
 const evaluatesIfPackingIsTraveling = require('./evaluators/evaluates_if_packing_is_traveling')
+const evaluatesIfPackingIsWithButtonFalse = require('./evaluators/evaluates_if_packing_is_with_button_false')
 
 const getLastMessage = (package) => {
     if(package.last_message_signal) return new Date(package.last_message_signal).valueOf()
@@ -23,8 +24,9 @@ const getLastMessage = (package) => {
     let lastPosition = package.last_position ? package.last_position.timestamp : 0;
     let lastBattery = package.last_battery ? package.last_battery.timestamp : 0;
     let lastTemperature = package.last_temperature ? package.last_temperature.timestamp : 0;
+    let lastButton = package.last_detector_switch ? package.last_detector_switch.timestamp : 0;
 
-    return _.max(lastPosition, lastBattery, lastTemperature) * 1000;
+    return _.max(lastPosition, lastBattery, lastTemperature, lastButton) * 1000;
 }
 
 module.exports = async (setting, packing, controlPoints) => {
@@ -70,6 +72,9 @@ module.exports = async (setting, packing, controlPoints) => {
                 return null
             }
         }
+
+        // BOTAO Alps
+        await evaluatesIfPackingIsWithButtonFalse(packing);
 
         switch (packing.current_state) {
             case STATES.ANALISE.key:
@@ -428,6 +433,7 @@ module.exports = async (setting, packing, controlPoints) => {
 
                 break
         }
+
     } catch (error) {
         //console.error(error)
         throw new Error(error)

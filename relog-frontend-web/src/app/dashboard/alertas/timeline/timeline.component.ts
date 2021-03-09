@@ -61,7 +61,8 @@ export class TimelineComponent implements OnInit {
         || ((constants.ALERTS.LATE == elem.current_state) && this.settings.enable_viagem_atrasada)            //4
         || ((constants.ALERTS.PERMANENCE_TIME == elem.current_state))                                         //5
         || ((constants.ALERTS.NO_SIGNAL == elem.current_state) && this.settings.enable_sem_sinal)             //6
-        || ((constants.ALERTS.MISSING == elem.current_state) && this.settings.enable_perdida)                 //7
+        || ((constants.ALERTS.MISSING == elem.current_state) && this.settings.enable_perdida)
+        || ((constants.ALERTS.DEVICE_REMOVED == elem.current_state))        //7
       });
       
       // console.log(this.listOfAlerts);
@@ -114,6 +115,10 @@ export class TimelineComponent implements OnInit {
         result = 7;
         break;
 
+      case constants.ALERTS.DEVICE_REMOVED:
+        result = 13;
+        break;
+  
       default:
         result = 0;
     }
@@ -153,7 +158,11 @@ export class TimelineComponent implements OnInit {
       case constants.ALERTS.MISSING:
         result = 'Embalagem perdida';
         break;
-      
+ 
+      case constants.ALERTS.DEVICE_REMOVED:
+        result = 'Dispositivo removido';
+        break;  
+
       default:
         result = "Não identificado";
     }

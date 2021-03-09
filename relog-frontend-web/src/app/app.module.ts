@@ -49,6 +49,7 @@ import { AlertaEmbalagemAtrasadaComponent } from "./shared/modal-alerta/alerta-e
 import { AlertaLocalIncorretoComponent } from "./shared/modal-alerta/alerta-local-incorreto/alerta-local-incorreto.component";
 import { AlertaPermanenciaComponent } from "./shared/modal-alerta/alerta-permanencia/alerta-permanencia.component";
 import { AlertaEmbalagemPerdidaComponent } from "./shared/modal-alerta/alerta-embalagem-perdida/alerta-embalagem-perdida.component";
+import { AlertaDispositivoRemovidoComponent } from "./shared/modal-alerta/alerta-dispositivo-removido/alerta-dispositivo-removido.component"
 import { SidebarModule } from "ng-sidebar";
 import { CreateUserComponent } from "./shared/modal-user/create-user/create-user.component";
 import { NgSelectModule } from "@ng-select/ng-select";
@@ -71,6 +72,7 @@ import { DateTimePickerComponent } from "./shared/date-time-picker/date-time-pic
     AlertaPermanenciaComponent,
     AlertaEmbalagemPerdidaComponent,
     AlertaSemSinalComponent,
+    AlertaDispositivoRemovidoComponent,
     ModalRastComponent,
     ModalUserComponent,
     ModalInvComponent,
@@ -139,6 +141,7 @@ import { DateTimePickerComponent } from "./shared/date-time-picker/date-time-pic
     AlertaPermanenciaComponent,
     AlertaEmbalagemPerdidaComponent,
     AlertaSemSinalComponent,
+    AlertaDispositivoRemovidoComponent,
     ModalRastComponent,
     AbscenseModalComponent,
     ModalSettings,

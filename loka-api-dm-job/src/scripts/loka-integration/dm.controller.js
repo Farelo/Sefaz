@@ -47,6 +47,12 @@ const fetchAndSaveSensors = async (packing, startDate, endDate, cookie) => {
       //BATTERY
       let allBattery = retrieveBattery(result);
       if (allBattery.length > 0) await dm_service.createManyBatteryMessages(packing, allBattery);
+
+      //ALPS BUTTON
+      let allButton = retrieveButton(result);
+      if (allButton.length > 0) await dm_service.createManyButtonMessages(packing, allButton);
+
+
       return result;
    } catch (error) {
       debug(error);
@@ -90,6 +96,27 @@ const retrieveBattery = (sensorsArray) => {
    return result;
 };
 
+
+const retrieveButton = (sensorsArray) => {
+   let result = [];
+
+   sensorsArray.forEach((sigfoxMessage) => {
+      let existentButton = searchProperty("Detector Switch", sigfoxMessage.messageDecoded);
+
+      if (existentButton) {
+
+         existentButton == "True" ?  existentButton = true : existentButton = false; 
+   
+         result.push({
+            timestamp: sigfoxMessage.timestamp,
+            date: sigfoxMessage.date,
+            detector_switch: existentButton
+         });
+      }
+   });
+   return result;
+};
+
 /**
  * Função para varrer o array messageDecoded retornado pela LOKA que contem subarrays com informações dos sensores.
  * Exemplo de messageDecoded:
@@ -118,6 +145,10 @@ const searchProperty = (propToFind, messageDecoded) => {
 
          if (propToFind === "Battery Status") {
             return translateALPSBattery(propertySet[1]);
+         }
+
+         if (propToFind === "Detector Switch") {
+           return propertySet[1].toString(propertySet[1])
          }
       } catch (error) {
          debug(error);
