@@ -164,7 +164,7 @@ exports.create_many = async (req, res) => {
          log: "create_packing_many",
          newData: current_packing,
       });
-      await subPacking(current_packing.tag.code);
+      // await subPacking(current_packing.tag.code);
       packings.push(current_packing);
    }
 
