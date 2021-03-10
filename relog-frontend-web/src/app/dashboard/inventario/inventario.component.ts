@@ -63,12 +63,12 @@ export class InventarioComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // this.connection.unsubscribe();
   }
-
-  public currentUser: any = {};
+ 
+  public currentSettings: any = {};
 
   /////////////
-  constructor(private auth: AuthenticationService) {
-    this.currentUser = this.auth.currentUser();
+  constructor(private auth: AuthenticationService) { 
+    this.currentSettings = this.auth.currentSettings(); 
 
     this.escolhas = [
       { name: "GERAL" },

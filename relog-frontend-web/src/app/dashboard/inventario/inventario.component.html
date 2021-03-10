@@ -49,7 +49,7 @@
             <option>Inventário Geral</option>
             <option>Tempo de Permanência</option>
             <option>Tempo de Ausência</option>
-            <option *ngIf="currentUser?.role === 'masterAdmin'">Relatório Crítico de Ausência</option>
+            <option *ngIf="currentSettings?.report_critical_absent">Relatório Crítico de Ausência</option>
             <option>Bateria</option>
             <option>Quantidade</option>
             <option>Geral</option>
