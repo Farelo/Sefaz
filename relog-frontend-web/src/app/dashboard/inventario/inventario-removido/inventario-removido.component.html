@@ -65,13 +65,13 @@
           <tbody>
             <tr
               *ngFor="
-                let packing of listOfBattery
+                let packing of listOfRemoved
                   | paginate
                     : {
                         id: 'battery',
                         itemsPerPage: 10,
-                        currentPage: listOfBatteryActualPage,
-                        totalItems: listOfBattery.length
+                        currentPage: listOfRemovedActualPage,
+                        totalItems: listOfRemoved.length
                       }
               "
             >
@@ -104,14 +104,14 @@
 
         <div
           class="classVazio"
-          *ngIf="!selectedFamily && listOfBattery.length < 1"
+          *ngIf="!selectedFamily && listOfRemoved.length < 1"
         >
           Selecione um equipamento.
         </div>
 
         <div
           class="classVazio"
-          *ngIf="selectedFamily && listOfBattery.length < 1"
+          *ngIf="selectedFamily && listOfRemoved.length < 1"
         >
           Não há resultado para este filtro.
         </div>

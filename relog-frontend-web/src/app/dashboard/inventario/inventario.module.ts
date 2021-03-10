@@ -29,6 +29,7 @@ import { CriticalAbsentModalComponent } from './inventario-critico-ausencia/moda
 import { InventarioCriticoAusencia } from './inventario-critico-ausencia/inventario-critico-ausencia.component';
 import { NguiMapModule } from '@ngui/map';
 import { constants } from 'environments/constants';
+import { InventarioRemovidoComponent } from './inventario-removido/inventario-removido.component';
 
 @NgModule({
   imports: [
@@ -59,6 +60,7 @@ import { constants } from 'environments/constants';
     InventarioBateriaComponent,
     InventarioQuantidadeComponent,
     InventarioEquipamentoGeralComponent,
+    InventarioRemovidoComponent,
     FornecedorComponent,
     InventarioAusenciaComponent,
     InventarioPosicoesComponent,
