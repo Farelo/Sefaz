@@ -168,20 +168,21 @@ const findActualControlPoint = async (packing, allControlPoints, settings) => {
  * @param {*} allControlPoints
  */
 const findPolygonalIntersection = async (packing, allControlPoints) => {
-   let myActualControlPoint = null;
+   let intersectionsWithCP = [];
 
-   allControlPoints.some((controlPointToTest) => {
-      let isInsideControlePoint = false;
-
-      if (intersectionpoly(packing, controlPointToTest)) {
-         myActualControlPoint = controlPointToTest;
-         isInsideControlePoint = true;
-      }
-
-      return isInsideControlePoint;
+   allControlPoints.forEach((controlPointToTest) => {
+      const { cp, area } = intersectionpoly(packing, controlPointToTest);
+      if (cp) intersectionsWithCP.push({ cp, area });
    });
 
-   if (myActualControlPoint) return { cp: myActualControlPoint, distance: 0 };
+   let maxAreaCP = { cp: null, area: -1 };
+   intersectionsWithCP.forEach((item) => {
+      if (item.area > maxAreaCP.area) {
+         maxAreaCP = item;
+      }
+   });
+
+   if (intersectionsWithCP.length) return maxAreaCP;
    else return null;
 };
 
@@ -296,18 +297,12 @@ const intersectionpoly = (packing, controlPoint) => {
       //reconverte para o LineString limpo para polígno
       controlPointPolygon = turf.lineToPolygon(newControlPointLine);
 
-      // mLog('antes:')
-      // mLog(JSON.stringify(controlPointPolygon))
-
       //se o polígono tem autointersecção, então quebra em 2 ou mais features
       //se o polígono não tem auto intersecção, então o mantém
       let unkinkControlPointPolygon = turf.unkinkPolygon(controlPointPolygon);
 
       if (unkinkControlPointPolygon.features.length > 1) {
          //Caso o polígono tenha auto intersecção
-         // mLog('p com auto intersecção')
-         // mLog('.depois:')
-         // mLog(JSON.stringify(unkinkControlPointPolygon))
 
          let controlPointPolygonArray = [];
 
@@ -317,6 +312,7 @@ const intersectionpoly = (packing, controlPoint) => {
          });
 
          let result = false;
+         let acumArea = -1;
 
          controlPointPolygonArray.forEach((mPolygon) => {
             //criar polígono da embalagem
@@ -324,38 +320,33 @@ const intersectionpoly = (packing, controlPoint) => {
             let radius = getLastPosition(packing).accuracy;
             let options = { steps: 64, units: "meters" };
 
-            //mLog(center, radius)
             let packingPolygon = turf.circle(center, radius, options);
-            //mLog('c: ')
-            //mLog(JSON.stringify(packingPolygon))
 
-            //checar intersecção
-            let intersection = turf.intersect(mPolygon, packingPolygon);
+            // checar intersecção parcial
+            // console.log("mPolygon", JSON.stringify(mPolygon));
+
             let intersectionMartinez = martinez.intersection(
-               controlPointPolygon.geometry.coordinates,
+               mPolygon.geometry.coordinates,
                packingPolygon.geometry.coordinates
             );
 
-            //checar inclusão total
-            let contained = turf.booleanContains(mPolygon, packingPolygon);
+            // Packing AND polygon in the same gson
+            // let geoJson = packingPolygon;
+            // geoJson.geometry.coordinates.push(mPolygon.geometry.coordinates[0]); 
+            // console.log("\n1 geojson: ", JSON.stringify(geoJson));
 
-            // mLog(' ')
-            // mLog('i: ', packing.tag.code)
-            // mLog(intersection)
-
-            if (result == false) {
-               // result = intersection !== null || intersectionMartinez !== null || contained !== false ? true : false;
-
-               if (intersectionMartinez) {
-                  if (intersectionMartinez.length) {
-                     result = true;
-                  }
+            if (intersectionMartinez) { 
+               if (intersectionMartinez.length) {
+                  result = true;
+                  let calculatedArea = turf.area(turf.polygon(intersectionMartinez[0])); 
+                  if (calculatedArea > acumArea) acumArea = calculatedArea;
                }
             }
          });
 
          //mLog(result);
-         return result;
+         if (result) return { cp: controlPoint, area: acumArea };
+         else return { cp: null, area: 0 };
       } else {
          //Caso o polígono não tenha autointersecção
          // mLog('p sem auto intersecção')
@@ -373,14 +364,14 @@ const intersectionpoly = (packing, controlPoint) => {
          //mLog(JSON.stringify(packingPolygon))
 
          //checar intersecção
-         let intersection = turf.intersect(controlPointPolygon, packingPolygon);
+         // let intersection = turf.intersect(controlPointPolygon, packingPolygon);
          let intersectionMartinez = martinez.intersection(
             controlPointPolygon.geometry.coordinates,
             packingPolygon.geometry.coordinates
          );
 
          //checar inclusão total
-         let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
+         // let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
 
          // mLog(' ')
          // mLog('i: ', packing.tag.code)
@@ -388,18 +379,16 @@ const intersectionpoly = (packing, controlPoint) => {
          // }
 
          let result = false;
-         if (intersectionMartinez) {
+         if (intersectionMartinez) { 
             if (intersectionMartinez.length) {
                result = true;
             }
          }
 
-         return result;
+         if (result) return { cp: controlPoint, area: turf.area(turf.polygon(intersectionMartinez[0])) };
+         else return { cp: null, area: 0 };
       }
-   } catch (error) {
-      //mLog('erro: ', controlPointLine)
-      //mLog(controlPoint.name)
-      console.log(packing);
+   } catch (error) { 
       console.log(packing._id, packing.last_position._id, controlPoint._id);
       throw new Error(error);
    }
