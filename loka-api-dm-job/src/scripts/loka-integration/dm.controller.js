@@ -52,6 +52,18 @@ const fetchAndSaveSensors = async (packing, startDate, endDate, cookie) => {
       let allButton = retrieveButton(result);
       if (allButton.length > 0) await dm_service.createManyButtonMessages(packing, allButton);
 
+      // CHECK IF BUTTON IS ALREADY ACTIVATED
+      console.log('******* Entoru no parametro *******');
+      if(result[0].message.length != (12 * 2) || result[0].message.length != (2 * 2)){
+      
+         let button = [{
+            timestamp: result[0].timestamp,
+            date: result[0].date,
+            detector_switch: true
+         }]
+         
+         await dm_service.createManyButtonMessages(packing, button);
+      }
 
       return result;
    } catch (error) {
@@ -99,7 +111,7 @@ const retrieveBattery = (sensorsArray) => {
 
 const retrieveButton = (sensorsArray) => {
    let result = [];
-
+   
    sensorsArray.forEach((sigfoxMessage) => {
       let existentButton = searchProperty("Detector Switch", sigfoxMessage.messageDecoded);
 
