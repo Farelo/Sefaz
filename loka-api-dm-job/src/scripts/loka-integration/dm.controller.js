@@ -53,7 +53,6 @@ const fetchAndSaveSensors = async (packing, startDate, endDate, cookie) => {
       if (allButton.length > 0) await dm_service.createManyButtonMessages(packing, allButton);
 
       // CHECK IF BUTTON IS ALREADY ACTIVATED
-      console.log('******* Entoru no parametro *******');
       if(result[0].message.length != (12 * 2) || result[0].message.length != (2 * 2)){
       
          let button = [{
