@@ -1,8 +1,7 @@
 const logger = require("../config/winston.config");
 const swaggerJSDoc = require("swagger-jsdoc");
 const config = require("config");
-const swaggerUi = require("swagger-ui-express");
-const swStats = require("swagger-stats");
+const swaggerUi = require("swagger-ui-express"); 
 
 /**
  * Inicializa as rotas das documentações geradas para o sistema
@@ -14,8 +13,7 @@ const initRoutesOfDocumentation = (swaggerSpec, app) => {
     `${config.get("swagger.route")}`,
     swaggerUi.serve,
     swaggerUi.setup(swaggerSpec)
-  );
-  app.use(swStats.getMiddleware({ swaggerSpec }));
+  ); 
 };
 
 /**
