@@ -30,8 +30,6 @@ export class InventarioCriticoAusencia implements OnInit {
 
   public reportAvailable: boolean = false;
 
-  public packingStatus = new PackingStatus();
-
   constructor(
     private reportService: ReportsService,
     private modalService: NgbModal
@@ -50,15 +48,17 @@ export class InventarioCriticoAusencia implements OnInit {
     this.originalListOfEvents = [];
     this.actualListOfEvents = [];
 
+    let packingStatus = new PackingStatus();
+
     this.reportService
       .getCriticalAbsent(this.absentDays)
       .subscribe((result: any[]) => {
         this.originalListOfEvents = result;
 
-        this.originalListOfEvents.map(elem=>{
-          elem.status = this.packingStatus.transform(elem.status)
+        this.originalListOfEvents.map((elem) => {
+          elem.status = packingStatus.transform(elem.status);
           return elem;
-        })
+        });
 
         this.actualListOfEvents = this.originalListOfEvents;
 
@@ -308,15 +308,15 @@ export class InventarioCriticoAusencia implements OnInit {
         { title: "Família", dataKey: "family" },
         { title: "Serial", dataKey: "serial" },
         { title: "Tag", dataKey: "tag" },
-        { title: "Tipo", dataKey: "lastOwnerOrSupplier" },
         {
           title: "Último Ponto de Controle Próprio",
-          dataKey: "lastOwnerOrSupplierType",
+          dataKey: "lastOwnerOrSupplier",
         },
+        { title: "Tipo", dataKey: "lastOwnerOrSupplierType" },
         { title: "Data de Saída", dataKey: "leaveMessage" },
         { title: "Status Atual", dataKey: "status" },
         { title: "Última mensagem", dataKey: "lastMessage" },
-        { title: "Evento", dataKey: "event" },
+        { title: "Local Atual", dataKey: "event" },
         { title: "Tipo de Evento", dataKey: "eventType" },
         { title: "Data do Evento", dataKey: "eventDate" },
       ];
@@ -327,7 +327,7 @@ export class InventarioCriticoAusencia implements OnInit {
           fontSize: 6,
         },
       });
-      doc.save("critical_absent.pdf");
+      doc.save("relatorio-critico-de-ausencia.pdf");
     }
   }
 
@@ -345,7 +345,7 @@ export class InventarioCriticoAusencia implements OnInit {
             lastOwnerOrSupplier: element.lastOwnerOrSupplier,
             lastOwnerOrSupplierType: element.lastOwnerOrSupplierType,
             leaveMessage: this.convertTimezone(element.leaveMessage),
-            status: this.packingStatus.transform(element.status),
+            status: element.status,
             lastMessage: this.convertTimezone(element.lastMessage),
             event: event.control_point ? event.control_point.name : "-",
             eventType: event.type,
@@ -360,7 +360,7 @@ export class InventarioCriticoAusencia implements OnInit {
           lastOwnerOrSupplier: element.lastOwnerOrSupplier,
           lastOwnerOrSupplierType: element.lastOwnerOrSupplierType,
           leaveMessage: this.convertTimezone(element.leaveMessage),
-          status: this.packingStatus.transform(element.status),
+          status: element.status,
           lastMessage: this.convertTimezone(element.lastMessage),
           event: "-",
           eventType: "-",
@@ -378,12 +378,12 @@ export class InventarioCriticoAusencia implements OnInit {
       family: "Família",
       serial: "Serial",
       tag: "Tag",
-      lastOwnerOrSupplier: "Tipo",
-      lastOwnerOrSupplierType: "Último Ponto de Controle",
+      lastOwnerOrSupplier: "Último Ponto de Controle Próprio",
+      lastOwnerOrSupplierType: "Tipo",
       leaveMessage: "Data de Saída",
       status: "Status Atual",
       lastMessage: "Última mensagem",
-      event: "Evento",
+      event: "Local Atual",
       eventType: "Tipo do Evento",
       eventDate: "Data do Evento",
     };
