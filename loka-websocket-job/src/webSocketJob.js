@@ -1,20 +1,17 @@
 process.setMaxListeners(0);
+const config = require("config");
 const logger = require("./config/winston.config");
-var https = require("https");
-var WebSocketClient = require("websocket").client;
-var client = new WebSocketClient();
+const axios = require("axios");
+const WebSocket = require("ws");
 const { Packing } = require("./db/models/packings.model");
+const Position = require("./db/models/position.model");
+const Temperature = require("./db/models/temperature.model");
+const Battery = require("./db/models/battery.model");
 const { Message } = require("./db/models/message.model");
-
-const {
-  DeviceData,
-  device_data_save
-} = require("./db/models/device_data.model");
+const { DeviceData, device_data_save } = require("./db/models/device_data.model");
 const { parserMessage } = require("./util/parserMessage");
 
-//Authentication Token
-//Token of DM
-var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
+let wss = null;
 
 // Getting Dict DevicesIds x last DeviceData
 let deviceDictList;
@@ -25,19 +22,19 @@ async function getDeviceDictList() {
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
   //Getting all DeviceIds
-  let result = await Packing.find({}, { _id: 0, tag: 1 }).then(packFind => {
+  let result = await Packing.find({}, { _id: 0, tag: 1 }).then((packFind) => {
     let packMapped = packFind
-      .filter(packFilter => {
+      .filter((packFilter) => {
         return packFilter.tag.code != undefined;
       })
-      .map(async packMap => {
+      .map(async (packMap) => {
         //Get last deviceData from DB
         let lastDeviceData = await DeviceData.find({
-          device_id: packMap.tag.code
+          device_id: packMap.tag.code,
         })
           .sort({ _id: -1 })
           .limit(1)
-          .then(resultFind => {
+          .then((resultFind) => {
             return resultFind[0];
           });
 
@@ -57,15 +54,15 @@ async function getDeviceDictList() {
             seq_number: null,
             battery: {
               percentage: null,
-              voltage: null
+              voltage: null,
             },
-            message: null
+            message: null,
           };
         }
 
         let dict = {
           deviceId: packMap.tag.code,
-          lastDeviceData: lastDeviceData
+          lastDeviceData: lastDeviceData,
         };
         return dict;
       });
@@ -88,7 +85,7 @@ async function subscribingDeviceIds(deviceDictList) {
       port: 443,
       path: "/subscribe_terminal/" + deviceDict.deviceId,
       method: "GET",
-      headers: { Authorization: "Bearer " + token }
+      headers: { Authorization: "Bearer " + token },
     };
 
     // do the GET request
@@ -100,21 +97,21 @@ async function subscribingDeviceIds(deviceDictList) {
 
 function requestSubscribe(optionsget) {
   return new Promise((resolve, reject) => {
-    var reqGet = https.request(optionsget, function(res) {
+    var reqGet = https.request(optionsget, function (res) {
       /*logger.info(
         "Response code on subscribing of device with id " +
           deviceDict.deviceId +
           ": " +
           res.statusCode
       );*/
-      res.on("data", function(d) {
+      res.on("data", function (d) {
         logger.info("GET result:\n" + d);
         resolve(d);
       });
     });
 
     reqGet.end();
-    reqGet.on("error", function(e) {
+    reqGet.on("error", function (e) {
       /*logger.info(
         "Error on subscribing of device with id " +
           deviceDict.deviceId +
@@ -136,7 +133,7 @@ async function unsubscribingDeviceIds(deviceDictList) {
       port: 443,
       path: "/unsubscribe_terminal/" + deviceDict.deviceId,
       method: "GET",
-      headers: { Authorization: "Bearer " + token }
+      headers: { Authorization: "Bearer " + token },
     };
     // do the GET request
     logger.info("id: " + deviceDict.deviceId);
@@ -147,21 +144,21 @@ async function unsubscribingDeviceIds(deviceDictList) {
 function requestUnsubscribe(optionsget) {
   return new Promise((resolve, reject) => {
     // do the GET request
-    var reqGet = https.request(optionsget, function(res) {
+    var reqGet = https.request(optionsget, function (res) {
       /*logger.info(
         "Response code on Unsubscribing of device with id " +
           deviceDict.deviceId +
           ": " +
           res.statusCode
       );*/
-      res.on("data", function(d) {
+      res.on("data", function (d) {
         logger.info("GET result:\n" + d);
         resolve(d);
       });
     });
 
     reqGet.end();
-    reqGet.on("error", function(e) {
+    reqGet.on("error", function (e) {
       /*logger.info(
         "Error on Unsubscribing of device with id " +
           deviceDict.deviceId +
@@ -174,72 +171,89 @@ function requestUnsubscribe(optionsget) {
   });
 }
 
-// Start and manage the WebSocket
+/**
+ * Establishes a new websocket connection
+ */
 function initWebSocket() {
-  client.on("connectFailed", function(error) {
-    //logger.info("WebSocket Connect Failed: " + error.toString());
-  });
+  const wss = new WebSocket(config("ws.host"), { headers: { Authorization: "Bearer " + config("ws.tokens") } });
+  // client.connect(config("ws.host"), null, null, { Authorization: "Bearer " + config("ws.tokens") }, null);
 
-  client.on("connect", function(connection) {
-    logger.info("WebSocket Client Connected");
+  wss.on("connection", (ws) => {
+    console.info("WebSocket client is connected");
 
-    connection.on("error", function(error) {
-      logger.info("WebSocket Connection Error: " + error.toString());
-      initWebSocket();
+    ws.on("message", (message) => {
+      messageReceived(message);
     });
 
-    connection.on("close", function() {
-      connection.removeAllListeners();
-      logger.info("WebSocket Echo-protocol Connection Closed");
-      initWebSocket();
+    ws.on("close", () => {
+      console.log("stopping client");
     });
 
-    connection.on("message", async function(message) {
-      if (message.type === "utf8") {
-        //logger.info("WebSocket Received: '" + message.utf8Data + "'");
-        //console.log(message);
-        let jsonMessage = JSON.parse(message.utf8Data);
-
-        //Save message
-        messageCollection = {
-          message: JSON.stringify(jsonMessage),
-          message_date: new Date(jsonMessage.timestamp * 1000),
-          device_id: jsonMessage.timestamp
-        };
-        Message.create(messageCollection);
-
-        let deviceDict = deviceDictList.find(function(elem) {
-          return elem.deviceId == jsonMessage.src;
-        });
-
-        if (deviceDict) {
-          let deviceData = deviceDict.lastDeviceData;
-
-          let deviceDataToSave = await parserMessage(jsonMessage, deviceData);
-          if (deviceDataToSave !== null) {
-            await device_data_save(deviceDataToSave);
-            deviceData = deviceDataToSave;
-          }
-        }
-      }
+    ws.on("error", (message) => {
+      console.log("error on trying to connect", message);
     });
   });
-
-  client.connect(
-    "wss://core.loka.systems/messages",
-    null,
-    null,
-    { Authorization: "Bearer " + token },
-    null
-  );
 }
 
-const runWS = async () => {
-  await getDeviceDictList();
-  logger.info(deviceDictList);
-  await unsubscribingDeviceIds(deviceDictList);
-  await subscribingDeviceIds(deviceDictList);
+const messageReceived = (message) => {
+  // console.log(`Received message => ${message}`)
+  if (message.type === "utf8") {
+    //Save message
+    // Message.create({
+    //    message: JSON.stringify(jsonMessage),
+    //    message_date: new Date(jsonMessage.timestamp * 1000),
+    //    device_id: jsonMessage.timestamp,
+    // });
+
+    let jsonMessage = JSON.parse(message.utf8Data);
+
+    if (Object.keys(jsonMessage).includes("location")) {
+      createPositionMessage(jsonMessage);
+    } else if (Object.keys(jsonMessage).includes("analog")) {
+      switch (jsonMessage.analog.port) {
+        case "102":
+          createTemperatureMessage();
+          break;
+        case "103":
+          createBatteryMessage();
+          break;
+        case "200":
+          createBatteryMessage();
+          break;
+      }
+    }
+  }
+};
+
+const createPositionMessage = async (positionMessage) => {
+  let messageTimestamp = jsonMessage.timestamp;
+  if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
+
+  let newPosition = {
+    tag: packing.tag.code,
+    date: new Date(messageTimestamp),
+    timestamp: messageTimestamp,
+    latitude: positionMessage.location.latitude,
+    longitude: positionMessage.location.latitude,
+    accuracy: positionMessage.location.accuracy,
+  };
+
+  await Position.create(newPosition);
+};
+
+const createTemperatureMessage = async () => {
+  // await Temperature.createMany()
+};
+
+const createBatteryMessage = async () => {
+  // await Battery.createMany()
+};
+
+const runWebSocket = async () => {
+  // await getDeviceDictList();
+  // await unsubscribingDeviceIds(deviceDictList);
+  // await subscribingDeviceIds(deviceDictList);
   await initWebSocket();
 };
 
-exports.runWS = runWS;
+exports.runWebSocket = runWebSocket;
