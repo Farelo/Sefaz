@@ -4,7 +4,8 @@
   "description": "Serviço de recebimento de mensagens dos devices via websocket do DM LOKA",
   "main": "index.js",
   "scripts": {
-    "prod": "NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* node --stack-size=3072 src/index.js"
+    "start": "cross-env NODE_CONFIG_DIR=src/config DEBUG=* node src/index.js",
+    "prod": "cross-env NODE_CONFIG_DIR=src/config NODE_ENV=production DEBUG=* node --stack-size=3072 src/index.js"
   },
   "author": "Emanoel Ferraz",
   "license": "ISC",
@@ -16,7 +17,8 @@
     "app-root-path": "^2.1.0",
     "axios": "^0.21.1",
     "circular-json": "^0.5.9",
-    "config": "^3.2.2",
+    "config": "^2.0.0",
+    "cross-env": "^5.2.0",
     "loader": "^2.1.1",
     "moment": "^2.22.2",
     "mongodb": "^3.1.10",

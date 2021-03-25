@@ -1,22 +1,18 @@
-process.setMaxListeners(0);
-const config = require("config");
-const logger = require("./config/winston.config");
-const axios = require("axios");
+// process.setMaxListeners(0);
+// const logger = require("./config/winston.config");
+const config = require('config')
+const axios = require("axios"); 
 const WebSocket = require("ws");
 const { Packing } = require("./db/models/packings.model");
-const Position = require("./db/models/position.model");
-const Temperature = require("./db/models/temperature.model");
-const Battery = require("./db/models/battery.model");
-const { Message } = require("./db/models/message.model");
-const { DeviceData, device_data_save } = require("./db/models/device_data.model");
-const { parserMessage } = require("./util/parserMessage");
+const { Position } = require("./db/models/position.model");
+const { Temperature } = require("./db/models/temperatures.model");
+const { Battery } = require("./db/models/batteries.model");
 
 let wss = null;
 
 // Getting Dict DevicesIds x last DeviceData
 let deviceDictList;
 async function getDeviceDictList() {
-  logger.info("aqui");
   await require("./db/db")();
 
   //logger.info("Getting Dict DevicesIds x last DeviceData");
@@ -89,7 +85,7 @@ async function subscribingDeviceIds(deviceDictList) {
     };
 
     // do the GET request
-    logger.info("id: " + deviceDict.deviceId);
+    // logger.info("id: " + deviceDict.deviceId);
     await requestSubscribe(optionsget);
     //});
   }
@@ -105,7 +101,7 @@ function requestSubscribe(optionsget) {
           res.statusCode
       );*/
       res.on("data", function (d) {
-        logger.info("GET result:\n" + d);
+        // logger.info("GET result:\n" + d);
         resolve(d);
       });
     });
@@ -118,7 +114,7 @@ function requestSubscribe(optionsget) {
           ": " +
           e
       );*/
-      logger.info(e);
+      // logger.info(e);
       reject(e);
     });
   });
@@ -136,7 +132,7 @@ async function unsubscribingDeviceIds(deviceDictList) {
       headers: { Authorization: "Bearer " + token },
     };
     // do the GET request
-    logger.info("id: " + deviceDict.deviceId);
+    // logger.info("id: " + deviceDict.deviceId);
     await requestUnsubscribe(optionsget);
   }
 }
@@ -152,7 +148,7 @@ function requestUnsubscribe(optionsget) {
           res.statusCode
       );*/
       res.on("data", function (d) {
-        logger.info("GET result:\n" + d);
+        // logger.info("GET result:\n" + d);
         resolve(d);
       });
     });
@@ -165,7 +161,7 @@ function requestUnsubscribe(optionsget) {
           ": " +
           e
       );*/
-      logger.info(e);
+      // logger.info(e);
       reject(e);
     });
   });
@@ -175,7 +171,8 @@ function requestUnsubscribe(optionsget) {
  * Establishes a new websocket connection
  */
 function initWebSocket() {
-  const wss = new WebSocket(config("ws.host"), { headers: { Authorization: "Bearer " + config("ws.tokens") } });
+  console.log("Iniciando ...", config.get("ws.host"), config.get("ws.token"));
+  const wss = new WebSocket(config.get("ws.host"), { headers: { Authorization: "Bearer " + config.get("ws.token") } });
   // client.connect(config("ws.host"), null, null, { Authorization: "Bearer " + config("ws.tokens") }, null);
 
   wss.on("connection", (ws) => {
@@ -195,8 +192,10 @@ function initWebSocket() {
   });
 }
 
-const messageReceived = (message) => {
-  // console.log(`Received message => ${message}`)
+const messageReceived = async (message) => {
+  console.log(`Received message => ${message}`);
+  console.log(message);
+
   if (message.type === "utf8") {
     //Save message
     // Message.create({
@@ -212,13 +211,13 @@ const messageReceived = (message) => {
     } else if (Object.keys(jsonMessage).includes("analog")) {
       switch (jsonMessage.analog.port) {
         case "102":
-          createTemperatureMessage();
+          await createTemperatureMessage();
           break;
         case "103":
-          createBatteryMessage();
+          await createBatteryMessage();
           break;
         case "200":
-          createBatteryMessage();
+          await createBatteryMessage();
           break;
       }
     }
@@ -242,11 +241,11 @@ const createPositionMessage = async (positionMessage) => {
 };
 
 const createTemperatureMessage = async () => {
-  // await Temperature.createMany()
+  await Temperature.create();
 };
 
 const createBatteryMessage = async () => {
-  // await Battery.createMany()
+  await Battery.create();
 };
 
 const runWebSocket = async () => {

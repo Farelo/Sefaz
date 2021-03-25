@@ -1,11 +1,17 @@
 {
+  "ws": {
+    "host": "wss://core.loka.systems/messages",
+    "token": "c8f16c13-f85c-48e9-bfc4-5fe54ae89429",
+    "subscribe": "core.loka.systems/subscribe_terminal",
+    "unsubscribe": "core.loka.systems/unsubscribe_terminal"
+  },
   "db": {
     "url": "mongodb://localhost:27017/cebrace"
   },
   "database_options": {
     "reconnectTries": 100000,
     "reconnectInterval": 500,
-    "poolSize": 10,
+    "poolSize": 5000,
     "bufferMaxEntries": 0,
     "socketTimeoutMS": 0,
     "keepAlive": true

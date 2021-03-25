@@ -1,16 +1,12 @@
-{
-  "company": {
-    "name": "Cebrace",
-    "enabled": true
-  },
-  "server": {
-    "url": "localhost",
-    "port": 8014
+{  
+  "ws": {
+    "host": "wss://core.loka.systems/messages",
+    "token": "c8f16c13-f85c-48e9-bfc4-5fe54ae89429",
+    "subscribe": "core.loka.systems/subscribe_terminal",
+    "unsubscribe": "core.loka.systems/unsubscribe_terminal"
   },
   "db": {
-    "url": "mongodb://mongo:27017/cebrace",
-    "url-dev": "mongodb://localhost:27017/cebrace",
-    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/cebrace"
+    "url": "mongodb://mongo:27017/cebrace"
   },
   "database_options": {
     "reconnectTries": 100000,

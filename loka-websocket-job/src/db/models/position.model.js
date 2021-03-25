@@ -94,7 +94,7 @@ const create = async (position, actualPacking = null) => {
 
 const referenceFromPackage = async (packing, position) => {
   try {
-    await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
+    if (packing) await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
   } catch (error) {
     debug(error);
   }
