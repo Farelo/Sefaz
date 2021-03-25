@@ -72,29 +72,54 @@ const createMany = async (packing, positionArray) => {
   }
 };
 
-const create = async (position, actualPacking = null) => {
-  if (!actualPacking) {
+const createPosition = async (position, packing = null) => {
+  console.log("createPosition");
+  // console.log(position);
+
+  let actualPacking = null;
+
+  if (!packing) {
     actualPacking = await Packing.findOne({ "tag.code": position.tag });
   }
 
   let newPosition = new Position({
-    tag: actualPacking.tag,
-    date: new Date(position.date),
+    tag: position.tag,
+    date: position.date,
     timestamp: position.timestamp,
     latitude: position.latitude,
     longitude: position.latitude,
     accuracy: position.accuracy,
   });
 
-  await newPosition
-    .save()
-    .then((newDocument) => referenceFromPackage(actualPacking, newDocument))
-    .catch((error) => debug(error));
+  console.log("newPosition");
+  console.log(newPosition);
+
+  try {
+    await newPosition
+      .save()
+      .then((newDocument) => referenceFromPackage(actualPacking, newDocument))
+      .catch((error) => console.error(error));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const referenceFromPackage = async (packing, position) => {
+  console.log("referenceFromPackage");
+  console.log(position);
+  console.log(position._id);
+
   try {
-    if (packing) await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
+    if (packing) {
+      console.log("inside if");
+      console.log(packing._id);
+      let x = await Packing.findByIdAndUpdate(
+        packing._id,
+        { last_position: position._id },
+        { new: true }
+      ).exec();
+      console.log(x);
+    }
   } catch (error) {
     debug(error);
   }
@@ -104,5 +129,5 @@ const Position = mongoose.model("Position", positionSchema);
 
 exports.Position = Position;
 exports.positionSchema = positionSchema;
-exports.create = create;
+exports.createPosition = createPosition;
 exports.createMany = createMany;

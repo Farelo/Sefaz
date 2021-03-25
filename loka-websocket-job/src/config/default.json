@@ -6,7 +6,7 @@
     "unsubscribe": "core.loka.systems/unsubscribe_terminal"
   },
   "db": {
-    "url": "mongodb://localhost:27017/cebrace"
+    "url": "mongodb://localhost:27017/cebrace-2021-02-25"
   },
   "database_options": {
     "reconnectTries": 100000,

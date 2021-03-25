@@ -2,6 +2,7 @@
 const { runWebSocket } = require("./webSocketJob");
 
 const main = async () => { 
+  await require("./db/db")();
   await runWebSocket();
 }
 

@@ -32,7 +32,26 @@ const batterySchema = new mongoose.Schema({
  * @param {*} battery
  * @param {*} actualPacking
  */
-const create = async (battery, actualPacking = null) => {
+const createBattery = async (battery, actualPacking = null) => {
+  if (!actualPacking) {
+    actualPacking = await Packing.findOne({ "tag.code": battery.tag });
+  }
+
+  let newBattery = new Battery({
+    tag: actualPacking.tag,
+    date: new Date(battery.date),
+    timestamp: battery.timestamp,
+    battery: battery.battery,
+    batteryVoltage: battery.batteryVoltage,
+  });
+
+  await newBattery
+    .save()
+    .then((newDocument) => referenceFromPackage(actualPacking, newDocument))
+    .catch((error) => debug(error));
+};
+
+const createOrUpdateBattery = async (battery, actualPacking = null) => {
   if (!actualPacking) {
     actualPacking = await Packing.findOne({ "tag.code": battery.tag });
   }
@@ -64,4 +83,5 @@ batterySchema.index({ tag: 1, timestamp: -1 }, { unique: true });
 const Battery = mongoose.model("Battery", batterySchema);
 
 exports.Battery = Battery;
+exports.createBattery = createBattery;
 exports.batterySchema = batterySchema;

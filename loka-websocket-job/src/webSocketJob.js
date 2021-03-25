@@ -1,14 +1,17 @@
 // process.setMaxListeners(0);
 // const logger = require("./config/winston.config");
-const config = require('config')
-const axios = require("axios"); 
+const config = require("config");
+const axios = require("axios");
 const WebSocket = require("ws");
 const { Packing } = require("./db/models/packings.model");
-const { Position } = require("./db/models/position.model");
-const { Temperature } = require("./db/models/temperatures.model");
-const { Battery } = require("./db/models/batteries.model");
+const PositionController = require("./controllers/position.controller");
+const TemperatureController = require("./controllers/temperature.controller");
+const BatteryController = require("./controllers/battery.controller");
 
-let wss = null;
+const WebSocketClient = require("websocket").client;
+const client = new WebSocketClient();
+
+// let wss = null;
 
 // Getting Dict DevicesIds x last DeviceData
 let deviceDictList;
@@ -170,31 +173,61 @@ function requestUnsubscribe(optionsget) {
 /**
  * Establishes a new websocket connection
  */
+// function initWebSocket0() {
+//   console.log("Iniciando ...", config.get("ws.host"), config.get("ws.token"));
+
+//   try {
+//     const wss = new WebSocket(config.get("ws.host"), { headers: { Authorization: config.get("ws.token") } });
+//     // console.log(wss);
+//     // client.connect(config("ws.host"), null, null, { Authorization: "Bearer " + config("ws.tokens") }, null);
+
+//     wss.on("connection", (ws) => {
+//       console.info("WebSocket client is connected");
+
+//       ws.on("message", (message) => {
+//         messageReceived(message);
+//       });
+
+//       ws.on("close", () => {
+//         console.log("stopping client");
+//       });
+
+//       ws.on("error", (message) => {
+//         console.log("error on trying to connect", message);
+//       });
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
 function initWebSocket() {
-  console.log("Iniciando ...", config.get("ws.host"), config.get("ws.token"));
-  const wss = new WebSocket(config.get("ws.host"), { headers: { Authorization: "Bearer " + config.get("ws.token") } });
-  // client.connect(config("ws.host"), null, null, { Authorization: "Bearer " + config("ws.tokens") }, null);
+  client.on("connectFailed", async function (error) {
+    console.log("falha", error);
+  });
 
-  wss.on("connection", (ws) => {
-    console.info("WebSocket client is connected");
+  client.on("connect", function (connection) {
+    console.log("sucesso");
 
-    ws.on("message", (message) => {
+    connection.on("error", async function (error) {
+      console.log("erro", error);
+    });
+
+    connection.on("close", async function () {
+      console.log("close");
+    });
+
+    connection.on("message", async function (message) {
       messageReceived(message);
     });
-
-    ws.on("close", () => {
-      console.log("stopping client");
-    });
-
-    ws.on("error", (message) => {
-      console.log("error on trying to connect", message);
-    });
   });
+
+  client.connect(config.get("ws.host"), null, null, { Authorization: "Bearer " + config.get("ws.token") }, null);
 }
 
 const messageReceived = async (message) => {
-  console.log(`Received message => ${message}`);
-  console.log(message);
+  // console.log("Received message");
+  // console.log(message);
 
   if (message.type === "utf8") {
     //Save message
@@ -211,42 +244,73 @@ const messageReceived = async (message) => {
     } else if (Object.keys(jsonMessage).includes("analog")) {
       switch (jsonMessage.analog.port) {
         case "102":
-          await createTemperatureMessage();
+          //102 = Temperature
+          // await createTemperatureMessage(jsonMessage);
           break;
         case "103":
-          await createBatteryMessage();
+          //103 = Voltage
+          // await createBatteryVoltageMessage(jsonMessage);
           break;
         case "200":
-          await createBatteryMessage();
+          //200 = Battery level
+          // await createBatteryLevelMessage(jsonMessage);
           break;
       }
     }
   }
 };
 
+/**
+ * Create a position.
+ * Example of a position message from WS:
+    {
+      type: 'utf8',
+      utf8Data: '{"location":{"latitude":-23.2094,"longitude":-45.9517,"accuracy":32000.0},"src":"28422663","dst":"28422663","timestamp":1616637500,"historical":false}'
+    }
+ * @param {*} positionMessage 
+ */
 const createPositionMessage = async (positionMessage) => {
-  let messageTimestamp = jsonMessage.timestamp;
-  if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
-
-  let newPosition = {
-    tag: packing.tag.code,
-    date: new Date(messageTimestamp),
-    timestamp: messageTimestamp,
-    latitude: positionMessage.location.latitude,
-    longitude: positionMessage.location.latitude,
-    accuracy: positionMessage.location.accuracy,
-  };
-
-  await Position.create(newPosition);
+  await PositionController.createPosition(positionMessage);
 };
 
-const createTemperatureMessage = async () => {
-  await Temperature.create();
+/**
+ * Create a temperature message.
+ * Example of a temperature message from WS:
+    {
+      type: 'utf8',
+      utf8Data: '{"analog":{"port":"102","value":20.0},"timestamp":1616637561,"src":4064451,"dst":4064451}'
+    }
+ * @param {*} temperatureMessage 
+ */
+const createTemperatureMessage = async (temperatureMessage) => {
+  await TemperatureController.createTemperature(temperatureMessage);
 };
 
-const createBatteryMessage = async () => {
-  await Battery.create();
+/**
+ * Create a battery message.
+ * Battery Level and voltage level came in different messages. Example:
+ *  // 104 = voltage; 200 = percentage
+    {
+      type: 'utf8',
+      utf8Data: '{"analog":{"port":"104","value":3.328125},"timestamp":1616636910,"src":4080782,"dst":4080782}'
+    },
+    {
+      type: 'utf8',
+      utf8Data: '{"analog":{"port":"200","value":100},"timestamp":1616636910,"src":4080782,"dst":4080782}'
+    }
+ */
+const createBatteryVoltageMessage = async (batteryMessage) => {
+  await BatteryController.createBatteryVoltage(batteryMessage);
 };
+
+const createBatteryLevelMessage = async (batteryMessage) => {
+  await BatteryController.createBatteryLevel(batteryMessage);
+};
+
+/**
+ * TODO: analog message of switch button
+ */
+const createSeitchButtonMessage = (buttonMessage) => {};
 
 const runWebSocket = async () => {
   // await getDeviceDictList();

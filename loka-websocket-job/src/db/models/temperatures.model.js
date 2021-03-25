@@ -24,7 +24,10 @@ const temperatureSchema = new mongoose.Schema({
   },
 });
 
-const create = async (temperature, actualPacking = null) => {
+const createTemperature = async (temperature, actualPacking = null) => {
+  console.log("createTemperature");
+  console.log(temperature);
+  
   if (!actualPacking) {
     actualPacking = await Packing.findOne({ "tag.code": temperature.tag });
   }
@@ -56,4 +59,4 @@ const Temperature = mongoose.model("Temperature", temperatureSchema);
 
 exports.Temperature = Temperature;
 exports.temperatureSchema = temperatureSchema;
-exports.create = create;
+exports.createTemperature = createTemperature;
