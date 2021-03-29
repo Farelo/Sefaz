@@ -1,21 +1,21 @@
-const { Temperature } = require("../db/models/temperatures.model");
+const { Button } = require("../db/models/button.model");
 const { Packing } = require("../db/models/packings.model");
 
-exports.createTemperature = async (temperatureMessage) => {
-  let actualPacking = await Packing.findOne({ "tag.code": temperatureMessage.src });
+exports.createButton = async (buttonMessage) => {
+  let actualPacking = await Packing.findOne({ "tag.code": buttonMessage.src });
 
   if (actualPacking) {
-    let messageTimestamp = temperatureMessage.timestamp;
+    let messageTimestamp = buttonMessage.timestamp;
     if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
 
     updateLastMessage(actualPacking, messageTimestamp);
 
-    await Temperature.createTemperature(
+    await Button.createTemperature(
       {
-        tag: temperatureMessage.src,
+        tag: buttonMessage.src,
         date: new Date(messageTimestamp * 1000),
         timestamp: messageTimestamp,
-        value: temperatureMessage.analog.value,
+        detector_switch: !!buttonMessage.analog.value
       },
       actualPacking
     );

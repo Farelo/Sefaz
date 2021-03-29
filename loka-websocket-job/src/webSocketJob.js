@@ -7,6 +7,7 @@ const { Packing } = require("./db/models/packings.model");
 const PositionController = require("./controllers/position.controller");
 const TemperatureController = require("./controllers/temperature.controller");
 const BatteryController = require("./controllers/battery.controller");
+const ButtonController = require("./controllers/button.controller");
 
 const WebSocketClient = require("websocket").client;
 const client = new WebSocketClient();
@@ -227,7 +228,7 @@ function initWebSocket() {
 
 const messageReceived = async (message) => {
   // console.log("Received message");
-  // console.log(message);
+  console.log(message);
 
   if (message.type === "utf8") {
     //Save message
@@ -239,26 +240,41 @@ const messageReceived = async (message) => {
 
     let jsonMessage = JSON.parse(message.utf8Data);
 
+    updateLastMessage(jsonMessage);
+
     if (Object.keys(jsonMessage).includes("location")) {
       createPositionMessage(jsonMessage);
     } else if (Object.keys(jsonMessage).includes("analog")) {
       switch (jsonMessage.analog.port) {
         case "102":
           //102 = Temperature
-          // await createTemperatureMessage(jsonMessage);
+          await createTemperatureMessage(jsonMessage);
           break;
         case "103":
           //103 = Voltage
-          // await createBatteryVoltageMessage(jsonMessage);
+          await createBatteryVoltageMessage(jsonMessage);
+          break;
+        case "112":
+          //112 = Bateria ALPS
+          let auxMessage = jsonMessage;
+          auxMessage.analog.value = translateALPSBattery(auxMessage.analog.value);
+          await createBatteryLevelMessage(auxMessage);
+
+          break;
+        case "114":
+          //114 = Detector Switch
+          await createSwitchButtonMessage(jsonMessage);
           break;
         case "200":
           //200 = Battery level
-          // await createBatteryLevelMessage(jsonMessage);
+          await createBatteryLevelMessage(jsonMessage);
           break;
       }
     }
   }
 };
+
+const updateLastMessage = async (jsonMessage) => {};
 
 /**
  * Create a position.
@@ -310,13 +326,29 @@ const createBatteryLevelMessage = async (batteryMessage) => {
 /**
  * TODO: analog message of switch button
  */
-const createSeitchButtonMessage = (buttonMessage) => {};
+const createSwitchButtonMessage = async (buttonMessage) => {
+  await ButtonController.createButton(buttonMessage);
+};
 
 const runWebSocket = async () => {
   // await getDeviceDictList();
   // await unsubscribingDeviceIds(deviceDictList);
   // await subscribingDeviceIds(deviceDictList);
   await initWebSocket();
+};
+
+//////////////////////////////////////////////////////////
+const translateALPSBattery = (value) => {
+  let result = null;
+
+  if (value !== null) {
+    if (value == "Excellent" || value == 3) result = 100;
+    if (value == "Good" || value == 2) result = 70;
+    if (value == "Almost empty" || value == 1) result = 40;
+    if (value == "Empty" || value == 0) result = 0;
+  }
+
+  return result;
 };
 
 exports.runWebSocket = runWebSocket;

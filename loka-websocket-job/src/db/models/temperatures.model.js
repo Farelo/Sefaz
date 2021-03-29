@@ -24,30 +24,33 @@ const temperatureSchema = new mongoose.Schema({
   },
 });
 
-const createTemperature = async (temperature, actualPacking = null) => {
-  console.log("createTemperature");
-  console.log(temperature);
-  
-  if (!actualPacking) {
-    actualPacking = await Packing.findOne({ "tag.code": temperature.tag });
-  }
+temperatureSchema.statics.createTemperature = async (temperature, packing = null) => {
+  let actualPacking = null;
+
+  if (!packing) actualPacking = await Packing.findOne({ "tag.code": temperature.tag });
+  else actualPacking = packing;
 
   let newTemperature = new Temperature({
-    tag: actualPacking.tag,
-    date: new Date(temperature.date),
+    tag: temperature.tag,
+    date: temperature.date,
     timestamp: temperature.timestamp,
     value: temperature.value,
   });
 
-  await newTemperature
-    .save()
-    .then((newDocument) => referenceFromPackage(actualPacking, newDocument))
-    .catch((error) => debug(error));
+  try {
+    await newTemperature
+      .save()
+      .then((newDocument) => referenceFromPackage(actualPacking, newDocument))
+      .catch((error) => debug(error));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const referenceFromPackage = async (packing, temperature) => {
   try {
-    if (packing) await Packing.findByIdAndUpdate(packing._id, { last_temperature: temperature._id }, { new: true });
+    if (packing)
+      await Packing.findByIdAndUpdate(packing._id, { last_temperature: temperature._id }, { new: true }).exec();
   } catch (error) {
     debug(error);
   }
@@ -59,4 +62,3 @@ const Temperature = mongoose.model("Temperature", temperatureSchema);
 
 exports.Temperature = Temperature;
 exports.temperatureSchema = temperatureSchema;
-exports.createTemperature = createTemperature;
