@@ -10,12 +10,33 @@ exports.createButton = async (buttonMessage) => {
 
     updateLastMessage(actualPacking, messageTimestamp);
 
-    await Button.createTemperature(
+    await Button.createButton(
       {
         tag: buttonMessage.src,
         date: new Date(messageTimestamp * 1000),
         timestamp: messageTimestamp,
         detector_switch: !!buttonMessage.analog.value
+      },
+      actualPacking
+    );
+  }
+};
+
+exports.createButtonFromNetworkInformation = async (buttonMessage) => {
+  let actualPacking = await Packing.findOne({ "tag.code": buttonMessage.src });
+
+  if (actualPacking) {
+    let messageTimestamp = buttonMessage.timestamp;
+    if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
+
+    // updateLastMessage(actualPacking, messageTimestamp);
+
+    await Button.createButton(
+      {
+        tag: buttonMessage.src,
+        timestamp: buttonMessage.timestamp,
+        date: new Date(buttonMessage.timestamp * 1000),
+        detector_switch: true,
       },
       actualPacking
     );

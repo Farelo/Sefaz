@@ -28,8 +28,6 @@ exports.createBatteryLevel = async (batteryMessage) => {
     if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
 
     updateLastMessage(actualPacking, messageTimestamp);
-
-    console.log(batteryMessage);
     
     await Battery.findOneAndUpdate(
       { tag: batteryMessage.src, timestamp: messageTimestamp },

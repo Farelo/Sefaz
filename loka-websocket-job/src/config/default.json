@@ -1,7 +1,7 @@
 {
   "ws": {
     "host": "wss://core.loka.systems/messages",
-    "token": "6fe29508-5f36-4ad0-a3bf-7842d997e17b",
+    "token": "c8f16c13-f85c-48e9-bfc4-5fe54ae89429", 
     "subscribe": "https://core.loka.systems/api/subscription/v1/subscribe",
     "unsubscribe": "https://core.loka.systems/api/subscription/v1/unsubscribe"
   },

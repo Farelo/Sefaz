@@ -86,8 +86,6 @@ positionSchema.statics.createPosition = async (position, packing = null) => {
     longitude: position.latitude,
     accuracy: position.accuracy,
   });
-
-  console.log(newPosition);
   
   try {
     await newPosition

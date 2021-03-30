@@ -223,6 +223,8 @@ function initWebSocket() {
     });
   });
 
+  // "token": "c8f16c13-f85c-48e9-bfc4-5fe54ae89429", //QA
+  // "token": "6fe29508-5f36-4ad0-a3bf-7842d997e17b", //Sagi
   client.connect(config.get("ws.host"), null, null, { Authorization: "Bearer " + config.get("ws.token") }, null);
 }
 
@@ -239,8 +241,6 @@ const messageReceived = async (message) => {
     // });
 
     let jsonMessage = JSON.parse(message.utf8Data);
-
-    updateLastMessage(jsonMessage);
 
     if (Object.keys(jsonMessage).includes("location")) {
       createPositionMessage(jsonMessage);
@@ -270,11 +270,16 @@ const messageReceived = async (message) => {
           await createBatteryLevelMessage(jsonMessage);
           break;
       }
+    } else if (Object.keys(jsonMessage).includes("networkInformation")) {
+      if (
+        jsonMessage.networkInformation.message.length != 12 * 2 ||
+        jsonMessage.networkInformation.message.length != 2 * 2
+      ) {
+        await ButtonController.createButtonFromNetworkInformation(jsonMessage);
+      }
     }
   }
 };
-
-const updateLastMessage = async (jsonMessage) => {};
 
 /**
  * Create a position.

@@ -77,6 +77,7 @@ buttonSchema.statics.createButton = async (button, packing = null) => {
 };
 
 const referenceFromPackage = async (packing, doc) => {
+  console.log("button referenceFromPackage");
   try {
     await Packing.findByIdAndUpdate(packing._id, { last_detector_switch: doc._id }, { new: true });
   } catch (error) {
