@@ -325,8 +325,7 @@ body {
 
 .ngx-pagination .current,
 .ngx-pagination li {
-  width: 30px;
-  /* box-shadow: 0px 0px 7px #000; */
+  width: 30px; 
 }
 
 .ngx-pagination .current,
@@ -348,8 +347,7 @@ body {
   background-color: #3e4f60 !important;
 }
 
-.ngx-pagination .current {
-  /* border-color: #3E4F60; */
+.ngx-pagination .current { 
    color: white !important;
    border-color: white;
    padding: 2px !important;
@@ -372,8 +370,7 @@ body {
 }
 
 .ngx-pagination li:hover {
-  width: 30px;
-  /* background-color: #3E4F60 !important;  */
+  width: 30px; 
   padding: 2px !important;
   border-style: solid;
   border-width: thin;

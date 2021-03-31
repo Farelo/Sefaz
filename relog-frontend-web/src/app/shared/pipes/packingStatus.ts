@@ -7,8 +7,6 @@ export class PackingStatus {
 
   transform(status: string) {
 
-    console.log(status);
-
     switch (status) {
 
       case 'desabilitada_com_sinal':

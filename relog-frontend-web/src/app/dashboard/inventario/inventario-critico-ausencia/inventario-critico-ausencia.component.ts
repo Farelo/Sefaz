@@ -316,7 +316,9 @@ export class InventarioCriticoAusencia implements OnInit {
         { title: "Data de Saída", dataKey: "leaveMessage" },
         { title: "Status Atual", dataKey: "status" },
         { title: "Última mensagem", dataKey: "lastMessage" },
-        { title: "Local Atual", dataKey: "event" },
+        { title: "Local Atual", dataKey: "actualCP" },
+        { title: "Data de entrada", dataKey: "dateActualCP" },
+        { title: "Local do evento", dataKey: "event" },
         { title: "Tipo de Evento", dataKey: "eventType" },
         { title: "Data do Evento", dataKey: "eventDate" },
       ];
@@ -332,10 +334,9 @@ export class InventarioCriticoAusencia implements OnInit {
   }
 
   flatObject(mArray: any) {
-    //console.log(mArray);
     let result = [];
 
-    let plainArray = mArray.map((element) => {
+    mArray.forEach((element) => {
       if (element.eventList.length) {
         element.eventList.forEach((event) => {
           result.push({
@@ -347,6 +348,10 @@ export class InventarioCriticoAusencia implements OnInit {
             leaveMessage: this.convertTimezone(element.leaveMessage),
             status: element.status,
             lastMessage: this.convertTimezone(element.lastMessage),
+            actualCP: element.actualCP,
+            dateActualCP: element.dateActualCP
+              ? this.convertTimezone(element.dateActualCP)
+              : "-",
             event: event.control_point ? event.control_point.name : "-",
             eventType: event.type,
             eventDate: this.convertTimezone(event.created_at),
@@ -362,6 +367,10 @@ export class InventarioCriticoAusencia implements OnInit {
           leaveMessage: this.convertTimezone(element.leaveMessage),
           status: element.status,
           lastMessage: this.convertTimezone(element.lastMessage),
+          actualCP: element.actualCP,
+          dateActualCP: element.dateActualCP
+            ? this.convertTimezone(element.dateActualCP)
+            : "-",
           event: "-",
           eventType: "-",
           eventDate: "-",
@@ -383,7 +392,9 @@ export class InventarioCriticoAusencia implements OnInit {
       leaveMessage: "Data de Saída",
       status: "Status Atual",
       lastMessage: "Última mensagem",
-      event: "Local Atual",
+      actualCP: "Local Atual",
+      dateActualCP: "Data de entrada",
+      event: "Local do Evento",
       eventType: "Tipo do Evento",
       eventDate: "Data do Evento",
     };
