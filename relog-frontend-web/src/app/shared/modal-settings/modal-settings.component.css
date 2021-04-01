@@ -9,7 +9,7 @@
 
 .explicacao {
   color: #777;
-  font-size: 10px;
+  font-size: .75rem;
   margin-bottom: 0px; 
 }
 
@@ -32,8 +32,11 @@
 }
 
 .cabecalho {
-  background-color: #3E4F60;
-  color: white;
+  color: #193349;
+}
+
+.cabecalho th {
+  border-bottom: solid #193349 1px;
 }
 
 .tabela {

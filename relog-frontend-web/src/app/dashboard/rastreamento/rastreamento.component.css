@@ -86,9 +86,11 @@ td {
   padding: 5px !important;
 }
 
-.cabecalho th{
-  color: #193349;
-  font-weight: 700;
+
+
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #F2F5F4;
 }
 
 .classVazio {

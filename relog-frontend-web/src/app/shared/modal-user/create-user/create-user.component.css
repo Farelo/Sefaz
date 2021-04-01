@@ -96,8 +96,11 @@
 }
 
 .cabecalho {
-  background-color: #f9f9f9;
-  color: white;
+  color: #193349;
+}
+
+.cabecalho th {
+  border-bottom: solid #193349 1px;
 }
 
 table > thead > tr > th {
@@ -173,6 +176,6 @@ p {
 
 .explicacao { 
   color: #777;
-  font-size: 10px;
+  font-size: .75rem;
   margin-bottom: 0px;
 }

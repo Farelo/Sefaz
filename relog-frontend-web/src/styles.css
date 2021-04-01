@@ -4,6 +4,16 @@
   outline: none;
 }
 
+::-moz-selection { /* Code for Firefox */
+  color: #fff;
+  background: #ff6a6b;
+}
+
+::selection {
+  color: #fff;
+  background: #ff6a6b;
+}
+
 body {
   /* background-color: #f4f4f4; */
   background-color: #eff0f3;
@@ -16,6 +26,10 @@ body {
 .table td,
 .table th {
   font-size: 0.9rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #F2F5F4 !important;
 }
 
 /* Slider */

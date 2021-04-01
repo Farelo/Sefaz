@@ -34,8 +34,11 @@ hr {
   transition: background-image 0.3s ease-in-out;
 }
 
-.cabecalho {
-  color: #193349;
+
+
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #F2F5F4;
 }
 
 .bigger {
@@ -61,10 +64,6 @@ hr {
 
 .clear-padding {
   padding: 0px;
-}
-
-tbody > tr:nth-child(even) {
-    background-color: #f9f9f9;
 }
 
 

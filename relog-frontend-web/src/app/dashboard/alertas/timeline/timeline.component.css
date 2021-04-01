@@ -172,6 +172,9 @@ label {
   display: inline-block;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.quadradoPequeno:hover {
   -webkit-box-shadow: 0px 1px 20px 0px rgba(112, 144, 176, 0.2);
   -moz-box-shadow: 0px 1px 20px 0px rgba(112, 144, 176, 0.2);
   box-shadow: 0px 1px 20px 0px rgba(112, 144, 176, 0.2);
@@ -196,7 +199,7 @@ label {
     #fff 1rem,
     #fff 100%
   );
-  border: solid #fff 1px;
+  border: solid #ef5562 1px;
 }
 
 .status2 {
@@ -207,7 +210,7 @@ label {
     #fff 1rem,
     #fff 100%
   );
-  border: solid #fff 1px;
+  border: solid #f77737 1px;
 }
 
 .status3 {
@@ -218,7 +221,7 @@ label {
     #fff 0.5rem,
     #fff 100%
   );
-  border: solid #fff 1px;
+  border: solid #f8bd37 1px;
 }
 
 .status4 {
@@ -229,7 +232,7 @@ label {
     #fff 0.5rem,
     #fff 100%
   );
-  border: solid #fff 1px;
+  border: solid #4dc9ff 1px;
 }
 
 .status5 {
@@ -240,7 +243,7 @@ label {
     #fff 0.5rem,
     #fff 100%
   );
-  border: solid #fff 1px;
+  border: solid #4c7bff 1px;
 }
 
 .status6 {
@@ -251,7 +254,7 @@ label {
     #fff 0.5rem,
     #fff 100%
   );
-  border: solid #fff 1px;
+  border: solid #9ecf99 1px;
 }
 
 .status7 {
@@ -262,7 +265,7 @@ label {
     #fff 0.5rem,
     #fff 100%
   );
-  border: solid #fff 1px;
+  border: solid #3a9ca6 1px;
 }
 
 .status13 {
@@ -273,7 +276,7 @@ label {
     #fff 0.5rem,
     #fff 100%
   );
-  border: solid #fff 1px;
+  border: solid #a349a4 1px;
 }
 
 /* Hover */
@@ -295,7 +298,6 @@ label {
     #f7fafb 0.5rem,
     #f7fafb 100%
   );
-  border: solid #ef5562 1px;
 }
 
 .status2:hover {
@@ -303,10 +305,9 @@ label {
     to right,
     #f77737 0%,
     #f77737 0.5rem,
-    #f7fafb 0.5rem,
-    #f7fafb 100%
+    #f7f4f2 0.5rem,
+    #f7f4f2 100%
   );
-  border: solid #f77737 1px;
 }
 
 .status3:hover {
@@ -314,10 +315,9 @@ label {
     to right,
     #f8bd37 0%,
     #f8bd37 0.5rem,
-    #f2f2f2 0.5rem,
-    #f2f2f2 100%
+    #f5f3ef 0.5rem,
+    #f5f3ef 100%
   );
-  border: solid #f8bd37 1px;
 }
 
 .status4:hover {
@@ -325,10 +325,9 @@ label {
     to right,
     #4dc9ff 0%,
     #4dc9ff 0.5rem,
-    #f7fafb 0.5rem,
-    #f7fafb 100%
+    #c6e6f3 0.5rem,
+    #c6e6f3 100%
   );
-  border: solid #4dc9ff 1px;
 }
 
 .status5:hover {
@@ -336,10 +335,9 @@ label {
     to right,
     #4c7bff 0%,
     #4c7bff 0.5rem,
-    #f7fafb 0.5rem,
-    #f7fafb 100%
+    #d6dff8 0.5rem,
+    #d6dff8 100%
   );
-  border: solid #4c7bff 1px;
 }
 
 .status6:hover {
@@ -347,10 +345,9 @@ label {
     to right,
     #9ecf99 0%,
     #9ecf99 0.5rem,
-    #f7fafb 0.5rem,
-    #f7fafb 100%
+    #f5fdf4 0.5rem,
+    #f5fdf4 100%
   );
-  border: solid #9ecf99 1px;
 }
 
 .status7:hover {
@@ -358,10 +355,9 @@ label {
     to right,
     #3a9ca6 0%,
     #3a9ca6 0.5rem,
-    #f7fafb 0.5rem,
-    #f7fafb 100%
+    #e8f4f5 0.5rem,
+    #e8f4f5 100%
   );
-  border: solid #3a9ca6 1px;
 }
 
 .status13:hover {
@@ -369,10 +365,9 @@ label {
     to right,
     #a349a4 0%,
     #a349a4 0.5rem,
-    #f7fafb 0.5rem,
-    #f7fafb 100%
+    #f3ebf3 0.5rem,
+    #f3ebf3 100%
   );
-  border: solid #a349a4 1px;
 }
 
 .esquerda {

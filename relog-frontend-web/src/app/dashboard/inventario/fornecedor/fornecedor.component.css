@@ -13,9 +13,11 @@ td {
   background-color: white;
 }
 
-.cabecalho {
-  background-color: #3E4F60;
-  color: white;
+
+
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #F2F5F4;
 }
 
 span {

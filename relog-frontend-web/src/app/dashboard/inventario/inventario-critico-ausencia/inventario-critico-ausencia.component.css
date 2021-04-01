@@ -8,9 +8,11 @@
   margin-bottom: 0px;
 }
 
-.cabecalho {
-  background-color: #3E4F60;
-  color: white;
+
+
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #F2F5F4;
 }
 
 span {
@@ -48,7 +50,7 @@ hr {
 
 .explicacao {
   color: #777;
-  font-size: 10px;
+  font-size: .75rem;
   margin-bottom: 0px;
 }
 
@@ -110,10 +112,6 @@ hr {
   margin-bottom: 0px;
 }
 
-tbody > tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
 .export-button {
   height: 30px;
   cursor: pointer;
@@ -138,10 +136,6 @@ tbody > tr:nth-child(even) {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-}
-
-.default-order {
-  color: rgba(255, 255, 255, 0.5);
 }
 
 /*Checkboxes*/

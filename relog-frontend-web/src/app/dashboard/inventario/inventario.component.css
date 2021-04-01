@@ -1,4 +1,4 @@
-@import '~font-awesome/css/font-awesome.css';
+@import "~font-awesome/css/font-awesome.css";
 
 .painel {
   border-style: solid;
@@ -67,9 +67,9 @@ td {
   height: 15px;
 }
 
-.cabecalho {
-  background-color: #3E4F60;
-  color: white;
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #f2f5f4;
 }
 
 .infoData {
@@ -79,15 +79,33 @@ td {
 }
 
 .perdido {
-  background: radial-gradient(#ef5562 5%, #ef5562 45%, #fff 45%, #fff 62%, #ef5562 62%);
+  background: radial-gradient(
+    #ef5562 5%,
+    #ef5562 45%,
+    #fff 45%,
+    #fff 62%,
+    #ef5562 62%
+  );
 }
 
 .parado {
-  background: radial-gradient(#5d8dd7 5%, #5d8dd7 45%, #fff 45%, #fff 62%, #5d8dd7 62%);
+  background: radial-gradient(
+    #5d8dd7 5%,
+    #5d8dd7 45%,
+    #fff 45%,
+    #fff 62%,
+    #5d8dd7 62%
+  );
 }
 
 .incorreto {
-  background: radial-gradient(#a08dc2 5%, #a08dc2 45%, #fff 45%, #fff 62%, #a08dc2 62%);
+  background: radial-gradient(
+    #a08dc2 5%,
+    #a08dc2 45%,
+    #fff 45%,
+    #fff 62%,
+    #a08dc2 62%
+  );
 }
 
 span {
@@ -107,7 +125,7 @@ select {
   margin-left: 10px;
   background-color: WHITE;
   line-height: 1.25;
-  border:1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   text-align: left;
 }
 
@@ -123,7 +141,7 @@ select {
 }
 
 .definicao {
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   color: white;
   padding: 10px;
 }
@@ -136,7 +154,7 @@ select {
 
 hr {
   margin: 20px 0px 20px 0px;
-  border-color: #3E4F60;
+  border-color: #3e4f60;
   border-width: thin;
 }
 
@@ -171,7 +189,7 @@ hr {
 
 .mais {
   width: 100%;
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   padding: 5px;
   color: white;
   border: none;
@@ -226,7 +244,7 @@ hr {
 }
 
 .layer {
-  background: rgba(39,62,84,0.82);
+  background: rgba(39, 62, 84, 0.82);
   overflow: hidden;
   height: 100%;
   z-index: 2;
@@ -236,7 +254,6 @@ hr {
   background-color: white;
   margin: 0px;
   padding: 20px;
-  box-shadow: 0px 0px 7px #000;
 }
 
 .close {
@@ -276,16 +293,15 @@ hr {
   outline: none;
 }
 
-
 /* [Emanoel] INICIO: DASHBOARD GERAL */
-.icon-inner-level{
+.icon-inner-level {
   margin-left: 15px;
   transform: rotate(270deg) scaleX(-1);
   color: #adb5bd;
 }
-.botao-opcao{
+.botao-opcao {
   width: 100%;
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   padding: 5px;
   color: white;
   border: none;
@@ -294,64 +310,64 @@ hr {
   background-position: center;
   background-size: 15px;
 }
-.botao-download{
+.botao-download {
   color: white;
 }
 .hiddenRow {
-    padding: 0 !important;
+  padding: 0 !important;
 }
-.super-table{
+.super-table {
   font-size: 14px;
 }
-.super-table > thead tr th{
+.super-table > thead tr th {
   border: none;
 }
-.super-th{
+.super-th {
   text-align: center;
   position: relative;
 }
 .super-th:after {
-    position: absolute;
-    content: '';
-    border-bottom: 2px solid #ddd;
-    width: 99%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    bottom: -1px;
-    left: 50%;
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ddd;
+  width: 99%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  bottom: -1px;
+  left: 50%;
 }
-.super-th-atraso{
+.super-th-atraso {
   border-left: 2px solid #4dc9ff;
 }
-.super-th-permanencia{
+.super-th-permanencia {
   border-left: 2px solid #4c7bff;
 }
-.super-th-ausente{
+.super-th-ausente {
   border-left: 2px solid #ef5562;
 }
-.empty-super-th{
-  border-bottom: 1px solid #3E4F60;
+.empty-super-th {
+  border-bottom: 1px solid #3e4f60;
 }
-.inner-table{
+.inner-table {
   width: fit-content;
   min-width: 40%;
-  float:left;
+  float: left;
   margin-left: 15px;
 }
 .super-table > tbody > tr:nth-child(2) > td {
   padding: 0px 8px;
   border: 0px;
 }
-.badge-atrasado{
+.badge-atrasado {
   background-color: #4dc9ff;
 }
-.badge-incorreto{
+.badge-incorreto {
   background-color: #f77737;
 }
-.badge-permanencia{
+.badge-permanencia {
   background-color: #4c7bff;
 }
-.badge-ausente{
+.badge-ausente {
   background-color: #ef5562;
 }
 

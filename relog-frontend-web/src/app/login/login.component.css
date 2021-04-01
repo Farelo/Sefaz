@@ -46,13 +46,11 @@ h2 {
   color: #828282;
   padding: 13px 15px;
   background: #F2F5F6;
-  border-style: solid;
-  border-bottom-color: white;
-  border-bottom-width: 1.5px;
+  border-bottom: solid #bfbcbc 1.5px;
   border-top: none;
   border-left: none;
   border-right: none;
-  border-radius: 2px; 
+  border-radius: 6px; 
 }
 
 .inputMail:focus, 

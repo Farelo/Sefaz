@@ -1,12 +1,12 @@
-@import '~font-awesome/css/font-awesome.css';
+@import "~font-awesome/css/font-awesome.css";
 
 .table {
   margin-bottom: 0px;
 }
 
-.cabecalho {
-  background-color: #3E4F60;
-  color: white;
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #f2f5f4;
 }
 
 span {
@@ -26,7 +26,7 @@ select {
   margin-left: 10px;
   background-color: WHITE;
   line-height: 1.25;
-  border:1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   text-align: left;
 }
 
@@ -38,7 +38,7 @@ select {
 }
 
 .definicao {
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   color: white;
   padding: 10px;
   margin: 0px !important;
@@ -46,14 +46,12 @@ select {
 
 .resumo {
   display: inline-flex;
-  margin: 0px 20px 0px 0px!important;
-  box-shadow: 0px 0px 5px #999;
-  -webkit-box-shadow: 0px 0px 7px #999;
+  margin: 0px 20px 0px 0px !important; 
 }
 
 hr {
   margin: 20px 0px 20px 0px;
-  border-color: #3E4F60;
+  border-color: #3e4f60;
   border-width: thin;
 }
 
@@ -61,11 +59,9 @@ hr {
   background-color: white;
   margin: 0px;
   padding: 20px;
-  box-shadow: 0px 0px 7px #000;
-  -webkit-box-shadow: 0px 0px 7px #000;
 }
 
-.base-bg{
+.base-bg {
   background-color: white;
   padding: 20px 20px;
   border-radius: 6px;
@@ -75,15 +71,7 @@ hr {
   padding: 0px;
 }
 
-/* td {
-  background-color: white;
-} */
-
-tbody > tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
 .export-button {
   height: 30px;
   cursor: pointer;
- }
+}

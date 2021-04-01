@@ -44,7 +44,7 @@
   margin-bottom: 15px;
   width: 100%;
   background-color: #f5f9fc;
-  padding: 10px 15px 10px 15px;
+  padding: 20px 15px 20px 15px;
   border: none;
 }
 
@@ -92,13 +92,12 @@
 }
 
 .cabecalho {
-  background-color: #f9f9f9;
-  color: white;
+  color: #193349;
 }
 
-/* tbody > tr:nth-child(even) {
-    background-color: #f9f9f9;
-} */
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+}
 
 table > thead > tr > th {
   color: #333333;

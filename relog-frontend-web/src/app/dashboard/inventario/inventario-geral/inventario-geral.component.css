@@ -43,9 +43,11 @@ hr {
   margin-bottom: 0px;
 }
 
-.cabecalho {
-  background-color: #3E4F60;
-  color: white;
+
+
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #F2F5F4;
 }
 
 .tituloClaro {
@@ -175,16 +177,8 @@ hr {
   padding: 0px;
 }
 
-/* td {
-  background-color: white;
-} */
-
 .inner-table > table > tbody > tr{
   background-color: #fff;
-}
-
-tbody > tr:nth-child(even) {
-  background-color: #f9f9f9;
 }
 
 .export-button {

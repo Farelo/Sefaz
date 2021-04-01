@@ -1,10 +1,7 @@
 <div class="conteudoTop">
   <div class="base-bg">
     <div class="corpo">
-      <button class="help" (click)="openHelp(content)">
-        <div class="bigger">
-          <div class="det2"></div>
-        </div>
+      <button class="help det2" (click)="openHelp(content)">
       </button>
 
       <h2>Importar Dados</h2>
@@ -17,10 +14,10 @@
             [formGroup]="import"
             #formDir="ngForm"
           >
-            <p>Escolha um arquivo xlxs para importar</p>
+            <p>Escolha um arquivo .xls para importar</p>
 
             <div class="table-responsive tabela">
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                   <tr class="cabecalho">
                     <th>Arquivo</th>
@@ -33,18 +30,14 @@
 
                 <tbody>
                   <tr>
+                    <!-- Editar -->
                     <td>
                       <form>
                         <div class="form-group">
-                          <!-- <div class="editar">
-                            </div> -->
-                          <label for="single">ARQUIVO</label>
-                          <!-- [ngbTooltip]="getMessage()" placement="top" container="body" -->
-                          <!-- [attr.disabled]="(uploader.length !== 0) ? '' : null" -->
+                          <label class="blueButton" for="fileButtonLabel">Arquivo</label>
                           <input
                             type="file"
-                            class="form-control"
-                            id="single"
+                            id="fileButtonLabel"
                             (change)="fileEvent($event)"
                             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                           />
@@ -52,12 +45,14 @@
                       </form>
                     </td>
 
+                    <!-- nome do arquivo -->
                     <td>
                       <div *ngIf="uploader.length !== 0">
                         {{ uploader[0]?.name }}
                       </div>
                     </td>
 
+                    <!-- tamanho do arquivo -->
                     <td nowrap>
                       <div *ngIf="uploader.length !== 0">
                         {{ uploader[0]?.size / 1024 / 1024 | number: ".2" }}
@@ -65,6 +60,7 @@
                       </div>
                     </td>
 
+                    <!-- tipo da importação -->
                     <td nowrap>
                       <div *ngIf="uploader.length !== 0">
                         <select
@@ -86,9 +82,6 @@
                           <option>Pontos de Controle</option>
                           <option>Embalagens</option>
                           <option>Empresas</option>
-                          <!-- <option>Projetos</option> -->
-                          <!-- <option>Setores</option> -->
-                          <!-- <option>Rotas</option> -->
                         </select>
 
                         <p
@@ -105,12 +98,14 @@
                       </div>
                     </td>
 
+                    <!-- ações -->
                     <td nowrap>
                       <div *ngIf="uploader.length !== 0">
-                        <button type="submit" class="editar">Upload</button>
+                        
+                        <button type="submit" class="blueButton">Upload</button>
                         <button
                           type="button"
-                          class="excluir"
+                          class="redButton"
                           (click)="remove()"
                         >
                           Remove
@@ -157,7 +152,7 @@
 
         <div class="col-md-12">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr class="cabecalho">
                   <th>Linha</th>
@@ -207,7 +202,7 @@
 
         <div class="col-md-12">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr class="cabecalho">
                   <th>linha</th>
@@ -271,7 +266,7 @@
 
         <div class="col-md-12">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr class="cabecalho">
                   <th>linha</th>
@@ -327,7 +322,7 @@
 
         <div class="col-md-12">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr class="cabecalho">
                   <th>linha</th>
@@ -392,7 +387,7 @@
 
         <div class="col-md-12">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr class="cabecalho">
                   <th>linha</th>
@@ -467,7 +462,7 @@
 
         <div class="col-md-12">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr class="cabecalho">
                   <th>linha</th>
@@ -534,7 +529,7 @@
 
         <div class="col-md-12">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr class="cabecalho">
                   <th>linha</th>
@@ -612,7 +607,7 @@
         <span class="badge badge-secondary">duns</span>
       </p>
 
-      <table class="table table-sm">
+      <table class="table table-hover table-sm">
         <thead>
           <tr>
             <th>Coluna</th>
@@ -699,7 +694,7 @@
         <span class="badge badge-secondary">project</span>
       </p>
 
-      <table class="table table-sm">
+      <table class="table table-hover table-sm">
         <thead>
           <tr>
             <th>Coluna</th>
@@ -802,7 +797,7 @@
         <span class="badge badge-secondary">uf</span>
       </p>
 
-      <table class="table table-sm">
+      <table class="table table-hover table-sm">
         <thead>
           <tr>
             <th>Coluna</th>

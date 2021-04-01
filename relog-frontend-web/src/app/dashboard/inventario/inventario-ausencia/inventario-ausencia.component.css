@@ -1,4 +1,4 @@
-@import '~font-awesome/css/font-awesome.css';
+@import "~font-awesome/css/font-awesome.css";
 
 .meuInventario {
   /* box-shadow: 0px 0px 5px #000; */
@@ -9,9 +9,9 @@
   margin-bottom: 0px;
 }
 
-.cabecalho {
-  background-color: #3E4F60;
-  color: white;
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #f2f5f4;
 }
 
 span {
@@ -31,13 +31,13 @@ select {
   margin-left: 10px;
   background-color: WHITE;
   line-height: 1.25;
-  border:1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   text-align: left;
 }
 
 hr {
   margin: 20px 0px 20px 0px;
-  border-color: #3E4F60;
+  border-color: #3e4f60;
   border-width: thin;
 }
 
@@ -49,7 +49,7 @@ hr {
 
 .explicacao {
   color: #777;
-  font-size: 10px;
+  font-size: 0.75rem;
   margin-bottom: 0px;
 }
 
@@ -63,9 +63,9 @@ hr {
   padding: 10px 20px;
 }
 
-.botao-opcao{
+.botao-opcao {
   width: 100%;
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   padding: 5px;
   color: white;
   border: none;
@@ -81,55 +81,55 @@ hr {
   transition: background-color 0.3s;
 }
 
-.super-table{
+.super-table {
   font-size: 14px;
 }
 
-.super-table > thead tr th{
+.super-table > thead tr th {
   border: none;
 }
 
-.super-th{
+.super-th {
   text-align: center;
   position: relative;
 }
 
 .super-th:after {
-    position: absolute;
-    content: '';
-    border-bottom: 2px solid #ddd;
-    width: 99%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    bottom: -1px;
-    left: 50%;
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ddd;
+  width: 99%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  bottom: -1px;
+  left: 50%;
 }
 
-.super-th-atraso{
+.super-th-atraso {
   border-left: 2px solid #4dc9ff;
 }
 
-.super-th-permanencia{
+.super-th-permanencia {
   border-left: 2px solid #4c7bff;
 }
 
-.super-th-ausente{
+.super-th-ausente {
   border-left: 2px solid #ef5562;
 }
 
-.empty-super-th{
-  border-bottom: 1px solid #3E4F60;
+.empty-super-th {
+  border-bottom: 1px solid #3e4f60;
 }
 
-.inner-table{
+.inner-table {
   width: fit-content;
   min-width: 40%;
-  float:left;
+  float: left;
   margin-left: 15px;
   border: 1px solid #ddd;
 }
 
-.icon-inner-level{
+.icon-inner-level {
   margin-left: 15px;
   -webkit-transform: rotate(270deg) scaleX(-1);
   transform: rotate(270deg) scaleX(-1);
@@ -141,23 +141,23 @@ hr {
   border: 0px;
 }
 
-.badge-atrasado{
+.badge-atrasado {
   background-color: #4dc9ff;
 }
 
-.badge-incorreto{
+.badge-incorreto {
   background-color: #f77737;
 }
 
-.badge-permanencia{
+.badge-permanencia {
   background-color: #4c7bff;
 }
 
-.badge-ausente{
+.badge-ausente {
   background-color: #ef5562;
 }
 
-.base-bg{
+.base-bg {
   background-color: white;
   padding: 20px 20px;
   border-radius: 6px;
@@ -181,7 +181,7 @@ hr {
   height: 20px;
   background-image: url("../../../../assets/images/icon_circle_plus_blue.png");
   background-size: 20px;
-  cursor: pointer; 
+  cursor: pointer;
   display: inline-block;
 }
 
@@ -196,14 +196,6 @@ hr {
   text-align: center;
 }
 
-/* td {
-  background-color: white;
-} */
-
-tbody > tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
 .export-button {
   height: 30px;
   cursor: pointer;
@@ -211,8 +203,8 @@ tbody > tr:nth-child(even) {
 
 /* Sort table*/
 .sort-icons {
-  width: 15px; 
-  text-align: center; 
+  width: 15px;
+  text-align: center;
   font-size: 13px;
   display: flex;
   flex-direction: column;
@@ -221,15 +213,11 @@ tbody > tr:nth-child(even) {
 }
 
 .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */ 
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-}
-
-.default-order {
-  color: rgba(255, 255, 255, 0.5);
 }

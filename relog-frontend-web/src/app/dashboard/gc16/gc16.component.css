@@ -1,12 +1,10 @@
-@import '~font-awesome/css/font-awesome.css';
+@import "~font-awesome/css/font-awesome.css";
 
 .classVazio {
   background-color: white;
   margin: 0px;
   padding: 20px;
-  /* box-shadow: 0px 0px 7px #000; */
 }
-
 
 .table {
   margin-bottom: 0px;
@@ -23,7 +21,7 @@
   border-radius: 1em;
 }
 
-td { 
+td {
   height: 50px;
 }
 
@@ -45,9 +43,9 @@ td {
   height: 15px;
 }
 
-.cabecalho {
-  background-color: #3E4F60;
-  color: white;
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #f2f5f4;
 }
 
 .infoData {
@@ -61,7 +59,7 @@ span {
 }
 
 .inicial {
-  margin-bottom: 10px !important; 
+  margin-bottom: 10px !important;
 }
 
 .meuInput {
@@ -83,14 +81,14 @@ span {
   width: 140px;
   background-color: #fff;
   color: #000;
-  border: 1px solid #3E4F60;
+  border: 1px solid #3e4f60;
   height: 34px;
   border-radius: 5px;
   float: right;
 }
 
 .mais:hover {
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   color: #fff;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
@@ -108,7 +106,6 @@ span {
   cursor: pointer;
   left: 50%;
   margin-left: 43%;
-
 }
 
 .mais:hover .det {
@@ -126,8 +123,8 @@ span {
   float: right;
 }
 
-.editar, 
-.excluir{ 
+.editar,
+.excluir {
   background-color: transparent;
   border: 1px solid #e6e6e6;
   color: #444444;
@@ -137,10 +134,10 @@ span {
   font-size: 12px;
 }
 
-.editar:hover, 
+.editar:hover,
 .excluir:hover {
-  background-color: #3E4F60;
-  border: 1px solid #3E4F60;
+  background-color: #3e4f60;
+  border: 1px solid #3e4f60;
   color: #fff;
 
   transition: background-color 0.3s;
@@ -173,14 +170,10 @@ span {
   text-align: right;
 }
 
-.base-bg{
+.base-bg {
   background-color: white;
   border-radius: 6px;
   padding: 20px 20px;
-}
-
-tbody > tr:nth-child(even) {
-    background-color: #f9f9f9;
 }
 
 /* Teste wraper */
