@@ -126,7 +126,7 @@
 
 .captionButton {
   background-color: transparent;
-  border: none; 
+  border: none;
   background-image: url("../../../../assets/images/icon_question_dark.png");
   background-repeat: no-repeat;
   background-size: 1.5rem;
@@ -172,6 +172,9 @@ label {
   display: inline-block;
   border-radius: 6px;
   cursor: pointer;
+  -webkit-box-shadow: 0px 1px 20px 0px rgba(112, 144, 176, 0.2);
+  -moz-box-shadow: 0px 1px 20px 0px rgba(112, 144, 176, 0.2);
+  box-shadow: 0px 1px 20px 0px rgba(112, 144, 176, 0.2);
 }
 
 .status0 {
@@ -190,7 +193,7 @@ label {
     to right,
     #ef5562 0%,
     #ef5562 1rem,
-    #fff 1rem, 
+    #fff 1rem,
     #fff 100%
   );
   border: solid #fff 1px;
@@ -279,8 +282,8 @@ label {
     to right,
     #b3b3b3 0%,
     #b3b3b3 0.5rem,
-    #F7FAFB 0.5rem,
-    #F7FAFB 100%
+    #f7fafb 0.5rem,
+    #f7fafb 100%
   );
 }
 
@@ -289,8 +292,8 @@ label {
     to right,
     #ef5562 0%,
     #ef5562 0.5rem,
-    #F7FAFB 0.5rem,
-    #F7FAFB 100%
+    #f7fafb 0.5rem,
+    #f7fafb 100%
   );
   border: solid #ef5562 1px;
 }
@@ -300,8 +303,8 @@ label {
     to right,
     #f77737 0%,
     #f77737 0.5rem,
-    #F7FAFB 0.5rem,
-    #F7FAFB 100%
+    #f7fafb 0.5rem,
+    #f7fafb 100%
   );
   border: solid #f77737 1px;
 }
@@ -311,8 +314,8 @@ label {
     to right,
     #f8bd37 0%,
     #f8bd37 0.5rem,
-    #F2F2F2 0.5rem,
-    #F2F2F2 100%
+    #f2f2f2 0.5rem,
+    #f2f2f2 100%
   );
   border: solid #f8bd37 1px;
 }
@@ -322,8 +325,8 @@ label {
     to right,
     #4dc9ff 0%,
     #4dc9ff 0.5rem,
-    #F7FAFB 0.5rem,
-    #F7FAFB 100%
+    #f7fafb 0.5rem,
+    #f7fafb 100%
   );
   border: solid #4dc9ff 1px;
 }
@@ -333,8 +336,8 @@ label {
     to right,
     #4c7bff 0%,
     #4c7bff 0.5rem,
-    #F7FAFB 0.5rem,
-    #F7FAFB 100%
+    #f7fafb 0.5rem,
+    #f7fafb 100%
   );
   border: solid #4c7bff 1px;
 }
@@ -344,8 +347,8 @@ label {
     to right,
     #9ecf99 0%,
     #9ecf99 0.5rem,
-    #F7FAFB 0.5rem,
-    #F7FAFB 100%
+    #f7fafb 0.5rem,
+    #f7fafb 100%
   );
   border: solid #9ecf99 1px;
 }
@@ -355,8 +358,8 @@ label {
     to right,
     #3a9ca6 0%,
     #3a9ca6 0.5rem,
-    #F7FAFB 0.5rem,
-    #F7FAFB 100%
+    #f7fafb 0.5rem,
+    #f7fafb 100%
   );
   border: solid #3a9ca6 1px;
 }
@@ -366,8 +369,8 @@ label {
     to right,
     #a349a4 0%,
     #a349a4 0.5rem,
-    #F7FAFB 0.5rem,
-    #F7FAFB 100%
+    #f7fafb 0.5rem,
+    #f7fafb 100%
   );
   border: solid #a349a4 1px;
 }
@@ -390,7 +393,8 @@ label {
   font-size: 0.9rem;
 }
 
-.companyName, .quantity {
+.companyName,
+.quantity {
   font-size: 1rem;
   padding-left: 1.3rem;
   background-size: 1rem;
