@@ -1,3 +1,6 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
 
 .info {
   padding: 10px 20px 10px 10px;
@@ -14,6 +17,7 @@
   border-bottom-color: lighgrey;
   border-width: thin;
   border-bottom-style: solid;
+  font-family: "Raleway", sans-serif;
 }
 
 .infoData {
@@ -23,43 +27,44 @@
 }
 
 .botaoVoltar {
-  background-color: transparent;
-  color: white;
-  border-color: white;
-  border-style: solid;
-  border-width: 2px;
-  padding: 5px 0px;
-  width: 100px;
-  font-size: 13px;
-  float: right;
-  vertical-align: baseline;
+  background-color: white;
+  border: 1px solid #e6e6e6;
+  color: #193349;
+  border-radius: 6px;
+  padding: 0.2rem 1rem;
+  font-size: 1rem;
 }
 
 .botaoVoltar:hover {
-  background-color: white;
-  color: #777;
-  -webkit-transition: background-color 0.3s;
+  background-color: #335ba8;
+  color: #fff;
+
   transition: background-color 0.3s;
-  -webkit-transition: color 0.3s;
-  transition: color 0.3s;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
 }
 
 .botaoVoltar:focus {
   outline: none;
 }
 
-.info {
-  padding: 10px 4% 10px 10px;
-  margin-bottom: 5px;
-  background: white;
-  box-shadow: 0px 0px 7px #000;
+* {
+  font-family: "Roboto", sans-serif;
 }
 
-.tit1 {
-  color: black;
+.header {
+  border-bottom-color: #fff;
+  border-width: thin;
+  border-bottom-style: solid;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: 500;
+  vertical-align: middle;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.tit1,
 .lg0,
 .lg1,
 .lg2,
@@ -69,25 +74,12 @@
 .lg6,
 .lg7,
 .lg13 {
-  font-size: 12px;
+  margin-bottom: 0.2rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 12px;
   display: inline-block;
-  text-align: center;
-}
-
-.lg0,
-.lg1,
-.lg2,
-.lg3,
-.lg4,
-.lg5,
-.lg6,
-.lg7,
-.lg13 {
-  color: white;
-  padding: 5px;
-  margin-bottom: 5px;
-  width: 150px !important;
-  text-align: center;
+  margin-right: 0.5rem;
 }
 
 .lg0 {
@@ -126,72 +118,13 @@
   background-color: #a349a4;
 }
 
-.interrogacao1 {
-  background-color: transparent;
-  border: none;
-  text-align: right;
-  float: right;
-  background-image: url("../../../../assets/images/interrogacao.png");
-  background-size: 20px;
-  background-repeat: no-repeat;
-  width: 20px;
-  height: 20px;
-  vertical-align: baseline;
-}
-
-.interrogacao2 {
-  background-color: transparent;
-  border: none;
-  text-align: right;
-  float: right;
-  background-image: url("../../../../assets/images/interrogacao.png");
-  background-size: 20px;
-  background-repeat: no-repeat;
-  width: 20px;
-  height: 20px;
-  vertical-align: baseline;
-}
-
 .button:focus {
   border: none !important;
   outline: none !important;
 }
 
-.infoData {
-  font-size: 9px;
-  color: grey;
-  margin: 0px;
-}
-
-.perdido2,
-.parado2,
-.incorreto2 {
-  font-weight: bold;
-}
-
 span {
   font-weight: normal;
-}
-
-label {
-  font-weight: normal;
-  color: black;
-  font-size: 12px;
-}
-
-.botaoOk {
-  padding: 3px 15px;
-  background-color: #777;
-  color: white;
-  border: none;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
-  font-size: 14px;
-}
-
-.botaoOk:hover {
-  color: white;
-  background-color: #555;
 }
 
 .modalFilho p {
@@ -209,144 +142,210 @@ label {
 .quadradoPequeno {
   width: 24%;
   height: auto;
-  border-left-style: solid;
-  border-right-style: solid;
-  border-bottom-style: solid;
-  border-left-width: 2px;
-  border-right-width: 2px;
-  border-bottom-width: 2px;
-  padding: 20px 10px 10px 10px;
-  margin-bottom: 5px;
+  padding: 1rem 0.6rem 1rem 1.2rem;
+  margin-bottom: 1rem;
+  margin-right: 0.5rem;
   display: inline-block;
-  margin-left: 0.4%;
-  margin-right: 0.4%;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 .status0 {
-  background: linear-gradient(to bottom, #b3b3b3 0%, #b3b3b3 10%, #fff 10%, #fff 13%, #b3b3b3 13%, #b3b3b3 16%, #fff 16%, #fff 100%);
-  border-left-color: #b3b3b3;
-  border-right-color: #b3b3b3;
-  border-bottom-color: #b3b3b3;
+  background: linear-gradient(
+    to right,
+    #b3b3b3 0%,
+    #b3b3b3 1rem,
+    #fff 1rem,
+    #fff 100%
+  );
+  border: solid #fff 1px;
 }
 
 .status1 {
-  background: linear-gradient(to bottom, #ef5562 0%, #ef5562 10%, #fff 10%, #fff 13%, #ef5562 13%, #ef5562 16%, #fff 16%, #fff 100%);
-  border-left-color: #ef5562;
-  border-right-color: #ef5562;
-  border-bottom-color: #ef5562;
+  background: linear-gradient(
+    to right,
+    #ef5562 0%,
+    #ef5562 1rem,
+    #fff 1rem,
+    #fff 100%
+  );
+  border: solid #fff 1px;
 }
 
 .status2 {
-  background: linear-gradient(to bottom, #f77737 0%, #f77737 10%, #fff 10%, #fff 13%, #f77737 13%, #f77737 16%, #fff 16%, #fff 100%);
-  border-left-color: #f77737;
-  border-right-color: #f77737;
-  border-bottom-color: #f77737;
+  background: linear-gradient(
+    to right,
+    #f77737 0%,
+    #f77737 1rem,
+    #fff 1rem,
+    #fff 100%
+  );
+  border: solid #fff 1px;
 }
 
 .status3 {
-  background: linear-gradient(to bottom, #f8bd37 0%, #f8bd37 10%, #fff 10%, #fff 13%, #f8bd37 13%, #f8bd37 16%, #fff 16%, #fff 100%);
-  border-left-color: #f8bd37;
-  border-right-color: #f8bd37;
-  border-bottom-color: #f8bd37;
+  background: linear-gradient(
+    to right,
+    #f8bd37 0px,
+    #f8bd37 0.5rem,
+    #fff 0.5rem,
+    #fff 100%
+  );
+  border: solid #fff 1px;
 }
 
 .status4 {
-  background: linear-gradient(to bottom, #4dc9ff 0%, #4dc9ff 10%, #fff 10%, #fff 13%, #4dc9ff 13%, #4dc9ff 16%, #fff 16%, #fff 100%);
-  border-left-color: #4dc9ff;
-  border-right-color: #4dc9ff;
-  border-bottom-color: #4dc9ff;
+  background: linear-gradient(
+    to right,
+    #4dc9ff 0%,
+    #4dc9ff 0.5rem,
+    #fff 0.5rem,
+    #fff 100%
+  );
+  border: solid #fff 1px;
 }
 
 .status5 {
-  background: linear-gradient(to bottom, #4c7bff 0%, #4c7bff 10%, #fff 10%, #fff 13%, #4c7bff 13%, #4c7bff 16%, #fff 16%, #fff 100%);
-  border-left-color: #4c7bff;
-  border-right-color: #4c7bff;
-  border-bottom-color: #4c7bff;
+  background: linear-gradient(
+    to right,
+    #4c7bff 0%,
+    #4c7bff 0.5rem,
+    #fff 0.5rem,
+    #fff 100%
+  );
+  border: solid #fff 1px;
 }
 
 .status6 {
-  background: linear-gradient(to bottom, #9ecf99 0%, #9ecf99 10%, #fff 10%, #fff 13%, #9ecf99 13%, #9ecf99 16%, #fff 16%, #fff 100%);
-  border-left-color: #9ecf99;
-  border-right-color: #9ecf99;
-  border-bottom-color: #9ecf99;
+  background: linear-gradient(
+    to right,
+    #9ecf99 0%,
+    #9ecf99 0.5rem,
+    #fff 0.5rem,
+    #fff 100%
+  );
+  border: solid #fff 1px;
 }
 
 .status7 {
-  background: linear-gradient(to bottom, #3a9ca6 0%, #3a9ca6 10%, #fff 10%, #fff 13%, #3a9ca6 13%, #3a9ca6 16%, #fff 16%, #fff 100%);
-  border-left-color: #3a9ca6;
-  border-right-color: #3a9ca6;
-  border-bottom-color: #3a9ca6;
+  background: linear-gradient(
+    to right,
+    #3a9ca6 0%,
+    #3a9ca6 0.5rem,
+    #fff 0.5rem,
+    #fff 100%
+  );
+  border: solid #fff 1px;
 }
 
 .status13 {
-  background: linear-gradient(to bottom, #a349a4 0%, #a349a4 10%, #fff 10%, #fff 13%, #a349a4 13%, #a349a4 16%, #fff 16%, #fff 100%);
-  border-left-color: #a349a4;
-  border-right-color: #a349a4;
-  border-bottom-color: #a349a4;
+  background: linear-gradient(
+    to right,
+    #a349a4 0%,
+    #a349a4 0.5rem,
+    #b3b3b3 0.5rem,
+    #b3b3b3 100%
+  );
+  border: solid #fff 1px;
 }
 
+/* Hover */
 .status0:hover {
-  background: linear-gradient(to bottom, #b3b3b3 0%, #b3b3b3 10%, #d3d3d3 10%, #d3d3d3 13%, #b3b3b3 13%, #b3b3b3 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #b3b3b3;
-  border-right-color: #b3b3b3;
-  border-bottom-color: #b3b3b3;
+  background: linear-gradient(
+    to right,
+    #b3b3b3 0%,
+    #b3b3b3 0.5rem,
+    #f7fafb 0.5rem,
+    #f7fafb 100%
+  );
 }
 
 .status1:hover {
-  background: linear-gradient(to bottom, #ef5562 0%, #ef5562 10%, #d3d3d3 10%, #d3d3d3 13%, #ef5562 13%, #ef5562 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #ef5562;
-  border-right-color: #ef5562;
-  border-bottom-color: #ef5562;
+  background: linear-gradient(
+    to right,
+    #ef5562 0%,
+    #ef5562 0.5rem,
+    #f7fafb 0.5rem,
+    #f7fafb 100%
+  );
+  border: solid #ef5562 1px;
 }
 
 .status2:hover {
-  background: linear-gradient(to bottom, #f77737 0%, #f77737 10%, #d3d3d3 10%, #d3d3d3 13%, #f77737 13%, #f77737 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #f77737;
-  border-right-color: #f77737;
-  border-bottom-color: #f77737;
+  background: linear-gradient(
+    to right,
+    #f77737 0%,
+    #f77737 0.5rem,
+    #f7fafb 0.5rem,
+    #f7fafb 100%
+  );
+  border: solid #f77737 1px;
 }
 
 .status3:hover {
-  background: linear-gradient(to bottom, #f8bd37 0%, #f8bd37 10%, #d3d3d3 10%, #d3d3d3 13%, #f8bd37 13%, #f8bd37 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #f8bd37;
-  border-right-color: #f8bd37;
-  border-bottom-color: #f8bd37;
+  background: linear-gradient(
+    to right,
+    #f8bd37 0%,
+    #f8bd37 0.5rem,
+    #f2f2f2 0.5rem,
+    #f2f2f2 100%
+  );
+  border: solid #f8bd37 1px;
 }
 
 .status4:hover {
-  background: linear-gradient(to bottom, #4dc9ff 0%, #4dc9ff 10%, #d3d3d3 10%, #d3d3d3 13%, #4dc9ff 13%, #4dc9ff 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #4dc9ff;
-  border-right-color: #4dc9ff;
-  border-bottom-color: #4dc9ff;
+  background: linear-gradient(
+    to right,
+    #4dc9ff 0%,
+    #4dc9ff 0.5rem,
+    #f7fafb 0.5rem,
+    #f7fafb 100%
+  );
+  border: solid #4dc9ff 1px;
 }
 
 .status5:hover {
-  background: linear-gradient(to bottom, #4c7bff 0%, #4c7bff 10%, #d3d3d3 10%, #d3d3d3 13%, #4c7bff 13%, #4c7bff 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #4c7bff;
-  border-right-color: #4c7bff;
-  border-bottom-color: #4c7bff;
+  background: linear-gradient(
+    to right,
+    #4c7bff 0%,
+    #4c7bff 0.5rem,
+    #f7fafb 0.5rem,
+    #f7fafb 100%
+  );
+  border: solid #4c7bff 1px;
 }
 
 .status6:hover {
-  background: linear-gradient(to bottom, #9ecf99 0%, #9ecf99 10%, #d3d3d3 10%, #d3d3d3 13%, #9ecf99 13%, #9ecf99 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #9ecf99;
-  border-right-color: #9ecf99;
-  border-bottom-color: #9ecf99;
+  background: linear-gradient(
+    to right,
+    #9ecf99 0%,
+    #9ecf99 0.5rem,
+    #f7fafb 0.5rem,
+    #f7fafb 100%
+  );
+  border: solid #9ecf99 1px;
 }
 
 .status7:hover {
-  background: linear-gradient(to bottom, #3a9ca6 0%, #3a9ca6 10%, #d3d3d3 10%, #d3d3d3 13%, #3a9ca6 13%, #3a9ca6 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #3a9ca6;
-  border-right-color: #3a9ca6;
-  border-bottom-color: #3a9ca6;
+  background: linear-gradient(
+    to right,
+    #3a9ca6 0%,
+    #3a9ca6 0.5rem,
+    #f7fafb 0.5rem,
+    #f7fafb 100%
+  );
+  border: solid #3a9ca6 1px;
 }
 
 .status13:hover {
-  background: linear-gradient(to bottom, #a349a4 0%, #a349a4 10%, #d3d3d3 10%, #d3d3d3 13%, #a349a4 13%, #a349a4 16%, #d3d3d3 16%, #d3d3d3 100%);
-  border-left-color: #a349a4;
-  border-right-color: #a349a4;
-  border-bottom-color: #a349a4;
+  background: linear-gradient(
+    to right,
+    #a349a4 0%,
+    #a349a4 0.5rem,
+    #f7fafb 0.5rem,
+    #f7fafb 100%
+  );
+  border: solid #a349a4 1px;
 }
 
 .esquerda {
@@ -406,11 +405,11 @@ label {
 }
 
 .fornecedor7 {
-  background-image: url("../../../../assets/images/local7.png"); 
+  background-image: url("../../../../assets/images/local7.png");
 }
 
 .fornecedor13 {
-  background-image: url("../../../../assets/images/local8.png"); 
+  background-image: url("../../../../assets/images/local8.png");
 }
 
 .quantidade {
@@ -497,15 +496,17 @@ label {
 }
 
 .header {
-  border-bottom-color: #01002d;
+  border-bottom-color: #fff;
   border-width: thin;
   border-bottom-style: solid;
   margin-bottom: 25px;
   font-size: 2rem;
   font-weight: 500;
   vertical-align: middle;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
 
 /* Teste wraper */
 @media (max-width: 576px) {
