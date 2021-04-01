@@ -1,72 +1,36 @@
-@import '~font-awesome/css/font-awesome.css';
+@import "~font-awesome/css/font-awesome.css";
 
 .form-group {
-    margin-bottom: 0rem;
+  margin-bottom: 0rem;
 }
 
-.teste {
-  background-image: url("../../assets/images/evoy-fundo1.jpg");
+.bg {
+  background-image: url("../../assets/images/evoy_fundo_no_logo.png");
+  background-color: #01358D;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  height: 100%;
   min-height: 100vh;
   margin: 0px;
   padding: 0px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
 }
 
 .quadrado {
   display: inline-block;
-  text-align: -webkit-center;
-  padding: 0px; 
-  position: absolute;
-  box-sizing: border-box;
-  width: 400px;
-  height: 400px; 
+  text-align: center;
+  padding: 0px;
+  width: 25rem;
+  height: 25rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  background-color: white;
+  border-radius: 6px;
   overflow: hidden;
-  position: absolute;
-  top: calc( 50% - 100px );
-  left: calc( 80% - 200px );
-}
-
-.quadrado-blur { 
-  background: url("../../assets/images/evoy-fundo1.jpg") no-repeat center center fixed;
-  background-size: cover;
-  padding: 0px; 
-
-  -webkit-filter:blur(10px);
-  -ms-filter: blur(10px);
-  -o-filter: blur(10px);
-  filter: blur(10px);
-
-  height: 400px;
-  width: 400px;
-
-  position: absolute;
-  top: calc( 50% - 100px );
-  left: calc( 80% - 200px );
-
-  /* display: inline-block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
-  transform: translate(-50%, -50%); */
-}
-
-.quadrado-content {
-  background:rgba(0,0,0,0.2); 
-  position: absolute;
-  margin: auto;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding-left: 30px;
-  padding-right: 30px;
-  height: 100%;
-  width: 100%;
+  margin-right: 5rem;
 }
 
 h2 {
@@ -75,32 +39,24 @@ h2 {
   margin-top: 40px;
 }
 
-input { 
+.inputMail, 
+.inputSenha {
   width: 100%;
+  height: 3rem;
+  color: #828282;
   padding: 13px 15px;
-  background:rgba(0,0,0,0.2); 
+  background: #F2F5F6;
   border-style: solid;
   border-bottom-color: white;
   border-bottom-width: 1.5px;
   border-top: none;
   border-left: none;
   border-right: none;
-  text-decoration: none;
-  color: white; 
-  display:block;
+  border-radius: 2px; 
 }
 
-.wrapper {
-  display: inline-flex;
-  margin-top: 25px;
-}
-
-.inputSenha {
-  background-size: 18px;
-  text-decoration: none;
-}
-
-input:focus {
+.inputMail:focus, 
+.inputSenha:focus {
   outline: none !important;
   border-style: solid;
   border-bottom-color: #4577d8;
@@ -111,18 +67,39 @@ input:focus {
   box-shadow: none;
 }
 
+#submitLogin {
+  width: 100%;
+  height: 3rem;
+  padding: 10px 40px;
+  color: white;
+  background: #e24747;
+  border-radius: 22px;
+  border: none;
+}
+
+#submitLogin:hover {
+  width: 100%;
+  padding: 10px 40px;
+  color: white;
+  background: #CF3939;
+  border-radius: 22px;
+  opacity: 0.7;
+  -webkit-transition: background-color 0.3s, color 0.5s;
+  transition: background-color 0.3s, color 0.5s;
+}
+
 .required {
-  border-color: #FF8A80 !important;
+  border-color: #ff8a80 !important;
 }
 
 .requiredText {
-  color: #FF8A80 !important;
+  color: #ff8a80 !important;
 }
 
 .senhaIncorreta {
   outline: none !important;
   border-style: solid;
-  border-bottom-color: #FF8A80;
+  border-bottom-color: #ff8a80;
   border-bottom-width: 1.5px;
   border-top: none;
   border-left: none;
@@ -137,13 +114,12 @@ p {
 }
 
 .esqueci {
-  color: #fff;
+  color: #919499;
   margin-top: 20px;
   margin-bottom: 25px;
 }
 
-.esqueci:hover {
-  color: #4577d8;
+.esqueci:hover { 
   cursor: pointer;
 }
 
@@ -152,40 +128,12 @@ p {
   border-style: none;
 }
 
-button {
-  /* width: calc( 100% - 60px ); */
-  width: 100%;
-  padding: 10px 40px;
-  background-color: transparent;
-  border-radius: 5px;
-  color: white;
-  border-style: solid;
-  border-width: medium;
-  border-color: white;
-  opacity: 0.7;
+.requiredText {
+  text-align: center;
+  text-align: -webkit-center;
 }
 
-button:hover {
-  background-color: white;
-  color: black;
-  border-color: white;
-  opacity: 0.7;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
-  -webkit-transition: color 0.5s;
-  transition: color 0.5s;
-}
-
-button:focus {
-  outline: none;
-}
-
-.requiredText { 
-  text-align: center; 
-  text-align: -webkit-center; 
-}
-
-.input-group{
+.input-group {
   width: min-content;
 }
 
@@ -194,11 +142,11 @@ button:focus {
 .emailIncorreto,
 .emailNaoCadastrado,
 .senhaObrigatoria {
-  color: #FF8A80;
+  color: #ff8a80;
   font-size: 13px;
 }
 
-::-webkit-input-placeholder {
+/* ::-webkit-input-placeholder {
   color: #fafafb;
   opacity: 0.5;
 }
@@ -216,13 +164,16 @@ button:focus {
 :-moz-placeholder {
   color: #fafafb;
   opacity: 0.8;
-}
+} */
 
-@media (max-width: 425px) { 
-  .quadrado, .quadrado-blur, .quadrado-content { 
+@media (max-width: 600px) {
+  .bg {
+    justify-content: center
+  }
+  .quadrado {
     width: 100% !important;
-    left: 0;
-  } 
+    margin-right: 0rem;
+  }
 
   button {
     padding: 5px 0px !important;
