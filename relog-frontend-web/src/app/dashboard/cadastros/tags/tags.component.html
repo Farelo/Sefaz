@@ -1,6 +1,19 @@
-<div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" class="form-control mr-4" placeholder="Buscar" aria-describedby="basic-addon1" [(ngModel)]="search" (keyup.enter)="searchEvent()">
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+<div class="d-flex justify-content-between mb-3 no-gutters">
+  <input
+    type="text"
+    class="input-filter mr-4"
+    placeholder="Buscar"
+    aria-describedby="basic-addon1"
+    [(ngModel)]="search"
+    (keyup.enter)="searchEvent()"
+  />
+  <button
+    routerLink="cadastrar"
+    class="btn btn-outline-secondary"
+    type="button"
+  >
+    Novo
+  </button>
 </div>
 
 <div class="table-responsive">
@@ -12,19 +25,32 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let tag of data.data | paginate: {  id:'tag',
-                                                      itemsPerPage: 10,
-                                                      currentPage: data.meta.page,
-                                                      totalItems: data.data.length}; index as index">
-        <td>{{ tag.code | truncate : 20 }}</td>
+      <tr
+        *ngFor="
+          let tag of data.data
+            | paginate
+              : {
+                  id: 'tag',
+                  itemsPerPage: 10,
+                  currentPage: data.meta.page,
+                  totalItems: data.data.length
+                };
+          index as index
+        "
+      >
+        <td>{{ tag.code | truncate: 20 }}</td>
 
-        <td class="teste">
-          <div >
+        <td class="actions">
+          <div>
             <button class="editar" [routerLink]="['editar/', tag._id]">
-              EDITAR
+              <i class="fa fa-pencil" aria-hidden="true"></i>
             </button>
-            <button class="excluir" (click)="removeTags(tag)" [disabled]="tag.status == 1">
-              EXCLUIR
+            <button
+              class="excluir"
+              (click)="removeTags(tag)"
+              [disabled]="tag.status == 1"
+            >
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
           </div>
         </td>
@@ -37,9 +63,12 @@
 </div>
 <br />
 <div class="has-text-centered">
-    <pagination-controls id='tag' class="my-pagination"
+  <pagination-controls
+    id="tag"
+    class="my-pagination"
     (pageChange)="pageChanged($event)"
     directionLinks="false"
-    autoHide="true">
-    </pagination-controls>
+    autoHide="true"
+  >
+  </pagination-controls>
 </div>

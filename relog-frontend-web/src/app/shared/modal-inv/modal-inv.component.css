@@ -13,7 +13,6 @@
 .botaoVisualizar:focus {
   outline: none;
 }
-* { font-family: 'Roboto', sans-serif; }
 
 .modalBody span {
   font-weight: bold;

@@ -1,11 +1,8 @@
 @import '~font-awesome/css/font-awesome.css';
 
-* { font-family: 'Roboto', sans-serif; }
-
 .descricao {
   display: inline;
-  font-weight: 600;
-  font-family: 'Raleway', sans-serif;
+  font-weight: 600; 
   font-size: 13px;
   margin: 10px 0px 5px 0px
 }
@@ -13,8 +10,7 @@
 .explicacao {
   color: #777;
   font-size: 10px;
-  margin-bottom: 0px;
-  font-family: 'Roboto', sans-serif;
+  margin-bottom: 0px; 
 }
 
 .campo {
@@ -82,8 +78,7 @@ td {
   border-width: 2px;
   padding: 5px 0px;
   width: 100px;
-  font-size: 13px;
-  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;  
 }
 
 .botaoRegistrar:hover,

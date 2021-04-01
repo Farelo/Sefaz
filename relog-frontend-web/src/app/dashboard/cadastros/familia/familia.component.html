@@ -1,11 +1,19 @@
-<div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" 
-    class="form-control mr-4" 
-    placeholder="Buscar família por código" 
-    aria-describedby="basic-addon1"  
-    (keyup)="searchEvent($event)">
-    
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+<div class="d-flex justify-content-between mb-3 no-gutters">
+  <input
+    type="text"
+    class="input-filter mr-4"
+    placeholder="Buscar família por código"
+    aria-describedby="basic-addon1"
+    (keyup)="searchEvent($event)"
+  />
+
+  <button
+    routerLink="cadastrar"
+    class="btn btn-outline-secondary"
+    type="button"
+  >
+    Novo
+  </button>
 </div>
 
 <div class="table-responsive">
@@ -17,18 +25,25 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let family of listOfFamilies | paginate: {
-                                                    itemsPerPage: 10,
-                                                    currentPage: actualPage,
-                                                    totalItems: listOfFamilies.length}">
-        <td>{{ family.code | truncate : 20 }}</td>
-        <td class="teste">
+      <tr
+        *ngFor="
+          let family of listOfFamilies
+            | paginate
+              : {
+                  itemsPerPage: 10,
+                  currentPage: actualPage,
+                  totalItems: listOfFamilies.length
+                }
+        "
+      >
+        <td>{{ family.code | truncate: 20 }}</td>
+        <td class="actions">
           <div>
             <button class="editar" [routerLink]="['editar/', family._id]">
-              EDITAR
+              <i class="fa fa-pencil" aria-hidden="true"></i>
             </button>
             <button class="excluir" (click)="removePacking(family)">
-              EXCLUIR
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
           </div>
         </td>
@@ -44,6 +59,11 @@
 <br />
 
 <div class="has-text-centered">
-  <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
+  <pagination-controls
+    class="my-pagination"
+    (pageChange)="actualPage = $event"
+    directionLinks="false"
+    autoHide="true"
+  >
   </pagination-controls>
 </div>

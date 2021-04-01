@@ -1,7 +1,5 @@
 @import '~font-awesome/css/font-awesome.css';
 
-* { font-family: 'Roboto', sans-serif; }
-
 h2 {
   margin-bottom: 0px;
 }
@@ -70,37 +68,6 @@ h2 {
   text-align: center;
   margin-top: 20px;
 }
-
-/* .gm-style-iw {
-  max-width: 250px;
-  min-width: 220px;
-} */
-
-/* .gm-style-iw {
-  top: 0px !important;
-  left: 0px !important;
-  min-width: 200px;
-  max-width: 220px;
-  background-color: #fff;
-  box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
-  border: 1px solid rgba(72, 181, 233, 0.6);
-  border-radius: 2px 2px 10px 10px;
-} */
-/* 
-.gm-style-iw > div{
-  display: block !important;
-}
-
-#iw-container {
-  margin-bottom: 10px;
-} */
-
-/* .iw-title {
-  background-color: #3e4f5f;
-  color: #fff;
-  padding: 10px 0px;
-  padding-left: 6px;
-} */
 
 .info-window-content {
   padding: 6px;

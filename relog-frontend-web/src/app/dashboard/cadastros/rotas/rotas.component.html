@@ -1,12 +1,20 @@
-<div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" 
-    class="form-control mr-4" 
-    placeholder="Buscar rota por família ou ponto de controle" 
-    aria-describedby="basic-addon1" 
+<div class="d-flex justify-content-between mb-3 no-gutters">
+  <input
+    type="text"
+    class="input-filter mr-4"
+    placeholder="Buscar rota por família ou ponto de controle"
+    aria-describedby="basic-addon1"
     [(ngModel)]="search"
-    (keyup)="searchEvent($event)">
+    (keyup)="searchEvent($event)"
+  />
 
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+  <button
+    routerLink="cadastrar"
+    class="btn btn-outline-secondary"
+    type="button"
+  >
+    Novo
+  </button>
 </div>
 
 <div class="table-responsive">
@@ -22,21 +30,37 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let route of allRoutes | paginate: {
-                                            itemsPerPage: 10,
-                                            currentPage: actualPage,
-                                            totalItems: allRoutes.length};">
-        <td>{{ route.family.code | truncate : 20 }}</td>
-        <td>{{ route.first_point ? route.first_point.name : '' | truncate : 20 }}</td>
-        <td>{{ route.second_point ? route.second_point.name : '' | truncate : 20 }}</td>
+      <tr
+        *ngFor="
+          let route of allRoutes
+            | paginate
+              : {
+                  itemsPerPage: 10,
+                  currentPage: actualPage,
+                  totalItems: allRoutes.length
+                }
+        "
+      >
+        <td>{{ route.family.code | truncate: 20 }}</td>
+        <td>
+          {{ route.first_point ? route.first_point.name : ("" | truncate: 20) }}
+        </td>
+        <td>
+          {{
+            route.second_point ? route.second_point.name : ("" | truncate: 20)
+          }}
+        </td>
         <td>{{ getFormatedDistance(route.distance) }}</td>
         <!-- <td>{{ route.duration_time }}</td>  -->
-        <td class="teste">
-          <button class="editar botaoPlanta" [routerLink]="['editar/', route._id]">
-            EDITAR
+        <td class="actions">
+          <button
+            class="editar botaoPlanta"
+            [routerLink]="['editar/', route._id]"
+          >
+            <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
           <button class="excluir" (click)="removeRoutes(route)">
-            EXCLUIR
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
           </button>
         </td>
       </tr>
@@ -51,10 +75,11 @@
 <br />
 
 <div class="has-text-centered">
-  <pagination-controls 
-    class="my-pagination" 
-    (pageChange)="actualPage = $event" 
-    directionLinks="false" 
-    autoHide="true">
+  <pagination-controls
+    class="my-pagination"
+    (pageChange)="actualPage = $event"
+    directionLinks="false"
+    autoHide="true"
+  >
   </pagination-controls>
 </div>

@@ -1,9 +1,5 @@
 @import '~font-awesome/css/font-awesome.css';
 
-* {
-  font-family: 'Roboto', sans-serif;
-}
-
 .painel {
   border-style: solid;
   border-color: white;
@@ -14,6 +10,7 @@
 
 .corpo {
   background-color: white;
+  border-radius: 6px;
   padding: 15px;
   transition: height 0.5s ease-out;
 }
@@ -100,7 +97,6 @@ span {
 h2,
 h3 {
   display: inline-flex;
-  font-family: 'Raleway', sans-serif;
   margin: 0px;
   vertical-align: middle;
   font-weight: 600;
@@ -154,7 +150,6 @@ hr {
   padding: 5px 0px;
   width: 100px;
   font-size: 13px;
-  font-family: 'Montserrat', sans-serif;
   background-color: white;
   color: #777;
   border-color: #777;
@@ -248,10 +243,6 @@ hr {
   font-size: 20px;
   text-align: right;
   margin-right: 5px;
-}
-
-.modalFilho {
-  font-family: 'Roboto', sans-serif;
 }
 
 .header {

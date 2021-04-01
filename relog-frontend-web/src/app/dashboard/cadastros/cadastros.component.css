@@ -1,67 +1,30 @@
-@import '~font-awesome/css/font-awesome.css';
+@import "~font-awesome/css/font-awesome.css";
 
 .cadastroMenu {
   width: 100%;
+  height: 2.2rem;
+  color: #193349;
   margin-bottom: 5px;
-  background-color: white;
-  border: none;
-  padding: 2px;
-  color: grey;
-  -webkit-transition: background-color 0.5s;
-  transition: background-color 0.5s;
-  font-family: 'Raleway', sans-serif;
-}
-
-td,
-th,
-tr,
-.excluir,
-.editar,
-p {
-  font-family: 'Roboto', sans-serif;
-}
-
-.menu,
-h1 {
-  font-family: 'Raleway', sans-serif;
-}
-
-.cadastroMenu div {
-  width: 100%;
-  height: auto;
-  border-style: solid;
-  border-color: grey;
-  border-width: thin;
   padding: 3px;
+  background-color: white;
+  border: solid #e9e9ea 1px;
+  border-radius: 1px;
   -webkit-transition: background-color 0.5s;
   transition: background-color 0.5s;
+  outline: none;
 }
 
 .cadastroMenu:hover {
-  background-color: #6d8297;
-}
-
-.cadastroMenu div:hover {
-  color: white;
-  border-color: white;
+  background-color: #ccd6e9; 
 }
 
 .cadastroMenu:active {
   background-color: #6d8297;
 }
 
-.cadastroMenu div:active {
-  color: white;
-  border-color: white;
-}
-
 .active {
-  background-color: #3E4F60;
-}
-
-.active div {
+  background-color: #335ba8;
   color: white;
-  border-color: white;
 }
 
 .col-md-3 {
@@ -81,14 +44,14 @@ h1 {
   width: 140px;
   background-color: #fff;
   color: #000;
-  border: 1px solid #3E4F60;
+  border: 1px solid #3e4f60;
   height: 34px;
   border-radius: 5px;
   float: right;
 }
 
 .mais:hover {
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   color: #fff;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
@@ -98,78 +61,90 @@ h1 {
   position: relative;
 }
 
- .det {
-   width: 15px;
-   height: 15px;
-   background-image: url("../../../assets/images/icon_plus_white.png");
-   background-size: 15px 15px;
-   cursor: pointer;
-   left: 50%;
-   margin-left: 43%;
+.det {
+  width: 15px;
+  height: 15px;
+  background-image: url("../../../assets/images/icon_plus_white.png");
+  background-size: 15px 15px;
+  cursor: pointer;
+  left: 50%;
+  margin-left: 43%;
+}
 
- }
-
- .mais:hover .det {
-   background-image: url("../../../assets/images/icon_plus_white.png");
-   -webkit-transition: background-color 0.3s;
-   -mozkit-transition: background-color 0.3s;
-   transition: background-color 0.3s;
- }
+.mais:hover .det {
+  background-image: url("../../../assets/images/icon_plus_white.png");
+  -webkit-transition: background-color 0.3s;
+  -mozkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
 
 .form-control {
   font-size: 15px;
 }
 
-.cabecalho {
-  background-color: #3E4F60;
-  color: white;
+.input-filter {
+  font-size: .9rem;
+  color: #707f86;
+  background-color: #f7fafb;
+  border: none;
+  padding: 0.2rem 0.6rem !important;
+  border-radius: 3px;
+  flex-grow: 1;
 }
 
-td {
-  /* background-color: white; */
-  height: 50px;
+.input-filter:focus { 
+  outline: none;
+}
+
+/* Tabela */
+.table {
+  margin-bottom: 0px;
+}
+
+tbody > tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.cabecalho {
+  color: #193349;
 }
 
 .editar,
-.excluir{ 
+.excluir {
   background-color: transparent;
   border: 1px solid #e6e6e6;
-  color: #444444;
-  border-radius: 5px;
-  width: 80px;
-  padding: 4px 10px;
-  font-size: 12px;
+  color: #193349;
+  border-radius: 6px;
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.8rem;
 }
 
-.editar:hover, 
-.excluir:hover {
-  background-color: #3E4F60;
-  border: 1px solid #3E4F60;
+.editar:hover {
+  background-color: #335ba8;
   color: #fff;
 
   transition: background-color 0.3s;
   -webkit-transition: background-color 0.3s;
   -moz-transition: background-color 0.3s;
+}
 
-  transition: border-color 0.3s;
-  -webkit-transition: border-color 0.3s;
-  -moz-transition: border-color 0.3s;
+.excluir:hover {
+  background-color: #ff4548;
+  color: #fff;
+
+  transition: background-color 0.3s;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
 }
 
 .excluir {
   margin-left: 5px;
 }
-.tabela {
-  box-shadow: 0px 0px 7px #000;
-}
 
-.table {
-  margin-bottom: 0px;
-}
-
-.teste {
+.actions {
   text-align: right;
-  width: 180px;
+  width: 5rem;
   padding: 8px 0px;
 }
 
@@ -194,7 +169,6 @@ td {
 .descricao {
   display: inline;
   font-weight: 600;
-  font-family: 'Raleway', sans-serif;
   font-size: 13px;
 }
 
@@ -202,7 +176,6 @@ td {
   color: #777;
   font-size: 10px;
   margin-bottom: 0px;
-  font-family: 'Roboto', sans-serif;
 }
 
 .campo {
@@ -211,18 +184,17 @@ td {
 
 .campo span {
   display: inline;
-    font-weight: 600;
-    font-family: 'Raleway', sans-serif;
-    font-size: 13px;
+  font-weight: 600;
+  font-size: 13px;
 }
 
 .time .form-control {
-  font-size: 1.4rem!important;
-  padding: .2rem .5rem!important;
+  font-size: 1.4rem !important;
+  padding: 0.2rem 0.5rem !important;
 }
 
 .time .titulo {
-  color:  #3E4F60;
+  color: #3e4f60;
 }
 
 input {
@@ -240,7 +212,7 @@ input {
   border-width: 2px;
   padding: 5px 0px;
   width: 100px;
-  font-size: 13px; 
+  font-size: 13px;
 }
 
 .botaoRegistrar:hover,
@@ -258,12 +230,12 @@ input {
 
 .botaoRegistrar {
   background-color: white;
-  color: #3E4F60;
-  border-color: #3E4F60;
+  color: #3e4f60;
+  border-color: #3e4f60;
 }
 
 .botaoRegistrar:hover {
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   color: white;
 }
 
@@ -362,7 +334,9 @@ h3 {
   display: inline-block;
   width: 25px;
 }
-.fromSun, .fromSun1, .fromSun2 {
+.fromSun,
+.fromSun1,
+.fromSun2 {
   width: 22px;
   height: 32px;
   background-repeat: no-repeat;
@@ -373,7 +347,6 @@ h3 {
   background-size: contain;
   background-repeat: no-repeat;
   margin-left: 8px;
-
 }
 .fromSun1 {
   background-image: url("../../../assets/images/icon_local_to.png");
@@ -393,8 +366,8 @@ h3 {
 }
 
 .divisoria {
-  color: #3E4F60;
-  border-color: #3E4F60;
+  color: #3e4f60;
+  border-color: #3e4f60;
   border-width: thin;
   margin-bottom: 25px;
 }
@@ -410,22 +383,11 @@ h3 {
   }
 }
 @media (max-width: 576px) {
-  .divEsquerda,.divMeio,.divDireita {
+  .divEsquerda,
+  .divMeio,
+  .divDireita {
     padding: 0px;
   }
-}
-
-.table>thead>tr>th {
-    border-bottom: unset;
-}
-
-.table>tbody>tr>td {
-    border-bottom: 1px solid #ddd !important;
-    border-top: unset !important;
-}
- 
-tbody > tr:nth-child(even) {
-    background-color: #f9f9f9;
 }
 
 /* Teste wraper */
@@ -473,25 +435,24 @@ tbody > tr:nth-child(even) {
   height: 36px;
 }
 
-
 /* Sort table*/
 .sort-icons {
-  width: 15px; 
-  text-align: center; 
+  width: 15px;
+  text-align: center;
   font-size: 13px;
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   cursor: pointer;
 }
 
 .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */ 
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
 
@@ -507,7 +468,7 @@ tbody > tr:nth-child(even) {
 /* Checkboxes */
 
 .checkbox label:after {
-  content: '';
+  content: "";
   display: table;
   clear: both;
 }
@@ -516,16 +477,15 @@ tbody > tr:nth-child(even) {
   position: relative;
   display: inline-block;
   border: 1px solid #a9a9a9;
-  border-radius: .25em;
+  border-radius: 0.25em;
   width: 1.3em;
   height: 1.3em;
-  float: left;
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 
 .checkbox .cr .cr-icon {
   position: absolute;
-  font-size: .8em;
+  font-size: 0.8em;
   line-height: 0;
   top: 50%;
   left: 15%;
@@ -535,14 +495,14 @@ tbody > tr:nth-child(even) {
   display: none;
 }
 
-.checkbox label input[type="checkbox"]+.cr>.cr-icon {
+.checkbox label input[type="checkbox"] + .cr > .cr-icon {
   opacity: 0;
 }
 
-.checkbox label input[type="checkbox"]:checked+.cr>.cr-icon {
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon {
   opacity: 1;
 }
 
-.checkbox label input[type="checkbox"]:disabled+.cr {
-  opacity: .5;
+.checkbox label input[type="checkbox"]:disabled + .cr {
+  opacity: 0.5;
 }

@@ -1,6 +1,3 @@
-* {
-  font-family: 'Roboto', sans-serif;
-}
 
 .info {
   padding: 10px 20px 10px 10px;
@@ -17,7 +14,6 @@
   border-bottom-color: lighgrey;
   border-width: thin;
   border-bottom-style: solid;
-  font-family: 'Raleway', sans-serif;
 }
 
 .infoData {
@@ -35,7 +31,6 @@
   padding: 5px 0px;
   width: 100px;
   font-size: 13px;
-  font-family: 'Montserrat', sans-serif;
   float: right;
   vertical-align: baseline;
 }
@@ -53,28 +48,11 @@
   outline: none;
 }
 
-* {
-  font-family: 'Roboto', sans-serif;
-}
-
 .info {
   padding: 10px 4% 10px 10px;
   margin-bottom: 5px;
   background: white;
   box-shadow: 0px 0px 7px #000;
-}
-
-.header {
-  margin-bottom: 25px;
-  padding-bottom: 19px;
-  border-bottom-color: #fff;
-  border-width: thin;
-  border-bottom-style: solid;
-  margin-bottom: 25px;
-  color: white;
-  font-size: 20px;
-  font-family: 'Raleway', sans-serif;
-  vertical-align: middle;
 }
 
 .tit1 {
@@ -519,15 +497,12 @@ label {
 }
 
 .header {
-  margin-bottom: 25px;
-  padding-bottom: 19px;
-  border-bottom-color: #fff;
+  border-bottom-color: #01002d;
   border-width: thin;
   border-bottom-style: solid;
   margin-bottom: 25px;
-  color: white;
-  font-size: 20px;
-  font-family: 'Raleway', sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
   vertical-align: middle;
 }
 

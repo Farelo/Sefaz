@@ -1,40 +1,55 @@
-<div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" 
-    class="form-control mr-4" 
-    placeholder="Buscar empresa por nome" 
-    aria-describedby="basic-addon1" 
+<div class="d-flex justify-content-between mb-3 no-gutters">
+  <input
+    type="text"
+    class="input-filter mr-4"
+    placeholder="Buscar empresa por nome"
+    aria-describedby="basic-addon1"
     [(ngModel)]="search"
-    (keyup)="searchEvent($event)">
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+    (keyup)="searchEvent($event)"
+  />
+  <button
+    routerLink="cadastrar"
+    class="btn btn-outline-secondary"
+    type="button"
+  >
+    Novo
+  </button>
 </div>
 
 <div class="table-responsive">
   <table class="table">
     <thead>
       <tr class="cabecalho">
-        <th> Nome </th>
-        <th> Telefone </th>
+        <th>Nome</th>
+        <th>Telefone</th>
         <!-- <th> CNPJ </th> -->
-        <th> Tipo </th>
-        <th> </th>
+        <th>Tipo</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let company of listOfCompanies | paginate: {
-                                          itemsPerPage: 10,
-                                          currentPage: actualPage,
-                                          totalItems: listOfCompanies.length}">
-        <td>{{ company.name | truncate : 20 }}</td>
-        <td>{{ company.phone ? company.phone : '-' }}</td>
+      <tr
+        *ngFor="
+          let company of listOfCompanies
+            | paginate
+              : {
+                  itemsPerPage: 10,
+                  currentPage: actualPage,
+                  totalItems: listOfCompanies.length
+                }
+        "
+      >
+        <td>{{ company.name | truncate: 20 }}</td>
+        <td>{{ company.phone ? company.phone : "-" }}</td>
         <!-- <td>{{ company.cnpj ? company.cnpj : '-'  }}</td> -->
         <td>{{ company.type | type }}</td>
         <td class="teste">
-            <button class="editar" [routerLink]="['editar/', company._id]">
-              EDITAR
-            </button>
-            <button class="excluir" (click)="removeCompany(company)">
-              EXCLUIR
-            </button>
+          <button class="editar" [routerLink]="['editar/', company._id]">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+          <button class="excluir" (click)="removeCompany(company)">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </button>
         </td>
       </tr>
     </tbody>
@@ -48,6 +63,11 @@
 <br />
 
 <div class="has-text-centered">
-  <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
+  <pagination-controls
+    class="my-pagination"
+    (pageChange)="actualPage = $event"
+    directionLinks="false"
+    autoHide="true"
+  >
   </pagination-controls>
 </div>

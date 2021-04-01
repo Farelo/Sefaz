@@ -1,9 +1,5 @@
 @import '~font-awesome/css/font-awesome.css';
 
-* {
-  font-family: 'Roboto', sans-serif;
-}
-
 .meuInventario { 
   margin-bottom: 25px;
 }
@@ -24,7 +20,6 @@ span {
 h2,
 h3 {
   display: inline-flex;
-  font-family: 'Raleway', sans-serif;
   margin: 0px;
   vertical-align: middle;
   font-weight: 600;
@@ -48,7 +43,6 @@ hr {
 .descricao {
   display: inline;
   font-weight: 600;
-  font-family: 'Raleway', sans-serif;
   font-size: 13px;
 }
 
@@ -56,7 +50,6 @@ hr {
   color: #777;
   font-size: 10px;
   margin-bottom: 0px;
-  font-family: 'Roboto', sans-serif;
 }
 
 .botao-registrar {
@@ -97,8 +90,7 @@ hr {
 .base-bg{
   background-color: white;
   padding: 20px 20px;
-  box-shadow: 0px 0px 7px #000;
-  -webkit-box-shadow: 0px 0px 7px #000;
+  border-radius: 6px;
 }
 
 .clear-padding {

@@ -1,11 +1,18 @@
-<div class="input-group mb-3 d-flex justify-content-between">
-  <input 
-    type="text" 
-    class="form-control mr-4" 
-    placeholder="Buscar departamento por nome ou ponto de controle" 
+<div class="d-flex justify-content-between mb-3 no-gutters">
+  <input
+    type="text"
+    class="input-filter mr-4"
+    placeholder="Buscar departamento por nome ou ponto de controle"
     aria-describedby="basic-addon1"
-    (keyup)="searchEvent($event)">
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+    (keyup)="searchEvent($event)"
+  />
+  <button
+    routerLink="cadastrar"
+    class="btn btn-outline-secondary"
+    type="button"
+  >
+    Novo
+  </button>
 </div>
 
 <div class="table-responsive">
@@ -18,18 +25,25 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let department of allDepartments | paginate: {
-                                                      itemsPerPage: 10,
-                                                      currentPage: actualPage,
-                                                      totalItems: allDepartments.length};">
-        <td>{{ department.name | truncate : 20 }}</td>
-        <td>{{ (department?.control_point?.name || '-') | truncate : 20 }}</td>
-        <td class="teste">
+      <tr
+        *ngFor="
+          let department of allDepartments
+            | paginate
+              : {
+                  itemsPerPage: 10,
+                  currentPage: actualPage,
+                  totalItems: allDepartments.length
+                }
+        "
+      >
+        <td>{{ department.name | truncate: 20 }}</td>
+        <td>{{ department?.control_point?.name || "-" | truncate: 20 }}</td>
+        <td class="actions">
           <button class="editar" [routerLink]="['editar/', department._id]">
-            EDITAR
+            <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
           <button class="excluir" (click)="removeDepartment(department)">
-            EXCLUIR
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
           </button>
         </td>
       </tr>
@@ -44,11 +58,11 @@
 <br />
 
 <div class="has-text-centered">
-  <pagination-controls 
-    class="my-pagination" 
-    (pageChange)="actualPage = $event" 
-    directionLinks="false" 
-    autoHide="true">
+  <pagination-controls
+    class="my-pagination"
+    (pageChange)="actualPage = $event"
+    directionLinks="false"
+    autoHide="true"
+  >
   </pagination-controls>
 </div>
-
