@@ -267,8 +267,8 @@ label {
     to right,
     #a349a4 0%,
     #a349a4 0.5rem,
-    #b3b3b3 0.5rem,
-    #b3b3b3 100%
+    #fff 0.5rem,
+    #fff 100%
   );
   border: solid #fff 1px;
 }
