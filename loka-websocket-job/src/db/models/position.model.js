@@ -83,7 +83,7 @@ positionSchema.statics.createPosition = async (position, packing = null) => {
     date: position.date,
     timestamp: position.timestamp,
     latitude: position.latitude,
-    longitude: position.latitude,
+    longitude: position.longitude,
     accuracy: position.accuracy,
   });
   

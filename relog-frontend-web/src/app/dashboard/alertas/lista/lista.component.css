@@ -243,8 +243,8 @@ span {
     to right,
     #a349a4 0%,
     #a349a4 0.5rem,
-    #b3b3b3 0.5rem,
-    #b3b3b3 100%
+    #fff 0.5rem,
+    #fff 100%
   );
   border: solid #fff 1px;
 }
@@ -342,8 +342,8 @@ span {
     to right,
     #a349a4 0%,
     #a349a4 0.5rem,
-    #f7fafb 0.5rem,
-    #f7fafb 100%
+    #faf4fa 0.5rem,
+    #faf4fa 100%
   );
   border: solid #a349a4 1px;
 }

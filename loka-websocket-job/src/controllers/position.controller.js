@@ -16,7 +16,7 @@ exports.createPosition = async (positionMessage) => {
         date: new Date(messageTimestamp * 1000),
         timestamp: messageTimestamp,
         latitude: positionMessage.location.latitude,
-        longitude: positionMessage.location.latitude,
+        longitude: positionMessage.location.longitude,
         accuracy: positionMessage.location.accuracy,
       },
       actualPacking
