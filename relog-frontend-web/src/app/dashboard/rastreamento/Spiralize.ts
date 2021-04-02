@@ -259,7 +259,7 @@ export class Spiralize {
                 packing_code: array[0].family.code,
                 serial: array[0].serial,
                 position: { lat: array[0].latitude, lng: array[0].longitude },
-                icon: { url: 'assets/images/pin_cluster.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) },
+                icon: { url: 'assets/images/pin_cluster.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) },
                 // label: `${array.length}`
             })
 
@@ -356,9 +356,9 @@ export class Spiralize {
                     this.spiralPath.setOptions({
                         path: spiralCoordinates,
                         geodesic: true,
-                        strokeColor: '#cbb7ed',
+                        strokeColor: '#6684bd',
                         strokeOpacity: 0.4,
-                        strokeWeight: 2,
+                        strokeWeight: 3,
                         zIndex: 998
                     });
                     this.spiralPath.setMap(this.mMap);
@@ -469,39 +469,39 @@ export class Spiralize {
 
         switch (status) {
             case constants.ALERTS.ANALISYS:
-                pin = { url: 'assets/images/pin_analise.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                pin = { url: 'assets/images/pin_analise.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) }
                 break;
 
             case constants.ALERTS.ABSENT:
-                pin = { url: 'assets/images/pin_ausente.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                pin = { url: 'assets/images/pin_ausente.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) }
                 break;
 
             case constants.ALERTS.INCORRECT_LOCAL:
-                pin = { url: 'assets/images/pin_incorreto.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                pin = { url: 'assets/images/pin_incorreto.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) }
                 break;
 
             case constants.ALERTS.LATE:
-                pin = { url: 'assets/images/pin_atrasado.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                pin = { url: 'assets/images/pin_atrasado.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) }
                 break;
 
             case constants.ALERTS.PERMANENCE_TIME:
-                pin = { url: 'assets/images/pin_permanencia.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                pin = { url: 'assets/images/pin_permanencia.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) }
                 break;
 
             case constants.ALERTS.NO_SIGNAL:
-                pin = { url: 'assets/images/pin_sem_sinal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                pin = { url: 'assets/images/pin_sem_sinal.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) }
                 break;
 
             case constants.ALERTS.MISSING:
-                pin = { url: 'assets/images/pin_perdido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                pin = { url: 'assets/images/pin_perdido.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) }
                 break;
 
             case constants.ALERTS.DEVICE_REMOVED:
-                pin = { url: 'assets/images/pin_removido.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                pin = { url: 'assets/images/pin_removido.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) }
                 break;
             
             default:
-                pin = { url: 'assets/images/pin_normal.png', size: (new google.maps.Size(28, 43)), scaledSize: (new google.maps.Size(28, 43)) }
+                pin = { url: 'assets/images/pin_normal.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) }
                 break;
         }
 

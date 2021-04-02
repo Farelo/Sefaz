@@ -160,8 +160,8 @@ span {
   background: linear-gradient(
     to right,
     #b3b3b3 0%,
-    #b3b3b3 1rem,
-    #fff 1rem,
+    #b3b3b3 0.5rem,
+    #fff 0.5rem,
     #fff 100%
   );
   border: solid #b3b3b3 1px;
@@ -171,8 +171,8 @@ span {
   background: linear-gradient(
     to right,
     #ef5562 0%,
-    #ef5562 1rem,
-    #fff 1rem,
+    #ef5562 0.5rem,
+    #fff 0.5rem,
     #fff 100%
   );
   border: solid #ef5562 1px;
@@ -182,8 +182,8 @@ span {
   background: linear-gradient(
     to right,
     #f77737 0%,
-    #f77737 1rem,
-    #fff 1rem,
+    #f77737 0.5rem,
+    #fff 0.5rem,
     #fff 100%
   );
   border: solid #f77737 1px;

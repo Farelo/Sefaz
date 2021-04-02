@@ -140,9 +140,9 @@
         *ngFor="let posCP of listOfCircleControlPoints"
         [position]="posCP.position"
         [icon]="{
-          url: 'assets/images/pin_plant.png',
-          size: [28, 43],
-          scaledSize: [28, 43]
+          url: 'assets/images/pin_cp.png',
+          size: [30, 30],
+          scaledSize: [30, 30]
         }"
         [visible]="showControlledPlants"
         [title]="posCP.name"
@@ -177,9 +177,9 @@
         [position]="posCP.position"
         (click)="clickedPlant($event, posCP)"
         [icon]="{
-          url: 'assets/images/pin_plant.png',
-          size: [28, 43],
-          scaledSize: [28, 43]
+          url: 'assets/images/pin_cp.png',
+          size: [30, 30],
+          scaledSize: [30, 30]
         }"
         [visible]="showControlledPlants"
       >

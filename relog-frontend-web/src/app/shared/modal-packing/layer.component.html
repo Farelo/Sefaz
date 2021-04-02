@@ -94,18 +94,18 @@
 
   <div class="modalBody">
     <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false" [scrollwheel]="true" (mapReady$)="onInitMap($event)">
-      <polyline *ngIf="!showLastPosition" [path]="path" [geodesic]="true" [strokeColor]="'#3c763d'" [strokeOpacity]="2" [strokeWeight]="3" [icons]="icons"></polyline>
+      <polyline *ngIf="!showLastPosition" [path]="path" [geodesic]="true" [strokeColor]="getRadiusWithAlert()" [strokeOpacity]="1" [strokeWeight]="5" [icons]="icons"></polyline>
       
 
       <!-- ///////////// -->
       <!-- Ponto de Controle -->
       <marker *ngFor="let posCP of listOfCircleControlPoints" 
         [position]="posCP.position" 
-        [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+        [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }"
         [visible]="showControlledPlants" 
         [title]="posCP.name" 
         (click)="clickedPlant($event, posCP)">
-        <info-window id="pw">
+        <info-window id="pw" width="400" maxWidth="400">
           <div class="iw-title">INFORMAÇÕES</div> 
           <div *ngIf="plant.display" class="info-window-content">
             <p>
@@ -124,10 +124,10 @@
       <marker *ngFor="let posCP of listOfPolygonControlPoints" 
         [position]="posCP.position" 
         (click)="clickedPlant($event, posCP)"
-        [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }" 
+        [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }" 
         [visible]="showControlledPlants">
         <!-- <div class="custom-icon-map-plant"></div> -->
-        <info-window id="lw">
+        <info-window id="lw" width="400" maxWidth="400">
           <div class="iw-title">INFORMAÇÕES</div>
           <div *ngIf="plant.display" class="info-window-content">
             <p>
@@ -139,61 +139,6 @@
       <polygon *ngFor="let posCPPolygon of listOfPolygonControlPoints" [paths]="posCPPolygon.geofence.coordinates" [editable]="false" [fillColor]="'#0044a8'"
         [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"> </polygon>
 
-
-      <!-- ///////////// -->
-      <!-- rack markers -->
-      <!-- <ng-container *ngFor="let pos of rangedMarkers; let i = index">
-        <marker *ngIf="(pos.accuracy <= accuracyRange) && (!showLastPosition)"  
-          [position]="pos.latLng" 
-          (click)="clicked($event,pos)"
-          [icon]="getPinWithAlert(i)" >
-          <info-window id="iw">
-            <div class="iw-title">INFORMAÇÕES</div>
-            <div *ngIf="marker.display" class="info-window-content">
-              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss'}}</p>
-              <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
-              <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
-            </div>
-          </info-window>
-        </marker>
-      </ng-container> -->
-      
-      <!-- <ng-container *ngFor="let posRadius of rangedMarkers">
-        <circle *ngIf="(posRadius.accuracy <= accuracyRange) && (!showLastPosition)"
-              [center]="posRadius.latLng" 
-              [fillColor]="getRadiusWithAlert()" 
-              [fillOpacity]="0.2" 
-              [strokeColor]="getRadiusWithAlert()"
-              [strokeOpacity]="0.7" 
-              [strokeWeight]="1" 
-              radius="{{ posRadius.accuracy || 0 }}"></circle>
-      </ng-container>  -->
-
-      <!-- ///////////// -->
-      <!-- rack last marker -->
-      <!-- <ng-container *ngIf="lastPosition">
-        <marker *ngIf="showLastPosition" [position]="lastPosition.latLng"
-          (click)="clicked($event,lastPosition)"
-           [icon]="getPin()">
-          <info-window id="iw">
-            <div class="iw-title">INFORMAÇÕES</div>
-            <div *ngIf="marker.display" class="info-window-content">
-              <p> <span class="bold">Data da mensagem:</span> {{ (marker.messageDate) | date: 'dd/MM/yy HH:mm:ss'}}</p>
-              <p> <span class="bold">Bateria:</span> {{ marker.battery ? ((marker.battery | round) + "%") : "Sem registro" }}</p>
-              <p> <span class="bold">Acurácia:</span> {{ marker.accuracy ? ((marker.accuracy) + "m") : 'Sem registro' }}</p>
-            </div>
-          </info-window>
-        </marker>
-        
-        <circle *ngIf="showLastPosition" 
-          [center]="lastPosition.latLng" 
-          [fillColor]="getRadiusWithAlert()"
-          [fillOpacity]="0.2"
-          [strokeColor]="getRadiusWithAlert()" 
-          [strokeOpacity]="0.7" 
-          [strokeWeight]="1" 
-          radius="{{ lastPosition.accuracy || 0 }}"></circle>
-      </ng-container>  -->
     </ngui-map>
 
   </div>
