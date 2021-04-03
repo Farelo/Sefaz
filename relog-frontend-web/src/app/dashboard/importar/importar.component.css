@@ -9,6 +9,9 @@
 .corpo {
   background-color: white;
   padding: 15px;
+  -webkit-box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
+  -moz-box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
+  box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
 }
 
 .botoes {
@@ -325,6 +328,9 @@ select {
   background-color: white;
   padding: 20px 20px;
   border-radius: 6px;
+  -webkit-box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
+  -moz-box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
+  box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
 }
 
 /* Teste wraper */

@@ -1,28 +1,28 @@
 <div class="conteudoTop">
-  <div class="painel">
-    <div class="corpo">
+  <div class="corpo">
+    <h3>Embalagens do Sistema</h3>
 
-      <h3>Embalagens do Sistema</h3>
+    <hr />
 
-      <hr>
+    <!-- Resumo de quantidades da Home -->
+    <app-resumo-home [resume]="resume"></app-resumo-home>
 
-      <!-- Resumo de quantidades da Home -->
-      <app-resumo-home [resume]="resume"></app-resumo-home>
+    <!-- Categoria Pontos de Controle -->
+    <app-categoria-pontos-de-controle
+      [resume]="resume"
+    ></app-categoria-pontos-de-controle>
 
-      <!-- Categoria Pontos de Controle -->
-      <app-categoria-pontos-de-controle [resume]="resume"></app-categoria-pontos-de-controle>
+    <!-- Em Viagem -->
+    <app-categoria-em-viagem [resume]="resume"></app-categoria-em-viagem>
 
-      <!-- Em Viagem -->
-      <app-categoria-em-viagem [resume]="resume"></app-categoria-em-viagem>
+    <!-- Sem Sinal -->
+    <!-- <app-categoria-sem-sinal></app-categoria-sem-sinal> -->
 
-      <!-- Sem Sinal -->
-      <!-- <app-categoria-sem-sinal></app-categoria-sem-sinal> -->
-
-      <!-- Bateria Baixa -->
-      <app-categoria-bateria-baixa [resume]="resume"></app-categoria-bateria-baixa>
-
-    </div>
+    <!-- Bateria Baixa -->
+    <app-categoria-bateria-baixa
+      [resume]="resume"
+    ></app-categoria-bateria-baixa>
   </div>
 
-  <br>
+  <br />
 </div>
