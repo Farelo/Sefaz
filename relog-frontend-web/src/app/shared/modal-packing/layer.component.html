@@ -1,146 +1,253 @@
-<div class="modalFilho">
-  <div class="header">
-    <h2> Detalhes da Embalagem </h2>
-    
-    <p>
-      <span class="badge badge-secondary">Código: {{packing.family_code}}</span>
-      <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{packing.serial}}</span>
-      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.tag}}</span>
-    </p>
-
-    <!-- <div id="collapseExample" *ngIf="packing.current_control_point_name" [ngbCollapse]="detailsIsCollapsed">
-      <p>Ponto de controle atual: {{ packing.current_control_point_name }}</p>
-    </div>
-
-    <span id="showDetails" *ngIf="packing.current_control_point_name" (click)="detailsIsCollapsed = !detailsIsCollapsed" [attr.aria-expanded]="!detailsIsCollapsed" aria-controls="collapseExample"
-      style="cursor: pointer;">{{ detailsIsCollapsed == true ? 'Mostrar detalhes' : 'Esconder detalhes' }}</span> -->
+<div style="height: 100%">
+  
+  <div class="close-button" (click)="activeLayer.dismiss('Cross click')">
+    &times;
   </div>
 
-  <button type="button" class="close" aria-label="Close" (click)="activeLayer.dismiss('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
+  <div class="m-0" style="display: flex; height: 100%">
+    <section id="filters-section" class="p-0 pr-1 m-0">
+      <section class="header">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            border-right: solid #a9b5c0 1px;
+          "
+        >
+          <label class="filter-label m-0">FAMÍLIA </label>
+          <div>{{ packing.family_code }}</div>
+        </div>
 
-  <div class="row">
-    <div class="col-md-6">
-      <p style="margin-bottom: 4px;">FILTRAR POR:</p>
-    </div>
-    <div class="col-md-6">
-      <p *ngIf="!isLoading" class="text-right"> {{ getResultQuantity() }} </p>
-      <p *ngIf="isLoading" class="text-right"> Carregando resultados </p>
-    </div>
-  </div>
-  <div class="map-filters form-row">
-    <div class="col-md-2">
-      <!-- <label for="dateBegin" class="col-form-label-sm">Data inicial</label> -->
-      <!-- <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDaterangepicker [(ngModel)]="initialDate" [bsConfig]="datePickerConfig" placement="right"> -->
-      <input id="dateBegin" type="text" placeholder="Data inicial" class="form-control input-date-picker" bsDatepicker [(ngModel)]="initialDate" (ngModelChange)="onFirstDateChange($event)" [bsConfig]="datePickerConfig" style="cursor: pointer;">
-    </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            border-right: solid #a9b5c0 1px;
+          "
+        >
+          <label class="filter-label m-0">SERIAL </label>
+          <div>{{ packing.serial }}</div>
+        </div>
 
-    <div class="col-md-2">
-      <!-- <label for="dateEnd" class="col-form-label-sm">Data final</label> -->
-      <input id="dateEnd" type="text" placeholder="Data final" class="form-control input-date-picker" bsDatepicker [(ngModel)]="finalDate" (ngModelChange)="onFinalDateChange($event)" [bsConfig]="datePickerConfig" style="cursor: pointer;">
-    </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+          "
+        >
+          <label class="filter-label m-0 m-0">TAG</label>
+          <div>{{ packing.tag }}</div>
+        </div>
+      </section>
 
-    <span style="padding-top: 5px;" class="col-auto">Acurácia:</span>
-    <!-- <div class="col-md-4"> -->
-      <!-- <nouislider id="accuracyRange" [min]="0" [max]="32" [step]="0.1" [(ngModel)]="someRange3" [tooltips]="[true]"></nouislider> -->
-    <!-- </div> -->
+      <section class="pl-2 pr-2">
+        <div class="mt-4" id="quantity-results">
+          <img
+            src="assets/images/icon_position.png"
+            style="height: 1.1rem; margin-right: 0.2rem"
+          />
+          <p *ngIf="!isLoading" class="m-0" style="display: inline-block">
+            {{ getResultQuantity() }}
+          </p>
+          <p *ngIf="isLoading" class="m-0" style="display: inline-block">
+            Carregando resultados
+          </p>
+        </div>
 
-    <!-- <div class="form-group col-auto"> 
-      <div class="input-group-accuracy">
-        <span class="input-group-accuracy-btn">
-          <button type="button" class="btn btn-default btn-left-accuracy" (click)="decrementRange()">-</button>
-        </span>
-        <input id="after" class="form-control" type="text" min="1" max="10" style="width: 80px !important; text-align: center;" [(ngModel)]="accuracyRange" (ngModelChange)="rangechanged()">
-        <span class="input-group-accuracy-btn">
-          <button type="button" class="btn btn-default btn-right-accuracy" (click)="incrementRange()">+</button>
-        </span>
-      </div>
-    </div> -->
+        <p class="m-0 mt-4" style="font-weight: bold; font-size: 1rem">
+          Filtros
+        </p>
 
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary" type="button" (click)="decrementRange()">-</button>
-      </div>
-      <input type="text" style="width: 80px !important; text-align: center;" class="form-control" [(ngModel)]="accuracyRange" (ngModelChange)="rangechanged()">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" (click)="incrementRange()">+</button>
-      </div>
-    </div>
+        <label for="dateBegin" class="filter-label m-0 mt2">DATA INICIAL</label>
+        <input
+          id="dateBegin"
+          type="text"
+          placeholder="Data inicial"
+          class="form-control input-date-picker"
+          bsDatepicker
+          [(ngModel)]="initialDate"
+          (ngModelChange)="onFirstDateChange($event)"
+          [bsConfig]="datePickerConfig"
+          style="cursor: pointer"
+        />
 
-    <div class="form-group form-check">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" value="" [(ngModel)]="showLastPosition" (click)="lastPositionClicked($event)">
-          <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
-          Apenas última posição
-        </label>
-      </div>
-    </div>
+        <label for="dateBegin" class="filter-label m-0 mt2">DATA FINAL</label>
+        <input
+          id="dateEnd"
+          type="text"
+          placeholder="Data final"
+          class="form-control input-date-picker"
+          bsDatepicker
+          [(ngModel)]="finalDate"
+          (ngModelChange)="onFinalDateChange($event)"
+          [bsConfig]="datePickerConfig"
+          style="cursor: pointer"
+        />
 
-    <div class="form-group form-check">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" value="" [ngModel]="showControlledPlants" (ngModelChange)="toggleShowControlledPlants()">
-          <span class="cr">
-            <i class="cr-icon fa fa-check"> </i>
-          </span> 
-          Mostrar pontos de controle
-        </label>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="modalBody">
-    <ngui-map [center]="center" mapTypeId="roadmap" scrollwheel="false" [scrollwheel]="true" (mapReady$)="onInitMap($event)">
-      <polyline *ngIf="!showLastPosition" [path]="path" [geodesic]="true" [strokeColor]="getRadiusWithAlert()" [strokeOpacity]="1" [strokeWeight]="5" [icons]="icons"></polyline>
-      
-
-      <!-- ///////////// -->
-      <!-- Ponto de Controle -->
-      <marker *ngFor="let posCP of listOfCircleControlPoints" 
-        [position]="posCP.position" 
-        [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }"
-        [visible]="showControlledPlants" 
-        [title]="posCP.name" 
-        (click)="clickedPlant($event, posCP)">
-        <info-window id="pw" width="400" maxWidth="400">
-          <div class="iw-title">INFORMAÇÕES</div> 
-          <div *ngIf="plant.display" class="info-window-content">
-            <p>
-              <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p> 
+        <label class="filter-label m-0 mt2">ACURÁCIA</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <button
+              class="btn btn-outline-secondary"
+              style="padding: 0.3rem 0.75rem"
+              type="button"
+              (click)="decrementRange()"
+            >
+              -
+            </button>
           </div>
-        </info-window>
-      </marker>
-              
-      <circle *ngFor="let posCPCircle of listOfCircleControlPoints" [center]="posCPCircle.geofence.coordinates[0]" [radius]="posCPCircle.geofence.radius"
-              [editable]="false" [fillColor]="'#0044a8'" [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4"
-              [strokeWeight]="1" [visible]="showControlledPlants"> </circle>
-
-
-      <!-- ///////////// -->
-      <!-- Ponto de Controle -->
-      <marker *ngFor="let posCP of listOfPolygonControlPoints" 
-        [position]="posCP.position" 
-        (click)="clickedPlant($event, posCP)"
-        [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }" 
-        [visible]="showControlledPlants">
-        <!-- <div class="custom-icon-map-plant"></div> -->
-        <info-window id="lw" width="400" maxWidth="400">
-          <div class="iw-title">INFORMAÇÕES</div>
-          <div *ngIf="plant.display" class="info-window-content">
-            <p>
-              <span class="bold">Ponto de Controle:</span> {{ plant.name }}</p>
+          <input
+            type="text"
+            style="width: 80px !important; text-align: center"
+            class="form-control"
+            [(ngModel)]="accuracyRange"
+            (ngModelChange)="rangechanged()"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              style="padding: 0.3rem 0.75rem"
+              type="button"
+              (click)="incrementRange()"
+            >
+              +
+            </button>
           </div>
-        </info-window>
-      </marker>
-      
-      <polygon *ngFor="let posCPPolygon of listOfPolygonControlPoints" [paths]="posCPPolygon.geofence.coordinates" [editable]="false" [fillColor]="'#0044a8'"
-        [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"> </polygon>
+        </div>
 
-    </ngui-map>
+        <div class="mt2">
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                value=""
+                [(ngModel)]="showLastPosition"
+                (click)="lastPositionClicked($event)"
+              />
+              <span class="cr"> <i class="cr-icon fa fa-check"> </i> </span>
+              Apenas última posição
+            </label>
+          </div>
+        </div>
 
+        <div class="mt1">
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                value=""
+                [ngModel]="showControlledPlants"
+                (ngModelChange)="toggleShowControlledPlants()"
+              />
+              <span class="cr">
+                <i class="cr-icon fa fa-check"> </i>
+              </span>
+              Mostrar pontos de controle
+            </label>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section
+      class="p-0 m-0"
+      style="flex-grow: 1; padding-left: 0.2rem; padding-right: 0.2rem"
+    >
+      <ngui-map
+        [center]="center"
+        mapTypeId="roadmap"
+        scrollwheel="false"
+        [scrollwheel]="true"
+        (mapReady$)="onInitMap($event)"
+      >
+        <polyline
+          *ngIf="!showLastPosition"
+          [path]="path"
+          [geodesic]="true"
+          [strokeColor]="getRadiusWithAlert()"
+          [strokeOpacity]="1"
+          [strokeWeight]="5"
+          [icons]="icons"
+        ></polyline>
+
+        <!-- Ponto de Controle -->
+        <marker
+          *ngFor="let posCP of listOfCircleControlPoints"
+          [position]="posCP.position"
+          [icon]="{
+            url: 'assets/images/pin_cp.png',
+            size: [30, 30],
+            scaledSize: [30, 30]
+          }"
+          [visible]="showControlledPlants"
+          [title]="posCP.name"
+          (click)="clickedPlant($event, posCP)"
+        >
+          <info-window id="pw" width="400" maxWidth="400">
+            <div class="iw-title">INFORMAÇÕES</div>
+            <div *ngIf="plant.display" class="info-window-content">
+              <p>
+                <span class="bold">Ponto de Controle:</span> {{ plant.name }}
+              </p>
+            </div>
+          </info-window>
+        </marker>
+
+        <circle
+          *ngFor="let posCPCircle of listOfCircleControlPoints"
+          [center]="posCPCircle.geofence.coordinates[0]"
+          [radius]="posCPCircle.geofence.radius"
+          [editable]="false"
+          [fillColor]="'#0044a8'"
+          [fillOpacity]="0.2"
+          [strokeColor]="'#0044a8'"
+          [strokeOpacity]="0.4"
+          [strokeWeight]="1"
+          [visible]="showControlledPlants"
+        >
+        </circle>
+
+        <!-- Ponto de Controle -->
+        <marker
+          *ngFor="let posCP of listOfPolygonControlPoints"
+          [position]="posCP.position"
+          (click)="clickedPlant($event, posCP)"
+          [icon]="{
+            url: 'assets/images/pin_cp.png',
+            size: [30, 30],
+            scaledSize: [30, 30]
+          }"
+          [visible]="showControlledPlants"
+        >
+          <info-window id="lw" width="400" maxWidth="400">
+            <div class="iw-title">INFORMAÇÕES</div>
+            <div *ngIf="plant.display" class="info-window-content">
+              <p>
+                <span class="bold">Ponto de Controle:</span> {{ plant.name }}
+              </p>
+            </div>
+          </info-window>
+        </marker>
+
+        <polygon
+          *ngFor="let posCPPolygon of listOfPolygonControlPoints"
+          [paths]="posCPPolygon.geofence.coordinates"
+          [editable]="false"
+          [fillColor]="'#0044a8'"
+          [fillOpacity]="0.2"
+          [strokeColor]="'#0044a8'"
+          [strokeOpacity]="0.4"
+          [strokeWeight]="1"
+          [visible]="showControlledPlants"
+        >
+        </polygon>
+      </ngui-map>
+    </section>
   </div>
-
 </div>

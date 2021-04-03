@@ -1,13 +1,45 @@
-@import '~font-awesome/css/font-awesome.css';
+@import "~font-awesome/css/font-awesome.css";
 
 h2 {
-  margin-bottom: 0px;
+  margin-bottom: 0rem;
 }
 
-.close {
+label {
+  margin: 0px;
+}
+
+.mt1 {
+  margin-top: 0.5rem !important;
+}
+
+.mt2 {
+  margin-top: 1rem !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.filter-label {
+  color: #a9b5c0;
+  font-size: 0.75rem;
+}
+
+.close-button {
+  position: absolute !important;
+  right: -2rem;
   font-size: 2rem;
-  text-align: right;
   margin-right: 5px;
+  cursor: pointer;
+  background-color: white;
+  width: 2rem;
+  text-align: center;
+  border-radius: 6px;
+
+}
+
+#filters-section {
+  width: 18rem !important;
 }
 
 .botaoVisualizar {
@@ -20,22 +52,16 @@ h2 {
 }
 
 .header {
-  display: inline-grid; 
-  margin-bottom: 15px;
+  display: flex;
+  background-color: #f1f3f6;
+  padding: 1rem 0rem;
+  justify-content: space-around;
+  border-radius: 6px;
 }
 
-#showDetails {
-  color: #007bff;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#showDetails:hover {
-  text-decoration: underline;
-}
-
-.header p {
-  font-weight: bold;
+#quantity-results {
+  display: flex;
+  align-items: center; 
 }
 
 .modalBody span {
@@ -47,13 +73,13 @@ h2 {
   text-align: center;
   border-style: solid;
   border-width: 2px;
-  border-color: #3E4F60;
+  border-color: #3e4f60;
   background-color: white;
-  color: #3E4F60;
+  color: #3e4f60;
 }
 
 .botaoVisualizar:hover {
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   color: white;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
@@ -70,127 +96,115 @@ h2 {
   padding: 6px;
 }
 
-img {
-  float: right;
-  margin: 0 5px 5px 10px;
-  background-color: red;
-}
-
 .bold {
   font-weight: 700;
 }
 
-.input-group {
-  width: unset;
-}
-
 /*--------*/
 /*Checkboxes*/
-.checkbox {
-  margin: 6px 0px 0px 6px;
-}
-
-.checkbox label:after {
-  content: '';
-  display: table;
-  clear: both;
+.checkbox label {
+  display: flex;
+  align-items: center;
+  align-content: center;
 }
 
 .checkbox .cr {
   position: relative;
   display: inline-block;
   border: 1px solid #a9a9a9;
-  border-radius: .25em;
+  border-radius: 0.25em;
   width: 1.3em;
-  height: 1.3em; 
-  margin-right: .5em;
+  height: 1.3em;
+  margin-right: 0.5em;
 }
 
 .checkbox .cr .cr-icon {
   position: absolute;
-  font-size: .8em;
+  font-size: 0.8em;
   line-height: 0;
   top: 50%;
   left: 15%;
 }
 
-.checkbox label input[type="checkbox"] {
+.checkbox input[type="checkbox"] {
   display: none;
 }
 
-.checkbox label input[type="checkbox"]+.cr>.cr-icon {
+.checkbox input[type="checkbox"] + .cr > .cr-icon {
   opacity: 0;
 }
 
-.checkbox label input[type="checkbox"]:checked+.cr>.cr-icon {
+.checkbox input[type="checkbox"]:checked + .cr > .cr-icon {
   opacity: 1;
 }
 
-.checkbox label input[type="checkbox"]:disabled+.cr {
-  opacity: .5;
+.checkbox input[type="checkbox"]:disabled + .cr {
+  opacity: 0.5;
 }
 
 /* ------ */
 .input-group-accuracy {
-    display: table; 
+  display: table;
 }
 
 .input-group-accuracy-btn {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .btn-left-accuracy {
-    margin-right: -2px;
+  margin-right: -2px;
 }
 
 .btn-right-accuracy {
-    margin-left: -2px;
+  margin-left: -2px;
 }
 
 .input-group-accuracy-btn > .btn {
-    position: relative;
+  position: relative;
 }
 
 .btn {
-    padding: 6px 12px; 
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
 }
 
 .btn-default {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
 }
 
 .input-group-accuracy {
-    border-radius: 0;
+  border-radius: 0;
 }
 
-.input-group-accuracy .form-control, .input-group-accuracy-btn {
-    display: table-cell;
+.input-group-accuracy .form-control,
+.input-group-accuracy-btn {
+  display: table-cell;
 }
 
 .input-group-accuracy .form-control {
-    width: 100%;
+  width: 100%;
 }
 
-.form-control{
-  width: 100% !important;
-  font-size: 14px;
+.form-control {
+  font-size: 0.9rem;
+  flex: unset;
+  padding: .3rem .75rem;
 }
 
-div#collapseExample > p{
+div#collapseExample > p {
   font-weight: normal;
   margin-bottom: 4px;
 }
 
 ngui-map {
-  height: calc( 60vh ) !important;
+  height: 100%;
 }
 
-.custom-icon-map-plant{
+.custom-icon-map-plant {
   background-image: url("/assets/images/pin_cp.png");
   background-repeat: no-repeat;
   background-position: center;
@@ -203,7 +217,7 @@ div.info-window-content > p {
 }
 
 /* filtro acurácia */
-.input-group>.input-group-prepend>.btn {
+.input-group > .input-group-prepend > .btn {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   height: 100%;
@@ -212,7 +226,7 @@ div.info-window-content > p {
   position: relative;
 }
 
-.input-group>.input-group-append>.btn {
+.input-group > .input-group-append > .btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   height: 100%;

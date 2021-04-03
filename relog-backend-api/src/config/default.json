@@ -8,7 +8,7 @@
     "port": 3000
   },
   "db": {
-    "url": "mongodb://127.0.0.1:27017/cebrace-2021-01-13", 
+    "url": "mongodb://127.0.0.1:27017/ee-2021-03-06", 
     "mongodb_container": "mongodb://<user>:<password>@<host>:27017/cebrace" 
   },
   "security": {

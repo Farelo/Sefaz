@@ -19,7 +19,7 @@ declare var google: any;
 defineLocale("pt-br", ptBrLocale);
 
 @Component({
-  selector: "app-alerta",
+  selector: "critical-absent-report",
   templateUrl: "./layer.component.html",
   styleUrls: ["./layer.component.css"],
 })

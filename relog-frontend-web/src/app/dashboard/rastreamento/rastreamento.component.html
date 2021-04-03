@@ -235,7 +235,7 @@
 
             <!-- ///////////// -->
             <!-- Control Point -->
-            <marker
+            <!-- <marker
               *ngFor="let posCP of listOfControlPoints"
               [position]="posCP.position"
               [icon]="{
@@ -247,7 +247,7 @@
               [title]="posCP.name"
               (click)="clicked($event, posCP)"
             >
-            </marker>
+            </marker> -->
 
             <!-- <circle *ngFor="let posCPRadius of listOfControlPoints" [center]="posCPRadius.position" [fillColor]="'#0044a8'"
               [fillOpacity]="0.2" [strokeColor]="'#0044a8'" [strokeOpacity]="0.4" [strokeWeight]="1" [visible]="showControlledPlants"
@@ -360,7 +360,7 @@
                 </div>
 
                 <div class="classVazio" *ngIf="!packingsByPlant.length">
-                  Não existem embalagens nessa planta.
+                  Não há embalagens nesse ponto de controle
                 </div>
               </div>
             </info-window>

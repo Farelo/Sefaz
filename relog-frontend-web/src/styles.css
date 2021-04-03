@@ -350,13 +350,14 @@ hotTable {
 }
 
 /**/
-@media (min-width: 970px) {
+/* @media (min-width: 970px) {
   .modal-xl > .modal-lg {
     max-width: 1490px !important;
     min-width: 971px !important;
     width: 95% !important;
+    height: 90%;
   }
-}
+} */
 
 .modal-content {
   margin-top: 40px;
@@ -368,4 +369,18 @@ hotTable {
 
 button {
   cursor: pointer;
+}
+
+.modal-xl .modal-dialog { 
+  min-width: 90% !important;
+  width: 90% !important;
+  height: 90% !important;
+}
+
+.modal-content {
+  height: 100%;
+}
+
+modal-position {
+  height: 100% !important;
 }
