@@ -1,7 +1,7 @@
 @import "assets/hamburgers.css";
 
 * {
-  outline: none;
+  outline: none ;
 }
 
 ::-moz-selection { /* Code for Firefox */

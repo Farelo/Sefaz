@@ -181,7 +181,7 @@
 
           <p class="requiredText" 
             *ngIf="(newCompany.get('address.uf').hasError('pattern')) 
-            || (newCompany.get('address.uf').hasError('pattern') && submitted)">
+            || (newCompany.get('address.uf').hasError('pattern') && submitted)"> 
             Excesso de espaços em branco</p>
 
           <p class="requiredText" *ngIf="(newCompany.get('address.uf').hasError('minlength') && newCompany.get('address.uf').touched)
@@ -193,8 +193,8 @@
     <br />
     
     <div class="botoes">
-      <button routerLink="/rc/cadastros/company" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
+      <button routerLink="/rc/cadastros/company" class="redButton">VOLTAR</button>
+      <button type="submit" class="blueButton">ATUALIZAR</button>
     </div>
     
     <br />

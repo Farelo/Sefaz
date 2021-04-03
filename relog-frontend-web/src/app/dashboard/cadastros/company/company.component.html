@@ -43,7 +43,7 @@
         <td>{{ company.phone ? company.phone : "-" }}</td>
         <!-- <td>{{ company.cnpj ? company.cnpj : '-'  }}</td> -->
         <td>{{ company.type | type }}</td>
-        <td class="teste">
+        <td class="actions">
           <button class="editar" [routerLink]="['editar/', company._id]">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>

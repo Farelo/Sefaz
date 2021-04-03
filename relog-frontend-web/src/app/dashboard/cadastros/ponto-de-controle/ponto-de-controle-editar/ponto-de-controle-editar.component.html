@@ -190,43 +190,13 @@
         <span class="forn">{{ this.mControlPoint.controls.full_address.value || 'Nenhuma informação sobre a localidade'
           }}</span>
       </div>
-
-
-      <!-- Input para a latitude -->
-      <!-- <div class="campo col-md-6">
-        <p class="descricao">LATITUDE</p>
-        <div class="input-group">
-          <input type="text" readonly class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2"
-            formControlName="lat" [(ngModel)]="lat" [ngClass]="{'required': (mControlPoint.get('lat').hasError('required') && mControlPoint.get('lat').touched)
-              || (mControlPoint.get('lat').hasError('required') && submitted)}">
-        </div>
-
-        <p class="requiredText" *ngIf="(mControlPoint.get('lat').hasError('required') && mControlPoint.get('lat').touched)
-          || (mControlPoint.get('lat').hasError('required') && submitted)">
-          Campo Obrigatório</p>
-      </div> -->
-
-
-      <!-- Input para a longitude -->
-      <!-- <div class="campo col-md-6">
-        <p class="descricao">LONGITUDE</p>
-        <div class="input-group">
-          <input type="text" readonly class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2"
-            formControlName="lng" [(ngModel)]="lng" [ngClass]="{'required': (mControlPoint.get('lng').hasError('required') && mControlPoint.get('lng').touched)
-            || (mControlPoint.get('lng').hasError('required') && submitted)}">
-        </div>
-
-        <p class="requiredText" *ngIf="(mControlPoint.get('lng').hasError('required') && mControlPoint.get('lng').touched)
-          || (mControlPoint.get('lng').hasError('required') && submitted)">
-          Campo Obrigatório</p>
-      </div> -->
     </div>
 
     <br />
 
     <div class="botoes">
-      <button routerLink="/rc/cadastros/ponto" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
+      <button routerLink="/rc/cadastros/ponto" class="redButton">VOLTAR</button>
+      <button type="submit" class="blueButton">ATUALIZAR</button>
     </div>
 
   </form>
