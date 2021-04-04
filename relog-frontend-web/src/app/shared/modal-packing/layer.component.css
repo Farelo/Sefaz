@@ -35,7 +35,6 @@ label {
   width: 2rem;
   text-align: center;
   border-radius: 6px;
-
 }
 
 #filters-section {
@@ -59,9 +58,17 @@ label {
   border-radius: 6px;
 }
 
+.description-value {
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 #quantity-results {
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .modalBody span {
@@ -192,7 +199,7 @@ label {
 .form-control {
   font-size: 0.9rem;
   flex: unset;
-  padding: .3rem .75rem;
+  padding: 0.3rem 0.75rem;
 }
 
 div#collapseExample > p {

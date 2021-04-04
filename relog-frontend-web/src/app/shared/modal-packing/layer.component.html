@@ -11,16 +11,18 @@
     <section id="filters-section" class="p-0 pr-1 m-0">
       <section class="header">
         <div
-          style=" 
+          style="
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
+            width: 33%;
             border-right: solid #a9b5c0 1px;
           "
         >
           <label class="filter-label m-0">FAMÍLIA </label>
-          <div>{{ packing.family_code }}</div>
+          <div class="description-value" [ngbTooltip]="packing.family_code">
+            {{ packing.family_code }}
+          </div>
         </div>
 
         <div
@@ -28,12 +30,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
+            width: 33%;
             border-right: solid #a9b5c0 1px;
           "
         >
           <label class="filter-label m-0">SERIAL </label>
-          <div>{{ packing.serial }}</div>
+          <div class="description-value" [ngbTooltip]="packing.serial">
+            {{ packing.serial }}
+          </div>
         </div>
 
         <div
@@ -41,11 +45,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
+            width: 33%;
           "
         >
           <label class="filter-label m-0 m-0">TAG</label>
-          <div>{{ packing.tag }}</div>
+          <div class="description-value" [ngbTooltip]="packing.tag">
+            {{ packing.tag }}
+          </div>
         </div>
       </section>
 
