@@ -1,14 +1,17 @@
-<div style="height: 100%">
-  
+<div id="modal-packing-container" style="height: 100%">
   <div class="close-button" (click)="activeLayer.dismiss('Cross click')">
     &times;
   </div>
 
-  <div class="m-0" style="display: flex; height: 100%">
+  <div
+    id="filter-map-container"
+    class="m-0"
+    style="display: flex; height: 100%"
+  >
     <section id="filters-section" class="p-0 pr-1 m-0">
       <section class="header">
         <div
-          style="
+          style=" 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -156,6 +159,7 @@
     </section>
 
     <section
+      id="map-section"
       class="p-0 m-0"
       style="flex-grow: 1; padding-left: 0.2rem; padding-right: 0.2rem"
     >

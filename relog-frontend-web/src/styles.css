@@ -155,6 +155,8 @@ body {
 
 .modal-content {
   padding: 5px;
+  height: 100%;
+  margin-top: 40px;
 }
 
 .modalPequeno {
@@ -349,20 +351,6 @@ hotTable {
   margin: 0px;
 }
 
-/**/
-/* @media (min-width: 970px) {
-  .modal-xl > .modal-lg {
-    max-width: 1490px !important;
-    min-width: 971px !important;
-    width: 95% !important;
-    height: 90%;
-  }
-} */
-
-.modal-content {
-  margin-top: 40px;
-}
-
 .arrow::before {
   content: none !important;
 }
@@ -375,10 +363,7 @@ button {
   min-width: 90% !important;
   width: 90% !important;
   height: 90% !important;
-}
-
-.modal-content {
-  height: 100%;
+  margin: auto !important;
 }
 
 modal-position {

@@ -1,23 +1,16 @@
 <div class="bg">
   <div class="quadrado">
-    <alert type="danger" *ngIf="erroAuth">
-      <strong>Atenção!</strong> Usuário ou senha invalidos!.
-    </alert>
-
-    <!-- <h2 class="text-center">Login</h2>  -->
-    <br />
-    <br />
+    
     <div>
-      <img src="assets/images/logo-evoy-c-tag.png" style="height: 4rem" />
+      <img src="assets/images/logo-evoy-c-tag.png" style="height: 4rem; margin-top: 3rem;" />
     </div>
 
-    <br />
-    <br />
     <form
       novalidate
       (ngSubmit)="onSubmit(login)"
       [formGroup]="login"
       #formDir="ngForm"
+      style="margin-top: 2rem;"
     >
       <div class="form-group">
         <input
@@ -96,6 +89,10 @@
       </div>
 
       <br />
+
+      <alert type="danger" *ngIf="erroAuth">
+        <strong>Atenção!</strong> Usuário ou senha invalidos
+      </alert>
 
       <button id="submitLogin" type="submit">ENTRAR</button>
 

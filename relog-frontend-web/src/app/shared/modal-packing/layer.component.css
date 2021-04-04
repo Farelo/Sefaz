@@ -39,7 +39,7 @@ label {
 }
 
 #filters-section {
-  width: 18rem !important;
+  width: 18rem;
 }
 
 .botaoVisualizar {
@@ -237,4 +237,24 @@ div.info-window-content > p {
 
 .btn-outline-secondary {
   border-color: #ced4da;
+}
+
+@media (max-width: 700px) {
+  #modal-packing-container {
+    overflow-y: scroll;
+  }
+
+  #filter-map-container {
+    flex-flow: column;
+  }
+
+  #filters-section {
+    width: 100%;
+  }
+
+  #map-section {
+    height: 600px;
+    margin-top: 1rem !important;
+    padding: 0.5rem !important;
+  }
 }
