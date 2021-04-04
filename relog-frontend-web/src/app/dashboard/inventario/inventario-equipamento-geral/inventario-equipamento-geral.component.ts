@@ -67,7 +67,6 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
    * Default list
    */
   generalInventoryEquipament() {
-    
     this.reportsService.getGeneralInventory().subscribe(
       (result) => {
         this.generalEquipament = result;
@@ -109,8 +108,8 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
   openLayer(packing) {
     const modalRef = this.modalService.open(LayerModalComponent, {
-      size: "lg",
       windowClass: "modal-xl",
+      backdrop: "static",
     });
     modalRef.componentInstance.packing = packing;
   }

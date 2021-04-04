@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import {
-  PackingService, 
+  PackingService,
   AuthenticationService,
   PositionsService,
   ControlPointsService,
@@ -20,7 +20,7 @@ declare var google: any;
 defineLocale("pt-br", ptBrLocale);
 
 @Component({
-  selector: "app-alerta",
+  selector: "modal-position",
   templateUrl: "./layer.component.html",
   styleUrls: ["./layer.component.css"],
 })
@@ -89,7 +89,7 @@ export class LayerModalComponent implements OnInit {
     private controlPointsService: ControlPointsService,
     private packingService: PackingService,
     private positionService: PositionsService,
-    private authenticationService: AuthenticationService, 
+    private authenticationService: AuthenticationService,
     private localeService: BsLocaleService
   ) {
     defineLocale("pt-br", ptBrLocale);
@@ -234,7 +234,7 @@ export class LayerModalComponent implements OnInit {
       .getFilteredPositions(codeTag, startDate, finalDate, accuracy)
       .subscribe((result: any[]) => {
         console.log(result.length);
-        
+
         if (result.length > 1) {
           this.markers = result.reverse();
 
@@ -284,7 +284,7 @@ export class LayerModalComponent implements OnInit {
                 `<div style="padding: 0px 6px;">
                       <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Data:</span> ${datePipe.transform(
                         m.message_date,
-                        "dd/MM/yy HH:mm:ss" 
+                        "dd/MM/yy HH:mm:ss"
                       )}</p>
                       <p style="margin-bottom: 2px;"> <span style="font-weight: 700">Acurácia:</span> ${
                         m.accuracy
@@ -325,7 +325,7 @@ export class LayerModalComponent implements OnInit {
 
   rangechanged() {
     // console.log('rangechanged');
-    if(this.showLastPosition) this.showLastPosition = !this.showLastPosition;
+    if (this.showLastPosition) this.showLastPosition = !this.showLastPosition;
     this.updatePaths();
     // this.getLastPostition();
   }
@@ -493,7 +493,9 @@ export class LayerModalComponent implements OnInit {
     if (this.rangedMarkers.length > 0)
       this.center = this.rangedMarkers[this.rangedMarkers.length - 1].position;
     else
-      this.center = this.allPackingMarkers[this.allPackingMarkers.length - 1].position;
+      this.center = this.allPackingMarkers[
+        this.allPackingMarkers.length - 1
+      ].position;
 
     this.isLoading = false;
   }
@@ -569,72 +571,74 @@ export class LayerModalComponent implements OnInit {
       case constants.ALERTS.ANALISYS:
         pin = {
           url: "assets/images/pin_analise.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         break;
 
       case constants.ALERTS.ABSENT:
         pin = {
           url: "assets/images/pin_ausente.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         break;
 
       case constants.ALERTS.INCORRECT_LOCAL:
         pin = {
           url: "assets/images/pin_incorreto.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         break;
 
       case constants.ALERTS.LOW_BATTERY:
         pin = {
           url: "assets/images/pin_bateria.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         break;
 
       case constants.ALERTS.LATE:
         pin = {
           url: "assets/images/pin_atrasado.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         break;
 
       case constants.ALERTS.PERMANENCE_TIME:
         pin = {
           url: "assets/images/pin_permanencia.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         break;
 
       case constants.ALERTS.NO_SIGNAL:
         pin = {
           url: "assets/images/pin_sem_sinal.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         break;
 
       case constants.ALERTS.MISSING:
         pin = {
           url: "assets/images/pin_perdido.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         break;
 
       default:
         pin = {
           url: "assets/images/pin_normal.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(10, 10),
         };
         break;
     }
@@ -649,21 +653,21 @@ export class LayerModalComponent implements OnInit {
       case constants.ALERTS.ANALISYS:
         pin = {
           url: "assets/images/pin_analise.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         if (this.rangedMarkers.length > 1) {
           if (i == 0)
             pin = {
               url: "assets/images/pin_analise_first.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
           if (i == this.rangedMarkers.length - 1)
             pin = {
               url: "assets/images/pin_analise_final.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
         }
         break;
@@ -671,21 +675,21 @@ export class LayerModalComponent implements OnInit {
       case constants.ALERTS.ABSENT:
         pin = {
           url: "assets/images/pin_ausente.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         if (this.rangedMarkers.length > 1) {
           if (i == 0)
             pin = {
               url: "assets/images/pin_ausente_first.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
           if (i == this.rangedMarkers.length - 1)
             pin = {
               url: "assets/images/pin_ausente_final.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
         }
         break;
@@ -693,21 +697,21 @@ export class LayerModalComponent implements OnInit {
       case constants.ALERTS.INCORRECT_LOCAL:
         pin = {
           url: "assets/images/pin_incorreto.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         if (this.rangedMarkers.length > 1) {
           if (i == 0)
             pin = {
               url: "assets/images/pin_incorreto_first.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
           if (i == this.rangedMarkers.length - 1)
             pin = {
               url: "assets/images/pin_incorreto_final.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
         }
         break;
@@ -715,21 +719,21 @@ export class LayerModalComponent implements OnInit {
       case constants.ALERTS.LOW_BATTERY:
         pin = {
           url: "assets/images/pin_bateria.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         if (this.rangedMarkers.length > 1) {
           if (i == 0)
             pin = {
               url: "assets/images/pin_bateria_first.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
           if (i == this.rangedMarkers.length - 1)
             pin = {
               url: "assets/images/pin_bateria_final.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
         }
         break;
@@ -737,21 +741,21 @@ export class LayerModalComponent implements OnInit {
       case constants.ALERTS.LATE:
         pin = {
           url: "assets/images/pin_atrasado.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         if (this.rangedMarkers.length > 1) {
           if (i == 0)
             pin = {
               url: "assets/images/pin_atrasado_first.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
           if (i == this.rangedMarkers.length - 1)
             pin = {
               url: "assets/images/pin_atrasado_final.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
         }
         break;
@@ -759,21 +763,21 @@ export class LayerModalComponent implements OnInit {
       case constants.ALERTS.PERMANENCE_TIME:
         pin = {
           url: "assets/images/pin_permanencia.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         if (this.rangedMarkers.length > 1) {
           if (i == 0)
             pin = {
               url: "assets/images/pin_permanencia_first.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
           if (i == this.rangedMarkers.length - 1)
             pin = {
               url: "assets/images/pin_permanencia_final.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
         }
         break;
@@ -781,21 +785,21 @@ export class LayerModalComponent implements OnInit {
       case constants.ALERTS.NO_SIGNAL:
         pin = {
           url: "assets/images/pin_sem_sinal.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         if (this.rangedMarkers.length > 1) {
           if (i == 0)
             pin = {
               url: "assets/images/pin_sem_sinal_first.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
           if (i == this.rangedMarkers.length - 1)
             pin = {
               url: "assets/images/pin_sem_sinal_final.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
         }
         break;
@@ -803,21 +807,21 @@ export class LayerModalComponent implements OnInit {
       case constants.ALERTS.MISSING:
         pin = {
           url: "assets/images/pin_perdido.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40),
         };
         if (this.rangedMarkers.length > 1) {
           if (i == 0)
             pin = {
               url: "assets/images/pin_perdido_first.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
           if (i == this.rangedMarkers.length - 1)
             pin = {
               url: "assets/images/pin_perdido_final.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
         }
         break;
@@ -825,21 +829,21 @@ export class LayerModalComponent implements OnInit {
       default:
         pin = {
           url: "assets/images/pin_normal.png",
-          size: new google.maps.Size(28, 43),
-          scaledSize: new google.maps.Size(28, 43),
+          size: new google.maps.Size(29, 40),
+          scaledSize: new google.maps.Size(29, 40), 
         };
         if (this.rangedMarkers.length > 1) {
           if (i == 0)
             pin = {
               url: "assets/images/pin_normal_first.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
           if (i == this.rangedMarkers.length - 1)
             pin = {
               url: "assets/images/pin_normal_final.png",
-              size: new google.maps.Size(28, 43),
-              scaledSize: new google.maps.Size(28, 43),
+              size: new google.maps.Size(29, 40),
+              scaledSize: new google.maps.Size(29, 40),
             };
         }
         break;

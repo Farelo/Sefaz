@@ -9,7 +9,7 @@
 
 .mais {
   width: 80px;
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   padding: 5px;
   color: white;
   border: none;
@@ -24,10 +24,8 @@
 
 .titulo {
   float: left;
-  font-family: 'Montserrat', sans-serif;
   font-weight: 500;
 }
-
 
 tbody {
   border: none !important;
@@ -36,12 +34,12 @@ tbody {
 tr {
   border-top-style: solid;
   border-top-width: 0.1px;
-  border-top-color: rgba(99,130,201,0.2);
+  border-top-color: rgba(99, 130, 201, 0.2);
 }
 
 hr {
   margin: 20px 0px 20px 0px;
-  border-color: #3E4F60;
+  border-color: #3e4f60;
   border-width: thin;
 }
 
@@ -56,7 +54,7 @@ select {
 }
 
 .descricao {
-  margin: 10px 0px 5px 0px
+  margin: 10px 0px 5px 0px;
 }
 
 .modal-title {
@@ -77,32 +75,24 @@ select {
 .btn {
   font-size: 16px;
 }
-* { font-family: 'Roboto', sans-serif; }
 
 .table {
   font-size: 14px;
 }
 
 .cabecalho {
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   color: white;
 }
 
 .tabela {
   border-style: solid;
-  border-color: #3E4F60;
+  border-color: #3e4f60;
   border-width: 2px;
 }
 
-td { background-color: white; }
-
-td,
-th,
-tr,
-.excluir,
-.editar,
-p {
-  font-family: 'Roboto', sans-serif;
+td {
+  background-color: white;
 }
 
 .header {
@@ -140,7 +130,6 @@ td {
   padding: 5px 0px;
   width: 100px;
   font-size: 13px;
-  font-family: 'Montserrat', sans-serif;
 }
 
 .botaoRegistrar:hover,
@@ -158,12 +147,12 @@ td {
 
 .botaoRegistrar {
   background-color: white;
-  color: #3E4F60;
-  border-color: #3E4F60;
+  color: #3e4f60;
+  border-color: #3e4f60;
 }
 
 .botaoRegistrar:hover {
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   color: white;
 }
 
@@ -214,8 +203,8 @@ td {
 }
 
 .divisoria {
-  color: #3E4F60;
-  border-color: #3E4F60;
+  color: #3e4f60;
+  border-color: #3e4f60;
   border-width: thin;
   margin-bottom: 25px;
 }
@@ -228,7 +217,9 @@ td {
   padding: 5px 10px;
 }
 
-.excluir { background-color: #1d416b; }
+.excluir {
+  background-color: #1d416b;
+}
 
 .excluir:hover {
   background-color: #102b40;
@@ -244,10 +235,12 @@ td {
   padding: 5px 10px;
 }
 
-.editar { background-color: #3b5d93; }
+.editar {
+  background-color: #3b5d93;
+}
 
 .editar:hover {
-  background-color: #3E4F60;
+  background-color: #3e4f60;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }

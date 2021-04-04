@@ -4,7 +4,7 @@ import { PackingService } from '../../servicos/index.service';
 
 
 @Component({
-  selector: 'app-alerta',
+  selector: 'absent-report',
   templateUrl: './abscense.component.html',
   styleUrls: ['./abscense.component.css']
 })

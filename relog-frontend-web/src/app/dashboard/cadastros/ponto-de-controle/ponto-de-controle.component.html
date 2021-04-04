@@ -1,20 +1,41 @@
-<div class="input-group mb-3 d-flex justify-content-between">
-  <input type="text" class="form-control mr-4" placeholder="Buscar por nome" aria-describedby="basic-addon1" [(ngModel)]="search"
-    (keyup)="searchEvent($event)">
-  <button routerLink="cadastrar" class="btn btn-outline-secondary" type="button">Novo</button>
+<div class="d-flex justify-content-between mb-3 no-gutters">
+  <input
+    type="text"
+    class="input-filter mr-4"
+    placeholder="Buscar por nome"
+    aria-describedby="basic-addon1"
+    [(ngModel)]="search"
+    (keyup)="searchEvent($event)"
+  />
+  <button
+    routerLink="cadastrar"
+    class="btn btn-outline-secondary"
+    type="button"
+  >
+    Novo
+  </button>
 </div>
 
 <div class="table-responsive">
-  <table class="table">
+  <table class="table table-hover">
     <thead>
       <tr class="cabecalho">
         <th *ngFor="let header of headers">
           <span class="noselect d-flex" (click)="headerClick(header)">
             {{ header.label }}
             <span class="sort-icons noselect">
-              <i class="fa fa-sort default-order" *ngIf="(header.name !== sort.name)"></i>
-              <i class="fa fa-caret-up" *ngIf="(header.name == sort.name) && (sort.order == 'asc')"></i>
-              <i class="fa fa-caret-down" *ngIf="(header.name == sort.name) && (sort.order == 'desc')"></i>
+              <i
+                class="fa fa-sort default-order"
+                *ngIf="header.name !== sort.name"
+              ></i>
+              <i
+                class="fa fa-caret-up"
+                *ngIf="header.name == sort.name && sort.order == 'asc'"
+              ></i>
+              <i
+                class="fa fa-caret-down"
+                *ngIf="header.name == sort.name && sort.order == 'desc'"
+              ></i>
             </span>
           </span>
         </th>
@@ -22,19 +43,26 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let point of listOfControlPoints | paginate: { 
-                                                      itemsPerPage: 10,
-                                                      currentPage: actualPage,
-                                                      totalItems: listOfControlPoints.length};">
-        <td>{{ point.name | truncate : 30 }}</td>
-        <td>{{ point.company.name | truncate : 20 }}</td>
+      <tr
+        *ngFor="
+          let point of listOfControlPoints
+            | paginate
+              : {
+                  itemsPerPage: 10,
+                  currentPage: actualPage,
+                  totalItems: listOfControlPoints.length
+                }
+        "
+      >
+        <td>{{ point.name | truncate: 30 }}</td>
+        <td>{{ point.company.name | truncate: 20 }}</td>
 
-        <td class="teste">
+        <td class="actions">
           <button class="editar" [routerLink]="['editar/', point._id]">
-            EDITAR
+            <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
           <button class="excluir" (click)="removeControlPoint(point)">
-            EXCLUIR
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
           </button>
         </td>
       </tr>
@@ -49,6 +77,11 @@
 <br />
 
 <div class="has-text-centered">
-  <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
+  <pagination-controls
+    class="my-pagination"
+    (pageChange)="actualPage = $event"
+    directionLinks="false"
+    autoHide="true"
+  >
   </pagination-controls>
 </div>

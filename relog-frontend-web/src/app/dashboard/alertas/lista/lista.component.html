@@ -1,84 +1,133 @@
 <div class="conteudoTop">
-  <div class="conteudoHome">
+  <div class="">
     <div class="header">
-      Timeline
-      <button routerLink="/rc/alertas" class="botaoVoltar">VOLTAR</button>
+      Alertas por família e serial
+      <button routerLink="/rc/alertas" class="botaoVoltar">Voltar</button>
     </div>
 
-
     <div class="painel">
-      <div class="quadradoPequeno" 
-        placement="bottom" 
-        [tooltip]="getAlertText(alert.current_state)" 
+      <div
+        class="quadradoPequeno"
+        placement="bottom"
+        [tooltip]="getAlertText(alert.current_state)"
         (click)="open(alert, alert.current_state)"
         [ngClass]="{
-          'status0': alertCode == 0,
-          'status1': alertCode == 1,
-          'status2': alertCode == 2,
-          'status3': alertCode == 3,
-          'status4': alertCode == 4,
-          'status5': alertCode == 5,
-          'status6': alertCode == 6,
-          'status7': alertCode == 7 ,
-          'status13': alertCode == 13 }"
-        *ngFor="let alert of listOfAlerts | paginate: { id:'list',
-          itemsPerPage: 15,
-          currentPage: listOfAlertsActualPage,
-          totalItems: listOfAlerts.length}">
-
+          status0: alertCode == 0,
+          status1: alertCode == 1,
+          status2: alertCode == 2,
+          status3: alertCode == 3,
+          status4: alertCode == 4,
+          status5: alertCode == 5,
+          status6: alertCode == 6,
+          status7: alertCode == 7,
+          status13: alertCode == 13
+        }"
+        *ngFor="
+          let alert of listOfAlerts
+            | paginate
+              : {
+                  id: 'list',
+                  itemsPerPage: 15,
+                  currentPage: listOfAlertsActualPage,
+                  totalItems: listOfAlerts.length
+                }
+        "
+      >
         <div class="esquerda">
-          <span class="codigo" tooltip="Código da Embalagem">{{ alert.family.code }}</span>
+          <span class="codigo" tooltip="Código da Embalagem">{{
+            alert.family.code
+          }}</span>
           <br />
-          <span class="descricao" tooltip="Data do Alerta">{{ alert?.last_current_state_history?.created_at ? (alert.last_current_state_history.created_at | date) : '' }}</span>
+          <span class="descricao" tooltip="Data do Alerta">{{
+            alert?.last_current_state_history?.created_at
+              ? (alert.last_current_state_history.created_at | date)
+              : ""
+          }}</span>
         </div>
 
         <div class="direita">
-          <span class="fornecedor" tooltip="Última planta em que foi visto" *ngIf="alertCode == 1 || alertCode == 4"
+          <span
+            class="fornecedor"
+            tooltip="Última planta em que foi visto"
+            *ngIf="alertCode == 1 || alertCode == 4"
             [ngClass]="{
-              'fornecedor0': alertCode == 0,
-              'fornecedor1': alertCode == 1,
-              'fornecedor2': alertCode == 2,
-              'fornecedor3': alertCode == 3,
-              'fornecedor4': alertCode == 4,
-              'fornecedor5': alertCode == 5,
-              'fornecedor6': alertCode == 6,
-              'fornecedor7': alertCode == 7 ,
-              'fornecedor13': alertCode == 13 }">
-              {{ truncateText(alert.last_event_record !== null ? alert.last_event_record?.control_point?.name : 'Inf. Indesponível', 20) }}
+              fornecedor0: alertCode == 0,
+              fornecedor1: alertCode == 1,
+              fornecedor2: alertCode == 2,
+              fornecedor3: alertCode == 3,
+              fornecedor4: alertCode == 4,
+              fornecedor5: alertCode == 5,
+              fornecedor6: alertCode == 6,
+              fornecedor7: alertCode == 7,
+              fornecedor13: alertCode == 13
+            }"
+          >
+            {{
+              truncateText(
+                alert.last_event_record !== null
+                  ? alert.last_event_record?.control_point?.name
+                  : "Inf. Indesponível",
+                20
+              )
+            }}
           </span>
 
-          <span class="fornecedor" tooltip="Planta Atual" *ngIf="alertCode !== 1 && alertCode !== 4" [ngClass]="{
-              'fornecedor0': alertCode == 0,
-              'fornecedor1': alertCode == 1,
-              'fornecedor2': alertCode == 2,
-              'fornecedor3': alertCode == 3,
-              'fornecedor4': alertCode == 4,
-              'fornecedor5': alertCode == 5,
-              'fornecedor6': alertCode == 6,
-              'fornecedor7': alertCode == 7,
-              'fornecedor13': alertCode == 13 }">
-            {{ truncateText(alert.last_event_record !== null ? alert.last_event_record?.control_point?.name : 'Inf. Indesponível', 20) }}
-          </span> <br />
+          <span
+            class="fornecedor"
+            tooltip="Planta Atual"
+            *ngIf="alertCode !== 1 && alertCode !== 4"
+            [ngClass]="{
+              fornecedor0: alertCode == 0,
+              fornecedor1: alertCode == 1,
+              fornecedor2: alertCode == 2,
+              fornecedor3: alertCode == 3,
+              fornecedor4: alertCode == 4,
+              fornecedor5: alertCode == 5,
+              fornecedor6: alertCode == 6,
+              fornecedor7: alertCode == 7,
+              fornecedor13: alertCode == 13
+            }"
+          >
+            {{
+              truncateText(
+                alert.last_event_record !== null
+                  ? alert.last_event_record?.control_point?.name
+                  : "Inf. Indesponível",
+                20
+              )
+            }}
+          </span>
+          <br />
 
-          <span class="quantidade" tooltip="Código Serial da Embalagem" [ngClass]="{
-              'quantidade0': alertCode == 0,
-              'quantidade1': alertCode == 1,
-              'quantidade2': alertCode == 2,
-              'quantidade3': alertCode == 3,
-              'quantidade4': alertCode == 4,
-              'quantidade5': alertCode == 5,
-              'quantidade6': alertCode == 6,
-              'quantidade7': alertCode == 7 ,
-              'quantidade13': alertCode == 13 }">{{alert.serial}}
+          <span
+            class="quantidade"
+            tooltip="Código Serial da Embalagem"
+            [ngClass]="{
+              quantidade0: alertCode == 0,
+              quantidade1: alertCode == 1,
+              quantidade2: alertCode == 2,
+              quantidade3: alertCode == 3,
+              quantidade4: alertCode == 4,
+              quantidade5: alertCode == 5,
+              quantidade6: alertCode == 6,
+              quantidade7: alertCode == 7,
+              quantidade13: alertCode == 13
+            }"
+            >{{ alert.serial }}
           </span>
         </div>
-        
       </div>
 
-      <div class="has-text-centered" style="width: 100%; margin-top: 20px;">
-        <pagination-controls id='list' class="my-pagination" (pageChange)="listOfAlertsActualPage = $event"
-          directionLinks="false" autoHide="true">
+      <div class="has-text-centered" style="width: 100%; margin-top: 20px">
+        <pagination-controls
+          id="list"
+          class="my-pagination"
+          (pageChange)="listOfAlertsActualPage = $event"
+          directionLinks="false"
+          autoHide="true"
+        >
         </pagination-controls>
       </div>
     </div>
   </div>
+</div>

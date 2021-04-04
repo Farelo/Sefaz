@@ -1,25 +1,31 @@
 <div class="modalFilho">
   <div class="header">
-
-    <h2 style="color: #354052; margin-bottom: 0px;">Gerenciar Usuários</h2>
+    <h2 style="color: #354052; margin-bottom: 0px">Gerenciar Usuários</h2>
 
     <div class="col-12 no-padding">
-      <p class="alerta-badges"> Usuários cadastrados no sistema </p>
+      <p class="alerta-badges">Usuários cadastrados no sistema</p>
     </div>
 
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-   
-  <div class="modalBody">
 
+  <div class="modalBody">
     <div class="col-12 no-padding text-right pointer" (click)="createUser()">
-      <img height="18" src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDQwMCA0MDAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMCA0MDA7IiB4bWw6c3BhY2U9InByZXNlcnZlIiBjbGFzcz0iIj48Zz48Zz4KCTxnPgoJCTxwYXRoIGQ9Ik0xOTkuOTk1LDBDODkuNzE2LDAsMCw4OS43MiwwLDIwMGMwLDExMC4yNzksODkuNzE2LDIwMCwxOTkuOTk1LDIwMEMzMTAuMjc3LDQwMCw0MDAsMzEwLjI3OSw0MDAsMjAwICAgIEM0MDAsODkuNzIsMzEwLjI3NywwLDE5OS45OTUsMHogTTE5OS45OTUsMzczLjc3QzEwNC4xODIsMzczLjc3LDI2LjIzLDI5NS44MTYsMjYuMjMsMjAwYzAtOTUuODE3LDc3Ljk1MS0xNzMuNzcsMTczLjc2NS0xNzMuNzcgICAgYzk1LjgxNywwLDE3My43NzIsNzcuOTUzLDE3My43NzIsMTczLjc3QzM3My43NjksMjk1LjgxNiwyOTUuODEyLDM3My43NywxOTkuOTk1LDM3My43N3oiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIGNsYXNzPSJhY3RpdmUtcGF0aCIgc3R5bGU9ImZpbGw6IzM1NDA1MiIgZGF0YS1vbGRfY29sb3I9IiMwMDAwMDAiPjwvcGF0aD4KCQk8cGF0aCBkPSJNMjc5LjQ3OCwxODYuODg0aC02Ni4zNjNWMTIwLjUyYzAtNy4yNDMtNS44NzItMTMuMTE1LTEzLjExNS0xMy4xMTVzLTEzLjExNSw1Ljg3My0xMy4xMTUsMTMuMTE1djY2LjM2OGgtNjYuMzYxICAgIGMtNy4yNDIsMC0xMy4xMTUsNS44NzMtMTMuMTE1LDEzLjExNWMwLDcuMjQzLDUuODczLDEzLjExNSwxMy4xMTUsMTMuMTE1aDY2LjM1OHY2Ni4zNjJjMCw3LjI0Miw1Ljg3MiwxMy4xMTQsMTMuMTE1LDEzLjExNCAgICBjNy4yNDIsMCwxMy4xMTUtNS44NzIsMTMuMTE1LTEzLjExNHYtNjYuMzY1aDY2LjM2N2M3LjI0MSwwLDEzLjExNC01Ljg3MywxMy4xMTQtMTMuMTE1ICAgIEMyOTIuNTkzLDE5Mi43NTcsMjg2LjcyLDE4Ni44ODQsMjc5LjQ3OCwxODYuODg0eiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojMzU0MDUyIiBkYXRhLW9sZF9jb2xvcj0iIzAwMDAwMCI+PC9wYXRoPgoJPC9nPgo8L2c+PC9nPiA8L3N2Zz4=" />
-      <p style="display: inline-block;"> Cadastrar Usuário</p>
+      <img
+        height="18"
+        src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDQwMCA0MDAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMCA0MDA7IiB4bWw6c3BhY2U9InByZXNlcnZlIiBjbGFzcz0iIj48Zz48Zz4KCTxnPgoJCTxwYXRoIGQ9Ik0xOTkuOTk1LDBDODkuNzE2LDAsMCw4OS43MiwwLDIwMGMwLDExMC4yNzksODkuNzE2LDIwMCwxOTkuOTk1LDIwMEMzMTAuMjc3LDQwMCw0MDAsMzEwLjI3OSw0MDAsMjAwICAgIEM0MDAsODkuNzIsMzEwLjI3NywwLDE5OS45OTUsMHogTTE5OS45OTUsMzczLjc3QzEwNC4xODIsMzczLjc3LDI2LjIzLDI5NS44MTYsMjYuMjMsMjAwYzAtOTUuODE3LDc3Ljk1MS0xNzMuNzcsMTczLjc2NS0xNzMuNzcgICAgYzk1LjgxNywwLDE3My43NzIsNzcuOTUzLDE3My43NzIsMTczLjc3QzM3My43NjksMjk1LjgxNiwyOTUuODEyLDM3My43NywxOTkuOTk1LDM3My43N3oiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIGNsYXNzPSJhY3RpdmUtcGF0aCIgc3R5bGU9ImZpbGw6IzM1NDA1MiIgZGF0YS1vbGRfY29sb3I9IiMwMDAwMDAiPjwvcGF0aD4KCQk8cGF0aCBkPSJNMjc5LjQ3OCwxODYuODg0aC02Ni4zNjNWMTIwLjUyYzAtNy4yNDMtNS44NzItMTMuMTE1LTEzLjExNS0xMy4xMTVzLTEzLjExNSw1Ljg3My0xMy4xMTUsMTMuMTE1djY2LjM2OGgtNjYuMzYxICAgIGMtNy4yNDIsMC0xMy4xMTUsNS44NzMtMTMuMTE1LDEzLjExNWMwLDcuMjQzLDUuODczLDEzLjExNSwxMy4xMTUsMTMuMTE1aDY2LjM1OHY2Ni4zNjJjMCw3LjI0Miw1Ljg3MiwxMy4xMTQsMTMuMTE1LDEzLjExNCAgICBjNy4yNDIsMCwxMy4xMTUtNS44NzIsMTMuMTE1LTEzLjExNHYtNjYuMzY1aDY2LjM2N2M3LjI0MSwwLDEzLjExNC01Ljg3MywxMy4xMTQtMTMuMTE1ICAgIEMyOTIuNTkzLDE5Mi43NTcsMjg2LjcyLDE4Ni44ODQsMjc5LjQ3OCwxODYuODg0eiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBzdHlsZT0iZmlsbDojMzU0MDUyIiBkYXRhLW9sZF9jb2xvcj0iIzAwMDAwMCI+PC9wYXRoPgoJPC9nPgo8L2c+PC9nPiA8L3N2Zz4="
+      />
+      <p style="display: inline-block">Cadastrar Usuário</p>
     </div>
 
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr class="cabecalho">
           <th class="semBorda">Nome</th>
@@ -28,26 +34,44 @@
           <th></th>
         </tr>
       </thead>
-      <tbody *ngFor="let user of userData | paginate: {
-                                              itemsPerPage: 10,
-                                              currentPage: actualPage,
-                                              totalItems: userData.length}">
+      <tbody
+        *ngFor="
+          let user of userData
+            | paginate
+              : {
+                  itemsPerPage: 10,
+                  currentPage: actualPage,
+                  totalItems: userData.length
+                }
+        "
+      >
         <tr>
-          <td [attr.title]="user.full_name">{{ user.full_name | truncate : 20 }}</td>
+          <td [attr.title]="user.full_name">
+            {{ user.full_name | truncate: 20 }}
+          </td>
           <td>{{ getTypeLabel(user.role) }}</td>
-          <td>{{ user?.company?.name || '-' }}</td>
-          <td style="text-align: right">
-            <a (click)="editUser(user)">Editar</a>
-            <a (click)="removeProfile(user)">Excluir</a>
+          <td>{{ user?.company?.name || "-" }}</td>
+
+          <td class="actions">
+            <button class="editar" (click)="editUser(user)">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+            <button class="excluir" (click)="removeProfile(user)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
 
     <div class="has-text-centered">
-      <pagination-controls class="my-pagination" (pageChange)="actualPage = $event" directionLinks="false" autoHide="true">
+      <pagination-controls
+        class="my-pagination"
+        (pageChange)="actualPage = $event"
+        directionLinks="false"
+        autoHide="true"
+      >
       </pagination-controls>
     </div>
-    
   </div>
 </div>

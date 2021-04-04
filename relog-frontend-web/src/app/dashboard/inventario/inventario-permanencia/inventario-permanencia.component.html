@@ -60,7 +60,7 @@
   <!-- Tabela SEM serial selecionado -->
   <div>
     <div class="table-responsive">
-      <table class="table">
+      <table class="table table-hover">
         <thead>
            <!-- <tr class="cabecalho">
             <th>Família</th>
@@ -118,59 +118,6 @@
       </pagination-controls>
     </div>
   </div>
-
-  <!-- Taela COM serial selecionado -->
-  <!-- <div *ngIf="selectedSerial">
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr class="cabecalho">
-            <th>Data</th>
-            <th>Hora</th>
-            <th>Duns</th>
-
-            <th>Fornecedor</th>
-            <th>Status</th>
-            <th>Local</th>
-
-            <th>Tempo no Status</th>
-            <th style="text-align: center;">Tempo de Referência <br> BPline (Dias)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let packing of permanence.data | paginate: {
-                                                            id: 'permanenceHistoric',
-                                                            itemsPerPage: 10,
-                                                            currentPage: permanence.meta.page,
-                                                            totalItems: permanence.meta.total_docs}">
-            <td>{{ packing.date | date: 'dd/MM/yy HH:mm:ss'}}</td>
-            <td>{{ packing.date | date:'dd/MM/yy HH:mm:ss'}}</td>
-            <td>{{ packing.supplier?.duns || '-' }}</td>
-
-            <td>{{ packing.supplier?.name || '-' }}</td>
-            <td>{{ packing.status == 'NORMAL' || packing.status == undefined? packing.plant?.plant.plant_name : (packing.status
-              == 'MISSING' ? 'Embalagem Ausente' : 'Embalagem Viajando') }}</td>
-            <td>{{ packing.plant | type }}</td>
-
-            <td>{{ packing.permanence_time >= 0 ? (packing.permanence_time | time) : 'Sem Registro' }}</td>
-            <td style="text-align: center;">{{ packing.actual_gc16?.days >= 0 ? packing.actual_gc16?.days : '-' }}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="classVazio" *ngIf="permanence.data?.length < 1">
-        Não existem embalagens cadastradas com estes parâmetros.
-      </div>
-    </div>
-
-    <br> 
-
-    <div class="has-text-centered">
-      <pagination-controls class="my-pagination" id="permanenceHistoric" (pageChange)="permanence.meta.page = $event;permanenceInventorySerial()"
-        directionLinks="false" autoHide="true">
-      </pagination-controls>
-    </div>
-  </div> -->
 
 </div>
 

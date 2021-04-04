@@ -1,9 +1,5 @@
 @import '~font-awesome/css/font-awesome.css';
 
-* {
-  font-family: 'Roboto', sans-serif;
-}
-
 .meuInventario {
   box-shadow: 0px 0px 5px #000;
   margin-bottom: 25px;
@@ -13,9 +9,11 @@
   margin-bottom: 0px;
 }
 
-.cabecalho {
-  background-color: #3E4F60;
-  color: white;
+
+
+.cabecalho th {
+  border-bottom: solid #193349 1px;
+  background-color: #F2F5F4;
 }
 
 span {
@@ -25,7 +23,6 @@ span {
 h2,
 h3 {
   display: inline-flex;
-  font-family: 'Raleway', sans-serif;
   margin: 0px;
   vertical-align: middle;
   font-weight: 600;
@@ -59,24 +56,18 @@ hr {
 .base-bg{
   background-color: white;
   padding: 20px 20px;
-  box-shadow: 0px 0px 7px #000;
-  -webkit-box-shadow: 0px 0px 7px #000;
+  border-radius: 6px;
+  -webkit-box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
+  -moz-box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
+  box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
 }
 
 .clear-padding {
   padding: 0px;
 }
 
-/* td {
-  background-color: white;
-} */
-
 .input-label {
   margin-bottom: 0px;
-}
-
-tbody > tr:nth-child(even) {
-    background-color: #f9f9f9;
 }
 
 .export-button {
@@ -103,10 +94,6 @@ tbody > tr:nth-child(even) {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-}
-
-.default-order {
-  color: rgba(255, 255, 255, 0.5);
 }
 
 /*Checkboxes*/

@@ -130,7 +130,7 @@
 
           <!-- ///////////// -->
           <!-- New Ponto de Controle -->
-          <marker *ngIf="center !== undefined" [position]="center" [title]="address.name" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }">
+          <marker *ngIf="center !== undefined" [position]="center" [title]="address.name" [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }">
             <!-- <info-window id="pw">
               <div class="iw-title">INFORMAÇÕES</div>
               <div *ngIf="plant.display" class="info-window-content">
@@ -146,7 +146,7 @@
             [editable]="false" [fillColor]="'#455A64'" [fillOpacity]="0.2" [strokeColor]="'#263238'" [strokeOpacity]="0.4"
             [strokeWeight]="1"> </circle>
           
-            <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+            <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }"
             [title]="posCP.name" (click)="clickedPlant($event, posCP)">
             <info-window id="pw">
               <div class="iw-title">INFORMAÇÕES</div>
@@ -164,7 +164,7 @@
           </polygon>
 
           <marker *ngFor="let posCP of listOfPolygonControlPoints" [position]="posCP.position" (click)="clickedPlant($event, posCP)"
-            [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }">
+            [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }">
             <!-- <div class="custom-icon-map-plant"></div> -->
             <info-window id="lw">
               <div class="iw-title">INFORMAÇÕES</div>
@@ -190,43 +190,13 @@
         <span class="forn">{{ this.mControlPoint.controls.full_address.value || 'Nenhuma informação sobre a localidade'
           }}</span>
       </div>
-
-
-      <!-- Input para a latitude -->
-      <!-- <div class="campo col-md-6">
-        <p class="descricao">LATITUDE</p>
-        <div class="input-group">
-          <input type="text" readonly class="form-control" placeholder="Digite a latitude" aria-describedby="basic-addon2"
-            formControlName="lat" [(ngModel)]="lat" [ngClass]="{'required': (mControlPoint.get('lat').hasError('required') && mControlPoint.get('lat').touched)
-              || (mControlPoint.get('lat').hasError('required') && submitted)}">
-        </div>
-
-        <p class="requiredText" *ngIf="(mControlPoint.get('lat').hasError('required') && mControlPoint.get('lat').touched)
-          || (mControlPoint.get('lat').hasError('required') && submitted)">
-          Campo Obrigatório</p>
-      </div> -->
-
-
-      <!-- Input para a longitude -->
-      <!-- <div class="campo col-md-6">
-        <p class="descricao">LONGITUDE</p>
-        <div class="input-group">
-          <input type="text" readonly class="form-control" placeholder="Digite a longitude" aria-describedby="basic-addon2"
-            formControlName="lng" [(ngModel)]="lng" [ngClass]="{'required': (mControlPoint.get('lng').hasError('required') && mControlPoint.get('lng').touched)
-            || (mControlPoint.get('lng').hasError('required') && submitted)}">
-        </div>
-
-        <p class="requiredText" *ngIf="(mControlPoint.get('lng').hasError('required') && mControlPoint.get('lng').touched)
-          || (mControlPoint.get('lng').hasError('required') && submitted)">
-          Campo Obrigatório</p>
-      </div> -->
     </div>
 
     <br />
 
     <div class="botoes">
-      <button routerLink="/rc/cadastros/ponto" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">ATUALIZAR</button>
+      <button routerLink="/rc/cadastros/ponto" class="redButton">VOLTAR</button>
+      <button type="submit" class="blueButton">ATUALIZAR</button>
     </div>
 
   </form>

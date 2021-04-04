@@ -40,7 +40,7 @@
       <button type="button" class="botaoVisualizar" (click)="historicFlag = false" *ngIf="historicFlag">Fechar Historico</button>
       <br>
       <div style="padding-top: 20px" class="table-responsive tabela" *ngIf="historicFlag">
-        <table class="table">
+        <table class="table table-hover">
           <thead>
             <tr class="cabecalho">
               <th>Data</th>
@@ -81,7 +81,7 @@
       <span>Departamento:</span> {{alerta.data.department ? alerta.data.department.name : 'Sem Registro'}}</p>
 
     <div class="table-responsive tabela">
-      <table class="table">
+      <table class="table table-hover">
         <thead>
           <tr class="cabecalho">
             <th colspan="5" class="text-center"> Rotas da embalagem </th>
@@ -124,7 +124,7 @@
     <p>
       <span>Tempo em viagem:</span> {{alerta.data.packing?.trip.time_countdown | time }}</p>
     <div class="table-responsive tabela">
-      <table class="table">
+      <table class="table table-hover">
         <thead>
           <tr class="cabecalho">
 

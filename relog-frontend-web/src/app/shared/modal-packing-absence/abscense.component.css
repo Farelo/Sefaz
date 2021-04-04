@@ -12,7 +12,6 @@
 .botaoVisualizar:focus {
   outline: none;
 }
-* { font-family: 'Roboto', sans-serif; }
 
 .header {
   display: inline-grid;
@@ -66,8 +65,7 @@
 #iw-container {
   margin-bottom: 10px;
 }
-.iw-title {
-  font-family: 'Raleway', sans-serif;
+.iw-title { 
   font-size: 16px;
   color: white;
   margin: 0px;

@@ -7,12 +7,6 @@ h1 {
   font-weight: 500;
 }
 
-h1,
-.botaoSalvar,
-.botaoVoltar {
-  font-family: 'Montserrat', sans-serif;
-}
-
 input {
   font-size: 13px;
   border-radius: 0em !important;
@@ -37,15 +31,13 @@ select {
 .descricao {
   display: inline;
   font-weight: 600;
-  font-family: 'Raleway', sans-serif;
   font-size: 13px;
 }
 
 .explicacao {
   color: #777;
-  font-size: 10px;
+  font-size: .75rem;
   margin-bottom: 0px;
-  font-family: 'Roboto', sans-serif;
 }
 
 .campo { margin-bottom: 20px; }

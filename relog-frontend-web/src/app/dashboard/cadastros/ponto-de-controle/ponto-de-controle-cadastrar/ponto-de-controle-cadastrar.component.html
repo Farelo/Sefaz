@@ -153,7 +153,7 @@
 
                 <!-- ///////////// -->
                 <!-- New Ponto de Controle -->
-                <marker *ngIf="center !== undefined" [position]="center" [title]="address.name" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }">
+                <marker *ngIf="center !== undefined" [position]="center" [title]="address.name" [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }">
                   <!-- <info-window id="pw">
                     <div class="iw-title">INFORMAÇÕES</div>
                     <div *ngIf="plant.display" class="info-window-content">
@@ -166,7 +166,7 @@
 
                 <!-- ///////////// -->
                 <!-- Ponto de Controle -->
-                <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }"
+                <marker *ngFor="let posCP of listOfCircleControlPoints" [position]="posCP.position" [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }"
                   [title]="posCP.name" (click)="clickedPlant($event, posCP)">
                   <info-window id="pw">
                     <div class="iw-title">INFORMAÇÕES</div>
@@ -184,7 +184,7 @@
                 <!-- ///////////// -->
                 <!-- Ponto de Controle -->
                 <marker *ngFor="let posCP of listOfPolygonControlPoints" [position]="posCP.position" (click)="clickedPlant($event, posCP)"
-                  [icon]="{ url: 'assets/images/pin_plant.png', size: [28, 43], scaledSize: [28, 43] }">
+                  [icon]="{ url: 'assets/images/pin_cp.png', size: [30, 30], scaledSize: [30, 30] }">
                   <!-- <div class="custom-icon-map-plant"></div> -->
                   <info-window id="lw">
                     <div class="iw-title">INFORMAÇÕES</div>
@@ -218,8 +218,8 @@
     <br />
 
     <div class="botoes">
-      <button routerLink="/rc/cadastros/ponto" class="botaoVoltar">VOLTAR</button>
-      <button type="submit" class="botaoRegistrar">REGISTRAR</button>
+      <button routerLink="/rc/cadastros/ponto" class="redButton">VOLTAR</button>
+      <button type="submit" class="blueButton">REGISTRAR</button>
     </div>
 
     <br />

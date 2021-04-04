@@ -16,15 +16,17 @@
 .btn {
   font-size: 16px;
 }
-* { font-family: 'Roboto', sans-serif; }
 
 .table {
   font-size: 14px;
 }
 
 .cabecalho {
-  background-color: #3E4F60;
-  color: white;
+  color: #193349;
+}
+
+.cabecalho th {
+  border-bottom: solid #193349 1px;
 }
 
 td { background-color: white; }

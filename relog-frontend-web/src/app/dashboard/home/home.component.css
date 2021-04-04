@@ -1,6 +1,3 @@
-* {
-  font-family: 'Roboto', sans-serif;
-}
 
 h2 {
   font-weight: bold;
@@ -21,14 +18,19 @@ hr {
 
 .painel { 
   background-color: white;
+  border-radius: 6px;;
   padding: 15px 15px;
-  -webkit-box-shadow: 0px 0px 7px #000;
-  box-shadow: 0px 0px 7px #000;
 }
 
 .corpo {
   background-color: white;
+  border-radius: 6px;;
+  padding: 15px 15px;
+  background-color: white;
   padding: 15px 30px;
+  -webkit-box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
+  -moz-box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
+  box-shadow: 0px 1px 15px 0px rgb(112 144 176 / 5%);
 }
 
 .resumo-barras {
