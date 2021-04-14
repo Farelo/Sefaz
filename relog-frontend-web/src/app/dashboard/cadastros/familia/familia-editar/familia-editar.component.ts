@@ -71,7 +71,7 @@ export class FamiliaEditarComponent implements OnInit {
   configureFormGroup() {
     this.mFamily = this.fb.group({
       code: ['',
-        [Validators.required, Validators.minLength(2), Validators.maxLength(25), Validators.pattern(/^((?!\s{2}).)*$/) ]
+        [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(/^((?!\s{2}).)*$/) ]
       ],
       company: ['', [Validators.required]],
       control_points: new FormControl([])
@@ -98,6 +98,8 @@ export class FamiliaEditarComponent implements OnInit {
   onSubmit({ value, valid }: { value: any, valid: boolean }): void {
     this.submitted = true;
 
+    console.log(value, valid);
+    
     if (this.mFamily.valid) {
 
       //console.log(this.mFamily);

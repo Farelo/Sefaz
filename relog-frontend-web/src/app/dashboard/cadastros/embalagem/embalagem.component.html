@@ -38,7 +38,7 @@
                 }
         "
       >
-        <td>{{ packing.family ? (packing.family.code | truncate: 20) : "-"}}</td>
+        <td>{{ packing.family ? packing.family.code : "-"}}</td>
         <td>{{ packing.serial }}</td>
         <td>{{ packing.tag.code }}</td>
         <td class="actions">

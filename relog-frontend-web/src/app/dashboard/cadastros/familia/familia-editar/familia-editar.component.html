@@ -6,14 +6,14 @@
 
     <!-- Input para o código da família -->
     <div class="campo col-sm-12 col-md-6">
-      <p class="descricao">CÓDIGO DA FAMÍLIA</p>
+      <p class="descricao">NOME DA FAMÍLIA</p>
       <p class="explicacao">Ex: "AAA1"</p>
 
       <div class="input-group">
         <input type="text" class="form-control required" 
-          placeholder="Digite o código" 
+          placeholder="Digite o nome" 
           formControlName="code" 
-          maxlength="30"
+          maxlength="50"
           (focusout)="validateCode($event)"
           [ngClass]="{'required': (mFamily.get('code').hasError('required') && mFamily.get('code').touched)
           || (mFamily.get('code').hasError('required') && mFamily.invalid && submitted)

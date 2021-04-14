@@ -71,7 +71,7 @@
           <input type="text" class="form-control" 
             placeholder="Digite o nome do usuário"
             formControlName="full_name" 
-            maxlength="40"
+            maxlength="80"
             [(ngModel)]="full_name" 
             [ngClass]="{'required': ((newUser.get('full_name').hasError('required') && newUser.get('full_name').touched)
             || (newUser.get('full_name').hasError('required') && submitted))  
@@ -97,7 +97,7 @@
           <input type="text" class="form-control" 
             placeholder="Digite o email"
             formControlName="email" 
-            maxlength="40"
+            maxlength="80"
             (focusout)="validateEmail($event)"
             [(ngModel)]="email" 
             [ngClass]="{'required': (newUser.get('email').hasError('required') && newUser.get('email').touched)

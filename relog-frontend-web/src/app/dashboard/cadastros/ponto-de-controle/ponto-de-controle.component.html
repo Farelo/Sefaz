@@ -54,8 +54,8 @@
                 }
         "
       >
-        <td>{{ point.name | truncate: 30 }}</td>
-        <td>{{ point.company.name | truncate: 20 }}</td>
+        <td>{{ point.name }}</td>
+        <td>{{ point.company.name }}</td>
 
         <td class="actions">
           <button class="editar" [routerLink]="['editar/', point._id]">

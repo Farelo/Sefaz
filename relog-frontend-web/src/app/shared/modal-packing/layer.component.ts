@@ -235,8 +235,8 @@ export class LayerModalComponent implements OnInit {
       .subscribe((result: any[]) => {
         console.log(result.length);
 
-        if (result.length > 1) {
-          this.markers = result.reverse();
+        if (result.length > 0) {
+          // this.markers = result.reverse();
 
           let datePipe = new DatePipe("en");
 
@@ -299,12 +299,14 @@ export class LayerModalComponent implements OnInit {
             return m;
           });
 
-          //atualiza o path
-          this.updatePaths();
         } else {
           this.isLoading = false;
+          this.allPackingMarkers = []
         }
 
+        //atualiza o path
+        this.updatePaths();
+        
         // this.getResultQuantity();
       });
   }

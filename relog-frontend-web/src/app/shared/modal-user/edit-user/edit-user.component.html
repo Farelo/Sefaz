@@ -64,7 +64,7 @@
         <div class="form-group col-sm-12 col-md-6">
           <p class="descricao">NOME DO USUÁRIO</p>
           <input type="text" class="form-control" 
-            maxlength="40"
+            maxlength="80"
             placeholder="Digite o nome do usuário"
             formControlName="full_name" 
             [(ngModel)]="full_name" 
@@ -90,7 +90,7 @@
 
         <div class="form-group col-sm-12 col-md-6">
           <p class="descricao">E-MAIL</p>
-          <input type="text" class="form-control" placeholder="Digite o email" formControlName="email" maxlength="40"
+          <input type="text" class="form-control" placeholder="Digite o email" formControlName="email" maxlength="80"
             (focusout)="validateEmail($event)" [(ngModel)]="email" [ngClass]="{'required': (newUser.get('email').hasError('required') && newUser.get('email').touched)
             || (newUser.get('email').hasError('required') && submitted)
           
