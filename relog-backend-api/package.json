@@ -16,7 +16,7 @@
     "@turf/turf": "5.1.6",
     "app-root-path": "^2.1.0",
     "axios": "0.20.0",
-    "bcrypt": "^3.0.2",
+    "bcrypt": "^3.0.8",
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "config": "^2.0.0",
