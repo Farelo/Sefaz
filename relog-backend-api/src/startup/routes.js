@@ -50,6 +50,7 @@ module.exports = (app) => {
    app.use("/api/companies", companies);
    app.use("/api/families", families);
    app.use("/api/packings", packings);
+   app.use("/api/racks", racks);
    app.use("/api/control_points", control_points);
    app.use("/api/types", types);
    app.use("/api/routes", routes);

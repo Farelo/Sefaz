@@ -112,5 +112,155 @@ module.exports = router
  *
  */
 
+// POST '/'
+/**
+ * @swagger
+ *
+ * /racks/create_many:
+ *   post:
+ *     summary: Create a racks
+ *     description: Create a rack
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Racks
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: rack
+ *         description: Rack array
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *     responses:
+ *       200:
+ *         description: Rack is a valid request
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *
+ */
 
+// PATCH '/:id'
+/**
+ * @swagger
+ * /racks/{id}:
+ *   patch:
+ *     summary: Update a rack
+ *     description: Update a rack by id
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Racks
+ *     parameters:
+ *       - name: id
+ *         description: Rack id
+ *         in: path
+ *         required: true
+ *         type: string
+ *       - name: rack
+ *         description: Rack object
+ *         in:  body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/RackObject'
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
 
+// DELETE '/'
+/**
+ * @swagger
+ * /racks/{id}:
+ *   delete:
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Racks
+ *     summary: Delete a rack
+ *     description: Delete a rack
+ *     parameters:
+ *       - name: id
+ *         description: Rack id
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+/**
+ * @swagger
+ *
+ * definitions:
+ *   RackObject:
+ *     type: object
+ *     required:
+ *       - serial
+ *       - family
+ *     properties:
+ *       tag:
+ *         $ref: '#/definitions/TagObject'
+ *       serial:
+ *         type: string
+ *       model:
+ *         type: string
+ *       type:
+ *         type: string
+ *       weigth:
+ *         type: number
+ *       width:
+ *         type: number
+ *       heigth:
+ *         type: number
+ *       length:
+ *         type: number
+ *       capacity:
+ *         type: number
+ *       maxliespan:
+ *         type: number
+ *       fabricationDate:
+ *         type: date
+ *         pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+ *         example: "2019-05-17"
+ *       observations:
+ *         type: string
+ *       active:
+ *         type: boolean
+ *       family:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ *
+ * definitions:
+ *   TagObject:
+ *     type: object
+ *     required:
+ *       - code
+ *     properties:
+ *       code:
+ *         type: string
+ *       version:
+ *         type: string
+ *       manufactorer:
+ *         type: string
+ *       
+ */
