@@ -6,6 +6,7 @@ const users = require("../resources/users/users.routing");
 const companies = require("../resources/companies/companies.routing");
 const families = require("../resources/families/families.routing");
 const packings = require("../resources/packings/packings.routing");
+const engines = require("../resources/engines/engines.routing");
 const control_points = require("../resources/control_points/control_points.routing");
 const types = require("../resources/types/types.routing");
 const routes = require("../resources/routes/routes.routing");
@@ -50,7 +51,7 @@ module.exports = (app) => {
    app.use("/api/companies", companies);
    app.use("/api/families", families);
    app.use("/api/packings", packings);
-   app.use("/api/racks", racks);
+   app.use("/api/engines", engines);
    app.use("/api/control_points", control_points);
    app.use("/api/types", types);
    app.use("/api/routes", routes);

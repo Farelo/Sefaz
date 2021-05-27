@@ -1,46 +1,46 @@
 const express = require('express')
 const router = express.Router()
-const racks_controller = require('./racks.controller')
+const engines_controller = require('./engines.controller')
 const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
-const { validate_racks } = require('./racks.model')
+const { validate_engines } = require('./engines.model')
 
-router.get('/', [auth], racks_controller.all)
-router.get('/:id', [auth, validate_object_id], racks_controller.show)
-router.post('/', [auth, authz, validate_joi(validate_racks)], racks_controller.create)
-router.post('/create_many', [auth, authz], racks_controller.create_many)
-router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_racks)], racks_controller.update)
-router.delete('/:id', [auth, authz, validate_object_id], racks_controller.delete)
+router.get('/', [auth], engines_controller.all)
+router.get('/:id', [auth, validate_object_id], engines_controller.show)
+router.post('/', [auth, authz, validate_joi(validate_engines)], engines_controller.create)
+router.post('/create_many', [auth, authz], engines_controller.create_many)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_engines)], engines_controller.update)
+router.delete('/:id', [auth, authz, validate_object_id], engines_controller.delete)
 
 module.exports = router
 
 // GET '/'
 /**
  * @swagger
- * /racks:
+ * /engines:
  *   get:
- *     summary: Retrieve all racks
- *     description: Retrieve all racks on database
+ *     summary: Retrieve all engines
+ *     description: Retrieve all engines on database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Racks
+ *       - engines
  *     parameters:
- *       - name: tag_code
- *         description: Return rack filtered by tag code
+ *       - name: serial
+ *         description: Return engine filtered by serial
  *         in: query
  *         required: false
  *         type: string
- *       - name: family
- *         description: Return rack filtered by family
+ *       - name: model
+ *         description: Return engine filtered by model
  *         in: query
  *         required: false
  *         type: string
  *     responses:
  *       200:
- *         description: list of all racks
+ *         description: list of all engines
  *       400:
  *         description: Bad Request
  *       404:
@@ -51,25 +51,25 @@ module.exports = router
 /**
  * @swagger
  *
- * /racks/{id}:
+ * /engines/{id}:
  *   get:
- *     summary: Create a rack
- *     description: Create a rack
+ *     summary: Create a engine
+ *     description: Create a engine
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Racks
+ *       - engines
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Rack id
+ *         description: engine id
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: Rack is a valid request
+ *         description: engine is a valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -83,26 +83,26 @@ module.exports = router
 /**
  * @swagger
  *
- * /racks:
+ * /engines:
  *   post:
- *     summary: Create a rack
- *     description: Create a rack
+ *     summary: Create a engine
+ *     description: Create a engine
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Racks
+ *       - engines
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: Rack
- *         description: Rack object
+ *       - name: engine
+ *         description: engine object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/RackObject'
+ *           $ref: '#/definitions/engineObject'
  *     responses:
  *       200:
- *         description: rack is a valid request
+ *         description: engine is a valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -116,19 +116,19 @@ module.exports = router
 /**
  * @swagger
  *
- * /racks/create_many:
+ * /engines/create_many:
  *   post:
- *     summary: Create a racks
- *     description: Create a rack
+ *     summary: Create a engines
+ *     description: Create a engine
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Racks
+ *       - engines
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: rack
- *         description: Rack array
+ *       - name: engine
+ *         description: engine array
  *         in: body
  *         required: true
  *         schema:
@@ -137,7 +137,7 @@ module.exports = router
  *             type: string
  *     responses:
  *       200:
- *         description: Rack is a valid request
+ *         description: engine is a valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -150,26 +150,26 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /racks/{id}:
+ * /engines/{id}:
  *   patch:
- *     summary: Update a rack
- *     description: Update a rack by id
+ *     summary: Update a engine
+ *     description: Update a engine by id
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Racks
+ *       - engines
  *     parameters:
  *       - name: id
- *         description: Rack id
+ *         description: engine id
  *         in: path
  *         required: true
  *         type: string
- *       - name: rack
- *         description: Rack object
+ *       - name: engine
+ *         description: engine object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/RackObject'
+ *           $ref: '#/definitions/engineObject'
  *     responses:
  *       200:
  *         description: OK
@@ -182,17 +182,17 @@ module.exports = router
 // DELETE '/'
 /**
  * @swagger
- * /racks/{id}:
+ * /engines/{id}:
  *   delete:
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Racks
- *     summary: Delete a rack
- *     description: Delete a rack
+ *       - engines
+ *     summary: Delete a engine
+ *     description: Delete a engine
  *     parameters:
  *       - name: id
- *         description: Rack id
+ *         description: engine id
  *         in: path
  *         required: true
  *         type: string
@@ -209,11 +209,12 @@ module.exports = router
  * @swagger
  *
  * definitions:
- *   RackObject:
+ *   engineObject:
  *     type: object
  *     required:
  *       - serial
- *       - family
+ *       - id_engine_type
+ *       - id_rack
  *     properties:
  *       tag:
  *         $ref: '#/definitions/TagObject'
@@ -221,24 +222,10 @@ module.exports = router
  *         type: string
  *       model:
  *         type: string
- *       type:
+ *       part_number:
  *         type: string
- *       weigth:
+ *       id_engine_type:
  *         type: number
- *       width:
- *         type: number
- *       heigth:
- *         type: number
- *       length:
- *         type: number
- *       capacity:
- *         type: number
- *       maxliespan:
- *         type: number
- *       fabricationDate:
- *         type: date
- *         pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
- *         example: "2019-05-17"
  *       observations:
  *         type: string
  *       active:
@@ -260,7 +247,6 @@ module.exports = router
  *         type: string
  *       version:
  *         type: string
- *       manufactorer:
- *         type: string
+ *       
  *       
  */
