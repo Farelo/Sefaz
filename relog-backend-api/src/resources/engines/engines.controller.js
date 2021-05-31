@@ -4,7 +4,7 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 const debug = require("debug")("controller:engines");
 const HttpStatus = require("http-status-codes");
 const engines_service = require("./engines.service");
-const families_service = require("../families/families.service");
+const engine_types_service = require("../engine_types/engine_types.service");
 const projects_service = require("../projects/projects.service");
 const logs_controller = require("../logs/logs.controller");
 const apiKeysService = require("../api_keys/api_keys.service");
@@ -18,8 +18,8 @@ var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 
 exports.all = async (req, res) => {
    const tag = req.query.tag_code ? req.query.tag_code : null;
-   const family = req.query.family ? req.query.family : null;
-   const engines = await engines_service.get_engines(tag, family);
+   const engine_type = req.query.engine_type ? req.query.engine_type : null;
+   const engines = await engines_service.get_engines(tag, engine_type);
 
    res.json(engines);
 };
@@ -36,8 +36,8 @@ exports.create = async (req, res) => {
    let engine = await engines_service.find_by_tag(req.body.tag.code);
    if (engine) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Engine already exists with this code." });
 
-   const family = await families_service.find_by_id(req.body.family);
-   if (!family) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid family." });
+   const engine_type = await engine_types_service.find_by_id(req.body.engine_type);
+   if (!engine_type) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid engine_types." });
 
 
    engine = await engines_service.create_engine(req.body);
@@ -58,8 +58,8 @@ exports.create_many = async (req, res) => {
             message: `Engine already exists with this code ${engine.data.tag.code}.`,
          });
 
-      const family = await families_service.find_by_id(engine.data.family._id);
-      if (!family) return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid family ${engine.data.family}.` });
+      const engine_type = await engine_types_service.find_by_id(engine.data.engine_type._id);
+      if (!engine_type) return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid engine_type ${engine.data.engine_type}.` });
 
 
       engine.data.active = true;

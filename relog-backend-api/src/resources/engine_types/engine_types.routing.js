@@ -172,10 +172,8 @@ module.exports = router
  *     type: object
  *     required:
  *       - code
- *       - name
  *     properties:
  *       code:
  *         type: string
- *       name:
- *         type: string
+ *      
  */

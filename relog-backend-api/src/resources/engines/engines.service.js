@@ -22,10 +22,7 @@ exports.get_engines = async (tag, engine_type) => {
       const data = await Engine.findByTag(tag)
          .populate("engine_type", ["_id", "code"])
          .populate("project", ["_id", "name"])
-         .populate("last_position")
-         .populate("last_battery")
-         .populate("last_event_record")
-         .populate("last_alert_history");
+         .populate("Rack_Transport");
 
       return data ? [data] : [];
    } catch (error) {
@@ -36,12 +33,9 @@ exports.get_engines = async (tag, engine_type) => {
 exports.get_engine = async (id) => {
    try {
       const engine = await Engine.findById(id)
-         .populate("family", ["_id", "code", "company"])
-         .populate("project", ["_id", "name"])
-         .populate("last_position")
-         .populate("last_battery")
-         .populate("last_event_record")
-         .populate("last_alert_history");
+      .populate("engine_type", ["_id", "code"])
+      .populate("project", ["_id", "name"])
+      .populate("Rack_Transport");
 
       return engine;
    } catch (error) {

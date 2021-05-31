@@ -47,7 +47,7 @@ const engineSchema = new mongoose.Schema({
     
     id_rack_transport: {
         type: mongoose.Schema.ObjectId,
-        ref: 'RackTransport',
+        ref: 'Rack_Transport',
         required: true
     },
     
