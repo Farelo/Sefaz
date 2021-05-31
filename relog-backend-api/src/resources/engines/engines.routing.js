@@ -26,15 +26,15 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - engines
+ *       - Engines
  *     parameters:
- *       - name: serial
- *         description: Return engine filtered by serial
+ *       - name: tag_code
+ *         description: Return engine filtered by tag code
  *         in: query
  *         required: false
  *         type: string
- *       - name: model
- *         description: Return engine filtered by model
+ *       - name: engine_type
+ *         description: Return engine filtered by engine type
  *         in: query
  *         required: false
  *         type: string
@@ -58,18 +58,18 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - engines
+ *       - Engines
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: engine id
+ *         description: Engine id
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: engine is a valid request
+ *         description: Engine is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -90,19 +90,19 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - engines
+ *       - Engines
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: engine
- *         description: engine object
+ *         description: Engine object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/engineObject'
+ *           $ref: '#/definitions/EngineObject'
  *     responses:
  *       200:
- *         description: engine is a valid request
+ *         description: Engine is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -118,17 +118,17 @@ module.exports = router
  *
  * /engines/create_many:
  *   post:
- *     summary: Create a engines
- *     description: Create a engine
+ *     summary: Create a engine
+ *     description: Create many engines
  *     security:
  *       - Bearer: []
  *     tags:
- *       - engines
+ *       - Engines
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: engine
- *         description: engine array
+ *         description: Engine array
  *         in: body
  *         required: true
  *         schema:
@@ -137,7 +137,7 @@ module.exports = router
  *             type: string
  *     responses:
  *       200:
- *         description: engine is a valid request
+ *         description: Engine is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -157,19 +157,19 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - engines
+ *       - Engines
  *     parameters:
  *       - name: id
- *         description: engine id
+ *         description: Engine id
  *         in: path
  *         required: true
  *         type: string
  *       - name: engine
- *         description: engine object
+ *         description: Engine object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/engineObject'
+ *           $ref: '#/definitions/EngineObject'
  *     responses:
  *       200:
  *         description: OK
@@ -187,12 +187,12 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - engines
+ *       - Engines
  *     summary: Delete a engine
  *     description: Delete a engine
  *     parameters:
  *       - name: id
- *         description: engine id
+ *         description: Engine id
  *         in: path
  *         required: true
  *         type: string
@@ -205,36 +205,36 @@ module.exports = router
  *         description: Not Found
  */
 
-/**
+ /**
  * @swagger
  *
  * definitions:
- *   engineObject:
+ *   EngineObject:
  *     type: object
  *     required:
  *       - serial
  *       - id_engine_type
- *       - id_rack
  *     properties:
  *       tag:
  *         $ref: '#/definitions/TagObject'
  *       serial:
  *         type: string
- *       model:
- *         type: string
  *       part_number:
  *         type: string
- *       id_engine_type:
- *         type: number
+ *       id_rack_transport:
+ *         type: string
+ *       engine_type:
+ *         type: string
+ *       model:
+ *         type: string
  *       observations:
  *         type: string
  *       active:
  *         type: boolean
- *       family:
- *         type: string
+ *       
  */
 
-/**
+ /**
  * @swagger
  *
  * definitions:
@@ -245,8 +245,7 @@ module.exports = router
  *     properties:
  *       code:
  *         type: string
- *       version:
- *         type: string
+ *       
  *       
  *       
  */

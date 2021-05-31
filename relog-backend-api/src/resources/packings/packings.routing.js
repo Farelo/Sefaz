@@ -192,7 +192,7 @@ module.exports = router
  *     tags:
  *       - Packings
  *     summary: Delete a packing
- *     description: Deleta a packing
+ *     description: Delete a packing
  *     parameters:
  *       - name: id
  *         description: Packing id
