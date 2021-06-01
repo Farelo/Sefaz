@@ -3,7 +3,7 @@ const router = express.Router()
 const import_controller = require('./imports.controller')
 const auth = require('../../security/auth.middleware')
 
-router.post('/packing_xlsx', auth, import_controller.import_packing)
+router.post('/rack_xlsx', auth, import_controller.import_rack)
 router.post('/control_point_xlsx', auth, import_controller.import_control_points)
 router.post('/company_xlsx', auth, import_controller.import_companies)
 
@@ -13,10 +13,10 @@ module.exports = router
 /**
  * @swagger
  *
- * /imports/packing_xlsx:
+ * /imports/rack_xlsx:
  *   post:
- *     summary: Uploads xlsx file to create packings
- *     description: Uploads xlsx file to create packings
+ *     summary: Uploads xlsx file to create racks
+ *     description: Uploads xlsx file to create racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -27,7 +27,7 @@ module.exports = router
  *       - application/json
  *     parameters:
  *       - in: formData
- *         name: packing_xlsx
+ *         name: rack_xlsx
  *         description: The file to upload xlsx
  *         required: true
  *         type: file

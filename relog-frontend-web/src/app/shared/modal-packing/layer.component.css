@@ -247,7 +247,7 @@ div.info-window-content > p {
 }
 
 @media (max-width: 700px) {
-  #modal-packing-container {
+  #modal-rack-container {
     overflow-y: scroll;
   }
 

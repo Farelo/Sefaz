@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const packingSchema = new mongoose.Schema({
+const rackSchema = new mongoose.Schema({
   tag: {
     code: {
       type: String,
@@ -194,7 +194,7 @@ const packingSchema = new mongoose.Schema({
   },
 });
 
-packingSchema.statics.findByTag = function (tag, projection = "") {
+rackSchema.statics.findByTag = function (tag, projection = "") {
   return this.findOne({ "tag.code": tag }, projection);
 };
 
@@ -204,10 +204,10 @@ const update_updated_at_middleware = function (next) {
   next();
 };
 
-packingSchema.pre("update", update_updated_at_middleware);
-packingSchema.pre("findOneAndUpdate", update_updated_at_middleware);
+rackSchema.pre("update", update_updated_at_middleware);
+rackSchema.pre("findOneAndUpdate", update_updated_at_middleware);
 
-const Packing = mongoose.model("Packing", packingSchema);
+const Rack = mongoose.model("Rack", rackSchema);
 
-exports.Packing = Packing;
-exports.packingSchema = packingSchema; 
+exports.Rack = Rack;
+exports.rackSchema = rackSchema; 

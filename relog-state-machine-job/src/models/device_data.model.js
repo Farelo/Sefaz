@@ -1,6 +1,6 @@
 const debug = require('debug')('model:device_data')
 const mongoose = require('mongoose')
-const { Packing } = require('../models/packings.model')
+const { Rack } = require('../models/racks.model')
 
 const deviceDataSchema = new mongoose.Schema({
     device_id: {
@@ -58,21 +58,21 @@ const deviceDataSchema = new mongoose.Schema({
 
 deviceDataSchema.index({ device_id: 1, message_date: -1 }, { unique: true })
 
-const update_packing = async (device_data, next) => {
+const update_rack = async (device_data, next) => {
     
     try {
         let update_attrs = {}
         let update = false 
-        const packing = await Packing.findByTag(device_data.device_id)
+        const rack = await Rack.findByTag(device_data.device_id)
     
-        if (!packing) next()
+        if (!rack) next()
 
-        let current_message_date_on_packing = await DeviceData.findById(packing.last_device_data, {_id: 0, message_date: 1})
+        let current_message_date_on_rack = await DeviceData.findById(rack.last_device_data, {_id: 0, message_date: 1})
 
-        current_message_date_on_packing = current_message_date_on_packing ? current_message_date_on_packing.message_date : null
+        current_message_date_on_rack = current_message_date_on_rack ? current_message_date_on_rack.message_date : null
 
         //se o novo device_data é mais recente que o que já esta salvo, então atualiza
-        if(device_data.message_date > current_message_date_on_packing) {
+        if(device_data.message_date > current_message_date_on_rack) {
 
             update_attrs.last_device_data = device_data._id
 
@@ -82,12 +82,12 @@ const update_packing = async (device_data, next) => {
         //se o novo device_data possui informação de bateria
         if (device_data.battery.percentage || device_data.battery.voltage) {
         
-            let packing_date_battery_data = await DeviceData.findById(packing.last_device_data_battery, {_id: 0, message_date: 1})
+            let rack_date_battery_data = await DeviceData.findById(rack.last_device_data_battery, {_id: 0, message_date: 1})
 
-            packing_date_battery_data = packing_date_battery_data ? packing_date_battery_data.message_date : null
+            rack_date_battery_data = rack_date_battery_data ? rack_date_battery_data.message_date : null
 
-            // se essa informação de bateria é mais recente que a que ja existe no packing ou o packing não tem ainda nenhuma info de bateria
-            if (device_data.message_date > packing_date_battery_data){
+            // se essa informação de bateria é mais recente que a que ja existe no rack ou o rack não tem ainda nenhuma info de bateria
+            if (device_data.message_date > rack_date_battery_data){
 
                 update_attrs.last_device_data_battery =  device_data._id
             }
@@ -96,7 +96,7 @@ const update_packing = async (device_data, next) => {
         }
 
         if (update)
-            await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true })
+            await Rack.findByIdAndUpdate(rack._id, update_attrs, { new: true })
 
         next()
     } catch (error) {
@@ -108,8 +108,8 @@ deviceDataSchema.statics.findByDeviceId = function (device_id, projection = '') 
     return this.findOne({ device_id }, projection)
 }
 
-const saveDeviceDataToPacking = function (doc, next) {
-    update_packing(doc, next)
+const saveDeviceDataToRack = function (doc, next) {
+    update_rack(doc, next)
 }
 
 const update_updated_at_middleware = function (next) {
@@ -151,7 +151,7 @@ const device_data_save = async (devide_data_array) => {
     }
 }
 
-deviceDataSchema.post('save', saveDeviceDataToPacking)
+deviceDataSchema.post('save', saveDeviceDataToRack)
 deviceDataSchema.pre('update', update_updated_at_middleware)
 deviceDataSchema.pre('findOneAndUpdate', update_updated_at_middleware)
 

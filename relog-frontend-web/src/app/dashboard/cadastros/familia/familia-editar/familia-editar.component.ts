@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Packing } from '../../../../shared/models/packing';
+import { Rack } from '../../../../shared/models/rack';
 import { Supplier } from '../../../../shared/models/supplier';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { ToastService, ProjectService, SuppliersService, TagsService, PackingService, CompaniesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
+import { ToastService, ProjectService, SuppliersService, TagsService, RackService, CompaniesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 
 @Component({
@@ -124,7 +124,7 @@ export class FamiliaEditarComponent implements OnInit {
 
   validateCode(event: any) {
 
-    //console.log(this.mPacking.get('tag.code').value);
+    //console.log(this.mRack.get('tag.code').value);
 
     if (this.mActualFamily.code == this.mFamily.get('code').value) {
       this.validateNotTakenLoading = false;

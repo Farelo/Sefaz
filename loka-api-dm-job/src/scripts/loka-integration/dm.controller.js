@@ -19,38 +19,38 @@ async function logoutDM(cookie) {
   }
 }
 
-const fetchAndSavePositions = async (packing, startDate, endDate, cookie) => {
+const fetchAndSavePositions = async (rack, startDate, endDate, cookie) => {
   debug("fetchAndSavePositions");
   // console.log("fetchAndSavePositions", startDate, endDate);
   try {
     if (!cookie) cookie = await dm_service.loginLokaDmApi();
-    let result = await dm_service.fetchPositions(packing.tag.code, startDate, endDate, true, cookie);
+    let result = await dm_service.fetchPositions(rack.tag.code, startDate, endDate, true, cookie);
 
-    if (result.length > 0) await dm_service.createManyPositionMessages(packing, result);
+    if (result.length > 0) await dm_service.createManyPositionMessages(rack, result);
     return result;
   } catch (error) {
     return [];
   }
 };
 
-const fetchAndSaveSensors = async (packing, startDate, endDate, cookie) => {
+const fetchAndSaveSensors = async (rack, startDate, endDate, cookie) => {
   try {
     // console.log("fetchAndSaveSensors", startDate, endDate);
     if (!cookie) cookie = await dm_service.loginLokaDmApi();
 
-    let result = await dm_service.fetchSensors(packing.tag.code, startDate, endDate, cookie);
+    let result = await dm_service.fetchSensors(rack.tag.code, startDate, endDate, cookie);
 
     //TEMPERATURE
     let allTemperatures = retrieveTemperature(result);
-    if (allTemperatures.length > 0) await dm_service.createManyTemperatureMessages(packing, allTemperatures);
+    if (allTemperatures.length > 0) await dm_service.createManyTemperatureMessages(rack, allTemperatures);
 
     //BATTERY
     let allBattery = retrieveBattery(result);
-    if (allBattery.length > 0) await dm_service.createManyBatteryMessages(packing, allBattery);
+    if (allBattery.length > 0) await dm_service.createManyBatteryMessages(rack, allBattery);
 
     //ALPS BUTTON
     let allButton = retrieveButton(result);
-    if (allButton.length > 0) await dm_service.createManyButtonMessages(packing, allButton);
+    if (allButton.length > 0) await dm_service.createManyButtonMessages(rack, allButton);
 
     // CHECK IF BUTTON IS ALREADY ACTIVATED
     if (result.length) {
@@ -63,7 +63,7 @@ const fetchAndSaveSensors = async (packing, startDate, endDate, cookie) => {
           },
         ];
 
-        await dm_service.createManyButtonMessages(packing, button);
+        await dm_service.createManyButtonMessages(rack, button);
       }
     }
 

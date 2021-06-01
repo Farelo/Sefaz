@@ -2,21 +2,21 @@ const debug = require('debug')('controller:home')
 const HttpStatus = require('http-status-codes')
 const xlsx = require('node-xlsx').default
 const fs = require('fs')
-const { Packing } = require('../packings/packings.model')
+const { Rack } = require('../racks/racks.model')
 const { ControlPoint } = require('../control_points/control_points.model')
 const { Family } = require('../families/families.model')
 const { Project } = require('../projects/projects.model')
 const { Type } = require('../types/types.model')
 const { Company } = require('../companies/companies.model')
 
-exports.import_packing = async (req, res) => {
+exports.import_rack = async (req, res) => {
     if (Object.keys(req.files).length == 0) return res.status(HttpStatus.BAD_REQUEST).send({ message: 'No files were uploaded.' })
     
-    const packing_xlsx = req.files.packing_xlsx
-    const file_name = new Date().getTime().toString() + 'packing'
+    const rack_xlsx = req.files.rack_xlsx
+    const file_name = new Date().getTime().toString() + 'rack'
     const file_path = `${__dirname}/uploads/${file_name}.xlsx`
 
-    packing_xlsx.mv(file_path, async err => {
+    rack_xlsx.mv(file_path, async err => {
         try {
             if (err) return res.status(HttpStatus.BAD_REQUEST).send({ message: err })
             let errors = []
@@ -24,37 +24,37 @@ exports.import_packing = async (req, res) => {
             let to_register = []
 
             const workSheetsFromFile = xlsx.parse(file_path)
-            const packings = workSheetsFromFile[0].data.filter((data, index) => index !== 0)
+            const racks = workSheetsFromFile[0].data.filter((data, index) => index !== 0)
 
-            for (const [index, packing] of packings.entries()) {
+            for (const [index, rack] of racks.entries()) {
                 let temp_obj = {}
 
-                const current_packing = await Packing.findByTag(packing[2])
-                const family = await Family.findByCode(packing[0], {_id: 1, code: 1})
-                const project = packing[12] !== undefined ? await Project.findOne({ name: packing[12].toString() }) : null
+                const current_rack = await Rack.findByTag(rack[2])
+                const family = await Family.findByCode(rack[0], {_id: 1, code: 1})
+                const project = rack[12] !== undefined ? await Project.findOne({ name: rack[12].toString() }) : null
                 
-                if (!project && packing[12] !== undefined) errors.push({ line: index + 1, description: `Project with this name ${packing[12]} do not exists` })
+                if (!project && rack[12] !== undefined) errors.push({ line: index + 1, description: `Project with this name ${rack[12]} do not exists` })
 
                 if (!family) {
-                    errors.push({ line: index + 1, description: `Family code ${packing[0]} do not exists` })
+                    errors.push({ line: index + 1, description: `Family code ${rack[0]} do not exists` })
                 } else {
-                    if (!current_packing) {
+                    if (!current_rack) {
                         temp_obj.line = index + 1
                         temp_obj.data = {
                             family: family,
-                            serial: packing[1],
+                            serial: rack[1],
                             tag: {
-                                code: packing[2],
-                                version: packing[3],
-                                manufactorer: packing[4],
+                                code: rack[2],
+                                version: rack[3],
+                                manufactorer: rack[4],
                             },
-                            weigth: packing[5],
-                            width: packing[6],
-                            heigth: packing[7],
-                            length: packing[8],
-                            capacity: packing[9],
-                            observations: packing[10],
-                            type: packing[11],
+                            weigth: rack[5],
+                            width: rack[6],
+                            heigth: rack[7],
+                            length: rack[8],
+                            capacity: rack[9],
+                            observations: rack[10],
+                            type: rack[11],
                         }
                         
                         if (project) temp_obj.data.project = project
@@ -62,26 +62,26 @@ exports.import_packing = async (req, res) => {
                         to_register.push(temp_obj)
 
                     } else {
-                        await Packing.findByIdAndUpdate(current_packing._id, {
+                        await Rack.findByIdAndUpdate(current_rack._id, {
                             family: family,
-                            serial: packing[1],
+                            serial: rack[1],
                             tag: {
-                                code: packing[2],
-                                version: packing[3],
-                                manufactorer: packing[4],
+                                code: rack[2],
+                                version: rack[3],
+                                manufactorer: rack[4],
                             },
-                            weigth: packing[5],
-                            width: packing[6],
-                            heigth: packing[7],
-                            length: packing[8],
-                            capacity: packing[9],
-                            observations: packing[10],
-                            type: packing[11],
+                            weigth: rack[5],
+                            width: rack[6],
+                            heigth: rack[7],
+                            length: rack[8],
+                            capacity: rack[9],
+                            observations: rack[10],
+                            type: rack[11],
                             project: project ? project : undefined
                         })
                         
                         temp_obj.line = index + 1
-                        temp_obj.data = await Packing.findById(current_packing._id).populate('family')
+                        temp_obj.data = await Rack.findById(current_rack._id).populate('family')
                         temp_obj.data.project = project ? project : ''
 
                         updated.push(temp_obj)

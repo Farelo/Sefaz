@@ -1,6 +1,6 @@
 const debug = require("debug")("model:battery");
 const mongoose = require("mongoose");
-const { Packing } = require("./packings.model");
+const { Rack } = require("./racks.model");
 
 const batterySchema = new mongoose.Schema({
    tag: {
@@ -29,11 +29,11 @@ const batterySchema = new mongoose.Schema({
 
 batterySchema.index({ tag: 1, timestamp: -1 }, { unique: true });
 
-const createMany = async (packing, batteryArray) => {
+const createMany = async (rack, batteryArray) => {
    for (const [index, battery] of batteryArray.entries()) {
       try {
          const newBattery = new Battery({
-            tag: packing.tag.code,
+            tag: rack.tag.code,
             date: new Date(battery.timestamp * 1000),
             timestamp: battery.timestamp,
             battery: battery.battery,
@@ -43,20 +43,20 @@ const createMany = async (packing, batteryArray) => {
          if (index == 0) {
             await newBattery
                .save()
-               .then((doc) => referenceFromPackage(packing, doc))
+               .then((doc) => referenceFromPackage(rack, doc))
                .catch((err) => debug(err));
          } else {
             await newBattery.save().catch((err) => debug(err));
          }
       } catch (error) {
-         debug(`Erro ao salvar a bateria do device ${packing.tag.code} | ${error}`);
+         debug(`Erro ao salvar a bateria do device ${rack.tag.code} | ${error}`);
       }
    }
 };
 
-const referenceFromPackage = async (packing, doc) => {
+const referenceFromPackage = async (rack, doc) => {
    try {
-      await Packing.findByIdAndUpdate(packing._id, { last_battery: doc._id }, { new: true });
+      await Rack.findByIdAndUpdate(rack._id, { last_battery: doc._id }, { new: true });
    } catch (error) {
       debug(error);
    }

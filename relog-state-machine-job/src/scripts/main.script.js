@@ -4,7 +4,7 @@ const { Setting } = require("../models/settings.model");
 const { Position } = require("../models/position.model");
 const { Battery } = require("../models/battery.model");
 const { Temperature } = require("../models/temperature.model");
-const { Packing } = require("../models/packings.model");
+const { Rack } = require("../models/racks.model");
 const { ControlPoint } = require("../models/control_points.model");
 const { Buttons } = require("../models/button.model");
 
@@ -30,8 +30,8 @@ module.exports = async () => {
 
             const controlPoints = await ControlPoint.find({}).sort({company: 1}).populate("company").populate("type");
 
-            //const packings = await Packing.find({ })
-            const packings = await Packing.find({})
+            //const racks = await Rack.find({ })
+            const racks = await Rack.find({})
                .populate("family")
                .populate("last_current_state_history")
                .populate("last_event_record")
@@ -40,7 +40,7 @@ module.exports = async () => {
                .populate("last_temperature")
                .populate("last_detector_switch");
 
-            await iteratePackings(setting, packings, controlPoints);
+            await iterateRacks(setting, racks, controlPoints);
 
             console.log("Finished at", new Date().toISOString());
 
@@ -51,9 +51,9 @@ module.exports = async () => {
    });
 };
 
-const iteratePackings = async (setting, packings, controlPoints) => {
-   for await (let packing of packings) {
-      runSM(setting, packing, controlPoints);
+const iterateRacks = async (setting, racks, controlPoints) => {
+   for await (let rack of racks) {
+      runSM(setting, rack, controlPoints);
    }
 };
 

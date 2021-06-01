@@ -2,8 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { constants } from '../../../../environments/constants';
 import { Pagination } from '../../models/pagination';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoryService, InventoryLogisticService, RoutesService, PackingService } from '../../../servicos/index.service';
-import { LayerModalComponent } from '../../modal-packing/layer.component';
+import { InventoryService, InventoryLogisticService, RoutesService, RackService } from '../../../servicos/index.service';
+import { LayerModalComponent } from '../../modal-rack/layer.component';
 
 @Component({
   selector: 'app-alerta-local-incorreto',
@@ -19,7 +19,7 @@ export class AlertaLocalIncorretoComponent implements OnInit {
 
   constructor(
     public activeAlerta: NgbActiveModal,
-    private packingsService: PackingService,
+    private racksService: RackService,
     private routesService: RoutesService,
     private modalService: NgbModal) { 
     
@@ -39,8 +39,8 @@ export class AlertaLocalIncorretoComponent implements OnInit {
 
   visualizeOnMap() {
 
-    this.packingsService
-      .getPacking(this.alerta._id)
+    this.racksService
+      .getRack(this.alerta._id)
       .subscribe(
         result => {
           let actualPackage = result;
@@ -56,7 +56,7 @@ export class AlertaLocalIncorretoComponent implements OnInit {
           actualPackage.tag = actualPackage.tag.code;
           actualPackage.family_code = this.alerta.family.code;
 
-          modalRef.componentInstance.packing = actualPackage;
+          modalRef.componentInstance.rack = actualPackage;
         },
         err => {
           console.log(err);

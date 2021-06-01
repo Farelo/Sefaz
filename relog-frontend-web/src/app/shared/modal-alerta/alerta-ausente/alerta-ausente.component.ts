@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pagination } from '../../models/pagination';
-import { InventoryService, InventoryLogisticService, PackingService } from '../../../servicos/index.service';
-import { LayerModalComponent } from '../../modal-packing/layer.component';
+import { InventoryService, InventoryLogisticService, RackService } from '../../../servicos/index.service';
+import { LayerModalComponent } from '../../modal-rack/layer.component';
 import { constants } from '../../../../environments/constants';
 
 @Component({
@@ -18,7 +18,7 @@ export class AlertaAusenteComponent implements OnInit {
 
   constructor(
     public activeAlerta: NgbActiveModal,
-    private packingsService: PackingService,
+    private racksService: RackService,
     private modalService: NgbModal) {
 
     this.mConstants = constants;
@@ -31,11 +31,11 @@ export class AlertaAusenteComponent implements OnInit {
 
   getHistoric() {
     // this.inventoryService
-    //   .getInventoryPackingHistoric(
+    //   .getInventoryRackHistoric(
     //     10,
     //     this.historic.meta.page,
-    //     this.alerta.data.packing.serial,
-    //     this.alerta.data.packing.code,
+    //     this.alerta.data.rack.serial,
+    //     this.alerta.data.rack.code,
     // ).subscribe(
     //     result => {
     //       this.historic = result;
@@ -52,8 +52,8 @@ export class AlertaAusenteComponent implements OnInit {
 
   visualizeOnMap() {
 
-    this.packingsService
-      .getPacking(this.alerta._id)
+    this.racksService
+      .getRack(this.alerta._id)
       .subscribe(
         result => {
           let actualPackage = result;
@@ -71,7 +71,7 @@ export class AlertaAusenteComponent implements OnInit {
           
           console.log(this.alerta);
           console.log(actualPackage);
-          modalRef.componentInstance.packing = actualPackage;
+          modalRef.componentInstance.rack = actualPackage;
         },
         err => {
           console.log(err);

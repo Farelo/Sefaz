@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import {
-  PackingService,
+  RackService,
   AuthenticationService,
   PositionsService,
   ControlPointsService,
@@ -28,8 +28,8 @@ export class CriticalAbsentModalComponent implements OnInit {
   public detailsIsCollapsed = true;
   public message = "";
 
-  @Input() packing;
-  public mPacking: any;
+  @Input() rack;
+  public mRack: any;
 
   public path = [];
   public center: any = new google.maps.LatLng(0, 0);
@@ -79,7 +79,7 @@ export class CriticalAbsentModalComponent implements OnInit {
   constructor(
     public activeLayer: NgbActiveModal,
     private controlPointsService: ControlPointsService,
-    private packingService: PackingService,
+    private rackService: RackService,
     private positionService: PositionsService,
     private authenticationService: AuthenticationService,
     private localeService: BsLocaleService
@@ -89,12 +89,12 @@ export class CriticalAbsentModalComponent implements OnInit {
   onInitMap(map) {
     this.mMap = map;
     this.getFilteredPositions(
-      this.packing.tag,
+      this.rack.tag,
       Math.floor(
         new Date(
-          this.packing.leaveMessage
-            ? this.packing.leaveMessage
-            : this.packing.dateLastOwnerOrSupplier
+          this.rack.leaveMessage
+            ? this.rack.leaveMessage
+            : this.rack.dateLastOwnerOrSupplier
         ).getTime() / 1000
       ),
       Math.floor(new Date().getTime() / 1000),
@@ -111,13 +111,13 @@ export class CriticalAbsentModalComponent implements OnInit {
   }
 
   /**
-   * If the user came from Alert screen, then the packing.current_state contains the alert status code.
+   * If the user came from Alert screen, then the rack.current_state contains the alert status code.
    * If not, trye to retrieve an existing alert status code.
    */
   getAlertCode() {
     let result: number = 0;
 
-    switch (this.packing.current_state) {
+    switch (this.rack.current_state) {
       case constants.ALERTS.ANALISYS:
         result = 0;
         break;
@@ -157,7 +157,7 @@ export class CriticalAbsentModalComponent implements OnInit {
     return result;
   }
 
-  public allPackingMarkers: any = [];
+  public allRackMarkers: any = [];
   public infoWin: google.maps.InfoWindow = new google.maps.InfoWindow();
   public mCircle: google.maps.Circle = new google.maps.Circle();
 
@@ -184,7 +184,7 @@ export class CriticalAbsentModalComponent implements OnInit {
 
           let datePipe = new DatePipe("en");
 
-          this.allPackingMarkers = result.map((elem, idx) => {
+          this.allRackMarkers = result.map((elem, idx) => {
             let m = new google.maps.Marker({
               message_date: elem.date,
               // battery: elem.battery.percentage
@@ -316,7 +316,7 @@ export class CriticalAbsentModalComponent implements OnInit {
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
     this.marker.messageDate = opt.message_date;
-    this.marker.battery = this.packing.battery_percentage;
+    this.marker.battery = this.rack.battery_percentage;
     this.marker.end = opt.end;
     this.marker.accuracy = opt.accuracy;
 
@@ -378,13 +378,13 @@ export class CriticalAbsentModalComponent implements OnInit {
     let result = "";
 
     if (this.rangedMarkers.length == 0)
-      result = `0 posições de ${this.allPackingMarkers.length} disponíveis`;
+      result = `0 posições de ${this.allRackMarkers.length} disponíveis`;
 
     if (this.rangedMarkers.length == 1)
-      result = `1 posição de ${this.allPackingMarkers.length} disponíveis`;
+      result = `1 posição de ${this.allRackMarkers.length} disponíveis`;
 
     if (this.rangedMarkers.length > 1)
-      result = `${this.rangedMarkers.length} posições de ${this.allPackingMarkers.length} disponíveis`;
+      result = `${this.rangedMarkers.length} posições de ${this.allRackMarkers.length} disponíveis`;
 
     return result;
   }
@@ -416,7 +416,7 @@ export class CriticalAbsentModalComponent implements OnInit {
       return elem;
     });
 
-    this.rangedMarkers = this.allPackingMarkers.filter((elem) => {
+    this.rangedMarkers = this.allRackMarkers.filter((elem) => {
       let result = false;
       if (elem.accuracy <= this.accuracyRange) {
         this.path.push(elem.position);
@@ -437,8 +437,8 @@ export class CriticalAbsentModalComponent implements OnInit {
     if (this.rangedMarkers.length > 0)
       this.center = this.rangedMarkers[this.rangedMarkers.length - 1].position;
     else
-      this.center = this.allPackingMarkers[
-        this.allPackingMarkers.length - 1
+      this.center = this.allRackMarkers[
+        this.allRackMarkers.length - 1
       ].position;
 
     this.isLoading = false;
@@ -509,7 +509,7 @@ export class CriticalAbsentModalComponent implements OnInit {
 
   getPin() {
     let pin = null;
-    let current_state = this.packing.current_state;
+    let current_state = this.rack.current_state;
 
     switch (current_state) {
       case constants.ALERTS.ANALISYS:
@@ -589,7 +589,7 @@ export class CriticalAbsentModalComponent implements OnInit {
 
   getPinWithAlert(i: number) {
     let pin = null;
-    let current_state = this.packing.current_state;
+    let current_state = this.rack.current_state;
 
     switch (current_state) {
       case constants.ALERTS.ANALISYS:
@@ -796,7 +796,7 @@ export class CriticalAbsentModalComponent implements OnInit {
 
   getRadiusWithAlert() {
     let pin = "#027f01";
-    let current_state = this.packing.current_state;
+    let current_state = this.rack.current_state;
 
     switch (current_state) {
       case constants.ALERTS.ANALISYS:

@@ -1,14 +1,14 @@
 const { Button } = require("../db/models/button.model");
-const { Packing } = require("../db/models/packings.model");
+const { Rack } = require("../db/models/racks.model");
 
 exports.createButton = async (buttonMessage) => {
-  let actualPacking = await Packing.findOne({ "tag.code": buttonMessage.src });
+  let actualRack = await Rack.findOne({ "tag.code": buttonMessage.src });
 
-  if (actualPacking) {
+  if (actualRack) {
     let messageTimestamp = buttonMessage.timestamp;
     if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
 
-    updateLastMessage(actualPacking, messageTimestamp);
+    updateLastMessage(actualRack, messageTimestamp);
 
     await Button.createButton(
       {
@@ -17,19 +17,19 @@ exports.createButton = async (buttonMessage) => {
         timestamp: messageTimestamp,
         detector_switch: !!buttonMessage.analog.value
       },
-      actualPacking
+      actualRack
     );
   }
 };
 
 exports.createButtonFromNetworkInformation = async (buttonMessage) => {
-  let actualPacking = await Packing.findOne({ "tag.code": buttonMessage.src });
+  let actualRack = await Rack.findOne({ "tag.code": buttonMessage.src });
 
-  if (actualPacking) {
+  if (actualRack) {
     let messageTimestamp = buttonMessage.timestamp;
     if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
 
-    // updateLastMessage(actualPacking, messageTimestamp);
+    // updateLastMessage(actualRack, messageTimestamp);
 
     await Button.createButton(
       {
@@ -38,23 +38,23 @@ exports.createButtonFromNetworkInformation = async (buttonMessage) => {
         date: new Date(buttonMessage.timestamp * 1000),
         detector_switch: true,
       },
-      actualPacking
+      actualRack
     );
   }
 };
 
-const updateLastMessage = async (actualPacking, timestamp) => {
-  if (actualPacking.last_message_signal) {
-    if (timestamp * 1000 > new Date(actualPacking.last_message_signal).getTime()) {
-      await Packing.findByIdAndUpdate(
-        actualPacking._id,
+const updateLastMessage = async (actualRack, timestamp) => {
+  if (actualRack.last_message_signal) {
+    if (timestamp * 1000 > new Date(actualRack.last_message_signal).getTime()) {
+      await Rack.findByIdAndUpdate(
+        actualRack._id,
         { last_message_signal: new Date(timestamp * 1000) },
         { new: true }
       ).exec();
     }
   } else {
-    await Packing.findByIdAndUpdate(
-      actualPacking._id,
+    await Rack.findByIdAndUpdate(
+      actualRack._id,
       { last_message_signal: new Date(timestamp * 1000) },
       { new: true }
     ).exec();

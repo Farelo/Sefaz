@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from
 import {
   FamiliesService,
   PositionsService,
-  PackingService,
+  RackService,
   TemperaturesService,
 } from "app/servicos/index.service";
 import {
@@ -60,7 +60,7 @@ export class InventarioTemperaturasComponent implements OnInit {
 
   constructor(
     private familyService: FamiliesService,
-    private packingService: PackingService,
+    private rackService: RackService,
     private temperatureService: TemperaturesService,
     private localeService: BsLocaleService
   ) {
@@ -109,7 +109,7 @@ export class InventarioTemperaturasComponent implements OnInit {
    * Carregar todos os pacotes com paginação e sem filtro
    */
   loadSerials(): void {
-    this.packingService.getAllPackings().subscribe(
+    this.rackService.getAllRacks().subscribe(
       (result) => {
         this.listOfSerials = result;
         this._listOfSerials = result;

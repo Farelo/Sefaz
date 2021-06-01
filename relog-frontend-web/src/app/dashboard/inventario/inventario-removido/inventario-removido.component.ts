@@ -37,7 +37,7 @@ export class InventarioRemovidoComponent implements OnInit {
 
   ngOnInit() {
 
-    this.loadPackings();
+    this.loadRacks();
     this.removedInventory();
   }
 
@@ -49,7 +49,7 @@ export class InventarioRemovidoComponent implements OnInit {
     });
   }
 
-  loadPackings() {
+  loadRacks() {
     this.familyService.getAllFamilies().subscribe(result => {
       this.listOfFamily = result; 
     }, err => console.error(err));

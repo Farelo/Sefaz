@@ -19,8 +19,8 @@ export class InventoryLogisticService {
       .catch(this.handleError);
   }
 
-  getInventoryGeneralPackings(limit: number, page: number, code: string, array: any): Observable<any> {
-    return this.http.post(`${environment.url}inventory/logistic/general/packings/${limit}/${page}?code=${code}`, array)
+  getInventoryGeneralRacks(limit: number, page: number, code: string, array: any): Observable<any> {
+    return this.http.post(`${environment.url}inventory/logistic/general/racks/${limit}/${page}?code=${code}`, array)
       .catch(this.handleError);
   }
 
@@ -36,9 +36,9 @@ export class InventoryLogisticService {
       .catch(this.handleError);
   }
 
-  getInventoryPackingHistoric(limit: number, page: number, serial: string, code: string, array: any): Observable<any> {
+  getInventoryRackHistoric(limit: number, page: number, serial: string, code: string, array: any): Observable<any> {
 
-    return this.http.post(`${environment.url}inventory/logistic/packing/historic/${limit}/${page}/${serial}/${code}`, array)
+    return this.http.post(`${environment.url}inventory/logistic/rack/historic/${limit}/${page}/${serial}/${code}`, array)
       .catch(this.handleError);
   }
 

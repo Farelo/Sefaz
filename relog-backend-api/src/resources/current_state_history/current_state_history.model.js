@@ -1,11 +1,11 @@
 const debug = require('debug')('model:currentStateHistory')
 const mongoose = require('mongoose')
-const { Packing } = require('../packings/packings.model')
+const { Rack } = require('../racks/racks.model')
 
 const currentStateHistorySchema = new mongoose.Schema({
-    packing: {
+    rack: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Packing',
+        ref: 'Rack',
         required: true
     },
     type: {
@@ -44,23 +44,23 @@ const currentStateHistorySchema = new mongoose.Schema({
     }
 })
 
-const update_packing = async (current_state_history, next) => {
+const update_rack = async (current_state_history, next) => {
     try {
-        await Packing.findByIdAndUpdate(current_state_history.packing, { last_current_state_history: current_state_history._id }, { new: true })
+        await Rack.findByIdAndUpdate(current_state_history.rack, { last_current_state_history: current_state_history._id }, { new: true })
         next()
     } catch (error) {
         next(error)
     }
 }
 
-currentStateHistorySchema.statics.findByPacking = function (packing_id, projection = '') {
+currentStateHistorySchema.statics.findByRack = function (rack_id, projection = '') {
     return this
-        .find({ packing: packing_id }, projection)
+        .find({ rack: rack_id }, projection)
         .sort({ created_at: -1 })
 }
 
-const saveCurrentStateHistoryToPacking = function (doc, next) {
-    update_packing(doc, next)
+const saveCurrentStateHistoryToRack = function (doc, next) {
+    update_rack(doc, next)
 }
 
 const update_updated_at_middleware = function (next) {
@@ -69,7 +69,7 @@ const update_updated_at_middleware = function (next) {
     next()
 }
 
-currentStateHistorySchema.post('save', saveCurrentStateHistoryToPacking)
+currentStateHistorySchema.post('save', saveCurrentStateHistoryToRack)
 currentStateHistorySchema.pre('update', update_updated_at_middleware)
 currentStateHistorySchema.pre('findOneAndUpdate', update_updated_at_middleware)
 

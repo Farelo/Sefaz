@@ -2,7 +2,7 @@ import { Injectable }     from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Packing } from '../shared/models/packing';
+import { Rack } from '../shared/models/rack';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class PositionsService {
   }
 
   /**
-   * This method retrieves the packing positions that matches the 'initial date', 'final date' and 'max accuracy error'.
+   * This method retrieves the rack positions that matches the 'initial date', 'final date' and 'max accuracy error'.
    * If final date isn't given, then consider finalDate = today, because there is no position generated from tomorrow. :)
    * 
    * @param device_tag The package code

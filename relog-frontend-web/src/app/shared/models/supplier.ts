@@ -4,6 +4,6 @@ export interface Supplier {
      cnpj: string;
      profile: string;
      plant: string;
-     hashPacking: string;
+     hashRack: string;
      _id: string;
 }

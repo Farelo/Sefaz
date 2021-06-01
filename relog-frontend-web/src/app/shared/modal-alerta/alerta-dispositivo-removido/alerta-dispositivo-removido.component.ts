@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LayerModalComponent } from '../../modal-packing/layer.component';
+import { LayerModalComponent } from '../../modal-rack/layer.component';
 import { Pagination } from '../../models/pagination';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoryService, InventoryLogisticService, PackingService } from '../../../servicos/index.service';
+import { InventoryService, InventoryLogisticService, RackService } from '../../../servicos/index.service';
 import { constants } from '../../../../environments/constants';
 
 @Component({
@@ -17,7 +17,7 @@ export class AlertaDispositivoRemovidoComponent implements OnInit {
 
   constructor(
     public activeAlerta: NgbActiveModal,
-    private packingsService: PackingService,
+    private racksService: RackService,
     private modalService: NgbModal) {
 
     this.mConstants = constants;
@@ -31,8 +31,8 @@ export class AlertaDispositivoRemovidoComponent implements OnInit {
 
     console.log(this.alerta);
 
-    this.packingsService
-      .getPacking(this.alerta._id)
+    this.racksService
+      .getRack(this.alerta._id)
       .subscribe(result => {
         let actualPackage = result;
         //console.log('actualPackage: ' + JSON.stringify(actualPackage));
@@ -47,7 +47,7 @@ export class AlertaDispositivoRemovidoComponent implements OnInit {
         actualPackage.tag = actualPackage.tag.code;
         actualPackage.family_code = this.alerta.family.code;
         
-        modalRef.componentInstance.packing = actualPackage;
+        modalRef.componentInstance.rack = actualPackage;
       },
         err => {
           console.log(err);

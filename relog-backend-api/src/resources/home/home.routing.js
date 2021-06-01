@@ -15,7 +15,7 @@ module.exports = router
  * /home:
  *   get:
  *     summary: Retrieve home on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -41,7 +41,7 @@ module.exports = router
  * /home/low_battery:
  *   get:
  *     summary: Retrieve home on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -61,7 +61,7 @@ module.exports = router
  * /home/permanence_time_exceeded:
  *   get:
  *     summary: Retrieve home on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:

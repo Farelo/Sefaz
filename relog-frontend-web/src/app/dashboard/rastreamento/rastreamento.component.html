@@ -63,8 +63,8 @@
             <label>Serial</label>
             <ng-select
               [(ngModel)]="selectedSerial"
-              (clear)="loadPackings()"
-              (change)="loadPackings()"
+              (clear)="loadRacks()"
+              (change)="loadRacks()"
               [items]="listOfSerials"
               bindLabel="serial"
               bindValue="serial"
@@ -132,8 +132,8 @@
                 <input
                   type="checkbox"
                   value=""
-                  [ngModel]="showPackings"
-                  (ngModelChange)="toggleShowPackings()"
+                  [ngModel]="showRacks"
+                  (ngModelChange)="toggleShowRacks()"
                 />
                 <span class="cr">
                   <i class="cr-icon fa fa-check"> </i>
@@ -320,7 +320,7 @@
 
                 <br />
 
-                <div class="table-responsive tabela" *ngIf="packingsByPlant.length">
+                <div class="table-responsive tabela" *ngIf="racksByPlant.length">
                   <table class="table table-hover">
                     <thead>
                       <tr class="cabecalho" style="font-weight: bold">
@@ -332,34 +332,34 @@
                     <tbody>
                       <tr
                         *ngFor="
-                          let packing of packingsByPlant
+                          let rack of racksByPlant
                             | paginate
                               : {
-                                  id: 'packingMap',
+                                  id: 'rackMap',
                                   itemsPerPage: 10,
-                                  currentPage: packingsByPlantActualPage,
-                                  totalItems: packingsByPlant.length
+                                  currentPage: racksByPlantActualPage,
+                                  totalItems: racksByPlant.length
                                 }
                         "
                       >
-                        <td>{{ packing.family.code }}</td>
-                        <td>{{ packing.serial }}</td>
-                        <td>{{ packing.tag.code }}</td>
+                        <td>{{ rack.family.code }}</td>
+                        <td>{{ rack.serial }}</td>
+                        <td>{{ rack.tag.code }}</td>
                       </tr>
                     </tbody>
                   </table>
 
                   <div class="has-text-centered">
                     <pagination-controls
-                      id="packingMap"
-                      (pageChange)="packingsByPlantActualPage = $event"
+                      id="rackMap"
+                      (pageChange)="racksByPlantActualPage = $event"
                       autoHide="true"
                       directionLinks="false"
                     ></pagination-controls>
                   </div>
                 </div>
 
-                <div class="classVazio" *ngIf="!packingsByPlant.length">
+                <div class="classVazio" *ngIf="!racksByPlant.length">
                   Não há embalagens nesse ponto de controle
                 </div>
               </div>

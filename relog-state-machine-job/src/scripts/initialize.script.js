@@ -2,7 +2,7 @@ const ora = require('ora')
 const { Setting } = require('../models/settings.model')
 const { Company } = require('../models/companies.model')
 const { Family } = require('../models/families.model')
-const { Packing } = require('../models/packings.model')
+const { Rack } = require('../models/racks.model')
 const { DeviceData } = require('../models/device_data.model')
 const { ControlPoint } = require('../models/control_points.model')
 const { Type } = require('../models/types.model')
@@ -21,9 +21,9 @@ module.exports = async () => {
         if (!has_settings.length > 0) await create_settings()
         spinner.info('Settings ok.')
 
-        // const has_packings = await Packing.find()
-        // if (!has_packings.length > 0) await create_many_packings()
-        // spinner.info('Packings ok.')
+        // const has_racks = await Rack.find()
+        // if (!has_racks.length > 0) await create_many_racks()
+        // spinner.info('Racks ok.')
 
         // const has_device_data = await DeviceData.find()
         // if (!has_device_data.length > 0) await create_many_device_data()
@@ -50,7 +50,7 @@ const create_settings = async () => {
     await setting.save()
 }
 
-const create_many_packings = async () => {
+const create_many_racks = async () => {
     try {
         const company = await Company.create({ name: 'Fornecedor A', type: 'client' })
         const family = await Family.create({ code: 'CODEA', company: company._id })
@@ -59,8 +59,8 @@ const create_many_packings = async () => {
         const anotherFamily = await Family.create({ code: 'CODEB', company: anotherCompany._id })
 
         for (let i=0; i<3; i++) {
-            let packing = {} 
-            packing = new Packing({
+            let rack = {} 
+            rack = new Rack({
                 family: family._id,
                 tag: {
                     code: `50000${i}`,
@@ -75,11 +75,11 @@ const create_many_packings = async () => {
                 capacity: 1000,
                 active: true
             })
-            await packing.save()
-            spinner.info('Packing created with success!')
+            await rack.save()
+            spinner.info('Rack created with success!')
         }
 
-        await Packing.create({
+        await Rack.create({
             family: anotherFamily._id,
             tag: {
                 code: `500003`,

@@ -1,9 +1,9 @@
 process.setMaxListeners(0);
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
-const debug = require("debug")("controller:packings");
+const debug = require("debug")("controller:racks");
 const HttpStatus = require("http-status-codes");
-const packings_service = require("./packings.service");
+const racks_service = require("./racks.service");
 const families_service = require("../families/families.service");
 const projects_service = require("../projects/projects.service");
 const control_points_service = require("../control_points/control_points.service");
@@ -21,22 +21,22 @@ var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 exports.all = async (req, res) => {
    const tag = req.query.tag_code ? req.query.tag_code : null;
    const family = req.query.family ? req.query.family : null;
-   const packings = await packings_service.get_packings(tag, family);
+   const racks = await racks_service.get_racks(tag, family);
 
-   res.json(packings);
+   res.json(racks);
 };
 
 exports.show = async (req, res) => {
-   const packing = await packings_service.get_packing(req.params.id);
+   const rack = await racks_service.get_rack(req.params.id);
 
-   if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid packing" });
+   if (!rack) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid rack" });
 
-   res.json(packing);
+   res.json(rack);
 };
 
 exports.create = async (req, res) => {
-   let packing = await packings_service.find_by_tag(req.body.tag.code);
-   if (packing) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Packing already exists with this code." });
+   let rack = await racks_service.find_by_tag(req.body.tag.code);
+   if (rack) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Rack already exists with this code." });
 
    const family = await families_service.find_by_id(req.body.family);
    if (!family) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid family." });
@@ -46,28 +46,28 @@ exports.create = async (req, res) => {
       if (!project) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid project." });
    }
 
-   packing = await packings_service.create_packing(req.body);
+   rack = await racks_service.create_rack(req.body);
 
-   logs_controller.create({ token: req.headers.authorization, log: "create_packing", newData: req.body });
+   logs_controller.create({ token: req.headers.authorization, log: "create_rack", newData: req.body });
    //Create on callback proxy
    // let proxyApiKey = await apiKeysService.findByName("proxy-ayga");
-   // if (proxyApiKey.length) await createOnProxy(packing, proxyApiKey[0]);
+   // if (proxyApiKey.length) await createOnProxy(rack, proxyApiKey[0]);
 
-   //Sub packing in websocket
-   // await subPacking(packing.tag.code);
+   //Sub rack in websocket
+   // await subRack(rack.tag.code);
 
-   res.status(HttpStatus.CREATED).send(packing);
+   res.status(HttpStatus.CREATED).send(rack);
 };
 
-const createOnProxy = async (packing, proxyApiKey) => {
+const createOnProxy = async (rack, proxyApiKey) => {
    console.log(" ");
    console.log("createOnProxy");
-   console.log(packing);
+   console.log(rack);
    console.log(proxyApiKey);
 
    let response = await axios.post(
       config.get("proxyAyga.url"),
-      { tag: packing.tag.code, client: config.get("proxyAyga.clientName") },
+      { tag: rack.tag.code, client: config.get("proxyAyga.clientName") },
       {
          headers: {
             APIKEY: proxyApiKey.key,
@@ -77,7 +77,7 @@ const createOnProxy = async (packing, proxyApiKey) => {
    console.log(response);
 };
 
-async function subPacking(id) {
+async function subRack(id) {
    var optionsget = {
       host: "core.loka.systems",
       port: 443,
@@ -108,7 +108,7 @@ function requestSubscribe(optionsget) {
    });
 }
 
-async function unsubPacking(id) {
+async function unsubRack(id) {
    var optionsget = {
       host: "core.loka.systems",
       port: 443,
@@ -137,69 +137,69 @@ function requestUnsubscribe(optionsget) {
 }
 
 exports.create_many = async (req, res) => {
-   let packings = [];
+   let racks = [];
 
-   for (let packing of req.body) {
-      let current_packing = await packings_service.find_by_tag(packing.data.tag.code);
-      if (current_packing)
+   for (let rack of req.body) {
+      let current_rack = await racks_service.find_by_tag(rack.data.tag.code);
+      if (current_rack)
          return res.status(HttpStatus.BAD_REQUEST).send({
-            message: `Packing already exists with this code ${packing.data.tag.code}.`,
+            message: `Rack already exists with this code ${rack.data.tag.code}.`,
          });
 
-      const family = await families_service.find_by_id(packing.data.family._id);
-      if (!family) return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid family ${packing.data.family}.` });
+      const family = await families_service.find_by_id(rack.data.family._id);
+      if (!family) return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid family ${rack.data.family}.` });
 
-      if (packing.data.project) {
-         const project = await projects_service.find_by_id(packing.data.project);
+      if (rack.data.project) {
+         const project = await projects_service.find_by_id(rack.data.project);
          if (!project)
-            return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid project ${packing.data.project}.` });
+            return res.status(HttpStatus.NOT_FOUND).send({ message: `Invalid project ${rack.data.project}.` });
       }
 
-      packing.data.active = true;
+      rack.data.active = true;
 
-      current_packing = await packings_service.create_packing(packing.data);
+      current_rack = await racks_service.create_rack(rack.data);
 
       logs_controller.create({
          token: req.headers.authorization,
-         log: "create_packing_many",
-         newData: current_packing,
+         log: "create_rack_many",
+         newData: current_rack,
       });
-      // await subPacking(current_packing.tag.code);
-      packings.push(current_packing);
+      // await subRack(current_rack.tag.code);
+      racks.push(current_rack);
    }
 
-   res.status(HttpStatus.CREATED).send(packings);
+   res.status(HttpStatus.CREATED).send(racks);
 };
 
 exports.update = async (req, res) => {
-   let packing = await packings_service.find_by_id(req.params.id);
-   if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid packing" });
+   let rack = await racks_service.find_by_id(req.params.id);
+   if (!rack) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid rack" });
 
-   packing = await packings_service.update_packing(req.params.id, req.body);
-   logs_controller.create({ token: req.headers.authorization, log: "update_packing", newData: req.body });
+   rack = await racks_service.update_rack(req.params.id, req.body);
+   logs_controller.create({ token: req.headers.authorization, log: "update_rack", newData: req.body });
 
-   res.json(packing);
+   res.json(rack);
 };
 
 exports.delete = async (req, res) => {
-   const packing = await packings_service.find_by_id(req.params.id);
-   if (!packing) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid packing" });
+   const rack = await racks_service.find_by_id(req.params.id);
+   if (!rack) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid rack" });
 
-   await packing.remove();
-   await logs_controller.create({ token: req.headers.authorization, log: "delete_packing", newData: packing });
+   await rack.remove();
+   await logs_controller.create({ token: req.headers.authorization, log: "delete_rack", newData: rack });
 
-   // await unsubPacking(packing.tag.code);
+   // await unsubRack(rack.tag.code);
 
    return res.send({ message: "Delete successfully" });
 };
 
-exports.show_packings_on_control_point = async (req, res) => {
+exports.show_racks_on_control_point = async (req, res) => {
    const { control_point_id } = req.params;
 
    const control_point = await control_points_service.get_control_point(control_point_id);
    if (!control_point) return res.status(HttpStatus.NOT_FOUND).send("Invalid company");
 
-   const data = await packings_service.get_packings_on_control_point(control_point);
+   const data = await racks_service.get_racks_on_control_point(control_point);
 
    res.json(data);
 };
@@ -207,7 +207,7 @@ exports.show_packings_on_control_point = async (req, res) => {
 exports.check_device = async (req, res) => {
    const { device_id } = req.params;
 
-   const data = await packings_service.check_device(device_id);
+   const data = await racks_service.check_device(device_id);
 
    res.json(data);
 };
@@ -216,7 +216,7 @@ exports.geolocation = async (req, res) => {
    const query = {
       company_id: req.query.company_id ? req.query.company_id : null,
       family_id: req.query.family_id ? req.query.family_id : null,
-      packing_serial: req.query.packing_serial ? req.query.packing_serial : null,
+      rack_serial: req.query.rack_serial ? req.query.rack_serial : null,
    };
 
    if (req.query.family_id) {
@@ -229,8 +229,8 @@ exports.geolocation = async (req, res) => {
       if (!company) return res.status(HttpStatus.NOT_FOUND).send("Invalid company");
    }
 
-   let packings = await packings_service.geolocation(query);
-   packings = packings.map((elem) => {
+   let racks = await racks_service.geolocation(query);
+   racks = racks.map((elem) => {
       let newObj = _.pick(elem, ["family", "serial", "tag", "last_position", "last_battery", "current_state"]);
 
       if (newObj.last_position)
@@ -249,5 +249,5 @@ exports.geolocation = async (req, res) => {
       return newObj;
    });
 
-   res.json(packings);
+   res.json(racks);
 };

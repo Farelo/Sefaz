@@ -7,7 +7,7 @@ export { RoutesService } from './routes.service';
 export { ProjectService } from './projects.service';
 export { ProfileService } from './profile.service';
 export { PlantsService } from './plants.service';
-export { PackingService } from './packings.service';
+export { RackService } from './racks.service';
 export { LogisticService } from './logistic.service';
 export { InventoryService } from './inventory.service';
 export { InventoryLogisticService } from './inventory_logistic.service';

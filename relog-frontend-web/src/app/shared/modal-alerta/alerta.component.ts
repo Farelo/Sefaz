@@ -5,7 +5,7 @@ import {
   InventoryLogisticService,
 } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination';
-import { LayerModalComponent } from '../modal-packing/layer.component';
+import { LayerModalComponent } from '../modal-rack/layer.component';
 import { constants } from '../../../environments/constants';
 
 @Component({
@@ -32,11 +32,11 @@ export class AlertaModalComponent implements OnInit {
 
   getHistoric() {
     this.inventoryService
-      .getInventoryPackingHistoric(
+      .getInventoryRackHistoric(
         10,
         this.historic.meta.page,
-        this.alerta.data.packing.serial,
-        this.alerta.data.packing.code,
+        this.alerta.data.rack.serial,
+        this.alerta.data.rack.code,
       )
       .subscribe(
         result => {
@@ -56,9 +56,9 @@ export class AlertaModalComponent implements OnInit {
 
     //console.log('open map');
     //console.log('alerta: ' + JSON.stringify(this.alerta));
-    //console.log('[alerta-component] alerta: ' + JSON.stringify(this.alerta.data.packing));
+    //console.log('[alerta-component] alerta: ' + JSON.stringify(this.alerta.data.rack));
     this.inventoryService
-      .getInventoryGeneralPackings(10, 1, this.alerta.data.packing.code_tag, '')
+      .getInventoryGeneralRacks(10, 1, this.alerta.data.rack.code_tag, '')
       .subscribe(
         result => {
           let actualPackage = result.data;
@@ -71,7 +71,7 @@ export class AlertaModalComponent implements OnInit {
             windowClass: 'modal-xl',
           });
           actualPackage[0].alertCode = this.alerta.data.status;
-          modalRef.componentInstance.packing = actualPackage[0];
+          modalRef.componentInstance.rack = actualPackage[0];
         },
         err => {
           console.log(err);

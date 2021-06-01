@@ -3,31 +3,31 @@ const STATES = require("../common/states");
 
 // MODELS
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
-const { Packing } = require('../../models/packings.model')
+const { Rack } = require('../../models/racks.model')
 const { Family } = require('../../models/families.model')
 
-const getLastPosition = (packing) => {
-    if(packing.last_position) return packing.last_position 
+const getLastPosition = (rack) => {
+    if(rack.last_position) return rack.last_position 
     return null
 }
 
-module.exports = async (packing, currentControlPoint) => {
+module.exports = async (rack, currentControlPoint) => {
     try {
-        const family = await Family.findById(packing.family)
+        const family = await Family.findById(rack.family)
 
         const itsOnFamilyControlPoint = family.control_points.find(cp => isIncorrectLocalWithControlPoints(cp, currentControlPoint))
         if (itsOnFamilyControlPoint !== undefined) {
             //console.log('EMBALAGEM ESTÁ EM UM LOCAL CORRETO')
-            await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
+            await Rack.findByIdAndUpdate(rack._id, { current_state: STATES.LOCAL_CORRETO.key }, { new: true })
 
-            if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
-            await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_CORRETO.alert, device_data_id: getLastPosition(packing) })
+            if (rack.last_current_state_history && rack.last_current_state_history.type === STATES.LOCAL_CORRETO.alert) return null
+            await CurrentStateHistory.create({ rack: rack._id, type: STATES.LOCAL_CORRETO.alert, device_data_id: getLastPosition(rack) })
         } else {
             //console.log('EMBALAGEM ESTÁ EM UM LOCAL INCORRETO')
-            await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
+            await Rack.findByIdAndUpdate(rack._id, { current_state: STATES.LOCAL_INCORRETO.key }, { new: true })
 
-            if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return null
-            await CurrentStateHistory.create({ packing: packing._id, type: STATES.LOCAL_INCORRETO.alert, device_data_id: getLastPosition(packing)  })
+            if (rack.last_current_state_history && rack.last_current_state_history.type === STATES.LOCAL_INCORRETO.alert) return null
+            await CurrentStateHistory.create({ rack: rack._id, type: STATES.LOCAL_INCORRETO.alert, device_data_id: getLastPosition(rack)  })
         }
                 
     } catch (error) {

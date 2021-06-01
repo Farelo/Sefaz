@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GC16Service, AuthenticationService, PackingService, InventoryLogisticService, InventoryService } from '../../servicos/index.service'; 
+import { GC16Service, AuthenticationService, RackService, InventoryLogisticService, InventoryService } from '../../servicos/index.service'; 
 import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -14,7 +14,7 @@ export class Gc16Component implements OnInit {
   public logged_user: any;
   public mListOfGC16: any[] = [];
   public equipamentSearch = "";
-  public packings: any[];
+  public racks: any[];
   public search: string;
  
   constructor( 

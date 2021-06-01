@@ -1,25 +1,25 @@
-const debug = require("debug")("service:packings");
+const debug = require("debug")("service:racks");
 const _ = require("lodash");
 const config = require("config");
-const { Packing } = require("./packings.model");
+const { Rack } = require("./racks.model");
 const { Family } = require("../families/families.model");
 const rp = require("request-promise");
 const mongoose = require("mongoose");
 
-exports.get_packings = async (tag, family) => {
+exports.get_racks = async (tag, family) => {
    try {
       if (!tag) {
          if (family)
-            return await Packing.find({ family: family })
+            return await Rack.find({ family: family })
                .populate("family", ["_id", "code", "company"])
                .populate("project", ["_id", "name"]);
 
-         return await Packing.find()
+         return await Rack.find()
             .populate("family", ["_id", "code", "company"])
             .populate("project", ["_id", "name"]);
       } 
 
-      const data = await Packing.findByTag(tag)
+      const data = await Rack.findByTag(tag)
          .populate("family", ["_id", "code", "company"])
          .populate("project", ["_id", "name"])
          .populate("last_position")
@@ -33,9 +33,9 @@ exports.get_packings = async (tag, family) => {
    }
 };
 
-exports.get_packing = async (id) => {
+exports.get_rack = async (id) => {
    try {
-      const packing = await Packing.findById(id)
+      const rack = await Rack.findById(id)
          .populate("family", ["_id", "code", "company"])
          .populate("project", ["_id", "name"])
          .populate("last_position")
@@ -43,7 +43,7 @@ exports.get_packing = async (id) => {
          .populate("last_event_record")
          .populate("last_alert_history");
 
-      return packing;
+      return rack;
    } catch (error) {
       throw new Error(error);
    }
@@ -51,7 +51,7 @@ exports.get_packing = async (id) => {
 
 exports.find_by_tag = async (tag) => {
    try {
-      return await Packing.findByTag(tag)
+      return await Rack.findByTag(tag)
          .populate("family", ["_id", "code", "company"])
          .populate("project", ["_id", "name"]);
    } catch (error) {
@@ -61,7 +61,7 @@ exports.find_by_tag = async (tag) => {
 
 exports.populatedFindByTag = async (tag) => {
    try {
-      return await Packing.findByTag(tag)
+      return await Rack.findByTag(tag)
          .populate("family", ["_id", "code", "company"])
          .populate("project", ["_id", "name"])
          .populate("last_position")
@@ -72,12 +72,12 @@ exports.populatedFindByTag = async (tag) => {
    }
 };
 
-exports.create_packing = async (packing) => {
+exports.create_rack = async (rack) => {
    try {
-      const new_packing = new Packing(packing);
-      await new_packing.save();
+      const new_rack = new Rack(rack);
+      await new_rack.save();
 
-      return new_packing;
+      return new_rack;
    } catch (error) {
       throw new Error(error);
    }
@@ -85,32 +85,32 @@ exports.create_packing = async (packing) => {
 
 exports.find_by_id = async (id) => {
    try {
-      const packing = await Packing.findById(id)
+      const rack = await Rack.findById(id)
          .populate("family", ["_id", "code", "company"])
          .populate("project", ["_id", "name"]);
 
-      return packing;
+      return rack;
    } catch (error) {
       throw new Error(error);
    }
 };
 
-exports.update_packing = async (id, packing_edited) => {
+exports.update_rack = async (id, rack_edited) => {
    try {
       const options = { runValidators: true, new: true };
-      const packing = await Packing.findByIdAndUpdate(id, packing_edited, options);
+      const rack = await Rack.findByIdAndUpdate(id, rack_edited, options);
 
-      return packing;
+      return rack;
    } catch (error) {
       throw new Error(error);
    }
 };
 
-exports.get_packings_on_control_point = async (control_point) => {
+exports.get_racks_on_control_point = async (control_point) => {
    try {
-      const packings = await Packing.find({}).populate("last_event_record").populate("family", ["_id", "code"]);
+      const racks = await Rack.find({}).populate("last_event_record").populate("family", ["_id", "code"]);
 
-      const data = packings.filter((packing) => packingOnControlPoint(packing, control_point));
+      const data = racks.filter((rack) => rackOnControlPoint(rack, control_point));
 
       return data;
    } catch (error) {
@@ -130,7 +130,7 @@ exports.check_device = async (device_id) => {
    }
 };
 
-exports.geolocation = async (query = { company_id: null, family_id: null, packing_serial: null }) => {
+exports.geolocation = async (query = { company_id: null, family_id: null, rack_serial: null }) => {
    try {
       let familiesIds = [];
 
@@ -152,14 +152,14 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
          };
       }
 
-      if (query.packing_serial !== null) {
+      if (query.rack_serial !== null) {
          conditions["serial"] = {
-            $eq: query.packing_serial,
+            $eq: query.rack_serial,
          };
       }
 
       // console.log(conditions)
-      return await Packing.find(conditions)
+      return await Rack.find(conditions)
          .populate("last_position")
          .populate("last_battery")
          .populate("family", ["_id", "code"]);
@@ -168,9 +168,9 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
    }
 };
 
-const packingOnControlPoint = (packing, control_point) => {
-   return packing.last_event_record && packing.last_event_record.type === "inbound"
-      ? packing.last_event_record.control_point.toString() === control_point._id.toString()
+const rackOnControlPoint = (rack, control_point) => {
+   return rack.last_event_record && rack.last_event_record.type === "inbound"
+      ? rack.last_event_record.control_point.toString() === control_point._id.toString()
       : false;
 };
 

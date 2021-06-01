@@ -4,14 +4,14 @@ const current_state_history_controller = require('./current_state_history.contro
 const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 
-router.get('/:packing_id', [auth], current_state_history_controller.all)
+router.get('/:rack_id', [auth], current_state_history_controller.all)
 
 module.exports = router
 
 // GET '/'
 /**
  * @swagger
- * /current_state_history/{packing_id}:
+ * /current_state_history/{rack_id}:
  *   get:
  *     summary: Retrieve all families
  *     description: Retrieve all families on database
@@ -20,7 +20,7 @@ module.exports = router
  *     tags:
  *       - CurrentStateHistory
  *     parameters:
- *       - name: packing_id
+ *       - name: rack_id
  *         description: Return family filtered by tag code
  *         in: path
  *         required: true

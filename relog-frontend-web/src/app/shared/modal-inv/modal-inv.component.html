@@ -3,12 +3,12 @@
     <h2>Detalhes da Embalagem</h2>
     
     <p>
-      <span class="badge badge-secondary">Código: {{packing.code}}</span>
-      <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{packing.serial}}</span>
-      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{packing.code_tag}}</span>
+      <span class="badge badge-secondary">Código: {{rack.code}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">Serial: {{rack.serial}}</span>
+      <span class="badge badge-secondary" style="margin-left:5px;">TAG: {{rack.code_tag}}</span>
     </p>
 
-    <p>Fornecedor: {{packing.supplier?.name}} </p>
+    <p>Fornecedor: {{rack.supplier?.name}} </p>
   </div>
   <button type="button" class="close" aria-label="Close" (click)="activeAlerta.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -27,12 +27,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let packing of data.data">
-            <td>{{packing.status}}</td>
-            <td>{{packing.quantity}}</td>
-            <td>{{packing.project?.name}}</td>
-            <td>{{packing.actual_plant?.plant ? (packing.actual_plant?.local === 'Factory' ? 'Fábrica' : (packing.actual_plant?.local
-              === 'Supplier' ? 'Fornecedor': (packing.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Não Registrado')))
+          <tr *ngFor="let rack of data.data">
+            <td>{{rack.status}}</td>
+            <td>{{rack.quantity}}</td>
+            <td>{{rack.project?.name}}</td>
+            <td>{{rack.actual_plant?.plant ? (rack.actual_plant?.local === 'Factory' ? 'Fábrica' : (rack.actual_plant?.local
+              === 'Supplier' ? 'Fornecedor': (rack.actual_plant?.local === 'Logistic' ? 'Op. Logístico': 'Não Registrado')))
               : 'Sem registro'}}</td>
 
           </tr>

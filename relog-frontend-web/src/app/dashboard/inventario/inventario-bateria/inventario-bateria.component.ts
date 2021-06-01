@@ -37,7 +37,7 @@ export class InventarioBateriaComponent implements OnInit {
 
   ngOnInit() {
 
-    this.loadPackings();
+    this.loadRacks();
     this.batteryInventory();
   }
 
@@ -49,7 +49,7 @@ export class InventarioBateriaComponent implements OnInit {
     });
   }
 
-  loadPackings() {
+  loadRacks() {
     this.familyService.getAllFamilies().subscribe(result => {
       this.listOfFamily = result; 
     }, err => console.error(err));

@@ -1,49 +1,49 @@
 const express = require('express')
 const router = express.Router()
-const packings_controller = require('./packings.controller')
+const racks_controller = require('./racks.controller')
 const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
-const { validate_packings } = require('./packings.model')
+const { validate_racks } = require('./racks.model')
 
-router.get('/', [auth], packings_controller.all)
-router.get('/:id', [auth, validate_object_id], packings_controller.show)
-router.post('/', [auth, authz, validate_joi(validate_packings)], packings_controller.create)
-router.post('/create_many', [auth, authz], packings_controller.create_many)
-router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_packings)], packings_controller.update)
-router.delete('/:id', [auth, authz, validate_object_id], packings_controller.delete)
-router.get('/on_control_point/:control_point_id', [auth], packings_controller.show_packings_on_control_point)
-router.get('/check_device/:device_id', [auth], packings_controller.check_device)
-router.get('/data/geolocation', [auth], packings_controller.geolocation)
+router.get('/', [auth], racks_controller.all)
+router.get('/:id', [auth, validate_object_id], racks_controller.show)
+router.post('/', [auth, authz, validate_joi(validate_racks)], racks_controller.create)
+router.post('/create_many', [auth, authz], racks_controller.create_many)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_racks)], racks_controller.update)
+router.delete('/:id', [auth, authz, validate_object_id], racks_controller.delete)
+router.get('/on_control_point/:control_point_id', [auth], racks_controller.show_racks_on_control_point)
+router.get('/check_device/:device_id', [auth], racks_controller.check_device)
+router.get('/data/geolocation', [auth], racks_controller.geolocation)
 
 module.exports = router
 
 // GET '/'
 /**
  * @swagger
- * /packings:
+ * /racks:
  *   get:
- *     summary: Retrieve all packings
- *     description: Retrieve all packings on database
+ *     summary: Retrieve all racks
+ *     description: Retrieve all racks on database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packings
+ *       - Racks
  *     parameters:
  *       - name: tag_code
- *         description: Return packing filtered by tag code
+ *         description: Return rack filtered by tag code
  *         in: query
  *         required: false
  *         type: string
  *       - name: family
- *         description: Return packing filtered by family
+ *         description: Return rack filtered by family
  *         in: query
  *         required: false
  *         type: string
  *     responses:
  *       200:
- *         description: list of all packings
+ *         description: list of all racks
  *       400:
  *         description: Bad Request
  *       404:
@@ -54,25 +54,25 @@ module.exports = router
 /**
  * @swagger
  *
- * /packings/{id}:
+ * /racks/{id}:
  *   get:
- *     summary: Create a packing
- *     description: Create a packing
+ *     summary: Create a rack
+ *     description: Create a rack
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packings
+ *       - Racks
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Packing id
+ *         description: Rack id
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: Packing is valid request
+ *         description: Rack is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -86,26 +86,26 @@ module.exports = router
 /**
  * @swagger
  *
- * /packings:
+ * /racks:
  *   post:
- *     summary: Create a packing
- *     description: Create a packing
+ *     summary: Create a rack
+ *     description: Create a rack
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packings
+ *       - Racks
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: packing
- *         description: Packing object
+ *       - name: rack
+ *         description: Rack object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/PackingObject'
+ *           $ref: '#/definitions/RackObject'
  *     responses:
  *       200:
- *         description: Packing is valid request
+ *         description: Rack is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -119,19 +119,19 @@ module.exports = router
 /**
  * @swagger
  *
- * /packings/create_many:
+ * /racks/create_many:
  *   post:
- *     summary: Create a packing
- *     description: Create a packing
+ *     summary: Create a rack
+ *     description: Create a rack
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packings
+ *       - Racks
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: packing
- *         description: Packing array
+ *       - name: rack
+ *         description: Rack array
  *         in: body
  *         required: true
  *         schema:
@@ -140,7 +140,7 @@ module.exports = router
  *             type: string
  *     responses:
  *       200:
- *         description: Packing is valid request
+ *         description: Rack is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -153,26 +153,26 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /packings/{id}:
+ * /racks/{id}:
  *   patch:
- *     summary: Update a packing
- *     description: Update a packing by id
+ *     summary: Update a rack
+ *     description: Update a rack by id
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packings
+ *       - Racks
  *     parameters:
  *       - name: id
- *         description: Packing id
+ *         description: Rack id
  *         in: path
  *         required: true
  *         type: string
- *       - name: packing
- *         description: Packing object
+ *       - name: rack
+ *         description: Rack object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/PackingObject'
+ *           $ref: '#/definitions/RackObject'
  *     responses:
  *       200:
  *         description: OK
@@ -185,17 +185,17 @@ module.exports = router
 // DELETE '/'
 /**
  * @swagger
- * /packings/{id}:
+ * /racks/{id}:
  *   delete:
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packings
- *     summary: Delete a packing
- *     description: Delete a packing
+ *       - Racks
+ *     summary: Delete a rack
+ *     description: Delete a rack
  *     parameters:
  *       - name: id
- *         description: Packing id
+ *         description: Rack id
  *         in: path
  *         required: true
  *         type: string
@@ -210,17 +210,17 @@ module.exports = router
 
  /**
  * @swagger
- * /packings/on_control_point/{control_point_id}:
+ * /racks/on_control_point/{control_point_id}:
  *   get:
- *     summary: Retrieve packings on a current control point
- *     description: Retrieve packings on a current control point
+ *     summary: Retrieve racks on a current control point
+ *     description: Retrieve racks on a current control point
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packings
+ *       - Racks
  *     parameters:
  *       - name: control_point_id
- *         description: Return packings on a current control point
+ *         description: Return racks on a current control point
  *         in: path
  *         required: true
  *         type: string
@@ -235,17 +235,17 @@ module.exports = router
 
  /**
  * @swagger
- * /packings/check_device/{device_id}:
+ * /racks/check_device/{device_id}:
  *   get:
- *     summary: Check if packings exists in loka's database
- *     description: Check if packings exists in loka's database
+ *     summary: Check if racks exists in loka's database
+ *     description: Check if racks exists in loka's database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packings
+ *       - Racks
  *     parameters:
  *       - name: device_id
- *         description: Check if packings exists in loka's database
+ *         description: Check if racks exists in loka's database
  *         in: path
  *         required: true
  *         type: string
@@ -261,14 +261,14 @@ module.exports = router
 // GET '/'
 /**
  * @swagger
- * /packings/data/geolocation:
+ * /racks/data/geolocation:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Packings
+ *       - Racks
  *     parameters:
  *       - name: company_id
  *         description: Filter localization
@@ -280,7 +280,7 @@ module.exports = router
  *         in: query
  *         required: false
  *         type: string
- *       - name: packing_serial
+ *       - name: rack_serial
  *         description: Filter localization
  *         in: query
  *         required: false
@@ -298,7 +298,7 @@ module.exports = router
  * @swagger
  *
  * definitions:
- *   PackingObject:
+ *   RackObject:
  *     type: object
  *     required:
  *       - serial

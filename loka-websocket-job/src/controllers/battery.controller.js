@@ -1,5 +1,5 @@
 const { Battery } = require("../db/models/batteries.model");
-const { Packing } = require("../db/models/packings.model");
+const { Rack } = require("../db/models/racks.model");
 
 exports.createBatteryVoltage = async (batteryMessage) => {
   let messageTimestamp = batteryMessage.timestamp;
@@ -21,13 +21,13 @@ exports.createBatteryVoltage = async (batteryMessage) => {
 };
 
 exports.createBatteryLevel = async (batteryMessage) => {
-  let actualPacking = await Packing.findOne({ "tag.code": batteryMessage.src });
+  let actualRack = await Rack.findOne({ "tag.code": batteryMessage.src });
 
-  if (actualPacking) {
+  if (actualRack) {
     let messageTimestamp = batteryMessage.timestamp;
     if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
 
-    updateLastMessage(actualPacking, messageTimestamp);
+    updateLastMessage(actualRack, messageTimestamp);
     
     await Battery.findOneAndUpdate(
       { tag: batteryMessage.src, timestamp: messageTimestamp },
@@ -60,8 +60,8 @@ exports.createBatteryLevel = async (batteryMessage) => {
               },
               async (newDoc) => {
                 try {
-                  //Proceed to update the packing.last_battery
-                  await Packing.findOneAndUpdate(
+                  //Proceed to update the rack.last_battery
+                  await Rack.findOneAndUpdate(
                     { "tag.code": newDoc.tag },
                     { last_battery: newDoc._id },
                     { new: true }
@@ -72,25 +72,25 @@ exports.createBatteryLevel = async (batteryMessage) => {
           }
         }
 
-        //Proceed to update the packing.last_battery
-        await Packing.findOneAndUpdate({ "tag.code": newDoc.tag }, { last_battery: newDoc._id }, { new: true }).exec();
+        //Proceed to update the rack.last_battery
+        await Rack.findOneAndUpdate({ "tag.code": newDoc.tag }, { last_battery: newDoc._id }, { new: true }).exec();
       }
     );
   }
 };
 
-const updateLastMessage = async (actualPacking, timestamp) => {
-  if (actualPacking.last_message_signal) {
-    if (timestamp * 1000 > new Date(actualPacking.last_message_signal).getTime()) {
-      await Packing.findByIdAndUpdate(
-        actualPacking._id,
+const updateLastMessage = async (actualRack, timestamp) => {
+  if (actualRack.last_message_signal) {
+    if (timestamp * 1000 > new Date(actualRack.last_message_signal).getTime()) {
+      await Rack.findByIdAndUpdate(
+        actualRack._id,
         { last_message_signal: new Date(timestamp * 1000) },
         { new: true }
       ).exec();
     }
   } else {
-    await Packing.findByIdAndUpdate(
-      actualPacking._id,
+    await Rack.findByIdAndUpdate(
+      actualRack._id,
       { last_message_signal: new Date(timestamp * 1000) },
       { new: true }
     ).exec();

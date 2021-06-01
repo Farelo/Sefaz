@@ -1,4 +1,4 @@
-<div id="modal-packing-container" style="height: 100%">
+<div id="modal-rack-container" style="height: 100%">
   <div class="close-button" (click)="activeLayer.dismiss('Cross click')">
     &times;
   </div>
@@ -20,8 +20,8 @@
           "
         >
           <label class="filter-label m-0">FAMÍLIA </label>
-          <div class="description-value" [ngbTooltip]="packing.family_code">
-            {{ packing.family_code }}
+          <div class="description-value" [ngbTooltip]="rack.family_code">
+            {{ rack.family_code }}
           </div>
         </div>
 
@@ -35,8 +35,8 @@
           "
         >
           <label class="filter-label m-0">SERIAL </label>
-          <div class="description-value" [ngbTooltip]="packing.serial">
-            {{ packing.serial }}
+          <div class="description-value" [ngbTooltip]="rack.serial">
+            {{ rack.serial }}
           </div>
         </div>
 
@@ -49,8 +49,8 @@
           "
         >
           <label class="filter-label m-0 m-0">TAG</label>
-          <div class="description-value" [ngbTooltip]="packing.tag">
-            {{ packing.tag }}
+          <div class="description-value" [ngbTooltip]="rack.tag">
+            {{ rack.tag }}
           </div>
         </div>
       </section>

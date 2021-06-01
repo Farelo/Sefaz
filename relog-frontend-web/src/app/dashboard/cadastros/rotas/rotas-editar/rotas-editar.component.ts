@@ -37,7 +37,7 @@ export class RotasEditarComponent implements OnInit {
   public address: any = {};
   public center: any;
   public pos: any;
-  public existPacking = true;
+  public existRack = true;
   public directions = false;
   public choiced = false;
   public choice_equipament = false;

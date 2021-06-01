@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const { Packing } = require('./packings.model')
+const { Rack } = require('./racks.model')
 
-describe('Packing unit test', () => {
+describe('Rack unit test', () => {
 
     describe('validate_object_id', () => {
         it('should validate a object_id if is an invalid _id', () => {

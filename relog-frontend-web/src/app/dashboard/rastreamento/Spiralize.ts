@@ -101,7 +101,7 @@ export class Spiralize {
         let i = 0;
         let j = 0;
         let l = this.listOfObjects.length;
-        // console.log(`plotedPackings: ${JSON.stringify(this.listOfObjects)}`);
+        // console.log(`plotedRacks: ${JSON.stringify(this.listOfObjects)}`);
         let removeI = false;
 
         while (i < l) {
@@ -256,7 +256,7 @@ export class Spiralize {
                 // position: location.position,
                 // icon: this.getPinWithAlert(location.current_state)
 
-                packing_code: array[0].family.code,
+                rack_code: array[0].family.code,
                 serial: array[0].serial,
                 position: { lat: array[0].latitude, lng: array[0].longitude },
                 icon: { url: 'assets/images/pin_cluster.png', size: (new google.maps.Size(29, 40)), scaledSize: (new google.maps.Size(29, 40)) },
@@ -454,7 +454,7 @@ export class Spiralize {
             this.spiralPoints[0].setMap(null);
             this.spiralPoints.shift();
             // if (this.spiralPoints[0] == undefined) console.log('[0] undefined');
-            // else console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].packing_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
+            // else console.log(`this.spiralPoints: ${JSON.stringify(this.spiralPoints[0].rack_code)}, ${JSON.stringify(this.spiralPoints[0].serial)}`);
         }
 
         //console.log('.this.spiralPoints.length: ' + this.spiralPoints.length);
@@ -558,7 +558,7 @@ export class Spiralize {
         return pin;
       }
 
-    toggleShowPackings(status: any) {
+    toggleShowRacks(status: any) {
 
         if (status) {
             // console.log('.');

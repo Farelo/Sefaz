@@ -1,11 +1,11 @@
 const debug = require("debug")("model:control_points");
 const mongoose = require("mongoose");
-const { Packing } = require("../packings/packings.model");
+const { Rack } = require("../racks/racks.model");
 
 const eventRecordSchema = new mongoose.Schema({
-   packing: {
+   rack: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Packing",
+      ref: "Rack",
    },
    control_point: {
       type: mongoose.Schema.Types.ObjectId,
@@ -44,21 +44,21 @@ const eventRecordSchema = new mongoose.Schema({
    },
 });
 
-const update_packing = async (event_record, next) => {
+const update_rack = async (event_record, next) => {
    try {
-      await Packing.findByIdAndUpdate(event_record.packing, { last_event_record: event_record._id }, { new: true });
+      await Rack.findByIdAndUpdate(event_record.rack, { last_event_record: event_record._id }, { new: true });
       next();
    } catch (error) {
       next(error);
    }
 };
 
-eventRecordSchema.statics.findByPacking = function (packing_id, projection = "") {
-   return this.find({ packing: packing_id }, projection).sort({ created_at: -1 });
+eventRecordSchema.statics.findByRack = function (rack_id, projection = "") {
+   return this.find({ rack: rack_id }, projection).sort({ created_at: -1 });
 };
 
-const saveEventRecordToPacking = function (doc, next) {
-   update_packing(doc, next);
+const saveEventRecordToRack = function (doc, next) {
+   update_rack(doc, next);
 };
 
 const update_updated_at_middleware = function (next) {
@@ -67,7 +67,7 @@ const update_updated_at_middleware = function (next) {
    next();
 };
 
-eventRecordSchema.post("save", saveEventRecordToPacking);
+eventRecordSchema.post("save", saveEventRecordToRack);
 eventRecordSchema.pre("update", update_updated_at_middleware);
 eventRecordSchema.pre("findOneAndUpdate", update_updated_at_middleware);
 

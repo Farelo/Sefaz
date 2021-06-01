@@ -1,4 +1,4 @@
-export class Packing {
+export class Rack {
   code: string;
   type: string;
   weigth: number;
@@ -23,7 +23,7 @@ export class Packing {
     time_late: number;
     date_late: number;
   };
-  packing_missing: {
+  rack_missing: {
     last_time: number;
     time_countdown: number;
   };
@@ -45,7 +45,7 @@ export class Packing {
   department: string;
   supplier: string;
   project: string;
-  hashPacking: string;
+  hashRack: string;
   incontida: {
     date: number;
     time: number;

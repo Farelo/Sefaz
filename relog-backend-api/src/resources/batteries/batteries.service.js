@@ -2,7 +2,7 @@ const debug = require("debug")("service:batteries");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const { Battery } = require("./batteries.model");
-const { Packing } = require("../packings/packings.model");
+const { Rack } = require("../racks/racks.model");
 
 exports.create = async (data) => {
    try {
@@ -14,19 +14,19 @@ exports.create = async (data) => {
    }
 };
 
-exports.createMany = async (packing, batteryArray) => {
+exports.createMany = async (rack, batteryArray) => {
    let maxTimestampIndex = -1;
    if (batteryArray.length) {
       // procura o índice do elemento com timestamp mais atual: primeiro elemento ou o último
       if (batteryArray[0].timestamp >= batteryArray[batteryArray.length - 1].timestamp) maxTimestampIndex = 0;
       else maxTimestampIndex = batteryArray.length - 1;
 
-      updatePackageLastMessage(packing, batteryArray[maxTimestampIndex]);
+      updatePackageLastMessage(rack, batteryArray[maxTimestampIndex]);
 
       for (const [index, battery] of batteryArray.entries()) {
          try {
             const newBattery = new Battery({
-               tag: packing.tag.code,
+               tag: rack.tag.code,
                date: new Date(battery.date),
                timestamp: battery.timestamp,
                battery: battery.battery,
@@ -38,38 +38,38 @@ exports.createMany = async (packing, batteryArray) => {
             if (index == maxTimestampIndex) {
                await newBattery
                   .save()
-                  .then((doc) => referenceFromPackage(packing, doc))
+                  .then((doc) => referenceFromPackage(rack, doc))
                   .catch((err) => debug(err));
             } else {
                await newBattery.save();
             }
          } catch (error) {
-            debug(`Erro ao salvar a bateria do device ${packing.tag.code} | ${error}`);
+            debug(`Erro ao salvar a bateria do device ${rack.tag.code} | ${error}`);
          }
       }
    }
 };
 
-const updatePackageLastMessage = async (packing, newMessage) => {
-   if (packing.last_message_signal) {
-      if (new Date(newMessage.date).getTime() > new Date(packing.last_message_signal).getTime()) {
-         await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+const updatePackageLastMessage = async (rack, newMessage) => {
+   if (rack.last_message_signal) {
+      if (new Date(newMessage.date).getTime() > new Date(rack.last_message_signal).getTime()) {
+         await Rack.findByIdAndUpdate(rack._id, { last_message_signal: newMessage.date }, { new: true });
       }
    } else {
-      await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+      await Rack.findByIdAndUpdate(rack._id, { last_message_signal: newMessage.date }, { new: true });
    }
 };
 
-const referenceFromPackage = async (packing, newBattery) => {
+const referenceFromPackage = async (rack, newBattery) => {
    try {
-      if (packing.last_battery) {
-         if (newBattery.timestamp > packing.last_battery.timestamp) {
-            await Packing.findByIdAndUpdate(packing._id, { last_battery: newBattery._id }, { new: true });
+      if (rack.last_battery) {
+         if (newBattery.timestamp > rack.last_battery.timestamp) {
+            await Rack.findByIdAndUpdate(rack._id, { last_battery: newBattery._id }, { new: true });
          }
       } else {
-         await Packing.findByIdAndUpdate(packing._id, { last_battery: newBattery._id }, { new: true });
+         await Rack.findByIdAndUpdate(rack._id, { last_battery: newBattery._id }, { new: true });
       }
-      // await Packing.findByIdAndUpdate(packing._id, { last_battery: doc._id }, { new: true });
+      // await Rack.findByIdAndUpdate(rack._id, { last_battery: doc._id }, { new: true });
    } catch (error) {
       debug(error);
    }
@@ -115,13 +115,13 @@ exports.get = async ({ tag = null, start_date = null, end_date = null, max = 100
 
 exports.getLast = async ({ companyId = null, familyId = null, serial = null }) => {
    try {
-      let packings = [];
+      let racks = [];
 
       switch (true) {
          // company, family and serial
          case companyId != null && familyId != null && serial != null:
             console.log("c, f e s");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -184,7 +184,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          // company and family
          case companyId != null && familyId != null:
             console.log("c e f");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -246,7 +246,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          // company and serial
          case companyId != null && serial != null:
             console.log("c e s");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -308,7 +308,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          //family and serial
          case familyId != null && serial != null:
             console.log("f e s");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -370,7 +370,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          //Only company
          case companyId != null:
             console.log("only company");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -431,7 +431,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          //Only family
          case familyId != null:
             console.log("f");
-            packings = await Packing.find(
+            racks = await Rack.find(
                { family: familyId },
                {
                   "tag.code": 1,
@@ -446,7 +446,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          //Only serial
          case serial != null:
             console.log("s");
-            packings = await Packing.find(
+            racks = await Rack.find(
                { serial: serial },
                {
                   "tag.code": 1,
@@ -460,7 +460,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
 
          default:
             console.log("default");
-            packings = await Packing.find(
+            racks = await Rack.find(
                {},
                {
                   "tag.code": 1,
@@ -472,7 +472,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
                .populate("family", "code company");
             break;
       }
-      return packings;
+      return racks;
    } catch (error) {
       throw new Error(error);
    }

@@ -469,7 +469,7 @@ export class PontoDeControleEditarComponent implements OnInit {
   public validateNotTakenLoading: boolean = false;
   // validateNotTaken(control: AbstractControl) {
   //   this.validateNotTakenLoading = true;
-  //   // console.log('this.mActualPacking.tag.code: ' + this.mActualPacking.tag.code);
+  //   // console.log('this.mActualRack.tag.code: ' + this.mActualRack.tag.code);
   //   // console.log('control.value: ' + control.value);
 
   //   if (this.mActualControlPoint.name == control.value) {

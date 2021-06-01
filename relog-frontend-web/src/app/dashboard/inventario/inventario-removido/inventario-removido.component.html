@@ -65,7 +65,7 @@
           <tbody>
             <tr
               *ngFor="
-                let packing of listOfRemoved
+                let rack of listOfRemoved
                   | paginate
                     : {
                         id: 'battery',
@@ -75,17 +75,17 @@
                       }
               "
             >
-              <td>{{ packing.tag || "-" }}</td>
-              <td>{{ packing.family_code || "-" }}</td>
-              <td>{{ packing.serial || "-" }}</td>
+              <td>{{ rack.tag || "-" }}</td>
+              <td>{{ rack.family_code || "-" }}</td>
+              <td>{{ rack.serial || "-" }}</td>
 
-              <td>{{ packing.current_control_point_name || "-" }}</td>
-              <td>{{ packing.current_control_point_type }}</td>
+              <td>{{ rack.current_control_point_name || "-" }}</td>
+              <td>{{ rack.current_control_point_type }}</td>
 
               <td
                 [ngbTooltip]="
-                  packing.battery_date !== '-'
-                    ? (packing.battery_date
+                  rack.battery_date !== '-'
+                    ? (rack.battery_date
                       | date: 'dd/MM/yy HH:mm:ss':'+00:00')
                     : 'Sem data da removed'
                 "
@@ -93,8 +93,8 @@
                 container="body"
               >
                 {{
-                  packing.battery_percentage !== "-"
-                    ? (packing.battery_percentage | round) + "%"
+                  rack.battery_percentage !== "-"
+                    ? (rack.battery_percentage | round) + "%"
                     : "Sem Registro"
                 }}
               </td>

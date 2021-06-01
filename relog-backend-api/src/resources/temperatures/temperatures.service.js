@@ -2,7 +2,7 @@ const debug = require("debug")("service:temperatures");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const { Temperature } = require("./temperatures.model");
-const { Packing } = require("../packings/packings.model");
+const { Rack } = require("../racks/racks.model");
 
 exports.create = async (data) => {
    try {
@@ -17,10 +17,10 @@ exports.create = async (data) => {
 /**
  * Cria várias temperaturas a partir de um array de mensagens.
  * As mensagens devem estar em ordem cronológica crescente. Ou seja, da mais antiga para a mais recente.
- * @param {*} packing
+ * @param {*} rack
  * @param {*} temperatureArray
  */
-exports.createMany = async (packing, temperatureArray) => {
+exports.createMany = async (rack, temperatureArray) => {
    let maxTimestampIndex = -1;
    if (temperatureArray.length) {
       // procura o índice do elemento com timestamp mais atual: primeiro elemento ou o último
@@ -28,12 +28,12 @@ exports.createMany = async (packing, temperatureArray) => {
          maxTimestampIndex = 0;
       else maxTimestampIndex = temperatureArray.length - 1;
 
-      updatePackageLastMessage(packing, temperatureArray[maxTimestampIndex]);
+      updatePackageLastMessage(rack, temperatureArray[maxTimestampIndex]);
 
       for (const [index, temperature] of temperatureArray.entries()) {
          try {
             const newTemperature = new Temperature({
-               tag: packing.tag.code,
+               tag: rack.tag.code,
                date: new Date(temperature.date),
                timestamp: temperature.timestamp,
                value: temperature.value,
@@ -44,36 +44,36 @@ exports.createMany = async (packing, temperatureArray) => {
             if (index == maxTimestampIndex) {
                await newTemperature
                   .save()
-                  .then((doc) => referenceFromPackage(packing, doc))
+                  .then((doc) => referenceFromPackage(rack, doc))
                   .catch((err) => debug(err));
             } else {
                await newTemperature.save();
             }
          } catch (error) {
-            debug(`Erro ao salvar a temperatura do device ${packing.tag.code} | ${error}`);
+            debug(`Erro ao salvar a temperatura do device ${rack.tag.code} | ${error}`);
          }
       }
    }
 };
 
-const updatePackageLastMessage = async (packing, newMessage) => {
-   if (packing.last_message_signal) {
-      if (new Date(newMessage.date).getTime() > new Date(packing.last_message_signal).getTime()) {
-         await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+const updatePackageLastMessage = async (rack, newMessage) => {
+   if (rack.last_message_signal) {
+      if (new Date(newMessage.date).getTime() > new Date(rack.last_message_signal).getTime()) {
+         await Rack.findByIdAndUpdate(rack._id, { last_message_signal: newMessage.date }, { new: true });
       }
    } else {
-      await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+      await Rack.findByIdAndUpdate(rack._id, { last_message_signal: newMessage.date }, { new: true });
    }
 };
 
-const referenceFromPackage = async (packing, newTemperature) => {
+const referenceFromPackage = async (rack, newTemperature) => {
    try {
-      if (packing.last_temperature) {
-         if (newTemperature.timestamp > packing.last_temperature.timestamp) {
-            await Packing.findByIdAndUpdate(packing._id, { last_temperature: newTemperature._id }, { new: true });
+      if (rack.last_temperature) {
+         if (newTemperature.timestamp > rack.last_temperature.timestamp) {
+            await Rack.findByIdAndUpdate(rack._id, { last_temperature: newTemperature._id }, { new: true });
          }
       } else {
-         await Packing.findByIdAndUpdate(packing._id, { last_temperature: newTemperature._id }, { new: true });
+         await Rack.findByIdAndUpdate(rack._id, { last_temperature: newTemperature._id }, { new: true });
       }
    } catch (error) {
       debug(error);
@@ -120,13 +120,13 @@ exports.get = async ({ tag = null, start_date = null, end_date = null, max = 100
 
 exports.getLast = async ({ companyId = null, familyId = null, serial = null }) => {
    try {
-      let packings = [];
+      let racks = [];
 
       switch (true) {
          // company, family and serial
          case companyId != null && familyId != null && serial != null:
             console.log("c, f e s");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -188,7 +188,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          // company and family
          case companyId != null && familyId != null:
             console.log("c e f");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -249,7 +249,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          // company and serial
          case companyId != null && serial != null:
             console.log("c e s");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -310,7 +310,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          //family and serial
          case familyId != null && serial != null:
             console.log("f e s");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -371,7 +371,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          //Only company
          case companyId != null:
             console.log("only company");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -431,7 +431,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          //Only family
          case familyId != null:
             console.log("f");
-            packings = await Packing.find(
+            racks = await Rack.find(
                { family: familyId },
                {
                   "tag.code": 1,
@@ -446,7 +446,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
          //Only serial
          case serial != null:
             console.log("s");
-            packings = await Packing.find(
+            racks = await Rack.find(
                { serial: serial },
                {
                   "tag.code": 1,
@@ -460,7 +460,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
 
          default:
             console.log("default");
-            packings = await Packing.find(
+            racks = await Rack.find(
                {},
                {
                   "tag.code": 1,
@@ -472,7 +472,7 @@ exports.getLast = async ({ companyId = null, familyId = null, serial = null }) =
                .populate("family", "code company");
             break;
       }
-      return packings;
+      return racks;
    } catch (error) {
       throw new Error(error);
    }

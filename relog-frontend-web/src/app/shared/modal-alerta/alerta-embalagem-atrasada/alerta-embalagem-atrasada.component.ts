@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoryService, InventoryLogisticService, PlantsService, PackingService } from '../../../servicos/index.service';
-import { LayerModalComponent } from '../../modal-packing/layer.component';
+import { InventoryService, InventoryLogisticService, PlantsService, RackService } from '../../../servicos/index.service';
+import { LayerModalComponent } from '../../modal-rack/layer.component';
 import { constants } from 'environments/constants';
 
 @Component({
@@ -16,7 +16,7 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
   
   constructor(
     public activeAlerta: NgbActiveModal,
-    private packingsService: PackingService,
+    private racksService: RackService,
     private modalService: NgbModal) { 
 
     this.mConstants = constants;
@@ -28,8 +28,8 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
   }
 
   getLastPlant() {
-    // if (this.alerta.data.packing.last_plant.plant !== undefined) {
-    //   this.plantsService.retrievePlant(this.alerta.data.packing.last_plant.plant).subscribe(result => {
+    // if (this.alerta.data.rack.last_plant.plant !== undefined) {
+    //   this.plantsService.retrievePlant(this.alerta.data.rack.last_plant.plant).subscribe(result => {
     //     //console.log('result: ' + JSON.stringify(result));
 
     //     if (result.data.length != {}) {
@@ -42,8 +42,8 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
 
   visualizeOnMap() {
 
-    this.packingsService
-      .getPacking(this.alerta._id)
+    this.racksService
+      .getRack(this.alerta._id)
       .subscribe(
         result => {
           let actualPackage = result;
@@ -59,7 +59,7 @@ export class AlertaEmbalagemAtrasadaComponent implements OnInit {
           actualPackage.tag = actualPackage.tag.code;
           actualPackage.family_code = this.alerta.family.code;
           
-          modalRef.componentInstance.packing = actualPackage;
+          modalRef.componentInstance.rack = actualPackage;
         },
         err => {
           console.log(err);

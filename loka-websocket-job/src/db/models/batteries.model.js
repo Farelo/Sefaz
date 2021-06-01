@@ -1,6 +1,6 @@
 const debug = require("debug")("model:battery");
 const mongoose = require("mongoose");
-const { Packing } = require("./packings.model");
+const { Rack } = require("./racks.model");
 
 const batterySchema = new mongoose.Schema({
   tag: {
@@ -28,17 +28,17 @@ const batterySchema = new mongoose.Schema({
 });
 
 /**
- * Creates a new Battery document and links to the packing
+ * Creates a new Battery document and links to the rack
  * @param {*} battery
- * @param {*} actualPacking
+ * @param {*} actualRack
  */
-const createBattery = async (battery, actualPacking = null) => {
-  if (!actualPacking) {
-    actualPacking = await Packing.findOne({ "tag.code": battery.tag });
+const createBattery = async (battery, actualRack = null) => {
+  if (!actualRack) {
+    actualRack = await Rack.findOne({ "tag.code": battery.tag });
   }
 
   let newBattery = new Battery({
-    tag: actualPacking.tag,
+    tag: actualRack.tag,
     date: new Date(battery.date),
     timestamp: battery.timestamp,
     battery: battery.battery,
@@ -47,17 +47,17 @@ const createBattery = async (battery, actualPacking = null) => {
 
   await newBattery
     .save()
-    .then((newDocument) => referenceFromPackage(actualPacking, newDocument))
+    .then((newDocument) => referenceFromPackage(actualRack, newDocument))
     .catch((error) => debug(error));
 };
 
-const createOrUpdateBattery = async (battery, actualPacking = null) => {
-  if (!actualPacking) {
-    actualPacking = await Packing.findOne({ "tag.code": battery.tag });
+const createOrUpdateBattery = async (battery, actualRack = null) => {
+  if (!actualRack) {
+    actualRack = await Rack.findOne({ "tag.code": battery.tag });
   }
 
   let newBattery = new Battery({
-    tag: actualPacking.tag,
+    tag: actualRack.tag,
     date: new Date(battery.date),
     timestamp: battery.timestamp,
     battery: battery.battery,
@@ -66,13 +66,13 @@ const createOrUpdateBattery = async (battery, actualPacking = null) => {
 
   await newBattery
     .save()
-    .then((newDocument) => referenceFromPackage(actualPacking, newDocument))
+    .then((newDocument) => referenceFromPackage(actualRack, newDocument))
     .catch((error) => debug(error));
 };
 
-const referenceFromPackage = async (packing, position) => {
+const referenceFromPackage = async (rack, position) => {
   try {
-    if (packing) await Packing.findByIdAndUpdate(packing._id, { last_battery: position._id }, { new: true });
+    if (rack) await Rack.findByIdAndUpdate(rack._id, { last_battery: position._id }, { new: true });
   } catch (error) {
     debug(error);
   }

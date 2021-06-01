@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pagination } from '../../shared/models/pagination';
-import { PackingService } from '../../servicos/index.service';
+import { RackService } from '../../servicos/index.service';
 
 @Component({
   selector: 'app-modal-rast',
@@ -14,20 +14,20 @@ export class ModalRastComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private packingService: PackingService
+    private rackService: RackService
   ) { }
 
   ngOnInit() {
-    this.getPackings();
+    this.getRacks();
   }
 
-  getPackings(){
-    this.packingService.getPackingsByDepartment(this.department, 10, this.data.meta.page).subscribe(result => this.data = result);
+  getRacks(){
+    this.rackService.getRacksByDepartment(this.department, 10, this.data.meta.page).subscribe(result => this.data = result);
   }
 
   pageChanged(page: any): void{
     this.data.meta.page = page;
-    this.getPackings();
+    this.getRacks();
   }
 
 }

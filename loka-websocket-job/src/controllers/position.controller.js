@@ -1,14 +1,14 @@
 const { Position } = require("../db/models/position.model");
-const { Packing } = require("../db/models/packings.model");
+const { Rack } = require("../db/models/racks.model");
 
 exports.createPosition = async (positionMessage) => {
-  let actualPacking = await Packing.findOne({ "tag.code": positionMessage.src });
+  let actualRack = await Rack.findOne({ "tag.code": positionMessage.src });
 
-  if (actualPacking) {
+  if (actualRack) {
     let messageTimestamp = positionMessage.timestamp;
     if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
 
-    updateLastMessage(actualPacking, messageTimestamp);
+    updateLastMessage(actualRack, messageTimestamp);
 
     await Position.createPosition(
       {
@@ -19,23 +19,23 @@ exports.createPosition = async (positionMessage) => {
         longitude: positionMessage.location.longitude,
         accuracy: positionMessage.location.accuracy,
       },
-      actualPacking
+      actualRack
     );
   }
 };
 
-const updateLastMessage = async (actualPacking, timestamp) => {
-  if (actualPacking.last_message_signal) {
-    if (timestamp * 1000 > new Date(actualPacking.last_message_signal).getTime()) {
-      await Packing.findByIdAndUpdate(
-        actualPacking._id,
+const updateLastMessage = async (actualRack, timestamp) => {
+  if (actualRack.last_message_signal) {
+    if (timestamp * 1000 > new Date(actualRack.last_message_signal).getTime()) {
+      await Rack.findByIdAndUpdate(
+        actualRack._id,
         { last_message_signal: new Date(timestamp * 1000) },
         { new: true }
       ).exec();
     }
   } else {
-    await Packing.findByIdAndUpdate(
-      actualPacking._id,
+    await Rack.findByIdAndUpdate(
+      actualRack._id,
       { last_message_signal: new Date(timestamp * 1000) },
       { new: true }
     ).exec();

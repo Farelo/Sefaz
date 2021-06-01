@@ -1,6 +1,6 @@
 const debug = require("debug")("job:loka");
 const dm_controller = require("../loka-integration/dm.controller");
-const { Packing } = require("../../models/packings.model");
+const { Rack } = require("../../models/racks.model");
 const moment = require("moment");
 const _ = require("lodash");
 
@@ -10,10 +10,10 @@ const _ = require("lodash");
 // Como consequencia, os tempos UTF-3 que vem da loka são salvos convertidos em UTF-0.
 // Na hora de consumir pegamos a data como se fosse UTF-0 aí temos que realizar offset.
 // A rota position/get recebe startDate e endDate como localtime.
-const generatePositionQuery = (packing) => {
+const generatePositionQuery = (rack) => {
    let positionStartDate = 0;
-   if (packing.last_position)
-      positionStartDate = moment(packing.last_position.timestamp * 1000)
+   if (rack.last_position)
+      positionStartDate = moment(rack.last_position.timestamp * 1000)
          .utc()
          .subtract(3, "h")
          .add(1, "seconds")
@@ -28,7 +28,7 @@ const generatePositionQuery = (packing) => {
    return [positionStartDate, positionEndDate];
 };
 
-const generateSensorQuery = (packing) => {
+const generateSensorQuery = (rack) => {
    let lastTemperatureTimestamp = 0;
    let lastBatteryTimestamp = 0;
 
@@ -36,8 +36,8 @@ const generateSensorQuery = (packing) => {
    let sensorEndDate = 0;
 
    //Get the last temperature and battery
-   if (packing.last_temperature) lastTemperatureTimestamp = packing.last_temperature.timestamp;
-   if (packing.last_battery) lastBatteryTimestamp = packing.last_battery.timestamp;
+   if (rack.last_temperature) lastTemperatureTimestamp = rack.last_temperature.timestamp;
+   if (rack.last_battery) lastBatteryTimestamp = rack.last_battery.timestamp;
 
    //Which one is the most recent?
    let lastSensorTimestamp = _.max([lastTemperatureTimestamp, lastBatteryTimestamp]);
@@ -76,7 +76,7 @@ module.exports = async () => {
 
          // "tag.code": "28423339"
          // "tag.code": "4081800"
-         let devices = await Packing.find(
+         let devices = await Rack.find(
             { $or: [{ "tag.deviceModel": { $in: ["loka", "alps"] } }, { "tag.deviceModel": { $exists: false } }] },
             { _id: 1, tag: 1, last_position: 1 }
          )
@@ -84,14 +84,14 @@ module.exports = async () => {
             .populate("last_battery")
             .populate("last_temperature");
 
-         for (const [i, packing] of devices.entries()) {
+         for (const [i, rack] of devices.entries()) {
             try {
                //recupera a última mensagem de posição e cria janela de tempo. Se não houver, inicia 1 semana atrás
-               const [positionStartDate, positionEndDate] = generatePositionQuery(packing);
+               const [positionStartDate, positionEndDate] = generatePositionQuery(rack);
 
                //Coleta novas posições na loka
                const newPositionsArray = await dm_controller.fetchAndSavePositions(
-                  packing,
+                  rack,
                   positionStartDate,
                   positionEndDate,
                   cookie
@@ -100,11 +100,11 @@ module.exports = async () => {
                // console.log(newPositionsArray);
 
                //recupera a última mensagem de sensor e cria janela de tempo. Se não houver, inicia 1 semana atrás
-               const [sensorStartDate, sensorEndDate] = generateSensorQuery(packing);
+               const [sensorStartDate, sensorEndDate] = generateSensorQuery(rack);
 
                //Coleta novas mensagens de sensores na loka
                const newSensorsArray = await dm_controller.fetchAndSaveSensors(
-                  packing,
+                  rack,
                   sensorStartDate,
                   sensorEndDate,
                   cookie
@@ -112,25 +112,25 @@ module.exports = async () => {
 
                // console.log(newSensorsArray);
 
-               // What is the last signal timestamp? Update the last_message_signal Packing's attribute
+               // What is the last signal timestamp? Update the last_message_signal Rack's attribute
                if (newPositionsArray.length > 0 && newSensorsArray.length > 0) {
                   let lastMessage =
                      newPositionsArray[0].timestamp >= newSensorsArray[0].timestamp
                         ? new Date(newPositionsArray[0].timestamp * 1000)
                         : new Date(newSensorsArray[0].timestamp * 1000);
-                  await Packing.findByIdAndUpdate(packing._id, { last_message_signal: lastMessage }, { new: true });
+                  await Rack.findByIdAndUpdate(rack._id, { last_message_signal: lastMessage }, { new: true });
                } else {
                   if (newPositionsArray.length > 0) {
-                     await Packing.findByIdAndUpdate(
-                        packing._id,
+                     await Rack.findByIdAndUpdate(
+                        rack._id,
                         { last_message_signal: new Date(newPositionsArray[0].timestamp * 1000) },
                         { new: true }
                      );
                   }
 
                   if (newSensorsArray.length > 0) {
-                     await Packing.findByIdAndUpdate(
-                        packing._id,
+                     await Rack.findByIdAndUpdate(
+                        rack._id,
                         { last_message_signal: new Date(newSensorsArray[0].timestamp * 1000) },
                         { new: true }
                      );
@@ -140,13 +140,13 @@ module.exports = async () => {
                concluded_devices++;
 
                debug(
-                  `Request ${i + 1}: ${packing.tag.code} | ${positionStartDate} | ${sensorStartDate} | ${
+                  `Request ${i + 1}: ${rack.tag.code} | ${positionStartDate} | ${sensorStartDate} | ${
                      newPositionsArray.length
                   } |  ${newSensorsArray.length}\n`
                );
             } catch (error) {
                error_devices++;
-               debug(`${i}: Erro ocorrido no device: ' + ${packing.tag.code} + ' | ' + ${error}`);
+               debug(`${i}: Erro ocorrido no device: ' + ${rack.tag.code} + ' | ' + ${error}`);
             }
          }
 

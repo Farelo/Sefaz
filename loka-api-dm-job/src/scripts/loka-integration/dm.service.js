@@ -106,8 +106,8 @@ exports.fetchPositions = async (deviceId, startDate, endDate, lowAccuracy, cooki
    }
 };
 
-exports.createManyPositionMessages = async (packing, messages) => {
-   await Position.createMany(packing, messages);
+exports.createManyPositionMessages = async (rack, messages) => {
+   await Position.createMany(rack, messages);
 };
 
 exports.fetchSensors = async (deviceId, startDate, endDate, cookie) => {
@@ -134,14 +134,14 @@ exports.fetchSensors = async (deviceId, startDate, endDate, cookie) => {
    }
 };
 
-exports.createManyTemperatureMessages = async (packing, messages) => {
-   await Temperature.createMany(packing, messages);
+exports.createManyTemperatureMessages = async (rack, messages) => {
+   await Temperature.createMany(rack, messages);
 };
 
-exports.createManyBatteryMessages = async (packing, messages) => {
-   await Battery.createMany(packing, messages);
+exports.createManyBatteryMessages = async (rack, messages) => {
+   await Battery.createMany(rack, messages);
 };
 
-exports.createManyButtonMessages = async (packing, messages) => {
-   await Button.createMany(packing, messages);
+exports.createManyButtonMessages = async (rack, messages) => {
+   await Button.createMany(rack, messages);
 };

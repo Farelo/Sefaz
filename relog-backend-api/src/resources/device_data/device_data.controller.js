@@ -3,7 +3,7 @@ const HttpStatus = require("http-status-codes");
 const positionsService = require("../positions/positions.service");
 const batteriesService = require("../batteries/batteries.service");
 const temperaturesService = require("../temperatures/temperatures.service");
-const packingsService = require("../packings/packings.service");
+const racksService = require("../racks/racks.service");
 const _ = require("lodash");
 
 exports.all = async (req, res) => {
@@ -17,8 +17,8 @@ exports.all = async (req, res) => {
    console.log(query);
 
    if (device_id) {
-      const packing = await packingsService.find_by_tag(device_id);
-      if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
+      const rack = await racksService.find_by_tag(device_id);
+      if (!rack) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
    }
 
    const resultPositions = await positionsService.getPosition(query);
@@ -96,7 +96,7 @@ exports.all = async (req, res) => {
 //    const query = {
 //       company_id: req.query.company_id ? req.query.company_id : null,
 //       family_id: req.query.family_id ? req.query.family_id : null,
-//       packing_serial: req.query.packing_serial ? req.query.packing_serial : null,
+//       rack_serial: req.query.rack_serial ? req.query.rack_serial : null,
 //    };
 
 //    if (req.query.family_id) {

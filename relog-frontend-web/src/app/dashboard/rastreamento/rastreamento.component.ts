@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Department } from '../../shared/models/department'; 
-import { AuthenticationService, PackingService, FamiliesService, ControlPointsService } from '../../servicos/index.service';
+import { AuthenticationService, RackService, FamiliesService, ControlPointsService } from '../../servicos/index.service';
 import { Pagination } from '../../shared/models/pagination'; 
 import './markercluster';
 import { Spiralize } from './Spiralize';
@@ -39,7 +39,7 @@ export class RastreamentoComponent implements OnInit {
     display: true,
     lat: null,
     lng: null,
-    packing: null
+    rack: null
   };
   public packMarker = {
     display: true,
@@ -47,7 +47,7 @@ export class RastreamentoComponent implements OnInit {
     lat: null,
     lng: null,
     start: null,
-    packing_code: null,
+    rack_code: null,
     serial: null,
     battery: null,
     accuracy: null
@@ -66,14 +66,14 @@ export class RastreamentoComponent implements OnInit {
   public selectedSerial: any = null;
 
   //array de pinos
-  public plotedPackings: any[] = [];
+  public plotedRacks: any[] = [];
   public listOfControlPoints: any = [];
 
   //show markers
   public showControlledPlants: boolean = false;
   public showControlledLogistics: boolean = false;
   public showControlledSuppliers: boolean = false;
-  public showPackings: boolean = false;
+  public showRacks: boolean = false;
 
   //misc
   public settings: any = {};
@@ -89,7 +89,7 @@ export class RastreamentoComponent implements OnInit {
     private controlPointsService: ControlPointsService, 
     private familyService: FamiliesService,
     private authenticationService: AuthenticationService,
-    private packingService: PackingService,  
+    private rackService: RackService,  
     private auth: AuthenticationService) {
 
   }
@@ -106,7 +106,7 @@ export class RastreamentoComponent implements OnInit {
 
     this.zoom = 14;
     this.mMap = map;
-    this.loadPackings();
+    this.loadRacks();
   }
 
 
@@ -211,13 +211,13 @@ export class RastreamentoComponent implements OnInit {
     // console.log(this.selectedFamily);
 
     if (this.selectedFamily) {
-      //this.loadPackings();
+      //this.loadRacks();
       this.selectedSerial = null;
       this.listOfSerials = [];
 
       let query = { family: this.selectedFamily._id };
 
-      this.packingService.getAllPackings(query).subscribe(result => {
+      this.rackService.getAllRacks(query).subscribe(result => {
         this.listOfSerials = result.filter(elem => {
           return elem.family.code == this.selectedFamily.code;
         });
@@ -236,13 +236,13 @@ export class RastreamentoComponent implements OnInit {
       this.listOfFamilies = this.auxListOfFamilies;
     }
 
-    this.loadPackings();
+    this.loadRacks();
   }
 
   /**
    * The filter has changed
    */
-  loadPackings() {
+  loadRacks() {
 
     // console.log('.'); 
 
@@ -260,16 +260,16 @@ export class RastreamentoComponent implements OnInit {
     // console.log('this.selectedSerial');
     // console.log(this.selectedSerial);
 
-    this.packingService.getGeolocation(cp_id, family_id, serial_id).subscribe((result: any[]) => {
+    this.rackService.getGeolocation(cp_id, family_id, serial_id).subscribe((result: any[]) => {
 
-      this.plotedPackings = result.filter(elem => {
+      this.plotedRacks = result.filter(elem => {
         if (elem.last_position)
           return true;
         else
           return false;
       });
 
-      this.plotedPackings.map(elem => {
+      this.plotedRacks.map(elem => {
         elem.position = (new google.maps.LatLng(elem.last_position.latitude, elem.last_position.longitude));
         elem.latitude = elem.last_position.latitude;
         elem.longitude = elem.last_position.longitude;
@@ -277,20 +277,20 @@ export class RastreamentoComponent implements OnInit {
       });
 
       //Se só há um objeto selecionado, centralize o mapa nele
-      if (this.plotedPackings.length == 1){
-        if (this.plotedPackings[0].last_position){
-          this.center = { lat: this.plotedPackings[0].latitude, lng: this.plotedPackings[0].longitude }
+      if (this.plotedRacks.length == 1){
+        if (this.plotedRacks[0].last_position){
+          this.center = { lat: this.plotedRacks[0].latitude, lng: this.plotedRacks[0].longitude }
         }
       }
-      // console.log(JSON.stringify(this.plotedPackings));
+      // console.log(JSON.stringify(this.plotedRacks));
 
       //this.resolveClustering();
       if (this.mSpiralize) {
         this.mSpiralize.clearState();
-        this.mSpiralize.repaint(this.plotedPackings, this.mMap, false, this.showPackings);
+        this.mSpiralize.repaint(this.plotedRacks, this.mMap, false, this.showRacks);
 
       } else {
-        this.mSpiralize = new Spiralize(this.plotedPackings, this.mMap, false);
+        this.mSpiralize = new Spiralize(this.plotedRacks, this.mMap, false);
       }
     });
   }
@@ -319,15 +319,15 @@ export class RastreamentoComponent implements OnInit {
   /**
    * Exibir/Ocultar as embalagens
    */
-  toggleShowPackings() {
+  toggleShowRacks() {
 
-    this.showPackings = !this.showPackings;
-    this.mSpiralize.toggleShowPackings(this.showPackings);
+    this.showRacks = !this.showRacks;
+    this.mSpiralize.toggleShowRacks(this.showRacks);
   }
 
   familyChanged(){
     this.selectedSerial = null; 
-    this.loadPackings(); 
+    this.loadRacks(); 
     this.loadSerialsOfSelectedEquipment();
   }
 
@@ -338,11 +338,11 @@ export class RastreamentoComponent implements OnInit {
   onEquipmentSelectClear() {
 
     this.selectedSerial = null;
-    this.loadPackings();
+    this.loadRacks();
   }
 
-  public packingsByPlant: any[] = [];
-  public packingsByPlantActualPage: number = -1;
+  public racksByPlant: any[] = [];
+  public racksByPlantActualPage: number = -1;
 
   clicked(_a, opt) {
 
@@ -353,10 +353,10 @@ export class RastreamentoComponent implements OnInit {
     this.marker.lat = marker.getPosition().lat();
     this.marker.lng = marker.getPosition().lng();
 
-    this.packingService.packingsOnControlPoint(opt._id).subscribe(result => {
+    this.rackService.racksOnControlPoint(opt._id).subscribe(result => {
       // console.log('');
       // console.log(result);
-      this.packingsByPlant = result;
+      this.racksByPlant = result;
       this.startWindow(marker);
     });
   }

@@ -15,10 +15,10 @@ export class InventarioComponent implements OnInit, OnDestroy {
   public name_supplier: any = "";
   public escolhaGeral: any = "GERAL";
   public escolhaEquipamento = "";
-  public packings: any[];
-  public detailedGeneralpackings: any[];
-  public abpackings: any[];
-  public ab_packings: any[];
+  public racks: any[];
+  public detailedGeneralracks: any[];
+  public abracks: any[];
+  public ab_racks: any[];
   public escolhas: any[];
   public abserials: any[];
   public locals: any[];
@@ -55,8 +55,8 @@ export class InventarioComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // this.generalInventory();
     // this.tamanhoSelect();
-    // this.loadPackings();
-    // this.loadAbPackings();
+    // this.loadRacks();
+    // this.loadAbRacks();
     // this.loadLocals();
   }
 

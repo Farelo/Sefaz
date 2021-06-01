@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import {
   ToastService,
-  PackingService,
+  RackService,
   FamiliesService,
   ProjectService,
 } from "../../../../servicos/index.service";
@@ -19,15 +19,15 @@ import {
   styleUrls: ["../../cadastros.component.css"],
 })
 export class EmbalagemCadastroComponent implements OnInit {
-  public mPacking: FormGroup;
+  public mRack: FormGroup;
   public listOfFamilies: any[] = [];
   public listOfProjects: any[] = [];
-  public activePacking: boolean = false;
+  public activeRack: boolean = false;
   public deviceModel: any[] = [];
 
   constructor(
     private familyService: FamiliesService,
-    private packingService: PackingService,
+    private rackService: RackService,
     private projectService: ProjectService,
     private toastService: ToastService,
     private router: Router,
@@ -92,7 +92,7 @@ export class EmbalagemCadastroComponent implements OnInit {
    * @param value
    */
   finishRegister(value) {
-    this.packingService.createPacking(value).subscribe((result) => {
+    this.rackService.createRack(value).subscribe((result) => {
       let message = {
         title: "Embalagem Cadastrada",
         body: "A embalagem foi cadastrada com sucesso",
@@ -105,7 +105,7 @@ export class EmbalagemCadastroComponent implements OnInit {
    * Configure the form group
    */
   configureForm() {
-    this.mPacking = this.fb.group({
+    this.mRack = this.fb.group({
       tag: this.fb.group({
         code: [
           "",
@@ -166,16 +166,16 @@ export class EmbalagemCadastroComponent implements OnInit {
   }
 
   validateTag(event: any) {
-    //console.log(this.mPacking.get('tag.code').value);
+    //console.log(this.mRack.get('tag.code').value);
 
-    if (!this.mPacking.get("tag.code").errors) {
+    if (!this.mRack.get("tag.code").errors) {
       this.validateNotTakenLoading = true;
-      this.packingService
-        .getAllPackings({ tag_code: this.mPacking.get("tag.code").value })
+      this.rackService
+        .getAllRacks({ tag_code: this.mRack.get("tag.code").value })
         .subscribe((result) => {
-          if (result.length == 0) this.mPacking.get("tag.code").setErrors(null);
+          if (result.length == 0) this.mRack.get("tag.code").setErrors(null);
           else
-            this.mPacking.get("tag.code").setErrors({ uniqueValidation: true });
+            this.mRack.get("tag.code").setErrors({ uniqueValidation: true });
 
           this.validateNotTakenLoading = false;
         });
@@ -193,7 +193,7 @@ export class EmbalagemCadastroComponent implements OnInit {
   //     .delay(800)
   //     .debounceTime(800)
   //     .distinctUntilChanged()
-  //     .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
+  //     .switchMap(value => this.rackService.getAllRacks({ tag_code: control.value }))
   //     .map(res => {
   //       this.validateNotTakenLoading = false;
 

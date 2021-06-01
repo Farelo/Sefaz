@@ -1,17 +1,17 @@
 const debug = require("debug")("controller:temperatures");
 const HttpStatus = require("http-status-codes");
 const temperaturesService = require("./temperatures.service");
-const packingsService = require("../packings/packings.service");
+const racksService = require("../racks/racks.service");
 const familiesService = require("../families/families.service");
 const companiesService = require("../companies/companies.service");
 
 exports.createMany = async (allTemperatures) => {
    try {
-      let currentPacking = null; 
+      let currentRack = null; 
       if (allTemperatures.length) { 
-         currentPacking = await packingsService.populatedFindByTag(allTemperatures[0].tag);
-         if (currentPacking) {
-            await temperaturesService.createMany(currentPacking, allTemperatures);
+         currentRack = await racksService.populatedFindByTag(allTemperatures[0].tag);
+         if (currentRack) {
+            await temperaturesService.createMany(currentRack, allTemperatures);
          } else {
             throw new Error(`The tag ${allTemperatures[0].tag} doesn't exists`);
          }
@@ -29,8 +29,8 @@ exports.get = async (req, res) => {
    };
 
    if (query.tag) {
-      const packing = await packingsService.find_by_tag(query.tag);
-      if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
+      const rack = await racksService.find_by_tag(query.tag);
+      if (!rack) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
    }
 
    const result = await temperaturesService.get(query);

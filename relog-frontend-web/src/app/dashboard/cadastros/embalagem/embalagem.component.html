@@ -29,24 +29,24 @@
     <tbody>
       <tr
         *ngFor="
-          let packing of listOfPackings
+          let rack of listOfRacks
             | paginate
               : {
                   itemsPerPage: 10,
                   currentPage: actualPage,
-                  totalItems: listOfPackings.length
+                  totalItems: listOfRacks.length
                 }
         "
       >
-        <td>{{ packing.family ? packing.family.code : "-"}}</td>
-        <td>{{ packing.serial }}</td>
-        <td>{{ packing.tag.code }}</td>
+        <td>{{ rack.family ? rack.family.code : "-"}}</td>
+        <td>{{ rack.serial }}</td>
+        <td>{{ rack.tag.code }}</td>
         <td class="actions">
           <div>
-            <button class="editar" [routerLink]="['editar/', packing._id]">
+            <button class="editar" [routerLink]="['editar/', rack._id]">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </button>
-            <button class="excluir" (click)="removePacking(packing)">
+            <button class="excluir" (click)="removeRack(rack)">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
           </div>
@@ -56,7 +56,7 @@
   </table>
 </div>
 
-<div class="classVazio" *ngIf="listOfPackings.length < 1">
+<div class="classVazio" *ngIf="listOfRacks.length < 1">
   Ainda não existem embalagens cadastradas.
 </div>
 

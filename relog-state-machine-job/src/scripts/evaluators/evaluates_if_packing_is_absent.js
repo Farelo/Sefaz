@@ -4,9 +4,9 @@ const moment = require("moment");
 
 // MODELS
 const { CurrentStateHistory } = require("../../models/current_state_history.model");
-const { Packing } = require("../../models/packings.model");
+const { Rack } = require("../../models/racks.model");
 
-module.exports = async (packing, controlPoints, currentControlPoint) => {
+module.exports = async (rack, controlPoints, currentControlPoint) => {
    try {
       if (currentControlPoint) {
          /* Recupera os pontos de controle que são owner */
@@ -16,36 +16,36 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
          //console.log(controlPointOwner)
 
          /* Checa se a embalagem está em algum ponto de controle OWNER */
-         const packingIsOk = controlPointOwner.filter((cp) => isAbsent(cp, currentControlPoint));
+         const rackIsOk = controlPointOwner.filter((cp) => isAbsent(cp, currentControlPoint));
 
          /* Se não estiver no ponto de controle OWNER atualiza a embalagem com o status ABSENT */
          // Se não iniciou, inicia o giro
-         if (!packingIsOk.length) {
-            if (!packing.absent_time) {
-               await Packing.findByIdAndUpdate(
-                  packing._id,
+         if (!rackIsOk.length) {
+            if (!rack.absent_time) {
+               await Rack.findByIdAndUpdate(
+                  rack._id,
                   { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null },
                   { new: true }
                );
             }
 
-            // const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
+            // const current_state_history = await CurrentStateHistory.findOne({ rack: rack._id, type: STATES.AUSENTE.alert })
             // if (current_state_history) {
             //     //console.log("ESTADO DE AUSENTE JÁ CRIADO!")
             // } else {
-            //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+            //     await CurrentStateHistory.create({ rack: rack._id, type: STATES.AUSENTE.alert, device_data_id: rack.last_device_data ? rack.last_device_data._id : null  })
             // }
 
-            packing.absent = true;
-            return packing;
+            rack.absent = true;
+            return rack;
          } else {
             // Finaliza o giro
             // console.log('ESTÁ NUMA PLANTA DONA')
-            if (packing.absent_time) {
+            if (rack.absent_time) {
                let calculate = 0;
-               if (packing.cicle_start) calculate = getDiffDateTodayInHours(packing.cicle_start);
-               await Packing.findByIdAndUpdate(
-                  packing._id,
+               if (rack.cicle_start) calculate = getDiffDateTodayInHours(rack.cicle_start);
+               await Rack.findByIdAndUpdate(
+                  rack._id,
                   {
                      absent: false,
                      absent_time: null,
@@ -57,43 +57,43 @@ module.exports = async (packing, controlPoints, currentControlPoint) => {
                );
             }
 
-            // let newPacking = await Packing.findOne({_id: packing._id});
-            // await Packing.findByIdAndUpdate(newPacking._id, { last_owner_supplier: newPacking.last_event_record });
+            // let newRack = await Rack.findOne({_id: rack._id});
+            // await Rack.findByIdAndUpdate(newRack._id, { last_owner_supplier: newRack.last_event_record });
 
             //console.log('ESTÁ NUMA PLANTA DONA')
 
-            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
+            // current_state_history = await CurrentStateHistory.findOne({ rack: rack._id, type: STATES.AUSENTE.alert })
             // if (current_state_history) {
             //     await current_state_history.remove()
             // } else {
             //     //console.log("ESTADO DE AUSENTE JÁ REMOVIDO!")
             // }
 
-            packing.absent = false;
-            return packing;
+            rack.absent = false;
+            return rack;
          }
       } else {
          // console.log('ABSENT. FORA DE PLANTA')
 
-         if (!packing.absent_time) {
+         if (!rack.absent_time) {
             // console.log('NÃO ESTÁ NUMA PLANTA DONA.')
             // Inicia o giro
-            await Packing.findByIdAndUpdate(
-               packing._id,
+            await Rack.findByIdAndUpdate(
+               rack._id,
                { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null },
                { new: true }
             );
          }
 
-         // const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.AUSENTE.alert })
+         // const current_state_history = await CurrentStateHistory.findOne({ rack: rack._id, type: STATES.AUSENTE.alert })
          // if (current_state_history) {
          //     //console.log("ESTADO DE AUSENTE JÁ CRIADO!")
          // } else {
-         //     await CurrentStateHistory.create({ packing: packing._id, type: STATES.AUSENTE.alert, device_data_id: packing.last_device_data ? packing.last_device_data._id : null  })
+         //     await CurrentStateHistory.create({ rack: rack._id, type: STATES.AUSENTE.alert, device_data_id: rack.last_device_data ? rack.last_device_data._id : null  })
          // }
 
-         packing.absent = true;
-         return packing;
+         rack.absent = true;
+         return rack;
       }
    } catch (error) {
       console.error(error);

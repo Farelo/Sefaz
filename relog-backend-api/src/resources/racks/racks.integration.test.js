@@ -2,17 +2,17 @@ const request = require('supertest')
 const { User } = require('../users/users.model')
 const { Company } = require('../companies/companies.model')
 const { Family } = require('../families/families.model')
-const { Packing } = require('./packings.model')
+const { Rack } = require('./racks.model')
 const _ = require('lodash')
 
-describe('api/packings', () => {
+describe('api/racks', () => {
     let server
     let token
     let new_company
     let new_user
     let new_family
-    let packing_body
-    let new_packing
+    let rack_body
+    let new_rack
     let user
     beforeEach(async () => {
         server = require('../../server')
@@ -37,7 +37,7 @@ describe('api/packings', () => {
         new_family = new Family({ code: 'CODE', company: new_company._id })
         await new_family.save()
 
-        packing_body = {
+        rack_body = {
             tag: {
                 code: "0001",
                 version: "01",
@@ -54,21 +54,21 @@ describe('api/packings', () => {
             family: new_family._id
         }
 
-        new_packing = new Packing(packing_body)
-        new_packing.save()
+        new_rack = new Rack(rack_body)
+        new_rack.save()
     })
     afterEach(async () => {
         await server.close()
         await User.deleteMany({})
         await Company.deleteMany({})
         await Family.deleteMany({})
-        await Packing.deleteMany({})
+        await Rack.deleteMany({})
     })
 
-    describe('GET: /api/packings', () => {
+    describe('GET: /api/racks', () => {
 
-        it('should return all packings', async () => {
-            await Packing.insertMany([
+        it('should return all racks', async () => {
+            await Rack.insertMany([
                 {
                     tag: {
                         code: "teste 1",
@@ -104,7 +104,7 @@ describe('api/packings', () => {
             ])
 
             const res = await request(server)
-                .get('/api/packings')
+                .get('/api/racks')
                 .set('Authorization', token)
 
             expect(res.status).toBe(200)
@@ -113,17 +113,17 @@ describe('api/packings', () => {
 
         it('should return 404 if invalid url is passed', async () => { 
             const res = await request(server)
-                .get(`/api/packingsss`)
+                .get(`/api/racksss`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
         })
     })
 
-    describe('GET /api/packings/:id', () => {
-        it('should return a packing if valid id is passed', async () => {
+    describe('GET /api/racks/:id', () => {
+        it('should return a rack if valid id is passed', async () => {
             const res = await request(server)
-                .get(`/api/packings/${new_packing._id}`)
+                .get(`/api/racks/${new_rack._id}`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(200)
@@ -131,7 +131,7 @@ describe('api/packings', () => {
 
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
-                .get(`/api/packings/1a`)
+                .get(`/api/racks/1a`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
@@ -139,24 +139,24 @@ describe('api/packings', () => {
 
         it('should return 404 if invalid url with valid id is passed', async () => { 
             const res = await request(server)
-                .get(`/api/packingsss/${new_packing._id}`)
+                .get(`/api/racksss/${new_rack._id}`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
         })
     })
 
-    describe('POST: /api/packings', () => {
+    describe('POST: /api/racks', () => {
         
         const exec = () => {
             return request(server)
-                .post('/api/packings')
+                .post('/api/racks')
                 .set('Authorization', token)
-                .send(packing_body)
+                .send(rack_body)
         }
 
         beforeEach(async () => {
-            packing_body = {
+            rack_body = {
                 tag: {
                     code: "0001",
                     version: "01",
@@ -175,8 +175,8 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if requeired attributes is not provied', async () => {
-            packing_body.tag.code = ''
-            packing_body.serial = ''
+            rack_body.tag.code = ''
+            rack_body.serial = ''
 
             const res = await exec()
 
@@ -192,7 +192,7 @@ describe('api/packings', () => {
         it('should return 400 if is body is empty', async () => {
             const exec = () => {
                 return request(server)
-                    .post('/api/packings')
+                    .post('/api/racks')
                     .set('Authorization', token)
                     .send({})
             }
@@ -207,7 +207,7 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if is unknow key is provied', async () => {
-            packing_body.test = 'test'
+            rack_body.test = 'test'
 
             const res = await exec()
 
@@ -220,9 +220,9 @@ describe('api/packings', () => {
         it('should return 404 if invalid url is provied', async () => {
             const exec = () => {
                 return request(server)
-                    .post('/api/packingssss')
+                    .post('/api/rackssss')
                     .set('Authorization', token)
-                    .send(packing_body)
+                    .send(rack_body)
             }
 
             const res = await exec()
@@ -231,16 +231,16 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if attributes values above the limits', async () => {
-            packing_body.tag.code = 'asdfasdfasdfasdfasdfasdfas'
-            packing_body.tag.version = 'asdfasdfasdfasdfasdfasdfasasdfa'
-            packing_body.tag.manufactorer = 'asdfasdfasdfasdfasdfasdfasasdfa'
-            packing_body.serial = 'asdfasdfasdfasdfasdfasdfasasdfa'
-            packing_body.weigth = 10001
-            packing_body.width = 10001
-            packing_body.heigth = 10001
-            packing_body.length = 10001
-            packing_body.capacity = 10001
-            packing_body.observations = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfaa'
+            rack_body.tag.code = 'asdfasdfasdfasdfasdfasdfas'
+            rack_body.tag.version = 'asdfasdfasdfasdfasdfasdfasasdfa'
+            rack_body.tag.manufactorer = 'asdfasdfasdfasdfasdfasdfasasdfa'
+            rack_body.serial = 'asdfasdfasdfasdfasdfasdfasasdfa'
+            rack_body.weigth = 10001
+            rack_body.width = 10001
+            rack_body.heigth = 10001
+            rack_body.length = 10001
+            rack_body.capacity = 10001
+            rack_body.observations = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfaa'
 
             const res = await exec()
 
@@ -259,7 +259,7 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if id attributes are invalid', async () => {
-            packing_body.family = "asd"
+            rack_body.family = "asd"
 
             const res = await exec()
 
@@ -270,18 +270,18 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if the attribute types diferent than expected', async () => {
-            packing_body.tag.code = 11
-            packing_body.tag.version = 11
-            packing_body.tag.manufactorer = 11
-            packing_body.serial = 11
-            packing_body.weigth = 'asd'
-            packing_body.width = 'asd'
-            packing_body.length = 'asd'
-            packing_body.heigth = 'asd'
-            packing_body.capacity = 'asd'
-            packing_body.observations = 11
-            packing_body.active = 11
-            packing_body.family = 11
+            rack_body.tag.code = 11
+            rack_body.tag.version = 11
+            rack_body.tag.manufactorer = 11
+            rack_body.serial = 11
+            rack_body.weigth = 'asd'
+            rack_body.width = 'asd'
+            rack_body.length = 'asd'
+            rack_body.heigth = 'asd'
+            rack_body.capacity = 'asd'
+            rack_body.observations = 11
+            rack_body.active = 11
+            rack_body.family = 11
 
             const res = await exec()
 
@@ -303,26 +303,26 @@ describe('api/packings', () => {
         })
     })
 
-    describe('PATCH: /api/packings/:id', () => {
+    describe('PATCH: /api/racks/:id', () => {
         
         const exec = () => {
             return request(server)
-                .patch(`/api/packings/${new_packing._id}`)
+                .patch(`/api/racks/${new_rack._id}`)
                 .set('Authorization', token)
-                .send(packing_body)
+                .send(rack_body)
         }
 
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server)
-                .patch(`/api/packings/1`)
+                .patch(`/api/racks/1`)
                 .set('Authorization', token)
 
             expect(res.status).toBe(404)
         })
 
         it('should return 400 if required attributes is not provied', async () => {
-            packing_body.tag.code = ''
-            packing_body.serial = ''
+            rack_body.tag.code = ''
+            rack_body.serial = ''
 
             const res = await exec()
 
@@ -344,7 +344,7 @@ describe('api/packings', () => {
         it('should return 400 if is body is empty', async () => {
             const exec = () => {
                 return request(server)
-                    .patch(`/api/packings/${new_packing._id}`)
+                    .patch(`/api/racks/${new_rack._id}`)
                     .set('Authorization', token)
                     .send({})
             }
@@ -359,7 +359,7 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if is unknow key is provied', async () => {
-            packing_body.test = 'test'
+            rack_body.test = 'test'
 
             const res = await exec()
 
@@ -372,9 +372,9 @@ describe('api/packings', () => {
         it('should return 404 if invalid url is provied', async () => {
             const exec = () => {
                 return request(server)
-                    .post('/api/packingssss')
+                    .post('/api/rackssss')
                     .set('Authorization', token)
-                    .send(packing_body)
+                    .send(rack_body)
             }
 
             const res = await exec()
@@ -383,16 +383,16 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if attributes values above the limits', async () => {
-            packing_body.tag.code = 'asdfasdfasdfasdfasdfasdfas'
-            packing_body.tag.version = 'asdfasdfasdfasdfasdfasdfasasdfa'
-            packing_body.tag.manufactorer = 'asdfasdfasdfasdfasdfasdfasasdfa'
-            packing_body.serial = 'asdfasdfasdfasdfasdfasdfasasdfa'
-            packing_body.weigth = 10001
-            packing_body.width = 10001
-            packing_body.heigth = 10001
-            packing_body.length = 10001
-            packing_body.capacity = 10001
-            packing_body.observations = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfaa'
+            rack_body.tag.code = 'asdfasdfasdfasdfasdfasdfas'
+            rack_body.tag.version = 'asdfasdfasdfasdfasdfasdfasasdfa'
+            rack_body.tag.manufactorer = 'asdfasdfasdfasdfasdfasdfasasdfa'
+            rack_body.serial = 'asdfasdfasdfasdfasdfasdfasasdfa'
+            rack_body.weigth = 10001
+            rack_body.width = 10001
+            rack_body.heigth = 10001
+            rack_body.length = 10001
+            rack_body.capacity = 10001
+            rack_body.observations = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfaa'
 
             const res = await exec()
 
@@ -411,7 +411,7 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if id attributes are invalid', async () => {
-            packing_body.family = "asd"
+            rack_body.family = "asd"
 
             const res = await exec()
 
@@ -422,18 +422,18 @@ describe('api/packings', () => {
         })
 
         it('should return 400 if the attribute types diferent than expected', async () => {
-            packing_body.tag.code = 11
-            packing_body.tag.version = 11
-            packing_body.tag.manufactorer = 11
-            packing_body.serial = 11
-            packing_body.weigth = 'asd'
-            packing_body.width = 'asd'
-            packing_body.length = 'asd'
-            packing_body.heigth = 'asd'
-            packing_body.capacity = 'asd'
-            packing_body.observations = 11
-            packing_body.active = 11
-            packing_body.family = 11
+            rack_body.tag.code = 11
+            rack_body.tag.version = 11
+            rack_body.tag.manufactorer = 11
+            rack_body.serial = 11
+            rack_body.weigth = 'asd'
+            rack_body.width = 'asd'
+            rack_body.length = 'asd'
+            rack_body.heigth = 'asd'
+            rack_body.capacity = 'asd'
+            rack_body.observations = 11
+            rack_body.active = 11
+            rack_body.family = 11
 
             const res = await exec()
 
@@ -455,11 +455,11 @@ describe('api/packings', () => {
         })
     })
 
-    describe('DELETE: /api/packings/:id', () => {
+    describe('DELETE: /api/racks/:id', () => {
 
         let exec = () => {
             return request(server)
-                .delete(`/api/packings/${new_packing._id}`)
+                .delete(`/api/racks/${new_rack._id}`)
                 .set('Authorization', token)
         }
 
@@ -475,13 +475,13 @@ describe('api/packings', () => {
             const res = await exec()
 
             expect(res.status).toBe(400)
-            expect(res.body.message).toBe('Invalid packing')
+            expect(res.body.message).toBe('Invalid rack')
         })
 
         it('should return 404 if url invalid is provied', async () => {
             exec = () => {
                 return request(server)
-                    .delete(`/api/packingsss/${new_packing._id}`)
+                    .delete(`/api/racksss/${new_rack._id}`)
                     .set('Authorization', token)
             }
 
@@ -493,7 +493,7 @@ describe('api/packings', () => {
         it('should return 404 if invalid id is provied', async () => {
             exec = () => {
                 return request(server)
-                    .delete(`/api/packings/aa`)
+                    .delete(`/api/racks/aa`)
                     .set('Authorization', token)
             }
 
@@ -505,7 +505,7 @@ describe('api/packings', () => {
         it('should return 404 if id is not provied', async () => {
             exec = () => {
                 return request(server)
-                    .delete(`/api/packings/`)
+                    .delete(`/api/racks/`)
                     .set('Authorization', token)
             }
 

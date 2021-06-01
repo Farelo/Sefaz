@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
-import { InventoryService, PackingService, AuthenticationService, InventoryLogisticService, FamiliesService, ReportsService, ControlPointTypesService } from '../../../servicos/index.service';
-import { AbscenseModalComponent } from '../../../shared/modal-packing-absence/abscense.component';
+import { InventoryService, RackService, AuthenticationService, InventoryLogisticService, FamiliesService, ReportsService, ControlPointTypesService } from '../../../servicos/index.service';
+import { AbscenseModalComponent } from '../../../shared/modal-rack-absence/abscense.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { FloatTimePipe } from '../../../shared/pipes/floatTime';
-import { LayerModalComponent } from 'app/shared/modal-packing/layer.component';
+import { LayerModalComponent } from 'app/shared/modal-rack/layer.component';
 import 'jspdf';
 import 'jspdf-autotable';
 declare var jsPDF: any;
@@ -171,23 +171,23 @@ export class InventarioAusenciaComponent implements OnInit {
   }
 
 
-  openAbsence(packing) {
+  openAbsence(rack) {
     // const modalRef = this.modalService.open(AbscenseModalComponent, { backdrop: "static", size: "lg" });
-    // modalRef.componentInstance.packing = packing;
+    // modalRef.componentInstance.rack = rack;
     const modalRef = this.modalService.open(LayerModalComponent, {
       backdrop: 'static',
       size: 'lg',
       windowClass: 'modal-xl',
     });
     
-    console.log(packing);
+    console.log(rack);
 
-    packing.tag = packing.tag;
-    packing.family_code = packing.family.code;
+    rack.tag = rack.tag;
+    rack.family_code = rack.family.code;
     
-    //packing.current_control_point_name = packing.last_event_record.control_point.name ? packing.last_event_record.control_point.name : '';
+    //rack.current_control_point_name = rack.last_event_record.control_point.name ? rack.last_event_record.control_point.name : '';
     
-    modalRef.componentInstance.packing = packing;
+    modalRef.componentInstance.rack = rack;
   }
  /**
    * 

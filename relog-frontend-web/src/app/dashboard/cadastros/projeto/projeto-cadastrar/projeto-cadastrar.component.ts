@@ -40,7 +40,7 @@ export class ProjetoCadastrarComponent implements OnInit {
   public validateNotTakenLoading: boolean;
   validateName(event: any) {
 
-    //console.log(this.mPacking.get('tag.code').value);
+    //console.log(this.mRack.get('tag.code').value);
 
     if (!this.mProject.get('name').errors) {
 

@@ -103,7 +103,7 @@ export class GeralComponent implements OnInit {
             a1: obj.family.code,
             a2: obj.family.company.name,
             a3: obj.project_name == null ? 'Sem projeto' :  obj.project_name,
-            a4: (obj.packings_quantity >= 0) ? obj.packings_quantity : '-',
+            a4: (obj.racks_quantity >= 0) ? obj.racks_quantity : '-',
           };
         });
       

@@ -1,6 +1,6 @@
 const debug = require("debug")("model:button");
 const mongoose = require("mongoose");
-const { Packing } = require("./packings.model");
+const { Rack} = require("./racks.model");
 
 const buttonSchema = new mongoose.Schema({
    tag: {
@@ -27,11 +27,11 @@ const buttonSchema = new mongoose.Schema({
 
 buttonSchema.index({ tag: 1, timestamp: -1 }, { unique: true });
 
-const createMany = async (packing, buttonArray) => {
+const createMany = async (rack, buttonArray) => {
    for (const [index, button] of buttonArray.entries()) {
       try {
          const newButton = new Button({
-            tag: packing.tag.code,
+            tag: rack.tag.code,
             date: new Date(button.date),
             timestamp: button.timestamp,
             detector_switch: button.detector_switch
@@ -42,20 +42,20 @@ const createMany = async (packing, buttonArray) => {
          if (index == 0) {
             await newButton
                .save()
-               .then((doc) => referenceFromPackage(packing, doc))
+               .then((doc) => referenceFromPackage(rack, doc))
                .catch((err) => debug(err));
          } else {
             await newButton.save();
          }
       } catch (error) {
-         debug(`Erro ao salvar a Detector Switch do device ${packing.tag.code} | ${error}`);
+         debug(`Erro ao salvar a Detector Switch do device ${rack.tag.code} | ${error}`);
       }
    }
 };
 
-const referenceFromPackage = async (packing, doc) => {
+const referenceFromPackage = async (rack, doc) => {
    try {
-      await Packing.findByIdAndUpdate(packing._id, { last_detector_switch: doc._id }, { new: true });
+      await Rack.findByIdAndUpdate(rack._id, { last_detector_switch: doc._id }, { new: true });
    } catch (error) {
       debug(error);
    }

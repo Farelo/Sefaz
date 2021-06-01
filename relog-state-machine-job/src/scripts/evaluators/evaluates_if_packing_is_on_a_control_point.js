@@ -3,30 +3,30 @@ const turf = require("@turf/turf");
 const martinez = require("martinez-polygon-clipping");
 const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_in_km");
 const { EventRecord } = require("../../models/event_record.model");
-const { Packing } = require("../../models/packings.model");
+const { Rack } = require("../../models/racks.model");
 
-const getLastPosition = (packing) => {
-   if (packing.last_position) return packing.last_position;
+const getLastPosition = (rack) => {
+   if (rack.last_position) return rack.last_position;
    return null;
 };
 
-module.exports = async (packing, controlPoints, settings) => {
+module.exports = async (rack, controlPoints, settings) => {
    try {
-      // console.log(packing);
+      // console.log(rack);
 
       let _result = null;
 
       // Se já teve event_record
-      if (packing.last_event_record) {
+      if (rack.last_event_record) {
          //Se o último evento foi INBOUND
-         if (packing.last_event_record.type == "inbound") {
+         if (rack.last_event_record.type == "inbound") {
             // console.log(" inbound 1");
             //recupera o ponto de controle em que estava e testa se o device continua incluído nele
             let controlPointToTest = controlPoints.find(
-               (elem) => elem._id.toString() == packing.last_event_record.control_point.toString()
+               (elem) => elem._id.toString() == rack.last_event_record.control_point.toString()
             );
 
-            let controlPointToTestFound = await testOneControlPoint(packing, controlPointToTest, settings);
+            let controlPointToTestFound = await testOneControlPoint(rack, controlPointToTest, settings);
             // console.log("controlPointToTestFound", !!controlPointToTestFound ? controlPointToTestFound.cp.name : controlPointToTestFound);
 
             // se CONTINUA no mesmo ponto de controle
@@ -38,49 +38,49 @@ module.exports = async (packing, controlPoints, settings) => {
                // se NÃO CONTINUA no mesmo ponto de controle:
                // Procura algum PC
                // console.log("procurando novo");
-               let actualControlPointFound = await findActualControlPoint(packing, controlPoints, settings);
+               let actualControlPointFound = await findActualControlPoint(rack, controlPoints, settings);
                // console.log("actualControlPointFound", actualControlPointFound)
 
                if (actualControlPointFound) {
                   // console.log("achou ", actualControlPointFound.cp._id);
                   // Se encontrou um novo PC e o sinal é elegível para entrada
                   //sai do PC anterior e entra no novo
-                  if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
-                     // console.log("creation 1. last type:", packing.last_event_record ? packing.last_event_record.type : "nulo");
-                     await createOutbound(packing, controlPoints);
-                     await createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
+                  if (getLastPosition(rack).accuracy <= settings.accuracy_limit) {
+                     // console.log("creation 1. last type:", rack.last_event_record ? rack.last_event_record.type : "nulo");
+                     await createOutbound(rack, controlPoints);
+                     await createInbound(rack, actualControlPointFound.cp, actualControlPointFound.distance);
 
                      _result = actualControlPointFound.cp;
                   } else {
                      //saiu do PC, achou outro, mas não tem sinal bom o suficiente
-                     await createOutbound(packing, controlPoints);
+                     await createOutbound(rack, controlPoints);
                   }
                   // else não é elegível
                } else {
                   // console.log("não achou. está fora de PC");
                   // Se não encontrou um novo PC então sai do que estava
-                  // console.log("creation 2. last type:", packing.last_event_record ? packing.last_event_record.type : "nulo");
-                  await createOutbound(packing, controlPoints); //Não se encontra em nenhum ponto de controle
+                  // console.log("creation 2. last type:", rack.last_event_record ? rack.last_event_record.type : "nulo");
+                  await createOutbound(rack, controlPoints); //Não se encontra em nenhum ponto de controle
                }
             }
          }
 
          //Se o último evento foi OUTBOUND
-         if (packing.last_event_record.type === "outbound") {
+         if (rack.last_event_record.type === "outbound") {
             // console.log("outbound 2");
             //Procura algum PC
 
             // console.log("procurando");
-            let actualControlPointFound = await findActualControlPoint(packing, controlPoints, settings);
+            let actualControlPointFound = await findActualControlPoint(rack, controlPoints, settings);
             // console.log("resultado", actualControlPointFound ? actualControlPointFound._id : null);
 
             if (actualControlPointFound) {
                // Se encontrou um novo PC e o sinal é elegível para entrada
                //sai do PC anterior e entra no novo
-               if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
+               if (getLastPosition(rack).accuracy <= settings.accuracy_limit) {
                   // É elegível
-                  // console.log("creation 3. last type:", packing.last_event_record ? packing.last_event_record.type : "nulo");
-                  await createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
+                  // console.log("creation 3. last type:", rack.last_event_record ? rack.last_event_record.type : "nulo");
+                  await createInbound(rack, actualControlPointFound.cp, actualControlPointFound.distance);
                   _result = actualControlPointFound.cp;
                }
             }
@@ -88,14 +88,14 @@ module.exports = async (packing, controlPoints, settings) => {
       } else {
          // Se nunca teve event_record
          //Procura algum PC
-         if (getLastPosition(packing)) {
-            let actualControlPointFound = await findActualControlPoint(packing, controlPoints, settings);
+         if (getLastPosition(rack)) {
+            let actualControlPointFound = await findActualControlPoint(rack, controlPoints, settings);
             if (actualControlPointFound) {
                // Se encontrou um novo PC e o sinal é elegível para entrada
                //sai do PC anterior e entra no novo
-               if (getLastPosition(packing).accuracy <= settings.accuracy_limit) {
-                  // console.log("creation 4. last type:", packing.last_event_record ? packing.last_event_record.type : "nulo");
-                  await createInbound(packing, actualControlPointFound.cp, actualControlPointFound.distance);
+               if (getLastPosition(rack).accuracy <= settings.accuracy_limit) {
+                  // console.log("creation 4. last type:", rack.last_event_record ? rack.last_event_record.type : "nulo");
+                  await createInbound(rack, actualControlPointFound.cp, actualControlPointFound.distance);
                   _result = actualControlPointFound.cp;
                }
             }
@@ -109,20 +109,20 @@ module.exports = async (packing, controlPoints, settings) => {
    }
 };
 
-const testOneControlPoint = async (packing, controlPoint, settings) => {
+const testOneControlPoint = async (rack, controlPoint, settings) => {
    let result = null;
 
-   // console.log("testOneControlPoint", packing._id, controlPoint._id);
+   // console.log("testOneControlPoint", rack._id, controlPoint._id);
 
    if (controlPoint.geofence.type == "c") {
-      myActualControlPoint = await findCircularIntersection(packing, [controlPoint], settings);
+      myActualControlPoint = await findCircularIntersection(rack, [controlPoint], settings);
       if (myActualControlPoint) {
          result = myActualControlPoint;
       }
    }
 
    if (controlPoint.geofence.type == "p") {
-      myActualControlPoint = await findPolygonalIntersection(packing, [controlPoint], settings);
+      myActualControlPoint = await findPolygonalIntersection(rack, [controlPoint], settings);
       if (myActualControlPoint) {
          result = myActualControlPoint;
       }
@@ -132,17 +132,17 @@ const testOneControlPoint = async (packing, controlPoint, settings) => {
    return result;
 };
 
-const findActualControlPoint = async (packing, allControlPoints, settings) => {
+const findActualControlPoint = async (rack, allControlPoints, settings) => {
    /**
     * Ao encontrar intersecção poligonal, já assume o dispositivo como incluso.
     * Ponto de controle circular tem que buscar aquele que possui a menor distância.
     */
 
-   if (getLastPosition(packing)) {
+   if (getLastPosition(rack)) {
       let myActualControlPoint = null;
 
       let polygonalControlPoints = allControlPoints.filter((elem) => elem.geofence.type == "p");
-      myActualControlPoint = await findPolygonalIntersection(packing, polygonalControlPoints, settings);
+      myActualControlPoint = await findPolygonalIntersection(rack, polygonalControlPoints, settings);
 
       if (myActualControlPoint) {
          // Polygonal control point found
@@ -151,7 +151,7 @@ const findActualControlPoint = async (packing, allControlPoints, settings) => {
          //Try circular controlPoints
          let circularControlPoints = allControlPoints.filter((elem) => elem.geofence.type == "c");
 
-         myActualControlPoint = await findCircularIntersection(packing, circularControlPoints, settings);
+         myActualControlPoint = await findCircularIntersection(rack, circularControlPoints, settings);
 
          if (myActualControlPoint) {
             return myActualControlPoint;
@@ -164,14 +164,14 @@ const findActualControlPoint = async (packing, allControlPoints, settings) => {
 
 /**
  * Return the { cp: controlPointFoundObject, distance: smallerDistanceFound } object if a intersection exists or null if no intersection was found.
- * @param {*} packing
+ * @param {*} rack
  * @param {*} allControlPoints
  */
-const findPolygonalIntersection = async (packing, allControlPoints) => {
+const findPolygonalIntersection = async (rack, allControlPoints) => {
    let intersectionsWithCP = [];
 
    allControlPoints.forEach((controlPointToTest) => {
-      const { cp, area } = intersectionpoly(packing, controlPointToTest);
+      const { cp, area } = intersectionpoly(rack, controlPointToTest);
       if (cp) intersectionsWithCP.push({ cp, area });
    });
 
@@ -188,22 +188,22 @@ const findPolygonalIntersection = async (packing, allControlPoints) => {
 
 /**
  * Return the { cp: controlPointFoundObject, distance: smallerDistanceFound } object if a intersection exists or null if no intersection was found.
- * @param {*} packing
+ * @param {*} rack
  * @param {*} allControlPoints
  */
-const findCircularIntersection = async (packing, allControlPoints) => {
+const findCircularIntersection = async (rack, allControlPoints) => {
    let myActualControlPoint = null;
    let smallerDistance = Infinity;
 
    allControlPoints.forEach((controlPointToTest) => {
       const calculatedDistance = getDistanceFromLatLonInKm(
-         getLastPosition(packing).latitude,
-         getLastPosition(packing).longitude,
+         getLastPosition(rack).latitude,
+         getLastPosition(rack).longitude,
          controlPointToTest.geofence.coordinates[0].lat,
          controlPointToTest.geofence.coordinates[0].lng
       );
 
-      if (calculatedDistance <= controlPointToTest.geofence.radius + getLastPosition(packing).accuracy) {
+      if (calculatedDistance <= controlPointToTest.geofence.radius + getLastPosition(rack).accuracy) {
          if (calculatedDistance < smallerDistance) {
             smallerDistance = calculatedDistance;
             myActualControlPoint = controlPointToTest;
@@ -217,47 +217,47 @@ const findCircularIntersection = async (packing, allControlPoints) => {
 
 /**
  * Creates a new EventRecord register in the database
- * @param {*} packing  The avaluated packing.
- * @param {*} currentControlPoint The control point that the packing are located in.
+ * @param {*} rack  The avaluated rack.
+ * @param {*} currentControlPoint The control point that the rack are located in.
  * @param {*} distance The distance to the controlpoint in case it has a circular geofence.
  */
-const createInbound = async (packing, currentControlPoint, distance) => {
+const createInbound = async (rack, currentControlPoint, distance) => {
    const eventRecord = new EventRecord({
-      packing: packing._id,
+      rack: rack._id,
       control_point: currentControlPoint._id,
       distance_km: distance,
-      accuracy: getLastPosition(packing).accuracy,
+      accuracy: getLastPosition(rack).accuracy,
       type: "inbound",
-      device_data_id: getLastPosition(packing)._id,
-      created_at: getLastPosition(packing).date,
+      device_data_id: getLastPosition(rack)._id,
+      created_at: getLastPosition(rack).date,
    });
 
-   // console.log("inbound", packing._id, eventRecord._id, currentControlPoint._id, getLastPosition(packing)._id);
+   // console.log("inbound", rack._id, eventRecord._id, currentControlPoint._id, getLastPosition(rack)._id);
    await eventRecord.save();
-   await Packing.findOneAndUpdate({ _id: packing._id }, { last_event_record: eventRecord._id });
+   await Rack.findOneAndUpdate({ _id: rack._id }, { last_event_record: eventRecord._id });
 };
 
-const createOutbound = async (packing, allControlPoints) => {
+const createOutbound = async (rack, allControlPoints) => {
    const eventRecord = new EventRecord({
-      packing: packing._id,
-      control_point: packing.last_event_record.control_point._id,
-      distance_km: packing.last_event_record.distance_km,
-      accuracy: getLastPosition(packing).accuracy,
+      rack: rack._id,
+      control_point: rack.last_event_record.control_point._id,
+      distance_km: rack.last_event_record.distance_km,
+      accuracy: getLastPosition(rack).accuracy,
       type: "outbound",
-      device_data_id: getLastPosition(packing)._id,
-      created_at: getLastPosition(packing).date,
+      device_data_id: getLastPosition(rack)._id,
+      created_at: getLastPosition(rack).date,
    });
 
-   // console.log("outbound", packing.last_event_record.control_point._id, getLastPosition(packing)._id);
+   // console.log("outbound", rack.last_event_record.control_point._id, getLastPosition(rack)._id);
    await eventRecord.save();
-   await Packing.findOneAndUpdate({ _id: packing._id }, { last_event_record: eventRecord._id });
+   await Rack.findOneAndUpdate({ _id: rack._id }, { last_event_record: eventRecord._id });
 
    //Updating last_owner_supplier attribute
    const CPOwnerSupplier = allControlPoints.filter(isOwnerOrSupplier);
-   const packingIsOk = CPOwnerSupplier.filter((cp) => isAbsent(cp, packing.last_event_record.control_point));
+   const rackIsOk = CPOwnerSupplier.filter((cp) => isAbsent(cp, rack.last_event_record.control_point));
 
-   if (packingIsOk.length) {
-      await Packing.findOneAndUpdate({ _id: packing._id }, { last_owner_supplier: eventRecord._id });
+   if (rackIsOk.length) {
+      await Rack.findOneAndUpdate({ _id: rack._id }, { last_owner_supplier: eventRecord._id });
    }
 };
 
@@ -266,7 +266,7 @@ const mLog = (mText) => {
    if (idAbleToLog) console.log(mText);
 };
 
-const intersectionpoly = (packing, controlPoint) => {
+const intersectionpoly = (rack, controlPoint) => {
    try {
       //criar polígono da planta
       let coordinates = controlPoint.geofence.coordinates;
@@ -316,22 +316,22 @@ const intersectionpoly = (packing, controlPoint) => {
 
          controlPointPolygonArray.forEach((mPolygon) => {
             //criar polígono da embalagem
-            let center = [getLastPosition(packing).longitude, getLastPosition(packing).latitude];
-            let radius = getLastPosition(packing).accuracy;
+            let center = [getLastPosition(rack).longitude, getLastPosition(rack).latitude];
+            let radius = getLastPosition(rack).accuracy;
             let options = { steps: 64, units: "meters" };
 
-            let packingPolygon = turf.circle(center, radius, options);
+            let rackPolygon = turf.circle(center, radius, options);
 
             // checar intersecção parcial
             // console.log("mPolygon", JSON.stringify(mPolygon));
 
             let intersectionMartinez = martinez.intersection(
                mPolygon.geometry.coordinates,
-               packingPolygon.geometry.coordinates
+               rackPolygon.geometry.coordinates
             );
 
-            // Packing AND polygon in the same gson
-            // let geoJson = packingPolygon;
+            // Rack AND polygon in the same gson
+            // let geoJson = rackPolygon;
             // geoJson.geometry.coordinates.push(mPolygon.geometry.coordinates[0]); 
             // console.log("\n1 geojson: ", JSON.stringify(geoJson));
 
@@ -354,27 +354,27 @@ const intersectionpoly = (packing, controlPoint) => {
          // mLog(JSON.stringify(unkinkControlPointPolygon))
 
          //criar polígono da embalagem
-         let center = [getLastPosition(packing).longitude, getLastPosition(packing).latitude];
-         let radius = getLastPosition(packing).accuracy;
+         let center = [getLastPosition(rack).longitude, getLastPosition(rack).latitude];
+         let radius = getLastPosition(rack).accuracy;
          let options = { steps: 64, units: "meters" };
 
          //mLog(center, radius)
-         let packingPolygon = turf.circle(center, radius, options);
+         let rackPolygon = turf.circle(center, radius, options);
          //mLog('c: ')
-         //mLog(JSON.stringify(packingPolygon))
+         //mLog(JSON.stringify(rackPolygon))
 
          //checar intersecção
-         // let intersection = turf.intersect(controlPointPolygon, packingPolygon);
+         // let intersection = turf.intersect(controlPointPolygon, rackPolygon);
          let intersectionMartinez = martinez.intersection(
             controlPointPolygon.geometry.coordinates,
-            packingPolygon.geometry.coordinates
+            rackPolygon.geometry.coordinates
          );
 
          //checar inclusão total
-         // let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
+         // let contained = turf.booleanContains(controlPointPolygon, rackPolygon);
 
          // mLog(' ')
-         // mLog('i: ', packing.tag.code)
+         // mLog('i: ', rack.tag.code)
          // if(intersection !== null || intersectionMartinez !== null || contained !== false) {
          // }
 
@@ -389,7 +389,7 @@ const intersectionpoly = (packing, controlPoint) => {
          else return { cp: null, area: 0 };
       }
    } catch (error) { 
-      console.log(packing._id, packing.last_position._id, controlPoint._id);
+      console.log(rack._id, rack.last_position._id, controlPoint._id);
       throw new Error(error);
    }
 };

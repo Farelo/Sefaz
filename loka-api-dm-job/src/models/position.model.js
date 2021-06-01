@@ -1,6 +1,6 @@
 const debug = require("debug")("model:position");
 const mongoose = require("mongoose");
-const { Packing } = require("./packings.model");
+const { Rack } = require("./racks.model");
 
 const positionSchema = new mongoose.Schema({
    tag: {
@@ -38,13 +38,13 @@ const positionSchema = new mongoose.Schema({
 
 positionSchema.index({ tag: 1, timestamp: -1 }, { unique: true });
 
-const createMany = async (packing, positionArray) => {
+const createMany = async (rack, positionArray) => {
    let firstSaved = true;
    for (const [index, position] of positionArray.entries()) {
       if (position.accuracy <= 32000) {
          try {
             const newPosition = new Position({
-               tag: packing.tag.code,
+               tag: rack.tag.code,
                date: new Date(position.timestamp * 1000),
                timestamp: position.timestamp,
                last_communication: new Date(position.terminal.lastCommunicationString),
@@ -60,21 +60,21 @@ const createMany = async (packing, positionArray) => {
                firstSaved = false;
                await newPosition
                   .save()
-                  .then((newDoc) => referenceFromPackage(packing, newDoc))
+                  .then((newDoc) => referenceFromPackage(rack, newDoc))
                   .catch((err) => debug(err));
             } else {
                await newPosition.save();
             }
          } catch (error) {
-            debug(`Erro ao salvar a posição do device ${packing.tag.code} | ${error}`);
+            debug(`Erro ao salvar a posição do device ${rack.tag.code} | ${error}`);
          }
       }
    }
 };
 
-const referenceFromPackage = async (packing, position) => {
+const referenceFromPackage = async (rack, position) => {
    try {
-      await Packing.findByIdAndUpdate(packing._id, { last_position: position._id }, { new: true });
+      await Rack.findByIdAndUpdate(rack._id, { last_position: position._id }, { new: true });
    } catch (error) {
       debug(error);
    }

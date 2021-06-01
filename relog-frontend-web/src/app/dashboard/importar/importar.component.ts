@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import * as Handsontable from 'handsontable/dist/handsontable.full.js';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DepartmentService, RoutesService, PackingService, ToastService, PlantsService, ProjectService, TagsService, ImportService, ControlPointsService, CompaniesService } from '../../servicos/index.service';
+import { DepartmentService, RoutesService, RackService, ToastService, PlantsService, ProjectService, TagsService, ImportService, ControlPointsService, CompaniesService } from '../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 declare var $: any;
 
@@ -25,7 +25,7 @@ export class ImportarComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private importService: ImportService,
-    private packingService: PackingService,
+    private rackService: RackService,
     private companyService: CompaniesService,
     private controlPoints: ControlPointsService, 
     private toastService: ToastService,
@@ -41,7 +41,7 @@ export class ImportarComponent implements OnInit {
   remove() {
     this.import['controls'].type.setValue("Escolha");
 
-    this.file.delete('packing_xlsx');
+    this.file.delete('rack_xlsx');
     this.file.delete('control_point_xlsx');
     this.file.delete('company_xlsx');
     
@@ -69,13 +69,13 @@ export class ImportarComponent implements OnInit {
     this.send = false;
 
     //clear the formdata
-    this.file.delete('packing_xlsx');
+    this.file.delete('rack_xlsx');
     this.file.delete('control_point_xlsx');
     this.file.delete('company_xlsx');
 
     switch (this.import['controls'].type.value) {
       case 'Embalagens':
-        this.file.append('packing_xlsx', this.upFile);
+        this.file.append('rack_xlsx', this.upFile);
         break;
 
       case 'Pontos de Controle':
@@ -93,7 +93,7 @@ export class ImportarComponent implements OnInit {
     if (valid) {
       switch (value.type) {
         case 'Embalagens':
-          this.sendPackings();
+          this.sendRacks();
           break;
 
         case 'Pontos de Controle':
@@ -108,8 +108,8 @@ export class ImportarComponent implements OnInit {
   }
 
 
-  sendPackings() {
-    this.importService.sendDataToImportPacking(this.file).subscribe(res => {
+  sendRacks() {
+    this.importService.sendDataToImportRack(this.file).subscribe(res => {
       this.send = true;
       this.importResult = res;
     }, err => this.toastService.errorArray(err));
@@ -137,7 +137,7 @@ export class ImportarComponent implements OnInit {
 
     switch (this.import['controls'].type.value) {
       case 'Embalagens':
-        this.packingService.createPackingArray(this.importResult.to_register).subscribe(result => { 
+        this.rackService.createRackArray(this.importResult.to_register).subscribe(result => { 
           this.send = false; 
           this.toastService.successArray('', 'Embalagens') 
         }, err => this.toastService.errorArray(err));
