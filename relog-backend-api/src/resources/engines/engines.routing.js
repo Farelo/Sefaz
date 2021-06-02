@@ -221,9 +221,9 @@ module.exports = router
  *         type: string
  *       part_number:
  *         type: string
- *       id_rack_transport:
+ *       id_rack:
  *         type: string
- *       engine_type:
+ *       id_engine_type:
  *         type: string
  *       model:
  *         type: string

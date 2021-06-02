@@ -5,30 +5,19 @@ const { Route } = require('../routes/routes.model')
 
 exports.get_engine_types = async (code) => {
     try {
-        if (!code) return await Family.find().populate('name', ['_id', 'name'])
+        if (!code) return await Project.find()
 
-        const data = await Family.findByCode(code)
+        const data = await Project.findByName(code)
         return data ? [data] : []
     } catch (error) {
         throw new Error(error)
     }
 }
 
-exports.get_engine_type = async (id) => {
+exports.get_engine_types = async (id) => {
     try {
-        let engine_type = await Engine_type
+        const engine_type = await Engine_type
             .findById(id)
-            .populate('name', ['_id', 'name'])
-            
-            
-
-            engine_type.routes = await Promise.all(
-            engine_type.routes.map(async route => {
-                const temp_route = await Route.findById(route).populate('first_point').populate('second_point')
-                return temp_route
-            })
-        )
-
         return engine_type
     } catch (error) {
         throw new Error(error)
@@ -37,7 +26,7 @@ exports.get_engine_type = async (id) => {
 
 exports.find_by_code = async (code) => {
     try {
-        const engine_type = await Engine_type.findByCode(code)
+        const engine_type = await Engine_types.findByCode(code)
         return engine_type
     } catch (error) {
         throw new Error(error)

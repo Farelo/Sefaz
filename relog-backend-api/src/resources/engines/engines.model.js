@@ -28,6 +28,11 @@ const engineSchema = new mongoose.Schema({
         minlength: 0,
         maxlength: 100,
     },
+    production_date:{
+        type: Date,
+        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/,
+        example: "2019-05-17",
+    },
     
     observations: {
         type: String,
@@ -45,9 +50,9 @@ const engineSchema = new mongoose.Schema({
         required: true
     },
     
-    id_rack_transport: {
+    id_rack: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Rack_Transport',
+        ref: 'Rack',
         required: true
     },
     
@@ -64,7 +69,7 @@ const validate_engines = (engine) => {
         observations: Joi.string().min(0).max(250).allow(''),
         active: Joi.boolean(),
         id_engine_type: Joi.objectId().required(),
-        id_rack_transport: Joi.objectId().required()
+        id_rack: Joi.objectId().required()
     })
 
     return Joi.validate(engine, schema, { abortEarly: false })

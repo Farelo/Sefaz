@@ -316,6 +316,9 @@ module.exports = router
  *         type: number
  *       heigth:
  *         type: number
+ *       fabrication_date
+ *         type: date
+ *         pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
  *       length:
  *         type: number
  *       capacity:
