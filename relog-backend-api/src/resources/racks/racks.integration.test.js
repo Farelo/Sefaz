@@ -82,6 +82,7 @@ describe('api/racks', () => {
                     heigth: 10,
                     length: 10,
                     capacity: 10,
+                    fabrication_date: "2019-05-17",
                     observations: "teste",
                     active: true,
                     family: new_family._id
@@ -98,6 +99,7 @@ describe('api/racks', () => {
                     heigth: 10,
                     length: 10,
                     capacity: 10,
+                    fabrication_date: "2019-05-17",
                     observations: "teste",
                     active: true,
                     family: new_family._id
@@ -242,6 +244,7 @@ describe('api/racks', () => {
             rack_body.heigth = 10001
             rack_body.length = 10001
             rack_body.capacity = 10001
+            rack_body.fabrication_date = 10000001
             rack_body.observations = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfaa'
 
             const res = await exec()
@@ -256,7 +259,8 @@ describe('api/racks', () => {
                 "\"width\" must be less than or equal to 10000",
                 "\"heigth\" must be less than or equal to 10000",
                 "\"length\" must be less than or equal to 10000",
-                "\"capacity\" must be less than or equal to 10000"
+                "\"capacity\" must be less than or equal to 10000",
+                "\"fabrication_date\" must be less than or equal to current date"
             ])
         })
 
@@ -281,6 +285,7 @@ describe('api/racks', () => {
             rack_body.length = 'asd'
             rack_body.heigth = 'asd'
             rack_body.capacity = 'asd'
+            rack_body.fabrication_date = "20051"
             rack_body.observations = 11
             rack_body.active = 11
             rack_body.family = 11
@@ -298,6 +303,7 @@ describe('api/racks', () => {
                 "\"heigth\" must be a number",
                 "\"length\" must be a number",
                 "\"capacity\" must be a number",
+                "\"fabrication_date\" must be a date",
                 "\"observations\" must be a string",
                 "\"active\" must be a boolean",
                 "\"family\" must be a string"
@@ -394,6 +400,7 @@ describe('api/racks', () => {
             rack_body.heigth = 10001
             rack_body.length = 10001
             rack_body.capacity = 10001
+            rack_body.fabrication_date = 10000001
             rack_body.observations = 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfaa'
 
             const res = await exec()
@@ -408,7 +415,8 @@ describe('api/racks', () => {
                 "\"width\" must be less than or equal to 10000",
                 "\"heigth\" must be less than or equal to 10000",
                 "\"length\" must be less than or equal to 10000",
-                "\"capacity\" must be less than or equal to 10000"
+                "\"capacity\" must be less than or equal to 10000",
+                "\"fabrication_date\" must be less than or equal to current date"
             ])
         })
 
@@ -433,6 +441,7 @@ describe('api/racks', () => {
             rack_body.length = 'asd'
             rack_body.heigth = 'asd'
             rack_body.capacity = 'asd'
+            rack_body.fabrication_date = "20051"
             rack_body.observations = 11
             rack_body.active = 11
             rack_body.family = 11
@@ -450,6 +459,7 @@ describe('api/racks', () => {
                 "\"heigth\" must be a number",
                 "\"length\" must be a number",
                 "\"capacity\" must be a number",
+                "\"fabrication_date\" must be a date",
                 "\"observations\" must be a string",
                 "\"active\" must be a boolean",
                 "\"family\" must be a string"
@@ -483,7 +493,7 @@ describe('api/racks', () => {
         it('should return 404 if url invalid is provied', async () => {
             exec = () => {
                 return request(server)
-                    .delete(`/api/racksss/${new_rack._id}`)
+                    .delete(`/api/racks/${new_rack._id}`)
                     .set('Authorization', token)
             }
 
