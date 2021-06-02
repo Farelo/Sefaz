@@ -49,6 +49,7 @@ describe('api/racks', () => {
             heigth: 10,
             length: 10,
             capacity: 10,
+            fabrication_date: "2019-05-17",
             observations: "teste",
             active: true,
             family: new_family._id
@@ -168,6 +169,7 @@ describe('api/racks', () => {
                 heigth: 10,
                 length: 10,
                 capacity: 10,
+                fabrication_date: "2019-05-17",
                 observations: "teste",
                 active: true,
                 family: new_family._id
