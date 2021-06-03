@@ -44,4 +44,4 @@ const Engine_type = mongoose.model('Engine_type', engine_typeSchema)
 
 exports.Engine_type = Engine_type
 exports.engine_typeSchema = engine_typeSchema
-exports.validate_engine_types = validate_engine_types
+exports.validate_engine_type = validate_engine_type
