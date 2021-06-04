@@ -18,23 +18,23 @@ module.exports = router
 // GET '/'
 /**
  * @swagger
- * /engine_types:
+ * /engineTypes:
  *   get:
- *     summary: Retrieve all engine_types
- *     description: Retrieve all engine_types on database
+ *     summary: Retrieve all engineTypes
+ *     description: Retrieve all engineTypes on database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_types
+ *       - EngineTypes
  *     parameters:
  *       - name: code
- *         description: Return engine_type filtered by tag code
+ *         description: Return engineTypes filtered by tag code
  *         in: query
  *         required: false
  *         type: string
  *     responses:
  *       200:
- *         description: list of all engine_types
+ *         description: list of all engineTypes
  *       400:
  *         description: Bad Request
  *       404:
@@ -45,25 +45,25 @@ module.exports = router
 /**
  * @swagger
  *
- * /engine_types/{id}:
+ * /engineTypes/{id}:
  *   get:
- *     summary: Create a engine_type
- *     description: Create a engine_type
+ *     summary: Create a engineTypes
+ *     description: Create a engineTypes
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_types
+ *       - EngineTypes
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Engine_type id
+ *         description: EngineTypes id
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: Engine_type is valid request
+ *         description: EngineTypes is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -77,26 +77,26 @@ module.exports = router
 /**
  * @swagger
  *
- * /engine_types:
+ * /engineTypes:
  *   post:
- *     summary: Create a engine_type
- *     description: Create a engine_type
+ *     summary: Create a engineType
+ *     description: Create a engineType
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_types
+ *       - EngineTypes
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: engine_type
- *         description: Engine_type object
+ *       - name: engineType
+ *         description: EngineType object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/Engine_typeObject'
+ *           $ref: '#/definitions/EngineTypeObject'
  *     responses:
  *       200:
- *         description: Engine_type is valid request
+ *         description: EngineType is valid request
  *       400:
  *         description: Bad Request
  *       401:
@@ -109,26 +109,26 @@ module.exports = router
 // PATCH '/:id'
 /**
  * @swagger
- * /engine_types/{id}:
+ * /engineTypes/{id}:
  *   patch:
- *     summary: Update a engine_type
- *     description: Update a engine_type by id
+ *     summary: Update a engineType
+ *     description: Update a engineType by id
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_types
+ *       - EngineTypes
  *     parameters:
  *       - name: id
- *         description: Engine_type id
+ *         description: EngineType id
  *         in: path
  *         required: true
  *         type: string
- *       - name: engine_type
- *         description: Engine_type object
+ *       - name: engineType
+ *         description: EngineType object
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/Engine_typeObject'
+ *           $ref: '#/definitions/EngineTypeObject'
  *     responses:
  *       200:
  *         description: OK
@@ -141,17 +141,17 @@ module.exports = router
 // DELETE '/'
 /**
  * @swagger
- * /engine_types/{id}:
+ * /engineTypes/{id}:
  *   delete:
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_types
- *     summary: Delete a engine_type
- *     description: Deleta a engine_type
+ *       - EngineTypes
+ *     summary: Delete a engineType
+ *     description: Deleta a engineType
  *     parameters:
  *       - name: id
- *         description: Engine_type id
+ *         description: EngineType id
  *         in: path
  *         required: true
  *         type: string
@@ -168,7 +168,7 @@ module.exports = router
  * @swagger
  *
  * definitions:
- *   Engine_typeObject:
+ *   EngineTypeObject:
  *     type: object
  *     required:
  *       - code
