@@ -48,7 +48,7 @@ module.exports = router
  * /engine_types/{id}:
  *   get:
  *     summary: Create a engine_types
- *     description: Create a engine_types
+ *     description: Create a engine_type
  *     security:
  *       - Bearer: []
  *     tags:
@@ -174,6 +174,8 @@ module.exports = router
  *       - code
  *     properties:
  *       code:
+ *         type: string
+ *       observations:
  *         type: string
  *      
  */
