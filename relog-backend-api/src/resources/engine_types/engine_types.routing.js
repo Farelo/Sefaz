@@ -25,7 +25,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_types
+ *       - EngineTypes
  *     parameters:
  *       - name: code
  *         description: Return engine_types filtered by tag code
@@ -52,7 +52,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_types
+ *       - EngineTypes
  *     produces:
  *       - application/json
  *     parameters:
@@ -84,7 +84,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_types
+ *       - EngineTypes
  *     produces:
  *       - application/json
  *     parameters:
@@ -116,7 +116,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_type
+ *       - EngineTypes
  *     parameters:
  *       - name: id
  *         description: Engine_type id
@@ -146,7 +146,7 @@ module.exports = router
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Engine_types
+ *       - EngineTypes
  *     summary: Delete a engine_type
  *     description: Deleta a engine_type
  *     parameters:
