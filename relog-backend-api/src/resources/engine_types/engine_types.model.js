@@ -1,3 +1,4 @@
+const debug = require('debug')('model:engine_types')
 const mongoose = require('mongoose')
 const Joi = require('joi')
 
