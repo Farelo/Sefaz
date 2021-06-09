@@ -28,7 +28,7 @@ module.exports = router
  *       - EngineTypes
  *     parameters:
  *       - name: code
- *         description: Return engine_types filtered by tag code
+ *         description: Return engine_types filtered by code
  *         in: query
  *         required: false
  *         type: string

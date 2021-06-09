@@ -7,14 +7,13 @@ const engineTypeSchema = new mongoose.Schema({
         type: String,
         minlength: 2,
         maxlength: 50,
-        required: true,
-        unique: true
+        required: true
     },
     
     observations: {
         type: String,
         minlength: 0,
-        maxlength: 250,
+        maxlength: 250
     }
     
 })
