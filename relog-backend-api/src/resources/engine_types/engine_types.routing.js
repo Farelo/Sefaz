@@ -5,12 +5,12 @@ const auth = require('../../security/auth.middleware')
 const authz = require('../../security/authz.middleware')
 const validate_object_id = require('../../middlewares/validate_object_id.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
-const { validate_engine_types } = require('./engine_types.model')
+const { validate_engineTypes } = require('./engine_types.model')
 
 router.get('/', [auth], engine_types_controller.all)
 router.get('/:id', [auth, validate_object_id], engine_types_controller.show)
-router.post('/', [auth, authz, validate_joi(validate_engine_types)], engine_types_controller.create)
-router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_engine_types)], engine_types_controller.update)
+router.post('/', [auth, authz, validate_joi(validate_engineTypes)], engine_types_controller.create)
+router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_engineTypes)], engine_types_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], engine_types_controller.delete)
 
 module.exports = router

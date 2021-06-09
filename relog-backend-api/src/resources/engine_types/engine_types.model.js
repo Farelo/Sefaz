@@ -1,6 +1,6 @@
-const debug = require('debug')('model:engine_types')
-const mongoose = require('mongoose')
-const Joi = require('joi')
+const debug = require('debug')('model:engine_types');
+const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const engineTypeSchema = new mongoose.Schema({
     code: {
@@ -25,11 +25,11 @@ const validate_engineTypes = (engine_type) => {
         observations: Joi.string().min(2).max(250)
     })
 
-    return Joi.validate(engine_type, schema, { abortEarly: false })
+    return Joi.validate(engine_type, schema, { abortEarly: false });
 }
 
 engineTypeSchema.statics.findByCode = function (code, projection = '') {
-    return this.findOne({ code }, projection)
+    return this.findOne({ code }, projection);
 }
 
 const update_updated_at_middleware = function (next) {
@@ -38,11 +38,11 @@ const update_updated_at_middleware = function (next) {
     next()
 }
 
-engineTypeSchema.pre('update', update_updated_at_middleware)
-engineTypeSchema.pre('findOneAndUpdate', update_updated_at_middleware)
+engineTypeSchema.pre('update', update_updated_at_middleware);
+engineTypeSchema.pre('findOneAndUpdate', update_updated_at_middleware);
 
-const EngineType = mongoose.model('EngineType', engineTypeSchema)
+const EngineType = mongoose.model('EngineType', engineTypeSchema);
 
-exports.EngineType = EngineType
-exports.engineTypeSchema = engineTypeSchema
-exports.validate_engineTypes = validate_engineTypes
+exports.EngineType = EngineType;
+exports.engineTypeSchema = engineTypeSchema;
+exports.validate_engineTypes = validate_engineTypes;
