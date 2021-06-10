@@ -14,7 +14,7 @@ exports.get_engine_types = async (code) => {
     }
 }
 
-exports.get_engine_types = async (id) => {
+exports.get_engine_type = async (id) => {
     try {
         const engine_type = await EngineType
             .findById(id)
