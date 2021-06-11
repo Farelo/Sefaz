@@ -222,6 +222,8 @@ module.exports = router
  *         type: string
  *       model:
  *         type: string
+ *       family:
+ *         type: string
  *       observations:
  *         type: string
  *       active:

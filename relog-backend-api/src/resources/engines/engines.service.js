@@ -2,7 +2,7 @@ const debug = require("debug")("service:engines");
 const _ = require("lodash");
 const config = require("config");
 const { Engine } = require("./engines.model");
-const { Engine_type } = require("../engine_types/engine_types.model");
+const { EngineType } = require("../engine_types/engine_types.model");
 const { Rack } = require("../racks/racks.model");
 const rp = require("request-promise");
 const mongoose = require("mongoose");
@@ -12,17 +12,19 @@ exports.get_engines = async (tag, engine_type) => {
       if (!tag) {
          if (engine_type)
             return await Engine.find({ engine_type: engine_type })
-               .populate("engine_type", ["_id", "code"])
+               .populate("EngineType", ["_id", "code"])
+               .populate("Rack," ["_id", "name"]);
                
 
          return await Engine.find()
-            .populate("engine_type", ["_id", "code"])
+            .populate("EngineType", ["_id", "code"])
+            .populate("Rack," ["_id", "name"]);
             
       } 
 
       const data = await Engine.findByTag(tag)
-         .populate("engine_type", ["_id", "code"])
-         .populate("family", ["_id", "name"])
+         .populate("EngineType", ["_id", "code"])
+         .populate("family", ["_id", "code", "company"])
          .populate("Rack," ["_id", "name"]);
 
       return data ? [data] : [];
@@ -34,8 +36,8 @@ exports.get_engines = async (tag, engine_type) => {
 exports.get_engine = async (id) => {
    try {
       const engine = await Engine.findById(id)
-      .populate("engine_type", ["_id", "code"])
-         .populate("family", ["_id", "name"])
+         .populate("EngineType", ["_id", "code"])
+         .populate("family", ["_id", "code", "company"])
          .populate("Rack," ["_id", "name"]);
 
       return engine;
@@ -47,7 +49,7 @@ exports.get_engine = async (id) => {
 exports.find_by_tag = async (tag) => {
    try {
       return await Engine.findByTag(tag)
-      .populate("engine_type", ["_id", "code"])
+      .populate("EngineType", ["_id", "code"])
       .populate("Rack," ["_id", "name"]);
    } catch (error) {
       throw new Error(error);
@@ -57,8 +59,8 @@ exports.find_by_tag = async (tag) => {
 exports.populatedFindByTag = async (tag) => {
    try {
       return await Engine.findByTag(tag)
-      .populate("engine_type", ["_id", "code"])
-      .populate("family", ["_id", "name"])
+      .populate("EngineType", ["_id", "code"])
+      .populate("family", ["_id", "code", "company"])
       .populate("Rack," ["_id", "name"]);
          //rack
          //enginetype
@@ -82,7 +84,8 @@ exports.find_by_id = async (id) => {
    try {
       const engine = await Engine.findById(id)
        .populate("engine_type", ["_id", "code"])
-       .populate("Rack," ["_id", "name"]);
+       .populate("Rack," ["_id", "name"])
+       .populate("family", ["_id", "code", "company"]);
          
 
       return engine;

@@ -14,7 +14,6 @@ const _ = require("lodash");
 var https = require("https");
 const axios = require("axios");
 
-var token = "bb1ab275-2985-461b-8766-10c4b2c4127a";
 
 exports.all = async (req, res) => {
    const tag = req.query.tag_code ? req.query.tag_code : null;

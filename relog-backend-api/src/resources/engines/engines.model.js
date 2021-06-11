@@ -22,7 +22,11 @@ const engineSchema = new mongoose.Schema({
         minlength: 0,
         maxlength: 100,
     },
-    
+    family: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Family',
+        required: true
+    },
     model: {
         type: String,
         minlength: 0,
