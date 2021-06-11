@@ -46,7 +46,7 @@ const engineSchema = new mongoose.Schema({
     
     id_engine_type: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Engine_type',
+        ref: 'EngineType',
         required: true
     },
     
