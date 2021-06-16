@@ -62,8 +62,6 @@ exports.populatedFindByTag = async (tag) => {
       .populate("EngineType", ["_id", "code"])
       .populate("family", ["_id", "code", "company"])
       .populate("Rack," ["_id", "name"]);
-         //rack
-         //enginetype
    } catch (error) {
       throw new Error(error);
    }
