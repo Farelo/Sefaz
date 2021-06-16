@@ -13,7 +13,7 @@ const engineTypeSchema = new mongoose.Schema({
     
     observations: {
         type: String,
-        minlength: 0,
+        minlength: 4,
         maxlength: 250
         
     }
@@ -23,7 +23,7 @@ const engineTypeSchema = new mongoose.Schema({
 const validate_engineTypes = (engine_type) => {
     const schema = Joi.object().keys({
         code: Joi.string().min(4).max(50).required(),
-        observations: Joi.string().min(0).max(250)
+        observations: Joi.string().min(4).max(250).required()
     })
 
     return Joi.validate(engine_type, schema, { abortEarly: false })

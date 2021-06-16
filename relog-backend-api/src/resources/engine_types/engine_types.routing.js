@@ -172,6 +172,7 @@ module.exports = router
  *     type: object
  *     required:
  *       - code
+ *       - observations
  *     properties:
  *       code:
  *         type: string
