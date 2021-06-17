@@ -30,6 +30,13 @@ const familySchema = new mongoose.Schema({
     update_at: {
         type: Date,
         default: Date.now
+    },
+    checklist: {
+        type: String,
+        minlength: 4,
+        maxlength: 200,
+        required: true,
+        unique: true
     }
 })
 
@@ -38,7 +45,8 @@ const validate_families = (family) => {
         code: Joi.string().min(2).max(50).required(),
         company: Joi.objectId().required(),
         routes: Joi.array().items(Joi.objectId()),
-        control_points: Joi.array().items(Joi.objectId())
+        control_points: Joi.array().items(Joi.objectId()),
+        checklist: Joi.string().min(4).max(200).required()
     })
 
     return Joi.validate(family, schema, { abortEarly: false })
