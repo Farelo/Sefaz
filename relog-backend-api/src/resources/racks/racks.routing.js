@@ -318,6 +318,8 @@ module.exports = router
  *         type: number
  *       fabricationDate:
  *         type: date
+ *         pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+ *         example: "2019-05-17"
  *       length:
  *         type: number
  *       capacity:
@@ -344,6 +346,8 @@ module.exports = router
  *       version:
  *         type: string
  *       manufactorer:
+ *         type: string
+ *       deviceModel:
  *         type: string
  *       
  */
