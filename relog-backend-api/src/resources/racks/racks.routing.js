@@ -317,9 +317,9 @@ module.exports = router
  *       heigth:
  *         type: number
  *       fabricationDate:
- *         type: date
- *         pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
- *         example: "2019-05-17"
+ *         type: string
+ *         format: date
+ *         example: 2019-02-01
  *       length:
  *         type: number
  *       capacity:

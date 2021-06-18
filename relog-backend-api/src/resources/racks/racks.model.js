@@ -60,8 +60,9 @@ const rackSchema = new mongoose.Schema({
         max: 10000,
         default: 0
     },
-    fabrication_date:{
+    fabricationDate:{
         type: Date,
+        default: Date.now
     },
     temperature: {
         type: Number,
@@ -217,7 +218,8 @@ const validate_racks = (rack) => {
         observations: Joi.string().min(0).max(250).allow(''),
         active: Joi.boolean(),
         family: Joi.objectId().required(),
-        project: Joi.objectId()
+        project: Joi.objectId(),
+        fabricationDate: Joi.date()
     })
 
     return Joi.validate(rack, schema, { abortEarly: false })
