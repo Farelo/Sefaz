@@ -206,7 +206,7 @@ const validate_racks = (rack) => {
             code: Joi.string().min(4).max(25).required(),
             version: Joi.string().min(1).max(100),
             manufactorer: Joi.string().min(2).max(100),
-            deviceModel: Joi.string()
+            deviceModel: Joi.string().min(2).max(100)
         },
         serial: Joi.string().min(2).max(30).required(),
         type: Joi.string().min(0).max(100),
