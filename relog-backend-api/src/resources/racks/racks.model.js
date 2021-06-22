@@ -8,7 +8,9 @@ const rackSchema = new mongoose.Schema({
             type: String,
             minlength: 4,
             maxlength: 25,
-            required: true
+            required: true,
+            unique: true
+
         },
         version: {
             type: String,
