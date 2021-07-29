@@ -42,6 +42,7 @@
     "ora": "^3.0.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
+    "soap": "^0.40.0",
     "ssl-root-cas": "^1.2.5",
     "swagger-jsdoc": "^3.0.3",
     "swagger-ui-express": "^4.0.1",
