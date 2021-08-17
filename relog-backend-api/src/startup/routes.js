@@ -26,6 +26,7 @@ const callbacks = require("../resources/callbacks/callbacks.routing");
 const current_state_history = require("../resources/current_state_history/current_state_history.routing");
 const imports = require("../resources/imports/imports.routing");
 const logs = require("../resources/logs/logs.routing");
+const integrations = require("../resources/integrations/integrations.routing");
 
 const apiKeys = require("../resources/api_keys/api_keys.routing");
 const error = require("../middlewares/error_handler.middleware");
@@ -73,6 +74,7 @@ module.exports = (app) => {
    app.use("/api/imports", imports);
    app.use("/api/logs", logs);
    app.use("/api/api_keys", apiKeys);
+   app.use("/api/integrations", integrations);
 
    // Middlewares functions
    app.use(error);

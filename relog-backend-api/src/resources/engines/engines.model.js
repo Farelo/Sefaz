@@ -17,11 +17,6 @@ const engineSchema = new mongoose.Schema({
         maxlength: 30,
         required: true
     },
-    part_number: {
-        type: String,
-        minlength: 0,
-        maxlength: 100,
-    },
     family: {
         type: mongoose.Schema.ObjectId,
         ref: 'Family',
@@ -34,8 +29,8 @@ const engineSchema = new mongoose.Schema({
     },
     production_date:{
         type: Date,
-        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/,
-        example: "2019-05-17",
+        //pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/,
+        //example: "2019-05-17",
     },
     
     observations: {
@@ -68,7 +63,7 @@ const validate_engines = (engine) => {
             code: Joi.string().min(4).max(25).required(),
         },
         serial: Joi.string().min(2).max(30).required(),
-        part_number: Joi.string().min(0).max(100),
+        //part_number: Joi.string().min(0).max(100),
         model: Joi.string().min(0).max(100),
         observations: Joi.string().min(0).max(250).allow(''),
         active: Joi.boolean(),

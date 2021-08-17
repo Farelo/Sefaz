@@ -3,16 +3,17 @@ const router = express.Router()
 const integration_controller = require('./integrations.controller')
 const auth = require('../../security/auth.middleware')
 
-router.post('/integrations', auth, integration_controller.import_rack)
 
-module.exports = router
+router.post('/', [auth], integration_controller.create)
+
+module.exports = router;
 
 
 // POST '/'
 /**
  * @swagger
  *
- * /engine_types:
+ * /integration:
  *   post:
  *     summary: Integration between racks and engines
  *     description: Integration between racks and engines

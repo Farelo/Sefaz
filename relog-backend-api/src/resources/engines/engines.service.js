@@ -3,7 +3,7 @@ const _ = require("lodash");
 const config = require("config");
 const { Engine } = require("./engines.model");
 const { EngineType } = require("../engine_types/engine_types.model");
-const { Rack } = require("../racks/racks.model");
+//const { Rack } = require("../racks/racks.model");
 const rp = require("request-promise");
 const mongoose = require("mongoose");
 

@@ -74,3 +74,12 @@ exports.update_family = async (id, family_edited) => {
         throw new Error(error)
     }
 }
+
+try{
+    Family.insertMany([
+        {code: 'D08', company: "5df7bfddbae2e90023f74705"},
+        {code: 'D26', company: "5df7bfddbae2e90023f74705"}
+    ], { ordered:false})
+}catch(e){
+    print(e);
+} 
