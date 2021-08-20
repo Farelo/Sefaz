@@ -8,14 +8,14 @@ const engineSchema = new mongoose.Schema({
             type: String,
             minlength: 4,
             maxlength: 25,
-            required: true
         },
     },
     serial: {
         type: String,
         minlength: 2,
         maxlength: 30,
-        required: true
+        required: true,
+        unique: true
     },
     family: {
         type: mongoose.Schema.ObjectId,
@@ -29,8 +29,6 @@ const engineSchema = new mongoose.Schema({
     },
     production_date:{
         type: Date,
-        //pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/,
-        //example: "2019-05-17",
     },
     
     observations: {
@@ -40,7 +38,7 @@ const engineSchema = new mongoose.Schema({
     },
     active: {
         type: Boolean,
-        default: false
+        default: true
     },
     
     id_engine_type: {
@@ -60,10 +58,9 @@ const engineSchema = new mongoose.Schema({
 const validate_engines = (engine) => {
     const schema = Joi.object().keys({
         tag: {
-            code: Joi.string().min(4).max(25).required(),
+            code: Joi.string().min(4).max(25),
         },
         serial: Joi.string().min(2).max(30).required(),
-        //part_number: Joi.string().min(0).max(100),
         model: Joi.string().min(0).max(100),
         observations: Joi.string().min(0).max(250).allow(''),
         active: Joi.boolean(),
@@ -76,6 +73,10 @@ const validate_engines = (engine) => {
 
 engineSchema.statics.findByTag = function (tag, projection = '') {
     return this.findOne({ 'tag.code': tag }, projection)
+}
+
+engineSchema.statics.findBySerial = function (serial, projection = '') {
+    return this.findOne({ 'serial': serial }, projection)
 }
 
 const update_updated_at_middleware = function (next) {

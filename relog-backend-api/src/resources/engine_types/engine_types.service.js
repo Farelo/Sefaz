@@ -145,6 +145,6 @@ EngineType.insertMany([
     {code: '2V3100015AM', observations: 'D26 - 6 cilindros'}
 
 ], { ordered:false})
- }catch(e){
-     print(e);
+ }catch(err){
+     print(err);
  } 

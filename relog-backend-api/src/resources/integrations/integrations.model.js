@@ -3,15 +3,6 @@ const mongoose = require('mongoose')
 const Joi = require('joi')
 
 const integrationSchema = new mongoose.Schema({
-    tag: {
-        code: {
-            type: String,
-            minlength: 4,
-            maxlength: 25,
-            required: true
-        },
-    },
-
     id_engine_type: {
         type: mongoose.Schema.ObjectId,
         ref: 'EngineType',
@@ -23,6 +14,13 @@ const integrationSchema = new mongoose.Schema({
         minlength: 2,
         maxlength: 30,
         required: true
+    },
+
+    serial2: {
+        type: String,
+        minlength: 2,
+        maxlength: 30,
+        
     },
 
     dtVinculo:{
@@ -50,9 +48,6 @@ const integrationSchema = new mongoose.Schema({
 
 const validate_integrations = (integration) => {
     const schema = Joi.object().keys({
-        tag: {
-            code: Joi.string().min(4).max(25).required(),
-        },
         id_engine_type: Joi.objectId().required(),
         serial: Joi.string().min(2).max(30).required(),
         production_date: Joi.date(),
@@ -62,10 +57,6 @@ const validate_integrations = (integration) => {
     })
 
     return Joi.validate(integration, schema, { abortEarly: false })
-}
-
-integrationSchema.statics.findByTag = function (tag, projection = '') {
-    return this.findOne({ 'tag.code': tag }, projection)
 }
 
 const update_updated_at_middleware = function (next) {

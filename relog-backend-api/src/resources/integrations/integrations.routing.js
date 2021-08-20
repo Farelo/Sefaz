@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const integration_controller = require('./integrations.controller')
 const auth = require('../../security/auth.middleware')
+const validate_joi = require('../../middlewares/validate_joi.middleware')
 
 
-router.post('/', [auth], integration_controller.create)
+router.post('/', integration_controller.create_IntegrationId);
 
 module.exports = router;
 
@@ -17,19 +18,10 @@ module.exports = router;
  *   post:
  *     summary: Integration between racks and engines
  *     description: Integration between racks and engines
- *     security:
- *       - Bearer: []
  *     tags:
  *       - Integration
  *     produces:
  *       - application/json
- *     parameters:
- *       - name: integration
- *         description: Integration object
- *         in:  body
- *         required: true
- *         schema:
- *           $ref: '#/definitions/IntegrationObject'
  *     responses:
  *       200:
  *         description:  valid request
@@ -42,32 +34,3 @@ module.exports = router;
  *
  */
 
-/**
- * @swagger
- *
- * definitions:
- *   IntegrationObject:
- *     type: object
- *     required:
- *       - code
- *       - model
- *       - serial_engine
- *       - date
- *       - rack_model
- *       - id_rack
- *     properties:
- *       code:
- *         type: string
- *       model:
- *         type: string
- *       serial_engine:
- *         type: string
- *       date:
- *         type: string
- *       rack_model:
- *         type: string
- *       id_rack:
- *         type: string
- *         
- *      
- */

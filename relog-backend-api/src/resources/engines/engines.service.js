@@ -92,6 +92,18 @@ exports.find_by_id = async (id) => {
    }
 };
 
+
+exports.find_by_serial = async (serial) => {
+   try {
+      console.log("service" + serial)
+      const engine = await Engine.findBySerial(serial)
+         
+      return engine;
+   } catch (error) {
+      throw new Error(error);
+   }
+};
+
 exports.update_engine = async (id, engine_edited) => {
    try {
       const options = { runValidators: true, new: true };

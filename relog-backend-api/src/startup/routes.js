@@ -74,7 +74,7 @@ module.exports = (app) => {
    app.use("/api/imports", imports);
    app.use("/api/logs", logs);
    app.use("/api/api_keys", apiKeys);
-   app.use("/api/integrations", integrations);
+   app.use("/api/integration", integrations);
 
    // Middlewares functions
    app.use(error);
