@@ -218,17 +218,22 @@ module.exports = router
  *         $ref: '#/definitions/TagObject'
  *       serial:
  *         type: string
- *       part_number:
+ *        code:
+ *         type: string
+ *       family:
  *         type: string
  *       model:
  *         type: string
- *       family:
+ *       production_date:
  *         type: string
  *       observations:
  *         type: string
  *       active:
  *         type: boolean
- *       
+ *       id_engine_type:
+ *         type: string
+ *       id_rack:
+ *         type: string
  */
 
  /**
@@ -238,11 +243,11 @@ module.exports = router
  *   TagObject:
  *     type: object
  *     required:
- *       - code
+ *       - serial
  *       - id_rack
  *       - id_engine_type
  *     properties:
- *       code:
+ *       serial:
  *         type: string
  *       id_rack:
  *         type: string
