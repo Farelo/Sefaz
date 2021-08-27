@@ -218,8 +218,6 @@ module.exports = router
  *         $ref: '#/definitions/TagObject'
  *       serial:
  *         type: string
- *        code:
- *         type: string
  *       family:
  *         type: string
  *       model:
