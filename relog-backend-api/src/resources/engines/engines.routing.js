@@ -99,7 +99,7 @@ module.exports = router
  *         in:  body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/EngineObject'
+ *          $ref: '#/definitions/EnginesObject'
  *     responses:
  *       200:
  *         description: Engine is valid request
@@ -209,7 +209,7 @@ module.exports = router
  * @swagger
  *
  * definitions:
- *   EngineObject:
+ *   EnginesObject:
  *     type: object
  *     required:
  *       - serial
@@ -241,16 +241,11 @@ module.exports = router
  *   TagObject:
  *     type: object
  *     required:
- *       - serial
- *       - id_rack
- *       - id_engine_type
+ *       - code
  *     properties:
- *       serial:
+ *       code:
  *         type: string
- *       id_rack:
- *         type: string
- *       id_engine_type:
- *         type: string
+ *       
  *       
  *       
  *       
