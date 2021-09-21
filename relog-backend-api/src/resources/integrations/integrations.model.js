@@ -23,7 +23,7 @@ const integrationSchema = new mongoose.Schema({
         
     },
 
-    dtVinculo:{
+    fabrication_date:{
         type: Date,
     },
 
@@ -50,7 +50,7 @@ const validate_integrations = (integration) => {
     const schema = Joi.object().keys({
         id_engine_type: Joi.objectId().required(),
         serial: Joi.string().min(2).max(30).required(),
-        production_date: Joi.date(),
+        fabrication_date: Joi.date(),
         family: Joi.objectId().required(),
         id_rack: Joi.objectId().required(),
         active: Joi.boolean()

@@ -12,58 +12,35 @@ const logs_controller = require("../logs/logs.controller");
 
 let resposta;
 
-exports.create_IntegrationId = async (res) => {
-  var promise = new Promise((resolve, reject) => {
-    soap.createClient(url, (err, client) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(client);
-      client.MessageSplitter(function (err, res) {
-        if (err) throw err;
-        // print the service returned result
-        parseString(res, function (err, result) {
-          resposta = result;
-          console.log(result);
-          createEngine(result);
-        });
-      });
-    });
-  }).catch(console.log("nada"));
-  res.status(HttpStatus.CREATED).send("engines");
+ exports.create_IntegrationId = async (req) => {
+  createEngine(req);
+  
 };
-
+ 
 
 async function createEngine(req) {
 
-  console.log(req.Rack.Engine[0].serial1)
-  const searchSerial = await engines_service.find_by_serial(req.Rack.Engine[0].serial1);
+  
+  const searchSerial = await engines_service.find_by_serial(req.serial);
   if (searchSerial != null){
     
-    return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid Rack." });
+    return console.log("Engine Already exists.");
   }
 
-
   
-  const family = await families_service.find_by_code(req.Rack.RackModel);
+  const family = await families_service.find_by_code(req.family);
   if (!family)
-    return res
-      .status(HttpStatus.NOT_FOUND)
-      .send({ message: "Invalid Family." });
+    return console.log( "Invalid Family.");
 
-  const engine_type = await engine_types_service.find_by_code(
-    req.Rack.engine_type
-  );
-  if (!engine_type){
-  console.log("    Erro Engine" );
-    return res
-      .status(HttpStatus.NOT_FOUND)
-      .send({ message: "Invalid Engine." });
-    }
-  const rack = await racks_service.find_by_tag(req.Rack.id_rack);
+  const engine_type = await engine_types_service.find_by_code(req.id_engine_type);
+  if (!engine_type)
+  
+    return console.log(" Invalid Engine" );
+  
+  const rack = await racks_service.find_by_tag(req.id_rack);
   if (!rack){
     
-    return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid Rack." });
+    return console.log( "Invalid Rack.");
   }
 
   let engine = {
@@ -71,18 +48,18 @@ async function createEngine(req) {
     family: family._id,
     id_engine_type: engine_type._id,
     id_rack: rack._id,
-    serial: req.Rack.Engine[0].serial1,
-    production_date: req.Rack.Date,
+    serial: req.serial,
+    fabrication_date: req.fabrication_date,
   };
-
-  if (req.Rack.Engine[0].serial2 != null || req.Rack.Engine[0].serial2 != "") {
+console.log(req);
+  if (req.serial2 != null || req.serial2 != '') {
     let engine2 = {
     //model: req.Rack.RackModel,//ajustar isso
     family: family._id,
     id_engine_type: engine_type._id,
     id_rack: rack._id,
-    serial: req.Rack.Engine[0].serial2,
-    production_date: req.Rack.Date,
+    serial: req.serial2,
+    fabrication_date: req.fabrication_date,
     };
 
     await engines_service.create_engine(engine2);
@@ -98,9 +75,9 @@ async function createEngine(req) {
   
   let integration = {
     family: family._id,
-    serial: req.Rack.Engine[0].serial1,
-    serial2: req.Rack.Engine[0].serial2,
-    dtVinculo: req.Rack.dtVinculo,
+    serial: req.serial,
+    serial2: req.serial2,
+    dtVinculo: req.dtVinculo,
     id_engine_type: engine_type._id,
     id_rack: rack._id,
   };
@@ -122,4 +99,6 @@ async function createIntegration(req)  {
   // });
 
   //res.status(HttpStatus.CREATED).send(integration);
+
+  
 };

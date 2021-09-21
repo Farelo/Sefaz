@@ -5,7 +5,7 @@ const auth = require('../../security/auth.middleware')
 const validate_joi = require('../../middlewares/validate_joi.middleware')
 
 
-router.post('/', integration_controller.create_IntegrationId);
+//router.post('/', integration_controller.create_IntegrationId);
 
 module.exports = router;
 
