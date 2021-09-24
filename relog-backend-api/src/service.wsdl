@@ -19,7 +19,7 @@
             <s:element minOccurs="1" maxOccurs="1" name="family" type="s:string"/>
             <s:element minOccurs="1" maxOccurs="1" name="serial" type="s:string"/>
             <s:element minOccurs="0" maxOccurs="1" name="serial2" type="s:string"/>
-            <s:element minOccurs="1" maxOccurs="1" name="fabrication_date" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="fabrication_date" type="s:dateTime"/>
             <s:element minOccurs="1" maxOccurs="1" name="id_engine_type" type="s:string"/>
             <s:element minOccurs="1" maxOccurs="1" name="id_rack" type="s:string"/>
           </s:sequence>
