@@ -6,7 +6,7 @@ import "jspdf";
 import "jspdf-autotable";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { CriticalAbsentModalComponent } from "./modal-position/layer.component";
-import { PackingStatus } from "app/shared/pipes/packingStatus";
+import { RackStatus } from "app/shared/pipes/rackStatus";
 
 declare var jsPDF: any;
 
@@ -48,7 +48,7 @@ export class InventarioCriticoAusencia implements OnInit {
     this.originalListOfEvents = [];
     this.actualListOfEvents = [];
 
-    let packingStatus = new PackingStatus();
+    let rackStatus = new RackStatus();
 
     this.reportService
       .getCriticalAbsent(this.absentDays)
@@ -56,7 +56,7 @@ export class InventarioCriticoAusencia implements OnInit {
         this.originalListOfEvents = result;
 
         this.originalListOfEvents.map((elem) => {
-          elem.status = packingStatus.transform(elem.status);
+          elem.status = rackStatus.transform(elem.status);
           return elem;
         });
 
@@ -118,8 +118,8 @@ export class InventarioCriticoAusencia implements OnInit {
     let auxFrequencyResult = {};
     this.frequencyResult = [];
 
-    actualListOfEvents.forEach((actualPacking) => {
-      actualPacking.eventList.forEach((element) => {
+    actualListOfEvents.forEach((actualRack) => {
+      actualRack.eventList.forEach((element) => {
         if (!!element.control_point) {
           if (auxFrequencyResult[element.control_point.name] == undefined)
             auxFrequencyResult[element.control_point.name] = 1;
@@ -152,7 +152,7 @@ export class InventarioCriticoAusencia implements OnInit {
       size: "lg",
       windowClass: "modal-xl",
     });
-    modalRef.componentInstance.packing = {
+    modalRef.componentInstance.rack = {
       family: item.family,
       serial: item.serial,
       tag: item.tag,

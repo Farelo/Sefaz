@@ -1,4 +1,4 @@
-const debug = require('debug')('service:packings')
+const debug = require('debug')('service:racks')
 const _ = require('lodash')
 const reports_repository = require('./reports.repository')
 

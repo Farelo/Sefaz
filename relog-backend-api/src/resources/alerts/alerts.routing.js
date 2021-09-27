@@ -14,7 +14,7 @@ module.exports = router
  * /alerts:
  *   get:
  *     summary: Retrieve alerts on database
- *     description: Retrieve alerts about all packings
+ *     description: Retrieve alerts about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -34,7 +34,7 @@ module.exports = router
  * /alerts/{family_id}/{current_state}:
  *   get:
  *     summary: Retrieve alerts on database
- *     description: Retrieve alerts about all packings
+ *     description: Retrieve alerts about all racks
  *     security:
  *       - Bearer: []
  *     tags:

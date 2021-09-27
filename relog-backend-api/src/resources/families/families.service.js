@@ -74,3 +74,9 @@ exports.update_family = async (id, family_edited) => {
         throw new Error(error)
     }
 }
+
+try{
+    Family.insertMany([], { ordered:false})
+}catch(err){
+    print(err);
+} 

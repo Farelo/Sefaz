@@ -7,35 +7,35 @@ const STATES = require('../common/states')
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
 const { Family } = require('../../models/families.model')
 const { GC16 } = require('../../models/gc16.model')
-const { Packing } = require('../../models/packings.model')
+const { Rack } = require('../../models/racks.model')
 
-module.exports = async (packing, currentControlPoint) => {
+module.exports = async (rack, currentControlPoint) => {
     let current_state_history = {}
     try {
-        if (packing.last_event_record && packing.last_event_record.type === 'inbound') {
-            timeIntervalInDays = getDiffDateTodayInDays(packing.last_event_record.created_at)
+        if (rack.last_event_record && rack.last_event_record.type === 'inbound') {
+            timeIntervalInDays = getDiffDateTodayInDays(rack.last_event_record.created_at)
             const gc16 = await GC16.findById(currentControlPoint.gc16)
             if (!gc16) return null
 
-            const family = await Family.findById(packing.family).populate('company')
+            const family = await Family.findById(rack.family).populate('company')
 
             if (family.company.type === 'owner' || family.company.type === 'supplier') {
                 if (timeIntervalInDays > gc16.owner_stock.days) {
                     //console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
-                    await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
+                    await Rack.findByIdAndUpdate(rack._id, { permanence_time_exceeded: true }, { new: true })
 
-                    const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                    const current_state_history = await CurrentStateHistory.findOne({ rack: rack._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     if (current_state_history) {
                         //console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ CRIADO!")
                     } else {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert, device_data_id: packing.last_position ? packing.last_position._id : null  })
+                        await CurrentStateHistory.create({ rack: rack._id, type: STATES.PERMANENCIA_EXCEDIDA.alert, device_data_id: rack.last_position ? rack.last_position._id : null  })
                     }
 
                 } else {
                     //console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
-                    await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+                    await Rack.findByIdAndUpdate(rack._id, { permanence_time_exceeded: false }, { new: true })
                     
-                    // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                    // current_state_history = await CurrentStateHistory.findOne({ rack: rack._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     // if (current_state_history) {
                     //     await current_state_history.remove()
                     // } else {
@@ -45,20 +45,20 @@ module.exports = async (packing, currentControlPoint) => {
             } else {
                 if (timeIntervalInDays > gc16.client_stock.days) {
                     //console.log("ESTOU COM O TEMPO DE PERMANÊNCIA EXCEDIDO")
-                    await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: true }, { new: true })
+                    await Rack.findByIdAndUpdate(rack._id, { permanence_time_exceeded: true }, { new: true })
                     
-                    const current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                    const current_state_history = await CurrentStateHistory.findOne({ rack: rack._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     if (current_state_history) {
                         //console.log("ESTADO DE TEMPO DE PERMANÊNCIA EXCEDIDO JÁ CRIADO!")
                     } else {
-                        await CurrentStateHistory.create({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert, device_data_id: packing.last_position ? packing.last_position._id : null  })
+                        await CurrentStateHistory.create({ rack: rack._id, type: STATES.PERMANENCIA_EXCEDIDA.alert, device_data_id: rack.last_position ? rack.last_position._id : null  })
                     }
 
                 } else {
                     //console.log("DENTRO DO TEMPO DE PERMANÊNCIA")
-                    await Packing.findByIdAndUpdate(packing._id, { permanence_time_exceeded: false }, { new: true })
+                    await Rack.findByIdAndUpdate(rack._id, { permanence_time_exceeded: false }, { new: true })
 
-                    // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
+                    // current_state_history = await CurrentStateHistory.findOne({ rack: rack._id, type: STATES.PERMANENCIA_EXCEDIDA.alert })
                     // if (current_state_history) {
                     //     await current_state_history.remove()
                     // } else {

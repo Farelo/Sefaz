@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoryService, InventoryLogisticService, PlantsService, PackingService } from '../../../servicos/index.service';
-import { LayerModalComponent } from '../../modal-packing/layer.component';
+import { InventoryService, InventoryLogisticService, PlantsService, RackService } from '../../../servicos/index.service';
+import { LayerModalComponent } from '../../modal-rack/layer.component';
 import { constants } from 'environments/constants';
 
 
@@ -16,7 +16,7 @@ export class AlertaSemSinalComponent implements OnInit {
   public mConstants: any;
   
   constructor(public activeAlerta: NgbActiveModal,
-    private packingsService: PackingService,
+    private racksService: RackService,
     private modalService: NgbModal){
 
     this.mConstants = constants; 
@@ -29,8 +29,8 @@ export class AlertaSemSinalComponent implements OnInit {
 
   visualizeOnMap() { 
     
-    this.packingsService
-      .getPacking(this.alerta._id)
+    this.racksService
+      .getRack(this.alerta._id)
       .subscribe(
         result => {
           let actualPackage = result;
@@ -48,7 +48,7 @@ export class AlertaSemSinalComponent implements OnInit {
 
           console.log(actualPackage);
 
-          modalRef.componentInstance.packing = actualPackage;
+          modalRef.componentInstance.rack = actualPackage;
         },
         err => {
           console.log(err);

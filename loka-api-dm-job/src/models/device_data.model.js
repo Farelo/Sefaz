@@ -1,6 +1,6 @@
 const debug = require("debug")("model:device_data");
 const mongoose = require("mongoose");
-const { Packing } = require("./packings.model");
+const { Rack} = require("./racks.model");
 
 const deviceDataSchema = new mongoose.Schema({
   device_id: {
@@ -67,7 +67,7 @@ const update_updated_at_middleware = function (next) {
   next();
 };
 
-const device_data_save = async (packing, device_data_array) => {
+const device_data_save = async (rack, device_data_array) => {
   //Limpa do array todas as mensagens (exceto a primeira) que não tenham
   //acurácia, ou tenham acurácia com mais de 32km
   let newBatchOfMessages = [];
@@ -91,7 +91,7 @@ const device_data_save = async (packing, device_data_array) => {
     if (newBatchOfMessages[0].accuracy > 32000) {
       let update_attrs = {};
       update_attrs.last_message_signal = new Date(newBatchOfMessages[0].messageDate);
-      await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+      await Rack.findByIdAndUpdate(rack._id, update_attrs, { new: true });
       newBatchOfMessages = newBatchOfMessages.slice(1);
       isLastSignalAlreadySaved = true;
     }
@@ -122,13 +122,13 @@ const device_data_save = async (packing, device_data_array) => {
           if (!isLastSignalAlreadySaved) {
             let update_attrs = {};
             update_attrs.last_message_signal = new_device_data.message_date;
-            await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+            await Rack.findByIdAndUpdate(rack._id, update_attrs, { new: true });
           }
 
           await new_device_data
             .save()
             .then((doc) => {
-              update_link_to_last_devicedata(packing, doc);
+              update_link_to_last_devicedata(rack, doc);
             })
             .catch((err) => debug(err));
         } else {
@@ -150,31 +150,31 @@ const device_data_save = async (packing, device_data_array) => {
   }
 
   // if (device_data_array.length > 0)
-  //     update_link_to_last_devicedata(packing, device_data_array[0])
+  //     update_link_to_last_devicedata(rack, device_data_array[0])
 };
 
-const update_link_to_last_devicedata = async (packing, device_data) => {
+const update_link_to_last_devicedata = async (rack, device_data) => {
   try {
     let update_attrs = {};
     let update = false;
 
     //momento da última mensagem
-    let current_message_date_on_packing = packing.last_device_data ? packing.last_device_data.message_date : null;
+    let current_message_date_on_rack = rack.last_device_data ? rack.last_device_data.message_date : null;
 
     //se o novo device_data é mais recente que o que já esta salvo, então atualiza
-    if (device_data.message_date > current_message_date_on_packing) {
+    if (device_data.message_date > current_message_date_on_rack) {
       update_attrs.last_device_data = device_data._id;
       update = true;
     }
 
     //se o novo device_data possui informação de bateria
     if (device_data.battery.percentage || device_data.battery.voltage) {
-      let packing_date_battery_data = packing.last_device_data_battery
-        ? packing.last_device_data_battery.message_date
+      let rack_date_battery_data = rack.last_device_data_battery
+        ? rack.last_device_data_battery.message_date
         : null;
 
-      // se essa informação de bateria é mais recente que a que ja existe no packing ou o packing não tem ainda nenhuma info de bateria
-      if (device_data.message_date > packing_date_battery_data) {
+      // se essa informação de bateria é mais recente que a que ja existe no rack ou o rack não tem ainda nenhuma info de bateria
+      if (device_data.message_date > rack_date_battery_data) {
         update_attrs.last_device_data_battery = device_data._id;
       }
       update = true;
@@ -183,22 +183,22 @@ const update_link_to_last_devicedata = async (packing, device_data) => {
     if (update) {
       // debug(' ')
       // debug(' ')
-      // debug(JSON.stringify(packing))
-      // debug('update packing')
-      // debug('last_device_data', packing.last_device_data)
+      // debug(JSON.stringify(rack))
+      // debug('update rack')
+      // debug('last_device_data', rack.last_device_data)
       // debug('update_attrs.last_device_data', update_attrs.last_device_data)
 
-      // debug('last_device_data_battery', packing.last_device_data_battery)
+      // debug('last_device_data_battery', rack.last_device_data_battery)
       // debug('update_attrs.last_device_data_battery', update_attrs.last_device_data_battery)
 
-      await Packing.findByIdAndUpdate(packing._id, update_attrs, { new: true });
+      await Rack.findByIdAndUpdate(rack._id, update_attrs, { new: true });
     }
   } catch (error) {
     debug(error);
   }
 };
 
-//deviceDataSchema.post('save', saveDeviceDataToPacking)
+//deviceDataSchema.post('save', saveDeviceDataToRack)
 deviceDataSchema.pre("update", update_updated_at_middleware);
 deviceDataSchema.pre("findOneAndUpdate", update_updated_at_middleware);
 

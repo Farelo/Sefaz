@@ -2,13 +2,13 @@ const debug = require("debug")("service:device_data");
 const _ = require("lodash");
 const { DeviceData } = require("./device_data.model");
 const { Family } = require("../families/families.model");
-const { Packing } = require("../packings/packings.model");
+const { Rack } = require("../racks/racks.model");
 
-exports.find_packing_by_device_id = async (device_id) => {
+exports.find_rack_by_device_id = async (device_id) => {
    try {
-      const packing = await Packing.findByTag(device_id);
+      const rack = await Rack.findByTag(device_id);
 
-      return packing;
+      return rack;
    } catch (error) {
       throw new Error(error);
    }
@@ -54,63 +54,63 @@ exports.get_device_data = async (device_id, { start_date = null, end_date = null
    }
 };
 
-exports.geolocation = async (query = { company_id: null, family_id: null, packing_serial: null }) => {
+exports.geolocation = async (query = { company_id: null, family_id: null, rack_serial: null }) => {
    try {
-      let packings = [];
+      let racks = [];
       let families = [];
       let data = [];
 
       switch (true) {
-         case query.company_id != null && query.family_id != null && query.packing_serial != null:
+         case query.company_id != null && query.family_id != null && query.rack_serial != null:
             families = await Family.find({ _id: query.family_id });
 
             data = await Promise.all(
                families.map(async (family) => {
-                  return await Packing.find({
+                  return await Rack.find({
                      family: family._id,
-                     serial: query.packing_serial,
+                     serial: query.rack_serial,
                   })
                      .populate("last_device_data")
                      .populate("last_device_data_battery")
                      .populate("family");
                })
             );
-            packings = _.flatMap(data);
+            racks = _.flatMap(data);
             break;
 
          case query.company_id != null && query.family_id != null:
             families = await Family.find({ _id: query.family_id });
             data = await Promise.all(
                families.map(async (family) => {
-                  return await Packing.find({ family: family._id })
+                  return await Rack.find({ family: family._id })
                      .populate("last_device_data")
                      .populate("last_device_data_battery")
                      .populate("family");
                })
             );
-            packings = _.flatMap(data);
+            racks = _.flatMap(data);
             break;
 
-         case query.company_id != null && query.packing_serial != null:
+         case query.company_id != null && query.rack_serial != null:
             families = await Family.find({ company: query.company_id });
             data = await Promise.all(
                families.map(async (family) => {
-                  return await Packing.find({
+                  return await Rack.find({
                      family: family._id,
-                     serial: query.packing_serial,
+                     serial: query.rack_serial,
                   })
                      .populate("last_device_data")
                      .populate("last_device_data_battery")
                      .populate("family");
                })
             );
-            packings = _.flatMap(data);
+            racks = _.flatMap(data);
             break;
 
-         case query.family_id != null && query.packing_serial != null:
-            packings = await Packing.find({
+         case query.family_id != null && query.rack_serial != null:
+            racks = await Rack.find({
                family: query.family_id,
-               serial: query.packing_serial,
+               serial: query.rack_serial,
             })
                .populate("last_device_data")
                .populate("last_device_data_battery")
@@ -121,38 +121,38 @@ exports.geolocation = async (query = { company_id: null, family_id: null, packin
             families = await Family.find({ company: query.company_id });
             data = await Promise.all(
                families.map(async (family) => {
-                  return await Packing.find({ family: family._id })
+                  return await Rack.find({ family: family._id })
                      .populate("last_device_data")
                      .populate("last_device_data_battery")
                      .populate("family");
                })
             );
-            packings = _.flatMap(data);
+            racks = _.flatMap(data);
             break;
 
          case query.family_id != null:
-            packings = await Packing.find({ family: query.family_id })
+            racks = await Rack.find({ family: query.family_id })
                .populate("last_device_data")
                .populate("last_device_data_battery")
                .populate("family");
             break;
 
-         case query.packing_serial != null:
-            packings = await Packing.find({ serial: query.packing_serial })
+         case query.rack_serial != null:
+            racks = await Rack.find({ serial: query.rack_serial })
                .populate("last_device_data")
                .populate("last_device_data_battery")
                .populate("family");
             break;
 
          default:
-            packings = await Packing.find({})
+            racks = await Rack.find({})
                .populate("last_device_data")
                .populate("last_device_data_battery")
                .populate("family");
             break;
       }
 
-      return packings;
+      return racks;
    } catch (error) {
       throw new Error(error);
    }

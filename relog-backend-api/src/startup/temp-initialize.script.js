@@ -1,7 +1,7 @@
 const ora = require('ora')
 const { Company } = require('../resources/companies/companies.model')
 const { Family } = require('../resources/families/families.model')
-const { Packing } = require('../resources/packings/packings.model')
+const { Rack } = require('../resources/racks/racks.model')
 const { DeviceData } = require('../resources/device_data/device_data.model')
 const { Setting } = require('../resources/settings/settings.model')
 const spinner = ora('Initializing...')
@@ -13,9 +13,9 @@ module.exports = async () => {
         // if (!has_settings.length > 0) await create_settings()
         // spinner.info('Settings ok.')
 
-        const has_packings = await Packing.find()
-        if (!has_packings.length > 0) await create_many_packings()
-        spinner.info('Packings ok.')
+        const has_racks = await Rack.find()
+        if (!has_racks.length > 0) await create_many_racks()
+        spinner.info('Racks ok.')
 
         // const has_device_data = await DeviceData.find()
         // if (!has_device_data.length > 0) await create_many_device_data()
@@ -36,14 +36,14 @@ const create_settings = async () => {
     })
 }
 
-const create_many_packings = async () => {
+const create_many_racks = async () => {
     try {
         const company = await Company.create({ name: 'CEBRACEC', type: 'owner' })
         const family = await Family.create({ code: 'CODEA', company: company._id })
 
         for (let i=0; i<3; i++) {
-            let packing = {} 
-            packing = new Packing({
+            let rack = {} 
+            rack = new Rack({
                 family: family._id,
                 tag: {
                     code: `410523${i}`,
@@ -58,8 +58,8 @@ const create_many_packings = async () => {
                 capacity: 1000,
                 active: true
             })
-            await packing.save()
-            spinner.info('Packing created with success!')
+            await rack.save()
+            spinner.info('Rack created with success!')
         }
     } catch (error) {
         console.log(error)

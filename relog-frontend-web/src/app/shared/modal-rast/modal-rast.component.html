@@ -18,10 +18,10 @@
           </tr>
         </thead>
         <tbody >
-          <tr *ngFor="let packing of data.data">
-            <td>{{packing.code}}</td>
-            <td>{{packing.serial}}</td>
-            <td>{{packing.supplier.name}}</td>
+          <tr *ngFor="let rack of data.data">
+            <td>{{rack.code}}</td>
+            <td>{{rack.serial}}</td>
+            <td>{{rack.supplier.name}}</td>
           </tr>
         </tbody>
       </table>

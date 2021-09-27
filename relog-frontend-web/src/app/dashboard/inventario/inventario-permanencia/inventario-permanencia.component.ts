@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Pagination } from '../../../shared/models/pagination';
-import { InventoryService, PackingService, AuthenticationService, ReportsService, FamiliesService } from '../../../servicos/index.service';
+import { InventoryService, RackService, AuthenticationService, ReportsService, FamiliesService } from '../../../servicos/index.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { FloatTimePipe } from '../../../shared/pipes/floatTime';
 import 'jspdf';
@@ -28,7 +28,7 @@ export class InventarioPermanenciaComponent implements OnInit {
   constructor(
     private reportService: ReportsService,
     private familyService: FamiliesService,
-    private packingService: PackingService,
+    private rackService: RackService,
     private auth: AuthenticationService) {
 
   }
@@ -38,7 +38,7 @@ export class InventarioPermanenciaComponent implements OnInit {
     this.loadTableHeaders();
 
     //Loading the families
-    this.loadPackings();
+    this.loadRacks();
 
     //Loads the data in the table
     this.permanenceInventory();
@@ -56,7 +56,7 @@ export class InventarioPermanenciaComponent implements OnInit {
   /**
    * Loading the families
    */
-  loadPackings() {
+  loadRacks() {
     this.familyService.getAllFamilies().subscribe(result => {
 
       this.listOfFamilies = result;
@@ -91,7 +91,7 @@ export class InventarioPermanenciaComponent implements OnInit {
 
     this.selectedSerial = null;
     console.log(event);
-    this.packingService.getAllPackings({ family: event._id }).subscribe(result => {
+    this.rackService.getAllRacks({ family: event._id }).subscribe(result => {
       this.listOfSerials = result;
     }, err => console.error(err));
   }

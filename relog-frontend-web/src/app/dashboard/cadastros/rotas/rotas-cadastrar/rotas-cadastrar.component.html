@@ -5,7 +5,7 @@
   <form novalidate  (ngSubmit)="onSubmit(mRoute)" [formGroup]="mRoute" #formDir="ngForm">
     <div class="row">
       <div class="col-md-12">
-        <alert type="info" *ngIf="!existPacking">
+        <alert type="info" *ngIf="!existRack">
           <strong>Atenção!</strong> Não existe embalagens associadas a esse fornecedor.
         </alert>
       </div>

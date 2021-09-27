@@ -4,7 +4,7 @@ export interface GC16 {
    productiveDays: number;
    containerDays: number;
    project: any;
-   packing: string;
+   rack: string;
    supplier: any;
    _id : string;
    factoryStock: {

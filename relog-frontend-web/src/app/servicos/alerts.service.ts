@@ -49,23 +49,23 @@ export class AlertsService {
 
   getAlertsPaginationByHashing(limit: number, page: number, code: string, project: string, supplier: string, status: string, attr: string = ''): Observable<any> {
 
-    return this.http.get(`${environment.url}alert/list/all/packing/${limit}/${page}/${code}/${project}/${supplier}/${status}?attr=${attr}`)
+    return this.http.get(`${environment.url}alert/list/all/rack/${limit}/${page}/${code}/${project}/${supplier}/${status}?attr=${attr}`)
       .catch(this.handleError);
   }
 
   getAlertsPaginationByHashingLogistic(limit: number, page: number, code: string, project: string, supplier: string, status: string, array: any): Observable<any> {
 
-    return this.http.post(`${environment.url}alert/list/all/packing/logistic/${limit}/${page}/${code}/${project}/${supplier}/${status}`, array)
+    return this.http.post(`${environment.url}alert/list/all/rack/logistic/${limit}/${page}/${code}/${project}/${supplier}/${status}`, array)
       .catch(this.handleError);
   }
 
-  retrieveAlertByPacking(id: string, status: number): Observable<any> {
+  retrieveAlertByRack(id: string, status: number): Observable<any> {
     return this.http.get(`${environment.url}alert/retrieve/${id}/${status}`)
       .catch(this.handleError);
   }
 
-  retrievePackingAlert(packing_id: string) {
-    return this.http.get(`${environment.url}alerts/packing/${packing_id}`)
+  retrieveRackAlert(rack_id: string) {
+    return this.http.get(`${environment.url}alerts/rack/${rack_id}`)
       .catch(this.handleError);
   }
 

@@ -13,13 +13,13 @@ export class MapsService {
         return Observable.throw(error);
     }
 
-    getPackings(params: any = []): Observable<any> {
+    getRacks(params: any = []): Observable<any> {
         var queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
         if (queryString) { queryString = '?' + queryString; }
 
         //console.log('queryString: ' + queryString);
 
-        return this.http.get(`${environment.url}maps/packings${queryString}`)
+        return this.http.get(`${environment.url}maps/racks${queryString}`)
             .catch(this.handleError);
     }
 }

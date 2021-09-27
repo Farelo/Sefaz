@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const { Company } = require('../companies/companies.model')
 const { User } = require('../users/users.model')
 const { DeviceData } = require('./device_data.model')
-const { Packing } = require('../packings/packings.model')
+const { Rack } = require('../racks/racks.model')
 const { Family } = require('../families/families.model')
 
 describe('api/device_data', () => {
@@ -13,7 +13,7 @@ describe('api/device_data', () => {
     let new_user
     let token
     let device_data_body
-    let new_packing
+    let new_rack
 
 
     beforeEach(async () => {
@@ -35,7 +35,7 @@ describe('api/device_data', () => {
         
         new_family = await Family.create({ code: 'Family1', company: new_company._id })
 
-        new_packing = await Packing.create( { tag: {code: '1234567'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+        new_rack = await Rack.create( { tag: {code: '1234567'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
 
         device_data_body = { 
             device_id: '1234567', 
@@ -63,7 +63,7 @@ describe('api/device_data', () => {
         await Company.deleteMany({})
         await User.deleteMany({})
         await DeviceData.deleteMany({})
-        await Packing.deleteMany({})
+        await Rack.deleteMany({})
         await Family.deleteMany({})
     })
 
@@ -75,14 +75,14 @@ describe('api/device_data', () => {
     //         //family ja criada no topo do script{ code: 'Family1', company: new_company._id }
     //         const family2 = await Family.create({ code: 'Family2', company: new_company._id })
 
-    //         const packing1 = await Packing.create( { tag: {code: '9000001'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-    //         const packing2 = await Packing.create( { tag: {code: '9000002'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-    //         const packing3 = await Packing.create( { tag: {code: '9000003'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-    //         const packing4 = await Packing.create( { tag: {code: '9000004'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-    //         const packing5 = await Packing.create( { tag: {code: '9000005'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-    //         const packing6 = await Packing.create( { tag: {code: '8999991'}, serial: '001', family: new_family._id, current_state: 'analise' })
-    //         const packing7 = await Packing.create( { tag: {code: '8999992'}, serial: '002', family: new_family._id, current_state: 'analise' })
-    //         const packing8 = await Packing.create( { tag: {code: '8999993'}, serial: '001', family: family2._id,    current_state: 'analise' })
+    //         const rack1 = await Rack.create( { tag: {code: '9000001'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const rack2 = await Rack.create( { tag: {code: '9000002'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const rack3 = await Rack.create( { tag: {code: '9000003'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const rack4 = await Rack.create( { tag: {code: '9000004'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const rack5 = await Rack.create( { tag: {code: '9000005'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+    //         const rack6 = await Rack.create( { tag: {code: '8999991'}, serial: '001', family: new_family._id, current_state: 'analise' })
+    //         const rack7 = await Rack.create( { tag: {code: '8999992'}, serial: '002', family: new_family._id, current_state: 'analise' })
+    //         const rack8 = await Rack.create( { tag: {code: '8999993'}, serial: '001', family: family2._id,    current_state: 'analise' })
 
     //         const device_data1 = await DeviceData.create( { device_id: '9000001', message_date: new Date('2018-11-09T00:00:00'), message_date_timestamp: 123456789 } )
     //         const device_data2 = await DeviceData.create( { device_id: '9000002', message_date: new Date('2018-06-15T00:00:00'), message_date_timestamp: 123456789 } )
@@ -97,7 +97,7 @@ describe('api/device_data', () => {
 
     //     describe('Testing call to the rout by company_id', () => {
 
-    //         it('should return all 9 packings belonging to the same company and filled with their last_device_data ', async () =>{
+    //         it('should return all 9 racks belonging to the same company and filled with their last_device_data ', async () =>{
 
     //             const company = await Company.findOne({"name": "CEBRACE TESTE"})
 
@@ -107,19 +107,19 @@ describe('api/device_data', () => {
 
     //             expect(res.status).toBe(200)
     //             expect(res.body.length).toBe(9)
-    //             expect(res.body.every(packing => {
+    //             expect(res.body.every(rack => {
 
-    //                 switch(packing.tag.code) {
+    //                 switch(rack.tag.code) {
     //                     case "1234567":
-    //                         return !packing.hasOwnProperty('last_device_data')
+    //                         return !rack.hasOwnProperty('last_device_data')
     //                     case "9000005":
-    //                         return !packing.hasOwnProperty('last_device_data')
+    //                         return !rack.hasOwnProperty('last_device_data')
     //                     default:
-    //                         if (packing.hasOwnProperty('last_device_data')) {
+    //                         if (rack.hasOwnProperty('last_device_data')) {
 
-    //                             const message_date = packing.last_device_data.message_date
+    //                             const message_date = rack.last_device_data.message_date
 
-    //                             switch(packing.tag.code) {
+    //                             switch(rack.tag.code) {
     //                                 case "9000001":
     //                                     return message_date == new Date('2018-11-09T00:00:00').toISOString()
     //                                 case "9000002":
@@ -143,13 +143,13 @@ describe('api/device_data', () => {
 
     //     })
 
-    //     // describe('Testing call to the route by packing_id', () => {
+    //     // describe('Testing call to the route by rack_id', () => {
 
-    //     //     it('should return one packing filled with its last_device_data', async () =>{
-    //     //         const packing = await Packing.findOne({"tag.code": "9000001"})
+    //     //     it('should return one rack filled with its last_device_data', async () =>{
+    //     //         const rack = await Rack.findOne({"tag.code": "9000001"})
 
     //     //         const res = await request(server)
-    //     //             .get(`/api/device_data/data/${packing.tag.code}`)
+    //     //             .get(`/api/device_data/data/${rack.tag.code}`)
     //     //             .set('Authorization', token)
 
     //     //         expect(res.status).toBe(200)
@@ -158,23 +158,23 @@ describe('api/device_data', () => {
     //     //     })
     //     // })
 
-    //     describe('Testing call to the route by packing_serial', () => {
+    //     describe('Testing call to the route by rack_serial', () => {
 
-    //         it('should return all packings filled with its last_device_data', async () =>{
+    //         it('should return all racks filled with its last_device_data', async () =>{
 
-    //             const packing_serial = '001'
+    //             const rack_serial = '001'
 
     //             const res = await request(server)
-    //                 .get(`/api/device_data/data?packing_serial=${packing_serial}`)
+    //                 .get(`/api/device_data/data?rack_serial=${rack_serial}`)
     //                 .set('Authorization', token)
 
     //             expect(res.status).toBe(200)
     //             expect(res.body.length).toBe(2)
-    //             expect(res.body.every(packing => packing.serial == '001')).toBeTruthy()
-    //             expect(res.body.every(packing => {
-    //                 const message_date = packing.last_device_data.message_date
+    //             expect(res.body.every(rack => rack.serial == '001')).toBeTruthy()
+    //             expect(res.body.every(rack => {
+    //                 const message_date = rack.last_device_data.message_date
 
-    //                 switch(packing.tag.code) {
+    //                 switch(rack.tag.code) {
     //                     case "8999991":
     //                         return message_date == new Date('2018-10-25T00:00:00').toISOString()
     //                     case "8999993":
@@ -188,7 +188,7 @@ describe('api/device_data', () => {
 
     //     describe('Testing call to the route without query-string', () => {
 
-    //         it('should return all 9 packings filled with their last_device_data, when it exists', async () =>{
+    //         it('should return all 9 racks filled with their last_device_data, when it exists', async () =>{
 
     //             const res = await request(server)
     //                 .get(`/api/device_data/data`)
@@ -196,19 +196,19 @@ describe('api/device_data', () => {
 
     //             expect(res.status).toBe(200)
     //             expect(res.body.length).toBe(9)
-    //             expect(res.body.every(packing => {
+    //             expect(res.body.every(rack => {
 
-    //                 switch(packing.tag.code) {
+    //                 switch(rack.tag.code) {
     //                     case "1234567":
-    //                         return !packing.hasOwnProperty('last_device_data')
+    //                         return !rack.hasOwnProperty('last_device_data')
     //                     case "9000005":
-    //                         return !packing.hasOwnProperty('last_device_data')
+    //                         return !rack.hasOwnProperty('last_device_data')
     //                     default:
-    //                         if (packing.hasOwnProperty('last_device_data')) {
+    //                         if (rack.hasOwnProperty('last_device_data')) {
 
-    //                             const message_date = packing.last_device_data.message_date
+    //                             const message_date = rack.last_device_data.message_date
 
-    //                             switch(packing.tag.code) {
+    //                             switch(rack.tag.code) {
     //                                 case "9000001":
     //                                     return message_date == new Date('2018-11-09T00:00:00').toISOString()
     //                                 case "9000002":
@@ -233,7 +233,7 @@ describe('api/device_data', () => {
 
     //     afterEach(async () => {
     //         await Family.deleteMany({})
-    //         await Packing.deleteMany({})
+    //         await Rack.deleteMany({})
     //     })
 
         
@@ -243,8 +243,8 @@ describe('api/device_data', () => {
 
         beforeEach(async () => {
 
-            await Packing.create( { tag: {code: '5045499'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
-            await Packing.create( { tag: {code: '9999999'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+            await Rack.create( { tag: {code: '5045499'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
+            await Rack.create( { tag: {code: '9999999'}, serial: 'SERIAL', family: new_family._id, current_state: 'analise' })
 
             await DeviceData.collection.insertMany([
                 { 
@@ -420,21 +420,21 @@ describe('api/device_data', () => {
 
         afterEach(async () => {
             await DeviceData.deleteMany({})
-            await Packing.deleteMany({})
+            await Rack.deleteMany({})
         })
     })
 
     describe('MONGOOSE TRIGGER POST_SAVE DEVICE_DATA', () => {
 
-        // criar um novo device_data com um last_date mais antigo: nao deve alterar o last date do packing
-        it('should return the same device_data._id from packing.last_device_data as the recently created', async () => {
+        // criar um novo device_data com um last_date mais antigo: nao deve alterar o last date do rack
+        it('should return the same device_data._id from rack.last_device_data as the recently created', async () => {
 
             const new_device_data = new DeviceData(device_data_body)
             await new_device_data.save()
         
-            const packing = await Packing.findByTag(device_data_body.device_id)
+            const rack = await Rack.findByTag(device_data_body.device_id)
 
-            const last_device_data = packing.last_device_data
+            const last_device_data = rack.last_device_data
 
             // console.log('new_device_data._id: ', new_device_data._id)
             // console.log('last_device_data ID: ', last_device_data)
@@ -443,7 +443,7 @@ describe('api/device_data', () => {
 
         })
 
-        it('should return the same device_data._id from the packing.last_device_data as the second device_data created', async () => {
+        it('should return the same device_data._id from the rack.last_device_data as the second device_data created', async () => {
 
             const deviceId = '1234567'
 
@@ -461,18 +461,18 @@ describe('api/device_data', () => {
             })
             await second_device_data.save()
 
-            const packing = await Packing.findByTag(deviceId)
+            const rack = await Rack.findByTag(deviceId)
 
-            const last_device_data = packing.last_device_data
+            const last_device_data = rack.last_device_data
 
-            //first_device_data._id should be differente to packing.last_device_data
+            //first_device_data._id should be differente to rack.last_device_data
             expect(first_device_data._id).not.toEqual(last_device_data)
             
-            //second_device_data._id should be equal to packing.last_device_data 
+            //second_device_data._id should be equal to rack.last_device_data 
             expect(second_device_data._id).toEqual(last_device_data)
         })
 
-        it('should return the same device_data._id from the packing.last_device_data as the first device_data created', async () => { 
+        it('should return the same device_data._id from the rack.last_device_data as the first device_data created', async () => { 
             const deviceId = '1234567'
 
             const first_device_data = new DeviceData({ 
@@ -489,39 +489,39 @@ describe('api/device_data', () => {
             })
             await second_device_data.save()
 
-            const packing = await Packing.findByTag(deviceId)
+            const rack = await Rack.findByTag(deviceId)
 
-            const last_device_data = packing.last_device_data
+            const last_device_data = rack.last_device_data
 
-            //first_device_data._id should be euqal to packing.last_device_data
+            //first_device_data._id should be euqal to rack.last_device_data
             expect(first_device_data._id).toEqual(last_device_data)
             
-            //second_device_data._id should be different to packing.last_device_data 
+            //second_device_data._id should be different to rack.last_device_data 
             expect(second_device_data._id).not.toEqual(last_device_data)
         })
 
         
-        it('should return the same device_data._id from the packing.last_device_data_battery as the recently device_data created', async () => {
+        it('should return the same device_data._id from the rack.last_device_data_battery as the recently device_data created', async () => {
 
             const new_device_data = new DeviceData(device_data_body)
             await new_device_data.save()
         
             const tag = {code: device_data_body.device_id}
 
-            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
+            const rack = await Rack.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
 
-            expect(new_device_data._id).toEqual(packing.last_device_data_battery._id)
-            expect(new_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
-            expect(new_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
+            expect(new_device_data._id).toEqual(rack.last_device_data_battery._id)
+            expect(new_device_data.battery.percentage).toEqual(rack.last_device_data_battery.battery.percentage)
+            expect(new_device_data.battery.voltage).toEqual(rack.last_device_data_battery.battery.voltage)
         })
 
-        it('should keep the oldest device_data._id from the packing.last_device_data_battery if the recently device_data does not contain battery data', async () => {
+        it('should keep the oldest device_data._id from the rack.last_device_data_battery if the recently device_data does not contain battery data', async () => {
 
             const new_device_data = new DeviceData(device_data_body)
             await new_device_data.save()
             
             // adicionar um segundo device_data forcará a execução do post save
-            // como este segundo device data nao tem info de bateria, então o last_device_data_battery do packing deve permanecer com o id do device_data anterior
+            // como este segundo device data nao tem info de bateria, então o last_device_data_battery do rack deve permanecer com o id do device_data anterior
             const second_device_data = new DeviceData({ 
                 device_id: '1234567', 
                 message_date: new Date('2018-12-31T00:00:00'),
@@ -531,22 +531,22 @@ describe('api/device_data', () => {
             
             const tag = {code: device_data_body.device_id}
             
-            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
+            const rack = await Rack.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
         
-            expect(new_device_data._id).toEqual(packing.last_device_data_battery._id)
-            expect(new_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
-            expect(new_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
-            expect(second_device_data._id).not.toEqual(packing.last_device_data_battery._id)
+            expect(new_device_data._id).toEqual(rack.last_device_data_battery._id)
+            expect(new_device_data.battery.percentage).toEqual(rack.last_device_data_battery.battery.percentage)
+            expect(new_device_data.battery.voltage).toEqual(rack.last_device_data_battery.battery.voltage)
+            expect(second_device_data._id).not.toEqual(rack.last_device_data_battery._id)
 
         } )
 
-        it ('should update the packing.last_device_data_battery to the new device_data._id wich contains battery data', async () => {
+        it ('should update the rack.last_device_data_battery to the new device_data._id wich contains battery data', async () => {
 
             const new_device_data = new DeviceData(device_data_body)
             await new_device_data.save()
             
             // adicionar um segundo device_data forcará a execução do post save
-            // como este segundo device tem info de bateria, então o last_device_data_battery do packing deverá ser atualizado com o id do segundo device_data
+            // como este segundo device tem info de bateria, então o last_device_data_battery do rack deverá ser atualizado com o id do segundo device_data
             const second_device_data = new DeviceData({ 
                 device_id: '1234567', 
                 message_date: new Date('2018-12-31T00:00:00'),
@@ -557,23 +557,23 @@ describe('api/device_data', () => {
 
             const tag = {code: device_data_body.device_id}
             
-            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
+            const rack = await Rack.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
         
-            expect(new_device_data._id).not.toEqual(packing.last_device_data_battery._id)
-            expect(second_device_data._id).toEqual(packing.last_device_data_battery._id)
-            expect(second_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
-            expect(second_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
+            expect(new_device_data._id).not.toEqual(rack.last_device_data_battery._id)
+            expect(second_device_data._id).toEqual(rack.last_device_data_battery._id)
+            expect(second_device_data.battery.percentage).toEqual(rack.last_device_data_battery.battery.percentage)
+            expect(second_device_data.battery.voltage).toEqual(rack.last_device_data_battery.battery.voltage)
 
         })
 
-        it('should not update the packing.last_device_data_battery to the new device_data._id wich contains battery data but is an oldest device_data', async () => {
+        it('should not update the rack.last_device_data_battery to the new device_data._id wich contains battery data but is an oldest device_data', async () => {
             //testar um caso em que apesar de ter bateria, a data eh mais antiga, por isso fica a bateria antiga
 
             const new_device_data = new DeviceData(device_data_body)
             await new_device_data.save()
             
             // adicionar um segundo device_data forcará a execução do post save
-            // apesar deste segundo device data ter info de bateria, a data dessa info de bateria é mais antiga que a info de bateria que o packing ja possui
+            // apesar deste segundo device data ter info de bateria, a data dessa info de bateria é mais antiga que a info de bateria que o rack ja possui
             const second_device_data = new DeviceData({ 
                 device_id: '1234567', 
                 message_date: new Date('2018-01-01T00:00:00'),
@@ -584,18 +584,18 @@ describe('api/device_data', () => {
 
             const tag = {code: device_data_body.device_id}
             
-            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
+            const rack = await Rack.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery')
         
-            expect(new_device_data._id).toEqual(packing.last_device_data_battery._id)
-            expect(second_device_data._id).not.toEqual(packing.last_device_data_battery._id)
-            expect(new_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
-            expect(new_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
+            expect(new_device_data._id).toEqual(rack.last_device_data_battery._id)
+            expect(second_device_data._id).not.toEqual(rack.last_device_data_battery._id)
+            expect(new_device_data.battery.percentage).toEqual(rack.last_device_data_battery.battery.percentage)
+            expect(new_device_data.battery.voltage).toEqual(rack.last_device_data_battery.battery.voltage)
 
         })
 
         
-        it('should update the packing.last_device_data and packing_last_device_data_battery with two different device_data._id', async () => {
-            //testar um caso em que o packing nao tem bateria ainda, 2 device data sao inseridos e o mais recente nao tem bateria e o mais antigo tem
+        it('should update the rack.last_device_data and rack_last_device_data_battery with two different device_data._id', async () => {
+            //testar um caso em que o rack nao tem bateria ainda, 2 device data sao inseridos e o mais recente nao tem bateria e o mais antigo tem
             //nesse caso, o last_davice_data ficará com o mais recente e o last_device_data_battery com o mais antigo, pq tem bateria
 
             const first_device_data = new DeviceData({ 
@@ -615,16 +615,16 @@ describe('api/device_data', () => {
 
             const tag = {code: '1234567'}
             
-            const packing = await Packing.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery').populate('last_device_data')
+            const rack = await Rack.findOne({ 'tag.code': tag.code }).populate('last_device_data_battery').populate('last_device_data')
         
-            expect(first_device_data._id).toEqual(packing.last_device_data._id)
-            expect(second_device_data._id).not.toEqual(packing.last_device_data._id)
+            expect(first_device_data._id).toEqual(rack.last_device_data._id)
+            expect(second_device_data._id).not.toEqual(rack.last_device_data._id)
 
-            expect(second_device_data._id).toEqual(packing.last_device_data_battery._id)
-            expect(first_device_data._id).not.toEqual(packing.last_device_data_battery._id)
+            expect(second_device_data._id).toEqual(rack.last_device_data_battery._id)
+            expect(first_device_data._id).not.toEqual(rack.last_device_data_battery._id)
             
-            expect(second_device_data.battery.percentage).toEqual(packing.last_device_data_battery.battery.percentage)
-            expect(second_device_data.battery.voltage).toEqual(packing.last_device_data_battery.battery.voltage)
+            expect(second_device_data.battery.percentage).toEqual(rack.last_device_data_battery.battery.percentage)
+            expect(second_device_data.battery.voltage).toEqual(rack.last_device_data_battery.battery.voltage)
 
         })
 

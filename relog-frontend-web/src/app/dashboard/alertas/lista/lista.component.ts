@@ -89,7 +89,7 @@ export class ListaComponent implements OnInit {
   }
 
   open(embalagem, status) {
-    // this.alertsService.retrieveAlertByPacking(embalagem, status)
+    // this.alertsService.retrieveAlertByRack(embalagem, status)
     //   .subscribe(result => {
 
     // console.log(embalagem);

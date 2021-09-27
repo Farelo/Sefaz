@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const moment = require("moment");
-const { Packing } = require("../../packings/packings.model");
+const { Rack } = require("../../racks/racks.model");
 const { EventRecord } = require("../../event_record/event_record.model");
 const { Position } = require("../../positions/positions.model");
 
@@ -11,7 +11,7 @@ module.exports = async (days) => {
    try {
       let startDate = new Date();
 
-      const packings = await Packing.aggregate([
+      const racks = await Rack.aggregate([
          {
             $match: {
                last_owner_supplier: {
@@ -151,7 +151,7 @@ module.exports = async (days) => {
 
       //Filtra as embalagens com mais de x dias (default = 30 dias)
 
-      let resultPackings = packings.filter((element) => {
+      let resultRacks = racks.filter((element) => {
          if (element.last_owner_supplier !== null) {
             return new Date(element.last_owner_supplier.created_at) < moment().subtract(days, "days").toDate();
          } else return false;
@@ -159,15 +159,15 @@ module.exports = async (days) => {
 
       let resultList = [];
 
-      for (const [i, actualPacking] of resultPackings.entries()) {
+      for (const [i, actualRack] of resultRacks.entries()) {
          let query = {};
-         if (actualPacking.last_owner_supplier) {
+         if (actualRack.last_owner_supplier) {
             query = {
-               packing: actualPacking._id,
-               created_at: { $gte: actualPacking.last_owner_supplier.created_at },
-               _id: { $ne: actualPacking.last_owner_supplier._id },
+               rack: actualRack._id,
+               created_at: { $gte: actualRack.last_owner_supplier.created_at },
+               _id: { $ne: actualRack.last_owner_supplier._id },
             };
-         } else query = { packing: actualPacking._id };
+         } else query = { rack: actualRack._id };
 
          /**
           * TODO:
@@ -195,29 +195,29 @@ module.exports = async (days) => {
          }
 
          resultList.push({
-            family: actualPacking.family ? actualPacking.family.code : "-",
-            serial: actualPacking.serial,
-            tag: actualPacking.tag.code,
-            lastOwnerOrSupplier: actualPacking.last_owner_supplier.control_point
-               ? actualPacking.last_owner_supplier.control_point.name
+            family: actualRack.family ? actualRack.family.code : "-",
+            serial: actualRack.serial,
+            tag: actualRack.tag.code,
+            lastOwnerOrSupplier: actualRack.last_owner_supplier.control_point
+               ? actualRack.last_owner_supplier.control_point.name
                : "-",
-            lastOwnerOrSupplierType: actualPacking.last_owner_supplier.control_point
-               ? actualPacking.last_owner_supplier.control_point.type.name
+            lastOwnerOrSupplierType: actualRack.last_owner_supplier.control_point
+               ? actualRack.last_owner_supplier.control_point.type.name
                : "-",
-            dateLastOwnerOrSupplier: actualPacking.last_owner_supplier.created_at,
-            leaveMessage: actualPacking.last_owner_supplier.device_data_id
-               ? actualPacking.last_owner_supplier.device_data_id.date
+            dateLastOwnerOrSupplier: actualRack.last_owner_supplier.created_at,
+            leaveMessage: actualRack.last_owner_supplier.device_data_id
+               ? actualRack.last_owner_supplier.device_data_id.date
                : "-",
             actualCP:
-               actualPacking.last_event_record.type == "inbound"
-                  ? actualPacking.last_event_record.control_point
-                     ? actualPacking.last_event_record.control_point.name
+               actualRack.last_event_record.type == "inbound"
+                  ? actualRack.last_event_record.control_point
+                     ? actualRack.last_event_record.control_point.name
                      : "-"
                   : "-",
             dateActualCP:
-               actualPacking.last_event_record.type == "inbound" ? actualPacking.last_event_record.created_at : "",
-            status: actualPacking.current_state,
-            lastMessage: actualPacking.last_message_signal,
+               actualRack.last_event_record.type == "inbound" ? actualRack.last_event_record.created_at : "",
+            status: actualRack.current_state,
+            lastMessage: actualRack.last_message_signal,
             eventList: eventsList,
          });
       }

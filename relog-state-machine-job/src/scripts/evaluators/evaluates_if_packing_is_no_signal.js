@@ -5,27 +5,27 @@ const STATES = require('../common/states')
 
 // MODELS
 const { CurrentStateHistory } = require('../../models/current_state_history.model')
-const { Packing } = require('../../models/packings.model')
+const { Rack } = require('../../models/racks.model')
 
-module.exports = async (packing) => {
+module.exports = async (rack) => {
     try {
         //console.log(`EMBALAGEM ESTÁ SEM SINAL`)
-        //if (packing.last_current_state_history && packing.last_current_state_history.type === STATES.SEM_SINAL.alert) return null
-        if (packing.current_state && packing.current_state === STATES.SEM_SINAL.alert) return null
+        //if (rack.last_current_state_history && rack.last_current_state_history.type === STATES.SEM_SINAL.alert) return null
+        if (rack.current_state && rack.current_state === STATES.SEM_SINAL.alert) return null
 
-        await CurrentStateHistory.create({ packing: packing._id, type: STATES.SEM_SINAL.alert, device_data_id: null  })
+        await CurrentStateHistory.create({ rack: rack._id, type: STATES.SEM_SINAL.alert, device_data_id: null  })
         // await currentStateHistory.save()
 
-        // console.log('packing.absent')
-        // console.log(packing.absent)
+        // console.log('rack.absent')
+        // console.log(rack.absent)
 
-        if(packing.absent == true){
-            let actualOfflineWhileAbsentRegister = createOfflineWhileAbsentRegister(packing)
+        if(rack.absent == true){
+            let actualOfflineWhileAbsentRegister = createOfflineWhileAbsentRegister(rack)
 
-            await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.SEM_SINAL.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister })
+            await Rack.findByIdAndUpdate(rack._id, { current_state: STATES.SEM_SINAL.key, offlineWhileAbsent: actualOfflineWhileAbsentRegister })
 
         } else{
-            await Packing.findByIdAndUpdate(packing._id, { current_state: STATES.SEM_SINAL.key })
+            await Rack.findByIdAndUpdate(rack._id, { current_state: STATES.SEM_SINAL.key })
         }
         
     } catch (error) { 
@@ -33,17 +33,17 @@ module.exports = async (packing) => {
     }
 }
 
-const createOfflineWhileAbsentRegister = (packing) => {
+const createOfflineWhileAbsentRegister = (rack) => {
 
-    if(!packing.offlineWhileAbsent){
-        packing.offlineWhileAbsent.push({
+    if(!rack.offlineWhileAbsent){
+        rack.offlineWhileAbsent.push({
             start: new Date()
         })
-        return packing.offlineWhileAbsent
+        return rack.offlineWhileAbsent
     }
 
-    packing.offlineWhileAbsent.push({
+    rack.offlineWhileAbsent.push({
         start: new Date()
     })
-    return packing.offlineWhileAbsent
+    return rack.offlineWhileAbsent
 }

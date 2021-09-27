@@ -3,7 +3,7 @@
 const config = require("config");
 const axios = require("axios");
 const WebSocket = require("ws");
-const { Packing } = require("./db/models/packings.model");
+const { Rack } = require("./db/models/racks.model");
 const PositionController = require("./controllers/position.controller");
 const TemperatureController = require("./controllers/temperature.controller");
 const BatteryController = require("./controllers/battery.controller");
@@ -22,7 +22,7 @@ async function getDeviceDictList() {
   //logger.info("Getting Dict DevicesIds x last DeviceData");
 
   //Getting all DeviceIds
-  let result = await Packing.find({}, { _id: 0, tag: 1 }).then((packFind) => {
+  let result = await Rack.find({}, { _id: 0, tag: 1 }).then((packFind) => {
     let packMapped = packFind
       .filter((packFilter) => {
         return packFilter.tag.code != undefined;

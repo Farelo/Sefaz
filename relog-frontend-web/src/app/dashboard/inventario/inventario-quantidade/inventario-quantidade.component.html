@@ -58,26 +58,26 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let packing of listOfQuantity | paginate: {
+        <tr *ngFor="let rack of listOfQuantity | paginate: {
                                                         id:'quantity',
                                                         itemsPerPage: 10,
                                                         currentPage: listOfQuantityActualPage,
                                                         totalItems: listOfQuantity.length }">
-          <td>{{packing.family_code || '-'}}</td>
-          <td>{{packing.company || '-'}}</td>
-          <td>{{packing.control_point_name || '-'}}</td>
+          <td>{{rack.family_code || '-'}}</td>
+          <td>{{rack.company || '-'}}</td>
+          <td>{{rack.control_point_name || '-'}}</td>
 
-          <td>{{packing.control_point_type}}</td>
-          <td>{{packing.actual_plant | type}}</td>
+          <td>{{rack.control_point_type}}</td>
+          <td>{{rack.actual_plant | type}}</td>
 
-          <td style="text-align:center;">{{packing.stock_min}}</td>
-          <td style="text-align:center;">{{packing.total || '-'}}</td>
-          <td style="text-align:center;">{{packing.stock_max}}</td>
+          <td style="text-align:center;">{{rack.stock_min}}</td>
+          <td style="text-align:center;">{{rack.total || '-'}}</td>
+          <td style="text-align:center;">{{rack.stock_max}}</td>
 
-          <!-- <td>{{packing.actual_gc16 ? (packing.actual_gc16?.min > packing.quantity ? (packing.quantity-packing.actual_gc16?.min)
-            : (packing.actual_gc16?.max
-            < packing.quantity ? packing.quantity-packing.actual_gc16?.max : 'NP')) : '-' }}</td> -->
-          <!-- <td>{{packing.status}}</td> -->
+          <!-- <td>{{rack.actual_gc16 ? (rack.actual_gc16?.min > rack.quantity ? (rack.quantity-rack.actual_gc16?.min)
+            : (rack.actual_gc16?.max
+            < rack.quantity ? rack.quantity-rack.actual_gc16?.max : 'NP')) : '-' }}</td> -->
+          <!-- <td>{{rack.status}}</td> -->
         </tr>
       </tbody>
     </table>
@@ -96,7 +96,7 @@
   <div class="resumo">
     <h5 class="definicao">Total: </h5>
     <h5 class="numero">{{ qtdTotal || 0 }}</h5>
-    <!-- <h5 class="numero">{{ quantity.meta?.total_packings || 0}}</h5> -->
+    <!-- <h5 class="numero">{{ quantity.meta?.total_racks || 0}}</h5> -->
   </div>
 
   <!-- <div class="resumo">

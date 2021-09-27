@@ -11,7 +11,7 @@ import { constants } from '../../../environments/constants';
 })
 export class ModalInvComponent implements OnInit {
   @Input()
-  packing;
+  rack;
   public data: Pagination = new Pagination({ meta: { page: 1 } });
   constructor(
     public activeAlerta: NgbActiveModal,
@@ -27,9 +27,9 @@ export class ModalInvComponent implements OnInit {
       .getInventorySupplierByPlantAnd(
         10,
         this.data.meta.page,
-        this.packing.code,
-        this.packing.supplier._id,
-        this.packing.project._id,
+        this.rack.code,
+        this.rack.supplier._id,
+        this.rack.project._id,
       )
       .subscribe(result => {
         this.data = result;

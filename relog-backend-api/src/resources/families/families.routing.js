@@ -178,4 +178,6 @@ module.exports = router
  *         type: string
  *       company:
  *         type: string
+ *       checklist:
+ *         type: string
  */

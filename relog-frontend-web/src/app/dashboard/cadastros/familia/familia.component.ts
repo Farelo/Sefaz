@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PackingService, AuthenticationService, CompaniesService } from '../../../servicos/index.service'; 
+import { RackService, AuthenticationService, CompaniesService } from '../../../servicos/index.service'; 
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FamiliesService } from 'app/servicos/families.service';
@@ -52,11 +52,11 @@ export class FamiliaComponent implements OnInit {
 
   /**
    * 
-   * @param packing Remove a company
+   * @param rack Remove a company
    */
-  removePacking(packing):void{
+  removeRack(rack):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.mObject = packing;
+    modalRef.componentInstance.mObject = rack;
     modalRef.componentInstance.mType = "FAMILY";
 
     modalRef.result.then((result) => {

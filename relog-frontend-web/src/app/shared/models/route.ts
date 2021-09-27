@@ -3,8 +3,8 @@ export interface Route {
    supplier: string;
    plant_factory: string;
    plant_supplier: string;
-   packing_code: string;
-   hashPacking: string;
+   rack_code: string;
+   hashRack: string;
    time: {
      max: number,
      min: number

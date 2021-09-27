@@ -3,7 +3,7 @@ import { TimePipe } from './time';
 import { RoundPipe } from './round';
 import { CompanyType } from './plantType'; 
 import { TruncatePipe } from './truncate';
-import { PackingStatus } from './packingStatus';
+import { RackStatus } from './rackStatus';
 import { FloatTimePipe } from './floatTime'; 
 import { StatusTime } from './statusTime';
 
@@ -17,7 +17,7 @@ import { StatusTime } from './statusTime';
     CompanyType, 
     StatusTime,
     TruncatePipe,
-    PackingStatus,
+    RackStatus,
     FloatTimePipe,
   ],
   exports: [
@@ -26,7 +26,7 @@ import { StatusTime } from './statusTime';
     CompanyType, 
     StatusTime,
     TruncatePipe,
-    PackingStatus,
+    RackStatus,
     FloatTimePipe,
   ]
 })

@@ -1,5 +1,5 @@
   import { Component, OnInit } from '@angular/core';
-  import { PackingService, HomeService } from '../../servicos/index.service';
+  import { RackService, HomeService } from '../../servicos/index.service';
   import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
   @Component({

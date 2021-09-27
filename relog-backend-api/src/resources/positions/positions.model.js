@@ -1,6 +1,6 @@
 const debug = require("debug")("model:positions");
 const mongoose = require("mongoose");
-const { Packing } = require("../packings/packings.model");
+const { Rack } = require("../racks/racks.model");
 
 const positionSchema = new mongoose.Schema({
    tag: {

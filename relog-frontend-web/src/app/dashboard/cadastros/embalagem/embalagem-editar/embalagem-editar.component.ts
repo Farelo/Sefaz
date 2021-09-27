@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastService, PackingService, FamiliesService, ProjectService } from '../../../../servicos/index.service';
+import { ToastService, RackService, FamiliesService, ProjectService } from '../../../../servicos/index.service';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -11,18 +11,18 @@ import { Subscription } from 'rxjs';
 })
 export class EmbalagemEditarComponent implements OnInit {
 
-  public mPacking: FormGroup;
+  public mRack: FormGroup;
   public listOfFamilies: any[] = [];
   public listOfProjects: any[] = [];
   public inscricao: Subscription;
   public mId: string;
-  public mActualPacking: any;
-  public activePacking: boolean = false;
+  public mActualRack: any;
+  public activeRack: boolean = false;
   public deviceModel: any[] = [];
 
   constructor(
     private familyService: FamiliesService,
-    private packingService: PackingService,
+    private rackService: RackService,
     private projectService: ProjectService,
     private toastService: ToastService,
     private router: Router,
@@ -65,13 +65,13 @@ export class EmbalagemEditarComponent implements OnInit {
   retrieveUser() {
     this.inscricao = this.route.params.subscribe((params: any) => {
       this.mId = params['id'];
-      this.packingService.getPacking(this.mId).subscribe(result => {
+      this.rackService.getRack(this.mId).subscribe(result => {
 
         //console.log('result ...' + JSON.stringify(result));
         if (result['observations'] == null) result['observations'] = '';
 
-        this.mActualPacking = result;
-        (<FormGroup>this.mPacking).patchValue(result, { onlySelf: true });
+        this.mActualRack = result;
+        (<FormGroup>this.mRack).patchValue(result, { onlySelf: true });
       });
     });
   }
@@ -88,7 +88,7 @@ export class EmbalagemEditarComponent implements OnInit {
   }
 
   finishUpdate(newValue) {
-    this.packingService.editPacking(this.mId, newValue)
+    this.rackService.editRack(this.mId, newValue)
       .subscribe(result => {
         let message = {
           title: "Embalagem Atualizada",
@@ -100,7 +100,7 @@ export class EmbalagemEditarComponent implements OnInit {
 
 
   configureForm() {
-    this.mPacking = this.fb.group({
+    this.mRack = this.fb.group({
       tag: this.fb.group({
         code: ['',
           [Validators.required, Validators.minLength(4), Validators.pattern(/^((?!\s{2}).)*$/)]],
@@ -124,17 +124,17 @@ export class EmbalagemEditarComponent implements OnInit {
 
   validateTag(event: any) {
 
-    //console.log(this.mPacking.get('tag.code').value);
-    if (!this.mPacking.get('tag.code').errors && (this.mActualPacking.tag.code !== this.mPacking.get('tag.code').value)) {
+    //console.log(this.mRack.get('tag.code').value);
+    if (!this.mRack.get('tag.code').errors && (this.mActualRack.tag.code !== this.mRack.get('tag.code').value)) {
       //console.log('.');
 
       this.validateNotTakenLoading = true;
-      this.packingService.getAllPackings({ tag_code: this.mPacking.get('tag.code').value }).subscribe(result => {
+      this.rackService.getAllRacks({ tag_code: this.mRack.get('tag.code').value }).subscribe(result => {
 
         if (result.length == 0)
-          this.mPacking.get('tag.code').setErrors(null);
+          this.mRack.get('tag.code').setErrors(null);
         else
-          this.mPacking.get('tag.code').setErrors({ uniqueValidation: true });
+          this.mRack.get('tag.code').setErrors({ uniqueValidation: true });
 
         this.validateNotTakenLoading = false;
       });
@@ -144,10 +144,10 @@ export class EmbalagemEditarComponent implements OnInit {
   public validateNotTakenLoading: boolean = false;
   // validateNotTaken(control: AbstractControl) {
   //   this.validateNotTakenLoading = true;
-  //   // console.log('this.mActualPacking.tag.code: ' + this.mActualPacking.tag.code);
+  //   // console.log('this.mActualRack.tag.code: ' + this.mActualRack.tag.code);
   //   // console.log('control.value: ' + control.value);
 
-  //   if (this.mActualPacking.tag.code == control.value) {
+  //   if (this.mActualRack.tag.code == control.value) {
   //     // console.log('equal');
   //     this.validateNotTakenLoading = false;
   //     return new Promise((resolve, reject) => resolve(null));
@@ -158,7 +158,7 @@ export class EmbalagemEditarComponent implements OnInit {
   //     .delay(800)
   //     .debounceTime(800)
   //     .distinctUntilChanged()
-  //     .switchMap(value => this.packingService.getAllPackings({ tag_code: control.value }))
+  //     .switchMap(value => this.rackService.getAllRacks({ tag_code: control.value }))
   //     .map(res => {
 
   //       this.validateNotTakenLoading = false;

@@ -1,14 +1,14 @@
 const { Temperature } = require("../db/models/temperatures.model");
-const { Packing } = require("../db/models/packings.model");
+const { Rack } = require("../db/models/racks.model");
 
 exports.createTemperature = async (temperatureMessage) => {
-  let actualPacking = await Packing.findOne({ "tag.code": temperatureMessage.src });
+  let actualRack = await Rack.findOne({ "tag.code": temperatureMessage.src });
 
-  if (actualPacking) {
+  if (actualRack) {
     let messageTimestamp = temperatureMessage.timestamp;
     if (messageTimestamp.toString().length == 13) messageTimestamp = messageTimestamp / 1000;
 
-    updateLastMessage(actualPacking, messageTimestamp);
+    updateLastMessage(actualRack, messageTimestamp);
 
     await Temperature.createTemperature(
       {
@@ -17,23 +17,23 @@ exports.createTemperature = async (temperatureMessage) => {
         timestamp: messageTimestamp,
         value: temperatureMessage.analog.value,
       },
-      actualPacking
+      actualRack
     );
   }
 };
 
-const updateLastMessage = async (actualPacking, timestamp) => {
-  if (actualPacking.last_message_signal) {
-    if (timestamp * 1000 > new Date(actualPacking.last_message_signal).getTime()) {
-      await Packing.findByIdAndUpdate(
-        actualPacking._id,
+const updateLastMessage = async (actualRack, timestamp) => {
+  if (actualRack.last_message_signal) {
+    if (timestamp * 1000 > new Date(actualRack.last_message_signal).getTime()) {
+      await Rack.findByIdAndUpdate(
+        actualRack._id,
         { last_message_signal: new Date(timestamp * 1000) },
         { new: true }
       ).exec();
     }
   } else {
-    await Packing.findByIdAndUpdate(
-      actualPacking._id,
+    await Rack.findByIdAndUpdate(
+      actualRack._id,
       { last_message_signal: new Date(timestamp * 1000) },
       { new: true }
     ).exec();

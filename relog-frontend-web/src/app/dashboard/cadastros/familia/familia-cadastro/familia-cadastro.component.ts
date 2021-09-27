@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastService, PackingService, CompaniesService, ControlPointsService } from '../../../../servicos/index.service';
+import { ToastService, RackService, CompaniesService, ControlPointsService } from '../../../../servicos/index.service';
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { Family } from 'app/shared/models/family';
 import { FamiliesService } from 'app/servicos/families.service';
@@ -22,7 +22,7 @@ export class FamiliaCadastroComponent implements OnInit {
     private companyService: CompaniesService,
     private familyService: FamiliesService,
     private controlPointsService: ControlPointsService,
-    private packingService: PackingService,
+    private rackService: RackService,
     private toastService: ToastService,
     private fb: FormBuilder) {
 
@@ -96,7 +96,7 @@ export class FamiliaCadastroComponent implements OnInit {
 
   validateCode(event: any){
 
-    //console.log(this.mPacking.get('tag.code').value);
+    //console.log(this.mRack.get('tag.code').value);
     // console.log(this.mFamily);
     // console.log(this.mFamily.controls.code.valid);
 
@@ -124,7 +124,7 @@ export class FamiliaCadastroComponent implements OnInit {
   //     .debounceTime(800)
   //     .distinctUntilChanged()
   //     .switchMap(value => this.familyService.getAllFamilies({ code: control.value }))
-  //     //.switchMap(value => this.packingService.getAllPackings())
+  //     //.switchMap(value => this.rackService.getAllRacks())
   //     .map(res => {
   //       this.emailLoading = false;
         

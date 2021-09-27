@@ -158,8 +158,8 @@ export class ImportService {
     // return Observable.of(result);
   }
 
-  sendDataToImportPacking(file: any): Observable<any> {
-    return this.http.post(`${environment.url}/imports/packing_xlsx`, file)
+  sendDataToImportRack(file: any): Observable<any> {
+    return this.http.post(`${environment.url}/imports/rack_xlsx`, file)
       .catch(this.handleError);
 
     // let result = {

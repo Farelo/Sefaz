@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PackingService } from '../../servicos/index.service';
+import { RackService } from '../../servicos/index.service';
 
 
 @Component({
@@ -10,7 +10,7 @@ import { PackingService } from '../../servicos/index.service';
 })
 export class AbscenseModalComponent implements OnInit {
 
-  @Input() packing;
+  @Input() rack;
 
   public path = [];
   public center: any;
@@ -26,15 +26,15 @@ export class AbscenseModalComponent implements OnInit {
 
   constructor(
     public activeLayer: NgbActiveModal,
-    private packingService: PackingService) { }
+    private rackService: RackService) { }
 
   ngOnInit() {
     this.getPositions();
-    //console.log('[absent.component] this.packing: ' + JSON.stringify(this.packing));
+    //console.log('[absent.component] this.rack: ' + JSON.stringify(this.rack));
   }
 
   getPositions() {
-    // this.packingService.getPositions(this.packing.code_tag).subscribe(result => {
+    // this.rackService.getPositions(this.rack.code_tag).subscribe(result => {
     //   this.center = result.data.positions[0];
     //   this.path = result.data.positions;
     //   this.markers = result.data.markers;

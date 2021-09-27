@@ -3,7 +3,7 @@ const _ = require("lodash");
 const moment = require("moment");
 
 const { Family } = require("../families/families.model");
-const { Packing } = require("../packings/packings.model");
+const { Rack } = require("../racks/racks.model");
 const { ControlPoint } = require("../control_points/control_points.model");
 
 exports.get_alerts = async () => {
@@ -14,29 +14,29 @@ exports.get_alerts = async () => {
          families.map(async (family) => {
             let data_temp = [];
 
-            const packings = await Packing.find({ active: true, family: family._id }).populate(
+            const racks = await Rack.find({ active: true, family: family._id }).populate(
                "last_current_state_history"
             );
-            const packings_with_battery_low = await Packing.find({
+            const racks_with_battery_low = await Rack.find({
                active: true,
                family: family._id,
                low_battery: true,
             }).populate("last_current_state_history");
 
 
-            const packings_with_button_false = await Packing.find({
+            const racks_with_button_false = await Rack.find({
                active: true,
                family: family._id,
                detector_switch: false,
             }).populate("last_current_state_history");
             
-            const packings_with_permanence_time_exceeded = await Packing.find({
+            const racks_with_permanence_time_exceeded = await Rack.find({
                active: true,
                family: family._id,
                permanence_time_exceeded: true,
             }).populate("last_current_state_history");
 
-            data_temp = Object.entries(_.countBy(packings, "current_state")).map(([key, value]) => {
+            data_temp = Object.entries(_.countBy(racks, "current_state")).map(([key, value]) => {
                return {
                   family_id: family._id,
                   family_code: family.code,
@@ -46,37 +46,37 @@ exports.get_alerts = async () => {
                };
             });
 
-            if (packings_with_battery_low.length > 0) {
+            if (racks_with_battery_low.length > 0) {
                const battery_low = {
                   family_id: family._id,
                   family_code: family.code,
                   company: family.company,
                   current_state: "bateria_baixa",
-                  qtd: packings_with_battery_low.length,
+                  qtd: racks_with_battery_low.length,
                };
 
                data_temp.push(battery_low);
             }
 
-            if (packings_with_permanence_time_exceeded.length > 0) {
+            if (racks_with_permanence_time_exceeded.length > 0) {
                const permanence_time_exceeded = {
                   family_id: family._id,
                   family_code: family.code,
                   company: family.company,
                   current_state: "tempo_de_permanencia_excedido",
-                  qtd: packings_with_permanence_time_exceeded.length,
+                  qtd: racks_with_permanence_time_exceeded.length,
                };
 
                data_temp.push(permanence_time_exceeded);
             }
 
-            if (packings_with_button_false.length > 0) {
+            if (racks_with_button_false.length > 0) {
                const buttonFalse = {
                   family_id: family._id,
                   family_code: family.code,
                   company: family.company,
                   current_state: "dispositivo_removido",
-                  qtd: packings_with_button_false.length,
+                  qtd: racks_with_button_false.length,
                };
 
                data_temp.push(buttonFalse);
@@ -95,30 +95,30 @@ exports.get_alerts = async () => {
 exports.get_alerts_by_family = async (family_id, current_state) => {
    try {
 
-      let packings = [];
+      let racks = [];
       if(current_state === "bateria_baixa"){
-         packings = await Packing.find({ active: true, family: family_id, low_battery: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
+         racks = await Rack.find({ active: true, family: family_id, low_battery: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
          .populate("family", "code")
          .populate("last_position", "date timestamp latitude longitude accuracy")
          .populate("last_battery", "date timestamp battery batteryVoltage")
          .populate("last_event_record", "control_point type created_at")
          .populate("last_current_state_history", "type created_at")
       }else if(current_state === "tempo_de_permanencia_excedido"){
-         packings = await Packing.find({ active: true, family: family_id, permanence_time_exceeded: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
+         racks = await Rack.find({ active: true, family: family_id, permanence_time_exceeded: true }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
          .populate("family", "code")
          .populate("last_position", "date timestamp latitude longitude accuracy")
          .populate("last_battery", "date timestamp battery batteryVoltage")
          .populate("last_event_record", "control_point type created_at")
          .populate("last_current_state_history", "type created_at")
       }else if(current_state === "dispositivo_removido"){
-         packings = await Packing.find({ active: true, family: family_id, detector_switch: false }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
+         racks = await Rack.find({ active: true, family: family_id, detector_switch: false }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
          .populate("family", "code")
          .populate("last_position", "date timestamp latitude longitude accuracy")
          .populate("last_battery", "date timestamp battery batteryVoltage")
          .populate("last_event_record", "control_point type created_at")
          .populate("last_current_state_history", "type created_at")
       }else{
-         packings = await Packing.find({ active: true, family: family_id, current_state: current_state }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
+         racks = await Rack.find({ active: true, family: family_id, current_state: current_state }, { tag: 1, family: 1, serial: 1, last_event_record: 1, last_current_state_history: 1, last_position: 1, last_battery: 1})
          .populate("family", "code")
          .populate("last_position", "date timestamp latitude longitude accuracy")
          .populate("last_battery", "date timestamp battery batteryVoltage")
@@ -126,7 +126,7 @@ exports.get_alerts_by_family = async (family_id, current_state) => {
          .populate("last_current_state_history", "type created_at");
       }
 
-      const data = await Promise.all(packings.map(map_last_event_record));
+      const data = await Promise.all(racks.map(map_last_event_record));
 
       return data;
    } catch (error) {
@@ -134,14 +134,14 @@ exports.get_alerts_by_family = async (family_id, current_state) => {
    }
 };
 
-const map_last_event_record = async (packing) => {
-   if (!packing.last_event_record) return packing;
+const map_last_event_record = async (rack) => {
+   if (!rack.last_event_record) return rack;
 
    let temp_obj = {};
 
-   const control_point = await ControlPoint.findById(packing.last_event_record.control_point, { name: 1 });
+   const control_point = await ControlPoint.findById(rack.last_event_record.control_point, { name: 1 });
 
-   temp_obj = packing;
+   temp_obj = rack;
    temp_obj.last_event_record.control_point = control_point;
 
    return temp_obj;

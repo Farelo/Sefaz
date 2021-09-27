@@ -1,15 +1,21 @@
 {
   "company": {
-    "name": "Cebrace",
+    "name": "gm",
     "enabled": true
   },
   "server": {
     "url": "localhost:3000",
     "port": 3000
   },
+  
+  "serverWsdl": {
+    "url": "localhost:3002",
+    "port": 3002
+  },
+
   "db": {
-    "url": "mongodb://127.0.0.1:27017/cebrace-2021-02-25", 
-    "mongodb_container": "mongodb://<user>:<password>@<host>:27017/cebrace" 
+    "url": "mongodb://127.0.0.1:27017/gm-2021-04-28" 
+    
   },
   "security": {
     "jwtPrivateKey": "secr3t",

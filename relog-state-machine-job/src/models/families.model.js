@@ -48,7 +48,7 @@ const update_updated_at_middleware = function (next) {
 
 const removeMiddleware = function (doc, next) {
     const family = doc
-    family.model('Packing').update(
+    family.model('Rack').update(
         { family: family._id },
         { $unset: { family: 1 } },
         { multi: true },

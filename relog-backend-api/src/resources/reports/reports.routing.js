@@ -23,7 +23,7 @@ module.exports = router
  * /reports/general:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -43,7 +43,7 @@ module.exports = router
  * /reports/general_inventory:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general inventory report about all packings
+ *     description: Retrieve general inventory report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -63,7 +63,7 @@ module.exports = router
  * /reports/absent:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -99,7 +99,7 @@ module.exports = router
  * /reports/permanence_time:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -130,7 +130,7 @@ module.exports = router
  * /reports/battery:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -156,7 +156,7 @@ module.exports = router
  * /reports/quantity:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -182,7 +182,7 @@ module.exports = router
  * /reports/general_info:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -208,7 +208,7 @@ module.exports = router
  * /reports/clients:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -234,7 +234,7 @@ module.exports = router
  * /reports/snapshot:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -254,7 +254,7 @@ module.exports = router
  * /reports/snapshot_recovery:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Recover historical snapshot report about all packings
+ *     description: Recover historical snapshot report about all racks
  *     security:
  *       - Bearer: []
  *     tags:
@@ -281,14 +281,14 @@ module.exports = router
  * /reports/owner_supplier_absent:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve informations abount packings out owner or supplier at least 30 days
+ *     description: Retrieve informations abount racks out owner or supplier at least 30 days
  *     security:
  *       - Bearer: []
  *     tags:
  *       - Reports
  *     responses:
  *       200:
- *         description: list of all packings
+ *         description: list of all racks
  *       400:
  *         description: Bad Request
  *       404:

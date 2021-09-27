@@ -1,6 +1,6 @@
 const debug = require("debug")("model:temperature");
 const mongoose = require("mongoose");
-const { Packing } = require("./packings.model");
+const { Rack } = require("./racks.model");
 
 const temperatureSchema = new mongoose.Schema({
   tag: {
@@ -24,11 +24,11 @@ const temperatureSchema = new mongoose.Schema({
   },
 });
 
-temperatureSchema.statics.createTemperature = async (temperature, packing = null) => {
-  let actualPacking = null;
+temperatureSchema.statics.createTemperature = async (temperature, rack = null) => {
+  let actualRack = null;
 
-  if (!packing) actualPacking = await Packing.findOne({ "tag.code": temperature.tag });
-  else actualPacking = packing;
+  if (!rack) actualRack = await Rack.findOne({ "tag.code": temperature.tag });
+  else actualRack = rack;
 
   let newTemperature = new Temperature({
     tag: temperature.tag,
@@ -40,17 +40,17 @@ temperatureSchema.statics.createTemperature = async (temperature, packing = null
   try {
     await newTemperature
       .save()
-      .then((newDocument) => referenceFromPackage(actualPacking, newDocument))
+      .then((newDocument) => referenceFromPackage(actualRack, newDocument))
       .catch((error) => debug(error));
   } catch (error) {
     console.log(error);
   }
 };
 
-const referenceFromPackage = async (packing, temperature) => {
+const referenceFromPackage = async (rack, temperature) => {
   try {
-    if (packing)
-      await Packing.findByIdAndUpdate(packing._id, { last_temperature: temperature._id }, { new: true }).exec();
+    if (rack)
+      await Rack.findByIdAndUpdate(rack._id, { last_temperature: temperature._id }, { new: true }).exec();
   } catch (error) {
     debug(error);
   }

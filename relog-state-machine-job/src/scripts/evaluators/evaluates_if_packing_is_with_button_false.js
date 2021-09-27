@@ -2,27 +2,27 @@
 const STATES = require("../common/states");
 
 // MODELS
-const { Packing } = require("../../models/packings.model");
+const { Rack } = require("../../models/racks.model");
 const { CurrentStateHistory } = require("../../models/current_state_history.model");
 
-module.exports = async (packing) => {
+module.exports = async (rack) => {
    try {
-      if (packing.last_detector_switch) { 
-         if (packing.last_detector_switch.detector_switch) { 
-            //If last_detector_switch is true, but packing.detector_switch is false yet:
-            console.log(packing.detector_switch, !packing.detector_switch);
-            if (!packing.detector_switch) { 
-               await Packing.findByIdAndUpdate(packing._id, { detector_switch: true }, { new: true });
+      if (rack.last_detector_switch) { 
+         if (rack.last_detector_switch.detector_switch) { 
+            //If last_detector_switch is true, but rack.detector_switch is false yet:
+            console.log(rack.detector_switch, !rack.detector_switch);
+            if (!rack.detector_switch) { 
+               await Rack.findByIdAndUpdate(rack._id, { detector_switch: true }, { new: true });
             }
          } else { 
-            //If last_detector_switch is false, but packing.detector_switch is true yet:
-            if (packing.detector_switch) { 
-               await Packing.findByIdAndUpdate(packing._id, { detector_switch: false }, { new: true });
+            //If last_detector_switch is false, but rack.detector_switch is true yet:
+            if (rack.detector_switch) { 
+               await Rack.findByIdAndUpdate(rack._id, { detector_switch: false }, { new: true });
 
                await CurrentStateHistory.create({
-                  packing: packing._id,
+                  rack: rack._id,
                   type: STATES.DISPOSITIVO_REMOVIDO.alert,
-                  device_data_id: packing.last_detector_switch ? packing.last_detector_switch._id : null,
+                  device_data_id: rack.last_detector_switch ? rack.last_detector_switch._id : null,
                });
             }
          }

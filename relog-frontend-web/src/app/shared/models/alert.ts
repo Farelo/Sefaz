@@ -4,10 +4,10 @@ export class Alert {
         public department: string,
         public correct_plant_factory:string,
         public correct_plant_supplier: string,
-        public packing: string,
+        public rack: string,
         public status: string,
         public supplier: string,
-        public hashpacking: string,
+        public hashrack: string,
         public _id: string
         ){}
 }

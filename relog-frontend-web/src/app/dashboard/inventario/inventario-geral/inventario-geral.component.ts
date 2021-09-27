@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, Input, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Pagination } from '../../../shared/models/pagination';
-import { InventoryLogisticService, AuthenticationService, PackingService, SuppliersService, InventoryService, ReportsService, CompaniesService, FamiliesService } from '../../../servicos/index.service';
+import { InventoryLogisticService, AuthenticationService, RackService, SuppliersService, InventoryService, ReportsService, CompaniesService, FamiliesService } from '../../../servicos/index.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import 'jspdf';
 import 'jspdf-autotable';
@@ -18,8 +18,8 @@ export class InventarioGeralComponent implements OnInit {
   public listOfCompanies: any[] = [];
   public mCompany: any = null;
 
-  public listOfPackings: any[] = [];
-  public mPacking: any = null;
+  public listOfRacks: any[] = [];
+  public mRack: any = null;
 
   public detailedGeneralInventory: any[] = [];
   public auxDetailedGeneralInventory: any[] = [];
@@ -103,7 +103,7 @@ export class InventarioGeralComponent implements OnInit {
    */
   companyFilter(event: any) {
     // console.log(event);
-    this.mPacking = null;
+    this.mRack = null;
 
     if (!event) {
       this.detailedGeneralInventory = this.auxDetailedGeneralInventory;
@@ -114,29 +114,29 @@ export class InventarioGeralComponent implements OnInit {
       return elem.company == event.name;
     });
 
-    this.loadPackings(event);
+    this.loadRacks(event);
   }
 
   /**
-   * Once a company was selected, loads the packings
+   * Once a company was selected, loads the racks
    * @param event
    */
-  loadPackings(event: any) {
+  loadRacks(event: any) {
     // console.log(event);
 
     let aux = this.detailedGeneralInventory.filter(elem => {
       return (elem.company == event.name);
     });
 
-    this.listOfPackings = aux;
-    // console.log(this.listOfPackings);
+    this.listOfRacks = aux;
+    // console.log(this.listOfRacks);
   }
 
   /**
-   * A packing was selected
+   * A rack was selected
    * @param event 
    */
-  packingFilter(event: any) {
+  rackFilter(event: any) {
     // console.log(event);
 
     if (!event) {

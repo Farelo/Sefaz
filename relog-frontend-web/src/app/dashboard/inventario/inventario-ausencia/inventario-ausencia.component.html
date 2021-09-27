@@ -114,20 +114,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let packing of listOfAbsent | paginate: {
+        <tr *ngFor="let rack of listOfAbsent | paginate: {
                                                     id:'absence',
                                                     itemsPerPage: 10,
                                                     currentPage: actualPage,
                                                     totalItems: listOfAbsent.length }">
-          <td>{{packing.family.code || '-'}}</td>
-          <td>{{packing.serial || '-'}}</td>
-          <td>{{packing.tag || '-'}}</td>
+          <td>{{rack.family.code || '-'}}</td>
+          <td>{{rack.serial || '-'}}</td>
+          <td>{{rack.tag || '-'}}</td>
           
-          <td>{{ packing.control_point_name }}</td>
-          <td>{{ packing.absent_time_in_hours !== '-' ? (packing.absent_time_in_hours | float_time) : 'Sem histórico' }}</td>
-          <!--td>{{packing.permanence?.amount_days >= 0 ? (packing.permanence?.amount_days | time) : 'Sem Registro'}}</td-->
+          <td>{{ rack.control_point_name }}</td>
+          <td>{{ rack.absent_time_in_hours !== '-' ? (rack.absent_time_in_hours | float_time) : 'Sem histórico' }}</td>
+          <!--td>{{rack.permanence?.amount_days >= 0 ? (rack.permanence?.amount_days | time) : 'Sem Registro'}}</td-->
           <td style="text-align: center;">
-            <div class="bigger" (click)="openAbsence(packing)">
+            <div class="bigger" (click)="openAbsence(rack)">
               <div class="det"></div>
             </div>
           </td>

@@ -15,7 +15,7 @@ module.exports = router;
  * /device_data/data/{device_id}:
  *   get:
  *     summary: Retrieve reports on database
- *     description: Retrieve general report about all packings
+ *     description: Retrieve general report about all racks
  *     security:
  *       - Bearer: []
  *     tags:

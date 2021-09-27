@@ -2,21 +2,21 @@
 const STATES = require("../common/states");
 
 // MODELS
-const { Packing } = require("../../models/packings.model");
+const { Rack } = require("../../models/racks.model");
 const { CurrentStateHistory } = require("../../models/current_state_history.model");
 
-module.exports = async (packing, setting) => {
+module.exports = async (rack, setting) => {
    let current_state_history = {};
 
-   const battery_level = packing.last_battery ? packing.last_battery.battery : null;
+   const battery_level = rack.last_battery ? rack.last_battery.battery : null;
 
    try {
       if (battery_level) {
          if (battery_level < setting.battery_level_limit) {
-            await Packing.findByIdAndUpdate(packing._id, { low_battery: true }, { new: true });
+            await Rack.findByIdAndUpdate(rack._id, { low_battery: true }, { new: true });
 
             current_state_history = await CurrentStateHistory.findOne({
-               packing: packing._id,
+               rack: rack._id,
                type: STATES.BATERIA_BAIXA.alert,
             });
             
@@ -24,16 +24,16 @@ module.exports = async (packing, setting) => {
                //console.log("ESTADO DE BATERIA BAIXA JÁ CRIADO!")
             } else {
                await CurrentStateHistory.create({
-                  packing: packing._id,
+                  rack: rack._id,
                   type: STATES.BATERIA_BAIXA.alert,
-                  device_data_id: packing.last_battery ? packing.last_battery._id : null,
+                  device_data_id: rack.last_battery ? rack.last_battery._id : null,
                });
             }
          } else {
-            if (packing.low_battery)
-               await Packing.findByIdAndUpdate(packing._id, { low_battery: false }, { new: true });
+            if (rack.low_battery)
+               await Rack.findByIdAndUpdate(rack._id, { low_battery: false }, { new: true });
 
-            // current_state_history = await CurrentStateHistory.findOne({ packing: packing._id, type: STATES.BATERIA_BAIXA.alert })
+            // current_state_history = await CurrentStateHistory.findOne({ rack: rack._id, type: STATES.BATERIA_BAIXA.alert })
             // if (current_state_history) {
             //   await current_state_history.remove()
             // } else {

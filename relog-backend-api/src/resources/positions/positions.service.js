@@ -2,22 +2,22 @@ const debug = require("debug")("service:positions");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const { Position } = require("./positions.model");
-const { Packing } = require("../packings/packings.model");
+const { Rack } = require("../racks/racks.model");
 
-exports.createMany = async (packing, positionArray) => {
+exports.createMany = async (rack, positionArray) => {
    let maxTimestampIndex = -1;
    if (positionArray.length) {
       // procura o índice do elemento com timestamp mais atual: primeiro elemento ou o último
       if (positionArray[0].timestamp >= positionArray[positionArray.length - 1].timestamp) maxTimestampIndex = 0;
       else maxTimestampIndex = positionArray.length - 1;
 
-      updatePackageLastMessage(packing, positionArray[maxTimestampIndex]);
+      updatePackageLastMessage(rack, positionArray[maxTimestampIndex]);
 
       for (const [index, position] of positionArray.entries()) {
          if (position.accuracy <= 32000) {
             try {
                const newPosition = new Position({
-                  tag: packing.tag.code,
+                  tag: rack.tag.code,
                   date: new Date(position.date),
                   timestamp: position.timestamp,
                   latitude: position.latitude,
@@ -30,37 +30,37 @@ exports.createMany = async (packing, positionArray) => {
                if (index == maxTimestampIndex) {
                   await newPosition
                      .save()
-                     .then((newDoc) => referenceFromPackage(packing, newDoc))
+                     .then((newDoc) => referenceFromPackage(rack, newDoc))
                      .catch((err) => debug(err));
                } else {
                   await newPosition.save();
                }
             } catch (error) {
-               debug(`Erro ao salvar a posição do device ${packing.tag.code} | ${error}`);
+               debug(`Erro ao salvar a posição do device ${rack.tag.code} | ${error}`);
             }
          }
       }
    }
 };
 
-const updatePackageLastMessage = async (packing, newMessage) => {
-   if (packing.last_message_signal) {
-      if (new Date(newMessage.date).getTime() > new Date(packing.last_message_signal).getTime()) {
-         await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+const updatePackageLastMessage = async (rack, newMessage) => {
+   if (rack.last_message_signal) {
+      if (new Date(newMessage.date).getTime() > new Date(rack.last_message_signal).getTime()) {
+         await Rack.findByIdAndUpdate(rack._id, { last_message_signal: newMessage.date }, { new: true });
       }
    } else {
-      await Packing.findByIdAndUpdate(packing._id, { last_message_signal: newMessage.date }, { new: true });
+      await Rack.findByIdAndUpdate(rack._id, { last_message_signal: newMessage.date }, { new: true });
    }
 };
 
-const referenceFromPackage = async (packing, newPosition) => {
+const referenceFromPackage = async (rack, newPosition) => {
    try {
-      if (packing.last_position) {
-         if (newPosition.timestamp > packing.last_position.timestamp) {
-            await Packing.findByIdAndUpdate(packing._id, { last_position: newPosition._id }, { new: true });
+      if (rack.last_position) {
+         if (newPosition.timestamp > rack.last_position.timestamp) {
+            await Rack.findByIdAndUpdate(rack._id, { last_position: newPosition._id }, { new: true });
          }
       } else {
-         await Packing.findByIdAndUpdate(packing._id, { last_position: newPosition._id }, { new: true });
+         await Rack.findByIdAndUpdate(rack._id, { last_position: newPosition._id }, { new: true });
       } 
    } catch (error) {
       debug(error);
@@ -110,13 +110,13 @@ exports.getPosition = async ({ tag = null, start_date = null, end_date = null, a
 
 exports.geolocation = async ({ companyId = null, familyId = null, serial = null }) => {
    try {
-      let packings = [];
+      let racks = [];
 
       switch (true) {
          // company, family and serial
          case companyId != null && familyId != null && serial != null:
             console.log("c, f e s");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -182,7 +182,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
          // company and family
          case companyId != null && familyId != null:
             console.log("c e f");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -247,7 +247,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
          // company and serial
          case companyId != null && serial != null:
             console.log("c e s");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -312,7 +312,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
          //family and serial
          case familyId != null && serial != null:
             console.log("f e s");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -377,7 +377,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
          //Only company
          case companyId != null:
             console.log("only company");
-            packings = await Packing.aggregate([
+            racks = await Rack.aggregate([
                {
                   $project: {
                      tag: 1,
@@ -441,7 +441,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
          //Only family
          case familyId != null:
             console.log("f");
-            packings = await Packing.find(
+            racks = await Rack.find(
                { family: familyId },
                {
                   "tag.code": 1,
@@ -457,7 +457,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
          //Only serial
          case serial != null:
             console.log("s");
-            packings = await Packing.find(
+            racks = await Rack.find(
                { serial: serial },
                {
                   "tag.code": 1,
@@ -472,7 +472,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
 
          default:
             console.log("default");
-            packings = await Packing.find(
+            racks = await Rack.find(
                {},
                {
                   "tag.code": 1,
@@ -485,7 +485,7 @@ exports.geolocation = async ({ companyId = null, familyId = null, serial = null 
                .populate("family", "code company");
             break;
       }
-      return packings;
+      return racks;
    } catch (error) {
       throw new Error(error);
    }

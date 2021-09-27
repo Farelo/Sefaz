@@ -62,29 +62,29 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let packing of generalEquipament | paginate: {
+        <tr *ngFor="let rack of generalEquipament | paginate: {
                                                           itemsPerPage: 10,
                                                           currentPage: actualPage,
                                                           totalItems: generalEquipament.length}">
 
-          <td class="text-center">{{ packing.family_code || '-' }}</td>
-          <td class="text-center">{{ packing.serial || '-' }}</td>
-          <td>{{ packing.tag || '-' }}</td>
+          <td class="text-center">{{ rack.family_code || '-' }}</td>
+          <td class="text-center">{{ rack.serial || '-' }}</td>
+          <td>{{ rack.tag || '-' }}</td>
 
-          <td>{{ packing.company || '-' }}</td>
-          <td style="cursor: default;">{{ packing.current_state | packingStatus}}</td>
-          <td style="cursor: default;">{{packing?.current_control_point_name ? packing.current_control_point_name : "-" }}</td>
+          <td>{{ rack.company || '-' }}</td>
+          <td style="cursor: default;">{{ rack.current_state | rackStatus}}</td>
+          <td style="cursor: default;">{{rack?.current_control_point_name ? rack.current_control_point_name : "-" }}</td>
 
-          <td>{{ packing.current_control_point_type }} </td>
-          <td class="text-center" [ngbTooltip]="packing.battery_date !== '-' ? (packing.battery_date | date: 'dd/MM/yy HH:mm:ss') : 'Sem data da bateria'" placement="top" container="body">{{ (packing.battery_percentage != undefined && packing.battery_percentage >= 0) ? ((packing.battery_percentage | round) + '%') : 'Sem Registro' }} </td>
+          <td>{{ rack.current_control_point_type }} </td>
+          <td class="text-center" [ngbTooltip]="rack.battery_date !== '-' ? (rack.battery_date | date: 'dd/MM/yy HH:mm:ss') : 'Sem data da bateria'" placement="top" container="body">{{ (rack.battery_percentage != undefined && rack.battery_percentage >= 0) ? ((rack.battery_percentage | round) + '%') : 'Sem Registro' }} </td>
           
-          <td class="text-center">{{ packing.in_out_accuracy !== '-' ? packing.in_out_accuracy + 'm' : '-'}}</td>
-          <td class="text-center">{{ (packing.in_out_date !== "-") ? ((packing.in_out_date | date: 'dd/MM/yy HH:mm:ss')) : '-' }}</td>
+          <td class="text-center">{{ rack.in_out_accuracy !== '-' ? rack.in_out_accuracy + 'm' : '-'}}</td>
+          <td class="text-center">{{ (rack.in_out_date !== "-") ? ((rack.in_out_date | date: 'dd/MM/yy HH:mm:ss')) : '-' }}</td>
 
-          <td class="text-center">{{ packing.accuracy || '-' }} m</td>
-          <td class="text-center">{{ (packing.date !== "Sem registro") ? ((packing.date | date: 'dd/MM/yy HH:mm:ss')) : packing.date }}</td>
+          <td class="text-center">{{ rack.accuracy || '-' }} m</td>
+          <td class="text-center">{{ (rack.date !== "Sem registro") ? ((rack.date | date: 'dd/MM/yy HH:mm:ss')) : rack.date }}</td>
           <td style="text-align: center;">
-            <div class="bigger" (click)="openLayer(packing)">
+            <div class="bigger" (click)="openLayer(rack)">
               <div class="det"> </div>
             </div>
           </td>

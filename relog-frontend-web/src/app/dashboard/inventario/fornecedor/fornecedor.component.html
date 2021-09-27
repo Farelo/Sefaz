@@ -52,18 +52,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let packing of listOfQuantityInSuppliers | paginate: {
+        <tr *ngFor="let rack of listOfQuantityInSuppliers | paginate: {
                                                         id:'supplier',
                                                         itemsPerPage: 10,
                                                         currentPage: listOfQuantityInSuppliersActualPage, 
                                                         totalItems: listOfQuantityInSuppliers.length }">
-          <td>{{ packing.family_code || '-' }}</td>
-          <!-- <td>{{packing.description || '-'}}</td> -->
-          <!-- <td>{{packing.project?.name || '-'}}</td> -->
-          <td>{{ packing.company }}</td>
-          <td>{{ packing.control_point_name }}</td>
-          <td>{{ packing.control_point_type }}</td>
-          <td>{{ packing.qtd || '-' }}</td>
+          <td>{{ rack.family_code || '-' }}</td>
+          <!-- <td>{{rack.description || '-'}}</td> -->
+          <!-- <td>{{rack.project?.name || '-'}}</td> -->
+          <td>{{ rack.company }}</td>
+          <td>{{ rack.control_point_name }}</td>
+          <td>{{ rack.control_point_type }}</td>
+          <td>{{ rack.qtd || '-' }}</td>
               
         </tr>
       </tbody>

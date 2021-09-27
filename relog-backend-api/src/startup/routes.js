@@ -5,9 +5,11 @@ const fileUpload = require("express-fileupload");
 const users = require("../resources/users/users.routing");
 const companies = require("../resources/companies/companies.routing");
 const families = require("../resources/families/families.routing");
-const packings = require("../resources/packings/packings.routing");
+const racks = require("../resources/racks/racks.routing");
 const control_points = require("../resources/control_points/control_points.routing");
 const types = require("../resources/types/types.routing");
+const engines = require("../resources/engines/engines.routing");
+const engine_types = require("../resources/engine_types/engine_types.routing");
 const routes = require("../resources/routes/routes.routing");
 const departments = require("../resources/departments/departments.routing");
 const projects = require("../resources/projects/projects.routing");
@@ -24,6 +26,7 @@ const callbacks = require("../resources/callbacks/callbacks.routing");
 const current_state_history = require("../resources/current_state_history/current_state_history.routing");
 const imports = require("../resources/imports/imports.routing");
 const logs = require("../resources/logs/logs.routing");
+const integrations = require("../resources/integrations/integrations.routing");
 
 const apiKeys = require("../resources/api_keys/api_keys.routing");
 const error = require("../middlewares/error_handler.middleware");
@@ -49,9 +52,11 @@ module.exports = (app) => {
    app.use("/api/users", users);
    app.use("/api/companies", companies);
    app.use("/api/families", families);
-   app.use("/api/packings", packings);
+   app.use("/api/racks", racks);
+   app.use("/api/engines", engines);
    app.use("/api/control_points", control_points);
    app.use("/api/types", types);
+   app.use("/api/engine_types", engine_types);
    app.use("/api/routes", routes);
    app.use("/api/departments", departments);
    app.use("/api/projects", projects);
@@ -69,6 +74,7 @@ module.exports = (app) => {
    app.use("/api/imports", imports);
    app.use("/api/logs", logs);
    app.use("/api/api_keys", apiKeys);
+   app.use("/api/integration", integrations);
 
    // Middlewares functions
    app.use(error);

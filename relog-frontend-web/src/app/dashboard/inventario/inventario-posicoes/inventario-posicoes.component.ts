@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FamiliesService, PositionsService, PackingService } from 'app/servicos/index.service';
+import { FamiliesService, PositionsService, RackService } from 'app/servicos/index.service';
 import { DatepickerModule, BsDatepickerModule, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NouiFormatter } from 'ng2-nouislider';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -43,7 +43,7 @@ export class InventarioPosicoesComponent implements OnInit {
   public finalDate: Date;    //Initial date
 
   constructor(private familyService: FamiliesService,
-    private packingService: PackingService,
+    private rackService: RackService,
     private positionService: PositionsService,
     private localeService: BsLocaleService) {
 
@@ -90,7 +90,7 @@ export class InventarioPosicoesComponent implements OnInit {
    */
   loadSerials(): void {
 
-    this.packingService.getAllPackings().subscribe(result => {
+    this.rackService.getAllRacks().subscribe(result => {
 
       this.listOfSerials = result;
       this._listOfSerials = result;

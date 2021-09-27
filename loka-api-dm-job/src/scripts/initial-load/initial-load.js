@@ -1,7 +1,7 @@
 const debug = require('debug')('initial-load')
 const fs = require('fs')
 const dm_controller = require('../loka-integration/dm.controller')
-const { Packing } = require('../../models/packings.model')
+const { Rack } = require('../../models/racks.model')
 const { device_data_save } = require('../../models/device_data.model')
 const appRoot = require('app-root-path');
 
@@ -76,13 +76,13 @@ module.exports = async () => {
 const get_devices = async () => {
     
     try {
-        const packings = await Packing.find({}, {_id: 0, tag: 1})//.limit(1)
+        const racks = await Rack.find({}, {_id: 0, tag: 1})//.limit(1)
     
-        return packings//packings.lengh ? packings.map(packing => {return packing.tag.code}) : packings
+        return racks//racks.lengh ? racks.map(rack => {return rack.tag.code}) : racks
         
     } catch (error) {
         
-        console.log(`Erro ao buscar os packings no banco`)
+        console.log(`Erro ao buscar os racks no banco`)
 
         return []
     }

@@ -9,7 +9,7 @@ console.log('server . . . ')
 require('./startup/logger')(app)
 require('./startup/db')()
 
-if (process.env.SCRIPT == 'without-battery') require('./scripts/update-last-battery-to-packings')()
+if (process.env.SCRIPT == 'without-battery') require('./scripts/update-last-battery-to-racks')()
 else if (process.env.SCRIPT == 'battery-zero') require('./scripts/update-battery-with-zero')()
 
 const server = app.listen(config.get('server.port'), () => {

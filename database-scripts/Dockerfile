@@ -20,5 +20,5 @@ COPY . .
 EXPOSE 28050
 
 # executar o script desejado (manter sempre comentado, depois de rodar o script desejado, para outros nao rodarem sem querer o script errado)
-# ENTRYPOINT [ "npm", "run", "update-last-battery-to-packing" ]
+# ENTRYPOINT [ "npm", "run", "update-last-battery-to-rack" ]
 #  ENTRYPOINT [ "npm", "run", "update-battery-zero" ]

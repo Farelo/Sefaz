@@ -19,13 +19,13 @@ export class InventoryService {
       .catch(this.handleError);
   }
 
-  getInventoryGeneralPackings(limit: number, page: number, code: string, 
-    supplier: string = '', code_packing: string ='', 
+  getInventoryGeneralRacks(limit: number, page: number, code: string, 
+    supplier: string = '', code_rack: string ='', 
     sort: string = '', order: string = ''): Observable<any> {
     
     let filtered = ((sort !== '') && (order !== '')) ? `&attr=${sort}&order=${order}`: '';
     // if ((sort !== '') && (order !== '')) filtered = `&attr=${sort}&order=${order}`;
-    return this.http.get(`${environment.url}inventory/general/packings/${limit}/${page}?code=${code}&supplier=${supplier}&code_packing=${code_packing}${filtered}`)
+    return this.http.get(`${environment.url}inventory/general/racks/${limit}/${page}?code=${code}&supplier=${supplier}&code_rack=${code_rack}${filtered}`)
       .catch(this.handleError);
   }
 
@@ -46,14 +46,14 @@ export class InventoryService {
       .catch(this.handleError);
   }
   
-  getInventoryPackingHistoric(limit: number, page: number, serial: string, code: string, attr: string = ''): Observable<any> {
+  getInventoryRackHistoric(limit: number, page: number, serial: string, code: string, attr: string = ''): Observable<any> {
 
-    return this.http.get(`${environment.url}inventory/packing/historic/${limit}/${page}/${serial}/${code}?attr=${attr}`)
+    return this.http.get(`${environment.url}inventory/rack/historic/${limit}/${page}/${serial}/${code}?attr=${attr}`)
       .catch(this.handleError);
   }
 
-  getInventoryAbsencePacking(limit: number, page: number, serial: string, code: string, attr: string = ''): Observable<any> {
-    return this.http.get(`${environment.url}inventory/packing/absence/${limit}/${page}/${serial}/${code}?attr=${attr}`)
+  getInventoryAbsenceRack(limit: number, page: number, serial: string, code: string, attr: string = ''): Observable<any> {
+    return this.http.get(`${environment.url}inventory/rack/absence/${limit}/${page}/${serial}/${code}?attr=${attr}`)
       .catch(this.handleError);
   }
 
@@ -65,7 +65,7 @@ export class InventoryService {
 
   getLowBattery(limit: number, page: number): Observable<any> {
 
-    return this.http.get(`${environment.url}home/packings/low_battery/${limit}/${page}`)
+    return this.http.get(`${environment.url}home/racks/low_battery/${limit}/${page}`)
       .catch(this.handleError);
   }
 

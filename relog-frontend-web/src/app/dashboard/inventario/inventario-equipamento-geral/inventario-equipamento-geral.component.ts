@@ -6,11 +6,11 @@ import {
 } from "../../../servicos/index.service";
 import { Pagination } from "../../../shared/models/pagination";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { LayerModalComponent } from "../../../shared/modal-packing/layer.component";
+import { LayerModalComponent } from "../../../shared/modal-rack/layer.component";
 import { constants } from "../../../../environments/constants";
 import { Angular2Csv } from "angular2-csv/Angular2-csv";
 import { RoundPipe } from "../../../shared/pipes/round";
-import { PackingStatus } from "app/shared/pipes/packingStatus";
+import { RackStatus } from "app/shared/pipes/rackStatus";
 import "jspdf";
 import "jspdf-autotable";
 declare var jsPDF: any;
@@ -106,12 +106,12 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
     this.actualPage = 0;
   }
 
-  openLayer(packing) {
+  openLayer(rack) {
     const modalRef = this.modalService.open(LayerModalComponent, {
       windowClass: "modal-xl",
       backdrop: "static",
     });
-    modalRef.componentInstance.packing = packing;
+    modalRef.componentInstance.rack = rack;
   }
 
   getFormatedData(t: any) {
@@ -267,7 +267,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
 
   flatObject(mArray: any) {
     let transformer = new RoundPipe();
-    let packingStatus = new PackingStatus();
+    let rackStatus = new RackStatus();
 
     return mArray.map((obj) => {
       return {
@@ -275,7 +275,7 @@ export class InventarioEquipamentoGeralComponent implements OnInit {
         serial: obj.serial,
         tag: obj.tag,
         company: obj.company,
-        status: packingStatus.transform(obj.current_state),
+        status: rackStatus.transform(obj.current_state),
         control_point: obj.current_control_point_name,
         type: obj.current_control_point_type,
         battery:

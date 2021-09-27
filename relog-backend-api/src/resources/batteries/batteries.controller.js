@@ -1,17 +1,17 @@
 const debug = require("debug")("controller:batteries");
 const HttpStatus = require("http-status-codes");
 const batteriesService = require("./batteries.service");
-const packingsService = require("../packings/packings.service");
+const racksService = require("../racks/racks.service");
 const familiesService = require("../families/families.service");
 const companiesService = require("../companies/companies.service");
 
 exports.createMany = async (allBatteries) => {
    try {
-      let currentPacking = null; 
+      let currentRack = null; 
       if (allBatteries.length) { 
-         currentPacking = await packingsService.populatedFindByTag(allBatteries[0].tag); 
-         if (currentPacking) {
-            await batteriesService.createMany(currentPacking, allBatteries);
+         currentRack = await racksService.populatedFindByTag(allBatteries[0].tag); 
+         if (currentRack) {
+            await batteriesService.createMany(currentRack, allBatteries);
          } else {
             throw new Error(`The tag ${allBatteries[0].tag} doesn't exists`);
          }
@@ -29,8 +29,8 @@ exports.get = async (req, res) => {
    };
 
    if (query.tag){
-      const packing = await packingsService.find_by_tag(query.tag); 
-      if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
+      const rack = await racksService.find_by_tag(query.tag); 
+      if (!rack) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
    }
       
    const result = await batteriesService.get(query); 

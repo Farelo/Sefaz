@@ -1,7 +1,7 @@
 const debug = require("debug")("controller:positions");
 const HttpStatus = require("http-status-codes");
 const positionsService = require("./positions.service");
-const packingsService = require("../packings/packings.service");
+const racksService = require("../racks/racks.service");
 const familiesService = require("../families/families.service");
 const companiesService = require("../companies/companies.service");
 
@@ -14,8 +14,8 @@ exports.get = async (req, res) => {
    };
 
    if (query.tag) {
-      const packing = await packingsService.find_by_tag(query.tag);
-      if (!packing) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
+      const rack = await racksService.find_by_tag(query.tag);
+      if (!rack) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid tag" });
    }
 
    console.log(query);
@@ -26,11 +26,11 @@ exports.get = async (req, res) => {
 
 exports.createMany = async (allPositions) => {
    try {
-      let currentPacking = null; 
+      let currentRack = null; 
       if (allPositions.length) { 
-         currentPacking = await packingsService.populatedFindByTag(allPositions[0].tag);
-         if (currentPacking) {
-            await positionsService.createMany(currentPacking, allPositions);
+         currentRack = await racksService.populatedFindByTag(allPositions[0].tag);
+         if (currentRack) {
+            await positionsService.createMany(currentRack, allPositions);
          } else {
             throw new Error(`The tag ${allPositions[0].tag} doesn't exists`);
          }

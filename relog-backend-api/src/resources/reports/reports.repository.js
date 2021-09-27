@@ -9,7 +9,7 @@ const { DeviceData } = require("../device_data/device_data.model");
 const { Position } = require("../positions/positions.model");
 const { Battery } = require("../batteries/batteries.model");
 const { Family } = require("../families/families.model");
-const { Packing } = require("../packings/packings.model");
+const { Rack } = require("../racks/racks.model");
 const { GC16 } = require("../gc16/gc16.model");
 const { Setting } = require("../settings/settings.model");
 const owner_supplier_absent = require("./scripts/owner_supplier_absent");
@@ -18,7 +18,7 @@ const martinez = require("martinez-polygon-clipping");
 
 exports.general_report = async () => {
    try {
-      const aggregate = await Packing.aggregate([
+      const aggregate = await Rack.aggregate([
          {
             $lookup: {
                from: "families",
@@ -56,7 +56,7 @@ exports.general_report = async () => {
                project_name: {
                   $first: "$project_object.name",
                },
-               packings_quantity: { $sum: 1 },
+               racks_quantity: { $sum: 1 },
             },
          },
       ]);
@@ -77,7 +77,7 @@ exports.general_report = async () => {
 
             res = {
                family,
-               packings_quantity: aggr.packings_quantity,
+               racks_quantity: aggr.racks_quantity,
                project_name: aggr.project_name,
             };
             return res;
@@ -96,11 +96,11 @@ exports.general_inventory_report = async () => {
          {},
          { control_points: 0, routes: 0, created_at: 0, update_at: 0, __v: 0 }
       ).populate("company");
-      const families_with_packings = await Promise.all(
+      const families_with_racks = await Promise.all(
          families.map(async (family) => {
             let family_obj = {};
 
-            const _in_owner = await Packing.find(
+            const _in_owner = await Rack.find(
                {
                   family: family._id,
                   absent: false,
@@ -138,7 +138,7 @@ exports.general_inventory_report = async () => {
                }
             );
 
-            const _in_clients = await Packing.find(
+            const _in_clients = await Rack.find(
                { family: family._id, absent: true, active: true },
                {
                   weigth: 0,
@@ -171,23 +171,23 @@ exports.general_inventory_report = async () => {
                }
             );
 
-            const qtd_total = await Packing.find({ family: family._id, active: true }).count();
+            const qtd_total = await Rack.find({ family: family._id, active: true }).count();
 
-            const qtd_in_owner = await Packing.find({
+            const qtd_in_owner = await Rack.find({
                family: family._id,
                absent: false,
                active: true,
                current_state: { $ne: "analise" },
             }).count();
 
-            let qtd_in_clients = await Packing.find({
+            let qtd_in_clients = await Rack.find({
                family: family._id,
                absent: true,
                active: true,
                current_state: { $in: ["local_correto"] },
             }).populate("last_event_record");
 
-            let qtd_in_cp = await Packing.find(
+            let qtd_in_cp = await Rack.find(
                { family: family._id, active: true },
                {
                   weigth: 0,
@@ -220,56 +220,56 @@ exports.general_inventory_report = async () => {
                }
             ).populate("last_event_record");
 
-            const qtd_in_analysis = await Packing.find({
+            const qtd_in_analysis = await Rack.find({
                family: family._id,
                current_state: "analise",
                active: true,
             }).count();
 
-            const qtd_in_traveling = await Packing.find({
+            const qtd_in_traveling = await Rack.find({
                family: family._id,
                active: true,
                absent: true,
                current_state: { $in: ["viagem_em_prazo"] },
             }).count();
 
-            const qtd_in_traveling_late = await Packing.find({
+            const qtd_in_traveling_late = await Rack.find({
                family: family._id,
                current_state: "viagem_atrasada",
                active: true,
             }).count();
 
-            const qtd_in_traveling_missing = await Packing.find({
+            const qtd_in_traveling_missing = await Rack.find({
                family: family._id,
                current_state: "viagem_perdida",
                active: true,
             }).count();
 
-            const qtd_in_correct_cp = await Packing.find({
+            const qtd_in_correct_cp = await Rack.find({
                family: family._id,
                current_state: "local_correto",
                active: true,
             }).count();
 
-            const qtd_in_incorrect_cp = await Packing.find({
+            const qtd_in_incorrect_cp = await Rack.find({
                family: family._id,
                current_state: "local_incorreto",
                active: true,
             }).count();
 
-            const qtd_with_permanence_time_exceeded = await Packing.find({
+            const qtd_with_permanence_time_exceeded = await Rack.find({
                family: family._id,
                permanence_time_exceeded: true,
                active: true,
             }).count();
 
-            const qtd_no_signal = await Packing.find({
+            const qtd_no_signal = await Rack.find({
                family: family._id,
                current_state: "sem_sinal",
                active: true,
             }).count();
 
-            const qtd_missing = await Packing.find({
+            const qtd_missing = await Rack.find({
                family: family._id,
                current_state: "perdida",
                active: true,
@@ -278,11 +278,11 @@ exports.general_inventory_report = async () => {
             const locations = await owner_general_inventory_report_detailed(family._id);
 
             qtd_in_clients = qtd_in_clients.filter(
-               (packing) => packing.last_event_record && packing.last_event_record.type === "inbound"
+               (rack) => rack.last_event_record && rack.last_event_record.type === "inbound"
             );
 
             qtd_in_cp = qtd_in_cp.filter(
-               (packing) => packing.last_event_record && packing.last_event_record.type === "inbound"
+               (rack) => rack.last_event_record && rack.last_event_record.type === "inbound"
             );
 
             family_obj.company = family.company ? family.company.name : "-";
@@ -313,7 +313,7 @@ exports.general_inventory_report = async () => {
          })
       );
 
-      return families_with_packings;
+      return families_with_racks;
    } catch (error) {
       console.log(error);
       throw new Error(error);
@@ -322,19 +322,19 @@ exports.general_inventory_report = async () => {
 
 const owner_general_inventory_report_detailed = async (family_id) => {
    const family = await Family.findById(family_id);
-   const packings = await Packing.find({ family: family._id, absent: false, active: true }).populate(
+   const racks = await Rack.find({ family: family._id, absent: false, active: true }).populate(
       "last_event_record"
    );
 
    const data = await Promise.all(
-      packings
-         .filter((packing) => packing.last_event_record && packing.last_event_record.type === "inbound")
-         .map(async (packing) => {
+      racks
+         .filter((rack) => rack.last_event_record && rack.last_event_record.type === "inbound")
+         .map(async (rack) => {
             let data_temp = {};
 
-            const control_point = await ControlPoint.findById(packing.last_event_record.control_point);
+            const control_point = await ControlPoint.findById(rack.last_event_record.control_point);
 
-            data_temp.packing = packing._id;
+            data_temp.rack = rack._id;
             data_temp.control_point_name = control_point ? control_point.name : "-";
 
             return data_temp;
@@ -346,16 +346,16 @@ const owner_general_inventory_report_detailed = async (family_id) => {
 
 const general_inventory_report_detailed = async (family_id) => {
    const family = await Family.findById(family_id);
-   const packings = await Packing.find({ family: family._id }).populate("last_event_record");
+   const racks = await Rack.find({ family: family._id }).populate("last_event_record");
    const data = await Promise.all(
-      packings
-         .filter((packing) => packing.last_event_record && packing.last_event_record.type === "inbound")
-         .map(async (packing) => {
+      racks
+         .filter((rack) => rack.last_event_record && rack.last_event_record.type === "inbound")
+         .map(async (rack) => {
             let data_temp = {};
 
-            const control_point = await ControlPoint.findById(packing.last_event_record.control_point);
+            const control_point = await ControlPoint.findById(rack.last_event_record.control_point);
 
-            data_temp.packing = packing._id;
+            data_temp.rack = rack._id;
             data_temp.control_point_name = control_point.name;
 
             return data_temp;
@@ -368,7 +368,7 @@ const general_inventory_report_detailed = async (family_id) => {
 exports.snapshot_report = async () => {
    try {
       //console.log('snapshot_report')
-      const packings = await Packing.aggregate([
+      const racks = await Rack.aggregate([
          {
             $lookup: {
                from: "families",
@@ -490,27 +490,27 @@ exports.snapshot_report = async () => {
       const settings = await Setting.find({});
 
       const data = await Promise.all(
-         packings.map(async (packing) => {
+         racks.map(async (rack) => {
             let obj = {};
-            const battery_level = packing.last_battery ? packing.last_battery.battery : null;
-            const lastAccurateMessage = packing.last_position;
+            const battery_level = rack.last_battery ? rack.last_battery.battery : null;
+            const lastAccurateMessage = rack.last_position;
 
-            obj.id = packing._id;
-            obj.message_date = packing.last_position
-               ? `${moment(packing.last_position.date).locale("pt-br").format("L")} ${moment(packing.last_position.date)
+            obj.id = rack._id;
+            obj.message_date = rack.last_position
+               ? `${moment(rack.last_position.date).locale("pt-br").format("L")} ${moment(rack.last_position.date)
                     .locale("pt-br")
                     .format("LTS")}`
                : "-";
-            obj.family = packing.family ? packing.family.code : "-";
-            obj.serial = packing.serial;
-            obj.tag = packing.tag.code;
-            obj.current_state = packing.current_state;
+            obj.family = rack.family ? rack.family.code : "-";
+            obj.serial = rack.serial;
+            obj.tag = rack.tag.code;
+            obj.current_state = rack.current_state;
             obj.collect_date = `${moment().locale("pt-br").format("L")} ${moment().locale("pt-br").format("LT")}`;
-            obj.accuracy = packing.last_position ? packing.last_position.accuracy : "-";
-            obj.lat_lng_device = await getLatLngOfPacking(packing);
-            obj.cicle_start = packing.cicle_start ? packing.cicle_start : "-";
-            obj.cicle_end = packing.cicle_end ? packing.cicle_end : "-";
-            obj.last_cicle_duration = packing.last_cicle_duration ? packing.last_cicle_duration : "-";
+            obj.accuracy = rack.last_position ? rack.last_position.accuracy : "-";
+            obj.lat_lng_device = await getLatLngOfRack(rack);
+            obj.cicle_start = rack.cicle_start ? rack.cicle_start : "-";
+            obj.cicle_end = rack.cicle_end ? rack.cicle_end : "-";
+            obj.last_cicle_duration = rack.last_cicle_duration ? rack.last_cicle_duration : "-";
 
             obj.lat_lng_cp = "-";
             obj.cp_type = "-";
@@ -519,34 +519,34 @@ exports.snapshot_report = async () => {
             obj.area = "-";
             obj.permanence_time = "-";
 
-            if (packing.last_event_record) {
-               if (packing.last_event_record.type) {
-                  if (packing.last_event_record.type == "inbound") {
-                     obj.lat_lng_cp = await getLatLngOfControlPoint(packing);
+            if (rack.last_event_record) {
+               if (rack.last_event_record.type) {
+                  if (rack.last_event_record.type == "inbound") {
+                     obj.lat_lng_cp = await getLatLngOfControlPoint(rack);
 
-                     let tempActualControlPoint = await getActualControlPoint(packing);
+                     let tempActualControlPoint = await getActualControlPoint(rack);
 
                      obj.cp_type = tempActualControlPoint.type.name;
                      obj.cp_name = tempActualControlPoint.name;
                      obj.geo = tempActualControlPoint.geofence.type;
 
-                     obj.area = await getAreaControlPoint(packing);
+                     obj.area = await getAreaControlPoint(rack);
 
-                     if (["analise", "perdida", "sem_sinal"].includes(packing.current_state)) {
+                     if (["analise", "perdida", "sem_sinal"].includes(rack.current_state)) {
                         obj.permanence_time = "-";
                      } else {
-                        obj.permanence_time = getDiffDateTodayInHours(packing.last_event_record.created_at);
+                        obj.permanence_time = getDiffDateTodayInHours(rack.last_event_record.created_at);
                      }
                   }
                }
             }
 
             obj.signal =
-               packing.current_state === "sem_sinal"
+               rack.current_state === "sem_sinal"
                   ? "FALSE"
-                  : packing.current_state === "desabilitada_sem_sinal"
+                  : rack.current_state === "desabilitada_sem_sinal"
                   ? "FALSE"
-                  : packing.current_state === "perdida"
+                  : rack.current_state === "perdida"
                   ? "FALSE"
                   : "TRUE";
             obj.battery = battery_level ? battery_level : "-";
@@ -556,13 +556,13 @@ exports.snapshot_report = async () => {
                   : "TRUE"
                : "FALSE";
 
-            obj.temperature = packing.last_temperature ? packing.last_temperature.value : "-";
+            obj.temperature = rack.last_temperature ? rack.last_temperature.value : "-";
 
             obj.travel_time = "-";
-            if (packing.last_event_record) {
-               if (packing.last_event_record.type) {
-                  if (packing.last_event_record.type === "outbound") {
-                     obj.travel_time = getDiffDateTodayInHours(packing.last_event_record.created_at);
+            if (rack.last_event_record) {
+               if (rack.last_event_record.type) {
+                  if (rack.last_event_record.type === "outbound") {
+                     obj.travel_time = getDiffDateTodayInHours(rack.last_event_record.created_at);
                   }
                }
             }
@@ -570,15 +570,15 @@ exports.snapshot_report = async () => {
             //--------------------------------------------------
             //Begin: Calculate no signal while absent, if absent
             obj.absent_time = "-";
-            if (packing.absent == true) {
+            if (rack.absent == true) {
                let noSignalTimeSinceAbsent = 0;
-               noSignalTimeSinceAbsent = calculateAbsentIntervalsOfflineTime(packing);
+               noSignalTimeSinceAbsent = calculateAbsentIntervalsOfflineTime(rack);
 
                let absentTimeUntilNow = 0;
-               absentTimeUntilNow = await getDiffDateTodayInHours(packing.absent_time);
+               absentTimeUntilNow = await getDiffDateTodayInHours(rack.absent_time);
 
-               // console.log(`getDiffDateTodayInHours: ${await getDiffDateTodayInHours(packing.absent_time)}, tag: ${packing.tag.code}`)
-               // console.log(`noSignalTimeSinceAbsent: ${noSignalTimeSinceAbsent}, tag: ${packing.tag.code} `)
+               // console.log(`getDiffDateTodayInHours: ${await getDiffDateTodayInHours(rack.absent_time)}, tag: ${rack.tag.code}`)
+               // console.log(`noSignalTimeSinceAbsent: ${noSignalTimeSinceAbsent}, tag: ${rack.tag.code} `)
 
                if (noSignalTimeSinceAbsent > 0.0) {
                   //if some trouble occurred and the noSignalTimeSinceAbsent > absentTimeUntilNow, consider absentTimeUntilNow = 0
@@ -588,13 +588,13 @@ exports.snapshot_report = async () => {
                   }
 
                   obj.absent_time =
-                     packing.absent && packing.absent_time !== null
+                     rack.absent && rack.absent_time !== null
                         ? absentTimeUntilNow - noSignalTimeSinceAbsent
                         : "-";
                } else {
                   obj.absent_time =
-                     packing.absent && packing.absent_time !== null
-                        ? await getDiffDateTodayInHours(packing.absent_time)
+                     rack.absent && rack.absent_time !== null
+                        ? await getDiffDateTodayInHours(rack.absent_time)
                         : "-";
                }
             }
@@ -615,28 +615,28 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
 
    try {
       /**
-       * 1. Recuperar lista de packings. Para cada um:
+       * 1. Recuperar lista de racks. Para cada um:
        * 2. Recuperar próximo devicedata a partir da data especificada.
        * 3. calcular intersecção
        * 4. Montar objeto do snapshot
        */
 
-      const packings = await Packing.find({}).populate("family", "code");
+      const racks = await Rack.find({}).populate("family", "code");
       const controlPoints = await ControlPoint.find({}).populate("type");
       const settings = await Setting.find({});
 
-      // 1. Recuperar lista de packings. Para cada um:
+      // 1. Recuperar lista de racks. Para cada um:
       const data = await Promise.all(
-         packings.map(async (packing) => {
+         racks.map(async (rack) => {
             // 2. Recuperar próximo position a partir da data especificada.
             const position = await Position.findOne({
-               device_id: packing.tag.code,
+               device_id: rack.tag.code,
                date: { $lte: new Date(snapshot_date) },
             });
 
             const battery = await Battery.findOne({
                battery: { $ne: null },
-               tag: packing.tag.code,
+               tag: rack.tag.code,
                date: { $lte: new Date(snapshot_date) },
             });
 
@@ -658,24 +658,24 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                battery_alert: "",
             };
 
-            obj.id = packing._id;
-            obj.family = packing.family ? packing.family.code : "-";
-            obj.serial = packing.serial;
-            obj.tag = packing.tag.code;
+            obj.id = rack._id;
+            obj.family = rack.family ? rack.family.code : "-";
+            obj.serial = rack.serial;
+            obj.tag = rack.tag.code;
 
             obj.collect_date = `${moment(snapshot_date).locale("pt-br").format("L")} ${moment(snapshot_date)
                .locale("pt-br")
                .format("LT")}`;
 
-            obj.cicle_start = packing.cicle_start ? packing.cicle_start : "-";
-            obj.cicle_end = packing.cicle_end ? packing.cicle_end : "-";
-            obj.last_cicle_duration = packing.last_cicle_duration ? packing.last_cicle_duration : "-";
+            obj.cicle_start = rack.cicle_start ? rack.cicle_start : "-";
+            obj.cicle_end = rack.cicle_end ? rack.cicle_end : "-";
+            obj.last_cicle_duration = rack.last_cicle_duration ? rack.last_cicle_duration : "-";
 
             if (position !== null) {
-               packing.last_position = position;
+               rack.last_position = position;
 
                // 3. calcular intersecção
-               const current_control_point = await findControlPointIntersection(packing, controlPoints, settings);
+               const current_control_point = await findControlPointIntersection(rack, controlPoints, settings);
 
                // console.log('current_control_point')
                // console.log(current_control_point)
@@ -687,7 +687,7 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
                        .format("LTS")}`
                   : "-";
                obj.accuracy = position.accuracy;
-               obj.lat_lng_device = await getLatLngOfPacking(packing);
+               obj.lat_lng_device = await getLatLngOfRack(rack);
 
                if (battery !== null) {
                   obj.battery = battery.battery;
@@ -739,13 +739,13 @@ exports.snapshot_recovery_report = async (snapshot_date) => {
 
 /**
  * This method calculates the amount of time the package has been 'sem_sinal', 'perdida' ou 'ausente' since missing.
- * @param {*} packing The package to be analyzed
+ * @param {*} rack The package to be analyzed
  */
-const calculateAbsentIntervalsOfflineTime = (packing) => {
+const calculateAbsentIntervalsOfflineTime = (rack) => {
    let acum = 0;
 
-   if (packing.offlineWhileAbsent) {
-      packing.offlineWhileAbsent.map((elem) => {
+   if (rack.offlineWhileAbsent) {
+      rack.offlineWhileAbsent.map((elem) => {
          if (elem.start !== null) {
             let result = calculateRangeTime(elem.start, elem.end == null ? 0 : elem.end);
             acum += result;
@@ -831,12 +831,12 @@ const calculateRangeTime = (dateFrom, dateTo) => {
 
 exports.absent_report = async (query = { family: null, serial: null, absent_time_in_hours: null }) => {
    try {
-      let packings = [];
+      let racks = [];
       let current_family = query.family ? await Family.findOne({ _id: query.family }) : null;
 
       switch (true) {
          case query.family != null && query.serial != null:
-            packings = await Packing.find(
+            racks = await Rack.find(
                {
                   absent: true,
                   active: true,
@@ -850,7 +850,7 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                .populate("last_event_record");
             break;
          case query.family != null:
-            packings = await Packing.find(
+            racks = await Rack.find(
                { absent: true, active: true, family: current_family._id },
                { serial: 1, absent_time: 1, current_state: 1, "tag.code": 1 }
             )
@@ -859,7 +859,7 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                .populate("last_event_record");
             break;
          case query.serial != null:
-            packings = await Packing.find(
+            racks = await Rack.find(
                { absent: true, active: true, serial: query.serial },
                { serial: 1, absent_time: 1, current_state: 1, "tag.code": 1 }
             )
@@ -868,7 +868,7 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                .populate("last_event_record");
             break;
          default:
-            packings = await Packing.find(
+            racks = await Rack.find(
                { absent: true, active: true },
                { serial: 1, absent_time: 1, current_state: 1, "tag.code": 1 }
             )
@@ -879,17 +879,17 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
       }
 
       const data = await Promise.all(
-         packings.map(async (packing) => {
+         racks.map(async (rack) => {
             let object_temp = {};
 
-            object_temp._id = packing._id;
-            object_temp.tag = packing.tag.code;
-            object_temp.current_state = packing.current_state;
-            object_temp.family = packing.family;
-            object_temp.serial = packing.serial;
+            object_temp._id = rack._id;
+            object_temp.tag = rack.tag.code;
+            object_temp.current_state = rack.current_state;
+            object_temp.family = rack.family;
+            object_temp.serial = rack.serial;
 
-            if (packing.last_event_record) {
-               let aux_last_event_record = await EventRecord.findById(packing.last_event_record).populate(
+            if (rack.last_event_record) {
+               let aux_last_event_record = await EventRecord.findById(rack.last_event_record).populate(
                   "control_point"
                );
                object_temp.control_point_name =
@@ -900,8 +900,8 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
                object_temp.control_point_name = "Sem registro";
             }
 
-            object_temp.absent_time_in_hours = packing.absent_time
-               ? await getDiffDateTodayInHours(packing.absent_time)
+            object_temp.absent_time_in_hours = rack.absent_time
+               ? await getDiffDateTodayInHours(rack.absent_time)
                : "0";
 
             return object_temp;
@@ -909,8 +909,8 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
       );
 
       if (query.absent_time_in_hours != null) {
-         const packings_filtered = data.filter((packing) => packing.absent_time_in_hours < query.absent_time_in_hours);
-         return packings_filtered;
+         const racks_filtered = data.filter((rack) => rack.absent_time_in_hours < query.absent_time_in_hours);
+         return racks_filtered;
       }
 
       return data;
@@ -921,12 +921,12 @@ exports.absent_report = async (query = { family: null, serial: null, absent_time
 
 exports.permanence_time_report = async (query = { paramFamily: null, paramSerial: null }) => {
    try {
-      let packings = [];
+      let racks = [];
       //let current_family = query.paramFamily ? await Family.findOne({ _id: query.paramFamily }) : null
 
       switch (true) {
          case query.paramFamily != null && query.paramSerial != null:
-            packings = await Packing.find({
+            racks = await Rack.find({
                permanence_time_exceeded: true,
                active: true,
                family: query.paramFamily,
@@ -939,7 +939,7 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
             break;
 
          case query.paramFamily != null:
-            packings = await Packing.find({ permanence_time_exceeded: true, active: true, family: query.paramFamily })
+            racks = await Rack.find({ permanence_time_exceeded: true, active: true, family: query.paramFamily })
                .populate("family", "_id code company")
                .populate("last_postition")
                .populate("last_battery")
@@ -947,7 +947,7 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
             break;
 
          case query.paramSerial != null:
-            packings = await Packing.find({ permanence_time_exceeded: true, active: true, serial: query.paramSerial })
+            racks = await Rack.find({ permanence_time_exceeded: true, active: true, serial: query.paramSerial })
                .populate("family", "_id code company")
                .populate("last_postition")
                .populate("last_battery")
@@ -955,7 +955,7 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
             break;
 
          default:
-            packings = await Packing.find({ permanence_time_exceeded: true, active: true })
+            racks = await Rack.find({ permanence_time_exceeded: true, active: true })
                .populate("family", "_id code company")
                .populate("last_postition")
                .populate("last_battery")
@@ -966,30 +966,30 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
       let data = [];
       if (query.paramSerial != null) {
          data = await Promise.all(
-            packings
-               .filter((packing) => packing.last_event_record && packing.last_event_record.type === "inbound")
-               .map(async (packing) => {
+            racks
+               .filter((rack) => rack.last_event_record && rack.last_event_record.type === "inbound")
+               .map(async (rack) => {
                   let object_temp = {};
                   let stock_in_days = null;
 
                   const current_control_point = await ControlPoint.findById(
-                     packing.last_event_record.control_point
+                     rack.last_event_record.control_point
                   ).populate("type");
-                  const current_company = await Company.findById(packing.family.company);
-                  const gc16 = packing.family.gc16 ? await GC16.findById(packing.family.gc16) : null;
+                  const current_company = await Company.findById(rack.family.company);
+                  const gc16 = rack.family.gc16 ? await GC16.findById(rack.family.gc16) : null;
                   if (gc16) stock_in_days = current_company.type === "owner" ? gc16.owner_stock : gc16.client_stock;
 
-                  object_temp._id = packing._id;
-                  object_temp.tag = packing.tag.code;
-                  object_temp.family_id = packing.family._id;
-                  object_temp.family_code = packing.family ? packing.family.code : "-";
-                  object_temp.serial = packing.serial;
+                  object_temp._id = rack._id;
+                  object_temp.tag = rack.tag.code;
+                  object_temp.family_id = rack.family._id;
+                  object_temp.family_code = rack.family ? rack.family.code : "-";
+                  object_temp.serial = rack.serial;
                   object_temp.current_control_point_name =
                      current_control_point !== null ? current_control_point.name : "-";
                   object_temp.current_control_point_type =
                      current_control_point !== null ? current_control_point.type.name : "-";
-                  object_temp.date = packing.last_event_record.created_at;
-                  object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at);
+                  object_temp.date = rack.last_event_record.created_at;
+                  object_temp.permanence_time_exceeded = getDiffDateTodayInHours(rack.last_event_record.created_at);
                   if (gc16) object_temp.stock_in_days = stock_in_days.days;
 
                   return object_temp;
@@ -997,26 +997,26 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
          );
       } else {
          data = await Promise.all(
-            packings
-               .filter((packing) => packing.last_event_record && packing.last_event_record.type === "inbound")
-               .map(async (packing) => {
+            racks
+               .filter((rack) => rack.last_event_record && rack.last_event_record.type === "inbound")
+               .map(async (rack) => {
                   let object_temp = {};
 
                   const current_control_point = await ControlPoint.findById(
-                     packing.last_event_record.control_point
+                     rack.last_event_record.control_point
                   ).populate("type");
-                  const current_company = await Company.findById(packing.family.company);
+                  const current_company = await Company.findById(rack.family.company);
 
-                  object_temp._id = packing._id;
-                  object_temp.tag = packing.tag.code;
-                  object_temp.family_id = packing.family._id;
-                  object_temp.family_code = packing.family ? packing.family.code : "-";
-                  object_temp.serial = packing.serial;
+                  object_temp._id = rack._id;
+                  object_temp.tag = rack.tag.code;
+                  object_temp.family_id = rack.family._id;
+                  object_temp.family_code = rack.family ? rack.family.code : "-";
+                  object_temp.serial = rack.serial;
                   object_temp.current_control_point_name =
                      current_control_point !== null ? current_control_point.name : "-";
                   object_temp.current_control_point_type =
                      current_control_point !== null ? current_control_point.type.name : "-";
-                  object_temp.permanence_time_exceeded = getDiffDateTodayInHours(packing.last_event_record.created_at);
+                  object_temp.permanence_time_exceeded = getDiffDateTodayInHours(rack.last_event_record.created_at);
                   object_temp.company = current_company !== null ? current_company.name : "-";
 
                   return object_temp;
@@ -1025,8 +1025,8 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
       }
 
       if (query.absent_time_in_hours != null) {
-         const packings_filtered = data.filter((packing) => packing.absent_time_in_hours < query.absent_time_in_hours);
-         return packings_filtered;
+         const racks_filtered = data.filter((rack) => rack.absent_time_in_hours < query.absent_time_in_hours);
+         return racks_filtered;
       }
 
       return data;
@@ -1037,17 +1037,17 @@ exports.permanence_time_report = async (query = { paramFamily: null, paramSerial
 
 exports.battery_report = async (family_id = null) => {
    try {
-      let packings = [];
+      let racks = [];
 
       switch (true) {
          case family_id != null:
-            packings = await Packing.find({ active: true, family: family_id })
+            racks = await Rack.find({ active: true, family: family_id })
                .populate("family", "_id code")
                .populate("last_battery")
                .populate("last_event_record");
             break;
          default:
-            packings = await Packing.find({ active: true })
+            racks = await Rack.find({ active: true })
                .populate("family", "_id code")
                .populate("last_battery")
                .populate("last_event_record");
@@ -1055,18 +1055,18 @@ exports.battery_report = async (family_id = null) => {
       }
 
       const data = await Promise.all(
-         packings.map(async (packing) => {
+         racks.map(async (rack) => {
             let object_temp = {};
 
-            const current_control_point = packing.last_event_record
-               ? await ControlPoint.findById(packing.last_event_record.control_point).populate("type")
+            const current_control_point = rack.last_event_record
+               ? await ControlPoint.findById(rack.last_event_record.control_point).populate("type")
                : null;
 
-            object_temp._id = packing._id;
-            object_temp.tag = packing.tag.code;
-            object_temp.family_id = packing.family._id;
-            object_temp.family_code = packing.family ? packing.family.code : "-";
-            object_temp.serial = packing.serial;
+            object_temp._id = rack._id;
+            object_temp.tag = rack.tag.code;
+            object_temp.family_id = rack.family._id;
+            object_temp.family_code = rack.family ? rack.family.code : "-";
+            object_temp.serial = rack.serial;
             object_temp.current_control_point_name = current_control_point
                ? current_control_point.name
                : "Fora de um ponto de controle";
@@ -1075,9 +1075,9 @@ exports.battery_report = async (family_id = null) => {
                ? current_control_point.type.name
                : "Fora de um ponto de controle";
 
-            object_temp.battery_percentage = packing.last_battery ? packing.last_battery.battery : "-";
+            object_temp.battery_percentage = rack.last_battery ? rack.last_battery.battery : "-";
 
-            object_temp.battery_date = packing.last_battery ? packing.last_battery.date : "-";
+            object_temp.battery_date = rack.last_battery ? rack.last_battery.date : "-";
 
             return object_temp;
          })
@@ -1104,18 +1104,18 @@ exports.quantity_report = async (family_id = null) => {
          let stock = null;
 
          if (family.gc16) stock = family.company.type === "owner" ? family.gc16.owner_stock : family.gc16.client_stock;
-         const packings = await Packing.find({ family: family._id, active: true }).populate("last_event_record");
-         const qtd_total = await Packing.find({ family: family._id, active: true }).count();
-         // const qtd_analysis = await Packing.find({ family: family._id, current_state: 'analise' }).count()
-         const packings_outbound = packings.filter(
-            (packing) => packing.last_event_record && packing.last_event_record.type === "outbound"
+         const racks = await Rack.find({ family: family._id, active: true }).populate("last_event_record");
+         const qtd_total = await Rack.find({ family: family._id, active: true }).count();
+         // const qtd_analysis = await Rack.find({ family: family._id, current_state: 'analise' }).count()
+         const racks_outbound = racks.filter(
+            (rack) => rack.last_event_record && rack.last_event_record.type === "outbound"
          );
-         const packings_inbound = await Promise.all(
-            packings
-               .filter((packing) => packing.last_event_record && packing.last_event_record.type === "inbound")
-               .map(async (packing) => {
+         const racks_inbound = await Promise.all(
+            racks
+               .filter((rack) => rack.last_event_record && rack.last_event_record.type === "inbound")
+               .map(async (rack) => {
                   let obj_temp = {};
-                  const cp = await ControlPoint.findById(packing.last_event_record.control_point).populate("type");
+                  const cp = await ControlPoint.findById(rack.last_event_record.control_point).populate("type");
 
                   obj_temp.control_point_name = cp !== null ? cp.name : "-";
                   obj_temp.control_point_type = cp !== null ? cp.type.name : "-";
@@ -1124,17 +1124,17 @@ exports.quantity_report = async (family_id = null) => {
                })
          );
 
-         const output = Object.entries(_.countBy(packings_inbound, "control_point_name")).map(([key, value]) => {
-            const packing_temp = packings_inbound.filter((p) => p.control_point_name === key);
+         const output = Object.entries(_.countBy(racks_inbound, "control_point_name")).map(([key, value]) => {
+            const rack_temp = racks_inbound.filter((p) => p.control_point_name === key);
             return {
                family_code: family.code,
                company: family.company ? family.company.name : "-",
                stock_min: stock ? stock.qty_container : "-",
                stock_max: stock ? stock.qty_container_max : "-",
-               packings_traveling: packings_outbound.length,
+               racks_traveling: racks_outbound.length,
                total: value,
                control_point_name: key,
-               control_point_type: packing_temp[0].control_point_type,
+               control_point_type: rack_temp[0].control_point_type,
                qtd_total: qtd_total,
             };
          });
@@ -1151,14 +1151,14 @@ exports.quantity_report = async (family_id = null) => {
 exports.general_info_report = async (family_id = null) => {
    try {
       let current_family = family_id ? await Family.findOne({ _id: family_id }) : null;
-      let packings =
+      let racks =
          family_id != null
-            ? await Packing.find({ active: true, family: current_family._id })
+            ? await Rack.find({ active: true, family: current_family._id })
                  .populate("family", { routes: 0, control_points: 0 })
                  .populate("last_position")
                  .populate("last_battery")
                  .populate("last_event_record")
-            : await Packing.find({ active: true })
+            : await Rack.find({ active: true })
                  .populate("family", { routes: 0, control_points: 0 })
                  .populate("last_position")
                  .populate("last_battery")
@@ -1166,16 +1166,16 @@ exports.general_info_report = async (family_id = null) => {
                  .populate("last_current_state_history");
 
       const data = await Promise.all(
-         packings.map(async (packing) => {
+         racks.map(async (rack) => {
             let object_temp = {};
             let current_control_point = null;
 
             object_temp.current_control_point_name = "-";
             object_temp.current_control_point_type = "-";
 
-            if (packing.last_event_record) {
-               if (packing.last_event_record.type == "inbound") {
-                  current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate(
+            if (rack.last_event_record) {
+               if (rack.last_event_record.type == "inbound") {
+                  current_control_point = await ControlPoint.findById(rack.last_event_record.control_point).populate(
                      "type"
                   );
 
@@ -1197,28 +1197,28 @@ exports.general_info_report = async (family_id = null) => {
                }
             }
 
-            //const current_control_point = packing.last_event_record ? await ControlPoint.findById(packing.last_event_record.control_point).populate('type') : null
-            const company = await Company.findById(packing.family.company);
-            // console.log(packing)
-            object_temp._id = packing._id;
-            object_temp.tag = packing.tag.code;
-            object_temp.family_code = packing.family ? packing.family.code : "-";
-            object_temp.serial = packing.serial;
+            //const current_control_point = rack.last_event_record ? await ControlPoint.findById(rack.last_event_record.control_point).populate('type') : null
+            const company = await Company.findById(rack.family.company);
+            // console.log(rack)
+            object_temp._id = rack._id;
+            object_temp.tag = rack.tag.code;
+            object_temp.family_code = rack.family ? rack.family.code : "-";
+            object_temp.serial = rack.serial;
             object_temp.company = company ? company.name : "-";
-            object_temp.current_state = packing.current_state;
+            object_temp.current_state = rack.current_state;
 
             //dados do último inbound/outbound
-            object_temp.in_out_accuracy = packing.last_event_record ? packing.last_event_record.accuracy : "-";
-            object_temp.in_out_date = packing.last_event_record ? packing.last_event_record.created_at : "-";
-            // object_temp.in_out_accuracy = packing.last_current_state_history ? packing.last_current_state_history.accuracy : '-'
-            // object_temp.in_out_date = packing.last_current_state_history ? packing.last_current_state_history.created_at : '-'
+            object_temp.in_out_accuracy = rack.last_event_record ? rack.last_event_record.accuracy : "-";
+            object_temp.in_out_date = rack.last_event_record ? rack.last_event_record.created_at : "-";
+            // object_temp.in_out_accuracy = rack.last_current_state_history ? rack.last_current_state_history.accuracy : '-'
+            // object_temp.in_out_date = rack.last_current_state_history ? rack.last_current_state_history.created_at : '-'
 
             //dados atuais
-            object_temp.accuracy = packing.last_position ? packing.last_position.accuracy : "Sem registro";
-            object_temp.date = packing.last_message_signal ? packing.last_message_signal : "Sem registro";
+            object_temp.accuracy = rack.last_position ? rack.last_position.accuracy : "Sem registro";
+            object_temp.date = rack.last_message_signal ? rack.last_message_signal : "Sem registro";
 
-            object_temp.battery_percentage = packing.last_battery ? packing.last_battery.battery : "Sem registro";
-            object_temp.battery_date = packing.last_battery ? packing.last_battery.date : "-";
+            object_temp.battery_percentage = rack.last_battery ? rack.last_battery.battery : "Sem registro";
+            object_temp.battery_date = rack.last_battery ? rack.last_battery.date : "-";
 
             return object_temp;
          })
@@ -1242,21 +1242,21 @@ exports.clients_report = async (company_id = null) => {
       for (let family of families) {
          try {
             //Busca todas as embalagens que pertencem à família atual do loop
-            const packings = await Packing.find({ family: family._id, active: true }).populate("last_event_record");
+            const racks = await Rack.find({ family: family._id, active: true }).populate("last_event_record");
 
-            //Da lista packings, filtra as que fizeram outbound
-            const packings_outbound = packings.filter(
-               (packing) => packing.last_event_record && packing.last_event_record.type === "outbound"
+            //Da lista racks, filtra as que fizeram outbound
+            const racks_outbound = racks.filter(
+               (rack) => rack.last_event_record && rack.last_event_record.type === "outbound"
             );
 
-            const packings_inbound = await Promise.all(
-               //Da lista packings, filtra as que fizeram inbound
-               packings
-                  .filter((packing) => packing.last_event_record && packing.last_event_record.type === "inbound")
-                  .map(async (packing) => {
+            const racks_inbound = await Promise.all(
+               //Da lista racks, filtra as que fizeram inbound
+               racks
+                  .filter((rack) => rack.last_event_record && rack.last_event_record.type === "inbound")
+                  .map(async (rack) => {
                      let obj_temp = {};
                      //Preenche as informações do ponto de controle a qual fez inbound
-                     const cp = await ControlPoint.findById(packing.last_event_record.control_point)
+                     const cp = await ControlPoint.findById(rack.last_event_record.control_point)
                         .populate("type")
                         .populate("company");
 
@@ -1276,17 +1276,17 @@ exports.clients_report = async (company_id = null) => {
                   })
             );
 
-            // console.log(packings_inbound);
+            // console.log(racks_inbound);
 
-            const output = Object.entries(_.countBy(packings_inbound, "control_point_name")).map(([key, value]) => {
-               const packing_temp = packings_inbound.filter((p) => p.control_point_name === key);
+            const output = Object.entries(_.countBy(racks_inbound, "control_point_name")).map(([key, value]) => {
+               const rack_temp = racks_inbound.filter((p) => p.control_point_name === key);
                return {
                   family_code: family.code,
                   company_id: family.company._id,
                   company: family.company ? family.company.name : "-",
-                  packings_traveling: packings_outbound.length,
+                  racks_traveling: racks_outbound.length,
                   control_point_name: key,
-                  control_point_type: packing_temp[0].control_point_type,
+                  control_point_type: rack_temp[0].control_point_type,
                   qtd: value,
                };
             });
@@ -1306,14 +1306,14 @@ exports.owner_supplier_absent = async (days) => {
    return owner_supplier_absent(days);
 };
 
-const getLatLngOfPacking = async (packing) => {
-   if (!packing.last_position) return "-";
-   return `${packing.last_position.latitude} ${packing.last_position.longitude}`;
+const getLatLngOfRack = async (rack) => {
+   if (!rack.last_position) return "-";
+   return `${rack.last_position.latitude} ${rack.last_position.longitude}`;
 };
 
-const getActualControlPoint = async (packing) => {
-   // const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate("type");
-   const current_control_point = packing.last_event_record.control_point;
+const getActualControlPoint = async (rack) => {
+   // const current_control_point = await ControlPoint.findById(rack.last_event_record.control_point).populate("type");
+   const current_control_point = rack.last_event_record.control_point;
 
    if (current_control_point == null || current_control_point == undefined) {
       let result = {
@@ -1335,9 +1335,9 @@ const getActualControlPoint = async (packing) => {
    }
 };
 
-const getLatLngOfControlPoint = async (packing) => {
-   //console.log('getLatLngOfControlPoint ', packing.tag.code)
-   const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point);
+const getLatLngOfControlPoint = async (rack) => {
+   //console.log('getLatLngOfControlPoint ', rack.tag.code)
+   const current_control_point = await ControlPoint.findById(rack.last_event_record.control_point);
 
    if (current_control_point !== null && current_control_point !== undefined) {
       if (current_control_point.geofence.type == "c") {
@@ -1354,9 +1354,9 @@ const getLatLngOfControlPoint = async (packing) => {
    }
 };
 
-const getAreaControlPoint = async (packing) => {
-   //console.log('getAreaControlPoint ', packing.tag.code)
-   const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point);
+const getAreaControlPoint = async (rack) => {
+   //console.log('getAreaControlPoint ', rack.tag.code)
+   const current_control_point = await ControlPoint.findById(rack.last_event_record.control_point);
 
    if (current_control_point !== null && current_control_point !== undefined) {
       if (current_control_point.geofence.type == "c") {
@@ -1376,21 +1376,21 @@ const getAreaControlPoint = async (packing) => {
    }
 };
 
-const getTypeOfControlPoint = async (packing) => {
-   const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate("type");
+const getTypeOfControlPoint = async (rack) => {
+   const current_control_point = await ControlPoint.findById(rack.last_event_record.control_point).populate("type");
    return current_control_point.type.name;
 };
 
-const getNameOfControlPoint = async (packing) => {
-   const current_control_point = await ControlPoint.findById(packing.last_event_record.control_point).populate("type");
+const getNameOfControlPoint = async (rack) => {
+   const current_control_point = await ControlPoint.findById(rack.last_event_record.control_point).populate("type");
    return current_control_point.name;
 };
 
-const getAbsentTimeCountDown = async (packing) => {
+const getAbsentTimeCountDown = async (rack) => {
    let diff_date_array = [];
 
-   if (packing.last_event_record) {
-      const event_records = await EventRecord.find({ packing: packing._id, type: "outbound" }).sort({ created_at: -1 });
+   if (rack.last_event_record) {
+      const event_records = await EventRecord.find({ rack: rack._id, type: "outbound" }).sort({ created_at: -1 });
       if (!event_records.length > 0) return "-";
 
       diff_date_array = await Promise.all(
@@ -1421,7 +1421,7 @@ const getDiffDateTodayInHours = (date) => {
    return duration.asHours();
 };
 
-const findControlPointIntersection = async (packing, controlPoints, setting) => {
+const findControlPointIntersection = async (rack, controlPoints, setting) => {
    let distance = Infinity;
    let currentControlPoint = null;
    let range_radius = 0;
@@ -1434,9 +1434,9 @@ const findControlPointIntersection = async (packing, controlPoints, setting) => 
 
       if (controlPoint.geofence.type === "p") {
          if (!isInsidePolygon) {
-            //if (pnpoly(packing, controlPoint)) {
-            if (intersectionpoly(packing, controlPoint)) {
-               //mLog(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}` )
+            //if (pnpoly(rack, controlPoint)) {
+            if (intersectionpoly(rack, controlPoint)) {
+               //mLog(`>> POLIGONO: DENTRO DO PONTO DE CONTROLE p: ${rack._id} e cp: ${controlPoint._id}` )
                distance = 0;
                currentControlPoint = controlPoint;
                isInsidePolygon = true;
@@ -1444,11 +1444,11 @@ const findControlPointIntersection = async (packing, controlPoints, setting) => 
          }
       } else {
          if (!isInsidePolygon) {
-            //mLog(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${packing._id} e cp: ${controlPoint._id}`)
+            //mLog(`== CIRCULO: DENTRO DO PONTO DE CONTROLE p: ${rack._id} e cp: ${controlPoint._id}`)
 
             const calculate = getDistanceFromLatLonInKm(
-               packing.last_position.latitude,
-               packing.last_position.longitude,
+               rack.last_position.latitude,
+               rack.last_position.longitude,
                controlPoint.geofence.coordinates[0].lat,
                controlPoint.geofence.coordinates[0].lng
             );
@@ -1465,7 +1465,7 @@ const findControlPointIntersection = async (packing, controlPoints, setting) => 
    return currentControlPoint;
 };
 
-const intersectionpoly = (packing, controlPoint) => {
+const intersectionpoly = (rack, controlPoint) => {
    try {
       //mLog('intersectionpoly?')
 
@@ -1522,27 +1522,27 @@ const intersectionpoly = (packing, controlPoint) => {
 
          controlPointPolygonArray.forEach((mPolygon) => {
             //criar polígono da embalagem
-            let center = [packing.last_position.longitude, packing.last_position.latitude];
-            let radius = packing.last_position.accuracy;
+            let center = [rack.last_position.longitude, rack.last_position.latitude];
+            let radius = rack.last_position.accuracy;
             let options = { steps: 64, units: "meters" };
 
             //mLog(center, radius)
-            let packingPolygon = turf.circle(center, radius, options);
+            let rackPolygon = turf.circle(center, radius, options);
             //mLog('c: ')
-            //mLog(JSON.stringify(packingPolygon))
+            //mLog(JSON.stringify(rackPolygon))
 
             //checar intersecção
-            let intersection = turf.intersect(mPolygon, packingPolygon);
+            let intersection = turf.intersect(mPolygon, rackPolygon);
             let intersectionMartinez = martinez.intersection(
                controlPointPolygon.geometry.coordinates,
-               packingPolygon.geometry.coordinates
+               rackPolygon.geometry.coordinates
             );
 
             //checar inclusão total
-            let contained = turf.booleanContains(mPolygon, packingPolygon);
+            let contained = turf.booleanContains(mPolygon, rackPolygon);
 
             // mLog(' ')
-            // mLog('i: ', packing.tag.code)
+            // mLog('i: ', rack.tag.code)
             // mLog(intersection)
 
             if (result == false)
@@ -1559,27 +1559,27 @@ const intersectionpoly = (packing, controlPoint) => {
          // mLog(JSON.stringify(unkinkControlPointPolygon))
 
          //criar polígono da embalagem
-         let center = [packing.last_position.longitude, packing.last_position.latitude];
-         let radius = packing.last_position.accuracy;
+         let center = [rack.last_position.longitude, rack.last_position.latitude];
+         let radius = rack.last_position.accuracy;
          let options = { steps: 64, units: "meters" };
 
          //mLog(center, radius)
-         let packingPolygon = turf.circle(center, radius, options);
+         let rackPolygon = turf.circle(center, radius, options);
          //mLog('c: ')
-         //mLog(JSON.stringify(packingPolygon))
+         //mLog(JSON.stringify(rackPolygon))
 
          //checar intersecção
-         let intersection = turf.intersect(controlPointPolygon, packingPolygon);
+         let intersection = turf.intersect(controlPointPolygon, rackPolygon);
          let intersectionMartinez = martinez.intersection(
             controlPointPolygon.geometry.coordinates,
-            packingPolygon.geometry.coordinates
+            rackPolygon.geometry.coordinates
          );
 
          //checar inclusão total
-         let contained = turf.booleanContains(controlPointPolygon, packingPolygon);
+         let contained = turf.booleanContains(controlPointPolygon, rackPolygon);
 
          // mLog(' ')
-         // mLog('i: ', packing.tag.code)
+         // mLog('i: ', rack.tag.code)
          // mLog(intersection)
 
          let result = intersection !== null || intersectionMartinez !== null || contained !== false ? true : false;

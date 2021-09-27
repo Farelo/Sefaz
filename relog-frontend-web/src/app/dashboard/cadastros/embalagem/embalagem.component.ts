@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PackingService, AuthenticationService, FamiliesService } from '../../../servicos/index.service';
-import { Packing } from '../../../shared/models/packing';
+import { RackService, AuthenticationService, FamiliesService } from '../../../servicos/index.service';
+import { Rack } from '../../../shared/models/rack';
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,8 +13,8 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class EmbalagemComponent implements OnInit {
   
   //list
-  private _listOfPackings: any[] = [];
-  public listOfPackings: any[] = [];
+  private _listOfRacks: any[] = [];
+  public listOfRacks: any[] = [];
   
   //ng select
   public listOfFamilies: any[] = [];
@@ -26,7 +26,7 @@ export class EmbalagemComponent implements OnInit {
   public logged_user: any;
   
   constructor(
-    private packingService: PackingService,
+    private rackService: RackService,
     private familyService: FamiliesService,
     private modalService: NgbModal,
     private auth: AuthenticationService) {
@@ -42,19 +42,19 @@ export class EmbalagemComponent implements OnInit {
 
   ngOnInit() {
     //this.loadFamilies();
-    this.loadPackings();
+    this.loadRacks();
   }
 
 
   /**
    * Carregar todos os pacotes com paginação e sem filtro
    */
-  loadPackings(): void{
+  loadRacks(): void{
 
-    this.packingService.getAllPackings().subscribe(result => {
+    this.rackService.getAllRacks().subscribe(result => {
 
-      this._listOfPackings = result;
-      this.listOfPackings = result;
+      this._listOfRacks = result;
+      this.listOfRacks = result;
       }, err => {console.log(err)});
   }
 
@@ -65,16 +65,16 @@ export class EmbalagemComponent implements OnInit {
   }
   
   /**
-   * Proceed to remove a packing
-   * @param packing 
+   * Proceed to remove a rack
+   * @param rack 
    */
-  removePacking(packing):void{
+  removeRack(rack):void{
     const modalRef = this.modalService.open(ModalDeleteComponent);
-    modalRef.componentInstance.mObject = packing;
-    modalRef.componentInstance.mType = "PACKING";
+    modalRef.componentInstance.mObject = rack;
+    modalRef.componentInstance.mType = "RACK";
 
     modalRef.result.then((result) => {
-      this.loadPackings();
+      this.loadRacks();
     });
   }
 
@@ -83,14 +83,14 @@ export class EmbalagemComponent implements OnInit {
     const val = event.target.value.toLowerCase();
 
     // filter our data
-    const temp = this._listOfPackings.filter(function (item) {
+    const temp = this._listOfRacks.filter(function (item) {
       return ((item.family.code.toLowerCase().indexOf(val) !== -1 || !val)
               || (item.serial.toLowerCase().indexOf(val) !== -1 || !val)
               || (item.tag.code.toLowerCase().indexOf(val) !== -1 || !val));
     });
 
     // update the rows
-    this.listOfPackings = temp;
+    this.listOfRacks = temp;
     // Whenever the filter changes, always go back to the first page
     this.actualPage = 0;
   }

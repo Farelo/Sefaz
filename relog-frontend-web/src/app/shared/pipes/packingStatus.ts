@@ -1,9 +1,9 @@
-import { Packing } from './../models/packing';
+import { Rack } from './../models/rack';
 import { Pipe, PipeTransform } from '@angular/core';
 import { constants } from '../../../environments/constants';
 
-@Pipe({ name: 'packingStatus' })
-export class PackingStatus {
+@Pipe({ name: 'rackStatus' })
+export class RackStatus {
 
   transform(status: string) {
 
