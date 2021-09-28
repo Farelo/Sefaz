@@ -77,7 +77,7 @@ console.log(req);
     family: family._id,
     serial: req.serial,
     serial2: req.serial2,
-    dtVinculo: req.dtVinculo,
+    fabrication_date: req.fabrication_date,
     id_engine_type: engine_type._id,
     id_rack: rack._id,
   };
