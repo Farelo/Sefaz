@@ -10,7 +10,7 @@ const families_service = require("../families/families.service");
 const logs_controller = require("../logs/logs.controller");
 
 
-let resposta;
+//let resposta;
 
  exports.create_IntegrationId = async (req) => {
   createEngine(req);
