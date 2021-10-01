@@ -25,6 +25,7 @@ exports.get_racks = async (tag, family) => {
          .populate("last_position")
          .populate("last_battery")
          .populate("last_event_record")
+         .populate("last_integration_record")
          .populate("last_alert_history");
 
       return data ? [data] : [];
@@ -41,6 +42,7 @@ exports.get_rack = async (id) => {
          .populate("last_position")
          .populate("last_battery")
          .populate("last_event_record")
+         .populate("last_integration_record")
          .populate("last_alert_history");
 
       return rack;

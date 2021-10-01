@@ -43,7 +43,10 @@ const integrationSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    
+    integration_date: {
+        type: Date,
+        default: Date.now,
+    },
 })
 
 const validate_integrations = (integration) => {

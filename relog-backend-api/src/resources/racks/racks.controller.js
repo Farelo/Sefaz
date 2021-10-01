@@ -49,12 +49,6 @@ exports.create = async (req, res) => {
    rack = await racks_service.create_rack(req.body);
 
    logs_controller.create({ token: req.headers.authorization, log: "create_rack", newData: req.body });
-   //Create on callback proxy
-   // let proxyApiKey = await apiKeysService.findByName("proxy-ayga");
-   // if (proxyApiKey.length) await createOnProxy(rack, proxyApiKey[0]);
-
-   //Sub rack in websocket
-   // await subRack(rack.tag.code);
 
    res.status(HttpStatus.CREATED).send(rack);
 };
