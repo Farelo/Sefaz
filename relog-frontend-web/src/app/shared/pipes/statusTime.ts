@@ -1,10 +1,9 @@
-import { Rack } from './../models/rack';
 import { Pipe, PipeTransform } from '@angular/core';
 import { constants } from '../../../environments/constants';
 
 @Pipe({ name: 'statusTime' })
 export class StatusTime {
-  transform(rack: Rack) {
+  transform(rack: any) {
     switch (rack.status) {
       case constants.STATUS_TIME.MISSING:
         return rack.rack_missing.time_countdown;

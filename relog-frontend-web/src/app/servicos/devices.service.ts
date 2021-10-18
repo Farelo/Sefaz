@@ -1,8 +1,7 @@
 import { Injectable }     from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Rack } from '../shared/models/rack';
 import { environment } from '../../environments/environment';
 
 @Injectable()
