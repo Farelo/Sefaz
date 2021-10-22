@@ -240,7 +240,11 @@ const createInbound = async (rack, currentControlPoint, distance) => {
 const createOutbound = async (rack, allControlPoints) => {
 
 //se control point for VW, 
-if(rack.last_event_record.control_point)
+if(rack.last_event_record.control_point.FlagHT =="true"){
+
+
+   
+}
 
    const eventRecord = new EventRecord({
       rack: rack._id,

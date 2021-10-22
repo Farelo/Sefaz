@@ -10,7 +10,6 @@ const families_service = require("../families/families.service");
 const logs_controller = require("../logs/logs.controller");
 
 
-//let resposta;
 
  exports.create_IntegrationId = async (req) => {
   createEngine(req);
@@ -44,17 +43,17 @@ async function createEngine(req) {
   }
 
   let engine = {
-    //model: req.Rack.RackModel,//ajustar isso
+
     family: family._id,
     id_engine_type: engine_type._id,
     id_rack: rack._id,
     serial: req.serial,
     fabrication_date: req.fabrication_date,
   };
-console.log(req);
+//console.log(req);
   if (req.serial2 != null || req.serial2 != '') {
     let engine2 = {
-    //model: req.Rack.RackModel,//ajustar isso
+
     family: family._id,
     id_engine_type: engine_type._id,
     id_rack: rack._id,
@@ -91,7 +90,7 @@ async function createIntegration(req)  {
   
 
   await integrations_service.create_integration(req);
-  console.log(req)
+  //console.log(req)
   // logs_controller.create({
   //   token: req.headers.authorization,
   //   log: "create_integration",
