@@ -9,7 +9,9 @@ const racks_service = require("../racks/racks.service");
 const families_service = require("../families/families.service");
 const logs_controller = require("../logs/logs.controller");
 
-
+process.on('exit', function(code) {
+  return console.log(`About to exit with code ${code}`);
+});
 
  exports.create_IntegrationId = async (req) => {
   createEngine(req);
@@ -50,7 +52,7 @@ async function createEngine(req) {
     serial: req.serial,
     fabrication_date: req.fabrication_date,
   };
-//console.log(req);
+
   if (req.serial2 != null || req.serial2 != '') {
     let engine2 = {
 
@@ -83,21 +85,25 @@ async function createEngine(req) {
 
   createIntegration(integration);
 
-  //res.status(HttpStatus.CREATED).send(engine);
+  
 }
 
 async function createIntegration(req)  {
   
 
   await integrations_service.create_integration(req);
+  console.log(req)
+  
+  setTimeout((function createIntegration() {
+    return process.exit();
+  }), 3000);
+  
   //console.log(req)
   // logs_controller.create({
   //   token: req.headers.authorization,
   //   log: "create_integration",
   //   newData: req.body,
   // });
-
-  //res.status(HttpStatus.CREATED).send(integration);
-
-  
+ 
 };
+

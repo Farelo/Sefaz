@@ -20,7 +20,6 @@ const server = app.listen(config.get('server.port'), () => {
 
 
 function createIntegration(args) {
-  console.log("nada")
   integration_controller.create_IntegrationId(args)
 }
 
@@ -36,6 +35,7 @@ var serviceObject = {
 };
 
 
+
 const appWsdl = express()
 // load the WSDL file
 var xml = fs.readFileSync(__dirname+'\\service.wsdl', 'utf8');
@@ -46,5 +46,7 @@ var serverWsdl = appWsdl.listen(`${config.get('serverWsdl.port')}`, () => {
   soap.listen(appWsdl, wsdl_path, serviceObject, xml);
     logger.info(`Server is running on port: ${config.get('serverWsdl.port')}`)
 })
+
+
 
 module.exports = {server, serverWsdl}
