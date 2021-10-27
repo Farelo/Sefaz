@@ -52,6 +52,11 @@ const controlPointSchema = new mongoose.Schema({
         ref: 'Type',
         required: true
     },
+    FlagHT: {
+        type: boolean,
+        default: false
+        
+    },
     company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company',
