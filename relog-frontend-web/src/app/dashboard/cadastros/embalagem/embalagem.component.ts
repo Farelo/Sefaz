@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { RackService, AuthenticationService, FamiliesService } from '../../../servicos/index.service';
-import { Rack } from '../../../shared/models/rack';
+import { RackService, AuthenticationService, FamiliesService } from '../../../servicos/index.service'; 
 import { Pagination } from '../../../shared/models/pagination';
 import { ModalDeleteComponent } from '../../../shared/modal-delete/modal-delete.component';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';

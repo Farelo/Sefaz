@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Rack } from '../models/rack';
 import { constants } from '../../../environments/constants';
 
 @Pipe({name: 'type'})

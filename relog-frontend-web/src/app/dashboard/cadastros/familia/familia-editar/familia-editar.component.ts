@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Rack } from '../../../../shared/models/rack';
-import { Supplier } from '../../../../shared/models/supplier';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { ToastService, ProjectService, SuppliersService, TagsService, RackService, CompaniesService, FamiliesService, ControlPointsService } from '../../../../servicos/index.service';
