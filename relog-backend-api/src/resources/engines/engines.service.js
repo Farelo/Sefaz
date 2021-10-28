@@ -71,7 +71,7 @@ exports.create_engine = async (engine) => {
    try {
       const new_engine = new Engine(engine);
       await new_engine.save();
-
+      // TODO: logs_controller.create({ token: req.headers.authorization, log: "create_engine", newData: req.body });
       return new_engine;
    } catch (error) {
       throw new Error(error);
@@ -95,7 +95,6 @@ exports.find_by_id = async (id) => {
 
 exports.find_by_serial = async (serial) => {
    try {
-      console.log("service" + serial)
       const engine = await Engine.findBySerial(serial)
          
       return engine;
