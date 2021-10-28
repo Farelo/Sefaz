@@ -9,10 +9,12 @@ const logs_controller = require("../logs/logs.controller");
 exports.createEngineAndIntegrate = async (req) => {
   try {
     //validation
-    //TODO: também validar se o serial 2 já existe.
     //TODO: Verificar se faz sentido prosseguir com o vínculo quando apenas um serial existe
-    const searchSerial = await engines_service.find_by_serial(req.serial);
-    if (!!searchSerial) throw new Error("Engine Already exists");
+    const searchFirstSerial = await engines_service.find_by_serial(req.serial);
+    if (!!searchFirstSerial) throw new Error("Engine Already exists");
+
+    const searchSecondSerial = await engines_service.find_by_serial(req.serial2);
+    if (!!searchSecondSerial) throw new Error("Engine Already exists");
 
     const family = await families_service.find_by_code(req.family);
     if (!family) throw new Error("Invalid rack family");
