@@ -37,6 +37,7 @@ exports.createEngineAndIntegrate = async (req) => {
     createIntegration(rack._id, family._id, engine_type._id, req.serial, req.serial2, req.fabrication_date);
 
     return { result: "Success" };
+    
   } catch (error) {
     throw {
       Fault: {

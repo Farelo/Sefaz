@@ -45,27 +45,33 @@ let expressAppWSDLinstance = expressAppWSDL.listen(`${config.get("serverWsdl.por
   logger.info(`Server is running on port: ${config.get("serverWsdl.port")}`);
 
   WSDLServer.authorizeConnection = function (request, response) {
-    const authorization = request.headers.authorization;
-    const authorizationToken = authorization.split(" ")[1];
+    if (request.headers.authorization) {
+      const authorization = request.headers.authorization;
+      const authorizationToken = authorization.split(" ")[1];
 
-    const decodedBase64 = base64.decode(authorizationToken);
-    console.log(decodedBase64);
+      const decodedBase64 = base64.decode(authorizationToken);
+      console.log(decodedBase64);
 
-    const username = decodedBase64.split(":")[0];
-    const password = decodedBase64.split(":")[1];
+      const username = decodedBase64.split(":")[0];
+      const password = decodedBase64.split(":")[1];
 
-    //TODO: puxar do banco de dados
-    if (username == "0143cddd-f698-48f1-868b-5d969ee80b04")
-      if (
-        password ==
-        "MIICXAIBAAKBgQCWeMwlAD2gP23U7SfKVbytUC+FIhY6e1N6j41Hn2uSPMIYtFnN+bXdkbZrSK1P2zFvjtp0dnmWnMk05f6uuQMh0+N8jxj1JF6TFX4G3pK7MaV3JaWBRF4Rxh4LXiDKwXzSj25dcoY6+MlbCUI0rumHmlwU8TRv4008oLHstaynywIDAQABAoGAZ4HtHD7QJZ28Vc5Vos/bnHUeWzyZgd04DYUWMICvpMb61beqVxBBVItZqu8xmU808IKaL6cX+M0dc7AKw/Is/lcAfbB8AB8jlEnqgZD01dkt55jO6HUeiDaL1MeEl01lcOMYEebMOyzfxZ13U3Avbti1tEmacF4yNPboPvejtWECQQDWt4+2C584C1d/vSlNh55ilEZNtr5X/g1Pxpv/KaQFSJi6It/UHVGZGaKbVJykKncB2vy/fEmwZ69W85Z+g+U5AkEAs2cRpo9tdbx1mY2xg/gYoR4n+x0xfujuTGkzi6i8wyZ7c4zm3w224qDRMTJJq2YQmzRCGCxSK3os6rkong/ZIwJBAM5lMsKGV22TEW/b0FkTVT9jUlUfpcaFkhwuSQO07lKZ3x2FqmyGJkqp5rGzWsM/gpgI/c2/VkI42MYXboF8nZkCQCXD+K87WiuCtK7SaSACxgyEsJ3oE1dH6YIkUzl/F91s6Gf2rVMfK/ShLehRUbjHD4/cfF1iVxnX6kSvHaHIbEkCQB6RonRsIPG+QKJAZbBzkzqolfT3b/KT4C+vFWUjNrh6cW2OlJ9zMa18UzvtNZHy5XHqw8SSxn2IqSKPVezawd8="
-      )
-        return true;
+      //TODO: puxar do banco de dados
+      if (username == "0143cddd-f698-48f1-868b-5d969ee80b04")
+        if (
+          password ==
+          "MIICXAIBAAKBgQCWeMwlAD2gP23U7SfKVbytUC+FIhY6e1N6j41Hn2uSPMIYtFnN+bXdkbZrSK1P2zFvjtp0dnmWnMk05f6uuQMh0+N8jxj1JF6TFX4G3pK7MaV3JaWBRF4Rxh4LXiDKwXzSj25dcoY6+MlbCUI0rumHmlwU8TRv4008oLHstaynywIDAQABAoGAZ4HtHD7QJZ28Vc5Vos/bnHUeWzyZgd04DYUWMICvpMb61beqVxBBVItZqu8xmU808IKaL6cX+M0dc7AKw/Is/lcAfbB8AB8jlEnqgZD01dkt55jO6HUeiDaL1MeEl01lcOMYEebMOyzfxZ13U3Avbti1tEmacF4yNPboPvejtWECQQDWt4+2C584C1d/vSlNh55ilEZNtr5X/g1Pxpv/KaQFSJi6It/UHVGZGaKbVJykKncB2vy/fEmwZ69W85Z+g+U5AkEAs2cRpo9tdbx1mY2xg/gYoR4n+x0xfujuTGkzi6i8wyZ7c4zm3w224qDRMTJJq2YQmzRCGCxSK3os6rkong/ZIwJBAM5lMsKGV22TEW/b0FkTVT9jUlUfpcaFkhwuSQO07lKZ3x2FqmyGJkqp5rGzWsM/gpgI/c2/VkI42MYXboF8nZkCQCXD+K87WiuCtK7SaSACxgyEsJ3oE1dH6YIkUzl/F91s6Gf2rVMfK/ShLehRUbjHD4/cfF1iVxnX6kSvHaHIbEkCQB6RonRsIPG+QKJAZbBzkzqolfT3b/KT4C+vFWUjNrh6cW2OlJ9zMa18UzvtNZHy5XHqw8SSxn2IqSKPVezawd8="
+        )
+          return true;
 
-    response.statusCode = 401;
-    response.statusMessage = "Invalid username or password";
+      response.statusCode = 401;
+      response.statusMessage = "Invalid username or password";
 
-    return false;
+      return false;
+    } else {
+      response.statusCode = 401;
+      response.statusMessage = "Invalid username or password";
+      return false;
+    }
   };
 });
 
