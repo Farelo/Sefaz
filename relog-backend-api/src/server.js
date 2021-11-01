@@ -40,17 +40,19 @@ const expressAppWSDL = express();
 let wsdlFile = fs.readFileSync(__dirname + "\\service.wsdl", "utf8");
 
 let expressAppWSDLinstance = expressAppWSDL.listen(`${config.get("serverWsdl.port")}`, () => {
-  const wsdl_path = "/wsdl";
+  const wsdl_path = "/integrateRackEngine";
   let WSDLServer = soap.listen(expressAppWSDL, wsdl_path, serviceObject, wsdlFile);
-  logger.info(`Server is running on port: ${config.get("serverWsdl.port")}`);
+  logger.info(`SOAP Server is running on port: ${config.get("serverWsdl.port")}`);
 
   WSDLServer.authorizeConnection = function (request, response) {
+    
+    if (request.method == "GET" ) return true;
+    
     if (request.headers.authorization) {
       const authorization = request.headers.authorization;
       const authorizationToken = authorization.split(" ")[1];
 
       const decodedBase64 = base64.decode(authorizationToken);
-      console.log(decodedBase64);
 
       const username = decodedBase64.split(":")[0];
       const password = decodedBase64.split(":")[1];
