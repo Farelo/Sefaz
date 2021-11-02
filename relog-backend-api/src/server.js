@@ -66,12 +66,12 @@ let expressAppWSDLinstance = expressAppWSDL.listen(`${config.get("serverWsdl.por
           return true;
 
       response.statusCode = 401;
-      response.statusMessage = "Invalid username or password";
+      // response.statusMessage = "Invalid username or password";
 
       return false;
     } else {
       response.statusCode = 401;
-      response.statusMessage = "Invalid username or password";
+      // response.statusMessage = "Invalid username or password";
       return false;
     }
   };

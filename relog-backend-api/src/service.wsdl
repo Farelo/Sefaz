@@ -65,7 +65,7 @@
   <!-- SERVICE:  -->
   <wsdl:service name="IntegrationService">
     <wsdl:port name="IntegrationServiceSoapPort" binding="tns:IntegrationServiceSoapBinding">
-      <soap:address location="http://localhost:3002/wsdl"/>
+      <soap:address location="http://localhost:3002/integrateRackEngine"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
