@@ -61,6 +61,17 @@ exports.find_by_tag = async (tag) => {
    }
 };
 
+
+exports.findByFamilyAndSerial = async (familyId, serial) => {
+  try {
+     return await Rack.findOne({family: familyId, serial: serial})
+        .populate("family", ["_id", "code", "company"])
+        .populate("project", ["_id", "name"]);
+  } catch (error) {
+     throw new Error(error);
+  }
+};
+
 exports.populatedFindByTag = async (tag) => {
    try {
       return await Rack.findByTag(tag)

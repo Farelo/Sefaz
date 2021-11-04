@@ -22,7 +22,7 @@ exports.createEngineAndIntegrate = async (req) => {
     const engine_type = await engine_types_service.find_by_code(req.id_engine_type);
     if (!engine_type) throw new Error("Invalid engine type");
 
-    const rack = await racks_service.find_by_tag(req.id_rack);
+    const rack = await racks_service.findByFamilyAndSerial(family._id, req.id_rack);
     if (!rack) throw new Error("Invalid rack");
 
     //Create first engine
