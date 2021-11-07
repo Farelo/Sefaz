@@ -23,8 +23,9 @@ export default createGlobalStyle`
   }
 
   body {
-    background: ${props => props.theme.colors.red};
-    color: ${props => props.theme.colors.white};
+    background: ${props => props.theme.colors.blue[100]};
+    color: ${props => props.theme.colors.white[100]};
+    ${props => props.theme.fonts.title}
   }
 
   button, a {

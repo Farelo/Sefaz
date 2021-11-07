@@ -10,9 +10,12 @@ function App(): JSX.Element {
       <ThemeProvider theme={theme}>
         <Global />
         <div>
-          <h1>Olá mundo</h1>
+          <h1>Titulo</h1>
           <p>
-            Inicio da aplicação front end evoy <strong>react</strong>
+            Aqui tenho um exemplo de um texto feito no propio app da aplicação
+            <br />
+            esse texto é meramente ilustrativo com a finalidade de testar as
+            <strong> fontes importadas</strong>
           </p>
         </div>
       </ThemeProvider>

@@ -4,22 +4,36 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
       ice: string;
-      red: string;
+      blue: {
+        100: string;
+        50: string;
+        10: string;
+      };
+      green: {
+        100: string;
+        50: string;
+      };
       black: string;
-      purple: string;
-      white: string;
-      registrationField: string;
-      textNav: string;
+      text: string;
+      negative: string;
+      positive: string;
+      white: {
+        100: string;
+        50: string;
+        10: string;
+      };
+      gray: {
+        100: string;
+        80: string;
+        50: string;
+        10: string;
+        5: string;
+      };
+      yellow: string;
+      orange: string;
     };
     fonts: {
       title: string;
-      subtitle: string;
-      nav: string;
-      text: string;
-      secondaryText: string;
-      selectText: string;
-      button: string;
-      date: string;
     };
   }
 }
