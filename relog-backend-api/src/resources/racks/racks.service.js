@@ -89,7 +89,6 @@ exports.create_rack = async (rack) => {
    try {
       const new_rack = new Rack(rack);
       await new_rack.save();
-
       return new_rack;
    } catch (error) {
       throw new Error(error);

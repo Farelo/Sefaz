@@ -3,14 +3,9 @@ const _ = require('lodash')
 const { EngineType } = require('./engine_types.model')
 const { Route } = require('../routes/routes.model')
 
-
-
-
-
 exports.get_engine_types = async (code) => {
     try {
         if (!code) return await EngineType.find()
-
         const data = await EngineType.findByCode(code)
         return data ? [data] : []
     } catch (error) {
