@@ -1,0 +1,22 @@
+import { Link, useLocation } from 'react-router-dom';
+import { IconType } from 'react-icons';
+
+import { Container } from './LiNav.style';
+
+type linavProps = {
+  title: string;
+  to: string;
+  icon: IconType;
+};
+
+export function LiNav({ title, to, icon: Icon }: linavProps) {
+  const { pathname } = useLocation();
+  return (
+    <Container className={pathname === to ? 'active' : ''}>
+      <Link to={to}>
+        <Icon size={32} color="#01358D" />
+        <p>{title}</p>
+      </Link>
+    </Container>
+  );
+}

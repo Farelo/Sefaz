@@ -34,6 +34,10 @@ declare module 'styled-components' {
     };
     fonts: {
       title: string;
+      subtitle: string;
+      menuSubtitle: string;
+      menu: string;
+      text: string;
     };
   }
 }

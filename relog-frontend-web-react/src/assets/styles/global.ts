@@ -1,6 +1,10 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, css } from 'styled-components';
 
-export default createGlobalStyle`
+type ContainerProps = {
+  isActive: boolean;
+};
+
+export default createGlobalStyle<ContainerProps>`
   * {
     margin: 0;
     padding: 0;
@@ -21,14 +25,29 @@ export default createGlobalStyle`
   a {
     text-decoration: none;
   }
-
   body {
-    background: ${props => props.theme.colors.blue[100]};
-    color: ${props => props.theme.colors.white[100]};
-    ${props => props.theme.fonts.title}
+    background-color: ${props => props.theme.colors.white[10]};
+   /* padding-left: 4rem;
+    transition: padding 0.5s;
+    ${props =>
+      props.isActive &&
+      css`
+        padding-left: 12.5rem;
+      `}*/
+  }
+  body #app-react {
+    display: flex;
+  }
+  body #main {
+    width: 100%;
   }
 
-  button, a {
+  body #pages {
+    width: 100%;
+    display: flex;
+    justify-content:center;
+  }
+  button {
     cursor: pointer;
   }
 `;
