@@ -21,7 +21,7 @@ function App(): JSX.Element {
     <>
       <ThemeProvider theme={theme}>
         <Router>
-          <Global isActive={isActive} />
+          <Global />
           <div id="app-react">
             <Aside openMenu={openMenu} isActive={isActive} />
             <main id="main">

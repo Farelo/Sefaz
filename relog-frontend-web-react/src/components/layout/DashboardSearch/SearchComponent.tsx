@@ -13,8 +13,8 @@ export function SearchComponent({
       <div className="select-container">
         <div className="select-group">
           <p>Categoria</p>
-          <select>
-            <option value="" disabled selected>
+          <select defaultValue="">
+            <option value="" disabled>
               Selecione uma categoria
             </option>
             <option value="">Equipamento</option>
@@ -22,8 +22,8 @@ export function SearchComponent({
         </div>
         <div className="select-group">
           <p>Modelo</p>
-          <select onChange={handleSelectModel}>
-            <option value="" disabled selected>
+          <select onChange={handleSelectModel} defaultValue="">
+            <option value="" disabled>
               Selecione uma categoria
             </option>
             <option value="InventarioGeral">Inventario Geral</option>

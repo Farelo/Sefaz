@@ -1,6 +1,6 @@
 import { Container } from './InventarioGeral.style';
 
-function InventarioGeral() {
+function InventarioGeral(): JSX.Element {
   return (
     <Container>
       <h1>Relatorio Geral</h1>

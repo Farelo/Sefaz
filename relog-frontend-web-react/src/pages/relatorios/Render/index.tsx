@@ -5,7 +5,7 @@ type RenderProps = {
 };
 
 export function Render({ search }: RenderProps): JSX.Element {
-  const Component = lazy(() => import(`../Relatorios/${search}`));
+  const Component = lazy(() => import(`../relatorio/${search}`));
 
   return (
     <>

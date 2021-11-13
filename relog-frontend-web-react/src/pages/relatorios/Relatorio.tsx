@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Render } from '../../components/Render';
+import { Render } from './Render/index';
 import { SearchComponent } from '../../components/layout/DashboardSearch/SearchComponent';
 import { Container } from './Relatorio.style';
 
@@ -9,7 +9,8 @@ export function Relatorio(): JSX.Element {
     if (storage) {
       return storage;
     }
-    return '';
+
+    return 'default';
   });
 
   function handleSelectModel(event: ChangeEvent<HTMLSelectElement>) {

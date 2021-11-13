@@ -1,10 +1,6 @@
-import styled, { createGlobalStyle, css } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
-type ContainerProps = {
-  isActive: boolean;
-};
-
-export default createGlobalStyle<ContainerProps>`
+export default createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
@@ -27,23 +23,20 @@ export default createGlobalStyle<ContainerProps>`
   }
   body {
     background-color: ${props => props.theme.colors.white[10]};
-   /* padding-left: 4rem;
-    transition: padding 0.5s;
-    ${props =>
-      props.isActive &&
-      css`
-        padding-left: 12.5rem;
-      `}*/
   }
   body #app-react {
+    height: 100%;
+    width: 100%;
     display: flex;
   }
   body #main {
+    height: 100%;
     width: 100%;
   }
 
   body #pages {
     width: 100%;
+    height: 100%;
     display: flex;
     justify-content:center;
   }

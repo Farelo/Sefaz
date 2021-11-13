@@ -13,7 +13,8 @@ export const Container = styled.div`
 
   h1 {
     ${props => props.theme.fonts.title}
-    opacity: 0.7;
+    font-weight: bold;
+    opacity: 0.6;
   }
   .select-container {
     margin-left: 9.3125rem;

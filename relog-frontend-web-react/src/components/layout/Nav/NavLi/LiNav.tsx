@@ -9,7 +9,7 @@ type linavProps = {
   icon: IconType;
 };
 
-export function LiNav({ title, to, icon: Icon }: linavProps) {
+export function LiNav({ title, to, icon: Icon }: linavProps): JSX.Element {
   const { pathname } = useLocation();
   return (
     <Container className={pathname === to ? 'active' : ''}>
