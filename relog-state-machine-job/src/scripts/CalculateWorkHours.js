@@ -1,6 +1,0 @@
-
-
-const  registerWorkHour = (rack, controlPoint) =>{
-
-
-}
