@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { Container } from './Relatorio.style';
+import { Container } from './SearchComponent.style';
 
 type SearchComponentProps = {
   handleSelectModel: (event: ChangeEvent<HTMLSelectElement>) => void;
@@ -26,6 +26,7 @@ export function SearchComponent({
             <option value="" disabled>
               Selecione uma categoria
             </option>
+            <option value="default">Default</option>
             <option value="InventarioGeral">Inventario Geral</option>
             <option value="InventarioPosicoes">Inventario Posicoes</option>
           </select>

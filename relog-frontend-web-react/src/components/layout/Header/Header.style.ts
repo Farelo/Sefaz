@@ -7,11 +7,14 @@ export const Container = styled.header`
 
   display: flex;
   align-items: center;
-  padding-left: 3rem;
+  justify-content: center;
   opacity: 0.8;
   box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.1);
-
   h1 {
     ${props => props.theme.fonts.title};
+    font-weight: bold;
+  }
+  span {
+    padding: 0.2rem;
   }
 `;

@@ -7,7 +7,8 @@ type ContainerProps = {
 export const Container = styled.aside<ContainerProps>`
   background: ${props => props.theme.colors.white[50]};
   width: 4rem;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   /*
     Implementação da slidebar utilizando position fixed
     position: fixed;

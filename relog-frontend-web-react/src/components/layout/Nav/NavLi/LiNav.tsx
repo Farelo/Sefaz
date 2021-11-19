@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { IconType } from 'react-icons';
 
 import { Container } from './LiNav.style';
@@ -13,10 +13,10 @@ export function LiNav({ title, to, icon: Icon }: linavProps): JSX.Element {
   const { pathname } = useLocation();
   return (
     <Container className={pathname === to ? 'active' : ''}>
-      <Link to={to}>
+      <NavLink to={to}>
         <Icon size={32} color="#01358D" />
         <p>{title}</p>
-      </Link>
+      </NavLink>
     </Container>
   );
 }

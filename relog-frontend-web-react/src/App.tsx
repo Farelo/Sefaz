@@ -8,8 +8,7 @@ import theme from './assets/styles/theme';
 import Global from './assets/styles/global';
 
 import { Aside } from './components/layout/Aside/Aside';
-import { Header } from './components/layout/Header/Header';
-import Routes from './routes.js';
+import Routes from './routes';
 
 function App(): JSX.Element {
   const [isActive, setIsActive] = useState(false);
@@ -25,10 +24,7 @@ function App(): JSX.Element {
           <div id="app-react">
             <Aside openMenu={openMenu} isActive={isActive} />
             <main id="main">
-              <Header title="Dashboard" />
-              <div id="pages">
-                <Routes />
-              </div>
+              <Routes />
             </main>
           </div>
         </Router>

@@ -32,15 +32,10 @@ export default createGlobalStyle`
   body #main {
     height: 100%;
     width: 100%;
-  }
-
-  body #pages {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content:center;
+    padding-bottom: 2rem;
   }
   button {
     cursor: pointer;
   }
+
 `;

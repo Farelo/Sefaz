@@ -10,7 +10,7 @@ export function Render({ search }: RenderProps): JSX.Element {
   return (
     <>
       {search && (
-        <Suspense fallback={<div>load..</div>}>
+        <Suspense fallback={<div />}>
           <Component />
         </Suspense>
       )}
