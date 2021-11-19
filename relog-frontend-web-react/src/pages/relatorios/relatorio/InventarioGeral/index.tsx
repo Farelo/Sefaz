@@ -28,23 +28,23 @@ function InventarioGeral(): JSX.Element {
           <p>Tipos de Alertas</p>
           <div>
             <p>
-              <span /> Atraso de rota
+              <span className="blue" /> Atraso de rota
             </p>
             <p>
-              <span /> Local incorreto
-            </p>
-          </div>
-          <div>
-            <p>
-              <span /> Tempo de permanência
-            </p>
-            <p>
-              <span /> Embalagem ausente
+              <span className="orange" /> Local incorreto
             </p>
           </div>
           <div>
             <p>
-              <span /> Sem sinal
+              <span className="orange" /> Tempo de permanência
+            </p>
+            <p>
+              <span className="blue" /> Embalagem ausente
+            </p>
+          </div>
+          <div>
+            <p>
+              <span className="green" /> Sem sinal
             </p>
             <p>
               <span /> Embalagem incorreto
@@ -90,6 +90,236 @@ function InventarioGeral(): JSX.Element {
               <tr>
                 <td>SST4</td>
                 <td>477</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="inventario-online">
+          <h1>Inventário Online</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Em PCs Própios</th>
+                <th>Em PCs administrados</th>
+                <th>Em trânsito</th>
+                <th>Em análise</th>
+                <th>Total online</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+                <td>477</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="diferenca-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Diferença entre fisico e online</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+              </tr>
+              <tr>
+                <td>477</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="alertas">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <h1>Alertas</h1>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span className="blue">!</span>
+                </td>
+                <td>
+                  <span className="orange">!</span>
+                </td>
+                <td>
+                  <span className="green">!</span>
+                </td>
+                <td>
+                  <span className="red">!</span>
+                </td>
+                <td>
+                  <span className="green">!</span>
+                </td>
+                <td>
+                  <span className="blue">!</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span>!</span>
+                </td>
+                <td>
+                  <span className="orange">!</span>
+                </td>
+                <td>
+                  <span className="green">!</span>
+                </td>
+                <td>
+                  <span className="red">!</span>
+                </td>
+                <td>
+                  <span className="green">!</span>
+                </td>
+                <td>
+                  <span className="blue">!</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="blue">!</span>
+                </td>
+                <td>
+                  <span>!</span>
+                </td>
+                <td>
+                  <span className="green">!</span>
+                </td>
+                <td>
+                  <span>!</span>
+                </td>
+                <td>
+                  <span>!</span>
+                </td>
+                <td>
+                  <span className="blue">!</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span>!</span>
+                </td>
+                <td>
+                  <span>!</span>
+                </td>
+                <td>
+                  <span className="green">!</span>
+                </td>
+                <td>
+                  <span>!</span>
+                </td>
+                <td>
+                  <span>!</span>
+                </td>
+                <td>
+                  <span className="blue">!</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="blue">!</span>
+                </td>
+                <td>
+                  <span className="orange">!</span>
+                </td>
+                <td>
+                  <span className="green">!</span>
+                </td>
+                <td>
+                  <span className="red">!</span>
+                </td>
+                <td>
+                  <span className="green">!</span>
+                </td>
+                <td>
+                  <span className="blue">!</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="blue">!</span>
+                </td>
+                <td>
+                  <span className="orange">!</span>
+                </td>
+                <td>
+                  <span className="green">!</span>
+                </td>
+                <td>
+                  <span className="red">!</span>
+                </td>
+                <td>
+                  <span>!</span>
+                </td>
+                <td>
+                  <span>!</span>
+                </td>
               </tr>
             </tbody>
           </table>
