@@ -1,9 +1,9 @@
 const debug = require("debug")("model:control_points");
 const mongoose = require("mongoose");
 const { Rack } = require("../racks/racks.model");
-const { Integration } = require("../integrations/integrations.model");
 
-const eventRecordSchema = new mongoose.Schema({
+
+const integrationRecordSchema = new mongoose.Schema({
    rack: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Rack",

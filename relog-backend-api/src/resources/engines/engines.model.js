@@ -3,13 +3,6 @@ const mongoose = require('mongoose')
 const Joi = require('joi')
 
 const engineSchema = new mongoose.Schema({
-    tag: {
-        code: {
-            type: String,
-            minlength: 4,
-            maxlength: 25,
-        },
-    },
     serial: {
         type: String,
         minlength: 2,
@@ -22,12 +15,8 @@ const engineSchema = new mongoose.Schema({
         ref: 'Family',
         required: true
     },
-    model: {
-        type: String,
-        minlength: 0,
-        maxlength: 100,
-    },
-    production_date:{
+
+    fabrication_date:{
         type: Date,
     },
     
@@ -57,11 +46,9 @@ const engineSchema = new mongoose.Schema({
 
 const validate_engines = (engine) => {
     const schema = Joi.object().keys({
-        tag: {
-            code: Joi.string().min(4).max(25),
-        },
         serial: Joi.string().min(2).max(30).required(),
         model: Joi.string().min(0).max(100),
+        fabrication_date: Joi.date(),
         observations: Joi.string().min(0).max(250).allow(''),
         active: Joi.boolean(),
         id_engine_type: Joi.objectId().required(),
@@ -71,12 +58,8 @@ const validate_engines = (engine) => {
     return Joi.validate(engine, schema, { abortEarly: false })
 }
 
-engineSchema.statics.findByTag = function (tag, projection = '') {
-    return this.findOne({ 'tag.code': tag }, projection)
-}
-
 engineSchema.statics.findBySerial = function (serial, projection = '') {
-    return this.findOne({ 'serial': serial }, projection)
+    return this.findOne({ serial }, projection)
 }
 
 const update_updated_at_middleware = function (next) {

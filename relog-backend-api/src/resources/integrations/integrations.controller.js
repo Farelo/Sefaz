@@ -83,3 +83,30 @@ const createIntegration = async (rack, family, engineType, serialOne, serialTwo,
     throw new Error(error);
   }
 };
+
+exports.all = async (req, res) => {
+  const id = req.query.id ? req.query.id : null;
+  const integration = await integrations_service.get_integrations(id);
+
+  res.json(integration);
+};
+
+exports.update = async (req, res) => {
+  let integration = await integrations_service.find_by_id(req.id);
+  if (!integration) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid Integration" });
+   
+  integration = await integrations_service.update_integration(req.params.id, req.body);
+  logs_controller.create({ token: req.headers.authorization, log: "update_integration", newData: req.body });
+
+  res.json(integration);
+};
+
+exports.delete = async (req, res) => {
+  const integration = await integrations_service.find_by_id(req.id);
+  if (!integration) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid integration" });
+
+  await integration.remove();
+  await logs_controller.create({ token: req.headers.authorization, log: "delete_integration", newData: integration });
+
+  return res.send({ message: "Delete successfully" });
+};

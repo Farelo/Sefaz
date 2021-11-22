@@ -1,19 +1,20 @@
 const { Integration } = require("./integrations.model");
 
 
+exports.get_integrations = async (id) => {
+   try {
+       if (!id) return await Integration.find().populate('EngineType', ['_id', 'code']).populate('family', ['_id', 'code', 'company']).populate("Rack", ["_id", "name"]);
+       const data = await Integration.findById(id)
+       return data ? [data] : []
+   } catch (error) {
+       throw new Error(error)
+   }
+}
 
 exports.create_integration = async (integration) => {
   try {
      const new_integration = new Integration(integration);
      await new_integration.save();
-
-     //console.log(req)
-    // logs_controller.create({
-    //   token: req.headers.authorization,
-    //   log: "create_integration",
-    //   newData: req.body,
-    // });
-
      return new_integration;
   } catch (error) {
      throw new Error(error);
@@ -21,3 +22,22 @@ exports.create_integration = async (integration) => {
 };
 
 
+exports.find_by_id = async (id) => {
+   try {
+      const integration = await Integration.findById(id)
+      return integration;
+   } catch (error) {
+      throw new Error(error);
+   }
+};
+
+
+exports.update_integration = async (id, integration_edited) => {
+   try {
+      const options = { runValidators: true, new: true };
+      const integration = await Integration.findByIdAndUpdate(id, integration_edited, options);
+      return integration;
+   } catch (error) {
+      throw new Error(error);
+   }
+};

@@ -75,8 +75,5 @@ exports.update_family = async (id, family_edited) => {
     }
 }
 
-try{
-    Family.insertMany([], { ordered:false})
-}catch(err){
-    print(err);
-} 
+
+
