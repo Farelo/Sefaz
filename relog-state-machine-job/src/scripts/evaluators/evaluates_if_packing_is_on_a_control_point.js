@@ -4,6 +4,7 @@ const martinez = require("martinez-polygon-clipping");
 const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_in_km");
 const { EventRecord } = require("../../models/event_record.model");
 const { Rack } = require("../../models/racks.model");
+//const { Integration } = require("../../models/integrations.model");
 
 const getLastPosition = (rack) => {
    if (rack.last_position) return rack.last_position;
@@ -240,10 +241,15 @@ const createInbound = async (rack, currentControlPoint, distance) => {
 const createOutbound = async (rack, allControlPoints) => {
 
 //se control point for VW, 
-if(rack.last_event_record.control_point.FlagHT =="true"){
+let actualControlPoint = await ControlPoint.find({_id: rack.last_event_record.control_point});
+if(actualControlPoint.FlagHT =="true"){
 
+//Registro Horas de trabalho
+   registerWorkHour(rack, controlPoint);
 
-   
+//desvinculo integração
+   detachIntegration(integration);
+
 }
 
    const eventRecord = new EventRecord({
