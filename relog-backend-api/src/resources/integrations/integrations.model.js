@@ -51,15 +51,31 @@ const validate_integrations = (integration) => {
     family: Joi.objectId().required(),
     id_rack: Joi.objectId().required(),
     active: Joi.boolean(),
-    integration_date: Joi.date()
+    integration_date: Joi.date(),
   });
 
   return Joi.validate(integration, schema, { abortEarly: false });
 };
 
-integrationSchema.statics.findById = function (id, projection = '') {
-  return this.findOne({ id }, projection)
-}
+integrationSchema.statics.findById = function (id, projection = "") {
+  return this.findOne({ id }, projection);
+};
+
+const saveIntegrationRecordToRack = function (doc, next) {
+  update_rack(doc, next);
+};
+
+const update_rack = async (integration_record, next) => {
+  try {
+    // TODO: corrigir parametros
+    await Rack.findOneAndUpdate({ serial: integration_record.id_rack }, 
+      { last_integration_record: integration_record._id }, 
+      { new: true });
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
 
 const update_updated_at_middleware = function (next) {
   let update = this.getUpdate();
@@ -67,6 +83,7 @@ const update_updated_at_middleware = function (next) {
   next();
 };
 
+integrationSchema.post("save", saveIntegrationRecordToRack);
 integrationSchema.pre("update", update_updated_at_middleware);
 integrationSchema.pre("findOneAndUpdate", update_updated_at_middleware);
 

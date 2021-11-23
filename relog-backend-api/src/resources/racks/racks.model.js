@@ -159,7 +159,7 @@ const rackSchema = new mongoose.Schema({
     },
     last_integration_record: {
         type: mongoose.Schema.ObjectId,
-        ref: 'IntegrationRecord'
+        ref: 'Integration'
     },
     last_event_record: {
         type: mongoose.Schema.ObjectId,

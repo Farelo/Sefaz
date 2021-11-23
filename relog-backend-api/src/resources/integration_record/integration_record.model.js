@@ -45,21 +45,8 @@ const integrationRecordSchema = new mongoose.Schema({
    },
 });
 
-const update_rack = async (integration_record, next) => {
-   try {
-      await Rack.findByIdAndUpdate(integration_record.rack, { last_integration_record: integration_record._id }, { new: true });
-      next();
-   } catch (error) {
-      next(error);
-   }
-};
-
 integrationRecordSchema.statics.findByRack = function (rack_id, projection = "") {
    return this.find({ rack: rack_id }, projection).sort({ created_at: -1 });
-};
-
-const saveIntegrationRecordToRack = function (doc, next) {
-   update_rack(doc, next);
 };
 
 const update_updated_at_middleware = function (next) {
@@ -68,7 +55,6 @@ const update_updated_at_middleware = function (next) {
    next();
 };
 
-integrationRecordSchema.post("save", saveIntegrationRecordToRack);
 integrationRecordSchema.pre("update", update_updated_at_middleware);
 integrationRecordSchema.pre("findOneAndUpdate", update_updated_at_middleware);
 
