@@ -1,5 +1,6 @@
 const debug = require("debug")("model:integrations");
 const mongoose = require("mongoose");
+const { Rack } = require("../racks/racks.model");
 const Joi = require("joi");
 
 const integrationSchema = new mongoose.Schema({

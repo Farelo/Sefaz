@@ -6,6 +6,17 @@ const { Integration } = require("../integrations/integrations.model");
 const rp = require("request-promise");
 const mongoose = require("mongoose");
 
+exports.create_engine = async (engine) => {
+  try {
+     const new_engine = new Engine(engine);
+     await new_engine.save();
+     // TODO: logs_controller.create({ token: req.headers.authorization, log: "create_engine", newData: req.body });
+     return new_engine;
+  } catch (error) {
+     throw new Error(error);
+  }
+};
+
 exports.get_engines = async (serial) => {
    try {
        if (!serial) return await Engine.find().populate('EngineType', ['_id', 'code']).populate('family', ['_id', 'code', 'company']).populate("Rack", ["_id", "name"]);
