@@ -5,6 +5,7 @@ const engine_types_service = require("../engine_types/engine_types.service");
 const racks_service = require("../racks/racks.service");
 const families_service = require("../families/families.service");
 const logs_controller = require("../logs/logs.controller");
+const { Rack } = require("../racks/racks.model");
 
 exports.createEngineAndIntegrate = async (req) => {
   try {
@@ -79,6 +80,12 @@ const createIntegration = async (rack, family, engineType, serialOne, serialTwo,
       fabrication_date: fabricationDate,
     };
     await integrations_service.create_integration(newIntegration);
+      await Rack.findByIdAndUpdate(
+        rack._id,
+        { work_start: new Date(), work_end: null },
+        { new: true }
+    );
+  
   } catch (error) {
     throw new Error(error);
   }

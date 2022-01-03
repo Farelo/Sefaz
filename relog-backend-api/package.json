@@ -21,6 +21,7 @@
     "bunyan": "^1.8.12",
     "config": "^2.0.0",
     "cors": "^2.8.4",
+    "date-fns": "^2.27.0",
     "dtrace-provider": "^0.8.7",
     "express": "^4.16.3",
     "express-async-errors": "^3.0.0",

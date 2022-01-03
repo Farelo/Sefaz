@@ -1,21 +1,37 @@
 const { Rack } = require("../models/racks.model");
-const { Integration } = require("../models/integrations.model");
-const logs_controller = require("")
+const moment = require("moment");
 
 
+module.exports = async (rack) => {
+    try {
+            let calculate = 0;
+            if (rack.work_start) calculate = getDiffDateTodayInHours(rack.work_start);
+            await Rack.findByIdAndUpdate(
+               rack._id,
+               {
+                  
+                  work_end: new Date(),
+                  last_cicle_duration: calculate,
+               },
+               { new: true }
+            );
+         
 
-const detachIntegration = (integration) =>{
-    if(integration.active =="true"){
-        await integration.remove();
-        await logs_controller.create({ token: req.headers.authorization, log: "delete_integration", newData: integration });
-
-
-
+        
+    } catch (error) {
+        console.error(error);
+      throw new Error(error);
     }
 
 
-}
 
-const  registerWorkHour = (rack, controlPoint) =>{
-//TODO coleção registro de horas de trabalho
-}
+
+
+
+const getDiffDateTodayInHours = (date) => {
+    const today = moment();
+    date = moment(date);
+ 
+    const duration = moment.duration(today.diff(date));
+    return duration.asHours();
+ };

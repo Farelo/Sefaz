@@ -114,6 +114,10 @@ const rackSchema = new mongoose.Schema({
         ref: 'Family',
         required: true
     },
+    last_integration_record: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Integration'
+    },
     detector_switch:{
         type: Boolean,
         default: true
@@ -161,6 +165,22 @@ const rackSchema = new mongoose.Schema({
     last_battery:{
         type: mongoose.Schema.ObjectId,
         ref: 'Battery'
+    },
+    total_work_duration: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'WorkHour'
+    },
+    last_work_duration: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'WorkHour'
+    },
+    work_start: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'WorkHour'
+    },
+    work_end: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'WorkHour'
     },
     last_detector_switch:{
         type: mongoose.Schema.ObjectId,

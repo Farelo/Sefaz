@@ -103,6 +103,10 @@ const rackSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Department'
     },
+    last_integration_record: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Integration'
+    },
     last_event_record: {
         type: mongoose.Schema.ObjectId,
         ref: 'EventRecord'

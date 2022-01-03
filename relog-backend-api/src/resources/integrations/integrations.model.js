@@ -41,6 +41,10 @@ const integrationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  Detach_integration_date: {
+    type: Date,
+    
+  },
 });
 
 const validate_integrations = (integration) => {
@@ -62,20 +66,27 @@ integrationSchema.statics.findById = function (id, projection = "") {
   return this.findOne({ id }, projection);
 };
 
-const saveIntegrationRecordToRack = function (doc, next) {
-  update_rack(doc, next);
-};
 
-const update_rack = async (integration_record, next) => {
+
+const update_rack = async (integrations, next) => {
   try {
-    // TODO: corrigir parametros
-    await Rack.findOneAndUpdate({ serial: integration_record.id_rack }, 
-      { last_integration_record: integration_record._id }, 
-      { new: true });
+    await Rack.findByIdAndUpdate(
+      integrations.id_rack,
+      { last_integration_record: integrations._id },
+      { new: true }
+    );
     next();
   } catch (error) {
     next(error);
   }
+};
+
+integrationSchema.statics.findByRack = function (rack_id, projection = "") {
+  return this.find({ rack: rack_id }, projection).sort({ created_at: -1 });
+};
+
+const saveIntegrationRecordToRack = function (doc, next) {
+  update_rack(doc, next);
 };
 
 const update_updated_at_middleware = function (next) {

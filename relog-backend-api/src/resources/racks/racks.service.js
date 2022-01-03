@@ -27,6 +27,7 @@ exports.get_racks = async (tag, family) => {
          .populate("last_event_record")
          .populate("last_integration_record")
          .populate("last_alert_history");
+         
 
       return data ? [data] : [];
    } catch (error) {
@@ -80,6 +81,7 @@ exports.populatedFindByTag = async (tag) => {
          .populate("last_position")
          .populate("last_battery")
          .populate("last_temperature")
+         .populate("last_integration_record")
    } catch (error) {
       throw new Error(error);
    }
@@ -99,6 +101,7 @@ exports.find_by_id = async (id) => {
    try {
       const rack = await Rack.findById(id)
          .populate("family", ["_id", "code", "company"])
+         .populate("last_integration_record")
          .populate("project", ["_id", "name"]);
 
       return rack;
@@ -120,7 +123,7 @@ exports.update_rack = async (id, rack_edited) => {
 
 exports.get_racks_on_control_point = async (control_point) => {
    try {
-      const racks = await Rack.find({}).populate("last_event_record").populate("family", ["_id", "code"]);
+      const racks = await Rack.find({}).populate("last_event_record").populate("family", ["_id", "code"]).populate("last_integration_record");
 
       const data = racks.filter((rack) => rackOnControlPoint(rack, control_point));
 

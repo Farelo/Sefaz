@@ -125,6 +125,10 @@ const rackSchema = new mongoose.Schema({
         ref: 'Family',
         required: true
     },
+    last_integration_record: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Integration'
+    },
     last_message_signal:{
         type: Date,
         default: null
@@ -157,10 +161,6 @@ const rackSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Department'
     },
-    last_integration_record: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Integration'
-    },
     last_event_record: {
         type: mongoose.Schema.ObjectId,
         ref: 'EventRecord'
@@ -168,6 +168,22 @@ const rackSchema = new mongoose.Schema({
     last_owner_supplier: {
         type: mongoose.Schema.ObjectId,
         ref: 'EventRecord'
+    },
+    total_work_duration: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'WorkHour'
+    },
+    work_start: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'WorkHour'
+    },
+    work_end: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'WorkHour'
+    },
+    last_work_duration: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'WorkHour'
     },
     project: {
         type: mongoose.Schema.ObjectId,

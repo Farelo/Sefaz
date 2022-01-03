@@ -1,5 +1,6 @@
 const debug = require("debug")("model:integrations");
 const mongoose = require("mongoose");
+const { Rack } = require("../racks/racks.model");
 const Joi = require("joi");
 
 const integrationSchema = new mongoose.Schema({
@@ -40,6 +41,10 @@ const integrationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  Detach_integration_date: {
+    type: Date,
+    
+  },
 });
 
 const validate_integrations = (integration) => {
@@ -51,15 +56,34 @@ const validate_integrations = (integration) => {
     family: Joi.objectId().required(),
     id_rack: Joi.objectId().required(),
     active: Joi.boolean(),
-    integration_date: Joi.date()
+    integration_date: Joi.date(),
   });
 
   return Joi.validate(integration, schema, { abortEarly: false });
 };
 
-integrationSchema.statics.findById = function (id, projection = '') {
-  return this.findOne({ id }, projection)
-}
+integrationSchema.statics.findById = function (id, projection = "") {
+  return this.findOne({ id }, projection);
+};
+
+
+
+const update_rack = async (integrations, next) => {
+  try {
+    await Rack.findByIdAndUpdate(
+      integrations.id_rack,
+      { last_integration_record: integrations._id },
+      { new: true }
+    );
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const saveIntegrationRecordToRack = function (doc, next) {
+  update_rack(doc, next);
+};
 
 const update_updated_at_middleware = function (next) {
   let update = this.getUpdate();
@@ -67,6 +91,7 @@ const update_updated_at_middleware = function (next) {
   next();
 };
 
+integrationSchema.post("save", saveIntegrationRecordToRack);
 integrationSchema.pre("update", update_updated_at_middleware);
 integrationSchema.pre("findOneAndUpdate", update_updated_at_middleware);
 

@@ -11,6 +11,7 @@ const { Battery } = require("../batteries/batteries.model");
 const { Family } = require("../families/families.model");
 const { Rack } = require("../racks/racks.model");
 const { GC16 } = require("../gc16/gc16.model");
+const { Integration } = require("../integrations/integrations.model");
 const { Setting } = require("../settings/settings.model");
 const owner_supplier_absent = require("./scripts/owner_supplier_absent");
 const turf = require("@turf/turf");
@@ -436,6 +437,20 @@ exports.snapshot_report = async () => {
          {
             $unwind: {
                path: "$last_event_record",
+               preserveNullAndEmptyArrays: true,
+            },
+         },
+         {
+            $lookup: {
+               from: "integrations",
+               localField: "last_integration_record",
+               foreignField: "_id",
+               as: "last_integration_record",
+            },
+         },
+         {
+            $unwind: {
+               path: "$last_integration_record",
                preserveNullAndEmptyArrays: true,
             },
          },
