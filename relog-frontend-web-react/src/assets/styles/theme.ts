@@ -31,9 +31,31 @@ export default {
     orange: '#F77737',
   },
   fonts: {
+    // Falta estilo de letter space e line-height
     title: `
-      font:500 0.875rem Arial, Helvetica, Fira Sans;
-      letter-spacing: 0.17px;
+      font-weight: 400;
+      font-size: 1.125rem;
+      font-family: 'Fira Sans', sans-serif;
+    `,
+    subtitle: `
+      font-weight: 400;
+      font-size: 1rem;
+      font-family: 'Fira Sans', sans-serif;
+  `,
+    menuSubtitle: `
+      font-weight: 500;
+      font-size: 0.9375rem;
+      font-family: 'Fira Sans', sans-serif;
+  `,
+    menu: `
+      font-weight: 400;
+      font-size: 0.875rem;
+      font-family: 'Roboto', sans-serif;
+  `,
+    text: `
+      font-weight: 400;
+      font-size: 12px;
+      font-family: 'Roboto', sans-serif;
     `,
   },
 };
