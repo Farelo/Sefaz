@@ -43,7 +43,11 @@ module.exports = async (rack, controlPoints, currentControlPoint) => {
             // console.log('ESTÁ NUMA PLANTA DONA')
             if (rack.absent_time) {
                let calculate = 0;
+               
                if (rack.cicle_start) calculate = getDiffDateTodayInHours(rack.cicle_start);
+                let total_cicle_duration = total_cicle_duration + calculate;
+                total_cicle_duration = getDiffDateTodayInHours(total_cicle_duration);
+
                await Rack.findByIdAndUpdate(
                   rack._id,
                   {
@@ -52,6 +56,7 @@ module.exports = async (rack, controlPoints, currentControlPoint) => {
                      offlineWhileAbsent: [],
                      cicle_end: new Date(),
                      last_cicle_duration: calculate,
+                     total_cicle_duration: total_cicle_duration,
                   },
                   { new: true }
                );

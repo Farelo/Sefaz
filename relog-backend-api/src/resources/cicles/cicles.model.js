@@ -11,13 +11,16 @@ const cicleSchema = new mongoose.Schema({
     required: true,
   },
   control_point_destiny: {
-    type: String,
-    minlength: 2,
-    maxlength: 30,
-  },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ControlPoint",
+ },
+  control_point_origin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ControlPoint",
+ },
   start_date: {
     type: Date,
-    default: Date.now,
+    default: null,
   },
   end_date: {
     type: Date,

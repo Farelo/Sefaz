@@ -497,7 +497,7 @@ const mLog = (mText) => {
 
 const updateOfflineWhileAbsentRegister = (rack) => {
 
-    //if we need to end, but there is not not a begin, then create one
+    //if we need to end, but there is not a begin, then create one
     if (!rack.offlineWhileAbsent) {
         rack.offlineWhileAbsent.push({
             start: new Date(),

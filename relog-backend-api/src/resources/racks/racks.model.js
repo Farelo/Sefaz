@@ -88,18 +88,15 @@ const rackSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
-    cicle_start: {
-        type: Date,
-        default: null
-    },
-    cicle_end: {
-        type: Date,
-        default: null
-    },
     last_cicle_duration: {
-        type: Number,
-        default: 0
+        type: mongoose.Schema.ObjectId,
+        ref: 'Cicle'
     },
+    total_cicle_duration: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Cicle'
+    },
+    
     offlineWhileAbsent: [
         {
             start: {
@@ -170,14 +167,6 @@ const rackSchema = new mongoose.Schema({
         ref: 'EventRecord'
     },
     total_work_duration: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'WorkHour'
-    },
-    work_start: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'WorkHour'
-    },
-    work_end: {
         type: mongoose.Schema.ObjectId,
         ref: 'WorkHour'
     },

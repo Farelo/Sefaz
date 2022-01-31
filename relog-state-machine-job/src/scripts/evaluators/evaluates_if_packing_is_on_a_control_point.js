@@ -5,6 +5,7 @@ const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_i
 const { EventRecord } = require("../../models/event_record.model");
 const { Rack } = require("../../models/racks.model");
 const detachIntegration = require('../detachIntegration');
+const calculateWorkHours = require('../calculateWorkHours');
 
 
 const getLastPosition = (rack) => {
@@ -250,7 +251,7 @@ if(actualControlPoint.FlagHT === "true"){
 await detachIntegration(rack);
 
 //Registro Horas de trabalho
-await calculateWorkHours(rack)
+await calculateWorkHours(rack);
 
 }
 

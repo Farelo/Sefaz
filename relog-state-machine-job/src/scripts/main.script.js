@@ -38,7 +38,7 @@ module.exports = async () => {
                .populate("last_position")
                .populate("last_battery")
                .populate("last_temperature")
-               //.populate("last_integration_record")
+               .populate("last_integration_record")
                .populate("last_detector_switch");
 
             await iterateRacks(setting, racks, controlPoints);
