@@ -27,6 +27,8 @@ const current_state_history = require("../resources/current_state_history/curren
 const imports = require("../resources/imports/imports.routing");
 const logs = require("../resources/logs/logs.routing");
 const integrations = require("../resources/integrations/integrations.routing");
+const rack_items = require("../resources/racks_items/racks_items.routing");
+const maintenance_checklist = require("../resources/maintenance_checklist/maintenance_checklist.routing");
 
 const apiKeys = require("../resources/api_keys/api_keys.routing");
 const error = require("../middlewares/error_handler.middleware");
@@ -75,6 +77,8 @@ module.exports = (app) => {
    app.use("/api/logs", logs);
    app.use("/api/api_keys", apiKeys);
    app.use("/api/integration", integrations);
+   app.use("/api/rack_items", rack_items);
+   app.use("/api/checklist", maintenance_checklist);
 
    // Middlewares functions
    app.use(error);
