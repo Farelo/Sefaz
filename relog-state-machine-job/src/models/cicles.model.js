@@ -1,7 +1,8 @@
 const debug = require("debug")("model:integrations");
 const mongoose = require("mongoose");
-const { Rack } = require("../racks/racks.model");
-const Joi = require("joi");
+const { Rack } = require("./racks.model");
+
+
 
 const cicleSchema = new mongoose.Schema({
 
@@ -28,17 +29,6 @@ const cicleSchema = new mongoose.Schema({
   },
 });
 
-const validate_cicles = (cicle) => {
-  const schema = Joi.object().keys({
-
-    id_rack: Joi.objectId().required(),
-    control_point_destiny: Joi.string().min(2).max(30),
-    start_date: Joi.date(),
-    end_date: Joi.date(),
-  });
-
-  return Joi.validate(cicle, schema, { abortEarly: false });
-};
 
 cicleSchema.statics.findById = function (id, projection = "") {
   return this.findOne({ id }, projection);
@@ -81,4 +71,4 @@ const Cicle = mongoose.model("Cicle", cicleSchema);
 
 exports.Cicle = Cicle;
 exports.cicleSchema = cicleSchema;
-exports.validate_cicles = validate_cicles;
+

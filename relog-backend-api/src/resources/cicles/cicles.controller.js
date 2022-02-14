@@ -9,33 +9,33 @@ exports.all = async (req, res) => {
    const serial = req.query.serial ? req.query.serial : null;
    const cicles = await cicles_service.get_cicles(serial);
 
-   res.json(engines);
+   res.json(cicles);
 };
 
 exports.show = async (req, res) => {
-   const engine = await engines_service.get_engine(req.params.id);
+   const cicles = await cicles_service.get_cicles(req.params.id);
 
-   if (!engine) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid engine" });
+   if (!cicles) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid cicles" });
 
-   res.json(engine);
+   res.json(cicles);
 };
 
 exports.update = async (req, res) => {
-   let engine = await engines_service.find_by_id(req.params.id);
-   if (!engine) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid engine" });
+   let cicles = await cicles_service.find_by_id(req.params.id);
+   if (!cicles) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid cicle" });
 
-   engine = await engines_service.update_engine(req.params.id, req.body);
-   logs_controller.create({ token: req.headers.authorization, log: "update_engine", newData: req.body });
+   cicles = await cicles_service.update_cicle(req.params.id, req.body);
+   logs_controller.create({ token: req.headers.authorization, log: "update_cicle", newData: req.body });
 
-   res.json(engine);
+   res.json(cicles);
 };
 
 exports.delete = async (req, res) => {
-   const engine = await engines_service.find_by_id(req.params.id);
-   if (!engine) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid engine" });
+   const cicles = await cicles_service.find_by_id(req.params.id);
+   if (!cicles) return res.status(HttpStatus.BAD_REQUEST).send({ message: "Invalid cicle" });
 
-   await engine.remove();
-   await logs_controller.create({ token: req.headers.authorization, log: "delete_engine", newData: engine });
+   await cicles.remove();
+   await logs_controller.create({ token: req.headers.authorization, log: "delete_cicle", newData: cicles });
 
    return res.send({ message: "Delete successfully" });
 };

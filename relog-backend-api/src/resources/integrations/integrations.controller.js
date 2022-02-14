@@ -80,12 +80,22 @@ const createIntegration = async (rack, family, engineType, serialOne, serialTwo,
       fabrication_date: fabricationDate,
     };
     await integrations_service.create_integration(newIntegration);
-      await Rack.findByIdAndUpdate(
-        rack._id,
-        { work_start: new Date(), work_end: null },
-        { new: true }
-    );
-  
+
+  } catch (error) {
+    throw new Error(error);
+  }
+    
+    try{
+      let newWorkHour = {
+        id_rack: rack,
+        work_start: Date.now(),
+        work_end: null,
+        total_work_duration: 0,
+
+      };
+    
+    await integrations_service.create_work_hour(newWorkHour);
+
   } catch (error) {
     throw new Error(error);
   }

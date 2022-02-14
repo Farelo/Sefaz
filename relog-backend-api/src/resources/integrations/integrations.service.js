@@ -1,4 +1,5 @@
 const { Integration } = require("./integrations.model");
+const { WorkHour } = require("../work_hours/work_hours.model");
 
 
 exports.get_integrations = async (id) => {
@@ -21,11 +22,11 @@ exports.create_integration = async (integration) => {
   }
 };
 
-exports.create_work_hour = async (WorkHour) => {
+exports.create_work_hour = async (Work_hour) => {
    try {
-      const new_work_hour = new Integration(integration);
-      await new_integration.save();
-      return new_integration;
+      const new_Work_hour = new WorkHour(Work_hour);
+      await new_Work_hour.save();
+      return new_Work_hour;
    } catch (error) {
       throw new Error(error);
    }

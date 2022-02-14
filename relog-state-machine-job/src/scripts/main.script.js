@@ -7,6 +7,7 @@ const { Temperature } = require("../models/temperature.model");
 const { Rack } = require("../models/racks.model");
 const { ControlPoint } = require("../models/control_points.model");
 const { Buttons } = require("../models/button.model");
+//const { Cicle } = require("../../models/cicles.model");
 
 const runSM = require("./runSM.script"); 
 

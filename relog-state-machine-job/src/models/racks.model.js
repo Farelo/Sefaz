@@ -77,18 +77,6 @@ const rackSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
-    cicle_start: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Cicle'
-    },
-    cicle_end: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Cicle'
-    },
-    last_cicle_duration: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Cicle'
-    },
     total_cicle_duration: {
         type: mongoose.Schema.ObjectId,
         ref: 'Cicle'
@@ -175,18 +163,7 @@ const rackSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'WorkHour'
     },
-    last_work_duration: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'WorkHour'
-    },
-    work_start: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'WorkHour'
-    },
-    work_end: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'WorkHour'
-    },
+    
     last_detector_switch:{
         type: mongoose.Schema.ObjectId,
         ref: 'Button'

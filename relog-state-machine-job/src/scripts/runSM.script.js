@@ -18,13 +18,13 @@ const evaluatesIfRackIsWithPermanenceTimeExceeded = require('./evaluators/evalua
 const evaluatesIfRackIsTraveling = require('./evaluators/evaluates_if_packing_is_traveling')
 const evaluatesIfRackIsWithButtonFalse = require('./evaluators/evaluates_if_packing_is_with_button_false')
 
-const getLastMessage = (package) => {
-    if(package.last_message_signal) return new Date(package.last_message_signal).valueOf()
+const getLastMessage = (rack) => {
+    if(rack.last_message_signal) return new Date(rack.last_message_signal).valueOf()
     
-    let lastPosition = package.last_position ? package.last_position.timestamp : 0;
-    let lastBattery = package.last_battery ? package.last_battery.timestamp : 0;
-    let lastTemperature = package.last_temperature ? package.last_temperature.timestamp : 0;
-    let lastButton = package.last_detector_switch ? package.last_detector_switch.timestamp : 0;
+    let lastPosition = rack.last_position ? rack.last_position.timestamp : 0;
+    let lastBattery = rack.last_battery ? rack.last_battery.timestamp : 0;
+    let lastTemperature = rack.last_temperature ? rack.last_temperature.timestamp : 0;
+    let lastButton = rack.last_detector_switch ? rack.last_detector_switch.timestamp : 0;
 
     return _.max(lastPosition, lastBattery, lastTemperature, lastButton) * 1000;
 }

@@ -2,9 +2,11 @@
 const STATES = require("../common/states");
 const moment = require("moment");
 
+
 // MODELS
 const { CurrentStateHistory } = require("../../models/current_state_history.model");
 const { Rack } = require("../../models/racks.model");
+const { Cicle } = require("../../models/cicles.model");
 
 module.exports = async (rack, controlPoints, currentControlPoint) => {
    try {
@@ -22,9 +24,24 @@ module.exports = async (rack, controlPoints, currentControlPoint) => {
          // Se não iniciou, inicia o giro
          if (!rackIsOk.length) {
             if (!rack.absent_time) {
+
+               try{
+                  let Cicle = new Cicle ({
+                    id_rack: rack,
+                    cicle_start: Date.now(),
+                    cicle_end: null,
+                    total_cicle_duration: 0,
+                    control_point_origin: controlPoints,
+                    control_point_destiny: null,
+                  });
+                  await Cicle.save();
+            
+              } catch (error) {
+                throw new Error(error);
+              }
                await Rack.findByIdAndUpdate(
                   rack._id,
-                  { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null },
+                  { absent: true, absent_time: new Date()},
                   { new: true }
                );
             }
@@ -42,21 +59,36 @@ module.exports = async (rack, controlPoints, currentControlPoint) => {
             // Finaliza o giro
             // console.log('ESTÁ NUMA PLANTA DONA')
             if (rack.absent_time) {
-               let calculate = 0;
                
-               if (rack.cicle_start) calculate = getDiffDateTodayInHours(rack.cicle_start);
-                let total_cicle_duration = total_cicle_duration + calculate;
+               
+               //if (rack.cicle_start) calculate = getDiffDateTodayInHours(rack.cicle_start);
+                //rack.last_cicle_duration;
+                
+                var cicle_calculate = await Cicle.findByIdAndUpdate(
+                  rack._id,
+                  {
+                     cicle_end: Date.now(),
+                     control_point_destiny: controlPoints,  
+                  },
+                  { new: true }
+               );
+
+               let total_cicle_duration = total_cicle_duration + (cicle_calculate.cicle_start - cicle_calculate.cicle_end);
                 total_cicle_duration = getDiffDateTodayInHours(total_cicle_duration);
 
+                await Cicle.findByIdAndUpdate(
+                  rack._id,
+                  {
+                     total_cicle_duration: total_cicle_duration,
+                  },
+                  { new: true }
+               );
                await Rack.findByIdAndUpdate(
                   rack._id,
                   {
                      absent: false,
                      absent_time: null,
                      offlineWhileAbsent: [],
-                     cicle_end: new Date(),
-                     last_cicle_duration: calculate,
-                     total_cicle_duration: total_cicle_duration,
                   },
                   { new: true }
                );
@@ -83,9 +115,25 @@ module.exports = async (rack, controlPoints, currentControlPoint) => {
          if (!rack.absent_time) {
             // console.log('NÃO ESTÁ NUMA PLANTA DONA.')
             // Inicia o giro
+            try{
+               let Cicle = new Cicle ({
+                 id_rack: rack,
+                 cicle_start: Date.now(),
+                 cicle_end: null,
+                 total_cicle_duration: 0,
+                 control_point_origin: controlPoints,
+                 control_point_destiny: null,
+               });
+               
+      
+               await Cicle.save();
+         
+           } catch (error) {
+             throw new Error(error);
+           }
             await Rack.findByIdAndUpdate(
                rack._id,
-               { absent: true, absent_time: new Date(), cicle_start: new Date(), cicle_end: null },
+               { absent: true, absent_time: new Date() },
                { new: true }
             );
          }

@@ -27,6 +27,9 @@ const current_state_history = require("../resources/current_state_history/curren
 const imports = require("../resources/imports/imports.routing");
 const logs = require("../resources/logs/logs.routing");
 const integrations = require("../resources/integrations/integrations.routing");
+const cicles = require("../resources/cicles/cicles.routing");
+const work_hours = require("../resources/work_hours/work_hours.routing");
+
 
 const apiKeys = require("../resources/api_keys/api_keys.routing");
 const error = require("../middlewares/error_handler.middleware");
@@ -75,6 +78,8 @@ module.exports = (app) => {
    app.use("/api/logs", logs);
    app.use("/api/api_keys", apiKeys);
    app.use("/api/integration", integrations);
+   app.use("/api/cicles", cicles);
+   app.use("/api/work_hours", work_hours);
 
    // Middlewares functions
    app.use(error);
