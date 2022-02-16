@@ -1,7 +1,7 @@
 const debug = require("debug")("model:integrations");
 const mongoose = require("mongoose");
 const { Rack } = require("./racks.model");
-const Joi = require("joi");
+//const Joi = require("joi");
 
 const integrationSchema = new mongoose.Schema({
   id_engine_type: {
@@ -47,21 +47,6 @@ const integrationSchema = new mongoose.Schema({
   },
 });
 
-const validate_integrations = (integration) => {
-  const schema = Joi.object().keys({
-    id_engine_type: Joi.objectId().required(),
-    serial: Joi.string().min(2).max(30).required(),
-    serial2: Joi.string().min(2).max(30).required(),
-    fabrication_date: Joi.date(),
-    family: Joi.objectId().required(),
-    id_rack: Joi.objectId().required(),
-    active: Joi.boolean(),
-    integration_date: Joi.date(),
-  });
-
-  return Joi.validate(integration, schema, { abortEarly: false });
-};
-
 integrationSchema.statics.findById = function (id, projection = "") {
   return this.findOne({ id }, projection);
 };
@@ -99,4 +84,4 @@ const Integration = mongoose.model("Integration", integrationSchema);
 
 exports.Integration = Integration;
 exports.integrationSchema = integrationSchema;
-exports.validate_integrations = validate_integrations;
+

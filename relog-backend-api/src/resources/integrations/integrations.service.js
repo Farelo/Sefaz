@@ -5,6 +5,7 @@ const { WorkHour } = require("../work_hours/work_hours.model");
 exports.get_integrations = async (id) => {
    try {
        if (!id) return await Integration.find().populate('EngineType', ['_id', 'code']).populate('family', ['_id', 'code', 'company']).populate("Rack", ["_id", "name"]);
+       
        const data = await Integration.findById(id)
        return data ? [data] : []
    } catch (error) {

@@ -17,6 +17,7 @@ module.exports = async (rack) => {
 
       let total_work_duration = total_work_duration + (work_hour_calculate.work_start - work_hour_calculate.work_end);
        total_work_duration = getDiffDateTodayInHours(total_work_duration);
+       //console.log("teste");
 
        await WorkHour.findByIdAndUpdate(
          rack._id,

@@ -1,28 +1,23 @@
-// const { Rack } = require("../models/racks.model");
-// //const { Integration } = require("../models/integrations.model");
-// const logs_controller = require("");
-// const { Integration } = require("../../../relog-backend-api/src/resources/integrations/integrations.model");
+//const { Rack } = require("../models/racks.model");
+const {Integration} = require("../../models/integrations.model")
 
+module.exports = async (rack) => {
 
+      try {
 
-// module.exports = async (rack) =>{ 
-        
-// try {
+           // Integration.updateOne({ id_rack: rack._id }, { $set: { active: false } })
+            const filter = { id_rack: rack._id  };
+            const update = { active: false  };
 
-//         let integration_detach = await Integration.findById(rack._id)
+            // `doc` is the document _after_ `update` was applied because of
+            // `new: true`
+             await Integration.findOneAndUpdate(filter, update, {
+                  new: true
+            });
 
-//         await Rack.findByIdAndUpdate(
-//                 rack._id,
-//                 { active: false},
-//                 { new: true }
-//              );
-          
-//           rack.last_integration_record.active = false;
-//           return rack;
-        
-// } catch (error) {
-//       console.error(error);
-//       throw new Error(error);
-// }
+      } catch (error) {
+            console.error(error);
+            throw new Error(error);
+      }
 
-// };  
+};  

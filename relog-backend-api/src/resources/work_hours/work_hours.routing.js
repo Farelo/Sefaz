@@ -25,7 +25,7 @@ module.exports = router;
  *     summary: work hours of racks
  *     description: Work hours of racks
  *     tags:
- *       - Work_hours
+ *       - WorkHour
  *     produces:
  *       - application/json
  *     responses:
@@ -45,21 +45,21 @@ module.exports = router;
  * @swagger
  * /work_hours:
  *   get:
- *     summary: Retrieve all work_hours
- *     description: Retrieve all work_hours on database
+ *     summary: Retrieve all Work hours of a rack
+ *     description: Retrieve all Work hours on database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Integration
+ *       - WorkHour
  *     parameters:
  *       - name: Id
- *         description: Return all work_hours filtered by Id
+ *         description: Return all Work hours filtered by Id
  *         in: query
  *         required: false
  *         type: string
  *     responses:
  *       200:
- *         description: list of all Work_hours
+ *         description: list of all Work hours
  *       400:
  *         description: Bad Request
  *       404:
@@ -76,7 +76,7 @@ module.exports = router;
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Work_hours
+ *       - WorkHour
  *     parameters:
  *       - name: id
  *         description: Work_hours id
@@ -106,7 +106,7 @@ module.exports = router;
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Work_hours
+ *       - WorkHour
  *     summary: Delete a work_hours
  *     description: Delete a work_hours
  *     parameters:
@@ -133,25 +133,22 @@ module.exports = router;
  *     required:
  *       - id
  *     properties:
- *       active:
- *         type: boolean
- *       family:
- *          type: string
- *       serial:
- *         type: string
- *       serial2:
- *         type: string
- *       fabrication_date:
+ *       work_end:
  *         type: string
  *         format: date
  *         example: 2021-10-24T22:55:38.916+00:00
- *       id_engine_type:
- *         type: string
  *       id_rack:
  *         type: string
- *       integration_date:
+ *       work_start:
  *          type: string
  *          format: date
  *          example: 2021-10-24T22:55:38.916+00:00
- *     
+ *       last_work_duration:
+ *          type: string
+ *          format: date
+ *          example: 2021-10-24T22:55:38.916+00:00
+ *       total_work_duration:
+ *          type: string
+ *          format: date
+ *          example: 2021-10-24T22:55:38.916+00:00
  */

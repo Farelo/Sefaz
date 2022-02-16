@@ -4,7 +4,7 @@ const martinez = require("martinez-polygon-clipping");
 const getDistanceFromLatLonInKm = require("../common/get_distance_from_lat_lng_in_km");
 const { EventRecord } = require("../../models/event_record.model");
 const { Rack } = require("../../models/racks.model");
-//const detachIntegration = require('../detachIntegration');
+const detachIntegration = require('../common/detachIntegration');
 const calculateWorkHours = require('../common/calculateWorkHours');
 
 
@@ -249,7 +249,7 @@ if(actualControlPoint.FlagHT === "true"){
 
 //desvinculo integração
 
-//await detachIntegration(rack);
+await detachIntegration(rack);
 
 //Registro Horas de trabalho
 await calculateWorkHours(rack);

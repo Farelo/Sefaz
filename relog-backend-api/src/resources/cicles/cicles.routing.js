@@ -25,7 +25,7 @@ module.exports = router;
  *     summary: cicles of racks
  *     description: cicles of racks
  *     tags:
- *       - Cicles
+ *       - Cicle
  *     produces:
  *       - application/json
  *     responses:
@@ -45,12 +45,12 @@ module.exports = router;
  * @swagger
  * /cicles:
  *   get:
- *     summary: Retrieve all cicles
+ *     summary: Retrieve all cicles of a rack
  *     description: Retrieve all cicles on database
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Cicles
+ *       - Cicle
  *     parameters:
  *       - name: Id
  *         description: Return all cicles filtered by Id
@@ -76,7 +76,7 @@ module.exports = router;
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Cicles
+ *       - Cicle
  *     parameters:
  *       - name: id
  *         description: cicles id
@@ -106,7 +106,7 @@ module.exports = router;
  *     security:
  *       - Bearer: []
  *     tags:
- *       - Cicles
+ *       - Cicle
  *     summary: Delete a cicles
  *     description: Delete a cicles
  *     parameters:
@@ -133,25 +133,26 @@ module.exports = router;
  *     required:
  *       - id
  *     properties:
- *       active:
- *         type: boolean
- *       family:
- *          type: string
- *       serial:
- *         type: string
- *       serial2:
- *         type: string
- *       fabrication_date:
- *         type: string
- *         format: date
- *         example: 2021-10-24T22:55:38.916+00:00
- *       id_engine_type:
- *         type: string
  *       id_rack:
  *         type: string
- *       integration_date:
+ *       control_point_destiny:
+ *         type: string
+ *       control_point_origin:
+ *         type: string
+ *       cicle_start:
  *          type: string
  *          format: date
  *          example: 2021-10-24T22:55:38.916+00:00
- *     
+ *       cicle_end:
+ *          type: string
+ *          format: date
+ *          example: 2021-10-24T22:55:38.916+00:00
+ *       last_cicle_duration:
+ *          type: string
+ *          format: date
+ *          example: 2021-10-24T22:55:38.916+00:00
+ *       total_cicle_duration:
+ *          type: string
+ *          format: date
+ *          example: 2021-10-24T22:55:38.916+00:00
  */

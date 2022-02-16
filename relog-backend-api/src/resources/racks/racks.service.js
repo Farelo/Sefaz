@@ -26,6 +26,7 @@ exports.get_racks = async (tag, family) => {
          .populate("last_battery")
          .populate("last_event_record")
          .populate("last_integration_record")
+         .populate("last_work_duration")
          .populate("last_alert_history");
          
 
@@ -44,6 +45,7 @@ exports.get_rack = async (id) => {
          .populate("last_battery")
          .populate("last_event_record")
          .populate("last_integration_record")
+         .populate("last_work_duration")
          .populate("last_alert_history");
 
       return rack;
@@ -82,6 +84,7 @@ exports.populatedFindByTag = async (tag) => {
          .populate("last_battery")
          .populate("last_temperature")
          .populate("last_integration_record")
+         .populate("last_work_duration");
    } catch (error) {
       throw new Error(error);
    }
@@ -102,6 +105,7 @@ exports.find_by_id = async (id) => {
       const rack = await Rack.findById(id)
          .populate("family", ["_id", "code", "company"])
          .populate("last_integration_record")
+         .populate("last_work_duration")
          .populate("project", ["_id", "name"]);
 
       return rack;

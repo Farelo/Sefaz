@@ -6,10 +6,10 @@ const cicles_service = require("./cicles.service");
 const logs_controller = require("../logs/logs.controller");
 
 exports.all = async (req, res) => {
-   const serial = req.query.serial ? req.query.serial : null;
-   const cicles = await cicles_service.get_cicles(serial);
+   const id = req.query.id ? req.query.id : null;
+   const cicle = await cicles_service.get_cicles(id);
 
-   res.json(cicles);
+   res.json(cicle);
 };
 
 exports.show = async (req, res) => {
