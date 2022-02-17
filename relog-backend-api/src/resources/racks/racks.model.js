@@ -88,10 +88,10 @@ const rackSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
-    last_cicle_duration: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Cicle'
-    },
+    //last_cicle_duration: {
+       // type: mongoose.Schema.ObjectId,
+       // ref: 'Cicle'
+    //},
     total_cicle_duration: {
         type: mongoose.Schema.ObjectId,
         ref: 'Cicle'
@@ -167,10 +167,6 @@ const rackSchema = new mongoose.Schema({
         ref: 'EventRecord'
     },
     total_work_duration: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'WorkHour'
-    },
-    last_work_duration: {
         type: mongoose.Schema.ObjectId,
         ref: 'WorkHour'
     },
