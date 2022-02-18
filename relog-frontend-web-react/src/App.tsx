@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ThemeProvider } from 'styled-components';
+
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import theme from './assets/styles/theme';
 import Global from './assets/styles/global';
 
+import { Aside } from './components/layout/Aside/Aside';
+import Routes from './routes';
+
 function App(): JSX.Element {
+  const [isActive, setIsActive] = useState(false);
+
+  function openMenu() {
+    setIsActive(!isActive);
+  }
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Global />
-        <div>
-          <h1>Titulo</h1>
-          <p>
-            Aqui tenho um exemplo de um texto feito no propio app da aplicação
-            <br />
-            esse texto é meramente ilustrativo com a finalidade de testar as
-            <strong> fontes importadas</strong>
-          </p>
-        </div>
+        <Router>
+          <Global />
+          <div id="app-react">
+            <Aside openMenu={openMenu} isActive={isActive} />
+            <main id="main">
+              <Routes />
+            </main>
+          </div>
+        </Router>
       </ThemeProvider>
     </>
   );

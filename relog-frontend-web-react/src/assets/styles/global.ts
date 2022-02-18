@@ -21,14 +21,21 @@ export default createGlobalStyle`
   a {
     text-decoration: none;
   }
-
   body {
-    background: ${props => props.theme.colors.blue[100]};
-    color: ${props => props.theme.colors.white[100]};
-    ${props => props.theme.fonts.title}
+    background-color: ${props => props.theme.colors.white[10]};
   }
-
-  button, a {
+  body #app-react {
+    height: 100%;
+    width: 100%;
+    display: flex;
+  }
+  body #main {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 2rem;
+  }
+  button {
     cursor: pointer;
   }
+
 `;
