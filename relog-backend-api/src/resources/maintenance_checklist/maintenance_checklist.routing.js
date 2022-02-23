@@ -83,11 +83,11 @@ module.exports = router
  *   Checklist:
  *     type: object
  *     required:
- *       - rack_id
+ *       - maintenance_id
  *       - items
  *       - photo
  *     properties:
- *       rack_id:
+ *       maintenance_id:
  *         type: string
  *       photo:
  *         type: string

@@ -4,18 +4,15 @@ Joi.objectId = require('joi-objectid')(Joi)
 
 
 const maintenanceChecklistSchema = new mongoose.Schema({
-    rack_id: {
+    maintenance_id: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Rack'
+        ref: 'Maintenance'
     }, 
     items: [{
         minlength: 0,
         maxlength: 250,
         type: String
     }],
-    photo: {
-        type: String
-    },
     excluded_at: {
         type: Date
     }
@@ -23,7 +20,7 @@ const maintenanceChecklistSchema = new mongoose.Schema({
 
 const validate_maintenance_checklist = (maintenance_checklist) => {
     const schema = Joi.object().keys({
-        rack_id: Joi.objectId().required(),
+        maintenance_id: Joi.objectId().required(),
         items: Joi.array().items(Joi.objectId())
     })
 

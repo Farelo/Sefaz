@@ -75,5 +75,24 @@ exports.update_family = async (id, family_edited) => {
     }
 }
 
+exports.add_item = async (id, item_id) => {
+    try {
+        var family = await Family.findById(id)
+        family.rack_items.push(item_id)
+       
+        return  await family.save()
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
-
+exports.remove_item = async (id, item_id) => {
+    try {
+        var family = await Family.findById(id)
+        family.rack_items.pull(item_id)
+       
+        return  await family.save()
+    } catch (error) {
+        throw new Error(error)
+    }
+}

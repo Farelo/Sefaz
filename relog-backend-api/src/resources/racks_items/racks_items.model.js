@@ -5,13 +5,13 @@ Joi.objectId = require('joi-objectid')(Joi)
 const config = require('config')
 
 const rackItemsSchema = new mongoose.Schema({
-    rack_id: {
+    family_id: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Rack'
+        ref: 'Family'
     }, 
     name: {
         type: String,
-        minlength: 5,
+        minlength: 3,
         maxlength: 255,
         required: true,
         unique: true
@@ -19,7 +19,7 @@ const rackItemsSchema = new mongoose.Schema({
     description: {
         type: String,
         minlength: 0,
-        maxlength: 500,
+        maxlength: 250,
     },
     current_price: {
         type: Number
@@ -28,9 +28,6 @@ const rackItemsSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Price'
     }],
-    photo: {
-        type: String
-    },
     excluded_at: {
         type: Date
     }
@@ -39,12 +36,10 @@ const rackItemsSchema = new mongoose.Schema({
 const validate_RackItem = (rack_item) => {
     const schema = Joi.object().keys({
         //code: Joi.string().min(4).max(25).required(),
-        name: Joi.string().min(5).max(255).required(),
+        name: Joi.string().min(3).max(255).required(),
         description: Joi.string().min(0).max(500).allow(''),
-        price: {
-            cost: Joi.number(),
-            date: Joi.date()
-        }
+        current_price: Joi.number().required(),
+        date: Joi.date().required()
     })
 
     return Joi.validate(rack_item, schema, { abortEarly: false })

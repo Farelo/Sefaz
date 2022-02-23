@@ -23,17 +23,16 @@ exports.create = async (req, res) => {
       if (existingItem) res.status(HttpStatus.BAD_REQUEST).send({ message: "Name already exists" });
 
       const rack_item = await rack_item_service.create_rack_item(req.body);
-
       const price = {
          item_id: rack_item._id,
          cost: rack_item.current_price,
-         date: Date.now()
+         date: req.body.date
       }
+      
       const new_price = await price_service.create_price(price)
 
-      const updated_rack_item = rack_item_service.update_rack_item_price(rack_item._id, new_price._id)
-
-
+      const updated_rack_item = await rack_item_service.update_rack_item_price(rack_item._id, new_price._id)
+     
       logs_controller.create({ token: req.headers.authorization, log: "create_rack", newData: req.body });
 
       res.status(HttpStatus.CREATED).send(updated_rack_item);
@@ -62,8 +61,16 @@ exports.update = async (req, res) => {
 exports.update_price = async (req, res) => {
    let rack_item = await rack_item_service.find_by_id(req.params.id);
    if (!rack_item) return res.status(HttpStatus.NOT_FOUND).send({ message: "Invalid rack item" });
+
+   const price = {
+      item_id: rack_item._id,
+      cost: req.body.current_price,
+      date: req.body.date
+   }
+
+   const new_price = await price_service.create_price(price)
  
-   rack_item = await rack_item_service.update_rack_item_price(req.params.id, req.body.price);
+   rack_item = await rack_item_service.update_current_price(req.params.id, new_price._id, new_price.cost);
    logs_controller.create({ token: req.headers.authorization, log: "update_rack_item", newData: rack_item });
 
    res.status(HttpStatus.CREATED).json(rack_item);
