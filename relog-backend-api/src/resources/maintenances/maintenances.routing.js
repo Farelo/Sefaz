@@ -12,6 +12,7 @@ router.get('/:id', [auth, validate_object_id], maintenance_controller.show)
 router.post('/', [auth, authz], maintenance_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id], maintenance_controller.update)
 router.get('/time_report/:id', [auth, authz, validate_object_id], maintenance_controller.get_time_report)
+router.get('/historic',  [auth, authz], maintenance_controller.get_historic)
 
 module.exports = router
 
@@ -152,6 +153,52 @@ module.exports = router
  *         in: path
  *         required: true
  *         type: string
+ *     responses:
+ *       200:
+ *         description: Maintenance is valid request
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Not Found
+ *
+ */
+
+// GET '/historic'
+/**
+ * @swagger
+ *
+ * /maintenances/historic:
+ *   get:
+ *     summary: Get the maintenance report by date and family 
+ *     description: Get the maintenance report by date and family 
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Maintenances
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: family_id
+ *         description: Family id you want to filter by
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: startDate
+ *         description: Start date to filter by date (ISO 8601 format)
+ *         in: query
+ *         required: true
+ *         type: string
+ *         format: date-time
+ *         example: 2022-01-20T00:00:00.000Z
+ *       - name: endDate
+ *         description: End date to filter by date (ISO 8601 format)
+ *         in: query
+ *         required: false
+ *         type: string
+ *         format: date-time    
+ *         example: 2022-01-22T00:00:00.000Z 
  *     responses:
  *       200:
  *         description: Maintenance is valid request

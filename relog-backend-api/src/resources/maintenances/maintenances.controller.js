@@ -2,6 +2,7 @@ const _ = require("lodash");
 const HttpStatus = require("http-status-codes");
 const maintenance_service = require("./maintenances.service");
 const rack_service = require("../racks/racks.service");
+const family_service = require("../families/families.service");
 const logs_controller = require("../logs/logs.controller");
 const jwt = require("jsonwebtoken");
 const config = require("config");
@@ -44,11 +45,22 @@ exports.update = async (req, res) => {
 };
 
 exports.get_time_report = async (req, res) => {
-   const rack = await rack_service.find_by_id(req.params.id);
-   if (!rack) return res.status(HttpStatus.NOT_FOUND).send({ message: "Rack not found" });
+   const maintenance = await rack_service.find_by_id(req.params.id);
+   if (!maintenance) return res.status(HttpStatus.NOT_FOUND).send({ message: "Rack not found" });
    
    const report = await maintenance_service.get_report(req.params.id)
    res.status(HttpStatus.OK).json(report)
+};
+
+exports.get_historic = async (req, res) => {
+   var {start_date, end_date, family_id} = req.query
+
+   const existing_family = await family_service.find_by_id(family_id)
+   if(!existing_family) family_id = null
+
+   const maintenances = await maintenance_service.get_historic({start_date, end_date, family_id})
+
+   res.status(HttpStatus.OK).json(maintenances)
 };
 
 const extractToken = (req) => {

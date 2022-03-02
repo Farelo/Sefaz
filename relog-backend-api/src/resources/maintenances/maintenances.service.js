@@ -69,6 +69,41 @@ exports.get_report = async (rack_id) => {
     }
 }
 
+//histórico pelo date e pela família do rack
+exports.get_historic = async ( options) => {
+    try {
+        var start_date = new Date(options.start_date);
+        let today = new Date()
+        var end_date = options.end_date ? new Date(options.end_date) : today
+        end_date.setHours(23, 59, 59)
+
+        var family_id = options.family_id
+        var maintenances
+        if(family_id == null){
+            maintenances = await Maintenance.find({
+                excluded_at: { $exists: false },
+                date: { $gte: start_date, $lte: end_date }
+            })
+            .populate("rack_id");
+        }
+        else{
+            maintenances = await Maintenance.find({
+                excluded_at: { $exists: false },
+                date: { $gte: start_date, $lte: end_date }
+            })
+            .populate("rack_id", "code family serial type")
+
+            maintenances = maintenances.filter(elem => {
+                return (elem.rack_id.family == family_id)
+            })
+        }
+        
+        return maintenances
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 /* exports.delete_rack_item = async (id, rack_edited) => {
     try {
         const options = { new: true }
