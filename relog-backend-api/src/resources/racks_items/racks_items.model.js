@@ -45,7 +45,6 @@ const validate_RackItem = (rack_item) => {
     return Joi.validate(rack_item, schema, { abortEarly: false })
 }
 
-
 const RackItem = mongoose.model('RackItem', rackItemsSchema)
 
 exports.RackItem = RackItem
