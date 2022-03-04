@@ -53,6 +53,10 @@ const maitenance_schema = new mongoose.Schema({
         price:{
             type: mongoose.Schema.ObjectId,
             ref: 'Price'
+        },
+        need_maintenance:{
+            type: Boolean,
+            default: false
         }
     }],
     total_cost: {

@@ -235,7 +235,7 @@ module.exports = router
  *       - name: startDate
  *         description: Start date to filter by date (ISO 8601 format)
  *         in: query
- *         required: false
+ *         required: true
  *         type: string
  *         format: date-time
  *         example: 2022-01-20T00:00:00.000Z
@@ -272,8 +272,6 @@ module.exports = router
  *     properties:
  *       name:
  *         type: string
- *       family_id:
- *         type: string
  *       description:
  *         type: string
  *       current_price:
@@ -294,13 +292,10 @@ module.exports = router
  *     required:
  *       - name
  *       - description
- *       - photo
  *     properties:
  *       name:
  *         type: string
  *       description:
- *         type: string
- *       photo:
  *         type: string
  */
 

@@ -3,6 +3,7 @@ const HttpStatus = require("http-status-codes");
 const config = require("config");
 const rack_item_service = require("./racks_items.service");
 const price_service = require("../prices/prices.service");
+const families_service = require("../families/families.service");
 const logs_controller = require("../logs/logs.controller");
 const debug = require("debug")("controller:rack_items");
 var https = require("https");
@@ -17,16 +18,16 @@ exports.all = async (req, res) => {
 
 exports.create = async (req, res) => {
    console.log("create rack item");
+   const {name, description, current_price, date } = req.body
 
-   if (req.body) {
-      const existingItem = await rack_item_service.find_by_name(req.body.name);
+      const existingItem = await rack_item_service.find_by_name(name);
       if (existingItem) res.status(HttpStatus.BAD_REQUEST).send({ message: "Name already exists" });
 
-      const rack_item = await rack_item_service.create_rack_item(req.body);
+      const rack_item = await rack_item_service.create_rack_item({name, description});
       const price = {
          item_id: rack_item._id,
-         cost: rack_item.current_price,
-         date: req.body.date
+         cost: current_price,
+         date: date
       }
       
       const new_price = await price_service.create_price(price)
@@ -36,7 +37,7 @@ exports.create = async (req, res) => {
       logs_controller.create({ token: req.headers.authorization, log: "create_rack", newData: req.body });
 
       res.status(HttpStatus.CREATED).send(updated_rack_item);
-   }
+   
 };
 
 exports.show = async (req, res) => {
@@ -70,7 +71,7 @@ exports.update_price = async (req, res) => {
 
    const new_price = await price_service.create_price(price)
  
-   rack_item = await rack_item_service.update_current_price(req.params.id, new_price._id, new_price.cost);
+   rack_item = await rack_item_service.update_current_price(req.params.id, new_price._id);
    logs_controller.create({ token: req.headers.authorization, log: "update_rack_item", newData: rack_item });
 
    res.status(HttpStatus.CREATED).json(rack_item);

@@ -5,10 +5,6 @@ Joi.objectId = require('joi-objectid')(Joi)
 const config = require('config')
 
 const rackItemsSchema = new mongoose.Schema({
-    family_id: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Family'
-    }, 
     name: {
         type: String,
         minlength: 3,
@@ -22,7 +18,8 @@ const rackItemsSchema = new mongoose.Schema({
         maxlength: 250,
     },
     current_price: {
-        type: Number
+        type: mongoose.Schema.ObjectId,
+        ref: 'Price'
     },
     prices: [{
         type: mongoose.Schema.ObjectId,
@@ -35,11 +32,10 @@ const rackItemsSchema = new mongoose.Schema({
 
 const validate_RackItem = (rack_item) => {
     const schema = Joi.object().keys({
-        //code: Joi.string().min(4).max(25).required(),
         name: Joi.string().min(3).max(255).required(),
         description: Joi.string().min(0).max(500).allow(''),
-        current_price: Joi.number().required(),
-        date: Joi.date().required()
+        current_price: Joi.number(),
+        date: Joi.date()
     })
 
     return Joi.validate(rack_item, schema, { abortEarly: false })

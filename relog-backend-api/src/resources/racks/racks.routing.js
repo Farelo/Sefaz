@@ -330,6 +330,8 @@ module.exports = router
  *         type: boolean
  *       family:
  *         type: string
+ *       in_maintenance:
+ *         type: boolean
  */
 
  /**

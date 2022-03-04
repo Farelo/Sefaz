@@ -49,8 +49,8 @@ module.exports = router
  *
  * /families/{id}:
  *   get:
- *     summary: Create a family
- *     description: Create a family
+ *     summary: Get a family
+ *     description: Get a family
  *     security:
  *       - Bearer: []
  *     tags:

@@ -12,7 +12,7 @@ router.get('/:id', [auth, validate_object_id], maintenance_controller.show)
 router.post('/', [auth, authz], maintenance_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id], maintenance_controller.update)
 router.get('/time_report/:id', [auth, authz, validate_object_id], maintenance_controller.get_time_report)
-router.get('/historic',  [auth, authz], maintenance_controller.get_historic)
+router.get('/historic/maintenance_report',  [auth], maintenance_controller.get_historic)
 
 module.exports = router
 
@@ -169,7 +169,7 @@ module.exports = router
 /**
  * @swagger
  *
- * /maintenances/historic:
+ * /maintenances/historic/maintenance_report:
  *   get:
  *     summary: Get the maintenance report by date and family 
  *     description: Get the maintenance report by date and family 
@@ -258,11 +258,10 @@ module.exports = router
  *     type: object
  *     required:
  *       - item
- *       - price
  *     properties:
  *       item:
  *         type: string
- *       price:
- *         type: string
+ *       need_maintenance:
+ *         type: boolean
  *       
  */
