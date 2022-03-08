@@ -180,25 +180,41 @@ module.exports = router
  *     produces:
  *       - application/json
  *     parameters:
+ *       - name: rack_id
+ *         description: Rack id you want to filter by
+ *         in: query
+ *         required: false
+ *         type: string
  *       - name: family_id
  *         description: Family id you want to filter by
  *         in: query
  *         required: false
  *         type: string
- *       - name: startDate
+ *       - name: item_id
+ *         description: Item id you want to filter by
+ *         in: query
+ *         required: false
+ *         type: string
+ *       - name: need_maintenance
+ *         description: To filter by the items that need maintenance
+ *         in: query
+ *         required: false
+ *         type: boolean
+ *         default: false
+ *       - name: start_date
  *         description: Start date to filter by date (ISO 8601 format)
  *         in: query
  *         required: true
  *         type: string
  *         format: date-time
- *         example: 2022-01-20T00:00:00.000Z
- *       - name: endDate
+ *         default: 2022-01-20T00:00:00.000Z
+ *       - name: end_date
  *         description: End date to filter by date (ISO 8601 format)
  *         in: query
  *         required: false
  *         type: string
  *         format: date-time    
- *         example: 2022-01-22T00:00:00.000Z 
+ *         dafault: 2022-01-22T00:00:00.000Z 
  *     responses:
  *       200:
  *         description: Maintenance is valid request
@@ -241,8 +257,6 @@ module.exports = router
  *         items:
  *          type: string
  *       rack_photo:
- *         type: string
- *       user_id:
  *         type: string
  *       user_auxiliar1:
  *         type: string

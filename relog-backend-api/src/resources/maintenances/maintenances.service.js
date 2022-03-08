@@ -1,4 +1,5 @@
 const e = require("cors");
+const { indexOf } = require("lodash");
 const _ = require('lodash')
 const { Maintenance } = require("./maintenances.model")
 
@@ -76,27 +77,161 @@ exports.get_historic = async ( options) => {
         let today = new Date()
         var end_date = options.end_date ? new Date(options.end_date) : today
         end_date.setHours(23, 59, 59)
-
+        console.log("options," , options)
         var family_id = options.family_id
         var maintenances
-        if(family_id == null){
-            maintenances = await Maintenance.find({
-                excluded_at: { $exists: false },
-                date: { $gte: start_date, $lte: end_date }
-            })
-            .populate("rack_id");
-        }
-        else{
-            maintenances = await Maintenance.find({
-                excluded_at: { $exists: false },
-                date: { $gte: start_date, $lte: end_date }
-            })
-            .populate("rack_id", "code family serial type")
 
-            maintenances = maintenances.filter(elem => {
-                return (elem.rack_id.family == family_id)
-            })
-        }
+
+        /**
+         * * se houver rack id na option
+         */
+         if(options.rack_id != null){
+             if(options.item_id != null && options.need_maintenance == 'false'){
+                maintenances = await Maintenance.find({
+                    excluded_at: { $exists: false },
+                    date: { $gte: start_date, $lte: end_date },
+                    rack_id: options.rack_id
+                })
+                .populate("rack_id", "code family serial type"); 
+                maintenances = maintenances.filter(elem => {
+                      elem.items = elem.items.filter(item => {
+                        return (item.item == options.item_id && elem.need_maintenance == false)
+                    }) 
+                    return (elem.items.length > 0 && elem.items) 
+                })
+             }
+             else if(options.need_maintenance == 'true'){
+                maintenances = await Maintenance.find({
+                    excluded_at: { $exists: false },
+                    date: { $gte: start_date, $lte: end_date },
+                    rack_id: options.rack_id
+                })
+                .populate("rack_id", "code family serial type"); 
+                maintenances = maintenances.filter(elem => {
+                    elem.items = elem.items.filter(item => {
+                        return (item.need_maintenance == true)
+                    })  
+                    return (elem.items.length > 0 && elem.items)
+                })
+             }
+             else if(options.need_maintenance == 'false'){
+                maintenances = await Maintenance.find({
+                    excluded_at: { $exists: false },
+                    date: { $gte: start_date, $lte: end_date },
+                    rack_id: options.rack_id
+                })
+                .populate("rack_id", "code family serial type"); 
+                maintenances = maintenances.filter(elem => {
+                    elem.items = elem.items.filter(item => {
+                        return (item.need_maintenance == false)
+                    })  
+                    return (elem.items.length > 0 && elem.items)
+                })
+             }
+             else{
+                maintenances = await Maintenance.find({
+                    excluded_at: { $exists: false },
+                    date: { $gte: start_date, $lte: end_date },
+                    rack_id: options.rack_id
+                })
+                .populate("rack_id", "code family serial type");
+             }
+         }
+         else{
+            if(family_id != null){
+                if(options.item_id != null && options.need_maintenance == 'false'){
+                    maintenances = await Maintenance.find({
+                        excluded_at: { $exists: false },
+                        date: { $gte: start_date, $lte: end_date }
+                    })
+                    .populate("rack_id", "code family serial type")
+        
+                    maintenances = maintenances.filter(elem => {
+                        elem.items = elem.items.filter(item => {
+                            return(item.item == options.item_id && item.need_maintenance == false)
+                        })
+                        return (elem.rack_id.family == family_id && elem.items.length > 0)
+                    })
+                }
+                else if(options.need_maintenance == 'true'){
+                    maintenances = await Maintenance.find({
+                        excluded_at: { $exists: false },
+                        date: { $gte: start_date, $lte: end_date }
+                    })
+                    .populate("rack_id", "code family serial type")
+        
+                    maintenances = maintenances.filter(elem => { 
+                        elem.items = elem.items.filter(item => {
+                            return(item.need_maintenance == true)
+                        })
+                        return (elem.rack_id.family == family_id && elem.items.length > 0)
+                    })
+                }
+                else{
+                    maintenances = await Maintenance.find({
+                        excluded_at: { $exists: false },
+                        date: { $gte: start_date, $lte: end_date }
+                    })
+                    .populate("rack_id", "code family serial type")
+        
+                    maintenances = maintenances.filter(elem => {
+                        return (elem.rack_id.family == family_id)
+                    })
+                }
+            }
+            else if(family_id == null && options.item_id != null && options.need_maintenance == 'true'){
+                console.log("entrei AQUIII")
+                maintenances = await Maintenance.find({
+                    excluded_at: { $exists: false },
+                    date: { $gte: start_date, $lte: end_date }
+                })
+                .populate("rack_id", "code family serial type");
+                maintenances = maintenances.filter(elem => {
+                    elem.items = elem.items.filter(item => {
+                        
+                        return(item.item == options.item_id && item.need_maintenance == true)
+                    })
+                  //  console.log("ELEM ",elem)
+                    return (elem.items.length > 0)
+                })
+            }
+            else if(family_id == null && options.item_id != null && options.need_maintenance == 'false'){
+                maintenances = await Maintenance.find({
+                    excluded_at: { $exists: false },
+                    date: { $gte: start_date, $lte: end_date }
+                })
+                .populate("rack_id", "code family serial type");
+                maintenances = maintenances.filter(elem => {
+                    
+                    elem.items = elem.items.filter(item => {
+                        return(item.item == options.item_id)
+                    })
+                    return (elem.items.length > 0)
+                })
+            }
+            else if(family_id == null && options.item_id == null && options.need_maintenance == 'true'){
+                maintenances = await Maintenance.find({
+                    excluded_at: { $exists: false },
+                    date: { $gte: start_date, $lte: end_date }
+                })
+                .populate("rack_id", "code family serial type")
+    
+                maintenances = maintenances.filter(elem => {
+                    elem.items = elem.items.filter(item => {
+                        return(item.need_maintenance == true)  
+                    })
+                   
+                    return (elem.items.length > 0)
+                })
+            }
+            else{
+                maintenances = await Maintenance.find({
+                    excluded_at: { $exists: false },
+                    date: { $gte: start_date, $lte: end_date }
+                })
+                .populate("rack_id", "code family serial type");
+            }
+         }
         
         return maintenances
     } catch (error) {

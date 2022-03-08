@@ -82,13 +82,19 @@ exports.get_time_report = async (req, res) => {
 };
 
 exports.get_historic = async (req, res) => {
-   var {start_date, end_date, family_id} = req.query
+   var {start_date, end_date, family_id, rack_id, item_id, need_maintenance} = req.query
 
    const existing_family = await family_service.find_by_id(family_id)
-   console.log("existring", existing_family)
    if(!existing_family) family_id = null
+   
+   const existing_rack = await rack_service.find_by_id(rack_id)
+   if(!existing_rack) rack_id = null
 
-   const maintenances = await maintenance_service.get_historic({start_date, end_date, family_id})
+   const existing_item = await items_service.find_by_id(item_id)
+   if(!existing_item) item_id = null
+
+   console.log("existing item -----", existing_item)
+   const maintenances = await maintenance_service.get_historic({start_date, end_date, family_id, rack_id, item_id, need_maintenance})
 
    res.status(HttpStatus.OK).json(maintenances)
 };
