@@ -197,6 +197,10 @@ const rackSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'DeviceData'
     },
+    in_maintenance: {
+        type: Boolean,
+        default: false
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -224,6 +228,7 @@ const validate_racks = (rack) => {
         capacity: Joi.number().max(10000),
         observations: Joi.string().min(0).max(250).allow(''),
         active: Joi.boolean(),
+        in_maintenance: Joi.boolean(),
         family: Joi.objectId().required(),
         project: Joi.objectId(),
         fabricationDate: Joi.date()

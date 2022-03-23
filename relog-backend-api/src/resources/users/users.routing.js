@@ -236,6 +236,8 @@ module.exports = router
  *     properties:
  *       email:
  *         type: string
+ *         default: admin@admin.smart
  *       password:
  *         type: string
+ *         default: Admin20
  */

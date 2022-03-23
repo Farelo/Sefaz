@@ -12,6 +12,8 @@ router.get('/:id', [auth, validate_object_id], families_controller.show)
 router.post('/', [auth, authz, validate_joi(validate_families)], families_controller.create)
 router.patch('/:id', [auth, authz, validate_object_id, validate_joi(validate_families)], families_controller.update)
 router.delete('/:id', [auth, authz, validate_object_id], families_controller.delete)
+router.patch('/insert_item/:id', [auth, authz, validate_object_id], families_controller.insert_item)
+router.patch('/remove_item/:id', [auth, authz, validate_object_id], families_controller.remove_item)
 
 module.exports = router
 
@@ -47,8 +49,8 @@ module.exports = router
  *
  * /families/{id}:
  *   get:
- *     summary: Create a family
- *     description: Create a family
+ *     summary: Get a family
+ *     description: Get a family
  *     security:
  *       - Bearer: []
  *     tags:
@@ -164,6 +166,71 @@ module.exports = router
  *         description: Not Found
  */
 
+// INSERT ITEM '/'
+/**
+ * @swagger
+ * /families/insert_item/{id}:
+ *   patch:
+ *     summary: Update a family array item
+ *     description: Add an item id to the family
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Families
+ *     parameters:
+ *       - name: id
+ *         description: Family id
+ *         in: path
+ *         required: true
+ *         type: string
+ *       - name: family
+ *         description: Item object
+ *         in:  body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/ItemObject'
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+// DELETE ITEM'/'
+/**
+ * @swagger
+ * /families/remove_item/{id}:
+ *   patch:
+ *     summary: Update a family array item
+ *     description: Remove an item id from the family
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - Families
+ *     parameters:
+ *       - name: id
+ *         description: Family id
+ *         in: path
+ *         required: true
+ *         type: string
+ *       - name: family
+ *         description: Item object
+ *         in:  body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/ItemObject'
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ */
+
+
  /**
  * @swagger
  *
@@ -173,10 +240,29 @@ module.exports = router
  *     required:
  *       - code
  *       - company
+ *       - rack_items
  *     properties:
  *       code:
  *         type: string
  *       company:
+ *         type: string
+ *       rack_items:
+ *         type: array
+ *         items: 
+ *          type: string
+ *       
+ */
+
+ /**
+ * @swagger
+ *
+ * definitions:
+ *   ItemObject:
+ *     type: object
+ *     required:
+ *       - item_id
+ *     properties:
+ *       item_id:
  *         type: string
  *       
  */

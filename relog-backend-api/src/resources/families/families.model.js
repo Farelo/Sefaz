@@ -22,6 +22,10 @@ const familySchema = new mongoose.Schema({
         ref: 'Company',
         required: true
     },
+    rack_items: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'RackItem'
+    }],
     created_at: {
         type: Date,
         default: Date.now
@@ -40,7 +44,7 @@ const validate_families = (family) => {
         company: Joi.objectId().required(),
         routes: Joi.array().items(Joi.objectId()),
         control_points: Joi.array().items(Joi.objectId()),
-      
+        rack_items: Joi.array().items(Joi.string())
     })
 
     return Joi.validate(family, schema, { abortEarly: false })
