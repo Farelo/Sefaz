@@ -6,6 +6,7 @@ const { EventRecord } = require("../../models/event_record.model");
 const { Rack } = require("../../models/racks.model");
 const detachIntegration = require('../common/detachIntegration');
 const calculateWorkHours = require('../common/calculateWorkHours');
+const maintenance = require("../common/maintenance");
 
 
 const getLastPosition = (rack) => {
@@ -253,6 +254,11 @@ await detachIntegration(rack);
 
 //Registro Horas de trabalho
 await calculateWorkHours(rack);
+
+}
+if(actualControlPoint.cp_Maintenance === "true"){
+
+   await maintenance(rack);
 
 }
 

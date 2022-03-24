@@ -70,7 +70,12 @@ const controlPointSchema = new mongoose.Schema({
     update_at: {
         type: Date,
         default: Date.now
+    },
+    cp_Maintenance: {
+        type: Boolean,
+        default: false
     }
+
 })
 
 const validate_control_points = (control_point) => {

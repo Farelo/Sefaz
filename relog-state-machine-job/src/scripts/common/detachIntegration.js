@@ -9,8 +9,7 @@ module.exports = async (rack) => {
             const filter = { id_rack: rack._id  };
             const update = { active: false  };
 
-            // `doc` is the document _after_ `update` was applied because of
-            // `new: true`
+            
              await Integration.findOneAndUpdate(filter, update, {
                   new: true
             });

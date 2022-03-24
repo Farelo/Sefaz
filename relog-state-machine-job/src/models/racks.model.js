@@ -192,6 +192,10 @@ const rackSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'DeviceData'
     },
+    in_maintenance: {
+        type: Boolean,
+        default: false
+    },
     created_at: {
         type: Date,
         default: Date.now
