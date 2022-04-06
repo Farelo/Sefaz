@@ -31,7 +31,6 @@ const cicles = require("../resources/cicles/cicles.routing");
 const work_hours = require("../resources/work_hours/work_hours.routing");
 
 const rack_items = require("../resources/racks_items/racks_items.routing");
-const maintenance_checklist = require("../resources/maintenance_checklist/maintenance_checklist.routing");
 const maintenances = require("../resources/maintenances/maintenances.routing");
 
 const apiKeys = require("../resources/api_keys/api_keys.routing");
@@ -84,7 +83,6 @@ module.exports = (app) => {
    app.use("/api/cicles", cicles);
    app.use("/api/work_hours", work_hours);
    app.use("/api/rack_items", rack_items);
-   app.use("/api/checklist", maintenance_checklist);
    app.use("/api/maintenances", maintenances);
 
    // Middlewares functions

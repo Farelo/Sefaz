@@ -27,10 +27,6 @@ const maitenance_schema = new mongoose.Schema({
     rack_photo: {
         type: String
     },
-    /* checklist_id: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Maintenance_checklist'
-    }, */
     user_id: {
         type: mongoose.Schema.ObjectId,
         ref: 'User'

@@ -77,7 +77,6 @@ exports.get_historic = async ( options) => {
         let today = new Date()
         var end_date = options.end_date ? new Date(options.end_date) : today
         end_date.setHours(23, 59, 59)
-        console.log("options," , options)
         var family_id = options.family_id
         var maintenances
 
@@ -180,7 +179,6 @@ exports.get_historic = async ( options) => {
                 }
             }
             else if(family_id == null && options.item_id != null && options.need_maintenance == 'true'){
-                console.log("entrei AQUIII")
                 maintenances = await Maintenance.find({
                     excluded_at: { $exists: false },
                     date: { $gte: start_date, $lte: end_date }
@@ -191,7 +189,6 @@ exports.get_historic = async ( options) => {
                         
                         return(item.item == options.item_id && item.need_maintenance == true)
                     })
-                  //  console.log("ELEM ",elem)
                     return (elem.items.length > 0)
                 })
             }

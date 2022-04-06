@@ -4,6 +4,7 @@ const maintenance_service = require("./maintenances.service");
 const rack_service = require("../racks/racks.service");
 const family_service = require("../families/families.service");
 const items_service = require("../racks_items/racks_items.service");
+const prices_service = require("../prices/prices.service");
 const logs_controller = require("../logs/logs.controller");
 const jwt = require("jsonwebtoken");
 const config = require("config");
@@ -19,19 +20,23 @@ exports.create = async (req, res) => {
       if (!existing_rack) res.status(HttpStatus.BAD_REQUEST).send({ message: "Rack not found" });
 
       var maintenance_data = req.body      
-      let token = extractToken(req)
-      const decoded_payload = jwt.verify(token, config.get("security.jwtPrivateKey"))
+      let req_token = extractToken(req)
+      const decoded_payload = jwt.verify(req_token, config.get("security.jwtPrivateKey"))
       maintenance_data['user_id'] = decoded_payload._id
 
+      var total_cost = 0
       var items = req.body.items
       for(var i in items){
          const existing_item = await items_service.find_by_id(items[i].item)
          if(!existing_item) res.status(HttpStatus.BAD_REQUEST).send({ message: "Item not found" })
          items[i]['price'] = existing_item.current_price
+         
+         let current_item_cost = await prices_service.find_by_id(existing_item.current_price)
+         current_item_cost = current_item_cost.cost
+         total_cost = total_cost + current_item_cost
       }
-      console.log("items", items)
       maintenance_data['items'] = items
-      console.log("maintenance_data")
+      maintenance_data['total_cost'] = total_cost
 
       const maintenance = await maintenance_service.create_maitenance(maintenance_data);
       logs_controller.create({ token: req.headers.authorization, log: "create_maitenance", newData: maintenance_data });
@@ -62,11 +67,9 @@ exports.update = async (req, res) => {
          if(!existing_item) res.status(HttpStatus.BAD_REQUEST).send({ message: "Item not found" })
          items[i]['price'] = existing_item.current_price
       }
-      console.log("items", items)
+      
       maintenance_data['items'] = items
-      console.log("maintenance_data")
-
-
+ 
    maintenance = await maintenance_service.update(req.params.id, maintenance_data);
    logs_controller.create({ token: req.headers.authorization, log: "update_maintenance", newData: maintenance });
 
@@ -93,7 +96,6 @@ exports.get_historic = async (req, res) => {
    const existing_item = await items_service.find_by_id(item_id)
    if(!existing_item) item_id = null
 
-   console.log("existing item -----", existing_item)
    const maintenances = await maintenance_service.get_historic({start_date, end_date, family_id, rack_id, item_id, need_maintenance})
 
    res.status(HttpStatus.OK).json(maintenances)
